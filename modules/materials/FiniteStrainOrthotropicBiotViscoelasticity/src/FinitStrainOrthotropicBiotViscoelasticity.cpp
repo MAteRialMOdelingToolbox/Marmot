@@ -1,7 +1,6 @@
 #include "Marmot/FiniteStrainOrthotropicBiotViscoelasticity.h"
 #include "Marmot/MarmotAutomaticDifferentiationForFastor.h"
 #include "Marmot/MarmotDeformationMeasures.h"
-#include "Marmot/MarmotEigenSystems.h"
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotFiniteStrainViscoelasticity.h"
@@ -17,8 +16,9 @@ namespace Marmot::Materials {
 
   using namespace Marmot;
   using namespace Fastor;
-  using namespace FastorIndices;
-  using namespace FastorStandardTensors;
+  using namespace TensorUtility::FastorTensors;
+  using namespace TensorUtility::FastorTensors::Indices;
+  using namespace TensorUtility::FastorTensors::StandardTensors;
 
   double FiniteStrainOrthotropicBiotViscoelasticity::getDensity( const double* stateVars ) const
   {
@@ -43,9 +43,9 @@ namespace Marmot::Materials {
       G13( materialProperties[7] ),
       G23( materialProperties[8] ),
       maxwellProperties(
-        ContinuumMechanics::FiniteStrain::Viscoelasticity::createMaxwellProperties( materialProperties[9],
+        ContinuumMechanics::Viscoelasticity::FiniteStrain::createMaxwellProperties( materialProperties[9],
                                                                                     &materialProperties[10] ) ),
-      dBiotStress_dU( makeDual( ContinuumMechanics::VoigtNotation::voigtToStiffnessFastor(
+      dBiotStress_dU( makeDual( ContinuumMechanics::Voigt::voigtToStiffnessFastor(
         ContinuumMechanics::Elasticity::Orthotropic::
           stiffnessTensor( E1, E2, E3, nu12, nu23, nu13, G12, G23, G13 ) ) ) )
   {
@@ -62,11 +62,12 @@ namespace Marmot::Materials {
     const auto& F = deformation.F;
 
     using namespace ContinuumMechanics;
+    using namespace ContinuumMechanics::Kinematics;
     // compute Cauchy-Green deformation
     const Tensor33t< scalar > C = DeformationMeasures::rightCauchyGreen( F );
 
     // compute principal stretches and directions
-    auto [lam, Q] = Math::computeEigenSystemJacobi( C );
+    auto [lam, Q] = TensorUtility::FastorTensors::StandardTensors::computeEigenSystemJacobi( C );
     Tensor33t< scalar > principalStretch( 0. );
     for ( int i = 0; i < 3; ++i ) {
       principalStretch( i, i ) = sqrt( lam( i ) );
@@ -90,7 +91,7 @@ namespace Marmot::Materials {
     memcpy( stateLayout.getPtr( response.stateVars, "S0_old" ), makeReal( S_biot ).data(), 9 * sizeof( double ) );
 
     // add viscoelastic contribution to Biot stress
-    ContinuumMechanics::FiniteStrain::Viscoelasticity::evaluateGeneralizedMaxwellModel<
+    ContinuumMechanics::Viscoelasticity::FiniteStrain::evaluateGeneralizedMaxwellModel<
       scalar >( S_biot,
                 dS_biot,
                 timeIncrement.dT,

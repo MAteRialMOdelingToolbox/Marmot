@@ -31,315 +31,324 @@
 #include <utility>
 #include <vector>
 
-namespace Marmot {
-  namespace Solvers {
+namespace Marmot::Solvers {
+  /**
+   * @class Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain
+   * @brief Solver for material point problems with finite strain materials
+   * @details This class implements a solver for material point problems
+   * using finite strain material models. It supports loading steps with
+   * controlled displacement gradient and stress components, adaptive time stepping,
+   * and history recording.
+   */
+  class MarmotMaterialPointSolverFiniteStrain {
+
+  public:
     /**
-     * @class Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain
-     * @brief Solver for material point problems with finite strain materials
-     * @details This class implements a solver for material point problems
-     * using finite strain material models. It supports loading steps with
-     * controlled displacement gradient and stress components, adaptive time stepping,
-     * and history recording.
+     * @struct Step
+     * @brief Struct to define a loading step
+     * @details Each step contains targets for displacement gradient and stress states,
+     * time information and time step control parameters.
      */
-    class MarmotMaterialPointSolverFiniteStrain {
+    struct Step {
+      TensorUtility::FastorTensors::StandardTensors::Tensor33d
+        gradUIncrementTarget;             ///< Target displacement gradient increment for the step
+      TensorUtility::FastorTensors::StandardTensors::Tensor33d
+        stressIncrementTarget;            ///< Target Kirchhoff stress increment for the step
+      TensorUtility::FastorTensors::StandardTensors::Tensor33t< bool >
+        isGradUComponentControlled;       ///< Flags to indicate which displacement
+                                          ///< gradient components are controlled
+      TensorUtility::FastorTensors::StandardTensors::Tensor33t< bool >
+             isStressComponentControlled; ///< Flags to indicate which stress components are controlled
+      double timeStart     = 0.0;         ///< Start time of the step
+      double timeEnd       = 1.0;         ///< End time of the step
+      double dTStart       = 0.1;         ///< Initial time step size
+      double dTMin         = 1e-6;        ///< Minimum time step size
+      double dTMax         = 0.5;         ///< Maximum time step size
+      int    maxIncrements = 100;         ///< Maximum number of increments in the step
 
-    public:
       /**
-       * @struct Step
-       * @brief Struct to define a loading step
-       * @details Each step contains targets for displacement gradient and stress states,
-       * time information and time step control parameters.
+       * @brief Check that for each component, either deformation or stress is controlled
+       * @throws std::runtime_error if the condition is not met
        */
-      struct Step {
-        FastorStandardTensors::Tensor33d gradUIncrementTarget;  ///< Target displacement gradient increment for the step
-        FastorStandardTensors::Tensor33d stressIncrementTarget; ///< Target Kirchhoff stress increment for the step
-        FastorStandardTensors::Tensor33t< bool > isGradUComponentControlled; ///< Flags to indicate which displacement
-                                                                             ///< gradient components are controlled
-        FastorStandardTensors::Tensor33t< bool >
-               isStressComponentControlled; ///< Flags to indicate which stress components are controlled
-        double timeStart     = 0.0;         ///< Start time of the step
-        double timeEnd       = 1.0;         ///< End time of the step
-        double dTStart       = 0.1;         ///< Initial time step size
-        double dTMin         = 1e-6;        ///< Minimum time step size
-        double dTMax         = 0.5;         ///< Maximum time step size
-        int    maxIncrements = 100;         ///< Maximum number of increments in the step
-
-        /**
-         * @brief Check that for each component, either deformation or stress is controlled
-         * @throws std::runtime_error if the condition is not met
-         */
-        void checkControl() const
-        {
-          for ( int i = 0; i < 9; i++ ) {
-            if ( reshape< 9 >( isGradUComponentControlled )[i] == reshape< 9 >( isStressComponentControlled )[i] ) {
-              throw std::runtime_error(
-                "exactly one of displacement gradient or stress component must be controlled for each component." );
-            }
+      void checkControl() const
+      {
+        for ( int i = 0; i < 9; i++ ) {
+          if ( reshape< 9 >( isGradUComponentControlled )[i] == reshape< 9 >( isStressComponentControlled )[i] ) {
+            throw std::runtime_error(
+              "exactly one of displacement gradient or stress component must be controlled for each component." );
           }
         }
-      };
-      /**
-       * @struct Increment
-       * @brief Struct to define a loading increment
-       * @details Each increment contains displacement gradient and stress increments,
-       * control flags, time information, and iteration limits.
-       */
-      struct Increment {
-        FastorStandardTensors::Tensor9d         gradUIncrement; ///< Target displacement gradient increment for the step
-        FastorStandardTensors::Tensor9d         stressIncrement; ///< Target Kirchhoff stress increment for the step
-        FastorStandardTensors::Tensor9t< bool > isGradUComponentControlled; ///< Flags to indicate which displecement
-                                                                            ///< gradient components are controlled
-        FastorStandardTensors::Tensor9t< bool >
-               isStressComponentControlled; ///< Flags to indicate which stress components are controlled
-        double timeOld;                     ///< Old time at the beginning of the increment
-        double dT;                          ///< Time step size for the increment
-      };
-      /**
-       * @struct HistoryEntry
-       * @brief Struct to record the history of the simulation
-       * @details Each entry contains time, stress, deformation, and state variables.
-       */
-      struct HistoryEntry {
-        double                             time;      ///< Time at the history entry
-        FastorStandardTensors::Tensor33d   stress;    ///< Stress at the history entry
-        FastorStandardTensors::Tensor33d   F;         ///< deformation gradient at the history entry
-        FastorStandardTensors::Tensor3333d dTau_dF;   ///< Material tangent at the history entry
-        Eigen::VectorXd                    stateVars; ///< State variables at the history entry
+      }
+    };
+    /**
+     * @struct Increment
+     * @brief Struct to define a loading increment
+     * @details Each increment contains displacement gradient and stress increments,
+     * control flags, time information, and iteration limits.
+     */
+    struct Increment {
+      TensorUtility::FastorTensors::StandardTensors::Tensor9d
+        gradUIncrement;                   ///< Target displacement gradient increment for the step
+      TensorUtility::FastorTensors::StandardTensors::Tensor9d
+        stressIncrement;                  ///< Target Kirchhoff stress increment for the step
+      TensorUtility::FastorTensors::StandardTensors::Tensor9t< bool >
+        isGradUComponentControlled;       ///< Flags to indicate which displecement
+                                          ///< gradient components are controlled
+      TensorUtility::FastorTensors::StandardTensors::Tensor9t< bool >
+             isStressComponentControlled; ///< Flags to indicate which stress components are controlled
+      double timeOld;                     ///< Old time at the beginning of the increment
+      double dT;                          ///< Time step size for the increment
+    };
+    /**
+     * @struct HistoryEntry
+     * @brief Struct to record the history of the simulation
+     * @details Each entry contains time, stress, deformation, and state variables.
+     */
+    struct HistoryEntry {
+      double                                                     time;    ///< Time at the history entry
+      TensorUtility::FastorTensors::StandardTensors::Tensor33d   stress;  ///< Stress at the history entry
+      TensorUtility::FastorTensors::StandardTensors::Tensor33d   F;       ///< deformation gradient at the history entry
+      TensorUtility::FastorTensors::StandardTensors::Tensor3333d dTau_dF; ///< Material tangent at the history entry
+      Eigen::VectorXd                                            stateVars; ///< State variables at the history entry
 
-        /**
-         * @brief Print the history entry to the console
-         */
-        void print() const
-        {
-          std::cout.precision( 6 );
-          std::cout << std::scientific << "  Material state for time: " << time << std::endl;
-          std::cout << "  tau:" << std::endl;
-          std::cout << "   [" << stress( 0, 0 ) << ", " << stress( 0, 1 ) << ", " << stress( 0, 2 ) << std::endl;
-          std::cout << "    " << stress( 1, 0 ) << ", " << stress( 1, 1 ) << ", " << stress( 1, 2 ) << std::endl;
-          std::cout << "    " << stress( 2, 0 ) << ", " << stress( 2, 1 ) << ", " << stress( 2, 2 ) << "]" << std::endl;
+      /**
+       * @brief Print the history entry to the console
+       */
+      void print() const
+      {
+        std::cout.precision( 6 );
+        std::cout << std::scientific << "  Material state for time: " << time << std::endl;
+        std::cout << "  tau:" << std::endl;
+        std::cout << "   [" << stress( 0, 0 ) << ", " << stress( 0, 1 ) << ", " << stress( 0, 2 ) << std::endl;
+        std::cout << "    " << stress( 1, 0 ) << ", " << stress( 1, 1 ) << ", " << stress( 1, 2 ) << std::endl;
+        std::cout << "    " << stress( 2, 0 ) << ", " << stress( 2, 1 ) << ", " << stress( 2, 2 ) << "]" << std::endl;
 
-          std::cout << "\n  F:" << std::endl;
-          std::cout << "   [" << F( 0, 0 ) << ", " << F( 0, 1 ) << ", " << F( 0, 2 ) << std::endl;
-          std::cout << "    " << F( 1, 0 ) << ", " << F( 1, 1 ) << ", " << F( 1, 2 ) << std::endl;
-          std::cout << "    " << F( 2, 0 ) << ", " << F( 2, 1 ) << ", " << F( 2, 2 ) << "]" << std::endl;
-          if ( stateVars.size() > 0 ) {
-            std::cout << "\n  state variables: " << std::endl;
-            // print 3 per line
-            std::cout << "   [";
-            for ( int i = 0; i < stateVars.size(); i++ ) {
-              std::cout << stateVars[i];
-              if ( ( i + 1 ) % 3 == 0 )
-                std::cout << "," << std::endl << "    ";
-              else if ( i != stateVars.size() - 1 )
-                std::cout << ", ";
-            }
-            std::cout << "]" << std::endl;
+        std::cout << "\n  F:" << std::endl;
+        std::cout << "   [" << F( 0, 0 ) << ", " << F( 0, 1 ) << ", " << F( 0, 2 ) << std::endl;
+        std::cout << "    " << F( 1, 0 ) << ", " << F( 1, 1 ) << ", " << F( 1, 2 ) << std::endl;
+        std::cout << "    " << F( 2, 0 ) << ", " << F( 2, 1 ) << ", " << F( 2, 2 ) << "]" << std::endl;
+        if ( stateVars.size() > 0 ) {
+          std::cout << "\n  state variables: " << std::endl;
+          // print 3 per line
+          std::cout << "   [";
+          for ( int i = 0; i < stateVars.size(); i++ ) {
+            std::cout << stateVars[i];
+            if ( ( i + 1 ) % 3 == 0 )
+              std::cout << "," << std::endl << "    ";
+            else if ( i != stateVars.size() - 1 )
+              std::cout << ", ";
           }
+          std::cout << "]" << std::endl;
         }
-        /**
-         * @brief Constructor for HistoryEntry
-         * @param time Time at the history entry
-         * @param stress Stress tensor at the history entry
-         * @param F Deformation gradient at the history entry
-         * @param dTau_dF Material tangent at the history entry
-         * @param stateVars State variables at the history entry
-         */
-        HistoryEntry( double                                    time,
-                      const FastorStandardTensors::Tensor33d&   stress,
-                      const FastorStandardTensors::Tensor33d&   F,
-                      const FastorStandardTensors::Tensor3333d& dTau_dF,
-                      const Eigen::VectorXd&                    stateVars )
-          : time( time ), stress( stress ), F( F ), dTau_dF( dTau_dF ), stateVars( stateVars )
-        {
-        }
-        // default constructor
-        HistoryEntry()
-          : time( 0.0 ),
-            stress( FastorStandardTensors::Tensor33d( 0.0 ) ),
-            F( FastorStandardTensors::Tensor33d( 0.0 ) ),
-            dTau_dF( FastorStandardTensors::Tensor3333d( 0.0 ) ),
-            stateVars( Eigen::VectorXd() )
-        {
-        }
-      };
-
+      }
       /**
-       * @struct SolverOptions
-       * @brief Struct to define solver options
-       * @details Contains parameters for controlling the solver's behavior.
+       * @brief Constructor for HistoryEntry
+       * @param time Time at the history entry
+       * @param stress Stress tensor at the history entry
+       * @param F Deformation gradient at the history entry
+       * @param dTau_dF Material tangent at the history entry
+       * @param stateVars State variables at the history entry
        */
-      struct SolverOptions {
-        int    maxIterations       = 25;    ///< Maximum number of iterations per increment (default: 25)
-        double residualTolerance   = 1e-10; ///< Convergence tolerance (default: 1e-10)
-        double correctionTolerance = 1e-10; ///< Correction tolerance (default: 1e-10)
-      };
-
-      /**
-       * @brief Constructor for the MarmotMaterialPointSolverFiniteStrain class
-       * @param materialName Name of the finite strain material model
-       * @param materialProperties Array of material properties
-       * @param nMaterialProperties Number of material properties
-       * @param options Solver options controlling nonlinear iteration settings
-       */
-      MarmotMaterialPointSolverFiniteStrain( const std::string&   materialName,
-                                             const double*        materialProperties,
-                                             const int            nMaterialProperties,
-                                             const SolverOptions& options );
-
-      /**
-       * @brief Add a loading step to the solver
-       * @param step The Step to be added
-       */
-      void addStep( const Step& step );
-
-      /**
-       * @brief Get the list of added loading steps
-       * @return A vector of Step containing the added steps
-       */
-      std::vector< Step > getSteps() const { return steps; }
-
-      /**
-       * @brief Clear all added loading steps
-       */
-      void clearSteps() { steps.clear(); }
-
-      /**
-       * @brief Set the initial state of the material model
-       * @param initialStress The initial stress in Voigt notation
-       * @param initialStateVars The initial state variables
-       */
-      void setInitialState( const FastorStandardTensors::Tensor33d& initialStress,
-                            const Eigen::VectorXd&                  initialStateVars );
-
-      /**
-       * @brief Get the number of state variables in the material model
-       * @return The number of state variables
-       */
-      int getNumberOfStateVariables() const { return nStateVars; }
-
-      /**
-       * @brief Reset the solver to the initial state
-       * @details This function resets the initial stress
-       * and state variables of the material model.
-       */
-      void resetToInitialState();
-
-      /**
-       * @brief Solve the material point problem for all added steps
-       */
-      void solve();
-
-      /**
-       * @brief Get the recorded history of the simulation
-       * @return A vector of HistoryEntry containing the recorded history
-       */
-      const std::vector< HistoryEntry >& getHistory() const { return history; }
-
-      /**
-       * @brief Clear the recorded history
-       */
-      void clearHistory() { history.clear(); }
-
-      /**
-       * @brief Print the recorded history to the console
-       */
-      void printHistory();
-
-      /**
-       * @brief Export the recorded history to a CSV file
-       * @param filename The name of the CSV file to export to
-       */
-      void exportHistoryToCSV( const std::string& filename );
-
-    private:
-      /**
-       * @brief Solve a single loading step
-       * @param step The Step to be solved
-       *
-       * @details This function iterates over the increments
-       * defined in the step, calling solveIncrement for each increment.
-       * It manages time stepping and ensures that the entire step
-       * is covered.
-       */
-      void solveStep( const Step& step );
-
-      /**
-       * @brief Solve a single increment within a loading step
-       * @param increment The Increment to be solved
-       * @throws std::runtime_error if the solver does not converge
-       *
-       * @details This function implements a Newton-Raphson iterative
-       * solver to compute the stress and deformation state for the given increment.
-       * It updates the material state variables and records the history
-       * after convergence.
-       */
-      void solveIncrement( const Increment& increment );
-
-      /**
-       * @brief Compute the residual for the current increment
-       * @param stressIncrement The computed stress increment
-       * @param target The target (mixed) stress/strain increment
-       * @param increment The Increment containing control information
-       * @return The computed residual vector
-       *
-       * @details This function calculates the residual vector
-       * based on the difference between the computed stress increment
-       * and the target increment, taking into account which components
-       * are controlled by strain or stress.
-       */
-      FastorStandardTensors::Tensor9d computeResidual( const FastorStandardTensors::Tensor9d& stressIncrement,
-                                                       const FastorStandardTensors::Tensor9d& target,
-                                                       const Increment&                       increment );
-
-      /**
-       * @brief Modify the material tangent matrix based on control type
-       * @param tangent The material tangent matrix to be modified
-       * @param increment The Increment containing control information
-       *
-       * @details This function adjusts the tangent matrix to account for
-       * the components that are controlled by displacement gradient  or stress, ensuring
-       * that the solver correctly handles mixed control scenarios.
-       * This is done by zeroing out rows corresponding to displacement gradient controlled
-       * components and setting their diagonal entries to one.
-       */
-      void modifyTangent( FastorStandardTensors::Tensor99d& tangent, const Increment& increment );
-
-      /// @brief The finite strain material model
-      std::unique_ptr< MarmotMaterialFiniteStrain > material;
-
-      /// @brief Number of state variables in the material model
-      int nStateVars;
-
-      /// @brief Current state variables
-      Eigen::VectorXd stateVars;
-
-      /// @brief Initial state variables
-      Eigen::VectorXd _initialStateVars;
-
-      /// @brief Temporary state variables for computations
-      Eigen::VectorXd stateVarsTemp;
-
-      /// @brief The Kirchhoff stress
-      FastorStandardTensors::Tensor33d stress = FastorStandardTensors::Tensor33d( 0.0 );
-
-      /// @brief The initial Kirchhoff stress
-      FastorStandardTensors::Tensor33d _initialStress = FastorStandardTensors::Tensor33d( 0.0 );
-
-      /// @brief The displacement gradient
-      FastorStandardTensors::Tensor33d gradU = FastorStandardTensors::Tensor33d( 0.0 );
-
-      /// @brief The material tangent dTau/dF
-      FastorStandardTensors::Tensor3333d dTau_dF = FastorStandardTensors::Tensor3333d( 0.0 );
-
-      /// @brief List of loading steps
-      std::vector< Step > steps;
-
-      /// @brief History of the simulation
-      std::vector< HistoryEntry > history = std::vector< HistoryEntry >();
-
-      /// @brief Solver options
-      const SolverOptions options;
+      HistoryEntry( double                                                            time,
+                    const TensorUtility::FastorTensors::StandardTensors::Tensor33d&   stress,
+                    const TensorUtility::FastorTensors::StandardTensors::Tensor33d&   F,
+                    const TensorUtility::FastorTensors::StandardTensors::Tensor3333d& dTau_dF,
+                    const Eigen::VectorXd&                                            stateVars )
+        : time( time ), stress( stress ), F( F ), dTau_dF( dTau_dF ), stateVars( stateVars )
+      {
+      }
+      // default constructor
+      HistoryEntry()
+        : time( 0.0 ),
+          stress( TensorUtility::FastorTensors::StandardTensors::Tensor33d( 0.0 ) ),
+          F( TensorUtility::FastorTensors::StandardTensors::Tensor33d( 0.0 ) ),
+          dTau_dF( TensorUtility::FastorTensors::StandardTensors::Tensor3333d( 0.0 ) ),
+          stateVars( Eigen::VectorXd() )
+      {
+      }
     };
 
-  } // namespace Solvers
-} // namespace Marmot
+    /**
+     * @struct SolverOptions
+     * @brief Struct to define solver options
+     * @details Contains parameters for controlling the solver's behavior.
+     */
+    struct SolverOptions {
+      int    maxIterations       = 25;    ///< Maximum number of iterations per increment (default: 25)
+      double residualTolerance   = 1e-10; ///< Convergence tolerance (default: 1e-10)
+      double correctionTolerance = 1e-10; ///< Correction tolerance (default: 1e-10)
+    };
+
+    /**
+     * @brief Constructor for the MarmotMaterialPointSolverFiniteStrain class
+     * @param materialName Name of the finite strain material model
+     * @param materialProperties Array of material properties
+     * @param nMaterialProperties Number of material properties
+     * @param options Solver options controlling nonlinear iteration settings
+     */
+    MarmotMaterialPointSolverFiniteStrain( const std::string&   materialName,
+                                           const double*        materialProperties,
+                                           const int            nMaterialProperties,
+                                           const SolverOptions& options );
+
+    /**
+     * @brief Add a loading step to the solver
+     * @param step The Step to be added
+     */
+    void addStep( const Step& step );
+
+    /**
+     * @brief Get the list of added loading steps
+     * @return A vector of Step containing the added steps
+     */
+    std::vector< Step > getSteps() const { return steps; }
+
+    /**
+     * @brief Clear all added loading steps
+     */
+    void clearSteps() { steps.clear(); }
+
+    /**
+     * @brief Set the initial state of the material model
+     * @param initialStress The initial stress in Voigt notation
+     * @param initialStateVars The initial state variables
+     */
+    void setInitialState( const TensorUtility::FastorTensors::StandardTensors::Tensor33d& initialStress,
+                          const Eigen::VectorXd&                                          initialStateVars );
+
+    /**
+     * @brief Get the number of state variables in the material model
+     * @return The number of state variables
+     */
+    int getNumberOfStateVariables() const { return nStateVars; }
+
+    /**
+     * @brief Reset the solver to the initial state
+     * @details This function resets the initial stress
+     * and state variables of the material model.
+     */
+    void resetToInitialState();
+
+    /**
+     * @brief Solve the material point problem for all added steps
+     */
+    void solve();
+
+    /**
+     * @brief Get the recorded history of the simulation
+     * @return A vector of HistoryEntry containing the recorded history
+     */
+    const std::vector< HistoryEntry >& getHistory() const { return history; }
+
+    /**
+     * @brief Clear the recorded history
+     */
+    void clearHistory() { history.clear(); }
+
+    /**
+     * @brief Print the recorded history to the console
+     */
+    void printHistory();
+
+    /**
+     * @brief Export the recorded history to a CSV file
+     * @param filename The name of the CSV file to export to
+     */
+    void exportHistoryToCSV( const std::string& filename );
+
+  private:
+    /**
+     * @brief Solve a single loading step
+     * @param step The Step to be solved
+     *
+     * @details This function iterates over the increments
+     * defined in the step, calling solveIncrement for each increment.
+     * It manages time stepping and ensures that the entire step
+     * is covered.
+     */
+    void solveStep( const Step& step );
+
+    /**
+     * @brief Solve a single increment within a loading step
+     * @param increment The Increment to be solved
+     * @throws std::runtime_error if the solver does not converge
+     *
+     * @details This function implements a Newton-Raphson iterative
+     * solver to compute the stress and deformation state for the given increment.
+     * It updates the material state variables and records the history
+     * after convergence.
+     */
+    void solveIncrement( const Increment& increment );
+
+    /**
+     * @brief Compute the residual for the current increment
+     * @param stressIncrement The computed stress increment
+     * @param target The target (mixed) stress/strain increment
+     * @param increment The Increment containing control information
+     * @return The computed residual vector
+     *
+     * @details This function calculates the residual vector
+     * based on the difference between the computed stress increment
+     * and the target increment, taking into account which components
+     * are controlled by strain or stress.
+     */
+    TensorUtility::FastorTensors::StandardTensors::Tensor9d computeResidual(
+      const TensorUtility::FastorTensors::StandardTensors::Tensor9d& stressIncrement,
+      const TensorUtility::FastorTensors::StandardTensors::Tensor9d& target,
+      const Increment&                                               increment );
+
+    /**
+     * @brief Modify the material tangent matrix based on control type
+     * @param tangent The material tangent matrix to be modified
+     * @param increment The Increment containing control information
+     *
+     * @details This function adjusts the tangent matrix to account for
+     * the components that are controlled by displacement gradient  or stress, ensuring
+     * that the solver correctly handles mixed control scenarios.
+     * This is done by zeroing out rows corresponding to displacement gradient controlled
+     * components and setting their diagonal entries to one.
+     */
+    void modifyTangent( TensorUtility::FastorTensors::StandardTensors::Tensor99d& tangent, const Increment& increment );
+
+    /// @brief The finite strain material model
+    std::unique_ptr< MarmotMaterialFiniteStrain > material;
+
+    /// @brief Number of state variables in the material model
+    int nStateVars;
+
+    /// @brief Current state variables
+    Eigen::VectorXd stateVars;
+
+    /// @brief Initial state variables
+    Eigen::VectorXd _initialStateVars;
+
+    /// @brief Temporary state variables for computations
+    Eigen::VectorXd stateVarsTemp;
+
+    /// @brief The Kirchhoff stress
+    TensorUtility::FastorTensors::StandardTensors::Tensor33d
+      stress = TensorUtility::FastorTensors::StandardTensors::Tensor33d( 0.0 );
+
+    /// @brief The initial Kirchhoff stress
+    TensorUtility::FastorTensors::StandardTensors::Tensor33d
+      _initialStress = TensorUtility::FastorTensors::StandardTensors::Tensor33d( 0.0 );
+
+    /// @brief The displacement gradient
+    TensorUtility::FastorTensors::StandardTensors::Tensor33d
+      gradU = TensorUtility::FastorTensors::StandardTensors::Tensor33d( 0.0 );
+
+    /// @brief The material tangent dTau/dF
+    TensorUtility::FastorTensors::StandardTensors::Tensor3333d
+      dTau_dF = TensorUtility::FastorTensors::StandardTensors::Tensor3333d( 0.0 );
+
+    /// @brief List of loading steps
+    std::vector< Step > steps;
+
+    /// @brief History of the simulation
+    std::vector< HistoryEntry > history = std::vector< HistoryEntry >();
+
+    /// @brief Solver options
+    const SolverOptions options;
+  };
+
+} // namespace Marmot::Solvers

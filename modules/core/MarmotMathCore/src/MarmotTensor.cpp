@@ -1,13 +1,13 @@
 #include "Marmot/MarmotTensor.h"
 
-using namespace Marmot::ContinuumMechanics::TensorUtility;
+using namespace Marmot::TensorUtility;
 
 namespace Marmot {
-  namespace ContinuumMechanics::CommonTensors {
+  namespace TensorUtility::EigenTensors {
 
-    EigenTensors::Tensor3333d Initialize_IFourthOrder()
+    Tensor3333d Initialize_IFourthOrder()
     {
-      EigenTensors::Tensor3333d I;
+      Tensor3333d I;
 
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ )
@@ -18,9 +18,9 @@ namespace Marmot {
       return I;
     }
 
-    EigenTensors::Tensor3333d Initialize_IFourthOrderTranspose()
+    Tensor3333d Initialize_IFourthOrderTranspose()
     {
-      EigenTensors::Tensor3333d IT;
+      Tensor3333d IT;
 
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ )
@@ -31,9 +31,9 @@ namespace Marmot {
       return IT;
     }
 
-    EigenTensors::Tensor3333d Initialize_I2xI2()
+    Tensor3333d Initialize_I2xI2()
     {
-      EigenTensors::Tensor3333d I2xI2;
+      Tensor3333d I2xI2;
 
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ )
@@ -44,9 +44,9 @@ namespace Marmot {
       return I2xI2;
     }
 
-    EigenTensors::Tensor33d Initialize_I2()
+    Tensor33d Initialize_I2()
     {
-      EigenTensors::Tensor33d I2;
+      Tensor33d I2;
 
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ )
@@ -55,9 +55,9 @@ namespace Marmot {
       return I2;
     }
 
-    EigenTensors::Tensor3333d Initialize_Isym()
+    Tensor3333d Initialize_Isym()
     {
-      EigenTensors::Tensor3333d Isym;
+      Tensor3333d Isym;
 
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ )
@@ -68,9 +68,9 @@ namespace Marmot {
       return Isym;
     }
 
-    EigenTensors::Tensor3333d Initialize_Iskew()
+    Tensor3333d Initialize_Iskew()
     {
-      EigenTensors::Tensor3333d Iskew;
+      Tensor3333d Iskew;
 
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ )
@@ -81,9 +81,9 @@ namespace Marmot {
       return Iskew;
     }
 
-    EigenTensors::Tensor3333d Initialize_dDeviatoricStress_dStress()
+    Tensor3333d Initialize_dDeviatoricStress_dStress()
     {
-      EigenTensors::Tensor3333d dsdsigma;
+      Tensor3333d dsdsigma;
       dsdsigma.setZero();
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ )
@@ -94,9 +94,9 @@ namespace Marmot {
       return dsdsigma;
     }
 
-    EigenTensors::Tensor333d Initialize_LeviCivita3D()
+    Tensor333d Initialize_LeviCivita3D()
     {
-      EigenTensors::Tensor333d e;
+      Tensor333d e;
       e.setConstant( 0.0 );
 
       e( 0, 1, 2 ) = 1.0;
@@ -110,9 +110,9 @@ namespace Marmot {
       return e;
     }
 
-    EigenTensors::Tensor122d Initialize_LeviCivita2D()
+    Tensor122d Initialize_LeviCivita2D()
     {
-      EigenTensors::Tensor122d e;
+      Tensor122d e;
       e.setConstant( 0.0 );
 
       e( 0, 0, 1 ) = 1.0;
@@ -121,9 +121,9 @@ namespace Marmot {
       return e;
     }
 
-  } // namespace ContinuumMechanics::CommonTensors
+  } // namespace TensorUtility::EigenTensors
 
-  namespace ContinuumMechanics::TensorUtility {
+  namespace TensorUtility {
     Eigen::Matrix3d dyadicProduct( const Eigen::Vector3d& vector1, const Eigen::Vector3d& vector2 )
     {
       Eigen::Matrix3d dyade;
@@ -134,5 +134,5 @@ namespace Marmot {
 
       return dyade;
     }
-  } // namespace ContinuumMechanics::TensorUtility
+  } // namespace TensorUtility
 } // namespace Marmot

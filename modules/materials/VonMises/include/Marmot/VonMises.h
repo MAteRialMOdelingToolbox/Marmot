@@ -32,6 +32,11 @@ namespace Marmot::Materials {
   class VonMisesModel : public MarmotMaterialHypoElastic {
 
   public:
+    /// @brief Convergence tolerance for the inner Newton iteration.
+    static constexpr double innerNewtonTol = 1e-12;
+    /// @brief Maximum number of inner Newton iterations.
+    static constexpr int nMaxInnerNewtonCycles = 15;
+
     VonMisesModel( const double* materialProperties, const int nMaterialProperties, const int materialLabel );
 
     void computeStress( state3D&                state,

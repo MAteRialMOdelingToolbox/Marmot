@@ -1,9 +1,9 @@
 #include "Marmot/HaighWestergaard.h"
 #include "Marmot/MarmotTesting.h"
 
+using Marmot::MakeString;
 using namespace Marmot::Testing;
-using namespace Marmot::ContinuumMechanics::HaighWestergaard;
-using namespace Marmot::ContinuumMechanics::VoigtNotation::Invariants;
+using namespace Marmot::ContinuumMechanics::Invariants;
 using namespace autodiff;
 
 void testHaighWestergaardDouble()

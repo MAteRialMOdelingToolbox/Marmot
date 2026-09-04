@@ -19,7 +19,7 @@ void test_NewmarkBetaIntegrator()
   double a     = 0;
   double da_du = 0;
 
-  TimeIntegration::newmarkBetaIntegration< 1 >( &du, &v, &a, dT, beta, gamma, &da_du );
+  NumericalAlgorithms::TimeIntegration::newmarkBetaIntegration< 1 >( &du, &v, &a, dT, beta, gamma, &da_du );
 
   throwExceptionOnFailure( checkIfEqual( a, 2, 1e-10 ), MakeString() << __PRETTY_FUNCTION__ << " failed: " << a );
   throwExceptionOnFailure( checkIfEqual( v, 1, 1e-10 ), MakeString() << __PRETTY_FUNCTION__ << " failed: " << v );

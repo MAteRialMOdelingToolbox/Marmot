@@ -24,74 +24,72 @@
  */
 
 #pragma once
-#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTypedefs.h"
-#include <utility>
 
 namespace Marmot {
-  namespace ContinuumMechanics::CommonTensors {
+  namespace TensorUtility::EigenTensors {
     /**
      * @brief Initializes the fourth-order tensor \f$I_{ijkl} = \delta_{ij}\delta_{kl}\f$.
      */
-    EigenTensors::Tensor3333d Initialize_I2xI2();
+    Tensor3333d Initialize_I2xI2();
 
     /**
      * @brief Fourth-order tensor \f$I_{ijkl} = \delta_{ij}\delta_{kl}\f$.
      */
-    inline const EigenTensors::Tensor3333d I2xI2 = Initialize_I2xI2();
+    inline const Tensor3333d I2xI2 = Initialize_I2xI2();
 
     /**
      * @brief Initializes the symmetric fourth-order identity tensor \f$
      * I_{ijkl}^{sym}=\frac{1}{2}(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}) \f$.
      */
-    EigenTensors::Tensor3333d Initialize_Isym();
+    Tensor3333d Initialize_Isym();
 
     /**
      * @brief Symmetric fourth-order identity tensor
      * \f$ I_{ijkl}^{sym}=\frac{1}{2}(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}) \f$.
      */
-    inline const EigenTensors::Tensor3333d Isym = Initialize_Isym();
+    inline const Tensor3333d Isym = Initialize_Isym();
 
     /**
      * @brief Initializes the skew-symmetric fourth-order identity tensor
      * \f$ I_{ijkl}^{skew}=\frac{1}{2}(\delta_{ik}\delta_{jl}-\delta_{il}\delta_{jk}) \f$.
      */
-    EigenTensors::Tensor3333d Initialize_Iskew();
+    Tensor3333d Initialize_Iskew();
 
     /** @brief Skew-symmetric part of the fourth-order identity tensor \f$
      * I_{ijkl}^{skew}=\frac{1}{2}(\delta_{ik}\delta_{jl}-\delta_{il}\delta_{jk}) \f$.
      */
-    inline const EigenTensors::Tensor3333d Iskew = Initialize_Iskew();
+    inline const Tensor3333d Iskew = Initialize_Iskew();
 
     /**
      * @brief Initializes the fourth-order identity tensor \f$ I_{ijkl} = \delta_{ik}\delta_{jl} \f$.
      */
-    EigenTensors::Tensor3333d Initialize_IFourthOrder();
+    Tensor3333d Initialize_IFourthOrder();
 
     /**
      * @brief Fourth-order identity tensor \f$ I_{ijkl} = \delta_{ik}\delta_{jl} \f$.
      */
-    inline const EigenTensors::Tensor3333d IFourthOrder = Initialize_IFourthOrder();
+    inline const Tensor3333d IFourthOrder = Initialize_IFourthOrder();
 
     /**
      * @brief Initializes the transposed fourth-order identity tensor \f$ I_{ijkl}^{T} = \delta_{il}\delta_{jk} \f$.
      */
-    EigenTensors::Tensor3333d Initialize_IFourthOrderTranspose();
+    Tensor3333d Initialize_IFourthOrderTranspose();
 
     /// @brief Transposed fourth-order identity tensor \f$ I_{ijkl}^{T} = \delta_{il}\delta_{jk} \f$.
-    inline const EigenTensors::Tensor3333d IFourthOrderTranspose = Initialize_IFourthOrderTranspose();
+    inline const Tensor3333d IFourthOrderTranspose = Initialize_IFourthOrderTranspose();
 
     /**
      * @brief Initializes the derivative tensor of deviatoric stress w.r.t. stress  \f$ \frac{\partial
      * s_{ij}}{\partial\sigma_{kl}} = \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\delta_{kl} \f$.
      */
-    EigenTensors::Tensor3333d Initialize_dDeviatoricStress_dStress();
+    Tensor3333d Initialize_dDeviatoricStress_dStress();
 
     /** @brief Derivative of the deviatoric stress with respect to stress \f$ \frac{\partial
      * s_{ij}}{\partial\sigma_{kl}} =
      * \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\delta_{kl} \f$.
      */
-    inline const EigenTensors::Tensor3333d dDeviatoricStress_dStress = Initialize_dDeviatoricStress_dStress();
+    inline const Tensor3333d dDeviatoricStress_dStress = Initialize_dDeviatoricStress_dStress();
 
     /**
      * @brief Initializes the 3D Levi-Civita permutation tensor \f$E_{ijk}\f$.
@@ -105,13 +103,13 @@ namespace Marmot {
      *   \end{cases}
      * \f]
      */
-    EigenTensors::Tensor333d Initialize_LeviCivita3D();
+    Tensor333d Initialize_LeviCivita3D();
 
     /**
      * @brief 3D Levi-Civita permutation tensor \f$E_{ijk}\f$.
      * @copydetails Initialize_LeviCivita3D
      */
-    inline const EigenTensors::Tensor333d LeviCivita3D = Initialize_LeviCivita3D();
+    inline const Tensor333d LeviCivita3D = Initialize_LeviCivita3D();
 
     /**
      * @brief 2D Levi-Civita permutation tensor \f$E_{ij}\f$.
@@ -126,24 +124,24 @@ namespace Marmot {
      * \f]
      * Commonly used to represent 2D cross products and rotations in tensor notation.
      */
-    EigenTensors::Tensor122d Initialize_LeviCivita2D();
+    Tensor122d Initialize_LeviCivita2D();
 
     /**
      * @brief 2D Levi-Civita permutation tensor \f$\varepsilon_{ij}\f$.
      * @copydetails Initialize_LeviCivita2D
      */
-    inline const EigenTensors::Tensor122d LeviCivita2D = Initialize_LeviCivita2D();
+    inline const Tensor122d LeviCivita2D = Initialize_LeviCivita2D();
 
     /**
      * @brief Initializes the second-order identity tensor.
      * @details \f$ I_{ij} = \delta_{ij} \f$.
      */
-    EigenTensors::Tensor33d Initialize_I2();
+    Tensor33d Initialize_I2();
 
     /** @brief Second-order identity tensor.
      * @copydetails Initialize_I2
      */
-    inline const EigenTensors::Tensor33d I2 = Initialize_I2();
+    inline const Tensor33d I2 = Initialize_I2();
 
     /**
      * @brief Returns the number of rotational DOFs for the given dimension.
@@ -225,9 +223,9 @@ namespace Marmot {
         return LeviCivita3D;
     }
 
-  } // namespace ContinuumMechanics::CommonTensors
+  } // namespace TensorUtility::EigenTensors
 
-  namespace ContinuumMechanics::TensorUtility {
+  namespace TensorUtility {
     /** @brief Kronecker delta function \f$ \delta_{ab} \f$.
      * @return 1 if a == b, otherwise 0.
      */
@@ -344,98 +342,6 @@ namespace Marmot {
      */
     Eigen::Matrix3d dyadicProduct( const Eigen::Vector3d& vector1, const Eigen::Vector3d& vector2 );
 
-    namespace IndexNotation {
-      /**
-       * @brief Convert a Voigt index to tensor indices.
-       *
-       * Maps a Voigt notation index @p ij to the corresponding
-       * `(i, j)` tensor indices for a given dimension @p nDim.
-       *
-       * @tparam nDim Problem dimension (1, 2, or 3).
-       * @param ij Voigt index.
-       * @return Pair of tensor indices (i, j).
-       * @throws std::invalid_argument if @p nDim or @p ij is invalid.
-       */
-      template < int nDim >
-      constexpr std::pair< int, int > fromVoigt( int ij )
-      {
-        if constexpr ( nDim == 1 )
-          return std::pair< int, int >( 0, 0 );
-        else if ( nDim == 2 )
-          switch ( ij ) {
-          case 0: return std::pair< int, int >( 0, 0 );
-          case 1: return std::pair< int, int >( 1, 1 );
-          case 2: return std::pair< int, int >( 0, 1 );
-          }
-
-        else if ( nDim == 3 ) {
-          switch ( ij ) {
-          case 0: return std::pair< int, int >( 0, 0 );
-          case 1: return std::pair< int, int >( 1, 1 );
-          case 2: return std::pair< int, int >( 2, 2 );
-          case 3: return std::pair< int, int >( 0, 1 );
-          case 4: return std::pair< int, int >( 0, 2 );
-          case 5: return std::pair< int, int >( 1, 2 );
-          }
-        }
-
-        throw std::invalid_argument( MakeString()
-                                     << __PRETTY_FUNCTION__ << ": invalid dimension / voigt index specified" );
-      }
-
-      /**
-       * @brief Maps tensor indices (i, j) to the corresponding Voigt
-       * notation index for a given dimension @p nDim.
-       *
-       * @tparam nDim Problem dimension (1, 2, or 3).
-       * @param i Row index of the tensor.
-       * @param j Column index of the tensor.
-       * @return Voigt index corresponding to (i, j).
-       * @throws std::invalid_argument if @p nDim is invalid.
-       */
-      template < int nDim >
-      constexpr int toVoigt( int i, int j )
-      {
-        if constexpr ( nDim == 1 )
-          return 0;
-        else if ( nDim == 2 )
-          return ( i == j ) ? ( i == 0 ? 0 : 1 ) : 2;
-
-        else if ( nDim == 3 ) {
-          constexpr int tensor2VoigtNotationIndicesMapping[3][3] = { { 0, 3, 4 }, { 3, 1, 5 }, { 4, 5, 2 } };
-          return tensor2VoigtNotationIndicesMapping[i][j];
-        }
-
-        throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
-      }
-
-      /**
-       * @brief Construct the Voigt mapping tensor.
-       *
-       * Creates a 3rd-order tensor that maps tensor indices (i, j)
-       * to their corresponding Voigt index. Each entry is 1 at
-       * `(toVoigt<nDim>(i, j), i, j)` and 0 elsewhere.
-       *
-       * @tparam nDim Problem dimension (1, 2, or 3).
-       * @return A tensor of shape (VoigtSize, nDim, nDim) encoding
-       *         the Voigt mapping.
-       */
-      template < int nDim >
-      Eigen::TensorFixedSize< double, Eigen::Sizes< VOIGTFROMDIM( nDim ), nDim, nDim > > voigtMap()
-      {
-        using namespace Eigen;
-        Eigen::TensorFixedSize< double, Eigen::Sizes< VOIGTFROMDIM( nDim ), nDim, nDim > > result;
-        result.setZero();
-        for ( int i = 0; i < nDim; i++ )
-          for ( int j = 0; j < nDim; j++ )
-            result( toVoigt< nDim >( i, j ), i, j ) = 1;
-        return result;
-      }
-
-    } // namespace IndexNotation
-
-    // namespace ContinuumMechanics::VoigtNotation
-
-  } // namespace ContinuumMechanics::TensorUtility
+  } // namespace TensorUtility
 
 } // namespace Marmot

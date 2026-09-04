@@ -2,7 +2,6 @@
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
-#include "Marmot/MarmotUtility.h"
 #include "Marmot/MarmotVoigt.h"
 
 namespace Marmot::Materials {
@@ -45,7 +44,7 @@ namespace Marmot::Materials {
       Vector3d  direction2 = { materialProperties[i + 3], materialProperties[i + 4], materialProperties[i + 5] };
 
       Matrix3d localCoordinateSystem = Marmot::Math::orthonormalCoordinateSystem( direction1, direction2 );
-      using namespace ContinuumMechanics::VoigtNotation::Transformations;
+      using namespace ContinuumMechanics::Transformations;
       Matrix6d transformStrainToLocalSystem  = transformationMatrixStrainVoigt( localCoordinateSystem );
       Matrix6d transformStressToGlobalSystem = transformationMatrixStressVoigt( localCoordinateSystem )
                                                  .colPivHouseholderQr()

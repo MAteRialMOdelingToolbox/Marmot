@@ -27,8 +27,6 @@
 #include "Marmot/MarmotMaterialHypoElasticAD.h"
 #include "Marmot/MarmotTypedefs.h"
 
-using namespace Marmot;
-
 namespace Marmot::Materials {
   /**
    * @brief Implementation of a isotropic linear elastic material

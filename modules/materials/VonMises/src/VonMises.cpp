@@ -3,7 +3,6 @@
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotExceptions.h"
 #include "Marmot/MarmotTypedefs.h"
-#include "Marmot/VonMisesConstants.h"
 
 namespace Marmot::Materials {
 
@@ -74,8 +73,9 @@ namespace Marmot::Materials {
     // compute elastic predictor
     const Vector6d trialStress = S + Cel * dE;
 
-    using namespace ContinuumMechanics::VoigtNotation;
-    const double rhoTrial = std::sqrt( 2. * Invariants::J2( trialStress ) );
+    using namespace ContinuumMechanics::Voigt;
+    using namespace ContinuumMechanics::Invariants;
+    const double rhoTrial = std::sqrt( 2. * J2( trialStress ) );
 
     if ( f( rhoTrial, kappa ) >= 0.0 ) {
       // plastic step
@@ -92,11 +92,11 @@ namespace Marmot::Materials {
       double dg_ddKappa = 0;
 
       // compute return mapping direction
-      Vector6d n = ContinuumMechanics::VoigtNotation::IDev * trialStress / rhoTrial;
+      Vector6d n = ContinuumMechanics::Voigt::IDev * trialStress / rhoTrial;
 
-      while ( std::abs( g( dKappa ) ) > VonMisesConstants::innerNewtonTol ) {
+      while ( std::abs( g( dKappa ) ) > innerNewtonTol ) {
 
-        if ( counter == VonMisesConstants::nMaxInnerNewtonCycles ) {
+        if ( counter == nMaxInnerNewtonCycles ) {
           throw StressUpdateFailed( "return mapping failed to converge in VonMisesModel::computeStress" );
         }
         // compute derivative of g wrt kappa
@@ -114,7 +114,7 @@ namespace Marmot::Materials {
       kappa = kappa + dKappa;
 
       // compute consistent tangent in Voigt Notation
-      Matrix6d IDevHalfShear = ContinuumMechanics::VoigtNotation::IDev;
+      Matrix6d IDevHalfShear = ContinuumMechanics::Voigt::IDev;
       IDevHalfShear.block< 6, 3 >( 0, 3 ) *= 0.5;
 
       dS_dE = Cel -
@@ -173,8 +173,9 @@ namespace Marmot::Materials {
     // compute elastic predictor
     const Vector6d trialStress = S + Cel * dE;
 
-    using namespace ContinuumMechanics::VoigtNotation;
-    const double rhoTrial = std::sqrt( 2. * Invariants::J2( trialStress ) );
+    using namespace ContinuumMechanics::Voigt;
+    using namespace ContinuumMechanics::Invariants;
+    const double rhoTrial = std::sqrt( 2. * J2( trialStress ) );
 
     if ( f( rhoTrial, kappa ) >= 0.0 ) {
       // plastic step
@@ -191,7 +192,7 @@ namespace Marmot::Materials {
       double dg_ddKappa = 0;
 
       // compute return mapping direction
-      Vector6d n = ContinuumMechanics::VoigtNotation::IDev * trialStress / rhoTrial;
+      Vector6d n = ContinuumMechanics::Voigt::IDev * trialStress / rhoTrial;
 
       double g_val = g( dKappa );
 
@@ -209,7 +210,7 @@ namespace Marmot::Materials {
         counter += 1;
       }
 
-      if ( std::abs( g_val ) > VonMisesConstants::innerNewtonTol ) {
+      if ( std::abs( g_val ) > innerNewtonTol ) {
         throw Marmot::StressUpdateFailed( "return mapping failed to converge in VonMisesModel::computeStressExplicit" );
       }
 

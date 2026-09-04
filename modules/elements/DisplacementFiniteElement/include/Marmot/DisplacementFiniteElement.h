@@ -43,10 +43,9 @@
 #include <memory>
 #include <vector>
 
-using namespace Marmot;
-using namespace Eigen;
-
 namespace Marmot::Elements {
+
+  using namespace Eigen;
 
   /**
    * @class Marmot::Elements::DisplacementFiniteElement
@@ -472,10 +471,10 @@ namespace Marmot::Elements {
   {
     for ( auto& qp : qps ) {
       qp.material = std::unique_ptr< MarmotMaterialHypoElastic >(
-        MarmotLibrary::MarmotMaterialHypoElasticFactory::createMaterial( section.materialName,
-                                                                         section.materialProperties,
-                                                                         section.nMaterialProperties,
-                                                                         elLabel ) );
+        Marmot::Factory::MarmotMaterialHypoElasticFactory::createMaterial( section.materialName,
+                                                                           section.materialProperties,
+                                                                           section.nMaterialProperties,
+                                                                           elLabel ) );
 
       if ( !qp.material )
         throw std::invalid_argument( MakeString()
@@ -539,7 +538,7 @@ namespace Marmot::Elements {
                                                                   double        dT )
   {
     using namespace Marmot;
-    using namespace ContinuumMechanics::VoigtNotation;
+    using namespace ContinuumMechanics::Voigt;
 
     Map< const RhsSized > QTotal( QTotal_ );
     Map< const RhsSized > dQ( dQ_ );
@@ -624,7 +623,7 @@ namespace Marmot::Elements {
           qp.managedStateVars->stress = state.stress;
 
           S                    = reduce3DVoigt< ParentGeometryElement::voigtSize >( state.stress );
-          C                    = ContinuumMechanics::PlaneStrain::getPlaneStrainTangent( C66 );
+          C                    = ContinuumMechanics::LowerOrder::PlaneStrain::getPlaneStrainTangent( C66 );
           elasticEnergyDensity = state.elasticEnergyDensity;
           dissipation          = state.dissipation;
         }
@@ -671,7 +670,7 @@ namespace Marmot::Elements {
                                                                           double        dT )
   {
     using namespace Marmot;
-    using namespace ContinuumMechanics::VoigtNotation;
+    using namespace ContinuumMechanics::Voigt;
 
     Map< const RhsSized > QTotal( QTotal_ );
     Map< const RhsSized > dQ( dQ_ );

@@ -197,7 +197,7 @@ namespace Marmot::Materials {
      */
     void initializeYourself( double* stateVars, int nStateVars ) override
     {
-      using namespace Marmot::FastorStandardTensors;
+      using namespace Marmot::TensorUtility::FastorTensors::StandardTensors;
 
       TensorMap33d Fn = this->stateLayout.getAs< TensorMap33d >( stateVars, deformationGradientSlot );
       std::memcpy( Fn.data(), Spatial3D::I.data(), 9 * sizeof( double ) );
@@ -247,17 +247,17 @@ namespace Marmot::Materials {
 
   protected:
     /// @brief Convert an Eigen 3x3 matrix into a Fastor tensor.
-    static Marmot::FastorStandardTensors::Tensor33d fromEigen( const Eigen::Matrix3d& m )
+    static Marmot::TensorUtility::FastorTensors::StandardTensors::Tensor33d fromEigen( const Eigen::Matrix3d& m )
     {
-      Marmot::FastorStandardTensors::Tensor33d t;
-      Marmot::mapEigenToFastor( t ) = m;
+      Marmot::TensorUtility::FastorTensors::StandardTensors::Tensor33d t;
+      Marmot::TensorUtility::FastorTensors::mapEigenToFastor( t ) = m;
       return t;
     }
 
     /// @brief Convert a Fastor 3x3 tensor into an Eigen matrix.
-    static Eigen::Matrix3d toEigen( const Marmot::FastorStandardTensors::Tensor33d& t )
+    static Eigen::Matrix3d toEigen( const Marmot::TensorUtility::FastorTensors::StandardTensors::Tensor33d& t )
     {
-      return Eigen::Matrix3d( Marmot::mapEigenToFastor( t ) );
+      return Eigen::Matrix3d( Marmot::TensorUtility::FastorTensors::mapEigenToFastor( t ) );
     }
 
     /**
@@ -324,9 +324,9 @@ namespace Marmot::Materials {
                             bool                       computeTangent ) const
     {
       using namespace Fastor;
-      using namespace Marmot::FastorStandardTensors;
-      using namespace Marmot::FastorIndices;
-      using namespace Marmot::ContinuumMechanics::VoigtNotation;
+      using namespace Marmot::TensorUtility::FastorTensors::StandardTensors;
+      using namespace Marmot::TensorUtility::FastorTensors::Indices;
+      using namespace Marmot::ContinuumMechanics::Voigt;
 
       const Tensor33d& Ident = Spatial3D::I;
 
@@ -453,7 +453,7 @@ namespace Marmot::Materials {
                                   const Deformation< 3 >&          deformation,
                                   const TimeIncrement&             timeIncrement ) const
     {
-      using namespace Marmot::FastorStandardTensors;
+      using namespace Marmot::TensorUtility::FastorTensors::StandardTensors;
 
       const int             nTotal = this->getNumberOfRequiredStateVars();
       std::vector< double > stateOld( nTotal );

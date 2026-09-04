@@ -51,7 +51,7 @@ For the 3D case the mapping between the tensor indices :math:`(i,j)` and the Voi
    \end{bmatrix}
 
 and is available in both directions as ``toVoigt<nDim>(i, j)`` and ``fromVoigt<nDim>(ij)`` in the
-namespace ``Marmot::ContinuumMechanics::TensorUtility::IndexNotation``. Prefer these helpers over
+namespace ``Marmot::ContinuumMechanics::VoigtNotation``. Prefer these helpers over
 hard-coded indices — code written against them stays correct if the ordering ever changes.
 
 Stress and strain

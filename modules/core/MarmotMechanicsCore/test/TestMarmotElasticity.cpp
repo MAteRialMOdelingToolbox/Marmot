@@ -2,6 +2,7 @@
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
 
+using Marmot::MakeString;
 using namespace Marmot::Testing;
 using namespace Marmot::ContinuumMechanics::Elasticity::Isotropic;
 using namespace Marmot::ContinuumMechanics::Elasticity::TransverseIsotropic;

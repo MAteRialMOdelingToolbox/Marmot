@@ -29,146 +29,150 @@
 #include <functional>
 #include <memory>
 
-/**
- * @class MarmotElementSpatialWrapper
- * @brief Wrapper that embeds a lower-dimensional child element (e.g.\ a truss) into a
- *        higher-dimensional ambient space (2-D or 3-D).
- *
- * The projection transformation is constructed automatically from the supplied
- * nodal coordinates.  The child element is created via a user-provided factory
- * functor so that the wrapper remains independent of the concrete child type.
- */
-class MarmotElementSpatialWrapper : public MarmotElement {
-
-public:
-  const int nDim;                                ///< Number of spatial dimensions of the ambient space.
-  const int nDimChild;                           ///< Number of spatial dimensions of the child element.
-  const int nNodes;                              ///< Number of nodes shared by parent and child element.
-  const int nRhsChild;                           ///< Size of the child element's right-hand-side vector.
-  const Eigen::Map< const Eigen::VectorXi >
-            rhsIndicesToBeProjected;             ///< Indices in the child RHS vector that need projection.
-  const int projectedSize;                       ///< Number of projected DOFs (child-element dimension).
-  const int unprojectedSize;                     ///< Number of unprojected DOFs (ambient-space dimension).
-
-  std::unique_ptr< MarmotElement > childElement; ///< Owned child element instance.
-  Eigen::MatrixXd                  T;            ///< Coordinate transformation matrix from child to parent space.
-  Eigen::MatrixXd                  P;            ///< Projection matrix mapping parent DOFs to child DOFs.
-  Eigen::MatrixXd                  projectedCoordinates; ///< Nodal coordinates expressed in the child (local) frame.
+namespace Marmot {
 
   /**
-   * @brief Construct the spatial wrapper.
-   * @param[in] nDim                      Number of spatial dimensions of the ambient space.
-   * @param[in] nChildDim                 Number of spatial dimensions of the child element.
-   * @param[in] nNodes                    Number of nodes.
-   * @param[in] sizeRhsChild              Size of the child element's right-hand-side vector.
-   * @param[in] rhsIndicesToBeWrapped_    Array of child-RHS indices to be projected.
-   * @param[in] nRhsIndicesToBeWrapped    Length of @p rhsIndicesToBeWrapped_.
-   * @param[in] childElement              Owning pointer to the child element instance.
+   * @class MarmotElementSpatialWrapper
+   * @brief Wrapper that embeds a lower-dimensional child element (e.g.\ a truss) into a
+   *        higher-dimensional ambient space (2-D or 3-D).
+   *
+   * The projection transformation is constructed automatically from the supplied
+   * nodal coordinates.  The child element is created via a user-provided factory
+   * functor so that the wrapper remains independent of the concrete child type.
    */
-  MarmotElementSpatialWrapper( int                              nDim,
-                               int                              nChildDim,
-                               int                              nNodes,
-                               int                              sizeRhsChild,
-                               const int                        rhsIndicesToBeWrapped_[],
-                               int                              nRhsIndicesToBeWrapped,
-                               std::unique_ptr< MarmotElement > childElement );
+  class MarmotElementSpatialWrapper : public MarmotElement {
 
-  /// @copydoc MarmotElement::getNumberOfRequiredStateVars
-  int getNumberOfRequiredStateVars();
+  public:
+    const int nDim;                                ///< Number of spatial dimensions of the ambient space.
+    const int nDimChild;                           ///< Number of spatial dimensions of the child element.
+    const int nNodes;                              ///< Number of nodes shared by parent and child element.
+    const int nRhsChild;                           ///< Size of the child element's right-hand-side vector.
+    const Eigen::Map< const Eigen::VectorXi >
+              rhsIndicesToBeProjected;             ///< Indices in the child RHS vector that need projection.
+    const int projectedSize;                       ///< Number of projected DOFs (child-element dimension).
+    const int unprojectedSize;                     ///< Number of unprojected DOFs (ambient-space dimension).
 
-  /// @copydoc MarmotElement::getNodeFields
-  std::vector< std::vector< std::string > > getNodeFields();
+    std::unique_ptr< MarmotElement > childElement; ///< Owned child element instance.
+    Eigen::MatrixXd                  T;            ///< Coordinate transformation matrix from child to parent space.
+    Eigen::MatrixXd                  P;            ///< Projection matrix mapping parent DOFs to child DOFs.
+    Eigen::MatrixXd                  projectedCoordinates; ///< Nodal coordinates expressed in the child (local) frame.
 
-  /// @copydoc MarmotElement::getDofIndicesPermutationPattern
-  std::vector< int > getDofIndicesPermutationPattern();
+    /**
+     * @brief Construct the spatial wrapper.
+     * @param[in] nDim                      Number of spatial dimensions of the ambient space.
+     * @param[in] nChildDim                 Number of spatial dimensions of the child element.
+     * @param[in] nNodes                    Number of nodes.
+     * @param[in] sizeRhsChild              Size of the child element's right-hand-side vector.
+     * @param[in] rhsIndicesToBeWrapped_    Array of child-RHS indices to be projected.
+     * @param[in] nRhsIndicesToBeWrapped    Length of @p rhsIndicesToBeWrapped_.
+     * @param[in] childElement              Owning pointer to the child element instance.
+     */
+    MarmotElementSpatialWrapper( int                              nDim,
+                                 int                              nChildDim,
+                                 int                              nNodes,
+                                 int                              sizeRhsChild,
+                                 const int                        rhsIndicesToBeWrapped_[],
+                                 int                              nRhsIndicesToBeWrapped,
+                                 std::unique_ptr< MarmotElement > childElement );
 
-  /// @copydoc MarmotElement::getNNodes
-  int getNNodes();
+    /// @copydoc MarmotElement::getNumberOfRequiredStateVars
+    int getNumberOfRequiredStateVars();
 
-  /// @copydoc MarmotElement::getNSpatialDimensions
-  int getNSpatialDimensions();
+    /// @copydoc MarmotElement::getNodeFields
+    std::vector< std::vector< std::string > > getNodeFields();
 
-  /// @copydoc MarmotElement::getNDofPerElement
-  int getNDofPerElement();
+    /// @copydoc MarmotElement::getDofIndicesPermutationPattern
+    std::vector< int > getDofIndicesPermutationPattern();
 
-  /// @copydoc MarmotElement::getElementShape
-  std::string getElementShape();
+    /// @copydoc MarmotElement::getNNodes
+    int getNNodes();
 
-  /// @copydoc MarmotElement::assignStateVars
-  void assignStateVars( double* stateVars, int nStateVars );
+    /// @copydoc MarmotElement::getNSpatialDimensions
+    int getNSpatialDimensions();
 
-  /// @copydoc MarmotElement::assignProperty(const ElementProperties&)
-  void assignProperty( const ElementProperties& property );
+    /// @copydoc MarmotElement::getNDofPerElement
+    int getNDofPerElement();
 
-  /// @copydoc MarmotElement::assignProperty(const MarmotMaterialSection&)
-  void assignProperty( const MarmotMaterialSection& property );
+    /// @copydoc MarmotElement::getElementShape
+    std::string getElementShape();
 
-  /// @copydoc MarmotElement::assignProperty(const std::string&, const double*)
-  void assignProperty( const std::string& propertyName, const double* properties ) override;
+    /// @copydoc MarmotElement::assignStateVars
+    void assignStateVars( double* stateVars, int nStateVars );
 
-  /// @copydoc MarmotElement::getPropertyNames
-  std::vector< std::string > getPropertyNames() const override;
+    /// @copydoc MarmotElement::assignProperty(const ElementProperties&)
+    void assignProperty( const ElementProperties& property );
 
-  /// @copydoc MarmotElement::assignNodeCoordinates
-  void assignNodeCoordinates( const double* coordinates );
+    /// @copydoc MarmotElement::assignProperty(const MarmotMaterialSection&)
+    void assignProperty( const MarmotMaterialSection& property );
 
-  /// @copydoc MarmotElement::initializeYourself
-  void initializeYourself();
+    /// @copydoc MarmotElement::assignProperty(const std::string&, const double*)
+    void assignProperty( const std::string& propertyName, const double* properties ) override;
 
-  /**
-   * @brief Perform element computations with coordinate transformation.
-   * @param[in]  QTotal  Total dof vector in the ambient (parent) space.
-   * @param[in]  dQ      Incremental dof vector in the ambient space.
-   * @param[out] Pe      Internal force vector in the ambient space.
-   * @param[out] Ke      Stiffness matrix in the ambient space.
-   * @param[in]  time    Current time.
-   * @param[in]  dT      Time step size.
-   */
-  void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT );
+    /// @copydoc MarmotElement::getPropertyNames
+    std::vector< std::string > getPropertyNames() const override;
 
-  /// @copydoc MarmotElement::setInitialConditions
-  void setInitialConditions( StateTypes state, const double* values );
+    /// @copydoc MarmotElement::assignNodeCoordinates
+    void assignNodeCoordinates( const double* coordinates );
 
-  /**
-   * @brief Compute contribution from distributed surface loads with coordinate transformation.
-   * @param[in]  loadType    Type of distributed load.
-   * @param[out] P           External load vector in the ambient space.
-   * @param[out] K           Load stiffness matrix in the ambient space.
-   * @param[in]  elementFace Index of element face.
-   * @param[in]  load        Applied load values.
-   * @param[in]  QTotal      Total dof vector.
-   * @param[in]  time        Current time.
-   * @param[in]  dT          Time step size.
-   */
-  void computeDistributedLoad( DistributedLoadTypes loadType,
-                               double*              P,
-                               double*              K,
-                               int                  elementFace,
-                               const double*        load,
-                               const double*        QTotal,
-                               double               time,
-                               double               dT );
+    /// @copydoc MarmotElement::initializeYourself
+    void initializeYourself();
 
-  /**
-   * @brief Compute body force contribution with coordinate transformation.
-   * @param[out] P      External load vector in the ambient space.
-   * @param[out] K      Load stiffness matrix in the ambient space.
-   * @param[in]  load   Applied body force values.
-   * @param[in]  QTotal Total dof vector.
-   * @param[in]  time   Current time.
-   * @param[in]  dT     Time step size.
-   */
-  void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, double time, double dT );
+    /**
+     * @brief Perform element computations with coordinate transformation.
+     * @param[in]  QTotal  Total dof vector in the ambient (parent) space.
+     * @param[in]  dQ      Incremental dof vector in the ambient space.
+     * @param[out] Pe      Internal force vector in the ambient space.
+     * @param[out] Ke      Stiffness matrix in the ambient space.
+     * @param[in]  time    Current time.
+     * @param[in]  dT      Time step size.
+     */
+    void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT );
 
-  /// @copydoc MarmotElement::getStateView
-  StateView getStateView( const std::string& stateName, int quadraturePoint );
+    /// @copydoc MarmotElement::setInitialConditions
+    void setInitialConditions( StateTypes state, const double* values );
 
-  /// @copydoc MarmotElement::getCoordinatesAtCenter
-  std::vector< double > getCoordinatesAtCenter();
+    /**
+     * @brief Compute contribution from distributed surface loads with coordinate transformation.
+     * @param[in]  loadType    Type of distributed load.
+     * @param[out] P           External load vector in the ambient space.
+     * @param[out] K           Load stiffness matrix in the ambient space.
+     * @param[in]  elementFace Index of element face.
+     * @param[in]  load        Applied load values.
+     * @param[in]  QTotal      Total dof vector.
+     * @param[in]  time        Current time.
+     * @param[in]  dT          Time step size.
+     */
+    void computeDistributedLoad( DistributedLoadTypes loadType,
+                                 double*              P,
+                                 double*              K,
+                                 int                  elementFace,
+                                 const double*        load,
+                                 const double*        QTotal,
+                                 double               time,
+                                 double               dT );
 
-  /// @copydoc MarmotElement::getCoordinatesAtQuadraturePoints
-  std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints();
+    /**
+     * @brief Compute body force contribution with coordinate transformation.
+     * @param[out] P      External load vector in the ambient space.
+     * @param[out] K      Load stiffness matrix in the ambient space.
+     * @param[in]  load   Applied body force values.
+     * @param[in]  QTotal Total dof vector.
+     * @param[in]  time   Current time.
+     * @param[in]  dT     Time step size.
+     */
+    void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, double time, double dT );
 
-  /// @copydoc MarmotElement::getNumberOfQuadraturePoints
-  int getNumberOfQuadraturePoints();
-};
+    /// @copydoc MarmotElement::getStateView
+    StateView getStateView( const std::string& stateName, int quadraturePoint );
+
+    /// @copydoc MarmotElement::getCoordinatesAtCenter
+    std::vector< double > getCoordinatesAtCenter();
+
+    /// @copydoc MarmotElement::getCoordinatesAtQuadraturePoints
+    std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints();
+
+    /// @copydoc MarmotElement::getNumberOfQuadraturePoints
+    int getNumberOfQuadraturePoints();
+  };
+
+} // namespace Marmot

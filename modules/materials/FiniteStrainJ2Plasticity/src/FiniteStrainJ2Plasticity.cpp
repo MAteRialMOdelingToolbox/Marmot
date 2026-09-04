@@ -13,8 +13,8 @@ namespace Marmot::Materials {
 
   using namespace Marmot;
   using namespace Fastor;
-  using namespace FastorIndices;
-  using namespace FastorStandardTensors;
+  using namespace TensorUtility::FastorTensors::Indices;
+  using namespace TensorUtility::FastorTensors::StandardTensors;
 
   FiniteStrainJ2Plasticity::FiniteStrainJ2Plasticity( const double* materialProperties,
                                                       int           nMaterialProperties,
@@ -75,8 +75,8 @@ namespace Marmot::Materials {
     using namespace Fastor;
     using namespace Eigen;
     using namespace autodiff;
-    using namespace FastorIndices;
-    using namespace FastorStandardTensors;
+    using namespace TensorUtility::FastorTensors::Indices;
+    using namespace TensorUtility::FastorTensors::StandardTensors;
 
     Tensor33d FeTrial = deformation.F % Fastor::inverse( FpOld );
     double    betaP, dBetaP_dAlphaP;
@@ -120,6 +120,7 @@ namespace Marmot::Materials {
       memcpy( Fp.data(), FpNew.data(), 9 * sizeof( double ) );
 
       using namespace ContinuumMechanics;
+      using namespace ContinuumMechanics::Kinematics;
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
@@ -160,6 +161,7 @@ namespace Marmot::Materials {
     }
     else {
       using namespace Marmot::ContinuumMechanics;
+      using namespace Marmot::ContinuumMechanics::Kinematics;
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
@@ -203,8 +205,8 @@ namespace Marmot::Materials {
     using namespace Fastor;
     using namespace Eigen;
     using namespace autodiff;
-    using namespace FastorIndices;
-    using namespace FastorStandardTensors;
+    using namespace TensorUtility::FastorTensors::Indices;
+    using namespace TensorUtility::FastorTensors::StandardTensors;
 
     Tensor33d FeTrial = deformation.F % Fastor::inverse( FpOld );
     double    betaP, dBetaP_dAlphaP;
@@ -269,6 +271,7 @@ namespace Marmot::Materials {
       memcpy( Fp.data(), FpNew.data(), 9 * sizeof( double ) );
 
       using namespace ContinuumMechanics;
+      using namespace ContinuumMechanics::Kinematics;
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
@@ -316,6 +319,7 @@ namespace Marmot::Materials {
     }
     else {
       using namespace Marmot::ContinuumMechanics;
+      using namespace Marmot::ContinuumMechanics::Kinematics;
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
@@ -365,8 +369,8 @@ namespace Marmot::Materials {
     using namespace Fastor;
     using namespace Eigen;
     using namespace autodiff;
-    using namespace FastorIndices;
-    using namespace FastorStandardTensors;
+    using namespace TensorUtility::FastorTensors::Indices;
+    using namespace TensorUtility::FastorTensors::StandardTensors;
 
     Tensor33d FeTrial = deformation.F % Fastor::inverse( FpOld );
     double    betaP, dBetaP_dAlphaP;
@@ -431,6 +435,7 @@ namespace Marmot::Materials {
       memcpy( Fp.data(), FpNew.data(), 9 * sizeof( double ) );
 
       using namespace ContinuumMechanics;
+      using namespace ContinuumMechanics::Kinematics;
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
@@ -478,6 +483,7 @@ namespace Marmot::Materials {
     }
     else {
       using namespace Marmot::ContinuumMechanics;
+      using namespace Marmot::ContinuumMechanics::Kinematics;
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
@@ -530,8 +536,8 @@ namespace Marmot::Materials {
     using namespace Fastor;
     using namespace Eigen;
     using namespace autodiff;
-    using namespace FastorIndices;
-    using namespace FastorStandardTensors;
+    using namespace TensorUtility::FastorTensors::Indices;
+    using namespace TensorUtility::FastorTensors::StandardTensors;
 
     Tensor33d FeTrial = deformation.F % Fastor::inverse( FpOld );
     double    betaP, dBetaP_dAlphaP;
@@ -595,6 +601,7 @@ namespace Marmot::Materials {
       memcpy( Fp.data(), FpNew.data(), 9 * sizeof( double ) );
 
       using namespace ContinuumMechanics;
+      using namespace ContinuumMechanics::Kinematics;
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
@@ -642,6 +649,7 @@ namespace Marmot::Materials {
     }
     else {
       using namespace Marmot::ContinuumMechanics;
+      using namespace Marmot::ContinuumMechanics::Kinematics;
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;

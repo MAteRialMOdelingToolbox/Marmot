@@ -2,6 +2,7 @@
 #include "Marmot/MarmotPronySeries.h"
 #include "Marmot/MarmotTesting.h"
 
+using namespace Marmot;
 using namespace Marmot::Testing;
 
 void testPronySeriesWithZeroMaxwellElements()

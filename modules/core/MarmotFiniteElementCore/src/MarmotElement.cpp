@@ -1,7 +1,11 @@
 #include "Marmot/MarmotElement.h"
 
-MarmotElement::~MarmotElement() {}
+namespace Marmot {
 
-void MarmotElement::assignProperty( const ElementProperties& property ) {}
+  MarmotElement::~MarmotElement() {}
 
-void MarmotElement::assignProperty( const MarmotMaterialSection& property ) {}
+  void MarmotElement::assignProperty( const ElementProperties& property ) {}
+
+  void MarmotElement::assignProperty( const MarmotMaterialSection& property ) {}
+
+} // namespace Marmot

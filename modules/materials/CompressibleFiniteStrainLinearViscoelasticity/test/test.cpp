@@ -6,8 +6,8 @@
 
 using namespace Marmot::Testing;
 using namespace Marmot::Solvers;
-using namespace Marmot::FastorStandardTensors;
-using namespace Marmot::FastorIndices;
+using namespace Marmot::TensorUtility::FastorTensors::StandardTensors;
+using namespace Marmot::TensorUtility::FastorTensors::Indices;
 
 // -----------------------------------------------------------------------
 // Material property helpers

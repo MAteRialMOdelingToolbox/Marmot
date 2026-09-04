@@ -4,6 +4,7 @@
 #include "Marmot/VonMises.h"
 
 using namespace Marmot::Testing;
+using Marmot::MarmotMaterialHypoElastic;
 
 void testMarmotLocalization()
 {

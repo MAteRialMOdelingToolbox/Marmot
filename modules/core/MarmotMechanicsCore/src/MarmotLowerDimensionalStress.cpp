@@ -1,10 +1,9 @@
 #include "Marmot/MarmotLowerDimensionalStress.h"
-#include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotVoigt.h"
 
 using namespace Eigen;
 
-namespace Marmot::ContinuumMechanics {
+namespace Marmot::ContinuumMechanics::LowerOrder {
 
   namespace UniaxialStress {
     double getUniaxialStressTangent( const Ref< const Matrix6d >& C )
@@ -21,11 +20,11 @@ namespace Marmot::ContinuumMechanics {
 
   namespace PlaneStrain {
 
-    EigenTensors::Tensor322d reduce3D_dStress_dDeformationGradient(
-      const EigenTensors::Tensor633d& dStressdDeformationGradient3D )
+    TensorUtility::EigenTensors::Tensor322d reduce3D_dStress_dDeformationGradient(
+      const TensorUtility::EigenTensors::Tensor633d& dStressdDeformationGradient3D )
     {
-      static constexpr int     planeVoigtIndices[] = { 0, 1, 3 };
-      EigenTensors::Tensor322d tangent2D;
+      static constexpr int                    planeVoigtIndices[] = { 0, 1, 3 };
+      TensorUtility::EigenTensors::Tensor322d tangent2D;
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 2; j++ )
           for ( int k = 0; k < 2; k++ )
@@ -58,7 +57,8 @@ namespace Marmot::ContinuumMechanics {
 
   namespace PlaneStress {
 
-    EigenTensors::Tensor322d compute_dStress_dDeformationGradient( const EigenTensors::Tensor633d& dS_dF_3D )
+    TensorUtility::EigenTensors::Tensor322d compute_dStress_dDeformationGradient(
+      const TensorUtility::EigenTensors::Tensor633d& dS_dF_3D )
     {
       /*  dS^PS    dS^PS    dS    dF^Comp
        *  ----- == ----- * ---- * -------
@@ -77,9 +77,9 @@ namespace Marmot::ContinuumMechanics {
        * */
 
       // projection to plane
-      EigenTensors::Tensor322d dS_dF = PlaneStrain::reduce3D_dStress_dDeformationGradient( dS_dF_3D );
+      TensorUtility::EigenTensors::Tensor322d dS_dF = PlaneStrain::reduce3D_dStress_dDeformationGradient( dS_dF_3D );
 
-      using namespace ContinuumMechanics::TensorUtility::IndexNotation;
+      using namespace ContinuumMechanics::Voigt;
 
       // clang-format off
                 for ( int m = 0; m < 2; m ++ )
@@ -143,4 +143,5 @@ namespace Marmot::ContinuumMechanics {
     }
 
   } // namespace PlaneStress
-} // namespace Marmot::ContinuumMechanics
+
+} // namespace Marmot::ContinuumMechanics::LowerOrder

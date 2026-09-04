@@ -105,7 +105,8 @@ namespace Marmot::Testing {
                          const double                                           stiffnessTol )
   {
     using namespace Eigen;
-    using namespace ContinuumMechanics::VoigtNotation;
+    using namespace ContinuumMechanics::Voigt;
+    using namespace ContinuumMechanics::Transformations;
 
     solver.solve();
     auto           history = solver.getHistory();
@@ -157,11 +158,8 @@ namespace Marmot::Testing {
 
       // modify steps to account for rotation
       for ( auto& step : steps ) {
-        auto modifiedStep = step;
-        modifiedStep
-          .strainIncrementTarget = Transformations::transformStrainToLocalSystem( Vector6d(
-                                                                                    step.strainIncrementTarget ),
-                                                                                  e );
+        auto modifiedStep                  = step;
+        modifiedStep.strainIncrementTarget = transformStrainToLocalSystem( Vector6d( step.strainIncrementTarget ), e );
         std::cout << "modified strain increment target:\n"
                   << Vector6d( modifiedStep.strainIncrementTarget ).transpose() << "\n"
                   << std::endl;
@@ -174,7 +172,7 @@ namespace Marmot::Testing {
       auto history_ = solver.getHistory();
 
       const Vector6d S  = Vector6d( history_.back().stress );
-      const Vector6d S_ = Transformations::transformStressToGlobalSystem( S, e );
+      const Vector6d S_ = transformStressToGlobalSystem( S, e );
 
       // check stress
       if ( !checkIfEqual( MatrixXd( S_ ), MatrixXd( refStress ), stressTol ) ) {
@@ -187,7 +185,7 @@ namespace Marmot::Testing {
 
       // get tangent in new coordinate system
       Matrix6d dS_dE  = Matrix6d( history_.back().dStressdStrain );
-      Matrix6d dS_dE_ = Transformations::transformStiffnessToGlobalSystem( dS_dE, e );
+      Matrix6d dS_dE_ = transformStiffnessToGlobalSystem( dS_dE, e );
 
       // check tangent
       if ( !checkIfEqual( MatrixXd( dS_dE_ ), MatrixXd( refStiffness ), stiffnessTol ) ) {

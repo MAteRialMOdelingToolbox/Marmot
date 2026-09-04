@@ -1,10 +1,12 @@
 #include "Fastor/Fastor.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotFiniteStrainPlasticity.h"
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTesting.h"
 
+using Marmot::MakeString;
 using namespace Marmot::Testing;
-using namespace Marmot::FastorStandardTensors;
+using namespace Marmot::TensorUtility::FastorTensors::StandardTensors;
 
 Tensor33d make_dGp()
 {
@@ -26,7 +28,7 @@ Tensor33d make_dGp()
 
 auto testExponentialMap()
 {
-  using namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration;
+  using namespace Marmot::ContinuumMechanics::Plasticity::FlowIntegration;
   Tensor33d dGp = make_dGp();
   // compute exponential map
   Tensor33d exMap = exponentialMap( dGp );
@@ -52,7 +54,7 @@ auto testExponentialMap()
 
 auto testExplicitIntegration()
 {
-  using namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrderDerived;
+  using namespace Marmot::ContinuumMechanics::Plasticity::FlowIntegration::FirstOrderDerived;
   Tensor33d dGp = make_dGp();
   // make explicit integration
   std::pair< Tensor33d, Tensor3333d > res     = explicitIntegration( dGp );
@@ -75,7 +77,7 @@ auto testExplicitIntegration()
 
 auto testExponentialMapAndDerivative()
 {
-  using namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrderDerived;
+  using namespace Marmot::ContinuumMechanics::Plasticity::FlowIntegration::FirstOrderDerived;
   Tensor33d dGp = make_dGp();
   // compute exponential map
   std::pair< Tensor33d, Tensor3333d > exMapTot = exponentialMap( dGp );

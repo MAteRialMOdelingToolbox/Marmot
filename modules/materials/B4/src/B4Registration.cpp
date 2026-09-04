@@ -3,7 +3,7 @@
 
 namespace Marmot::Materials::Registration {
 
-  using namespace MarmotLibrary;
+  using namespace Marmot::Factory;
 
   const static bool B4isRegistered = MarmotMaterialHypoElasticFactory::registerMaterial< B4 >( "B4" );
 

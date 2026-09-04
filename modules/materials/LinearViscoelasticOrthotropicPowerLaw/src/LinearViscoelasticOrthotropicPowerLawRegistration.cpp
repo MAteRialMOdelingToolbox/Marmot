@@ -3,7 +3,7 @@
 
 namespace Marmot::Materials::Registration {
 
-  using namespace MarmotLibrary;
+  using namespace Marmot::Factory;
 
   const static bool LinearViscoelasticOrthotropicPowerLawisRegistered = MarmotMaterialHypoElasticFactory::
     registerMaterial< LinearViscoelasticOrthotropicPowerLaw >( "LINEARVISCOELASTICORTHOTROPICPOWERLAW" );

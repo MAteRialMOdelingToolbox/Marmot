@@ -88,9 +88,9 @@ namespace Marmot::NumericalAlgorithms {
      * @param dChauchyDEps  Algorithmic Cauchy-stress/strain tangent (6×6).
      * @return              The 6×3×3 tangent tensor \f$\frac{d\boldsymbol{S}}{d\mathbf{F}}\f$.
      */
-    Marmot::EigenTensors::Tensor633d compute_dS_dF( const Marmot::Vector6d& stress,
-                                                    const Eigen::Matrix3d&  FInv,
-                                                    const Marmot::Matrix6d& dChauchyDEps );
+    Marmot::TensorUtility::EigenTensors::Tensor633d compute_dS_dF( const Marmot::Vector6d& stress,
+                                                                   const Eigen::Matrix3d&  FInv,
+                                                                   const Marmot::Matrix6d& dChauchyDEps );
 
     /**
      * @brief Compute the consistent tangent \f$\frac{d\phi}{d\mathbf{F}}\f$ for a scalar quantity.

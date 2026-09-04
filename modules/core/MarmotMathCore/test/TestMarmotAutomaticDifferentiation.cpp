@@ -6,7 +6,7 @@ using namespace Marmot::Testing;
 // test automatic differentiation for scalar functions
 void testAutomaticDifferentiationForScalars()
 {
-  using namespace Marmot::AutomaticDifferentiation;
+  using namespace Marmot::NumericalAlgorithms::AutomaticDifferentiation;
 
   // check scalar first derivative
   auto scalar_func = [&]( const autodiff::dual x ) {
@@ -34,7 +34,7 @@ void testAutomaticDifferentiationForScalars()
 
 void testADForVectorValuedFunctions()
 {
-  using namespace Marmot::AutomaticDifferentiation;
+  using namespace Marmot::NumericalAlgorithms::AutomaticDifferentiation;
 
   // check jacobian with autodiff::dual
   auto vector_func = [&]( const autodiff::VectorXdual x ) {

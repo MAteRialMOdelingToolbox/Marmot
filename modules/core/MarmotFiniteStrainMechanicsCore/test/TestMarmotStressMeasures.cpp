@@ -5,7 +5,7 @@
 
 using namespace Marmot::Testing;
 using namespace Marmot::ContinuumMechanics::StressMeasures;
-using namespace Marmot::FastorStandardTensors;
+using namespace Marmot::TensorUtility::FastorTensors::StandardTensors;
 
 void testKirchhoffStressFromPK2_identityTensor()
 {

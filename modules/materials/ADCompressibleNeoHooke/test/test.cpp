@@ -7,8 +7,8 @@
 
 using namespace Marmot::Testing;
 using namespace Marmot::Materials;
-using namespace Marmot::FastorStandardTensors;
-using namespace Marmot::FastorIndices;
+using namespace Marmot::TensorUtility::FastorTensors::StandardTensors;
+using namespace Marmot::TensorUtility::FastorTensors::Indices;
 
 void testSetup( const std::string& testName,
                 const Tensor33d&   inputF,
@@ -129,7 +129,7 @@ void testSetup( const std::string& testName,
 // Test I-1: Undeformed configuration
 void testUndeformedResponse()
 {
-  Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+  Tensor33d inputF = Marmot::TensorUtility::FastorTensors::StandardTensors::Spatial3D::I;
   Tensor33d stressTarget( 0.0 );
   testSetup( "I-1: Undeformed configuration", inputF, stressTarget );
 }
@@ -138,7 +138,7 @@ void testDeformationResponse()
 {
   // Test I-2a: Finite strain simple shear load case
   {
-    Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+    Tensor33d inputF = Marmot::TensorUtility::FastorTensors::StandardTensors::Spatial3D::I;
     inputF( 1, 0 ) += 0.2;
 
     Tensor33d stressTarget( 0.0 );
@@ -153,7 +153,7 @@ void testDeformationResponse()
 
   // Test I-2b: Small strain simple shear load case
   {
-    Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+    Tensor33d inputF = Marmot::TensorUtility::FastorTensors::StandardTensors::Spatial3D::I;
     inputF( 1, 0 ) += 1e-06;
 
     Tensor33d stressTarget( 0.0 );
@@ -168,7 +168,7 @@ void testDeformationResponse()
 
   // Test I-2c: Hydrostatic load case
   {
-    Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+    Tensor33d inputF = Marmot::TensorUtility::FastorTensors::StandardTensors::Spatial3D::I;
     inputF( 0, 0 ) += 0.02;
     inputF( 1, 1 ) += 0.02;
     inputF( 2, 2 ) += 0.02;
@@ -209,7 +209,7 @@ void testDeformationResponse()
 // Test I-3: Computation of the algorithmic tangent
 void testAlgorithmicTangent()
 {
-  Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+  Tensor33d inputF = Marmot::TensorUtility::FastorTensors::StandardTensors::Spatial3D::I;
   inputF( 0, 0 ) += 0.01;
   inputF( 1, 1 ) += 0.02;
   inputF( 2, 2 ) += 0.03;

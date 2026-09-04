@@ -49,6 +49,7 @@ namespace Marmot {
         const std::function< Fastor::Tensor< double, Rest... >( const double ) >& F,
         const double                                                              x )
       {
+        using namespace Marmot::TensorUtility::FastorTensors;
 
         double volatile h                       = std::max( 1.0, std::abs( x ) ) * Marmot::Constants::SquareRootEps;
         Fastor::Tensor< double, Rest... > dF    = F( x + h ) - F( x );
@@ -69,6 +70,7 @@ namespace Marmot {
         const std::function< Fastor::Tensor< double, Rest... >( const double ) >& F,
         const double                                                              x )
       {
+        using namespace Marmot::TensorUtility::FastorTensors;
 
         double volatile h                       = std::max( 1.0, std::abs( x ) ) * Marmot::Constants::CubicRootEps;
         Fastor::Tensor< double, Rest... > dF    = F( x + h ) - F( x - h );
@@ -295,6 +297,8 @@ namespace Marmot {
       Fastor::Tensor< double, dim, dim > forwardDifference( const tensor_to_scalar_function_type< dim >& F,
                                                             const Fastor::Tensor< double, dim, dim >&    T )
       {
+        using namespace Marmot::TensorUtility::FastorTensors;
+
         Fastor::Tensor< double, dim, dim > dF_dT;
         Fastor::Tensor< std::complex< double >, dim, dim >
           T_right = fastorTensorFromDoubleTensor< std::complex< double >, dim >( T );
@@ -357,6 +361,8 @@ namespace Marmot {
         Fastor::Tensor< double, dim, dim > forwardDifference( const tensor_to_scalar_function_type< dim, dim >& f,
                                                               const Fastor::Tensor< double, dim, dim >&         T )
         {
+          using namespace Marmot::TensorUtility::FastorTensors;
+
           Fastor::Tensor< complexDouble, dim, dim > T_right = fastorTensorFromDoubleTensor< complexDouble >( T );
           Fastor::Tensor< double, dim, dim >        dF_dT( 0.0 );
 
@@ -404,6 +410,7 @@ namespace Marmot {
             Fastor::Tensor< complexDouble, RestF... >( const Fastor::Tensor< complexDouble, RestT... >& ) >& F,
           const Fastor::Tensor< double, RestT... >&                                                          T )
         {
+          using namespace Marmot::TensorUtility::FastorTensors;
 
           Fastor::Tensor< double, RestF..., RestT... > dF_dT( 0.0 );
           Fastor::Tensor< complexDouble, RestT... >    T_right = fastorTensorFromDoubleTensor< complexDouble >( T );

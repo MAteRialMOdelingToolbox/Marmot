@@ -45,7 +45,8 @@ namespace Marmot::Materials {
     const double& phi = inc.K( 0 );
 
     // quadratic degradation function: g(phi) = (1-phi)^2
-    const auto [g, dg_dphi, d2g_dphi2] = PhaseField::EnergyDegradationFunctions::SecondOrderDerived::quadratic( phi );
+    const auto [g, dg_dphi, d2g_dphi2] = ContinuumMechanics::PhaseField::EnergyDegradationFunctions::
+      SecondOrderDerived::quadratic( phi );
 
     // positive elastic strain energy density (no tension-compression split)
     const double psiPlus = 0.5 * eps.dot( C * eps );

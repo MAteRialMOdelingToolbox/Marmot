@@ -32,6 +32,9 @@
 
 namespace Marmot::Materials {
 
+  namespace KelvinChain          = Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain;
+  namespace SolidificationTheory = Marmot::ContinuumMechanics::Viscoelasticity::SolidificationTheory;
+
   /**
    * \brief Implementation of a linear elastic material
    * according to the B4 model by Bazant et al. (2015)

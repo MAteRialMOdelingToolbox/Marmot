@@ -31,6 +31,8 @@
 
 namespace Marmot::Materials {
 
+  namespace KelvinChain = Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain;
+
   /**
    * @brief Implementation of an orthotropic linear viscoelastic material model
    * following a Power Law compliance function and assuming constant Poisson's ratios

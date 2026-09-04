@@ -79,7 +79,7 @@ Implementation
 --------------
 
 The model is implemented within the general gradient-enhanced hypoelastic framework
-(:cpp:class:`MarmotMaterialGeneralGradientEnhancedHypoElastic`), treating the phase-field
+(:cpp:class:`Marmot::MarmotMaterialGeneralGradientEnhancedHypoElastic`), treating the phase-field
 variable :math:`d` as the single nonlocal variable (:math:`\bar\kappa = d`).
 The gradient enhancement coefficient is constant: :math:`c = l^2`.
 

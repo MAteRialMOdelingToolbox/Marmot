@@ -104,10 +104,10 @@ namespace Marmot::Materials {
     const double G23;
 
     /// @brief Generalized Maxwell model parameters.
-    const ContinuumMechanics::FiniteStrain::Viscoelasticity::MaxwellProperties maxwellProperties;
+    const ContinuumMechanics::Viscoelasticity::FiniteStrain::MaxwellProperties maxwellProperties;
 
     /// @brief Constant derivative of Biot stress with respect to right stretch tensor.
-    const FastorStandardTensors::Tensor3333t< autodiff::dual > dBiotStress_dU;
+    const TensorUtility::FastorTensors::StandardTensors::Tensor3333t< autodiff::dual > dBiotStress_dU;
 
     /// @brief Define the layout of persistent state variables.
     void initializeStateLayout()

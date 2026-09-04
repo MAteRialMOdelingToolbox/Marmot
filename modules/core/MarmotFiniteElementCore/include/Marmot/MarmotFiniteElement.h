@@ -178,7 +178,7 @@ namespace Marmot {
         }
         return B_;
       }
-      namespace axisymmetric {
+      namespace Axisymmetric {
         constexpr int voigtSize = 4; ///< Voigt vector size for axisymmetric elements (σ_rr, σ_zz, σ_θθ, σ_rz).
 
         /**
@@ -206,7 +206,7 @@ namespace Marmot {
           }
           return B_;
         }
-      } // namespace axisymmetric
+      } // namespace Axisymmetric
 
       /**
        * @brief Compute the 2-D Green–Lagrange B-operator.
@@ -265,7 +265,7 @@ namespace Marmot {
         Eigen::Vector3i getBoundaryElementIndices( int faceID );
       } // namespace Quad8
 
-    }   // end of namespace Spatial2D
+    }   // namespace Spatial2D
 
     namespace Spatial3D {
       constexpr int nDim = 3; ///< Number of spatial dimensions for 3-D elements.

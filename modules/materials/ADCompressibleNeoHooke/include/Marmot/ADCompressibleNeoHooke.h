@@ -24,6 +24,7 @@
  */
 
 #pragma once
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterialFiniteStrainAD.h"
 
 namespace Marmot::Materials {

@@ -3,6 +3,7 @@
 #include "Marmot/MarmotTesting.h"
 
 using namespace Eigen;
+using Marmot::MakeString;
 using namespace Marmot::Testing;
 using namespace Marmot::ContinuumMechanics::Kinematics::VelocityGradient;
 using namespace Marmot::ContinuumMechanics::Kinematics::Strain;
@@ -60,8 +61,8 @@ void testDeformationGradientAnddEdFCalculation()
                            MakeString() << __PRETTY_FUNCTION__
                                         << " Error for Green-Lagrange strain with 0 deformation." );
   // calculate the value for the differentiation of strain wrt deformation gradient by function
-  Marmot::EigenTensors::Tensor633d dEdFcalc = dGreenLagrangedDeformationGradient( F );
-  double                           dEdFexpect;
+  Marmot::TensorUtility::EigenTensors::Tensor633d dEdFcalc = dGreenLagrangedDeformationGradient( F );
+  double                                          dEdFexpect;
   // loop through all indices/dimensions
   for ( int i = 0; i < 3; i++ )
     for ( int j = 0; j < 3; j++ )
@@ -87,7 +88,7 @@ void testDeformationGradientAnddEdFCalculation()
                            MakeString() << __PRETTY_FUNCTION__
                                         << " Error for Green-Lagrange strain with high deformation." );
   // calculate the value for the differentiation of strain wrt deformation gradient by function
-  Marmot::EigenTensors::Tensor633d dEdFcalch = dGreenLagrangedDeformationGradient( Fh );
+  Marmot::TensorUtility::EigenTensors::Tensor633d dEdFcalch = dGreenLagrangedDeformationGradient( Fh );
   // loop through all indices/dimensions
   for ( int i = 0; i < 3; i++ )
     for ( int j = 0; j < 3; j++ )

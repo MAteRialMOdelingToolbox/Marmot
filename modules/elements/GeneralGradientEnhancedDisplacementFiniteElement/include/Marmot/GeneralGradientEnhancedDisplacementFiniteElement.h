@@ -40,10 +40,9 @@
 #include <memory>
 #include <vector>
 
-using namespace Marmot;
-using namespace Eigen;
-
 namespace Marmot::Elements {
+
+  using namespace Eigen;
 
   /**
    * @class Marmot::Elements::GeneralGradientEnhancedDisplacementFiniteElement
@@ -509,7 +508,7 @@ namespace Marmot::Elements {
   {
     for ( auto& qp : qps ) {
       qp.material = std::unique_ptr< MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables > >(
-        MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< nNonlocalVariables >::
+        Marmot::Factory::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< nNonlocalVariables >::
           createMaterial( section.materialName, section.materialProperties, section.nMaterialProperties, elLabel ) );
     }
   }
@@ -636,7 +635,7 @@ namespace Marmot::Elements {
     Ref< KSizedVector > fK( Pe.tail( sizeDoFK ) );
 
     using namespace Marmot;
-    using namespace ContinuumMechanics::VoigtNotation;
+    using namespace ContinuumMechanics::Voigt;
 
     using response  = typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >::response;
     using tangents  = typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >::tangents;
@@ -666,7 +665,7 @@ namespace Marmot::Elements {
       tangents  tan;
       increment inc;
       if constexpr ( nDim == 2 ) {
-        Vector6d dE6             = ContinuumMechanics::VoigtNotation::planeVoigtToVoigt( dE );
+        Vector6d dE6             = ContinuumMechanics::Voigt::planeVoigtToVoigt( dE );
         res.stress               = qp.managedStateVars->stress;
         res.elasticEnergyDensity = qp.managedStateVars->elasticStrainEnergy / qp.J0xW;
         res.dissipation          = qp.managedStateVars->dissipation / qp.J0xW;
@@ -677,13 +676,13 @@ namespace Marmot::Elements {
 
         if ( sectionType == SectionType::PlaneStress ) {
           qp.material->computePlaneStress( res, tan, inc );
-          S = ContinuumMechanics::VoigtNotation::voigtToPlaneVoigt( res.stress );
-          C = ContinuumMechanics::PlaneStress::getPlaneStressTangent( tan.dStressddStrain );
+          S = ContinuumMechanics::Voigt::voigtToPlaneVoigt( res.stress );
+          C = ContinuumMechanics::LowerOrder::PlaneStress::getPlaneStressTangent( tan.dStressddStrain );
         }
         else if ( sectionType == SectionType::PlaneStrain ) {
           qp.material->computeStress( res, tan, inc );
-          S = ContinuumMechanics::VoigtNotation::voigtToPlaneVoigt( res.stress );
-          C = ContinuumMechanics::PlaneStrain::getPlaneStrainTangent( tan.dStressddStrain );
+          S = ContinuumMechanics::Voigt::voigtToPlaneVoigt( res.stress );
+          C = ContinuumMechanics::LowerOrder::PlaneStrain::getPlaneStrainTangent( tan.dStressddStrain );
         }
         else {
           throw std::invalid_argument( "Invalid section type for 2D element, expected PlaneStress or PlaneStrain" );
@@ -699,8 +698,8 @@ namespace Marmot::Elements {
                                                    qK.segment( idx, nNonLocalNodes ) -
                                                  N_K.transpose() * res.KLocal( n ) ) *
                                                qp.J0xW;
-          const auto dSdK         = ContinuumMechanics::VoigtNotation::voigtToPlaneVoigt( tan.dStressddK.col( n ) );
-          const auto dK_Local_dDE = ContinuumMechanics::VoigtNotation::voigtToPlaneVoigt(
+          const auto dSdK         = ContinuumMechanics::Voigt::voigtToPlaneVoigt( tan.dStressddK.col( n ) );
+          const auto dK_Local_dDE = ContinuumMechanics::Voigt::voigtToPlaneVoigt(
             tan.dKLocalddStrain.row( n ).transpose() );
 
           kUK.block( 0, idx, sizeDoFU, nNonLocalNodes ) += B.transpose() * dSdK * N_K * qp.J0xW;
@@ -779,7 +778,7 @@ namespace Marmot::Elements {
     Ref< KSizedVector > fK( Pe.tail( sizeDoFK ) );
 
     using namespace Marmot;
-    using namespace ContinuumMechanics::VoigtNotation;
+    using namespace ContinuumMechanics::Voigt;
 
     using response  = typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >::response;
     using increment = typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >::increment;
@@ -807,7 +806,7 @@ namespace Marmot::Elements {
       response  res;
       increment inc;
       if constexpr ( nDim == 2 ) {
-        Vector6d dE6             = ContinuumMechanics::VoigtNotation::planeVoigtToVoigt( dE );
+        Vector6d dE6             = ContinuumMechanics::Voigt::planeVoigtToVoigt( dE );
         res.stress               = qp.managedStateVars->stress;
         res.elasticEnergyDensity = qp.managedStateVars->elasticStrainEnergy / qp.J0xW;
         res.dissipation          = qp.managedStateVars->dissipation / qp.J0xW;
@@ -817,11 +816,11 @@ namespace Marmot::Elements {
 
         if ( sectionType == SectionType::PlaneStress ) {
           qp.material->computePlaneStressExplicit( res, inc );
-          S = ContinuumMechanics::VoigtNotation::voigtToPlaneVoigt( res.stress );
+          S = ContinuumMechanics::Voigt::voigtToPlaneVoigt( res.stress );
         }
         else if ( sectionType == SectionType::PlaneStrain ) {
           qp.material->computeStressExplicit( res, inc );
-          S = ContinuumMechanics::VoigtNotation::voigtToPlaneVoigt( res.stress );
+          S = ContinuumMechanics::Voigt::voigtToPlaneVoigt( res.stress );
         }
         else {
           throw std::invalid_argument( "Invalid section type for 2D element, expected PlaneStress or PlaneStrain" );

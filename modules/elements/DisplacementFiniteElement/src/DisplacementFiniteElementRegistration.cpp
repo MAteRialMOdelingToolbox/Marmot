@@ -8,12 +8,12 @@ namespace Marmot::Elements::Registration {
   template < class T,
              Marmot::FiniteElement::Quadrature::IntegrationTypes integrationType,
              typename T::SectionType                             sectionType >
-  MarmotLibrary::MarmotElementFactory::elementFactoryFunction makeFactoryFunction()
+  Marmot::Factory::MarmotElementFactory::elementFactoryFunction makeFactoryFunction()
   {
     return []( int elementID ) -> MarmotElement* { return new T( elementID, integrationType, sectionType ); };
   }
 
-  using namespace MarmotLibrary;
+  using namespace Marmot::Factory;
   using namespace Marmot::FiniteElement::Quadrature;
 
   const static bool CPS4_isRegistered = MarmotElementFactory::
@@ -46,19 +46,19 @@ namespace Marmot::Elements::Registration {
                                           FullIntegration,
                                           DisplacementFiniteElement< 2, 8 >::PlaneStrain >() );
 
-  const static bool C3D8_isRegistered = MarmotLibrary::MarmotElementFactory::
+  const static bool C3D8_isRegistered = Marmot::Factory::MarmotElementFactory::
     registerElement( "C3D8",
                      makeFactoryFunction< DisplacementFiniteElement< 3, 8 >,
                                           FullIntegration,
                                           DisplacementFiniteElement< 3, 8 >::SectionType::Solid >() );
 
-  const static bool C3D20_isRegistered = MarmotLibrary::MarmotElementFactory::
+  const static bool C3D20_isRegistered = Marmot::Factory::MarmotElementFactory::
     registerElement( "C3D20",
                      makeFactoryFunction< DisplacementFiniteElement< 3, 20 >,
                                           FullIntegration,
                                           DisplacementFiniteElement< 3, 20 >::SectionType::Solid >() );
 
-  const static bool C3D20R_isRegistered = MarmotLibrary::MarmotElementFactory::
+  const static bool C3D20R_isRegistered = Marmot::Factory::MarmotElementFactory::
     registerElement( "C3D20R",
                      makeFactoryFunction< DisplacementFiniteElement< 3, 20 >,
                                           ReducedIntegration,
@@ -74,5 +74,5 @@ namespace Marmot::Elements::Registration {
     constexpr static int nIndicesToBeWrapped  = 2;
     return new MarmotElementSpatialWrapper( 2, 1, 2, 2, indicesToBeWrapped, nIndicesToBeWrapped, std::move( uelT2D2 ) );
   }
-  const static bool T2D2_isRegistered = MarmotLibrary::MarmotElementFactory::registerElement( "T2D2", generateT2D2 );
+  const static bool T2D2_isRegistered = Marmot::Factory::MarmotElementFactory::registerElement( "T2D2", generateT2D2 );
 } // namespace Marmot::Elements::Registration

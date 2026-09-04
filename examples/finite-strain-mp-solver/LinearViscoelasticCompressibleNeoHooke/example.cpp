@@ -11,7 +11,7 @@ int main( int argc, char** argv )
   double appliedStrain = 0.1;
 
   using namespace Marmot::Solvers;
-  using namespace Marmot::FastorStandardTensors;
+  using namespace Marmot::TensorUtility::FastorTensors::StandardTensors;
 
   // 1) Define the material model
   // std::string materialName = "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY_SUBSTEPPED";

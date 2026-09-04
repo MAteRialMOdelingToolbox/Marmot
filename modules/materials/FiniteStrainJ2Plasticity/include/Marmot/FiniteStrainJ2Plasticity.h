@@ -38,9 +38,36 @@
 
 namespace Marmot::Materials {
 
-  using namespace Fastor;
-  using namespace FastorStandardTensors;
-  using namespace FastorIndices;
+  namespace Spatial3D = TensorUtility::FastorTensors::StandardTensors::Spatial3D;
+  using TensorUtility::FastorTensors::deviatoric;
+  using TensorUtility::FastorTensors::fastorTensorFromDoubleTensor;
+  using TensorUtility::FastorTensors::multiplyFastorTensorWithScalar;
+  using TensorUtility::FastorTensors::Indices::Ii;
+  using TensorUtility::FastorTensors::Indices::iI;
+  using TensorUtility::FastorTensors::Indices::iImn;
+  using TensorUtility::FastorTensors::Indices::ij;
+  using TensorUtility::FastorTensors::Indices::IJ;
+  using TensorUtility::FastorTensors::Indices::iJ;
+  using TensorUtility::FastorTensors::Indices::IJKL;
+  using TensorUtility::FastorTensors::Indices::iJKL;
+  using TensorUtility::FastorTensors::Indices::ijmn;
+  using TensorUtility::FastorTensors::Indices::ik;
+  using TensorUtility::FastorTensors::Indices::IK;
+  using TensorUtility::FastorTensors::Indices::IL;
+  using TensorUtility::FastorTensors::Indices::iL;
+  using TensorUtility::FastorTensors::Indices::JK;
+  using TensorUtility::FastorTensors::Indices::jl;
+  using TensorUtility::FastorTensors::Indices::JL;
+  using TensorUtility::FastorTensors::Indices::KL;
+  using TensorUtility::FastorTensors::Indices::KLMN;
+  using TensorUtility::FastorTensors::Indices::LI;
+  using TensorUtility::FastorTensors::Indices::mnkL;
+  using TensorUtility::FastorTensors::Indices::to_ijkl;
+  using TensorUtility::FastorTensors::Indices::to_ijKL;
+  using TensorUtility::FastorTensors::Indices::to_IJKL;
+  using TensorUtility::FastorTensors::StandardTensors::Tensor3333d;
+  using TensorUtility::FastorTensors::StandardTensors::Tensor33d;
+  using TensorUtility::FastorTensors::StandardTensors::Tensor33t;
 
   /**
    * @class Marmot::Materials::FiniteStrainJ2Plasticity
@@ -315,6 +342,7 @@ namespace Marmot::Materials {
     std::tuple< Tensor33d, Tensor3333d > computeMandelStress( const Tensor33d& Fe ) const
     {
       using namespace Marmot::ContinuumMechanics;
+      using namespace Marmot::ContinuumMechanics::Kinematics;
       Tensor33d   Ce;
       Tensor3333d dCe_dFe;
       std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( Fe );
@@ -345,6 +373,7 @@ namespace Marmot::Materials {
     Tensor33t< T > computeMandelStressOnly( const Tensor33t< T >& Fe ) const
     {
       using namespace Marmot::ContinuumMechanics;
+      using namespace Marmot::ContinuumMechanics::Kinematics;
       Tensor33t< T > Ce = DeformationMeasures::rightCauchyGreen( Fe );
 
       T              psi_;
@@ -437,8 +466,8 @@ namespace Marmot::Materials {
       Tensor33d   dGp = multiplyFastorTensorWithScalar( df_dS, dLambda );
       Tensor33d   dFp;
       Tensor3333d ddFp_ddGp;
-      std::tie( dFp, ddFp_ddGp ) = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrderDerived::
-        exponentialMap( dGp );
+      std::tie( dFp,
+                ddFp_ddGp ) = ContinuumMechanics::Plasticity::FlowIntegration::FirstOrderDerived::exponentialMap( dGp );
 
       return { dFp, einsum< IJKL, KL >( ddFp_ddGp, df_dS ) };
     }
@@ -488,7 +517,7 @@ namespace Marmot::Materials {
       std::tie( f, df_dMandel, df_dBetaP ) = yieldFunctionFromStressFirstOrderDerived( mandelStress, betaP );
 
       const Tensor33t< T > dGp = multiplyFastorTensorWithScalar( df_dMandel, dLambda );
-      const Tensor33t< T > dFp = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::exponentialMap( dGp );
+      const Tensor33t< T > dFp = ContinuumMechanics::Plasticity::FlowIntegration::exponentialMap( dGp );
 
       VectorXt< T > aux = mV9t( Tensor33t< T >( einsum< iJ, JK >( Fe, dFp ) ).data() ) -
                           mV9t( fastorTensorFromDoubleTensor< T >( FeTrial ).data() );
@@ -554,8 +583,8 @@ namespace Marmot::Materials {
       Tensor33d   dGp = dLambda * df_dMandel;
       Tensor33d   dFp;
       Tensor3333d ddFp_ddGp;
-      std::tie( dFp, ddFp_ddGp ) = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrderDerived::
-        exponentialMap( dGp );
+      std::tie( dFp,
+                ddFp_ddGp ) = ContinuumMechanics::Plasticity::FlowIntegration::FirstOrderDerived::exponentialMap( dGp );
 
       Tensor3333d ddGp_dFe      = dLambda * einsum< ijmn, mnkL >( d2f_dMandel_dMandel, dMandel_dFe );
       Tensor33d   ddFp_ddLambda = einsum< IJKL, KL >( ddFp_ddGp, df_dMandel );

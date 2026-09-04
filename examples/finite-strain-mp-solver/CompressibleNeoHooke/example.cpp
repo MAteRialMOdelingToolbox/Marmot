@@ -4,7 +4,7 @@
 int main()
 {
   using namespace Marmot::Solvers;
-  using namespace Marmot::FastorStandardTensors;
+  using namespace Marmot::TensorUtility::FastorTensors::StandardTensors;
 
   // 1) Define the material model
   std::string materialName = "COMPRESSIBLENEOHOOKE";

@@ -82,7 +82,7 @@ namespace Marmot {
   template < typename T >
   using VectorXt = Eigen::Matrix< T, -1, 1 >; ///< Dynamic column vector with scalar type @p T
 
-  namespace EigenTensors {
+  namespace TensorUtility::EigenTensors {
 
     typedef Eigen::TensorFixedSize< double, Eigen::Sizes< 6, 3, 3 > > Tensor633d; ///< Fixed-size 6×3×3 double tensor
     typedef Eigen::TensorFixedSize< double, Eigen::Sizes< 3, 2, 2 > > Tensor322d; ///< Fixed-size 3×2×2 double tensor
@@ -100,6 +100,6 @@ namespace Marmot {
                                                                    Tensor2112d; ///< Fixed-size 2×1×1×2 double tensor
     typedef Eigen::TensorFixedSize< double, Eigen::Sizes< 3, 3 > > Tensor33d;   ///< Fixed-size 3×3 double tensor
 
-  }                                                                             // namespace EigenTensors
+  }                                                                             // namespace TensorUtility::EigenTensors
 
 } // namespace Marmot

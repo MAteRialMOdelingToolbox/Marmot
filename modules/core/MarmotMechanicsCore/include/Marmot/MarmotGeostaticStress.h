@@ -37,7 +37,7 @@
  * linearly-varying stress distribution defined along a vertical coordinate axis.
  */
 
-namespace Marmot::GeostaticStress {
+namespace Marmot::ContinuumMechanics::GeostaticStress {
 
   /**
    * @brief Computes the three principal geostatic stress components at a given depth.
@@ -52,4 +52,4 @@ namespace Marmot::GeostaticStress {
   std::tuple< double, double, double > getGeostaticStressFromLinearDistribution( const double* geostaticStressDefintion,
                                                                                  double        coordinate_y );
 
-} // namespace Marmot::GeostaticStress
+} // namespace Marmot::ContinuumMechanics::GeostaticStress

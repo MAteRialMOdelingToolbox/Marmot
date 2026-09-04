@@ -29,7 +29,7 @@
 #include <string>
 #include <unordered_map>
 
-namespace MarmotLibrary {
+namespace Marmot::Factory {
 
   /**
    * @brief Factory class for creating MarmotMaterialGeneralGradientEnhancedHypoElastic instances.
@@ -41,7 +41,7 @@ namespace MarmotLibrary {
   public:
     /// Type alias for the material factory function, which creates instances of
     /// MarmotMaterialGeneralGradientEnhancedHypoElastic.
-    using materialFactoryFunction = std::function< MarmotMaterialGeneralGradientEnhancedHypoElastic<
+    using materialFactoryFunction = std::function< Marmot::MarmotMaterialGeneralGradientEnhancedHypoElastic<
       nNonlocalVariables >*( const double* materialProperties, int nMaterialProperties, int materialNumber ) >;
 
     MarmotMaterialGeneralGradientEnhancedHypoElasticFactory() = delete;
@@ -54,7 +54,7 @@ namespace MarmotLibrary {
      * @param[in] materialNumber Unique identifier for the material instance.
      * @return Pointer to the created MarmotMaterial instance, or nullptr if creation failed.
      */
-    static MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >* createMaterial(
+    static Marmot::MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >* createMaterial(
       const std::string& materialName,
       const double*      materialProperties,
       int                nMaterialProperties,
@@ -73,7 +73,7 @@ namespace MarmotLibrary {
       assert( map.find( materialName ) == map.end() && "Material already registered!" );
 
       map[materialName] = []( const double* materialProperties, int nMaterialProperties, int materialNumber )
-        -> MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >* {
+        -> Marmot::MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >* {
         return new T( materialProperties, nMaterialProperties, materialNumber );
       };
       return true;
@@ -83,4 +83,4 @@ namespace MarmotLibrary {
     /// @brief Get the map of material factory functions by material name.
     static MaterialFactoryMap& materialFactoryFunctionByName();
   };
-} // namespace MarmotLibrary
+} // namespace Marmot::Factory

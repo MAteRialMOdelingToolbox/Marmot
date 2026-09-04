@@ -1,14 +1,11 @@
 #include "Marmot/ADVonMises.h"
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 
-namespace Marmot::Materials {
+namespace Marmot::Materials::Registration {
 
-  namespace Registration {
+  using namespace Marmot::Factory;
 
-    using namespace MarmotLibrary;
+  const static bool ADVonMisesIsRegistered = MarmotMaterialHypoElasticFactory::registerMaterial< ADVonMises >(
+    "ADVONMISES" );
 
-    const static bool ADVonMisesIsRegistered = MarmotMaterialHypoElasticFactory::registerMaterial< ADVonMises >(
-      "ADVONMISES" );
-
-  } // namespace Registration
-} // namespace Marmot::Materials
+} // namespace Marmot::Materials::Registration

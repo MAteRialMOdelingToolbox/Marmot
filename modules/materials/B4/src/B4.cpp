@@ -11,6 +11,10 @@ using namespace Eigen;
 
 namespace Marmot::Materials {
 
+  namespace KelvinChain          = Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain;
+  namespace SolidificationTheory = Marmot::ContinuumMechanics::Viscoelasticity::SolidificationTheory;
+  namespace Shrinkage            = Marmot::ContinuumMechanics::Shrinkage;
+
   B4::B4( const double* materialProperties, int nMaterialProperties, int materialLabel )
     : MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialLabel ),
       // clang-format off

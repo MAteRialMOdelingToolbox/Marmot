@@ -1,6 +1,5 @@
 #include "Marmot/HughesWinget.h"
 #include "Marmot/MarmotKinematics.h"
-#include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotVoigt.h"
 
 namespace Marmot::NumericalAlgorithms {
@@ -15,7 +14,7 @@ namespace Marmot::NumericalAlgorithms {
 
     Matrix3d dEps_ = 0.5 * ( l + l.transpose() ); // actually d * dT
     dOmega         = 0.5 * ( l - l.transpose() ); // actually omega * dT
-    dEps           = Marmot::ContinuumMechanics::VoigtNotation::voigtFromStrainMatrix( dEps_ );
+    dEps           = Marmot::ContinuumMechanics::Voigt::voigtFromStrainMatrix( dEps_ );
     dR             = ( Matrix3d::Identity() - 0.5 * dOmega ).inverse() * ( Matrix3d::Identity() + 0.5 * dOmega );
   }
 
@@ -32,27 +31,26 @@ namespace Marmot::NumericalAlgorithms {
   Marmot::Vector6d HughesWinget::rotateTensor( const Marmot::Vector6d& tensor )
   {
 
-    return Marmot::ContinuumMechanics::VoigtNotation::stressToVoigt< double >(
-      dR * Marmot::ContinuumMechanics::VoigtNotation::voigtToStress( tensor ) * dR.transpose() );
+    return Marmot::ContinuumMechanics::Voigt::stressToVoigt< double >(
+      dR * Marmot::ContinuumMechanics::Voigt::voigtToStress( tensor ) * dR.transpose() );
   }
 
-  Marmot::EigenTensors::Tensor633d HughesWinget::compute_dS_dF( const Marmot::Vector6d& stress,
-                                                                const Matrix3d&         FInv,
-                                                                const Marmot::Matrix6d& dChauchydEps )
+  Marmot::TensorUtility::EigenTensors::Tensor633d HughesWinget::compute_dS_dF( const Marmot::Vector6d& stress,
+                                                                               const Matrix3d&         FInv,
+                                                                               const Marmot::Matrix6d& dChauchydEps )
   {
     using namespace Marmot;
-    using namespace Marmot::ContinuumMechanics::TensorUtility;
     using namespace Marmot::ContinuumMechanics::Kinematics::VelocityGradient;
 
-    EigenTensors::Tensor633d dS_dl;
-    EigenTensors::Tensor633d dS_dF;
-    EigenTensors::Tensor633d dStressRotational_dl;
-    EigenTensors::Tensor633d dStressJaumann_dl;
-    auto                     stressNew = ContinuumMechanics::VoigtNotation::stressMatrixFromVoigt< 3 >( stress );
+    TensorUtility::EigenTensors::Tensor633d dS_dl;
+    TensorUtility::EigenTensors::Tensor633d dS_dF;
+    TensorUtility::EigenTensors::Tensor633d dStressRotational_dl;
+    TensorUtility::EigenTensors::Tensor633d dStressJaumann_dl;
+    auto                                    stressNew = ContinuumMechanics::Voigt::stressMatrixFromVoigt< 3 >( stress );
 
     dStressRotational_dl.setZero();
     for ( int ij = 0; ij < 6; ij++ ) {
-      auto [i, j] = IndexNotation::fromVoigt< 3 >( ij );
+      auto [i, j] = ContinuumMechanics::Voigt::fromVoigt< 3 >( ij );
       for ( int k = 0; k < 3; k++ )
         for ( int l = 0; l < 3; l++ )
           for ( int m = 0; m < 3; m++ )

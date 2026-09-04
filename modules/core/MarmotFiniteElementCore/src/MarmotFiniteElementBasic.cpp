@@ -162,5 +162,5 @@ namespace Marmot {
       return getGaussPointInfo( shape, integrationType ).size();
     }
 
-  } // end of namespace FiniteElement::Quadrature
-} // end of namespace Marmot
+  } // namespace FiniteElement::Quadrature
+} // namespace Marmot

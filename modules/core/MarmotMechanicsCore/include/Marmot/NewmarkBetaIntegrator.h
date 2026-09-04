@@ -26,7 +26,7 @@
 #pragma once
 
 #include <algorithm>
-namespace Marmot::TimeIntegration {
+namespace Marmot::NumericalAlgorithms::TimeIntegration {
 
   //! \brief Newmark-Beta time integration
   //! \details
@@ -65,4 +65,4 @@ namespace Marmot::TimeIntegration {
     }
   }
 
-} // namespace Marmot::TimeIntegration
+} // namespace Marmot::NumericalAlgorithms::TimeIntegration

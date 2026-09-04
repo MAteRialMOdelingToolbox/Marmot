@@ -4,6 +4,7 @@
 
 #include "Marmot/MarmotConstants.h"
 
+using Marmot::MakeString;
 using namespace Marmot::Testing;
 using namespace Marmot::NumericalAlgorithms::Differentiation;
 

@@ -31,82 +31,78 @@
  * @brief Manager for multi-surface yield-surface combinations in multi-surface plasticity.
  */
 
-namespace Marmot {
-  namespace NumericalAlgorithms {
-    /**
-     * @brief Tracks and iterates over yield-surface activity combinations for multi-surface plasticity.
-     *
-     * Maintains a table of all \f$2^n - 1\f$ non-empty subsets of @p nYieldSurfaces yield
-     * surfaces and provides an interface to iterate over them during the return-mapping
-     * algorithm, marking already-tried combinations as used.
-     *
-     * @tparam nYieldSurfaces  Number of yield surfaces.
-     */
-    template < int nYieldSurfaces >
-    class YieldSurfaceCombinationManager {
-      /// Column in the YieldSurfFlagArr for marking a combination as used
-      const int idxUsedFlag;
+namespace Marmot::NumericalAlgorithms {
+  /**
+   * @brief Tracks and iterates over yield-surface activity combinations for multi-surface plasticity.
+   *
+   * Maintains a table of all \f$2^n - 1\f$ non-empty subsets of @p nYieldSurfaces yield
+   * surfaces and provides an interface to iterate over them during the return-mapping
+   * algorithm, marking already-tried combinations as used.
+   *
+   * @tparam nYieldSurfaces  Number of yield surfaces.
+   */
+  template < int nYieldSurfaces >
+  class YieldSurfaceCombinationManager {
+    /// Column in the YieldSurfFlagArr for marking a combination as used
+    const int idxUsedFlag;
 
-    public:
-      /// An array which contains every possible (reasonable) combination of yield surfaces
-      Eigen::Array< bool, ( 1 << nYieldSurfaces ) - 1, ( nYieldSurfaces + 1 ) > yieldSurfaceCombinations;
-      /// An array to carry active/nonactive states of yield surfaces
-      typedef Eigen::Array< bool, 1, nYieldSurfaces > YieldSurfFlagArr;
-      /// An array to carry values of yield functions
-      typedef Eigen::Array< double, 1, nYieldSurfaces > YieldSurfResArr;
+  public:
+    /// An array which contains every possible (reasonable) combination of yield surfaces
+    Eigen::Array< bool, ( 1 << nYieldSurfaces ) - 1, ( nYieldSurfaces + 1 ) > yieldSurfaceCombinations;
+    /// An array to carry active/nonactive states of yield surfaces
+    typedef Eigen::Array< bool, 1, nYieldSurfaces > YieldSurfFlagArr;
+    /// An array to carry values of yield functions
+    typedef Eigen::Array< double, 1, nYieldSurfaces > YieldSurfResArr;
 
-      YieldSurfaceCombinationManager();
-      /// get another unused combination of yield surfaces
-      bool getAnotherYieldFlagCombination( YieldSurfFlagArr& activeSurfaces );
-      /// set the current combination as used
-      void markYieldFlagCombinationAsUsed( const YieldSurfFlagArr& activeSurfaces );
-      /// reset all yieldsurfaces as unused
-      void resetUsedYieldFlagCombinations();
-    };
-  } // namespace NumericalAlgorithms
-} // namespace Marmot
+    YieldSurfaceCombinationManager();
+    /// get another unused combination of yield surfaces
+    bool getAnotherYieldFlagCombination( YieldSurfFlagArr& activeSurfaces );
+    /// set the current combination as used
+    void markYieldFlagCombinationAsUsed( const YieldSurfFlagArr& activeSurfaces );
+    /// reset all yieldsurfaces as unused
+    void resetUsedYieldFlagCombinations();
+  };
+} // namespace Marmot::NumericalAlgorithms
 
-namespace Marmot {
-  namespace NumericalAlgorithms {
-    template < int n >
-    YieldSurfaceCombinationManager< n >::YieldSurfaceCombinationManager() : idxUsedFlag( n )
-    {
-      yieldSurfaceCombinations.setZero();
-      const int numRows = ( 1 << n ) - 1;
-      const int numCols = n;
+namespace Marmot::NumericalAlgorithms {
+  template < int n >
+  YieldSurfaceCombinationManager< n >::YieldSurfaceCombinationManager() : idxUsedFlag( n )
+  {
+    yieldSurfaceCombinations.setZero();
+    const int numRows = ( 1 << n ) - 1;
+    const int numCols = n;
 
-      for ( int row = 0; row < numRows; row++ )
-        for ( int col = 0; col < numCols; col++ )
-          yieldSurfaceCombinations( row, col ) = ( row + 1 ) & 1 << ( col );
-      return;
-    }
+    for ( int row = 0; row < numRows; row++ )
+      for ( int col = 0; col < numCols; col++ )
+        yieldSurfaceCombinations( row, col ) = ( row + 1 ) & 1 << ( col );
+    return;
+  }
 
-    template < int n >
-    bool YieldSurfaceCombinationManager< n >::getAnotherYieldFlagCombination( YieldSurfFlagArr& activeSurfaces )
-    {
-      for ( int i = 0; i < yieldSurfaceCombinations.rows(); i++ ) {
-        bool             alreadyUsed          = yieldSurfaceCombinations.row( i )( idxUsedFlag );
-        YieldSurfFlagArr combinationCandidate = yieldSurfaceCombinations.row( i ).head( n );
-        if ( !alreadyUsed && ( combinationCandidate == true ).any() ) {
-          activeSurfaces = combinationCandidate;
-          return true;
-        }
+  template < int n >
+  bool YieldSurfaceCombinationManager< n >::getAnotherYieldFlagCombination( YieldSurfFlagArr& activeSurfaces )
+  {
+    for ( int i = 0; i < yieldSurfaceCombinations.rows(); i++ ) {
+      bool             alreadyUsed          = yieldSurfaceCombinations.row( i )( idxUsedFlag );
+      YieldSurfFlagArr combinationCandidate = yieldSurfaceCombinations.row( i ).head( n );
+      if ( !alreadyUsed && ( combinationCandidate == true ).any() ) {
+        activeSurfaces = combinationCandidate;
+        return true;
       }
-      return false;
     }
+    return false;
+  }
 
-    template < int n >
-    void YieldSurfaceCombinationManager< n >::resetUsedYieldFlagCombinations()
-    {
-      yieldSurfaceCombinations.col( idxUsedFlag ).setConstant( false );
-    }
+  template < int n >
+  void YieldSurfaceCombinationManager< n >::resetUsedYieldFlagCombinations()
+  {
+    yieldSurfaceCombinations.col( idxUsedFlag ).setConstant( false );
+  }
 
-    template < int n >
-    void YieldSurfaceCombinationManager< n >::markYieldFlagCombinationAsUsed( const YieldSurfFlagArr& activeSurfaces )
-    {
-      for ( int i = 0; i < yieldSurfaceCombinations.rows(); i++ )
-        if ( ( yieldSurfaceCombinations.row( i ).head( n ) == activeSurfaces ).all() )
-          yieldSurfaceCombinations.row( i )( idxUsedFlag ) = true;
-    }
-  } // namespace NumericalAlgorithms
-} // namespace Marmot
+  template < int n >
+  void YieldSurfaceCombinationManager< n >::markYieldFlagCombinationAsUsed( const YieldSurfFlagArr& activeSurfaces )
+  {
+    for ( int i = 0; i < yieldSurfaceCombinations.rows(); i++ )
+      if ( ( yieldSurfaceCombinations.row( i ).head( n ) == activeSurfaces ).all() )
+        yieldSurfaceCombinations.row( i )( idxUsedFlag ) = true;
+  }
+} // namespace Marmot::NumericalAlgorithms

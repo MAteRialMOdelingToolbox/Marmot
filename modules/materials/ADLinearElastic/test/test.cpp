@@ -3,6 +3,7 @@
 #include "Marmot/MarmotTesting.h"
 #include "Marmot/MarmotTypedefs.h"
 
+using Marmot::MakeString;
 using namespace Marmot::Testing;
 using namespace Marmot::Solvers;
 

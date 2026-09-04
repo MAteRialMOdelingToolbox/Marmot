@@ -1,14 +1,11 @@
 #include "Marmot/FiniteStrainIsotropicBiotViscoelasticity.h"
 #include "Marmot/MarmotMaterialFiniteStrainFactory.h"
 
-namespace Marmot::Materials {
+namespace Marmot::Materials::Registration {
 
-  namespace Registration {
+  using namespace Marmot::Factory;
 
-    using namespace MarmotLibrary;
+  const static bool FiniteStrainIsotropicBiotViscoelasticityRegistered = MarmotMaterialFiniteStrainFactory::
+    registerMaterial< FiniteStrainIsotropicBiotViscoelasticity >( "FINITESTRAINISOTROPICBIOTVISCOELASTICITY" );
 
-    const static bool FiniteStrainIsotropicBiotViscoelasticityRegistered = MarmotMaterialFiniteStrainFactory::
-      registerMaterial< FiniteStrainIsotropicBiotViscoelasticity >( "FINITESTRAINISOTROPICBIOTVISCOELASTICITY" );
-
-  } // namespace Registration
-} // namespace Marmot::Materials
+} // namespace Marmot::Materials::Registration

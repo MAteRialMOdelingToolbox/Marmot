@@ -1,15 +1,11 @@
 #include "Marmot/ADLinearElastic.h"
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 
-namespace Marmot::Materials {
+namespace Marmot::Materials::Registration {
 
-  namespace Registration {
+  using namespace Marmot::Factory;
 
-    using namespace MarmotLibrary;
+  const static bool ADLinearElasticIsRegistered = MarmotMaterialHypoElasticFactory::registerMaterial< ADLinearElastic >(
+    "ADLINEARELASTIC" );
 
-    const static bool
-      ADLinearElasticIsRegistered = MarmotMaterialHypoElasticFactory::registerMaterial< ADLinearElastic >(
-        "ADLINEARELASTIC" );
-
-  } // namespace Registration
-} // namespace Marmot::Materials
+} // namespace Marmot::Materials::Registration

@@ -1,27 +1,31 @@
 #include "Marmot/MarmotJournal.h"
 
-MarmotJournal& MarmotJournal::getInstance()
-{
-  static MarmotJournal instance;
+namespace Marmot {
 
-  return instance;
-}
+  MarmotJournal& MarmotJournal::getInstance()
+  {
+    static MarmotJournal instance;
 
-MarmotJournal::MarmotJournal() : output( nullptr ) {}
+    return instance;
+  }
 
-void MarmotJournal::setMSGOutputDirection( std::ostream& newOutputStream )
-{
-  getInstance().output.rdbuf( newOutputStream.rdbuf() );
-}
+  MarmotJournal::MarmotJournal() : output( nullptr ) {}
 
-bool MarmotJournal::warningToMSG( const std::string& message )
-{
-  getInstance().output << message;
-  return false;
-}
+  void MarmotJournal::setMSGOutputDirection( std::ostream& newOutputStream )
+  {
+    getInstance().output.rdbuf( newOutputStream.rdbuf() );
+  }
 
-bool MarmotJournal::notificationToMSG( const std::string& message )
-{
-  getInstance().output << message;
-  return true;
-}
+  bool MarmotJournal::warningToMSG( const std::string& message )
+  {
+    getInstance().output << message;
+    return false;
+  }
+
+  bool MarmotJournal::notificationToMSG( const std::string& message )
+  {
+    getInstance().output << message;
+    return true;
+  }
+
+} // namespace Marmot

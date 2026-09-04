@@ -2,19 +2,16 @@
 #include "Marmot/MarmotMaterialFiniteStrainFactory.h"
 #include "Marmot/MarmotMaterialFiniteStrainSubstepped.h"
 
-namespace Marmot::Materials {
+namespace Marmot::Materials::Registration {
 
-  namespace Registration {
+  using namespace Marmot::Factory;
 
-    using namespace MarmotLibrary;
+  const static bool CompressibleFiniteStrainLinearViscoelasticityRegistered = MarmotMaterialFiniteStrainFactory::
+    registerMaterial< CompressibleFiniteStrainLinearViscoelasticity >(
+      "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY" );
 
-    const static bool CompressibleFiniteStrainLinearViscoelasticityRegistered = MarmotMaterialFiniteStrainFactory::
-      registerMaterial< CompressibleFiniteStrainLinearViscoelasticity >(
-        "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY" );
-
-    const static bool
-      CompressibleFiniteStrainLinearViscoelasticitySubsteppedRegistered = MarmotMaterialFiniteStrainFactory::
-        registerMaterial< MarmotMaterialFiniteStrainSubstepped< CompressibleFiniteStrainLinearViscoelasticity > >(
-          "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY_SUBSTEPPED" );
-  } // namespace Registration
-} // namespace Marmot::Materials
+  const static bool
+    CompressibleFiniteStrainLinearViscoelasticitySubsteppedRegistered = MarmotMaterialFiniteStrainFactory::
+      registerMaterial< MarmotMaterialFiniteStrainSubstepped< CompressibleFiniteStrainLinearViscoelasticity > >(
+        "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY_SUBSTEPPED" );
+} // namespace Marmot::Materials::Registration

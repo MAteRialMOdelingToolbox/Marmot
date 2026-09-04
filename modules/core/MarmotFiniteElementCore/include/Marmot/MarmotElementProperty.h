@@ -25,46 +25,50 @@
 #pragma once
 #include <string>
 
-/** @struct MarmotMaterialSection
- * @brief Structure to hold material section properties.
- *
- * This structure is used to define a material section with its code and properties,
- * allowing for flexible material definitions in finite element analysis.
- */
-class MarmotMaterialSection {
-public:
-  const std::string materialName;        ///< Name identifying the material model.
-  const double*     materialProperties;  ///< Pointer to the array of material property values.
-  int               nMaterialProperties; ///< Number of material property values.
+namespace Marmot {
 
-  /**
-   * @brief Construct a MarmotMaterialSection.
-   * @param[in] materialName       Name identifying the material model.
-   * @param[in] materialProperties Pointer to the array of material property values.
-   * @param[in] nMaterialProperties Number of material property values.
+  /** @struct MarmotMaterialSection
+   * @brief Structure to hold material section properties.
+   *
+   * This structure is used to define a material section with its code and properties,
+   * allowing for flexible material definitions in finite element analysis.
    */
-  MarmotMaterialSection( const std::string materialName, const double* materialProperties, int nMaterialProperties )
-    : materialName( materialName ),
-      materialProperties( materialProperties ),
-      nMaterialProperties( nMaterialProperties ){};
-};
+  class MarmotMaterialSection {
+  public:
+    const std::string materialName;        ///< Name identifying the material model.
+    const double*     materialProperties;  ///< Pointer to the array of material property values.
+    int               nMaterialProperties; ///< Number of material property values.
 
-/** @struct ElementProperties
- * @brief Structure to hold element properties.
- *
- * This structure is used to define properties of a finite element,
- * allowing for flexible element definitions in finite element analysis.
- */
-class ElementProperties {
-public:
-  const double* elementProperties;  ///< Pointer to the array of element property values.
-  int           nElementProperties; ///< Number of element property values.
+    /**
+     * @brief Construct a MarmotMaterialSection.
+     * @param[in] materialName       Name identifying the material model.
+     * @param[in] materialProperties Pointer to the array of material property values.
+     * @param[in] nMaterialProperties Number of material property values.
+     */
+    MarmotMaterialSection( const std::string materialName, const double* materialProperties, int nMaterialProperties )
+      : materialName( materialName ),
+        materialProperties( materialProperties ),
+        nMaterialProperties( nMaterialProperties ){};
+  };
 
-  /**
-   * @brief Construct an ElementProperties object.
-   * @param[in] elementProperties  Pointer to the array of element property values.
-   * @param[in] nElementProperties Number of element property values.
+  /** @struct ElementProperties
+   * @brief Structure to hold element properties.
+   *
+   * This structure is used to define properties of a finite element,
+   * allowing for flexible element definitions in finite element analysis.
    */
-  ElementProperties( const double* elementProperties, int nElementProperties )
-    : elementProperties( elementProperties ), nElementProperties( nElementProperties ){};
-};
+  class ElementProperties {
+  public:
+    const double* elementProperties;  ///< Pointer to the array of element property values.
+    int           nElementProperties; ///< Number of element property values.
+
+    /**
+     * @brief Construct an ElementProperties object.
+     * @param[in] elementProperties  Pointer to the array of element property values.
+     * @param[in] nElementProperties Number of element property values.
+     */
+    ElementProperties( const double* elementProperties, int nElementProperties )
+      : elementProperties( elementProperties ), nElementProperties( nElementProperties ){};
+  };
+
+} // namespace Marmot

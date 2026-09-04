@@ -36,7 +36,7 @@
 using namespace Marmot;
 using namespace Marmot::Materials;
 using namespace Marmot::Testing;
-using namespace Marmot::FastorStandardTensors;
+using namespace Marmot::TensorUtility::FastorTensors::StandardTensors;
 
 namespace {
 
@@ -123,7 +123,7 @@ namespace {
   {
     const Eigen::Matrix3d Q = Eigen::AngleAxisd( angle, axis.normalized() ).toRotationMatrix();
     Tensor33d             t;
-    Marmot::mapEigenToFastor( t ) = Q;
+    Marmot::TensorUtility::FastorTensors::mapEigenToFastor( t ) = Q;
     return t;
   }
 
@@ -318,24 +318,20 @@ void testSmallStrainAgreement()
   for ( int n = 0; n < 20; n++ ) {
     Ftotal += H;
     Tensor33d F;
-    Marmot::mapEigenToFastor( F ) = Ftotal;
+    Marmot::TensorUtility::FastorTensors::mapEigenToFastor( F ) = Ftotal;
     step( w, state, F );
 
     Marmot::Matrix6d C = Marmot::Matrix6d::Zero();
-    direct.computeStress( directState,
-                          C,
-                          ContinuumMechanics::VoigtNotation::voigtFromStrainMatrix< 3 >( H ),
-                          { 0.0, 1.0 } );
+    direct.computeStress( directState, C, ContinuumMechanics::Voigt::voigtFromStrainMatrix< 3 >( H ), { 0.0, 1.0 } );
   }
 
   Tensor33d Ffinal;
-  Marmot::mapEigenToFastor( Ffinal ) = Ftotal;
-  const auto [tau, dTau_dF]          = step( w, state, Ffinal );
+  Marmot::TensorUtility::FastorTensors::mapEigenToFastor( Ffinal ) = Ftotal;
+  const auto [tau, dTau_dF]                                        = step( w, state, Ffinal );
 
-  const Eigen::Matrix3d sigmaDirect = ContinuumMechanics::VoigtNotation::stressMatrixFromVoigt< 3 >(
-    directState.stress );
-  Tensor33d expected;
-  Marmot::mapEigenToFastor( expected ) = sigmaDirect;
+  const Eigen::Matrix3d sigmaDirect = ContinuumMechanics::Voigt::stressMatrixFromVoigt< 3 >( directState.stress );
+  Tensor33d             expected;
+  Marmot::TensorUtility::FastorTensors::mapEigenToFastor( expected ) = sigmaDirect;
 
   // Compare the Cauchy stress: tau = J sigma, and the J factor alone is larger than the tolerance below.
   const Tensor33d sigma = Tensor33d( tau / Ftotal.determinant() );
@@ -498,7 +494,8 @@ void testVolumetricScaling()
 
   const double J = lambda * lambda * lambda;
   Tensor33d    expected;
-  Marmot::mapEigenToFastor( expected ) = J * ContinuumMechanics::VoigtNotation::stressMatrixFromVoigt< 3 >( ds.stress );
+  Marmot::TensorUtility::FastorTensors::mapEigenToFastor(
+    expected ) = J * ContinuumMechanics::Voigt::stressMatrixFromVoigt< 3 >( ds.stress );
 
   throwExceptionOnFailure( checkIfEqual( tau, expected, 1e-10 ),
                            "volumetric response does not match J * sigma in " + std::string( __PRETTY_FUNCTION__ ) );

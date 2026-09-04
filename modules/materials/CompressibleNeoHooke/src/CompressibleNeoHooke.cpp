@@ -13,8 +13,8 @@ namespace Marmot::Materials {
 
   using namespace Marmot;
   using namespace Fastor;
-  using namespace FastorIndices;
-  using namespace FastorStandardTensors;
+  using namespace TensorUtility::FastorTensors::Indices;
+  using namespace TensorUtility::FastorTensors::StandardTensors;
 
   CompressibleNeoHooke::CompressibleNeoHooke( const double* materialProperties,
                                               int           nMaterialProperties,
@@ -35,6 +35,7 @@ namespace Marmot::Materials {
     const auto& F_ = deformation.F;
 
     using namespace ContinuumMechanics;
+    using namespace ContinuumMechanics::Kinematics;
     // compute Cauchy-Green deformation
     const auto [C, dC_dF] = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( F_ );
 

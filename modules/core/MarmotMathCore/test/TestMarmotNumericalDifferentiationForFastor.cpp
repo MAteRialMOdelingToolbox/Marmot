@@ -1,6 +1,6 @@
-// #include "Marmot/MarmotJournal.h"
 #include "Fastor/Fastor.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotNumericalDifferentiationForFastor.h"
 #include "Marmot/MarmotTesting.h"
@@ -8,6 +8,7 @@
 
 using namespace Marmot;
 using namespace Marmot::Testing;
+using namespace Marmot::TensorUtility::FastorTensors;
 using namespace Marmot::NumericalAlgorithms::Differentiation;
 
 void testScalarToTensor()
@@ -45,7 +46,8 @@ void testTensorToScalar()
   std::function< double( const Fastor::Tensor< double, 2, 2 >& ) > tensorToScalar_func =
     []( const Fastor::Tensor< double, 2, 2 >& x ) {
       // auto   frobeniusNorm_squared = Fastor::einsum< Fastor::Index< 0, 1 >, Fastor::Index< 0, 1 > >( x, x );
-      auto   frobeniusNorm_squared = Fastor::einsum< FastorIndices::ij, FastorIndices::ij >( x, x );
+      auto   frobeniusNorm_squared = Fastor::einsum< TensorUtility::FastorTensors::Indices::ij,
+                                                   TensorUtility::FastorTensors::Indices::ij >( x, x );
       double res                   = frobeniusNorm_squared.toscalar();
       return res;
     };
@@ -69,7 +71,8 @@ void testTensorToTensor()
 {
   std::function< Fastor::Tensor< double, 3, 3 >( const Fastor::Tensor< double, 3, 3 >& ) > tensorToTensor_func =
     []( const Fastor::Tensor< double, 3, 3 >& x ) {
-      auto matrixproduct = Fastor::einsum< FastorIndices::ij, FastorIndices::jk >( x, x );
+      auto matrixproduct = Fastor::einsum< TensorUtility::FastorTensors::Indices::ij,
+                                           TensorUtility::FastorTensors::Indices::jk >( x, x );
       return matrixproduct;
     };
 
@@ -78,12 +81,14 @@ void testTensorToTensor()
   Fastor::Tensor< double, 3, 3, 3, 3 > dF_dX_forward = TensorToTensor::forwardDifference( tensorToTensor_func, x_ );
   Fastor::Tensor< double, 3, 3, 3, 3 > dF_dX_central = TensorToTensor::centralDifference( tensorToTensor_func, x_ );
   Fastor::Tensor< double, 3, 3, 3, 3 >
-    dF_dX_target = Fastor::einsum< Fastor::Index< 0, 2 >,
-                                   Fastor::Index< 3, 1 >,
-                                   Fastor::OIndex< 0, 1, 2, 3 > >( FastorStandardTensors::Spatial3D::I, x_ ) +
-                   Fastor::einsum< Fastor::Index< 0, 2 >,
-                                   Fastor::Index< 1, 3 >,
-                                   Fastor::OIndex< 0, 1, 2, 3 > >( x_, FastorStandardTensors::Spatial3D::I );
+    dF_dX_target = Fastor::einsum<
+                     Fastor::Index< 0, 2 >,
+                     Fastor::Index< 3, 1 >,
+                     Fastor::OIndex< 0, 1, 2, 3 > >( TensorUtility::FastorTensors::StandardTensors::Spatial3D::I, x_ ) +
+                   Fastor::einsum<
+                     Fastor::Index< 0, 2 >,
+                     Fastor::Index< 1, 3 >,
+                     Fastor::OIndex< 0, 1, 2, 3 > >( x_, TensorUtility::FastorTensors::StandardTensors::Spatial3D::I );
 
   throwExceptionOnFailure( Fastor::isequal( dF_dX_forward, dF_dX_target, 1e-6 ),
                            MakeString() << __PRETTY_FUNCTION__
@@ -116,7 +121,8 @@ Fastor::Tensor< double, 3, 3, 3, 3 > createRank4StiffnessTensor( double E, doubl
 Fastor::Tensor< double, 3, 3 > hookes_law( const Fastor::Tensor< double, 3, 3 >& strain )
 {
   Fastor::Tensor< double, 3, 3, 3, 3 > C      = createRank4StiffnessTensor( 30000., 0.2 );
-  Fastor::Tensor< double, 3, 3 >       stress = Fastor::einsum< FastorIndices::ijkl, FastorIndices::kl >( C, strain );
+  Fastor::Tensor< double, 3, 3 >       stress = Fastor::einsum< TensorUtility::FastorTensors::Indices::ijkl,
+                                                          TensorUtility::FastorTensors::Indices::kl >( C, strain );
   return stress;
 }
 
@@ -190,7 +196,8 @@ void testTensorToScalarComplex()
   std::function< std::complex< double >( const Fastor::Tensor< std::complex< double >, 2, 2 >& ) > tensorToScalar_func =
     []( const Fastor::Tensor< std::complex< double >, 2, 2 >& x ) {
       // auto   frobeniusNorm_squared = Fastor::einsum< Fastor::Index< 0, 1 >, Fastor::Index< 0, 1 > >( x, x );
-      auto                   frobeniusNorm_squared = Fastor::einsum< FastorIndices::ij, FastorIndices::ij >( x, x );
+      auto                   frobeniusNorm_squared = Fastor::einsum< TensorUtility::FastorTensors::Indices::ij,
+                                                   TensorUtility::FastorTensors::Indices::ij >( x, x );
       std::complex< double > res                   = frobeniusNorm_squared.toscalar();
       return res;
     };
@@ -216,7 +223,8 @@ void testTensorToTensorComplex()
   std::function< Fastor::Tensor< std::complex< double >, 3, 3 >(
     const Fastor::Tensor< std::complex< double >, 3, 3 >& ) >
     tensorToTensor_func = []( const Fastor::Tensor< std::complex< double >, 3, 3 >& x ) {
-      auto matrixproduct = Fastor::einsum< FastorIndices::ij, FastorIndices::jk >( x, x );
+      auto matrixproduct = Fastor::einsum< TensorUtility::FastorTensors::Indices::ij,
+                                           TensorUtility::FastorTensors::Indices::jk >( x, x );
       return matrixproduct;
     };
 
@@ -225,12 +233,14 @@ void testTensorToTensorComplex()
   Fastor::Tensor< double, 3, 3, 3, 3 > dF_dX_forward = Complex::TensorToTensor::forwardDifference( tensorToTensor_func,
                                                                                                    x_ );
   Fastor::Tensor< double, 3, 3, 3, 3 >
-    dF_dX_target = Fastor::einsum< Fastor::Index< 0, 2 >,
-                                   Fastor::Index< 3, 1 >,
-                                   Fastor::OIndex< 0, 1, 2, 3 > >( FastorStandardTensors::Spatial3D::I, x_ ) +
-                   Fastor::einsum< Fastor::Index< 0, 2 >,
-                                   Fastor::Index< 1, 3 >,
-                                   Fastor::OIndex< 0, 1, 2, 3 > >( x_, FastorStandardTensors::Spatial3D::I );
+    dF_dX_target = Fastor::einsum<
+                     Fastor::Index< 0, 2 >,
+                     Fastor::Index< 3, 1 >,
+                     Fastor::OIndex< 0, 1, 2, 3 > >( TensorUtility::FastorTensors::StandardTensors::Spatial3D::I, x_ ) +
+                   Fastor::einsum<
+                     Fastor::Index< 0, 2 >,
+                     Fastor::Index< 1, 3 >,
+                     Fastor::OIndex< 0, 1, 2, 3 > >( x_, TensorUtility::FastorTensors::StandardTensors::Spatial3D::I );
 
   throwExceptionOnFailure( Fastor::isequal( dF_dX_forward, dF_dX_target, 1e-10 ),
                            MakeString() << __PRETTY_FUNCTION__
@@ -244,7 +254,8 @@ Fastor::Tensor< std::complex< double >, 3, 3 > hookes_law(
   Fastor::Tensor< std::complex< double >, 3, 3, 3, 3 >
     C_complex = fastorTensorFromDoubleTensor< std::complex< double > >( C_double );
   Fastor::Tensor< std::complex< double >, 3, 3 >
-    stress = Fastor::einsum< FastorIndices::ijkl, FastorIndices::kl >( C_complex, strain );
+    stress = Fastor::einsum< TensorUtility::FastorTensors::Indices::ijkl,
+                             TensorUtility::FastorTensors::Indices::kl >( C_complex, strain );
   return stress;
 }
 

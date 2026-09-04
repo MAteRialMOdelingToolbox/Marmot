@@ -30,66 +30,70 @@
 #include <unordered_map>
 #include <vector>
 
-/// @brief A convenience auxiliary class for managing multiple statevars with arbitrary length in a single consecutive
-/// double array
-class MarmotStateVarVectorManager {
+namespace Marmot {
 
-public:
-  /// get a StateView for a statevar entry
-  inline StateView getStateView( const std::string& name ) const
-  {
-    auto entry = theLayout.entries.at( name );
-    return { theStateVars + entry.index, entry.length };
-  }
+  /// @brief A convenience auxiliary class for managing multiple statevars with arbitrary length in a single consecutive
+  /// double array
+  class MarmotStateVarVectorManager {
 
-  /// get the reference to the first array element of an entry in the statevar vector
-  inline double& find( const std::string& name ) const { return theStateVars[theLayout.entries.at( name ).index]; }
-
-  /// check if the entry with name is managed
-  inline bool contains( const std::string& name ) const { return theLayout.entries.count( name ); }
-
-protected:
-  /// An entry in the statevar vector consists of the name and a certain length
-  struct StateVarEntryDefinition {
-    std::string name;   ///< Unique name identifying the state variable entry
-    int         length; ///< Number of consecutive doubles occupied by this entry
-  };
-
-  /// The location in the statevar vector consists of the index and its certain length
-  struct StateVarEntryLocation {
-    int index;  ///< Zero-based offset into the statevar array where the entry begins
-    int length; ///< Number of consecutive doubles occupied by this entry
-  };
-
-  /// The layout is defined by a map of names to Locations, and the resulting required total length of the statevar
-  /// vector
-  struct StateVarVectorLayout {
-    std::unordered_map< std::string, StateVarEntryLocation > entries; ///< Map from entry name to its location
-    int                                                      nRequiredStateVars; ///< Total number of doubles required
-  };
-
-  /// generate the statevar vector layout from a list of entries, defined by name and length
-  static StateVarVectorLayout makeLayout( const std::vector< StateVarEntryDefinition >& theEntries )
-  {
-    std::unordered_map< std::string, StateVarEntryLocation > theMap;
-    int                                                      sizeOccupied = 0;
-    for ( const auto& theEntry : theEntries ) {
-      const auto nextLocation = sizeOccupied;
-      theMap[theEntry.name]   = { nextLocation, theEntry.length };
-      sizeOccupied += theEntry.length;
+  public:
+    /// get a StateView for a statevar entry
+    inline StateView getStateView( const std::string& name ) const
+    {
+      auto entry = theLayout.entries.at( name );
+      return { theStateVars + entry.index, entry.length };
     }
-    return { theMap, sizeOccupied };
-  }
 
-  /// pointer to the first element in the statevar vector
-  double* theStateVars;
+    /// get the reference to the first array element of an entry in the statevar vector
+    inline double& find( const std::string& name ) const { return theStateVars[theLayout.entries.at( name ).index]; }
 
-  /// a const reference to the respective layout
-  const StateVarVectorLayout& theLayout;
+    /// check if the entry with name is managed
+    inline bool contains( const std::string& name ) const { return theLayout.entries.count( name ); }
 
-  /// @brief Constructs the manager from an existing statevar array and a pre-built layout.
-  /// @param theStateVars Pointer to the first element of the statevar array.
-  /// @param theLayout_ Layout describing the offsets and lengths of each named entry.
-  MarmotStateVarVectorManager( double* theStateVars, const StateVarVectorLayout& theLayout_ )
-    : theStateVars( theStateVars ), theLayout( theLayout_ ){};
-};
+  protected:
+    /// An entry in the statevar vector consists of the name and a certain length
+    struct StateVarEntryDefinition {
+      std::string name;   ///< Unique name identifying the state variable entry
+      int         length; ///< Number of consecutive doubles occupied by this entry
+    };
+
+    /// The location in the statevar vector consists of the index and its certain length
+    struct StateVarEntryLocation {
+      int index;  ///< Zero-based offset into the statevar array where the entry begins
+      int length; ///< Number of consecutive doubles occupied by this entry
+    };
+
+    /// The layout is defined by a map of names to Locations, and the resulting required total length of the statevar
+    /// vector
+    struct StateVarVectorLayout {
+      std::unordered_map< std::string, StateVarEntryLocation > entries; ///< Map from entry name to its location
+      int                                                      nRequiredStateVars; ///< Total number of doubles required
+    };
+
+    /// generate the statevar vector layout from a list of entries, defined by name and length
+    static StateVarVectorLayout makeLayout( const std::vector< StateVarEntryDefinition >& theEntries )
+    {
+      std::unordered_map< std::string, StateVarEntryLocation > theMap;
+      int                                                      sizeOccupied = 0;
+      for ( const auto& theEntry : theEntries ) {
+        const auto nextLocation = sizeOccupied;
+        theMap[theEntry.name]   = { nextLocation, theEntry.length };
+        sizeOccupied += theEntry.length;
+      }
+      return { theMap, sizeOccupied };
+    }
+
+    /// pointer to the first element in the statevar vector
+    double* theStateVars;
+
+    /// a const reference to the respective layout
+    const StateVarVectorLayout& theLayout;
+
+    /// @brief Constructs the manager from an existing statevar array and a pre-built layout.
+    /// @param theStateVars Pointer to the first element of the statevar array.
+    /// @param theLayout_ Layout describing the offsets and lengths of each named entry.
+    MarmotStateVarVectorManager( double* theStateVars, const StateVarVectorLayout& theLayout_ )
+      : theStateVars( theStateVars ), theLayout( theLayout_ ){};
+  };
+
+} // namespace Marmot

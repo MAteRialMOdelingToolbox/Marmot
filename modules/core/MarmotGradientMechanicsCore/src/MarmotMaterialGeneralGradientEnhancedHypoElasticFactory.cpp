@@ -1,7 +1,7 @@
 #include "Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h"
 #include "Marmot/MarmotJournal.h"
 
-using namespace MarmotLibrary;
+using namespace Marmot::Factory;
 
 template <>
 MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< 1 >::MaterialFactoryMap& MarmotMaterialGeneralGradientEnhancedHypoElasticFactory<
@@ -12,7 +12,7 @@ MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< 1 >::MaterialFactoryMap
 }
 
 template <>
-MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >* MarmotMaterialGeneralGradientEnhancedHypoElasticFactory<
+Marmot::MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >* MarmotMaterialGeneralGradientEnhancedHypoElasticFactory<
   1 >::createMaterial( const std::string& materialName,
                        const double*      materialProperties,
                        int                nMaterialProperties,
@@ -25,7 +25,7 @@ MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >* MarmotMaterialGeneralGrad
     for ( const auto& pair : map ) {
       reg += pair.first + ", ";
     }
-    throw std::invalid_argument( MakeString()
+    throw std::invalid_argument( Marmot::MakeString()
                                  << __PRETTY_FUNCTION__ << " Material " + materialName + " not registered!" + reg );
   }
 
@@ -41,7 +41,7 @@ MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< 2 >::MaterialFactoryMap
 }
 
 template <>
-MarmotMaterialGeneralGradientEnhancedHypoElastic< 2 >* MarmotMaterialGeneralGradientEnhancedHypoElasticFactory<
+Marmot::MarmotMaterialGeneralGradientEnhancedHypoElastic< 2 >* MarmotMaterialGeneralGradientEnhancedHypoElasticFactory<
   2 >::createMaterial( const std::string& materialName,
                        const double*      materialProperties,
                        int                nMaterialProperties,
@@ -54,7 +54,7 @@ MarmotMaterialGeneralGradientEnhancedHypoElastic< 2 >* MarmotMaterialGeneralGrad
     for ( const auto& pair : map ) {
       reg += pair.first + ", ";
     }
-    throw std::invalid_argument( MakeString()
+    throw std::invalid_argument( Marmot::MakeString()
                                  << __PRETTY_FUNCTION__ << " Material " + materialName + " not registered!" + reg );
   }
 
@@ -70,7 +70,7 @@ MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< 6 >::MaterialFactoryMap
 }
 
 template <>
-MarmotMaterialGeneralGradientEnhancedHypoElastic< 6 >* MarmotMaterialGeneralGradientEnhancedHypoElasticFactory<
+Marmot::MarmotMaterialGeneralGradientEnhancedHypoElastic< 6 >* MarmotMaterialGeneralGradientEnhancedHypoElasticFactory<
   6 >::createMaterial( const std::string& materialName,
                        const double*      materialProperties,
                        int                nMaterialProperties,
@@ -83,7 +83,7 @@ MarmotMaterialGeneralGradientEnhancedHypoElastic< 6 >* MarmotMaterialGeneralGrad
     for ( const auto& pair : map ) {
       reg += pair.first + ", ";
     }
-    throw std::invalid_argument( MakeString()
+    throw std::invalid_argument( Marmot::MakeString()
                                  << __PRETTY_FUNCTION__ << " Material " + materialName + " not registered!" + reg );
   }
 

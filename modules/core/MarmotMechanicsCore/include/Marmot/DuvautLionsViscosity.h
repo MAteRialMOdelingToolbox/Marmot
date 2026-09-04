@@ -26,74 +26,70 @@
 #pragma once
 #include "Marmot/MarmotTypedefs.h"
 
-namespace Marmot {
-  namespace ContinuumMechanics::CommonConstitutiveModels {
+namespace Marmot::ContinuumMechanics::Viscoplasticity {
+  /**
+   * \brief Implementation of Duvaut-Lions viscosity for a material with `nMatTangentSize` internal degrees of
+   * freedom
+   * @todo: Update member names to more descriptive ones
+   */
+  template < int nMatTangentSize >
+  class DuvautLionsViscosity {
+  private:
+    /*
+     * Viscosity parameter for Duvault-Lions viscosity*/
+    const double viscosity;
+
+  public:
+    typedef Eigen::Matrix< double, nMatTangentSize, nMatTangentSize >
+      TangentSizedMatrix; ///< Square matrix type sized to the material tangent dimension
+
+    /// @brief Constructs the viscosity model with the given viscosity parameter.
+    /// @param viscosity Viscosity parameter \f$\eta\f$ for the Duvaut-Lions regularisation.
+    DuvautLionsViscosity( double viscosity );
+
     /**
-     * \brief Implementation of Duvaut-Lions viscosity for a material with `nMatTangentSize` internal degrees of
-     * freedom
-     * @todo: Update member names to more descriptive ones
-     */
-    template < int nMatTangentSize >
-    class DuvautLionsViscosity {
-    private:
-      /*
-       * Viscosity parameter for Duvault-Lions viscosity*/
-      const double viscosity;
+     * Apply viscosity on a scalar internal variable depending on the extremal solutions for t=0 (trialState) and
+     * t=\f$\infty\f$, and timestep dt */
+    double applyViscosityOnStateVar( double stateVarTrial, double StateVarInf, double dT );
+    /**
+     * Apply viscosity on voigt sized rank two tensor depending on the extremal solutions for t=0 (trialState) and
+     * t=\f$\infty\f$, and timestep dt */
+    Marmot::Vector6d applyViscosityOnStress( const Marmot::Vector6d& trialStress,
+                                             const Marmot::Vector6d& stressInf,
+                                             double                  dT );
+    /**
+     * Apply viscosity on the inverse (algorithmic) material tangent depending on the extremal solutions for t=0
+     * (trialState) and t=\f$\infty\f$, and timestep dt
+     * @todo: Check if application to inverse can be replaced by application to non-inverse in general*/
+    TangentSizedMatrix applyViscosityOnMatTangent( const TangentSizedMatrix& matTangentInv, double dT );
+  };
+} // namespace Marmot::ContinuumMechanics::Viscoplasticity
 
-    public:
-      typedef Eigen::Matrix< double, nMatTangentSize, nMatTangentSize >
-        TangentSizedMatrix; ///< Square matrix type sized to the material tangent dimension
+namespace Marmot::ContinuumMechanics::Viscoplasticity {
+  template < int s >
+  DuvautLionsViscosity< s >::DuvautLionsViscosity( double viscosity ) : viscosity( viscosity )
+  {
+  }
 
-      /// @brief Constructs the viscosity model with the given viscosity parameter.
-      /// @param viscosity Viscosity parameter \f$\eta\f$ for the Duvaut-Lions regularisation.
-      DuvautLionsViscosity( double viscosity );
+  template < int s >
+  double DuvautLionsViscosity< s >::applyViscosityOnStateVar( double stateVarTrial, double StateVarInf, double dT )
+  {
+    return ( stateVarTrial + ( dT / viscosity ) * StateVarInf ) / ( dT / viscosity + 1 );
+  }
 
-      /**
-       * Apply viscosity on a scalar internal variable depending on the extremal solutions for t=0 (trialState) and
-       * t=\f$\infty\f$, and timestep dt */
-      double applyViscosityOnStateVar( double stateVarTrial, double StateVarInf, double dT );
-      /**
-       * Apply viscosity on voigt sized rank two tensor depending on the extremal solutions for t=0 (trialState) and
-       * t=\f$\infty\f$, and timestep dt */
-      Marmot::Vector6d applyViscosityOnStress( const Marmot::Vector6d& trialStress,
-                                               const Marmot::Vector6d& stressInf,
-                                               double                  dT );
-      /**
-       * Apply viscosity on the inverse (algorithmic) material tangent depending on the extremal solutions for t=0
-       * (trialState) and t=\f$\infty\f$, and timestep dt
-       * @todo: Check if application to inverse can be replaced by application to non-inverse in general*/
-      TangentSizedMatrix applyViscosityOnMatTangent( const TangentSizedMatrix& matTangentInv, double dT );
-    };
-  } // namespace ContinuumMechanics::CommonConstitutiveModels
-} // namespace Marmot
+  template < int s >
+  Marmot::Vector6d DuvautLionsViscosity< s >::applyViscosityOnStress( const Marmot::Vector6d& trialStress,
+                                                                      const Marmot::Vector6d& stressInf,
+                                                                      double                  dT )
+  {
+    return ( trialStress + ( dT / viscosity ) * stressInf ) / ( dT / viscosity + 1 );
+  }
 
-namespace Marmot {
-  namespace ContinuumMechanics::CommonConstitutiveModels {
-    template < int s >
-    DuvautLionsViscosity< s >::DuvautLionsViscosity( double viscosity ) : viscosity( viscosity )
-    {
-    }
-
-    template < int s >
-    double DuvautLionsViscosity< s >::applyViscosityOnStateVar( double stateVarTrial, double StateVarInf, double dT )
-    {
-      return ( stateVarTrial + ( dT / viscosity ) * StateVarInf ) / ( dT / viscosity + 1 );
-    }
-
-    template < int s >
-    Marmot::Vector6d DuvautLionsViscosity< s >::applyViscosityOnStress( const Marmot::Vector6d& trialStress,
-                                                                        const Marmot::Vector6d& stressInf,
-                                                                        double                  dT )
-    {
-      return ( trialStress + ( dT / viscosity ) * stressInf ) / ( dT / viscosity + 1 );
-    }
-
-    template < int s >
-    typename DuvautLionsViscosity< s >::TangentSizedMatrix DuvautLionsViscosity< s >::applyViscosityOnMatTangent(
-      const TangentSizedMatrix& matTangentInv,
-      double                    dT )
-    {
-      return ( 1 / ( 1 + dT / viscosity ) ) * ( TangentSizedMatrix::Identity() + dT / viscosity * matTangentInv );
-    }
-  } // namespace ContinuumMechanics::CommonConstitutiveModels
-} // namespace Marmot
+  template < int s >
+  typename DuvautLionsViscosity< s >::TangentSizedMatrix DuvautLionsViscosity< s >::applyViscosityOnMatTangent(
+    const TangentSizedMatrix& matTangentInv,
+    double                    dT )
+  {
+    return ( 1 / ( 1 + dT / viscosity ) ) * ( TangentSizedMatrix::Identity() + dT / viscosity * matTangentInv );
+  }
+} // namespace Marmot::ContinuumMechanics::Viscoplasticity

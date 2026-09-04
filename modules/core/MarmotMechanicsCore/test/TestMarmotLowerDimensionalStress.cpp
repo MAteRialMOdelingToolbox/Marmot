@@ -1,6 +1,5 @@
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotLowerDimensionalStress.h"
-#include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotTesting.h"
 #include "Marmot/MarmotVoigt.h"
 
@@ -10,10 +9,11 @@
  */
 
 using namespace Eigen;
+using Marmot::MakeString;
 using namespace Marmot::ContinuumMechanics::Elasticity::Isotropic;
-using namespace Marmot::ContinuumMechanics::PlaneStrain;
-using namespace Marmot::ContinuumMechanics::PlaneStress;
-using namespace Marmot::ContinuumMechanics::UniaxialStress;
+using namespace Marmot::ContinuumMechanics::LowerOrder::PlaneStrain;
+using namespace Marmot::ContinuumMechanics::LowerOrder::PlaneStress;
+using namespace Marmot::ContinuumMechanics::LowerOrder::UniaxialStress;
 using namespace Marmot::Testing;
 
 Marmot::Matrix6d create_C_Matrix()
@@ -42,7 +42,7 @@ void test_getUniaxialStressTangent()
 void test_reduce3D_dStress_dDeformationGradient()
 {
   // Create Tensor
-  Marmot::EigenTensors::Tensor633d inputTensor;
+  Marmot::TensorUtility::EigenTensors::Tensor633d inputTensor;
   // Set all values to zero initially
   inputTensor.setZero();
   // Populate the tensor with some non-zero values to represent derivatives
@@ -78,10 +78,10 @@ void test_reduce3D_dStress_dDeformationGradient()
   */
 
   // Compute the result using the reduce3D_dStress_dDeformationGradient function
-  Marmot::EigenTensors::Tensor322d computedResult = reduce3D_dStress_dDeformationGradient( inputTensor );
+  Marmot::TensorUtility::EigenTensors::Tensor322d computedResult = reduce3D_dStress_dDeformationGradient( inputTensor );
 
   // Expected results
-  Marmot::EigenTensors::Tensor322d expectedResult;
+  Marmot::TensorUtility::EigenTensors::Tensor322d expectedResult;
   expectedResult( 0, 0, 0 ) = 1.0;  // σ_xx
   expectedResult( 0, 1, 0 ) = 2.0;  // σ_xx
   expectedResult( 0, 0, 1 ) = 3.0;  // σ_xx
@@ -149,7 +149,7 @@ void test_dStrainDStrainPlaneStrain()
 void test_compute_dStress_dDeformationGradient()
 {
   // Create Tensor
-  Marmot::EigenTensors::Tensor633d inputTensor;
+  Marmot::TensorUtility::EigenTensors::Tensor633d inputTensor;
   // Set all values to 1 initially
   inputTensor.setConstant( 1.0 );
   // Set some different values
@@ -185,12 +185,12 @@ void test_compute_dStress_dDeformationGradient()
   */
 
   // Compute the result using the compute_dStress_dDeformationGradient function
-  Marmot::EigenTensors::Tensor322d computedResult = compute_dStress_dDeformationGradient( inputTensor );
+  Marmot::TensorUtility::EigenTensors::Tensor322d computedResult = compute_dStress_dDeformationGradient( inputTensor );
 
   // Expected results
-  using namespace Marmot::ContinuumMechanics::TensorUtility::IndexNotation;
+  using namespace Marmot::ContinuumMechanics::Voigt;
 
-  Marmot::EigenTensors::Tensor322d expectedResult;
+  Marmot::TensorUtility::EigenTensors::Tensor322d expectedResult;
   // clang-format off
   for ( int m = 0; m < 2; m ++ )
     for ( int n = 0; n < 2; n ++ )

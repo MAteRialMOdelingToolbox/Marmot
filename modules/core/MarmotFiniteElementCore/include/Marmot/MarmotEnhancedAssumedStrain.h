@@ -25,43 +25,41 @@
 #pragma once
 #include "Marmot/MarmotTypedefs.h"
 
-namespace Marmot {
+/**
+ * @brief Enhanced Assumed Strain (EAS) element enrichment utilities.
+ *
+ * Functions and enumerations for constructing the EAS interpolation matrices
+ * used in incompatible-mode and enhanced assumed strain finite element
+ * formulations (de Borst, Simo & Rifai variants).
+ */
+namespace Marmot::FiniteElement::EAS {
+
   /**
-   * @brief Enhanced Assumed Strain (EAS) element enrichment utilities.
-   *
-   * Functions and enumerations for constructing the EAS interpolation matrices
-   * used in incompatible-mode and enhanced assumed strain finite element
-   * formulations (de Borst, Simo & Rifai variants).
+   * @brief Supported EAS enrichment types.
    */
-  namespace FiniteElement::EAS {
+  enum EASType {
+    DeBorstEAS2,    ///< De Borst 2-parameter EAS
+    DeBorstEAS2_P2, ///< De Borst 2-parameter EAS, variant P2
+    EAS3,           ///< 3-parameter EAS
+    DeBorstEAS6b,   ///< De Borst 6-parameter EAS, variant b
+    DeBorstEAS9,    ///< De Borst 9-parameter EAS
+    SimoRifaiEAS5,  ///< Simo–Rifai 5-parameter EAS
+    SimoRifaiEAS4,  ///< Simo–Rifai 4-parameter EAS
+  };
 
-    /**
-     * @brief Supported EAS enrichment types.
-     */
-    enum EASType {
-      DeBorstEAS2,    ///< De Borst 2-parameter EAS
-      DeBorstEAS2_P2, ///< De Borst 2-parameter EAS, variant P2
-      EAS3,           ///< 3-parameter EAS
-      DeBorstEAS6b,   ///< De Borst 6-parameter EAS, variant b
-      DeBorstEAS9,    ///< De Borst 9-parameter EAS
-      SimoRifaiEAS5,  ///< Simo–Rifai 5-parameter EAS
-      SimoRifaiEAS4,  ///< Simo–Rifai 4-parameter EAS
-    };
+  /**
+   * @brief Computes the EAS transformation matrix from the element Jacobian.
+   * @param J  Element Jacobian matrix at the reference point.
+   * @return   Transformation matrix \f$\mathbf{F}\f$ for mapping EAS modes.
+   */
+  Eigen::MatrixXd F( const Eigen::MatrixXd& J );
 
-    /**
-     * @brief Computes the EAS transformation matrix from the element Jacobian.
-     * @param J  Element Jacobian matrix at the reference point.
-     * @return   Transformation matrix \f$\mathbf{F}\f$ for mapping EAS modes.
-     */
-    Eigen::MatrixXd F( const Eigen::MatrixXd& J );
+  /**
+   * @brief Evaluates the EAS interpolation matrix at a given natural coordinate.
+   * @param type EAS enrichment type.
+   * @param xi   Natural coordinates of the integration point.
+   * @return     EAS interpolation matrix \f$\mathbf{M}\f$.
+   */
+  Eigen::MatrixXd EASInterpolation( EASType type, const Eigen::VectorXd& xi );
 
-    /**
-     * @brief Evaluates the EAS interpolation matrix at a given natural coordinate.
-     * @param type EAS enrichment type.
-     * @param xi   Natural coordinates of the integration point.
-     * @return     EAS interpolation matrix \f$\mathbf{M}\f$.
-     */
-    Eigen::MatrixXd EASInterpolation( EASType type, const Eigen::VectorXd& xi );
-
-  } // namespace FiniteElement::EAS
-} // namespace Marmot
+} // namespace Marmot::FiniteElement::EAS

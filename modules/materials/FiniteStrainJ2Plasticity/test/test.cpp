@@ -7,8 +7,8 @@
 
 using namespace Marmot::Testing;
 using namespace Marmot::Materials;
-using namespace Marmot::FastorStandardTensors;
-using namespace Marmot::FastorIndices;
+using namespace Marmot::TensorUtility::FastorTensors::StandardTensors;
+using namespace Marmot::TensorUtility::FastorTensors::Indices;
 
 // NOTE: Scalar return mapping not implemented yet
 
@@ -54,8 +54,9 @@ void testSetup( const std::string& testName,
     }
 
     // Set initial state variables
-    double                   alphaP = 0.0;                                     // initial equivalent plastic strain
-    Tensor33d                Fp = Marmot::FastorStandardTensors::Spatial3D::I; // initial plastic deformation gradient
+    double alphaP = 0.0;                                                        // initial equivalent plastic strain
+    Tensor33d
+      Fp = Marmot::TensorUtility::FastorTensors::StandardTensors::Spatial3D::I; // initial plastic deformation gradient
     std::array< double, 10 > stateVars_;
     std::memcpy( stateVars_.data(), Fp.data(), 9 * sizeof( double ) );
     stateVars_[9] = alphaP;
@@ -210,9 +211,9 @@ void testSetup( const std::string& testName,
 // Test I-1: Undeformed configuration
 void testUndeformedResponse()
 {
-  Tensor33d inputF       = Marmot::FastorStandardTensors::Spatial3D::I;
+  Tensor33d inputF       = Marmot::TensorUtility::FastorTensors::StandardTensors::Spatial3D::I;
   Tensor33d targetStress = Tensor33d( 0.0 );
-  Tensor33d targetFp     = Marmot::FastorStandardTensors::Spatial3D::I;
+  Tensor33d targetFp     = Marmot::TensorUtility::FastorTensors::StandardTensors::Spatial3D::I;
   double    targetAlphaP = 0.0;
   testSetup( "I-1: Undeformed configuration", inputF, targetStress, targetFp, targetAlphaP );
 }
@@ -222,7 +223,7 @@ void testDeformationResponse()
 {
   // Test I-2a: Simple shear deformation
   {
-    Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+    Tensor33d inputF = Marmot::TensorUtility::FastorTensors::StandardTensors::Spatial3D::I;
     inputF( 1, 0 ) += 0.02;
 
     Tensor33d stressTarget( 0.0 );
@@ -246,7 +247,7 @@ void testDeformationResponse()
 
   // Test I-2b: Hydrostatic deformation
   {
-    Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+    Tensor33d inputF = Marmot::TensorUtility::FastorTensors::StandardTensors::Spatial3D::I;
     inputF( 0, 0 ) += 0.002;
     inputF( 1, 1 ) += 0.002;
     inputF( 2, 2 ) += 0.002;
@@ -256,7 +257,7 @@ void testDeformationResponse()
     stressTarget( 1, 1 ) = 1048.97652265991;
     stressTarget( 2, 2 ) = 1048.97652265991;
 
-    Tensor33d FpTarget     = Marmot::FastorStandardTensors::Spatial3D::I;
+    Tensor33d FpTarget     = Marmot::TensorUtility::FastorTensors::StandardTensors::Spatial3D::I;
     double    alphaPTarget = 0.0;
 
     testSetup( "I-2b: Hydrostatic", inputF, stressTarget, FpTarget, alphaPTarget );
@@ -264,7 +265,7 @@ void testDeformationResponse()
 
   // Test I-2c: Arbitrary deformation
   {
-    Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+    Tensor33d inputF = Marmot::TensorUtility::FastorTensors::StandardTensors::Spatial3D::I;
     inputF( 0, 0 )   = 1.01;
     inputF( 0, 1 )   = 0.06;
     inputF( 0, 2 )   = -0.03;
@@ -305,7 +306,7 @@ void testDeformationResponse()
 // Test I-3: Algorithmic tangent
 void testAlgorithmicTangent()
 {
-  Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+  Tensor33d inputF = Marmot::TensorUtility::FastorTensors::StandardTensors::Spatial3D::I;
   inputF( 0, 0 ) += 0.001;
   inputF( 1, 1 ) += 0.002;
   inputF( 2, 2 ) += 0.003;
@@ -442,7 +443,7 @@ void testRotation()
       inputF( 2, 2 ) = 1;
 
       Tensor33d stressTarget( 0.0 );
-      Tensor33d FpTarget     = Marmot::FastorStandardTensors::Spatial3D::I;
+      Tensor33d FpTarget     = Marmot::TensorUtility::FastorTensors::StandardTensors::Spatial3D::I;
       double    alphaPTarget = 0.0;
 
       testSetup( "I-4a: Pure rotation about z-axis", inputF, stressTarget, FpTarget, alphaPTarget );

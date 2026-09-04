@@ -14,6 +14,8 @@ using namespace Eigen;
 
 namespace Marmot::Materials {
 
+  namespace KelvinChain = Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain;
+
   double LinearViscoelasticOrthotropicPowerLaw::getDensity( const double* stateVars ) const
   {
     if ( nMaterialProperties < 24 ) {
@@ -113,8 +115,8 @@ namespace Marmot::Materials {
     localCoordinateSystem = Marmot::Math::orthonormalCoordinateSystem( direction1, direction2 );
 
     // unit stiffness matrix in global coordinate system
-    CelUnitGlobal = ContinuumMechanics::VoigtNotation::Transformations::
-      transformStiffnessToGlobalSystem( CelUnit, localCoordinateSystem );
+    CelUnitGlobal = ContinuumMechanics::Transformations::transformStiffnessToGlobalSystem( CelUnit,
+                                                                                           localCoordinateSystem );
   }
 
   void LinearViscoelasticOrthotropicPowerLaw::computeStress( state3D&        state,
@@ -129,8 +131,9 @@ namespace Marmot::Materials {
 
     const double& dT = timeInfo.dT;
 
-    using namespace Marmot::ContinuumMechanics::VoigtNotation;
-    Vector6d dELocal = Transformations::transformStrainToLocalSystem( dE, localCoordinateSystem );
+    using namespace Marmot::ContinuumMechanics::Voigt;
+    using namespace Marmot::ContinuumMechanics::Transformations;
+    Vector6d dELocal = transformStrainToLocalSystem( dE, localCoordinateSystem );
 
     if ( ( dE.array() == 0 ).all() && dT == 0 ) {
       C = E1 * CelUnitGlobal;
@@ -166,7 +169,7 @@ namespace Marmot::Materials {
     Vector6d deltaStressLocal = localEffectiveStiffness * ( dELocal - creepStrainIncrement );
 
     // update stress in global coordinate system
-    nomStress += Transformations::transformStressToGlobalSystem( deltaStressLocal, localCoordinateSystem );
+    nomStress += transformStressToGlobalSystem( deltaStressLocal, localCoordinateSystem );
 
     // transform local stiffness to global coordinate system
     C = 1. / effectiveCompliance * CelUnitGlobal;

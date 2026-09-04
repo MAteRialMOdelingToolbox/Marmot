@@ -40,5 +40,8 @@ add_marmot_test("TestYieldSurfaceCombinationManager" "${CURR_TEST_SOURCE_DIR}/Te
 # Tests for NewmarkBetaIntegrator
 add_marmot_test("TestNewmarkBetaIntegrator" "${CURR_TEST_SOURCE_DIR}/TestNewmarkBetaIntegrator.cpp")
 
+# Tests for MarmotTimeIntegration
+add_marmot_test("TestMarmotTimeIntegration" "${CURR_TEST_SOURCE_DIR}/TestMarmotTimeIntegration.cpp")
+
 # Tests for MarmotGeostaticStress
 add_marmot_test("TestMarmotGeostaticStress" "${CURR_TEST_SOURCE_DIR}/TestMarmotGeostaticStress.cpp")

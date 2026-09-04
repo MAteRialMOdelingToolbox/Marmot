@@ -1,9 +1,11 @@
 #include "Fastor/Fastor.h"
 #include "Marmot/MarmotEnergyDensityFunctions.h"
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTesting.h"
 
+using Marmot::MakeString;
 using namespace Marmot::Testing;
-using namespace Marmot::FastorStandardTensors;
+using namespace Marmot::TensorUtility::FastorTensors::StandardTensors;
 
 std::tuple< Tensor33d, Tensor33d, double, double, double, double > computationParameters()
 {

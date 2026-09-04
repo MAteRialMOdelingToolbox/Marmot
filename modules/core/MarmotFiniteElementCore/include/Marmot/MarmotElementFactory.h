@@ -28,7 +28,7 @@
 #include <string>
 #include <unordered_map>
 
-namespace MarmotLibrary {
+namespace Marmot::Factory {
 
   /**
    * @class MarmotElementFactory
@@ -39,7 +39,7 @@ namespace MarmotLibrary {
   class MarmotElementFactory {
   public:
     /// @brief Factory function pointer type: takes an element number and returns a new MarmotElement.
-    using elementFactoryFunction = MarmotElement* (*)( int elementNumber );
+    using elementFactoryFunction = Marmot::MarmotElement* (*)( int elementNumber );
     MarmotElementFactory()       = delete;
 
     /**
@@ -49,12 +49,12 @@ namespace MarmotLibrary {
      * @return Pointer to the created MarmotElement instance.
      * @throws std::invalid_argument if @p elementName is not registered.
      */
-    static MarmotElement* createElement( const std::string& elementName, int elementNumber )
+    static Marmot::MarmotElement* createElement( const std::string& elementName, int elementNumber )
     {
       auto& map = elementFactoryFunctionByName();
       auto  it  = map.find( elementName );
       if ( it == map.end() ) {
-        throw std::invalid_argument( MakeString()
+        throw std::invalid_argument( Marmot::MakeString()
                                      << __PRETTY_FUNCTION__ << "Element " + elementName + " not registered!" );
       }
 
@@ -82,4 +82,4 @@ namespace MarmotLibrary {
     static ElementFactoryMap& elementFactoryFunctionByName();
   };
 
-} // namespace MarmotLibrary
+} // namespace Marmot::Factory
