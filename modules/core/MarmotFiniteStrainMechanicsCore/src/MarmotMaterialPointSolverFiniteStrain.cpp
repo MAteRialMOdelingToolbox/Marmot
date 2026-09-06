@@ -79,8 +79,8 @@ namespace Marmot {
       double dT       = 0.0;
       double stepTime = step.timeEnd - step.timeStart;
 
-      int  counter          = 0;
-      bool dTStartAssigned  = false;
+      int  counter         = 0;
+      bool dTStartAssigned = false;
 
       while ( time < step.timeEnd && counter <= step.maxIncrements ) {
 
