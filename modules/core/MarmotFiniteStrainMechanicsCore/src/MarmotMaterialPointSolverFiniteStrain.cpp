@@ -96,6 +96,9 @@ namespace Marmot {
         if ( counter == 1 && !dTStartAssigned ) {
           dT              = step.dTStart;
           dTStartAssigned = true;
+          // ensure the very first assigned dT does not overshoot the step end
+          if ( time + dT > step.timeEnd )
+            dT = step.timeEnd - time;
         }
 
         // setup increment
