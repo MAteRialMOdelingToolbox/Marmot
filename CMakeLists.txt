@@ -245,6 +245,25 @@ if(SHARED_LIBRARIES)
     message("+------------------------------------------------------------------------------+")
 endif()
 
+# ── Code coverage ──────────────────────────────────────────────────────────────
+
+# Opt-in: instruments only the Marmot library itself (not the test executables) with
+# gcov, since the library sources are what coverage is meant to measure. Link options
+# are PUBLIC so that test executables linking against Marmot also link the gcov runtime.
+option(MARMOT_ENABLE_COVERAGE "Instrument libMarmot with gcov code coverage (GCC/Clang only)" OFF)
+
+if(MARMOT_ENABLE_COVERAGE)
+    if(NOT CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+        message(FATAL_ERROR "MARMOT_ENABLE_COVERAGE requires GCC or Clang")
+    endif()
+    if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+        message(WARNING "MARMOT_ENABLE_COVERAGE is intended to be used with -DCMAKE_BUILD_TYPE=Debug for accurate line coverage")
+    endif()
+    message(STATUS "Instrumenting ${PROJECT_NAME} for code coverage (--coverage)")
+    target_compile_options(${PROJECT_NAME} PRIVATE --coverage -O0)
+    target_link_options(${PROJECT_NAME} PUBLIC --coverage)
+endif()
+
 # Include test definitions for all installed modules
 foreach(MODULEPATH IN LISTS INSTALLED_MODULEPATHS)
     if(EXISTS "${MODULEPATH}/test.cmake")

@@ -1,0 +1,95 @@
+# This is a workflow to measure C++ code coverage on ubuntu and upload it to Codecov
+name: coverage
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    env:
+      CC:   gcc-14
+      CXX:  g++-14
+
+    steps:
+      - name: Install lcov
+        shell: bash -leo pipefail {0}
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y lcov
+
+      - name: Install Eigen
+        shell: bash -leo pipefail {0}
+        run: |
+          git clone --branch 3.4.0 https://gitlab.com/libeigen/eigen.git
+          cd eigen
+          mkdir build
+          cd build
+          cmake -DBUILD_TESTING=OFF  ..
+          sudo make install
+          cd ../..
+
+      - name: Install Autodiff
+        shell: bash -leo pipefail {0}
+        run: |
+          git clone --branch v1.1.0 https://github.com/autodiff/autodiff.git
+          cd autodiff
+          mkdir build
+          cd build
+          cmake -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF ..
+          sudo make install
+          cd ../..
+
+      - name: Install Fastor
+        shell: bash -leo pipefail {0}
+        run: |
+          git clone --branch V0.6.4 https://github.com/romeric/Fastor.git
+          cd Fastor
+          mkdir build
+          cd build
+          cmake -DBUILD_TESTING=OFF  ..
+          sudo make install
+          cd ../..
+
+      - name: Check out Marmot
+        uses: actions/checkout@v4
+
+      - name: Build Marmot with coverage instrumentation
+        shell: bash -leo pipefail {0}
+        run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Debug -DMARMOT_ENABLE_COVERAGE=ON ..
+          make -j$(nproc)
+
+      - name: Run tests
+        shell: bash -leo pipefail {0}
+        run: |
+          cd build
+          # --no-tests=error: ctest exits 0 on an empty test set, which would
+          # report success for a build that produced no coverage at all.
+          ctest --output-on-failure --no-tests=error
+
+      - name: Capture coverage
+        shell: bash -leo pipefail {0}
+        run: |
+          cd build
+          lcov --gcov-tool gcov-14 --directory . --capture --output-file coverage.info
+          lcov --remove coverage.info \
+            '/usr/*' \
+            '*/eigen/*' \
+            '*/autodiff/*' \
+            '*/Fastor/*' \
+            '*/build/*' \
+            --output-file coverage.filtered.info \
+            --ignore-errors unused
+          lcov --list coverage.filtered.info
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: build/coverage.filtered.info
+          fail_ci_if_error: true
