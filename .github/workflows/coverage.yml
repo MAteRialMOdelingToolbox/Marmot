@@ -90,6 +90,11 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
+          # GitHub withholds repo secrets (CODECOV_TOKEN included) from `pull_request`
+          # runs whose head repo is a fork, which is how most PRs reach this repo -
+          # codecov-action falls back to its tokenless upload for public repos in that
+          # case, so don't fail_ci_if_error and break an external contributor's PR
+          # check over an upload hiccup.
           token: ${{ secrets.CODECOV_TOKEN }}
           files: build/coverage.filtered.info
-          fail_ci_if_error: true
+          fail_ci_if_error: false
