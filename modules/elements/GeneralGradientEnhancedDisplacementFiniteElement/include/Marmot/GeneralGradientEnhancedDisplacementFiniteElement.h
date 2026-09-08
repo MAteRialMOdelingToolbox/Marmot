@@ -23,6 +23,7 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
+#include "Marmot/MarmotBulkViscosity.h"
 #include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotExceptions.h"
@@ -113,6 +114,11 @@ namespace Marmot::Elements {
 
     /** Section assumption applied by this element instance. */
     const SectionType sectionType;
+    /**
+     * @brief Coefficients of the artificial bulk viscosity, assigned via the named property
+     * "bulk viscosity" and inactive unless it is.
+     */
+    FiniteElement::BulkViscosity::Coefficients bulkViscosityCoefficients;
 
     /**
      * @brief Data and state associated with a quadrature point.
@@ -133,6 +139,28 @@ namespace Marmot::Elements {
       NSizedK     N_K;
       dNdXiSizedK dNdX_K;
       BSizedK     B_K;
+
+      /**
+       * @brief The element's smallest physical extent at this quadrature point.
+       * @details Cached because the artificial bulk viscosity needs it on every explicit increment,
+       * whereas the stable time increment that shares the definition is asked for rarely. The
+       * element's nodal coordinates do not change, so the cached value cannot go stale.
+       */
+      double characteristicElementLength = 0.0;
+
+      /**
+       * @brief Wave speed the artificial bulk viscosity is scaled with, cached on first use.
+       * @details Asking the material for its current wave speed costs a full constitutive
+       * evaluation -- for a gradient-enhanced damage-plasticity model, a complete return mapping --
+       * which is affordable for the stable time increment (asked for rarely) and not affordable per
+       * quadrature point per explicit increment. What is cached is therefore the wave speed of the
+       * UNDAMAGED material. That is the right one to cache rather than a convenient one: the term
+       * exists to damp the highest frequency the MESH can carry, which the undamaged material sets,
+       * and holding it fixed as the material softens leaves the damping slightly stronger than a
+       * current-stiffness value would -- the safe direction for a device whose purpose is to remove
+       * energy. Zero means "not yet computed".
+       */
+      double referenceWaveSpeed = 0.0;
 
       /**
        * @brief Manager for per-quadrature-point state variables.
@@ -251,6 +279,30 @@ namespace Marmot::Elements {
 
     /** @brief Assign material section and instantiate per-quadrature-point materials. */
     void assignProperty( const MarmotMaterialSection& marmotElementProperty );
+
+    /**
+     * @brief Assign a named element property.
+     * @param propertyName The only supported name is "bulk viscosity".
+     * @param properties For "bulk viscosity": the two dimensionless coefficients
+     *        \f$b_1\f$ (linear) and \f$b_2\f$ (quadratic), in that order.
+     * @param nProperties Number of values behind that pointer.
+     * @throws std::invalid_argument if the name is not understood, if the count does not match
+     *         what the property expects, or if a coefficient is negative.
+     */
+    void assignProperty( const std::string& propertyName, const double* properties, int nProperties ) override;
+
+    /** @brief The named properties this element understands. */
+    std::vector< std::string > getPropertyNames() const override;
+
+    /**
+     * @brief The element's smallest physical extent at a parent coordinate.
+     * @param xi Parent coordinate to evaluate the Jacobian at.
+     * @return Twice the smallest singular value of the local geometry element's Jacobian.
+     * @details Shared by the stable time increment and the artificial bulk viscosity so that the
+     * two cannot drift apart: both scale their result to the highest frequency the element can
+     * carry.
+     */
+    double characteristicElementLengthAt( const XiSized& xi );
 
     /** @brief Provide nodal coordinates to local and non-local geometry elements. */
     void assignNodeCoordinates( const double* coordinates );
@@ -515,6 +567,55 @@ namespace Marmot::Elements {
   }
 
   template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
+  void GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
+    assignProperty( const std::string& propertyName, const double* properties, int nProperties )
+  {
+    if ( propertyName == "bulk viscosity" ) {
+      if ( nProperties != 2 )
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__
+                                     << ": the named property 'bulk viscosity' takes exactly "
+                                        "2 values, the linear coefficient b1 and the quadratic coefficient b2, but "
+                                     << nProperties << " were given." );
+
+      /* Artificial bulk viscosity is a NUMERICAL device, so it is an element property and not a
+       * material one: the same concrete integrated implicitly needs none of it, and two meshes of
+       * the same material may want different amounts. Both coefficients are dimensionless; see
+       * Marmot::FiniteElement::BulkViscosity for what they multiply.
+       */
+      bulkViscosityCoefficients.linear    = properties[0];
+      bulkViscosityCoefficients.quadratic = properties[1];
+
+      if ( bulkViscosityCoefficients.linear < 0.0 || bulkViscosityCoefficients.quadratic < 0.0 )
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__
+                                     << ": both bulk viscosity coefficients must be non-negative, a negative one "
+                                        "would feed energy into the solution rather than remove it." );
+    }
+    else {
+      MarmotElement::assignProperty( propertyName, properties, nProperties );
+    }
+  }
+
+  template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
+  std::vector< std::string > GeneralGradientEnhancedDisplacementFiniteElement< nDim,
+                                                                               nNodes,
+                                                                               nNonlocalVariables,
+                                                                               nNonLocalNodes >::getPropertyNames()
+    const
+  {
+    return { "bulk viscosity" };
+  }
+
+  template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
+  double GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
+    characteristicElementLengthAt( const XiSized& xi )
+  {
+    const JacobianSized J = localGeometryElement.Jacobian( localGeometryElement.dNdXi( xi ) );
+    return 2.0 * Eigen::JacobiSVD< JacobianSized >( J ).singularValues().minCoeff();
+  }
+
+  template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
   std::vector< std::vector< std::string > > GeneralGradientEnhancedDisplacementFiniteElement<
     nDim,
     nNodes,
@@ -585,6 +686,9 @@ namespace Marmot::Elements {
       qp.N                      = localGeometryElement.N( qp.xi );
       qp.dNdX                   = localGeometryElement.dNdX( dNdXi, JInv );
       qp.B                      = localGeometryElement.B( qp.dNdX );
+
+      qp.characteristicElementLength = characteristicElementLengthAt( qp.xi );
+      qp.referenceWaveSpeed          = 0.0;
 
       const auto           dNdXi_K = nonLocalGeometryElement.dNdXi( qp.xi );
       const JacobianSizedK J_K     = nonLocalGeometryElement.Jacobian( dNdXi_K );
@@ -794,6 +898,32 @@ namespace Marmot::Elements {
 
       Voigt dE = B * dQU;
 
+      /* The artificial bulk viscosity is added to the stress that is INTEGRATED, never to the one
+       * that is STORED. It is a numerical device: the constitutive law must not see it, it must
+       * leave no trace in the state, and it must not appear in the reported stress. With inactive
+       * coefficients it is never evaluated, so a run that does not ask for bulk viscosity is
+       * bit-identical to one built before it existed.
+       *
+       * In plane stress the out-of-plane strain is not carried by the element's kinematics, so the
+       * trace is taken over the in-plane components only and the term is approximate there. In 3D
+       * and in plane strain this IS the volumetric strain increment.
+       */
+      constexpr int nNormalComponents = nDim == 3 ? 3 : 2;
+
+      const auto bulkViscousStressAt = [&]( QuadraturePoint& quadraturePoint, const response& currentResponse ) {
+        if ( quadraturePoint.referenceWaveSpeed <= 0.0 )
+          quadraturePoint.referenceWaveSpeed = quadraturePoint.material->getMaximumWaveSpeed( currentResponse );
+
+        return FiniteElement::BulkViscosity::viscousStressFromIncrement( dE.head( nNormalComponents ).sum(),
+                                                                         dT,
+                                                                         quadraturePoint.material->getDensity(
+                                                                           quadraturePoint.managedStateVars
+                                                                             ->materialStateVars.data() ),
+                                                                         quadraturePoint.referenceWaveSpeed,
+                                                                         quadraturePoint.characteristicElementLength,
+                                                                         bulkViscosityCoefficients );
+      };
+
       // delta of _K at Gausspoint
       Vector< double, nNonlocalVariables > K;
       Vector< double, nNonlocalVariables > dK;
@@ -827,6 +957,9 @@ namespace Marmot::Elements {
           throw std::invalid_argument( "Invalid section type for 2D element, expected PlaneStress or PlaneStrain" );
         }
 
+        if ( bulkViscosityCoefficients.areActive() )
+          S.head( nNormalComponents ).array() += bulkViscousStressAt( qp, res );
+
         fU += B.transpose() * S * qp.J0xW;
 
         for ( int n = 0; n < nNonlocalVariables; n++ ) {
@@ -849,7 +982,11 @@ namespace Marmot::Elements {
           inc                      = { dE, K, dK, time, dT };
           qp.material->computeStressExplicit( res, inc );
 
-          fU += B.transpose() * res.stress * qp.J0xW;
+          Vector6d integratedStress = res.stress;
+          if ( bulkViscosityCoefficients.areActive() )
+            integratedStress.head( nNormalComponents ).array() += bulkViscousStressAt( qp, res );
+
+          fU += B.transpose() * integratedStress * qp.J0xW;
 
           for ( int n = 0; n < nNonlocalVariables; n++ ) {
             Eigen::Index idx = n * nNonLocalNodes;
@@ -1019,10 +1156,8 @@ namespace Marmot::Elements {
        * reproduces the previous expressions exactly -- a cube of side h gives h either way --
        * so the estimate is tightened only where it was previously wrong.
        */
-      const JacobianSized J_ = localGeometryElement.Jacobian( localGeometryElement.dNdXi( qp.xi ) );
-      const double        characteristicElementLength = 2.0 *
-                                                 Eigen::JacobiSVD< JacobianSized >( J_ ).singularValues().minCoeff();
-      response waveSpeedResponse;
+      const double characteristicElementLength = characteristicElementLengthAt( qp.xi );
+      response     waveSpeedResponse;
       waveSpeedResponse.stress = qp.managedStateVars->stress;
       waveSpeedResponse.KLocal.setZero();
       waveSpeedResponse.c.setZero();

@@ -115,10 +115,14 @@ public:
    * @brief Assign a single property of the element by name.
    * @param[in] propertyName Name of the property.
    * @param[in] properties Pointer to the array of property values.
+   * @param[in] nProperties Number of values behind that pointer.
    * @note Default implementation throws an exception, as an element not overriding this
    * interface does not support any named properties.
+   * @note The count is part of the interface rather than implied by the name: the caller is
+   * typically a scripting layer handing over a user-supplied list, and an implementation reading
+   * a fixed number of values from an unchecked pointer would read past the end of it silently.
    */
-  virtual void assignProperty( const std::string& propertyName, const double* properties )
+  virtual void assignProperty( const std::string& propertyName, const double* properties, int nProperties )
   {
     throw std::invalid_argument( MakeString()
                                  << __PRETTY_FUNCTION__ << ": unsupported named property '" << propertyName << "'" );
