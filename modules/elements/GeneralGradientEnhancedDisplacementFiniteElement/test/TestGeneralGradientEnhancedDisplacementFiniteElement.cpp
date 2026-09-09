@@ -712,6 +712,64 @@ void testNonlocalCriticalTimeStepScalesLinearlyWithElementSize()
                            MakeString() << __PRETTY_FUNCTION__ << ": expected a ratio of 0.5, got " << ratio );
 }
 
+void testTinyMicroInertiaIsNotTreatedAsAbsent()
+{
+  /* A micro-inertia is a time SQUARED, so ordinary values are very small: eta^2/4 is 2.5e-13 for a
+   * viscosity of 1e-6 s. Eigen's isZero() tests against a precision threshold of 1e-12 by default,
+   * which would call such a value absent -- the property assigned, the field integrated with no
+   * second-order term, and its stability limit unchecked, all silently. Hence an exact comparison,
+   * and hence this test, whose value sits two orders BELOW that threshold.
+   */
+  const double tinyMicroInertia = 1.0e-14;
+  const double density          = 1.0e4;
+
+  const double dtWithTiny   = criticalTimeStepOfCube( 0.2, tinyMicroInertia, 0.0, density );
+  const double dtMechanical = criticalTimeStepOfCube( 0.2, 0.0, 0.0, density );
+
+  throwExceptionOnFailure( dtWithTiny < dtMechanical,
+                           MakeString() << __PRETTY_FUNCTION__ << ": a micro-inertia of " << tinyMicroInertia
+                                        << " was ignored -- the stable increment stayed at the mechanical "
+                                        << dtMechanical );
+
+  // And it reaches the assembled vector, not just the time step.
+  constexpr int nDim          = 3;
+  constexpr int nNodes        = 8;
+  constexpr int nNonlocalVars = 1;
+  using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
+
+  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                                0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+
+  auto element = std::make_unique< ElemType >( 1,
+                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                               ElemType::SectionType::Solid );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+  const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  const std::vector< double > elPropsVec = { 1.0 };
+  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  element->assignProperty( elProps );
+  element->assignProperty( materialSection );
+  element->assignProperty( "nonlocal micro inertia", &tinyMicroInertia, 1 );
+
+  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVarsTotal );
+  element->initializeYourself();
+
+  std::vector< double > microInertia( element->getNDofPerElement(), 0.0 );
+  element->computeLumpedNonlocalMicroInertia( microInertia.data() );
+
+  double total = 0.0;
+  for ( size_t i = nNodes * nDim; i < microInertia.size(); i++ )
+    total += microInertia[i];
+
+  throwExceptionOnFailure( checkIfEqual( total, tinyMicroInertia, 1e-24 ),
+                           MakeString() << __PRETTY_FUNCTION__ << ": the lumped micro-inertia sums to " << total
+                                        << " instead of " << tinyMicroInertia );
+}
+
 void testNonlocalViscosityLowersTheCriticalTimeStep()
 {
   const double density = 1.0e4;
@@ -747,6 +805,7 @@ int main()
     testNonlocalCriticalTimeStepScalesWithSqrtOfMicroInertia,
     testNonlocalCriticalTimeStepScalesLinearlyWithElementSize,
     testNonlocalViscosityLowersTheCriticalTimeStep,
+    testTinyMicroInertiaIsNotTreatedAsAbsent,
   };
 
   executeTestsAndCollectExceptions( tests );

@@ -1181,8 +1181,14 @@ namespace Marmot::Elements {
      * vector, which is what tells the solver its non-local field is still first order in time.
      * Returning early also keeps a run that does not ask for this bit-identical to one built
      * before it existed.
+     *
+     * Compared against exactly zero, NOT with Eigen's isZero(): that one tests against a precision
+     * threshold of 1e-12 by default, and a micro-inertia is a time SQUARED -- eta^2/4 for a
+     * viscosity of 1e-6 s is 2.5e-13, an ordinary value that isZero() would call absent. The
+     * failure would be silent in the worst way: the property assigned, the field integrated as
+     * though it had no second-order term, and its stability limit unchecked.
      */
-    if ( nonlocalMicroInertia.isZero() )
+    if ( !( nonlocalMicroInertia.array() > 0.0 ).any() )
       return;
 
     /* The blend below is deliberately the same one computeLumpedInertia() applies to the non-local
@@ -1302,7 +1308,7 @@ namespace Marmot::Elements {
      * first order in time and is not integrated by the central-difference update this function's
      * estimate belongs to, so there is nothing here to bound.
      */
-    if ( nonlocalMicroInertia.isZero() )
+    if ( !( nonlocalMicroInertia.array() > 0.0 ).any() )
       return;
 
     /* Read off the mass and the damping that are actually ASSEMBLED, by calling the very functions

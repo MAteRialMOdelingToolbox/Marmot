@@ -177,8 +177,7 @@ declared as carrying a micro-inertia rather than a mass:
    2.5e-11
 
    *solver, solver=NEDParallel, name=theSolver
-   second-order-fields="displacement", "nonlocal damage"
-   first-order-fields=""
+   second-order-fields="displacement, nonlocal damage"
    micro-inertia-fields="nonlocal damage"
 
 Both directions of that declaration are checked: a micro-inertia the elements carry but
