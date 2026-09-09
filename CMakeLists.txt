@@ -128,6 +128,7 @@ function(add_marmot_test test_name test_source)
   # avoids that blind spot.
   if(MARMOT_ENABLE_COVERAGE)
     target_compile_options(${test_name} PRIVATE --coverage -O0)
+    target_link_options(${test_name} PRIVATE --coverage)
   endif()
 endfunction()
 
@@ -260,7 +261,9 @@ endif()
 # too (see add_marmot_test below) because templated classes get re-instantiated per
 # translation unit, and an uninstrumented test binary's own copy of a template method
 # otherwise wins symbol resolution over the library's instrumented one, hiding it from
-# coverage entirely. Link options are PUBLIC so consumers link the gcov runtime too.
+# coverage entirely. Flags are kept PRIVATE: PUBLIC link options would be exported into
+# MarmotTargets.cmake, silently forcing --coverage onto any downstream consumer that
+# links Marmot::Marmot from a coverage-enabled install.
 option(MARMOT_ENABLE_COVERAGE "Instrument libMarmot and its tests with gcov code coverage (GCC/Clang only)" OFF)
 
 if(MARMOT_ENABLE_COVERAGE)
@@ -272,7 +275,7 @@ if(MARMOT_ENABLE_COVERAGE)
     endif()
     message(STATUS "Instrumenting ${PROJECT_NAME} for code coverage (--coverage)")
     target_compile_options(${PROJECT_NAME} PRIVATE --coverage -O0)
-    target_link_options(${PROJECT_NAME} PUBLIC --coverage)
+    target_link_options(${PROJECT_NAME} PRIVATE --coverage)
 endif()
 
 # Include test definitions for all installed modules
