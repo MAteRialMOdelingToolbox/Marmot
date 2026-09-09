@@ -121,6 +121,26 @@ namespace Marmot::Elements {
     FiniteElement::BulkViscosity::Coefficients bulkViscosityCoefficients;
 
     /**
+     * @brief Micro-inertia of the non-local field, one entry per non-local variable, assigned via
+     * the named property "nonlocal micro inertia" and zero unless it is.
+     * @details It multiplies the second time derivative of the non-local variable, turning its
+     * balance from the parabolic (viscous) equation
+     * \f$ \eta\,\dot{\bar\varepsilon} + \bar\varepsilon - c\,\nabla^2\bar\varepsilon =
+     * \tilde\varepsilon \f$ into the damped hyperbolic one
+     * \f$ m_k\,\ddot{\bar\varepsilon} + \eta\,\dot{\bar\varepsilon} + \bar\varepsilon -
+     * c\,\nabla^2\bar\varepsilon = \tilde\varepsilon \f$, whose stable increment falls off
+     * with \f$h\f$ rather than with \f$h^2\f$. The non-local viscosity keeps its meaning
+     * exactly: what was the coefficient of the highest time derivative becomes the damping.
+     *
+     * Like the artificial bulk viscosity above this is a NUMERICAL device and therefore an element
+     * property and not a material one: the physical model is the \f$m_k = 0\f$ one, the same
+     * material integrated implicitly needs none of it, and the value that pays off depends on the
+     * mesh being integrated. Units are seconds squared.
+     */
+    Eigen::Vector< double, nNonlocalVariables >
+      nonlocalMicroInertia = Eigen::Vector< double, nNonlocalVariables >::Zero();
+
+    /**
      * @brief Data and state associated with a quadrature point.
      * @details Holds parent coordinates, integration weight, Jacobian determinant, shape functions N and their
      * gradients dNdX, kinematic (strain-displacement) B-matrices for both local and non-local evaluations, and a
@@ -452,6 +472,20 @@ namespace Marmot::Elements {
     void computeLumpedInertia( double* M );
 
     /**
+     * @brief Compute the lumped micro-inertia of the non-local degrees of freedom.
+     * @param[out] M Diagonal of the lumped micro-inertia, in the element's dof order.
+     * @details Zero on the displacement block and on every non-local variable whose micro-inertia
+     * has not been assigned, so an element that was never given the named property
+     * "nonlocal micro inertia" reports nothing at all -- which is how the solver tells a
+     * second-order non-local field from a first-order one.
+     * @note The non-local block is weighted exactly as computeLumpedInertia() weights it. That is
+     * deliberate and not incidental: the stable time increment is read off THIS distribution, and
+     * a mass distribution that disagreed with the assembled one would surface as an unexplained
+     * instability rather than as a clean failure.
+     */
+    void computeLumpedNonlocalMicroInertia( double* M ) override;
+
+    /**
      * @brief Compute the critical time step for explicit dynamics based on
      * the dilatational wave speed and the element size.
      * @param criticalTimeStep Output parameter for the computed critical time step.
@@ -470,6 +504,24 @@ namespace Marmot::Elements {
      * above what it predicts. A convergence study on a 20-node bar settles only around a courant
      * number of 0.1-0.2, i.e. roughly a further factor of five is unaccounted for. Closing that
      * properly wants an eigenvalue-based estimate rather than another factor.
+     *
+     * @details Where the non-local field carries a micro-inertia the returned increment is the
+     * minimum of the mechanical estimate above and the non-local field's own limit. That one is
+     * NOT an \f$l/c\f$ estimate: it is a Gershgorin bound on the largest eigenvalue of
+     * \f$\mathbf{M}_k^{-1}\mathbf{K}_k\f$, built from the micro-inertia that is actually
+     * assembled and from both parts of the non-local operator -- the reaction term and the
+     * Laplacian. Both matter. Dropping the reaction term loses the ceiling the field has on a mesh
+     * coarser than its own internal length, and using \f$h/c_k\f$ with the continuum wave speed
+     * \f$c_k = \sqrt{c/m_k}\f$ overestimates the limit by the square root of the discrete
+     * Laplacian's eigenvalue constant, roughly a factor of two to three for a hexahedron. The
+     * damping the non-local viscosity provides is accounted for by the usual central-difference
+     * factor \f$\sqrt{1+\zeta^2}-\zeta\f$, which only ever lowers the result.
+     *
+     * The bound is an upper bound on the eigenvalue and therefore a lower bound on the increment,
+     * i.e. it errs safe. It is tight exactly where it has to be, on the Laplacian part that
+     * dominates once the element is smaller than the internal length; on the reaction part it is
+     * loose by up to a factor of three in the eigenvalue, which costs nothing there because that
+     * part is then negligible.
      */
     void computeCriticalTimeStepForExplicitDynamics( double& criticalTimeStep, const double* QTotal );
 
@@ -592,6 +644,24 @@ namespace Marmot::Elements {
                                      << ": both bulk viscosity coefficients must be non-negative, a negative one "
                                         "would feed energy into the solution rather than remove it." );
     }
+    else if ( propertyName == "nonlocal micro inertia" ) {
+      if ( nProperties != nNonlocalVariables )
+        throw std::invalid_argument(
+          MakeString() << __PRETTY_FUNCTION__
+                       << ": the named property 'nonlocal micro inertia' takes one value per non-local "
+                          "variable, i.e. "
+                       << nNonlocalVariables << " for this element, but " << nProperties << " were given." );
+
+      for ( int n = 0; n < nNonlocalVariables; n++ ) {
+        if ( properties[n] < 0.0 )
+          throw std::invalid_argument( MakeString()
+                                       << __PRETTY_FUNCTION__
+                                       << ": a micro-inertia must be non-negative, a negative one would make the "
+                                          "non-local field integrate backwards in time." );
+
+        nonlocalMicroInertia( n ) = properties[n];
+      }
+    }
     else {
       MarmotElement::assignProperty( propertyName, properties, nProperties );
     }
@@ -604,7 +674,7 @@ namespace Marmot::Elements {
                                                                                nNonLocalNodes >::getPropertyNames()
     const
   {
-    return { "bulk viscosity" };
+    return { "bulk viscosity", "nonlocal micro inertia" };
   }
 
   template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
@@ -1102,9 +1172,63 @@ namespace Marmot::Elements {
 
   template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
   void GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
+    computeLumpedNonlocalMicroInertia( double* M )
+  {
+    Map< RhsSized > LMM( M );
+    LMM.setZero();
+
+    /* An element that was not given the property carries no micro-inertia and reports a zero
+     * vector, which is what tells the solver its non-local field is still first order in time.
+     * Returning early also keeps a run that does not ask for this bit-identical to one built
+     * before it existed.
+     */
+    if ( nonlocalMicroInertia.isZero() )
+      return;
+
+    /* The blend below is deliberately the same one computeLumpedInertia() applies to the non-local
+     * block, derived here the same way rather than shared through a helper because the coefficient
+     * it multiplies differs: the viscosity is a material response and may vary between quadrature
+     * points, the micro-inertia is one number for the whole element.
+     */
+    constexpr int nNodesLinear = ( 1 << nDim );
+
+    auto            linGeometryEl    = MarmotGeometryElement< nDim, nNodesLinear >();
+    Eigen::VectorXd rowSumsHighOrder = Eigen::VectorXd::Zero( nNodes );
+    Eigen::VectorXd rowSumsLinear    = Eigen::VectorXd::Zero( nNodesLinear );
+    for ( const auto& qp : qps ) {
+      rowSumsHighOrder += Eigen::VectorXd( localGeometryElement.N( qp.xi ) ) * qp.J0xW;
+      rowSumsLinear += Eigen::VectorXd( linGeometryEl.N( qp.xi ) ) * qp.J0xW;
+    }
+    const double weight = FiniteElement::MassLumping::manifoldBlendWeight( rowSumsHighOrder, rowSumsLinear );
+
+    for ( const auto& qp : qps ) {
+      const auto N_    = localGeometryElement.N( qp.xi );
+      const auto N_lin = linGeometryEl.N( qp.xi );
+
+      VectorXd N_weighted = weight * ( N_ );
+      N_weighted.head( nNodesLinear ) += ( 1.0 - weight ) * N_lin;
+
+      VectorXd N_weighted_nonlocal;
+      if ( nNodes != nNonLocalNodes )
+        N_weighted_nonlocal = N_lin;
+      else
+        N_weighted_nonlocal = N_weighted;
+
+      for ( int n = 0; n < nNonlocalVariables; n++ ) {
+        Eigen::Index idx = n * nNonLocalNodes;
+        VectorXd     mK  = N_weighted_nonlocal * qp.J0xW * nonlocalMicroInertia( n );
+        for ( int i = 0; i < nNonLocalNodes; i++ )
+          LMM( sizeDoFU + idx + i ) += mK( i );
+      }
+    }
+  }
+
+  template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
+  void GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
     computeCriticalTimeStepForExplicitDynamics( double& criticalTimeStep, const double* QTotal )
   {
-    using response = typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >::response;
+    using response  = typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >::response;
+    using increment = typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >::increment;
 
     /* The l / c estimate below assumes the element's mass is spread UNIFORMLY over its nodes, each
      * carrying 1 / nNodes of it. The lumping scheme computeLumpedInertia applies does not do that:
@@ -1123,9 +1247,10 @@ namespace Marmot::Elements {
      * slightly below 1 for a distorted element -- which is correct, a distorted element does have a
      * tighter limit than its volume alone suggests.
      *
-     * Note this covers the DISPLACEMENT field only. The nonlocal field's own forward-Euler limit,
-     * set by its viscosity against the Helmholtz operator, is still not checked anywhere -- see the
-     * TODO below.
+     * Note this covers the DISPLACEMENT field only. The non-local field is handled separately
+     * below, and only where it has been made second order in time: a first-order non-local field
+     * has a forward-Euler limit set by its viscosity against the Helmholtz operator, which is a
+     * different formula, is not a wave speed, and is still not checked anywhere.
      */
     constexpr int   nNodesLinear     = ( 1 << nDim );
     auto            linGeometryEl    = MarmotGeometryElement< nDim, nNodesLinear >();
@@ -1139,7 +1264,6 @@ namespace Marmot::Elements {
     const double lumpedMassTimeStepFactor = FiniteElement::MassLumping::timeStepFactorFromMassDistribution(
       FiniteElement::MassLumping::manifoldMassFractions( rowSumsHighOrder, rowSumsLinear, weight ) );
 
-    // TODO: current implementation ignores nonlocal variables
     criticalTimeStep = std::numeric_limits< double >::max();
     for ( const auto& qp : qps ) {
       /* The characteristic length has to be the element's SMALLEST physical extent, not a
@@ -1172,6 +1296,109 @@ namespace Marmot::Elements {
       double        dt = lumpedMassTimeStepFactor * l / c;
       if ( dt < criticalTimeStep )
         criticalTimeStep = dt;
+    }
+
+    /* The non-local field's own limit, where it has one. Without a micro-inertia that field is
+     * first order in time and is not integrated by the central-difference update this function's
+     * estimate belongs to, so there is nothing here to bound.
+     */
+    if ( nonlocalMicroInertia.isZero() )
+      return;
+
+    /* Read off the mass and the damping that are actually ASSEMBLED, by calling the very functions
+     * that assemble them rather than re-deriving the lumping here. Their non-local blocks are
+     * m_k * r_i and eta * r_i with the same weights r_i, so the ratio below is the field's damping
+     * rate whatever the lumping does.
+     */
+    RhsSized lumpedInertia      = RhsSized::Zero();
+    RhsSized lumpedMicroInertia = RhsSized::Zero();
+    computeLumpedInertia( lumpedInertia.data() );
+    computeLumpedNonlocalMicroInertia( lumpedMicroInertia.data() );
+
+    Map< const RhsSized >           Q( QTotal );
+    const Ref< const KSizedVector > qK( Q.tail( sizeDoFK ) );
+
+    /* The non-local interaction parameters c -- the square of the internal length -- are a material
+     * RESPONSE and not a stored property, so a stress evaluation is the only way the material
+     * interface offers to read them. It is done on a SCRATCH copy of the state variables and with a
+     * zero strain increment, so it cannot leave a trace in the state or in the reported stress, and
+     * it happens once per element per step: this function is called when the solver builds its
+     * system, not per increment. The section assumption is not dispatched on because c does not
+     * depend on it.
+     */
+    Eigen::MatrixXd cAtQp( nNonlocalVariables, static_cast< Eigen::Index >( qps.size() ) );
+
+    for ( size_t i = 0; i < qps.size(); i++ ) {
+      const QuadraturePoint& qp = qps[i];
+
+      Eigen::VectorXd scratchStateVars = qp.managedStateVars->materialStateVars;
+
+      Eigen::Vector< double, nNonlocalVariables > K;
+      for ( int n = 0; n < nNonlocalVariables; n++ )
+        K( n ) = qp.N_K * qK.segment( n * nNonLocalNodes, nNonLocalNodes );
+
+      response nonlocalResponse;
+      nonlocalResponse.stress = qp.managedStateVars->stress;
+      nonlocalResponse.KLocal.setZero();
+      nonlocalResponse.c.setZero();
+      nonlocalResponse.stateVars            = scratchStateVars.data();
+      nonlocalResponse.elasticEnergyDensity = qp.managedStateVars->elasticStrainEnergy / qp.J0xW;
+      nonlocalResponse.dissipation          = qp.managedStateVars->dissipation / qp.J0xW;
+
+      const increment noIncrement = { Marmot::Vector6d::Zero(),
+                                      K,
+                                      Eigen::Vector< double, nNonlocalVariables >::Zero(),
+                                      0.0,
+                                      0.0 };
+
+      qp.material->computeStressExplicit( nonlocalResponse, noIncrement );
+
+      cAtQp.col( static_cast< Eigen::Index >( i ) ) = nonlocalResponse.c;
+    }
+
+    for ( int n = 0; n < nNonlocalVariables; n++ ) {
+
+      /* One non-local variable may carry a micro-inertia while another does not. The one that does
+       * not is first order in time and has no limit to contribute here, and its lumped
+       * micro-inertia is zero, which is exactly what would make the bound below divide by zero.
+       */
+      if ( nonlocalMicroInertia( n ) <= 0.0 )
+        continue;
+
+      Eigen::Matrix< double, nNonLocalNodes, nNonLocalNodes >
+        KK = Eigen::Matrix< double, nNonLocalNodes, nNonLocalNodes >::Zero();
+
+      for ( size_t i = 0; i < qps.size(); i++ ) {
+        const QuadraturePoint& qp = qps[i];
+        KK += ( qp.N_K.transpose() * qp.N_K +
+                cAtQp( n, static_cast< Eigen::Index >( i ) ) * qp.dNdX_K.transpose() * qp.dNdX_K ) *
+              qp.J0xW;
+      }
+
+      for ( int i = 0; i < nNonLocalNodes; i++ ) {
+        const Eigen::Index idx = sizeDoFU + n * nNonLocalNodes + i;
+
+        const double lumpedMicroInertiaHere = lumpedMicroInertia( idx );
+        if ( lumpedMicroInertiaHere <= 0.0 )
+          continue;
+
+        // Gershgorin: no eigenvalue of M^-1 K lies outside the union of the discs its rows define,
+        // and the matrix is similar to a symmetric positive definite one, so this bounds the
+        // largest.
+        const double omegaMax = std::sqrt( KK.row( i ).cwiseAbs().sum() / lumpedMicroInertiaHere );
+
+        // The damping ratio of that highest mode. The non-local viscosity damps it proportionally
+        // to the mass, so the ratio falls off as the frequency rises: it is the LOW modes this
+        // damping controls, and the highest one is barely touched -- which is why the factor below
+        // is close to one for any reasonable viscosity and is included for correctness rather than
+        // for the increment it buys.
+        const double zeta = 0.5 * ( lumpedInertia( idx ) / lumpedMicroInertiaHere ) / omegaMax;
+
+        const double dt = 2.0 / omegaMax * ( std::sqrt( 1.0 + zeta * zeta ) - zeta );
+
+        if ( dt < criticalTimeStep )
+          criticalTimeStep = dt;
+      }
     }
   }
 

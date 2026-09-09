@@ -281,4 +281,23 @@ public:
 
   /** @return Number of quadrature points used by the element. */
   virtual int getNumberOfQuadraturePoints() = 0;
+
+  /**
+   * @brief Compute the lumped micro-inertia of the element's non-local degrees of freedom.
+   * @param[out] M Diagonal of the lumped micro-inertia, in the element's dof order.
+   * @details Non-zero only for an element whose non-local field has been made second order in
+   * time, which turns its balance equation from a parabolic into a damped hyperbolic one. Unlike
+   * most of its siblings here this default does NOT throw: carrying no micro-inertia is the
+   * ordinary answer for the overwhelming majority of elements, not an unimplemented case, and the
+   * caller assembles over every element in the model. The buffer is supplied zero-initialised, so
+   * a default that leaves it untouched reports exactly that.
+   *
+   * @note Declared LAST, away from computeLumpedInertia() where it belongs by subject, because
+   * adding a virtual function in the middle of this class shifts the vtable slot of every virtual
+   * declared after it. Everything that links against Marmot has to be rebuilt when this header
+   * changes either way -- but a stale library mixed with a fresh consumer then dispatches existing
+   * calls to the wrong function, silently, instead of failing on the one call that is actually
+   * new. Appending keeps that failure mode confined to callers of this method.
+   */
+  virtual void computeLumpedNonlocalMicroInertia( double* M ) { static_cast< void >( M ); };
 };
