@@ -28,6 +28,16 @@ make install                                       # also installs the `marmot` 
 ctest -R Python_                                   # run the python solver example tests only
 ```
 
+To measure code coverage locally (GCC/Clang only, requires `lcov`):
+```bash
+cmake .. -DCMAKE_BUILD_TYPE=Debug -DMARMOT_ENABLE_COVERAGE=ON && make -j$(nproc)
+ctest --output-on-failure
+lcov --directory . --capture --output-file coverage.info
+lcov --remove coverage.info '/usr/*' '*/eigen/*' '*/autodiff/*' '*/Fastor/*' '*/build/*' --output-file coverage.filtered.info
+genhtml coverage.filtered.info --output-directory coverage_html      # open coverage_html/index.html
+```
+CI runs the same instrumentation on every push/PR (`.github/workflows/coverage.yml`) and uploads results to Codecov.
+
 ## General Coding Rules & Best Practices
 
 - **Minimal Diffs**: Keep changes focused and strictly scoped; avoid reformatting unrelated files.
