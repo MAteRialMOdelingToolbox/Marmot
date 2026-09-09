@@ -1,6 +1,8 @@
 #include "Fastor/Fastor.h"
 #include "Marmot/MarmotEnergyDensityFunctions.h"
+#include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotTesting.h"
+#include <complex>
 
 using namespace Marmot::Testing;
 using namespace Marmot::FastorStandardTensors;
@@ -162,13 +164,170 @@ auto testSecondOrderDerivedB()
     }
 }
 
+// Cross-check that the plain (energy-only) and FirstOrderDerived (energy + analytic
+// dPsi/dC) overloads of ArrudaBoyce8ChainPotential cannot drift out of sync: both
+// funnel through the same internal `detail::arrudaBoyce8ChainEnergyAndDerivative`
+// helper, but this test verifies that end-to-end rather than assuming it. The
+// gradient is cross-checked against a complex-step derivative of the plain overload
+// itself (not against a hand-derived formula), so this specifically guards against
+// the two overloads' shared helper silently diverging from what the plain overload
+// actually computes.
+auto testArrudaBoycePlainMatchesFirstOrderDerived()
+{
+  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+
+  Tensor33d    C       = get< 0 >( computationParameters() );
+  const double mu      = 500.0;
+  const double lambdaL = 2.5;
+
+  const double psiPlain = ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
+
+  double    psiFOD;
+  Tensor33d dPsiFOD_dC;
+  std::tie( psiFOD, dPsiFOD_dC ) = FirstOrderDerived::ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
+
+  throwExceptionOnFailure( checkIfEqual( psiPlain, psiFOD, 1e-14 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " plain and FirstOrderDerived energy densities disagree." );
+
+  // complex-step derivative of the plain overload, entry by entry (C treated as a
+  // general, not-necessarily-symmetric matrix argument, matching how dPsi/dC is
+  // defined and used everywhere else in this codebase)
+  const double h = 1e-20;
+  Tensor33d    dPsiCSDA( 0.0 );
+  for ( int i = 0; i < 3; i++ )
+    for ( int j = 0; j < 3; j++ ) {
+      Tensor33t< std::complex< double > > Cc = Marmot::fastorTensorFromDoubleTensor< std::complex< double > >( C );
+      Cc( i, j ) += std::complex< double >( 0.0, h );
+      std::complex< double > psiC = ArrudaBoyce8ChainPotential< std::complex< double > >( Cc, mu, lambdaL );
+      dPsiCSDA( i, j )             = psiC.imag() / h;
+    }
+
+  throwExceptionOnFailure( checkIfEqual( dPsiFOD_dC, dPsiCSDA, 1e-9 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " FirstOrderDerived gradient disagrees with a complex-step derivative "
+                                           "of the plain overload." );
+}
+
+// Generic plain-vs-FirstOrderDerived cross-check, same methodology as
+// testArrudaBoycePlainMatchesFirstOrderDerived: the FirstOrderDerived gradient
+// is checked against a complex-step derivative of the plain overload itself,
+// guarding against the two overloads' formulas silently drifting apart.
+template < typename PlainFn, typename FirstOrderFn, typename... Args >
+void checkPlainMatchesFirstOrderDerived( const char*   testName,
+                                         PlainFn       plainFn,
+                                         FirstOrderFn  firstOrderFn,
+                                         const Tensor33d& C,
+                                         Args... args )
+{
+  const double psiPlain = plainFn( C, args... );
+
+  double    psiFOD;
+  Tensor33d dPsiFOD_dC;
+  std::tie( psiFOD, dPsiFOD_dC ) = firstOrderFn( C, args... );
+
+  throwExceptionOnFailure( checkIfEqual( psiPlain, psiFOD, 1e-14 ),
+                           MakeString() << testName << " plain and FirstOrderDerived energy densities disagree." );
+
+  const double h = 1e-20;
+  Tensor33d    dPsiCSDA( 0.0 );
+  for ( int i = 0; i < 3; i++ )
+    for ( int j = 0; j < 3; j++ ) {
+      Tensor33t< std::complex< double > > Cc = Marmot::fastorTensorFromDoubleTensor< std::complex< double > >( C );
+      Cc( i, j ) += std::complex< double >( 0.0, h );
+      std::complex< double > psiC = plainFn( Cc, args... );
+      dPsiCSDA( i, j )             = psiC.imag() / h;
+    }
+
+  throwExceptionOnFailure( checkIfEqual( dPsiFOD_dC, dPsiCSDA, 1e-9 ),
+                           MakeString() << testName
+                                        << " FirstOrderDerived gradient disagrees with a complex-step derivative "
+                                           "of the plain overload." );
+}
+
+auto testNeoHookePlainMatchesFirstOrderDerived()
+{
+  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+  Tensor33d C = get< 0 >( computationParameters() );
+  checkPlainMatchesFirstOrderDerived(
+    __PRETTY_FUNCTION__,
+    []( const auto& C, double mu ) { return NeoHookePotential( C, mu ); },
+    []( const auto& C, double mu ) { return FirstOrderDerived::NeoHookePotential( C, mu ); },
+    C,
+    750.0 );
+}
+
+auto testYeohPlainMatchesFirstOrderDerived()
+{
+  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+  Tensor33d C = get< 0 >( computationParameters() );
+  checkPlainMatchesFirstOrderDerived(
+    __PRETTY_FUNCTION__,
+    []( const auto& C, double c10, double c20, double c30 ) { return YeohPotential( C, c10, c20, c30 ); },
+    []( const auto& C, double c10, double c20, double c30 ) { return FirstOrderDerived::YeohPotential( C, c10, c20, c30 ); },
+    C,
+    500.0,
+    50.0,
+    5.0 );
+}
+
+auto testMooneyRivlinPlainMatchesFirstOrderDerived()
+{
+  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+  Tensor33d C = get< 0 >( computationParameters() );
+  checkPlainMatchesFirstOrderDerived(
+    __PRETTY_FUNCTION__,
+    []( const auto& C, double c10, double c01 ) { return MooneyRivlinPotential( C, c10, c01 ); },
+    []( const auto& C, double c10, double c01 ) { return FirstOrderDerived::MooneyRivlinPotential( C, c10, c01 ); },
+    C,
+    400.0,
+    100.0 );
+}
+
+auto testVolumetricPenaltyPlainMatchesFirstOrderDerived()
+{
+  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+  Tensor33d C = get< 0 >( computationParameters() );
+  checkPlainMatchesFirstOrderDerived(
+    __PRETTY_FUNCTION__,
+    []( const auto& C, double kappa ) { return VolumetricPenaltyPotential( C, kappa ); },
+    []( const auto& C, double kappa ) { return FirstOrderDerived::VolumetricPenaltyPotential( C, kappa ); },
+    C,
+    10000.0 );
+}
+
+// Yeoh and Mooney-Rivlin must reduce exactly to NeoHooke's isochoric part when
+// the extra shape parameters vanish and C10=mu/2, since all three now share
+// the same isochoric invariant Ibar1 (no linear-shift terms to cause drift).
+auto testYeohMooneyRivlinReduceToNeoHooke()
+{
+  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+  Tensor33d    C  = get< 0 >( computationParameters() );
+  const double mu = 750.0;
+
+  const double psiNeoHooke = NeoHookePotential( C, mu );
+  const double psiYeoh     = YeohPotential( C, mu / 2., 0.0, 0.0 );
+  const double psiMR       = MooneyRivlinPotential( C, mu / 2., 0.0 );
+
+  throwExceptionOnFailure( checkIfEqual( psiYeoh, psiNeoHooke, 1e-13 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " Yeoh does not reduce to NeoHooke." );
+  throwExceptionOnFailure( checkIfEqual( psiMR, psiNeoHooke, 1e-13 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " Mooney-Rivlin does not reduce to NeoHooke." );
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{ testPenceGouPotentialA,
                                                        testPenceGouPotentialB,
                                                        testPenceGouPotentialC,
                                                        testFirstOrderDerivedB,
-                                                       testSecondOrderDerivedB };
+                                                       testSecondOrderDerivedB,
+                                                       testArrudaBoycePlainMatchesFirstOrderDerived,
+                                                       testNeoHookePlainMatchesFirstOrderDerived,
+                                                       testYeohPlainMatchesFirstOrderDerived,
+                                                       testMooneyRivlinPlainMatchesFirstOrderDerived,
+                                                       testVolumetricPenaltyPlainMatchesFirstOrderDerived,
+                                                       testYeohMooneyRivlinReduceToNeoHooke };
 
   executeTestsAndCollectExceptions( tests );
   return 0;

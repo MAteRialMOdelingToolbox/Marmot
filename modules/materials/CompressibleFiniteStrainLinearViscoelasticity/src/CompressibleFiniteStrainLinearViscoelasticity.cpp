@@ -47,34 +47,55 @@ namespace Marmot::Materials {
     std::function< autodiff::dual3rd( const FastorStandardTensors::Tensor33t< autodiff::dual3rd >& ) >
       energyDensityFunction;
 
+    // every base composes Psi = Psi_iso(shape params) + Psi_vol(kappa), with
+    // kappa always the LAST elasticProperties entry -- see the class docs.
     switch ( hyperelasticBase ) {
     case NeoHooke:
-      return ContinuumMechanics::EnergyDensityFunctions::ThirdOrderDerived::standardNeoHooke( C,
-                                                                                              elasticProperties[0],
-                                                                                              elasticProperties[1] );
-    case PenceGouNeoHooke:
       energyDensityFunction = [this]( const FastorStandardTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
-        autodiff::dual3rd res = ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialB<
-          autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1] );
-        return res;
+        return ContinuumMechanics::EnergyDensityFunctions::NeoHookePotential< autodiff::dual3rd >(
+                 C_ad, elasticProperties[0] ) +
+               ContinuumMechanics::EnergyDensityFunctions::VolumetricPenaltyPotential< autodiff::dual3rd >(
+                 C_ad, elasticProperties[1] );
       };
       break;
     case Yeoh:
       energyDensityFunction = [this]( const FastorStandardTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
-        autodiff::dual3rd
-          res = ContinuumMechanics::EnergyDensityFunctions::YeohPotential< autodiff::dual3rd >( C_ad,
+        return ContinuumMechanics::EnergyDensityFunctions::YeohPotential< autodiff::dual3rd >( C_ad,
                                                                                                 elasticProperties[0],
                                                                                                 elasticProperties[1],
-                                                                                                elasticProperties[2],
-                                                                                                elasticProperties[3] );
-        return res;
+                                                                                                elasticProperties[2] ) +
+               ContinuumMechanics::EnergyDensityFunctions::VolumetricPenaltyPotential< autodiff::dual3rd >(
+                 C_ad, elasticProperties[3] );
       };
       break;
     case MooneyRivlin:
       energyDensityFunction = [this]( const FastorStandardTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
-        autodiff::dual3rd res = ContinuumMechanics::EnergyDensityFunctions::MooneyRivlinPotential<
-          autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1], elasticProperties[2] );
-        return res;
+        return ContinuumMechanics::EnergyDensityFunctions::MooneyRivlinPotential< autodiff::dual3rd >(
+                 C_ad, elasticProperties[0], elasticProperties[1] ) +
+               ContinuumMechanics::EnergyDensityFunctions::VolumetricPenaltyPotential< autodiff::dual3rd >(
+                 C_ad, elasticProperties[2] );
+      };
+      break;
+    case ArrudaBoyce:
+      energyDensityFunction = [this]( const FastorStandardTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
+        return ContinuumMechanics::EnergyDensityFunctions::ArrudaBoyce8ChainPotential< autodiff::dual3rd >(
+                 C_ad, elasticProperties[0], elasticProperties[1] ) +
+               ContinuumMechanics::EnergyDensityFunctions::VolumetricPenaltyPotential< autodiff::dual3rd >(
+                 C_ad, elasticProperties[2] );
+      };
+      break;
+    case Ogden:
+      energyDensityFunction = [this]( const FastorStandardTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
+        return ContinuumMechanics::EnergyDensityFunctions::OgdenPotential< autodiff::dual3rd >(
+                 C_ad,
+                 elasticProperties[0],
+                 elasticProperties[1],
+                 elasticProperties[2],
+                 elasticProperties[3],
+                 elasticProperties[4],
+                 elasticProperties[5] ) +
+               ContinuumMechanics::EnergyDensityFunctions::VolumetricPenaltyPotential< autodiff::dual3rd >(
+                 C_ad, elasticProperties[6] );
       };
       break;
     default:
@@ -101,10 +122,15 @@ namespace Marmot::Materials {
     if ( onlyShearCreep == 1.0 ) {
       double G = 0;
       switch ( hyperelasticBase ) {
-      case NeoHooke:
-      case PenceGouNeoHooke: G = elasticProperties[1]; break;
+      case NeoHooke: G = elasticProperties[0]; break;
       case Yeoh:
       case MooneyRivlin: G = 2 * elasticProperties[0]; break;
+      case ArrudaBoyce: G = elasticProperties[0]; break;
+      case Ogden:
+        G = ( elasticProperties[0] * elasticProperties[1] + elasticProperties[2] * elasticProperties[3] +
+              elasticProperties[4] * elasticProperties[5] ) /
+            2;
+        break;
       default:
         throw std::runtime_error( "CompressibleFiniteStrainLinearViscoelasticity::"
                                   "CompressibleFiniteStrainLinearViscoelasticity: Unknown hyperelastic base." );
