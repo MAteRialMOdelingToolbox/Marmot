@@ -1,5 +1,6 @@
 ![build](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/build_ubuntu.yml/badge.svg)
 [![codecov](https://codecov.io/gh/MAteRialMOdelingToolbox/Marmot/branch/master/graph/badge.svg)](https://codecov.io/gh/MAteRialMOdelingToolbox/Marmot)
+[![codecov (next_v26.11)](https://codecov.io/gh/MAteRialMOdelingToolbox/Marmot/branch/next_v26.11/graph/badge.svg)](https://codecov.io/gh/MAteRialMOdelingToolbox/Marmot/branch/next_v26.11)
 ![clang-format](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/indent.yml/badge.svg)
 [![documentation](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/sphinx.yml/badge.svg)](https://materialmodelingtoolbox.github.io/Marmot/)
 [![license](https://img.shields.io/badge/license-LGPLv2-blue.svg)](LICENSE.md)
