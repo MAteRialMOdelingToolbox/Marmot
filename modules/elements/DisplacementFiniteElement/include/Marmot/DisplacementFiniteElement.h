@@ -575,6 +575,7 @@ namespace Marmot::Elements {
         Eigen::VectorXd stress1D( 1 );
         stress1D( 0 )               = state.stress;
         qp.managedStateVars->stress = make3DVoigt< ParentGeometryElement::voigtSize >( stress1D );
+        S                           = stress1D;
         elasticEnergyDensity        = state.elasticEnergyDensity;
         dissipation                 = state.dissipation;
       }
