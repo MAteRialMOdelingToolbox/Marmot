@@ -17,15 +17,20 @@ namespace Marmot::Materials {
 
   BergstromBoyce::BergstromBoyce( const double* materialProperties, int nMaterialProperties, int materialLabel )
     : MarmotMaterialFiniteStrain( materialProperties, nMaterialProperties, materialLabel ),
-      muA( materialProperties[0] ),
+      hyperelasticBase( materialProperties[0] ),
       kappaA( materialProperties[1] ),
-      muB( materialProperties[2] ),
-      kappaB( materialProperties[3] ),
-      c1( materialProperties[4] ),
-      c2( materialProperties[5] ),
-      c3( materialProperties[6] ),
-      implementationType( materialProperties[7] ),
-      density( nMaterialProperties > 8 ? materialProperties[8] : 0.0 )
+      kappaB( materialProperties[2] ),
+      A1( materialProperties[3] ),
+      A2( materialProperties[4] ),
+      A3( materialProperties[5] ),
+      B1( materialProperties[6] ),
+      B2( materialProperties[7] ),
+      B3( materialProperties[8] ),
+      c1( materialProperties[9] ),
+      c2( materialProperties[10] ),
+      c3( materialProperties[11] ),
+      implementationType( materialProperties[12] ),
+      density( nMaterialProperties > 13 ? materialProperties[13] : 0.0 )
   {
     stateLayout.add( "Fv", 9 ); // viscous deformation gradient of network B
     stateLayout.finalize();
@@ -120,11 +125,11 @@ namespace Marmot::Materials {
     std::tie( C, dC_dF ) = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( deformation.F );
 
     double psiA;
-    std::tie( psiA, dPsiA_dC ) = neoHookePotential( C, muA, kappaA );
+    std::tie( psiA, dPsiA_dC ) = hyperelasticPotential( C, hyperelasticBase, A1, A2, A3, kappaA );
 
     using func_type_A    = std::function< Tensor33t< complexDouble >( const Tensor33t< complexDouble >& ) >;
     func_type_A computeSA = [&]( const Tensor33t< complexDouble >& C_ ) {
-      const auto [_psi, _dPsi_dC] = neoHookePotential( C_, muA, kappaA );
+      const auto [_psi, _dPsi_dC] = hyperelasticPotential( C_, hyperelasticBase, A1, A2, A3, kappaA );
       return _dPsi_dC;
     };
     Tensor3333d d2PsiA_dCdC = NumericalAlgorithms::Differentiation::Complex::TensorToTensor::forwardDifference(
@@ -148,11 +153,11 @@ namespace Marmot::Materials {
     std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( Fe );
 
     double psiB;
-    std::tie( psiB, dPsiB_dCe ) = neoHookePotential( Ce, muB, kappaB );
+    std::tie( psiB, dPsiB_dCe ) = hyperelasticPotential( Ce, hyperelasticBase, B1, B2, B3, kappaB );
 
     using func_type_B    = std::function< Tensor33t< complexDouble >( const Tensor33t< complexDouble >& ) >;
     func_type_B computeSB = [&]( const Tensor33t< complexDouble >& Ce_ ) {
-      const auto [_psi, _dPsi_dCe] = neoHookePotential( Ce_, muB, kappaB );
+      const auto [_psi, _dPsi_dCe] = hyperelasticPotential( Ce_, hyperelasticBase, B1, B2, B3, kappaB );
       return _dPsi_dCe;
     };
     Tensor3333d d2PsiB_dCedCe = NumericalAlgorithms::Differentiation::Complex::TensorToTensor::forwardDifference(

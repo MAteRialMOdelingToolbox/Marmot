@@ -79,15 +79,24 @@ namespace Marmot {
       double dT       = 0.0;
       double stepTime = step.timeEnd - step.timeStart;
 
-      int counter = 0;
+      int  counter          = 0;
+      bool dTStartAssigned  = false;
 
       while ( time < step.timeEnd && counter <= step.maxIncrements ) {
 
         // adjust time step if overshooting
         if ( time + dT > step.timeEnd )
           dT = step.timeEnd - time;
-        if ( counter == 1 )
-          dT = step.dTStart; // use initial time step for the first increment, then adjust based on convergence
+        // use the initial time step for the first real increment, then adjust based on
+        // convergence -- assigned only once (not on every retry of that increment): counter
+        // stays at 1 across repeated failed retries of the same increment (it only advances
+        // on success), so gating this solely on `counter == 1` used to re-assign dT = dTStart
+        // on every such retry too, silently discarding the catch block's cutback below and
+        // preventing dT from ever reaching dTMin.
+        if ( counter == 1 && !dTStartAssigned ) {
+          dT              = step.dTStart;
+          dTStartAssigned = true;
+        }
 
         // setup increment
         Increment increment;

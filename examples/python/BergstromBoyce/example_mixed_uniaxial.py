@@ -4,8 +4,8 @@ import numpy as np
 
 print("Running example for FiniteStrain material: BERGSTROMBOYCE")
 
-# Material properties: muA, kappaA, muB, kappaB, c1, c2, c3, implementationType (0 = CSDA)
-properties = np.array([100.0, 1000.0, 50.0, 1000.0, 0.05, 1.0, 1.0, 0.0], dtype=np.float64)
+# Material properties: hyperelasticBase (0=NeoHooke), kappaA, kappaB, A1, A2, A3, B1, B2, B3, c1, c2, c3, implementationType (0 = CSDA)
+properties = np.array([0.0, 1000.0, 1000.0, 100.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.05, 1.0, 1.0, 0.0], dtype=np.float64)
 
 # Setup solver
 options = marmot.solvers.FiniteStrainSolver.SolverOptions()
