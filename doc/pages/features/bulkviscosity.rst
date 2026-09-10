@@ -83,6 +83,77 @@ by a single sharp energy release may need considerably more.
 are zero, so a model that does not ask for bulk viscosity produces bit-identical results
 to one run before the feature existed.
 
+Degradation with damage
+-----------------------
+
+The linear term acts on both signs of the volumetric rate, which means that in an element
+whose material has already failed it is a viscous resistance to the crack **opening** --
+and one that never relaxes. Its work is charged to the dissipated energy, so it inflates
+any fracture energy measured from the load-displacement response.
+
+That effect is not small and it is not spread out. Measured on a calibrated
+gradient-enhanced damage-plasticity bar in tension, at the coefficients above, the
+dissipated work per unit fracture area rose by 27 to 55 percent depending on the mesh, and
+falling only as about :math:`h^{0.4}` it was still a quarter of the total at the finest
+mesh. Applying bulk viscosity everywhere **except** the elements that damaged changed the
+same quantity by :math:`-1.6` percent: essentially the whole of the error is generated
+inside the damaged elements, and slowing the loading does not remove it (a ten-fold slower
+ramp only brought 38 percent down to 10 percent, because the strain rate inside a
+localising band is set by the softening and not by the imposed rate).
+
+The optional degradation addresses this by scaling the viscous stress with the material's
+remaining stiffness:
+
+.. math::
+
+   \sigma_\mathrm{bv} \leftarrow \left( \frac{c}{c_0} \right)^{n} \sigma_\mathrm{bv}
+
+with :math:`c` the wave speed at the current state, :math:`c_0` the cached undamaged
+reference, and the ratio clamped to :math:`[0,1]` so that a stiffer-than-virgin tangent
+cannot amplify the damping. This is the same argument that restricts the quadratic term to
+compression, applied to the **state** rather than to the sign of the rate.
+
+Because a wave speed is the square root of a stiffness, the exponent selects what the
+stress follows for a model whose tangent degrades as :math:`(1-\omega)\,\mathbb{C}_0`:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 10 40
+
+   * - :math:`n`
+     - Effect
+   * - ``0``
+     - Off, and the default. The current wave speed is never evaluated.
+   * - ``1``
+     - Scales with the wave speed, i.e. with :math:`\sqrt{1-\omega}`.
+   * - ``2``
+     - Scales with the tangent stiffness, i.e. with :math:`1-\omega`.
+
+It is requested through a second named property, which takes exactly one value:
+
+.. code-block:: none
+
+   *elementproperty, elSet=concrete, propertyName=bulk viscosity
+   0.06, 1.2
+
+   *elementproperty, elSet=concrete, propertyName=bulk viscosity damage degradation
+   2.0
+
+.. warning::
+
+   The stress is degraded with the current **tangent**, not with a damage variable: no
+   material interface here reports damage, and adding one would change the vtable of every
+   element. For a quasi-brittle material in tension the two coincide, because the softening
+   *is* the damage. For a model that merely yields, the algorithmic tangent also drops and
+   the viscous stress is then degraded by plastic flow rather than by cracking, which is
+   not what the device is for.
+
+.. note::
+
+   This is why the degradation is opt-in rather than the default: it needs the material's
+   current tangent, which costs a full constitutive evaluation per quadrature point per
+   increment -- exactly the cost the cached reference wave speed exists to avoid.
+
 Notes and limitations
 ---------------------
 
@@ -96,7 +167,9 @@ Notes and limitations
   use. The term exists to damp the highest frequency the *mesh* can carry, which the
   undamaged material sets, and holding it fixed as the material softens leaves the damping
   slightly stronger than a current-stiffness value would: the safe direction for a device
-  whose purpose is to remove energy.
+  whose purpose is to remove energy. Where that is the wrong trade -- above all when the
+  quantity of interest is a fracture energy -- the cached value becomes the reference of
+  the opt-in degradation described above, which does pay for the current wave speed.
 - **The characteristic length is the element's smallest physical extent**, twice the
   smallest singular value of the Jacobian -- the same length the stable time increment is
   computed from, shared through one function so the two cannot drift apart.

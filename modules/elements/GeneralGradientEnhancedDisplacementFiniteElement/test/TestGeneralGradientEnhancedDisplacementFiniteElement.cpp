@@ -1,6 +1,7 @@
 #include "Marmot/GeneralGradientEnhancedDisplacementFiniteElement.h"
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotTesting.h"
+#include <algorithm>
 #include <string>
 
 using namespace Marmot;
@@ -669,6 +670,53 @@ void testNonlocalMicroInertiaPropertyIsValidated()
                            MakeString() << __PRETTY_FUNCTION__ << ": a negative micro-inertia was accepted" );
 }
 
+void testBulkViscosityDamageDegradationIsValidated()
+{
+  constexpr int nDim          = 3;
+  constexpr int nNodes        = 8;
+  constexpr int nNonlocalVars = 1;
+  using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
+
+  auto element = std::make_unique< ElemType >( 1,
+                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                               ElemType::SectionType::Solid );
+
+  // reached through the base pointer, the way the EdelweissFE wrapper reaches it
+  MarmotElement* base = element.get();
+
+  const auto rejects = [&]( const double* values, int nValues ) {
+    try {
+      base->assignProperty( "bulk viscosity damage degradation", values, nValues );
+    }
+    catch ( const std::invalid_argument& ) {
+      return true;
+    }
+    return false;
+  };
+
+  const std::vector< double > twoValues = { 2.0, 2.0 };
+  throwExceptionOnFailure( rejects( twoValues.data(), 2 ),
+                           MakeString() << __PRETTY_FUNCTION__ << ": the single-value arity was not enforced" );
+
+  const double negative = -1.0;
+  throwExceptionOnFailure( rejects( &negative, 1 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << ": a negative exponent was accepted, which would amplify the viscous stress "
+                                           "as "
+                                           "the material fails" );
+
+  const double exponent = 2.0;
+  throwExceptionOnFailure( !rejects( &exponent, 1 ),
+                           MakeString() << __PRETTY_FUNCTION__ << ": a valid exponent was rejected" );
+
+  // The element must also report the name, or a deck asking for it would be silently ignored by
+  // whatever validates against getPropertyNames().
+  const auto names = base->getPropertyNames();
+  throwExceptionOnFailure( std::find( names.begin(), names.end(), "bulk viscosity damage degradation" ) != names.end(),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << ": the degradation is assignable but not reported by getPropertyNames()" );
+}
+
 void testNonlocalCriticalTimeStepScalesWithSqrtOfMicroInertia()
 {
   // No viscosity, so the damping factor is exactly one and the limit is exactly 2 / omega_max --
@@ -802,6 +850,7 @@ int main()
     testNonlocalMicroInertiaIsZeroUnlessAssigned,
     testNonlocalMicroInertiaSumsToMicroInertiaTimesVolume,
     testNonlocalMicroInertiaPropertyIsValidated,
+    testBulkViscosityDamageDegradationIsValidated,
     testNonlocalCriticalTimeStepScalesWithSqrtOfMicroInertia,
     testNonlocalCriticalTimeStepScalesLinearlyWithElementSize,
     testNonlocalViscosityLowersTheCriticalTimeStep,

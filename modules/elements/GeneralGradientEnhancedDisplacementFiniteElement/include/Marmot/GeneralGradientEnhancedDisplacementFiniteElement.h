@@ -179,6 +179,11 @@ namespace Marmot::Elements {
        * and holding it fixed as the material softens leaves the damping slightly stronger than a
        * current-stiffness value would -- the safe direction for a device whose purpose is to remove
        * energy. Zero means "not yet computed".
+       *
+       * It is also the reference the optional degradation with damage is measured against; see
+       * Marmot::FiniteElement::BulkViscosity::degradationFactor. That degradation is the one case
+       * in which the current wave speed IS asked for on every increment, which is why it has to be
+       * requested explicitly through a named element property.
        */
       double referenceWaveSpeed = 0.0;
 
@@ -644,6 +649,28 @@ namespace Marmot::Elements {
                                      << ": both bulk viscosity coefficients must be non-negative, a negative one "
                                         "would feed energy into the solution rather than remove it." );
     }
+    else if ( propertyName == "bulk viscosity damage degradation" ) {
+      if ( nProperties != 1 )
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__
+                                     << ": the named property 'bulk viscosity damage degradation' takes exactly "
+                                        "1 value, the exponent n of (c/c_0)^n, but "
+                                     << nProperties << " were given." );
+
+      /* Opt-in, and separate from 'bulk viscosity' itself so that switching it on does not disturb
+       * the coefficients: it costs a constitutive evaluation per quadrature point per increment,
+       * which is why it cannot be the default. See
+       * Marmot::FiniteElement::BulkViscosity::degradationFactor for what the exponent means and for
+       * what it degrades with -- the current tangent, not a damage variable.
+       */
+      if ( properties[0] < 0.0 )
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__
+                                     << ": the bulk viscosity damage degradation exponent must be non-negative, a "
+                                        "negative one would AMPLIFY the viscous stress as the material fails." );
+
+      bulkViscosityCoefficients.degradation = properties[0];
+    }
     else if ( propertyName == "nonlocal micro inertia" ) {
       if ( nProperties != nNonlocalVariables )
         throw std::invalid_argument(
@@ -674,7 +701,7 @@ namespace Marmot::Elements {
                                                                                nNonLocalNodes >::getPropertyNames()
     const
   {
-    return { "bulk viscosity", "nonlocal micro inertia" };
+    return { "bulk viscosity", "bulk viscosity damage degradation", "nonlocal micro inertia" };
   }
 
   template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
@@ -984,7 +1011,22 @@ namespace Marmot::Elements {
         if ( quadraturePoint.referenceWaveSpeed <= 0.0 )
           quadraturePoint.referenceWaveSpeed = quadraturePoint.material->getMaximumWaveSpeed( currentResponse );
 
-        return FiniteElement::BulkViscosity::viscousStressFromIncrement( dE.head( nNormalComponents ).sum(),
+        /* The optional degradation is evaluated here and not inside the viscous stress itself
+         * because it is the only part of the term that needs the material's CURRENT tangent, and
+         * asking for that costs a full constitutive evaluation. With the exponent at its default of
+         * zero the material is never asked and this branch is not taken, so a deck that does not
+         * request the degradation integrates exactly the stress it integrated before.
+         */
+        const double
+          degradation = bulkViscosityCoefficients.isDegraded()
+                          ? FiniteElement::BulkViscosity::degradationFactor( quadraturePoint.material
+                                                                               ->getMaximumWaveSpeed( currentResponse ),
+                                                                             quadraturePoint.referenceWaveSpeed,
+                                                                             bulkViscosityCoefficients.degradation )
+                          : 1.0;
+
+        return degradation *
+               FiniteElement::BulkViscosity::viscousStressFromIncrement( dE.head( nNormalComponents ).sum(),
                                                                          dT,
                                                                          quadraturePoint.material->getDensity(
                                                                            quadraturePoint.managedStateVars

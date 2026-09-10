@@ -23,11 +23,39 @@ void testDefaultNamedPropertyInterface()
   // through the MarmotElement base pointer, so exercise it the same way here
   MarmotElement* base = element.get();
 
-  // this element overrides the named-property interface for the artificial bulk viscosity, and
-  // that is the complete list of names it understands
+  // this element overrides the named-property interface for the artificial bulk viscosity and for
+  // its optional degradation with damage, and that is the complete list of names it understands
   const auto propertyNames = base->getPropertyNames();
-  throwExceptionOnFailure( propertyNames == std::vector< std::string >{ "bulk viscosity" },
+  throwExceptionOnFailure( propertyNames ==
+                             std::vector< std::string >{ "bulk viscosity", "bulk viscosity damage degradation" },
                            "getPropertyNames() must report exactly the named properties the element supports." );
+
+  // the degradation takes exactly one value, and a wrong count must be rejected rather than read
+  // past the end of the caller's array
+  const double exponent     = 2.0;
+  bool         threwOnArity = false;
+  try {
+    const double twoValues[2] = { 2.0, 2.0 };
+    base->assignProperty( "bulk viscosity damage degradation", twoValues, 2 );
+  }
+  catch ( const std::invalid_argument& ) {
+    threwOnArity = true;
+  }
+  throwExceptionOnFailure( threwOnArity, "'bulk viscosity damage degradation' must take exactly one value." );
+
+  // a negative exponent would amplify the viscous stress as the material fails
+  bool threwOnNegative = false;
+  try {
+    const double negative = -1.0;
+    base->assignProperty( "bulk viscosity damage degradation", &negative, 1 );
+  }
+  catch ( const std::invalid_argument& ) {
+    threwOnNegative = true;
+  }
+  throwExceptionOnFailure( threwOnNegative, "A negative degradation exponent must be rejected." );
+
+  // and a valid one must be accepted
+  base->assignProperty( "bulk viscosity damage degradation", &exponent, 1 );
 
   // a name it does not understand must still fall through to the base implementation and throw
   const double dummyValue = 1.0;

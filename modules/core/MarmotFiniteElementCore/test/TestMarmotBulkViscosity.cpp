@@ -159,6 +159,69 @@ void testIncrementOverload()
   }
 }
 
+void testDegradationIsOffByDefault()
+{
+  const Coefficients coefficients{ .linear = 0.06, .quadratic = 1.2 };
+
+  throwExceptionOnFailure( !coefficients.isDegraded(),
+                           "The degradation with damage must be off unless it is asked for." );
+
+  // A zero exponent must not even look at the wave speeds: it is the branch that keeps a deck
+  // which does not request the degradation bit-identical to one predating it.
+  throwExceptionOnFailure( degradationFactor( 0.0, waveSpeed, coefficients.degradation ) == 1.0,
+                           "A zero exponent must return exactly one, whatever the wave speeds are." );
+}
+
+void testDegradationExponents()
+{
+  // Half the wave speed is a quarter of the tangent stiffness, so for a model whose tangent
+  // degrades as (1 - omega) this is omega = 0.75.
+  const double current = 0.5 * waveSpeed;
+
+  throwExceptionOnFailure( checkIfEqual( degradationFactor( current, waveSpeed, 1.0 ), 0.5, 1e-14 ),
+                           "Exponent one must scale with the wave speed itself, i.e. sqrt(1 - omega)." );
+  throwExceptionOnFailure( checkIfEqual( degradationFactor( current, waveSpeed, 2.0 ), 0.25, 1e-14 ),
+                           "Exponent two must scale with the tangent stiffness, i.e. (1 - omega)." );
+
+  // A non-integral exponent goes through std::pow; check it against the closed form so that the
+  // fast paths for 1 and 2 cannot drift away from the general one.
+  throwExceptionOnFailure( checkIfEqual( degradationFactor( current, waveSpeed, 0.5 ), std::sqrt( 0.5 ), 1e-14 ),
+                           "A non-integral exponent must agree with the closed form." );
+}
+
+void testDegradationIsClampedAndSafe()
+{
+  throwExceptionOnFailure( degradationFactor( 0.0, waveSpeed, 2.0 ) == 0.0,
+                           "A fully degraded material must carry no artificial viscous stress: that is the whole "
+                           "point, since the linear term would otherwise resist the crack opening." );
+
+  // A tangent stiffer than the reference must not AMPLIFY the damping above the value the
+  // undamaged reference sets -- compaction and hardening can both do that.
+  throwExceptionOnFailure( degradationFactor( 3.0 * waveSpeed, waveSpeed, 1.0 ) == 1.0,
+                           "The factor must be clamped at one, never amplifying the viscous stress." );
+
+  // A reference of zero is a material that was never asked, or a massless one; dividing by it
+  // would be a silent infinity.
+  throwExceptionOnFailure( degradationFactor( waveSpeed, 0.0, 2.0 ) == 1.0,
+                           "A non-positive reference wave speed must fall back to no degradation." );
+}
+
+void testDegradationScalesTheViscousStress()
+{
+  const Coefficients coefficients{ .linear = 0.06, .quadratic = 1.2, .degradation = 2.0 };
+  const double       rate = 400.0;
+
+  throwExceptionOnFailure( coefficients.isDegraded(), "A positive exponent must report the term as degraded." );
+
+  // What the element multiplies: the degradation is a factor on the whole viscous stress, so an
+  // element at omega = 0.75 integrates a quarter of it.
+  const double undegraded = viscousStress( rate, density, waveSpeed, length, coefficients );
+  const double factor     = degradationFactor( 0.5 * waveSpeed, waveSpeed, coefficients.degradation );
+
+  throwExceptionOnFailure( checkIfEqual( factor * undegraded, 0.25 * undegraded, 1e-14 ),
+                           "The degraded viscous stress must be the factor times the undegraded one." );
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{ testInactiveByDefault,
@@ -167,7 +230,11 @@ int main()
                                                        testDissipativity,
                                                        testZeroRateGivesZeroStress,
                                                        testScaling,
-                                                       testIncrementOverload };
+                                                       testIncrementOverload,
+                                                       testDegradationIsOffByDefault,
+                                                       testDegradationExponents,
+                                                       testDegradationIsClampedAndSafe,
+                                                       testDegradationScalesTheViscousStress };
 
   executeTestsAndCollectExceptions( tests );
 
