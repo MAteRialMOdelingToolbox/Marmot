@@ -33,9 +33,11 @@ namespace Marmot::FiniteElement::BulkViscosity {
   /**
    * @brief Coefficients of the artificial bulk viscosity.
    *
-   * @details Both are dimensionless. The defaults are the ones Abaqus/Explicit applies unless told
-   * otherwise, and they are defaults rather than recommendations: \f$b_1\f$ is sized to damp the
-   * highest resolvable frequency of the mesh, not to model any physical dissipation.
+   * @details Both are dimensionless and default to zero, i.e. inactive: a model that does not ask
+   * for this device is unaffected by it. \f$b_1 = 0.06\f$, \f$b_2 = 1.2\f$ -- the values
+   * Abaqus/Explicit applies -- are a common choice rather than the default, and are
+   * recommendations rather than physical parameters: \f$b_1\f$ is sized to damp the highest
+   * resolvable frequency of the mesh, not to model any physical dissipation.
    */
   struct Coefficients {
     /** Linear coefficient \f$b_1\f$, active in compression and in expansion. */

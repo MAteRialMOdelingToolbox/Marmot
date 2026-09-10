@@ -9,5 +9,4 @@ This section contains the ready to use available Finite elements.
   displacementfiniteelement
   displacementfinitestrainelement
   generalgradientenhanceddisplacementfiniteelement
-  bulkviscosity
-  nonlocalmicroinertia
+  explicitdynamicsdevices

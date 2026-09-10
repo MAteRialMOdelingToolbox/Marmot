@@ -307,10 +307,16 @@ namespace Marmot::Elements {
 
     /**
      * @brief Assign a named element property.
-     * @param propertyName The only supported name is "bulk viscosity".
-     * @param properties For "bulk viscosity": the two dimensionless coefficients
-     *        \f$b_1\f$ (linear) and \f$b_2\f$ (quadratic), in that order.
-     * @param nProperties Number of values behind that pointer.
+     * @param propertyName One of "bulk viscosity", "bulk viscosity damage degradation" or
+     *        "nonlocal micro inertia".
+     * @param properties For "bulk viscosity": the two dimensionless coefficients \f$b_1\f$
+     *        (linear) and \f$b_2\f$ (quadratic), in that order. For "bulk viscosity damage
+     *        degradation": the single exponent \f$n\f$ of the optional degradation with the
+     *        material's loss of stiffness. For "nonlocal micro inertia": one micro-inertia
+     *        \f$m_k\f$ per non-local variable.
+     * @param nProperties Number of values behind that pointer: 2 for "bulk viscosity", 1 for
+     *        "bulk viscosity damage degradation", \c nNonlocalVariables for "nonlocal micro
+     *        inertia".
      * @throws std::invalid_argument if the name is not understood, if the count does not match
      *         what the property expects, or if a coefficient is negative.
      */
