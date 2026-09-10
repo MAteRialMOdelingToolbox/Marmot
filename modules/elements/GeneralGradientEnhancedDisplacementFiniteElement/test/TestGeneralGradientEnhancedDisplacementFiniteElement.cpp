@@ -233,8 +233,9 @@ void testCoordinatesAtQuadraturePoints()
 // ---------------------------------------------------------------------------------------------
 // Lumped (diagonal) mass/capacity matrix tests
 //
-// computeLumpedInertia() uses the manifold-based scheme of Yang et al. (2017) for both the
-// displacement block (using density) and each non-local field block (using non-local
+// computeLumpedInertia() and computeLumpedDamping() both use the manifold-based scheme of Yang
+// et al. (2017) for their non-zero block -- computeLumpedInertia() for the displacement block
+// (using density), computeLumpedDamping() for the non-local field block (using non-local
 // viscosity), mixing the high-order shape function N with the corresponding corner-node linear
 // shape function N_lin via N_weighted = w*N + (1-w)*N_lin (only the corner entries receive the
 // N_lin correction), with w = 1/2 by default and w = 1/3 special-cased for Hexa20: with the
@@ -246,7 +247,8 @@ void testCoordinatesAtQuadraturePoints()
 // Both tests below use equal-order interpolation (nNonLocalNodes == nNodes, the default), with
 // density == non-local viscosity == 1, so the non-local block reduces to the exact same
 // shape-function diagonal pattern as the displacement block, and the reference values (from an
-// independent SymPy computation) apply identically to both blocks.
+// independent SymPy computation) apply identically to both blocks. No micro-inertia is assigned,
+// so computeLumpedInertia()'s non-local block is exactly zero -- checked here too.
 // ---------------------------------------------------------------------------------------------
 
 void checkQuad8AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes intType, const std::string& label )
@@ -321,18 +323,30 @@ void checkQuad8AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes
   throwExceptionOnFailure( checkIfEqual( totalMass, 1.0, 1e-10 ),
                            label + ": Quad8 displacement block does not conserve the total element mass." );
 
+  // No micro-inertia was assigned, so computeLumpedInertia()'s non-local block must be exactly
+  // zero -- the field stays first order in time.
+  for ( int i = 0; i < nNodes; i++ )
+    throwExceptionOnFailure( M[sizeDoFU + i] == 0.0,
+                             label +
+                               ": Quad8 non-local lumped inertia entry is non-zero without a micro-inertia "
+                               "assigned (node " +
+                               std::to_string( i ) + ")." );
+
+  std::vector< double > C( element->getNDofPerElement(), 0.0 );
+  element->computeLumpedDamping( C.data() );
+
   double totalCapacity = 0.0;
   for ( int i = 0; i < nNodes; i++ ) {
     const double expected = i < 4 ? expectedCorner : expectedMidside;
-    throwExceptionOnFailure( M[sizeDoFU + i] > 0.0,
-                             label + ": Quad8 non-local lumped capacity entry is not strictly positive (node " +
+    throwExceptionOnFailure( C[sizeDoFU + i] > 0.0,
+                             label + ": Quad8 non-local lumped damping entry is not strictly positive (node " +
                                std::to_string( i ) + ")." );
-    throwExceptionOnFailure( checkIfEqual( M[sizeDoFU + i], expected, 1e-10 ),
+    throwExceptionOnFailure( checkIfEqual( C[sizeDoFU + i], expected, 1e-10 ),
                              label +
-                               ": Quad8 non-local lumped capacity entry does not match the analytic "
+                               ": Quad8 non-local lumped damping entry does not match the analytic "
                                "reference (node " +
                                std::to_string( i ) + ")." );
-    totalCapacity += M[sizeDoFU + i];
+    totalCapacity += C[sizeDoFU + i];
   }
   throwExceptionOnFailure( checkIfEqual( totalCapacity, 1.0, 1e-10 ),
                            label + ": Quad8 non-local block does not conserve the total element capacity." );
@@ -465,18 +479,30 @@ void checkHexa20AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationType
   throwExceptionOnFailure( checkIfEqual( totalMass, 1.0, 1e-10 ),
                            label + ": Hexa20 displacement block does not conserve the total element mass." );
 
+  // No micro-inertia was assigned, so computeLumpedInertia()'s non-local block must be exactly
+  // zero -- the field stays first order in time.
+  for ( int i = 0; i < nNodes; i++ )
+    throwExceptionOnFailure( M[sizeDoFU + i] == 0.0,
+                             label +
+                               ": Hexa20 non-local lumped inertia entry is non-zero without a micro-inertia "
+                               "assigned (node " +
+                               std::to_string( i ) + ")." );
+
+  std::vector< double > C( element->getNDofPerElement(), 0.0 );
+  element->computeLumpedDamping( C.data() );
+
   double totalCapacity = 0.0;
   for ( int i = 0; i < nNodes; i++ ) {
     const double expected = i < 8 ? expectedCorner : expectedEdge;
-    throwExceptionOnFailure( M[sizeDoFU + i] > 0.0,
-                             label + ": Hexa20 non-local lumped capacity entry is not strictly positive (node " +
+    throwExceptionOnFailure( C[sizeDoFU + i] > 0.0,
+                             label + ": Hexa20 non-local lumped damping entry is not strictly positive (node " +
                                std::to_string( i ) + ")." );
-    throwExceptionOnFailure( checkIfEqual( M[sizeDoFU + i], expected, 1e-10 ),
+    throwExceptionOnFailure( checkIfEqual( C[sizeDoFU + i], expected, 1e-10 ),
                              label +
-                               ": Hexa20 non-local lumped capacity entry does not match the analytic "
+                               ": Hexa20 non-local lumped damping entry does not match the analytic "
                                "reference (node " +
                                std::to_string( i ) + ")." );
-    totalCapacity += M[sizeDoFU + i];
+    totalCapacity += C[sizeDoFU + i];
   }
   throwExceptionOnFailure( checkIfEqual( totalCapacity, 1.0, 1e-10 ),
                            label + ": Hexa20 non-local block does not conserve the total element capacity." );
@@ -574,11 +600,14 @@ void testNonlocalMicroInertiaIsZeroUnlessAssigned()
   element->initializeYourself();
 
   // Deliberately dirtied: the contract is that the element WRITES the whole vector, so an element
-  // without a micro-inertia has to zero it rather than leave what happened to be there.
+  // without a micro-inertia has to zero its non-local block rather than leave what happened to be
+  // there. The displacement block is not checked against zero here: it legitimately carries the
+  // density-based mass computeLumpedInertia() now reports for every field at once.
+  constexpr int         sizeDoFU = nNodes * nDim;
   std::vector< double > microInertia( element->getNDofPerElement(), 12345.0 );
-  element->computeLumpedNonlocalMicroInertia( microInertia.data() );
+  element->computeLumpedInertia( microInertia.data() );
 
-  for ( size_t i = 0; i < microInertia.size(); i++ )
+  for ( size_t i = sizeDoFU; i < microInertia.size(); i++ )
     throwExceptionOnFailure( microInertia[i] == 0.0,
                              MakeString()
                                << __PRETTY_FUNCTION__
@@ -616,16 +645,11 @@ void testNonlocalMicroInertiaSumsToMicroInertiaTimesVolume()
   element->assignStateVars( stateVars.data(), nStateVarsTotal );
   element->initializeYourself();
 
+  // The displacement block carries the ordinary density-based mass now, not the micro-inertia --
+  // that only ever lands in the non-local block, which is what is summed below.
+  constexpr int         sizeDoFU = nNodes * nDim;
   std::vector< double > microInertia( element->getNDofPerElement(), 0.0 );
-  element->computeLumpedNonlocalMicroInertia( microInertia.data() );
-
-  // The displacement block carries none of it: a micro-inertia belongs to the non-local field
-  // alone, and a leak into the displacement block would be added to the physical mass.
-  constexpr int sizeDoFU = nNodes * nDim;
-  for ( int i = 0; i < sizeDoFU; i++ )
-    throwExceptionOnFailure( microInertia[i] == 0.0,
-                             MakeString() << __PRETTY_FUNCTION__
-                                          << ": micro-inertia leaked into the displacement block at dof " << i );
+  element->computeLumpedInertia( microInertia.data() );
 
   double total = 0.0;
   for ( size_t i = sizeDoFU; i < microInertia.size(); i++ )
@@ -807,7 +831,7 @@ void testTinyMicroInertiaIsNotTreatedAsAbsent()
   element->initializeYourself();
 
   std::vector< double > microInertia( element->getNDofPerElement(), 0.0 );
-  element->computeLumpedNonlocalMicroInertia( microInertia.data() );
+  element->computeLumpedInertia( microInertia.data() );
 
   double total = 0.0;
   for ( size_t i = nNodes * nDim; i < microInertia.size(); i++ )

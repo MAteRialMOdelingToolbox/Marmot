@@ -103,7 +103,7 @@ public:
   /// @copydoc MarmotElement::assignProperty(const MarmotMaterialSection&)
   void assignProperty( const MarmotMaterialSection& property );
 
-  /// @copydoc MarmotElement::assignProperty(const std::string&, const double*)
+  /// @copydoc MarmotElement::assignProperty(const std::string&, const double*, int)
   void assignProperty( const std::string& propertyName, const double* properties, int nProperties ) override;
 
   /// @copydoc MarmotElement::getPropertyNames

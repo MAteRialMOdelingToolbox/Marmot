@@ -1150,8 +1150,14 @@ namespace Marmot::Elements {
        * singular value IS that smallest physical extent. For a well-shaped element this
        * reproduces the previous expressions exactly -- a cube of side h gives h either way --
        * so the estimate is tightened only where it was previously wrong.
+       *
+       * Read from the cache initializeYourself() fills rather than recomputed here: the artificial
+       * bulk viscosity already needs this value on every explicit increment and caches it for that
+       * reason, and the nodal coordinates it depends on do not change, so a second computation here
+       * would only disagree with the cached one under floating-point noise, never under a real
+       * update.
        */
-      const double characteristicElementLength = characteristicElementLengthAt( qp.xi );
+      const double characteristicElementLength = qp.characteristicElementLength;
 
       MarmotMaterialHypoElastic::state3D state( qp.managedStateVars->stress,
                                                 qp.managedStateVars->elasticStrainEnergy / qp.J0xW,

@@ -219,8 +219,13 @@ public:
                                  double        dT ) = 0;
 
   /**
-   * @brief Compute lumped inertia matrix.
-   * @param[out] I Inertia matrix.
+   * @brief Compute the lumped (diagonal) inertia of the element, over every field it carries.
+   * @param[out] I Diagonal of the lumped inertia, in the element's dof order.
+   * @details The coefficient of each field's SECOND time derivative: mass on the displacement
+   * block, and, on a non-local block whose field has been given the named property "nonlocal micro
+   * inertia", that micro-inertia. Zero on any non-local block that has not been -- carrying none is
+   * what keeps that field first order in time; see computeLumpedDamping() for what integrates it in
+   * that case.
    * @note Default implementation throws an exception.
    */
   virtual void computeLumpedInertia( double* I )
@@ -283,14 +288,17 @@ public:
   virtual int getNumberOfQuadraturePoints() = 0;
 
   /**
-   * @brief Compute the lumped micro-inertia of the element's non-local degrees of freedom.
-   * @param[out] M Diagonal of the lumped micro-inertia, in the element's dof order.
-   * @details Non-zero only for an element whose non-local field has been made second order in
-   * time, which turns its balance equation from a parabolic into a damped hyperbolic one. Unlike
-   * most of its siblings here this default does NOT throw: carrying no micro-inertia is the
-   * ordinary answer for the overwhelming majority of elements, not an unimplemented case, and the
-   * caller assembles over every element in the model. The buffer is supplied zero-initialised, so
-   * a default that leaves it untouched reports exactly that.
+   * @brief Compute the lumped (diagonal) damping of the element, over every field it carries.
+   * @param[out] C Diagonal of the lumped damping, in the element's dof order.
+   * @details The coefficient of each field's FIRST time derivative: zero on the displacement
+   * block, where no device reports through this path, and the non-local viscosity on a non-local
+   * block -- always, whether or not that field has been given a micro-inertia (see
+   * computeLumpedInertia()). A first-order non-local field is integrated by this term alone; a
+   * second-order one is damped by it. Unlike most of its siblings here this default does NOT
+   * throw: carrying no damping is the ordinary answer for the overwhelming majority of elements,
+   * not an unimplemented case, and the caller assembles over every element in the model. The
+   * buffer is supplied zero-initialised, so a default that leaves it untouched reports exactly
+   * that.
    *
    * @note Declared LAST, away from computeLumpedInertia() where it belongs by subject, because
    * adding a virtual function in the middle of this class shifts the vtable slot of every virtual
@@ -299,5 +307,5 @@ public:
    * calls to the wrong function, silently, instead of failing on the one call that is actually
    * new. Appending keeps that failure mode confined to callers of this method.
    */
-  virtual void computeLumpedNonlocalMicroInertia( double* M ) { static_cast< void >( M ); };
+  virtual void computeLumpedDamping( double* C ) { static_cast< void >( C ); };
 };
