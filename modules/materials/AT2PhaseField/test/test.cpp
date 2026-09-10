@@ -3,6 +3,7 @@
 #include "Marmot/MarmotTesting.h"
 #include "Marmot/MarmotTypedefs.h"
 #include <Eigen/Dense>
+#include <algorithm>
 #include <vector>
 
 using namespace Marmot::Testing;
@@ -297,6 +298,211 @@ void testTangentConsistency()
   }
 }
 // ─────────────────────────────────────────────────────────────────────────────
+// Test 5 – computeStressExplicit() (base class default): must match computeStress()
+// with the tangents discarded, for the very same increment and starting state.
+// ─────────────────────────────────────────────────────────────────────────────
+void testComputeStressExplicitMatchesComputeStress()
+{
+  const double                E = 20000., nu = 0.25, Gc = 2.7, l = 0.01;
+  const std::vector< double > properties = std::vector< double >{ E, nu, Gc, l };
+
+  auto [matA, stateVarsA] = makeMaterial( properties );
+  auto [matB, stateVarsB] = makeMaterial( properties );
+
+  Vector6d dEps = Vector6d::Zero();
+  dEps( 0 )     = 1e-3;
+  dEps( 3 )     = 2e-4;
+
+  Inc1 inc;
+  inc.dStrain = dEps;
+  inc.K( 0 )  = 0.2;
+  inc.dK( 0 ) = 0.0;
+  inc.time    = 0.0;
+  inc.dT      = 1.0;
+
+  Res1 resA;
+  Tan1 tanA;
+  resA.stress    = Vector6d::Zero();
+  resA.KLocal    = Eigen::Vector< double, 1 >::Zero();
+  resA.c         = Eigen::Vector< double, 1 >::Zero();
+  resA.stateVars = stateVarsA.data();
+  matA.computeStress( resA, tanA, inc );
+
+  Res1 resB;
+  resB.stress    = Vector6d::Zero();
+  resB.KLocal    = Eigen::Vector< double, 1 >::Zero();
+  resB.c         = Eigen::Vector< double, 1 >::Zero();
+  resB.stateVars = stateVarsB.data();
+  matB.computeStressExplicit( resB, inc );
+
+  throwExceptionOnFailure( checkIfEqual< double >( resA.stress, resB.stress, 1e-14 ) &&
+                             checkIfEqual( resA.KLocal( 0 ), resB.KLocal( 0 ), 1e-14 ) &&
+                             checkIfEqual( resA.c( 0 ), resB.c( 0 ), 1e-14 ),
+                           "computeStressExplicit() must match computeStress() ignoring the tangents in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+  throwExceptionOnFailure( checkIfEqual( stateVarsA[0], stateVarsB[0], 1e-14 ),
+                           "computeStressExplicit() must update state variables identically to computeStress() in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Test 6 – computePlaneStress()/computePlaneStressExplicit() (base class default):
+// for this material, dStress/dStrain = g(phi)*C is constant throughout the
+// iteration (phi is held fixed), so the plane-stress condensation is an exactly
+// linear problem and must converge to sigma_zz == 0 with the classical plane-
+// stress-condensed stiffness relating sigma_xx to eps_xx.
+// ─────────────────────────────────────────────────────────────────────────────
+void testComputePlaneStressConvergesToZeroOutOfPlaneStress()
+{
+  const double                E = 20000., nu = 0.25, Gc = 2.7, l = 0.01;
+  const std::vector< double > properties = std::vector< double >{ E, nu, Gc, l };
+  auto [mat, stateVars]                  = makeMaterial( properties );
+
+  Vector6d dEps = Vector6d::Zero();
+  dEps( 0 )     = 1e-3; // eps_xx only; eps_yy stays fixed at 0, eps_zz (index 2) is solved for
+
+  Inc1 inc;
+  inc.dStrain = dEps;
+  inc.K( 0 )  = 0.0; // phi = 0 (undamaged)
+  inc.dK( 0 ) = 0.0;
+  inc.time    = 0.0;
+  inc.dT      = 1.0;
+
+  Res1 res;
+  Tan1 tan;
+  res.stress    = Vector6d::Zero();
+  res.KLocal    = Eigen::Vector< double, 1 >::Zero();
+  res.c         = Eigen::Vector< double, 1 >::Zero();
+  res.stateVars = stateVars.data();
+
+  mat.computePlaneStress( res, tan, inc );
+
+  throwExceptionOnFailure( std::abs( res.stress( 2 ) ) < 1e-8,
+                           "computePlaneStress() did not converge to sigma_zz == 0 in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+
+  // Static condensation of the elastic stiffness (eliminating eps_zz via sigma_zz=0, with eps_yy
+  // held fixed at 0): sigma_xx = (C_xx,xx - C_xx,zz^2/C_zz,zz) * eps_xx. This is *not* the familiar
+  // E*eps_xx plane-stress modulus, since that additionally assumes eps_yy is free rather than fixed.
+  const Matrix6d C                = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
+  const double   condensedModulus = C( 0, 0 ) - C( 0, 2 ) * C( 2, 0 ) / C( 2, 2 );
+  const double   sigmaXXExpected  = condensedModulus * dEps( 0 );
+  throwExceptionOnFailure( checkIfEqual( res.stress( 0 ), sigmaXXExpected, 1e-6 ),
+                           "computePlaneStress() sigma_xx does not match the statically condensed stiffness in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+void testComputePlaneStressExplicitMatchesComputePlaneStress()
+{
+  const double                E = 20000., nu = 0.25, Gc = 2.7, l = 0.01;
+  const std::vector< double > properties = std::vector< double >{ E, nu, Gc, l };
+
+  auto [matA, stateVarsA] = makeMaterial( properties );
+  auto [matB, stateVarsB] = makeMaterial( properties );
+
+  Vector6d dEps = Vector6d::Zero();
+  dEps( 0 )     = 1e-3;
+
+  Inc1 inc;
+  inc.dStrain = dEps;
+  inc.K( 0 )  = 0.0;
+  inc.dK( 0 ) = 0.0;
+  inc.time    = 0.0;
+  inc.dT      = 1.0;
+
+  Res1 resA;
+  Tan1 tanA;
+  resA.stress    = Vector6d::Zero();
+  resA.KLocal    = Eigen::Vector< double, 1 >::Zero();
+  resA.c         = Eigen::Vector< double, 1 >::Zero();
+  resA.stateVars = stateVarsA.data();
+  matA.computePlaneStress( resA, tanA, inc );
+
+  Res1 resB;
+  resB.stress    = Vector6d::Zero();
+  resB.KLocal    = Eigen::Vector< double, 1 >::Zero();
+  resB.c         = Eigen::Vector< double, 1 >::Zero();
+  resB.stateVars = stateVarsB.data();
+  matB.computePlaneStressExplicit( resB, inc );
+
+  throwExceptionOnFailure( checkIfEqual< double >( resA.stress, resB.stress, 1e-10 ),
+                           "computePlaneStressExplicit() must match computePlaneStress() ignoring the tangents in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Test 7 – getMaximumWaveSpeed() (base class default): sqrt(max(C_ii)/rho), with
+// C_ii the diagonal of the algorithmic tangent at zero strain increment (i.e. the
+// undamaged elastic stiffness, since AT2PhaseField's tangent doesn't depend on
+// the (zero) strain increment itself).
+// ─────────────────────────────────────────────────────────────────────────────
+void testGetMaximumWaveSpeedMatchesClosedForm()
+{
+  const double                E = 20000., nu = 0.25, Gc = 2.7, l = 0.01, rho = 2400.;
+  const std::vector< double > properties = std::vector< double >{ E, nu, Gc, l, rho };
+  auto [mat, stateVars]                  = makeMaterial( properties );
+
+  const Matrix6d C = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
+
+  Res1 res;
+  res.stress    = Vector6d::Zero();
+  res.KLocal    = Eigen::Vector< double, 1 >::Zero();
+  res.c         = Eigen::Vector< double, 1 >::Zero();
+  res.stateVars = stateVars.data();
+
+  const double waveSpeed = mat.getMaximumWaveSpeed( res );
+
+  const double maxDiag  = C.diagonal().maxCoeff();
+  const double expected = std::sqrt( maxDiag / rho );
+  throwExceptionOnFailure( checkIfEqual( waveSpeed, expected, 1e-8 ),
+                           "getMaximumWaveSpeed() does not match sqrt(max(C_ii)/rho) in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+
+  // getMaximumWaveSpeed() must not mutate the caller's state variables (it operates on a copy).
+  throwExceptionOnFailure( stateVars[0] == 0.0,
+                           "getMaximumWaveSpeed() must not mutate the caller's state variables in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Test 8 – initializeYourself() (base class default): zeroes all state variables.
+// ─────────────────────────────────────────────────────────────────────────────
+void testInitializeYourselfZeroesStateVars()
+{
+  const double                E = 20000., nu = 0.25, Gc = 2.7, l = 0.01;
+  const std::vector< double > properties = std::vector< double >{ E, nu, Gc, l };
+  auto [mat, stateVars]                  = makeMaterial( properties );
+
+  std::fill( stateVars.begin(), stateVars.end(), 42.0 );
+  mat.initializeYourself( stateVars.data(), static_cast< int >( stateVars.size() ) );
+
+  throwExceptionOnFailure( std::all_of( stateVars.begin(), stateVars.end(), []( double v ) { return v == 0.0; } ),
+                           "initializeYourself() must zero all state variables in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Test 9 – getStateView() (base class default): delegates to the state layout
+// and must return a view aliasing the correct slice of the state vector.
+// ─────────────────────────────────────────────────────────────────────────────
+void testGetStateViewReturnsAliasingView()
+{
+  const double                E = 20000., nu = 0.25, Gc = 2.7, l = 0.01;
+  const std::vector< double > properties = std::vector< double >{ E, nu, Gc, l };
+  auto [mat, stateVars]                  = makeMaterial( properties );
+
+  const StateView view = mat.getStateView( "maxCrackDrivingForce", stateVars.data() );
+
+  throwExceptionOnFailure( view.stateSize == 1,
+                           "getStateView() returned the wrong size in " + std::string( __PRETTY_FUNCTION__ ) );
+
+  *view.stateLocation = 7.5;
+  throwExceptionOnFailure( stateVars[0] == 7.5,
+                           "getStateView() must alias the underlying state vector, not copy it, in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 int main()
 {
   const std::vector< std::function< void() > > tests = {
@@ -304,6 +510,12 @@ int main()
     testDegradedStress,
     testIrreversibility,
     testTangentConsistency,
+    testComputeStressExplicitMatchesComputeStress,
+    testComputePlaneStressConvergesToZeroOutOfPlaneStress,
+    testComputePlaneStressExplicitMatchesComputePlaneStress,
+    testGetMaximumWaveSpeedMatchesClosedForm,
+    testInitializeYourselfZeroesStateVars,
+    testGetStateViewReturnsAliasingView,
   };
 
   executeTestsAndCollectExceptions( tests );
