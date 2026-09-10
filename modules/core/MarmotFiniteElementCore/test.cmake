@@ -18,3 +18,6 @@ add_marmot_test("TestMarmotFiniteElement2D" "${CURR_TEST_SOURCE_DIR}/TestMarmotF
 
 # Tests for MarmotGeometryElement
 add_marmot_test("TestMarmotGeometryElement" "${CURR_TEST_SOURCE_DIR}/TestMarmotGeometryElement.cpp")
+
+# Tests for MarmotFiniteElementBasic
+add_marmot_test("TestMarmotFiniteElementBasic" "${CURR_TEST_SOURCE_DIR}/TestMarmotFiniteElementBasic.cpp")
