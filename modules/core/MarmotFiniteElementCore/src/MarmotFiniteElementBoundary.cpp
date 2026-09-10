@@ -251,7 +251,7 @@ namespace Marmot {
       /** Condense any scalar quantiaty parent vector to the corresponding boundary child vector (e.g.
        * temperature fields ) dependent on the underlying indices mapping
        * */
-      VectorXd boundaryVector( nNodes * nDim );
+      VectorXd boundaryVector( nNodes );
 
       for ( int i = 0; i < mapBoundaryToParentScalar.size(); i++ )
         boundaryVector( i ) = parentVector( mapBoundaryToParentScalar( i ) );
