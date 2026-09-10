@@ -320,7 +320,10 @@ void testGetStateViewReturnsTransformationMatrixAndDelegatesOtherwise()
 
 void testGetCoordinatesAtCenterMatchesChildCoordinatesInAmbientSpace()
 {
-  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 3.0, 4.0 }; // length-5 truss
+  // Truss from (2,1) to (5,5): same 3-4-5 geometry as a truss from the origin, but translated away
+  // from it, so a fix that only re-applies the rotation (and drops the translation) would still
+  // pass a truss-through-the-origin test while failing here.
+  const std::vector< double > nodeCoordsVec = { 2.0, 1.0, 5.0, 5.0 }; // length-5 truss
   const std::vector< double > matProps      = { 10000.0, 0.2, 1.0 };
   std::vector< double >       stateVars;
 
@@ -328,16 +331,17 @@ void testGetCoordinatesAtCenterMatchesChildCoordinatesInAmbientSpace()
 
   const auto center = wrapper->getCoordinatesAtCenter();
 
-  // The truss midpoint in ambient space is the average of its two endpoints: (1.5, 2.0).
+  // The truss midpoint in ambient space is the average of its two endpoints: (3.5, 3.0).
   throwExceptionOnFailure( static_cast< int >( center.size() ) == 2,
                            "getCoordinatesAtCenter() returned the wrong dimension." );
-  throwExceptionOnFailure( checkIfEqual( center[0], 1.5, 1e-10 ) && checkIfEqual( center[1], 2.0, 1e-10 ),
+  throwExceptionOnFailure( checkIfEqual( center[0], 3.5, 1e-10 ) && checkIfEqual( center[1], 3.0, 1e-10 ),
                            "getCoordinatesAtCenter() does not return the truss midpoint in ambient space." );
 }
 
 void testGetCoordinatesAtQuadraturePointsMatchesChildCoordinatesInAmbientSpace()
 {
-  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 3.0, 4.0 };
+  // Same translated-away-from-the-origin truss as above, for the same reason.
+  const std::vector< double > nodeCoordsVec = { 2.0, 1.0, 5.0, 5.0 };
   const std::vector< double > matProps      = { 10000.0, 0.2, 1.0 };
   std::vector< double >       stateVars;
 
@@ -350,11 +354,11 @@ void testGetCoordinatesAtQuadraturePointsMatchesChildCoordinatesInAmbientSpace()
   for ( const auto& coords : qpCoords ) {
     throwExceptionOnFailure( static_cast< int >( coords.size() ) == 2,
                              "getCoordinatesAtQuadraturePoints() returned the wrong dimension." );
-    // Every quadrature point must lie exactly on the line from (0,0) to (3,4), i.e. y/x = 4/3
-    // (equivalently 4*x - 3*y == 0), and within the segment's bounding box.
-    throwExceptionOnFailure( checkIfEqual( 4.0 * coords[0] - 3.0 * coords[1], 0.0, 1e-8 ),
+    // Every quadrature point must lie exactly on the line from (2,1) to (5,5), i.e.
+    // 4*(x-2) == 3*(y-1) (equivalently 4*x - 3*y - 5 == 0), and within the segment's bounding box.
+    throwExceptionOnFailure( checkIfEqual( 4.0 * coords[0] - 3.0 * coords[1] - 5.0, 0.0, 1e-8 ),
                              "getCoordinatesAtQuadraturePoints() point does not lie on the truss axis." );
-    throwExceptionOnFailure( coords[0] >= -1e-8 && coords[0] <= 3.0 + 1e-8,
+    throwExceptionOnFailure( coords[0] >= 2.0 - 1e-8 && coords[0] <= 5.0 + 1e-8,
                              "getCoordinatesAtQuadraturePoints() point lies outside the truss segment." );
   }
 }
