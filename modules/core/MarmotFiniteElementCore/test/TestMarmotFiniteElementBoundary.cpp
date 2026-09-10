@@ -70,6 +70,37 @@ void testConstructorThrowsForUnsupportedParentShape()
   throwExceptionOnFailure( threw, "BoundaryElement must throw for an unsupported parent shape." );
 }
 
+void testConstructorThrowsForOutOfRangeFaceIdOnSupportedParentShapes()
+{
+  // Quad4/Quad8 faces are 1..4; Hexa8/Hexa20 faces are 1..6. Face 99 is out of range for all of
+  // them, and each shape's own getBoundaryElementIndices() throws independently of the other
+  // (unrelated to the parent-shape switch tested above).
+  {
+    const Eigen::Map< const Eigen::VectorXd > parentCoords( unitSquareCoords.data(), 8 );
+    bool                                      threw = false;
+    try {
+      BoundaryElement boundaryEl( Quad4, 99, 2, parentCoords );
+    }
+    catch ( const std::invalid_argument& ) {
+      threw = true;
+    }
+    throwExceptionOnFailure( threw, "BoundaryElement must throw for an out-of-range Quad4 face ID." );
+  }
+  {
+    const std::vector< double > quad8Coords =
+      { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.5, 0.0, 1.0, 0.5, 0.5, 1.0, 0.0, 0.5 };
+    const Eigen::Map< const Eigen::VectorXd > parentCoords( quad8Coords.data(), 16 );
+    bool                                      threw = false;
+    try {
+      BoundaryElement boundaryEl( Quad8, 99, 2, parentCoords );
+    }
+    catch ( const std::invalid_argument& ) {
+      threw = true;
+    }
+    throwExceptionOnFailure( threw, "BoundaryElement must throw for an out-of-range Quad8 face ID." );
+  }
+}
+
 // ---------------------------------------------------------------------------------------------
 // computeScalarLoadVector(): integrates a unit scalar field, so its total (summed via
 // assembleIntoParentScalar) must equal the physical length/area of the face, by partition of
@@ -476,6 +507,7 @@ int main()
 {
   auto tests = std::vector< std::function< void() > >{
     testConstructorThrowsForUnsupportedParentShape,
+    testConstructorThrowsForOutOfRangeFaceIdOnSupportedParentShapes,
     testComputeScalarLoadVectorIntegratesToFaceLengthQuad4,
     testComputeScalarLoadVectorIntegratesToFaceAreaHexa8,
     testComputeVectorialLoadVectorIntegratesToDirectionTimesLengthQuad4,

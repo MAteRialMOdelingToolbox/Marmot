@@ -394,6 +394,67 @@ void testComputeDistributedLoadDelegatesAndThrowsForUnsupported1DChild()
                            "child has no boundary-element support)." );
 }
 
+// ---------------------------------------------------------------------------------------------
+// MarmotElementSpatialWrapper does not override computeLumpedInertia(), computeConsistentInertia(),
+// computeCriticalTimeStepForExplicitDynamics(), or computeInternalEnergy(), so calling any of them
+// falls through to MarmotElement's default (throwing) implementation -- otherwise untested,
+// since every OTHER element in this codebase does override all four.
+// ---------------------------------------------------------------------------------------------
+
+void testUnoverriddenOptionalMethodsFallBackToBaseClassDefaults()
+{
+  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 3.0, 4.0 };
+  const std::vector< double > matProps      = { 10000.0, 0.2, 1.0 };
+  std::vector< double >       stateVars;
+
+  auto wrapper = makeT2D2( nodeCoordsVec, matProps, stateVars );
+
+  const int nDof = wrapper->getNDofPerElement();
+
+  bool threw = false;
+  try {
+    std::vector< double > M( nDof, 0.0 );
+    wrapper->computeLumpedInertia( M.data() );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw, "computeLumpedInertia() must fall back to the base class default (throwing)." );
+
+  threw = false;
+  try {
+    std::vector< double > M( nDof * nDof, 0.0 );
+    wrapper->computeConsistentInertia( M.data() );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw, "computeConsistentInertia() must fall back to the base class default (throwing)." );
+
+  threw = false;
+  try {
+    double                      criticalTimeStep = 0.0;
+    const std::vector< double > QTotal( nDof, 0.0 );
+    wrapper->computeCriticalTimeStepForExplicitDynamics( criticalTimeStep, QTotal.data() );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw,
+                           "computeCriticalTimeStepForExplicitDynamics() must fall back to the base class "
+                           "default (throwing)." );
+
+  threw = false;
+  try {
+    double internalEnergy = 0.0;
+    wrapper->computeInternalEnergy( internalEnergy );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw, "computeInternalEnergy() must fall back to the base class default (throwing)." );
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{
@@ -408,6 +469,7 @@ int main()
     testGetCoordinatesAtCenterMatchesChildCoordinatesInAmbientSpace,
     testGetCoordinatesAtQuadraturePointsMatchesChildCoordinatesInAmbientSpace,
     testComputeDistributedLoadDelegatesAndThrowsForUnsupported1DChild,
+    testUnoverriddenOptionalMethodsFallBackToBaseClassDefaults,
   };
 
   executeTestsAndCollectExceptions( tests );
