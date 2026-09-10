@@ -198,7 +198,7 @@ void MarmotElementSpatialWrapper::computeDistributedLoad( DistributedLoadTypes l
   MatrixXd Ke_Projected( projectedSize, projectedSize );
 
   childElement
-    ->computeDistributedLoad( loadType, P_Projected.data(), Ke_Projected.data(), elementFace, QTotal, load, time, dT );
+    ->computeDistributedLoad( loadType, P_Projected.data(), Ke_Projected.data(), elementFace, load, QTotal, time, dT );
 
   Map< VectorXd > P_Unprojected( P_, unprojectedSize );
   P_Unprojected = P.transpose() * P_Projected;
@@ -244,7 +244,11 @@ std::vector< double > MarmotElementSpatialWrapper::getCoordinatesAtCenter()
   const auto                          coordsChild_ = childElement->getCoordinatesAtCenter();
   Eigen::Map< const Eigen::VectorXd > coordsChild( &coordsChild_[0], coordsChild_.size() );
 
-  coordsMap = P.transpose() * coordsChild;
+  // coordsChild is a single point in the CHILD's local (nDimChild-sized) space; project it into
+  // ambient (nDim-sized) space with the geometric transform T (nDimChild x nDim), not with P
+  // (projectedSize x unprojectedSize), which maps full DOF vectors, not coordinates, and is the
+  // wrong shape whenever nNodes > 1.
+  coordsMap = T.transpose() * coordsChild;
 
   return coords;
 }
@@ -259,8 +263,11 @@ std::vector< std::vector< double > > MarmotElementSpatialWrapper::getCoordinates
   Eigen::Map< Eigen::VectorXd > coordsMap( &coords[0], nDim );
 
   for ( const auto& coordsChild : listedChildCoords ) {
-    Eigen::Map< const Eigen::VectorXd > coordsChildMap( &coordsChild[0], nDim );
-    coordsMap = P.transpose() * coordsChildMap;
+    // Each coordsChild entry is a single point in the CHILD's local (nDimChild-sized) space, not
+    // an nDim-sized ambient point: mapping it with size nDim here would read past the end of a
+    // shorter (e.g. nDimChild=1) vector. Project with T (see getCoordinatesAtCenter() above).
+    Eigen::Map< const Eigen::VectorXd > coordsChildMap( &coordsChild[0], coordsChild.size() );
+    coordsMap = T.transpose() * coordsChildMap;
 
     listedCoords.push_back( coords );
   }

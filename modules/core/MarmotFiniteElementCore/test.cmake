@@ -3,3 +3,6 @@ SET(CURR_TEST_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/test")
 
 # Tests for MarmotFiniteElementBoundary
 add_marmot_test("TestMarmotFiniteElementBoundary" "${CURR_TEST_SOURCE_DIR}/TestMarmotFiniteElementBoundary.cpp")
+
+# Tests for MarmotFiniteElementSpatialWrapper
+add_marmot_test("TestMarmotFiniteElementSpatialWrapper" "${CURR_TEST_SOURCE_DIR}/TestMarmotFiniteElementSpatialWrapper.cpp")
