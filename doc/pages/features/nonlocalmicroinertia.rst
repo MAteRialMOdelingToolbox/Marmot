@@ -122,6 +122,92 @@ At that choice the gain over the parabolic scheme *at the same artificial lag* i
 a factor that **grows with every refinement level** -- which is the point: the finer the
 mesh, the more the second-order form is worth.
 
+Keeping the mechanical problem in charge
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There is a second criterion on :math:`\eta`, and it is the one that decides whether any of
+the usual quasi-static-explicit tricks work at all. The two limits the element takes the
+minimum of are
+
+.. math::
+
+   \Delta t_\mathrm{mech} \approx k_c\,\frac{h}{c_d} ,
+   \qquad
+   \Delta t_\mathrm{nl} \approx \frac{2 k_c}{\sqrt{C}}\,\frac{\sqrt{m_k}\,h}{l}
+   \qquad (h \ll l)
+
+and **both are linear in** :math:`h`. Their ratio therefore contains no mesh size at all,
+
+.. math::
+
+   \frac{\Delta t_\mathrm{nl}}{\Delta t_\mathrm{mech}}
+     = \frac{\eta\,c_d}{l\,\sqrt{C}} ,
+
+the courant number cancelling because it is applied to both. Which of the two is in charge
+is thus a property of the *parameters*, not of the discretisation: fix it once and it holds
+at every refinement level. Requiring the mechanical limit to be the binding one gives
+
+.. math::
+
+   \eta \;\ge\; \frac{\sqrt{C}\,l}{c_d}
+   \qquad\Longleftrightarrow\qquad
+   m_k \;\ge\; \frac{C}{4}\left(\frac{l}{c_d}\right)^{\!2} ,
+
+i.e. **the micro-inertia must exceed the square of the time a mechanical wave needs to
+cross one non-local length** -- the only natural time scale the coupled problem offers.
+Together with :math:`m_k \le \eta^2/4` this is a window rather than a conflict: the
+non-ringing bound caps :math:`m_k` from above, this one floors it from below.
+
+Why it matters for mass scaling
+"
+
+Mass scaling -- multiplying the density by :math:`f` to buy a larger increment, the
+standard device for a quasi-static explicit run -- lowers :math:`c_d` as
+:math:`1/\sqrt{f}`, so the floor above **rises as** :math:`\sqrt{f}`. The two knobs have
+to move together. Moving either one alone does nothing, which is easy to verify and
+surprising the first time:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 34 22 22 22
+
+   * - change
+     - what it raises
+     - what still binds
+     - measured :math:`\Delta t`
+   * - :math:`f\!:\,1 \to 10^4` at :math:`\eta = 10^{-5}`
+     - mechanical, 100-fold
+     - non-local
+     - 8.852981e-08, *unchanged*
+   * - :math:`\eta\!:\,10^{-5} \to 10^{-4}` at :math:`f = 1`
+     - non-local, tenfold
+     - mechanical
+     - 6.063391e-08, *unchanged*
+   * - both, :math:`f = 70` and :math:`\eta = 10^{-4}`
+     - both
+     - mechanical
+     - 5.072997e-07, the full :math:`\sqrt{70}`
+
+(:math:`h = 2.5` mm, :math:`l = 5` mm, `GC3D20R`, for which the ratio above gives
+:math:`C \approx 40`.)
+
+Two caveats. For :math:`h \sim l` the asymptotic forms do not hold -- the non-local limit
+saturates at the reaction term, as noted above -- so on a mesh that coarse the ratio has to
+be read off rather than predicted; it comes out *below* its asymptote. And a **parabolic**
+non-local field cannot be brought into this regime at all: its limit
+:math:`\Delta t \le 2\eta h^2/(C l^2)` is quadratic in :math:`h` and contains no density,
+so no mass scaling reaches it and refinement always wins in the end. Mass scaling a
+parabolic gradient-damage model therefore lifts the increment straight through a bound that
+nothing checks, and the run goes to NaN while still reporting that it finished. Making the
+non-local field second order in time is what makes "keep the mechanical problem in charge"
+an achievable state.
+
+When it is not achievable, the element says so:
+:cpp:func:`Marmot::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeCriticalTimeStepForExplicitDynamics`
+warns once per element type when the increment it returns came from the non-local limit
+rather than the mechanical one, since the caller receives a single number and cannot
+otherwise tell which knob would help it.
+
 What this does not do
 ^^^^^^^^^^^^^^^^^^^^^
 

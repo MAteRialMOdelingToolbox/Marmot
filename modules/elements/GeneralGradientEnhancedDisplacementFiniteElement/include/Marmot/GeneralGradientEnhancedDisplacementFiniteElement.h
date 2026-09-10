@@ -1353,6 +1353,13 @@ namespace Marmot::Elements {
     if ( !( nonlocalMicroInertia.array() > 0.0 ).any() )
       return;
 
+    /* Kept so that the caller can be told WHICH of the two limits it is being given. The
+     * distinction decides whether anything the user might reach for actually raises the increment:
+     * the mechanical limit answers to mass scaling and to the mesh, the non-local one to the
+     * micro-inertia and hence to the non-local viscosity, and neither responds to the other's knob.
+     */
+    const double mechanicalTimeStep = criticalTimeStep;
+
     /* Read off the mass and the damping that are actually ASSEMBLED, by calling the very functions
      * that assemble them rather than re-deriving the lumping here. Their non-local blocks are
      * m_k * r_i and eta * r_i with the same weights r_i, so the ratio below is the field's damping
@@ -1447,6 +1454,29 @@ namespace Marmot::Elements {
         if ( dt < criticalTimeStep )
           criticalTimeStep = dt;
       }
+    }
+
+    /* Say so when the non-local field, and not the mesh, is what bounds the increment. Warned once
+     * per element type per run rather than per element: this is called once per step, but a large
+     * model would otherwise emit one identical line per element, and MarmotJournal has no
+     * verbosity levels to hide them behind.
+     *
+     * It is worth a line because the two limits are indistinguishable from the outside -- the
+     * caller receives one number -- and the remedies are disjoint. A run bounded here does not get
+     * faster from mass scaling by any factor, since no density enters this bound; it needs a larger
+     * micro-inertia, i.e. a larger non-local viscosity. Both limits are linear in the element size
+     * once h << l, so whichever one is in charge stays in charge under refinement, and this is
+     * therefore a property of the parameters rather than of the mesh.
+     */
+    static bool nonlocalLimitAlreadyReported = false;
+    if ( criticalTimeStep < mechanicalTimeStep && !nonlocalLimitAlreadyReported ) {
+      nonlocalLimitAlreadyReported = true;
+      MarmotJournal::warningToMSG( MakeString()
+                                   << "element " << elLabel << ": the stable increment is bounded by the NON-LOCAL "
+                                   << "field (" << criticalTimeStep << " s), not by the mesh (" << mechanicalTimeStep
+                                   << " s). Mass scaling cannot raise it -- no density enters "
+                                   << "that bound. Raise the micro-inertia, i.e. the non-local viscosity, until the "
+                                   << "mechanical limit is the smaller of the two. Reported once per element type." );
     }
   }
 
