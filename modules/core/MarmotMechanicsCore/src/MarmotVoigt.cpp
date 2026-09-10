@@ -594,9 +594,9 @@ namespace Marmot {
 
         // clang-format off
                 Matrix36d projectMatrix;
-                projectMatrix << n( 0 ),      0,      0, n( 1 ), 0,      n( 2 ),
-                                      0, n( 1 ),      0, n( 0 ), n( 2 ),      0,
-                                      0,      0, n( 2 ),      0, n( 1 ), n( 0 );
+                projectMatrix << n( 0 ),      0,      0, n( 1 ), n( 2 ),      0,
+                                      0, n( 1 ),      0, n( 0 ),      0, n( 2 ),
+                                      0,      0, n( 2 ),      0, n( 0 ), n( 1 );
         // clang-format on
         return projectMatrix;
       }

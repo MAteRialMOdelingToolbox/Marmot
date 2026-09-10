@@ -1,4 +1,5 @@
 #include "Marmot/HaighWestergaard.h"
+#include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
 #include "Marmot/MarmotTesting.h"
 #include "Marmot/MarmotTypedefs.h"
@@ -378,34 +379,270 @@ void test_dSortedPrincipalStrains_dStrain()
                            MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Simple, previously-untested conversions and invariants
+// ─────────────────────────────────────────────────────────────────────────────
+
+void testVoigtToAxisymmetricVoigt()
+{
+  using namespace Marmot::ContinuumMechanics::VoigtNotation;
+  Vector6d voigt = { 1, 2, 3, 4, 5, 6 };
+  throwExceptionOnFailure( checkIfEqual< double >( voigtToAxisymmetricVoigt( voigt ), Vector4d( 1, 2, 3, 4 ) ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+}
+
+void testAxisymmetricVoigtToVoigt()
+{
+  using namespace Marmot::ContinuumMechanics::VoigtNotation;
+  Vector4d voigtAxisym = { 1, 2, 3, 4 };
+  throwExceptionOnFailure( checkIfEqual< double >( axisymmetricVoigtToVoigt( voigtAxisym ),
+                                                   Vector6d( 1, 2, 3, 4, 0, 0 ) ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+}
+
+void testNormStress()
+{
+  using namespace Marmot::ContinuumMechanics::VoigtNotation;
+  // A pure-shear Voigt stress (3,4) maps to a 3x3 stress matrix with off-diagonal 3 and 4 (each
+  // appearing twice, symmetric), so ||sigma||_F = sqrt(2*3^2 + 2*4^2).
+  Vector6d stress = { 0, 0, 0, 3, 4, 0 };
+  throwExceptionOnFailure( checkIfEqual( Invariants::normStress( stress ), std::sqrt( 2. * 9. + 2. * 16. ), 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+}
+
+void testStrainVolumetricNegative()
+{
+  using namespace Marmot::ContinuumMechanics::VoigtNotation;
+  // A diagonal (already-principal) strain state with two negative and one positive principal
+  // strain: the negative part is macauly(-(-0.01)) + macauly(-(-0.02)) + macauly(-(0.03)) = 0.01+0.02+0.
+  Vector6d strain = { -0.01, -0.02, 0.03, 0, 0, 0 };
+  throwExceptionOnFailure( checkIfEqual( Invariants::StrainVolumetricNegative( strain ), 0.03, 1e-10 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+}
+
+void testI1Strain()
+{
+  using namespace Marmot::ContinuumMechanics::VoigtNotation;
+  Vector6d strain = { 1, 2, 3, 4, 5, 6 };
+  throwExceptionOnFailure( checkIfEqual( Invariants::I1Strain( strain ), 6.0, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Transformations namespace: entirely untested previously. Verified via physical/algebraic
+// identities (Cauchy's theorem for the projection matrices, round-trip local<->global, rotational
+// invariance of an isotropic stiffness) rather than re-deriving the transformation formulas.
+// ─────────────────────────────────────────────────────────────────────────────
+
+namespace {
+  // A fixed, non-trivial (non-axis-aligned) orthonormal coordinate system, used throughout the
+  // Transformations tests below.
+  Eigen::Matrix3d makeTestRotation()
+  {
+    Eigen::Matrix3d N;
+    // clang-format off
+    N << 0.7071067811865476,  0.7071067811865476, 0.0,
+        -0.5,                 0.5,                 0.7071067811865476,
+         0.5,                -0.5,                 0.7071067811865476;
+    // clang-format on
+    return N;
+  }
+} // namespace
+
+void testStiffnessVoigtRoundTrip()
+{
+  using namespace Marmot::ContinuumMechanics::VoigtNotation;
+  const Matrix6d C = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( 20000., 0.25 );
+
+  const auto     stiffnessTensor4th = voigtToStiffness( C );
+  const Matrix6d roundTrip          = stiffnessToVoigt( stiffnessTensor4th );
+
+  throwExceptionOnFailure( checkIfEqual< double >( roundTrip, C, 1e-8 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " stiffnessToVoigt(voigtToStiffness(C)) != C" );
+
+  const auto fastorTensor  = voigtToStiffnessFastor( C );
+  bool       fastorMatches = true;
+  for ( int i = 0; i < 3; i++ )
+    for ( int j = 0; j < 3; j++ )
+      for ( int k = 0; k < 3; k++ )
+        for ( int l = 0; l < 3; l++ )
+          fastorMatches = fastorMatches &&
+                          checkIfEqual( fastorTensor( i, j, k, l ), stiffnessTensor4th( i, j, k, l ), 1e-10 );
+
+  throwExceptionOnFailure( fastorMatches,
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " voigtToStiffnessFastor() does not match voigtToStiffness()" );
+}
+
+void testTransformationMatrixStressVoigtIsIdentityForIdentitySystem()
+{
+  using namespace Marmot::ContinuumMechanics::VoigtNotation;
+  const Matrix6d T = Transformations::transformationMatrixStressVoigt( Eigen::Matrix3d::Identity() );
+  throwExceptionOnFailure( checkIfEqual< double >( T, Matrix6d::Identity() ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+}
+
+void testTransformationMatrixStressVoigtMatchesRotateVoigtStress()
+{
+  // transformationMatrixStressVoigt(X) internally uses directionCosines(X) = X^T as the
+  // rows-are-new-basis-vectors matrix, i.e. it is equivalent to rotateVoigtStress(X^T, ...).
+  using namespace Marmot::ContinuumMechanics::VoigtNotation;
+  const Eigen::Matrix3d N      = makeTestRotation();
+  const Vector6d        stress = { 10, -20, 30, 4, -5, 6 };
+
+  const Matrix6d T           = Transformations::transformationMatrixStressVoigt( N );
+  const Vector6d viaMatrix   = T * stress;
+  const Vector6d viaRotation = Transformations::rotateVoigtStress( N.transpose(), stress );
+
+  throwExceptionOnFailure( checkIfEqual< double >( viaMatrix, viaRotation, 1e-8 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " transformationMatrixStressVoigt() does not match rotateVoigtStress()" );
+}
+
+void testTransformationMatrixStrainVoigtMatchesDirectStrainRotation()
+{
+  using namespace Marmot::ContinuumMechanics::VoigtNotation;
+  const Eigen::Matrix3d N      = makeTestRotation();
+  const Vector6d        strain = { 0.001, -0.002, 0.003, 0.0004, -0.0005, 0.0006 };
+
+  const Matrix6d T         = Transformations::transformationMatrixStrainVoigt( N );
+  const Vector6d viaMatrix = T * strain;
+
+  // See testTransformationMatrixStressVoigtMatchesRotateVoigtStress(): the matrix actually applied
+  // is directionCosines(N) = N^T.
+  const Matrix3d strainMat  = voigtToStrain( strain );
+  const Matrix3d rotatedMat = N.transpose() * strainMat * N;
+  const Vector6d viaDirect  = strainToVoigt( rotatedMat );
+
+  throwExceptionOnFailure( checkIfEqual< double >( viaMatrix, viaDirect, 1e-8 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " transformationMatrixStrainVoigt() does not match N^T*strain*N" );
+}
+
+void testProjectVoigtStressToPlaneMatchesCauchyTraction()
+{
+  // Cauchy's stress theorem: t = sigma * n. projectVoigtStressToPlane(n) * stressVoigt must give
+  // the same traction vector as the direct matrix-vector product.
+  using namespace Marmot::ContinuumMechanics::VoigtNotation;
+  const Vector6d stress    = { 10, -20, 30, 4, -5, 6 };
+  const Matrix3d stressMat = voigtToStress( stress );
+  const Vector3d n         = Vector3d( 1., 2., -2. ).normalized();
+
+  const Vector3d tractionDirect        = stressMat * n;
+  const Vector3d tractionViaProjection = Transformations::projectVoigtStressToPlane( n ) * stress;
+
+  throwExceptionOnFailure( checkIfEqual< double >( tractionViaProjection, tractionDirect, 1e-10 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " projectVoigtStressToPlane() does not reproduce t = sigma*n" );
+}
+
+void testProjectVoigtStrainToPlaneMatchesDirectProduct()
+{
+  // There is no equally simple physical identity for the strain projection (the factor-of-2
+  // engineering-shear convention breaks the clean t=sigma*n analogy), so this only checks the
+  // documented relation to projectVoigtStressToPlane(): the off-diagonal (top-right) block is
+  // halved, everything else identical.
+  using namespace Marmot::ContinuumMechanics::VoigtNotation;
+  const Vector3d  n          = Vector3d( 1., 2., -2. ).normalized();
+  const Matrix36d stressProj = Transformations::projectVoigtStressToPlane( n );
+  const Matrix36d strainProj = Transformations::projectVoigtStrainToPlane( n );
+
+  Matrix36d expected = stressProj;
+  expected.topRightCorner( 3, 3 ) *= 0.5;
+
+  throwExceptionOnFailure( checkIfEqual< double >( strainProj, expected, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+}
+
+void testRotateVoigtStressRoundTrip()
+{
+  using namespace Marmot::ContinuumMechanics::VoigtNotation;
+  const Eigen::Matrix3d N      = makeTestRotation();
+  const Vector6d        stress = { 10, -20, 30, 4, -5, 6 };
+
+  const Vector6d rotated     = Transformations::rotateVoigtStress( N, stress );
+  const Vector6d rotatedBack = Transformations::rotateVoigtStress( N.transpose(), rotated );
+
+  throwExceptionOnFailure( checkIfEqual< double >( rotatedBack, stress, 1e-8 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " rotating by N then N^-1 did not recover the original stress" );
+}
+
+void testTransformStressStrainLocalGlobalRoundTrip()
+{
+  using namespace Marmot::ContinuumMechanics::VoigtNotation;
+  const Eigen::Matrix3d N      = makeTestRotation();
+  const Vector6d        stress = { 10, -20, 30, 4, -5, 6 };
+  const Vector6d        strain = { 0.001, -0.002, 0.003, 0.0004, -0.0005, 0.0006 };
+
+  const Vector6d stressLocal     = Transformations::transformStressToLocalSystem( stress, N );
+  const Vector6d stressRoundTrip = Transformations::transformStressToGlobalSystem( stressLocal, N );
+  throwExceptionOnFailure( checkIfEqual< double >( stressRoundTrip, stress, 1e-8 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " stress local/global round-trip failed" );
+
+  const Vector6d strainLocal     = Transformations::transformStrainToLocalSystem( strain, N );
+  const Vector6d strainRoundTrip = Transformations::transformStrainToGlobalSystem( strainLocal, N );
+  throwExceptionOnFailure( checkIfEqual< double >( strainRoundTrip, strain, 1e-8 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " strain local/global round-trip failed" );
+}
+
+void testTransformStiffnessToGlobalSystemPreservesIsotropicStiffness()
+{
+  // An isotropic stiffness tensor must be invariant under any rotation.
+  using namespace Marmot::ContinuumMechanics::VoigtNotation;
+  const Matrix6d        C = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( 20000., 0.25 );
+  const Eigen::Matrix3d N = makeTestRotation();
+
+  const Matrix6d rotated = Transformations::transformStiffnessToGlobalSystem( C, N );
+
+  throwExceptionOnFailure( checkIfEqual< double >( rotated, C, 1e-6 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " an isotropic stiffness must be invariant under rotation" );
+}
+
 int main()
 {
 
-  auto tests = std::vector< std::function< void() > >{ testStrainToVoigt,
-                                                       testVoigtToPlaneVoigt,
-                                                       testPrincipalStrains,
-                                                       testPrincipalStresses,
-                                                       testSortedPrincipalStrains,
-                                                       testPrincipalStressDirections,
-                                                       testVonMisesEquivalentStress,
-                                                       testVonMisesEquivalentStrain,
-                                                       testI1,
-                                                       testI2,
-                                                       testI2Strain,
-                                                       testI3,
-                                                       testI3Strain,
-                                                       testJ2,
-                                                       testJ3,
-                                                       testJ3Strain,
-                                                       test_dStressMean_dStress,
-                                                       test_dRho_dStress,
-                                                       test_dRhoStrain_dStrain,
-                                                       test_dTheta_dStress,
-                                                       test_dJ2_dStress,
-                                                       test_dJ3_dStress,
-                                                       test_dJ2Strain_dStrain,
-                                                       test_dJ3Strain_dStrain,
-                                                       test_dSortedPrincipalStrains_dStrain };
+  auto
+    tests = std::vector< std::function< void() > >{ testStrainToVoigt,
+                                                    testVoigtToPlaneVoigt,
+                                                    testPrincipalStrains,
+                                                    testPrincipalStresses,
+                                                    testSortedPrincipalStrains,
+                                                    testPrincipalStressDirections,
+                                                    testVonMisesEquivalentStress,
+                                                    testVonMisesEquivalentStrain,
+                                                    testI1,
+                                                    testI2,
+                                                    testI2Strain,
+                                                    testI3,
+                                                    testI3Strain,
+                                                    testJ2,
+                                                    testJ3,
+                                                    testJ3Strain,
+                                                    test_dStressMean_dStress,
+                                                    test_dRho_dStress,
+                                                    test_dRhoStrain_dStrain,
+                                                    test_dTheta_dStress,
+                                                    test_dJ2_dStress,
+                                                    test_dJ3_dStress,
+                                                    test_dJ2Strain_dStrain,
+                                                    test_dJ3Strain_dStrain,
+                                                    test_dSortedPrincipalStrains_dStrain,
+                                                    testVoigtToAxisymmetricVoigt,
+                                                    testAxisymmetricVoigtToVoigt,
+                                                    testNormStress,
+                                                    testStrainVolumetricNegative,
+                                                    testI1Strain,
+                                                    testStiffnessVoigtRoundTrip,
+                                                    testTransformationMatrixStressVoigtIsIdentityForIdentitySystem,
+                                                    testTransformationMatrixStressVoigtMatchesRotateVoigtStress,
+                                                    testTransformationMatrixStrainVoigtMatchesDirectStrainRotation,
+                                                    testProjectVoigtStressToPlaneMatchesCauchyTraction,
+                                                    testProjectVoigtStrainToPlaneMatchesDirectProduct,
+                                                    testRotateVoigtStressRoundTrip,
+                                                    testTransformStressStrainLocalGlobalRoundTrip,
+                                                    testTransformStiffnessToGlobalSystemPreservesIsotropicStiffness };
 
   executeTestsAndCollectExceptions( tests );
 
