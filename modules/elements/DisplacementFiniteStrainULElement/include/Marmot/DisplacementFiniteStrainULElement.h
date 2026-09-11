@@ -633,7 +633,7 @@ namespace Marmot::Elements {
           using namespace Marmot;
 
           Material::ConstitutiveResponse< 3 >
-            response3D( FastorStandardTensors::Tensor3d( qp.managedStateVars->stress.data(), ColumnMajor ),
+            response3D( FastorStandardTensors::Tensor33d( qp.managedStateVars->stress.data(), ColumnMajor ),
                         response.elasticEnergyDensity,
                         response.dissipation,
                         response.stateVars );
@@ -1256,16 +1256,21 @@ namespace Marmot::Elements {
         r_U( A, 0 ) -= ( +N( A ) * invF33 * response3D.tau( 2, 2 ) / r ) * J0xWxRx2Pi;
 
         for ( int B = 0; B < nNodes; B++ ) {
+          // K = d(r_U)/d(qU), and r_U(A,0) has a "-= N(A)*invF33*tau33/r" contribution above, so
+          // its Jacobian contributions here carry the matching minus sign.
           for ( int j = 0; j < 2; j++ ) {
-            k_UU( 0, A, j, B ) += ( +N( A ) * invF33 * dTau33_dqU( j, B ) / r ) * J0xWxRx2Pi;
+            k_UU( 0, A, j, B ) -= ( +N( A ) * invF33 * dTau33_dqU( j, B ) / r ) * J0xWxRx2Pi;
           }
           const double dF33_dN_qU_0 = ( N( B ) / r );
-          k_UU( 0, A, 0, B ) += ( +N( A ) * dInvF33_dF33 * dF33_dN_qU_0 * response3D.tau( 2, 2 ) / r ) * J0xWxRx2Pi;
+          k_UU( 0, A, 0, B ) -= ( +N( A ) * dInvF33_dF33 * dF33_dN_qU_0 * response3D.tau( 2, 2 ) / r ) * J0xWxRx2Pi;
         }
       }
 
       // K [dim, node, dim, node ]
       k_UU += ( +einsum< iA, ijkB, to_jAkB >( dNdx, dTau_dqU ) ) * J0xWxRx2Pi;
+
+      // geometric contribution (same as the non-axisymmetric case; see computeKernels() above)
+      k_UU += ( -einsum< kA, ij, iB, to_jAkB >( dNdx, tau, dNdx ) ) * J0xWxRx2Pi;
     }
     // copy back to the subblocks using mighty Eigen block access,
     // note the layout swap rowmajor -> colmajor

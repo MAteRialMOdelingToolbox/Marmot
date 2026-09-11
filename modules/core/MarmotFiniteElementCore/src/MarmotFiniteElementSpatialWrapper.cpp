@@ -148,6 +148,11 @@ void MarmotElementSpatialWrapper::assignNodeCoordinates( const double* coordinat
     }
   }
 
+  // Reference point (ambient-space coordinates of node 0) needed to recover the translation when
+  // later mapping a child-space point back into ambient space; see getCoordinatesAtCenter() /
+  // getCoordinatesAtQuadraturePoints() below.
+  referenceCoordinates = unprojectedCoordinates.col( 0 );
+
   // Projection of node coordinates
   projectedCoordinates = MatrixXd::Zero( nDimChild, nNodes );
   for ( int i = 0; i < nNodes; i++ )
@@ -200,7 +205,7 @@ void MarmotElementSpatialWrapper::computeDistributedLoad( DistributedLoadTypes l
   MatrixXd Ke_Projected( projectedSize, projectedSize );
 
   childElement
-    ->computeDistributedLoad( loadType, P_Projected.data(), Ke_Projected.data(), elementFace, QTotal, load, time, dT );
+    ->computeDistributedLoad( loadType, P_Projected.data(), Ke_Projected.data(), elementFace, load, QTotal, time, dT );
 
   Map< VectorXd > P_Unprojected( P_, unprojectedSize );
   P_Unprojected = P.transpose() * P_Projected;
@@ -246,7 +251,16 @@ std::vector< double > MarmotElementSpatialWrapper::getCoordinatesAtCenter()
   const auto                          coordsChild_ = childElement->getCoordinatesAtCenter();
   Eigen::Map< const Eigen::VectorXd > coordsChild( &coordsChild_[0], coordsChild_.size() );
 
-  coordsMap = P.transpose() * coordsChild;
+  // coordsChild is a single point in the CHILD's local (nDimChild-sized) space; project it into
+  // ambient (nDim-sized) space with the geometric transform T (nDimChild x nDim), not with P
+  // (projectedSize x unprojectedSize), which maps full DOF vectors, not coordinates, and is the
+  // wrong shape whenever nNodes > 1.
+  //
+  // T alone only encodes the rotation: assignNodeCoordinates() projects via s = T * x, so
+  // recovering x from s additionally requires the translation, recovered here via the ambient
+  // reference point (node 0) stored at assignment time: x = x_ref + T^T * (s - T * x_ref).
+  const VectorXd referenceProjectedCoordinates = T * referenceCoordinates;
+  coordsMap = referenceCoordinates + T.transpose() * ( coordsChild - referenceProjectedCoordinates );
 
   return coords;
 }
@@ -260,9 +274,15 @@ std::vector< std::vector< double > > MarmotElementSpatialWrapper::getCoordinates
   std::vector< double >         coords( nDim );
   Eigen::Map< Eigen::VectorXd > coordsMap( &coords[0], nDim );
 
+  const VectorXd referenceProjectedCoordinates = T * referenceCoordinates;
+
   for ( const auto& coordsChild : listedChildCoords ) {
-    Eigen::Map< const Eigen::VectorXd > coordsChildMap( &coordsChild[0], nDim );
-    coordsMap = P.transpose() * coordsChildMap;
+    // Each coordsChild entry is a single point in the CHILD's local (nDimChild-sized) space, not
+    // an nDim-sized ambient point: mapping it with size nDim here would read past the end of a
+    // shorter (e.g. nDimChild=1) vector. Project with T, recovering the translation via the
+    // ambient reference point (see getCoordinatesAtCenter() above).
+    Eigen::Map< const Eigen::VectorXd > coordsChildMap( &coordsChild[0], coordsChild.size() );
+    coordsMap = referenceCoordinates + T.transpose() * ( coordsChildMap - referenceProjectedCoordinates );
 
     listedCoords.push_back( coords );
   }

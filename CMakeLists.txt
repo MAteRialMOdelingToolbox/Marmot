@@ -120,6 +120,16 @@ function(add_marmot_test test_name test_source)
       BUILD_RPATH "${CMAKE_BINARY_DIR}/lib"
   )
   add_test(NAME ${test_name} COMMAND ${test_name} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+  # Many Marmot classes are templates (<int nDim, int nNodes>) that get implicitly
+  # re-instantiated inside each test's own translation unit. An uninstrumented test
+  # binary's own copy of such a template method wins symbol resolution over the
+  # library's instrumented copy, so gcov never sees it. Instrumenting the tests too
+  # (MARMOT_ENABLE_COVERAGE, set further down before this function is ever called)
+  # avoids that blind spot.
+  if(MARMOT_ENABLE_COVERAGE)
+    target_compile_options(${test_name} PRIVATE --coverage -O0)
+    target_link_options(${test_name} PRIVATE --coverage)
+  endif()
 endfunction()
 
 set(MODULES_DIR ${CMAKE_SOURCE_DIR}/modules)
@@ -243,6 +253,29 @@ if(SHARED_LIBRARIES)
         target_link_libraries(${PROJECT_NAME} PRIVATE "${SHARED_LIBRARY}")
     endforeach()
     message("+------------------------------------------------------------------------------+")
+endif()
+
+# ── Code coverage ──────────────────────────────────────────────────────────────
+
+# Opt-in: instruments the Marmot library with gcov. Test executables are instrumented
+# too (see add_marmot_test below) because templated classes get re-instantiated per
+# translation unit, and an uninstrumented test binary's own copy of a template method
+# otherwise wins symbol resolution over the library's instrumented one, hiding it from
+# coverage entirely. Flags are kept PRIVATE: PUBLIC link options would be exported into
+# MarmotTargets.cmake, silently forcing --coverage onto any downstream consumer that
+# links Marmot::Marmot from a coverage-enabled install.
+option(MARMOT_ENABLE_COVERAGE "Instrument libMarmot and its tests with gcov code coverage (GCC/Clang only)" OFF)
+
+if(MARMOT_ENABLE_COVERAGE)
+    if(NOT CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+        message(FATAL_ERROR "MARMOT_ENABLE_COVERAGE requires GCC or Clang")
+    endif()
+    if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+        message(WARNING "MARMOT_ENABLE_COVERAGE is intended to be used with -DCMAKE_BUILD_TYPE=Debug for accurate line coverage")
+    endif()
+    message(STATUS "Instrumenting ${PROJECT_NAME} for code coverage (--coverage)")
+    target_compile_options(${PROJECT_NAME} PRIVATE --coverage -O0)
+    target_link_options(${PROJECT_NAME} PRIVATE --coverage)
 endif()
 
 # Include test definitions for all installed modules
