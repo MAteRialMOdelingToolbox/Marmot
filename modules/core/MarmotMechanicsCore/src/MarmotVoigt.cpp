@@ -270,7 +270,7 @@ namespace Marmot {
           dPhi_dR = 0.0;
         }
         else if ( r >= 1 ) {
-          phi     = 1.0;
+          phi     = 0.0;
           dPhi_dR = 0.0;
         }
         else {
