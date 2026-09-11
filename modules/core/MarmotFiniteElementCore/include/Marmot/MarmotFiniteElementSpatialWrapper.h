@@ -54,6 +54,9 @@ public:
   Eigen::MatrixXd                  T;            ///< Coordinate transformation matrix from child to parent space.
   Eigen::MatrixXd                  P;            ///< Projection matrix mapping parent DOFs to child DOFs.
   Eigen::MatrixXd                  projectedCoordinates; ///< Nodal coordinates expressed in the child (local) frame.
+  Eigen::VectorXd referenceCoordinates; ///< Ambient-space coordinates of node 0, needed to recover the translation
+                                        ///< (T alone only encodes the rotation) when mapping a child-space point
+                                        ///< back into ambient space.
 
   /**
    * @brief Construct the spatial wrapper.
@@ -103,6 +106,12 @@ public:
   /// @copydoc MarmotElement::assignProperty(const MarmotMaterialSection&)
   void assignProperty( const MarmotMaterialSection& property );
 
+  /// @copydoc MarmotElement::assignProperty(const std::string&, const double*)
+  void assignProperty( const std::string& propertyName, const double* properties ) override;
+
+  /// @copydoc MarmotElement::getPropertyNames
+  std::vector< std::string > getPropertyNames() const override;
+
   /// @copydoc MarmotElement::assignNodeCoordinates
   void assignNodeCoordinates( const double* coordinates );
 
@@ -117,15 +126,8 @@ public:
    * @param[out] Ke      Stiffness matrix in the ambient space.
    * @param[in]  time    Current time.
    * @param[in]  dT      Time step size.
-   * @param[out] pNewdT  Suggested new time step size.
    */
-  void computeYourself( const double* QTotal,
-                        const double* dQ,
-                        double*       Pe,
-                        double*       Ke,
-                        const double* time,
-                        double        dT,
-                        double&       pNewdT );
+  void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT );
 
   /// @copydoc MarmotElement::setInitialConditions
   void setInitialConditions( StateTypes state, const double* values );
@@ -147,7 +149,7 @@ public:
                                int                  elementFace,
                                const double*        load,
                                const double*        QTotal,
-                               const double*        time,
+                               double               time,
                                double               dT );
 
   /**
@@ -159,12 +161,7 @@ public:
    * @param[in]  time   Current time.
    * @param[in]  dT     Time step size.
    */
-  void computeBodyForce( double*       P,
-                         double*       K,
-                         const double* load,
-                         const double* QTotal,
-                         const double* time,
-                         double        dT );
+  void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, double time, double dT );
 
   /// @copydoc MarmotElement::getStateView
   StateView getStateView( const std::string& stateName, int quadraturePoint );

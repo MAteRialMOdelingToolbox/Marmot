@@ -112,6 +112,27 @@ public:
   virtual void assignProperty( const MarmotMaterialSection& property );
 
   /**
+   * @brief Assign a single property of the element by name.
+   * @param[in] propertyName Name of the property.
+   * @param[in] properties Pointer to the array of property values.
+   * @note Default implementation throws an exception, as an element not overriding this
+   * interface does not support any named properties.
+   */
+  virtual void assignProperty( const std::string& propertyName, const double* properties )
+  {
+    throw std::invalid_argument( MakeString()
+                                 << __PRETTY_FUNCTION__ << ": unsupported named property '" << propertyName << "'" );
+  };
+
+  /**
+   * @brief Get the names of all the valid properties of the element.
+   * @return Vector of strings containing the property names.
+   * @note Default implementation returns an empty vector, as an element not overriding this
+   * interface does not expose any named properties.
+   */
+  virtual std::vector< std::string > getPropertyNames() const { return {}; };
+
+  /**
    * @brief Assign nodal coordinates to element.
    * @param[in] coordinates Pointer to array of nodal coordinates.
    */
@@ -135,15 +156,13 @@ public:
    * @param[out] K Stiffness matrix.
    * @param[in] time Current time.
    * @param[in] dT Time step size.
-   * @param[out] pNewdT Suggested new time step size.
    */
-  virtual void computeYourself( const double* QTotal,
-                                const double* dQ,
-                                double*       Pint,
-                                double*       K,
-                                const double* time,
-                                double        dT,
-                                double&       pNewdT ) = 0;
+  virtual void computeKernels( const double* QTotal,
+                               const double* dQ,
+                               double*       Pint,
+                               double*       K,
+                               double        time,
+                               double        dT ) = 0;
 
   /**
    * @brief Perform element computations for explicit time integration.
@@ -152,16 +171,10 @@ public:
    * @param[out] Pint Internal force vector.
    * @param[in] time Current time.
    * @param[in] dT Time step size.
-   * @param[out] pNewdT Suggested new time step size.
    *
    * @note Default implementation throws an exception.
    */
-  virtual void computeYourselfExplicit( const double* QTotal,
-                                        const double* dQ,
-                                        double*       Pint,
-                                        const double* time,
-                                        double        dT,
-                                        double&       pNewdT )
+  virtual void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pint, double time, double dT )
   {
     throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << " not yet implemented" );
   };
@@ -182,7 +195,7 @@ public:
                                        int                  elementFace,
                                        const double*        load,
                                        const double*        QTotal,
-                                       const double*        time,
+                                       double               time,
                                        double               dT ) = 0;
 
   /**
@@ -198,7 +211,7 @@ public:
                                  double*       K,
                                  const double* load,
                                  const double* QTotal,
-                                 const double* time,
+                                 double        time,
                                  double        dT ) = 0;
 
   /**

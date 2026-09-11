@@ -286,7 +286,8 @@ void test_dJ2_dStress()
 
   throwExceptionOnFailure( checkIfEqual( Marmot::ContinuumMechanics::VoigtNotation::Derivatives::dJ2_dStress( stress )
                                            .norm(),
-                                         dJ2_dStress_FD.norm() ),
+                                         dJ2_dStress_FD.norm(),
+                                         1e-8 ),
                            MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
@@ -306,7 +307,8 @@ void test_dJ3_dStress()
 
   throwExceptionOnFailure( checkIfEqual( Marmot::ContinuumMechanics::VoigtNotation::Derivatives::dJ3_dStress( stress )
                                            .norm(),
-                                         dJ3_dStress_FD.norm() ),
+                                         dJ3_dStress_FD.norm(),
+                                         1e-8 ),
                            MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
@@ -327,7 +329,8 @@ void test_dJ2Strain_dStrain()
   throwExceptionOnFailure( checkIfEqual( Marmot::ContinuumMechanics::VoigtNotation::Derivatives::dJ2Strain_dStrain(
                                            strain )
                                            .norm(),
-                                         dJ2_dStrain_FD.norm() ),
+                                         dJ2_dStrain_FD.norm(),
+                                         1e-8 ),
                            MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
@@ -347,7 +350,8 @@ void test_dJ3Strain_dStrain()
   throwExceptionOnFailure( checkIfEqual( Marmot::ContinuumMechanics::VoigtNotation::Derivatives::dJ3Strain_dStrain(
                                            strain )
                                            .norm(),
-                                         dJ3_dStrain_FD.norm() ),
+                                         dJ3_dStrain_FD.norm(),
+                                         1e-8 ),
                            MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 

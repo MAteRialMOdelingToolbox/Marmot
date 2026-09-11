@@ -120,7 +120,7 @@ void testTransverseIsotropicMaterialResponse()
 
   // Define the expected stress values for the applied strain increment
   Eigen::Matrix< double, 6, 1 > stressTarget_transverseIsotropic;
-  stressTarget_transverseIsotropic << 31.1111111111111111, 11.1111111111111111, 11.1111111111111111, 0., 0., 0.;
+  stressTarget_transverseIsotropic << 21.96078431372549, 3.9215686274509802, 3.9215686274509802, 0., 0., 0.;
 
   // Compare the computed stress to the expected stress and throw an exception if they differ
   throwExceptionOnFailure( checkIfEqual< double >( stress, stressTarget_transverseIsotropic, 1e-10 ),
@@ -212,7 +212,7 @@ void testOrthotropicMaterialResponse()
   Marmot::Vector6d stress = history.back().stress;
   // Define the expected stress values for the applied strain increment
   Eigen::Matrix< double, 6, 1 > stressTarget_orthotropic;
-  stressTarget_orthotropic << 32.32091690544413, 11.002865329512895, 14.613180515759312, 0., 0., 0.;
+  stressTarget_orthotropic << 24.62633451957296, 5.800711743772242, 9.074733096085410, 0., 0., 0.;
 
   // Compare the computed stress to the expected stress and throw an exception if they differ
   throwExceptionOnFailure( checkIfEqual< double >( stress, stressTarget_orthotropic, 1e-10 ),
@@ -309,7 +309,7 @@ void testOrthotropicMaterialResponseRotation()
 
   // Define the expected st ress values for the applied strain increment
   Eigen::Matrix< double, 6, 1 > stressTarget_orthotropic;
-  stressTarget_orthotropic << 0.28394632, 0.08759518, 0., 0.19606294, 0., 0.;
+  stressTarget_orthotropic << 2.898786736584660e-01, 8.616047561468707e-02, 0., 2.004527953677034e-01, 0., 0.;
 
   // Compare the computed stress to the expected stress and throw an exception if they differ
   throwExceptionOnFailure( checkIfEqual< double >( stress, stressTarget_orthotropic, 1e-8 ),

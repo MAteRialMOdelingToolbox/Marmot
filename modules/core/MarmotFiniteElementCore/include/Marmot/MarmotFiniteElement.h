@@ -520,13 +520,13 @@ namespace Marmot {
       /**
        * @brief Construct a BoundaryElement from a parent shape and face number.
        * @param[in] parentShape        Shape enum of the parent volume element.
-       * @param[in] nDim               Number of spatial dimensions.
        * @param[in] parentFaceNumber   Zero-based index of the boundary face on the parent element.
+       * @param[in] nDim               Number of spatial dimensions.
        * @param[in] parentCoordinates  Flat vector of parent nodal coordinates.
        */
       BoundaryElement( ElementShapes          parentShape,
-                       int                    nDim,
                        int                    parentFaceNumber,
+                       int                    nDim,
                        const Eigen::VectorXd& parentCoordinates );
 
       /// @brief Compute the scalar (pressure) load vector for a unit pressure.

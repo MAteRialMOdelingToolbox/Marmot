@@ -77,6 +77,19 @@ public:
   {
   }
 
+  /**
+   * @brief Virtual destructor.
+   *
+   * This class is abstract and instances are owned through base-class pointers
+   * (e.g. the std::unique_ptr held by the gradient-enhanced elements), so the
+   * destructor must be virtual — destroying a derived object through a base
+   * pointer with a non-virtual destructor is undefined behaviour. libstdc++
+   * silently invokes the wrong destructor, while libc++/clang diagnoses it
+   * (-Wdelete-abstract-non-virtual-dtor) and emits a trap instruction, which
+   * aborted every simulation using such a material on macOS/arm64.
+   */
+  virtual ~MarmotMaterialGeneralGradientEnhancedHypoElastic() = default;
+
   /// @brief Struct to hold the increment information.
   struct increment {
     Marmot::Vector6d                            dStrain; ///< Increment of the strain tensor in Voigt notation

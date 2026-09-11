@@ -44,7 +44,7 @@ namespace Marmot {
 
     Eigen::Matrix< double, 6, 6 > stiffnessToVoigt( const EigenTensors::Tensor3333d& C )
     {
-      // Ordering for Voigt notation (0->xx, 1->yy, 2->zz, 3->xy, 4->yz, 5->xz)
+      // Ordering for Voigt notation (0->xx, 1->yy, 2->zz, 3->xy, 4->xz, 5->yz)
       std::array< std::pair< int, int >, 6 > ordering = {
         { { 0, 0 }, { 1, 1 }, { 2, 2 }, { 0, 1 }, { 2, 0 }, { 1, 2 } } };
 

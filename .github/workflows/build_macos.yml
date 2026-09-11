@@ -1,0 +1,91 @@
+# This is a workflow to build the repo on macOS / arm64 (Apple Silicon).
+# GitHub's macos-14 and newer runners are Apple Silicon, so this exercises the
+# clang/libc++ toolchain, which is stricter than the GCC/libstdc++ combination
+# used by build_ubuntu.
+name: build_macos
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  build:
+    # macos-latest is arm64 (Apple Silicon); use macos-13 for an Intel runner.
+    runs-on: macos-latest
+    # Set explicitly rather than relying on CMake's default: the macOS runners also
+    # ship Homebrew GCC, and picking that up would silently build against libstdc++,
+    # defeating the purpose of this job. No version is pinned - tracking whatever
+    # Apple clang the runner provides is what users actually have.
+    env:
+      CC:   clang
+      CXX:  clang++
+    steps:
+      - name: Show toolchain
+        shell: bash -leo pipefail {0}
+        run: |
+          ${CXX} --version
+          cmake --version
+
+      - name: Install Python dependencies
+        shell: bash -leo pipefail {0}
+        run: |
+          pip3 install --break-system-packages numpy
+
+      - name: Install Eigen
+        shell: bash -leo pipefail {0}
+        run: |
+          git clone --branch 3.4.0 https://gitlab.com/libeigen/eigen.git
+          cd eigen
+          mkdir build
+          cd build
+          cmake -DBUILD_TESTING=OFF  ..
+          sudo make install
+          cd ../..
+
+      # NOTE: the build directory is deliberately NOT called `build` here. autodiff
+      # ships a Bazel `BUILD` file in its repository root, and the macOS filesystem
+      # is case-insensitive, so `mkdir build` fails with "File exists" and `cd build`
+      # with "Not a directory". On Linux the two names are distinct, which is why
+      # build_ubuntu is unaffected.
+      - name: Install Autodiff
+        shell: bash -leo pipefail {0}
+        run: |
+          git clone --branch v1.1.0 https://github.com/autodiff/autodiff.git
+          cd autodiff
+          mkdir build-cmake
+          cd build-cmake
+          cmake -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF ..
+          sudo make install
+          cd ../..
+
+      # NOTE: upstream Fastor does not compile on arm64 - it reaches x86 `cpuid`
+      # and `rdtsc` inline assembly on every non-Windows platform, and its scalar
+      # fallback backend has several defects that only surface off x86. The fork
+      # below is upstream `master` plus the minimal patch fixing exactly that.
+      # The fixes are offered upstream in romeric/Fastor#182 and #183; once either
+      # is merged, switch this step back to the upstream repository.
+      - name: Install Fastor (arm64-compatible fork)
+        shell: bash -leo pipefail {0}
+        run: |
+          git clone --branch arm64/apple-silicon-master https://github.com/BOKU-CMP-MEC-MAT/Fastor.git
+          cd Fastor
+          mkdir build
+          cd build
+          cmake -DBUILD_TESTING=OFF  ..
+          sudo make install
+          cd ../..
+
+      - name: Check out Marmot
+        uses: actions/checkout@v4
+
+      - name: Install Marmot
+        shell: bash -leo pipefail {0}
+        run: |
+          mkdir build
+          cd build
+          cmake -DMARMOT_BUILD_PYTHON_BINDINGS=ON ..
+          sudo make install
+          # --no-tests=error: ctest exits 0 on an empty test set, which would
+          # report success for a build that produced no tests at all.
+          ctest --output-on-failure --no-tests=error

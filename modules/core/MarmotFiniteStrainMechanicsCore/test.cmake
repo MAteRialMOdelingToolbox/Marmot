@@ -15,3 +15,6 @@ add_marmot_test("TestMarmotStressMeasures" "${CURR_TEST_SOURCE_DIR}/TestMarmotSt
 
 # Tests for MarmotFiniteStrainViscoelasticity
 add_marmot_test("TestMarmotFiniteStrainViscoelasticity" "${CURR_TEST_SOURCE_DIR}/TestMarmotFiniteStrainViscoelasticity.cpp")
+
+# Tests for the Hughes-Winget small-strain wrapper
+add_marmot_test("TestMarmotMaterialHughesWinget" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialHughesWinget.cpp")

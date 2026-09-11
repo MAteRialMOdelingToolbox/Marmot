@@ -110,7 +110,31 @@ Get Marmot:
     cd build
     cmake \
         -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
+        -DMARMOT_BUILD_PYTHON_BINDINGS=ON \
         ..
     make install
     ctest --output-on-failure
+
+Building with Python Bindings
+*****************************
+
+Marmot optionally provides a Python interface using `nanobind <https://github.com/wjakob/nanobind>`_.
+To enable the Python module, configure CMake with `-DMARMOT_BUILD_PYTHON_BINDINGS=ON`:
+
+.. code-block:: console
+
+    cmake -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DMARMOT_BUILD_PYTHON_BINDINGS=ON ..
+    make install
+    ctest --output-on-failure
+
+After installation, the ``marmot`` package is available directly in Python:
+
+.. code-block:: python
+
+    import marmot
+    import numpy as np
+
+    props = np.array([20000.0, 0.25])
+    solver = marmot.solvers.HypoElasticSolver("LINEARELASTIC", props)
+
 

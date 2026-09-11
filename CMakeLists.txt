@@ -55,6 +55,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_BUILD_RPATH "${CMAKE_BINARY_DIR}/lib")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # set install directories
@@ -115,7 +116,20 @@ enable_testing()
 function(add_marmot_test test_name test_source)
   add_executable(${test_name} ${test_source})
   target_link_libraries(${test_name} PRIVATE ${PROJECT_NAME})
+  set_target_properties(${test_name} PROPERTIES
+      BUILD_RPATH "${CMAKE_BINARY_DIR}/lib"
+  )
   add_test(NAME ${test_name} COMMAND ${test_name} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+  # Many Marmot classes are templates (<int nDim, int nNodes>) that get implicitly
+  # re-instantiated inside each test's own translation unit. An uninstrumented test
+  # binary's own copy of such a template method wins symbol resolution over the
+  # library's instrumented copy, so gcov never sees it. Instrumenting the tests too
+  # (MARMOT_ENABLE_COVERAGE, set further down before this function is ever called)
+  # avoids that blind spot.
+  if(MARMOT_ENABLE_COVERAGE)
+    target_compile_options(${test_name} PRIVATE --coverage -O0)
+    target_link_options(${test_name} PRIVATE --coverage)
+  endif()
 endfunction()
 
 set(MODULES_DIR ${CMAKE_SOURCE_DIR}/modules)
@@ -241,12 +255,46 @@ if(SHARED_LIBRARIES)
     message("+------------------------------------------------------------------------------+")
 endif()
 
+# ── Code coverage ──────────────────────────────────────────────────────────────
+
+# Opt-in: instruments the Marmot library with gcov. Test executables are instrumented
+# too (see add_marmot_test below) because templated classes get re-instantiated per
+# translation unit, and an uninstrumented test binary's own copy of a template method
+# otherwise wins symbol resolution over the library's instrumented one, hiding it from
+# coverage entirely. Flags are kept PRIVATE: PUBLIC link options would be exported into
+# MarmotTargets.cmake, silently forcing --coverage onto any downstream consumer that
+# links Marmot::Marmot from a coverage-enabled install.
+option(MARMOT_ENABLE_COVERAGE "Instrument libMarmot and its tests with gcov code coverage (GCC/Clang only)" OFF)
+
+if(MARMOT_ENABLE_COVERAGE)
+    if(NOT CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+        message(FATAL_ERROR "MARMOT_ENABLE_COVERAGE requires GCC or Clang")
+    endif()
+    if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+        message(WARNING "MARMOT_ENABLE_COVERAGE is intended to be used with -DCMAKE_BUILD_TYPE=Debug for accurate line coverage")
+    endif()
+    message(STATUS "Instrumenting ${PROJECT_NAME} for code coverage (--coverage)")
+    target_compile_options(${PROJECT_NAME} PRIVATE --coverage -O0)
+    target_link_options(${PROJECT_NAME} PRIVATE --coverage)
+endif()
+
 # Include test definitions for all installed modules
 foreach(MODULEPATH IN LISTS INSTALLED_MODULEPATHS)
     if(EXISTS "${MODULEPATH}/test.cmake")
         include("${MODULEPATH}/test.cmake")
     endif()
 endforeach()
+
+# ── Python bindings ───────────────────────────────────────────────────────────
+
+# Opt-in: building the bindings requires the Python development headers and
+# fetches nanobind, neither of which should be a hard dependency of the C++ library.
+option(MARMOT_BUILD_PYTHON_BINDINGS "Build the Marmot Python bindings" OFF)
+
+if(MARMOT_BUILD_PYTHON_BINDINGS)
+    message(STATUS "Building the Marmot Python bindings")
+    add_subdirectory(modules/python)
+endif()
 
 # ── Install ───────────────────────────────────────────────────────────────────
 
