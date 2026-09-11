@@ -87,8 +87,17 @@ void testBasicAccessorsDelegateToChild()
   throwExceptionOnFailure( static_cast< int >( nodeFields.size() ) == 2,
                            "getNodeFields() must delegate to the child." );
 
-  throwExceptionOnFailure( wrapper->getPropertyNames().empty(),
-                           "getPropertyNames() must delegate to the child (empty by default)." );
+  // Delegation is what this asserts, so it is asserted against the child's own answer rather than
+  // against emptiness: DisplacementFiniteElement reports the bulk-viscosity properties now, and a
+  // test that reads "empty" would be testing the child's property list instead of the wrapper.
+  const auto expectedPropertyNames = DisplacementFiniteElement<
+                                       1,
+                                       2 >( 1,
+                                            FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                            DisplacementFiniteElement< 1, 2 >::SectionType::UniaxialStress )
+                                       .getPropertyNames();
+  throwExceptionOnFailure( wrapper->getPropertyNames() == expectedPropertyNames,
+                           "getPropertyNames() must delegate to the child." );
 
   bool threw = false;
   try {
