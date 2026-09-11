@@ -76,11 +76,35 @@ void testADForVectorValuedFunctions()
                            "Error in vector function jacobian with autodiff::dual2nd" );
 }
 
+void testShiftTo2ndOrderDualForVectors()
+{
+  using namespace Marmot::AutomaticDifferentiation;
+
+  autodiff::VectorXdual X( 3 );
+  X( 0 ) = 1.5;
+  X( 1 ) = -2.5;
+  X( 2 ) = 3.5;
+
+  const autodiff::VectorXdual2nd X2nd = shiftTo2ndOrderDual( X );
+
+  throwExceptionOnFailure( static_cast< int >( X2nd.size() ) == 3,
+                           "shiftTo2ndOrderDual(VectorXdual) returned the wrong size in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+
+  for ( int i = 0; i < 3; i++ ) {
+    const autodiff::dual2nd expected = shiftTo2ndOrderDual( X( i ) );
+    throwExceptionOnFailure( checkIfEqual( X2nd( i ).val, expected.val ),
+                             "shiftTo2ndOrderDual(VectorXdual) does not match the scalar overload at index " +
+                               std::to_string( i ) + " in " + std::string( __PRETTY_FUNCTION__ ) );
+  }
+}
+
 int main()
 {
 
   auto tests = std::vector< std::function< void() > >{ testAutomaticDifferentiationForScalars,
-                                                       testADForVectorValuedFunctions };
+                                                       testADForVectorValuedFunctions,
+                                                       testShiftTo2ndOrderDualForVectors };
 
   executeTestsAndCollectExceptions( tests );
 

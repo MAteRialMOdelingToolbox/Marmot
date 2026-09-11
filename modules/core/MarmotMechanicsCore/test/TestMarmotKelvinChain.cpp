@@ -190,6 +190,27 @@ void approximateZerothComplianceTestFunction()
                            MakeString() << __PRETTY_FUNCTION__ << " error in zeroth compliance" );
 }
 
+void updateStateVarMatrixIsANoOpForZeroTimeIncrementTestFunction()
+{
+  const int  n = 2;
+  Properties elasticModuli( n ), retardationTimes( n );
+  elasticModuli << 3., 30.;
+  retardationTimes << 10., 50.;
+
+  StateVarMatrix stateVars( 6, n );
+  stateVars << 0.01, 0.1, 0.02, 0.2, 0.03, 0.3, 0.04, 0.4, 0.05, 0.5, 0.06, 0.6;
+  const StateVarMatrix stateVarsBefore = stateVars;
+
+  Vector6d dStress              = { 0.1, 0.2, 0.3, 0.06, 0.04, 0.02 };
+  Matrix6d unitComplianceMatrix = ContinuumMechanics::Elasticity::Isotropic::complianceTensor( 1.0, 0.2 );
+
+  updateStateVarMatrix( 0.0, elasticModuli, retardationTimes, stateVars, dStress, unitComplianceMatrix );
+
+  throwExceptionOnFailure( checkIfEqual< double >( stateVars, stateVarsBefore ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " updateStateVarMatrix() must be a no-op for dT <= 1e-14" );
+}
+
 int main()
 {
 
@@ -197,7 +218,8 @@ int main()
                                                        computeLambdaAndBetaTestFunction,
                                                        computeElasticModuliTestFunction,
                                                        approximateZerothComplianceTestFunction,
-                                                       evaluatePostWidderFormulaTestFunction };
+                                                       evaluatePostWidderFormulaTestFunction,
+                                                       updateStateVarMatrixIsANoOpForZeroTimeIncrementTestFunction };
 
   executeTestsAndCollectExceptions( tests );
 
