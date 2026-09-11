@@ -38,6 +38,8 @@
 #include "Marmot/MarmotStateVarVectorManager.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
+#include <atomic>
+#include <cmath>
 #include <memory>
 #include <vector>
 
@@ -116,7 +118,9 @@ namespace Marmot::Elements {
     const SectionType sectionType;
     /**
      * @brief Coefficients of the artificial bulk viscosity, assigned via the named property
-     * "bulk viscosity" and inactive unless it is.
+     * "bulk viscosity". They default to zero, which is inactive: unless that property is
+     * assigned, no viscous stress is formed and the element integrates exactly what it
+     * integrated before the device existed.
      */
     FiniteElement::BulkViscosity::Coefficients bulkViscosityCoefficients;
 
@@ -647,6 +651,22 @@ namespace Marmot::Elements {
                                         "2 values, the linear coefficient b1 and the quadratic coefficient b2, but "
                                      << nProperties << " were given." );
 
+      /* Validated BEFORE anything is committed, so a rejected assignment leaves the element
+       * exactly as it was: a caller that catches the exception and carries on must not be left
+       * running with half of an invalid property in place. Non-finite values are rejected
+       * alongside negative ones -- every comparison against a NaN is false, so a NaN would pass a
+       * `< 0.0` test and then propagate silently into the viscous stress.
+       */
+      if ( !std::isfinite( properties[0] ) || !std::isfinite( properties[1] ) )
+        throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
+                                                  << ": both bulk viscosity coefficients must be finite numbers." );
+
+      if ( properties[0] < 0.0 || properties[1] < 0.0 )
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__
+                                     << ": both bulk viscosity coefficients must be non-negative, a negative one "
+                                        "would feed energy into the solution rather than remove it." );
+
       /* Artificial bulk viscosity is a NUMERICAL device, so it is an element property and not a
        * material one: the same concrete integrated implicitly needs none of it, and two meshes of
        * the same material may want different amounts. Both coefficients are dimensionless; see
@@ -654,12 +674,6 @@ namespace Marmot::Elements {
        */
       bulkViscosityCoefficients.linear    = properties[0];
       bulkViscosityCoefficients.quadratic = properties[1];
-
-      if ( bulkViscosityCoefficients.linear < 0.0 || bulkViscosityCoefficients.quadratic < 0.0 )
-        throw std::invalid_argument( MakeString()
-                                     << __PRETTY_FUNCTION__
-                                     << ": both bulk viscosity coefficients must be non-negative, a negative one "
-                                        "would feed energy into the solution rather than remove it." );
     }
     else if ( propertyName == "bulk viscosity damage degradation" ) {
       if ( nProperties != 1 )
@@ -675,6 +689,12 @@ namespace Marmot::Elements {
        * Marmot::FiniteElement::BulkViscosity::degradationFactor for what the exponent means and for
        * what it degrades with -- the current tangent, not a damage variable.
        */
+      if ( !std::isfinite( properties[0] ) )
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__
+                                     << ": the bulk viscosity damage degradation exponent must be a finite number; a "
+                                        "NaN passes every ordering test and would silently disable the option." );
+
       if ( properties[0] < 0.0 )
         throw std::invalid_argument( MakeString()
                                      << __PRETTY_FUNCTION__
@@ -691,15 +711,27 @@ namespace Marmot::Elements {
                           "variable, i.e. "
                        << nNonlocalVariables << " for this element, but " << nProperties << " were given." );
 
+      /* Every entry is checked before ANY of them is written, for the same reason the arity is
+       * checked first: a rejected assignment must leave the element with the properties it had.
+       * Validating inside the writing loop left `{valid, -1}` half applied, so the next attempt
+       * would assemble a mixture of the old values and the new.
+       */
       for ( int n = 0; n < nNonlocalVariables; n++ ) {
+        if ( !std::isfinite( properties[n] ) )
+          throw std::invalid_argument( MakeString()
+                                       << __PRETTY_FUNCTION__
+                                       << ": a micro-inertia must be a finite number; a NaN passes every ordering "
+                                          "test and would propagate into the lumped inertia." );
+
         if ( properties[n] < 0.0 )
           throw std::invalid_argument( MakeString()
                                        << __PRETTY_FUNCTION__
                                        << ": a micro-inertia must be non-negative, a negative one would make the "
                                           "non-local field integrate backwards in time." );
-
-        nonlocalMicroInertia( n ) = properties[n];
       }
+
+      for ( int n = 0; n < nNonlocalVariables; n++ )
+        nonlocalMicroInertia( n ) = properties[n];
     }
     else {
       MarmotElement::assignProperty( propertyName, properties, nProperties );
@@ -1019,7 +1051,15 @@ namespace Marmot::Elements {
        */
       constexpr int nNormalComponents = nDim == 3 ? 3 : 2;
 
-      const auto bulkViscousStressAt = [&]( QuadraturePoint& quadraturePoint, const response& currentResponse ) {
+      const auto bulkViscousStressAt = [&]( QuadraturePoint&                            quadraturePoint,
+                                            const response&                             currentResponse,
+                                            const Vector< double, nNonlocalVariables >& currentK ) {
+        /* The reference is the speed at a ZERO non-local field, which is what the default argument
+         * asks for -- not merely "the speed the first time this was called". The distinction is the
+         * whole of the degradation: the two queries below differ in the non-local field alone, so
+         * their ratio measures damage and nothing else, and it does so identically on a restart, at
+         * a refinement, or on an element that enters explicit dynamics already damaged.
+         */
         if ( quadraturePoint.referenceWaveSpeed <= 0.0 )
           quadraturePoint.referenceWaveSpeed = quadraturePoint.material->getMaximumWaveSpeed( currentResponse );
 
@@ -1028,11 +1068,18 @@ namespace Marmot::Elements {
          * asking for that costs a full constitutive evaluation. With the exponent at its default of
          * zero the material is never asked and this branch is not taken, so a deck that does not
          * request the degradation integrates exactly the stress it integrated before.
+         *
+         * The current non-local field has to be handed over explicitly. It is an input to the
+         * constitutive law rather than a state it carries, so a query that does not pass it asks
+         * for the response at a field of zero -- which, wherever damage is driven by the non-local
+         * field alone, is the undamaged tangent however damaged the point is. Omitting it made this
+         * factor identically 1.0 and the whole property inert.
          */
         const double
           degradation = bulkViscosityCoefficients.isDegraded()
                           ? FiniteElement::BulkViscosity::degradationFactor( quadraturePoint.material
-                                                                               ->getMaximumWaveSpeed( currentResponse ),
+                                                                               ->getMaximumWaveSpeed( currentResponse,
+                                                                                                      currentK ),
                                                                              quadraturePoint.referenceWaveSpeed,
                                                                              bulkViscosityCoefficients.degradation )
                           : 1.0;
@@ -1082,7 +1129,7 @@ namespace Marmot::Elements {
         }
 
         if ( bulkViscosityCoefficients.areActive() )
-          S.head( nNormalComponents ).array() += bulkViscousStressAt( qp, res );
+          S.head( nNormalComponents ).array() += bulkViscousStressAt( qp, res, K );
 
         fU += B.transpose() * S * qp.J0xW;
 
@@ -1108,7 +1155,7 @@ namespace Marmot::Elements {
 
           Vector6d integratedStress = res.stress;
           if ( bulkViscosityCoefficients.areActive() )
-            integratedStress.head( nNormalComponents ).array() += bulkViscousStressAt( qp, res );
+            integratedStress.head( nNormalComponents ).array() += bulkViscousStressAt( qp, res, K );
 
           fU += B.transpose() * integratedStress * qp.J0xW;
 
@@ -1139,17 +1186,25 @@ namespace Marmot::Elements {
     Map< KeSizedMatrix > Me( M );
     Me.setZero();
 
+    /* The non-local block carries the same coefficient the LUMPED path assembles there: the
+     * micro-inertia, which is the coefficient of that field's second time derivative. It used to
+     * carry the non-local viscosity, from before inertia and damping were told apart -- which made
+     * the two paths disagree about what this matrix even is, and left an implicit consumer
+     * integrating the field with a viscosity as its mass while the explicit one used the
+     * micro-inertia. Where no micro-inertia has been assigned the block is zero, which is correct:
+     * the field is then first order in time and has no inertia at all. There is no consistent
+     * counterpart to computeLumpedDamping() yet; the viscosity is reported only through that one.
+     */
     for ( const auto& qp : qps ) {
-      const auto                  N_  = localGeometryElement.NB( localGeometryElement.N( qp.xi ) );
-      const NSizedK&              N_K = qp.N_K;
-      const double                rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
-      const std::vector< double > eta = qp.material->getNonlocalViscosity(
-        qp.managedStateVars->materialStateVars.data() );
+      const auto     N_  = localGeometryElement.NB( localGeometryElement.N( qp.xi ) );
+      const NSizedK& N_K = qp.N_K;
+      const double   rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
       Me.topLeftCorner( sizeDoFU, sizeDoFU ) += N_.transpose() * N_ * qp.J0xW * rho;
       for ( int n = 0; n < nNonlocalVariables; n++ ) {
         Eigen::Index idx = n * nNonLocalNodes;
         Me.bottomRightCorner( sizeDoFK, sizeDoFK )
-          .block( idx, idx, nNonLocalNodes, nNonLocalNodes ) += N_K.transpose() * N_K * qp.J0xW * eta[n];
+          .block( idx, idx, nNonLocalNodes, nNonLocalNodes ) += N_K.transpose() * N_K * qp.J0xW *
+                                                                nonlocalMicroInertia( n );
       }
     }
   }
@@ -1238,6 +1293,15 @@ namespace Marmot::Elements {
      * points, the micro-inertia is one number for the whole element.
      */
     constexpr int nNodesLinear = ( 1 << nDim );
+
+    // The same precondition computeLumpedInertia() carries, and for the same reason: below,
+    // N_weighted_nonlocal is assigned the LINEAR shape function vector and then indexed as though
+    // it held nNonLocalNodes entries, which reads past its end for any other non-local
+    // interpolation order.
+    static_assert( nNodes == nNonLocalNodes || nNonLocalNodes == nNodesLinear,
+                   "GeneralGradientEnhancedDisplacementFiniteElement::computeLumpedDamping requires the "
+                   "non-local field to use either the displacement interpolation order (nNonLocalNodes == "
+                   "nNodes) or linear corner-node interpolation (nNonLocalNodes == 2^nDim)." );
 
     auto            linGeometryEl    = MarmotGeometryElement< nDim, nNodesLinear >();
     Eigen::VectorXd rowSumsHighOrder = Eigen::VectorXd::Zero( nNodes );
@@ -1471,19 +1535,30 @@ namespace Marmot::Elements {
      * It is worth a line because the two limits are indistinguishable from the outside -- the
      * caller receives one number -- and the remedies are disjoint. A run bounded here does not get
      * faster from mass scaling by any factor, since no density enters this bound; it needs a larger
-     * micro-inertia, i.e. a larger non-local viscosity. Both limits are linear in the element size
+     * micro-inertia, and therefore, once that is at its non-ringing cap of eta^2/4, a larger
+     * non-local viscosity to raise the cap. Both limits are linear in the element size
      * once h << l, so whichever one is in charge stays in charge under refinement, and this is
      * therefore a property of the parameters rather than of the mesh.
      */
-    static bool nonlocalLimitAlreadyReported = false;
-    if ( criticalTimeStep < mechanicalTimeStep && !nonlocalLimitAlreadyReported ) {
-      nonlocalLimitAlreadyReported = true;
+    /* Atomic, because the critical time step is evaluated per element and a caller is free to do
+     * that in parallel: a plain bool here is a data race, and the exchange is also what makes
+     * "once" actually once rather than once per thread that happens to read it first. It is a
+     * function-local static, so "once" lasts as long as the PROCESS, not as long as the analysis
+     * -- a second analysis in the same process stays silent. That is the deliberate trade against
+     * emitting one identical line per element of a large model, and it is stated here rather than
+     * discovered.
+     */
+    static std::atomic< bool > nonlocalLimitAlreadyReported{ false };
+    if ( criticalTimeStep < mechanicalTimeStep && !nonlocalLimitAlreadyReported.exchange( true ) ) {
       MarmotJournal::warningToMSG( MakeString()
                                    << "element " << elLabel << ": the stable increment is bounded by the NON-LOCAL "
                                    << "field (" << criticalTimeStep << " s), not by the mesh (" << mechanicalTimeStep
                                    << " s). Mass scaling cannot raise it -- no density enters "
-                                   << "that bound. Raise the micro-inertia, i.e. the non-local viscosity, until the "
-                                   << "mechanical limit is the smaller of the two. Reported once per element type." );
+                                   << "that bound. Raise the micro-inertia m_k, which is the mass of this bound. It "
+                                   << "is an element property in its own right, but it is capped at eta^2/4 by the "
+                                   << "requirement that the field not ring, so raising it beyond that cap means "
+                                   << "raising the material's non-local viscosity eta with it. Reported once per "
+                                   << "element type." );
     }
   }
 

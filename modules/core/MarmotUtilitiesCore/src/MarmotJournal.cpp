@@ -27,6 +27,11 @@ bool MarmotJournal::warningToMSG( const std::string& message )
 
 bool MarmotJournal::notificationToMSG( const std::string& message )
 {
-  getInstance().output << message << std::endl;
+  // A newline, but deliberately NOT a flush. Unlike a warning, a notification is raised in bulk:
+  // the substeppers emit one per rejected substep, which is per quadrature point per increment,
+  // and now that a consumer can actually point this stream somewhere the flush would be paid on
+  // every one of them. What the reliability fix needed was for WARNINGS to survive an abnormal
+  // termination; notifications are progress chatter and may sit in the buffer.
+  getInstance().output << message << '\n';
   return true;
 }

@@ -99,7 +99,9 @@ namespace Marmot::Elements {
     const SectionType sectionType;
     /**
      * @brief Coefficients of the artificial bulk viscosity, assigned via the named property
-     * "bulk viscosity" and inactive unless it is.
+     * "bulk viscosity". They default to zero, which is inactive: unless that property is
+     * assigned, no viscous stress is formed and the element integrates exactly what it
+     * integrated before the device existed.
      */
     FiniteElement::BulkViscosity::Coefficients bulkViscosityCoefficients;
 
@@ -572,6 +574,22 @@ namespace Marmot::Elements {
                                         "2 values, the linear coefficient b1 and the quadratic coefficient b2, but "
                                      << nProperties << " were given." );
 
+      /* Validated BEFORE anything is committed, so a rejected assignment leaves the element
+       * exactly as it was: a caller that catches the exception and carries on must not be left
+       * running with half of an invalid property in place. Non-finite values are rejected
+       * alongside negative ones -- every comparison against a NaN is false, so a NaN would pass a
+       * `< 0.0` test and then propagate silently into the viscous stress.
+       */
+      if ( !std::isfinite( properties[0] ) || !std::isfinite( properties[1] ) )
+        throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
+                                                  << ": both bulk viscosity coefficients must be finite numbers." );
+
+      if ( properties[0] < 0.0 || properties[1] < 0.0 )
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__
+                                     << ": both bulk viscosity coefficients must be non-negative, a negative one "
+                                        "would feed energy into the solution rather than remove it." );
+
       /* Artificial bulk viscosity is a NUMERICAL device, so it is an element property and not a
        * material one: the same concrete integrated implicitly needs none of it, and two meshes of
        * the same material may want different amounts. Both coefficients are dimensionless; see
@@ -579,12 +597,6 @@ namespace Marmot::Elements {
        */
       bulkViscosityCoefficients.linear    = properties[0];
       bulkViscosityCoefficients.quadratic = properties[1];
-
-      if ( bulkViscosityCoefficients.linear < 0.0 || bulkViscosityCoefficients.quadratic < 0.0 )
-        throw std::invalid_argument( MakeString()
-                                     << __PRETTY_FUNCTION__
-                                     << ": both bulk viscosity coefficients must be non-negative, a negative one "
-                                        "would feed energy into the solution rather than remove it." );
     }
     else if ( propertyName == "bulk viscosity damage degradation" ) {
       if ( nProperties != 1 )
@@ -600,6 +612,12 @@ namespace Marmot::Elements {
        * Marmot::FiniteElement::BulkViscosity::degradationFactor for what the exponent means and for
        * what it degrades with -- the current tangent, not a damage variable.
        */
+      if ( !std::isfinite( properties[0] ) )
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__
+                                     << ": the bulk viscosity damage degradation exponent must be a finite number; a "
+                                        "NaN passes every ordering test and would silently disable the option." );
+
       if ( properties[0] < 0.0 )
         throw std::invalid_argument( MakeString()
                                      << __PRETTY_FUNCTION__

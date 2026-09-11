@@ -236,8 +236,19 @@ With a lumped micro-inertia and central differences the limit is
 
 For :math:`h \ll l` this is :math:`\Delta t \approx 2\sqrt{m_k}\,h / (\sqrt{C}\, l)`: **linear in
 the element size**, the same scaling elastodynamics has. On a mesh coarser than the internal length
-the reaction term takes over and the limit saturates at :math:`2\sqrt{m_k}`, so the field can never
-demand a smaller increment than that regardless of how coarse the mesh is.
+the reaction term takes over, :math:`\omega_\mathrm{max} \to 1/\sqrt{m_k}`, and the limit saturates
+-- but not at :math:`2\sqrt{m_k}`, because the damping does not go away with the mesh. The damping
+ratio tends to :math:`\zeta_\infty = \eta / (2\sqrt{m_k})`, which is finite, so the coarse-mesh
+limit is
+
+.. math::
+
+   \Delta t_\infty = 2\sqrt{m_k} \left( \sqrt{1+\zeta_\infty^2} - \zeta_\infty \right) .
+
+At the recommended :math:`m_k = \eta^2/4` that is :math:`\zeta_\infty = 1` exactly, so
+:math:`\Delta t_\infty = (\sqrt{2}-1)\,\eta \approx 0.414\,\eta` -- for :math:`\eta = 10^{-4}\,`s,
+:math:`4.14 \times 10^{-5}\,`s rather than the :math:`10^{-4}\,`s the undamped expression suggests.
+That is the largest increment the field will ever permit, however coarse the mesh.
 
 Two things are easy to get wrong here, each costing a factor of two or more: the continuum estimate
 :math:`\Delta t \le h/c_k` **overestimates** the limit, because the discrete Laplacian's eigenvalue
