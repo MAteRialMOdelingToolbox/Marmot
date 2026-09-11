@@ -5,7 +5,11 @@
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
 #include <algorithm>
+#include <cmath>
+#include <limits>
+#include <memory>
 #include <string>
+#include <vector>
 
 using namespace Marmot;
 using namespace Marmot::Elements;
@@ -1764,6 +1768,188 @@ void testNonlocalCriticalTimeStepScalesLinearlyWithElementSize()
                            MakeString() << __PRETTY_FUNCTION__ << ": expected a ratio of 0.5, got " << ratio );
 }
 
+namespace {
+
+  /* The VISCOUS part of the internal force alone, at a prescribed non-local field.
+   *
+   * Isolated by differencing two otherwise identical elements, one carrying the bulk viscosity and
+   * one not, at the same field value: the constitutive stress is degraded by that field too, and
+   * differencing at a fixed field cancels it exactly, leaving the artificial term by itself.
+   */
+  Eigen::VectorXd viscousForceAtNonlocalField( double nonlocalField, double degradationExponent )
+  {
+    constexpr int nDim          = 3;
+    constexpr int nNodes        = 8;
+    constexpr int nNonlocalVars = 1;
+    using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
+
+    const auto intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+    const auto secType = ElemType::SectionType::Solid;
+
+    const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                                  0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+    const std::vector< double > matProps      = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+
+    const std::vector< double > bulkViscosity = { 0.06, 1.2 };
+
+    // A uniform volumetric COMPRESSION, so that both the linear and the quadratic term are active.
+    const double    strainPerAxis = -1.0e-4;
+    constexpr int   sizeDoFU      = nNodes * nDim;
+    Eigen::VectorXd Q             = Eigen::VectorXd::Zero( sizeDoFU + nNodes );
+    for ( int a = 0; a < nNodes; a++ )
+      for ( int d = 0; d < nDim; d++ )
+        Q[a * nDim + d] = strainPerAxis * nodeCoordsVec[a * nDim + d];
+    for ( int a = 0; a < nNodes; a++ )
+      Q[sizeDoFU + a] = nonlocalField;
+
+    const auto internalForce = [&]( bool withBulkViscosity ) {
+      auto element = std::make_unique< ElemType >( 1, intType, secType );
+      element->assignNodeCoordinates( nodeCoordsVec.data() );
+      MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+      element->assignProperty( materialSection );
+
+      if ( withBulkViscosity ) {
+        element->assignProperty( "bulk viscosity", bulkViscosity.data(), bulkViscosity.size() );
+        element->assignProperty( "bulk viscosity damage degradation", &degradationExponent, 1 );
+      }
+
+      const int             nStateVars = element->getNumberOfRequiredStateVars();
+      std::vector< double > stateVars( nStateVars, 0.0 );
+      element->assignStateVars( stateVars.data(), nStateVars );
+      element->initializeYourself();
+
+      Eigen::VectorXd P = Eigen::VectorXd::Zero( Q.size() );
+      element->computeKernelsExplicit( Q.data(), Q.data(), P.data(), 0.0, 1.0e-3 );
+      return P;
+    };
+
+    return internalForce( true ) - internalForce( false );
+  }
+
+} // namespace
+
+/* The degradation, end to end through the element rather than as a formula.
+ *
+ * AT2's stiffness is degraded by the non-local field alone, so the wave speed it reports at a
+ * field of phi is (1 - phi) times its undamaged one, and the factor (c/c_0)^n is exactly
+ * (1 - phi)^n. That is the whole chain: the element asks the material for its wave speed AT THE
+ * CURRENT FIELD, divides by the reference it cached at a zero field, and raises the ratio to the
+ * assigned exponent.
+ *
+ * This is the test the defect needed. Every query used to be made at a zeroed field, so the ratio
+ * was identically 1.0 and the viscous force did not depend on phi at all -- which the unit tests
+ * on degradationFactor() could not see, because they never went through the element.
+ */
+void testBulkViscosityDegradesWithTheNonlocalField()
+{
+  const Eigen::VectorXd undamaged = viscousForceAtNonlocalField( 0.0, 2.0 );
+
+  throwExceptionOnFailure( undamaged.norm() > 0.0,
+                           MakeString() << __PRETTY_FUNCTION__ << ": the viscous force vanishes at phi = 0, so this "
+                                        << "test would pass on any implementation" );
+
+  for ( const double phi : { 0.25, 0.5, 0.75 } ) {
+    for ( const double exponent : { 1.0, 2.0 } ) {
+
+      const Eigen::VectorXd damaged  = viscousForceAtNonlocalField( phi, exponent );
+      const double          expected = std::pow( 1.0 - phi, exponent );
+
+      throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( damaged ),
+                                             Eigen::MatrixXd( expected * undamaged ),
+                                             1e-12 ),
+                               MakeString() << __PRETTY_FUNCTION__ << ": at a non-local field of " << phi
+                                            << " and exponent " << exponent << " the viscous force is not " << expected
+                                            << " times the undamaged one" );
+    }
+  }
+}
+
+/* And with the exponent at its default it must NOT degrade -- the same viscous force at every
+ * field value. Asserted because it is the shape the defect had: before the fix both the degraded
+ * and the undegraded case behaved like this one.
+ */
+void testBulkViscosityIsUndegradedByDefault()
+{
+  const Eigen::VectorXd atZero = viscousForceAtNonlocalField( 0.0, 0.0 );
+
+  for ( const double phi : { 0.25, 0.75 } )
+    throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( viscousForceAtNonlocalField( phi, 0.0 ) ),
+                                           Eigen::MatrixXd( atZero ),
+                                           1e-12 ),
+                             MakeString() << __PRETTY_FUNCTION__
+                                          << ": the viscous force depends on the non-local field although the "
+                                          << "degradation was not requested" );
+}
+
+/* A rejected property assignment must leave the element exactly as it was. Checked through the
+ * force rather than through a getter, because a half-applied assignment is only visible in what
+ * the element then integrates.
+ */
+void testRejectedPropertyAssignmentLeavesTheElementUnchanged()
+{
+  constexpr int nDim          = 3;
+  constexpr int nNodes        = 8;
+  constexpr int nNonlocalVars = 1;
+  using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
+
+  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                                0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+  const std::vector< double > matProps      = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+
+  // Fully built, because the assembled inertia is read back at the end: computeLumpedInertia()
+  // asks every quadrature point's material for its density, and a quadrature point without one
+  // has no material to ask.
+  auto element = std::make_unique< ElemType >( 1,
+                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                               ElemType::SectionType::Solid );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  element->assignProperty( materialSection );
+
+  const int             nStateVars = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVars, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVars );
+  element->initializeYourself();
+
+  const std::vector< double > valid = { 0.06, 1.2 };
+  element->assignProperty( "bulk viscosity", valid.data(), valid.size() );
+
+  const double                               nan      = std::numeric_limits< double >::quiet_NaN();
+  const std::vector< std::vector< double > > rejected = { { -1.0, 1.2 }, { 0.06, -1.0 }, { nan, 1.2 }, { 0.06, nan } };
+
+  for ( const auto& values : rejected ) {
+    bool threw = false;
+    try {
+      element->assignProperty( "bulk viscosity", values.data(), values.size() );
+    }
+    catch ( const std::invalid_argument& ) {
+      threw = true;
+    }
+    throwExceptionOnFailure( threw,
+                             MakeString() << __PRETTY_FUNCTION__
+                                          << ": a negative or non-finite bulk viscosity coefficient was accepted" );
+  }
+
+  // A micro-inertia vector is written only after every entry has passed, so a rejected one cannot
+  // leave earlier entries applied.
+  const std::vector< double > rejectedMicroInertia = { nan };
+  bool                        threwMicroInertia    = false;
+  try {
+    element->assignProperty( "nonlocal micro inertia", rejectedMicroInertia.data(), rejectedMicroInertia.size() );
+  }
+  catch ( const std::invalid_argument& ) {
+    threwMicroInertia = true;
+  }
+  throwExceptionOnFailure( threwMicroInertia,
+                           MakeString() << __PRETTY_FUNCTION__ << ": a non-finite micro-inertia was accepted" );
+
+  Eigen::VectorXd lumpedInertia = Eigen::VectorXd::Zero( element->getNDofPerElement() );
+  element->computeLumpedInertia( lumpedInertia.data() );
+  throwExceptionOnFailure( lumpedInertia.allFinite(),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << ": a rejected micro-inertia reached the assembled inertia" );
+}
+
 void testTinyMicroInertiaIsNotTreatedAsAbsent()
 {
   /* A micro-inertia is a time SQUARED, so ordinary values are very small: eta^2/4 is 2.5e-13 for a
@@ -1859,6 +2045,9 @@ int main()
     testNonlocalCriticalTimeStepScalesLinearlyWithElementSize,
     testNonlocalViscosityLowersTheCriticalTimeStep,
     testTinyMicroInertiaIsNotTreatedAsAbsent,
+    testBulkViscosityDegradesWithTheNonlocalField,
+    testBulkViscosityIsUndegradedByDefault,
+    testRejectedPropertyAssignmentLeavesTheElementUnchanged,
     testNodeFieldsTwoNonlocalVars,
     testComputeKernelsPlaneStrainTangentMatchesNumericalDifferentiation,
     testComputeKernelsPlaneStressTangentMatchesNumericalDifferentiation,
