@@ -107,17 +107,6 @@ namespace Marmot::Testing {
     using namespace Eigen;
     using namespace ContinuumMechanics::VoigtNotation;
 
-    solver.solve();
-    auto           history = solver.getHistory();
-    const Vector6d refStress( history.back().stress );
-    const Matrix6d refStiffness( history.back().dStressdStrain );
-
-    const int                     N   = 100;
-    Eigen::Matrix< double, N, 2 > pts = fibonacciLatticeHemisphere< N >();
-
-    Eigen::Vector2d pt;
-    double          phi, theta;
-
     // modify steps to account for rotation
     const auto steps = solver.getSteps();
     // check if at least one step exists
@@ -128,11 +117,22 @@ namespace Marmot::Testing {
 
     for ( auto& step : steps ) {
       // must be pure strain control, i.e. all strain increment components are controlled
-      if ( step.isStrainComponentControlled.any() == false ) {
+      if ( step.isStrainComponentControlled.all() == false ) {
         std::cout << "TURBOKREISEL TEST REQUIRES PURE STRAIN CONTROLLED STEPS." << std::endl;
         return false;
       };
     }
+
+    solver.solve();
+    auto           history = solver.getHistory();
+    const Vector6d refStress( history.back().stress );
+    const Matrix6d refStiffness( history.back().dStressdStrain );
+
+    const int                     N   = 100;
+    Eigen::Matrix< double, N, 2 > pts = fibonacciLatticeHemisphere< N >();
+
+    Eigen::Vector2d pt;
+    double          phi, theta;
 
     for ( int i1 = 0; i1 < N; i1++ ) {
       pt    = pts.row( i1 );
