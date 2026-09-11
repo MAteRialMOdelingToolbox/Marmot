@@ -93,7 +93,7 @@ void testBasicAccessorsDelegateToChild()
   bool threw = false;
   try {
     const double dummy = 1.0;
-    wrapper->assignProperty( "nonexistent property", &dummy );
+    wrapper->assignProperty( "nonexistent property", &dummy, 1 );
   }
   catch ( const std::invalid_argument& ) {
     threw = true;
