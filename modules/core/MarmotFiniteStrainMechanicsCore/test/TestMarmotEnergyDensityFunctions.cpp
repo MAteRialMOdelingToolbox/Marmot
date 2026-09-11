@@ -162,13 +162,164 @@ auto testSecondOrderDerivedB()
     }
 }
 
+auto testStandardNeoHookeEnergyMatchesClosedForm()
+{
+  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrderDerived;
+  std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
+  Tensor33d                                                          C      = get< 0 >( params );
+  const double                                                       K      = get< 2 >( params );
+  const double                                                       G      = get< 3 >( params );
+
+  const double lambda   = K - 2.0 / 3.0 * G;
+  const double trC      = Fastor::trace( C );
+  const double detC     = Fastor::determinant( C );
+  const double expected = G / 2. * ( trC - 3.0 - log( detC ) ) + lambda / 4. * ( detC - 1.0 - log( detC ) );
+
+  auto [psi, dPsi_dC, d2Psi_dC2, d3Psi_dC3] = standardNeoHooke( C, K, G );
+
+  throwExceptionOnFailure( checkIfEqual( psi, expected, 1e-10 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " energy density does not match the closed form" );
+}
+
+auto testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation()
+{
+  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrderDerived;
+  std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
+  Tensor33d                                                          C      = get< 0 >( params );
+  const double                                                       K      = get< 2 >( params );
+  const double                                                       G      = get< 3 >( params );
+
+  auto [psi0, dPsi_dC, d2Psi_dC2, d3Psi_dC3] = standardNeoHooke( C, K, G );
+
+  const double h = 1e-6;
+  for ( int i = 0; i < 3; i++ )
+    for ( int j = 0; j < 3; j++ ) {
+      Tensor33d Cp = C;
+      Tensor33d Cm = C;
+      Cp( i, j ) += h;
+      Cm( i, j ) -= h;
+      const double psiPlus  = std::get< 0 >( standardNeoHooke( Cp, K, G ) );
+      const double psiMinus = std::get< 0 >( standardNeoHooke( Cm, K, G ) );
+      const double numDeriv = ( psiPlus - psiMinus ) / ( 2. * h );
+      throwExceptionOnFailure( checkIfEqual( dPsi_dC( i, j ), numDeriv, 1e-6 ),
+                               MakeString() << __PRETTY_FUNCTION__ << " dPsi_dC(" << i << "," << j
+                                            << ") does not match central-difference numerical differentiation" );
+    }
+}
+
+// The 6 independent symmetric "unit" directions of a symmetric 3x3 tensor (00, 11, 22, and the
+// 3 off-diagonal directions with both (a,b) and (b,a) set to 1). d2Psi_dC2/d3Psi_dC3 are only
+// meaningful when contracted against directions like these -- C is always the (symmetric) right
+// Cauchy-Green tensor, and the returned tensors internally symmetrize over each differentiated
+// index pair to match that (e.g. d2Psi_dC2(i,j,k,l) == d2Psi_dC2(i,j,l,k) by construction), so
+// isolating a single (k,l) component via an asymmetric single-entry perturbation does not recover
+// it. Verifying directional bilinear/trilinear forms instead sidesteps that convention entirely.
+std::vector< Tensor33d > symmetricUnitDirections()
+{
+  std::vector< Tensor33d > directions;
+  for ( int a = 0; a < 3; a++ )
+    for ( int b = a; b < 3; b++ ) {
+      Tensor33d dC( 0.0 );
+      dC( a, b ) = 1.0;
+      dC( b, a ) = 1.0;
+      directions.push_back( dC );
+    }
+  return directions;
+}
+
+auto testStandardNeoHookeSecondDerivativeMatchesNumericalDifferentiation()
+{
+  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrderDerived;
+  std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
+  Tensor33d                                                          C      = get< 0 >( params );
+  const double                                                       K      = get< 2 >( params );
+  const double                                                       G      = get< 3 >( params );
+
+  auto [psi0, dPsi_dC0, d2Psi_dC2, d3Psi_dC3] = standardNeoHooke( C, K, G );
+
+  const double h = 1e-5;
+  for ( const Tensor33d& dC : symmetricUnitDirections() ) {
+    Tensor33d Cp = C + h * dC;
+    Tensor33d Cm = C - h * dC;
+
+    const Tensor33d dPsi_dC_plus  = std::get< 1 >( standardNeoHooke( Cp, K, G ) );
+    const Tensor33d dPsi_dC_minus = std::get< 1 >( standardNeoHooke( Cm, K, G ) );
+
+    for ( int i = 0; i < 3; i++ )
+      for ( int j = 0; j < 3; j++ ) {
+        const double numDirectional = ( dPsi_dC_plus( i, j ) - dPsi_dC_minus( i, j ) ) / ( 2. * h );
+
+        double analyticalDirectional = 0.0;
+        for ( int k = 0; k < 3; k++ )
+          for ( int l = 0; l < 3; l++ )
+            analyticalDirectional += d2Psi_dC2( i, j, k, l ) * dC( k, l );
+
+        throwExceptionOnFailure( checkIfEqual( analyticalDirectional, numDirectional, 1e-4 ),
+                                 MakeString() << __PRETTY_FUNCTION__ << " d2Psi_dC2 contracted with a symmetric "
+                                              << "direction does not match numerical differentiation at (" << i << ","
+                                              << j << ")" );
+      }
+  }
+}
+
+auto testStandardNeoHookeThirdDerivativeMatchesNumericalDifferentiation()
+{
+  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrderDerived;
+  std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
+  Tensor33d                                                          C      = get< 0 >( params );
+  const double                                                       K      = get< 2 >( params );
+  const double                                                       G      = get< 3 >( params );
+
+  auto [psi0, dPsi_dC0, d2Psi_dC2_0, d3Psi_dC3] = standardNeoHooke( C, K, G );
+
+  const std::vector< Tensor33d > directions = symmetricUnitDirections();
+
+  const double h = 1e-4;
+  for ( const Tensor33d& dCOuter : directions ) {
+    Tensor33d Cp = C + h * dCOuter;
+    Tensor33d Cm = C - h * dCOuter;
+
+    const Tensor3333d d2Psi_dC2_plus  = std::get< 2 >( standardNeoHooke( Cp, K, G ) );
+    const Tensor3333d d2Psi_dC2_minus = std::get< 2 >( standardNeoHooke( Cm, K, G ) );
+
+    for ( const Tensor33d& dCInner : directions )
+      for ( int i = 0; i < 3; i++ )
+        for ( int j = 0; j < 3; j++ ) {
+          double d2Plus = 0.0, d2Minus = 0.0;
+          for ( int k = 0; k < 3; k++ )
+            for ( int l = 0; l < 3; l++ ) {
+              d2Plus += d2Psi_dC2_plus( i, j, k, l ) * dCInner( k, l );
+              d2Minus += d2Psi_dC2_minus( i, j, k, l ) * dCInner( k, l );
+            }
+          const double numDirectional = ( d2Plus - d2Minus ) / ( 2. * h );
+
+          double analyticalDirectional = 0.0;
+          for ( int k = 0; k < 3; k++ )
+            for ( int l = 0; l < 3; l++ )
+              for ( int m = 0; m < 3; m++ )
+                for ( int n = 0; n < 3; n++ )
+                  analyticalDirectional += d3Psi_dC3( i, j, k, l, m, n ) * dCInner( k, l ) * dCOuter( m, n );
+
+          throwExceptionOnFailure( checkIfEqual( analyticalDirectional, numDirectional, 1e-2 ),
+                                   MakeString() << __PRETTY_FUNCTION__ << " d3Psi_dC3 contracted with two symmetric "
+                                                << "directions does not match numerical differentiation at (" << i
+                                                << "," << j << ")" );
+        }
+  }
+}
+
 int main()
 {
-  auto tests = std::vector< std::function< void() > >{ testPenceGouPotentialA,
-                                                       testPenceGouPotentialB,
-                                                       testPenceGouPotentialC,
-                                                       testFirstOrderDerivedB,
-                                                       testSecondOrderDerivedB };
+  auto tests = std::vector<
+    std::function< void() > >{ testPenceGouPotentialA,
+                               testPenceGouPotentialB,
+                               testPenceGouPotentialC,
+                               testFirstOrderDerivedB,
+                               testSecondOrderDerivedB,
+                               testStandardNeoHookeEnergyMatchesClosedForm,
+                               testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation,
+                               testStandardNeoHookeSecondDerivativeMatchesNumericalDifferentiation,
+                               testStandardNeoHookeThirdDerivativeMatchesNumericalDifferentiation };
 
   executeTestsAndCollectExceptions( tests );
   return 0;

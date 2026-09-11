@@ -62,6 +62,48 @@ void testCreateMaxwellPropertiesTwo()
                            MakeString() << __PRETTY_FUNCTION__ << ": sumGamma should be 0.5" );
 }
 
+// createMaxwellProperties must reject a negative element count
+void testCreateMaxwellPropertiesThrowsForNegativeCount()
+{
+  bool threw = false;
+  try {
+    createMaxwellProperties( -1, nullptr );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw, MakeString() << __PRETTY_FUNCTION__ << ": negative nMaxwell must throw" );
+}
+
+// createMaxwellProperties must reject a null pairVector when nMaxwell > 0
+void testCreateMaxwellPropertiesThrowsForNullPairVectorWithPositiveCount()
+{
+  bool threw = false;
+  try {
+    createMaxwellProperties( 1, nullptr );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw,
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << ": null gammaTauPairVector with nMaxwell > 0 must throw" );
+}
+
+// createMaxwellProperties must reject a negative relaxation time
+void testCreateMaxwellPropertiesThrowsForNegativeTau()
+{
+  const double pairs[2] = { 0.3, -1.0 };
+  bool         threw    = false;
+  try {
+    createMaxwellProperties( 1, pairs );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw, MakeString() << __PRETTY_FUNCTION__ << ": negative tau must throw" );
+}
+
 // ---------------------------------------------------------------------------
 // Helper: compute Maxwell alpha and beta analytically
 // ---------------------------------------------------------------------------
@@ -408,6 +450,64 @@ void testSimoOverloadTwoElements()
                            MakeString() << __PRETTY_FUNCTION__ << ": tangent(0,0,0,0) with two elements failed" );
 }
 
+// Element with a near-zero relaxation time must be skipped entirely (continue branch)
+void testSimoOverloadSkipsNearZeroTau()
+{
+  const double      pairs[4] = { 0.3, 1e-13, 0.2, 5.0 }; // element 1: tau ~ 0 -> must be skipped
+  MaxwellProperties props    = createMaxwellProperties( 2, pairs );
+
+  const double dT = 1.0;
+  double       alpha2, beta2;
+  computeAlphaBeta( 0.2, 5.0, dT, alpha2, beta2 );
+
+  Tensor33d   stress = Spatial3D::I;
+  Tensor3333d tangent( 1.0 );
+  Tensor33d   dStress = Spatial3D::I;
+
+  std::array< double, 18 > stateVars{};
+
+  evaluateGeneralizedMaxwellModel( stress, tangent, dStress, dT, props, stateVars.data() );
+
+  // the skipped element's state vars must never be written
+  for ( int i = 0; i < 9; ++i )
+    throwExceptionOnFailure( checkIfEqual( stateVars[i], 0.0 ),
+                             MakeString() << __PRETTY_FUNCTION__ << ": skipped element's state var[" << i
+                                          << "] must remain untouched" );
+
+  const double sumGamma       = 0.3 + 0.2;
+  const double expectedStress = ( 1.0 - sumGamma ) + beta2;
+  throwExceptionOnFailure( checkIfEqual( stress( 0, 0 ), expectedStress, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__ << ": stress(0,0) with a skipped element failed" );
+
+  const double expectedTangent = ( 1.0 - sumGamma + beta2 ); // tangent_in = 1.0 everywhere
+  throwExceptionOnFailure( checkIfEqual( tangent( 0, 0, 0, 0 ), expectedTangent, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__ << ": tangent(0,0,0,0) with a skipped element failed" );
+}
+
+// dT/tau below 1e-6 must use the Taylor-expansion branch for alpha/beta
+void testSimoOverloadTaylorApproximation()
+{
+  const double      pairs[2] = { 0.3, 1.0 };
+  MaxwellProperties props    = createMaxwellProperties( 1, pairs );
+
+  const double dT_small = 1e-8; // dT/tau = 1e-8 << 1e-6 -> Taylor branch
+
+  Tensor33d   stress = Spatial3D::I;
+  Tensor3333d tangent( 1.0 );
+  Tensor33d   dStress = Spatial3D::I;
+
+  std::array< double, 9 > stateVars{};
+
+  evaluateGeneralizedMaxwellModel( stress, tangent, dStress, dT_small, props, stateVars.data() );
+
+  double alpha_ref, beta_ref;
+  computeAlphaBeta( 0.3, 1.0, dT_small, alpha_ref, beta_ref );
+
+  const double expectedFactor = ( 1.0 - 0.3 ) + beta_ref;
+  throwExceptionOnFailure( checkIfEqual( stress( 0, 0 ), expectedFactor, 1e-10 ),
+                           MakeString() << __PRETTY_FUNCTION__ << ": Taylor branch stress(0,0) failed" );
+}
+
 // Verify that the Simo overload and template overload give the same stress result
 void testSimoAndTemplateOverloadConsistency()
 {
@@ -610,6 +710,112 @@ void testLiuOverloadNonZeroDTangentDDeformation()
                            MakeString() << __PRETTY_FUNCTION__ << ": tangent(0,0,0,0) with dStress=0 failed" );
 }
 
+// nMaxwell=0: no change to stress or tangent
+void testLiuOverloadNoOp()
+{
+  MaxwellProperties props = createMaxwellProperties( 0, nullptr );
+
+  Tensor33d stress( 0.0 );
+  stress( 0, 0 ) = 5.0;
+  stress( 1, 1 ) = 3.0;
+
+  Tensor3333d tangent( 1.0 );
+  Tensor3333d initialCompliance( 2.0 );
+
+  Tensor33d     dStress( 0.0 );
+  Tensor333333d dTangent_dDeformation( 1.0 );
+
+  Tensor33d   stressOrig  = stress;
+  Tensor3333d tangentOrig = tangent;
+
+  evaluateGeneralizedMaxwellModel( stress,
+                                   tangent,
+                                   dTangent_dDeformation,
+                                   initialCompliance,
+                                   dStress,
+                                   1.0,
+                                   props,
+                                   nullptr );
+
+  throwExceptionOnFailure( checkIfEqual( stress, stressOrig ),
+                           MakeString() << __PRETTY_FUNCTION__ << ": nMaxwell=0 should leave stress unchanged" );
+  throwExceptionOnFailure( checkIfEqual( tangent, tangentOrig ),
+                           MakeString() << __PRETTY_FUNCTION__ << ": nMaxwell=0 should leave tangent unchanged" );
+}
+
+// Element with a near-zero relaxation time must be skipped entirely (continue branch)
+void testLiuOverloadSkipsNearZeroTau()
+{
+  const double      pairs[4] = { 0.3, 1e-13, 0.2, 5.0 }; // element 1: tau ~ 0 -> must be skipped
+  MaxwellProperties props    = createMaxwellProperties( 2, pairs );
+
+  const double dT = 1.0;
+  double       alpha2, beta2;
+  computeAlphaBeta( 0.2, 5.0, dT, alpha2, beta2 );
+
+  const double K = 10000.0, G = 5000.0;
+  Tensor3333d  C    = makeIsotropicTangent( K, G );
+  Tensor3333d  Cinv = makeIsotropicCompliance( K, G );
+
+  Tensor33d     stress  = Spatial3D::I;
+  Tensor33d     dStress = Spatial3D::I;
+  Tensor3333d   tangent = C;
+  Tensor333333d dTangent_dDeformation( 0.0 );
+
+  std::array< double, 18 > stateVars{};
+
+  evaluateGeneralizedMaxwellModel( stress, tangent, dTangent_dDeformation, Cinv, dStress, dT, props, stateVars.data() );
+
+  for ( int i = 0; i < 9; ++i )
+    throwExceptionOnFailure( checkIfEqual( stateVars[i], 0.0 ),
+                             MakeString() << __PRETTY_FUNCTION__ << ": skipped element's state var[" << i
+                                          << "] must remain untouched" );
+
+  // Q_n2 = 0 -> Q_np2 = beta2 * dStress = beta2 * I; since C:Cinv = ISymm (identity on symmetric
+  // tensors, see testIsotropicInverseConsistency), H_np2 : C = Q_np2, so stress gets exactly
+  // beta2*I on top of the elastic scaling.
+  const double sumGamma       = 0.3 + 0.2;
+  const double expectedStress = ( 1.0 - sumGamma ) + beta2;
+  throwExceptionOnFailure( checkIfEqual( stress( 0, 0 ), expectedStress, 1e-8 ),
+                           MakeString() << __PRETTY_FUNCTION__ << ": stress(0,0) with a skipped element failed" );
+}
+
+// dT/tau below 1e-6 must use the Taylor-expansion branch for alpha/beta
+void testLiuOverloadTaylorApproximation()
+{
+  const double      pairs[2] = { 0.3, 1.0 };
+  MaxwellProperties props    = createMaxwellProperties( 1, pairs );
+
+  const double dT_small = 1e-8; // dT/tau = 1e-8 << 1e-6 -> Taylor branch
+
+  const double K = 10000.0, G = 5000.0;
+  Tensor3333d  C    = makeIsotropicTangent( K, G );
+  Tensor3333d  Cinv = makeIsotropicCompliance( K, G );
+
+  Tensor33d     stress  = Spatial3D::I;
+  Tensor33d     dStress = Spatial3D::I;
+  Tensor3333d   tangent = C;
+  Tensor333333d dTangent_dDeformation( 0.0 );
+
+  std::array< double, 9 > stateVars{};
+
+  evaluateGeneralizedMaxwellModel( stress,
+                                   tangent,
+                                   dTangent_dDeformation,
+                                   Cinv,
+                                   dStress,
+                                   dT_small,
+                                   props,
+                                   stateVars.data() );
+
+  double alpha_ref, beta_ref;
+  computeAlphaBeta( 0.3, 1.0, dT_small, alpha_ref, beta_ref );
+
+  const double expectedFactor = ( 1.0 - 0.3 ) + beta_ref;
+  throwExceptionOnFailure( checkIfEqual( stress( 0, 0 ), expectedFactor, 1e-8 ),
+                           MakeString() << __PRETTY_FUNCTION__ << ": Taylor branch stress(0,0) failed" );
+}
+
 // ---------------------------------------------------------------------------
 // main
 // ---------------------------------------------------------------------------
@@ -620,6 +826,9 @@ int main()
     testCreateMaxwellPropertiesEmpty,
     testCreateMaxwellPropertiesSingle,
     testCreateMaxwellPropertiesTwo,
+    testCreateMaxwellPropertiesThrowsForNegativeCount,
+    testCreateMaxwellPropertiesThrowsForNullPairVectorWithPositiveCount,
+    testCreateMaxwellPropertiesThrowsForNegativeTau,
 
     // Template overload (no tangent)
     testTemplateOverloadNoOp,
@@ -633,13 +842,18 @@ int main()
     testSimoOverloadNoOp,
     testSimoOverloadSingleElementFromZero,
     testSimoOverloadSingleElementFromNonZeroState,
+    testSimoOverloadSkipsNearZeroTau,
+    testSimoOverloadTaylorApproximation,
     testSimoOverloadTwoElements,
     testSimoAndTemplateOverloadConsistency,
 
     // Liu et al. overload (with compliance and dTangent/dDeformation)
     testIsotropicInverseConsistency,
+    testLiuOverloadNoOp,
     testLiuOverloadMatchesSimo,
     testLiuOverloadNonZeroDTangentDDeformation,
+    testLiuOverloadSkipsNearZeroTau,
+    testLiuOverloadTaylorApproximation,
   };
 
   executeTestsAndCollectExceptions( tests );
