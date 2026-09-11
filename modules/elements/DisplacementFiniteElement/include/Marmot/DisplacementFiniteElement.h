@@ -143,6 +143,15 @@ namespace Marmot::Elements {
        * Marmot::FiniteElement::BulkViscosity::degradationFactor. That degradation is the one case
        * in which the current wave speed IS asked for on every increment, which is why it has to be
        * requested explicitly through a named element property.
+       *
+       * @warning Captured on the first explicit increment, from the state the element has THEN. A
+       * hypoelastic material carries its damage in its state variables, so a run that begins from
+       * an already-damaged state -- a restart, or an explicit step following an implicit one --
+       * captures that degraded speed as its reference and measures no degradation from it
+       * afterwards. The viscosity is then simply not degraded, which is the direction that removes
+       * more energy rather than less, but it is not what was asked for. The gradient-enhanced
+       * element has no such ambiguity: there the reference is the wave speed at a ZERO non-local
+       * field, which is well defined whenever it is asked for.
        */
       double referenceWaveSpeed = 0.0;
 
