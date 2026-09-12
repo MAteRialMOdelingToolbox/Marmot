@@ -136,10 +136,8 @@ namespace Marmot::Elements {
      * with \f$h\f$ rather than with \f$h^2\f$. The non-local viscosity keeps its meaning
      * exactly: what was the coefficient of the highest time derivative becomes the damping.
      *
-     * Like the artificial bulk viscosity above this is a NUMERICAL device and therefore an element
-     * property and not a material one: the physical model is the \f$m_k = 0\f$ one, the same
-     * material integrated implicitly needs none of it, and the value that pays off depends on the
-     * mesh being integrated. Units are seconds squared.
+     * Like the bulk viscosity above it is a NUMERICAL device, hence an element property and not a
+     * material one: the physical model is the \f$m_k = 0\f$ one. Units are seconds squared.
      */
     Eigen::Vector< double, nNonlocalVariables >
       nonlocalMicroInertia = Eigen::Vector< double, nNonlocalVariables >::Zero();
@@ -174,20 +172,15 @@ namespace Marmot::Elements {
 
       /**
        * @brief Wave speed the artificial bulk viscosity is scaled with, cached on first use.
-       * @details Asking the material for its current wave speed costs a full constitutive
-       * evaluation -- for a gradient-enhanced damage-plasticity model, a complete return mapping --
-       * which is affordable for the stable time increment (asked for rarely) and not affordable per
-       * quadrature point per explicit increment. What is cached is therefore the wave speed of the
-       * UNDAMAGED material. That is the right one to cache rather than a convenient one: the term
-       * exists to damp the highest frequency the MESH can carry, which the undamaged material sets,
-       * and holding it fixed as the material softens leaves the damping slightly stronger than a
-       * current-stiffness value would -- the safe direction for a device whose purpose is to remove
-       * energy. Zero means "not yet computed".
+       * @details A current wave speed costs a full constitutive evaluation, which is affordable
+       * for the stable increment (asked for rarely) and not per quadrature point per explicit
+       * increment. What is cached is the UNDAMAGED speed: the term damps the highest frequency the
+       * MESH can carry, which the undamaged material sets, and holding it fixed as the material
+       * softens damps slightly harder -- the safe direction here. Zero means "not yet computed".
        *
-       * It is also the reference the optional degradation with damage is measured against; see
-       * Marmot::FiniteElement::BulkViscosity::degradationFactor. That degradation is the one case
-       * in which the current wave speed IS asked for on every increment, which is why it has to be
-       * requested explicitly through a named element property.
+       * It is also the reference the optional degradation is measured against (see
+       * Marmot::FiniteElement::BulkViscosity::degradationFactor), which is the one case that does
+       * ask for the current speed every increment -- hence opt-in through a named property.
        */
       double referenceWaveSpeed = 0.0;
 
@@ -495,14 +488,11 @@ namespace Marmot::Elements {
     /**
      * @brief Compute the lumped (diagonal) damping of the non-local degrees of freedom.
      * @param[out] C Diagonal of the lumped damping, in the element's dof order.
-     * @details Zero on the displacement block, where no device reports through this path. The
-     * non-local block carries the material's non-local viscosity, weighted exactly as
-     * computeLumpedInertia() weights the non-local block -- deliberately and not incidentally,
-     * since the stable time increment is read off both distributions together, and a distribution
-     * that disagreed with the assembled one would surface as an unexplained instability rather
-     * than as a clean failure. Reported unconditionally, whether or not the field has also been
-     * given a micro-inertia: it is what integrates a first-order field on its own, and what damps
-     * a second-order one.
+     * @details Zero on the displacement block; the non-local block carries the material's
+     * non-local viscosity, weighted exactly as computeLumpedInertia() weights that block, since
+     * the stable increment is read off both distributions together. Reported unconditionally,
+     * with or without a micro-inertia: it integrates a first-order field on its own and damps a
+     * second-order one.
      */
     void computeLumpedDamping( double* C ) override;
 
@@ -651,11 +641,9 @@ namespace Marmot::Elements {
                                         "2 values, the linear coefficient b1 and the quadratic coefficient b2, but "
                                      << nProperties << " were given." );
 
-      /* Validated BEFORE anything is committed, so a rejected assignment leaves the element
-       * exactly as it was: a caller that catches the exception and carries on must not be left
-       * running with half of an invalid property in place. Non-finite values are rejected
-       * alongside negative ones -- every comparison against a NaN is false, so a NaN would pass a
-       * `< 0.0` test and then propagate silently into the viscous stress.
+      /* Validated BEFORE anything is committed, so a rejected assignment leaves the element as it
+       * was. Non-finite values are rejected alongside negative ones: every comparison against a
+       * NaN is false, so a NaN would pass a `< 0.0` test and propagate into the viscous stress.
        */
       if ( !std::isfinite( properties[0] ) || !std::isfinite( properties[1] ) )
         throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
@@ -683,11 +671,10 @@ namespace Marmot::Elements {
                                         "1 value, the exponent n of (c/c_0)^n, but "
                                      << nProperties << " were given." );
 
-      /* Opt-in, and separate from 'bulk viscosity' itself so that switching it on does not disturb
-       * the coefficients: it costs a constitutive evaluation per quadrature point per increment,
-       * which is why it cannot be the default. See
-       * Marmot::FiniteElement::BulkViscosity::degradationFactor for what the exponent means and for
-       * what it degrades with -- the current tangent, not a damage variable.
+      /* Opt-in and separate from 'bulk viscosity' itself, so switching it on does not disturb the
+       * coefficients: it costs a constitutive evaluation per quadrature point per increment. See
+       * BulkViscosity::degradationFactor for the exponent, and for what it degrades with -- the
+       * current tangent, not a damage variable.
        */
       if ( !std::isfinite( properties[0] ) )
         throw std::invalid_argument( MakeString()
@@ -1039,41 +1026,32 @@ namespace Marmot::Elements {
 
       Voigt dE = B * dQU;
 
-      /* The artificial bulk viscosity is added to the stress that is INTEGRATED, never to the one
-       * that is STORED. It is a numerical device: the constitutive law must not see it, it must
-       * leave no trace in the state, and it must not appear in the reported stress. With inactive
-       * coefficients it is never evaluated, so a run that does not ask for bulk viscosity is
-       * bit-identical to one built before it existed.
-       *
-       * In plane stress the out-of-plane strain is not carried by the element's kinematics, so the
-       * trace is taken over the in-plane components only and the term is approximate there. In 3D
-       * and in plane strain this IS the volumetric strain increment.
+      /* Added to the stress that is INTEGRATED, never to the one that is STORED: the constitutive
+       * law must not see it and it must leave no trace in the state. With inactive coefficients it
+       * is never evaluated, so a run that does not ask for it is bit-identical to one built before
+       * it existed. In plane stress the out-of-plane strain is not in the element's kinematics, so
+       * the trace is over the in-plane components only and the term is approximate there.
        */
       constexpr int nNormalComponents = nDim == 3 ? 3 : 2;
 
       const auto bulkViscousStressAt = [&]( QuadraturePoint&                            quadraturePoint,
                                             const response&                             currentResponse,
                                             const Vector< double, nNonlocalVariables >& currentK ) {
-        /* The reference is the speed at a ZERO non-local field, which is what the default argument
-         * asks for -- not merely "the speed the first time this was called". The distinction is the
-         * whole of the degradation: the two queries below differ in the non-local field alone, so
-         * their ratio measures damage and nothing else, and it does so identically on a restart, at
-         * a refinement, or on an element that enters explicit dynamics already damaged.
+        /* The reference is the speed at a ZERO non-local field -- what the default argument asks
+         * for -- not "the speed the first time this was called". The two queries then differ in
+         * the field alone, so their ratio measures damage and nothing else, on a restart and after
+         * a refinement alike.
          */
         if ( quadraturePoint.referenceWaveSpeed <= 0.0 )
           quadraturePoint.referenceWaveSpeed = quadraturePoint.material->getMaximumWaveSpeed( currentResponse );
 
-        /* The optional degradation is evaluated here and not inside the viscous stress itself
-         * because it is the only part of the term that needs the material's CURRENT tangent, and
-         * asking for that costs a full constitutive evaluation. With the exponent at its default of
-         * zero the material is never asked and this branch is not taken, so a deck that does not
-         * request the degradation integrates exactly the stress it integrated before.
-         *
-         * The current non-local field has to be handed over explicitly. It is an input to the
-         * constitutive law rather than a state it carries, so a query that does not pass it asks
-         * for the response at a field of zero -- which, wherever damage is driven by the non-local
-         * field alone, is the undamaged tangent however damaged the point is. Omitting it made this
-         * factor identically 1.0 and the whole property inert.
+        /* Evaluated here rather than inside the viscous stress because it is the only part that
+         * needs the CURRENT tangent, which costs a full constitutive evaluation. At the default
+         * exponent the material is never asked, so such a deck integrates exactly what it did
+         * before. The current field must be passed explicitly: it is an INPUT to the constitutive
+         * law, so a query without it asks for the response at a field of zero -- the undamaged
+         * tangent, wherever damage is driven by that field alone. Omitting it made this factor
+         * identically 1.0 and the property inert.
          */
         const double
           degradation = bulkViscosityCoefficients.isDegraded()
@@ -1186,14 +1164,11 @@ namespace Marmot::Elements {
     Map< KeSizedMatrix > Me( M );
     Me.setZero();
 
-    /* The non-local block carries the same coefficient the LUMPED path assembles there: the
-     * micro-inertia, which is the coefficient of that field's second time derivative. It used to
-     * carry the non-local viscosity, from before inertia and damping were told apart -- which made
-     * the two paths disagree about what this matrix even is, and left an implicit consumer
-     * integrating the field with a viscosity as its mass while the explicit one used the
-     * micro-inertia. Where no micro-inertia has been assigned the block is zero, which is correct:
-     * the field is then first order in time and has no inertia at all. There is no consistent
-     * counterpart to computeLumpedDamping() yet; the viscosity is reported only through that one.
+    /* The non-local block carries what the LUMPED path assembles there: the micro-inertia. It
+     * used to carry the viscosity, from before inertia and damping were told apart, which left an
+     * implicit consumer integrating the field with a viscosity as its mass. Zero where none was
+     * assigned is correct -- the field is then first order and has no inertia. There is no
+     * consistent counterpart to computeLumpedDamping() yet.
      */
     for ( const auto& qp : qps ) {
       const auto     N_  = localGeometryElement.NB( localGeometryElement.N( qp.xi ) );
@@ -1444,13 +1419,10 @@ namespace Marmot::Elements {
     Map< const RhsSized >           Q( QTotal );
     const Ref< const KSizedVector > qK( Q.tail( sizeDoFK ) );
 
-    /* The non-local interaction parameters c -- the square of the internal length -- are a material
-     * RESPONSE and not a stored property, so a stress evaluation is the only way the material
-     * interface offers to read them. It is done on a SCRATCH copy of the state variables and with a
-     * zero strain increment, so it cannot leave a trace in the state or in the reported stress, and
-     * it happens once per element per step: this function is called when the solver builds its
-     * system, not per increment. The section assumption is not dispatched on because c does not
-     * depend on it.
+    /* The interaction parameters c are a material RESPONSE, not a stored property, so a stress
+     * evaluation is the only way to read them. Done on a SCRATCH copy of the state variables with
+     * a zero strain increment, so it leaves no trace, and once per element per step rather than
+     * per increment. c does not depend on the section assumption, so that is not dispatched on.
      */
     Eigen::MatrixXd cAtQp( nNonlocalVariables, static_cast< Eigen::Index >( qps.size() ) );
 
@@ -1527,26 +1499,17 @@ namespace Marmot::Elements {
       }
     }
 
-    /* Say so when the non-local field, and not the mesh, is what bounds the increment. Warned once
-     * per element type per run rather than per element: this is called once per step, but a large
-     * model would otherwise emit one identical line per element, and MarmotJournal has no
-     * verbosity levels to hide them behind.
-     *
-     * It is worth a line because the two limits are indistinguishable from the outside -- the
-     * caller receives one number -- and the remedies are disjoint. A run bounded here does not get
-     * faster from mass scaling by any factor, since no density enters this bound; it needs a larger
-     * micro-inertia, and therefore, once that is at its non-ringing cap of eta^2/4, a larger
-     * non-local viscosity to raise the cap. Both limits are linear in the element size
-     * once h << l, so whichever one is in charge stays in charge under refinement, and this is
-     * therefore a property of the parameters rather than of the mesh.
+    /* Say so when the non-local field, not the mesh, bounds the increment. The caller receives one
+     * number and the two remedies are disjoint: a run bounded here gains nothing from mass scaling,
+     * since no density enters this bound, and needs a larger micro-inertia -- and hence, once that
+     * is at its non-ringing cap of eta^2/4, a larger non-local viscosity to raise the cap. Both
+     * limits are linear in h once h << l, so whichever is in charge stays in charge under
+     * refinement. Warned once per element type, since MarmotJournal has no verbosity levels.
      */
-    /* Atomic, because the critical time step is evaluated per element and a caller is free to do
-     * that in parallel: a plain bool here is a data race, and the exchange is also what makes
-     * "once" actually once rather than once per thread that happens to read it first. It is a
-     * function-local static, so "once" lasts as long as the PROCESS, not as long as the analysis
-     * -- a second analysis in the same process stays silent. That is the deliberate trade against
-     * emitting one identical line per element of a large model, and it is stated here rather than
-     * discovered.
+    /* Atomic because the critical time step may be evaluated per element in parallel: a plain bool
+     * is a data race, and the exchange is what makes "once" once rather than once per thread. Being
+     * a function-local static, "once" lasts as long as the PROCESS -- a second analysis in the same
+     * process stays silent, which is the trade against one identical line per element.
      */
     static std::atomic< bool > nonlocalLimitAlreadyReported{ false };
     if ( criticalTimeStep < mechanicalTimeStep && !nonlocalLimitAlreadyReported.exchange( true ) ) {

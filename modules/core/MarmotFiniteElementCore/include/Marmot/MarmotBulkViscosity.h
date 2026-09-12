@@ -33,11 +33,10 @@ namespace Marmot::FiniteElement::BulkViscosity {
   /**
    * @brief Coefficients of the artificial bulk viscosity.
    *
-   * @details Both are dimensionless and default to zero, i.e. inactive: a model that does not ask
-   * for this device is unaffected by it. \f$b_1 = 0.06\f$, \f$b_2 = 1.2\f$ -- the values
-   * Abaqus/Explicit applies -- are a common choice rather than the default, and are
-   * recommendations rather than physical parameters: \f$b_1\f$ is sized to damp the highest
-   * resolvable frequency of the mesh, not to model any physical dissipation.
+   * @details Both are dimensionless and default to zero, i.e. inactive. \f$b_1 = 0.06\f$,
+   * \f$b_2 = 1.2\f$ are the values Abaqus/Explicit applies -- a common choice, not the default,
+   * and a recommendation rather than a physical parameter: \f$b_1\f$ is sized to damp the mesh's
+   * highest resolvable frequency, not to model dissipation.
    */
   struct Coefficients {
     /** Linear coefficient \f$b_1\f$, active in compression and in expansion. */
@@ -67,38 +66,26 @@ namespace Marmot::FiniteElement::BulkViscosity {
    * @param exponent The exponent \f$n\f$. Zero returns exactly one.
    * @return \f$\left(c/c_0\right)^n\f$, clamped to \f$[0,1]\f$.
    *
-   * @details Motivation. A fully cracked element carries no real stress, but the linear term of
-   * the artificial viscosity does not know that and keeps transmitting
-   * \f$b_1\rho c_0 L_e \dot{\varepsilon}_\mathrm{vol}\f$ across the crack. Since that term is
-   * active in expansion, it acts as a viscous resistance to the crack OPENING which never relaxes,
-   * and its work is charged to the fracture energy. Measured on a gradient-damage bar, artificial
-   * bulk viscosity at the Abaqus/Explicit default coefficients inflated the dissipated energy per
-   * unit fracture area by 27 to 55 percent depending on the mesh -- and applying it everywhere
-   * EXCEPT the elements that damaged changed that energy by -1.6 percent. Essentially the whole
-   * error is generated inside the damaged elements.
+   * @details A fully cracked element carries no real stress, but the linear term keeps
+   * transmitting \f$b_1\rho c_0 L_e \dot{\varepsilon}_\mathrm{vol}\f$ across the crack. Being
+   * active in expansion, it resists the crack OPENING and never relaxes, and its work is charged
+   * to the fracture energy: measured on a gradient-damage bar, bulk viscosity at the
+   * Abaqus/Explicit coefficients inflated \f$G_f\f$ by 27 to 55 percent, while applying it
+   * everywhere EXCEPT the damaged elements changed \f$G_f\f$ by -1.6 percent. This is the
+   * argument that already restricts the quadratic term to compression, applied to the STATE
+   * rather than to the sign of the rate.
    *
-   * This is the same argument that restricts the quadratic term to compression, applied to the
-   * STATE instead of to the sign of the rate: the quadratic term is gated so that it cannot resist
-   * a crack opening, and this gates the linear term so that it stops resisting one once the
-   * material there has failed.
-   *
-   * What it actually measures. The ratio of wave speeds is the square root of the ratio of tangent
-   * stiffnesses, so for a model whose tangent degrades as \f$(1-\omega)\,\mathbb{C}_0\f$:
-   *
-   *  - \f$n = 0\f$: off. No degradation, and the current wave speed is never evaluated.
-   *  - \f$n = 1\f$: scales with the wave speed, i.e. with \f$\sqrt{1-\omega}\f$.
-   *  - \f$n = 2\f$: scales with the tangent stiffness, i.e. with \f$1-\omega\f$ itself.
+   * The wave-speed ratio is the square root of the tangent-stiffness ratio, so for a tangent
+   * degrading as \f$(1-\omega)\,\mathbb{C}_0\f$: \f$n = 1\f$ scales with
+   * \f$\sqrt{1-\omega}\f$, \f$n = 2\f$ with \f$1-\omega\f$ itself, and \f$n = 0\f$ never
+   * evaluates the current wave speed at all.
    *
    * @warning It degrades with the current TANGENT, not with a damage variable -- no material
-   * interface here reports damage, and adding one would change every element's vtable. For a
-   * quasi-brittle material in tension the two coincide, because the softening IS the damage. For a
-   * model that merely yields, the algorithmic tangent also drops and the viscous stress is then
-   * degraded by plastic flow rather than by cracking, which is not what this is for.
+   * interface here reports damage. For a quasi-brittle material in tension the two coincide; for
+   * one that merely yields, the viscous stress is degraded by plastic flow rather than cracking.
    *
-   * @note Not free. The current wave speed comes from the material's algorithmic tangent, and
-   * obtaining that costs a full constitutive evaluation per quadrature point per increment -- which
-   * is precisely why the reference value is cached. That is the reason this is opt-in through a
-   * named element property rather than the default.
+   * @note Not free: the current wave speed costs a full constitutive evaluation per quadrature
+   * point per increment, which is why the reference is cached and why this is opt-in.
    */
   inline double degradationFactor( double currentWaveSpeed, double referenceWaveSpeed, double exponent )
   {
@@ -145,23 +132,17 @@ namespace Marmot::FiniteElement::BulkViscosity {
    *  - Landshoff, R. (1955). "A numerical method for treating fluid flow in the presence of
    *    shocks". Los Alamos Scientific Laboratory report LA-1930.
    *
-   * as it is applied in explicit finite element codes (Abaqus/Explicit, LS-DYNA), where the linear
-   * (Landshoff) term damps element-level ringing and the quadratic (Von Neumann-Richtmyer) term
-   * spreads a shock over a few elements.
+   * as applied in explicit finite element codes (Abaqus/Explicit, LS-DYNA): the linear (Landshoff)
+   * term damps element-level ringing, the quadratic (Von Neumann-Richtmyer) term spreads a shock
+   * over a few elements.
    *
-   * **This is a numerical device, not a material model.** It adds no state, is not seen by the
-   * constitutive law, and does not enter the stored stress: it is added to the stress only where
-   * the internal force is integrated. Both terms are dissipative by construction -- the power
-   * density is
-   * \f$\sigma_\mathrm{bv}\dot{\varepsilon}_\mathrm{vol}
-   *  = b_1\rho c_d L_e \dot{\varepsilon}_\mathrm{vol}^2
-   *  - \rho (b_2 L_e)^2 \dot{\varepsilon}_\mathrm{vol}^3 H(-\dot{\varepsilon}_\mathrm{vol}) \ge 0\f$,
-   * both terms non-negative -- so it can only remove energy from the system, never add it.
+   * **A numerical device, not a material model.** It adds no state, is not seen by the
+   * constitutive law and never enters the stored stress -- only the stress that is integrated.
+   * Both terms are dissipative by construction, so it can only remove energy.
    *
-   * The quadratic term is restricted to compression because in expansion it would resist the
-   * opening of a crack or a void, which is the one place where an artificial stress is least
-   * welcome. The linear term is not so restricted: damping only one sign of the volumetric rate
-   * would rectify the ringing it is meant to remove into a net volumetric drift.
+   * The quadratic term is restricted to compression, where in expansion it would resist a crack
+   * or void opening. The linear term is not: damping one sign of the volumetric rate only would
+   * rectify the ringing it exists to remove into a net volumetric drift.
    *
    * @note \f$L_e\f$ must be the same characteristic length the stable time increment is computed
    * from. Both scale the term to the highest frequency the mesh can carry, and if they disagree the

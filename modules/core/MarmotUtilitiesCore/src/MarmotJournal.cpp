@@ -17,21 +17,18 @@ void MarmotJournal::setMSGOutputDirection( std::ostream& newOutputStream )
 
 bool MarmotJournal::warningToMSG( const std::string& message )
 {
-  // Flushed, not merely written. Without this a warning sits in the sink's buffer until the
-  // process terminates normally -- and an explicit dynamic run is routinely stopped short, by a
-  // timeout, a scheduler or a user, at which point every warning it ever raised is discarded
-  // unread. Warnings are rare by construction, so the flush costs nothing that matters.
+  // Flushed, not merely written: otherwise a warning sits in the sink's buffer until the process
+  // terminates normally, and an explicit run stopped by a timeout or a scheduler discards every
+  // warning it raised. Warnings are rare, so the flush costs nothing.
   getInstance().output << message << std::endl;
   return false;
 }
 
 bool MarmotJournal::notificationToMSG( const std::string& message )
 {
-  // A newline, but deliberately NOT a flush. Unlike a warning, a notification is raised in bulk:
-  // the substeppers emit one per rejected substep, which is per quadrature point per increment,
-  // and now that a consumer can actually point this stream somewhere the flush would be paid on
-  // every one of them. What the reliability fix needed was for WARNINGS to survive an abnormal
-  // termination; notifications are progress chatter and may sit in the buffer.
+  // A newline, deliberately NOT a flush: notifications come in bulk -- the substeppers emit one
+  // per rejected substep, per quadrature point per increment -- and only WARNINGS need to survive
+  // an abnormal termination.
   getInstance().output << message << '\n';
   return true;
 }

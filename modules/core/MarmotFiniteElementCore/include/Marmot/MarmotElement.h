@@ -222,10 +222,9 @@ public:
    * @brief Compute the lumped (diagonal) inertia of the element, over every field it carries.
    * @param[out] I Diagonal of the lumped inertia, in the element's dof order.
    * @details The coefficient of each field's SECOND time derivative: mass on the displacement
-   * block, and, on a non-local block whose field has been given the named property "nonlocal micro
-   * inertia", that micro-inertia. Zero on any non-local block that has not been -- carrying none is
-   * what keeps that field first order in time; see computeLumpedDamping() for what integrates it in
-   * that case.
+   * block, and a micro-inertia on a non-local block given the "nonlocal micro inertia" property.
+   * Zero on one that has not been -- carrying none is what keeps that field first order in time;
+   * see computeLumpedDamping() for what integrates it then.
    * @note Default implementation throws an exception.
    */
   virtual void computeLumpedInertia( double* I )
@@ -291,21 +290,16 @@ public:
    * @brief Compute the lumped (diagonal) damping of the element, over every field it carries.
    * @param[out] C Diagonal of the lumped damping, in the element's dof order.
    * @details The coefficient of each field's FIRST time derivative: zero on the displacement
-   * block, where no device reports through this path, and the non-local viscosity on a non-local
-   * block -- always, whether or not that field has been given a micro-inertia (see
-   * computeLumpedInertia()). A first-order non-local field is integrated by this term alone; a
-   * second-order one is damped by it. Unlike most of its siblings here this default does NOT
-   * throw: carrying no damping is the ordinary answer for the overwhelming majority of elements,
-   * not an unimplemented case, and the caller assembles over every element in the model. The
-   * buffer is supplied zero-initialised, so a default that leaves it untouched reports exactly
-   * that.
+   * block, and the non-local viscosity on a non-local block -- always, with or without a
+   * micro-inertia (see computeLumpedInertia()). A first-order field is integrated by this term
+   * alone; a second-order one is damped by it. Unlike most siblings here the default does NOT
+   * throw: carrying no damping is the ordinary answer, not an unimplemented case, and the buffer
+   * arrives zero-initialised, so leaving it untouched reports exactly that.
    *
    * @note Declared LAST, away from computeLumpedInertia() where it belongs by subject, because
-   * adding a virtual function in the middle of this class shifts the vtable slot of every virtual
-   * declared after it. Everything that links against Marmot has to be rebuilt when this header
-   * changes either way -- but a stale library mixed with a fresh consumer then dispatches existing
-   * calls to the wrong function, silently, instead of failing on the one call that is actually
-   * new. Appending keeps that failure mode confined to callers of this method.
+   * inserting a virtual mid-class shifts the vtable slot of every virtual after it. A stale
+   * library mixed with a fresh consumer would then misdispatch existing calls silently instead of
+   * failing on the one call that is new.
    */
   virtual void computeLumpedDamping( double* C ) { static_cast< void >( C ); };
 };

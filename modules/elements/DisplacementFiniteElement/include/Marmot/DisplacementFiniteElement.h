@@ -130,28 +130,21 @@ namespace Marmot::Elements {
 
       /**
        * @brief Wave speed the artificial bulk viscosity is scaled with, cached on first use.
-       * @details Asking the material for its current wave speed costs a full constitutive
-       * evaluation, which is affordable for the stable time increment (asked for rarely) and not
-       * affordable per quadrature point per explicit increment. What is cached is therefore the
-       * wave speed of the UNDAMAGED material. That is the right one to cache rather than a
-       * convenient one: the term exists to damp the highest frequency the MESH can carry, which
-       * the undamaged material sets, and holding it fixed as the material softens leaves the
-       * damping slightly stronger than a current-stiffness value would -- the safe direction for a
-       * device whose purpose is to remove energy. Zero means "not yet computed".
-       *
-       * It is also the reference the optional degradation with damage is measured against; see
-       * Marmot::FiniteElement::BulkViscosity::degradationFactor. That degradation is the one case
-       * in which the current wave speed IS asked for on every increment, which is why it has to be
-       * requested explicitly through a named element property.
+       * @details A current wave speed costs a full constitutive evaluation, affordable for the
+       * stable increment (asked for rarely) and not per quadrature point per explicit increment.
+       * What is cached is the UNDAMAGED speed: the term damps the highest frequency the MESH can
+       * carry, which the undamaged material sets, and holding it fixed as the material softens
+       * damps slightly harder -- the safe direction here. Zero means "not yet computed". It is
+       * also the reference the optional degradation is measured against; see
+       * Marmot::FiniteElement::BulkViscosity::degradationFactor.
        *
        * @warning Captured on the first explicit increment, from the state the element has THEN. A
-       * hypoelastic material carries its damage in its state variables, so a run that begins from
-       * an already-damaged state -- a restart, or an explicit step following an implicit one --
-       * captures that degraded speed as its reference and measures no degradation from it
-       * afterwards. The viscosity is then simply not degraded, which is the direction that removes
-       * more energy rather than less, but it is not what was asked for. The gradient-enhanced
-       * element has no such ambiguity: there the reference is the wave speed at a ZERO non-local
-       * field, which is well defined whenever it is asked for.
+       * hypoelastic material carries its damage in its state variables, so a run beginning from an
+       * already-damaged state -- a restart, or an explicit step after an implicit one -- takes that
+       * degraded speed as its reference and measures no degradation afterwards. The viscosity is
+       * then simply not degraded, which removes more energy rather than less, but it is not what
+       * was asked for. The gradient-enhanced element has no such ambiguity: its reference is the
+       * speed at a ZERO non-local field.
        */
       double referenceWaveSpeed = 0.0;
 
@@ -281,10 +274,9 @@ namespace Marmot::Elements {
      * @brief The element's smallest physical extent at a parent coordinate.
      * @param xi Parent coordinate to evaluate the Jacobian at.
      * @return Twice the smallest singular value of the Jacobian.
-     * @details The Jacobian maps the natural cube \f$[-1,1]^{nDim}\f$ onto the element, so twice
-     * its smallest singular value IS the smallest physical extent. Shared by the stable time
-     * increment and the artificial bulk viscosity so that the two cannot drift apart: both scale
-     * their result to the highest frequency the element can carry.
+     * @details The Jacobian maps \f$[-1,1]^{nDim}\f$ onto the element, so twice its smallest
+     * singular value IS the smallest physical extent. Shared by the stable increment and the bulk
+     * viscosity so the two cannot drift apart.
      */
     double characteristicElementLengthAt( const XiSized& xi );
 
@@ -583,11 +575,9 @@ namespace Marmot::Elements {
                                         "2 values, the linear coefficient b1 and the quadratic coefficient b2, but "
                                      << nProperties << " were given." );
 
-      /* Validated BEFORE anything is committed, so a rejected assignment leaves the element
-       * exactly as it was: a caller that catches the exception and carries on must not be left
-       * running with half of an invalid property in place. Non-finite values are rejected
-       * alongside negative ones -- every comparison against a NaN is false, so a NaN would pass a
-       * `< 0.0` test and then propagate silently into the viscous stress.
+      /* Validated BEFORE anything is committed, so a rejected assignment leaves the element as it
+       * was. Non-finite values are rejected alongside negative ones: every comparison against a
+       * NaN is false, so a NaN would pass a `< 0.0` test and propagate into the viscous stress.
        */
       if ( !std::isfinite( properties[0] ) || !std::isfinite( properties[1] ) )
         throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
@@ -615,11 +605,10 @@ namespace Marmot::Elements {
                                         "1 value, the exponent n of (c/c_0)^n, but "
                                      << nProperties << " were given." );
 
-      /* Opt-in, and separate from 'bulk viscosity' itself so that switching it on does not disturb
-       * the coefficients: it costs a constitutive evaluation per quadrature point per increment,
-       * which is why it cannot be the default. See
-       * Marmot::FiniteElement::BulkViscosity::degradationFactor for what the exponent means and for
-       * what it degrades with -- the current tangent, not a damage variable.
+      /* Opt-in and separate from 'bulk viscosity' itself, so switching it on does not disturb the
+       * coefficients: it costs a constitutive evaluation per quadrature point per increment. See
+       * BulkViscosity::degradationFactor for the exponent, and for what it degrades with -- the
+       * current tangent, not a damage variable.
        */
       if ( !std::isfinite( properties[0] ) )
         throw std::invalid_argument( MakeString()

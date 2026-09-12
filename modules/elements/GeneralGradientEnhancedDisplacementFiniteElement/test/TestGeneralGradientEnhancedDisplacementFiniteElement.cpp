@@ -1770,11 +1770,10 @@ void testNonlocalCriticalTimeStepScalesLinearlyWithElementSize()
 
 namespace {
 
-  /* The VISCOUS part of the internal force alone, at a prescribed non-local field.
-   *
-   * Isolated by differencing two otherwise identical elements, one carrying the bulk viscosity and
-   * one not, at the same field value: the constitutive stress is degraded by that field too, and
-   * differencing at a fixed field cancels it exactly, leaving the artificial term by itself.
+  /* The VISCOUS part of the internal force alone, isolated by differencing two otherwise
+   * identical elements -- one with the bulk viscosity, one without -- at the same non-local field.
+   * The constitutive stress is degraded by that field too, so differencing at a fixed field
+   * cancels it exactly.
    */
   Eigen::VectorXd viscousForceAtNonlocalField( double nonlocalField, double degradationExponent )
   {
@@ -1828,17 +1827,11 @@ namespace {
 
 } // namespace
 
-/* The degradation, end to end through the element rather than as a formula.
- *
- * AT2's stiffness is degraded by the non-local field alone, so the wave speed it reports at a
- * field of phi is (1 - phi) times its undamaged one, and the factor (c/c_0)^n is exactly
- * (1 - phi)^n. That is the whole chain: the element asks the material for its wave speed AT THE
- * CURRENT FIELD, divides by the reference it cached at a zero field, and raises the ratio to the
- * assigned exponent.
- *
- * This is the test the defect needed. Every query used to be made at a zeroed field, so the ratio
- * was identically 1.0 and the viscous force did not depend on phi at all -- which the unit tests
- * on degradationFactor() could not see, because they never went through the element.
+/* The degradation end to end through the element rather than as a formula. AT2 is degraded by the
+ * non-local field alone, so its wave speed at a field of phi is (1 - phi) times the undamaged one
+ * and (c/c_0)^n is exactly (1 - phi)^n. Every query used to be made at a zeroed field, making the
+ * ratio identically 1.0 -- which the unit tests on degradationFactor() could not see, because they
+ * never went through the element.
  */
 void testBulkViscosityDegradesWithTheNonlocalField()
 {
@@ -1881,9 +1874,8 @@ void testBulkViscosityIsUndegradedByDefault()
                                           << "degradation was not requested" );
 }
 
-/* A rejected property assignment must leave the element exactly as it was. Checked through the
- * force rather than through a getter, because a half-applied assignment is only visible in what
- * the element then integrates.
+/* A rejected property assignment must leave the element as it was -- checked through the assembled
+ * inertia, since a half-applied assignment is only visible in what the element then produces.
  */
 void testRejectedPropertyAssignmentLeavesTheElementUnchanged()
 {

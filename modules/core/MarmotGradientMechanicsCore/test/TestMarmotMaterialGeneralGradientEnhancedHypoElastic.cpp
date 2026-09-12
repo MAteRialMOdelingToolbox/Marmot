@@ -11,14 +11,11 @@ using namespace Marmot::Testing;
 
 namespace {
 
-  /* A material whose stiffness is degraded by the NON-LOCAL FIELD and by nothing else, which is
-   * how gradient-enhanced damage models are built: `omega` is a function of the non-local variable
-   * handed to computeStress(), not a state the material carries. GCDP is exactly this at its
-   * default weighting m = 1.
-   *
-   * That is what makes the wave-speed query worth a test of its own. The field is an INPUT, so a
-   * query that does not pass it does not ask "what is the wave speed now", it asks "what would it
-   * be at a field of zero" -- the virgin answer, however damaged the point is.
+  /* A material degraded by the NON-LOCAL FIELD alone, which is how gradient-enhanced damage
+   * models are built -- `omega` is a function of the variable handed to computeStress(), not a
+   * state the material carries, and GCDP is exactly this at its default m = 1. The field being an
+   * INPUT is what makes the query worth a test: without it, the answer is the virgin one however
+   * damaged the point is.
    */
   class FieldDegradedMaterial : public MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 > {
   public:

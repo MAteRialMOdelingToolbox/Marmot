@@ -303,13 +303,11 @@ public:
    * @details The default implementation computes the 3D algorithmic tangent and returns
    *          `sqrt(max(C_ii) / rho)` with `C_ii` from the Voigt tangent diagonal entries.
    *
-   * @note The non-local field has to be passed in, because it is not part of the response: it is
-   *       an INPUT to the constitutive law, not a state it carries. Leaving it at zero therefore
-   *       does not mean "whatever the field currently is", it means "zero" -- and for a material
-   *       whose damage is driven by the non-local field alone (`m = 1` in GCDP, say) that is the
-   *       virgin tangent no matter how damaged the point actually is. A caller that wants the
-   *       CURRENT wave speed must pass the current field; a caller that wants the undamaged
-   *       reference, or a conservative (largest) speed for a critical time step, wants the default.
+   * @note The field is passed in because it is an INPUT to the constitutive law, not a state the
+   *       response carries. Leaving it at zero therefore means "zero", not "whatever it currently
+   *       is" -- and where damage is driven by that field alone (`m = 1` in GCDP) that is the
+   *       virgin tangent however damaged the point is. Pass the current field for the current wave
+   *       speed; take the default for an undamaged reference or a conservative critical time step.
    */
   virtual double getMaximumWaveSpeed(
     const response&                                    currentResponse,
