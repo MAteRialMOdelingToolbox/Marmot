@@ -115,10 +115,14 @@ public:
    * @brief Assign a single property of the element by name.
    * @param[in] propertyName Name of the property.
    * @param[in] properties Pointer to the array of property values.
+   * @param[in] nProperties Number of values behind that pointer.
    * @note Default implementation throws an exception, as an element not overriding this
    * interface does not support any named properties.
+   * @note The count is part of the interface rather than implied by the name: the caller is
+   * typically a scripting layer handing over a user-supplied list, and an implementation reading
+   * a fixed number of values from an unchecked pointer would read past the end of it silently.
    */
-  virtual void assignProperty( const std::string& propertyName, const double* properties )
+  virtual void assignProperty( const std::string& propertyName, const double* properties, int nProperties )
   {
     throw std::invalid_argument( MakeString()
                                  << __PRETTY_FUNCTION__ << ": unsupported named property '" << propertyName << "'" );
@@ -215,8 +219,12 @@ public:
                                  double        dT ) = 0;
 
   /**
-   * @brief Compute lumped inertia matrix.
-   * @param[out] I Inertia matrix.
+   * @brief Compute the lumped (diagonal) inertia of the element, over every field it carries.
+   * @param[out] I Diagonal of the lumped inertia, in the element's dof order.
+   * @details The coefficient of each field's SECOND time derivative: mass on the displacement
+   * block, and a micro-inertia on a non-local block given the "nonlocal micro inertia" property.
+   * Zero on one that has not been -- carrying none is what keeps that field first order in time;
+   * see computeLumpedDamping() for what integrates it then.
    * @note Default implementation throws an exception.
    */
   virtual void computeLumpedInertia( double* I )
@@ -277,4 +285,21 @@ public:
 
   /** @return Number of quadrature points used by the element. */
   virtual int getNumberOfQuadraturePoints() = 0;
+
+  /**
+   * @brief Compute the lumped (diagonal) damping of the element, over every field it carries.
+   * @param[out] C Diagonal of the lumped damping, in the element's dof order.
+   * @details The coefficient of each field's FIRST time derivative: zero on the displacement
+   * block, and the non-local viscosity on a non-local block -- always, with or without a
+   * micro-inertia (see computeLumpedInertia()). A first-order field is integrated by this term
+   * alone; a second-order one is damped by it. Unlike most siblings here the default does NOT
+   * throw: carrying no damping is the ordinary answer, not an unimplemented case, and the buffer
+   * arrives zero-initialised, so leaving it untouched reports exactly that.
+   *
+   * @note Declared LAST, away from computeLumpedInertia() where it belongs by subject, because
+   * inserting a virtual mid-class shifts the vtable slot of every virtual after it. A stale
+   * library mixed with a fresh consumer would then misdispatch existing calls silently instead of
+   * failing on the one call that is new.
+   */
+  virtual void computeLumpedDamping( double* C ) { static_cast< void >( C ); };
 };

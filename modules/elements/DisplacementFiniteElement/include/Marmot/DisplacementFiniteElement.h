@@ -23,6 +23,7 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
+#include "Marmot/MarmotBulkViscosity.h"
 #include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotExceptions.h"
@@ -96,6 +97,13 @@ namespace Marmot::Elements {
     const int elLabel;
     /** Section assumption applied by this element instance. */
     const SectionType sectionType;
+    /**
+     * @brief Coefficients of the artificial bulk viscosity, assigned via the named property
+     * "bulk viscosity". They default to zero, which is inactive: unless that property is
+     * assigned, no viscous stress is formed and the element integrates exactly what it
+     * integrated before the device existed.
+     */
+    FiniteElement::BulkViscosity::Coefficients bulkViscosityCoefficients;
 
     /**
      * @brief Data and state associated with a quadrature point.
@@ -111,6 +119,34 @@ namespace Marmot::Elements {
       double detJ;
       double J0xW;
       BSized B;
+
+      /**
+       * @brief The element's smallest physical extent at this quadrature point.
+       * @details Cached because the artificial bulk viscosity needs it on every explicit increment,
+       * whereas the stable time increment that shares the definition is asked for rarely. The
+       * element's nodal coordinates do not change, so the cached value cannot go stale.
+       */
+      double characteristicElementLength = 0.0;
+
+      /**
+       * @brief Wave speed the artificial bulk viscosity is scaled with, cached on first use.
+       * @details A current wave speed costs a full constitutive evaluation, affordable for the
+       * stable increment (asked for rarely) and not per quadrature point per explicit increment.
+       * What is cached is the UNDAMAGED speed: the term damps the highest frequency the MESH can
+       * carry, which the undamaged material sets, and holding it fixed as the material softens
+       * damps slightly harder -- the safe direction here. Zero means "not yet computed". It is
+       * also the reference the optional degradation is measured against; see
+       * Marmot::FiniteElement::BulkViscosity::degradationFactor.
+       *
+       * @warning Captured on the first explicit increment, from the state the element has THEN. A
+       * hypoelastic material carries its damage in its state variables, so a run beginning from an
+       * already-damaged state -- a restart, or an explicit step after an implicit one -- takes that
+       * degraded speed as its reference and measures no degradation afterwards. The viscosity is
+       * then simply not degraded, which removes more energy rather than less, but it is not what
+       * was asked for. The gradient-enhanced element has no such ambiguity: its reference is the
+       * speed at a ZERO non-local field.
+       */
+      double referenceWaveSpeed = 0.0;
 
       /**
        * @brief Manager for per-quadrature-point state variables.
@@ -216,6 +252,33 @@ namespace Marmot::Elements {
 
     /** @brief Assign material section and instantiate per-quadrature-point materials. */
     void assignProperty( const MarmotMaterialSection& marmotElementProperty );
+
+    /**
+     * @brief Assign a named element property.
+     * @param propertyName One of "bulk viscosity" or "bulk viscosity damage degradation".
+     * @param properties For "bulk viscosity": the two dimensionless coefficients \f$b_1\f$
+     *        (linear) and \f$b_2\f$ (quadratic), in that order. For "bulk viscosity damage
+     *        degradation": the single exponent \f$n\f$ of the optional degradation with the
+     *        material's loss of stiffness.
+     * @param nProperties Number of values behind that pointer: 2 for "bulk viscosity", 1 for
+     *        "bulk viscosity damage degradation".
+     * @throws std::invalid_argument if the name is not understood, if the count does not match
+     *         what the property expects, or if a coefficient is negative.
+     */
+    void assignProperty( const std::string& propertyName, const double* properties, int nProperties ) override;
+
+    /** @brief The named properties this element understands. */
+    std::vector< std::string > getPropertyNames() const override;
+
+    /**
+     * @brief The element's smallest physical extent at a parent coordinate.
+     * @param xi Parent coordinate to evaluate the Jacobian at.
+     * @return Twice the smallest singular value of the Jacobian.
+     * @details The Jacobian maps \f$[-1,1]^{nDim}\f$ onto the element, so twice its smallest
+     * singular value IS the smallest physical extent. Shared by the stable increment and the bulk
+     * viscosity so the two cannot drift apart.
+     */
+    double characteristicElementLengthAt( const XiSized& xi );
 
     /** @brief Provide nodal coordinates to the parent geometry element. */
     void assignNodeCoordinates( const double* coordinates );
@@ -500,6 +563,86 @@ namespace Marmot::Elements {
   }
 
   template < int nDim, int nNodes >
+  void DisplacementFiniteElement< nDim, nNodes >::assignProperty( const std::string& propertyName,
+                                                                  const double*      properties,
+                                                                  int                nProperties )
+  {
+    if ( propertyName == "bulk viscosity" ) {
+      if ( nProperties != 2 )
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__
+                                     << ": the named property 'bulk viscosity' takes exactly "
+                                        "2 values, the linear coefficient b1 and the quadratic coefficient b2, but "
+                                     << nProperties << " were given." );
+
+      /* Validated BEFORE anything is committed, so a rejected assignment leaves the element as it
+       * was. Non-finite values are rejected alongside negative ones: every comparison against a
+       * NaN is false, so a NaN would pass a `< 0.0` test and propagate into the viscous stress.
+       */
+      if ( !std::isfinite( properties[0] ) || !std::isfinite( properties[1] ) )
+        throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
+                                                  << ": both bulk viscosity coefficients must be finite numbers." );
+
+      if ( properties[0] < 0.0 || properties[1] < 0.0 )
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__
+                                     << ": both bulk viscosity coefficients must be non-negative, a negative one "
+                                        "would feed energy into the solution rather than remove it." );
+
+      /* Artificial bulk viscosity is a NUMERICAL device, so it is an element property and not a
+       * material one: the same concrete integrated implicitly needs none of it, and two meshes of
+       * the same material may want different amounts. Both coefficients are dimensionless; see
+       * Marmot::FiniteElement::BulkViscosity for what they multiply.
+       */
+      bulkViscosityCoefficients.linear    = properties[0];
+      bulkViscosityCoefficients.quadratic = properties[1];
+    }
+    else if ( propertyName == "bulk viscosity damage degradation" ) {
+      if ( nProperties != 1 )
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__
+                                     << ": the named property 'bulk viscosity damage degradation' takes exactly "
+                                        "1 value, the exponent n of (c/c_0)^n, but "
+                                     << nProperties << " were given." );
+
+      /* Opt-in and separate from 'bulk viscosity' itself, so switching it on does not disturb the
+       * coefficients: it costs a constitutive evaluation per quadrature point per increment. See
+       * BulkViscosity::degradationFactor for the exponent, and for what it degrades with -- the
+       * current tangent, not a damage variable.
+       */
+      if ( !std::isfinite( properties[0] ) )
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__
+                                     << ": the bulk viscosity damage degradation exponent must be a finite number; a "
+                                        "NaN passes every ordering test and would silently disable the option." );
+
+      if ( properties[0] < 0.0 )
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__
+                                     << ": the bulk viscosity damage degradation exponent must be non-negative, a "
+                                        "negative one would AMPLIFY the viscous stress as the material fails." );
+
+      bulkViscosityCoefficients.degradation = properties[0];
+    }
+    else {
+      MarmotElement::assignProperty( propertyName, properties, nProperties );
+    }
+  }
+
+  template < int nDim, int nNodes >
+  std::vector< std::string > DisplacementFiniteElement< nDim, nNodes >::getPropertyNames() const
+  {
+    return { "bulk viscosity", "bulk viscosity damage degradation" };
+  }
+
+  template < int nDim, int nNodes >
+  double DisplacementFiniteElement< nDim, nNodes >::characteristicElementLengthAt( const XiSized& xi )
+  {
+    const JacobianSized J = this->Jacobian( this->dNdXi( xi ) );
+    return 2.0 * Eigen::JacobiSVD< JacobianSized >( J ).singularValues().minCoeff();
+  }
+
+  template < int nDim, int nNodes >
   void DisplacementFiniteElement< nDim, nNodes >::assignNodeCoordinates( const double* coordinates )
   {
     ParentGeometryElement::assignNodeCoordinates( coordinates );
@@ -515,6 +658,9 @@ namespace Marmot::Elements {
       const dNdXiSized    dNdX  = this->dNdX( dNdXi, JInv );
       qp.detJ                   = J.determinant();
       qp.B                      = this->B( dNdX );
+
+      qp.characteristicElementLength = characteristicElementLengthAt( qp.xi );
+      qp.referenceWaveSpeed          = 0.0;
 
       if constexpr ( nDim == 3 ) {
         qp.J0xW = qp.weight * qp.detJ;
@@ -772,6 +918,58 @@ namespace Marmot::Elements {
       qp.managedStateVars->totalStrainEnergy   = ( elasticEnergyDensity + dissipation ) * qp.J0xW;
       qp.managedStateVars->strain += make3DVoigt< ParentGeometryElement::voigtSize >( dE );
 
+      /* The artificial bulk viscosity is added to the stress that is INTEGRATED, never to the one
+       * that is STORED. It is a numerical device: the constitutive law must not see it, it must
+       * leave no trace in the state, and it must not appear in the reported stress. With inactive
+       * coefficients nothing here is evaluated at all, so a run that does not ask for bulk
+       * viscosity is bit-identical to one built before it existed.
+       */
+      if ( bulkViscosityCoefficients.areActive() ) {
+
+        constexpr int nNormalComponents = nDim == 3 ? 3 : ( nDim == 2 ? 2 : 1 );
+
+        /* In plane stress the out-of-plane strain is not carried by the element's kinematics, so
+         * the trace is taken over the in-plane components only and the term is approximate there.
+         * In 3D and in plane strain this IS the volumetric strain increment.
+         */
+        const double volumetricStrainIncrement = dE.head( nNormalComponents ).sum();
+
+        const MarmotMaterialHypoElastic::state3D stateForWaveSpeed( qp.managedStateVars->stress,
+                                                                    elasticEnergyDensity,
+                                                                    dissipation,
+                                                                    qp.managedStateVars->materialStateVars.data() );
+
+        if ( qp.referenceWaveSpeed <= 0.0 )
+          qp.referenceWaveSpeed = qp.material->getMaximumWaveSpeed( stateForWaveSpeed );
+
+        /* The optional degradation needs the material's CURRENT tangent, and asking for that costs
+         * a full constitutive evaluation. With the exponent at its default of zero the material is
+         * never asked, so a deck that does not request the degradation integrates exactly the
+         * stress it integrated before.
+         */
+        const double
+          degradation = bulkViscosityCoefficients.isDegraded()
+                          ? FiniteElement::BulkViscosity::degradationFactor( qp.material->getMaximumWaveSpeed(
+                                                                               stateForWaveSpeed ),
+                                                                             qp.referenceWaveSpeed,
+                                                                             bulkViscosityCoefficients.degradation )
+                          : 1.0;
+
+        const double
+          bulkViscousStress = degradation *
+                              FiniteElement::BulkViscosity::viscousStressFromIncrement( volumetricStrainIncrement,
+                                                                                        dT,
+                                                                                        qp.material->getDensity(
+                                                                                          qp.managedStateVars
+                                                                                            ->materialStateVars
+                                                                                            .data() ),
+                                                                                        qp.referenceWaveSpeed,
+                                                                                        qp.characteristicElementLength,
+                                                                                        bulkViscosityCoefficients );
+
+        S.head( nNormalComponents ).array() += bulkViscousStress;
+      }
+
       Pe += B.transpose() * S * qp.J0xW;
     }
   }
@@ -972,10 +1170,14 @@ namespace Marmot::Elements {
        * singular value IS that smallest physical extent. For a well-shaped element this
        * reproduces the previous expressions exactly -- a cube of side h gives h either way --
        * so the estimate is tightened only where it was previously wrong.
+       *
+       * Read from the cache initializeYourself() fills rather than recomputed here: the artificial
+       * bulk viscosity already needs this value on every explicit increment and caches it for that
+       * reason, and the nodal coordinates it depends on do not change, so a second computation here
+       * would only disagree with the cached one under floating-point noise, never under a real
+       * update.
        */
-      const JacobianSized J_                          = this->Jacobian( this->dNdXi( qp.xi ) );
-      const double        characteristicElementLength = 2.0 *
-                                                 Eigen::JacobiSVD< JacobianSized >( J_ ).singularValues().minCoeff();
+      const double characteristicElementLength = qp.characteristicElementLength;
 
       MarmotMaterialHypoElastic::state3D state( qp.managedStateVars->stress,
                                                 qp.managedStateVars->elasticStrainEnergy / qp.J0xW,

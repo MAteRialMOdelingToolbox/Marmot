@@ -297,11 +297,21 @@ public:
   /**
    * @brief Get the maximum wave speed for the current response state.
    * @param currentResponse Current response state
+   * @param K The non-local field values the tangent is to be evaluated at; zero (the default)
+   *          asks for the response of the material with its non-local field undamaged.
    * @return Maximum wave speed
    * @details The default implementation computes the 3D algorithmic tangent and returns
    *          `sqrt(max(C_ii) / rho)` with `C_ii` from the Voigt tangent diagonal entries.
+   *
+   * @note The field is passed in because it is an INPUT to the constitutive law, not a state the
+   *       response carries. Leaving it at zero therefore means "zero", not "whatever it currently
+   *       is" -- and where damage is driven by that field alone (`m = 1` in GCDP) that is the
+   *       virgin tangent however damaged the point is. Pass the current field for the current wave
+   *       speed; take the default for an undamaged reference or a conservative critical time step.
    */
-  virtual double getMaximumWaveSpeed( const response& currentResponse ) const
+  virtual double getMaximumWaveSpeed(
+    const response&                                    currentResponse,
+    const Eigen::Vector< double, nNonlocalVariables >& K = Eigen::Vector< double, nNonlocalVariables >::Zero() ) const
   {
     const int nStateVars = getNumberOfRequiredStateVars();
 
@@ -316,7 +326,7 @@ public:
     tangents  tan;
     increment inc;
     inc.dStrain = Marmot::Vector6d::Zero();
-    inc.K       = Eigen::Vector< double, nNonlocalVariables >::Zero();
+    inc.K       = K;
     inc.dK      = Eigen::Vector< double, nNonlocalVariables >::Zero();
     inc.time    = 0.0;
     inc.dT      = 1.0;
