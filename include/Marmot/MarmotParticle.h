@@ -154,11 +154,11 @@ namespace Marmot::Meshfree {
                                           double        dT ) const {};
 
     virtual void computeDistributedLoadExplicit( int           type,
-                                             int           boundaryFaceID,
-                                             const double* load,
-                                             double*       fExt,
-                                             double        timeNew,
-                                             double        dT ) const {};
+                                                 int           boundaryFaceID,
+                                                 const double* load,
+                                                 double*       fExt,
+                                                 double        timeNew,
+                                                 double        dT ) const {};
 
     virtual void computeLumpedInertia( double* mLumped ) const { throw std::runtime_error( "Not implemented yet!" ); };
 
@@ -203,6 +203,15 @@ namespace Marmot::Meshfree {
     virtual void vci_assignTestFunctionCorrectionTerms( const double* eta_AiC_RowMajor ) = 0;
 
     virtual void setInitialCondition( const std::string& conditionName, const double* value ) = 0;
+
+    /// Compute the lumped damping of the particle, node-wise, for every field the particle carries. Analogous to
+    /// @ref computeLumpedInertia, but for the damping term of a field whose balance is first (or, together with a
+    /// nonzero lumped inertia, second) order in time, e.g. the viscosity @f$ \eta @f$ of an implicit-gradient
+    /// nonlocal field. Appended at the very end of the class (after every other virtual): it still changes the
+    /// vtable, but appending confines a stale-library mismatch to callers of this new method, exactly as done for
+    /// MarmotElement in Marmot #84.
+    /// @param cLumped Pointer to the (node-wise, non-blocked) lumped damping vector to accumulate into.
+    virtual void computeLumpedDamping( double* cLumped ) const { throw std::runtime_error( "Not implemented yet!" ); };
   };
 
 } // namespace Marmot::Meshfree
