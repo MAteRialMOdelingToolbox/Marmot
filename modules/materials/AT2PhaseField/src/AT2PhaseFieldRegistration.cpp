@@ -35,6 +35,12 @@ namespace Marmot::Materials {
     const static bool AT2PhaseFieldIsRegistered = MarmotMaterialGeneralGradientEnhancedHypoElasticFactory<
       1 >::registerMaterial< AT2PhaseField >( "AT2PHASEFIELD" );
 
+    // NOT registered with GradientEnhancedHughesWingetWrapper, deliberately. That wrapper hands the
+    // wrapped model the forward-rotated stress of the last increment, and this model ignores its
+    // `res.stress` argument entirely -- it returns g(phi) * C : eps from its own stored `strain` state.
+    // Wrapped, its Kirchhoff stress does not rotate at all under a rigid rotation. See the note in
+    // MarmotMaterialGradientEnhancedHughesWinget.h.
+
   } // namespace Registration
 
 } // namespace Marmot::Materials
