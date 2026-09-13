@@ -64,6 +64,16 @@ namespace Marmot::Meshfree {
     TensorDD                            _momentsOfInertia_IntermediateReference;
     std::array< Eigen::MatrixXd, nDim > _d2N_dYdY;
 
+    /// Second gradient (wrt Y) of the CURRENT increment of the displacement field, cached by
+    /// updatePhysicsExplicit() for use by the matching computePhysicsKernelsExplicit() call; the
+    /// explicit-dynamics counterpart of the quantity computePhysicsKernels() computes locally.
+    TensorDDD _d2x_dYdY;
+
+    /// Gradient (wrt Y) of the nodal velocity field, i.e. `du_dY / dT` of the current increment; feeds
+    /// the NSNI stabilization term of computeLumpedMomentum() below, exactly as in
+    /// DisplacementParticleSQCNIxNSNI.
+    TensorDD _dv_dY = TensorDD( 0.0 );
+
   public:
     GradientEnhancedFiniteStrainParticleSQCNIxNSNI(
       int                                            elementID,
@@ -132,6 +142,50 @@ namespace Marmot::Meshfree {
 
     void computePhysicsKernels( const double* dQ, double* fInt, double* dFInt_ddQ, double timeNew, double dT ) override;
 
+    /**
+     * @brief Explicit-dynamics update: advance the material point to the new state and cache the
+     *        quantities computePhysicsKernelsExplicit() will need.
+     * @param dQ      Increment of the nodal solution since the last accepted state (node-wise layout,
+     *                block size @f$ n_\mathrm{dim}+1 @f$, exactly as for computePhysicsKernels()).
+     * @param timeNew Current simulation time.
+     * @param dT      Time increment.
+     *
+     * @details Mirrors DisplacementParticleSQCNIxNSNI::updatePhysicsExplicit for the displacement dof
+     * (velocity/acceleration by finite difference of @f$ \Delta u/\Delta t @f$), and additionally drives
+     * the material point's nonlocal field by its total-consistent increment, accumulating the gradient
+     * of that increment into the material point's running grad_X(TOTAL nonlocal field) -- see
+     * @ref MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::incrementNonlocalDamageGradient.
+     */
+    void updatePhysicsExplicit( const double* dQ, double timeNew, double dT ) override;
+
+    /**
+     * @brief Explicit-dynamics internal force, in TOTAL form (as opposed to computePhysicsKernels(),
+     *        which is written in INCREMENT form for a Newton solve).
+     * @param fInt Pointer to the internal force vector to accumulate into; same node-wise layout as
+     *             computePhysicsKernels().
+     *
+     * @details Displacement rows: stress divergence plus the NSNI stabilization term, exactly as
+     * DisplacementParticleSQCNIxNSNI::computePhysicsKernelsExplicit (no inertia term -- that is lumped
+     * separately via computeLumpedInertia()). Nonlocal row:
+     * @f$ f_A = \bigl(T_A\,\bar N + c\,\nabla_X T_A\cdot\nabla_X\bar N - T_A\,L\bigr)\,V_0 @f$, using the
+     * TOTAL nonlocal field and TOTAL local driving force reported by the material point (@ref
+     * MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::getNonLocalDamage,
+     * ::getLocalDamage, ::getNonLocalDamageGradient) -- not their increments, which is what
+     * computePhysicsKernels() uses and what would be wrong here: there is no converged state for an
+     * increment to be taken relative to.
+     */
+    void computePhysicsKernelsExplicit( double* fInt ) override;
+
+    /**
+     * @brief Compute the lumped (nodal, non-blocked) momentum of the particle.
+     * @param mLumped Pointer to the lumped momentum vector to accumulate into.
+     *
+     * @details Displacement rows as DisplacementParticleSQCNIxNSNI::computeLumpedMomentum (partition of
+     * unity plus the NSNI second-moment stabilization term). The nonlocal row is left at zero -- see
+     * the doxygen note on GradientEnhancedFiniteStrainParticle::computeLumpedMomentum.
+     */
+    virtual void computeLumpedMomentum( double* mLumped ) const override;
+
     /// \brief Extract the second derivative of the shape function for a given node
     /// \param d2N_dYdY The second derivative of the shape function
     /// \param node The node for which the second derivative is extracted
@@ -172,14 +226,14 @@ namespace Marmot::Meshfree {
     const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation,
     ParentSQCNIParticle::SmoothingDomainUpdateType       smoothingVolumeUpdateType )
     : GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices >( elementID,
-                                                                  vertexCoordinates,
-                                                                  nVertexCoordinates,
-                                                                  volume,
-                                                                  materialName,
-                                                                  materialProperties,
-                                                                  sizeMaterialProperties,
-                                                                  approximation,
-                                                                  smoothingVolumeUpdateType )
+                                                                    vertexCoordinates,
+                                                                    nVertexCoordinates,
+                                                                    volume,
+                                                                    materialName,
+                                                                    materialProperties,
+                                                                    sizeMaterialProperties,
+                                                                    approximation,
+                                                                    smoothingVolumeUpdateType )
   {
     // second moments of the undeformed particle domain about its centroid
     // (for an affinely mapped cell this is identical to the former
@@ -193,10 +247,10 @@ namespace Marmot::Meshfree {
 
   template < int nDim, int nVertices >
   void GradientEnhancedFiniteStrainParticleSQCNIxNSNI< nDim, nVertices >::computePhysicsKernels( const double* dQ,
-                                                                                               double*       fInt,
-                                                                                               double*       dFInt_ddQ,
-                                                                                               double        timeNew,
-                                                                                               double        dT )
+                                                                                                 double*       fInt,
+                                                                                                 double* dFInt_ddQ,
+                                                                                                 double  timeNew,
+                                                                                                 double  dT )
   {
     using namespace Marmot::FastorIndices;
     using namespace Fastor;
@@ -381,6 +435,180 @@ namespace Marmot::Meshfree {
       }
     }
     // clang-format on
+  }
+
+  template < int nDim, int nVertices >
+  void GradientEnhancedFiniteStrainParticleSQCNIxNSNI< nDim, nVertices >::updatePhysicsExplicit( const double* dQ,
+                                                                                                 double        timeNew,
+                                                                                                 double        dT )
+  {
+    using namespace Marmot::FastorIndices;
+    using namespace Fastor;
+
+    const auto& _nNodes = this->_nNodes;
+    const auto& _N      = this->_N;
+    const auto& _dN_dY  = this->_dN_dY;
+    auto&       _mp     = this->_mp;
+
+    constexpr int nodeBlockSize = nDim + 1;
+
+    TensorD  du( 0.0 );
+    TensorDD du_dY( 0.0 );
+
+    double  dn = 0.0;
+    TensorD dn_dY( 0.0 );
+
+    _d2x_dYdY.zeros();
+    for ( int B = 0; B < _nNodes; B++ ) {
+
+      const int idxB_u = nodeBlockSize * B;
+      const int idxB_n = nodeBlockSize * B + nDim;
+
+      const double N_B        = _N( B );
+      const auto   dN_B_dY    = TensorD( _dN_dY.col( B ).data() ); // works because ColumnMajor of Eigen
+      const auto   d2N_B_dYdY = extract_d2N_dYdY_for_node( _d2N_dYdY, B );
+
+      const auto dQU_B = TensorD( dQ + idxB_u );
+      const auto dQN_B = dQ[idxB_n];
+
+      du += N_B * dQU_B;
+      dn += N_B * dQN_B;
+
+      du_dY += einsum< i, j >( dQU_B, dN_B_dY );
+      dn_dY += ( dQN_B * dN_B_dY );
+
+      _d2x_dYdY += einsum< i, jk >( dQU_B, d2N_B_dYdY );
+    }
+
+    _mp.prepareYourself( timeNew, dT );
+    _mp.incrementDeformation( du, du_dY, dn );
+
+    // grad_X of the CURRENT increment of the nonlocal field, using the mapping of the last accepted
+    // state (fixed throughout this step) -- exactly the operator computePhysicsKernels() uses for its
+    // own (increment-form) residual. Accumulated into the material point's running grad_X(TOTAL
+    // nonlocal field); see GradientEnhancedFiniteStrainMaterialPoint::incrementNonlocalDamageGradient.
+    const TensorD dn_dX = einsum< ji, j >( _mp.dY_dX(), dn_dY );
+    _mp.incrementNonlocalDamageGradient( dn_dX );
+
+    _mp.computeYourself( timeNew, dT );
+    if ( dT <= 1e-16 )
+      return;
+    const auto    v_n  = _mp.getVelocity();
+    const TensorD v_np = du / dT;
+    _mp.setVelocity( v_np );
+    _mp.setAcceleration( evaluate( v_np - v_n ) / dT );
+
+    _dv_dY = du_dY / dT;
+  }
+
+  template < int nDim, int nVertices >
+  void GradientEnhancedFiniteStrainParticleSQCNIxNSNI< nDim, nVertices >::computePhysicsKernelsExplicit( double* fInt )
+  {
+    using namespace Marmot::FastorIndices;
+    using namespace Fastor;
+    using ijmM = Index< i_, j_, m_, M_ >;
+    using mMK  = Index< m_, M_, K_ >;
+    using ijK  = Fastor::Index< i_, j_, K_ >;
+
+    const auto& _nNodes = this->_nNodes;
+    const auto& _dT_dY  = this->_dT_dY;
+    auto&       _mp     = this->_mp;
+
+    constexpr int nodeBlockSize = nDim + 1;
+
+    TensorD r_U( 0.0 );
+
+    const auto&   S            = _mp.response.S;
+    const double  NbarTotal    = _mp.getNonLocalDamage();
+    const double  LTotal       = _mp.getLocalDamage();
+    const TensorD NbarTotal_dX = _mp.getNonLocalDamageGradient();
+    const double  c            = _mp.response.nonLocalRadius * _mp.response.nonLocalRadius;
+
+    const double V0 = this->getVolumeUndeformed();
+
+    const auto& t = _mp.tangents;
+
+    Eigen::Map< Eigen::VectorXd > P( fInt, _nNodes * nodeBlockSize );
+
+    const auto   dY_dx            = evaluate( inv( _mp.dx_dY() ) );
+    const double detJIntermediate = determinant( _mp.dY_dX() );
+
+    const auto dS_dY = evaluate( einsum< ijmM, mMK >( t.dS_dDeltaF, _d2x_dYdY ) );
+
+    // clang-format off
+    for ( int A = 0; A < _nNodes; A++ ) {
+
+      const auto  dT_A_dY = TensorMap< const double, nDim >( _dT_dY.col( A ).data() );
+      const TensorD dT_A_dx = einsum< ji, j >( dY_dx , dT_A_dY );
+      const TensorD dT_A_dX = einsum< ji, j >( _mp.dY_dX(), dT_A_dY );
+
+      const double T_A = this->_T( A );
+
+      const int idxA_u = nodeBlockSize * A;
+      const int idxA_n = nodeBlockSize * A + nDim;
+
+      r_U = ( +einsum< i, ij >( dT_A_dx, S ) ) * V0;
+
+      // TOTAL form of the nonlocal residual -- see the doxygen note on the declaration for why this
+      // must not be the increment form computePhysicsKernels() uses.
+      const double r_N = evaluate( ( T_A * NbarTotal + c * einsum< i, i >( dT_A_dX, NbarTotal_dX ) -
+                                     T_A * LTotal ) *
+                                   V0 )
+                          .toscalar();
+
+      const auto d2NA_dYdY = extract_d2N_dYdY_for_node( _d2N_dYdY, A );
+
+      const TensorDD d2NA_dYdY_x_MOIScaled = einsum< ij, jk >( d2NA_dYdY, _momentsOfInertia_IntermediateReference ) / detJIntermediate;
+      const TensorDD d2NA_dxdY_x_MOIScaled = einsum< ji, jk >( dY_dx, d2NA_dYdY_x_MOIScaled ) ;
+
+      TensorD rU_Stab = einsum< iK, ijK >( d2NA_dxdY_x_MOIScaled, dS_dY );
+
+      r_U += rU_Stab;
+
+      {
+        using namespace Eigen;
+        P.template segment< nDim >( idxA_u ) += Map< Matrix< double, nDim, 1 > >( r_U.data() );
+        P( idxA_n ) += r_N;
+      }
+    }
+    // clang-format on
+  }
+
+  template < int nDim, int nVertices >
+  void GradientEnhancedFiniteStrainParticleSQCNIxNSNI< nDim, nVertices >::computeLumpedMomentum( double* mLumped ) const
+  {
+    using namespace FastorIndices;
+    using namespace Fastor;
+
+    auto&       _mp    = this->_mp;
+    const auto& _dT_dY = this->_dT_dY;
+
+    const double density0 = _mp.getDensityUndeformed();
+    const double V0       = this->getVolumeUndeformed();
+    const auto   v        = _mp.getVelocity();
+
+    const TensorDD _dv_dY_x_Y2 = einsum< ij, jk >( _dv_dY, _momentsOfInertia_IntermediateReference );
+
+    constexpr int nodeBlockSize = nDim + 1;
+
+    for ( int A = 0; A < this->_nNodes; A++ ) {
+
+      const double T_A     = this->_T( A );
+      const auto   dT_A_dY = Tensor< double, nDim >( _dT_dY.col( A ).data() );
+
+      const int idxA_u = nodeBlockSize * A;
+
+      const TensorD aux = einsum< ij, j >( _dv_dY_x_Y2, dT_A_dY );
+
+      const double detJIntermediate = determinant( _mp.dY_dX() );
+
+      for ( int i = 0; i < nDim; i++ ) {
+        mLumped[idxA_u + i] += density0 * T_A * V0 * v[i];
+        mLumped[idxA_u + i] += density0 * aux[i] / detJIntermediate;
+      }
+
+      // the nonlocal row (idxA_u + nDim) is left at zero -- see the doxygen note on the declaration.
+    }
   }
 
 } // namespace Marmot::Meshfree
