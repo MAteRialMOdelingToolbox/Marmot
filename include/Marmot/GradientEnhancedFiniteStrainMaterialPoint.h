@@ -83,6 +83,7 @@ namespace Marmot::MaterialPoints {
         { .name = "deformation gradient", .length = 9 },
         { .name = "nonlocal damage", .length = 1 },
         { .name = "local damage", .length = 1 },
+        { .name = "nonlocal damage gradient", .length = 3 },
         { .name = "stress", .length = 9 },
         { .name = "F0 XX", .length = 1 },
         { .name = "F0 YY", .length = 1 },
@@ -99,6 +100,7 @@ namespace Marmot::MaterialPoints {
       FastorStandardTensors::TensorMap33d dY_dX;
       double&                             nonLocalDamage;
       double&                             localDamage;
+      FastorStandardTensors::TensorMap3d  nonLocalDamageGradient;
       FastorStandardTensors::TensorMap33d stress;
       double&                             F0_XX;
       double&                             F0_YY;
@@ -117,6 +119,7 @@ namespace Marmot::MaterialPoints {
           dY_dX( &find( "deformation gradient" ) ),
           nonLocalDamage( find( "nonlocal damage" ) ),
           localDamage( find( "local damage" ) ),
+          nonLocalDamageGradient( &find( "nonlocal damage gradient" ) ),
           stress( &find( "stress" ) ),
           F0_XX( find( "F0 XX" ) ),
           F0_YY( find( "F0 YY" ) ),
@@ -187,6 +190,64 @@ namespace Marmot::MaterialPoints {
 
     const TensorD& coordinates() const { return _x0; };
 
+    /**
+     * @brief Get the TOTAL nonlocal field, for consumers that need the total (not incremental) form of
+     *        the nonlocal balance, e.g. an explicit-dynamics residual.
+     * @return The current value of the accumulated nonlocal field @f$ \bar N @f$.
+     */
+    double getNonLocalDamage() const { return state->nonLocalDamage; };
+
+    /**
+     * @brief Get the TOTAL local driving force @f$ L @f$ last reported by the material, for consumers
+     *        that need the total (not incremental) form of the nonlocal balance.
+     *
+     * @note Only meaningful after computeYourself() has run at least once: that call is what sets this
+     *       slot to the current @f$ L @f$ (it is what response.dL is differenced against, and what the
+     *       NEXT call to computeYourself() will treat as @f$ L_n @f$).
+     * @return The current value of the local driving force @f$ L @f$.
+     */
+    double getLocalDamage() const { return state->localDamage; };
+
+    /**
+     * @brief Get the nonlocal viscosity @f$ \eta @f$ of the assigned material.
+     * @return Nonlocal viscosity, the damping coefficient of the nonlocal balance.
+     */
+    double getNonlocalViscosity() const { return material->getNonlocalViscosity( state->materialState.data() ); };
+
+    /**
+     * @brief Get the nonlocal micro-inertia @f$ m_k @f$ of the assigned material.
+     * @return Nonlocal micro-inertia, in units of [time]^2; zero for a material that does not report
+     *         one, which is the quasi-static (first-order-in-time) model.
+     */
+    double getNonlocalMicroInertia() const { return material->getNonlocalMicroInertia( state->materialState.data() ); };
+
+    /**
+     * @brief Get the material-configuration gradient of the TOTAL nonlocal field, @f$ \nabla_X\bar N @f$.
+     *
+     * @details Only the increment of the nonlocal field ever reaches a material point (via
+     * incrementDeformation(), driven by a particle's @c dQ, which itself is only ever an increment --
+     * no consumer in this codebase ever hands over absolute nodal values). The TOTAL field itself is
+     * nonetheless available, honestly, as the running sum kept in @c state->nonLocalDamage. Its
+     * gradient has no such existing running sum, so incrementNonlocalDamageGradient() below adds one,
+     * one differential order higher, updated by whichever consumer forms grad_X(increment) for its own
+     * purposes anyway. Exact as long as the assigned node set does not change between calls -- the same
+     * limitation already shared by every other history-carrying quantity here (state->u,
+     * state->nonLocalDamage, ...).
+     * @return @f$ \nabla_X\bar N @f$, accumulated via incrementNonlocalDamageGradient().
+     */
+    TensorD getNonLocalDamageGradient() const { return state->nonLocalDamageGradient( Fastor::seq( 0, nDim ) ); };
+
+    /**
+     * @brief Accumulate the material-configuration gradient of an increment of the nonlocal field.
+     * @param dn_dX Gradient (with respect to the reference configuration @f$ X @f$) of the CURRENT
+     *              increment of the nonlocal field, i.e. @f$ \nabla_X(\Delta\bar N) @f$ for this call.
+     */
+    void incrementNonlocalDamageGradient( const TensorD& dn_dX )
+    {
+      for ( int i = 0; i < nDim; i++ )
+        state->nonLocalDamageGradient( i ) += dn_dX( i );
+    };
+
     virtual void prepareYourself( double timeNew, double dT );
 
     virtual void computeYourself( double timeNew, double dT ) = 0;
@@ -217,7 +278,7 @@ namespace Marmot::MaterialPoints {
       Fastor::Tensor< double, nDim, nDim, nDim, nDim > dS_dDeltaF;
       Fastor::Tensor< double, nDim, nDim >             dS_dN;
       Fastor::Tensor< double, nDim, nDim >             dL_dDeltaF;
-      double                                          dL_dN;
+      double                                           dL_dN;
     } tangents;
 
     TensorDD dx_dY() const { return state->dx_dY( Fastor::seq( 0, nDim ), Fastor::seq( 0, nDim ) ); };
@@ -244,9 +305,11 @@ namespace Marmot::MaterialPoints {
     {
       if ( conditionName == "geostaticstress" ) {
         std::tuple< double, double, double > geostaticNormalStressComponents = { value[0], value[0], value[0] };
-        const auto [F0_XX, F0_YY, F0_ZZ] = material->findEigenDeformationForEigenStress(
-          { state->F0_XX, state->F0_YY, state->F0_ZZ }, geostaticNormalStressComponents,
-          state->materialState.data() );
+        const auto [F0_XX,
+                    F0_YY,
+                    F0_ZZ] = material->findEigenDeformationForEigenStress( { state->F0_XX, state->F0_YY, state->F0_ZZ },
+                                                                           geostaticNormalStressComponents,
+                                                                           state->materialState.data() );
 
         state->F0_XX = F0_XX;
         state->F0_YY = F0_YY;
