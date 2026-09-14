@@ -38,6 +38,7 @@
 #include "Marmot/MarmotStateVarVectorManager.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
+#include <algorithm>
 #include <atomic>
 #include <cmath>
 #include <memory>
@@ -123,24 +124,6 @@ namespace Marmot::Elements {
      * integrated before the device existed.
      */
     FiniteElement::BulkViscosity::Coefficients bulkViscosityCoefficients;
-
-    /**
-     * @brief Micro-inertia of the non-local field, one entry per non-local variable, assigned via
-     * the named property "nonlocal micro inertia" and zero unless it is.
-     * @details It multiplies the second time derivative of the non-local variable, turning its
-     * balance from the parabolic (viscous) equation
-     * \f$ \eta\,\dot{\bar\varepsilon} + \bar\varepsilon - c\,\nabla^2\bar\varepsilon =
-     * \tilde\varepsilon \f$ into the damped hyperbolic one
-     * \f$ m_k\,\ddot{\bar\varepsilon} + \eta\,\dot{\bar\varepsilon} + \bar\varepsilon -
-     * c\,\nabla^2\bar\varepsilon = \tilde\varepsilon \f$, whose stable increment falls off
-     * with \f$h\f$ rather than with \f$h^2\f$. The non-local viscosity keeps its meaning
-     * exactly: what was the coefficient of the highest time derivative becomes the damping.
-     *
-     * Like the bulk viscosity above it is a NUMERICAL device, hence an element property and not a
-     * material one: the physical model is the \f$m_k = 0\f$ one. Units are seconds squared.
-     */
-    Eigen::Vector< double, nNonlocalVariables >
-      nonlocalMicroInertia = Eigen::Vector< double, nNonlocalVariables >::Zero();
 
     /**
      * @brief Data and state associated with a quadrature point.
@@ -304,18 +287,22 @@ namespace Marmot::Elements {
 
     /**
      * @brief Assign a named element property.
-     * @param propertyName One of "bulk viscosity", "bulk viscosity damage degradation" or
-     *        "nonlocal micro inertia".
+     * @param propertyName Either "bulk viscosity" or "bulk viscosity damage degradation".
      * @param properties For "bulk viscosity": the two dimensionless coefficients \f$b_1\f$
      *        (linear) and \f$b_2\f$ (quadratic), in that order. For "bulk viscosity damage
      *        degradation": the single exponent \f$n\f$ of the optional degradation with the
-     *        material's loss of stiffness. For "nonlocal micro inertia": one micro-inertia
-     *        \f$m_k\f$ per non-local variable.
+     *        material's loss of stiffness.
      * @param nProperties Number of values behind that pointer: 2 for "bulk viscosity", 1 for
-     *        "bulk viscosity damage degradation", \c nNonlocalVariables for "nonlocal micro
-     *        inertia".
+     *        "bulk viscosity damage degradation".
      * @throws std::invalid_argument if the name is not understood, if the count does not match
      *         what the property expects, or if a coefficient is negative.
+     * @note The micro-inertia of the non-local field was an element property here and is now a
+     *       MATERIAL one -- see MarmotMaterialGeneralGradientEnhancedHypoElastic::getNonlocalMicroInertia().
+     *       It is inseparable from the non-local viscosity, which has always been a material
+     *       property: the two are one parameter, bounded by \f$m_k \le \eta^2/4\f$, and that bound
+     *       is checkable only where both are visible. The retired name is deliberately not
+     *       accepted here, so a deck still assigning it fails loudly rather than running
+     *       parabolically while its author believes otherwise.
      */
     void assignProperty( const std::string& propertyName, const double* properties, int nProperties ) override;
 
@@ -477,11 +464,12 @@ namespace Marmot::Elements {
      * corner and the remaining nodes. An incorrect weight therefore leaves the element mass, and
      * hence the model mass, perfectly correct -- and is invisible to any check on totals.
      *
-     * @note The non-local block reports the micro-inertia assigned via the named property
-     * "nonlocal micro inertia", weighted with the same scheme -- zero for a non-local variable
-     * that was never given one, which is how the solver tells a second-order non-local field from
-     * a first-order one. The viscosity that integrates a first-order field, and that damps a
-     * second-order one, is reported separately by computeLumpedDamping().
+     * @note The non-local block reports the micro-inertia the MATERIAL provides through
+     * MarmotMaterialGeneralGradientEnhancedHypoElastic::getNonlocalMicroInertia(), weighted with
+     * the same scheme -- zero for a non-local variable whose material gives none, which is how the
+     * solver tells a second-order non-local field from a first-order one. The viscosity that
+     * integrates a first-order field, and that damps a second-order one, comes from the same
+     * material and is reported separately by computeLumpedDamping().
      */
     void computeLumpedInertia( double* M );
 
@@ -691,34 +679,21 @@ namespace Marmot::Elements {
       bulkViscosityCoefficients.degradation = properties[0];
     }
     else if ( propertyName == "nonlocal micro inertia" ) {
-      if ( nProperties != nNonlocalVariables )
-        throw std::invalid_argument(
-          MakeString() << __PRETTY_FUNCTION__
-                       << ": the named property 'nonlocal micro inertia' takes one value per non-local "
-                          "variable, i.e. "
-                       << nNonlocalVariables << " for this element, but " << nProperties << " were given." );
-
-      /* Every entry is checked before ANY of them is written, for the same reason the arity is
-       * checked first: a rejected assignment must leave the element with the properties it had.
-       * Validating inside the writing loop left `{valid, -1}` half applied, so the next attempt
-       * would assemble a mixture of the old values and the new.
+      /* Retired, and rejected rather than ignored. It is now a MATERIAL property, because it is
+       * inseparable from the non-local viscosity, which always was one: m_k <= eta^2/4 is the
+       * condition for the zeroth-order reaction mode not to ring, and neither side could check it
+       * while the two lived at different levels of the stack.
+       *
+       * A deck that still assigns it here must fail, not be ignored: ignoring it would leave the
+       * non-local field FIRST order in time -- integrated by its viscosity, with a stable increment
+       * falling off as h^2 and nothing checking it -- while the deck's author reads the property in
+       * their own input file and believes the field is hyperbolic.
        */
-      for ( int n = 0; n < nNonlocalVariables; n++ ) {
-        if ( !std::isfinite( properties[n] ) )
-          throw std::invalid_argument( MakeString()
-                                       << __PRETTY_FUNCTION__
-                                       << ": a micro-inertia must be a finite number; a NaN passes every ordering "
-                                          "test and would propagate into the lumped inertia." );
-
-        if ( properties[n] < 0.0 )
-          throw std::invalid_argument( MakeString()
-                                       << __PRETTY_FUNCTION__
-                                       << ": a micro-inertia must be non-negative, a negative one would make the "
-                                          "non-local field integrate backwards in time." );
-      }
-
-      for ( int n = 0; n < nNonlocalVariables; n++ )
-        nonlocalMicroInertia( n ) = properties[n];
+      throw std::invalid_argument(
+        MakeString() << __PRETTY_FUNCTION__
+                     << ": 'nonlocal micro inertia' is no longer an element property. It is now a material "
+                        "property, alongside the non-local viscosity it is bounded by (m_k <= eta^2/4): give it "
+                        "to the material instead of to the element set." );
     }
     else {
       MarmotElement::assignProperty( propertyName, properties, nProperties );
@@ -732,7 +707,7 @@ namespace Marmot::Elements {
                                                                                nNonLocalNodes >::getPropertyNames()
     const
   {
-    return { "bulk viscosity", "bulk viscosity damage degradation", "nonlocal micro inertia" };
+    return { "bulk viscosity", "bulk viscosity damage degradation" };
   }
 
   template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
@@ -1166,8 +1141,8 @@ namespace Marmot::Elements {
 
     /* The non-local block carries what the LUMPED path assembles there: the micro-inertia. It
      * used to carry the viscosity, from before inertia and damping were told apart, which left an
-     * implicit consumer integrating the field with a viscosity as its mass. Zero where none was
-     * assigned is correct -- the field is then first order and has no inertia. There is no
+     * implicit consumer integrating the field with a viscosity as its mass. Zero where the material
+     * provides none is correct -- the field is then first order and has no inertia. There is no
      * consistent counterpart to computeLumpedDamping() yet.
      */
     for ( const auto& qp : qps ) {
@@ -1175,11 +1150,13 @@ namespace Marmot::Elements {
       const NSizedK& N_K = qp.N_K;
       const double   rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
       Me.topLeftCorner( sizeDoFU, sizeDoFU ) += N_.transpose() * N_ * qp.J0xW * rho;
+
+      const std::vector< double > m_k = qp.material->getNonlocalMicroInertia(
+        qp.managedStateVars->materialStateVars.data() );
       for ( int n = 0; n < nNonlocalVariables; n++ ) {
         Eigen::Index idx = n * nNonLocalNodes;
         Me.bottomRightCorner( sizeDoFK, sizeDoFK )
-          .block( idx, idx, nNonLocalNodes, nNonLocalNodes ) += N_K.transpose() * N_K * qp.J0xW *
-                                                                nonlocalMicroInertia( n );
+          .block( idx, idx, nNonLocalNodes, nNonLocalNodes ) += N_K.transpose() * N_K * qp.J0xW * m_k[n];
       }
     }
   }
@@ -1243,9 +1220,12 @@ namespace Marmot::Elements {
         for ( int d = 0; d < nDim; d++ )
           LMM( i * nDim + d ) += m_( i );
       }
+
+      const std::vector< double > m_k = qp.material->getNonlocalMicroInertia(
+        qp.managedStateVars->materialStateVars.data() );
       for ( int n = 0; n < nNonlocalVariables; n++ ) {
         Eigen::Index idx = n * nNonLocalNodes;
-        VectorXd     mK  = N_weighted_nonlocal * qp.J0xW * nonlocalMicroInertia( n );
+        VectorXd     mK  = N_weighted_nonlocal * qp.J0xW * m_k[n];
         for ( int i = 0; i < nNonLocalNodes; i++ )
           LMM( sizeDoFU + idx + i ) += mK( i );
       }
@@ -1263,9 +1243,12 @@ namespace Marmot::Elements {
     // via the material's non-local viscosity, is assembled below.
 
     /* The blend below is deliberately the same one computeLumpedInertia() applies to the non-local
-     * block, derived here the same way rather than shared through a helper because the coefficient
-     * it multiplies differs: the viscosity is a material response and may vary between quadrature
-     * points, the micro-inertia is one number for the whole element.
+     * block, and is now the same in every respect: since the micro-inertia became a material
+     * property both coefficients are material responses read per quadrature point, so the two
+     * blocks differ only in which of the two they multiply. The blend is still derived here rather
+     * than shared through a helper, because the stable increment is read off the RATIO of the two
+     * distributions and a helper that drifted would be invisible in either one alone -- but there
+     * is no longer anything preventing that helper from existing.
      */
     constexpr int nNodesLinear = ( 1 << nDim );
 
@@ -1395,8 +1378,19 @@ namespace Marmot::Elements {
     /* The non-local field's own limit, where it has one. Without a micro-inertia that field is
      * first order in time and is not integrated by the central-difference update this function's
      * estimate belongs to, so there is nothing here to bound.
+     *
+     * Asked of the material, quadrature point by quadrature point, since that is where the
+     * micro-inertia lives -- and asked FIRST, before the two lumping assemblies below, so that the
+     * parabolic case, which is every deck that has not opted in, still leaves this function at the
+     * cost it had.
      */
-    if ( !( nonlocalMicroInertia.array() > 0.0 ).any() )
+    bool anyMicroInertia = false;
+    for ( const auto& qp : qps ) {
+      const std::vector< double > m_k = qp.material->getNonlocalMicroInertia(
+        qp.managedStateVars->materialStateVars.data() );
+      anyMicroInertia = anyMicroInertia || std::any_of( m_k.begin(), m_k.end(), []( double m ) { return m > 0.0; } );
+    }
+    if ( !anyMicroInertia )
       return;
 
     /* Kept so that the caller can be told WHICH of the two limits it is being given. The
@@ -1459,8 +1453,11 @@ namespace Marmot::Elements {
       /* One non-local variable may carry a micro-inertia while another does not. The one that does
        * not is first order in time and has no limit to contribute here, and its lumped
        * micro-inertia is zero, which is exactly what would make the bound below divide by zero.
+       * Read off the assembled block rather than off the material, because that is what the bound
+       * divides by, and because the material may report the micro-inertia per quadrature point
+       * while this block is one number per non-local node.
        */
-      if ( nonlocalMicroInertia( n ) <= 0.0 )
+      if ( !( lumpedInertia.segment( sizeDoFU + n * nNonLocalNodes, nNonLocalNodes ).array() > 0.0 ).any() )
         continue;
 
       Eigen::Matrix< double, nNonLocalNodes, nNonLocalNodes >

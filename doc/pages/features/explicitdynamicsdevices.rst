@@ -4,8 +4,13 @@ Explicit dynamics devices
 Two numerical devices for explicit dynamics, developed and calibrated together: artificial bulk
 viscosity, which damps volumetric ringing in the mechanical field, and non-local micro-inertia,
 which makes a gradient-enhanced field second order in time so its stable increment scales linearly
-rather than quadratically with the element size. Neither is a material model; both are element
-properties, inert unless assigned.
+rather than quadratically with the element size. Both are inert unless given a value.
+
+They are declared in different places, and deliberately so. The bulk viscosity is an **element**
+property: its useful value depends on the mesh, and two meshes of one material want different
+amounts of it. The micro-inertia is a **material** property, because it is inseparable from the
+non-local viscosity -- itself always a material property -- by the bound :math:`m_k \le \eta^2/4`,
+and because that bound can only be checked where both of its sides are visible.
 
 Artificial bulk viscosity
 -------------------------
@@ -387,22 +392,29 @@ References
 Usage
 ^^^^^
 
-The micro-inertia is an **element** property for the same reason artificial bulk viscosity is one:
-a numerical device, inert unless assigned, whose useful value depends on the mesh. It is assigned
-under the name ``nonlocal micro inertia``, one value per non-local variable:
+The micro-inertia is a **material** property, unlike the artificial bulk viscosity above. It sits
+with the non-local viscosity, and it sits there because the two are **one parameter and not two**:
+:math:`m_k \le \eta^2/4` is what keeps the reaction mode from ringing, the viscosity has always
+been a material property, and a bound can only be enforced where both of its sides are visible. It
+is the last entry of the material's property list, optional, and validated against that material's
+own :math:`\eta` when it is read:
 
-.. code-block:: cpp
+.. code-block:: none
 
-   const double microInertia = 2.5e-11; // seconds squared, = eta^2 / 4 for eta = 1e-5 s
-   element->assignProperty( "nonlocal micro inertia", &microInertia, 1 );
+   *material, name=gcdp, id=gcdp
+   ** ... idx 0-18 as before ...
+   **viscosity  density   nonlocalViscosity   nonlocalMicroInertia
+   0,           3e-9,     1e-4,               2.5e-9
+
+A micro-inertia above :math:`\eta^2/4` is **rejected**, not warned about: above it the
+regularisation rings, and ringing on the non-local field looks exactly like the mesh-scale
+oscillation the gradient enhancement exists to remove. A negative or non-finite one is rejected for
+the same reason a NaN anywhere is -- it passes every ordering test.
 
 From EdelweissFE the field also has to be moved from the first-order to the second-order
 integration scheme and declared as carrying a non-mechanical inertia rather than a mass:
 
 .. code-block:: none
-
-   *elementproperty, elSet=concrete, propertyName=nonlocal micro inertia
-   2.5e-11
 
    *solver, solver=NEDParallel, name=theSolver
    second-order-fields="displacement, nonlocal damage"
@@ -410,9 +422,17 @@ integration scheme and declared as carrying a non-mechanical inertia rather than
 
 Both directions of that declaration are checked: a micro-inertia the elements carry but the solver
 was not told about, and one the solver expects but the elements do not assemble, are both refused
-with a message rather than integrated. **Unset, the feature is completely inert**: an element that
-was never given the property reports zero, its non-local field stays first order in time, and the
-stable increment is the mechanical one exactly as before.
+with a message rather than integrated. **Unset, the feature is completely inert**: a material that
+provides no micro-inertia -- including every material that predates this interface, which inherits
+a zero -- leaves its non-local field first order in time, and the stable increment is the
+mechanical one exactly as before.
+
+.. note::
+
+   The micro-inertia was briefly an *element* property, assigned with
+   ``*elementProperty, propertyName=nonlocal micro inertia``. That name is now **rejected** by the
+   element rather than ignored, so a deck carrying it fails loudly instead of running parabolically
+   while its author believes otherwise. Move the value into the material's property list.
 
 Notes and limitations
 ^^^^^^^^^^^^^^^^^^^^^^

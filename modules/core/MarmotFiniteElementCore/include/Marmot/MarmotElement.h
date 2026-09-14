@@ -222,9 +222,9 @@ public:
    * @brief Compute the lumped (diagonal) inertia of the element, over every field it carries.
    * @param[out] I Diagonal of the lumped inertia, in the element's dof order.
    * @details The coefficient of each field's SECOND time derivative: mass on the displacement
-   * block, and a micro-inertia on a non-local block given the "nonlocal micro inertia" property.
-   * Zero on one that has not been -- carrying none is what keeps that field first order in time;
-   * see computeLumpedDamping() for what integrates it then.
+   * block, and a micro-inertia on a non-local block whose material provides one. Zero on one whose
+   * material does not -- carrying none is what keeps that field first order in time; see
+   * computeLumpedDamping() for what integrates it then.
    * @note Default implementation throws an exception.
    */
   virtual void computeLumpedInertia( double* I )

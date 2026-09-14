@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <cmath>
 #include <functional>
+#include <limits>
+#include <stdexcept>
 #include <vector>
 
 using namespace Marmot;
@@ -136,6 +138,88 @@ namespace {
                                << __PRETTY_FUNCTION__ << ": the undamaged reference depends on the carried state" );
   }
 
+  /* A material that reads a micro-inertia out of its properties and returns it through the base
+   * class's validation, which is how every material in this stack is expected to answer.
+   */
+  class MicroInertiaMaterial : public MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 > {
+  public:
+    static constexpr double viscosity = 1e-4;
+
+    MicroInertiaMaterial( const double* props, int nProps, int matNumber )
+      : MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >( props, nProps, matNumber )
+    {
+    }
+
+    void computeStress( response&, tangents&, const increment& ) const override {}
+
+    double getDensity( const double* ) const override { return 3e-9; }
+
+    std::vector< double > getNonlocalViscosity( const double* ) const override { return { viscosity }; }
+
+    std::vector< double > getNonlocalMicroInertia( const double* stateVars ) const override
+    {
+      return validatedNonlocalMicroInertia( { materialProperties[0] }, stateVars );
+    }
+  };
+
+  /* The micro-inertia is zero unless a material provides one, and that is not merely a default but
+   * the whole compatibility story: every material written before this interface existed keeps a
+   * first-order non-local field, integrated by its viscosity alone, without being touched.
+   */
+  void testMicroInertiaIsZeroForAMaterialThatProvidesNone()
+  {
+    const std::vector< double > props{ 0.0 };
+    FieldDegradedMaterial       mat( props.data(), 1, 1 );
+
+    const auto m_k = mat.getNonlocalMicroInertia( nullptr );
+
+    throwExceptionOnFailure( m_k.size() == 1,
+                             MakeString()
+                               << __PRETTY_FUNCTION__ << ": the default must return one entry per non-local variable" );
+    throwExceptionOnFailure( m_k[0] == 0.0,
+                             MakeString()
+                               << __PRETTY_FUNCTION__ << ": the default micro-inertia is " << m_k[0] << ", not zero" );
+  }
+
+  /* m_k and eta are ONE parameter: above eta^2/4 the zeroth-order reaction mode is underdamped and
+   * the regularisation rings, which looks exactly like the mesh-scale oscillation the gradient
+   * enhancement exists to remove. Nothing could check this while the micro-inertia was an element
+   * property and the viscosity a material one -- the two never met in the same object.
+   */
+  void testMicroInertiaIsBoundedByTheViscosity()
+  {
+    const double admissible = 0.25 * MicroInertiaMaterial::viscosity * MicroInertiaMaterial::viscosity;
+
+    const auto accepts = []( double m_k ) {
+      const std::vector< double > props{ m_k };
+      MicroInertiaMaterial        mat( props.data(), 1, 1 );
+      try {
+        return mat.getNonlocalMicroInertia( nullptr )[0] == m_k;
+      }
+      catch ( const std::invalid_argument& ) {
+        return false;
+      }
+    };
+
+    // The recommended value is the largest admissible one, so the bound has to accept it exactly.
+    throwExceptionOnFailure( accepts( admissible ),
+                             MakeString() << __PRETTY_FUNCTION__ << ": eta^2/4 = " << admissible
+                                          << " was rejected, which is the value the documentation recommends" );
+    throwExceptionOnFailure( accepts( 0.5 * admissible ),
+                             MakeString() << __PRETTY_FUNCTION__ << ": an admissible micro-inertia was rejected" );
+    throwExceptionOnFailure( accepts( 0.0 ),
+                             MakeString() << __PRETTY_FUNCTION__ << ": a zero micro-inertia was rejected" );
+
+    throwExceptionOnFailure( !accepts( 2.0 * admissible ),
+                             MakeString() << __PRETTY_FUNCTION__
+                                          << ": a micro-inertia of twice eta^2/4 was accepted; the reaction mode "
+                                             "rings there" );
+    throwExceptionOnFailure( !accepts( -admissible ),
+                             MakeString() << __PRETTY_FUNCTION__ << ": a negative micro-inertia was accepted" );
+    throwExceptionOnFailure( !accepts( std::numeric_limits< double >::quiet_NaN() ),
+                             MakeString() << __PRETTY_FUNCTION__ << ": a non-finite micro-inertia was accepted" );
+  }
+
 } // namespace
 
 int main()
@@ -144,6 +228,8 @@ int main()
     testDefaultQueryIsTheUndamagedWaveSpeed,
     testQueryFollowsTheNonlocalField,
     testReferenceIsIndependentOfTheCarriedState,
+    testMicroInertiaIsZeroForAMaterialThatProvidesNone,
+    testMicroInertiaIsBoundedByTheViscosity,
   };
 
   executeTestsAndCollectExceptions( tests );
