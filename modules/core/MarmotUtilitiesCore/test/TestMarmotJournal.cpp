@@ -12,15 +12,14 @@ using namespace Marmot::Testing;
 // its own fresh stream first, so it is unaffected by whichever stream a previous test last set.
 // ---------------------------------------------------------------------------------------------
 
-void testWarningToMSGWritesToTheRedirectedStreamAndReturnsFalse()
+void testWarningToMSGWritesToTheRedirectedStreamAndReturnsTrue()
 {
   std::ostringstream captured;
   MarmotJournal::setMSGOutputDirection( captured );
 
   const bool result = MarmotJournal::warningToMSG( "a test warning message" );
 
-  throwExceptionOnFailure( result == false,
-                           "warningToMSG() must return false in " + std::string( __PRETTY_FUNCTION__ ) );
+  throwExceptionOnFailure( result == true, "warningToMSG() must return true in " + std::string( __PRETTY_FUNCTION__ ) );
   throwExceptionOnFailure( captured.str().find( "a test warning message" ) != std::string::npos,
                            "warningToMSG() did not write its message to the redirected stream in " +
                              std::string( __PRETTY_FUNCTION__ ) );
@@ -50,6 +49,11 @@ void testSetMSGOutputDirectionRedirectsAwayFromAPreviousStream()
   MarmotJournal::setMSGOutputDirection( second );
   MarmotJournal::warningToMSG( "goes to second" );
 
+  // Restore the journal to a live, safe stream before any assertion below can throw and unwind
+  // out of this function while the singleton still points at `second`'s stream-buffer, which is
+  // about to be destroyed -- leaving a dangling pointer that would break later tests.
+  MarmotJournal::setMSGOutputDirection( std::cout );
+
   throwExceptionOnFailure( first.str().find( "goes to second" ) == std::string::npos,
                            "setMSGOutputDirection() must redirect away from the previous stream in " +
                              std::string( __PRETTY_FUNCTION__ ) );
@@ -61,7 +65,7 @@ void testSetMSGOutputDirectionRedirectsAwayFromAPreviousStream()
 int main()
 {
   const std::vector< std::function< void() > > tests = {
-    testWarningToMSGWritesToTheRedirectedStreamAndReturnsFalse,
+    testWarningToMSGWritesToTheRedirectedStreamAndReturnsTrue,
     testNotificationToMSGWritesToTheRedirectedStreamAndReturnsTrue,
     testSetMSGOutputDirectionRedirectsAwayFromAPreviousStream,
   };

@@ -171,6 +171,38 @@ void testSpinTurbokreiselReturnsFalseForAStressControlledStep()
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
+void testSpinTurbokreiselThrowsForAZeroDurationStep()
+{
+  // Step::checkControl() only checks that exactly one of strain/stress is controlled per
+  // component -- it does not reject timeStart == timeEnd. Such a step makes solveStep()'s
+  // internal loop run zero times, so solve() records no history entry at all. spinTurbokreisel()
+  // must detect this and throw a clear exception instead of calling history.back() on an empty
+  // history (undefined behavior).
+  auto solver = makeIsotropicSolver();
+
+  Marmot::Solvers::MarmotMaterialPointSolverHypoElastic::Step step;
+  step.isStrainComponentControlled = { true, true, true, true, true, true };
+  step.isStressComponentControlled = { false, false, false, false, false, false };
+  step.strainIncrementTarget       = Marmot::Vector6d::Zero();
+  step.stressIncrementTarget       = Marmot::Vector6d::Zero();
+  step.timeStart                   = 0.0;
+  step.timeEnd                     = 0.0; // zero-duration step -> solveStep() runs zero increments
+
+  solver.addStep( step );
+
+  bool threw = false;
+  try {
+    spinTurbokreisel( solver, 1e-8, 1e-8 );
+  }
+  catch ( const std::runtime_error& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw,
+                           "spinTurbokreisel() must throw std::runtime_error instead of invoking "
+                           "history.back() on an empty history for a zero-duration step in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
 void testSpinTurbokreiselDetectsAnAnisotropicMaterial()
 {
   // A transversely isotropic (i.e. genuinely NOT isotropic) LinearElastic material: E1, E2, nu12,
@@ -240,6 +272,7 @@ int main()
     testExecuteTestsAndCollectExceptionsAggregatesFailures,
     testSpinTurbokreiselReturnsFalseForNoSteps,
     testSpinTurbokreiselReturnsFalseForAStressControlledStep,
+    testSpinTurbokreiselThrowsForAZeroDurationStep,
     testSpinTurbokreiselDetectsAnAnisotropicMaterial,
     testSpinTurbokreiselDetectsATangentOnlyMismatch,
   };
