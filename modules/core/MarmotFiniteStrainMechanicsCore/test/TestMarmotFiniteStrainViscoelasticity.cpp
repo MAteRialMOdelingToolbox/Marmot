@@ -465,12 +465,17 @@ void testSimoOverloadSkipsNearZeroTau()
   Tensor33d   dStress = Spatial3D::I;
 
   std::array< double, 18 > stateVars{};
+  // pre-existing (nonzero) state for the skipped element: a zero-initialized sentinel would also
+  // pass if the continue path incorrectly overwrote the slot with zero, so seed a nonzero value.
+  const double sentinel = 3.5;
+  for ( int i = 0; i < 9; ++i )
+    stateVars[i] = sentinel;
 
   evaluateGeneralizedMaxwellModel( stress, tangent, dStress, dT, props, stateVars.data() );
 
-  // the skipped element's state vars must never be written
+  // the skipped element's state vars must never be written, i.e. must still equal the sentinel
   for ( int i = 0; i < 9; ++i )
-    throwExceptionOnFailure( checkIfEqual( stateVars[i], 0.0 ),
+    throwExceptionOnFailure( checkIfEqual( stateVars[i], sentinel ),
                              MakeString() << __PRETTY_FUNCTION__ << ": skipped element's state var[" << i
                                           << "] must remain untouched" );
 
@@ -496,14 +501,20 @@ void testSimoOverloadTaylorApproximation()
   Tensor3333d tangent( 1.0 );
   Tensor33d   dStress = Spatial3D::I;
 
+  // seed a nonzero pre-existing Maxwell element stress Q_n: with Q_n=0 the update alpha*Q_n is
+  // always 0 regardless of alpha, so alpha_ref (the Taylor-approximated coefficient) would never
+  // actually be observed by the assertion below.
+  const double            Q_n0 = 0.5;
   std::array< double, 9 > stateVars{};
+  stateVars.fill( Q_n0 );
 
   evaluateGeneralizedMaxwellModel( stress, tangent, dStress, dT_small, props, stateVars.data() );
 
   double alpha_ref, beta_ref;
   computeAlphaBeta( 0.3, 1.0, dT_small, alpha_ref, beta_ref );
 
-  const double expectedFactor = ( 1.0 - 0.3 ) + beta_ref;
+  // expected stress now depends on both Taylor-approximated coefficients, alpha_ref and beta_ref
+  const double expectedFactor = ( 1.0 - 0.3 ) + alpha_ref * Q_n0 + beta_ref;
   throwExceptionOnFailure( checkIfEqual( stress( 0, 0 ), expectedFactor, 1e-10 ),
                            MakeString() << __PRETTY_FUNCTION__ << ": Taylor branch stress(0,0) failed" );
 }
@@ -763,11 +774,17 @@ void testLiuOverloadSkipsNearZeroTau()
   Tensor333333d dTangent_dDeformation( 0.0 );
 
   std::array< double, 18 > stateVars{};
+  // pre-existing (nonzero) state for the skipped element: a zero-initialized sentinel would also
+  // pass if the continue path incorrectly overwrote the slot with zero, so seed a nonzero value.
+  const double sentinel = 3.5;
+  for ( int i = 0; i < 9; ++i )
+    stateVars[i] = sentinel;
 
   evaluateGeneralizedMaxwellModel( stress, tangent, dTangent_dDeformation, Cinv, dStress, dT, props, stateVars.data() );
 
+  // the skipped element's state vars must never be written, i.e. must still equal the sentinel
   for ( int i = 0; i < 9; ++i )
-    throwExceptionOnFailure( checkIfEqual( stateVars[i], 0.0 ),
+    throwExceptionOnFailure( checkIfEqual( stateVars[i], sentinel ),
                              MakeString() << __PRETTY_FUNCTION__ << ": skipped element's state var[" << i
                                           << "] must remain untouched" );
 
@@ -797,7 +814,12 @@ void testLiuOverloadTaylorApproximation()
   Tensor3333d   tangent = C;
   Tensor333333d dTangent_dDeformation( 0.0 );
 
+  // seed a nonzero pre-existing Maxwell element stress Q_n: with Q_n=0 the update alpha*Q_n is
+  // always 0 regardless of alpha, so alpha_ref (the Taylor-approximated coefficient) would never
+  // actually be observed by the assertion below.
+  const double            Q_n0 = 0.5;
   std::array< double, 9 > stateVars{};
+  stateVars.fill( Q_n0 );
 
   evaluateGeneralizedMaxwellModel( stress,
                                    tangent,
@@ -811,7 +833,8 @@ void testLiuOverloadTaylorApproximation()
   double alpha_ref, beta_ref;
   computeAlphaBeta( 0.3, 1.0, dT_small, alpha_ref, beta_ref );
 
-  const double expectedFactor = ( 1.0 - 0.3 ) + beta_ref;
+  // expected stress now depends on both Taylor-approximated coefficients, alpha_ref and beta_ref
+  const double expectedFactor = ( 1.0 - 0.3 ) + alpha_ref * Q_n0 + beta_ref;
   throwExceptionOnFailure( checkIfEqual( stress( 0, 0 ), expectedFactor, 1e-8 ),
                            MakeString() << __PRETTY_FUNCTION__ << ": Taylor branch stress(0,0) failed" );
 }
