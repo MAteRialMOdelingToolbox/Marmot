@@ -28,6 +28,10 @@ namespace {
                         const Marmot::Vector6d&,
                         const timeInfo& ) const override
     {
+      // Sentinel write so callers relying on state-var copy semantics (e.g.
+      // getMaximumWaveSpeed()) can actually detect whether they were handed a copy or an alias.
+      state.stateVars[0] = 42.0;
+
       state.stress      = Marmot::Vector6d::Zero();
       state.stress( 1 ) = 5.0; // never zero, and independent of dStrain
       state.stress( 2 ) = 5.0;
