@@ -17,7 +17,7 @@ void MarmotJournal::setMSGOutputDirection( std::ostream& newOutputStream )
 bool MarmotJournal::warningToMSG( const std::string& message )
 {
   getInstance().output << message;
-  return false;
+  return true;
 }
 
 bool MarmotJournal::notificationToMSG( const std::string& message )
