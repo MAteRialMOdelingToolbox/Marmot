@@ -85,12 +85,14 @@ void testSetInitialStateAndResetToInitialState()
   solver.addStep( step );
   solver.solve();
 
-  throwExceptionOnFailure( checkIfEqual( solver.getHistory().back().stress( 0 ), 42.0, 1e-10 ),
+  const auto history = solver.getHistory();
+  throwExceptionOnFailure( checkIfEqual( history.back().stress( 0 ), 42.0, 1e-10 ),
                            "setInitialState() did not seed the solver's starting stress in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
   solver.resetToInitialState();
-  throwExceptionOnFailure( solver.getHistory().empty(),
+  const auto historyAfterReset = solver.getHistory();
+  throwExceptionOnFailure( historyAfterReset.empty(),
                            "resetToInitialState() must clear the recorded history in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
@@ -100,7 +102,8 @@ void testSetInitialStateAndResetToInitialState()
   solver.clearSteps();
   solver.addStep( step );
   solver.solve();
-  throwExceptionOnFailure( checkIfEqual( solver.getHistory().back().stress( 0 ), 42.0, 1e-10 ),
+  const auto historyAfterResolve = solver.getHistory();
+  throwExceptionOnFailure( checkIfEqual( historyAfterResolve.back().stress( 0 ), 42.0, 1e-10 ),
                            "resetToInitialState() did not restore the initial stress in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
@@ -314,6 +317,8 @@ void testExportHistoryToCSVWritesExpectedContent()
   solver.addStep( step );
   solver.solve();
 
+  const auto history = solver.getHistory();
+
   const std::string filename = "test_export_history_hypoelastic.csv";
   solver.exportHistoryToCSV( filename );
 
@@ -336,7 +341,7 @@ void testExportHistoryToCSVWritesExpectedContent()
     if ( !line.empty() )
       dataLines++;
 
-  throwExceptionOnFailure( dataLines == static_cast< int >( solver.getHistory().size() ),
+  throwExceptionOnFailure( dataLines == static_cast< int >( history.size() ),
                            "exportHistoryToCSV() did not write one line per history entry in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
@@ -356,7 +361,7 @@ void testExportHistoryToCSVThrowsForInvalidPath()
 
   bool threw = false;
   try {
-    solver.exportHistoryToCSV( "/nonexistent_directory_xyz/out.csv" );
+    solver.exportHistoryToCSV( "." );
   }
   catch ( const std::runtime_error& ) {
     threw = true;

@@ -378,8 +378,12 @@ void testSolveIncrementThrowsOnNaN()
   try {
     solver.solve();
   }
-  catch ( const Marmot::SolverConvergenceFailed& ) {
+  catch ( const Marmot::SolverConvergenceFailed& e ) {
     threw = true;
+    throwExceptionOnFailure( std::string( e.what() ).find( "NaN encountered" ) != std::string::npos,
+                             "solveIncrement() must throw SolverConvergenceFailed with a NaN-specific message for a "
+                             "singular tangent in " +
+                               std::string( __PRETTY_FUNCTION__ ) );
   }
   throwExceptionOnFailure( threw,
                            "solveIncrement() must throw SolverConvergenceFailed for a singular tangent in " +
@@ -414,8 +418,13 @@ void testSolveIncrementThrowsWhenIterationsExhausted()
   try {
     solver.solve();
   }
-  catch ( const Marmot::SolverConvergenceFailed& ) {
+  catch ( const Marmot::SolverConvergenceFailed& e ) {
     threw = true;
+    throwExceptionOnFailure( std::string( e.what() ).find( "Maximum number of iterations reached" ) !=
+                               std::string::npos,
+                             "solveIncrement() must throw SolverConvergenceFailed with an iterations-exhausted "
+                             "message when the residual can never be driven to zero in " +
+                               std::string( __PRETTY_FUNCTION__ ) );
   }
   throwExceptionOnFailure( threw,
                            "solveIncrement() must throw SolverConvergenceFailed when the residual can never be "
@@ -560,7 +569,7 @@ void testExportHistoryToCSVThrowsForInvalidPath()
 
   bool threw = false;
   try {
-    solver.exportHistoryToCSV( "/nonexistent_directory_xyz/out.csv" );
+    solver.exportHistoryToCSV( "." );
   }
   catch ( const std::runtime_error& ) {
     threw = true;
