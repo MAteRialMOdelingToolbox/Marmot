@@ -2,6 +2,7 @@
 #include "Marmot/MarmotMaterialFiniteStrain.h"
 #include "Marmot/MarmotTesting.h"
 #include <cmath>
+#include <functional>
 #include <vector>
 
 using namespace Marmot;

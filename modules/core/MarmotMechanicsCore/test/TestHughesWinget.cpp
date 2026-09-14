@@ -4,6 +4,8 @@
 #include "Marmot/MarmotVoigt.h"
 #include <Eigen/Dense>
 #include <cmath>
+#include <functional>
+#include <vector>
 
 using namespace Marmot;
 using namespace Marmot::Testing;
