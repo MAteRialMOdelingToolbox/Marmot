@@ -3,6 +3,7 @@
 #include "Marmot/MarmotTesting.h"
 #include "Marmot/MarmotTypedefs.h"
 #include <Eigen/Dense>
+#include <functional>
 #include <utility>
 #include <vector>
 
@@ -79,7 +80,7 @@ void testComputePlaneStressThrowsWhenItCannotConverge()
   inc.time         = 0.0;
   inc.dT           = 1.0;
 
-  Mat1::response res;
+  Mat1::response res{};
   Mat1::tangents tan;
   res.stress    = Marmot::Vector6d::Zero();
   res.KLocal    = Eigen::Vector< double, 1 >::Zero();
@@ -106,7 +107,7 @@ void testGetMaximumWaveSpeedReturnsZeroForZeroDensity()
 {
   auto [mat, stateVars] = makeNeverConvergingMaterial();
 
-  Mat1::response res;
+  Mat1::response res{};
   res.stress    = Marmot::Vector6d::Zero();
   res.KLocal    = Eigen::Vector< double, 1 >::Zero();
   res.c         = Eigen::Vector< double, 1 >::Zero();
@@ -130,7 +131,7 @@ void testGetMaximumWaveSpeedToleratesNullStateVars()
   // is there to handle.
   mat.stateLayout.finalize();
 
-  Mat1::response res;
+  Mat1::response res{};
   res.stress    = Marmot::Vector6d::Zero();
   res.KLocal    = Eigen::Vector< double, 1 >::Zero();
   res.c         = Eigen::Vector< double, 1 >::Zero();

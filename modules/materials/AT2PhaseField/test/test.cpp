@@ -368,7 +368,7 @@ void testComputePlaneStressConvergesToZeroOutOfPlaneStress()
   inc.time    = 0.0;
   inc.dT      = 1.0;
 
-  Res1 res;
+  Res1 res{};
   Tan1 tan;
   res.stress    = Vector6d::Zero();
   res.KLocal    = Eigen::Vector< double, 1 >::Zero();
@@ -410,7 +410,7 @@ void testComputePlaneStressExplicitMatchesComputePlaneStress()
   inc.time    = 0.0;
   inc.dT      = 1.0;
 
-  Res1 resA;
+  Res1 resA{};
   Tan1 tanA;
   resA.stress    = Vector6d::Zero();
   resA.KLocal    = Eigen::Vector< double, 1 >::Zero();
@@ -418,7 +418,7 @@ void testComputePlaneStressExplicitMatchesComputePlaneStress()
   resA.stateVars = stateVarsA.data();
   matA.computePlaneStress( resA, tanA, inc );
 
-  Res1 resB;
+  Res1 resB{};
   resB.stress    = Vector6d::Zero();
   resB.KLocal    = Eigen::Vector< double, 1 >::Zero();
   resB.c         = Eigen::Vector< double, 1 >::Zero();
@@ -444,7 +444,7 @@ void testGetMaximumWaveSpeedMatchesClosedForm()
 
   const Matrix6d C = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
 
-  Res1 res;
+  Res1 res{};
   res.stress    = Vector6d::Zero();
   res.KLocal    = Eigen::Vector< double, 1 >::Zero();
   res.c         = Eigen::Vector< double, 1 >::Zero();
