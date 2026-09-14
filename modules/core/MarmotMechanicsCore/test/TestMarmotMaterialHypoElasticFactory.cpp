@@ -1,5 +1,6 @@
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 #include "Marmot/MarmotTesting.h"
+#include <functional>
 #include <memory>
 #include <stdexcept>
 #include <vector>
@@ -11,8 +12,8 @@ using namespace MarmotLibrary;
 // createMaterial(): the success path is exercised elsewhere (e.g. LinearElastic's own tests, via
 // the material point solver), but the throw branch for an unregistered material name is not.
 // "LINEARELASTIC" is genuinely registered (by LinearElasticRegistration.cpp, linked into every
-// test executable via libMarmot), so a name guaranteed not to collide with it proves the throw
-// path specifically, not just "any unknown name".
+// test executable via libMarmot), so a name not currently expected to collide with it proves the
+// throw path specifically, not just "any unknown name".
 // ---------------------------------------------------------------------------------------------
 void testCreateMaterialThrowsForUnregisteredName()
 {
