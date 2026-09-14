@@ -240,7 +240,8 @@ void MarmotMaterialPointSolverHypoElastic::exportHistoryToCSV( const std::string
 
   for ( int i = 0; i < nStateVars; i++ )
     file << std::setw( w - ( i < nStateVars - 1 ? 1 : 2 ) ) << "StateVar_" << i + 1
-         << ( i < nStateVars - 1 ? "," : "\n" );
+         << ( i < nStateVars - 1 ? "," : "" );
+  file << "\n";
 
   // write data with fixed-width formatting
   for ( const auto& entry : history ) {
@@ -253,7 +254,8 @@ void MarmotMaterialPointSolverHypoElastic::exportHistoryToCSV( const std::string
       file << std::setw( w - 1 ) << entry.strain[i] << ( i < 5 ? "," : "," );
 
     for ( int i = 0; i < nStateVars; i++ )
-      file << std::setw( w - 1 ) << entry.stateVars[i] << ( i < nStateVars - 1 ? "," : "\n" );
+      file << std::setw( w - 1 ) << entry.stateVars[i] << ( i < nStateVars - 1 ? "," : "" );
+    file << "\n";
   }
 
   file.close();
