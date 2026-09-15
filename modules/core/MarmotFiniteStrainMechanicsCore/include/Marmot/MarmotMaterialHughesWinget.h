@@ -418,12 +418,12 @@ namespace Marmot::Materials {
                                                                baseStateOld,
                                                                dEpsVoigt,
                                                                timeInfo );
-          dSigRot_dF               = einsum< ijmn, mnKL, to_ijKL >( voigtToStiffnessFastor( S ), dSigRot_dF );
+          dSigRot_dF               = einsum< ijmn, mnKL, to_ijKL >( voigtToStiffness( S ), dSigRot_dF );
         }
 
-        // voigtToStiffnessFastor scatters without a factor 1/2, which is exactly what a *tensorial*
+        // voigtToStiffness scatters without a factor 1/2, which is exactly what a *tensorial*
         // strain derivative requires: summing over both (m,n) and (n,m) reproduces the engineering shear.
-        const Tensor3333d C4      = voigtToStiffnessFastor( C );
+        const Tensor3333d C4      = voigtToStiffness( C );
         const Tensor3333d dSig_dF = dSigRot_dF + einsum< ijmn, mnKL, to_ijKL >( C4, dEps_dF );
 
         const Tensor33d dJ_dF = J * transpose( Finv ); // dJ/dF_kl = J Finv_lk

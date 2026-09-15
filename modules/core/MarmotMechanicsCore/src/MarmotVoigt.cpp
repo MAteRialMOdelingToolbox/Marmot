@@ -42,78 +42,6 @@ namespace Marmot {
       return strain;
     }
 
-    Eigen::Matrix< double, 6, 6 > stiffnessToVoigt( const EigenTensors::Tensor3333d& C )
-    {
-      // Ordering for Voigt notation (0->xx, 1->yy, 2->zz, 3->xy, 4->xz, 5->yz)
-      std::array< std::pair< int, int >, 6 > ordering = {
-        { { 0, 0 }, { 1, 1 }, { 2, 2 }, { 0, 1 }, { 2, 0 }, { 1, 2 } } };
-
-      Eigen::Matrix< double, 6, 6 > voigtStiffness;
-      voigtStiffness.setZero(); // Initialize with zeros
-
-      for ( int a = 0; a < 6; ++a ) {
-        int i = ordering[a].first;
-        int j = ordering[a].second;
-        for ( int b = 0; b < 6; ++b ) {
-          int k = ordering[b].first;
-          int l = ordering[b].second;
-
-          // Populate the Voigt stiffness matrix
-          voigtStiffness( a, b ) = C( i, j, k, l );
-          voigtStiffness( a, b ) += C( j, i, k, l );
-          voigtStiffness( a, b ) += C( j, i, l, k );
-          voigtStiffness( a, b ) += C( i, j, l, k );
-          voigtStiffness( a, b ) /= 4.0;
-        }
-      }
-
-      return voigtStiffness;
-    }
-
-    EigenTensors::Tensor3333d voigtToStiffness( const Eigen::Matrix< double, 6, 6 >& voigtStiffness )
-    {
-      using namespace TensorUtility::IndexNotation;
-
-      EigenTensors::Tensor3333d stiffness;
-      stiffness.setZero(); // Initialize with zeros
-
-      int row;
-      int col;
-      for ( int i = 0; i < 3; i++ ) {
-        for ( int j = 0; j < 3; j++ ) {
-          row = toVoigt< 3 >( i, j );
-          for ( int k = 0; k < 3; k++ ) {
-            for ( int l = 0; l < 3; l++ ) {
-              col = toVoigt< 3 >( k, l );
-              stiffness( i, j, k, l ) += voigtStiffness( row, col );
-            };
-          };
-        };
-      };
-
-      return stiffness;
-    }
-
-    FastorStandardTensors::Tensor3333d voigtToStiffnessFastor( const Marmot::Matrix6d& voigtStiffness )
-    {
-      FastorStandardTensors::Tensor3333d stiffness( 0. );
-      int                                row;
-      int                                col;
-      using namespace TensorUtility::IndexNotation;
-      for ( int i = 0; i < 3; i++ ) {
-        for ( int j = 0; j < 3; j++ ) {
-          row = toVoigt< 3 >( i, j );
-          for ( int k = 0; k < 3; k++ ) {
-            for ( int l = 0; l < 3; l++ ) {
-              col = toVoigt< 3 >( k, l );
-              stiffness( i, j, k, l ) += voigtStiffness( row, col );
-            };
-          };
-        };
-      };
-      return stiffness;
-    };
-
     Vector3d voigtToPlaneVoigt( const Vector6d& voigt )
     {
       /* converts a 6d voigt Vector with Abaqus notation
@@ -362,55 +290,6 @@ namespace Marmot {
         return 1. / 3 * I;
       }
 
-      Vector6d dTheta_dStress( double theta, const Vector6d& stress )
-      {
-        if ( theta <= 1e-15 || theta >= Pi / 3 - 1e-15 )
-          return Vector6d::Zero();
-
-        // const double J2_ = J2(stress);
-        // const double J3_ = J3(stress);
-
-        const double dThetadJ2 = dTheta_dJ2( stress );
-        const double dThetadJ3 = dTheta_dJ3( stress );
-
-        if ( Math::isNaN( dThetadJ2 ) || Math::isNaN( dThetadJ3 ) )
-          return Vector6d::Zero();
-
-        return dThetadJ2 * dJ2_dStress( stress ) + dThetadJ3 * dJ3_dStress( stress );
-      }
-
-      double dTheta_dJ2( const Vector6d& stress )
-      {
-        const HaighWestergaardCoordinates hw    = haighWestergaard( stress );
-        const double&                     theta = hw.theta;
-
-        if ( theta <= 1e-14 || theta >= Pi / 3 - 1e-14 )
-          return 1e16;
-
-        const double J2_ = J2( stress );
-        const double J3_ = J3( stress );
-
-        const double cos2_3theta = std::cos( 3 * theta ) * std::cos( 3 * theta );
-        const double dThetadJ2   = 3 * sqrt3 / 4 * J3_ / ( std::pow( J2_, 2.5 ) * std::sqrt( 1.0 - cos2_3theta ) );
-        return dThetadJ2;
-      }
-
-      double dTheta_dJ3( const Vector6d& stress )
-      {
-        const HaighWestergaardCoordinates hw    = haighWestergaard( stress );
-        const double&                     theta = hw.theta;
-
-        if ( theta <= 1e-14 || theta >= Pi / 3 - 1e-14 )
-          return -1e16;
-
-        const double J2_ = J2( stress );
-        // const double J3_ = J3(stress);
-
-        const double cos2_3theta = std::cos( 3 * theta ) * std::cos( 3 * theta );
-        const double dThetadJ3   = -sqrt3 / 2. * 1. / ( std::pow( J2_, 1.5 ) * std::sqrt( 1.0 - cos2_3theta ) );
-        return dThetadJ3;
-      }
-
       double dThetaStrain_dJ2Strain( const Vector6d& strain )
       {
         const HaighWestergaardCoordinates hw    = haighWestergaardFromStrain( strain );
@@ -433,18 +312,6 @@ namespace Marmot {
         else
           return -std::sqrt( 3. ) / 2. * 1. /
                  ( std::pow( J2Strain( strain ), 3. / 2 ) * std::sqrt( 1. - std::pow( std::cos( 3. * theta ), 2. ) ) );
-      }
-
-      Vector6d dJ2_dStress( const Vector6d& stress )
-      {
-        return P.array() * ( IDev * stress ).array();
-      }
-
-      Vector6d dJ3_dStress( const Vector6d& stress )
-      {
-        Vector6d s = IDev * stress;
-        return ( P.array() * stressToVoigt< double >( voigtToStress( s ) * voigtToStress( s ) ).array() ).matrix() -
-               2. / 3. * J2( stress ) * I;
       }
 
       Vector6d dJ2Strain_dStrain( const Vector6d& strain )
@@ -650,8 +517,9 @@ namespace Marmot {
       Matrix6d transformStiffnessToGlobalSystem( const Marmot::Matrix6d& stiffness,
                                                  const Matrix3d&         transformedCoordinateSystem )
       {
-        const EigenTensors::Tensor3333d stiffnessTensorLocal = voigtToStiffness( stiffness );
-        EigenTensors::Tensor3333d       stiffnessTensorGlobal;
+        const EigenTensors::Tensor3333d stiffnessTensorLocal = voigtToStiffness< EigenTensors::Tensor3333d >(
+          stiffness );
+        EigenTensors::Tensor3333d stiffnessTensorGlobal;
         stiffnessTensorGlobal.setZero();
         Matrix3d N = transformedCoordinateSystem.transpose();
 

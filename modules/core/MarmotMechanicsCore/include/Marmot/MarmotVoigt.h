@@ -28,10 +28,14 @@
  */
 
 #pragma once
+#include "Fastor/Fastor.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMath.h"
+#include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotTypedefs.h"
+#include <array>
+#include <utility>
 
 namespace Marmot {
   /**
@@ -310,30 +314,83 @@ namespace Marmot {
 
     /**
      * @brief Converts a fourth-order stiffness tensor to its Voigt notation representation (\f$ 6 \times 6 \f$ matrix).
-     * @param C The fourth-order stiffness tensor represented as an Eigen::Tensor<double, 4>.
+     * @tparam FourthOrderTensorType Fourth-order tensor type (e.g. EigenTensors::Tensor3333d or
+     *         Fastor::Tensor<double, 3, 3, 3, 3>) supporting `operator()(i,j,k,l)` element access.
+     * @param C The fourth-order stiffness tensor.
      * @return An Eigen::Matrix<double, 6, 6> representing the stiffness tensor in Voigt notation.
      * @note The input tensor `C` must follow the symmetry properties of a stiffness tensor for the
      *       conversion to be valid (minor symmetry).
+     * @note Fastor expression templates (e.g. the lazy result of `tensorA + tensorB`) do not support
+     *       `operator()(i,j,k,l)` element access. Materialize such expressions into a concrete
+     *       `Fastor::Tensor` first, e.g. via `Fastor::evaluate(tensorA + tensorB)`.
      */
-    Eigen::Matrix< double, 6, 6 > stiffnessToVoigt( const EigenTensors::Tensor3333d& C );
+    template < typename FourthOrderTensorType >
+    Eigen::Matrix< double, 6, 6 > stiffnessToVoigt( const FourthOrderTensorType& C )
+    {
+      // Ordering for Voigt notation (0->xx, 1->yy, 2->zz, 3->xy, 4->xz, 5->yz)
+      std::array< std::pair< int, int >, 6 > ordering = {
+        { { 0, 0 }, { 1, 1 }, { 2, 2 }, { 0, 1 }, { 2, 0 }, { 1, 2 } } };
+
+      Eigen::Matrix< double, 6, 6 > voigtStiffness;
+
+      for ( int a = 0; a < 6; ++a ) {
+        int i = ordering[a].first;
+        int j = ordering[a].second;
+        for ( int b = 0; b < 6; ++b ) {
+          int k = ordering[b].first;
+          int l = ordering[b].second;
+
+          // Populate the Voigt stiffness matrix
+          voigtStiffness( a, b ) = C( i, j, k, l );
+          voigtStiffness( a, b ) += C( j, i, k, l );
+          voigtStiffness( a, b ) += C( j, i, l, k );
+          voigtStiffness( a, b ) += C( i, j, l, k );
+          voigtStiffness( a, b ) /= 4.0;
+        }
+      }
+
+      return voigtStiffness;
+    }
 
     /**
      * @brief Converts a stiffness matrix in Voigt notation (\f$ 6 \times 6 \f$ matrix) to a 4th-order stiffness tensor
      * (\f$ 3 \times 3 \times 3 \times 3 \f$ tensor).
+     * @tparam FourthOrderTensorType Desired result type; cannot be deduced from @p voigtStiffness alone
+     *         (the same input matrix type can be converted to either an Eigen or a Fastor result), so it
+     *         defaults to FastorStandardTensors::Tensor3333d, the type most call sites want. Specify it
+     *         explicitly (e.g. `voigtToStiffness< EigenTensors::Tensor3333d >( m )`) to obtain an
+     *         Eigen::TensorFixedSize result instead.
+     * @tparam VoigtMatrixType Matrix type of @p voigtStiffness (e.g. Eigen::Matrix<double, 6, 6> or
+     *         Fastor::Tensor<double, 6, 6>), deduced from the argument.
      * @param voigtStiffness The \f$ 6 \times 6 \f$ matrix representing the stiffness in Voigt notation.
-     * @return An Eigen::Tensor of rank 4 (4th-order tensor) representing the stiffness tensor.
+     * @return A fourth-order tensor of type @p FourthOrderTensorType representing the stiffness tensor.
      *         The dimensions of the tensor are \f$ 3 \times 3 \times 3 \times 3 \f$.
      */
-    EigenTensors::Tensor3333d voigtToStiffness( const Eigen::Matrix< double, 6, 6 >& voigtStiffness );
+    template < typename FourthOrderTensorType = FastorStandardTensors::Tensor3333d, typename VoigtMatrixType >
+    FourthOrderTensorType voigtToStiffness( const VoigtMatrixType& voigtStiffness )
+    {
+      using namespace TensorUtility::IndexNotation;
 
-    /**
-     * @brief Converts a stiffness matrix in Voigt notation (\f$ 6 \times 6 \f$ matrix) to a 4th-order stiffness tensor
-     * (\f$ 3 \times 3 \times 3 \times 3 \f$ tensor).
-     * @param voigtStiffness The \f$ 6 \times 6 \f$ matrix representing the stiffness in Voigt notation.
-     * @return a Fastor::Tensor of rank 4 (4th-order tensor) representing the stiffness tensor.
-     *         The dimensions of the tensor are \f$ 3 \times 3 \times 3 \times 3 \f$.
-     */
-    Marmot::FastorStandardTensors::Tensor3333d voigtToStiffnessFastor( const Marmot::Matrix6d& voigtStiffness );
+      FourthOrderTensorType stiffness;
+
+      int row;
+      int col;
+      for ( int i = 0; i < 3; i++ ) {
+        for ( int j = 0; j < 3; j++ ) {
+          row = toVoigt< 3 >( i, j );
+          for ( int k = 0; k < 3; k++ ) {
+            for ( int l = 0; l < 3; l++ ) {
+              col = toVoigt< 3 >( k, l );
+              // every (i,j,k,l) combination is visited exactly once, so a plain assignment
+              // (rather than +=) is sufficient and no zero-initialization is required beforehand
+              stiffness( i, j, k, l ) = voigtStiffness( row, col );
+            };
+          };
+        };
+      };
+
+      return stiffness;
+    }
 
     /**
      * @brief Converts a stress vector in Voigt notation to its corresponding tensor form.
@@ -828,24 +885,13 @@ namespace Marmot {
       }
 
       /**
-       * @brief Computes the derivative of the lode angle \f$ \theta \f$
-       *        with respect to the stress vector.
-       *
-       * @param theta Lode angle \f$ \theta \f$.
-       * @param stress 6-component stress vector in Voigt notation.
-       * @return 6-component vector of partial derivatives
-       *         \f$ \tfrac{\partial \theta}{\partial \boldsymbol{\sigma}} \f$ in Voigt notation.
-       * @note Returns zero if \f$ \theta \leq 10^{-15} \f$ or if \f$ \theta \geq \frac{\pi}{3} - 10^{-15} \f$.
-       */
-      Marmot::Vector6d dTheta_dStress( double theta, const Marmot::Vector6d& stress );
-
-      /**
        * @brief Computes the derivative \f$ \frac{\partial \theta}{\partial J_2}\f$ of the lode angle \f$ \theta
        * \f$ with respect to the second deviatoric invariant \f$ J_2 \f$.
        * @param stress 6-component stress vector in Voigt notation.
        * @return Scalar derivative \f$ \tfrac{\partial \theta}{\partial J_2} \f$.
        */
-      double dTheta_dJ2( const Marmot::Vector6d& stress );
+      template < typename T >
+      T dTheta_dJ2( const Eigen::Matrix< T, 6, 1 >& stress );
 
       /**
        * @brief Computes the derivative \f$ \frac{\partial \theta}{\partial J_3}\f$ of the Lode angle
@@ -854,7 +900,59 @@ namespace Marmot {
        * @param stress Stress vector in Voigt notation (\f$ \boldsymbol{\sigma} \f$).
        * @return Value of the derivative \f$ \frac{\partial \theta}{\partial J_3} \f$.
        */
-      double dTheta_dJ3( const Marmot::Vector6d& stress );
+      template < typename T >
+      T dTheta_dJ3( const Eigen::Matrix< T, 6, 1 >& stress );
+
+      /**
+       * @brief Computes the derivative \f$ \frac{\partial J_2}{\partial \boldsymbol{\sigma}}\f$ of the second
+       * deviatoric invariant \f$ J_2 \f$ with respect to the stress vector in Voigt notation.
+       *
+       * @param stress Stress vector in Voigt notation (\f$ \boldsymbol{\sigma} \f$).
+       * @return Vector of partial derivatives \f$ \frac{\partial J_2}{\partial \boldsymbol{\sigma}} \f$ in Voigt
+       * notation.
+       */
+      template < typename T >
+      Eigen::Matrix< T, 6, 1 > dJ2_dStress( const Eigen::Matrix< T, 6, 1 >& stress )
+      {
+        return P.array() * ( IDev * stress ).array();
+      }
+
+      /**
+       * @brief Computes the derivative \f$ \frac{\partial J_3}{\partial \boldsymbol{\sigma}}\f$ of the third deviatoric
+       * invariant \f$ J_3 \f$ with respect to the stress vector in Voigt notation.
+       *
+       * @param stress Stress vector in Voigt notation (\f$ \boldsymbol{\sigma} \f$).
+       * @return Vector of partial derivatives \f$ \frac{\partial J_3}{\partial \boldsymbol{\sigma}} \f$ in Voigt
+       * notation.
+       */
+      template < typename T >
+      Eigen::Matrix< T, 6, 1 > dJ3_dStress( const Eigen::Matrix< T, 6, 1 >& stress )
+      {
+        Eigen::Matrix< T, 6, 1 > s = IDev * stress;
+        return ( P.array() * stressToVoigt< T >( voigtToStress( s ) * voigtToStress( s ) ).array() ).matrix() -
+               2. / 3. * Invariants::J2( stress ) * I;
+      }
+
+      /**
+       * @brief Computes the derivative of the lode angle \f$ \theta \f$
+       *        with respect to the stress vector.
+       *
+       * @param stress 6-component stress vector in Voigt notation.
+       * @return 6-component vector of partial derivatives
+       *         \f$ \tfrac{\partial \theta}{\partial \boldsymbol{\sigma}} \f$ in Voigt notation.
+       * @note Returns zero if \f$ \theta \leq 10^{-15} \f$ or if \f$ \theta \geq \frac{\pi}{3} - 10^{-15} \f$.
+       */
+      template < typename T >
+      Eigen::Matrix< T, 6, 1 > dTheta_dStress( const Eigen::Matrix< T, 6, 1 >& stress )
+      {
+        const T dThetadJ2 = dTheta_dJ2( stress );
+        const T dThetadJ3 = dTheta_dJ3( stress );
+
+        if ( Math::isNaN( dThetadJ2 ) || Math::isNaN( dThetadJ3 ) )
+          return Eigen::Matrix< T, 6, 1 >::Zero();
+
+        return dThetadJ2 * dJ2_dStress( stress ) + dThetadJ3 * dJ3_dStress( stress );
+      }
 
       /**
        * @brief Computes the derivative \f$ \frac{\partial \theta^{(\varepsilon)}}{\partial J^{(\varepsilon)}_2}\f$ of
@@ -875,26 +973,6 @@ namespace Marmot {
        * @return Value of the derivative \f$ \frac{\partial \theta^{(\varepsilon)}}{\partial J^{(\varepsilon)}_3} \f$.
        */
       double dThetaStrain_dJ3Strain( const Marmot::Vector6d& strain );
-
-      /**
-       * @brief Computes the derivative \f$ \frac{\partial J_2}{\partial \boldsymbol{\sigma}}\f$ of the second
-       * deviatoric invariant \f$ J_2 \f$ with respect to the stress vector in Voigt notation.
-       *
-       * @param stress Stress vector in Voigt notation (\f$ \boldsymbol{\sigma} \f$).
-       * @return Vector of partial derivatives \f$ \frac{\partial J_2}{\partial \boldsymbol{\sigma}} \f$ in Voigt
-       * notation.
-       */
-      Marmot::Vector6d dJ2_dStress( const Marmot::Vector6d& stress );
-
-      /**
-       * @brief Computes the derivative \f$ \frac{\partial J_3}{\partial \boldsymbol{\sigma}}\f$ of the third deviatoric
-       * invariant \f$ J_3 \f$ with respect to the stress vector in Voigt notation.
-       *
-       * @param stress Stress vector in Voigt notation (\f$ \boldsymbol{\sigma} \f$).
-       * @return Vector of partial derivatives \f$ \frac{\partial J_3}{\partial \boldsymbol{\sigma}} \f$ in Voigt
-       * notation.
-       */
-      Marmot::Vector6d dJ3_dStress( const Marmot::Vector6d& stress );
 
       /**
        * @brief Computes the derivative \f$ \frac{\partial J^{(\varepsilon)}_2}{\partial \boldsymbol{\varepsilon}} \f$
@@ -1164,4 +1242,61 @@ namespace Marmot {
     } // namespace Transformations
 
   }   // namespace ContinuumMechanics::VoigtNotation
+} // namespace Marmot
+
+#include "Marmot/HaighWestergaard.h"
+
+namespace Marmot {
+  namespace ContinuumMechanics::VoigtNotation::Derivatives {
+    using namespace Constants;
+
+    template < typename T >
+    T dTheta_dJ2( const Eigen::Matrix< T, 6, 1 >& stress )
+    {
+      const T J2_ = Invariants::J2( stress );
+      const T J3_ = Invariants::J3( stress );
+
+      if ( Math::makeReal( J2_ ) < 1e-12 ) {
+        // Hydrostatic axis regularization
+        return T( 0.0 );
+      }
+
+      using HaighWestergaardCoordinates       = ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates< T >;
+      const HaighWestergaardCoordinates hw    = ContinuumMechanics::HaighWestergaard::haighWestergaard( stress );
+      T                                 theta = hw.theta;
+
+      double threshold = 1e-10;
+      if ( Math::makeReal( theta ) <= threshold )
+        theta = T( threshold );
+      else if ( Math::makeReal( theta ) >= Pi / 3. - threshold )
+        theta = T( Pi / 3. - threshold );
+
+      const T dThetadJ2 = 3 * sqrt3 / 4 * J3_ / ( pow( J2_, 2.5 ) * sin( 3. * theta ) );
+      return dThetadJ2;
+    }
+
+    template < typename T >
+    T dTheta_dJ3( const Eigen::Matrix< T, 6, 1 >& stress )
+    {
+      const T J2_ = Invariants::J2( stress );
+
+      if ( Math::makeReal( J2_ ) < 1e-12 ) {
+        // Hydrostatic axis regularization
+        return T( 0.0 );
+      }
+
+      using HaighWestergaardCoordinates       = ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates< T >;
+      const HaighWestergaardCoordinates hw    = ContinuumMechanics::HaighWestergaard::haighWestergaard( stress );
+      T                                 theta = hw.theta;
+
+      double threshold = 1e-10;
+      if ( Math::makeReal( theta ) <= threshold )
+        theta = T( threshold );
+      else if ( Math::makeReal( theta ) >= Pi / 3. - threshold )
+        theta = T( Pi / 3. - threshold );
+
+      const T dThetadJ3 = -sqrt3 / 2. * 1. / ( pow( J2_, 1.5 ) * sin( 3. * theta ) );
+      return dThetadJ3;
+    }
+  } // namespace ContinuumMechanics::VoigtNotation::Derivatives
 } // namespace Marmot
