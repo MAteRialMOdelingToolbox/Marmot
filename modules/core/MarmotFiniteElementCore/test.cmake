@@ -21,3 +21,6 @@ add_marmot_test("TestMarmotGeometryElement" "${CURR_TEST_SOURCE_DIR}/TestMarmotG
 
 # Tests for MarmotFiniteElementBasic
 add_marmot_test("TestMarmotFiniteElementBasic" "${CURR_TEST_SOURCE_DIR}/TestMarmotFiniteElementBasic.cpp")
+
+# Tests for MarmotBulkViscosity
+add_marmot_test("TestMarmotBulkViscosity" "${CURR_TEST_SOURCE_DIR}/TestMarmotBulkViscosity.cpp")

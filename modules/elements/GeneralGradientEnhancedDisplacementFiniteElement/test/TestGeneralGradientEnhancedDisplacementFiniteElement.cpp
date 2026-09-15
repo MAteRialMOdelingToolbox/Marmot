@@ -5,7 +5,11 @@
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
 #include <algorithm>
+#include <cmath>
+#include <limits>
+#include <memory>
 #include <string>
+#include <vector>
 
 using namespace Marmot;
 using namespace Marmot::Elements;
@@ -237,8 +241,9 @@ void testCoordinatesAtQuadraturePoints()
 // ---------------------------------------------------------------------------------------------
 // Lumped (diagonal) mass/capacity matrix tests
 //
-// computeLumpedInertia() uses the manifold-based scheme of Yang et al. (2017) for both the
-// displacement block (using density) and each non-local field block (using non-local
+// computeLumpedInertia() and computeLumpedDamping() both use the manifold-based scheme of Yang
+// et al. (2017) for their non-zero block -- computeLumpedInertia() for the displacement block
+// (using density), computeLumpedDamping() for the non-local field block (using non-local
 // viscosity), mixing the high-order shape function N with the corresponding corner-node linear
 // shape function N_lin via N_weighted = w*N + (1-w)*N_lin (only the corner entries receive the
 // N_lin correction), with w = 1/2 by default and w = 1/3 special-cased for Hexa20: with the
@@ -250,7 +255,8 @@ void testCoordinatesAtQuadraturePoints()
 // Both tests below use equal-order interpolation (nNonLocalNodes == nNodes, the default), with
 // density == non-local viscosity == 1, so the non-local block reduces to the exact same
 // shape-function diagonal pattern as the displacement block, and the reference values (from an
-// independent SymPy computation) apply identically to both blocks.
+// independent SymPy computation) apply identically to both blocks. No micro-inertia is assigned,
+// so computeLumpedInertia()'s non-local block is exactly zero -- checked here too.
 // ---------------------------------------------------------------------------------------------
 
 void checkQuad8AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes intType, const std::string& label )
@@ -325,18 +331,30 @@ void checkQuad8AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes
   throwExceptionOnFailure( checkIfEqual( totalMass, 1.0, 1e-10 ),
                            label + ": Quad8 displacement block does not conserve the total element mass." );
 
+  // No micro-inertia was assigned, so computeLumpedInertia()'s non-local block must be exactly
+  // zero -- the field stays first order in time.
+  for ( int i = 0; i < nNodes; i++ )
+    throwExceptionOnFailure( M[sizeDoFU + i] == 0.0,
+                             label +
+                               ": Quad8 non-local lumped inertia entry is non-zero without a micro-inertia "
+                               "assigned (node " +
+                               std::to_string( i ) + ")." );
+
+  std::vector< double > C( element->getNDofPerElement(), 0.0 );
+  element->computeLumpedDamping( C.data() );
+
   double totalCapacity = 0.0;
   for ( int i = 0; i < nNodes; i++ ) {
     const double expected = i < 4 ? expectedCorner : expectedMidside;
-    throwExceptionOnFailure( M[sizeDoFU + i] > 0.0,
-                             label + ": Quad8 non-local lumped capacity entry is not strictly positive (node " +
+    throwExceptionOnFailure( C[sizeDoFU + i] > 0.0,
+                             label + ": Quad8 non-local lumped damping entry is not strictly positive (node " +
                                std::to_string( i ) + ")." );
-    throwExceptionOnFailure( checkIfEqual( M[sizeDoFU + i], expected, 1e-10 ),
+    throwExceptionOnFailure( checkIfEqual( C[sizeDoFU + i], expected, 1e-10 ),
                              label +
-                               ": Quad8 non-local lumped capacity entry does not match the analytic "
+                               ": Quad8 non-local lumped damping entry does not match the analytic "
                                "reference (node " +
                                std::to_string( i ) + ")." );
-    totalCapacity += M[sizeDoFU + i];
+    totalCapacity += C[sizeDoFU + i];
   }
   throwExceptionOnFailure( checkIfEqual( totalCapacity, 1.0, 1e-10 ),
                            label + ": Quad8 non-local block does not conserve the total element capacity." );
@@ -469,18 +487,30 @@ void checkHexa20AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationType
   throwExceptionOnFailure( checkIfEqual( totalMass, 1.0, 1e-10 ),
                            label + ": Hexa20 displacement block does not conserve the total element mass." );
 
+  // No micro-inertia was assigned, so computeLumpedInertia()'s non-local block must be exactly
+  // zero -- the field stays first order in time.
+  for ( int i = 0; i < nNodes; i++ )
+    throwExceptionOnFailure( M[sizeDoFU + i] == 0.0,
+                             label +
+                               ": Hexa20 non-local lumped inertia entry is non-zero without a micro-inertia "
+                               "assigned (node " +
+                               std::to_string( i ) + ")." );
+
+  std::vector< double > C( element->getNDofPerElement(), 0.0 );
+  element->computeLumpedDamping( C.data() );
+
   double totalCapacity = 0.0;
   for ( int i = 0; i < nNodes; i++ ) {
     const double expected = i < 8 ? expectedCorner : expectedEdge;
-    throwExceptionOnFailure( M[sizeDoFU + i] > 0.0,
-                             label + ": Hexa20 non-local lumped capacity entry is not strictly positive (node " +
+    throwExceptionOnFailure( C[sizeDoFU + i] > 0.0,
+                             label + ": Hexa20 non-local lumped damping entry is not strictly positive (node " +
                                std::to_string( i ) + ")." );
-    throwExceptionOnFailure( checkIfEqual( M[sizeDoFU + i], expected, 1e-10 ),
+    throwExceptionOnFailure( checkIfEqual( C[sizeDoFU + i], expected, 1e-10 ),
                              label +
-                               ": Hexa20 non-local lumped capacity entry does not match the analytic "
+                               ": Hexa20 non-local lumped damping entry does not match the analytic "
                                "reference (node " +
                                std::to_string( i ) + ")." );
-    totalCapacity += M[sizeDoFU + i];
+    totalCapacity += C[sizeDoFU + i];
   }
   throwExceptionOnFailure( checkIfEqual( totalCapacity, 1.0, 1e-10 ),
                            label + ": Hexa20 non-local block does not conserve the total element capacity." );
@@ -1116,8 +1146,14 @@ void testSetInitialConditionsRejectsUnsupportedStateTypes()
 // unity -- independent of element distortion.
 // ---------------------------------------------------------------------------------------------
 
-void testComputeConsistentInertiaConservesTotalMassAndCapacity()
+void testComputeConsistentInertiaConservesTotalMassAndMicroInertia()
 {
+  // The non-local block of the consistent inertia carries the MICRO-INERTIA, the coefficient of
+  // that field's second time derivative -- the same one computeLumpedInertia() assembles there.
+  // It carried the non-local viscosity until inertia and damping were told apart, which left this
+  // path and the lumped one disagreeing about what the matrix is; the viscosity is now reported
+  // by computeLumpedDamping() alone. Without a micro-inertia the block is zero, which is correct:
+  // the field is then first order in time and has no inertia at all.
   constexpr int nDim          = 2;
   constexpr int nNodes        = 4;
   constexpr int nNonlocalVars = 1;
@@ -1125,22 +1161,46 @@ void testComputeConsistentInertiaConservesTotalMassAndCapacity()
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::PlaneStrain );
-  element->assignNodeCoordinates( nodeCoordsVec.data() );
+  /* The micro-inertia is a MATERIAL property, so it is given to the material section rather than
+   * assigned to a built element -- which is why both variants below are whole elements. matProps
+   * is AT2PhaseField's { E, nu, Gc, l, density, nonlocalViscosity } plus, where given, the
+   * micro-inertia. Density and viscosity are 1, so the admissible eta^2/4 is 1/4.
+   */
+  /* matProps and stateVars are held OUT here, and the material properties are moved into
+   * matPropsStorage rather than read from the argument: MarmotMaterialSection keeps a bare
+   * `const double*`, and the material instantiated from it keeps that same pointer for its whole
+   * life -- it does not copy. A `const std::vector&` parameter bound to a braced temporary at the
+   * call site therefore dangles the moment buildElement() returns, and every later read of the
+   * density is undefined. It is not even a reliable crash: on Linux the freed buffer still held
+   * the old values and every assertion passed, while macOS read a zero density and the total mass
+   * came out 0 instead of 1.
+   */
+  std::vector< double >       matPropsStorage;
+  std::vector< double >       stateVars;
+  std::unique_ptr< ElemType > element;
+  const auto                  buildElement = [&]( std::vector< double > matProps ) {
+    // Destroyed BEFORE the buffers it points into are replaced, so no element ever holds a
+    // pointer to freed storage, not even briefly between the two statements below.
+    element.reset();
+    matPropsStorage = std::move( matProps );
 
-  const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 }; // density = nonlocalViscosity = 1
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
-  element->assignProperty( elProps );
-  element->assignProperty( materialSection );
+    element = std::make_unique< ElemType >( 1,
+                                            FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                            ElemType::SectionType::PlaneStrain );
+    element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
-  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
-  element->assignStateVars( stateVars.data(), nStateVarsTotal );
-  element->initializeYourself();
+    MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matPropsStorage.data(), matPropsStorage.size() );
+    const std::vector< double > elPropsVec = { 1.0 };
+    ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+    element->assignProperty( elProps );
+    element->assignProperty( materialSection );
+
+    stateVars.assign( element->getNumberOfRequiredStateVars(), 0.0 );
+    element->assignStateVars( stateVars.data(), stateVars.size() );
+    element->initializeYourself();
+  };
+
+  buildElement( { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 } );
 
   const int nDof    = element->getNDofPerElement();
   const int nNodes_ = nNodes;
@@ -1165,14 +1225,28 @@ void testComputeConsistentInertiaConservesTotalMassAndCapacity()
                              "computeConsistentInertia() does not conserve the total displacement-block mass." );
   }
 
-  // Nonlocal (capacity) block: uniform unit nonlocal field.
+  // Non-local (micro-inertia) block: uniform unit non-local field. Zero here, because this
+  // element's material provides no micro-inertia.
   Eigen::VectorXd kRigid   = Eigen::VectorXd::Zero( nDof );
   constexpr int   sizeDoFU = nNodes * nDim;
   for ( int a = 0; a < nNodes; a++ )
     kRigid[sizeDoFU + a] = 1.0;
-  const double capacityTotal = kRigid.transpose() * Mmat * kRigid;
-  throwExceptionOnFailure( checkIfEqual( capacityTotal, totalVolume, 1e-10 ),
-                           "computeConsistentInertia() does not conserve the total non-local capacity." );
+  throwExceptionOnFailure( checkIfEqual( double( kRigid.transpose() * Mmat * kRigid ), 0.0, 1e-14 ),
+                           "computeConsistentInertia() assembles a non-local inertia where the material gives none." );
+
+  // And with one, the block sums to m_k times the volume, exactly as the displacement block sums
+  // to rho times the volume. 0.25 is eta^2/4 for this material's eta of 1, i.e. the largest
+  // admissible micro-inertia and hence the recommended one.
+  const double microInertia = 0.25;
+  buildElement( { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0, microInertia } );
+
+  std::vector< double > MWithMicroInertia( nDof * nDof, 0.0 );
+  element->computeConsistentInertia( MWithMicroInertia.data() );
+  Eigen::Map< Eigen::MatrixXd > MmatWithMicroInertia( MWithMicroInertia.data(), nDof, nDof );
+
+  const double microInertiaTotal = kRigid.transpose() * MmatWithMicroInertia * kRigid;
+  throwExceptionOnFailure( checkIfEqual( microInertiaTotal, microInertia * totalVolume, 1e-10 ),
+                           "computeConsistentInertia() does not conserve the total non-local micro-inertia." );
 }
 
 void testComputeBodyForceConservesTotalForcePerDirection()
@@ -1454,6 +1528,542 @@ void testComputeDistributedLoadThrowsForUnhandledLoadType()
   throwExceptionOnFailure( threw, "computeDistributedLoad() must throw for an unhandled load type." );
 }
 
+/**
+ * @brief Build a cube of the given edge length with AT2PhaseField and, optionally, a micro-inertia.
+ * @param edgeLength Edge length of the cube.
+ * @param microInertia Micro-inertia the MATERIAL is given, in seconds squared; the material
+ *        property is left off entirely if zero, which is how a first-order non-local field is
+ *        asked for. It must not exceed \f$\eta^2/4\f$, which the material enforces.
+ * @param nonlocalViscosity The material's non-local viscosity, which is the damping of the
+ *        non-local field once that field carries a micro-inertia.
+ * @param density Material density; raising it slows the mechanical waves and so pushes the
+ *        mechanical limit out of the way of the non-local one.
+ * @return The critical time step the element reports.
+ */
+double criticalTimeStepOfCube( double edgeLength, double microInertia, double nonlocalViscosity, double density )
+{
+  constexpr int nDim          = 3;
+  constexpr int nNodes        = 8;
+  constexpr int nNonlocalVars = 1;
+  const int     elId          = 1;
+  const auto    intType       = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
+
+  const double                h             = edgeLength;
+  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, h, 0.0, 0.0, h, h, 0.0, 0.0, h, 0.0,
+                                                0.0, 0.0, h,   h, 0.0, h,   h, h, h,   0.0, h, h };
+
+  auto element = std::make_unique< ElemType >( elId, intType, ElemType::SectionType::Solid );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+  /* AT2PhaseField properties: E, nu, Gc, l, density, nonlocalViscosity and, last and optional, the
+   * micro-inertia. The internal length l enters the element as c = l^2, and l >> h is what puts the
+   * non-local field in the regime where its limit is set by the Laplacian rather than by the
+   * reaction term.
+   *
+   * l is 10 against element sizes of 0.1 - 0.2 rather than the 1 it once was, because the damping
+   * the callers below must now carry is bounded BELOW by the admissibility condition: the smallest
+   * damping ratio a legal (m_k, eta) pair can have is zeta = 1/sqrt(1 + C l^2/h^2), reached exactly
+   * at m_k = eta^2/4. Only l/h buys that back, and at l/h = 50 it is a fraction of a percent, small
+   * enough for the scaling ratios below to stay inside the tolerances they were written with.
+   */
+  std::vector< double > matProps = { 20000.0, 0.2, 1.0, 10.0, density, nonlocalViscosity };
+  if ( microInertia > 0.0 )
+    matProps.push_back( microInertia );
+
+  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  const std::vector< double > elPropsVec = { 1.0 };
+  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+
+  element->assignProperty( elProps );
+  element->assignProperty( materialSection );
+
+  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVarsTotal );
+  element->initializeYourself();
+
+  const std::vector< double > QTotal( element->getNDofPerElement(), 0.0 );
+
+  double criticalTimeStep = 0.0;
+  element->computeCriticalTimeStepForExplicitDynamics( criticalTimeStep, QTotal.data() );
+
+  return criticalTimeStep;
+}
+
+void testNonlocalMicroInertiaIsZeroUnlessAssigned()
+{
+  constexpr int nDim          = 3;
+  constexpr int nNodes        = 8;
+  constexpr int nNonlocalVars = 1;
+  using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
+
+  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                                0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+
+  auto element = std::make_unique< ElemType >( 1,
+                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                               ElemType::SectionType::Solid );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+  const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  const std::vector< double > elPropsVec = { 1.0 };
+  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  element->assignProperty( elProps );
+  element->assignProperty( materialSection );
+
+  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVarsTotal );
+  element->initializeYourself();
+
+  // Deliberately dirtied: the contract is that the element WRITES the whole vector, so an element
+  // whose material provides no micro-inertia has to zero its non-local block rather than leave what
+  // happened to be there. The displacement block is not checked against zero here: it legitimately
+  // carries the density-based mass computeLumpedInertia() now reports for every field at once.
+  constexpr int         sizeDoFU = nNodes * nDim;
+  std::vector< double > microInertia( element->getNDofPerElement(), 12345.0 );
+  element->computeLumpedInertia( microInertia.data() );
+
+  for ( size_t i = sizeDoFU; i < microInertia.size(); i++ )
+    throwExceptionOnFailure( microInertia[i] == 0.0,
+                             MakeString()
+                               << __PRETTY_FUNCTION__
+                               << ": an element whose material gives no micro-inertia reported one at dof " << i );
+}
+
+void testNonlocalMicroInertiaSumsToMicroInertiaTimesVolume()
+{
+  constexpr int nDim          = 3;
+  constexpr int nNodes        = 8;
+  constexpr int nNonlocalVars = 1;
+  using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
+
+  const double                h             = 2.0;
+  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, h, 0.0, 0.0, h, h, 0.0, 0.0, h, 0.0,
+                                                0.0, 0.0, h,   h, 0.0, h,   h, h, h,   0.0, h, h };
+
+  auto element = std::make_unique< ElemType >( 1,
+                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                               ElemType::SectionType::Solid );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+  // eta = 1 admits any micro-inertia up to 1/4, so the value below is far inside the bound.
+  const double                microInertiaValue = 3.0e-7;
+  const std::vector< double > matProps          = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0, microInertiaValue };
+  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  const std::vector< double > elPropsVec = { 1.0 };
+  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  element->assignProperty( elProps );
+  element->assignProperty( materialSection );
+
+  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVarsTotal );
+  element->initializeYourself();
+
+  // The displacement block carries the ordinary density-based mass now, not the micro-inertia --
+  // that only ever lands in the non-local block, which is what is summed below.
+  constexpr int         sizeDoFU = nNodes * nDim;
+  std::vector< double > microInertia( element->getNDofPerElement(), 0.0 );
+  element->computeLumpedInertia( microInertia.data() );
+
+  double total = 0.0;
+  for ( size_t i = sizeDoFU; i < microInertia.size(); i++ )
+    total += microInertia[i];
+
+  // Row-summing a consistent mass matrix conserves its total exactly, whatever the lumping weights
+  // do between nodes, so this is an exact statement and not a tolerance-fitted one. It also fails
+  // loudly on a mis-ordered node list, which would fold the cube inside out and change its volume.
+  throwExceptionOnFailure( checkIfEqual( total, microInertiaValue * h * h * h, 1e-14 ),
+                           MakeString() << __PRETTY_FUNCTION__ << ": the lumped micro-inertia sums to " << total
+                                        << " instead of " << microInertiaValue * h * h * h );
+}
+
+void testRetiredNonlocalMicroInertiaElementPropertyIsRejected()
+{
+  /* The micro-inertia was an element property and is now a material one. A deck that still assigns
+   * it here has to FAIL, not be quietly ignored: ignored, the non-local field would stay first
+   * order in time -- with a stable increment falling off as h^2 and nothing checking it -- while
+   * the deck's author reads the property in their own input file and believes otherwise. The
+   * element must also not advertise it, or a front end validating against getPropertyNames() would
+   * accept the deck before the element ever saw the value.
+   */
+  constexpr int nDim          = 3;
+  constexpr int nNodes        = 8;
+  constexpr int nNonlocalVars = 1;
+  using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
+
+  auto element = std::make_unique< ElemType >( 1,
+                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                               ElemType::SectionType::Solid );
+
+  MarmotElement* base = element.get();
+
+  const double value = 1.0e-12;
+  bool         threw = false;
+  try {
+    base->assignProperty( "nonlocal micro inertia", &value, 1 );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw,
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << ": the retired 'nonlocal micro inertia' element property was accepted" );
+
+  const auto names = base->getPropertyNames();
+  throwExceptionOnFailure( std::find( names.begin(), names.end(), "nonlocal micro inertia" ) == names.end(),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << ": the retired property is still reported by getPropertyNames()" );
+}
+
+void testBulkViscosityDamageDegradationIsValidated()
+{
+  constexpr int nDim          = 3;
+  constexpr int nNodes        = 8;
+  constexpr int nNonlocalVars = 1;
+  using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
+
+  auto element = std::make_unique< ElemType >( 1,
+                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                               ElemType::SectionType::Solid );
+
+  // reached through the base pointer, the way the EdelweissFE wrapper reaches it
+  MarmotElement* base = element.get();
+
+  const auto rejects = [&]( const double* values, int nValues ) {
+    try {
+      base->assignProperty( "bulk viscosity damage degradation", values, nValues );
+    }
+    catch ( const std::invalid_argument& ) {
+      return true;
+    }
+    return false;
+  };
+
+  const std::vector< double > twoValues = { 2.0, 2.0 };
+  throwExceptionOnFailure( rejects( twoValues.data(), 2 ),
+                           MakeString() << __PRETTY_FUNCTION__ << ": the single-value arity was not enforced" );
+
+  const double negative = -1.0;
+  throwExceptionOnFailure( rejects( &negative, 1 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << ": a negative exponent was accepted, which would amplify the viscous stress "
+                                           "as "
+                                           "the material fails" );
+
+  const double exponent = 2.0;
+  throwExceptionOnFailure( !rejects( &exponent, 1 ),
+                           MakeString() << __PRETTY_FUNCTION__ << ": a valid exponent was rejected" );
+
+  // The element must also report the name, or a deck asking for it would be silently ignored by
+  // whatever validates against getPropertyNames().
+  const auto names = base->getPropertyNames();
+  throwExceptionOnFailure( std::find( names.begin(), names.end(), "bulk viscosity damage degradation" ) != names.end(),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << ": the degradation is assignable but not reported by getPropertyNames()" );
+}
+
+void testNonlocalCriticalTimeStepScalesWithSqrtOfMicroInertia()
+{
+  /* Both variants are given their OWN recommended viscosity, eta = 2 sqrt(m_k), which is what makes
+   * the expected ratio exact rather than approximate: the damping ratio of the highest mode is then
+   * zeta = eta / (2 sqrt(m_k A)) = 1 / sqrt(A) whatever m_k is, so the damping factor
+   * sqrt(1+zeta^2) - zeta is identical for the two and cancels out of the ratio entirely. It cannot
+   * be removed instead by setting eta to zero, which is what this test did while the micro-inertia
+   * was an element property: an undamped second-order field rings forever, and the material now
+   * rejects the pairing.
+   *
+   * A high density keeps the mechanical limit far above the non-local one, so what is measured is
+   * the non-local branch.
+   */
+  const double density = 1.0e4;
+
+  const double dtBase      = criticalTimeStepOfCube( 0.2, 1.0e-4, 2.0e-2, density );
+  const double dtFourfold  = criticalTimeStepOfCube( 0.2, 4.0e-4, 4.0e-2, density );
+  const double dtMechanica = criticalTimeStepOfCube( 0.2, 0.0, 0.0, density );
+
+  throwExceptionOnFailure( dtBase < dtMechanica,
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << ": the non-local field did not govern, so the ratio below would be "
+                                           "measuring the mechanical limit instead" );
+
+  // A second-order field's limit goes with the square root of its inertia. A first-order (viscous)
+  // one would go with the coefficient itself, so this ratio is what separates the two.
+  throwExceptionOnFailure( checkIfEqual( dtFourfold / dtBase, 2.0, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__ << ": expected a ratio of 2, got "
+                                        << dtFourfold / dtBase );
+}
+
+void testNonlocalCriticalTimeStepScalesLinearlyWithElementSize()
+{
+  const double density = 1.0e4;
+
+  /* h << l on both meshes, so the Laplacian dominates the reaction term and the limit is in its
+   * asymptotic regime. Unlike the ratio above, this one does not cancel its damping exactly: with
+   * m_k and eta the same on both meshes, zeta = 1/sqrt(1 + C l^2/h^2) is twice as large on the
+   * coarse mesh as on the fine one, and the ratio is biased by about zeta/2. That is why the
+   * helper's internal length is 50 element sizes and not five -- at l/h = 50 the bias is a few
+   * parts in a thousand, well inside the tolerance below, whereas at l/h = 5 it would be 2.5 %
+   * and this test would fail on a correct implementation.
+   */
+  const double dtCoarse = criticalTimeStepOfCube( 0.2, 1.0e-4, 2.0e-2, density );
+  const double dtFine   = criticalTimeStepOfCube( 0.1, 1.0e-4, 2.0e-2, density );
+
+  throwExceptionOnFailure( dtFine < criticalTimeStepOfCube( 0.1, 0.0, 0.0, density ),
+                           MakeString() << __PRETTY_FUNCTION__ << ": the non-local field did not govern" );
+
+  // This is the whole point of the micro-inertia: halving the element size halves the stable
+  // increment. The parabolic scheme it replaces would have quartered it, so 0.25 is what this test
+  // exists to exclude.
+  const double ratio = dtFine / dtCoarse;
+  throwExceptionOnFailure( std::abs( ratio - 0.5 ) < 0.01,
+                           MakeString() << __PRETTY_FUNCTION__ << ": expected a ratio of 0.5, got " << ratio );
+}
+
+namespace {
+
+  /* The VISCOUS part of the internal force alone, isolated by differencing two otherwise
+   * identical elements -- one with the bulk viscosity, one without -- at the same non-local field.
+   * The constitutive stress is degraded by that field too, so differencing at a fixed field
+   * cancels it exactly.
+   */
+  Eigen::VectorXd viscousForceAtNonlocalField( double nonlocalField, double degradationExponent )
+  {
+    constexpr int nDim          = 3;
+    constexpr int nNodes        = 8;
+    constexpr int nNonlocalVars = 1;
+    using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
+
+    const auto intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+    const auto secType = ElemType::SectionType::Solid;
+
+    const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                                  0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+    const std::vector< double > matProps      = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+
+    const std::vector< double > bulkViscosity = { 0.06, 1.2 };
+
+    // A uniform volumetric COMPRESSION, so that both the linear and the quadratic term are active.
+    const double    strainPerAxis = -1.0e-4;
+    constexpr int   sizeDoFU      = nNodes * nDim;
+    Eigen::VectorXd Q             = Eigen::VectorXd::Zero( sizeDoFU + nNodes );
+    for ( int a = 0; a < nNodes; a++ )
+      for ( int d = 0; d < nDim; d++ )
+        Q[a * nDim + d] = strainPerAxis * nodeCoordsVec[a * nDim + d];
+    for ( int a = 0; a < nNodes; a++ )
+      Q[sizeDoFU + a] = nonlocalField;
+
+    const auto internalForce = [&]( bool withBulkViscosity ) {
+      auto element = std::make_unique< ElemType >( 1, intType, secType );
+      element->assignNodeCoordinates( nodeCoordsVec.data() );
+      MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+      element->assignProperty( materialSection );
+
+      if ( withBulkViscosity ) {
+        element->assignProperty( "bulk viscosity", bulkViscosity.data(), bulkViscosity.size() );
+        element->assignProperty( "bulk viscosity damage degradation", &degradationExponent, 1 );
+      }
+
+      const int             nStateVars = element->getNumberOfRequiredStateVars();
+      std::vector< double > stateVars( nStateVars, 0.0 );
+      element->assignStateVars( stateVars.data(), nStateVars );
+      element->initializeYourself();
+
+      Eigen::VectorXd P = Eigen::VectorXd::Zero( Q.size() );
+      element->computeKernelsExplicit( Q.data(), Q.data(), P.data(), 0.0, 1.0e-3 );
+      return P;
+    };
+
+    return internalForce( true ) - internalForce( false );
+  }
+
+} // namespace
+
+/* The degradation end to end through the element rather than as a formula. AT2 is degraded by the
+ * non-local field alone, so its wave speed at a field of phi is (1 - phi) times the undamaged one
+ * and (c/c_0)^n is exactly (1 - phi)^n. Every query used to be made at a zeroed field, making the
+ * ratio identically 1.0 -- which the unit tests on degradationFactor() could not see, because they
+ * never went through the element.
+ */
+void testBulkViscosityDegradesWithTheNonlocalField()
+{
+  const Eigen::VectorXd undamaged = viscousForceAtNonlocalField( 0.0, 2.0 );
+
+  throwExceptionOnFailure( undamaged.norm() > 0.0,
+                           MakeString() << __PRETTY_FUNCTION__ << ": the viscous force vanishes at phi = 0, so this "
+                                        << "test would pass on any implementation" );
+
+  for ( const double phi : { 0.25, 0.5, 0.75 } ) {
+    for ( const double exponent : { 1.0, 2.0 } ) {
+
+      const Eigen::VectorXd damaged  = viscousForceAtNonlocalField( phi, exponent );
+      const double          expected = std::pow( 1.0 - phi, exponent );
+
+      throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( damaged ),
+                                             Eigen::MatrixXd( expected * undamaged ),
+                                             1e-12 ),
+                               MakeString() << __PRETTY_FUNCTION__ << ": at a non-local field of " << phi
+                                            << " and exponent " << exponent << " the viscous force is not " << expected
+                                            << " times the undamaged one" );
+    }
+  }
+}
+
+/* And with the exponent at its default it must NOT degrade -- the same viscous force at every
+ * field value. Asserted because it is the shape the defect had: before the fix both the degraded
+ * and the undegraded case behaved like this one.
+ */
+void testBulkViscosityIsUndegradedByDefault()
+{
+  const Eigen::VectorXd atZero = viscousForceAtNonlocalField( 0.0, 0.0 );
+
+  for ( const double phi : { 0.25, 0.75 } )
+    throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( viscousForceAtNonlocalField( phi, 0.0 ) ),
+                                           Eigen::MatrixXd( atZero ),
+                                           1e-12 ),
+                             MakeString() << __PRETTY_FUNCTION__
+                                          << ": the viscous force depends on the non-local field although the "
+                                          << "degradation was not requested" );
+}
+
+/* A rejected property assignment must leave the element as it was -- checked through the assembled
+ * inertia, since a half-applied assignment is only visible in what the element then produces.
+ */
+void testRejectedPropertyAssignmentLeavesTheElementUnchanged()
+{
+  constexpr int nDim          = 3;
+  constexpr int nNodes        = 8;
+  constexpr int nNonlocalVars = 1;
+  using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
+
+  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                                0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+  const std::vector< double > matProps      = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+
+  // Fully built, because the assembled inertia is read back at the end: computeLumpedInertia()
+  // asks every quadrature point's material for its density, and a quadrature point without one
+  // has no material to ask.
+  auto element = std::make_unique< ElemType >( 1,
+                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                               ElemType::SectionType::Solid );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  element->assignProperty( materialSection );
+
+  const int             nStateVars = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVars, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVars );
+  element->initializeYourself();
+
+  const std::vector< double > valid = { 0.06, 1.2 };
+  element->assignProperty( "bulk viscosity", valid.data(), valid.size() );
+
+  const double                               nan      = std::numeric_limits< double >::quiet_NaN();
+  const std::vector< std::vector< double > > rejected = { { -1.0, 1.2 }, { 0.06, -1.0 }, { nan, 1.2 }, { 0.06, nan } };
+
+  for ( const auto& values : rejected ) {
+    bool threw = false;
+    try {
+      element->assignProperty( "bulk viscosity", values.data(), values.size() );
+    }
+    catch ( const std::invalid_argument& ) {
+      threw = true;
+    }
+    throwExceptionOnFailure( threw,
+                             MakeString() << __PRETTY_FUNCTION__
+                                          << ": a negative or non-finite bulk viscosity coefficient was accepted" );
+  }
+
+  // A rejected coefficient must not reach the assembled quantities either.
+  Eigen::VectorXd lumpedInertia = Eigen::VectorXd::Zero( element->getNDofPerElement() );
+  element->computeLumpedInertia( lumpedInertia.data() );
+  throwExceptionOnFailure( lumpedInertia.allFinite(),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << ": a rejected coefficient reached the assembled inertia" );
+}
+
+void testTinyMicroInertiaIsNotTreatedAsAbsent()
+{
+  /* A micro-inertia is a time SQUARED, so ordinary values are very small: eta^2/4 is 2.5e-13 for a
+   * viscosity of 1e-6 s. Eigen's isZero() tests against a precision threshold of 1e-12 by default,
+   * which would call such a value absent -- the property assigned, the field integrated with no
+   * second-order term, and its stability limit unchecked, all silently. Hence an exact comparison,
+   * and hence this test, whose value sits two orders BELOW that threshold.
+   */
+  const double tinyMicroInertia = 1.0e-14;
+  const double tinyViscosity    = 2.0e-7; // 2 sqrt(m_k): the smallest viscosity that admits it
+  const double density          = 1.0e4;
+
+  const double dtWithTiny   = criticalTimeStepOfCube( 0.2, tinyMicroInertia, tinyViscosity, density );
+  const double dtMechanical = criticalTimeStepOfCube( 0.2, 0.0, 0.0, density );
+
+  throwExceptionOnFailure( dtWithTiny < dtMechanical,
+                           MakeString() << __PRETTY_FUNCTION__ << ": a micro-inertia of " << tinyMicroInertia
+                                        << " was ignored -- the stable increment stayed at the mechanical "
+                                        << dtMechanical );
+
+  // And it reaches the assembled vector, not just the time step.
+  constexpr int nDim          = 3;
+  constexpr int nNodes        = 8;
+  constexpr int nNonlocalVars = 1;
+  using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
+
+  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                                0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+
+  auto element = std::make_unique< ElemType >( 1,
+                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                               ElemType::SectionType::Solid );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+  // eta = 1 here rather than the 2e-7 above, so the tiny value is admissible by a wide margin: what
+  // is under test is that it is not ROUNDED AWAY, not where the admissibility bound lies.
+  const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0, tinyMicroInertia };
+  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  const std::vector< double > elPropsVec = { 1.0 };
+  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  element->assignProperty( elProps );
+  element->assignProperty( materialSection );
+
+  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVarsTotal );
+  element->initializeYourself();
+
+  std::vector< double > microInertia( element->getNDofPerElement(), 0.0 );
+  element->computeLumpedInertia( microInertia.data() );
+
+  double total = 0.0;
+  for ( size_t i = nNodes * nDim; i < microInertia.size(); i++ )
+    total += microInertia[i];
+
+  throwExceptionOnFailure( checkIfEqual( total, tinyMicroInertia, 1e-24 ),
+                           MakeString() << __PRETTY_FUNCTION__ << ": the lumped micro-inertia sums to " << total
+                                        << " instead of " << tinyMicroInertia );
+}
+
+void testNonlocalViscosityLowersTheCriticalTimeStep()
+{
+  const double density = 1.0e4;
+
+  /* The baseline is the LEAST damped admissible pairing, eta = 2 sqrt(m_k), rather than the
+   * undamped one this test used to compare against: m_k > 0 with eta = 0 is exactly what the
+   * material now rejects, since an undamped second-order field rings forever. Raising eta tenfold
+   * at a fixed m_k raises the damping ratio tenfold, which is all this test needs.
+   */
+  const double dtLeastDamped = criticalTimeStepOfCube( 0.2, 1.0e-4, 2.0e-2, density );
+  const double dtDamped      = criticalTimeStepOfCube( 0.2, 1.0e-4, 2.0e-1, density );
+
+  // Damping never buys time step under central differences, it costs it. Getting the sign of that
+  // wrong would leave a damped run integrating above its limit while the estimate reported safety.
+  throwExceptionOnFailure( dtDamped < dtLeastDamped,
+                           MakeString() << __PRETTY_FUNCTION__ << ": damping did not lower the stable increment ("
+                                        << dtDamped << " against " << dtLeastDamped << ")" );
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{
@@ -1469,6 +2079,17 @@ int main()
     testLumpedInertiaQuad8ReducedIntegrationMatchesAnalyticValues,
     testLumpedInertiaHexa20FullIntegrationMatchesAnalyticValues,
     testLumpedInertiaHexa20ReducedIntegrationMatchesAnalyticValues,
+    testNonlocalMicroInertiaIsZeroUnlessAssigned,
+    testNonlocalMicroInertiaSumsToMicroInertiaTimesVolume,
+    testRetiredNonlocalMicroInertiaElementPropertyIsRejected,
+    testBulkViscosityDamageDegradationIsValidated,
+    testNonlocalCriticalTimeStepScalesWithSqrtOfMicroInertia,
+    testNonlocalCriticalTimeStepScalesLinearlyWithElementSize,
+    testNonlocalViscosityLowersTheCriticalTimeStep,
+    testTinyMicroInertiaIsNotTreatedAsAbsent,
+    testBulkViscosityDegradesWithTheNonlocalField,
+    testBulkViscosityIsUndegradedByDefault,
+    testRejectedPropertyAssignmentLeavesTheElementUnchanged,
     testNodeFieldsTwoNonlocalVars,
     testComputeKernelsPlaneStrainTangentMatchesNumericalDifferentiation,
     testComputeKernelsPlaneStressTangentMatchesNumericalDifferentiation,
@@ -1481,7 +2102,7 @@ int main()
     testSetInitialConditionsGeostaticStressAssignsInterpolatedStress,
     testSetInitialConditionsMaterialInitializationDoesNotThrow,
     testSetInitialConditionsRejectsUnsupportedStateTypes,
-    testComputeConsistentInertiaConservesTotalMassAndCapacity,
+    testComputeConsistentInertiaConservesTotalMassAndMicroInertia,
     testComputeBodyForceConservesTotalForcePerDirection,
     testComputeCriticalTimeStepMatchesMaterialWaveSpeedForRegularHexa8,
     testComputeInternalEnergyMatchesSumOverQuadraturePoints,
