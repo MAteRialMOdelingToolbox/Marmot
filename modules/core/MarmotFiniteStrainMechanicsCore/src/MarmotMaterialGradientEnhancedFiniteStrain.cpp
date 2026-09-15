@@ -120,10 +120,20 @@ std::tuple< double, double, double > MarmotMaterialGradientEnhancedFiniteStrain:
 
   Eigen::VectorXd materialStateVarsBackup = theStateVars;
 
+  /* Restored alongside the state variables below. computeStress() is handed these two and writes
+   * them, so without this each Newton trial starts from the previous trial's OUTPUT rather than
+   * from the state the iteration began in -- and a material that accumulates into either field
+   * would make the converged eigen deformation depend on how many trials it took to get there.
+   */
+  const double elasticEnergyDensityBackup = response.elasticEnergyDensity;
+  const double dissipationBackup          = response.dissipation;
+
   int itCounter = 0;
   while ( true ) {
     auto [normalStress, dNormalStress_dF] = evaluateStress( def );
     theStateVars                          = materialStateVarsBackup;
+    response.elasticEnergyDensity         = elasticEnergyDensityBackup;
+    response.dissipation                  = dissipationBackup;
 
     R = normalStress - eigenNormalStress;
 

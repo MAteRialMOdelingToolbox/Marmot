@@ -25,12 +25,14 @@
 
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
+#include "Marmot/MarmotMaterialGradientEnhancedFiniteStrainFactory.h"
 #include "Marmot/MarmotMaterialGradientEnhancedHughesWinget.h"
 #include "Marmot/MarmotTesting.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
 #include <Eigen/Geometry>
 #include <functional>
+#include <memory>
 #include <vector>
 
 using namespace Marmot;
@@ -555,11 +557,146 @@ void testEigenDeformationAtZeroStressConverges()
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
+/**
+ * @brief The wrapper must forward the wrapped material's micro-inertia, unchanged.
+ *
+ * This accessor is the whole reason the gradient-enhanced field can be made second order in time,
+ * and a wrapped material reaches the solver only through it. Two ways to break it silently are the
+ * base-state slice -- reading the wrapper's own state rather than the wrapped material's -- and the
+ * first-vector entry, both of which would return a plausible-looking zero. Zero is also exactly
+ * what "no micro-inertia" means, so the failure would look like a deck that simply did not ask for
+ * the hyperbolic scheme.
+ */
+void testNonlocalMicroInertiaIsForwarded()
+{
+  // <= eta^2/4 for the base stub's eta of 1, so the value is an admissible one.
+  constexpr double microInertia = 7.5e-9;
+
+  /// A stub whose micro-inertia is a fixed, non-zero, recognisable number.
+  class MicroInertiaStub : public IncrementalGradientStub {
+  public:
+    using IncrementalGradientStub::IncrementalGradientStub;
+
+    std::vector< double > getNonlocalMicroInertia( const double* ) const override { return { 7.5e-9 }; }
+  };
+
+  GradientEnhancedHughesWingetWrapper< MicroInertiaStub > w( stubProps.data(), int( stubProps.size() ), 1 );
+  auto                                                    state = freshState( w );
+
+  throwExceptionOnFailure( checkIfEqual( w.getNonlocalMicroInertia( state.data() ), microInertia, 1e-20 ),
+                           "the wrapper did not forward the wrapped material's micro-inertia in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+
+  // And a material that provides none still reports none -- the default this interface relies on.
+  Wrapper plain( stubProps.data(), int( stubProps.size() ), 1 );
+  auto    plainState = freshState( plain );
+
+  throwExceptionOnFailure( plain.getNonlocalMicroInertia( plainState.data() ) == 0.0,
+                           "a wrapped material providing no micro-inertia did not report zero in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+/**
+ * @brief The energy/dissipation round trip must close at @f$ J \neq 1 @f$.
+ *
+ * This interface's densities are per unit REFERENCE volume; the wrapped small-strain material knows
+ * only its own current volume, so the wrapper multiplies by @f$ J @f$ on the way out and must divide
+ * by the previous @f$ J @f$ on the way in. Skipping the second half rescales the history once per
+ * increment and compounds it -- invisible to every material in this tree, because none of them
+ * touches these fields, and invisible to every other test here for the same reason.
+ *
+ * The stub below accumulates a FIXED amount per call, so after n increments at a steady volume
+ * change the reported total must be exactly n times that amount times J, and nothing else.
+ */
+void testEnergyDensityRoundTripAtNonUnitJacobian()
+{
+  constexpr double perIncrement = 3.0;
+
+  /// Accumulates a fixed dissipation per call, in its own (current-volume) density.
+  class AccumulatingStub : public IncrementalGradientStub {
+  public:
+    using IncrementalGradientStub::IncrementalGradientStub;
+
+    void computeStress( response& res, tangents& tan, const increment& inc ) const override
+    {
+      IncrementalGradientStub::computeStress( res, tan, inc );
+      res.dissipation += perIncrement;
+    }
+  };
+
+  GradientEnhancedHughesWingetWrapper< AccumulatingStub > w( stubProps.data(), int( stubProps.size() ), 1 );
+  auto                                                    state = freshState( w );
+
+  // A pure dilatation, held constant after the first increment, so J is the same on every entry.
+  Tensor33d F = Spatial3D::I;
+  F( 0, 0 ) = F( 1, 1 ) = F( 2, 2 ) = 1.1;
+  const double J                    = 1.1 * 1.1 * 1.1;
+
+  GEResponse r;
+  r.stateVars = state.data();
+  GETangents t;
+
+  for ( int i = 1; i <= 3; ++i ) {
+    w.computeStress( r, t, GEDeformation{ F, 0.0 }, GETimeIncrement{ double( i ), 1.0 } );
+
+    // i increments of `perIncrement` in the wrapped material's own density, reported per reference
+    // volume. Without the inverse conversion this grows by a further factor of J each time.
+    throwExceptionOnFailure( checkIfEqual( r.dissipation, i * perIncrement * J, 1e-10 ),
+                             MakeString() << __PRETTY_FUNCTION__ << ": after " << i << " increments the dissipation is "
+                                          << r.dissipation << ", expected " << i * perIncrement * J );
+  }
+}
+
+/**
+ * @brief The factory must round-trip a registered name, and name what it knows when it cannot.
+ *
+ * The factory is how GCDP reaches this wrapper -- it registers GCDP/HUGHES-WINGET from its own
+ * repository and never constructs the wrapper directly, which is the opposite of what every other
+ * test in this file does. A registration or lookup regression would therefore pass this suite while
+ * breaking the integration the wrapper exists for.
+ */
+void testFactoryRoundTripAndUnknownName()
+{
+  using Factory = MarmotLibrary::MarmotMaterialGradientEnhancedFiniteStrainFactory;
+
+  const std::string name = "TESTONLY/GRADIENT-ENHANCED-HUGHES-WINGET";
+
+  const bool registered = Factory::registerMaterial< Wrapper >( name );
+  throwExceptionOnFailure( registered,
+                           "registerMaterial did not report success in " + std::string( __PRETTY_FUNCTION__ ) );
+
+  std::unique_ptr< MarmotMaterialGradientEnhancedFiniteStrain > created(
+    Factory::createMaterial( name, stubProps.data(), int( stubProps.size() ), 1 ) );
+
+  throwExceptionOnFailure( created != nullptr,
+                           "createMaterial returned nullptr for a registered name in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+
+  // Constructed through the factory it must behave as the directly constructed one does.
+  throwExceptionOnFailure( created->getNumberOfRequiredStateVars() ==
+                             Wrapper( stubProps.data(), int( stubProps.size() ), 1 ).getNumberOfRequiredStateVars(),
+                           "the factory-created material has a different state layout in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+
+  bool threw = false;
+  try {
+    Factory::createMaterial( "NO/SUCH-MATERIAL", stubProps.data(), int( stubProps.size() ), 1 );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw,
+                           "createMaterial accepted an unregistered name in " + std::string( __PRETTY_FUNCTION__ ) );
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{ testStateLayout,
                                                        testUndeformed,
                                                        testEigenDeformationAtZeroStressConverges,
+                                                       testNonlocalMicroInertiaIsForwarded,
+                                                       testEnergyDensityRoundTripAtNonUnitJacobian,
+                                                       testFactoryRoundTripAndUnknownName,
                                                        testRigidRotationIsExact,
                                                        testSmallStrainAgreement,
                                                        testAnalyticTangentVsNumericalElastic,

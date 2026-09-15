@@ -407,10 +407,27 @@ namespace Marmot::Materials {
       inc.time    = timeIncrement.time;
       inc.dT      = timeIncrement.dT;
 
+      /* Converted back out of the REFERENCE-volume convention, because the round trip has to close.
+       * This interface documents both quantities as densities per unit reference volume and the
+       * element stores and reloads them that way, while the wrapped small-strain material knows only
+       * its own current volume -- which is why the outputs below are multiplied by J. Handing the
+       * stored value straight back in skipped the inverse, so a material that ACCUMULATES into
+       * either field would have had its history rescaled by J on every increment and compounded.
+       *
+       * Jn, not J: the value on entry was written at the end of the last increment as Jn * (the
+       * wrapped material's own density), with Jn the determinant of the deformation gradient this
+       * increment starts from. At the first increment Fn is the identity and this is exactly a
+       * no-op. An inverted element is already meaningless here, so a non-positive Jn falls back to
+       * passing the value through rather than dividing by it.
+       */
+      const double Jn                = determinant( Fn );
+      const double seedEnergyDensity = Jn > 0.0 ? response.elasticEnergyDensity / Jn : response.elasticEnergyDensity;
+      const double seedDissipation   = Jn > 0.0 ? response.dissipation / Jn : response.dissipation;
+
       BaseMaterial::response res;
       res.stress               = sigmaRotVoigt;
-      res.elasticEnergyDensity = response.elasticEnergyDensity;
-      res.dissipation          = response.dissipation;
+      res.elasticEnergyDensity = seedEnergyDensity;
+      res.dissipation          = seedDissipation;
       res.stateVars            = baseState;
 
       /* Every use of `tan` below sits inside `if ( computeTangent )`, so on the explicit path it is
@@ -464,8 +481,8 @@ namespace Marmot::Materials {
                                                                sigmaNp1Voigt,
                                                                baseStateOld,
                                                                inc,
-                                                               response.elasticEnergyDensity,
-                                                               response.dissipation );
+                                                               seedEnergyDensity,
+                                                               seedDissipation );
           dSigRot_dF               = einsum< ijmn, mnKL, to_ijKL >( voigtToStiffnessFastor( S ), dSigRot_dF );
         }
 
