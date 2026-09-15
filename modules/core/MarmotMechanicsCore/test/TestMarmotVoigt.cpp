@@ -1,4 +1,6 @@
 #include "Marmot/HaighWestergaard.h"
+#include "Marmot/MarmotElasticity.h"
+#include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
 #include "Marmot/MarmotTesting.h"
 #include "Marmot/MarmotTypedefs.h"
@@ -378,6 +380,144 @@ void test_dSortedPrincipalStrains_dStrain()
                            MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
+void testStiffnessToVoigtRoundTripEigenTensor()
+{
+  Marmot::Matrix6d voigtStiffness;
+  // clang-format off
+  voigtStiffness <<
+    1200,   400,    400,    50,     60,     70,
+    400,    1200,   400,    80,     90,     100,
+    400,    400,    1200,   110,    120,    130,
+    50,     80,     110,    400,    140,    150,
+    60,     90,     120,    140,    400,    160,
+    70,     100,    130,    150,    160,    400;
+  // clang-format on
+
+  const auto
+    stiffnessTensor = Marmot::ContinuumMechanics::VoigtNotation::voigtToStiffness< Marmot::EigenTensors::Tensor3333d >(
+      voigtStiffness );
+  const auto voigtStiffnessRoundTrip = Marmot::ContinuumMechanics::VoigtNotation::stiffnessToVoigt( stiffnessTensor );
+
+  throwExceptionOnFailure( checkIfEqual< double >( voigtStiffnessRoundTrip, voigtStiffness, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+}
+
+void testStiffnessToVoigtRoundTripFastorTensor()
+{
+  Marmot::Matrix6d voigtStiffnessEigen;
+  // clang-format off
+  voigtStiffnessEigen <<
+    1200,   400,    400,    50,     60,     70,
+    400,    1200,   400,    80,     90,     100,
+    400,    400,    1200,   110,    120,    130,
+    50,     80,     110,    400,    140,    150,
+    60,     90,     120,    140,    400,    160,
+    70,     100,    130,    150,    160,    400;
+  // clang-format on
+
+  const Fastor::Tensor< double, 6, 6 > voigtStiffness( voigtStiffnessEigen.data(), Fastor::ColumnMajor );
+
+  const auto stiffnessTensor         = Marmot::ContinuumMechanics::VoigtNotation::voigtToStiffness( voigtStiffness );
+  const auto voigtStiffnessRoundTrip = Marmot::ContinuumMechanics::VoigtNotation::stiffnessToVoigt( stiffnessTensor );
+
+  throwExceptionOnFailure( checkIfEqual< double >( voigtStiffnessRoundTrip, voigtStiffnessEigen, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+}
+
+void testStiffnessToVoigtAveragesMinorSymmetricPermutations()
+{
+  // Build a fourth-order tensor directly (NOT via voigtToStiffness, which always produces an
+  // already minor-symmetric tensor) with deliberately broken minor symmetry, so that
+  // stiffnessToVoigt's averaging of the four minor-symmetric-equivalent entries is actually
+  // exercised.
+  Marmot::EigenTensors::Tensor3333d C;
+  C.setZero();
+
+  // Voigt entry (a,b) = (3,3), i.e. (i,j) = (0,1), (k,l) = (0,1): all four permutations distinct.
+  C( 0, 1, 0, 1 ) = 10;
+  C( 1, 0, 0, 1 ) = 20;
+  C( 1, 0, 1, 0 ) = 30;
+  C( 0, 1, 1, 0 ) = 40;
+  // expected voigtStiffness(3,3) = (10 + 20 + 30 + 40) / 4 = 25
+
+  // Voigt entry (a,b) = (0,3), i.e. (i,j) = (0,0), (k,l) = (0,1): the (i,j) swap term is
+  // degenerate (i == j), so only the (k,l) swap contributes a second distinct value.
+  C( 0, 0, 0, 1 ) = 100;
+  C( 0, 0, 1, 0 ) = 200;
+  // expected voigtStiffness(0,3) = (100 + 100 + 200 + 200) / 4 = 150
+
+  const auto voigtStiffness = Marmot::ContinuumMechanics::VoigtNotation::stiffnessToVoigt( C );
+
+  throwExceptionOnFailure( checkIfEqual( voigtStiffness( 3, 3 ), 25.0 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed at (3,3)" );
+  throwExceptionOnFailure( checkIfEqual( voigtStiffness( 0, 3 ), 150.0 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed at (0,3)" );
+}
+
+void testVoigtToStiffnessMatchesAnalyticIsotropicTensor()
+{
+  // Independent ground truth: the classical isotropic stiffness tensor
+  // C_ijkl = lambda * delta_ij * delta_kl + mu * ( delta_ik * delta_jl + delta_il * delta_jk ),
+  // built here from a plain second-order identity tensor via Fastor tensor algebra (not reusing
+  // any Marmot tensor-building helper), and compared against
+  // voigtToStiffness( Isotropic::stiffnessTensor( E, nu ) ).
+  const double E  = 1000.;
+  const double nu = 0.25;
+
+  const double lambda = nu * E / ( ( 1 + nu ) * ( 1 - 2 * nu ) );
+  const double mu     = E / ( 2 * ( 1 + nu ) );
+
+  Fastor::Tensor< double, 3, 3 > delta;
+  delta.eye2();
+
+  using namespace FastorIndices;
+  FastorStandardTensors::Tensor3333d expectedStiffnessTensor = lambda * Fastor::outer( delta, delta ) +
+                                                               mu *
+                                                                 ( Fastor::einsum< ik, jl, to_ijkl >( delta, delta ) +
+                                                                   Fastor::einsum< il, jk, to_ijkl >( delta, delta ) );
+
+  const Marmot::Matrix6d voigtStiffness = Marmot::ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
+
+  // voigtToStiffness defaults to a Fastor result, so this also exercises the Eigen-in/Fastor-out
+  // (cross-library) conversion path.
+  const auto stiffnessTensor = Marmot::ContinuumMechanics::VoigtNotation::voigtToStiffness( voigtStiffness );
+
+  throwExceptionOnFailure( checkIfEqual( stiffnessTensor, expectedStiffnessTensor, 1e-10 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+}
+
+void testVoigtToStiffnessIndexMapping()
+{
+  // Spot-check that voigtToStiffness places each Voigt entry at the tensor indices implied by the
+  // standard Voigt ordering (0->xx, 1->yy, 2->zz, 3->xy, 4->xz, 5->yz), with a focus on the
+  // shear-index mapping (12/13/23 <-> 3/4/5), which is the most error-prone part of the mapping.
+  Marmot::Matrix6d voigtStiffness;
+  // clang-format off
+  voigtStiffness <<
+    1200,   400,    400,    50,     60,     70,
+    400,    1200,   400,    80,     90,     100,
+    400,    400,    1200,   110,    120,    130,
+    50,     80,     110,    400,    140,    150,
+    60,     90,     120,    140,    400,    160,
+    70,     100,    130,    150,    160,    400;
+  // clang-format on
+
+  const auto
+    stiffnessTensor = Marmot::ContinuumMechanics::VoigtNotation::voigtToStiffness< Marmot::EigenTensors::Tensor3333d >(
+      voigtStiffness );
+
+  throwExceptionOnFailure( checkIfEqual( stiffnessTensor( 0, 1, 0, 1 ), voigtStiffness( 3, 3 ) ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed for (xy,xy) -> (3,3)" );
+  throwExceptionOnFailure( checkIfEqual( stiffnessTensor( 2, 0, 1, 2 ), voigtStiffness( 4, 5 ) ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed for (xz,yz) -> (4,5)" );
+  throwExceptionOnFailure( checkIfEqual( stiffnessTensor( 1, 2, 2, 0 ), voigtStiffness( 5, 4 ) ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed for (yz,xz) -> (5,4)" );
+  throwExceptionOnFailure( checkIfEqual( stiffnessTensor( 0, 0, 1, 2 ), voigtStiffness( 0, 5 ) ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed for (xx,yz) -> (0,5)" );
+  throwExceptionOnFailure( checkIfEqual( stiffnessTensor( 1, 1, 2, 0 ), voigtStiffness( 1, 4 ) ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed for (yy,xz) -> (1,4)" );
+}
+
 int main()
 {
 
@@ -405,7 +545,12 @@ int main()
                                                        test_dJ3_dStress,
                                                        test_dJ2Strain_dStrain,
                                                        test_dJ3Strain_dStrain,
-                                                       test_dSortedPrincipalStrains_dStrain };
+                                                       test_dSortedPrincipalStrains_dStrain,
+                                                       testStiffnessToVoigtRoundTripEigenTensor,
+                                                       testStiffnessToVoigtRoundTripFastorTensor,
+                                                       testStiffnessToVoigtAveragesMinorSymmetricPermutations,
+                                                       testVoigtToStiffnessMatchesAnalyticIsotropicTensor,
+                                                       testVoigtToStiffnessIndexMapping };
 
   executeTestsAndCollectExceptions( tests );
 

@@ -42,130 +42,6 @@ namespace Marmot {
       return strain;
     }
 
-    Eigen::Matrix< double, 6, 6 > stiffnessToVoigt( const EigenTensors::Tensor3333d& C )
-    {
-      // Ordering for Voigt notation (0->xx, 1->yy, 2->zz, 3->xy, 4->xz, 5->yz)
-      std::array< std::pair< int, int >, 6 > ordering = {
-        { { 0, 0 }, { 1, 1 }, { 2, 2 }, { 0, 1 }, { 2, 0 }, { 1, 2 } } };
-
-      Eigen::Matrix< double, 6, 6 > voigtStiffness;
-      voigtStiffness.setZero(); // Initialize with zeros
-
-      for ( int a = 0; a < 6; ++a ) {
-        int i = ordering[a].first;
-        int j = ordering[a].second;
-        for ( int b = 0; b < 6; ++b ) {
-          int k = ordering[b].first;
-          int l = ordering[b].second;
-
-          // Populate the Voigt stiffness matrix
-          voigtStiffness( a, b ) = C( i, j, k, l );
-          voigtStiffness( a, b ) += C( j, i, k, l );
-          voigtStiffness( a, b ) += C( j, i, l, k );
-          voigtStiffness( a, b ) += C( i, j, l, k );
-          voigtStiffness( a, b ) /= 4.0;
-        }
-      }
-
-      return voigtStiffness;
-    }
-
-    Eigen::Matrix< double, 6, 6 > stiffnessToVoigt( const Fastor::Tensor< double, 3, 3, 3, 3 >& C )
-    {
-      // Ordering for Voigt notation (0->xx, 1->yy, 2->zz, 3->xy, 4->yz, 5->xz)
-      std::array< std::pair< int, int >, 6 > ordering = {
-        { { 0, 0 }, { 1, 1 }, { 2, 2 }, { 0, 1 }, { 2, 0 }, { 1, 2 } } };
-
-      Eigen::Matrix< double, 6, 6 > voigtStiffness;
-      voigtStiffness.setZero(); // Initialize with zeros
-
-      for ( int a = 0; a < 6; ++a ) {
-        int i = ordering[a].first;
-        int j = ordering[a].second;
-        for ( int b = 0; b < 6; ++b ) {
-          int k = ordering[b].first;
-          int l = ordering[b].second;
-
-          // Populate the Voigt stiffness matrix
-          voigtStiffness( a, b ) = C( i, j, k, l );
-          voigtStiffness( a, b ) += C( j, i, k, l );
-          voigtStiffness( a, b ) += C( j, i, l, k );
-          voigtStiffness( a, b ) += C( i, j, l, k );
-          voigtStiffness( a, b ) /= 4.0;
-        }
-      }
-
-      return voigtStiffness;
-    }
-
-    EigenTensors::Tensor3333d voigtToStiffness( const Eigen::Matrix< double, 6, 6 >& voigtStiffness )
-    {
-      using namespace TensorUtility::IndexNotation;
-
-      EigenTensors::Tensor3333d stiffness;
-      stiffness.setZero(); // Initialize with zeros
-
-      int row;
-      int col;
-      for ( int i = 0; i < 3; i++ ) {
-        for ( int j = 0; j < 3; j++ ) {
-          row = toVoigt< 3 >( i, j );
-          for ( int k = 0; k < 3; k++ ) {
-            for ( int l = 0; l < 3; l++ ) {
-              col = toVoigt< 3 >( k, l );
-              stiffness( i, j, k, l ) += voigtStiffness( row, col );
-            };
-          };
-        };
-      };
-
-      return stiffness;
-    }
-
-    Fastor::Tensor< double, 3, 3, 3, 3 > voigtToStiffness( const Fastor::Tensor< double, 6, 6 >& voigtStiffness )
-    {
-      using namespace TensorUtility::IndexNotation;
-      Fastor::Tensor< double, 3, 3, 3, 3 > stiffness( 0. );
-
-      int row;
-      int col;
-      for ( int i = 0; i < 3; i++ ) {
-        for ( int j = 0; j < 3; j++ ) {
-          row = toVoigt< 3 >( i, j );
-          for ( int k = 0; k < 3; k++ ) {
-            for ( int l = 0; l < 3; l++ ) {
-              col = toVoigt< 3 >( k, l );
-              stiffness( i, j, k, l ) += voigtStiffness( row, col );
-            };
-          };
-        };
-      };
-
-      return stiffness;
-    }
-
-    FastorStandardTensors::Tensor3333d voigtToStiffnessFastor( const Marmot::Matrix6d& voigtStiffness )
-    {
-      using namespace TensorUtility::IndexNotation;
-      FastorStandardTensors::Tensor3333d stiffness( 0. );
-
-      int row;
-      int col;
-      for ( int i = 0; i < 3; i++ ) {
-        for ( int j = 0; j < 3; j++ ) {
-          row = toVoigt< 3 >( i, j );
-          for ( int k = 0; k < 3; k++ ) {
-            for ( int l = 0; l < 3; l++ ) {
-              col = toVoigt< 3 >( k, l );
-              stiffness( i, j, k, l ) += voigtStiffness( row, col );
-            };
-          };
-        };
-      };
-
-      return stiffness;
-    }
-
     Vector3d voigtToPlaneVoigt( const Vector6d& voigt )
     {
       /* converts a 6d voigt Vector with Abaqus notation
@@ -641,8 +517,9 @@ namespace Marmot {
       Matrix6d transformStiffnessToGlobalSystem( const Marmot::Matrix6d& stiffness,
                                                  const Matrix3d&         transformedCoordinateSystem )
       {
-        const EigenTensors::Tensor3333d stiffnessTensorLocal = voigtToStiffness( stiffness );
-        EigenTensors::Tensor3333d       stiffnessTensorGlobal;
+        const EigenTensors::Tensor3333d stiffnessTensorLocal = voigtToStiffness< EigenTensors::Tensor3333d >(
+          stiffness );
+        EigenTensors::Tensor3333d stiffnessTensorGlobal;
         stiffnessTensorGlobal.setZero();
         Matrix3d N = transformedCoordinateSystem.transpose();
 
