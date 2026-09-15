@@ -1,4 +1,5 @@
 #include "Marmot/MarmotTesting.h"
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
@@ -107,17 +108,6 @@ namespace Marmot::Testing {
     using namespace Eigen;
     using namespace ContinuumMechanics::VoigtNotation;
 
-    solver.solve();
-    auto           history = solver.getHistory();
-    const Vector6d refStress( history.back().stress );
-    const Matrix6d refStiffness( history.back().dStressdStrain );
-
-    const int                     N   = 100;
-    Eigen::Matrix< double, N, 2 > pts = fibonacciLatticeHemisphere< N >();
-
-    Eigen::Vector2d pt;
-    double          phi, theta;
-
     // modify steps to account for rotation
     const auto steps = solver.getSteps();
     // check if at least one step exists
@@ -128,11 +118,29 @@ namespace Marmot::Testing {
 
     for ( auto& step : steps ) {
       // must be pure strain control, i.e. all strain increment components are controlled
-      if ( step.isStrainComponentControlled.any() == false ) {
+      if ( step.isStrainComponentControlled.all() == false ) {
         std::cout << "TURBOKREISEL TEST REQUIRES PURE STRAIN CONTROLLED STEPS." << std::endl;
         return false;
       };
     }
+
+    solver.solve();
+    auto history = solver.getHistory();
+    // A step with timeStart == timeEnd is accepted by Step::checkControl() but makes
+    // solveStep()'s internal loop run zero times, recording no history entry for it.
+    // Guard against history.back() on an empty history in that (or any other) case.
+    if ( history.empty() )
+      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__
+                                             << ": solver.solve() produced no history entries (check for "
+                                                "zero-duration steps, i.e. timeStart == timeEnd)" );
+    const Vector6d refStress( history.back().stress );
+    const Matrix6d refStiffness( history.back().dStressdStrain );
+
+    const int                     N   = 100;
+    Eigen::Matrix< double, N, 2 > pts = fibonacciLatticeHemisphere< N >();
+
+    Eigen::Vector2d pt;
+    double          phi, theta;
 
     for ( int i1 = 0; i1 < N; i1++ ) {
       pt    = pts.row( i1 );

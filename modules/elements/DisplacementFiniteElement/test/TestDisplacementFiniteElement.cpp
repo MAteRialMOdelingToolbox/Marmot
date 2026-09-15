@@ -1,13 +1,17 @@
 #include "Marmot/DisplacementFiniteElement.h"
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotFiniteElement.h"
+#include "Marmot/MarmotNumericalDifferentiation.h"
 #include "Marmot/MarmotTesting.h"
+#include <Eigen/Dense>
+#include <algorithm>
 #include <cmath>
 #include <string>
 
 using namespace Marmot;
 using namespace Marmot::Elements;
 using namespace Marmot::Testing;
+namespace NumDiff = Marmot::NumericalAlgorithms::Differentiation;
 
 void testDefaultNamedPropertyInterface()
 {
@@ -23,15 +27,45 @@ void testDefaultNamedPropertyInterface()
   // through the MarmotElement base pointer, so exercise it the same way here
   MarmotElement* base = element.get();
 
-  // an element that does not override the named-property interface must expose
-  // no named properties, and assigning an unrecognized one must throw
-  throwExceptionOnFailure( base->getPropertyNames().empty(),
-                           "Default getPropertyNames() must be empty for an element without named properties." );
+  // this element overrides the named-property interface for the artificial bulk viscosity and for
+  // its optional degradation with damage, and that is the complete list of names it understands
+  const auto propertyNames = base->getPropertyNames();
+  throwExceptionOnFailure( propertyNames ==
+                             std::vector< std::string >{ "bulk viscosity", "bulk viscosity damage degradation" },
+                           "getPropertyNames() must report exactly the named properties the element supports." );
 
+  // the degradation takes exactly one value, and a wrong count must be rejected rather than read
+  // past the end of the caller's array
+  const double exponent     = 2.0;
+  bool         threwOnArity = false;
+  try {
+    const double twoValues[2] = { 2.0, 2.0 };
+    base->assignProperty( "bulk viscosity damage degradation", twoValues, 2 );
+  }
+  catch ( const std::invalid_argument& ) {
+    threwOnArity = true;
+  }
+  throwExceptionOnFailure( threwOnArity, "'bulk viscosity damage degradation' must take exactly one value." );
+
+  // a negative exponent would amplify the viscous stress as the material fails
+  bool threwOnNegative = false;
+  try {
+    const double negative = -1.0;
+    base->assignProperty( "bulk viscosity damage degradation", &negative, 1 );
+  }
+  catch ( const std::invalid_argument& ) {
+    threwOnNegative = true;
+  }
+  throwExceptionOnFailure( threwOnNegative, "A negative degradation exponent must be rejected." );
+
+  // and a valid one must be accepted
+  base->assignProperty( "bulk viscosity damage degradation", &exponent, 1 );
+
+  // a name it does not understand must still fall through to the base implementation and throw
   const double dummyValue = 1.0;
   bool         threw      = false;
   try {
-    base->assignProperty( "nonexistent property", &dummyValue );
+    base->assignProperty( "nonexistent property", &dummyValue, 1 );
   }
   catch ( const std::invalid_argument& ) {
     threw = true;
@@ -829,6 +863,943 @@ void testCriticalTimeStepHexa20RegularElementMatchesAnalyticMassDistributionFact
                            "Hexa20 critical time step does not match the analytic mass-distribution factor." );
 }
 
+// ---------------------------------------------------------------------------------------------
+// computeKernels() / computeKernelsExplicit(): tangent consistency
+//
+// This is an incremental (hypoelastic) formulation identical in spirit to the sibling gradient-
+// enhanced element: the strain increment is B*dQ (built from the "dQ" parameter; QTotal is unused
+// entirely here), and the quadrature-point's stress/strain evolve in place across calls. To get a
+// reproducible check with MarmotMathCore's numerical differentiation (per AGENTS.md), every
+// evaluation resets the quadrature-point state to a fresh (zero stress/strain) baseline and
+// applies the full vector Q as a single increment from that baseline via dQ=Q.
+// ---------------------------------------------------------------------------------------------
+
+void testComputeKernelsPlaneStrainTangentMatchesNumericalDifferentiation()
+{
+  constexpr int nDim    = 2;
+  constexpr int nNodes  = 4;
+  const int     elId    = 1;
+  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
+
+  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
+
+  auto element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( elId, intType, secType );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+  const std::vector< double > matProps = { 10000.0, 0.2, 1.0 }; // E, nu, density
+  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  const std::vector< double > elPropsVec = { 1.0 };             // thickness
+  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+
+  element->assignProperty( elProps );
+  element->assignProperty( materialSection );
+
+  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVarsTotal );
+  element->initializeYourself();
+
+  const int  nDof       = element->getNDofPerElement();
+  const auto resetState = [&]() { std::fill( stateVars.begin(), stateVars.end(), 0.0 ); };
+
+  Eigen::VectorXd Q0( nDof );
+  for ( int i = 0; i < nDof; i++ )
+    Q0[i] = 0.01 * std::sin( 1.3 * ( i + 1 ) );
+
+  resetState();
+  Eigen::VectorXd P( nDof );
+  Eigen::MatrixXd K( nDof, nDof );
+  P.setZero();
+  K.setZero();
+  element->computeKernels( Q0.data(), Q0.data(), P.data(), K.data(), 0.0, 1.0 );
+
+  NumDiff::vector_to_vector_function_type residual = [&]( const Eigen::VectorXd& Q ) -> Eigen::VectorXd {
+    resetState();
+    Eigen::VectorXd Ptmp( nDof );
+    Eigen::MatrixXd Ktmp( nDof, nDof );
+    Ptmp.setZero();
+    Ktmp.setZero();
+    element->computeKernels( Q.data(), Q.data(), Ptmp.data(), Ktmp.data(), 0.0, 1.0 );
+    return Ptmp;
+  };
+
+  const Eigen::MatrixXd numK = NumDiff::centralDifference( residual, Q0 );
+
+  throwExceptionOnFailure( checkIfEqual( K, numK, 1e-6 ),
+                           "computeKernels() stiffness matrix does not match the numerical tangent "
+                           "(PlaneStrain)." );
+}
+
+void testComputeKernelsSolid3DTangentMatchesNumericalDifferentiation()
+{
+  constexpr int nDim    = 3;
+  constexpr int nNodes  = 8;
+  const int     elId    = 1;
+  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
+
+  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                                0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+
+  auto element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( elId, intType, secType );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+  const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
+  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  element->assignProperty( materialSection );
+
+  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVarsTotal );
+  element->initializeYourself();
+
+  const int  nDof       = element->getNDofPerElement();
+  const auto resetState = [&]() { std::fill( stateVars.begin(), stateVars.end(), 0.0 ); };
+
+  Eigen::VectorXd Q0( nDof );
+  for ( int i = 0; i < nDof; i++ )
+    Q0[i] = 0.01 * std::sin( 0.9 * ( i + 1 ) );
+
+  resetState();
+  Eigen::VectorXd P( nDof );
+  Eigen::MatrixXd K( nDof, nDof );
+  P.setZero();
+  K.setZero();
+  element->computeKernels( Q0.data(), Q0.data(), P.data(), K.data(), 0.0, 1.0 );
+
+  NumDiff::vector_to_vector_function_type residual = [&]( const Eigen::VectorXd& Q ) -> Eigen::VectorXd {
+    resetState();
+    Eigen::VectorXd Ptmp( nDof );
+    Eigen::MatrixXd Ktmp( nDof, nDof );
+    Ptmp.setZero();
+    Ktmp.setZero();
+    element->computeKernels( Q.data(), Q.data(), Ptmp.data(), Ktmp.data(), 0.0, 1.0 );
+    return Ptmp;
+  };
+
+  const Eigen::MatrixXd numK = NumDiff::centralDifference( residual, Q0 );
+
+  throwExceptionOnFailure( checkIfEqual( K, numK, 1e-6 ),
+                           "computeKernels() stiffness matrix does not match the numerical tangent (Solid, 3D)." );
+}
+
+void testComputeKernelsUniaxialStressTangentMatchesNumericalDifferentiation()
+{
+  // 2-node bar (T2D2's underlying 1D element), production-used per
+  // DisplacementFiniteElementRegistration.cpp's generateT2D2().
+  constexpr int nDim    = 1;
+  constexpr int nNodes  = 2;
+  const int     elId    = 1;
+  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::UniaxialStress;
+
+  const std::vector< double > nodeCoordsVec = { 0.0, 1.0 }; // unit-length bar
+
+  auto element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( elId, intType, secType );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+  const std::vector< double > matProps = { 10000.0, 0.2, 1.0 }; // E, nu, density
+  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  const std::vector< double > elPropsVec = { 1.0 };             // cross-section area
+  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+
+  element->assignProperty( elProps );
+  element->assignProperty( materialSection );
+
+  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVarsTotal );
+  element->initializeYourself();
+
+  const int  nDof       = element->getNDofPerElement();
+  const auto resetState = [&]() { std::fill( stateVars.begin(), stateVars.end(), 0.0 ); };
+
+  Eigen::VectorXd Q0( nDof );
+  for ( int i = 0; i < nDof; i++ )
+    Q0[i] = 0.01 * std::sin( 1.4 * ( i + 1 ) );
+
+  resetState();
+  Eigen::VectorXd P( nDof );
+  Eigen::MatrixXd K( nDof, nDof );
+  P.setZero();
+  K.setZero();
+  element->computeKernels( Q0.data(), Q0.data(), P.data(), K.data(), 0.0, 1.0 );
+
+  NumDiff::vector_to_vector_function_type residual = [&]( const Eigen::VectorXd& Q ) -> Eigen::VectorXd {
+    resetState();
+    Eigen::VectorXd Ptmp( nDof );
+    Eigen::MatrixXd Ktmp( nDof, nDof );
+    Ptmp.setZero();
+    Ktmp.setZero();
+    element->computeKernels( Q.data(), Q.data(), Ptmp.data(), Ktmp.data(), 0.0, 1.0 );
+    return Ptmp;
+  };
+
+  const Eigen::MatrixXd numK = NumDiff::centralDifference( residual, Q0 );
+
+  throwExceptionOnFailure( checkIfEqual( K, numK, 1e-6 ),
+                           "computeKernels() stiffness matrix does not match the numerical tangent "
+                           "(UniaxialStress)." );
+}
+
+void testComputeKernelsExplicitThrowsForUniaxialStress()
+{
+  constexpr int nDim   = 1;
+  constexpr int nNodes = 2;
+
+  const std::vector< double > nodeCoordsVec = { 0.0, 1.0 };
+
+  auto element = std::make_unique<
+    DisplacementFiniteElement< nDim, nNodes > >( 1,
+                                                 FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                                 DisplacementFiniteElement< nDim,
+                                                                            nNodes >::SectionType::UniaxialStress );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+  const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
+  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  const std::vector< double > elPropsVec = { 1.0 };
+  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  element->assignProperty( elProps );
+  element->assignProperty( materialSection );
+
+  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVarsTotal );
+  element->initializeYourself();
+
+  const int             nDof = element->getNDofPerElement();
+  std::vector< double > Q( nDof, 0.0 );
+  std::vector< double > P( nDof, 0.0 );
+
+  bool threw = false;
+  try {
+    element->computeKernelsExplicit( Q.data(), Q.data(), P.data(), 0.0, 1.0 );
+  }
+  catch ( const std::runtime_error& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw, "computeKernelsExplicit() must throw for UniaxialStress (not yet implemented)." );
+}
+
+void testComputeKernelsExplicitMatchesImplicitResidualPlaneStrain()
+{
+  constexpr int nDim    = 2;
+  constexpr int nNodes  = 4;
+  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
+
+  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
+  const std::vector< double > matProps      = { 10000.0, 0.2, 1.0 };
+  const std::vector< double > elPropsVec    = { 1.0 };
+
+  auto elementImplicit = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
+  elementImplicit->assignNodeCoordinates( nodeCoordsVec.data() );
+  MarmotMaterialSection materialSectionImplicit( "LINEARELASTIC", matProps.data(), matProps.size() );
+  ElementProperties     elPropsImplicit( elPropsVec.data(), elPropsVec.size() );
+  elementImplicit->assignProperty( elPropsImplicit );
+  elementImplicit->assignProperty( materialSectionImplicit );
+  const int             nStateVarsTotalImplicit = elementImplicit->getNumberOfRequiredStateVars();
+  std::vector< double > stateVarsImplicit( nStateVarsTotalImplicit, 0.0 );
+  elementImplicit->assignStateVars( stateVarsImplicit.data(), nStateVarsTotalImplicit );
+  elementImplicit->initializeYourself();
+
+  auto elementExplicit = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
+  elementExplicit->assignNodeCoordinates( nodeCoordsVec.data() );
+  MarmotMaterialSection materialSectionExplicit( "LINEARELASTIC", matProps.data(), matProps.size() );
+  ElementProperties     elPropsExplicit( elPropsVec.data(), elPropsVec.size() );
+  elementExplicit->assignProperty( elPropsExplicit );
+  elementExplicit->assignProperty( materialSectionExplicit );
+  const int             nStateVarsTotalExplicit = elementExplicit->getNumberOfRequiredStateVars();
+  std::vector< double > stateVarsExplicit( nStateVarsTotalExplicit, 0.0 );
+  elementExplicit->assignStateVars( stateVarsExplicit.data(), nStateVarsTotalExplicit );
+  elementExplicit->initializeYourself();
+
+  const int nDof = elementImplicit->getNDofPerElement();
+
+  Eigen::VectorXd Q( nDof );
+  for ( int i = 0; i < nDof; i++ )
+    Q[i] = 0.01 * std::sin( 1.1 * ( i + 1 ) );
+
+  Eigen::VectorXd PImplicit( nDof );
+  Eigen::MatrixXd K( nDof, nDof );
+  PImplicit.setZero();
+  K.setZero();
+  elementImplicit->computeKernels( Q.data(), Q.data(), PImplicit.data(), K.data(), 0.0, 1.0 );
+
+  Eigen::VectorXd PExplicit( nDof );
+  PExplicit.setZero();
+  elementExplicit->computeKernelsExplicit( Q.data(), Q.data(), PExplicit.data(), 0.0, 1.0 );
+
+  throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( PImplicit ), Eigen::MatrixXd( PExplicit ), 1e-10 ),
+                           "computeKernelsExplicit() residual does not match computeKernels() (PlaneStrain)." );
+}
+
+void testComputeKernelsExplicitMatchesImplicitResidualSolid3D()
+{
+  constexpr int nDim    = 3;
+  constexpr int nNodes  = 8;
+  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
+
+  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                                0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+  const std::vector< double > matProps      = { 10000.0, 0.2, 1.0 };
+
+  auto elementImplicit = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
+  elementImplicit->assignNodeCoordinates( nodeCoordsVec.data() );
+  MarmotMaterialSection materialSectionImplicit( "LINEARELASTIC", matProps.data(), matProps.size() );
+  elementImplicit->assignProperty( materialSectionImplicit );
+  const int             nStateVarsTotalImplicit = elementImplicit->getNumberOfRequiredStateVars();
+  std::vector< double > stateVarsImplicit( nStateVarsTotalImplicit, 0.0 );
+  elementImplicit->assignStateVars( stateVarsImplicit.data(), nStateVarsTotalImplicit );
+  elementImplicit->initializeYourself();
+
+  auto elementExplicit = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
+  elementExplicit->assignNodeCoordinates( nodeCoordsVec.data() );
+  MarmotMaterialSection materialSectionExplicit( "LINEARELASTIC", matProps.data(), matProps.size() );
+  elementExplicit->assignProperty( materialSectionExplicit );
+  const int             nStateVarsTotalExplicit = elementExplicit->getNumberOfRequiredStateVars();
+  std::vector< double > stateVarsExplicit( nStateVarsTotalExplicit, 0.0 );
+  elementExplicit->assignStateVars( stateVarsExplicit.data(), nStateVarsTotalExplicit );
+  elementExplicit->initializeYourself();
+
+  const int nDof = elementImplicit->getNDofPerElement();
+
+  Eigen::VectorXd Q( nDof );
+  for ( int i = 0; i < nDof; i++ )
+    Q[i] = 0.01 * std::sin( 0.8 * ( i + 1 ) );
+
+  Eigen::VectorXd PImplicit( nDof );
+  Eigen::MatrixXd K( nDof, nDof );
+  PImplicit.setZero();
+  K.setZero();
+  elementImplicit->computeKernels( Q.data(), Q.data(), PImplicit.data(), K.data(), 0.0, 1.0 );
+
+  Eigen::VectorXd PExplicit( nDof );
+  PExplicit.setZero();
+  elementExplicit->computeKernelsExplicit( Q.data(), Q.data(), PExplicit.data(), 0.0, 1.0 );
+
+  throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( PImplicit ), Eigen::MatrixXd( PExplicit ), 1e-10 ),
+                           "computeKernelsExplicit() residual does not match computeKernels() (Solid, 3D)." );
+}
+
+// ---------------------------------------------------------------------------------------------
+// setInitialConditions()
+// ---------------------------------------------------------------------------------------------
+
+void testSetInitialConditionsGeostaticStressAssignsInterpolatedStress()
+{
+  constexpr int nDim    = 2;
+  constexpr int nNodes  = 4;
+  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
+
+  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
+
+  auto element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+  const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
+  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  const std::vector< double > elPropsVec = { 1.0 };
+  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  element->assignProperty( elProps );
+  element->assignProperty( materialSection );
+
+  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVarsTotal );
+  element->initializeYourself();
+
+  // sigmaY(y=0) = -10, sigmaY(y=1) = -20, kx = 0.5, kz = 0.25
+  const std::vector< double > geostaticDefinition = { -10.0, 0.0, -20.0, 1.0, 0.5, 0.25 };
+  element->setInitialConditions( MarmotElement::GeostaticStress, geostaticDefinition.data() );
+
+  for ( const auto& qp : element->qps ) {
+    const Eigen::Vector2d physicalCoords = element->NB( element->N( qp.xi ) ) * element->coordinates;
+    const double          y              = physicalCoords[1];
+    const double          expectedSigmaY = -10.0 + ( -20.0 - ( -10.0 ) ) * y;
+    throwExceptionOnFailure( checkIfEqual( qp.managedStateVars->stress( 1 ), expectedSigmaY, 1e-10 ),
+                             "setInitialConditions(GeostaticStress) did not set sigma_yy to the linearly "
+                             "interpolated value." );
+    throwExceptionOnFailure( checkIfEqual( qp.managedStateVars->stress( 0 ), 0.5 * expectedSigmaY, 1e-10 ),
+                             "setInitialConditions(GeostaticStress) did not set sigma_xx = kx * sigma_yy." );
+    throwExceptionOnFailure( checkIfEqual( qp.managedStateVars->stress( 2 ), 0.25 * expectedSigmaY, 1e-10 ),
+                             "setInitialConditions(GeostaticStress) did not set sigma_zz = kz * sigma_yy." );
+  }
+}
+
+void testSetInitialConditionsMaterialInitializationDoesNotThrow()
+{
+  constexpr int nDim    = 2;
+  constexpr int nNodes  = 4;
+  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
+
+  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
+
+  auto element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+  const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
+  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  const std::vector< double > elPropsVec = { 1.0 };
+  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  element->assignProperty( elProps );
+  element->assignProperty( materialSection );
+
+  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVarsTotal );
+  element->initializeYourself();
+
+  element->setInitialConditions( MarmotElement::MarmotMaterialInitialization, nullptr );
+}
+
+void testSetInitialConditionsRejectsUnsupportedStateTypes()
+{
+  constexpr int nDim   = 2;
+  constexpr int nNodes = 4;
+
+  auto element = std::make_unique<
+    DisplacementFiniteElement< nDim, nNodes > >( 1,
+                                                 FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                                 DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain );
+
+  bool threwForStateVars = false;
+  try {
+    element->setInitialConditions( MarmotElement::MarmotMaterialStateVars, nullptr );
+  }
+  catch ( const std::invalid_argument& ) {
+    threwForStateVars = true;
+  }
+  throwExceptionOnFailure( threwForStateVars,
+                           "setInitialConditions(MarmotMaterialStateVars) must throw and direct callers to the "
+                           "material." );
+
+  bool threwForUnhandled = false;
+  try {
+    element->setInitialConditions( MarmotElement::Sigma11, nullptr );
+  }
+  catch ( const std::invalid_argument& ) {
+    threwForUnhandled = true;
+  }
+  throwExceptionOnFailure( threwForUnhandled, "setInitialConditions() must throw for an unhandled state type." );
+}
+
+// ---------------------------------------------------------------------------------------------
+// computeConsistentInertia(), computeBodyForce(), computeDistributedLoad()
+// ---------------------------------------------------------------------------------------------
+
+void testComputeConsistentInertiaConservesTotalMass()
+{
+  constexpr int nDim    = 3;
+  constexpr int nNodes  = 8;
+  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
+
+  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                                0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+
+  auto element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+  const std::vector< double > matProps = { 10000.0, 0.2, 1.0 }; // density = 1
+  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  element->assignProperty( materialSection );
+
+  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVarsTotal );
+  element->initializeYourself();
+
+  const int nDof = element->getNDofPerElement();
+
+  double totalVolume = 0.0;
+  for ( const auto& qp : element->qps )
+    totalVolume += qp.J0xW;
+
+  std::vector< double > M( nDof * nDof, 0.0 );
+  element->computeConsistentInertia( M.data() );
+
+  Eigen::Map< Eigen::MatrixXd > Mmat( M.data(), nDof, nDof );
+  throwExceptionOnFailure( Mmat.isApprox( Mmat.transpose(), 1e-12 ), "Consistent mass matrix is not symmetric." );
+
+  for ( int d = 0; d < nDim; d++ ) {
+    Eigen::VectorXd uRigid = Eigen::VectorXd::Zero( nDof );
+    for ( int a = 0; a < nNodes; a++ )
+      uRigid[a * nDim + d] = 1.0;
+    const double massInDirection = uRigid.transpose() * Mmat * uRigid;
+    throwExceptionOnFailure( checkIfEqual( massInDirection, totalVolume, 1e-10 ),
+                             "computeConsistentInertia() does not conserve the total element mass." );
+  }
+}
+
+void testComputeBodyForceConservesTotalForcePerDirection()
+{
+  constexpr int nDim    = 3;
+  constexpr int nNodes  = 8;
+  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
+
+  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                                0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+
+  auto element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+  const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
+  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  element->assignProperty( materialSection );
+
+  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVarsTotal );
+  element->initializeYourself();
+
+  const int nDof = element->getNDofPerElement();
+
+  double totalVolume = 0.0;
+  for ( const auto& qp : element->qps )
+    totalVolume += qp.J0xW;
+
+  const std::vector< double > load( { 1.0, 2.0, 3.0 } );
+  const std::vector< double > QTotal( nDof, 0.0 );
+  std::vector< double >       P( nDof, 0.0 );
+  std::vector< double >       K( nDof * nDof, 0.0 ); // unused
+
+  element->computeBodyForce( P.data(), K.data(), load.data(), QTotal.data(), 0.0, 1.0 );
+
+  Eigen::Map< Eigen::VectorXd > Pvec( P.data(), nDof );
+
+  for ( int d = 0; d < nDim; d++ ) {
+    Eigen::VectorXd uRigid = Eigen::VectorXd::Zero( nDof );
+    for ( int a = 0; a < nNodes; a++ )
+      uRigid[a * nDim + d] = 1.0;
+    const double forceInDirection = uRigid.dot( Pvec );
+    throwExceptionOnFailure( checkIfEqual( forceInDirection, load[d] * totalVolume, 1e-10 ),
+                             "computeBodyForce() does not integrate to the analytically expected total force." );
+  }
+}
+
+void testComputeDistributedLoadThrowsForUnhandledLoadType()
+{
+  constexpr int nDim    = 2;
+  constexpr int nNodes  = 4;
+  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
+
+  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
+
+  auto element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+  const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
+  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  const std::vector< double > elPropsVec = { 1.0 };
+  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  element->assignProperty( elProps );
+  element->assignProperty( materialSection );
+
+  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVarsTotal );
+  element->initializeYourself();
+
+  const int nDof = element->getNDofPerElement();
+
+  const std::vector< double > load( 2, 0.0 );
+  const std::vector< double > QTotal( nDof, 0.0 );
+  std::vector< double >       P( nDof, 0.0 );
+  std::vector< double >       K( nDof * nDof, 0.0 );
+
+  bool threw = false;
+  try {
+    element->computeDistributedLoad( MarmotElement::SurfaceTorsion,
+                                     P.data(),
+                                     K.data(),
+                                     0,
+                                     load.data(),
+                                     QTotal.data(),
+                                     0.0,
+                                     1.0 );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw, "computeDistributedLoad() must throw for an unhandled load type." );
+}
+
+// ---------------------------------------------------------------------------------------------
+// computeInternalEnergy(), getStateView(), getCoordinatesAtQuadraturePoints()
+// ---------------------------------------------------------------------------------------------
+
+void testComputeInternalEnergyMatchesSumOverQuadraturePoints()
+{
+  constexpr int nDim    = 2;
+  constexpr int nNodes  = 4;
+  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
+
+  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
+
+  auto element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+  const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
+  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  const std::vector< double > elPropsVec = { 1.0 };
+  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  element->assignProperty( elProps );
+  element->assignProperty( materialSection );
+
+  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVarsTotal );
+  element->initializeYourself();
+
+  const int nDof = element->getNDofPerElement();
+
+  Eigen::VectorXd Q( nDof );
+  for ( int i = 0; i < nDof; i++ )
+    Q[i] = 0.01 * std::sin( 1.5 * ( i + 1 ) );
+
+  Eigen::VectorXd P( nDof );
+  Eigen::MatrixXd K( nDof, nDof );
+  P.setZero();
+  K.setZero();
+  element->computeKernels( Q.data(), Q.data(), P.data(), K.data(), 0.0, 1.0 );
+
+  double expected = 0.0;
+  for ( const auto& qp : element->qps )
+    expected += qp.managedStateVars->totalStrainEnergy;
+
+  double internalEnergy = 0.0;
+  element->computeInternalEnergy( internalEnergy );
+
+  throwExceptionOnFailure( checkIfEqual( internalEnergy, expected, 1e-12 ),
+                           "computeInternalEnergy() does not match the sum over quadrature points." );
+}
+
+void testGetStateViewVariants()
+{
+  constexpr int nDim    = 2;
+  constexpr int nNodes  = 4;
+  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
+
+  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
+
+  auto element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+  const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
+  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  const std::vector< double > elPropsVec = { 1.0 };
+  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  element->assignProperty( elProps );
+  element->assignProperty( materialSection );
+
+  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVarsTotal );
+  element->initializeYourself();
+
+  const int nDof = element->getNDofPerElement();
+
+  Eigen::VectorXd Q( nDof );
+  for ( int i = 0; i < nDof; i++ )
+    Q[i] = 0.01 * std::sin( 0.5 * ( i + 1 ) );
+
+  Eigen::VectorXd P( nDof );
+  Eigen::MatrixXd K( nDof, nDof );
+  P.setZero();
+  K.setZero();
+  element->computeKernels( Q.data(), Q.data(), P.data(), K.data(), 0.0, 1.0 );
+
+  const auto stressView = element->getStateView( "stress", 0 );
+  throwExceptionOnFailure( stressView.stateSize == 6, "getStateView(\"stress\") returned the wrong size." );
+  for ( int i = 0; i < 6; i++ )
+    throwExceptionOnFailure( checkIfEqual( stressView.stateLocation[i], element->qps[0].managedStateVars->stress( i ) ),
+                             "getStateView(\"stress\") does not point at the quadrature point's managed stress." );
+
+  const auto sdvView = element->getStateView( "sdv", 0 );
+  throwExceptionOnFailure( sdvView.stateSize ==
+                             static_cast< int >( element->qps[0].managedStateVars->materialStateVars.size() ),
+                           "getStateView(\"sdv\") returned the wrong size." );
+  throwExceptionOnFailure( sdvView.stateLocation == element->qps[0].managedStateVars->materialStateVars.data(),
+                           "getStateView(\"sdv\") does not point at the material state vector." );
+
+  bool threwForUnknownName = false;
+  try {
+    element->getStateView( "this state does not exist", 0 );
+  }
+  catch ( const std::exception& ) {
+    threwForUnknownName = true;
+  }
+  throwExceptionOnFailure( threwForUnknownName,
+                           "getStateView() for an unrecognized state name must fall through to the material "
+                           "and fail." );
+}
+
+void testGetCoordinatesAtQuadraturePoints()
+{
+  constexpr int nDim   = 2;
+  constexpr int nNodes = 4;
+
+  auto element = std::make_unique<
+    DisplacementFiniteElement< nDim, nNodes > >( 1,
+                                                 FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                                 DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStress );
+
+  const std::vector< double > nodeCoords = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
+  element->assignNodeCoordinates( nodeCoords.data() );
+
+  const auto qpCoords = element->getCoordinatesAtQuadraturePoints();
+  throwExceptionOnFailure( static_cast< int >( qpCoords.size() ) == element->getNumberOfQuadraturePoints(),
+                           "getCoordinatesAtQuadraturePoints() returned the wrong number of entries." );
+  for ( const auto& coords : qpCoords ) {
+    throwExceptionOnFailure( static_cast< int >( coords.size() ) == nDim,
+                             "getCoordinatesAtQuadraturePoints() returned the wrong dimension." );
+    throwExceptionOnFailure( coords[0] > 0.0 && coords[0] < 1.0 && coords[1] > 0.0 && coords[1] < 1.0,
+                             "getCoordinatesAtQuadraturePoints() returned a point outside the unit square." );
+  }
+}
+
+void testGetNodeFieldsAndDofIndicesPermutationPattern()
+{
+  constexpr int nDim   = 2;
+  constexpr int nNodes = 4;
+
+  auto element = std::make_unique<
+    DisplacementFiniteElement< nDim, nNodes > >( 1,
+                                                 FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                                 DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStress );
+
+  const auto nodeFields = element->getNodeFields();
+  throwExceptionOnFailure( static_cast< int >( nodeFields.size() ) == nNodes, "getNodeFields() size mismatch." );
+  for ( const auto& fields : nodeFields ) {
+    throwExceptionOnFailure( fields.size() == 1, "getNodeFields() node should have exactly one field." );
+    throwExceptionOnFailure( fields[0] == "displacement", "getNodeFields() field != displacement." );
+  }
+
+  const auto pattern = element->getDofIndicesPermutationPattern();
+  throwExceptionOnFailure( static_cast< int >( pattern.size() ) == nNodes * nDim,
+                           "getDofIndicesPermutationPattern() size mismatch." );
+  for ( int i = 0; i < nNodes * nDim; i++ )
+    throwExceptionOnFailure( pattern[i] == i, "getDofIndicesPermutationPattern() must be the identity mapping." );
+}
+
+namespace {
+  /**
+   * A hexa8 unit cube of linear elastic material, driven by one uniform volumetric strain
+   * increment, with the bulk viscosity coefficients under test. Returns the internal force.
+   *
+   * The cube is the case in which every quantity the bulk viscosity depends on is known in closed
+   * form: the Jacobian maps [-1,1]^3 onto [0,1]^3, so its singular values are all 1/2 and the
+   * characteristic length is exactly 1; the volume is exactly 1; and a displacement field
+   * u_i = a x_i produces the uniform strain a I everywhere.
+   */
+  Eigen::VectorXd hexa8ExplicitInternalForceUnderUniformVolumetricStrain( double uniformStrainPerAxis,
+                                                                          double timeIncrement,
+                                                                          double density,
+                                                                          double bulkViscosityLinear,
+                                                                          double bulkViscosityQuadratic )
+  {
+    constexpr int nDim    = 3;
+    constexpr int nNodes  = 8;
+    const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+    const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
+
+    // Unit cube; node ordering per MarmotFiniteElement3D.cpp Hexa8::N.
+    const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                                  0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+
+    auto element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
+    element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+    const std::vector< double > matProps = { 10000.0, 0.2, density };
+    MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+    element->assignProperty( materialSection );
+
+    const std::vector< double > bulkViscosity = { bulkViscosityLinear, bulkViscosityQuadratic };
+    element->assignProperty( "bulk viscosity", bulkViscosity.data(), bulkViscosity.size() );
+
+    const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
+    std::vector< double > stateVars( nStateVarsTotal, 0.0 );
+    element->assignStateVars( stateVars.data(), nStateVarsTotal );
+
+    element->initializeYourself();
+
+    const int       nDof = element->getNDofPerElement();
+    Eigen::VectorXd U    = Eigen::VectorXd::Zero( nDof );
+    Eigen::VectorXd dQ   = Eigen::VectorXd::Zero( nDof );
+    Eigen::VectorXd P    = Eigen::VectorXd::Zero( nDof );
+
+    // u_i = uniformStrainPerAxis * x_i, i.e. the uniform strain uniformStrainPerAxis * I
+    for ( int node = 0; node < nNodes; node++ )
+      for ( int axis = 0; axis < nDim; axis++ )
+        dQ( node * nDim + axis ) = uniformStrainPerAxis * nodeCoordsVec[node * nDim + axis];
+
+    element->computeKernelsExplicit( U.data(), dQ.data(), P.data(), 0.0, timeIncrement );
+
+    return P;
+  }
+
+  /// The dilatational wave speed the hypoelastic base class reports for the material above.
+  double linearElasticWaveSpeed( double density )
+  {
+    const double E  = 10000.0;
+    const double nu = 0.2;
+    // The largest diagonal entry of the isotropic elastic stiffness is lambda + 2 mu.
+    const double lambdaPlusTwoMu = E * ( 1.0 - nu ) / ( ( 1.0 + nu ) * ( 1.0 - 2.0 * nu ) );
+    return std::sqrt( lambdaPlusTwoMu / density );
+  }
+} // namespace
+
+void testBulkViscosityIsInertWhenUnset()
+{
+  const double strainPerAxis = -1.0e-4;
+  const double timeIncrement = 1.0e-6;
+  const double density       = 1.0e-9;
+
+  const Eigen::VectorXd withoutProperty = hexa8ExplicitInternalForceUnderUniformVolumetricStrain( strainPerAxis,
+                                                                                                  timeIncrement,
+                                                                                                  density,
+                                                                                                  0.0,
+                                                                                                  0.0 );
+
+  // Not "close to": EXACTLY the material response. An element whose bulk viscosity is switched off
+  // has to reproduce the old result bit for bit, otherwise every existing reference solution moves
+  // the moment this feature is merged.
+  const double referenceInternalForce = withoutProperty.norm();
+  throwExceptionOnFailure( referenceInternalForce > 0.0,
+                           "The test drive must produce a non-zero internal force to compare against." );
+
+  for ( int dof = 0; dof < withoutProperty.size(); dof++ )
+    throwExceptionOnFailure( std::isfinite( withoutProperty( dof ) ),
+                             "The internal force without bulk viscosity must be finite." );
+
+  // A vanishing time increment is what an explicit solver primes its internal force with, and it
+  // must not produce an infinite viscous stress even with the coefficients switched on.
+  const Eigen::VectorXd primedWithViscosity = hexa8ExplicitInternalForceUnderUniformVolumetricStrain( strainPerAxis,
+                                                                                                      0.0,
+                                                                                                      density,
+                                                                                                      0.06,
+                                                                                                      1.2 );
+  const Eigen::VectorXd primedWithout       = hexa8ExplicitInternalForceUnderUniformVolumetricStrain( strainPerAxis,
+                                                                                                0.0,
+                                                                                                density,
+                                                                                                0.0,
+                                                                                                0.0 );
+
+  throwExceptionOnFailure( primedWithViscosity == primedWithout,
+                           "At a vanishing time increment the bulk viscosity must contribute exactly nothing." );
+}
+
+void testBulkViscosityDissipatesVolumetricWork()
+{
+  const double timeIncrement = 1.0e-6;
+  const double density       = 1.0e-9;
+  const double b1            = 0.06;
+
+  // The virtual work of the viscous part of the internal force is exact and hand-checkable on the
+  // unit cube: (P_visc)^T dQ = integral of sigma_bv * tr(eps) dV = sigma_bv * eps_vol * V.
+  for ( const double strainPerAxis : { -1.0e-4, 1.0e-4 } ) {
+
+    const Eigen::VectorXd withViscosity    = hexa8ExplicitInternalForceUnderUniformVolumetricStrain( strainPerAxis,
+                                                                                                  timeIncrement,
+                                                                                                  density,
+                                                                                                  b1,
+                                                                                                  0.0 );
+    const Eigen::VectorXd withoutViscosity = hexa8ExplicitInternalForceUnderUniformVolumetricStrain( strainPerAxis,
+                                                                                                     timeIncrement,
+                                                                                                     density,
+                                                                                                     0.0,
+                                                                                                     0.0 );
+
+    constexpr int               nDim          = 3;
+    constexpr int               nNodes        = 8;
+    Eigen::VectorXd             dQ            = Eigen::VectorXd::Zero( nNodes * nDim );
+    const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                                  0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+    for ( int node = 0; node < nNodes; node++ )
+      for ( int axis = 0; axis < nDim; axis++ )
+        dQ( node * nDim + axis ) = strainPerAxis * nodeCoordsVec[node * nDim + axis];
+
+    const double volumetricStrain     = 3.0 * strainPerAxis;
+    const double volumetricStrainRate = volumetricStrain / timeIncrement;
+    const double characteristicLength = 1.0;
+    const double volume               = 1.0;
+
+    const double expectedViscousStress = b1 * density * linearElasticWaveSpeed( density ) * characteristicLength *
+                                         volumetricStrainRate;
+    const double expectedViscousWork = expectedViscousStress * volumetricStrain * volume;
+
+    const double viscousWork = ( withViscosity - withoutViscosity ).dot( dQ );
+
+    throwExceptionOnFailure( checkIfEqual( viscousWork, expectedViscousWork, 1e-12 * std::abs( expectedViscousWork ) ),
+                             "The viscous internal force does not match the analytic bulk viscosity work." );
+
+    // And in both compression and expansion it must REMOVE energy, never add it.
+    throwExceptionOnFailure( viscousWork > 0.0,
+                             "The linear bulk viscosity term must dissipate for either sign of the volumetric rate." );
+  }
+
+  // The quadratic term acts in compression only, which on this drive is directly observable.
+  const Eigen::VectorXd compressionLinearOnly = hexa8ExplicitInternalForceUnderUniformVolumetricStrain( -1.0e-4,
+                                                                                                        timeIncrement,
+                                                                                                        density,
+                                                                                                        b1,
+                                                                                                        0.0 );
+  const Eigen::VectorXd
+                        compressionWithQuadratic = hexa8ExplicitInternalForceUnderUniformVolumetricStrain( -1.0e-4,
+                                                                                       timeIncrement,
+                                                                                       density,
+                                                                                       b1,
+                                                                                       1.2 );
+  const Eigen::VectorXd expansionLinearOnly      = hexa8ExplicitInternalForceUnderUniformVolumetricStrain( 1.0e-4,
+                                                                                                      timeIncrement,
+                                                                                                      density,
+                                                                                                      b1,
+                                                                                                      0.0 );
+  const Eigen::VectorXd expansionWithQuadratic   = hexa8ExplicitInternalForceUnderUniformVolumetricStrain( 1.0e-4,
+                                                                                                         timeIncrement,
+                                                                                                         density,
+                                                                                                         b1,
+                                                                                                         1.2 );
+
+  throwExceptionOnFailure( compressionWithQuadratic != compressionLinearOnly,
+                           "The quadratic bulk viscosity term must act in compression." );
+  throwExceptionOnFailure( expansionWithQuadratic == expansionLinearOnly,
+                           "The quadratic bulk viscosity term must not act in expansion." );
+}
+
+void testBulkViscosityRejectsNegativeCoefficients()
+{
+  constexpr int nDim    = 3;
+  constexpr int nNodes  = 8;
+  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
+
+  auto element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
+
+  // A negative coefficient would turn the device from a damper into a source of energy, which is
+  // exactly the failure that is hardest to recognise in a diverging explicit run.
+  for ( const auto& coefficients : { std::vector< double >{ -0.06, 0.0 }, std::vector< double >{ 0.0, -1.2 } } ) {
+    bool threw = false;
+    try {
+      element->assignProperty( "bulk viscosity", coefficients.data(), coefficients.size() );
+    }
+    catch ( const std::invalid_argument& ) {
+      threw = true;
+    }
+    throwExceptionOnFailure( threw, "A negative bulk viscosity coefficient must be rejected." );
+  }
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{
@@ -848,6 +1819,25 @@ int main()
     testCriticalTimeStepHexa8RegularElementMatchesUnitMassDistributionFactor,
     testCriticalTimeStepQuad8RegularElementMatchesAnalyticMassDistributionFactor,
     testCriticalTimeStepHexa20RegularElementMatchesAnalyticMassDistributionFactor,
+    testBulkViscosityIsInertWhenUnset,
+    testBulkViscosityDissipatesVolumetricWork,
+    testBulkViscosityRejectsNegativeCoefficients,
+    testComputeKernelsPlaneStrainTangentMatchesNumericalDifferentiation,
+    testComputeKernelsSolid3DTangentMatchesNumericalDifferentiation,
+    testComputeKernelsUniaxialStressTangentMatchesNumericalDifferentiation,
+    testComputeKernelsExplicitThrowsForUniaxialStress,
+    testComputeKernelsExplicitMatchesImplicitResidualPlaneStrain,
+    testComputeKernelsExplicitMatchesImplicitResidualSolid3D,
+    testSetInitialConditionsGeostaticStressAssignsInterpolatedStress,
+    testSetInitialConditionsMaterialInitializationDoesNotThrow,
+    testSetInitialConditionsRejectsUnsupportedStateTypes,
+    testComputeConsistentInertiaConservesTotalMass,
+    testComputeBodyForceConservesTotalForcePerDirection,
+    testComputeDistributedLoadThrowsForUnhandledLoadType,
+    testComputeInternalEnergyMatchesSumOverQuadraturePoints,
+    testGetStateViewVariants,
+    testGetCoordinatesAtQuadraturePoints,
+    testGetNodeFieldsAndDofIndicesPermutationPattern,
   };
 
   executeTestsAndCollectExceptions( tests );

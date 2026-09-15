@@ -4,6 +4,9 @@ SET(CURR_TEST_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/test")
 # Tests for HaighWestergaard
 add_marmot_test("TestHaighWestergaard" "${CURR_TEST_SOURCE_DIR}/TestHaighWestergaard.cpp")
 
+# Tests for HughesWinget
+add_marmot_test("TestHughesWinget" "${CURR_TEST_SOURCE_DIR}/TestHughesWinget.cpp")
+
 # Tests for MarmotElasticity
 add_marmot_test("TestMarmotElasticity" "${CURR_TEST_SOURCE_DIR}/TestMarmotElasticity.cpp")
 
@@ -45,3 +48,5 @@ add_marmot_test("TestMarmotGeostaticStress" "${CURR_TEST_SOURCE_DIR}/TestMarmotG
 
 # Tests for MarmotMaterialHypoElastic
 add_marmot_test("TestMarmotMaterialHypoElastic" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialHypoElastic.cpp")
+# Tests for MarmotMaterialPointSolverHypoElastic
+add_marmot_test("TestMarmotMaterialPointSolverHypoElastic" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialPointSolverHypoElastic.cpp")
