@@ -54,6 +54,9 @@ public:
   Eigen::MatrixXd                  T;            ///< Coordinate transformation matrix from child to parent space.
   Eigen::MatrixXd                  P;            ///< Projection matrix mapping parent DOFs to child DOFs.
   Eigen::MatrixXd                  projectedCoordinates; ///< Nodal coordinates expressed in the child (local) frame.
+  Eigen::VectorXd referenceCoordinates; ///< Ambient-space coordinates of node 0, needed to recover the translation
+                                        ///< (T alone only encodes the rotation) when mapping a child-space point
+                                        ///< back into ambient space.
 
   /**
    * @brief Construct the spatial wrapper.
@@ -103,8 +106,8 @@ public:
   /// @copydoc MarmotElement::assignProperty(const MarmotMaterialSection&)
   void assignProperty( const MarmotMaterialSection& property );
 
-  /// @copydoc MarmotElement::assignProperty(const std::string&, const double*)
-  void assignProperty( const std::string& propertyName, const double* properties ) override;
+  /// @copydoc MarmotElement::assignProperty(const std::string&, const double*, int)
+  void assignProperty( const std::string& propertyName, const double* properties, int nProperties ) override;
 
   /// @copydoc MarmotElement::getPropertyNames
   std::vector< std::string > getPropertyNames() const override;

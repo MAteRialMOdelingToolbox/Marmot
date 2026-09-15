@@ -21,3 +21,9 @@ add_marmot_test("TestMarmotMaterialHughesWinget" "${CURR_TEST_SOURCE_DIR}/TestMa
 
 # Tests for MarmotMaterialFiniteStrainFactory
 add_marmot_test("TestMarmotMaterialFiniteStrainFactory" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialFiniteStrainFactory.cpp")
+
+# Tests for MarmotMaterialFiniteStrain
+add_marmot_test("TestMarmotMaterialFiniteStrain" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialFiniteStrain.cpp")
+
+# Tests for MarmotMaterialPointSolverFiniteStrain
+add_marmot_test("TestMarmotMaterialPointSolverFiniteStrain" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialPointSolverFiniteStrain.cpp")
