@@ -21,7 +21,7 @@ bool MarmotJournal::warningToMSG( const std::string& message )
   // terminates normally, and an explicit run stopped by a timeout or a scheduler discards every
   // warning it raised. Warnings are rare, so the flush costs nothing.
   getInstance().output << message << std::endl;
-  return false;
+  return true;
 }
 
 bool MarmotJournal::notificationToMSG( const std::string& message )
