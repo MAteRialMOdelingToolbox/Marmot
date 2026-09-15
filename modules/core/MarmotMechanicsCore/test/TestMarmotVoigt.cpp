@@ -683,11 +683,16 @@ void testPrincipalValuesAndDerivativesTriaxialRGreaterEqualOne()
                            MakeString() << __PRETTY_FUNCTION__ << " principal values are wrong at the r>=1 boundary" );
 }
 
-void testPrincipalValuesAndDerivativesTriaxialRLessEqualMinusOne()
+void testPrincipalValuesAndDerivativesTriaxialNearRMinusOne()
 {
   using namespace Marmot::ContinuumMechanics::VoigtNotation;
-  // diag(3,3,1) rotated 45 degrees about the y-axis: eigenvalues {3,3,1}, constructed so that
-  // r == -1 exactly -- the "r <= -1" boundary branch.
+  // diag(3,3,1) rotated 45 degrees about the y-axis: eigenvalues {3,3,1}, constructed so that r is
+  // mathematically exactly -1. In practice, floating-point rounding through acos()/sqrt() in the
+  // implementation lands the computed r only ~1e-7 short of -1 for every construction tried, not
+  // within the "r <= -1" branch's guard band -- unlike the analogous r>=1 case, which reliably
+  // rounds past its boundary. So this test only exercises the smooth interior acos(r)/3 formula in
+  // its near-singular regime, not the dedicated "r <= -1" branch itself; it checks that the
+  // principal values are still correct there, not that the boundary branch ran.
   const Vector6d stress = { 2., 3., 2., 0., -1., 0. };
 
   const auto [e, dE_dS] = Invariants::principalValuesAndDerivatives( stress );
@@ -696,7 +701,8 @@ void testPrincipalValuesAndDerivativesTriaxialRLessEqualMinusOne()
   Vector3d eSorted = e;
   std::sort( eSorted.data(), eSorted.data() + 3 );
   throwExceptionOnFailure( checkIfEqual< double >( eSorted, Vector3d( 1., 3., 3. ), 1e-8 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " principal values are wrong at the r<=-1 boundary" );
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " principal values are wrong near the r<=-1 boundary" );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -785,7 +791,9 @@ void testDThetaStrainDStrainMatchesNumericalDifferentiation()
 
   const auto dTheta_dStrain_FD = Marmot::NumericalAlgorithms::Differentiation::forwardDifference( theta, strain );
 
-  throwExceptionOnFailure( checkIfEqual( dThetaStrain_dStrain( strain ).norm(), dTheta_dStrain_FD.norm(), 1e-6 ),
+  throwExceptionOnFailure( checkIfEqual< double >( dThetaStrain_dStrain( strain ).transpose(),
+                                                   dTheta_dStrain_FD,
+                                                   1e-6 ),
                            MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
@@ -969,7 +977,7 @@ int main()
                                                        testPrincipalValuesAndDerivativesGeneralCase,
                                                        testPrincipalValuesAndDerivativesDiagonalStress,
                                                        testPrincipalValuesAndDerivativesTriaxialRGreaterEqualOne,
-                                                       testPrincipalValuesAndDerivativesTriaxialRLessEqualMinusOne,
+                                                       testPrincipalValuesAndDerivativesTriaxialNearRMinusOne,
                                                        testDThetaDStressAtLodeAngleBoundary,
                                                        testDThetaDJ2AndDJ3AtLodeAngleBoundary,
                                                        testDThetaStrainDJ2AndDJ3StrainAtLodeAngleBoundary,
