@@ -1166,15 +1166,30 @@ void testComputeConsistentInertiaConservesTotalMassAndMicroInertia()
    * is AT2PhaseField's { E, nu, Gc, l, density, nonlocalViscosity } plus, where given, the
    * micro-inertia. Density and viscosity are 1, so the admissible eta^2/4 is 1/4.
    */
+  /* matProps and stateVars are held OUT here, and the material properties are moved into
+   * matPropsStorage rather than read from the argument: MarmotMaterialSection keeps a bare
+   * `const double*`, and the material instantiated from it keeps that same pointer for its whole
+   * life -- it does not copy. A `const std::vector&` parameter bound to a braced temporary at the
+   * call site therefore dangles the moment buildElement() returns, and every later read of the
+   * density is undefined. It is not even a reliable crash: on Linux the freed buffer still held
+   * the old values and every assertion passed, while macOS read a zero density and the total mass
+   * came out 0 instead of 1.
+   */
+  std::vector< double >       matPropsStorage;
   std::vector< double >       stateVars;
   std::unique_ptr< ElemType > element;
-  const auto                  buildElement = [&]( const std::vector< double >& matProps ) {
+  const auto                  buildElement = [&]( std::vector< double > matProps ) {
+    // Destroyed BEFORE the buffers it points into are replaced, so no element ever holds a
+    // pointer to freed storage, not even briefly between the two statements below.
+    element.reset();
+    matPropsStorage = std::move( matProps );
+
     element = std::make_unique< ElemType >( 1,
                                             FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
                                             ElemType::SectionType::PlaneStrain );
     element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-    MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+    MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matPropsStorage.data(), matPropsStorage.size() );
     const std::vector< double > elPropsVec = { 1.0 };
     ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
     element->assignProperty( elProps );
