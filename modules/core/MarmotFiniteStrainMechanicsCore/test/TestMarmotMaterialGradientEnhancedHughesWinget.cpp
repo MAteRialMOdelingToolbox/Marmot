@@ -518,10 +518,48 @@ void testNonlocalIncrementBookkeeping()
                            "repeating N did not see dK = 0 in " + std::string( __PRETTY_FUNCTION__ ) );
 }
 
+/**
+ * @brief A zero eigen stress from an unstressed guess must converge immediately, to the identity.
+ *
+ * This is the commonest call there is -- geostatic initialisation of an unloaded region -- and it
+ * used to THROW. The convergence test read
+ * @c R.norm() / std::min( normalStress.norm(), 1.0 ) <= 1e-10, whose denominator is zero when the
+ * stress is, so an exactly satisfied residual evaluated as 0/0 = NaN, NaN is not <= 1e-10, Newton
+ * applied a zero correction five times over and gave up. Nothing caught it because this file is
+ * the only caller in the tree and it did not cover the zero case.
+ *
+ * The second half is the other direction of the same mistake: min() capped the denominator at 1,
+ * so a stress of order 100 was being held to 1e-12 relative. Asking for a non-zero eigen stress
+ * exercises that branch.
+ */
+void testEigenDeformationAtZeroStressConverges()
+{
+  Wrapper w( stubProps.data(), int( stubProps.size() ), 1 );
+  auto    state = freshState( w );
+
+  const auto [F0, F1, F2] = w.findEigenDeformationForEigenStress( { 1.0, 1.0, 1.0 }, { 0.0, 0.0, 0.0 }, state.data() );
+
+  throwExceptionOnFailure( checkIfEqual( F0, 1.0, 1e-12 ) && checkIfEqual( F1, 1.0, 1e-12 ) &&
+                             checkIfEqual( F2, 1.0, 1e-12 ),
+                           "a zero eigen stress did not return the identity deformation in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+
+  // And a non-zero target still converges, which is what the relative half of the scale is for.
+  auto stateB             = freshState( w );
+  const auto [G0, G1, G2] = w.findEigenDeformationForEigenStress( { 1.0, 1.0, 1.0 },
+                                                                  { -10.0, -10.0, -10.0 },
+                                                                  stateB.data() );
+
+  throwExceptionOnFailure( G0 < 1.0 && checkIfEqual( G0, G1, 1e-12 ) && checkIfEqual( G1, G2, 1e-12 ),
+                           "a hydrostatic compressive eigen stress did not give a uniform contraction in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{ testStateLayout,
                                                        testUndeformed,
+                                                       testEigenDeformationAtZeroStressConverges,
                                                        testRigidRotationIsExact,
                                                        testSmallStrainAgreement,
                                                        testAnalyticTangentVsNumericalElastic,

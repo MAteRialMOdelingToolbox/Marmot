@@ -66,8 +66,12 @@ namespace Marmot::Materials {
    * | @c response.L | @c KLocal(0), a total, which is what both sides mean |
    * | @c response.nonLocalRadius | @f$ \sqrt{c(0)} @f$ |
    * | @c tangents.dTau_dN | @f$ J\,\partial\boldsymbol{\sigma}/\partial\bar{N} @f$ |
-   * | @c tangents.dL_dF | @f$ \partial K^{\text{local}}/\partial\Delta\boldsymbol{\varepsilon} @f$, chained through the
-   * Hughes-Winget kinematics | | @c tangents.dL_dN | @c dKLocalddK(0,0) |
+   * | @c tangents.dL_dF | @f$ \partial K^{\text{local}}/\partial\Delta\boldsymbol{\varepsilon} @f$ |
+   * | @c tangents.dL_dN | @c dKLocalddK(0,0) |
+   *
+   * @c dL_dF is chained through the Hughes-Winget kinematics. Each row is kept inside the 120-column
+   * limit deliberately: `ReflowComments` would otherwise wrap a longer one onto the next line and
+   * split the table in two.
    *
    * @note The wrapped material wants the nonlocal field **and its increment**, while this interface hands
    * over only the total. The increment is therefore formed here, against a value of the last accepted
@@ -290,7 +294,9 @@ namespace Marmot::Materials {
     Marmot::Matrix6d computeStressSensitivity( const Marmot::Vector6d&        sigmaRotVoigt,
                                                const Marmot::Vector6d&        sigmaNp1Voigt,
                                                const std::vector< double >&   baseStateOld,
-                                               const BaseMaterial::increment& inc ) const
+                                               const BaseMaterial::increment& inc,
+                                               double                         elasticEnergyDensity,
+                                               double                         dissipation ) const
     {
       const int nBase = baseMaterial->getNumberOfRequiredStateVars();
 
@@ -304,13 +310,22 @@ namespace Marmot::Materials {
         if ( nBase > 0 )
           std::memcpy( scratch.data(), baseStateOld.data(), nBase * sizeof( double ) );
 
+        /* Seeded exactly as the real evaluation below seeds it. `response` has no default member
+         * initialisers, so leaving these two out left indeterminate doubles in a struct handed to
+         * a virtual that is free to read them -- and a material accumulating into its energy or
+         * dissipation would have accumulated onto garbage. No material in this tree does today,
+         * which is precisely why it would have gone unnoticed.
+         */
         BaseMaterial::response perturbed;
         perturbed.stress = sigmaRotVoigt;
         perturbed.stress( j ) += h;
-        perturbed.stateVars = nBase > 0 ? scratch.data() : nullptr;
+        perturbed.stateVars            = nBase > 0 ? scratch.data() : nullptr;
+        perturbed.elasticEnergyDensity = elasticEnergyDensity;
+        perturbed.dissipation          = dissipation;
 
-        BaseMaterial::tangents dummyTangents;
-        baseMaterial->computeStress( perturbed, dummyTangents, inc );
+        // The tangent this probe would return is discarded -- the probe IS the tangent. Asking for
+        // it costs a full consistent tangent per column per quadrature point.
+        baseMaterial->computeStressExplicit( perturbed, inc );
 
         S.col( j ) = ( perturbed.stress - sigmaNp1Voigt ) / h;
       }
@@ -398,8 +413,16 @@ namespace Marmot::Materials {
       res.dissipation          = response.dissipation;
       res.stateVars            = baseState;
 
+      /* Every use of `tan` below sits inside `if ( computeTangent )`, so on the explicit path it is
+       * computed and thrown away -- and for a return-mapping material like GCDP that is a full
+       * consistent tangent per quadrature point per increment, on the very path this wrapper exists
+       * to serve.
+       */
       BaseMaterial::tangents tan;
-      baseMaterial->computeStress( res, tan, inc );
+      if ( computeTangent )
+        baseMaterial->computeStress( res, tan, inc );
+      else
+        baseMaterial->computeStressExplicit( res, inc );
 
       const Marmot::Vector6d sigmaNp1Voigt = res.stress;
       const Tensor33d        sigmaNp1      = fromEigen( stressMatrixFromVoigt< 3 >( sigmaNp1Voigt ) );
@@ -437,7 +460,12 @@ namespace Marmot::Materials {
 
         if constexpr ( tangentMode == HughesWingetTangent::Exact ) {
           // Replace the implicit d(sigma^(n+1))/d(sigmaRot) = I assumption by the true operator.
-          const Marmot::Matrix6d S = computeStressSensitivity( sigmaRotVoigt, sigmaNp1Voigt, baseStateOld, inc );
+          const Marmot::Matrix6d S = computeStressSensitivity( sigmaRotVoigt,
+                                                               sigmaNp1Voigt,
+                                                               baseStateOld,
+                                                               inc,
+                                                               response.elasticEnergyDensity,
+                                                               response.dissipation );
           dSigRot_dF               = einsum< ijmn, mnKL, to_ijKL >( voigtToStiffnessFastor( S ), dSigRot_dF );
         }
 

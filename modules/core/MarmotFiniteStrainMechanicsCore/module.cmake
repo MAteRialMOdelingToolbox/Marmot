@@ -8,4 +8,5 @@ list(APPEND publicheaders
     "${CMAKE_CURRENT_LIST_DIR}/include/Marmot/MarmotMaterialHughesWinget.h"
     "${CMAKE_CURRENT_LIST_DIR}/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h"
     "${CMAKE_CURRENT_LIST_DIR}/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrainFactory.h"
+    "${CMAKE_CURRENT_LIST_DIR}/include/Marmot/MarmotMaterialGradientEnhancedHughesWinget.h"
     )

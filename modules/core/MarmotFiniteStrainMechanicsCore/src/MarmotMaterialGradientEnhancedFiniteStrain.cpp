@@ -127,7 +127,15 @@ std::tuple< double, double, double > MarmotMaterialGradientEnhancedFiniteStrain:
 
     R = normalStress - eigenNormalStress;
 
-    if ( R.norm() / std::min( normalStress.norm(), 1.0 ) <= 1e-10 )
+    /* Relative where there is a stress to be relative TO, absolute where there is not. The scale
+     * was min(), which is backwards in both directions: at a zero target from an unstressed guess
+     * -- the commonest case there is -- the denominator is 0, the test reads 0/0 = NaN, and NaN is
+     * not <= 1e-10, so an already exactly converged state never breaks. Newton then applies a zero
+     * correction until the iteration limit and throws, instead of returning the identity
+     * deformation it had in hand. At the other end min() caps the denominator at 1, so a stress of
+     * order 100 was being asked for 1e-12 relative, which five iterations cannot deliver.
+     */
+    if ( R.norm() <= 1e-10 * std::max( 1.0, normalStress.norm() ) )
       break;
 
     if ( itCounter > 5 )
