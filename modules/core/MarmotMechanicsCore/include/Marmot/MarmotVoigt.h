@@ -937,14 +937,13 @@ namespace Marmot {
        * @brief Computes the derivative of the lode angle \f$ \theta \f$
        *        with respect to the stress vector.
        *
-       * @param theta Lode angle \f$ \theta \f$.
        * @param stress 6-component stress vector in Voigt notation.
        * @return 6-component vector of partial derivatives
        *         \f$ \tfrac{\partial \theta}{\partial \boldsymbol{\sigma}} \f$ in Voigt notation.
        * @note Returns zero if \f$ \theta \leq 10^{-15} \f$ or if \f$ \theta \geq \frac{\pi}{3} - 10^{-15} \f$.
        */
       template < typename T >
-      Eigen::Matrix< T, 6, 1 > dTheta_dStress( T theta, const Eigen::Matrix< T, 6, 1 >& stress )
+      Eigen::Matrix< T, 6, 1 > dTheta_dStress( const Eigen::Matrix< T, 6, 1 >& stress )
       {
         const T dThetadJ2 = dTheta_dJ2( stress );
         const T dThetadJ3 = dTheta_dJ3( stress );

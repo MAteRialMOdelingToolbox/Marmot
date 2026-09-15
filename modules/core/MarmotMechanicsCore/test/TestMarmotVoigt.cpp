@@ -254,7 +254,6 @@ void test_dTheta_dStress()
 
   using namespace Marmot::ContinuumMechanics::VoigtNotation::Derivatives;
   const Vector6d stress = { 1, 2, 3, 4, 5, 6 };
-  const auto     hw     = ContinuumMechanics::HaighWestergaard::haighWestergaard( stress );
 
   const auto theta = []( const Vector6d& stress ) {
     Eigen::MatrixXd theta( 1, 1 );
@@ -264,9 +263,9 @@ void test_dTheta_dStress()
 
   const auto dTheta_dStress_FD = Marmot::NumericalAlgorithms::Differentiation::forwardDifference( theta, stress );
 
-  throwExceptionOnFailure( checkIfEqual( Marmot::ContinuumMechanics::VoigtNotation::Derivatives::
-                                           dTheta_dStress( hw.theta, stress )
-                                             .norm(),
+  throwExceptionOnFailure( checkIfEqual( Marmot::ContinuumMechanics::VoigtNotation::Derivatives::dTheta_dStress(
+                                           stress )
+                                           .norm(),
                                          dTheta_dStress_FD.norm(),
                                          1e-8 ),
                            MakeString() << __PRETTY_FUNCTION__ << " failed" );
