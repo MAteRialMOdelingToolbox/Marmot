@@ -648,6 +648,117 @@ void testEnergyDensityRoundTripAtNonUnitJacobian()
 }
 
 /**
+ * @brief The eigen-deformation overloads must pre-stretch F, and the plane-strain ones must delegate.
+ *
+ * The base class' convenience surface -- computeStress and computePlaneStrain with an eigen
+ * deformation, and their explicit counterparts -- is what a geostatic or thermally pre-strained
+ * analysis reaches for, and none of it had a caller in the tree. An eigen deformation multiplies
+ * the diagonal of F, so an element handed the identity with F0 must see exactly what an element
+ * handed diag(F0) without one sees; that equality is what makes the overload worth having and is
+ * what this checks.
+ */
+void testEigenDeformationAndPlaneStrainOverloads()
+{
+  constexpr double F0 = 1.05;
+
+  Tensor33d stretched = Spatial3D::I;
+  stretched( 0, 0 ) = stretched( 1, 1 ) = stretched( 2, 2 ) = F0;
+
+  // Reference: the stretch applied directly, no eigen deformation.
+  Wrapper    wRef( stubProps.data(), int( stubProps.size() ), 1 );
+  auto       refState = freshState( wRef );
+  const auto ref      = step( wRef, refState, stretched, 0.1 );
+
+  // The same thing expressed as an eigen deformation on an undeformed element.
+  Wrapper    wEig( stubProps.data(), int( stubProps.size() ), 1 );
+  auto       eigState = freshState( wEig );
+  GEResponse rEig;
+  rEig.stateVars = eigState.data();
+  GETangents tEig;
+  /* Through a base reference, which is how the element holds it. The wrapper overrides the
+   * four-argument computeStress and thereby HIDES the five-argument eigen-deformation overload for
+   * anyone calling on the derived type -- harmless in practice, since every consumer works through
+   * MarmotMaterialGradientEnhancedFiniteStrain*, but worth knowing.
+   */
+  GEFiniteStrain& baseEig = wEig;
+  baseEig.computeStress( rEig,
+                         tEig,
+                         GEDeformation{ Spatial3D::I, 0.1 },
+                         GETimeIncrement{ 0.0, 1.0 },
+                         std::make_tuple( F0, F0, F0 ) );
+
+  throwExceptionOnFailure( checkIfEqual( rEig.tau, ref.tau, 1e-12 ),
+                           "an eigen deformation did not reproduce the directly stretched response in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+  throwExceptionOnFailure( checkIfEqual( rEig.L, ref.L, 1e-12 ),
+                           "the local driving force differs under an eigen deformation in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+
+  // dTau_dN is NOT chain-ruled: the nonlocal field is not deformed. dTau_dF is.
+  throwExceptionOnFailure( checkIfEqual( tEig.dTau_dN, ref.tangents.dTau_dN, 1e-12 ),
+                           "dTau_dN was scaled by the eigen deformation, which does not deform the "
+                           "nonlocal field, in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+
+  // computePlaneStrain delegates to computeStress, in both overloads.
+  Wrapper    wPs( stubProps.data(), int( stubProps.size() ), 1 );
+  auto       psState = freshState( wPs );
+  GEResponse rPs;
+  rPs.stateVars = psState.data();
+  GETangents tPs;
+  wPs.computePlaneStrain( rPs, tPs, GEDeformation{ stretched, 0.1 }, GETimeIncrement{ 0.0, 1.0 } );
+
+  throwExceptionOnFailure( checkIfEqual( rPs.tau, ref.tau, 1e-12 ),
+                           "computePlaneStrain did not delegate to computeStress in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+
+  Wrapper    wPsE( stubProps.data(), int( stubProps.size() ), 1 );
+  auto       psEState = freshState( wPsE );
+  GEResponse rPsE;
+  rPsE.stateVars = psEState.data();
+  GETangents tPsE;
+  wPsE.computePlaneStrain( rPsE,
+                           tPsE,
+                           GEDeformation{ Spatial3D::I, 0.1 },
+                           GETimeIncrement{ 0.0, 1.0 },
+                           std::make_tuple( F0, F0, F0 ) );
+
+  throwExceptionOnFailure( checkIfEqual( rPsE.tau, ref.tau, 1e-12 ),
+                           "the eigen-deformation computePlaneStrain did not delegate in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+
+  // And the explicit counterparts, which discard the tangent.
+  Wrapper    wEx( stubProps.data(), int( stubProps.size() ), 1 );
+  auto       exState = freshState( wEx );
+  GEResponse rEx;
+  rEx.stateVars = exState.data();
+  wEx.computeStressExplicit( rEx, GEDeformation{ stretched, 0.1 }, GETimeIncrement{ 0.0, 1.0 } );
+
+  throwExceptionOnFailure( checkIfEqual( rEx.tau, ref.tau, 1e-12 ),
+                           "computeStressExplicit disagrees with computeStress in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+
+  Wrapper    wPsEx( stubProps.data(), int( stubProps.size() ), 1 );
+  auto       psExState = freshState( wPsEx );
+  GEResponse rPsEx;
+  rPsEx.stateVars = psExState.data();
+  wPsEx.computePlaneStrainExplicit( rPsEx, GEDeformation{ stretched, 0.1 }, GETimeIncrement{ 0.0, 1.0 } );
+
+  throwExceptionOnFailure( checkIfEqual( rPsEx.tau, ref.tau, 1e-12 ),
+                           "computePlaneStrainExplicit disagrees with computeStress in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+
+  // The value constructor, which nothing else builds.
+  double           dummyState = 0.0;
+  const GEResponse built( ref.tau, 1.5, 2.5, 3.5, 4.5, &dummyState );
+  throwExceptionOnFailure( checkIfEqual( built.L, 1.5, 1e-15 ) && checkIfEqual( built.nonLocalRadius, 2.5, 1e-15 ) &&
+                             checkIfEqual( built.elasticEnergyDensity, 3.5, 1e-15 ) &&
+                             checkIfEqual( built.dissipation, 4.5, 1e-15 ) && built.stateVars == &dummyState,
+                           "the ConstitutiveResponse value constructor did not store its arguments in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+/**
  * @brief The factory must round-trip a registered name, and name what it knows when it cannot.
  *
  * The factory is how GCDP reaches this wrapper -- it registers GCDP/HUGHES-WINGET from its own
@@ -696,6 +807,7 @@ int main()
                                                        testEigenDeformationAtZeroStressConverges,
                                                        testNonlocalMicroInertiaIsForwarded,
                                                        testEnergyDensityRoundTripAtNonUnitJacobian,
+                                                       testEigenDeformationAndPlaneStrainOverloads,
                                                        testFactoryRoundTripAndUnknownName,
                                                        testRigidRotationIsExact,
                                                        testSmallStrainAgreement,
