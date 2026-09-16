@@ -27,3 +27,6 @@ add_marmot_test("TestMarmotMaterialFiniteStrain" "${CURR_TEST_SOURCE_DIR}/TestMa
 
 # Tests for MarmotMaterialPointSolverFiniteStrain
 add_marmot_test("TestMarmotMaterialPointSolverFiniteStrain" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialPointSolverFiniteStrain.cpp")
+
+# Tests for the gradient-enhanced Hughes-Winget small-strain wrapper
+add_marmot_test("TestMarmotMaterialGradientEnhancedHughesWinget" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialGradientEnhancedHughesWinget.cpp")
