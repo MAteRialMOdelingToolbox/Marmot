@@ -91,7 +91,7 @@ namespace Marmot {
 
       inline const Tensor3333d Deviatoric = I4 - 1. / 3 * IHyd;
 
-      inline const Tensor3333d DeviatoricTranspose = Fastor::transpose( DeviatoricTranspose );
+      inline const Tensor3333d DeviatoricTranspose = Fastor::transpose( Deviatoric );
 
       inline const Tensor3333d DeviatoricSymmetric = ISymm - 1. / 3 * IHyd;
 

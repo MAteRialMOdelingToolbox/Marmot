@@ -110,12 +110,62 @@ void testPronySeriesWithOneMaxwellElement()
                            MakeString() << __PRETTY_FUNCTION__ << "stress computation failed (relaxation)" );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// updateStateVars(): a free function with no callers anywhere in the codebase, duplicating the
+// same state-variable update formula already embedded (and tested above) inside
+// evaluatePronySeries()'s `if (updateStateVars)` branch. Verified via that duplication: starting
+// from identical state, calling updateStateVars() directly must produce exactly the same updated
+// state as evaluatePronySeries(..., updateStateVars=true).
+// ─────────────────────────────────────────────────────────────────────────────
+
+void testUpdateStateVarsMatchesEvaluatePronySeries()
+{
+  const int nMaxwell = 1;
+
+  using namespace Marmot::ContinuumMechanics;
+  const auto C0 = Elasticity::Isotropic::stiffnessTensor( 100, 0.0 );
+
+  using namespace Marmot::ContinuumMechanics::Viscoelasticity::PronySeries;
+
+  Marmot::Matrix6d relaxationTimes = Matrix6d::Zero();
+  relaxationTimes.setConstant( 1.0 );
+  const Marmot::Matrix6d C1 = C0 * 0.1;
+
+  Properties props           = { nMaxwell, C0, Marmot::Vector6d::Zero(), Marmot::Matrix6d::Zero() };
+  props.pronyRelaxationTimes = relaxationTimes;
+  props.pronyStiffnesses     = C1;
+
+  Marmot::Vector6d dStrain = Vector6d::Zero();
+  dStrain( 0 )             = 1.0e-3;
+  dStrain( 3 )             = 4.0e-3;
+  const double dt          = 0.2;
+
+  // Give both starting points the same non-trivial initial state (as if a previous increment had
+  // already been applied), rather than the all-zero initial state used above.
+  StateVarMatrix initialStateVars = StateVarMatrix::Zero( 6, 6 );
+  initialStateVars.setConstant( 0.01 );
+
+  StateVarMatrix   stateVarsViaEvaluate = initialStateVars;
+  Marmot::Vector6d stress               = Vector6d::Zero();
+  Marmot::Matrix6d stiffness            = Matrix6d::Zero();
+  evaluatePronySeries( props, stress, stiffness, stateVarsViaEvaluate, dStrain, dt, true );
+
+  StateVarMatrix stateVarsViaUpdate = initialStateVars;
+  updateStateVars( props, stateVarsViaUpdate, dStrain, dt );
+
+  throwExceptionOnFailure( checkIfEqual< double >( stateVarsViaUpdate, stateVarsViaEvaluate, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " updateStateVars() does not match evaluatePronySeries()'s own "
+                                           "state-variable update" );
+}
+
 int main()
 {
 
   auto tests = std::vector< std::function< void() > >{
     testPronySeriesWithZeroMaxwellElements,
     testPronySeriesWithOneMaxwellElement,
+    testUpdateStateVarsMatchesEvaluatePronySeries,
   };
 
   executeTestsAndCollectExceptions( tests );
