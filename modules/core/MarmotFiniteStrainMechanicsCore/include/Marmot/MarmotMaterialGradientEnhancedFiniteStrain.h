@@ -33,9 +33,9 @@
  * @class MarmotMaterialGradientEnhancedFiniteStrain
  * @brief Abstract base class for gradient-enhanced (implicit-gradient) materials in the finite strain regime.
  *
- * The non-micropolar sibling of MarmotMaterialGradientEnhancedMicropolar, and the finite-strain
- * counterpart of MarmotMaterialGeneralGradientEnhancedHypoElastic: the displacement field is coupled to a
- * single scalar nonlocal field @f$ \bar{N} @f$ governed by the additional balance equation
+ * The finite-strain counterpart of MarmotMaterialGeneralGradientEnhancedHypoElastic: the displacement
+ * field is coupled to a single scalar nonlocal field @f$ \bar{N} @f$ governed by the additional balance
+ * equation
  * @f[
  *   \bar{N} - c\,\nabla^2\bar{N} = L(\boldsymbol{F},\,\bar{N}),
  *   \qquad c = R^2,
@@ -55,14 +55,9 @@
  * damage-dependent interactions (see MarmotDecreasingInteractions) can report the current @f$ c @f$, but
  * not its derivative, so its consistent tangent would be incomplete.
  *
- * @warning **This header is a reconstruction.** The original was written by the author of
- * GradientEnhancedFiniteStrainMaterialPoint / ...Particle / ...DisplacementElement but was never
- * published to any repository. Everything below that those consumers observe -- member names, struct
- * shapes, call signatures, the six-argument ConstitutiveResponse constructor -- is fixed by them. What
- * they do not observe is inferred from the sibling interfaces: the *order* of the four doubles in
- * ConstitutiveResponse (the consumers only ever pass zeros there and read the members by name), the
- * names and semantics of elasticEnergyDensity and dissipation, and the defaulted methods. Should the
- * original resurface, diff it against this file before adopting either.
+ * @note Member names, struct shapes and call signatures are fixed by the consumers of this interface
+ * (GradientEnhancedFiniteStrainMaterialPoint / ...Particle / ...DisplacementElement), including the
+ * six-argument ConstitutiveResponse constructor.
  */
 class MarmotMaterialGradientEnhancedFiniteStrain {
 
@@ -353,13 +348,11 @@ public:
    *   m_k\,\ddot{\bar{N}} + \eta\,\dot{\bar{N}} + \bar{N} - c\,\nabla^2\bar{N} = L(\boldsymbol{F},\,\bar{N}) .
    * @f]
    *
-   * @note Zero by default, which is the quasi-static model. The small-strain
-   * MarmotMaterialGeneralGradientEnhancedHypoElastic::getNonlocalViscosity is pure virtual instead, on
-   * the grounds that a gradient-enhanced material must answer it for any explicit path to exist -- but
-   * this header is a reconstruction (see the class note), and a reconstruction must not impose a
-   * breaking requirement on implementors it cannot see. Appended at the very end of the class, after
-   * every other virtual, so that a stale-library mismatch is confined to callers of this method and of
-   * getNonlocalMicroInertia() below -- the reasoning Marmot #84 applied to MarmotElement.
+   * @note Zero by default, which is the quasi-static model. Unlike the small-strain
+   * MarmotMaterialGeneralGradientEnhancedHypoElastic::getNonlocalViscosity, which is pure virtual, this
+   * default lets existing derived classes keep compiling without answering it. Appended at the very end
+   * of the class, after every other virtual, together with getNonlocalMicroInertia() below, so that a
+   * stale-library ABI mismatch is confined to callers of these two methods.
    */
   virtual double getNonlocalViscosity( const double* stateVars ) const { return 0.0; }
 

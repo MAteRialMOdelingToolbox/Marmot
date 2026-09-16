@@ -29,6 +29,7 @@
 #include "Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h"
 #include "Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h"
 #include "Marmot/MarmotMaterialHughesWinget.h"
+#include "Marmot/MarmotNumericalDifferentiation.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
 #include <cmath>
@@ -81,10 +82,9 @@ namespace Marmot::Materials {
    * @note **The wrapped material must be incremental in stress.** It has to update the Cauchy stress it
    * is handed, not recompute one from a stored strain: the wrapper's whole mechanism is to hand over the
    * forward-rotated stress of the last increment, and a material that ignores that argument discards the
-   * rotation along with it. `GCDPModel` qualifies -- it maps `res.stress` and updates it in place
-   * (`GCDP.cpp:57`), and its entire state is four scalars. **`AT2PhaseField` does not**: it carries a
-   * six-component `strain` state (`AT2PhaseField.h:60`) and returns @f$ g(\varphi)\,\mathbb{C}:
-   * \boldsymbol{\varepsilon} @f$ from it (`AT2PhaseField.cpp:71`), so its true
+   * rotation along with it. `AT2PhaseField` is a counter-example: it carries a six-component `strain`
+   * state (`AT2PhaseField.h:60`) and returns @f$ g(\varphi)\,\mathbb{C}:\boldsymbol{\varepsilon} @f$ from
+   * it (`AT2PhaseField.cpp:71`), so its true
    * @f$ \partial\boldsymbol{\sigma}^{(n+1)}/\partial\boldsymbol{\sigma}_{\text{rot}} @f$ is zero
    * rather than the identity. Measured: wrapped, a rigid rotation on top of an anisotropic stretch leaves
    * its Kirchhoff stress bit-for-bit **unrotated**. It is therefore deliberately not registered with this
@@ -92,13 +92,13 @@ namespace Marmot::Materials {
    *
    * @note **Only the stress is rotated.** Tensor-valued internal variables of the wrapped material are
    * passed through untouched and are therefore *not* objective under large incremental rotations. A model
-   * whose internal state is entirely scalar -- GCDP's `alphaP`, `alphaD`, `omega`, `I1p` -- is unaffected.
+   * whose internal state is entirely scalar is unaffected.
    *
    * @note The interaction @f$ c @f$ is reported through its square root, and its derivative
    * @f$ \partial c/\partial\bar{N} @f$ **cannot be forwarded at all**: the finite-strain interface has no
-   * slot for it. Harmless for a material whose @f$ c @f$ is constant (GCDP, AT2PhaseField both are); a
-   * material built on MarmotDecreasingInteractions would keep a correct residual but lose that term of
-   * its consistent tangent.
+   * slot for it. Harmless for a material whose @f$ c @f$ is constant (`AT2PhaseField` is); a material
+   * built on MarmotDecreasingInteractions would keep a correct residual but lose that term of its
+   * consistent tangent.
    *
    * @note The nonlocal balance is formulated in the material configuration by the consumers of this
    * interface, so @f$ c @f$ is handed over as the material constant the wrapped model reports, neither
@@ -141,6 +141,11 @@ namespace Marmot::Materials {
     }
 
     virtual ~GradientEnhancedHughesWingetWrapper() = default;
+
+    // The four-argument override below would otherwise hide the base class' five-argument
+    // eigen-deformation overload for a caller holding a GradientEnhancedHughesWingetWrapper<...>
+    // rather than a MarmotMaterialGradientEnhancedFiniteStrain*.
+    using MarmotMaterialGradientEnhancedFiniteStrain::computeStress;
 
     /**
      * @brief Register the state layout: the carried-over deformation gradient, Cauchy stress and nonlocal
@@ -285,40 +290,33 @@ namespace Marmot::Materials {
      * @brief Recover @f$ \boldsymbol{S} = \partial\boldsymbol{\sigma}^{(n+1)} /
      *        \partial\boldsymbol{\sigma}_{\text{rot}} @f$ by forward differences.
      * @param[in] sigmaRotVoigt Rotated stress that was handed to the wrapped material.
-     * @param[in] sigmaNp1Voigt Unperturbed updated stress returned by the wrapped material.
      * @param[in] baseStateOld  Wrapped material state *before* the unperturbed evaluation.
      * @param[in] inc           Increment handed to the wrapped material.
      * @return The sensitivity in Voigt form, with its three shear **columns** halved so that the result
      *         may be contracted as a full fourth-order tensor without double counting.
      */
     Marmot::Matrix6d computeStressSensitivity( const Marmot::Vector6d&        sigmaRotVoigt,
-                                               const Marmot::Vector6d&        sigmaNp1Voigt,
                                                const std::vector< double >&   baseStateOld,
                                                const BaseMaterial::increment& inc,
                                                double                         elasticEnergyDensity,
                                                double                         dissipation ) const
     {
-      const int nBase = baseMaterial->getNumberOfRequiredStateVars();
-
-      const double scale = std::max( 1.0, sigmaRotVoigt.cwiseAbs().maxCoeff() );
-      const double h     = std::sqrt( std::numeric_limits< double >::epsilon() ) * scale;
-
-      Marmot::Matrix6d S = Marmot::Matrix6d::Zero();
-
+      const int             nBase = baseMaterial->getNumberOfRequiredStateVars();
       std::vector< double > scratch( nBase );
-      for ( int j = 0; j < 6; ++j ) {
+
+      // A fresh copy of the wrapped material's pre-update state for every evaluation, including the
+      // one MarmotMathCore's forwardDifference() takes at sigmaRotVoigt itself, so each probe -- and
+      // the baseline -- starts from the same point regardless of evaluation order.
+      auto evaluate = [&]( const Eigen::VectorXd& sigmaRot ) -> Eigen::VectorXd {
         if ( nBase > 0 )
           std::memcpy( scratch.data(), baseStateOld.data(), nBase * sizeof( double ) );
 
-        /* Seeded exactly as the real evaluation below seeds it. `response` has no default member
-         * initialisers, so leaving these two out left indeterminate doubles in a struct handed to
-         * a virtual that is free to read them -- and a material accumulating into its energy or
-         * dissipation would have accumulated onto garbage. No material in this tree does today,
-         * which is precisely why it would have gone unnoticed.
-         */
         BaseMaterial::response perturbed;
-        perturbed.stress = sigmaRotVoigt;
-        perturbed.stress( j ) += h;
+        perturbed.stress = sigmaRot;
+        // BaseMaterial::response has no default member initialisers; a material that reads or
+        // accumulates into KLocal/c would otherwise see garbage.
+        perturbed.KLocal.setZero();
+        perturbed.c.setZero();
         perturbed.stateVars            = nBase > 0 ? scratch.data() : nullptr;
         perturbed.elasticEnergyDensity = elasticEnergyDensity;
         perturbed.dissipation          = dissipation;
@@ -326,9 +324,10 @@ namespace Marmot::Materials {
         // The tangent this probe would return is discarded -- the probe IS the tangent. Asking for
         // it costs a full consistent tangent per column per quadrature point.
         baseMaterial->computeStressExplicit( perturbed, inc );
+        return perturbed.stress;
+      };
 
-        S.col( j ) = ( perturbed.stress - sigmaNp1Voigt ) / h;
-      }
+      Marmot::Matrix6d S = Marmot::NumericalAlgorithms::Differentiation::forwardDifference( evaluate, sigmaRotVoigt );
 
       // Halve the shear columns: contracting S as a fourth-order tensor sums over both the (m,n) and
       // (n,m) entries of a symmetric stress, which would otherwise count each off-diagonal twice.
@@ -358,10 +357,11 @@ namespace Marmot::Materials {
 
       const Tensor33d& Ident = Spatial3D::I;
 
-      TensorMap33d Fn_ref    = this->stateLayout.getAs< TensorMap33d >( response.stateVars, deformationGradientSlot );
-      double*      sigmaNPtr = this->stateLayout.getPtr( response.stateVars, stressSlot );
-      double*      nPtr      = this->stateLayout.getPtr( response.stateVars, nonlocalFieldSlot );
-      double*      baseState = this->stateLayout.getPtr( response.stateVars, baseMaterialSlot );
+      TensorMap33d Fn_ref = this->stateLayout.getAs< TensorMap33d >( response.stateVars, deformationGradientSlot );
+      Eigen::Map< Marmot::Vector6d >
+              sigmaN_n  = this->stateLayout.getAs< Eigen::Map< Marmot::Vector6d > >( response.stateVars, stressSlot );
+      double* nPtr      = this->stateLayout.getPtr( response.stateVars, nonlocalFieldSlot );
+      double* baseState = this->stateLayout.getPtr( response.stateVars, baseMaterialSlot );
 
       // A zeroed state vector means pristine, so an all-zero F_n is the identity here -- without this,
       // F_mid would be singular on the very first increment for a host that never calls initializeYourself().
@@ -378,10 +378,9 @@ namespace Marmot::Materials {
       const Tensor33d dR   = Ainv % Tensor33d( Ident + 0.5 * dOm );
 
       // --- rotate the carried-over Cauchy stress forward ---
-      Eigen::Map< const Marmot::Vector6d > sigmaNVoigtMap( sigmaNPtr );
-      const Marmot::Vector6d               sigmaNVoigt = sigmaNVoigtMap;
-      const Tensor33d                      sigmaN      = fromEigen( stressMatrixFromVoigt< 3 >( sigmaNVoigt ) );
-      const Tensor33d                      sigmaRot    = dR % sigmaN % transpose( dR );
+      const Marmot::Vector6d sigmaNVoigt = sigmaN_n;
+      const Tensor33d        sigmaN      = fromEigen( stressMatrixFromVoigt< 3 >( sigmaNVoigt ) );
+      const Tensor33d        sigmaRot    = dR % sigmaN % transpose( dR );
 
       // --- assemble the increment for the wrapped material ---
       const int             nBase = baseMaterial->getNumberOfRequiredStateVars();
@@ -425,7 +424,12 @@ namespace Marmot::Materials {
       const double seedDissipation   = Jn > 0.0 ? response.dissipation / Jn : response.dissipation;
 
       BaseMaterial::response res;
-      res.stress               = sigmaRotVoigt;
+      res.stress = sigmaRotVoigt;
+      // BaseMaterial::response has no default member initialisers, so KLocal and c are otherwise
+      // indeterminate on entry -- harmless for a material that only writes them, but a material that
+      // reads or accumulates into them would observe garbage.
+      res.KLocal.setZero();
+      res.c.setZero();
       res.elasticEnergyDensity = seedEnergyDensity;
       res.dissipation          = seedDissipation;
       res.stateVars            = baseState;
@@ -478,7 +482,6 @@ namespace Marmot::Materials {
         if constexpr ( tangentMode == HughesWingetTangent::Exact ) {
           // Replace the implicit d(sigma^(n+1))/d(sigmaRot) = I assumption by the true operator.
           const Marmot::Matrix6d S = computeStressSensitivity( sigmaRotVoigt,
-                                                               sigmaNp1Voigt,
                                                                baseStateOld,
                                                                inc,
                                                                seedEnergyDensity,
@@ -510,10 +513,9 @@ namespace Marmot::Materials {
       }
 
       // --- commit ---
-      Eigen::Map< Marmot::Vector6d > sigmaNOut( sigmaNPtr );
-      sigmaNOut = sigmaNp1Voigt;
-      Fn_ref    = Fn1;
-      *nPtr     = nNew;
+      sigmaN_n = sigmaNp1Voigt;
+      Fn_ref   = Fn1;
+      *nPtr    = nNew;
     }
 
     /**
