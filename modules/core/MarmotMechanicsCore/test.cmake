@@ -46,5 +46,8 @@ add_marmot_test("TestNewmarkBetaIntegrator" "${CURR_TEST_SOURCE_DIR}/TestNewmark
 # Tests for MarmotGeostaticStress
 add_marmot_test("TestMarmotGeostaticStress" "${CURR_TEST_SOURCE_DIR}/TestMarmotGeostaticStress.cpp")
 
+# Tests for MarmotMaterialHypoElasticFactory
+add_marmot_test("TestMarmotMaterialHypoElasticFactory" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialHypoElasticFactory.cpp")
+
 # Tests for MarmotMaterialPointSolverHypoElastic
 add_marmot_test("TestMarmotMaterialPointSolverHypoElastic" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialPointSolverHypoElastic.cpp")
