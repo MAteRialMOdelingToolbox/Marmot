@@ -204,10 +204,11 @@ namespace Marmot::Materials {
                                                        const double          mu,
                                                        const double          kappa ) const
     {
-      auto [psiIso, dPsiIso_dC] = ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::NeoHookePotential< T >(
-        C, mu );
-      auto [psiVol, dPsiVol_dC] =
-        ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::VolumetricPenaltyPotential< T >( C, kappa );
+      auto [psiIso,
+            dPsiIso_dC] = ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::NeoHookePotential< T >( C,
+                                                                                                                 mu );
+      auto [psiVol, dPsiVol_dC] = ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::
+        VolumetricPenaltyPotential< T >( C, kappa );
 
       return { psiIso + psiVol, evaluate( dPsiIso_dC + dPsiVol_dC ) };
     }
@@ -225,9 +226,8 @@ namespace Marmot::Materials {
      *
      * \f[
      *   \Psi(\boldsymbol C) = C_{10}(\bar I_1-3) + C_{20}(\bar I_1-3)^2 + C_{30}(\bar I_1-3)^3
-     *                       + \frac{\kappa}{8}(\ln\det\boldsymbol C)^2, \qquad \bar I_1 = I_1 (\det\boldsymbol C)^{-1/3}
-     * \f]
-     * (isochoric part shared with CompressibleFiniteStrainLinearViscoelasticity via
+     *                       + \frac{\kappa}{8}(\ln\det\boldsymbol C)^2, \qquad \bar I_1 = I_1 (\det\boldsymbol
+     * C)^{-1/3} \f] (isochoric part shared with CompressibleFiniteStrainLinearViscoelasticity via
      * Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::YeohPotential,
      * volumetric part shared via
      * Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::VolumetricPenaltyPotential).
@@ -239,10 +239,13 @@ namespace Marmot::Materials {
                                                    const double          C30,
                                                    const double          kappa ) const
     {
-      auto [psiIso, dPsiIso_dC] = ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::YeohPotential< T >(
-        C, C10, C20, C30 );
-      auto [psiVol, dPsiVol_dC] =
-        ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::VolumetricPenaltyPotential< T >( C, kappa );
+      auto [psiIso,
+            dPsiIso_dC]         = ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::YeohPotential< T >( C,
+                                                                                                             C10,
+                                                                                                             C20,
+                                                                                                             C30 );
+      auto [psiVol, dPsiVol_dC] = ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::
+        VolumetricPenaltyPotential< T >( C, kappa );
 
       return { psiIso + psiVol, evaluate( dPsiIso_dC + dPsiVol_dC ) };
     }
@@ -274,10 +277,10 @@ namespace Marmot::Materials {
                                                            const double          C01,
                                                            const double          kappa ) const
     {
-      auto [psiIso, dPsiIso_dC] =
-        ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::MooneyRivlinPotential< T >( C, C10, C01 );
-      auto [psiVol, dPsiVol_dC] =
-        ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::VolumetricPenaltyPotential< T >( C, kappa );
+      auto [psiIso, dPsiIso_dC] = ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::MooneyRivlinPotential<
+        T >( C, C10, C01 );
+      auto [psiVol, dPsiVol_dC] = ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::
+        VolumetricPenaltyPotential< T >( C, kappa );
 
       return { psiIso + psiVol, evaluate( dPsiIso_dC + dPsiVol_dC ) };
     }
@@ -314,12 +317,10 @@ namespace Marmot::Materials {
                                                           const double          lambdaL,
                                                           const double          kappa ) const
     {
-      auto [psiIso, dPsiIso_dC] =
-        ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::ArrudaBoyce8ChainPotential< T >( C,
-                                                                                                        mu,
-                                                                                                        lambdaL );
-      auto [psiVol, dPsiVol_dC] =
-        ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::VolumetricPenaltyPotential< T >( C, kappa );
+      auto [psiIso, dPsiIso_dC] = ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::
+        ArrudaBoyce8ChainPotential< T >( C, mu, lambdaL );
+      auto [psiVol, dPsiVol_dC] = ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::
+        VolumetricPenaltyPotential< T >( C, kappa );
 
       return { psiIso + psiVol, evaluate( dPsiIso_dC + dPsiVol_dC ) };
     }
@@ -418,11 +419,11 @@ namespace Marmot::Materials {
       // (e.g. c2 very close to 0, oddly, more often than c2 near -1) --
       // those are handled by the existing per-residual exception fallback
       // during calibration, not by this floor.
-      constexpr double stretchTermFloor = 1e-2;
-      const double     stretchTermReal  = Math::makeReal( stretchTerm );
+      constexpr double stretchTermFloor   = 1e-2;
+      const double     stretchTermReal    = Math::makeReal( stretchTerm );
       const T          stretchTermClamped = stretchTermReal > stretchTermFloor
-                                               ? stretchTerm
-                                               : stretchTerm + T( stretchTermFloor - stretchTermReal );
+                                              ? stretchTerm
+                                              : stretchTerm + T( stretchTermFloor - stretchTermReal );
 
       const T gammaDot = T( c1 ) * pow( stretchTermClamped, c2 ) * pow( rho, c3 );
 
@@ -466,7 +467,8 @@ namespace Marmot::Materials {
       for ( int i = 0; i < 9; ++i )
         R( i ) = aux( i );
 
-      R( 9 ) = dGamma / T( dT ) - gammaDot;
+      // Formulated to support zero increments (dT = 0)
+      R( 9 ) = dGamma - gammaDot * T( dT );
 
       return R;
     }
