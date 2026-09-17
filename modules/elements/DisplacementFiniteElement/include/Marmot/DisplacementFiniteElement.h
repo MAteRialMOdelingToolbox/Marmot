@@ -23,6 +23,7 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
+#include "Marmot/MarmotBulkViscosity.h"
 #include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotExceptions.h"
@@ -30,6 +31,7 @@
 #include "Marmot/MarmotGeometryElement.h"
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotLowerDimensionalStress.h"
+#include "Marmot/MarmotMassLumping.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 #include "Marmot/MarmotMath.h"
@@ -95,6 +97,13 @@ namespace Marmot::Elements {
     const int elLabel;
     /** Section assumption applied by this element instance. */
     const SectionType sectionType;
+    /**
+     * @brief Coefficients of the artificial bulk viscosity, assigned via the named property
+     * "bulk viscosity". They default to zero, which is inactive: unless that property is
+     * assigned, no viscous stress is formed and the element integrates exactly what it
+     * integrated before the device existed.
+     */
+    FiniteElement::BulkViscosity::Coefficients bulkViscosityCoefficients;
 
     /**
      * @brief Data and state associated with a quadrature point.
@@ -110,6 +119,34 @@ namespace Marmot::Elements {
       double detJ;
       double J0xW;
       BSized B;
+
+      /**
+       * @brief The element's smallest physical extent at this quadrature point.
+       * @details Cached because the artificial bulk viscosity needs it on every explicit increment,
+       * whereas the stable time increment that shares the definition is asked for rarely. The
+       * element's nodal coordinates do not change, so the cached value cannot go stale.
+       */
+      double characteristicElementLength = 0.0;
+
+      /**
+       * @brief Wave speed the artificial bulk viscosity is scaled with, cached on first use.
+       * @details A current wave speed costs a full constitutive evaluation, affordable for the
+       * stable increment (asked for rarely) and not per quadrature point per explicit increment.
+       * What is cached is the UNDAMAGED speed: the term damps the highest frequency the MESH can
+       * carry, which the undamaged material sets, and holding it fixed as the material softens
+       * damps slightly harder -- the safe direction here. Zero means "not yet computed". It is
+       * also the reference the optional degradation is measured against; see
+       * Marmot::FiniteElement::BulkViscosity::degradationFactor.
+       *
+       * @warning Captured on the first explicit increment, from the state the element has THEN. A
+       * hypoelastic material carries its damage in its state variables, so a run beginning from an
+       * already-damaged state -- a restart, or an explicit step after an implicit one -- takes that
+       * degraded speed as its reference and measures no degradation afterwards. The viscosity is
+       * then simply not degraded, which removes more energy rather than less, but it is not what
+       * was asked for. The gradient-enhanced element has no such ambiguity: its reference is the
+       * speed at a ZERO non-local field.
+       */
+      double referenceWaveSpeed = 0.0;
 
       /**
        * @brief Manager for per-quadrature-point state variables.
@@ -216,6 +253,33 @@ namespace Marmot::Elements {
     /** @brief Assign material section and instantiate per-quadrature-point materials. */
     void assignProperty( const MarmotMaterialSection& marmotElementProperty );
 
+    /**
+     * @brief Assign a named element property.
+     * @param propertyName One of "bulk viscosity" or "bulk viscosity damage degradation".
+     * @param properties For "bulk viscosity": the two dimensionless coefficients \f$b_1\f$
+     *        (linear) and \f$b_2\f$ (quadratic), in that order. For "bulk viscosity damage
+     *        degradation": the single exponent \f$n\f$ of the optional degradation with the
+     *        material's loss of stiffness.
+     * @param nProperties Number of values behind that pointer: 2 for "bulk viscosity", 1 for
+     *        "bulk viscosity damage degradation".
+     * @throws std::invalid_argument if the name is not understood, if the count does not match
+     *         what the property expects, or if a coefficient is negative.
+     */
+    void assignProperty( const std::string& propertyName, const double* properties, int nProperties ) override;
+
+    /** @brief The named properties this element understands. */
+    std::vector< std::string > getPropertyNames() const override;
+
+    /**
+     * @brief The element's smallest physical extent at a parent coordinate.
+     * @param xi Parent coordinate to evaluate the Jacobian at.
+     * @return Twice the smallest singular value of the Jacobian.
+     * @details The Jacobian maps \f$[-1,1]^{nDim}\f$ onto the element, so twice its smallest
+     * singular value IS the smallest physical extent. Shared by the stable increment and the bulk
+     * viscosity so the two cannot drift apart.
+     */
+    double characteristicElementLengthAt( const XiSized& xi );
+
     /** @brief Provide nodal coordinates to the parent geometry element. */
     void assignNodeCoordinates( const double* coordinates );
 
@@ -251,7 +315,7 @@ namespace Marmot::Elements {
                                  const int                           elementFace,
                                  const double*                       load,
                                  const double*                       QTotal,
-                                 const double*                       time,
+                                 double                              time,
                                  double                              dT );
 
     /**
@@ -259,12 +323,7 @@ namespace Marmot::Elements {
      * @details Integrates \f$\mathbf{P}_e^{(b)} = \int_{\Omega_e} \mathbf{N}^\mathsf{T} \mathbf{f}\,
      * \mathrm{d}\Omega\f$.
      */
-    void computeBodyForce( double*       P,
-                           double*       K,
-                           const double* load,
-                           const double* QTotal,
-                           const double* time,
-                           double        dT );
+    void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, double time, double dT );
 
     /**
      * @brief Compute internal force and consistent tangent stiffness.
@@ -281,15 +340,8 @@ namespace Marmot::Elements {
      * @param Ke Tangent stiffness matrix (accumulated).
      * @param time Time data forwarded to materials.
      * @param dT Time increment.
-     * @param pNewdT Suggested scaling of dT by the material; if reduced (<1), the routine returns early.
      */
-    void computeYourself( const double* QTotal,
-                          const double* dQ,
-                          double*       Pe,
-                          double*       Ke,
-                          const double* time,
-                          double        dT,
-                          double&       pNewdT );
+    void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT );
 
     /**
      * @brief Compute internal force only (no tangent stiffness).
@@ -298,20 +350,13 @@ namespace Marmot::Elements {
      * \f[
      * \mathbf{P}_e = \sum_{qp} \mathbf{B}^\mathsf{T} \boldsymbol{\sigma}\, J_0 w.
      * \f]
-     * If pNewdT<1, the routine returns early to signal time step reduction.
      * @param QTotal Total displacement vector.
      * @param dQ Incremental displacement.
      * @param Pe Internal force vector (accumulated).
      * @param time Time data forwarded to materials.
      * @param dT Time increment.
-     * @param pNewdT Suggested scaling of dT by the material; if reduced (<1), the routine returns early.
      */
-    void computeYourselfExplicit( const double* QTotal,
-                                  const double* dQ,
-                                  double*       Pe,
-                                  const double* time,
-                                  double        dT,
-                                  double&       pNewdT );
+    void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT );
     /**
      * @brief Compute consistent mass matrix using material density.
      * @details \f$\mathbf{M}_e = \sum_{qp} \rho\, \mathbf{N}^\mathsf{T}\mathbf{N}\, J_0 w\f$.
@@ -321,17 +366,57 @@ namespace Marmot::Elements {
     /**
      * @brief Compute the lumped (diagonal) mass matrix.
      * @details Uses the manifold-based lumping scheme according to
-     * Yang et al. (2017) "A rigorous and unified mass lumping scheme for higher-order elements", CMAME.
+     * Yang, Zheng & Sivaselvan (2017) "A rigorous and unified mass lumping scheme for higher-order
+     * elements", CMAME 319, 491-514. The hexa20 weight the derivation below yields is the split
+     * assessed by Duczek & Gravenkamp (2019) "Critical assessment of different mass lumping schemes
+     * for higher order serendipity finite elements", CMAME 350, 836-897.
      * The lumped mass entries are computed using a weighted shape function
-     * \f$\hat{N} = \tfrac{1}{2}N + \tfrac{1}{2}N_\mathrm{lin}\f$,
+     * \f$\hat{N} = w\,N + (1-w)\,N_\mathrm{lin}\f$,
      * where \f$N\f$ is the high-order shape function and \f$N_\mathrm{lin}\f$ is the corresponding
      * linear (corner-node) shape function on the same element.
+     *
+     * The blend weight \f$w\f$ cannot be a constant, which is the subtlety here. A corner node's
+     * lumped mass is \f$w S^{N}_i + (1-w) S^{\mathrm{lin}}_i\f$, and for a serendipity element
+     * \f$S^{N}_i < 0 < S^{\mathrm{lin}}_i\f$, so positivity requires
+     * \f[ w < w_\mathrm{max} = \min_i \frac{S^{\mathrm{lin}}_i}{S^{\mathrm{lin}}_i - S^{N}_i}. \f]
+     * That limit is element-dependent: \f$0.75\f$ for a quad8, but exactly \f$0.50\f$ for a
+     * hexa20, where a hard-coded \f$\tfrac{1}{2}\f$ therefore sits precisely on the boundary and
+     * yields an exactly zero corner mass for any regular (affinely-mapped) element.
+     *
+     * The weight is therefore derived per element by
+     * Marmot::FiniteElement::MassLumping::manifoldBlendWeight(), which returns
+     * \f$w = \min(\tfrac{1}{2}, \tfrac{2}{3}\,w_\mathrm{max})\f$: exactly \f$\tfrac{1}{2}\f$
+     * wherever that is safe -- every 2D serendipity element, and every linear element, where the
+     * result does not depend on \f$w\f$ at all -- and \f$\tfrac{1}{3}\f$ for a hexa20. It
+     * reproduces -- analytically, and to rounding in floating point -- the values a
+     * per-element-type special case would give, without needing one, and
+     * the critical time step reads its mass distribution from the same helper so the two cannot
+     * disagree.
+     *
+     * @note The element total is independent of \f$w\f$: the blend only moves mass between the
+     * corner and the remaining nodes. An incorrect weight therefore leaves the element mass, and
+     * hence the model mass, perfectly correct -- and is invisible to any check on totals.
      */
     void computeLumpedInertia( double* M );
 
     /**
      * @brief Compute the critical time step for explicit dynamics.
      * @param criticalTimeStep Output parameter for the computed critical time step.
+     * @details The estimate is \f$l / c\f$, scaled by the factor
+     * Marmot::FiniteElement::MassLumping::timeStepFactorFromMassDistribution() derives from the
+     * same lumped mass fractions computeLumpedInertia() assembles: \f$l/c\f$ is the stable
+     * increment for an element whose mass is spread uniformly over its nodes, which lumping does
+     * not do, and the lightest node sets the highest frequency. \f$l\f$ is twice the smallest
+     * singular value of the Jacobian, i.e. the element's smallest physical extent, so a sliver is
+     * not mistaken for its volume-equivalent cube. The minimum over all quadrature points is
+     * returned.
+     *
+     * @warning This corrects the mass-distribution and element-distortion parts of the estimate
+     * only. It does NOT correct for polynomial order, and that residue is large: \f$l/c\f$ is a
+     * linear-element formula, while a quadratic element's highest free eigenfrequency lies well
+     * above what it predicts. A convergence study on a 20-node bar settles only around a courant
+     * number of 0.1-0.2, i.e. roughly a further factor of five is unaccounted for. Closing that
+     * properly wants an eigenvalue-based estimate rather than another factor.
      */
     void computeCriticalTimeStepForExplicitDynamics( double& criticalTimeStep, const double* QTotal );
 
@@ -401,12 +486,14 @@ namespace Marmot::Elements {
   {
     using namespace std;
 
-    static vector< vector< string > > nodeFields;
-    if ( nodeFields.empty() )
+    static const vector< vector< string > > nodeFields = [] {
+      vector< vector< string > > nodeFields;
       for ( int i = 0; i < nNodes; i++ ) {
         nodeFields.push_back( vector< string >() );
         nodeFields[i].push_back( "displacement" );
       }
+      return nodeFields;
+    }();
 
     return nodeFields;
   }
@@ -414,10 +501,12 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   std::vector< int > DisplacementFiniteElement< nDim, nNodes >::getDofIndicesPermutationPattern()
   {
-    static std::vector< int > permutationPattern;
-    if ( permutationPattern.empty() )
+    static const std::vector< int > permutationPattern = [] {
+      std::vector< int > permutationPattern;
       for ( int i = 0; i < nNodes * nDim; i++ )
         permutationPattern.push_back( i );
+      return permutationPattern;
+    }();
 
     return permutationPattern;
   }
@@ -456,6 +545,14 @@ namespace Marmot::Elements {
                                      << __PRETTY_FUNCTION__
                                      << ": invalid material assigned; cannot cast to MarmotMaterialHypoElastic!" );
 
+      /* Deliberately VOLUME based, and deliberately not the length
+       * computeCriticalTimeStepForExplicitDynamics uses. The material's characteristic length is a
+       * regularisation length -- it sets the width over which a softening law dissipates its
+       * fracture energy -- and the volume-equivalent length is the right measure for that. The
+       * stability estimate needs the opposite: the element's SMALLEST extent, because that is what
+       * bounds the highest frequency. The two definitions are not interchangeable; do not unify
+       * them.
+       */
       if constexpr ( nDim == 3 )
         qp.material->setCharacteristicElementLength( std::cbrt( 8 * qp.detJ ) );
       if constexpr ( nDim == 2 )
@@ -463,6 +560,86 @@ namespace Marmot::Elements {
       if constexpr ( nDim == 1 )
         qp.material->setCharacteristicElementLength( 2 * qp.detJ );
     }
+  }
+
+  template < int nDim, int nNodes >
+  void DisplacementFiniteElement< nDim, nNodes >::assignProperty( const std::string& propertyName,
+                                                                  const double*      properties,
+                                                                  int                nProperties )
+  {
+    if ( propertyName == "bulk viscosity" ) {
+      if ( nProperties != 2 )
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__
+                                     << ": the named property 'bulk viscosity' takes exactly "
+                                        "2 values, the linear coefficient b1 and the quadratic coefficient b2, but "
+                                     << nProperties << " were given." );
+
+      /* Validated BEFORE anything is committed, so a rejected assignment leaves the element as it
+       * was. Non-finite values are rejected alongside negative ones: every comparison against a
+       * NaN is false, so a NaN would pass a `< 0.0` test and propagate into the viscous stress.
+       */
+      if ( !std::isfinite( properties[0] ) || !std::isfinite( properties[1] ) )
+        throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
+                                                  << ": both bulk viscosity coefficients must be finite numbers." );
+
+      if ( properties[0] < 0.0 || properties[1] < 0.0 )
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__
+                                     << ": both bulk viscosity coefficients must be non-negative, a negative one "
+                                        "would feed energy into the solution rather than remove it." );
+
+      /* Artificial bulk viscosity is a NUMERICAL device, so it is an element property and not a
+       * material one: the same concrete integrated implicitly needs none of it, and two meshes of
+       * the same material may want different amounts. Both coefficients are dimensionless; see
+       * Marmot::FiniteElement::BulkViscosity for what they multiply.
+       */
+      bulkViscosityCoefficients.linear    = properties[0];
+      bulkViscosityCoefficients.quadratic = properties[1];
+    }
+    else if ( propertyName == "bulk viscosity damage degradation" ) {
+      if ( nProperties != 1 )
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__
+                                     << ": the named property 'bulk viscosity damage degradation' takes exactly "
+                                        "1 value, the exponent n of (c/c_0)^n, but "
+                                     << nProperties << " were given." );
+
+      /* Opt-in and separate from 'bulk viscosity' itself, so switching it on does not disturb the
+       * coefficients: it costs a constitutive evaluation per quadrature point per increment. See
+       * BulkViscosity::degradationFactor for the exponent, and for what it degrades with -- the
+       * current tangent, not a damage variable.
+       */
+      if ( !std::isfinite( properties[0] ) )
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__
+                                     << ": the bulk viscosity damage degradation exponent must be a finite number; a "
+                                        "NaN passes every ordering test and would silently disable the option." );
+
+      if ( properties[0] < 0.0 )
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__
+                                     << ": the bulk viscosity damage degradation exponent must be non-negative, a "
+                                        "negative one would AMPLIFY the viscous stress as the material fails." );
+
+      bulkViscosityCoefficients.degradation = properties[0];
+    }
+    else {
+      MarmotElement::assignProperty( propertyName, properties, nProperties );
+    }
+  }
+
+  template < int nDim, int nNodes >
+  std::vector< std::string > DisplacementFiniteElement< nDim, nNodes >::getPropertyNames() const
+  {
+    return { "bulk viscosity", "bulk viscosity damage degradation" };
+  }
+
+  template < int nDim, int nNodes >
+  double DisplacementFiniteElement< nDim, nNodes >::characteristicElementLengthAt( const XiSized& xi )
+  {
+    const JacobianSized J = this->Jacobian( this->dNdXi( xi ) );
+    return 2.0 * Eigen::JacobiSVD< JacobianSized >( J ).singularValues().minCoeff();
   }
 
   template < int nDim, int nNodes >
@@ -482,6 +659,9 @@ namespace Marmot::Elements {
       qp.detJ                   = J.determinant();
       qp.B                      = this->B( dNdX );
 
+      qp.characteristicElementLength = characteristicElementLengthAt( qp.xi );
+      qp.referenceWaveSpeed          = 0.0;
+
       if constexpr ( nDim == 3 ) {
         qp.J0xW = qp.weight * qp.detJ;
       }
@@ -497,13 +677,12 @@ namespace Marmot::Elements {
   }
 
   template < int nDim, int nNodes >
-  void DisplacementFiniteElement< nDim, nNodes >::computeYourself( const double* QTotal_,
-                                                                   const double* dQ_,
-                                                                   double*       Pe_,
-                                                                   double*       Ke_,
-                                                                   const double* time,
-                                                                   double        dT,
-                                                                   double&       pNewDT )
+  void DisplacementFiniteElement< nDim, nNodes >::computeKernels( const double* QTotal_,
+                                                                  const double* dQ_,
+                                                                  double*       Pe_,
+                                                                  double*       Ke_,
+                                                                  double        time,
+                                                                  double        dT )
   {
     using namespace Marmot;
     using namespace ContinuumMechanics::VoigtNotation;
@@ -536,18 +715,13 @@ namespace Marmot::Elements {
         state.stateVars            = qp.managedStateVars->materialStateVars.data();
 
         // set time info
-        timeInfo.time = time[1];
+        timeInfo.time = time;
         timeInfo.dT   = dT;
-        try {
-          qp.material->computeUniaxialStress( state, C[0], dE[0], timeInfo );
-        }
-        catch ( const Marmot::StressUpdateFailed& e ) {
-          pNewDT = 0.5;
-          return;
-        }
+        qp.material->computeUniaxialStress( state, C[0], dE[0], timeInfo );
         Eigen::VectorXd stress1D( 1 );
         stress1D( 0 )               = state.stress;
         qp.managedStateVars->stress = make3DVoigt< ParentGeometryElement::voigtSize >( stress1D );
+        S                           = stress1D;
         elasticEnergyDensity        = state.elasticEnergyDensity;
         dissipation                 = state.dissipation;
       }
@@ -566,15 +740,9 @@ namespace Marmot::Elements {
           state.stateVars            = qp.managedStateVars->materialStateVars.data();
 
           // set time info
-          timeInfo.time = time[1];
+          timeInfo.time = time;
           timeInfo.dT   = dT;
-          try {
-            qp.material->computePlaneStress( state, C, dE, timeInfo );
-          }
-          catch ( const Marmot::StressUpdateFailed& e ) {
-            pNewDT = 0.5;
-            return;
-          }
+          qp.material->computePlaneStress( state, C, dE, timeInfo );
           qp.managedStateVars->stress = make3DVoigt< ParentGeometryElement::voigtSize >( state.stress );
           S                           = state.stress;
           elasticEnergyDensity        = state.elasticEnergyDensity;
@@ -597,15 +765,9 @@ namespace Marmot::Elements {
           state.stateVars            = qp.managedStateVars->materialStateVars.data();
 
           // set time info
-          timeInfo.time = time[1];
+          timeInfo.time = time;
           timeInfo.dT   = dT;
-          try {
-            qp.material->computeStress( state, C66, dE6, timeInfo );
-          }
-          catch ( const Marmot::StressUpdateFailed& e ) {
-            pNewDT = 0.5;
-            return;
-          }
+          qp.material->computeStress( state, C66, dE6, timeInfo );
           qp.managedStateVars->stress = state.stress;
 
           S                    = reduce3DVoigt< ParentGeometryElement::voigtSize >( state.stress );
@@ -628,15 +790,9 @@ namespace Marmot::Elements {
           state.stateVars            = qp.managedStateVars->materialStateVars.data();
 
           // set time info
-          timeInfo.time = time[1];
+          timeInfo.time = time;
           timeInfo.dT   = dT;
-          try {
-            qp.material->computeStress( state, C, dE, timeInfo );
-          }
-          catch ( const Marmot::StressUpdateFailed& e ) {
-            pNewDT = 0.5;
-            return;
-          }
+          qp.material->computeStress( state, C, dE, timeInfo );
           qp.managedStateVars->stress = state.stress;
           S                           = state.stress;
           elasticEnergyDensity        = state.elasticEnergyDensity;
@@ -650,17 +806,16 @@ namespace Marmot::Elements {
       qp.managedStateVars->strain += make3DVoigt< ParentGeometryElement::voigtSize >( dE );
 
       Ke += B.transpose() * C * B * qp.J0xW;
-      Pe -= B.transpose() * S * qp.J0xW;
+      Pe += B.transpose() * S * qp.J0xW;
     }
   }
 
   template < int nDim, int nNodes >
-  void DisplacementFiniteElement< nDim, nNodes >::computeYourselfExplicit( const double* QTotal_,
-                                                                           const double* dQ_,
-                                                                           double*       Pe_,
-                                                                           const double* time,
-                                                                           double        dT,
-                                                                           double&       pNewDT )
+  void DisplacementFiniteElement< nDim, nNodes >::computeKernelsExplicit( const double* QTotal_,
+                                                                          const double* dQ_,
+                                                                          double*       Pe_,
+                                                                          double        time,
+                                                                          double        dT )
   {
     using namespace Marmot;
     using namespace ContinuumMechanics::VoigtNotation;
@@ -699,16 +854,10 @@ namespace Marmot::Elements {
           state.stateVars            = qp.managedStateVars->materialStateVars.data();
 
           // set time info
-          timeInfo.time = time[1];
+          timeInfo.time = time;
           timeInfo.dT   = dT;
           Matrix3d C    = Matrix3d::Zero();
-          try {
-            qp.material->computePlaneStress( state, C, dE, timeInfo );
-          }
-          catch ( const StressUpdateFailed& e ) {
-            pNewDT = 0.5;
-            return;
-          }
+          qp.material->computePlaneStress( state, C, dE, timeInfo );
           qp.managedStateVars->stress = make3DVoigt< ParentGeometryElement::voigtSize >( state.stress );
           S                           = state.stress;
           elasticEnergyDensity        = state.elasticEnergyDensity;
@@ -730,15 +879,9 @@ namespace Marmot::Elements {
           state.stateVars            = qp.managedStateVars->materialStateVars.data();
 
           // set time info
-          timeInfo.time = time[1];
+          timeInfo.time = time;
           timeInfo.dT   = dT;
-          try {
-            qp.material->computeStressExplicit( state, dE6, timeInfo );
-          }
-          catch ( const Marmot::StressUpdateFailed& e ) {
-            pNewDT = 0.5;
-            return;
-          }
+          qp.material->computeStressExplicit( state, dE6, timeInfo );
           qp.managedStateVars->stress = state.stress;
 
           S                    = reduce3DVoigt< ParentGeometryElement::voigtSize >( state.stress );
@@ -760,15 +903,9 @@ namespace Marmot::Elements {
           state.stateVars            = qp.managedStateVars->materialStateVars.data();
 
           // set time info
-          timeInfo.time = time[1];
+          timeInfo.time = time;
           timeInfo.dT   = dT;
-          try {
-            qp.material->computeStressExplicit( state, dE, timeInfo );
-          }
-          catch ( const Marmot::StressUpdateFailed& e ) {
-            pNewDT = 0.5;
-            return;
-          }
+          qp.material->computeStressExplicit( state, dE, timeInfo );
           qp.managedStateVars->stress = state.stress;
           S                           = state.stress;
           elasticEnergyDensity        = state.elasticEnergyDensity;
@@ -781,7 +918,59 @@ namespace Marmot::Elements {
       qp.managedStateVars->totalStrainEnergy   = ( elasticEnergyDensity + dissipation ) * qp.J0xW;
       qp.managedStateVars->strain += make3DVoigt< ParentGeometryElement::voigtSize >( dE );
 
-      Pe -= B.transpose() * S * qp.J0xW;
+      /* The artificial bulk viscosity is added to the stress that is INTEGRATED, never to the one
+       * that is STORED. It is a numerical device: the constitutive law must not see it, it must
+       * leave no trace in the state, and it must not appear in the reported stress. With inactive
+       * coefficients nothing here is evaluated at all, so a run that does not ask for bulk
+       * viscosity is bit-identical to one built before it existed.
+       */
+      if ( bulkViscosityCoefficients.areActive() ) {
+
+        constexpr int nNormalComponents = nDim == 3 ? 3 : ( nDim == 2 ? 2 : 1 );
+
+        /* In plane stress the out-of-plane strain is not carried by the element's kinematics, so
+         * the trace is taken over the in-plane components only and the term is approximate there.
+         * In 3D and in plane strain this IS the volumetric strain increment.
+         */
+        const double volumetricStrainIncrement = dE.head( nNormalComponents ).sum();
+
+        const MarmotMaterialHypoElastic::state3D stateForWaveSpeed( qp.managedStateVars->stress,
+                                                                    elasticEnergyDensity,
+                                                                    dissipation,
+                                                                    qp.managedStateVars->materialStateVars.data() );
+
+        if ( qp.referenceWaveSpeed <= 0.0 )
+          qp.referenceWaveSpeed = qp.material->getMaximumWaveSpeed( stateForWaveSpeed );
+
+        /* The optional degradation needs the material's CURRENT tangent, and asking for that costs
+         * a full constitutive evaluation. With the exponent at its default of zero the material is
+         * never asked, so a deck that does not request the degradation integrates exactly the
+         * stress it integrated before.
+         */
+        const double
+          degradation = bulkViscosityCoefficients.isDegraded()
+                          ? FiniteElement::BulkViscosity::degradationFactor( qp.material->getMaximumWaveSpeed(
+                                                                               stateForWaveSpeed ),
+                                                                             qp.referenceWaveSpeed,
+                                                                             bulkViscosityCoefficients.degradation )
+                          : 1.0;
+
+        const double
+          bulkViscousStress = degradation *
+                              FiniteElement::BulkViscosity::viscousStressFromIncrement( volumetricStrainIncrement,
+                                                                                        dT,
+                                                                                        qp.material->getDensity(
+                                                                                          qp.managedStateVars
+                                                                                            ->materialStateVars
+                                                                                            .data() ),
+                                                                                        qp.referenceWaveSpeed,
+                                                                                        qp.characteristicElementLength,
+                                                                                        bulkViscosityCoefficients );
+
+        S.head( nNormalComponents ).array() += bulkViscousStress;
+      }
+
+      Pe += B.transpose() * S * qp.J0xW;
     }
   }
   template < int nDim, int nNodes >
@@ -826,7 +1015,7 @@ namespace Marmot::Elements {
                                                                           const int     elementFace,
                                                                           const double* load,
                                                                           const double* QTotal,
-                                                                          const double* time,
+                                                                          double        time,
                                                                           double        dT )
   {
     Map< RhsSized > fU( P );
@@ -871,7 +1060,7 @@ namespace Marmot::Elements {
                                                                     double*       K,
                                                                     const double* load,
                                                                     const double* QTotal,
-                                                                    const double* time,
+                                                                    double        time,
                                                                     double        dT )
   {
     Map< RhsSized >                              Pe( P_ );
@@ -899,14 +1088,30 @@ namespace Marmot::Elements {
     Map< RhsSized > LMM( M );
     LMM.setZero();
 
-    constexpr int nNodesLinear  = ( 1 << nDim );
-    auto          linGeometryEl = MarmotGeometryElement< nDim, nNodesLinear >();
+    /* Row sums of the consistent mass matrix, from this element's own shape functions and from the
+     * linear (corner-node) shape functions of the same element. Density-free: the blend weight and
+     * the mass distribution are properties of the element geometry alone, and deriving them in one
+     * place is what keeps this function and computeCriticalTimeStepForExplicitDynamics consistent
+     * with each other -- a time step derived from a different mass distribution than the one
+     * actually assembled is exactly the kind of inconsistency that surfaces as an unexplained
+     * instability rather than as a clean failure.
+     */
+    constexpr int   nNodesLinear     = ( 1 << nDim );
+    auto            linGeometryEl    = MarmotGeometryElement< nDim, nNodesLinear >();
+    Eigen::VectorXd rowSumsHighOrder = Eigen::VectorXd::Zero( nNodes );
+    Eigen::VectorXd rowSumsLinear    = Eigen::VectorXd::Zero( nNodesLinear );
+    for ( const auto& qp : qps ) {
+      rowSumsHighOrder += Eigen::VectorXd( this->N( qp.xi ) ) * qp.J0xW;
+      rowSumsLinear += Eigen::VectorXd( linGeometryEl.N( qp.xi ) ) * qp.J0xW;
+    }
+    const double weight = FiniteElement::MassLumping::manifoldBlendWeight( rowSumsHighOrder, rowSumsLinear );
+
     for ( const auto& qp : qps ) {
       const auto N_    = this->N( qp.xi );
       const auto N_lin = linGeometryEl.N( qp.xi );
 
-      VectorXd N_weighted = 0.5 * ( N_ );
-      N_weighted.head( nNodesLinear ) += 0.5 * N_lin;
+      VectorXd N_weighted = weight * ( N_ );
+      N_weighted.head( nNodesLinear ) += ( 1.0 - weight ) * N_lin;
 
       const double rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
       VectorXd     m_  = N_weighted * qp.J0xW * rho;
@@ -922,15 +1127,57 @@ namespace Marmot::Elements {
                                                                                               const double* QTotal )
   {
 
+    /* The l / c estimate below assumes the element's mass is spread UNIFORMLY over its nodes, each
+     * carrying 1 / nNodes of it. The lumping scheme computeLumpedInertia applies does not do that:
+     * under the manifold-based blend a hexa20 corner node carries less than the uniform share, and
+     * the lightest node sets the highest frequency (omega = sqrt( k / m )), so the stable increment
+     * scales with sqrt( m_min / m_uniform ).
+     *
+     * Ignoring it puts the default courant number of 0.8 ABOVE the true limit for every 20-node
+     * element. That does not present as a marginally noisy run but as violent exponential
+     * divergence -- and only where the material provides no damping, so a 20-node run on a
+     * viscously regularised material can sit just above the limit and look perfectly healthy. That
+     * is worse than a clean failure, because it makes the fault look model-specific.
+     *
+     * The fractions come from the same helper computeLumpedInertia uses, so the two cannot drift
+     * apart. Exactly 1 for a linear element on a regular mesh, so nothing changes there, and
+     * slightly below 1 for a distorted element -- which is correct, a distorted element does have a
+     * tighter limit than its volume alone suggests.
+     */
+    constexpr int   nNodesLinear     = ( 1 << nDim );
+    auto            linGeometryEl    = MarmotGeometryElement< nDim, nNodesLinear >();
+    Eigen::VectorXd rowSumsHighOrder = Eigen::VectorXd::Zero( nNodes );
+    Eigen::VectorXd rowSumsLinear    = Eigen::VectorXd::Zero( nNodesLinear );
+    for ( const auto& qp : qps ) {
+      rowSumsHighOrder += Eigen::VectorXd( this->N( qp.xi ) ) * qp.J0xW;
+      rowSumsLinear += Eigen::VectorXd( linGeometryEl.N( qp.xi ) ) * qp.J0xW;
+    }
+    const double weight = FiniteElement::MassLumping::manifoldBlendWeight( rowSumsHighOrder, rowSumsLinear );
+    const double lumpedMassTimeStepFactor = FiniteElement::MassLumping::timeStepFactorFromMassDistribution(
+      FiniteElement::MassLumping::manifoldMassFractions( rowSumsHighOrder, rowSumsLinear, weight ) );
+
     criticalTimeStep = std::numeric_limits< double >::max();
     for ( const auto& qp : qps ) {
-      double characteristicElementLength = 0.0;
-      if constexpr ( nDim == 3 )
-        characteristicElementLength = std::cbrt( 8 * qp.detJ );
-      if constexpr ( nDim == 2 )
-        characteristicElementLength = std::sqrt( 4 * qp.detJ );
-      if constexpr ( nDim == 1 )
-        characteristicElementLength = 2 * qp.detJ;
+      /* The characteristic length has to be the element's SMALLEST physical extent, not a
+       * volume-averaged one. cbrt( 8 * detJ ) and its lower-dimensional analogues are volume
+       * based: for a sliver -- thin in one direction but not the others -- the volume stays
+       * moderate while the thin dimension collapses, so they OVERESTIMATE the length and hence
+       * the stable time step. Refining a distorted parent element is precisely how slivers are
+       * produced, so an h-adaptive explicit run integrates its most distorted elements above
+       * their stability limit and diverges thousands of increments later.
+       *
+       * The Jacobian maps the natural cube [-1,1]^nDim onto the element, so twice its smallest
+       * singular value IS that smallest physical extent. For a well-shaped element this
+       * reproduces the previous expressions exactly -- a cube of side h gives h either way --
+       * so the estimate is tightened only where it was previously wrong.
+       *
+       * Read from the cache initializeYourself() fills rather than recomputed here: the artificial
+       * bulk viscosity already needs this value on every explicit increment and caches it for that
+       * reason, and the nodal coordinates it depends on do not change, so a second computation here
+       * would only disagree with the cached one under floating-point noise, never under a real
+       * update.
+       */
+      const double characteristicElementLength = qp.characteristicElementLength;
 
       MarmotMaterialHypoElastic::state3D state( qp.managedStateVars->stress,
                                                 qp.managedStateVars->elasticStrainEnergy / qp.J0xW,
@@ -940,7 +1187,7 @@ namespace Marmot::Elements {
       const double c = qp.material->getMaximumWaveSpeed( state );
       if ( c <= 0.0 )
         throw std::runtime_error( "Non-positive wave speed encountered in computeCriticalTimeStepForExplicitDynamics" );
-      const double dt = characteristicElementLength / c;
+      const double dt = lumpedMassTimeStepFactor * characteristicElementLength / c;
       if ( dt < criticalTimeStep )
         criticalTimeStep = dt;
     }

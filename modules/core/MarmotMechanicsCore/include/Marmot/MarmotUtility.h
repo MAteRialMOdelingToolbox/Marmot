@@ -32,16 +32,4 @@
  */
 
 namespace Marmot {
-  /**
-   * @brief Signals that the current increment should be discarded.
-   *
-   * Sets @p pNewDT to the requested @p value and prints a warning message.
-   * Intended to be called inside material routines when convergence cannot
-   * be achieved, instructing the host code to restart with a smaller step.
-   *
-   * @param pNewDT   Output parameter: suggested new time-step size.
-   * @param value    Suggested value for the new time-step size.
-   * @param message  Human-readable reason for discarding the increment.
-   */
-  void discardTheIncrement( double& pNewDT, double value, const std::string& message );
 } // namespace Marmot

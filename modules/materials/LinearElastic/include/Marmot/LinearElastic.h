@@ -92,8 +92,10 @@ namespace Marmot::Materials {
     const double& E3;
 
     /// @brief Poisson's ratio between axes \f$x_1\f$ and \f$x_2\f$
-    /** \details \f$\nu_{12}\f$ represents the Poisson's ratio describing the strain in direction \f$x_1\f$ caused by a
-     * load in direction \f$x_2\f$ of the user-defined local coordinate system. Depending on the anisotropic type it is
+    /** \details \f$\nu_{12}\f$ represents the Poisson's ratio describing the strain in direction \f$x_2\f$ caused by a
+     * load in direction \f$x_1\f$ of the user-defined local coordinate system, i.e.
+     * \f$\nu_{12} = -\varepsilon_2/\varepsilon_1\f$ for uniaxial stress in direction \f$x_1\f$.
+     * Depending on the anisotropic type it is
      * a reference variable to:
      *   - Isotropic:           #materialProperties[1]
      *   - TransverseIsotropic: #materialProperties[2]
@@ -102,8 +104,10 @@ namespace Marmot::Materials {
     const double& nu12;
 
     /// @brief Poisson's ratio between axes \f$x_2\f$ and \f$x_3\f$
-    /** \details \f$\nu_{23}\f$ represents the Poisson's ratio describing the strain in direction \f$x_2\f$ caused by a
-     * load in direction \f$x_3\f$ of the user-defined local coordinate system. Depending on the anisotropic type it is
+    /** \details \f$\nu_{23}\f$ represents the Poisson's ratio describing the strain in direction \f$x_3\f$ caused by a
+     * load in direction \f$x_2\f$ of the user-defined local coordinate system, i.e.
+     * \f$\nu_{23} = -\varepsilon_3/\varepsilon_2\f$ for uniaxial stress in direction \f$x_2\f$.
+     * Depending on the anisotropic type it is
      * a reference variable to:
      *   - TransverseIsotropic: #materialProperties[3]
      *   - Orthotropic:         #materialProperties[4]
@@ -112,8 +116,9 @@ namespace Marmot::Materials {
     const double& nu23;
 
     /// @brief Poisson's ratio between axes \f$x_1\f$ and \f$x_3\f$
-    /** \details \f$\nu_{13}\f$ represents the Poisson's ratio describing the strain in direction \f$x_1\f$ caused by a
-     * load in direction \f$x_3\f$ of the user-defined local coordinate system.
+    /** \details \f$\nu_{13}\f$ represents the Poisson's ratio describing the strain in direction \f$x_3\f$ caused by a
+     * load in direction \f$x_1\f$ of the user-defined local coordinate system, i.e.
+     * \f$\nu_{13} = -\varepsilon_3/\varepsilon_1\f$ for uniaxial stress in direction \f$x_1\f$.
      * - For orthotropic behaviour it must be specified (#materialProperties[5]).
      * - For transverse-isotropic and isotropic behaviour it is set to #nu23 and does not need to be specified.
      */

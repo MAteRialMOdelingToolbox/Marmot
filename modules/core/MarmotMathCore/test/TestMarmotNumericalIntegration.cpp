@@ -42,9 +42,35 @@ void testIntegrateScalarFunction()
                            "Simpson's rule integration failed." );
 }
 
+void testIntegrateScalarFunctionThrowsForInvalidRule()
+{
+  auto testFunction = []( const double x ) { return std::pow( x, 2 ); };
+
+  std::tuple< double, double > limits = { 0.0, 1.0 };
+  int                          nSteps = 10;
+
+  // any enumerator value outside {midpoint, trapezodial, simpson} must hit the default: throw branch
+  const auto invalidRule = static_cast< integrationRule >( 99 );
+
+  bool threw = false;
+  try {
+    integrateScalarFunction( testFunction, limits, nSteps, invalidRule );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+
+  throwExceptionOnFailure( threw,
+                           "integrateScalarFunction() must throw std::invalid_argument for an unknown "
+                           "integration rule" );
+}
+
 int main()
 {
-  testIntegrateScalarFunction();
+  auto tests = std::vector< std::function< void() > >{ testIntegrateScalarFunction,
+                                                       testIntegrateScalarFunctionThrowsForInvalidRule };
+
+  executeTestsAndCollectExceptions( tests );
 
   return 0;
 }

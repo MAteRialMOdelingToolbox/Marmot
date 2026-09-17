@@ -56,6 +56,8 @@ namespace Marmot {
       return (VoigtSize)( ( ( x * x ) + x ) >> 1 );
     }
 
+    inline constexpr int IndicesToVoigtIndex[3][3] = { { 0, 3, 4 }, { 3, 1, 5 }, { 4, 5, 2 } };
+
     /** @brief Predefined 6D vector with scaling factor (2x) for shear components in Voigt notation.
      * @details The vector contains scaling factors: {1, 1, 1, 2, 2, 2}.
      */
