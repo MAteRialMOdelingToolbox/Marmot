@@ -80,15 +80,14 @@ namespace Marmot::Materials {
     using mM9d = Eigen::Map< Eigen::Matrix< double, 9, 9 > >;
 
     VectorXd X( 10 );
-    X.segment( 0, 9 ) = mV9d( FeTrial.data() );
+    X.segment( 0, 9 )  = mV9d( FeTrial.data() );
     X( 9 )             = 0.0;
     VectorXd        dX = VectorXd::Zero( 10 );
     VectorXd        R  = VectorXd::Zero( 10 );
     Eigen::MatrixXd dR_dX( 10, 10 );
 
-    std::tie( R, dR_dX ) = NumericalAlgorithms::Differentiation::Complex::forwardDifference(
-      [&]( const VectorXcd& X_ ) { return computeResidualVector( X_, FeTrial, dT ); },
-      X );
+    std::tie( R, dR_dX ) = NumericalAlgorithms::Differentiation::Complex::
+      forwardDifference( [&]( const VectorXcd& X_ ) { return computeResidualVector( X_, FeTrial, dT ); }, X );
     R = computeResidualVector( X, FeTrial, dT );
 
     size_t counter = 0;
@@ -100,9 +99,8 @@ namespace Marmot::Materials {
 
         dX = -dR_dX.colPivHouseholderQr().solve( R );
         X += dX;
-        std::tie( R, dR_dX ) = NumericalAlgorithms::Differentiation::Complex::forwardDifference(
-          [&]( const VectorXcd& X_ ) { return computeResidualVector( X_, FeTrial, dT ); },
-          X );
+        std::tie( R, dR_dX ) = NumericalAlgorithms::Differentiation::Complex::
+          forwardDifference( [&]( const VectorXcd& X_ ) { return computeResidualVector( X_, FeTrial, dT ); }, X );
         R = computeResidualVector( X, FeTrial, dT );
         counter += 1;
       }
@@ -114,8 +112,8 @@ namespace Marmot::Materials {
     Tensor33d Fe( X.segment( 0, 9 ).data() );
 
     // --- update the viscous deformation gradient ---
-    Tensor33d dFv    = Fastor::inverse( Fe ) % FeTrial;
-    Tensor33d FvNew  = dFv % FvOld;
+    Tensor33d dFv   = Fastor::inverse( Fe ) % FeTrial;
+    Tensor33d FvNew = dFv % FvOld;
     memcpy( Fv.data(), FvNew.data(), 9 * sizeof( double ) );
 
     // --- network A: direct evaluation on total C ---
@@ -127,21 +125,20 @@ namespace Marmot::Materials {
     double psiA;
     std::tie( psiA, dPsiA_dC ) = hyperelasticPotential( C, hyperelasticBase, A1, A2, A3, kappaA );
 
-    using func_type_A    = std::function< Tensor33t< complexDouble >( const Tensor33t< complexDouble >& ) >;
+    using func_type_A     = std::function< Tensor33t< complexDouble >( const Tensor33t< complexDouble >& ) >;
     func_type_A computeSA = [&]( const Tensor33t< complexDouble >& C_ ) {
       const auto [_psi, _dPsi_dC] = hyperelasticPotential( C_, hyperelasticBase, A1, A2, A3, kappaA );
       return _dPsi_dC;
     };
-    Tensor3333d d2PsiA_dCdC = NumericalAlgorithms::Differentiation::Complex::TensorToTensor::forwardDifference(
-      computeSA,
-      C );
+    Tensor3333d
+      d2PsiA_dCdC = NumericalAlgorithms::Differentiation::Complex::TensorToTensor::forwardDifference( computeSA, C );
 
     Tensor33d   PK2_A = 2. * dPsiA_dC;
     Tensor3333d dTauA_dPK2, dTauA_dF_partial;
     Tensor33d   tauA;
-    std::tie( tauA, dTauA_dPK2, dTauA_dF_partial ) = StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2(
-      PK2_A,
-      deformation.F );
+    std::tie( tauA,
+              dTauA_dPK2,
+              dTauA_dF_partial ) = StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2( PK2_A, deformation.F );
 
     Tensor3333d dPK2A_dF = einsum< ijKL, KLMN >( 2. * d2PsiA_dCdC, dC_dF );
     Tensor3333d dTauA_dF = einsum< IJKL, KLMN >( dTauA_dPK2, dPK2A_dF ) +
@@ -155,27 +152,25 @@ namespace Marmot::Materials {
     double psiB;
     std::tie( psiB, dPsiB_dCe ) = hyperelasticPotential( Ce, hyperelasticBase, B1, B2, B3, kappaB );
 
-    using func_type_B    = std::function< Tensor33t< complexDouble >( const Tensor33t< complexDouble >& ) >;
+    using func_type_B     = std::function< Tensor33t< complexDouble >( const Tensor33t< complexDouble >& ) >;
     func_type_B computeSB = [&]( const Tensor33t< complexDouble >& Ce_ ) {
       const auto [_psi, _dPsi_dCe] = hyperelasticPotential( Ce_, hyperelasticBase, B1, B2, B3, kappaB );
       return _dPsi_dCe;
     };
-    Tensor3333d d2PsiB_dCedCe = NumericalAlgorithms::Differentiation::Complex::TensorToTensor::forwardDifference(
-      computeSB,
-      Ce );
+    Tensor3333d
+      d2PsiB_dCedCe = NumericalAlgorithms::Differentiation::Complex::TensorToTensor::forwardDifference( computeSB, Ce );
 
     Tensor33d   PK2_B = 2. * dPsiB_dCe;
     Tensor3333d dTauB_dPK2, dTauB_dFe_partial;
     Tensor33d   tauB;
-    std::tie( tauB, dTauB_dPK2, dTauB_dFe_partial ) = StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2(
-      PK2_B,
-      Fe );
+    std::tie( tauB, dTauB_dPK2, dTauB_dFe_partial ) = StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2( PK2_B,
+                                                                                                                 Fe );
 
     // --- implicit-function-theorem sensitivity dFe/dF ---
-    MatrixXd dYdDeformation               = MatrixXd::Zero( 10, 10 );
-    dYdDeformation.block< 9, 9 >( 0, 0 ) = mM9d( Tensor3333d( einsum< IK, JL, to_IJKL >( Spatial3D::I,
-                                                                                         transpose( Fastor::inverse(
-                                                                                           FvOld ) ) ) )
+    MatrixXd dYdDeformation              = MatrixXd::Zero( 10, 10 );
+    dYdDeformation.block< 9, 9 >( 0, 0 ) = mM9d( Tensor3333d(
+                                                   einsum< IK, JL, to_IJKL >( Spatial3D::I,
+                                                                              transpose( Fastor::inverse( FvOld ) ) ) )
                                                    .data() )
                                              .transpose();
     MatrixXd dXdDeformation = dR_dX.colPivHouseholderQr().solve( dYdDeformation );

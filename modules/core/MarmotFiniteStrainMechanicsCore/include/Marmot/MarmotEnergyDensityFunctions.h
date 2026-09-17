@@ -153,8 +153,8 @@ namespace Marmot::ContinuumMechanics {
      *  where \f$ \bar{I}_1 = I_1 J^{-2/3} \f$ and \f$ \bar{I}_2 = I_2 J^{-4/3} \f$ are the first
      *  and second invariant of the isochoric right Cauchy-Green tensor, respectively, \f$ I_1 =
      *  \text{tr}(\boldsymbol{C}) \f$ and \f$ I_2 = 0.5 (I_1^2 - \text{tr}(\boldsymbol{C}^2)) \f$ are the first and
-     *  second invariant of the right Cauchy-Green tensor \f$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} \f$, \f$ J
-     *  = \sqrt{\det(\boldsymbol{C})} = \det(\boldsymbol{F}) \f$ is the determinant of the deformation gradient.
+     *  second invariant of the right Cauchy-Green tensor \f$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} \f$, \f$
+     * J = \sqrt{\det(\boldsymbol{C})} = \det(\boldsymbol{F}) \f$ is the determinant of the deformation gradient.
      *
      * @tparam T Scalar type, e.g. double, float, etc.
      * @param C Right Cauchy-Green tensor
@@ -200,7 +200,7 @@ namespace Marmot::ContinuumMechanics {
       const T J         = sqrt( determinant( C ) );
       const T I1        = trace( C );
       const T I1_minus3 = I1 * pow( J, -2. / 3. ) - 3.;
-      T       res = C10 * I1_minus3 + C20 * I1_minus3 * I1_minus3 + C30 * I1_minus3 * I1_minus3 * I1_minus3;
+      T       res       = C10 * I1_minus3 + C20 * I1_minus3 * I1_minus3 + C30 * I1_minus3 * I1_minus3 * I1_minus3;
       return res;
     }
 
@@ -403,15 +403,15 @@ namespace Marmot::ContinuumMechanics {
      */
     template < typename T >
     T OgdenPotential( const Tensor33t< T >& C,
-                      const double         mu1,
-                      const double         alpha1,
-                      const double         mu2,
-                      const double         alpha2,
-                      const double         mu3,
-                      const double         alpha3 )
+                      const double          mu1,
+                      const double          alpha1,
+                      const double          mu2,
+                      const double          alpha2,
+                      const double          mu3,
+                      const double          alpha3 )
     {
-      const T   J    = sqrt( determinant( C ) );
-      const T   Jm13 = pow( J, -1. / 3. );
+      const T J            = sqrt( determinant( C ) );
+      const T Jm13         = pow( J, -1. / 3. );
       const auto [eigC, Q] = Marmot::Math::computeEigenSystemJacobi( C );
 
       Tensor3t< T > lambdaBar;
@@ -447,9 +447,9 @@ namespace Marmot::ContinuumMechanics {
       template < typename T >
       std::tuple< T, Tensor33t< T > > VolumetricPenaltyPotential( const Tensor33t< T >& C, const double kappa )
       {
-        const T              lnDetC = log( determinant( C ) );
-        const Tensor33t< T > CInv   = inverse( C );
-        const T              psi    = kappa / 8. * lnDetC * lnDetC;
+        const T              lnDetC  = log( determinant( C ) );
+        const Tensor33t< T > CInv    = inverse( C );
+        const T              psi     = kappa / 8. * lnDetC * lnDetC;
         const Tensor33t< T > dPsi_dC = multiplyFastorTensorWithScalar( CInv, T( kappa / 4. * lnDetC ) );
         return { psi, dPsi_dC };
       }
@@ -473,10 +473,10 @@ namespace Marmot::ContinuumMechanics {
         const T Jm23  = pow( determinant( C ), -1. / 3. );
         const T Ibar1 = trace( C ) * Jm23;
 
-        const Tensor33t< T > I           = fastorTensorFromDoubleTensor< T >( Spatial3D::I );
-        const Tensor33t< T > CInv         = inverse( C );
-        const Tensor33t< T > dIbar1_dC    = multiplyFastorTensorWithScalar( I, Jm23 ) -
-                                          multiplyFastorTensorWithScalar( CInv, Ibar1 / 3. );
+        const Tensor33t< T > I         = fastorTensorFromDoubleTensor< T >( Spatial3D::I );
+        const Tensor33t< T > CInv      = inverse( C );
+        const Tensor33t< T > dIbar1_dC = multiplyFastorTensorWithScalar( I, Jm23 ) -
+                                         multiplyFastorTensorWithScalar( CInv, Ibar1 / 3. );
 
         const T              psi     = mu / 2. * ( Ibar1 - 3. );
         const Tensor33t< T > dPsi_dC = multiplyFastorTensorWithScalar( dIbar1_dC, T( mu / 2. ) );
@@ -495,22 +495,22 @@ namespace Marmot::ContinuumMechanics {
        */
       template < typename T >
       std::tuple< T, Tensor33t< T > > YeohPotential( const Tensor33t< T >& C,
-                                                      const double          C10,
-                                                      const double          C20,
-                                                      const double          C30 )
+                                                     const double          C10,
+                                                     const double          C20,
+                                                     const double          C30 )
       {
-        const T Jm23      = pow( determinant( C ), -1. / 3. );
-        const T Ibar1     = trace( C ) * Jm23;
-        const T Ibar1m3   = Ibar1 - 3.;
+        const T Jm23    = pow( determinant( C ), -1. / 3. );
+        const T Ibar1   = trace( C ) * Jm23;
+        const T Ibar1m3 = Ibar1 - 3.;
 
-        const Tensor33t< T > I        = fastorTensorFromDoubleTensor< T >( Spatial3D::I );
-        const Tensor33t< T > CInv     = inverse( C );
+        const Tensor33t< T > I         = fastorTensorFromDoubleTensor< T >( Spatial3D::I );
+        const Tensor33t< T > CInv      = inverse( C );
         const Tensor33t< T > dIbar1_dC = multiplyFastorTensorWithScalar( I, Jm23 ) -
-                                          multiplyFastorTensorWithScalar( CInv, Ibar1 / 3. );
+                                         multiplyFastorTensorWithScalar( CInv, Ibar1 / 3. );
 
-        const T psi          = C10 * Ibar1m3 + C20 * Ibar1m3 * Ibar1m3 + C30 * Ibar1m3 * Ibar1m3 * Ibar1m3;
-        const T dPsi_dIbar1  = C10 + 2. * C20 * Ibar1m3 + 3. * C30 * Ibar1m3 * Ibar1m3;
-        const Tensor33t< T > dPsi_dC = multiplyFastorTensorWithScalar( dIbar1_dC, dPsi_dIbar1 );
+        const T              psi         = C10 * Ibar1m3 + C20 * Ibar1m3 * Ibar1m3 + C30 * Ibar1m3 * Ibar1m3 * Ibar1m3;
+        const T              dPsi_dIbar1 = C10 + 2. * C20 * Ibar1m3 + 3. * C30 * Ibar1m3 * Ibar1m3;
+        const Tensor33t< T > dPsi_dC     = multiplyFastorTensorWithScalar( dIbar1_dC, dPsi_dIbar1 );
         return { psi, dPsi_dC };
       }
 
@@ -525,8 +525,8 @@ namespace Marmot::ContinuumMechanics {
        */
       template < typename T >
       std::tuple< T, Tensor33t< T > > MooneyRivlinPotential( const Tensor33t< T >& C,
-                                                              const double          C10,
-                                                              const double          C01 )
+                                                             const double          C10,
+                                                             const double          C01 )
       {
         const T J     = sqrt( determinant( C ) );
         const T Jm23  = pow( J, -2. / 3. );
@@ -540,13 +540,13 @@ namespace Marmot::ContinuumMechanics {
         const Tensor33t< T > CInv = inverse( C );
 
         const Tensor33t< T > dIbar1_dC = multiplyFastorTensorWithScalar( I, Jm23 ) -
-                                          multiplyFastorTensorWithScalar( CInv, Ibar1 / 3. );
+                                         multiplyFastorTensorWithScalar( CInv, Ibar1 / 3. );
         // dIbar2/dC = J^(-4/3)*I1*I - J^(-4/3)*C - (2/3)*Ibar2*Cinv (standard
         // isochoric second-invariant derivative identity, I2's own derivative
         // dI2/dC = I1*I - C combined with the J^(-4/3) scaling's own C-derivative).
         const Tensor33t< T > dIbar2_dC = multiplyFastorTensorWithScalar( I, T( Jm43 * I1 ) ) -
-                                          multiplyFastorTensorWithScalar( C, Jm43 ) -
-                                          multiplyFastorTensorWithScalar( CInv, T( 2. / 3. * Ibar2 ) );
+                                         multiplyFastorTensorWithScalar( C, Jm43 ) -
+                                         multiplyFastorTensorWithScalar( CInv, T( 2. / 3. * Ibar2 ) );
 
         const T              psi     = C10 * ( Ibar1 - 3. ) + C01 * ( Ibar2 - 3. );
         const Tensor33t< T > dPsi_dC = multiplyFastorTensorWithScalar( dIbar1_dC, T( C10 ) ) +
@@ -634,20 +634,20 @@ namespace Marmot::ContinuumMechanics {
        */
       template < typename T >
       std::tuple< T, Tensor33t< T > > ArrudaBoyce8ChainPotential( const Tensor33t< T >& C,
-                                                                    const double          mu,
-                                                                    const double          lambdaL )
+                                                                  const double          mu,
+                                                                  const double          lambdaL )
       {
         const T J     = sqrt( determinant( C ) );
         const T I1    = trace( C );
         const T Ibar1 = I1 * pow( J, -2. / 3 );
 
-        const auto [ psi_iso,
-                     dPsi_dIbar1 ] = EnergyDensityFunctions::detail::arrudaBoyce8ChainEnergyAndDerivative( Ibar1,
-                                                                                                            mu,
-                                                                                                            lambdaL );
+        const auto [psi_iso,
+                    dPsi_dIbar1] = EnergyDensityFunctions::detail::arrudaBoyce8ChainEnergyAndDerivative( Ibar1,
+                                                                                                         mu,
+                                                                                                         lambdaL );
 
-        const Tensor33t< T > I      = fastorTensorFromDoubleTensor< T >( Spatial3D::I );
-        const Tensor33t< T > CInv   = inverse( C );
+        const Tensor33t< T > I    = fastorTensorFromDoubleTensor< T >( Spatial3D::I );
+        const Tensor33t< T > CInv = inverse( C );
         // dIbar1/dC = d(I1*J^(-2/3))/dC = J^(-2/3)*dI1/dC + I1*d(J^(-2/3))/dC
         //           = J^(-2/3)*I - (I1/3)*J^(-2/3)*Cinv
         // and (I1/3)*J^(-2/3) = Ibar1/3 exactly (since Ibar1 = I1*J^(-2/3) by
@@ -657,7 +657,7 @@ namespace Marmot::ContinuumMechanics {
         // TestBergstromBoyce's P-4/I-1/I-2/I-3 failing against the isochoric
         // formulation's own reduction check).
         const Tensor33t< T > dIbar1_dC = multiplyFastorTensorWithScalar( I, T( pow( J, -2. / 3 ) ) ) -
-                                          multiplyFastorTensorWithScalar( CInv, Ibar1 / 3. );
+                                         multiplyFastorTensorWithScalar( CInv, Ibar1 / 3. );
 
         const Tensor33t< T > dPsi_dC = multiplyFastorTensorWithScalar( dIbar1_dC, dPsi_dIbar1 );
 

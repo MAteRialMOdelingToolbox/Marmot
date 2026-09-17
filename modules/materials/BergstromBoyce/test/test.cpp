@@ -23,7 +23,7 @@ using namespace Marmot::FastorIndices;
 // Properties: hyperelasticBase, kappaA, kappaB, A1, A2, A3, B1, B2, B3, c1, c2, c3,
 // implementationType
 struct PropsVariant {
-  std::string          name;
+  std::string           name;
   std::vector< double > props;
 };
 
@@ -107,7 +107,7 @@ Tensor33d combinedStress( const Tensor33d& F, int base, double p1, double p2, do
 std::vector< Tensor33d > randomSymmetricPositiveDefiniteCs()
 {
   std::vector< Tensor33d > Cs;
-  auto makeC = [&]( double a, double b, double c, double d, double e, double f ) {
+  auto                     makeC = [&]( double a, double b, double c, double d, double e, double f ) {
     Tensor33d F = Spatial3D::I;
     F( 0, 0 ) += a;
     F( 1, 1 ) += b;
@@ -117,7 +117,7 @@ std::vector< Tensor33d > randomSymmetricPositiveDefiniteCs()
     F( 0, 2 ) = f;
     return Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
   };
-  Cs.push_back( makeC( 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ) );        // C = I
+  Cs.push_back( makeC( 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ) );         // C = I
   Cs.push_back( makeC( 0.1, -0.03, -0.03, 0.02, 0.01, -0.01 ) ); // moderate, mildly triaxial
   Cs.push_back( makeC( 0.3, 0.1, -0.2, 0.05, -0.03, 0.04 ) );    // larger, fully general
   return Cs;
@@ -126,7 +126,7 @@ std::vector< Tensor33d > randomSymmetricPositiveDefiniteCs()
 void testPotentialStressFreeAtReference()
 {
   BergstromBoyce mat = makeMaterial( VARIANTS[0].props );
-  Tensor33d       C   = Spatial3D::I;
+  Tensor33d      C   = Spatial3D::I;
 
   for ( const auto& variant : VARIANTS ) {
     BergstromBoyce m2 = makeMaterial( variant.props );
@@ -141,7 +141,7 @@ void testPotentialStressFreeAtReference()
 void testYeohReducesToNeoHooke()
 {
   BergstromBoyce mat = makeMaterial( VARIANTS[0].props );
-  const double    mu = 42.0, kappa = 777.0;
+  const double   mu = 42.0, kappa = 777.0;
 
   for ( const auto& C : randomSymmetricPositiveDefiniteCs() ) {
     double    psiNH;
@@ -162,7 +162,7 @@ void testYeohReducesToNeoHooke()
 void testMooneyRivlinReducesToNeoHooke()
 {
   BergstromBoyce mat = makeMaterial( VARIANTS[0].props );
-  const double    mu = 42.0, kappa = 777.0;
+  const double   mu = 42.0, kappa = 777.0;
 
   for ( const auto& C : randomSymmetricPositiveDefiniteCs() ) {
     double    psiNH;
@@ -210,12 +210,14 @@ void testArrudaBoyceReducesToNeoHooke()
   // making an "error shrinks as lambdaL grows" comparison degenerate.
   for ( double a : { 1.2, 0.8, 1.6 } ) {
     Tensor33d    C           = isochoricC( a );
-    const double I1         = Fastor::trace( C );
+    const double I1          = Fastor::trace( C );
     const double psiTargetNH = mu / 2. * ( I1 - 3. );
 
     auto errorAtLambdaL = [&]( double lambdaL ) {
-      double psiAB =
-        Marmot::ContinuumMechanics::EnergyDensityFunctions::ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
+      double
+        psiAB = Marmot::ContinuumMechanics::EnergyDensityFunctions::ArrudaBoyce8ChainPotential< double >( C,
+                                                                                                          mu,
+                                                                                                          lambdaL );
       return std::abs( psiAB - psiTargetNH );
     };
 
@@ -247,8 +249,8 @@ void testArrudaBoyceReducesToNeoHooke()
 // the closed-form derivative used inside mooneyRivlinPotential.
 double I2standalone( const Tensor33d& C )
 {
-  const double I1  = Fastor::trace( C );
-  Tensor33d    CSq = einsum< IK, KJ, to_ij >( C, C );
+  const double I1    = Fastor::trace( C );
+  Tensor33d    CSq   = einsum< IK, KJ, to_ij >( C, C );
   const double trCSq = Fastor::trace( CSq );
   return 0.5 * ( I1 * I1 - trCSq );
 }
@@ -258,7 +260,7 @@ void testI2DerivativeIdentity()
   const double h = 1e-6;
 
   for ( const auto& C : randomSymmetricPositiveDefiniteCs() ) {
-    const double I1 = Fastor::trace( C );
+    const double I1               = Fastor::trace( C );
     Tensor33d    analyticaldI2_dC = Marmot::multiplyFastorTensorWithScalar( Tensor33d( Spatial3D::I ), I1 ) - C;
 
     // NOTE: perturb only the (i,j) entry, leaving (j,i) at its original value -- this
@@ -299,12 +301,12 @@ void testInstantaneousLimit( const PropsVariant& variant )
   Tensor33d   targetStress = combinedStress( F, int( p[0] ), p[3] + p[6], p[4], p[5], p[1] + p[2] );
 
   auto errorAtDt = [&]( const Tensor33d& F, const Tensor33d& target, double dt ) {
-    BergstromBoyce                              mat = makeMaterial( variant.props );
-    std::array< double, 9 >                     sv  = initialState( variant.props );
-    BergstromBoyce::ConstitutiveResponse< 3 >   response( Tensor33d( 0.0 ), 0.0, 0.0, sv.data() );
-    BergstromBoyce::AlgorithmicModuli< 3 >      tangent;
-    BergstromBoyce::Deformation< 3 >            def{ F };
-    BergstromBoyce::TimeIncrement                timeInc{ 0.0, dt };
+    BergstromBoyce                            mat = makeMaterial( variant.props );
+    std::array< double, 9 >                   sv  = initialState( variant.props );
+    BergstromBoyce::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, sv.data() );
+    BergstromBoyce::AlgorithmicModuli< 3 >    tangent;
+    BergstromBoyce::Deformation< 3 >          def{ F };
+    BergstromBoyce::TimeIncrement             timeInc{ 0.0, dt };
     mat.computeStress( response, tangent, def, timeInc );
     Tensor33d diff = response.tau - target;
     return sqrt( Fastor::inner( diff, diff ) );
@@ -314,8 +316,8 @@ void testInstantaneousLimit( const PropsVariant& variant )
   double e2 = errorAtDt( F, targetStress, 1e-5 );
 
   throwExceptionOnFailure( e1 < 1e-2,
-                           "I-1 [" + variant.name + "]: dt->0 limit error at dt=1e-4 too large: " +
-                             std::to_string( e1 ) );
+                           "I-1 [" + variant.name +
+                             "]: dt->0 limit error at dt=1e-4 too large: " + std::to_string( e1 ) );
   throwExceptionOnFailure( e2 < e1, "I-1 [" + variant.name + "]: dt->0 limit error did not shrink with smaller dt" );
 }
 
@@ -326,7 +328,7 @@ void testZeroFlowDegeneracy( const PropsVariant& variant )
 {
   std::vector< double > props0 = variant.props;
   props0[9]                    = 0.0; // c1 = 0
-  BergstromBoyce mat( props0.data(), props0.size(), 1 );
+  BergstromBoyce          mat( props0.data(), props0.size(), 1 );
   std::array< double, 9 > sv{};
   mat.initializeYourself( sv.data(), 9 );
 
@@ -345,7 +347,7 @@ void testZeroFlowDegeneracy( const PropsVariant& variant )
     BergstromBoyce::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, sv.data() );
     BergstromBoyce::AlgorithmicModuli< 3 >    tangent;
     BergstromBoyce::Deformation< 3 >          def{ F };
-    BergstromBoyce::TimeIncrement              timeInc{ 0.0, 10.0 };
+    BergstromBoyce::TimeIncrement             timeInc{ 0.0, 10.0 };
     mat.computeStress( response, tangent, def, timeInc );
 
     const auto& p      = variant.props;
@@ -366,7 +368,7 @@ void testZeroFlowDegeneracy( const PropsVariant& variant )
 // and during a long hold the deviatoric stress relaxes toward network A alone.
 void testIsochoricFlowAndRelaxationSplit( const PropsVariant& variant )
 {
-  BergstromBoyce mat = makeMaterial( variant.props );
+  BergstromBoyce          mat = makeMaterial( variant.props );
   std::array< double, 9 > sv{};
   mat.initializeYourself( sv.data(), 9 );
 
@@ -374,7 +376,7 @@ void testIsochoricFlowAndRelaxationSplit( const PropsVariant& variant )
     BergstromBoyce::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, sv.data() );
     BergstromBoyce::AlgorithmicModuli< 3 >    tangent;
     BergstromBoyce::Deformation< 3 >          def{ F };
-    BergstromBoyce::TimeIncrement              timeInc{ 0.0, dt };
+    BergstromBoyce::TimeIncrement             timeInc{ 0.0, dt };
     mat.computeStress( response, tangent, def, timeInc );
 
     Tensor33d Fv( 0.0 );
@@ -401,7 +403,7 @@ void testIsochoricFlowAndRelaxationSplit( const PropsVariant& variant )
     tauRampEnd  = step( F, 1.0 );
   }
 
-  ( void )tauRampEnd;
+  (void)tauRampEnd;
 
   // hold
   Tensor33d tauHold( 0.0 );
@@ -414,7 +416,7 @@ void testIsochoricFlowAndRelaxationSplit( const PropsVariant& variant )
   Tensor33d tauA_alone = combinedStress( Fend, int( p[0] ), p[3], p[4], p[5], p[1] );
   Tensor33d devA_alone = Marmot::deviatoric( tauA_alone );
   Tensor33d devDiff    = devHold - devA_alone;
-  double    relDiff = sqrt( Fastor::inner( devDiff, devDiff ) ) / sqrt( Fastor::inner( devA_alone, devA_alone ) );
+  double    relDiff    = sqrt( Fastor::inner( devDiff, devDiff ) ) / sqrt( Fastor::inner( devA_alone, devA_alone ) );
 
   throwExceptionOnFailure( relDiff < 0.05,
                            "I-3 [" + variant.name +
@@ -440,7 +442,7 @@ void testObjectivity( const PropsVariant& variant )
   BergstromBoyce::ConstitutiveResponse< 3 > responseU( Tensor33d( 0.0 ), 0.0, 0.0, svUnrotated.data() );
   BergstromBoyce::AlgorithmicModuli< 3 >    tangentU;
   BergstromBoyce::Deformation< 3 >          defU{ F_unrotated };
-  BergstromBoyce::TimeIncrement              timeIncU{ 0.0, 5.0 };
+  BergstromBoyce::TimeIncrement             timeIncU{ 0.0, 5.0 };
   mat.computeStress( responseU, tangentU, defU, timeIncU );
   Tensor33d stressUnrotated = responseU.tau;
 
@@ -461,14 +463,13 @@ void testObjectivity( const PropsVariant& variant )
     BergstromBoyce::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, sv.data() );
     BergstromBoyce::AlgorithmicModuli< 3 >    tangent;
     BergstromBoyce::Deformation< 3 >          def{ F_rotated };
-    BergstromBoyce::TimeIncrement              timeInc{ 0.0, 5.0 };
+    BergstromBoyce::TimeIncrement             timeInc{ 0.0, 5.0 };
     mat.computeStress( response, tangent, def, timeInc );
 
     Tensor33d stressRotated = einsum< iI, IJ, jJ, to_ij >( Q, stressUnrotated, Q );
 
     throwExceptionOnFailure( checkIfEqual( response.tau, stressRotated, 1e-9 ),
-                             "I-4 [" + variant.name + "]: objectivity failed at phi_deg=" +
-                               std::to_string( phi_deg ) );
+                             "I-4 [" + variant.name + "]: objectivity failed at phi_deg=" + std::to_string( phi_deg ) );
 
     Tensor33d FvUnrotated( 0.0 ), FvRotated( 0.0 );
     memcpy( FvUnrotated.data(), svUnrotated.data(), 9 * sizeof( double ) );
@@ -496,7 +497,7 @@ void testIsotropy( const PropsVariant& variant )
   BergstromBoyce::ConstitutiveResponse< 3 > responseU( Tensor33d( 0.0 ), 0.0, 0.0, svUnrotated.data() );
   BergstromBoyce::AlgorithmicModuli< 3 >    tangentU;
   BergstromBoyce::Deformation< 3 >          defU{ F_unrotated };
-  BergstromBoyce::TimeIncrement              timeIncU{ 0.0, 5.0 };
+  BergstromBoyce::TimeIncrement             timeIncU{ 0.0, 5.0 };
   mat.computeStress( responseU, tangentU, defU, timeIncU );
   Tensor33d stressUnrotated = responseU.tau;
 
@@ -516,7 +517,7 @@ void testIsotropy( const PropsVariant& variant )
     BergstromBoyce::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, sv.data() );
     BergstromBoyce::AlgorithmicModuli< 3 >    tangent;
     BergstromBoyce::Deformation< 3 >          def{ F_rotated };
-    BergstromBoyce::TimeIncrement              timeInc{ 0.0, 5.0 };
+    BergstromBoyce::TimeIncrement             timeInc{ 0.0, 5.0 };
     mat.computeStress( response, tangent, def, timeInc );
 
     throwExceptionOnFailure( checkIfEqual( response.tau, stressUnrotated, 1e-9 ),
@@ -533,31 +534,33 @@ void testUniaxialRelaxationWithMPSolver( const PropsVariant& variant )
 
   auto        solveropts = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
   std::string matName    = "BERGSTROMBOYCE";
-  auto solver = MarmotMaterialPointSolverFiniteStrain( matName, variant.props.data(), variant.props.size(),
+  auto        solver     = MarmotMaterialPointSolverFiniteStrain( matName,
+                                                       variant.props.data(),
+                                                       variant.props.size(),
                                                        solveropts );
 
   MarmotMaterialPointSolverFiniteStrain::Step rampStep;
-  rampStep.gradUIncrementTarget         = Tensor33d( 0.0 );
-  rampStep.gradUIncrementTarget( 0, 0 ) = 0.1;
-  rampStep.stressIncrementTarget        = Tensor33d( 0.0 );
+  rampStep.gradUIncrementTarget                = Tensor33d( 0.0 );
+  rampStep.gradUIncrementTarget( 0, 0 )        = 0.1;
+  rampStep.stressIncrementTarget               = Tensor33d( 0.0 );
   rampStep.isGradUComponentControlled          = Tensor33t< bool >( false );
-  rampStep.isGradUComponentControlled( 0, 0 )   = true;
-  rampStep.isStressComponentControlled          = Tensor33t< bool >( true );
-  rampStep.isStressComponentControlled( 0, 0 )  = false;
-  rampStep.timeStart = 0.0;
-  rampStep.timeEnd   = 1.0;
-  rampStep.dTStart   = 0.1;
-  rampStep.dTMax     = 0.1;
-  rampStep.dTMin     = 0.01;
+  rampStep.isGradUComponentControlled( 0, 0 )  = true;
+  rampStep.isStressComponentControlled         = Tensor33t< bool >( true );
+  rampStep.isStressComponentControlled( 0, 0 ) = false;
+  rampStep.timeStart                           = 0.0;
+  rampStep.timeEnd                             = 1.0;
+  rampStep.dTStart                             = 0.1;
+  rampStep.dTMax                               = 0.1;
+  rampStep.dTMin                               = 0.01;
   solver.addStep( rampStep );
 
   MarmotMaterialPointSolverFiniteStrain::Step holdStep = rampStep;
   holdStep.gradUIncrementTarget( 0, 0 )                = 0.0;
   holdStep.timeStart                                   = 1.0;
-  holdStep.timeEnd                                      = 100.0;
-  holdStep.dTStart                                      = 1.0;
-  holdStep.dTMax                                        = 10.0;
-  holdStep.dTMin                                        = 0.1;
+  holdStep.timeEnd                                     = 100.0;
+  holdStep.dTStart                                     = 1.0;
+  holdStep.dTMax                                       = 10.0;
+  holdStep.dTMin                                       = 0.1;
   solver.addStep( holdStep );
 
   solver.solve();
@@ -567,7 +570,7 @@ void testUniaxialRelaxationWithMPSolver( const PropsVariant& variant )
 
   double prevTime   = -1.0;
   double prevStress = -1.0;
-  bool   inHold      = false;
+  bool   inHold     = false;
   for ( const auto& h : history ) {
     double axialStress = h.stress( 0, 0 );
     throwExceptionOnFailure( axialStress > -1e-8, "I-6 [" + variant.name + "]: axial stress went negative in tension" );

@@ -7,8 +7,8 @@ namespace Marmot::Materials {
 
     using namespace MarmotLibrary;
 
-    const static bool BergstromBoyceRegistered = MarmotMaterialFiniteStrainFactory::registerMaterial<
-      BergstromBoyce >( "BERGSTROMBOYCE" );
+    const static bool BergstromBoyceRegistered = MarmotMaterialFiniteStrainFactory::registerMaterial< BergstromBoyce >(
+      "BERGSTROMBOYCE" );
 
   } // namespace Registration
 } // namespace Marmot::Materials

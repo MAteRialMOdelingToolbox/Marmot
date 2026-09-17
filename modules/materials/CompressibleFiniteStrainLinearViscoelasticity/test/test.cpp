@@ -320,8 +320,8 @@ void testArrudaBoyceMatchesSharedPotential()
 {
   const std::string matName  = "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY";
   auto              matProps = getElasticArrudaBoyceProps();
-  const double       mu = matProps[2], lambdaL = matProps[3], kappa = matProps[4];
-  auto               solver = makeSolver( matName, matProps );
+  const double      mu = matProps[2], lambdaL = matProps[3], kappa = matProps[4];
+  auto              solver = makeSolver( matName, matProps );
 
   Tensor33d F = Spatial3D::I;
   F( 0, 0 ) += 0.08;
@@ -336,17 +336,14 @@ void testArrudaBoyceMatchesSharedPotential()
   const Tensor33d C = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
   double          psiIso;
   Tensor33d       dPsiIso_dC;
-  std::tie( psiIso, dPsiIso_dC ) =
-    Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::ArrudaBoyce8ChainPotential< double >(
-      C,
-      mu,
-      lambdaL );
+  std::tie( psiIso, dPsiIso_dC ) = Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::
+    ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
 
   const double    lnDetC     = log( Fastor::determinant( C ) );
   const Tensor33d CInv       = Fastor::inverse( C );
   const Tensor33d dPsiVol_dC = ( kappa / 4. * lnDetC ) * CInv;
 
-  const Tensor33d PK2      = 2. * ( dPsiIso_dC + dPsiVol_dC );
+  const Tensor33d PK2       = 2. * ( dPsiIso_dC + dPsiVol_dC );
   const Tensor33d tauTarget = einsum< iI, IJ, jJ, to_ij >( F, PK2, F );
 
   throwExceptionOnFailure( checkIfEqual( tau, tauTarget, 1e-6 ),
@@ -358,14 +355,14 @@ void testArrudaBoyceMatchesSharedPotential()
 int main()
 {
   auto tests = std::vector< std::function< void() > >{
-    testUndeformedResponse,             // I-1: F=I gives zero stress
-    testUniaxialElasticResponse,        // I-2: Uniaxial elastic stretch reference values
-    testStressTensorSymmetry,           // I-3: Kirchhoff stress symmetry
-    testPureRotationZeroStress,         // I-4: Pure rotation gives zero stress
-    testObjectivity,                    // I-5: Objectivity tau(Q*F) = Q*tau(F)*Q^T
-    testViscoelasticRelaxation,         // I-6: Viscoelastic relaxation
-    testSubsteppedConsistency,          // I-7: Substepped == regular
-    testArrudaBoyceUndeformedResponse,  // I-8: ArrudaBoyce F=I gives zero stress
+    testUndeformedResponse,                // I-1: F=I gives zero stress
+    testUniaxialElasticResponse,           // I-2: Uniaxial elastic stretch reference values
+    testStressTensorSymmetry,              // I-3: Kirchhoff stress symmetry
+    testPureRotationZeroStress,            // I-4: Pure rotation gives zero stress
+    testObjectivity,                       // I-5: Objectivity tau(Q*F) = Q*tau(F)*Q^T
+    testViscoelasticRelaxation,            // I-6: Viscoelastic relaxation
+    testSubsteppedConsistency,             // I-7: Substepped == regular
+    testArrudaBoyceUndeformedResponse,     // I-8: ArrudaBoyce F=I gives zero stress
     testArrudaBoyceMatchesSharedPotential, // I-9: ArrudaBoyce matches shared potential
   };
 
