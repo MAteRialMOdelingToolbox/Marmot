@@ -1021,9 +1021,11 @@ namespace Marmot::Elements {
           quadraturePoint.referenceWaveSpeed = quadraturePoint.material->getMaximumWaveSpeed( currentResponse );
 
         /* Evaluated here rather than inside the viscous stress because it is the only part that
-         * needs the CURRENT tangent, which costs a full constitutive evaluation. At the default
-         * exponent the material is never asked, so such a deck integrates exactly what it did
-         * before. The current field must be passed explicitly: it is an INPUT to the constitutive
+         * needs the CURRENT tangent -- a full constitutive evaluation per quadrature point per
+         * increment unless the material has a closed form for it, which is the material's
+         * business and not the element's (GCDP has one). At the default exponent the material is
+         * never asked, so such a deck integrates exactly what it did before. The current field
+         * must be passed explicitly: it is an INPUT to the constitutive
          * law, so a query without it asks for the response at a field of zero -- the undamaged
          * tangent, wherever damage is driven by that field alone. Omitting it made this factor
          * identically 1.0 and the property inert.

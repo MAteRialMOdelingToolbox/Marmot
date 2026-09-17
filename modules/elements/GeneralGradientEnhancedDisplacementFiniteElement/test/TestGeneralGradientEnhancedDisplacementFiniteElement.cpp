@@ -1,6 +1,8 @@
 #include "Marmot/GeneralGradientEnhancedDisplacementFiniteElement.h"
+#include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotFiniteElement.h"
+#include "Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
@@ -9,6 +11,7 @@
 #include <limits>
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 using namespace Marmot;
@@ -1929,6 +1932,170 @@ void testBulkViscosityIsUndegradedByDefault()
                                           << "degradation was not requested" );
 }
 
+namespace {
+
+  /* A linear elastic material degraded by its non-local field alone, (1 - K) C_el, that counts how
+   * often its wave speed is asked for. Created by the element the ordinary way, from a registered
+   * name, so that what is counted is what a real material sees.
+   */
+  class WaveSpeedQueryCountingMaterial : public MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 > {
+  public:
+    /// @brief Calls to getMaximumWaveSpeed() since the last reset, over all instances.
+    static inline int nWaveSpeedQueries = 0;
+
+    /**
+     * @brief Construct from E, nu, the density and the non-local viscosity.
+     * @param materialProperties The four properties, in that order.
+     * @param nMaterialProperties Their number.
+     * @param materialNumber The material's label.
+     */
+    WaveSpeedQueryCountingMaterial( const double* materialProperties, int nMaterialProperties, int materialNumber )
+      : MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >( materialProperties, nMaterialProperties, materialNumber )
+    {
+      stateLayout.add( "unused", 1 );
+      stateLayout.finalize();
+    }
+
+    /**
+     * @brief The degraded linear elastic stress update.
+     * @param[in,out] res The response.
+     * @param[out] tan The tangents.
+     * @param[in] inc The increment.
+     */
+    void computeStress( response& res, tangents& tan, const increment& inc ) const override
+    {
+      tan.dStressddStrain = ( 1.0 - inc.K[0] ) *
+                            ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( this->materialProperties[0],
+                                                                                        this->materialProperties[1] );
+      res.stress += tan.dStressddStrain * inc.dStrain;
+      res.KLocal.setZero();
+      res.c.setZero();
+    }
+
+    /**
+     * @brief The density.
+     * @param stateVars Unused.
+     * @return The third property.
+     */
+    double getDensity( const double* stateVars ) const override { return this->materialProperties[2]; }
+
+    /**
+     * @brief The non-local viscosity.
+     * @param stateVars Unused.
+     * @return The fourth property.
+     */
+    std::vector< double > getNonlocalViscosity( const double* stateVars ) const override
+    {
+      return { this->materialProperties[3] };
+    }
+
+    /**
+     * @brief The base class' default, counted.
+     * @param currentResponse The current response.
+     * @param K The non-local field.
+     * @return The wave speed the default returns.
+     */
+    double getMaximumWaveSpeed(
+      const response&                   currentResponse,
+      const Eigen::Vector< double, 1 >& K = Eigen::Vector< double, 1 >::Zero() ) const override
+    {
+      nWaveSpeedQueries++;
+      return MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >::getMaximumWaveSpeed( currentResponse, K );
+    }
+  };
+
+  [[maybe_unused]] const bool waveSpeedQueryCountingMaterialRegistered = MarmotLibrary::
+    MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< 1 >::registerMaterial< WaveSpeedQueryCountingMaterial >(
+      "WAVESPEEDQUERYCOUNTINGMATERIAL" );
+
+  /* The material's wave-speed queries over the first and over the second explicit increment of a
+   * GC3D8 element under volumetric compression at a non-zero field.
+   */
+  std::pair< int, int > waveSpeedQueriesOverTwoIncrements( bool withBulkViscosity, double degradationExponent )
+  {
+    constexpr int nDim          = 3;
+    constexpr int nNodes        = 8;
+    constexpr int nNonlocalVars = 1;
+    using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
+
+    const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                                  0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+    const std::vector< double > matProps      = { 20000.0, 0.2, 2.0e-9, 1.0e-6 };
+    const std::vector< double > bulkViscosity = { 0.06, 1.2 };
+
+    auto element = std::make_unique< ElemType >( 1,
+                                                 FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                                 ElemType::SectionType::Solid );
+    element->assignNodeCoordinates( nodeCoordsVec.data() );
+    MarmotMaterialSection materialSection( "WAVESPEEDQUERYCOUNTINGMATERIAL", matProps.data(), matProps.size() );
+    element->assignProperty( materialSection );
+    if ( withBulkViscosity )
+      element->assignProperty( "bulk viscosity", bulkViscosity.data(), bulkViscosity.size() );
+    if ( degradationExponent > 0.0 )
+      element->assignProperty( "bulk viscosity damage degradation", &degradationExponent, 1 );
+
+    const int             nStateVars = element->getNumberOfRequiredStateVars();
+    std::vector< double > stateVars( nStateVars, 0.0 );
+    element->assignStateVars( stateVars.data(), nStateVars );
+    element->initializeYourself();
+
+    constexpr int   sizeDoFU = nNodes * nDim;
+    Eigen::VectorXd Q        = Eigen::VectorXd::Zero( sizeDoFU + nNodes );
+    for ( int a = 0; a < nNodes; a++ )
+      for ( int d = 0; d < nDim; d++ )
+        Q[a * nDim + d] = -1.0e-4 * nodeCoordsVec[a * nDim + d];
+    for ( int a = 0; a < nNodes; a++ )
+      Q[sizeDoFU + a] = 0.3;
+    Eigen::VectorXd P = Eigen::VectorXd::Zero( Q.size() );
+
+    WaveSpeedQueryCountingMaterial::nWaveSpeedQueries = 0;
+    element->computeKernelsExplicit( Q.data(), Q.data(), P.data(), 0.0, 1.0e-3 );
+    const int overTheFirstIncrement = WaveSpeedQueryCountingMaterial::nWaveSpeedQueries;
+
+    WaveSpeedQueryCountingMaterial::nWaveSpeedQueries = 0;
+    element->computeKernelsExplicit( Q.data(), Q.data(), P.data(), 1.0e-3, 1.0e-3 );
+    const int overTheSecondIncrement = WaveSpeedQueryCountingMaterial::nWaveSpeedQueries;
+
+    return { overTheFirstIncrement, overTheSecondIncrement };
+  }
+
+} // namespace
+
+/* What the degradation costs is what the material makes of ONE wave-speed query per quadrature
+ * point per increment, and nothing else: the reference is cached on the first increment, and with
+ * the exponent at its default -- or with no bulk viscosity at all -- the material is never asked for
+ * its current speed, which is what makes such a deck bit-identical to one built before the feature
+ * existed. Pinned through the count because a second query per increment, or a reference that is
+ * no longer cached, would change no result and would go unnoticed by every other test here while
+ * doubling the material cost of an explicit run.
+ */
+void testBulkViscosityDegradationAsksForTheWaveSpeedOncePerQuadraturePointPerIncrement()
+{
+  constexpr int nQuadraturePoints = 8;
+
+  {
+    const auto [first, second] = waveSpeedQueriesOverTwoIncrements( false, 0.0 );
+    throwExceptionOnFailure( first == 0 && second == 0,
+                             MakeString() << __PRETTY_FUNCTION__ << ": without bulk viscosity the material was asked "
+                                          << first << " and " << second << " times for its wave speed" );
+  }
+  {
+    const auto [first, second] = waveSpeedQueriesOverTwoIncrements( true, 0.0 );
+    throwExceptionOnFailure( first == nQuadraturePoints && second == 0,
+                             MakeString() << __PRETTY_FUNCTION__ << ": undegraded, the material was asked " << first
+                                          << " and " << second << " times; expected the " << nQuadraturePoints
+                                          << " reference queries once and nothing after" );
+  }
+  {
+    const auto [first, second] = waveSpeedQueriesOverTwoIncrements( true, 2.0 );
+    throwExceptionOnFailure( first == 2 * nQuadraturePoints && second == nQuadraturePoints,
+                             MakeString()
+                               << __PRETTY_FUNCTION__ << ": degraded, the material was asked " << first << " and "
+                               << second << " times; expected the reference plus one current "
+                               << "query per quadrature point, then one current query per quadrature point" );
+  }
+}
+
 /* A rejected property assignment must leave the element as it was -- checked through the assembled
  * inertia, since a half-applied assignment is only visible in what the element then produces.
  */
@@ -2089,6 +2256,7 @@ int main()
     testTinyMicroInertiaIsNotTreatedAsAbsent,
     testBulkViscosityDegradesWithTheNonlocalField,
     testBulkViscosityIsUndegradedByDefault,
+    testBulkViscosityDegradationAsksForTheWaveSpeedOncePerQuadraturePointPerIncrement,
     testRejectedPropertyAssignmentLeavesTheElementUnchanged,
     testNodeFieldsTwoNonlocalVars,
     testComputeKernelsPlaneStrainTangentMatchesNumericalDifferentiation,
