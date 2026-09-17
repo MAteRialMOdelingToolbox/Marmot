@@ -2,21 +2,21 @@ import marmot
 import marmot.testing
 import numpy as np
 
-print("Running example for FiniteStrain material: COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY")
+print("Running example for FiniteStrain material: BERGSTROMBOYCE")
 
-# Material properties extracted from C++ tests
-properties = np.array([0.0, 1.0, 3500.0, 1500.0, 1.0, 0.3, 10.0], dtype=np.float64)
+# Material properties: hyperelasticBase (0=NeoHooke), kappaA, kappaB, A1, A2, A3, B1, B2, B3, c1, c2, c3, implementationType (0 = CSDA)
+properties = np.array([0.0, 1000.0, 1000.0, 100.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.05, 1.0, 1.0, 0.0], dtype=np.float64)
 
 # Setup solver
 options = marmot.solvers.FiniteStrainSolver.SolverOptions()
-solver = marmot.solvers.FiniteStrainSolver("COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY", properties, options)
+solver = marmot.solvers.FiniteStrainSolver("BERGSTROMBOYCE", properties, options)
 
-# Setup a loading step
+# Setup a loading step: fully prescribed (strain-controlled) arbitrary deformation
 step = marmot.solvers.FiniteStrainSolver.Step()
 step.timeStart = 0.0
 step.timeEnd = 1.0
 step.dTStart = 0.1
-step.gradUIncrementTarget = np.array([[0.01, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]], dtype=np.float64)
+step.gradUIncrementTarget = np.array([[0.05, 0.02, 0.0], [0.0, -0.01, 0.0], [0.0, 0.0, -0.01]], dtype=np.float64)
 
 step.isGradUComponentControlled = np.array([[True, True, True], [True, True, True], [True, True, True]])
 step.isStressComponentControlled = np.logical_not(step.isGradUComponentControlled)
