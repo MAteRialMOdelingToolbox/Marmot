@@ -20,7 +20,7 @@ The material parameters are provided as a flat vector with the following layout:
    * - 0
      - hyperelasticBase
      - Hyperelastic base model selector: ``0`` = NeoHooke, ``1`` = Yeoh,
-       ``2`` = MooneyRivlin, ``3`` = PenceGouNeoHooke (variant B)
+       ``2`` = MooneyRivlin, ``3`` = PenceGouNeoHooke (variant B), ``4`` = ArrudaBoyce
    * - 1
      - onlyShearCreep
      - Flag: ``1`` restricts viscoelastic creep to the deviatoric (shear) part only,
@@ -65,6 +65,11 @@ The material parameters are provided as a flat vector with the following layout:
      - 3
      - 2
      - :math:`K` (bulk modulus), :math:`G` (shear modulus)
+   * - ArrudaBoyce
+     - 4
+     - 3
+     - :math:`\mu` (shear-modulus-like parameter), :math:`\lambda_L` (locking stretch),
+       :math:`D_1` (volumetric compliance)
 
 .. list-table::
    :header-rows: 1
@@ -79,6 +84,13 @@ The material parameters are provided as a flat vector with the following layout:
 
 Theory
 ------
+
+The ``ArrudaBoyce`` base reuses the isochoric 8-chain potential
+:math:`\Psi_{\rm iso}(\bar I_1;\mu,\lambda_L)` shared with :doc:`bergstromboyce` (see that page
+for the closed-form derivation and its stress-free/reduction properties), and adds this
+material's own volumetric term :math:`\frac{1}{D_1}\left(\frac{J^2-1}{2}-\ln J\right)` -- the same
+convention already used here by ``Yeoh``/``MooneyRivlin`` (as opposed to ``NeoHooke``/
+``PenceGouNeoHooke``'s :math:`K,G`-based convention).
 
 The model is a finite-strain generalization of the linear viscoelastic model
 described, e.g., in Liu et al. (2021). A generalized Maxwell model is employed
