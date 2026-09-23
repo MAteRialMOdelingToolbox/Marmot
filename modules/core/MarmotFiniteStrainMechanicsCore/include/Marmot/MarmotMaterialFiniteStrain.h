@@ -299,7 +299,7 @@ public:
    * @param stateVars Pointer to the state variable array
    * @return StatView to access the state variable
    */
-  StateView getStateView( const std::string& stateName, double* stateVars ) const
+  virtual StateView getStateView( const std::string& stateName, double* stateVars ) const
   {
     return stateLayout.getStateView( stateVars, stateName );
   }
@@ -371,6 +371,16 @@ public:
     const double density = getDensity( stateVars );
     return density > 0.0 ? std::sqrt( std::max( 0.0, maxStiffnessDiagonal ) / density ) : 0.0;
   }
+
+  /**
+   * @brief Set the characteristic element length at the considered evaluation point.
+   *
+   * Needed by materials whose softening behaviour is regularised via a mesh-adjusted softening modulus.
+   * The default implementation does nothing, so materials that do not depend on a length are unaffected.
+   *
+   * @param[in] length Characteristic element length.
+   */
+  virtual void setCharacteristicElementLength( double length ) {}
 
   /**
    * @brief Get the mass density of the material.

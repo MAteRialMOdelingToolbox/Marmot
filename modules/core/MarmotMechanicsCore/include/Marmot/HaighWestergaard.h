@@ -75,7 +75,15 @@ namespace Marmot {
       HaighWestergaardCoordinates< T > hw;
       const auto                       J2_ = J2( stress );
       hw.xi                                = I1( stress ) / sqrt3;
-      hw.rho                               = sqrt( 2. * J2_ );
+      // sqrt()'s derivative is singular at J2=0 (the hydrostatic axis, e.g. a virgin stress
+      // state of exactly zero): autodiff/complex-step differentiation propagates that as a NaN
+      // *derivative* even though rho's *value* (0) is perfectly well defined there. Below a tiny
+      // threshold, skip sqrt() entirely and construct an exact zero of the correct type instead
+      // -- mirroring dRho_dStress()'s existing "rho <= 1e-16" near-origin convention exactly
+      // (rho = sqrt(2*J2) <= 1e-16  <=>  J2 <= 5e-33) -- rather than letting sqrt() propagate a
+      // NaN derivative. This also absorbs J2 rounding to a tiny negative value for
+      // near-hydrostatic states.
+      hw.rho = Marmot::Math::makeReal( J2_ ) <= 5e-33 ? T( 0. ) : sqrt( 2. * J2_ );
 
       if ( Marmot::Math::makeReal( hw.rho ) != 0 ) {
         const T J3_ = J3( stress );

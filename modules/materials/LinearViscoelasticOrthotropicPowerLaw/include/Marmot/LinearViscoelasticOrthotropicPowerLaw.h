@@ -50,13 +50,13 @@ namespace Marmot::Materials {
     /// @brief Young's modulus in x3 direction
     const double& E3;
 
-    /// @brief Poisson's ratio
+    /// @brief Poisson's ratio \f$\nu_{12} = -\varepsilon_2/\varepsilon_1\f$ for uniaxial stress in x1 direction
     const double& nu12;
 
-    /// @brief Poisson's ratio
+    /// @brief Poisson's ratio \f$\nu_{23} = -\varepsilon_3/\varepsilon_2\f$ for uniaxial stress in x2 direction
     const double& nu23;
 
-    /// @brief Poisson's ratio
+    /// @brief Poisson's ratio \f$\nu_{13} = -\varepsilon_3/\varepsilon_1\f$ for uniaxial stress in x1 direction
     const double& nu13;
 
     /// @brief Shear modulus in x1-x2 plane

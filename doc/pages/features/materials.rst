@@ -20,3 +20,5 @@ This section contains the ready to use available material models.
   linearviscoelasticorthotropicpowerlaw
   vonmises
   advonmises
+  hugheswinget
+  gradientenhancedhugheswinget
