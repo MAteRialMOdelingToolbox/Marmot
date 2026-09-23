@@ -24,6 +24,7 @@
  */
 #pragma once
 #include "Marmot/MarmotBulkViscosity.h"
+#include "Marmot/MarmotConsistentMass.h"
 #include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotExceptions.h"
@@ -359,7 +360,10 @@ namespace Marmot::Elements {
     void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT );
     /**
      * @brief Compute consistent mass matrix using material density.
-     * @details \f$\mathbf{M}_e = \sum_{qp} \rho\, \mathbf{N}^\mathsf{T}\mathbf{N}\, J_0 w\f$.
+     * @details \f$\mathbf{M}_e = \sum_{p} \rho\, \mathbf{N}^\mathsf{T}\mathbf{N}\, J_0 w\f$ over the
+     * points \f$p\f$ of the full Gauss rule of the element's shape, also for a reduced-integration
+     * element, whose own rule would leave the mass rank-deficient; the density is taken from the
+     * nearest quadrature point of the element. See Marmot::FiniteElement::ConsistentMass.
      */
     void computeConsistentInertia( double* M );
 
@@ -1076,10 +1080,15 @@ namespace Marmot::Elements {
     Map< KeSizedMatrix > Me( M );
     Me.setZero();
 
-    for ( const auto& qp : qps ) {
-      const auto   N_  = this->NB( this->N( qp.xi ) );
-      const double rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
-      Me += N_.transpose() * N_ * qp.J0xW * rho;
+    for ( const auto& point : FiniteElement::ConsistentMass::integrationRule( this->shape ) ) {
+      const XiSized xi = point.xi;
+      const auto&   qp = qps[FiniteElement::ConsistentMass::nearestQuadraturePoint( point.xi, qps )];
+      // thickness (2D) or cross section (1D) exactly as initializeYourself() applied it; 1 in 3D
+      const double sectionFactor = qp.J0xW / ( qp.weight * qp.detJ );
+      const double rho           = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
+      const double detJ          = this->Jacobian( this->dNdXi( xi ) ).determinant();
+      const auto   N_            = this->NB( this->N( xi ) );
+      Me += N_.transpose() * N_ * ( point.weight * detJ * sectionFactor ) * rho;
     }
   }
   template < int nDim, int nNodes >

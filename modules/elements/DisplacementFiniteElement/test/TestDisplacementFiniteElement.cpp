@@ -1337,6 +1337,111 @@ void testComputeConsistentInertiaConservesTotalMass()
   }
 }
 
+// The consistent mass of a reduced-integration element: integrated with the FULL rule of its shape,
+// never with the element's own reduced rule, which cannot give a mass of full rank (8 points for a
+// Hexa20 give rank 24 out of 60). On a distorted element with a constant density, the reduced and
+// the full-integration element must therefore produce the same matrix, and it must be positive
+// definite. See Marmot::FiniteElement::ConsistentMass.
+
+/// Nodal parent coordinates of a Quad8 (0-3 corners, 4-7 midsides 0-1, 1-2, 2-3, 3-0).
+const std::vector< std::vector< double > > quad8ParentNodes =
+  { { -1, -1 }, { 1, -1 }, { 1, 1 }, { -1, 1 }, { 0, -1 }, { 1, 0 }, { 0, 1 }, { -1, 0 } };
+
+/// Nodal parent coordinates of a Hexa20 (0-7 corners, then the midsides of the bottom edges 0-1, 1-2,
+/// 2-3, 3-0, of the top edges 4-5, 5-6, 6-7, 7-4, and of the vertical edges 0-4, 1-5, 2-6, 3-7).
+const std::vector< std::vector< double > > hexa20ParentNodes = { { -1, -1, -1 }, { 1, -1, -1 }, { 1, 1, -1 },
+                                                                 { -1, 1, -1 },  { -1, -1, 1 }, { 1, -1, 1 },
+                                                                 { 1, 1, 1 },    { -1, 1, 1 },  { 0, -1, -1 },
+                                                                 { 1, 0, -1 },   { 0, 1, -1 },  { -1, 0, -1 },
+                                                                 { 0, -1, 1 },   { 1, 0, 1 },   { 0, 1, 1 },
+                                                                 { -1, 0, 1 },   { -1, -1, 0 }, { 1, -1, 0 },
+                                                                 { 1, 1, 0 },    { -1, 1, 0 } };
+
+/// A smooth, non-affine map of the parent element, so that the Jacobian varies over the element.
+std::vector< double > distortedNodeCoordinates( const std::vector< std::vector< double > >& parentNodes )
+{
+  const double          scale[3] = { 1.0, 1.3, 0.7 };
+  std::vector< double > coordinates;
+  for ( const auto& xi : parentNodes ) {
+    const int nDim = xi.size();
+    for ( int i = 0; i < nDim; i++ ) {
+      const double next = xi[( i + 1 ) % nDim];
+      coordinates.push_back( scale[i] * ( 0.5 * ( xi[i] + 1.0 ) + 0.08 * xi[i] * next + 0.05 * next * next ) );
+    }
+  }
+  return coordinates;
+}
+
+template < int nDim, int nNodes >
+Eigen::MatrixXd consistentMassOf( FiniteElement::Quadrature::IntegrationTypes                     intType,
+                                  typename DisplacementFiniteElement< nDim, nNodes >::SectionType secType,
+                                  const std::vector< double >&                                    nodeCoordinates )
+{
+  auto element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
+  element->assignNodeCoordinates( nodeCoordinates.data() );
+
+  const std::vector< double > matProps = { 10000.0, 0.2, 2.5 }; // density = 2.5
+  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  const std::vector< double > elPropsVec = { 0.3 };             // thickness; unused in 3D
+  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  if constexpr ( nDim < 3 )
+    element->assignProperty( elProps );
+  element->assignProperty( materialSection );
+
+  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVarsTotal );
+  element->initializeYourself();
+
+  const int             nDof = element->getNDofPerElement();
+  std::vector< double > M( nDof * nDof, 0.0 );
+  element->computeConsistentInertia( M.data() );
+  return Eigen::Map< Eigen::MatrixXd >( M.data(), nDof, nDof );
+}
+
+void checkReducedIntegrationConsistentMassIsTheFullOne( const Eigen::MatrixXd& reduced,
+                                                        const Eigen::MatrixXd& full,
+                                                        const std::string&     label )
+{
+  throwExceptionOnFailure( ( reduced - full ).norm() <= 1e-13 * full.norm(),
+                           label + ": the reduced-integration consistent mass differs from the full-integration one." );
+
+  const Eigen::VectorXd eigenvalues = Eigen::SelfAdjointEigenSolver< Eigen::MatrixXd >( reduced ).eigenvalues();
+  throwExceptionOnFailure( eigenvalues.minCoeff() > 1e-6 * eigenvalues.maxCoeff(),
+                           label + ": the reduced-integration consistent mass is not positive definite (smallest " +
+                             "eigenvalue " + std::to_string( eigenvalues.minCoeff() ) + ")." );
+}
+
+void testConsistentInertiaQuad8ReducedIntegrationIsIntegratedWithTheFullRule()
+{
+  using Element     = DisplacementFiniteElement< 2, 8 >;
+  const auto coords = distortedNodeCoordinates( quad8ParentNodes );
+  checkReducedIntegrationConsistentMassIsTheFullOne( consistentMassOf< 2, 8 >( FiniteElement::Quadrature::
+                                                                                 IntegrationTypes::ReducedIntegration,
+                                                                               Element::SectionType::PlaneStrain,
+                                                                               coords ),
+                                                     consistentMassOf< 2, 8 >( FiniteElement::Quadrature::
+                                                                                 IntegrationTypes::FullIntegration,
+                                                                               Element::SectionType::PlaneStrain,
+                                                                               coords ),
+                                                     "Quad8" );
+}
+
+void testConsistentInertiaHexa20ReducedIntegrationIsIntegratedWithTheFullRule()
+{
+  using Element     = DisplacementFiniteElement< 3, 20 >;
+  const auto coords = distortedNodeCoordinates( hexa20ParentNodes );
+  checkReducedIntegrationConsistentMassIsTheFullOne( consistentMassOf< 3, 20 >( FiniteElement::Quadrature::
+                                                                                  IntegrationTypes::ReducedIntegration,
+                                                                                Element::SectionType::Solid,
+                                                                                coords ),
+                                                     consistentMassOf< 3, 20 >( FiniteElement::Quadrature::
+                                                                                  IntegrationTypes::FullIntegration,
+                                                                                Element::SectionType::Solid,
+                                                                                coords ),
+                                                     "Hexa20" );
+}
+
 void testComputeBodyForceConservesTotalForcePerDirection()
 {
   constexpr int nDim    = 3;
@@ -1832,6 +1937,8 @@ int main()
     testSetInitialConditionsMaterialInitializationDoesNotThrow,
     testSetInitialConditionsRejectsUnsupportedStateTypes,
     testComputeConsistentInertiaConservesTotalMass,
+    testConsistentInertiaQuad8ReducedIntegrationIsIntegratedWithTheFullRule,
+    testConsistentInertiaHexa20ReducedIntegrationIsIntegratedWithTheFullRule,
     testComputeBodyForceConservesTotalForcePerDirection,
     testComputeDistributedLoadThrowsForUnhandledLoadType,
     testComputeInternalEnergyMatchesSumOverQuadraturePoints,

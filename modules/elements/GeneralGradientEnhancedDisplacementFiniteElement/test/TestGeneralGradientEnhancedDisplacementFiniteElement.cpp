@@ -1249,6 +1249,66 @@ void testComputeConsistentInertiaConservesTotalMassAndMicroInertia()
                            "computeConsistentInertia() does not conserve the total non-local micro-inertia." );
 }
 
+// The consistent inertia of a reduced-integration element is integrated with the FULL rule of its
+// shape (see Marmot::FiniteElement::ConsistentMass): on a distorted GC3D20R, the reduced and the
+// full-integration element must produce the same, positive definite matrix, displacement block and
+// micro-inertia block alike. With the element's own 8-point rule the displacement block would have
+// rank 24 out of 60.
+void testConsistentInertiaHexa20ReducedIntegrationIsIntegratedWithTheFullRule()
+{
+  using ElemType = GeneralGradientEnhancedDisplacementFiniteElement< 3, 20 >;
+
+  const std::vector< std::vector< double > > parentNodes = { { -1, -1, -1 }, { 1, -1, -1 }, { 1, 1, -1 },
+                                                             { -1, 1, -1 },  { -1, -1, 1 }, { 1, -1, 1 },
+                                                             { 1, 1, 1 },    { -1, 1, 1 },  { 0, -1, -1 },
+                                                             { 1, 0, -1 },   { 0, 1, -1 },  { -1, 0, -1 },
+                                                             { 0, -1, 1 },   { 1, 0, 1 },   { 0, 1, 1 },
+                                                             { -1, 0, 1 },   { -1, -1, 0 }, { 1, -1, 0 },
+                                                             { 1, 1, 0 },    { -1, 1, 0 } };
+  const double                               scale[3]    = { 1.0, 1.3, 0.7 };
+  std::vector< double >                      nodeCoordsVec;
+  for ( const auto& xi : parentNodes )
+    for ( int i = 0; i < 3; i++ ) {
+      const double next = xi[( i + 1 ) % 3];
+      nodeCoordsVec.push_back( scale[i] * ( 0.5 * ( xi[i] + 1.0 ) + 0.08 * xi[i] * next + 0.05 * next * next ) );
+    }
+
+  // AT2PhaseField's { E, nu, Gc, l, density, nonlocalViscosity, microInertia }. Held for the whole
+  // test: the material keeps a bare pointer into it (see
+  // testComputeConsistentInertiaConservesTotalMassAndMicroInertia).
+  const std::vector< double > matProps   = { 20000.0, 0.2, 1.0, 1.0, 2.5, 1.0, 0.25 };
+  const std::vector< double > elPropsVec = { 1.0 };
+
+  const auto consistentInertia = [&]( FiniteElement::Quadrature::IntegrationTypes intType ) {
+    ElemType element( 1, intType, ElemType::SectionType::Solid );
+    element.assignNodeCoordinates( nodeCoordsVec.data() );
+
+    MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+    ElementProperties     elProps( elPropsVec.data(), elPropsVec.size() );
+    element.assignProperty( elProps );
+    element.assignProperty( materialSection );
+
+    std::vector< double > stateVars( element.getNumberOfRequiredStateVars(), 0.0 );
+    element.assignStateVars( stateVars.data(), stateVars.size() );
+    element.initializeYourself();
+
+    const int             nDof = element.getNDofPerElement();
+    std::vector< double > M( nDof * nDof, 0.0 );
+    element.computeConsistentInertia( M.data() );
+    return Eigen::MatrixXd( Eigen::Map< Eigen::MatrixXd >( M.data(), nDof, nDof ) );
+  };
+
+  const Eigen::MatrixXd reduced = consistentInertia( FiniteElement::Quadrature::IntegrationTypes::ReducedIntegration );
+  const Eigen::MatrixXd full    = consistentInertia( FiniteElement::Quadrature::IntegrationTypes::FullIntegration );
+
+  throwExceptionOnFailure( ( reduced - full ).norm() <= 1e-13 * full.norm(),
+                           "the reduced-integration consistent inertia differs from the full-integration one." );
+
+  const Eigen::VectorXd eigenvalues = Eigen::SelfAdjointEigenSolver< Eigen::MatrixXd >( reduced ).eigenvalues();
+  throwExceptionOnFailure( eigenvalues.minCoeff() > 1e-6 * eigenvalues.maxCoeff(),
+                           "the reduced-integration consistent inertia is not positive definite." );
+}
+
 void testComputeBodyForceConservesTotalForcePerDirection()
 {
   constexpr int nDim          = 2;
@@ -2103,6 +2163,7 @@ int main()
     testSetInitialConditionsMaterialInitializationDoesNotThrow,
     testSetInitialConditionsRejectsUnsupportedStateTypes,
     testComputeConsistentInertiaConservesTotalMassAndMicroInertia,
+    testConsistentInertiaHexa20ReducedIntegrationIsIntegratedWithTheFullRule,
     testComputeBodyForceConservesTotalForcePerDirection,
     testComputeCriticalTimeStepMatchesMaterialWaveSpeedForRegularHexa8,
     testComputeInternalEnergyMatchesSumOverQuadraturePoints,
