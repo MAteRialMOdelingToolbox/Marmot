@@ -30,6 +30,7 @@
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotFiniteStrainPlasticity.h"
 #include "Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h"
+#include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
 #include <cmath>
 #include <utility>
@@ -160,6 +161,25 @@ namespace Marmot::Materials {
     }
 
     /**
+     * The exponential map of FiniteStrainJ2Plasticity (Marmot's FlowIntegration::exponentialMap), by scaling and
+     * squaring: the series is evaluated for dGp / 2^s with |dGp| / 2^s <= 1/2 only, so that also the large plastic
+     * increments of the intermediate Newton iterates are represented.
+     */
+    template < typename T >
+    static Tensor33t< T > exponentialMap( const Tensor33t< T >& dGp )
+    {
+      double norm2 = 0.0;
+      for ( int i = 0; i < 9; i++ )
+        norm2 += std::pow( std::abs( Math::makeReal( dGp.data()[i] ) ), 2 );
+      const int      s = norm2 > 0.25 ? int( std::ceil( std::log2( std::sqrt( norm2 ) / 0.5 ) ) ) : 0;
+      Tensor33t< T > E = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::exponentialMap(
+        Tensor33t< T >( multiplyFastorTensorWithScalar( dGp, T( std::ldexp( 1.0, -s ) ) ) ) );
+      for ( int k = 0; k < s; k++ )
+        E = Tensor33t< T >( E % E );
+      return E;
+    }
+
+    /**
      * Residual of the return to the cone for X = {Fe (9, row major), alphaP, dLambda}:
      * Fe exp( dLambda dg/dM ) - FeTrial, the hardening law and the scaled yield function.
      */
@@ -171,9 +191,9 @@ namespace Marmot::Materials {
       const T              alphaP  = X( 9 );
       const T              dLambda = X( 10 );
 
-      const Tensor33t< T > M   = mandelStress( Fe );
-      const Tensor33t< T > dGp = multiplyFastorTensorWithScalar( flowDirection( M ), dLambda );
-      const Tensor33t< T > dFp = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::exponentialMap( dGp );
+      const Tensor33t< T > M      = mandelStress( Fe );
+      const Tensor33t< T > dGp    = multiplyFastorTensorWithScalar( flowDirection( M ), dLambda );
+      const Tensor33t< T > dFp    = exponentialMap( dGp );
       const Tensor33t< T > Fe_dFp = Fastor::einsum< iJ, JK >( Fe, dFp );
 
       VectorXt< T > R( 11 );

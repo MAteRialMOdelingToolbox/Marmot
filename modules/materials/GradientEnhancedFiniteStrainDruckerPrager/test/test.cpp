@@ -278,6 +278,34 @@ void testTangentAtTheApex()
   checkTangents( mat, F, 2e-3, state0, "apex" );
 }
 
+void testLargeIncrement()
+{
+  // a far-off iterate of a global Newton scheme (from an MPM run): a plastic increment of order one, beyond the
+  // range of the plain series of the tensor exponential. The return must still end on the cone.
+  const auto props = properties( 5., 30., 10., 0.0 );
+  Mat        mat( props.data(), props.size(), 1 );
+  Tensor33d  F                                              = stretch( 1.6491543352545375, 0.67203941841161841, 1.0 );
+  F( 0, 1 )                                                 = 0.0029042753684767816;
+  F( 1, 0 )                                                 = 0.17121287455412429;
+  std::vector< double > state                               = freshState( mat );
+  double*               Fp                                  = mat.getStateView( "Fp", state.data() ).stateLocation;
+  Fp[0]                                                     = 0.99901841034324146;
+  Fp[4]                                                     = 1.001084449260059;
+  Fp[8]                                                     = 1.0003438151045874;
+  *mat.getStateView( "alphaP", state.data() ).stateLocation = 0.0025121126871932276;
+
+  const auto   res    = evaluate( mat, F, 0.0, state );
+  const double alphaP = stateValue( mat, res.state, "alphaP" );
+  // reference: the previous, independent implementation (return map in the principal elastic log strains)
+  throwExceptionOnFailure( std::abs( res.tau( 0, 0 ) + 66.70672101670 ) < 1e-8 &&
+                             std::abs( res.tau( 1, 1 ) + 400.5796457121 ) < 1e-8 &&
+                             std::abs( alphaP - 0.9634808934576 ) < 1e-11,
+                           MakeString() << "large increment: tau_xx " << res.tau( 0, 0 ) << ", tau_yy "
+                                        << res.tau( 1, 1 ) << ", alphaP " << alphaP << where );
+  throwExceptionOnFailure( std::abs( yieldFunction( res.tau, alphaP, 5., 30., 0.0 ) ) < 1e-8,
+                           "a large increment must still return to the cone" + where );
+}
+
 void testGradientEnhancedDamage()
 {
   const double c0 = 5., phi = 30., psi = 20., H = 100., epsF = 0.05;
@@ -451,6 +479,7 @@ int main()
                                                                testObjectivity,
                                                                testTangentInThePlasticBranch,
                                                                testTangentAtTheApex,
+                                                               testLargeIncrement,
                                                                testGradientEnhancedDamage,
                                                                testElasticUnloading,
                                                                testFactoryAndValidation,

@@ -47,7 +47,8 @@ namespace Marmot::Materials {
 
     /// absolute tolerance of the return-map residual (the yield function is scaled by the cohesion)
     constexpr double innerNewtonTol        = 1e-12;
-    constexpr int    nMaxInnerNewtonCycles = 25;
+    constexpr int    nMaxInnerNewtonCycles = 50;
+    constexpr int    nMaxHalvings          = 10;
     /// the deviatoric Mandel stress counts as vanished (apex) below this fraction of the cohesive strength
     constexpr double apexTol = 1e-10;
 
@@ -84,6 +85,50 @@ namespace Marmot::Materials {
         for ( int L = 0; L < 3; L++ )
           d( 3 * k + L ) = Finv( L, k );
       return d;
+    }
+
+    /**
+     * Newton's method for R( X ) = 0 with the Jacobian by the complex step, and a backtracking line search: a step
+     * is halved while the residual cannot be evaluated or does not decrease. On success, R and dR_dX belong to the
+     * converged X.
+     */
+    bool newtonWithBacktracking( const Differentiation::Complex::vector_to_vector_function_type& residual,
+                                 Eigen::VectorXd&                                                X,
+                                 Eigen::VectorXd&                                                R,
+                                 Eigen::MatrixXd&                                                dR_dX )
+    {
+      try {
+        std::tie( R, dR_dX ) = Differentiation::Complex::forwardDifference( residual, X );
+      }
+      catch ( const std::exception& ) {
+        return false;
+      }
+      for ( int counter = 0; counter <= nMaxInnerNewtonCycles; counter++ ) {
+        if ( !R.allFinite() || !dR_dX.allFinite() )
+          return false;
+        if ( R.norm() < innerNewtonTol )
+          return true;
+
+        const Eigen::VectorXd dX   = -dR_dX.colPivHouseholderQr().solve( R );
+        double                step = 1.0;
+        for ( int halving = 0; halving <= nMaxHalvings; halving++, step *= 0.5 ) {
+          const Eigen::VectorXd Xtrial = X + step * dX;
+          try {
+            const auto [Rtrial, Jtrial] = Differentiation::Complex::forwardDifference( residual, Xtrial );
+            if ( Rtrial.allFinite() && ( Rtrial.norm() < R.norm() || halving == nMaxHalvings ) ) {
+              X     = Xtrial;
+              R     = Rtrial;
+              dR_dX = Jtrial;
+              break;
+            }
+          }
+          catch ( const std::exception& ) {
+            if ( halving == nMaxHalvings )
+              return false;
+          }
+        }
+      }
+      return false;
     }
 
     Fastor::Tensor< double, 3 > principalValues( const Tensor33d& symmetric )
@@ -203,7 +248,13 @@ namespace Marmot::Materials {
     if ( converged )
       return cone;
 
-    // no admissible state on the cone: the trial state lies beyond the apex
+    // no admissible state on the cone: the trial state must lie beyond the apex. The volumetric plastic flow only
+    // lowers the pressure, and the apex pressure only grows with the hardening, so p_trial >= p_apex( alpha_n ) is
+    // necessary; otherwise the cone return failed for a state that belongs to the cone.
+    const double pTrial = Fastor::trace( mandelStress( FeTrial ) ) / 3.;
+    if ( eta <= 0.0 || pTrial < xi * ( c0 + H * alphaPOld ) / eta )
+      throw StressUpdateFailed( MakeString() << __PRETTY_FUNCTION__ << ": return to the cone not successful" );
+
     return returnToApex( F, FpOld, alphaPOld );
   }
 
@@ -231,18 +282,9 @@ namespace Marmot::Materials {
     VectorXd R;
     MatrixXd dR_dX;
     converged = false;
-    for ( int counter = 0; counter <= nMaxInnerNewtonCycles; counter++ ) {
-      std::tie( R, dR_dX ) = Differentiation::Complex::forwardDifference( residual, X );
-      if ( !R.allFinite() || !dR_dX.allFinite() )
-        return {};
-      if ( R.norm() < innerNewtonTol ) {
-        converged = true;
-        break;
-      }
-      X -= dR_dX.colPivHouseholderQr().solve( R );
-    }
-    if ( !converged )
+    if ( !newtonWithBacktracking( residual, X, R, dR_dX ) )
       return {};
+    converged = true;
 
     ReturnMapping r;
     r.plastic               = true;
@@ -304,19 +346,9 @@ namespace Marmot::Materials {
 
     VectorXd X( 2 );
     X << thetaTrial, alphaPOld;
-    VectorXd R;
-    MatrixXd dR_dX;
-    bool     converged = false;
-    for ( int counter = 0; counter <= nMaxInnerNewtonCycles; counter++ ) {
-      std::tie( R, dR_dX ) = Differentiation::Complex::forwardDifference( residual, X );
-      if ( !R.allFinite() )
-        break;
-      if ( R.norm() < innerNewtonTol ) {
-        converged = true;
-        break;
-      }
-      X -= dR_dX.colPivHouseholderQr().solve( R );
-    }
+    VectorXd   R;
+    MatrixXd   dR_dX;
+    const bool converged = newtonWithBacktracking( residual, X, R, dR_dX );
     if ( !converged || X( 1 ) < alphaPOld )
       throw StressUpdateFailed( MakeString() << __PRETTY_FUNCTION__ << ": return to the apex not successful" );
 
@@ -385,7 +417,17 @@ namespace Marmot::Materials {
     const Tensor33d F( deformation.F );
     const double    N = deformation.N;
 
-    const ReturnMapping r = returnMapping( F, FpOld, alphaP );
+    ReturnMapping r;
+    try {
+      r = returnMapping( F, FpOld, alphaP );
+    }
+    catch ( const StressUpdateFailed& ) {
+      throw;
+    }
+    catch ( const std::exception& e ) {
+      // e.g. a failed tensor exponential: to the host, this is a stress update that needs a smaller increment
+      throw StressUpdateFailed( MakeString() << __PRETTY_FUNCTION__ << ": " << e.what() );
+    }
 
     std::memcpy( stateLayout.getPtr( sv, "Fp" ), r.FpNew.data(), 9 * sizeof( double ) );
     alphaP = r.alphaP;
