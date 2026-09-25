@@ -31,6 +31,24 @@
 
 namespace Marmot {
 
+  /**
+   * @brief Compile-time trait to detect whether a pack of tensor dimensions describes a square rank-2 tensor
+   * @tparam Rest the pack of tensor dimensions
+   *
+   * Used to gate symmetry-exploiting code paths in numerical/automatic differentiation routines, which are only
+   * meaningful for a rank-2 tensor argument with equal dimensions (e.g. the right Cauchy-Green tensor).
+   */
+  template < size_t... Rest >
+  struct IsSquareRank2Tensor {
+    static constexpr bool value = false;
+  };
+
+  template < size_t dim1, size_t dim2 >
+  struct IsSquareRank2Tensor< dim1, dim2 > {
+    static constexpr bool   value = ( dim1 == dim2 );
+    static constexpr size_t dim   = dim1;
+  };
+
   namespace FastorStandardTensors {
 
     using Tensor3d      = Fastor::Tensor< double, 3 >;
