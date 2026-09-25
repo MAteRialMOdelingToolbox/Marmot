@@ -278,6 +278,28 @@ void testTangentAtTheApex()
   checkTangents( mat, F, 2e-3, state0, "apex" );
 }
 
+void testNearTheVertex()
+{
+  // tension with shear, just below the apex pressure (from an MPM run, perfectly plastic cohesion): the solution
+  // lies on the cone with a small deviator. The apex state here would violate its subdifferential condition, and a
+  // return that falls back to it makes the response discontinuous in F.
+  const std::array< double, 12 > props = { K, G, 5.0, 30.0, 10.0, 0.0, 0.0, 0.005, 0.99, 2.0, 1.5, 1.0 };
+  Mat                            mat( props.data(), props.size(), 1 );
+  Tensor33d                      F = stretch( 1.0056742731167041, 0.99934189820798636, 1.0 );
+  F( 0, 1 )                        = -0.0045365520453929751;
+  F( 1, 0 )                        = -0.0055641206783383192;
+
+  const auto            res = evaluate( mat, F, 0.0, freshState( mat ) );
+  const Eigen::Matrix3d tau = toEigen( res.tau );
+  const double          dev = ( tau - tau.trace() / 3.0 * Eigen::Matrix3d::Identity() ).norm();
+  throwExceptionOnFailure( dev > 1e-2,
+                           MakeString() << "the state must stay on the cone, |dev tau| = " << dev << where );
+  throwExceptionOnFailure( std::abs( yieldFunction( res.tau, stateValue( mat, res.state, "alphaP" ), 5., 30., 0.0 ) ) <
+                             1e-8,
+                           "on the cone" + where );
+  checkTangents( mat, F, 0.0, freshState( mat ), "near the vertex" );
+}
+
 void testLargeIncrement()
 {
   // a far-off iterate of a global Newton scheme (from an MPM run): a plastic increment of order one, beyond the
@@ -480,6 +502,7 @@ int main()
                                                                testTangentInThePlasticBranch,
                                                                testTangentAtTheApex,
                                                                testLargeIncrement,
+                                                               testNearTheVertex,
                                                                testGradientEnhancedDamage,
                                                                testElasticUnloading,
                                                                testFactoryAndValidation,
