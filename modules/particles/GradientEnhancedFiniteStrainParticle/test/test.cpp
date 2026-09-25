@@ -210,6 +210,14 @@ namespace {
     return shape == "Quad" ? 4 : shape == "Hexa" ? 6 : 0;
   }
 
+  // fill freed heap chunks of many sizes with garbage, so that members which are read before they are set show up as
+  // garbage instead of as zeros or as stale values of a previous, identical object
+  void dirtyHeap()
+  {
+    for ( int n = 1; n <= 1024; n += 1 + n / 8 )
+      std::vector< double >( n, 1.2345e300 );
+  }
+
   bool throws( const std::function< void() >& f )
   {
     try {
@@ -504,8 +512,7 @@ namespace {
     // VCI of order 0, before the first increment: the correction eta = M^-1 R makes the corrected test functions
     // satisfy R = int_dOmega T n - int_Omega grad T = 0 for every node whose correction is active (M > 0)
     if ( numberOfFaces( shape ) > 0 ) {
-      for ( int k = 0; k < 64; k++ ) // dirty the heap, so that an unevaluated basis shows up as garbage
-        std::vector< double >( 1 + k % 8, 1.2345e300 );
+      dirtyHeap(); // so that an unevaluated basis or volume shows up as garbage
       Setup< nDim > s( name, v, V );
       const int     nR = s.nNodes() * nDim;
       throwExceptionOnFailure( s.particle->vci_getNumberOfConstraints() == 1, name + ": one constraint of order 0" );
@@ -521,7 +528,9 @@ namespace {
 
       Eigen::VectorXd M = Eigen::VectorXd::Zero( s.nNodes() );
       s.particle->vci_compute_MMatrix( M.data() );
-      throwExceptionOnFailure( std::abs( M.maxCoeff() - V ) < 1e-12, name + ": M of order 0 is the volume" );
+      throwExceptionOnFailure( std::abs( M.maxCoeff() - V ) < 1e-12,
+                               MakeString()
+                                 << name << ": M of order 0 is the volume, " << M.maxCoeff() << " vs " << V );
 
       const Eigen::VectorXd R0 = residual();
       Eigen::VectorXd       eta( nR );
