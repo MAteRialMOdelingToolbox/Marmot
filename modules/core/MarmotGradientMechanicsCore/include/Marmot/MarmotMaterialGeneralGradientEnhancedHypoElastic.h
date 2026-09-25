@@ -310,6 +310,17 @@ public:
    *       is" -- and where damage is driven by that field alone (`m = 1` in GCDP) that is the
    *       virgin tangent however damaged the point is. Pass the current field for the current wave
    *       speed; take the default for an undamaged reference or a conservative critical time step.
+   *
+   * @note The default is not cheap: it copies the state and runs the full stress update at a zero
+   *       strain increment, which on a non-yielding point costs about as much as the stress update
+   *       itself. That is fine for a critical time step, computed once per step, but the artificial
+   *       bulk viscosity's damage degradation asks for the CURRENT wave speed on every quadrature
+   *       point on every explicit increment, and there the default doubles the material cost. A
+   *       material whose degraded tangent at a zero strain increment has a closed form -- the usual
+   *       \f$(1-\omega)\,\mathbb{C}^\mathrm{el}\f$ of a damage model -- should override this with
+   *       that closed form. The override must return what the default returns for it, must honour
+   *       `K` as an input, and must not touch the state; see GCDPModel::getMaximumWaveSpeed() for
+   *       one that does so to the bit.
    */
   virtual double getMaximumWaveSpeed(
     const response&                                    currentResponse,

@@ -141,21 +141,26 @@ It is requested through a second named property, taking exactly one value:
 
 .. note::
 
-   This is why the degradation is opt-in rather than the default: it needs the material's current
-   tangent, which costs a full constitutive evaluation per quadrature point per increment -- exactly
-   the cost the cached reference wave speed exists to avoid.
+   This is why the degradation is opt-in rather than the default: it asks the material for its
+   current wave speed on every quadrature point on every increment. With the material interface's
+   default ``getMaximumWaveSpeed()`` that is a full constitutive evaluation -- about the cost of the
+   stress update itself on a non-yielding point, so enabling the degradation roughly doubled the
+   material cost of a run. A damage model meant to run with it should therefore override
+   ``getMaximumWaveSpeed()`` with its closed form, :math:`\sqrt{(1-\omega)\,\max_i C_{ii}/\rho}`
+   for the usual :math:`(1-\omega)\,\mathbb{C}_0` tangent; GCDP does, bit-identically to the
+   default, at a few tens of nanoseconds per query.
 
 Notes and limitations
 ^^^^^^^^^^^^^^^^^^^^^^
 
 - **Volumetric only.** Ringing that is predominantly deviatoric or flexural is not reached, which
   is a property of the device and not of this implementation.
-- **The wave speed is cached.** Querying a material for its current wave speed costs a full
-  constitutive evaluation, unaffordable per quadrature point per explicit increment, so the
-  **undamaged** wave speed is cached on first use. That leaves the damping slightly stronger than a
+- **The reference wave speed is cached.** The **undamaged** wave speed is cached on first use and
+  is what the viscous stress is formed with. That leaves the damping slightly stronger than a
   current-stiffness value would as the material softens -- the safe direction for a device whose
   purpose is to remove energy -- and it is the reference the optional degradation above measures
-  against.
+  against. Only the degradation asks for the current wave speed, once per quadrature point per
+  increment, and what that costs is the material's business (see the note above).
 - **The characteristic length is the element's smallest physical extent**, twice the smallest
   singular value of the Jacobian -- the same length the stable time increment is computed from,
   shared through one function so the two cannot drift apart.
