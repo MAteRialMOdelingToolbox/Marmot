@@ -217,7 +217,7 @@ namespace Marmot::MaterialPoints {
       Fastor::Tensor< double, nDim, nDim, nDim, nDim > dS_dDeltaF;
       Fastor::Tensor< double, nDim, nDim >             dS_dN;
       Fastor::Tensor< double, nDim, nDim >             dL_dDeltaF;
-      double                                          dL_dN;
+      double                                           dL_dN;
     } tangents;
 
     TensorDD dx_dY() const { return state->dx_dY( Fastor::seq( 0, nDim ), Fastor::seq( 0, nDim ) ); };
@@ -244,9 +244,11 @@ namespace Marmot::MaterialPoints {
     {
       if ( conditionName == "geostaticstress" ) {
         std::tuple< double, double, double > geostaticNormalStressComponents = { value[0], value[0], value[0] };
-        const auto [F0_XX, F0_YY, F0_ZZ] = material->findEigenDeformationForEigenStress(
-          { state->F0_XX, state->F0_YY, state->F0_ZZ }, geostaticNormalStressComponents,
-          state->materialState.data() );
+        const auto [F0_XX,
+                    F0_YY,
+                    F0_ZZ] = material->findEigenDeformationForEigenStress( { state->F0_XX, state->F0_YY, state->F0_ZZ },
+                                                                           geostaticNormalStressComponents,
+                                                                           state->materialState.data() );
 
         state->F0_XX = F0_XX;
         state->F0_YY = F0_YY;
