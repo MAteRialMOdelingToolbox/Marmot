@@ -158,10 +158,9 @@ namespace Marmot::Meshfree {
      */
     virtual std::vector< std::string > getPropertyNames() const override
     {
-      auto validProperties = _validProperties;
-      validProperties.insert( validProperties.end(),
-                              getSubdomainPropertyNames().begin(),
-                              getSubdomainPropertyNames().end() );
+      auto       validProperties     = _validProperties;
+      const auto subdomainProperties = getSubdomainPropertyNames(); // returned by value: iterate over one copy
+      validProperties.insert( validProperties.end(), subdomainProperties.begin(), subdomainProperties.end() );
       return validProperties;
     };
 
