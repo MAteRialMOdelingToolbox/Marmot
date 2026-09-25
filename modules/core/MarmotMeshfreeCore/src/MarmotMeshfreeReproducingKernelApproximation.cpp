@@ -216,7 +216,7 @@ namespace Marmot::Meshfree {
       const Eigen::VectorXd x_minus_center = coordVec -
                                              Eigen::Map< const Eigen::VectorXd >( kf->getCenterCoordinates(), _dim );
 
-      const double phi = kf->computeKernelFunction( coord );
+      const double    phi         = kf->computeKernelFunction( coord );
       Eigen::VectorXd phiGradient = Eigen::VectorXd::Zero( _dim );
       kf->computeKernelFunctionGradient( coord, phiGradient.data() );
 
@@ -274,8 +274,8 @@ namespace Marmot::Meshfree {
     const auto bGradientTransposed = bGradient.transpose();
 
     for ( size_t k = 0; k < nCovering; k++ ) {
-      const int             A           = coveringKernelFunctionIndices[k];
-      const double          phi_A       = phi_cache[k];
+      const int              A             = coveringKernelFunctionIndices[k];
+      const double           phi_A         = phi_cache[k];
       const Eigen::VectorXd& phiGradient_A = phiGradient_cache[k];
       const Eigen::VectorXd& H             = H_cache[k];
       const Eigen::MatrixXd& HGradient     = HGradient_cache[k];

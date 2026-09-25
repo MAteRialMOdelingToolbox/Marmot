@@ -36,7 +36,7 @@ namespace Marmot::Meshfree {
    */
   template <>
   struct GaussRule< 2 > {
-    using Scalar = double; ///< Type for scalar values.
+    using Scalar = double;                        ///< Type for scalar values.
     using Vec    = Eigen::Matrix< Scalar, 2, 1 >; ///< Type for 2D vectors.
 
     /**
@@ -61,7 +61,7 @@ namespace Marmot::Meshfree {
    */
   template <>
   struct GaussRule< 3 > {
-    using Scalar = double; ///< Type for scalar values.
+    using Scalar = double;                        ///< Type for scalar values.
     using Vec    = Eigen::Matrix< Scalar, 3, 1 >; ///< Type for 3D vectors.
 
     /**
@@ -104,13 +104,13 @@ namespace Marmot::Meshfree {
   template < int nDim, int nNodes >
   class MarmotLagrangeCell {
   public:
-    using Scalar = double; ///< Type for scalar values.
-    using Vec    = Eigen::Matrix< Scalar, nDim, 1 >; ///< Type for vectors in nDim.
+    using Scalar = double;                                ///< Type for scalar values.
+    using Vec    = Eigen::Matrix< Scalar, nDim, 1 >;      ///< Type for vectors in nDim.
     using Mat    = Eigen::Matrix< Scalar, nDim, nNodes >; ///< Type for node coordinate matrix.
-    using RowN   = Eigen::Matrix< Scalar, 1, nNodes >; ///< Type for shape function vector.
+    using RowN   = Eigen::Matrix< Scalar, 1, nNodes >;    ///< Type for shape function vector.
     using dNMat  = Eigen::Matrix< Scalar, nDim, nNodes >; ///< Type for shape function derivative matrix.
 
-    using Self = MarmotLagrangeCell< nDim, nNodes >; ///< Alias for the current class type.
+    using Self = MarmotLagrangeCell< nDim, nNodes >;      ///< Alias for the current class type.
 
     /**
      * @brief Default constructor.
@@ -384,7 +384,7 @@ namespace Marmot::Meshfree {
      * @throws std::logic_error if not implemented for the specific element type.
      * @note This method must be specialized for each concrete element type.
      */
-    std::vector< Self > uniformSubdivided( ) const
+    std::vector< Self > uniformSubdivided() const
     {
       // The actual subdivision logic is handled by the specialized versions below.
       throw std::logic_error( "uniformSubdivided not implemented for this (nDim,nNodes)" );
@@ -398,10 +398,9 @@ namespace Marmot::Meshfree {
      * @throws std::out_of_range if parentFaceId is invalid.
      * @throws std::logic_error if not implemented for the specific element type.
      */
-    std::vector<int> getSubCellIndicesOnParentFace( int parentFaceId ) const
+    std::vector< int > getSubCellIndicesOnParentFace( int parentFaceId ) const
     {
-      throw std::logic_error(
-        "getSubCellIndicesOnParentFace not implemented for this (nDim,nNodes)" );
+      throw std::logic_error( "getSubCellIndicesOnParentFace not implemented for this (nDim,nNodes)" );
     }
 
     // ------------------------------------------------------------------------
@@ -449,14 +448,14 @@ namespace Marmot::Meshfree {
     // of a sub-cell given its flat index in the `uniformSubdivided` vector
     // The coordinates are 0-indexed, from 0 to (2^levels - 1) along each dimension.
     // NOTE: This helper is now only relevant for levels=1, simplifying its usage.
-    std::array<int, nDim> getGlobalGridCoords(int cell_idx ) const
+    std::array< int, nDim > getGlobalGridCoords( int cell_idx ) const
     {
 
-      std::array<int, nDim> coords;
+      std::array< int, nDim > coords;
       coords.fill( 0 );
 
       // The cell_idx directly maps to the local (i,j) or (i,j,k) index.
-      int local_child_idx         = cell_idx; // For levels=1, cell_idx is the direct index
+      int local_child_idx = cell_idx; // For levels=1, cell_idx is the direct index
 
       if ( nDim == 2 ) {
         // Quad4 specific local mapping: (0,0), (1,0), (1,1), (0,1)
@@ -484,28 +483,44 @@ namespace Marmot::Meshfree {
         // Hex8 specific local mapping: (0,0,0), (1,0,0), (1,1,0), (0,1,0), (0,0,1), (1,0,1), (1,1,1), (0,1,1)
         int local_i, local_j, local_k;
         if ( local_child_idx == 0 ) { // bottom-front-left
-          local_i = 0; local_j = 0; local_k = 0;
+          local_i = 0;
+          local_j = 0;
+          local_k = 0;
         }
         else if ( local_child_idx == 1 ) { // bottom-front-right
-          local_i = 1; local_j = 0; local_k = 0;
+          local_i = 1;
+          local_j = 0;
+          local_k = 0;
         }
         else if ( local_child_idx == 2 ) { // bottom-back-right
-          local_i = 1; local_j = 1; local_k = 0;
+          local_i = 1;
+          local_j = 1;
+          local_k = 0;
         }
         else if ( local_child_idx == 3 ) { // bottom-back-left
-          local_i = 0; local_j = 1; local_k = 0;
+          local_i = 0;
+          local_j = 1;
+          local_k = 0;
         }
         else if ( local_child_idx == 4 ) { // top-front-left
-          local_i = 0; local_j = 0; local_k = 1;
+          local_i = 0;
+          local_j = 0;
+          local_k = 1;
         }
         else if ( local_child_idx == 5 ) { // top-front-right
-          local_i = 1; local_j = 0; local_k = 1;
+          local_i = 1;
+          local_j = 0;
+          local_k = 1;
         }
         else if ( local_child_idx == 6 ) { // top-back-right
-          local_i = 1; local_j = 1; local_k = 1;
+          local_i = 1;
+          local_j = 1;
+          local_k = 1;
         }
         else { // local_child_idx == 7 (top-back-left)
-          local_i = 0; local_j = 1; local_k = 1;
+          local_i = 0;
+          local_j = 1;
+          local_k = 1;
         }
         coords[0] = local_i;
         coords[1] = local_j;
@@ -621,7 +636,7 @@ namespace Marmot::Meshfree {
    * @return A vector of new Quad4 elements.
    */
   template <>
-  inline std::vector< MarmotLagrangeCell< 2, 4 > > MarmotLagrangeCell< 2, 4 >::uniformSubdivided( ) const
+  inline std::vector< MarmotLagrangeCell< 2, 4 > > MarmotLagrangeCell< 2, 4 >::uniformSubdivided() const
   {
 
     std::vector< Self > next;
@@ -630,7 +645,7 @@ namespace Marmot::Meshfree {
     Vec s;
     Vec grid[3][3]; // Stores physical coordinates of points at -1, 0, +1 in natural space
 
-    for ( int j = 0; j < 3; ++j)
+    for ( int j = 0; j < 3; ++j )
       for ( int i = 0; i < 3; ++i ) {
         s << -1.0 + i, -1.0 + j; // Natural coordinates (-1,-1), (0,-1), (1,-1), etc.
         grid[i][j] = mapToPhysical( s );
@@ -660,30 +675,29 @@ namespace Marmot::Meshfree {
    * @throws std::out_of_range if parentFaceId is not between 1 and 4.
    */
   template <>
-  inline std::vector<int> MarmotLagrangeCell< 2, 4 >::getSubCellIndicesOnParentFace( int parentFaceId ) const
+  inline std::vector< int > MarmotLagrangeCell< 2, 4 >::getSubCellIndicesOnParentFace( int parentFaceId ) const
   {
 
-    std::vector<int> indices;
+    std::vector< int > indices;
 
     switch ( parentFaceId ) {
-        case 1: // S1: Bottom (eta=-1) -> sub-cells 0 and 1 are on this face
-            indices.push_back(0);
-            indices.push_back(1);
-            break;
-        case 2: // S2: Right (xi=+1) -> sub-cells 1 and 2 are on this face
-            indices.push_back(1);
-            indices.push_back(2);
-            break;
-        case 3: // S3: Top (eta=+1) -> sub-cells 2 and 3 are on this face
-            indices.push_back(2);
-            indices.push_back(3);
-            break;
-        case 4: // S4: Left (xi=-1) -> sub-cells 0 and 3 are on this face
-            indices.push_back(0);
-            indices.push_back(3);
-            break;
-        default:
-            throw std::out_of_range( "Quad4 parentFaceId must be 1..4 (Abaqus)" );
+    case 1: // S1: Bottom (eta=-1) -> sub-cells 0 and 1 are on this face
+      indices.push_back( 0 );
+      indices.push_back( 1 );
+      break;
+    case 2: // S2: Right (xi=+1) -> sub-cells 1 and 2 are on this face
+      indices.push_back( 1 );
+      indices.push_back( 2 );
+      break;
+    case 3: // S3: Top (eta=+1) -> sub-cells 2 and 3 are on this face
+      indices.push_back( 2 );
+      indices.push_back( 3 );
+      break;
+    case 4: // S4: Left (xi=-1) -> sub-cells 0 and 3 are on this face
+      indices.push_back( 0 );
+      indices.push_back( 3 );
+      break;
+    default: throw std::out_of_range( "Quad4 parentFaceId must be 1..4 (Abaqus)" );
     }
     return indices;
   }
@@ -858,7 +872,7 @@ namespace Marmot::Meshfree {
    * @return A vector of new Hex8 elements.
    */
   template <>
-  inline std::vector< MarmotLagrangeCell< 3, 8 > > MarmotLagrangeCell< 3, 8 >::uniformSubdivided( ) const
+  inline std::vector< MarmotLagrangeCell< 3, 8 > > MarmotLagrangeCell< 3, 8 >::uniformSubdivided() const
   {
 
     std::vector< Self > next;
@@ -906,50 +920,49 @@ namespace Marmot::Meshfree {
    * @throws std::out_of_range if parentFaceId is not between 1 and 6.
    */
   template <>
-  inline std::vector<int> MarmotLagrangeCell< 3, 8 >::getSubCellIndicesOnParentFace( int parentFaceId ) const
+  inline std::vector< int > MarmotLagrangeCell< 3, 8 >::getSubCellIndicesOnParentFace( int parentFaceId ) const
   {
 
-    std::vector<int> indices;
+    std::vector< int > indices;
 
     switch ( parentFaceId ) {
-        case 1: // S1: Bottom (z=-1) -> sub-cells 0, 1, 2, 3 are on this face
-            indices.push_back(0);
-            indices.push_back(1);
-            indices.push_back(2);
-            indices.push_back(3);
-            break;
-        case 2: // S2: Top (z=+1) -> sub-cells 4, 5, 6, 7 are on this face
-            indices.push_back(4);
-            indices.push_back(5);
-            indices.push_back(6);
-            indices.push_back(7);
-            break;
-        case 3: // S3: Front (eta=-1) -> sub-cells 0, 1, 4, 5 are on this face
-            indices.push_back(0);
-            indices.push_back(1);
-            indices.push_back(4);
-            indices.push_back(5);
-            break;
-        case 4: // S4: Right (xi=+1) -> sub-cells 1, 2, 5, 6 are on this face
-            indices.push_back(1);
-            indices.push_back(2);
-            indices.push_back(5);
-            indices.push_back(6);
-            break;
-        case 5: // S5: Back (eta=+1) -> sub-cells 2, 3, 6, 7 are on this face
-            indices.push_back(2);
-            indices.push_back(3);
-            indices.push_back(6);
-            indices.push_back(7);
-            break;
-        case 6: // S6: Left (xi=-1) -> sub-cells 0, 3, 4, 7 are on this face
-            indices.push_back(0);
-            indices.push_back(3);
-            indices.push_back(4);
-            indices.push_back(7);
-            break;
-        default:
-            throw std::out_of_range( "Hex8 parentFaceId must be 1..6 (Abaqus)" );
+    case 1: // S1: Bottom (z=-1) -> sub-cells 0, 1, 2, 3 are on this face
+      indices.push_back( 0 );
+      indices.push_back( 1 );
+      indices.push_back( 2 );
+      indices.push_back( 3 );
+      break;
+    case 2: // S2: Top (z=+1) -> sub-cells 4, 5, 6, 7 are on this face
+      indices.push_back( 4 );
+      indices.push_back( 5 );
+      indices.push_back( 6 );
+      indices.push_back( 7 );
+      break;
+    case 3: // S3: Front (eta=-1) -> sub-cells 0, 1, 4, 5 are on this face
+      indices.push_back( 0 );
+      indices.push_back( 1 );
+      indices.push_back( 4 );
+      indices.push_back( 5 );
+      break;
+    case 4: // S4: Right (xi=+1) -> sub-cells 1, 2, 5, 6 are on this face
+      indices.push_back( 1 );
+      indices.push_back( 2 );
+      indices.push_back( 5 );
+      indices.push_back( 6 );
+      break;
+    case 5: // S5: Back (eta=+1) -> sub-cells 2, 3, 6, 7 are on this face
+      indices.push_back( 2 );
+      indices.push_back( 3 );
+      indices.push_back( 6 );
+      indices.push_back( 7 );
+      break;
+    case 6: // S6: Left (xi=-1) -> sub-cells 0, 3, 4, 7 are on this face
+      indices.push_back( 0 );
+      indices.push_back( 3 );
+      indices.push_back( 4 );
+      indices.push_back( 7 );
+      break;
+    default: throw std::out_of_range( "Hex8 parentFaceId must be 1..6 (Abaqus)" );
     }
     return indices;
   }
@@ -986,6 +999,6 @@ namespace Marmot::Meshfree {
   /**
    * @brief Alias for a 3D, 8-node hexahedral element.
    */
-  using Hex8  = MarmotLagrangeCell< 3, 8 >;
+  using Hex8 = MarmotLagrangeCell< 3, 8 >;
 
 } // namespace Marmot::Meshfree

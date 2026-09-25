@@ -35,8 +35,8 @@
 #include <Eigen/Dense>
 #include <Fastor/Fastor.h>
 #include <stdexcept>
-#include <vector> // Explicitly include vector for clarity
 #include <tuple>  // Explicitly include tuple for std::tuple usage
+#include <vector> // Explicitly include vector for clarity
 
 namespace Marmot::Meshfree {
 
@@ -122,10 +122,9 @@ namespace Marmot::Meshfree {
       const std::vector< std::string > propertyNames = getPropertyNames();
 
       if ( nProperties != static_cast< int >( propertyNames.size() ) )
-        throw std::invalid_argument( "GenericSDIParticle::setProperties: number of properties (" +
-                                     std::to_string( nProperties ) +
-                                     ") does not match number of supported properties (" +
-                                     std::to_string( propertyNames.size() ) + ")." );
+        throw std::invalid_argument(
+          "GenericSDIParticle::setProperties: number of properties (" + std::to_string( nProperties ) +
+          ") does not match number of supported properties (" + std::to_string( propertyNames.size() ) + ")." );
 
       for ( int i = 0; i < nProperties; ++i )
         setProperty( propertyNames[i], &properties[i] );
@@ -439,7 +438,8 @@ namespace Marmot::Meshfree {
      */
     virtual void vci_compute_Test_P_BoundaryIntegral( [[maybe_unused]] double*       R_AiC_RowMajor,
                                                       [[maybe_unused]] const double* boundarySurfaceVector,
-                                                      [[maybe_unused]] int           boundaryFaceID ) override{
+                                                      [[maybe_unused]] int           boundaryFaceID ) override
+    {
 
       // This method depends on dY_dX, which is physics-specific.
       // It must be implemented in derived classes.
@@ -451,42 +451,43 @@ namespace Marmot::Meshfree {
      * @brief Computes the integral of the VCI test function gradient P.
      * @param R_AiC_RowMajor Pointer to the result matrix (row-major).
      */
-    virtual void vci_compute_TestGradient_P_Integral( [[maybe_unused]] double* R_AiC_RowMajor ) override{
+    virtual void vci_compute_TestGradient_P_Integral( [[maybe_unused]] double* R_AiC_RowMajor ) override
+    {
       // // dimensions of R_AiC_RowMajor: _nNodes x nDim x _nVCIConstraints
-       for (size_t s = 0; s < _subDomains.size(); ++s){//( const auto& sd : _subDomains)
-         const auto& sd = _subDomains[s];
-         const auto& sdf = _subDomainShapeFunctions[s];
-         const double vol = getSubdomainVolume( sd );
+      for ( size_t s = 0; s < _subDomains.size(); ++s ) { //( const auto& sd : _subDomains)
+        const auto&  sd  = _subDomains[s];
+        const auto&  sdf = _subDomainShapeFunctions[s];
+        const double vol = getSubdomainVolume( sd );
 
-         for ( int A = 0; A < _nNodes; A++ )
-           for ( int i = 0; i < nDim; i++ )
-             for ( int C = 0; C < _nVCIConstraints; C++ )
-               R_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] += sdf.dT_dY( i, A ) *
-                                                                                             sdf.P( C ) *
-                                                                                             vol;
-                                                                                             //getSubdomainVolume( sd );
-       }
+        for ( int A = 0; A < _nNodes; A++ )
+          for ( int i = 0; i < nDim; i++ )
+            for ( int C = 0; C < _nVCIConstraints; C++ )
+              R_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] += sdf.dT_dY( i, A ) *
+                                                                                            sdf.P( C ) * vol;
+        // getSubdomainVolume( sd );
+      }
     };
 
     /**
      * @brief Computes the integral of the VCI test function P gradient.
      * @param R_AiC_RowMajor Pointer to the result matrix (row-major).
      */
-    virtual void vci_compute_Test_PGradient_Integral( [[maybe_unused]] double* R_AiC_RowMajor ) override{
+    virtual void vci_compute_Test_PGradient_Integral( [[maybe_unused]] double* R_AiC_RowMajor ) override
+    {
       // dimensions of R_AiC_RowMajor: _nNodes x nDim x _nVCIConstraints
-       for ( size_t s = 0; s < _subDomains.size(); ++s){// ( const auto& sd : _subDomains)
+      for ( size_t s = 0; s < _subDomains.size(); ++s ) { // ( const auto& sd : _subDomains)
 
-         const auto& sd = _subDomains[s];
-         const auto& sdf = _subDomainShapeFunctions[s];
-         const double vol = getSubdomainVolume( sd );
+        const auto&  sd  = _subDomains[s];
+        const auto&  sdf = _subDomainShapeFunctions[s];
+        const double vol = getSubdomainVolume( sd );
 
-         for ( int A = 0; A < _nNodes; A++ )
-           for ( int i = 0; i < nDim; i++ )
-             for ( int C = 0; C < _nVCIConstraints; C++ )
-               R_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] += sdf.T( A ) *
-                                                                                             sdf.P_Gradient( C, i ) *
-                                                                                             vol;
-                                                                                             //getSubdomainVolume( sd );
+        for ( int A = 0; A < _nNodes; A++ )
+          for ( int i = 0; i < nDim; i++ )
+            for ( int C = 0; C < _nVCIConstraints; C++ )
+              R_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] += sdf.T( A ) *
+                                                                                            sdf.P_Gradient( C, i ) *
+                                                                                            vol;
+        // getSubdomainVolume( sd );
       }
     };
 
@@ -494,57 +495,61 @@ namespace Marmot::Meshfree {
      * @brief Computes the M-matrix for VCI.
      * @param mMatrix_ACD_RowMajor Pointer to the result matrix (row-major).
      */
-    virtual void vci_compute_MMatrix( [[maybe_unused]] double* mMatrix_ACD_RowMajor ) override{
+    virtual void vci_compute_MMatrix( [[maybe_unused]] double* mMatrix_ACD_RowMajor ) override
+    {
       // // dimensions of R_AiC_RowMajor: _nNodes x nDim x _nVCIConstraints
-       auto particleCenter = _particleDomainMain.getCenterCoordinates();
+      auto particleCenter = _particleDomainMain.getCenterCoordinates();
 
-       for (size_t s = 0; s < _subDomains.size(); ++s){// ( const auto& sd : _subDomains)
-         const auto& sd = _subDomains[s];
-         const auto& sdf = _subDomainShapeFunctions[s];
-         const double vol = getSubdomainVolume( sd );
-         auto center = sd.getCenterCoordinates();
+      for ( size_t s = 0; s < _subDomains.size(); ++s ) { // ( const auto& sd : _subDomains)
+        const auto&  sd     = _subDomains[s];
+        const auto&  sdf    = _subDomainShapeFunctions[s];
+        const double vol    = getSubdomainVolume( sd );
+        auto         center = sd.getCenterCoordinates();
 
-         for ( int A = 0; A < _nNodes; A++ ) {
-           const double R_A = _assignedKernelFunctions[A]->isInSupport( particleCenter.data() ) ? 1.0 : 0.0;
-           //const double R_A = _assignedKernelFunctions[A]->isInSupport( center.data() ) ? 1.0 : 0.0;
-           // const double R_A = 1.0;
+        for ( int A = 0; A < _nNodes; A++ ) {
+          const double R_A = _assignedKernelFunctions[A]->isInSupport( particleCenter.data() ) ? 1.0 : 0.0;
+          // const double R_A = _assignedKernelFunctions[A]->isInSupport( center.data() ) ? 1.0 : 0.0;
+          //  const double R_A = 1.0;
 
-           for ( int C = 0; C < _nVCIConstraints; C++ )
-             for ( int D = 0; D < _nVCIConstraints; D++ )
-               mMatrix_ACD_RowMajor[A * ( _nVCIConstraints * _nVCIConstraints ) + C * _nVCIConstraints + D] +=
-                                    R_A * sdf.P( C ) * sdf.P( D ) * vol;// getSubdomainVolume( sd );
-         }
-       }
+          for ( int C = 0; C < _nVCIConstraints; C++ )
+            for ( int D = 0; D < _nVCIConstraints; D++ )
+              mMatrix_ACD_RowMajor[A * ( _nVCIConstraints * _nVCIConstraints ) + C * _nVCIConstraints +
+                                   D] += R_A * sdf.P( C ) * sdf.P( D ) * vol; // getSubdomainVolume( sd );
+        }
+      }
     };
 
     /**
      * @brief Assigns test function correction terms for VCI.
      * @param eta_AiC_RowMajor Pointer to the correction terms matrix (row-major).
      */
-    virtual void vci_assignTestFunctionCorrectionTerms( [[maybe_unused]] const double* eta_AiC_RowMajor ) override{
-       auto particleCenter = _particleDomainMain.getCenterCoordinates();
+    virtual void vci_assignTestFunctionCorrectionTerms( [[maybe_unused]] const double* eta_AiC_RowMajor ) override
+    {
+      auto particleCenter = _particleDomainMain.getCenterCoordinates();
 
-       for (size_t s = 0; s < _subDomains.size(); ++s){// ( auto& sd : _subDomains)
-         const auto& sd = _subDomains[s];
-         auto& sdf = _subDomainShapeFunctions[s];
-         auto center = sd.getCenterCoordinates();
+      for ( size_t s = 0; s < _subDomains.size(); ++s ) { // ( auto& sd : _subDomains)
+        const auto& sd     = _subDomains[s];
+        auto&       sdf    = _subDomainShapeFunctions[s];
+        auto        center = sd.getCenterCoordinates();
 
-         for ( int A = 0; A < _nNodes; A++ ) {
-           const double R_A = _assignedKernelFunctions[A]->isInSupport( particleCenter.data() ) ? 1.0 : 0.0;
-           //const double R_A = _assignedKernelFunctions[A]->isInSupport( center.data() ) ? 1.0 : 0.0;
-           // const double R_A = 1.0;
-           for ( int i = 0; i < nDim; i++ ) {
-             double correction = 0.0;
+        for ( int A = 0; A < _nNodes; A++ ) {
+          const double R_A = _assignedKernelFunctions[A]->isInSupport( particleCenter.data() ) ? 1.0 : 0.0;
+          // const double R_A = _assignedKernelFunctions[A]->isInSupport( center.data() ) ? 1.0 : 0.0;
+          //  const double R_A = 1.0;
+          for ( int i = 0; i < nDim; i++ ) {
+            double correction = 0.0;
 
-             for ( int C = 0; C < _nVCIConstraints; C++ ) {
-               correction += eta_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] * R_A * sdf.P( C );
-               //sdf.dT_dY( i, A ) += eta_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] * R_A * sdf.P( C );
-             }
-             //sdf.dT_dY(i, A ) += correction;
-             sdf.dT_dY(i, A ) = sdf.dN_dY( i, A ) + correction;
-           }
-         }
-       }
+            for ( int C = 0; C < _nVCIConstraints; C++ ) {
+              correction += eta_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] * R_A *
+                            sdf.P( C );
+              // sdf.dT_dY( i, A ) += eta_AiC_RowMajor[A * ( nDim * _nVCIConstraints ) + i * _nVCIConstraints + C] * R_A
+              // * sdf.P( C );
+            }
+            // sdf.dT_dY(i, A ) += correction;
+            sdf.dT_dY( i, A ) = sdf.dN_dY( i, A ) + correction;
+          }
+        }
+      }
     };
 
   protected:

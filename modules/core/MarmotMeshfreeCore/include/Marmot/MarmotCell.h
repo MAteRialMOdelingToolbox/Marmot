@@ -25,12 +25,12 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
-#include "Marmot/MarmotMaterialPoint.h"
 #include "Marmot/MarmotJournal.h"
+#include "Marmot/MarmotMaterialPoint.h"
+#include <stdexcept>
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <stdexcept>
 
 class MarmotCell {
 
@@ -58,13 +58,15 @@ public:
                                             double*       dFInt_dQ,
                                             double        timeNew,
                                             double        dT ) const = 0;
-  
-  virtual void computeLumpedInertia( double* I ) {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "not yet implemented" );
+
+  virtual void computeLumpedInertia( double* I )
+  {
+    throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "not yet implemented" );
   }
-  
-  virtual void computeConsistentInertia( double* I ) {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "not yet implemented" );
+
+  virtual void computeConsistentInertia( double* I )
+  {
+    throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "not yet implemented" );
   }
 
   virtual void computeBodyLoad( int type, const double* load, double* fExt, double* dExt_dQ, double timeNew, double dT )
