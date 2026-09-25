@@ -414,8 +414,11 @@ namespace Marmot::Meshfree {
       const Tensor< double, nDim, nDim > deltaFInv = inverse( deltaF );
       const double                       deltaJ    = determinant( deltaF );
 
-      const TensorD v        = transpose( deltaFInv ) % N_dAY; // F^-T * N * dA
-      const TensorD traction = S % v;                          // tau * v
+      // the internal force integrates tau over the undeformed volume V0 = V_Y / J_Y, so the boundary term of the same
+      // weak form is tau * deltaF^-T * N dA_Y / J_Y, with J_Y the Jacobian of the intermediate configuration
+      const double  JY       = determinant( this->dY_dX() );
+      const TensorD v        = transpose( deltaFInv ) % N_dAY / JY; // F^-T * N * dA / J_Y
+      const TensorD traction = S % v;                               // tau * v
 
       Tensor< double, nDim, nDim, nDim > df_dDeltaF;
       df_dDeltaF.zeros();
