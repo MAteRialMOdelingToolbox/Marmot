@@ -28,6 +28,7 @@
 
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMeshfreeApproximation.h"
+#include "Marmot/MarmotMonomialBasisFunctions.h"
 #include "Marmot/MarmotParticle.h"
 #include <Eigen/Dense> // For Eigen::Matrix
 #include <sstream>
@@ -74,10 +75,14 @@ namespace Marmot::Meshfree {
     // Helper to set VCI order and resize related members
     void setVCIOrder( int order )
     {
-      _vciOrder        = order;
-      _nVCIConstraints = ( order + 1 ) * ( order + 2 ) / 2; // number of VCI constraints for polynomial basis of order
+      _vciOrder = order;
+      // number of monomials of degree <= order in nDim variables
+      _nVCIConstraints = Math::computeSizeOfMonomialBasisVector( order, nDim );
       _P.resize( _nVCIConstraints );
       _P_Gradient.resize( _nVCIConstraints, nDim );
+      // evaluate the basis right away: VCI may run before the first accepted increment updates it
+      Math::computeMonomialBasis( order, _centerReferenceIntermediate, _P );
+      Math::computeMonomialBasisGradient( order, _centerReferenceIntermediate, _P_Gradient );
     };
 
   public:

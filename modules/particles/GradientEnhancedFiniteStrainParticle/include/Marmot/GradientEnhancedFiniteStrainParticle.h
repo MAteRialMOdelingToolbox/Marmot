@@ -365,6 +365,9 @@ namespace Marmot::Meshfree {
                                    : ( order + 1 ) * ( order + 2 ) * ( order + 3 ) / 6;
       _P.resize( _nVCIConstraints );
       _P_Gradient.resize( _nVCIConstraints, nDim );
+      // evaluate the basis right away: VCI may run before the first accepted increment updates it
+      Math::computeMonomialBasis( order, _centerReferenceIntermediate, _P );
+      Math::computeMonomialBasisGradient( order, _centerReferenceIntermediate, _P_Gradient );
     };
 
     virtual void getEvaluationCoordinates( double* coordinates ) const { getVertexCoordinates( coordinates ); }
