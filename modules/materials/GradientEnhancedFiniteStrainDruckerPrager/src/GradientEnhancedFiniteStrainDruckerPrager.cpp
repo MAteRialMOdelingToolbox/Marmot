@@ -37,6 +37,17 @@ namespace Marmot::Materials {
       return T;
     }
 
+    /// the i-th material property, after checking that it exists: the references below are bound in the
+    /// member initializer list, i.e. before the constructor body could validate the property count
+    const double& property( const double* properties, int nProperties, int i )
+    {
+      constexpr int nRequired = 11;
+      if ( nProperties < nRequired )
+        throw std::invalid_argument( MakeString() << "GradientEnhancedFiniteStrainDruckerPrager: expected at least "
+                                                  << nRequired << " material properties, got " << nProperties );
+      return properties[i];
+    }
+
   } // namespace
 
   GradientEnhancedFiniteStrainDruckerPrager::GradientEnhancedFiniteStrainDruckerPrager(
@@ -44,22 +55,22 @@ namespace Marmot::Materials {
     int           nMaterialProperties,
     int           materialNumber )
     : MarmotMaterialGradientEnhancedFiniteStrain( materialProperties, nMaterialProperties, materialNumber ),
-      K( materialProperties[0] ),
-      G( materialProperties[1] ),
-      c0( materialProperties[2] ),
-      frictionAngle( materialProperties[3] ),
-      dilatancyAngle( materialProperties[4] ),
-      H( materialProperties[5] ),
-      As( materialProperties[6] ),
-      softeningModulus( materialProperties[7] ),
-      maxDamage( materialProperties[8] ),
-      nonLocalRadius( materialProperties[9] ),
-      weightingParameter( materialProperties[10] )
+      K( property( materialProperties, nMaterialProperties, 0 ) ),
+      G( property( materialProperties, nMaterialProperties, 1 ) ),
+      c0( property( materialProperties, nMaterialProperties, 2 ) ),
+      frictionAngle( property( materialProperties, nMaterialProperties, 3 ) ),
+      dilatancyAngle( property( materialProperties, nMaterialProperties, 4 ) ),
+      H( property( materialProperties, nMaterialProperties, 5 ) ),
+      As( property( materialProperties, nMaterialProperties, 6 ) ),
+      softeningModulus( property( materialProperties, nMaterialProperties, 7 ) ),
+      maxDamage( property( materialProperties, nMaterialProperties, 8 ) ),
+      nonLocalRadius( property( materialProperties, nMaterialProperties, 9 ) ),
+      weightingParameter( property( materialProperties, nMaterialProperties, 10 ) )
   {
-    if ( nMaterialProperties < 11 )
-      throw std::invalid_argument( MakeString()
-                                   << __PRETTY_FUNCTION__ << ": expected at least 11 material properties, got "
-                                   << nMaterialProperties );
+    if ( K <= 0.0 || G <= 0.0 )
+      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": bulk and shear modulus must be positive" );
+    if ( maxDamage < 0.0 || maxDamage >= 1.0 )
+      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": expected 0 <= maximum damage < 1" );
     if ( c0 <= 0.0 || softeningModulus <= 0.0 )
       throw std::invalid_argument( MakeString()
                                    << __PRETTY_FUNCTION__ << ": cohesion and softening modulus must be positive" );
@@ -99,9 +110,10 @@ namespace Marmot::Materials {
     std::memcpy( stateLayout.getPtr( stateVars, "Fp" ), I.data(), 9 * sizeof( double ) );
   }
 
-  std::tuple< Tensor33d, double, double > GradientEnhancedFiniteStrainDruckerPrager::stressUpdate( const Tensor33d& F_,
-                                                                                                   double nonLocalField,
-                                                                                                   double* sv ) const
+  std::tuple< Tensor33d, double, double, double > GradientEnhancedFiniteStrainDruckerPrager::stressUpdate(
+    const Tensor33d& F_,
+    double           nonLocalField,
+    double*          sv ) const
   {
     using Plasticity = GradientEnhancedFiniteStrainDruckerPragerPlasticity;
 
@@ -151,6 +163,7 @@ namespace Marmot::Materials {
     alphaP = result.newMaterialState.alphaP;
 
     // implicit-gradient damage
+    const double omegaOld = omega;
     alphaD += damageLaw.deltaAlphaLocal( dEp );
     const auto damage = damageLaw.computeDamage( alphaD, nonLocalField, kappa );
     kappa             = damage.kappa;
@@ -167,7 +180,13 @@ namespace Marmot::Materials {
     const double           psiEff = K / 8. * ( J2 + 1. / J2 - 2. ) +
                           G / 2. * ( ( 2.0 * ( epsE.array() - theta / 3.0 ) ).exp().sum() - 3. );
 
-    return { toFastor( ( 1.0 - omega ) * tauEff ), alphaD, ( 1.0 - omega ) * psiEff };
+    // dissipation of the increment: plastic work of the (damaged) Mandel stress on the plastic log strain increment,
+    // plus the energy released by the damage increment. The plastic part is non-negative also for non-associated
+    // flow, since on the cone sqrt(J2) + etaBar p = xi c - (eta - etaBar) p >= 0 up to the apex, where it is xi c
+    // etaBar / eta.
+    const double dDissipation = ( 1.0 - omega ) * S.dot( dEp ) + psiEff * ( omega - omegaOld );
+
+    return { toFastor( ( 1.0 - omega ) * tauEff ), alphaD, ( 1.0 - omega ) * psiEff, dDissipation };
   }
 
   void GradientEnhancedFiniteStrainDruckerPrager::computeStress( ConstitutiveResponse< 3 >& response,
@@ -181,13 +200,15 @@ namespace Marmot::Materials {
     const Tensor33d F( deformation.F );
     const double    N = deformation.N;
 
-    const auto [tau, L, psi] = stressUpdate( F, N, response.stateVars );
+    const auto [tau, L, psi, dDissipation] = stressUpdate( F, N, response.stateVars );
 
     response.tau                  = tau;
     response.L                    = L;
     response.nonLocalRadius       = nonLocalRadius;
     response.elasticEnergyDensity = psi;
-    response.dissipation          = 0.0;
+    // cumulative: the host carries the dissipation of the previous increments in, as for the other finite-strain
+    // materials (e.g. DisplacementFiniteStrainULElement)
+    response.dissipation += dDissipation;
 
     // algorithmic tangents by forward finite differences of the full state update; every probe starts from the
     // state at the beginning of the increment
@@ -196,8 +217,8 @@ namespace Marmot::Materials {
       for ( int l = 0; l < 3; ++l ) {
         Tensor33d Fpert = F;
         Fpert( k, l ) += eps;
-        std::vector< double > sv             = oldState;
-        const auto [tauPert, LPert, psiPert] = stressUpdate( Fpert, N, sv.data() );
+        std::vector< double > sv                     = oldState;
+        const auto [tauPert, LPert, psiPert, dDPert] = stressUpdate( Fpert, N, sv.data() );
         for ( int i = 0; i < 3; ++i )
           for ( int j = 0; j < 3; ++j )
             tangents.dTau_dF( i, j, k, l ) = ( tauPert( i, j ) - tau( i, j ) ) / eps;
@@ -205,9 +226,9 @@ namespace Marmot::Materials {
       }
 
     {
-      const double          epsN           = Constants::tangentPerturbationNonLocal;
-      std::vector< double > sv             = oldState;
-      const auto [tauPert, LPert, psiPert] = stressUpdate( F, N + epsN, sv.data() );
+      const double          epsN                   = Constants::tangentPerturbationNonLocal;
+      std::vector< double > sv                     = oldState;
+      const auto [tauPert, LPert, psiPert, dDPert] = stressUpdate( F, N + epsN, sv.data() );
       for ( int i = 0; i < 3; ++i )
         for ( int j = 0; j < 3; ++j )
           tangents.dTau_dN( i, j ) = ( tauPert( i, j ) - tau( i, j ) ) / epsN;
