@@ -229,6 +229,9 @@ namespace Marmot::Meshfree {
                                                     approximation,
                                                     smoothingVolumeUpdateType )
   {
+    // the intermediate reference coincides with the undeformed one until the first accepted increment;
+    // without this, the stabilization of the first increment is scaled by uninitialized memory
+    _momentsOfInertia_IntermediateReference = TensorDD( this->_particleDomain.getGeometrySecondMoments().data() );
   }
 
   template < int nDim, int nVertices >
