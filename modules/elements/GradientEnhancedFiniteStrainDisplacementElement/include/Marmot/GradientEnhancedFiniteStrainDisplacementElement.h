@@ -144,9 +144,10 @@ namespace Marmot::Elements {
 
     std::vector< QuadraturePoint > qps;
 
-    GradientEnhancedFiniteStrainDisplacementElement( int                                                 elementID,
-                                                     Marmot::FiniteElement::Quadrature::IntegrationTypes integrationType,
-                                                     SectionType                                         sectionType );
+    GradientEnhancedFiniteStrainDisplacementElement(
+      int                                                 elementID,
+      Marmot::FiniteElement::Quadrature::IntegrationTypes integrationType,
+      SectionType                                         sectionType );
 
     int getNumberOfRequiredStateVars();
 
@@ -200,7 +201,7 @@ namespace Marmot::Elements {
 
   template < int nDim, int nNodes >
   StateView GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::getStateView( const std::string& stateName,
-                                                                                           int qpNumber )
+                                                                                           int                qpNumber )
   {
     const auto& qp = qps[qpNumber];
     if ( qp.managedStateVars->contains( stateName ) ) {
