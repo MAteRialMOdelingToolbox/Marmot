@@ -62,6 +62,9 @@ namespace Marmot::Materials {
    * | 5   | @f$ \rho @f$     | density in the reference configuration    |
    *
    * State variables: @c kappa, the history maximum of the nonlocal field.
+   *
+   * The dissipation is cumulative: the incoming ConstitutiveResponse::dissipation is incremented by the energy
+   * released by the damage increment, @f$ \psi_0\,\Delta D @f$.
    */
   class GradientEnhancedCompressibleNeoHookeDamage : public MarmotMaterialGradientEnhancedFiniteStrain {
   public:

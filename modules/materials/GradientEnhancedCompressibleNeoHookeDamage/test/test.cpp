@@ -5,6 +5,8 @@
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTesting.h"
 #include <memory>
+#include <string>
+#include <vector>
 
 using namespace Marmot::Testing;
 using namespace Marmot::Materials;
@@ -185,6 +187,40 @@ void testFactoryAndProperties()
   throwExceptionOnFailure( threw, "kappaF <= kappa0 must be rejected" + where );
 }
 
+void testCumulativeDissipation()
+{
+  // carried over, incremented by a damaging step, unchanged by an undamaged one
+  const double                   carried = 2.0;
+  double                         kappa   = 2e-3;
+  Mat::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0., 0., 0., carried, &kappa );
+  Mat::AlgorithmicModuli< 3 >    t;
+  material().computeStress( response, t, { testF(), 3e-3 }, { 0.0, 1.0 } );
+  throwExceptionOnFailure( response.dissipation > carried, "damage growth must dissipate" + where );
+
+  const double afterDamage = response.dissipation;
+  material().computeStress( response, t, { testF(), 1e-3 }, { 0.0, 1.0 } ); // below the history: no new damage
+  throwExceptionOnFailure( std::abs( response.dissipation - afterDamage ) < 1e-14,
+                           "a step without damage growth must not dissipate" + where );
+}
+
+void testPropertyValidation()
+{
+  auto rejects = [&]( std::vector< double > p, const std::string& what ) {
+    bool thrown = false;
+    try {
+      Mat m( p.data(), p.size(), 1 );
+    }
+    catch ( const std::invalid_argument& ) {
+      thrown = true;
+    }
+    throwExceptionOnFailure( thrown, what + " must be rejected" + where );
+  };
+  rejects( { 3500., 1500., 1e-3, 1e-2 }, "a too short property array" );
+  rejects( { 0.0, 1500., 1e-3, 1e-2, 1. }, "K = 0" );
+  rejects( { 3500., -1., 1e-3, 1e-2, 1. }, "G < 0" );
+  rejects( { 3500., 1500., 0.0, 1e-2, 1. }, "kappa0 = 0" );
+}
+
 int main()
 {
   auto testFunctions = std::vector< std::function< void() > >{ testNoDamageBelowThresholdIsNeoHooke,
@@ -193,7 +229,9 @@ int main()
                                                                testConsistentTangentsLoading,
                                                                testUnloadingKeepsDamage,
                                                                testObjectivity,
-                                                               testFactoryAndProperties };
+                                                               testFactoryAndProperties,
+                                                               testCumulativeDissipation,
+                                                               testPropertyValidation };
   executeTestsAndCollectExceptions( testFunctions );
   return 0;
 }

@@ -14,22 +14,38 @@ namespace Marmot::Materials {
   using namespace FastorIndices;
   using namespace FastorStandardTensors;
 
+  namespace {
+
+    /// the i-th material property, after checking that it exists: the references are bound in the member
+    /// initializer list, i.e. before the constructor body could validate the property count
+    const double& property( const double* properties, int nProperties, int i )
+    {
+      constexpr int nRequired = 5;
+      if ( nProperties < nRequired )
+        throw std::invalid_argument( MakeString()
+                                     << "GradientEnhancedCompressibleNeoHookeDamage: expected at least " << nRequired
+                                     << " material properties (K, G, kappa0, kappaF, l), got " << nProperties );
+      return properties[i];
+    }
+
+  } // namespace
+
   GradientEnhancedCompressibleNeoHookeDamage::GradientEnhancedCompressibleNeoHookeDamage(
     const double* materialProperties,
     int           nMaterialProperties,
     int           materialNumber )
     : MarmotMaterialGradientEnhancedFiniteStrain( materialProperties, nMaterialProperties, materialNumber ),
-      K( materialProperties[0] ),
-      G( materialProperties[1] ),
-      kappa0( materialProperties[2] ),
-      kappaF( materialProperties[3] ),
-      nonLocalRadius( materialProperties[4] )
+      K( property( materialProperties, nMaterialProperties, 0 ) ),
+      G( property( materialProperties, nMaterialProperties, 1 ) ),
+      kappa0( property( materialProperties, nMaterialProperties, 2 ) ),
+      kappaF( property( materialProperties, nMaterialProperties, 3 ) ),
+      nonLocalRadius( property( materialProperties, nMaterialProperties, 4 ) )
   {
-    if ( nMaterialProperties < 5 )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
-                                                << ": expected at least 5 material properties (K, G, kappa0, "
-                                                   "kappaF, l), got "
-                                                << nMaterialProperties );
+    if ( K <= 0.0 || G <= 0.0 )
+      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": bulk and shear modulus must be positive" );
+    if ( kappa0 <= 0.0 )
+      throw std::invalid_argument( MakeString()
+                                   << __PRETTY_FUNCTION__ << ": the damage threshold kappa0 must be positive" );
     if ( !( kappaF > kappa0 ) )
       throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": kappaF must be greater than kappa0" );
 
@@ -82,6 +98,7 @@ namespace Marmot::Materials {
     // damage from the history of the nonlocal field
     double&      kappa    = stateLayout.getAs< double& >( response.stateVars, "kappa" );
     const double kappaOld = std::max( kappa, kappa0 );
+    const double DOld     = damage( kappaOld ).first;
     const bool   loading  = deformation.N > kappaOld;
     const double kappaNew = loading ? deformation.N : kappaOld;
 
@@ -91,7 +108,9 @@ namespace Marmot::Materials {
     response.L                    = L;
     response.nonLocalRadius       = nonLocalRadius;
     response.elasticEnergyDensity = ( 1. - D ) * psi0;
-    response.dissipation          = 0.0;
+    // cumulative: the host carries the dissipation of the previous increments in (as for the other finite-strain
+    // materials, e.g. DisplacementFiniteStrainULElement); the damage increment releases psi0 dD
+    response.dissipation += psi0 * ( D - DOld );
 
     tangents.dTau_dF = ( 1. - D ) * dTau0_dF;
     tangents.dTau_dN = loading ? Tensor33d( -dD_dKappa * tau0 ) : Tensor33d( 0.0 );
