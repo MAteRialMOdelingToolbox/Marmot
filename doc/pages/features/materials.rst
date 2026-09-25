@@ -22,3 +22,4 @@ This section contains the ready to use available material models.
   advonmises
   hugheswinget
   gradientenhancedhugheswinget
+  gradientenhancedfinitestraindruckerprager
