@@ -35,6 +35,7 @@
 #include <cmath>
 #include <complex>
 #include <cstring>
+#include <functional>
 #include <stdexcept>
 
 namespace Marmot::Materials {
@@ -51,6 +52,8 @@ namespace Marmot::Materials {
     constexpr int    nMaxHalvings          = 10;
     /// the deviatoric Mandel stress counts as vanished (apex) below this fraction of the cohesive strength
     constexpr double apexTol = 1e-10;
+    /// relative tolerance of the coaxiality of a cone solution with the trial state
+    constexpr double coaxialityTol = 1e-6;
 
     /// the i-th material property, after checking that it exists: the references below are bound in the
     /// member initializer list, i.e. before the constructor body could validate the property count
@@ -89,13 +92,14 @@ namespace Marmot::Materials {
 
     /**
      * Newton's method for R( X ) = 0 with the Jacobian by the complex step, and a backtracking line search: a step
-     * is halved while the residual cannot be evaluated or does not decrease. On success, R and dR_dX belong to the
-     * converged X.
+     * is halved while the residual cannot be evaluated, does not decrease, or leads to an inadmissible iterate. On
+     * success, R and dR_dX belong to the converged X.
      */
     bool newtonWithBacktracking( const Differentiation::Complex::vector_to_vector_function_type& residual,
                                  Eigen::VectorXd&                                                X,
                                  Eigen::VectorXd&                                                R,
-                                 Eigen::MatrixXd&                                                dR_dX )
+                                 Eigen::MatrixXd&                                                dR_dX,
+                                 const std::function< bool( const Eigen::VectorXd& ) >&          admissible )
     {
       try {
         std::tie( R, dR_dX ) = Differentiation::Complex::forwardDifference( residual, X );
@@ -113,6 +117,11 @@ namespace Marmot::Materials {
         double                step = 1.0;
         for ( int halving = 0; halving <= nMaxHalvings; halving++, step *= 0.5 ) {
           const Eigen::VectorXd Xtrial = X + step * dX;
+          if ( !admissible( Xtrial ) ) {
+            if ( halving == nMaxHalvings )
+              return false;
+            continue;
+          }
           try {
             const auto [Rtrial, Jtrial] = Differentiation::Complex::forwardDifference( residual, Xtrial );
             if ( Rtrial.allFinite() && ( Rtrial.norm() < R.norm() || halving == nMaxHalvings ) ) {
@@ -243,19 +252,29 @@ namespace Marmot::Materials {
       return elastic;
     }
 
+    // beyond the apex pressure, try the apex first: its admissibility decides between the two (the volumetric
+    // plastic flow only lowers the pressure and the apex pressure only grows with the hardening, so
+    // p_trial >= p_apex( alpha_n ) is necessary for the apex)
+    const double pTrial       = Fastor::trace( mandelStress( FeTrial ) ) / 3.;
+    const bool   apexPossible = eta > 0.0 && etaBar > 0.0 && pTrial >= xi * ( c0 + H * alphaPOld ) / eta;
+    if ( apexPossible ) {
+      try {
+        return returnToApex( F, FpOld, alphaPOld );
+      }
+      catch ( const StressUpdateFailed& ) {
+        // not admissible: the state belongs to the cone
+      }
+    }
+
     bool       converged = false;
     const auto cone      = returnToCone( F, FpOld, alphaPOld, converged );
     if ( converged )
       return cone;
 
-    // no admissible state on the cone: the trial state must lie beyond the apex. The volumetric plastic flow only
-    // lowers the pressure, and the apex pressure only grows with the hardening, so p_trial >= p_apex( alpha_n ) is
-    // necessary; otherwise the cone return failed for a state that belongs to the cone.
-    const double pTrial = Fastor::trace( mandelStress( FeTrial ) ) / 3.;
-    if ( eta <= 0.0 || pTrial < xi * ( c0 + H * alphaPOld ) / eta )
-      throw StressUpdateFailed( MakeString() << __PRETTY_FUNCTION__ << ": return to the cone not successful" );
+    if ( !apexPossible && eta > 0.0 && etaBar <= 0.0 && pTrial >= xi * ( c0 + H * alphaPOld ) / eta )
+      return returnToApex( F, FpOld, alphaPOld ); // reports that there is no apex without dilatancy
 
-    return returnToApex( F, FpOld, alphaPOld );
+    throw StressUpdateFailed( MakeString() << __PRETTY_FUNCTION__ << ": return to the cone not successful" );
   }
 
   GradientEnhancedFiniteStrainDruckerPrager::ReturnMapping GradientEnhancedFiniteStrainDruckerPrager::returnToCone(
@@ -274,15 +293,36 @@ namespace Marmot::Materials {
       return coneResidual< complexDouble >( X_, FeTrial, alphaPOld );
     };
 
-    VectorXd X( 11 );
-    X.head( 9 ) = Map< const Matrix< double, 9, 1 > >( FeTrial.data() );
-    X( 9 )      = alphaPOld;
-    X( 10 )     = 0.0;
+    // initial guesses: the return of the linearized (Hencky) problem, exact for small strains, and fractions of it,
+    // which keep the iterates away from the singular vertex of the cone
+    const Tensor33d MTrial        = mandelStress( FeTrial );
+    const Tensor33d devTrial      = deviatoric( MTrial );
+    const double    dLambdaLinear = std::max( 0.0,
+                                           yieldFunction( MTrial, alphaPOld ) /
+                                             ( G + K * eta * etaBar + xi * xi * H ) );
 
-    VectorXd R;
+    // an iterate whose deviator has turned against the trial deviator has crossed the vertex of the cone
+    const auto admissible = [&]( const VectorXd& X_ ) {
+      const Tensor33d dev_ = deviatoric( mandelStress( Tensor33d( X_.head( 9 ).eval().data() ) ) );
+      return Fastor::inner( dev_, devTrial ) > 0.0;
+    };
+
+    VectorXd X( 11 ), R;
     MatrixXd dR_dX;
     converged = false;
-    if ( !newtonWithBacktracking( residual, X, R, dR_dX ) )
+    for ( const double fraction : { 1.0, 0.5, 0.25, 0.9, 0.0 } ) {
+      const double    dLambda0 = fraction * dLambdaLinear;
+      const Tensor33d dFp0     = exponentialMap( Tensor33d( dLambda0 * flowDirection( MTrial ) ) );
+      const Tensor33d Fe0      = FeTrial % Fastor::inverse( dFp0 );
+      X.head( 9 )              = Map< const Matrix< double, 9, 1 > >( Fe0.data() );
+      X( 9 )                   = alphaPOld + xi * dLambda0;
+      X( 10 )                  = dLambda0;
+      if ( admissible( X ) && newtonWithBacktracking( residual, X, R, dR_dX, admissible ) ) {
+        converged = true;
+        break;
+      }
+    }
+    if ( !converged )
       return {};
     converged = true;
 
@@ -293,9 +333,16 @@ namespace Marmot::Materials {
     const double    dLambda = X( 10 );
     const Tensor33d M       = mandelStress( r.Fe );
 
-    // a solution on the cone needs a positive multiplier and a deviatoric stress: otherwise the apex takes over
-    const Tensor33d dev = deviatoric( M );
-    if ( dLambda < 0.0 || std::sqrt( 0.5 * Fastor::inner( dev, dev ) ) <= apexTol * xi * c0 ) {
+    // a solution on the cone needs a positive multiplier and a deviatoric stress. For an isotropic model it is
+    // moreover coaxial with the trial state (M and M_trial commute), with a deviator that points the same way as the
+    // trial deviator (the finite-strain analogue of sqrt(J2_trial) - G dLambda >= 0); near the apex, Newton may
+    // also converge to a spurious, non-coaxial solution. In all these cases the apex takes over.
+    const Tensor33d dev        = deviatoric( M );
+    const double    normDev    = std::sqrt( Fastor::inner( dev, dev ) );
+    const double    normTr     = std::sqrt( Fastor::inner( devTrial, devTrial ) );
+    const Tensor33d commutator = dev % devTrial - devTrial % dev;
+    if ( dLambda < 0.0 || std::sqrt( 0.5 ) * normDev <= apexTol * xi * c0 || Fastor::inner( dev, devTrial ) <= 0.0 ||
+         std::sqrt( Fastor::inner( commutator, commutator ) ) > coaxialityTol * normDev * normTr ) {
       converged = false;
       return {};
     }
@@ -348,7 +395,7 @@ namespace Marmot::Materials {
     X << thetaTrial, alphaPOld;
     VectorXd   R;
     MatrixXd   dR_dX;
-    const bool converged = newtonWithBacktracking( residual, X, R, dR_dX );
+    const bool converged = newtonWithBacktracking( residual, X, R, dR_dX, []( const VectorXd& ) { return true; } );
     if ( !converged || X( 1 ) < alphaPOld )
       throw StressUpdateFailed( MakeString() << __PRETTY_FUNCTION__ << ": return to the apex not successful" );
 
@@ -371,6 +418,17 @@ namespace Marmot::Materials {
       return dEp;
     };
     r.dEpPrincipal = dEpPrincipal( F, theta );
+
+    // the apex is admissible only if the plastic increment lies in the subdifferential of g at the vertex:
+    // sqrt(2) |dev dEp| <= dEp_v / etaBar (otherwise the state belongs to the cone)
+    {
+      const double dEpVol = r.dEpPrincipal( 0 ) + r.dEpPrincipal( 1 ) + r.dEpPrincipal( 2 );
+      double       dev2   = 0.0;
+      for ( int a = 0; a < 3; a++ )
+        dev2 += std::pow( r.dEpPrincipal( a ) - dEpVol / 3., 2 );
+      if ( std::sqrt( 2.0 * dev2 ) > ( 1.0 + 1e-8 ) * dEpVol / etaBar + 1e-14 )
+        throw StressUpdateFailed( MakeString() << __PRETTY_FUNCTION__ << ": the apex state is not admissible" );
+    }
     const double p = Fastor::trace( mandelStress( r.Fe ) ) / 3.;
     r.plasticWork  = p * ( thetaTrial - theta );
 
