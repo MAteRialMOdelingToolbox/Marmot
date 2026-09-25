@@ -104,14 +104,14 @@ namespace Marmot::Meshfree {
     virtual std::string getParticleShape() const override { return _makeUndeformedCell().getCellShape(); }
 
     GradientEnhancedFiniteStrainParticleSQCNI( int                                elementID,
-                                             const double*                      nodeCoordinates,
-                                             int                                nNodeCoordiantes,
-                                             double                             volume,
-                                             const std::string&                 materialName,
-                                             const double*                      materialProperties,
-                                             int                                sizeMaterialProperties,
-                                             const MarmotMeshfreeApproximation& approximation,
-                                             const SmoothingDomainUpdateType    smoothingVolumeUpdateType );
+                                               const double*                      nodeCoordinates,
+                                               int                                nNodeCoordiantes,
+                                               double                             volume,
+                                               const std::string&                 materialName,
+                                               const double*                      materialProperties,
+                                               int                                sizeMaterialProperties,
+                                               const MarmotMeshfreeApproximation& approximation,
+                                               const SmoothingDomainUpdateType    smoothingVolumeUpdateType );
 
     virtual void assignMeshfreeKernelFunctions(
       const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) override;
@@ -241,18 +241,18 @@ namespace Marmot::Meshfree {
     const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation,
     const SmoothingDomainUpdateType                      smoothingVolumeUpdateType )
     : GradientEnhancedFiniteStrainParticle< nDim >( elementID,
-                                                  getCenterFromVertices(
-                                                    Eigen::Map< const Eigen::Matrix< double, nDim, nVertices > >(
-                                                      vertexCoordinates ) )
-                                                    .data(),
-                                                  CoordinatesSized::RowsAtCompileTime,
-                                                  getVolumeFromVertices(
-                                                    Eigen::Map< const Eigen::Matrix< double, nDim, nVertices > >(
-                                                      vertexCoordinates ) ),
-                                                  materialName,
-                                                  materialProperties,
-                                                  sizeMaterialProperties,
-                                                  approximation ),
+                                                    getCenterFromVertices(
+                                                      Eigen::Map< const Eigen::Matrix< double, nDim, nVertices > >(
+                                                        vertexCoordinates ) )
+                                                      .data(),
+                                                    CoordinatesSized::RowsAtCompileTime,
+                                                    getVolumeFromVertices(
+                                                      Eigen::Map< const Eigen::Matrix< double, nDim, nVertices > >(
+                                                        vertexCoordinates ) ),
+                                                    materialName,
+                                                    materialProperties,
+                                                    sizeMaterialProperties,
+                                                    approximation ),
       _smoothingVolumeUpdateType( smoothingVolumeUpdateType ),
       _vertexCoordinates_Undeformed( vertexCoordinates )
 
@@ -260,13 +260,13 @@ namespace Marmot::Meshfree {
   }
 
   template < int nDim, int nVertices >
-  void GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices >::computeDistributedLoad( int           type,
-                                                                                           int           boundaryFaceID,
-                                                                                           const double* load_,
-                                                                                           double*       fExt,
-                                                                                           double*       dFExt_ddQ,
-                                                                                           double        timeNew,
-                                                                                           double        dT ) const
+  void GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices >::computeDistributedLoad( int type,
+                                                                                             int boundaryFaceID,
+                                                                                             const double* load_,
+                                                                                             double*       fExt,
+                                                                                             double*       dFExt_ddQ,
+                                                                                             double        timeNew,
+                                                                                             double        dT ) const
   {
 
     switch ( type ) {
@@ -476,7 +476,7 @@ namespace Marmot::Meshfree {
 
   template < int nDim, int nVertices >
   void GradientEnhancedFiniteStrainParticleSQCNI< nDim,
-                                                nVertices >::_updateVertexDisplacementsFromMaterialPointDeformation()
+                                                  nVertices >::_updateVertexDisplacementsFromMaterialPointDeformation()
   {
 
     Eigen::Matrix< double, nDim, nDim > F;

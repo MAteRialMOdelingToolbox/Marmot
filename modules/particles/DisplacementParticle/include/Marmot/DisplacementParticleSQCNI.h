@@ -393,12 +393,11 @@ namespace Marmot::Meshfree {
         }
       }
 
-
       break;
     }
-case DisplacementParticle< nDim >::CWFCorrection: {
-      const auto&   _mp           = this->_mp; 
-      const auto&   _nNodes       = this->_nNodes; 
+    case DisplacementParticle< nDim >::CWFCorrection: {
+      const auto&   _mp           = this->_mp;
+      const auto&   _nNodes       = this->_nNodes;
       constexpr int nodeBlockSize = nDim;
 
       const auto [N_dAY, Y_N] = getBoundaryVectorIntermediate( boundaryFaceID );
@@ -409,14 +408,14 @@ case DisplacementParticle< nDim >::CWFCorrection: {
       using namespace Fastor;
 
       const auto& S = _mp->response.S;
-      const auto& t = _mp->tangents; 
+      const auto& t = _mp->tangents;
 
-      const auto deltaF = this->dx_dY(); 
+      const auto                         deltaF    = this->dx_dY();
       const Tensor< double, nDim, nDim > deltaFInv = inverse( deltaF );
       const double                       deltaJ    = determinant( deltaF );
 
-      const TensorD v = transpose( deltaFInv ) % N_dAY; // F^-T * N * dA
-      const TensorD traction = S % v;                   // tau * v
+      const TensorD v        = transpose( deltaFInv ) % N_dAY; // F^-T * N * dA
+      const TensorD traction = S % v;                          // tau * v
 
       Tensor< double, nDim, nDim, nDim > df_dDeltaF;
       df_dDeltaF.zeros();
@@ -424,18 +423,18 @@ case DisplacementParticle< nDim >::CWFCorrection: {
       for ( int i = 0; i < nDim; ++i ) {
         for ( int m = 0; m < nDim; ++m ) {
           for ( int M = 0; M < nDim; ++M ) {
-            
+
             double geo = 0.0;
             double mat = 0.0;
 
             for ( int j = 0; j < nDim; ++j ) {
               // Geometric stiffness part: derived from delta(F^-T)
               geo -= S( i, j ) * v( m ) * deltaFInv( M, j );
-              
+
               // Material stiffness part: derived from delta(tau)
-              mat += t.dS_dDeltaF( i, j, m, M ) * v( j ); 
+              mat += t.dS_dDeltaF( i, j, m, M ) * v( j );
             }
-            
+
             df_dDeltaF( i, m, M ) = geo + mat;
           }
         }
@@ -478,14 +477,14 @@ case DisplacementParticle< nDim >::CWFCorrection: {
           {
             using namespace Eigen;
             K.template block< nDim, nDim >( idxA_u, idxB_u ) -= Map< Matrix< double, nDim, nDim > >(
-                torowmajor( df_ddQU_B ).data() );
+              torowmajor( df_ddQU_B ).data() );
           }
         }
       }
 
       break;
-  }
-        default: {
+    }
+    default: {
       throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
     }
     }

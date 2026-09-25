@@ -229,16 +229,15 @@ namespace Marmot::MaterialPoints {
   template < int nDim >
   void DisplacementMaterialPoint< nDim >::assignMaterial( const MarmotMaterialSection& section )
   {
-    material = std::unique_ptr< Material >( MarmotLibrary::MarmotMaterialFiniteStrainFactory::createMaterial(
-      section.materialName,
-      section.materialProperties,
-      section.nMaterialProperties,
-      _mpNumber ) );
+    material = std::unique_ptr< Material >(
+      MarmotLibrary::MarmotMaterialFiniteStrainFactory::createMaterial( section.materialName,
+                                                                        section.materialProperties,
+                                                                        section.nMaterialProperties,
+                                                                        _mpNumber ) );
 
     if ( !material )
       throw std::invalid_argument( MakeString()
-                                   << __PRETTY_FUNCTION__
-                                   << ": invalid finite strain material assigned!" );
+                                   << __PRETTY_FUNCTION__ << ": invalid finite strain material assigned!" );
   }
 
   template < int nDim >

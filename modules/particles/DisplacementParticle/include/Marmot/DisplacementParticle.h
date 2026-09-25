@@ -89,7 +89,8 @@ namespace Marmot::Meshfree {
     const std::unordered_map< std::string, int >& getSupportedDistributedLoadTypes() const override
     {
       static const std::unordered_map< std::string, int > _supportedDistributedLoadTypes = { { "PRESSURE", Pressure },
-                                                                                             { "CWFCORRECTION", CWFCorrection }};
+                                                                                             { "CWFCORRECTION",
+                                                                                               CWFCorrection } };
       return _supportedDistributedLoadTypes;
     };
 

@@ -46,15 +46,15 @@ double dB_dU( double u, const double* knotVec, int i )
   const auto& z = knotVec;
   return
     // clang-format off
-      ( std::abs( z[p+i]   - z[i] )  >= 1e-14 ? 
+      ( std::abs( z[p+i]   - z[i] )  >= 1e-14 ?
         ( 1               ) / (z[p+i] - z[i]     ) * B<p-1>(u, z, i)  +
-        ( u        - z[i] ) / (z[p+i] - z[i]     ) * dB_dU<p-1>(u, z, i)  
+        ( u        - z[i] ) / (z[p+i] - z[i]     ) * dB_dU<p-1>(u, z, i)
 
         : 0 )
       +
-      ( std::abs( z[p+i+1] - z[i+1]) >= 1e-14 ? 
+      ( std::abs( z[p+i+1] - z[i+1]) >= 1e-14 ?
         (          - 1    ) / (z[p+i+1] - z[i+1] ) * B<p-1>(u, z, i+1) +
-        ( z[i+p+1] - u    ) / (z[p+i+1] - z[i+1] ) * dB_dU<p-1>(u, z, i+1) 
+        ( z[i+p+1] - u    ) / (z[p+i+1] - z[i+1] ) * dB_dU<p-1>(u, z, i+1)
         : 0 )
       ;
   // clang-format on

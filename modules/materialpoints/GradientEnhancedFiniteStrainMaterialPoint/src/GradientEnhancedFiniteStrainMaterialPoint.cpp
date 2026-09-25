@@ -25,13 +25,20 @@ namespace Marmot::MaterialPoints {
     // total deformation gradient: the increment since the last accepted state, composed onto it
     const FastorStandardTensors::Tensor33d dx_dX = state->dx_dY % state->dY_dX;
 
-    Material::ConstitutiveResponse< 3 > response3D{ FastorStandardTensors::Tensor33d( 0.0 ), 0.0, 0.0, 0.0, 0.0,
+    Material::ConstitutiveResponse< 3 > response3D{ FastorStandardTensors::Tensor33d( 0.0 ),
+                                                    0.0,
+                                                    0.0,
+                                                    0.0,
+                                                    0.0,
                                                     state->materialState.data() };
     Material::AlgorithmicModuli< 3 >    algorithmicModuli3D;
     Material::Deformation< 3 >          deformation3D{ dx_dX, state->nonLocalDamage };
 
     if ( hasEigenDeformation )
-      material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement,
+      material->computePlaneStrain( response3D,
+                                    algorithmicModuli3D,
+                                    deformation3D,
+                                    timeIncrement,
                                     { state->F0_XX, state->F0_YY, state->F0_ZZ } );
     else
       material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
@@ -86,13 +93,20 @@ namespace Marmot::MaterialPoints {
 
     const FastorStandardTensors::Tensor33d dx_dX = state->dx_dY % state->dY_dX;
 
-    Material::ConstitutiveResponse< 3 > response3D{ FastorStandardTensors::Tensor33d( 0.0 ), 0.0, 0.0, 0.0, 0.0,
+    Material::ConstitutiveResponse< 3 > response3D{ FastorStandardTensors::Tensor33d( 0.0 ),
+                                                    0.0,
+                                                    0.0,
+                                                    0.0,
+                                                    0.0,
                                                     state->materialState.data() };
     Material::AlgorithmicModuli< 3 >    algorithmicModuli3D;
     Material::Deformation< 3 >          deformation3D{ dx_dX, state->nonLocalDamage };
 
     if ( hasEigenDeformation )
-      material->computeStress( response3D, algorithmicModuli3D, deformation3D, timeIncrement,
+      material->computeStress( response3D,
+                               algorithmicModuli3D,
+                               deformation3D,
+                               timeIncrement,
                                { state->F0_XX, state->F0_YY, state->F0_ZZ } );
     else
       material->computeStress( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
