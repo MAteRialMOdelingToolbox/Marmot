@@ -9,6 +9,8 @@
 #include <cmath>
 #include <functional>
 #include <memory>
+#include <string>
+#include <tuple>
 #include <vector>
 
 using namespace Marmot::Testing;
@@ -36,18 +38,23 @@ namespace {
   struct Result {
     Tensor33d                   tau;
     double                      L;
+    double                      dissipation;
     std::vector< double >       state;
     Mat::AlgorithmicModuli< 3 > t;
   };
 
   // one call on a COPY of the given state (the history is not committed)
-  Result evaluate( const Mat& mat, const Tensor33d& F, double N, const std::vector< double >& stateIn )
+  Result evaluate( const Mat&                   mat,
+                   const Tensor33d&             F,
+                   double                       N,
+                   const std::vector< double >& stateIn,
+                   double                       dissipationIn = 0.0 )
   {
     std::vector< double >          state = stateIn;
-    Mat::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0., 0., 0., 0., state.data() );
+    Mat::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0., 0., 0., dissipationIn, state.data() );
     Mat::AlgorithmicModuli< 3 >    t;
     mat.computeStress( response, t, { F, N }, { 0.0, 1.0 } );
-    return { response.tau, response.L, state, t };
+    return { response.tau, response.L, response.dissipation, state, t };
   }
 
   std::vector< double > freshState( Mat& mat )
@@ -233,6 +240,9 @@ void testTangentInThePlasticBranch()
       throwExceptionOnFailure( std::abs( res.t.dTau_dN( i, j ) - num ) < 1e-3 * ( 1. + std::abs( num ) ),
                                "dTau_dN inconsistent" + where );
     }
+  const double numL = ( rp.L - rm.L ) / ( 2 * hN );
+  throwExceptionOnFailure( std::abs( res.t.dL_dN - numL ) < 1e-6 * ( 1. + std::abs( numL ) ),
+                           "dL_dN inconsistent" + where );
 }
 
 void testGradientEnhancedDamage()
@@ -278,6 +288,23 @@ void testElasticUnloading()
                            "a small reverse increment must unload elastically" + where );
 }
 
+void testCumulativeDissipation()
+{
+  const auto props = properties( 5., 30., 10., 100., 0.05, 0.5 );
+  Mat        mat( props.data(), props.size(), 1 );
+
+  // the incoming dissipation is carried over and incremented by a plastic, damaging step ...
+  const double carried = 3.0;
+  const auto   loaded  = evaluate( mat, testF( 0.1 ), 1e-2, freshState( mat ), carried );
+  throwExceptionOnFailure( stateValue( mat, loaded.state, "alphaP" ) > 0.0, "the step must yield" + where );
+  throwExceptionOnFailure( loaded.dissipation > carried, "plastic flow and damage must dissipate" + where );
+
+  // ... and left unchanged by an elastic one
+  const auto elastic = evaluate( mat, testF( 0.08 ), 1e-2, loaded.state, loaded.dissipation );
+  throwExceptionOnFailure( std::abs( elastic.dissipation - loaded.dissipation ) < 1e-14,
+                           "an elastic step must not dissipate" + where );
+}
+
 void testFactoryAndValidation()
 {
   const auto                                                    props = properties( 5., 30., 10. );
@@ -298,6 +325,28 @@ void testFactoryAndValidation()
     threw = true;
   }
   throwExceptionOnFailure( threw, "psi > phi must be rejected" + where );
+
+  auto rejects = [&]( std::vector< double > p, const std::string& what ) {
+    bool thrown = false;
+    try {
+      Mat m( p.data(), p.size(), 1 );
+    }
+    catch ( const std::invalid_argument& ) {
+      thrown = true;
+    }
+    throwExceptionOnFailure( thrown, what + " must be rejected" + where );
+  };
+  const auto valid = properties( 5., 30., 10. );
+  rejects( std::vector< double >( valid.begin(), valid.begin() + 10 ), "a too short property array" );
+  for ( auto [idx, value, what] :
+        std::vector< std::tuple< int, double, std::string > >{ { 0, 0.0, "K = 0" },
+                                                               { 1, -1.0, "G < 0" },
+                                                               { 8, 1.0, "maxDamage = 1" },
+                                                               { 8, -0.1, "maxDamage < 0" } } ) {
+    std::vector< double > p( valid.begin(), valid.end() );
+    p[idx] = value;
+    rejects( p, what );
+  }
 }
 
 int main()

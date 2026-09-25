@@ -83,6 +83,9 @@ namespace Marmot::Materials {
    *
    * State variables: @c Fp (9), @c alphaP (hardening variable), @c alphaD (local damage variable),
    * @c kappa (damage history), @c omega (damage).
+   *
+   * The dissipation is cumulative: the incoming ConstitutiveResponse::dissipation is incremented by
+   * @f$ (1-\omega)\,\boldsymbol\Sigma:\Delta\boldsymbol\varepsilon^p + \psi_\mathrm{eff}\,\Delta\omega @f$.
    */
   class GradientEnhancedFiniteStrainDruckerPrager : public MarmotMaterialGradientEnhancedFiniteStrain {
 
@@ -119,10 +122,12 @@ namespace Marmot::Materials {
     const double& nonLocalRadius;
     const double& weightingParameter;
 
-    /// the full state update for (F, Nbar), written into the state vector sv: {tau, L, elastic energy density}
-    std::tuple< Fastor::Tensor< double, 3, 3 >, double, double > stressUpdate( const Fastor::Tensor< double, 3, 3 >& F,
-                                                                               double  nonLocalField,
-                                                                               double* sv ) const;
+    /// the full state update for (F, Nbar), written into the state vector sv:
+    /// {tau, L, elastic energy density, dissipation of the increment}
+    std::tuple< Fastor::Tensor< double, 3, 3 >, double, double, double > stressUpdate(
+      const Fastor::Tensor< double, 3, 3 >& F,
+      double                                nonLocalField,
+      double*                               sv ) const;
   };
 
 } // namespace Marmot::Materials
