@@ -115,8 +115,10 @@ namespace Marmot {
        * @param f The function mapping a tensor to a scalar
        * @param T The point at which the derivative is evaluated
        * @param isSymmetric If true, T (and thus the resulting gradient) is assumed to be symmetric, e.g. the right
-       * Cauchy-Green tensor, halving the number of function evaluations by only perturbing the upper triangle of T
-       * and mirroring the result to the lower triangle
+       * Cauchy-Green tensor. Only the dim*(dim+1)/2 upper-triangle entries of T are perturbed, and the result is
+       * mirrored to the lower triangle, instead of all dim^2 entries -- a ~1.5x reduction in function evaluations
+       * for dim=3; the fraction of evaluations needed, (dim+1)/(2*dim), approaches but never reaches 1/2 as dim
+       * grows, so this never fully halves the evaluation count
        * @return The derivative of the function f at the point T
        */
       template < size_t dim >
@@ -151,8 +153,10 @@ namespace Marmot {
        * @param F The function mapping a tensor to a scalar
        * @param T The point at which the derivative is evaluated
        * @param isSymmetric If true, T (and thus the resulting gradient) is assumed to be symmetric, e.g. the right
-       * Cauchy-Green tensor, halving the number of function evaluations by only perturbing the upper triangle of T
-       * and mirroring the result to the lower triangle
+       * Cauchy-Green tensor. Only the dim*(dim+1)/2 upper-triangle entries of T are perturbed, and the result is
+       * mirrored to the lower triangle, instead of all dim^2 entries -- a ~1.5x reduction in function evaluations
+       * for dim=3; the fraction of evaluations needed, (dim+1)/(2*dim), approaches but never reaches 1/2 as dim
+       * grows, so this never fully halves the evaluation count
        * @return The derivative of the function F at the point T
        */
       template < size_t dim >
@@ -198,8 +202,9 @@ namespace Marmot {
        * same dimension (e.g. the second Piola-Kirchhoff stress as a function of the right Cauchy-Green tensor), T is
        * assumed to be symmetric and F is assumed to be transpose-equivariant (F(A^T) = F(A)^T for general, not
        * necessarily symmetric, A), which holds for any tensor function built from tensor invariants/products. This
-       * halves the number of function evaluations by only perturbing the upper triangle of T and, for each function
-       * evaluation, filling both the direct entry and its transpose-mirrored counterpart
+       * reduces the number of function evaluations from dim^2 to dim*(dim+1)/2 -- a ~1.5x reduction for dim=3,
+       * approaching (but never reaching) a 2x reduction as dim grows -- by only perturbing the upper triangle of T
+       * and, for each function evaluation, filling both the direct entry and its transpose-mirrored counterpart
        * \f$ \partial F_{ab}/\partial T_{kl} = \partial F_{ba}/\partial T_{lk} \f$. Ignored otherwise.
        * @return The derivative of the function F at the point T
        */
@@ -285,8 +290,9 @@ namespace Marmot {
        * same dimension (e.g. the second Piola-Kirchhoff stress as a function of the right Cauchy-Green tensor), T is
        * assumed to be symmetric and F is assumed to be transpose-equivariant (F(A^T) = F(A)^T for general, not
        * necessarily symmetric, A), which holds for any tensor function built from tensor invariants/products. This
-       * halves the number of function evaluations by only perturbing the upper triangle of T and, for each function
-       * evaluation, filling both the direct entry and its transpose-mirrored counterpart
+       * reduces the number of function evaluations from dim^2 to dim*(dim+1)/2 -- a ~1.5x reduction for dim=3,
+       * approaching (but never reaching) a 2x reduction as dim grows -- by only perturbing the upper triangle of T
+       * and, for each function evaluation, filling both the direct entry and its transpose-mirrored counterpart
        * \f$ \partial F_{ab}/\partial T_{kl} = \partial F_{ba}/\partial T_{lk} \f$. Ignored otherwise.
        * @return The derivative of the function F at the point T
        */
@@ -395,8 +401,10 @@ namespace Marmot {
        * @param F The function mapping a tensor to a scalar with complex numbers
        * @param T The point at which the derivative is evaluated
        * @param isSymmetric If true, T (and thus the resulting gradient) is assumed to be symmetric, e.g. the right
-       * Cauchy-Green tensor, halving the number of function evaluations by only perturbing the upper triangle of T
-       * and mirroring the result to the lower triangle
+       * Cauchy-Green tensor. Only the dim*(dim+1)/2 upper-triangle entries of T are perturbed, and the result is
+       * mirrored to the lower triangle, instead of all dim^2 entries -- a ~1.5x reduction in function evaluations
+       * for dim=3; the fraction of evaluations needed, (dim+1)/(2*dim), approaches but never reaches 1/2 as dim
+       * grows, so this never fully halves the evaluation count
        * @return The derivative of the function F at the point T
        */
       template < size_t dim >
@@ -465,6 +473,19 @@ namespace Marmot {
         using tensor_to_scalar_function_type = std::function< complexDouble(
           const Fastor::Tensor< complexDouble, Rest... >& T ) >;
 
+        /**
+         * @brief Approximates the derivative of a function mapping a tensor to a scalar
+         * using the complex step method.
+         * @tparam dim The dimension of the input Tensor (assumed to be square)
+         * @param f The function mapping a tensor to a scalar with complex numbers
+         * @param T The point at which the derivative is evaluated
+         * @param isSymmetric If true, T (and thus the resulting gradient) is assumed to be symmetric, e.g. the right
+         * Cauchy-Green tensor. Only the dim*(dim+1)/2 upper-triangle entries of T are perturbed, and the result is
+         * mirrored to the lower triangle, instead of all dim^2 entries -- a ~1.5x reduction in function evaluations
+         * for dim=3; the fraction of evaluations needed, (dim+1)/(2*dim), approaches but never reaches 1/2 as dim
+         * grows, so this never fully halves the evaluation count
+         * @return The derivative of the function f at the point T
+         */
         template < size_t dim >
         Fastor::Tensor< double, dim, dim > forwardDifference( const tensor_to_scalar_function_type< dim, dim >& f,
                                                               const Fastor::Tensor< double, dim, dim >&         T,
@@ -512,9 +533,15 @@ namespace Marmot {
          * @tparam RestT The dimensions of the input Tensor
          * @param F The function mapping a tensor to a tensor
          * @param T The point at which the derivative is evaluated
-         * @param isSymmetric If true and T is a square rank-2 tensor, T is assumed to be symmetric, e.g. the right
-         * Cauchy-Green tensor, halving the number of function evaluations by only perturbing the upper triangle of T
-         * and mirroring the result to the lower triangle. Ignored for tensors that are not square rank-2.
+         * @param isSymmetric If true, T is a square rank-2 tensor and F's output is also a square rank-2 tensor of
+         * the same dimension (e.g. the second Piola-Kirchhoff stress as a function of the right Cauchy-Green
+         * tensor), T is assumed to be symmetric and F is assumed to be transpose-equivariant (F(A^T) = F(A)^T for
+         * general, not necessarily symmetric, A), which holds for any tensor function built from tensor
+         * invariants/products. This reduces the number of function evaluations from dim^2 to dim*(dim+1)/2 -- a
+         * ~1.5x reduction for dim=3, approaching (but never reaching) a 2x reduction as dim grows -- by only
+         * perturbing the upper triangle of T and, for each function evaluation, filling both the direct entry and
+         * its transpose-mirrored counterpart \f$ \partial F_{ab}/\partial T_{kl} = \partial F_{ba}/\partial T_{lk}
+         * \f$. Ignored otherwise.
          * @return The derivative of the function F at the point T
          */
         template < size_t... RestF, size_t... RestT >

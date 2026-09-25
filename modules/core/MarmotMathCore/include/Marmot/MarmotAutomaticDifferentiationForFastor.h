@@ -73,8 +73,10 @@ namespace Marmot {
      *  @param f function mapping a tensor to a scalar
      *  @param T input tensor at which the gradient is evaluated
      *  @param isSymmetric if true and T is a square rank-2 tensor, T (and thus the resulting gradient) is assumed to
-     *  be symmetric, e.g. the right Cauchy-Green tensor, halving the number of function evaluations by only seeding
-     *  the upper triangle of T and mirroring the result to the lower triangle. Ignored for tensors that are not
+     *  be symmetric, e.g. the right Cauchy-Green tensor. Only the dim*(dim+1)/2 upper-triangle entries of T are
+     *  seeded, and the result is mirrored to the lower triangle, instead of all dim^2 entries -- a ~1.5x reduction
+     *  in function evaluations for dim=3; the fraction of evaluations needed, (dim+1)/(2*dim), approaches but never
+     *  reaches 1/2 as dim grows, so this never fully halves the evaluation count. Ignored for tensors that are not
      *  square rank-2.
      *  @return gradient of f with respect to T, same shape as T
      */
@@ -138,8 +140,10 @@ namespace Marmot {
      *  @param f function mapping a tensor to a scalar
      *  @param T input tensor at which the gradient is evaluated
      *  @param isSymmetric if true and T is a square rank-2 tensor, T (and thus the resulting gradient) is assumed to
-     *  be symmetric, e.g. the right Cauchy-Green tensor, halving the number of function evaluations by only seeding
-     *  the upper triangle of T and mirroring the result to the lower triangle. Ignored for tensors that are not
+     *  be symmetric, e.g. the right Cauchy-Green tensor. Only the dim*(dim+1)/2 upper-triangle entries of T are
+     *  seeded, and the result is mirrored to the lower triangle, instead of all dim^2 entries -- a ~1.5x reduction
+     *  in function evaluations for dim=3; the fraction of evaluations needed, (dim+1)/(2*dim), approaches but never
+     *  reaches 1/2 as dim grows, so this never fully halves the evaluation count. Ignored for tensors that are not
      *  square rank-2.
      *  @return pair of function value and gradient of f with respect to T, same shape as T
      */
@@ -204,8 +208,9 @@ namespace Marmot {
      *  same dimension (e.g. the second Piola-Kirchhoff stress as a function of the right Cauchy-Green tensor), T is
      *  assumed to be symmetric and F is assumed to be transpose-equivariant (F(A^T) = F(A)^T for general, not
      *  necessarily symmetric, A), which holds for any tensor function built from tensor invariants/products. This
-     *  halves the number of function evaluations by only seeding the upper triangle of T and, for each evaluation,
-     *  filling both the direct entry and its transpose-mirrored counterpart
+     *  reduces the number of function evaluations from dim^2 to dim*(dim+1)/2 -- a ~1.5x reduction for dim=3,
+     *  approaching (but never reaching) a 2x reduction as dim grows -- by only seeding the upper triangle of T and,
+     *  for each evaluation, filling both the direct entry and its transpose-mirrored counterpart
      *  \f$ \partial F_{ab}/\partial T_{kl} = \partial F_{ba}/\partial T_{lk} \f$. Ignored otherwise.
      *  @return pair of function value and gradient of F with respect to T, gradient has shape (RestF..., RestT...)
      */
@@ -297,7 +302,9 @@ namespace Marmot {
        *  @note The implementation is currently limited to second rank (dim x dim) tensors
        *  @param isSymmetric if true, T is assumed to be symmetric, e.g. the right Cauchy-Green tensor, and F is
        *  assumed to be a transpose-invariant scalar function of T (as is the case for any scalar function built
-       *  from tensor invariants). This halves the number of outer-pair seed directions by exploiting the identity
+       *  from tensor invariants). This reduces the number of outer-pair seed directions from dim^2 to dim*(dim+1)/2
+       *  -- a ~1.5x reduction for dim=3, approaching (but never reaching) a 2x reduction as dim grows -- by
+       *  exploiting the identity
        *  \f$ \partial^2 F / \partial T_{ij}\partial T_{kl} = \partial^2 F/\partial T_{ji}\partial T_{lk} \f$, which
        *  holds at a symmetric T for such functions (note: this mirrors both index pairs simultaneously; mirroring
        *  either pair independently is in general NOT valid)
@@ -362,8 +369,10 @@ namespace Marmot {
        *
        *  @note The implementation is currently limited to second rank (dim x dim) tensors
        *  @param isSymmetric if true, T (and thus the resulting derivative) is assumed to be symmetric, e.g. the
-       *  right Cauchy-Green tensor, halving the number of function evaluations by only seeding the upper triangle
-       *  of T and mirroring the result to the lower triangle
+       *  right Cauchy-Green tensor. Only the dim*(dim+1)/2 upper-triangle entries of T are seeded, and the result is
+       *  mirrored to the lower triangle, instead of all dim^2 entries -- a ~1.5x reduction in function evaluations
+       *  for dim=3; the fraction of evaluations needed, (dim+1)/(2*dim), approaches but never reaches 1/2 as dim
+       *  grows, so this never fully halves the evaluation count
        */
       template < size_t dim >
       Fastor::Tensor< double, dim, dim > d2f_dTensor_dScalar( const tensor_and_scalar_to_scalar_function_type< dim >& F,
@@ -416,7 +425,9 @@ namespace Marmot {
        *  @note The implementation is currently limited to second rank (dim x dim) tensors
        *  @param isSymmetric if true, T is assumed to be symmetric, e.g. the right Cauchy-Green tensor, and F is
        *  assumed to be a transpose-invariant scalar function of T (as is the case for any scalar function built
-       *  from tensor invariants). This halves the number of outer-pair seed directions by exploiting the identity
+       *  from tensor invariants). This reduces the number of outer-pair seed directions from dim^2 to dim*(dim+1)/2
+       *  -- a ~1.5x reduction for dim=3, approaching (but never reaching) a 2x reduction as dim grows -- by
+       *  exploiting the identity
        *  \f$ \partial^3 F/\partial T_{ij}\partial T_{kl}\partial T_{mn} = \partial^3
        *  F/\partial T_{ji}\partial T_{lk}\partial T_{nm} \f$, which holds at a symmetric T for such functions (note:
        *  this mirrors all three index pairs simultaneously; mirroring any pair independently is in general NOT
