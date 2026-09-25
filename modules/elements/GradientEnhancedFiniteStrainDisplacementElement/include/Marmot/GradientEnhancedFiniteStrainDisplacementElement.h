@@ -95,6 +95,8 @@ namespace Marmot::Elements {
 
         inline const static auto layout = makeLayout( {
           { .name = "stress", .length = 9 },
+          { .name = "elastic energy density", .length = 1 },
+          { .name = "dissipation density", .length = 1 },
           { .name = "F0 XX", .length = 1 },
           { .name = "F0 YY", .length = 1 },
           { .name = "F0 ZZ", .length = 1 },
@@ -103,6 +105,8 @@ namespace Marmot::Elements {
 
       public:
         Eigen::Map< Marmot::Vector9d > stress;
+        double&                        elasticEnergyDensity; // per undeformed volume, as returned by the material
+        double&                        dissipationDensity;   // accumulated by the material over the increments
         double&                        F0_XX;
         double&                        F0_YY;
         double&                        F0_ZZ;
@@ -113,6 +117,8 @@ namespace Marmot::Elements {
         QPStateVarManager( double* theStateVarVector, int nStateVars )
           : MarmotStateVarVectorManager( theStateVarVector, layout ),
             stress( &find( "stress" ) ),
+            elasticEnergyDensity( find( "elastic energy density" ) ),
+            dissipationDensity( find( "dissipation density" ) ),
             F0_XX( find( "F0 XX" ) ),
             F0_YY( find( "F0 YY" ) ),
             F0_ZZ( find( "F0 ZZ" ) ),
@@ -387,8 +393,8 @@ namespace Marmot::Elements {
         response( Tensor< double, nDim, nDim >( qp.managedStateVars->stress.data(), ColumnMajor ),
                   0.0,
                   0.0,
-                  0.0,
-                  0.0,
+                  qp.managedStateVars->elasticEnergyDensity,
+                  qp.managedStateVars->dissipationDensity,
                   qp.managedStateVars->materialStateVars.data() );
       typename Material::AlgorithmicModuli< nDim > tangents;
 
@@ -402,8 +408,8 @@ namespace Marmot::Elements {
             response3D( FastorStandardTensors::Tensor33d( qp.managedStateVars->stress.data(), Fastor::ColumnMajor ),
                         0.0,
                         0.0,
-                        0.0,
-                        0.0,
+                        qp.managedStateVars->elasticEnergyDensity,
+                        qp.managedStateVars->dissipationDensity,
                         qp.managedStateVars->materialStateVars.data() );
 
           typename Material::AlgorithmicModuli< 3 > algorithmicModuli3D;
@@ -422,9 +428,11 @@ namespace Marmot::Elements {
           else
             qp.material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
 
-          response.tau            = reduceTo2D< U, U >( response3D.tau );
-          response.L              = response3D.L;
-          response.nonLocalRadius = response3D.nonLocalRadius;
+          response.tau                  = reduceTo2D< U, U >( response3D.tau );
+          response.L                    = response3D.L;
+          response.nonLocalRadius       = response3D.nonLocalRadius;
+          response.elasticEnergyDensity = response3D.elasticEnergyDensity;
+          response.dissipation          = response3D.dissipation;
 
           tangents.dTau_dF = reduceTo2D< U, U, U, U >( algorithmicModuli3D.dTau_dF );
           tangents.dTau_dN = reduceTo2D< U, U >( algorithmicModuli3D.dTau_dN );
@@ -451,6 +459,10 @@ namespace Marmot::Elements {
           qp.material->computeStress( response, tangents, deformation, timeIncrement );
         qp.managedStateVars->stress = Marmot::mapEigenToFastor( response.tau ).reshaped();
       }
+
+      // the materials accumulate the dissipation onto the incoming value: keep both with the state
+      qp.managedStateVars->elasticEnergyDensity = response.elasticEnergyDensity;
+      qp.managedStateVars->dissipationDensity   = response.dissipation;
 
       const auto dNdx = evaluate( einsum< ji, jA >( inv( F_np ), dNdX ) );
 
