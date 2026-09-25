@@ -369,6 +369,41 @@ void testCoordinatesAndStateViews()
                            "material state: kappa beyond the damage threshold" );
 }
 
+void testEnergyAndDissipationArePersisted()
+{
+  // the materials accumulate the dissipation onto the value of the last increment: the element must carry it
+  // from increment to increment, as it carries the material state
+  Setup                 q8( "GCPE8UL", quad8Coordinates );
+  const Eigen::VectorXd Q1 = damagingState( 2, 8 );
+  const Eigen::VectorXd Q2 = 1.5 * Q1;
+  Eigen::VectorXd       P  = Eigen::VectorXd::Zero( q8.nDof() );
+  Eigen::MatrixXd       K  = Eigen::MatrixXd::Zero( q8.nDof(), q8.nDof() );
+
+  q8.reset();
+  q8.element->computeKernels( Q1.data(), Q1.data(), P.data(), K.data(), 0.0, 1.0 );
+  const double psi1 = *q8.element->getStateView( "elastic energy density", 0 ).stateLocation;
+  const double d1   = *q8.element->getStateView( "dissipation density", 0 ).stateLocation;
+  throwExceptionOnFailure( psi1 > 0 && d1 > 0, "a damaging increment stores energy and dissipates" );
+
+  // second increment from the committed state (no reset)
+  const Eigen::VectorXd dQ = Q2 - Q1;
+  P.setZero();
+  K.setZero();
+  q8.element->computeKernels( Q2.data(), dQ.data(), P.data(), K.data(), 1.0, 1.0 );
+  const double d2 = *q8.element->getStateView( "dissipation density", 0 ).stateLocation;
+  throwExceptionOnFailure( d2 > d1, MakeString() << "dissipation must accumulate: " << d1 << " -> " << d2 );
+
+  // the increment alone: the same second increment from a fresh state that only knows the damage history
+  Setup fresh( "GCPE8UL", quad8Coordinates );
+  fresh.reset();
+  fresh.element->computeKernels( Q1.data(), Q1.data(), P.data(), K.data(), 0.0, 1.0 );
+  *fresh.element->getStateView( "dissipation density", 0 ).stateLocation = 0.0;
+  fresh.element->computeKernels( Q2.data(), dQ.data(), P.data(), K.data(), 1.0, 1.0 );
+  const double dIncrement = *fresh.element->getStateView( "dissipation density", 0 ).stateLocation;
+  throwExceptionOnFailure( std::abs( d2 - ( d1 + dIncrement ) ) < 1e-12 * d2,
+                           "accumulated dissipation is the sum of the increments" );
+}
+
 void testUnsupportedRequestsThrow()
 {
   Setup                 q8( "GCPE8UL", quad8Coordinates );
@@ -441,6 +476,7 @@ int main()
                                                                testSurfaceTractionAndBodyForce,
                                                                testPressureLoadTangentHexa8,
                                                                testCoordinatesAndStateViews,
+                                                               testEnergyAndDissipationArePersisted,
                                                                testUnsupportedRequestsThrow };
   executeTestsAndCollectExceptions( testFunctions );
   return 0;
