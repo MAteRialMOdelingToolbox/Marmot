@@ -219,6 +219,18 @@ void testPropertyValidation()
   rejects( { 0.0, 1500., 1e-3, 1e-2, 1. }, "K = 0" );
   rejects( { 3500., -1., 1e-3, 1e-2, 1. }, "G < 0" );
   rejects( { 3500., 1500., 0.0, 1e-2, 1. }, "kappa0 = 0" );
+
+  // the density is optional in the card, but asking for it without one is an error
+  const std::vector< double > noDensity = { 3500., 1500., 1e-3, 1e-2, 1. };
+  Mat                         m( noDensity.data(), noDensity.size(), 1 );
+  bool                        threw = false;
+  try {
+    m.getDensity( nullptr );
+  }
+  catch ( const std::runtime_error& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw, "a missing density must be reported" + where );
 }
 
 int main()

@@ -438,7 +438,17 @@ namespace Marmot::Elements {
         }
       }
       else {
-        qp.material->computeStress( response, tangents, deformation, timeIncrement );
+        // as for plane strain above: a geostatic initial state lives in the eigen deformation
+        if ( hasEigenDeformation )
+          qp.material->computeStress( response,
+                                      tangents,
+                                      deformation,
+                                      timeIncrement,
+                                      { qp.managedStateVars->F0_XX,
+                                        qp.managedStateVars->F0_YY,
+                                        qp.managedStateVars->F0_ZZ } );
+        else
+          qp.material->computeStress( response, tangents, deformation, timeIncrement );
         qp.managedStateVars->stress = Marmot::mapEigenToFastor( response.tau ).reshaped();
       }
 

@@ -8,6 +8,7 @@
 #include <functional>
 #include <memory>
 #include <string>
+#include <tuple>
 #include <vector>
 
 using namespace Marmot;
@@ -24,6 +25,27 @@ namespace {
 
   const std::vector< double > hexa8Coordinates = { 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0,
                                                    0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1 };
+
+  std::vector< double > hexa20Coordinates()
+  {
+    std::vector< double > c( hexa8Coordinates );
+    const int             edges[12][2] = { { 0, 1 },
+                                           { 1, 2 },
+                                           { 2, 3 },
+                                           { 3, 0 },
+                                           { 4, 5 },
+                                           { 5, 6 },
+                                           { 6, 7 },
+                                           { 7, 4 },
+                                           { 0, 4 },
+                                           { 1, 5 },
+                                           { 2, 6 },
+                                           { 3, 7 } };
+    for ( const auto& e : edges )
+      for ( int i = 0; i < 3; i++ )
+        c.push_back( 0.5 * ( hexa8Coordinates[3 * e[0] + i] + hexa8Coordinates[3 * e[1] + i] ) );
+    return c;
+  }
 
   // An element made through the factory, with properties, state and initialization -- as a host does it.
   struct Setup {
@@ -122,6 +144,8 @@ void testBasicProperties()
 {
   Setup q8( "GCPE8UL", quad8Coordinates );
   throwExceptionOnFailure( q8.nDof() == 24, "GCPE8UL: 8 x (2 + 1) dofs expected" );
+  throwExceptionOnFailure( q8.element->getNNodes() == 8 && q8.element->getNSpatialDimensions() == 2,
+                           "GCPE8UL: 8 nodes in 2D" );
   throwExceptionOnFailure( q8.element->getElementShape() == "quad8", "GCPE8UL: shape" );
   throwExceptionOnFailure( q8.element->getNumberOfQuadraturePoints() == 9, "GCPE8UL: 3x3 Gauss points" );
 
@@ -228,6 +252,179 @@ void testPressureLoadTangent()
                            "pressure load tangent is inconsistent (expected K = -dP/dQ)" );
 }
 
+void testConsistentTangentHexa20()
+{
+  checkNumericalTangent( "GC3D20UL", hexa20Coordinates(), 3, 20 );
+  checkNumericalTangent( "GC3D20RUL", hexa20Coordinates(), 3, 20 );
+}
+
+void testGeostaticInitialState()
+{
+  // constant hydrostatic in-situ stress: after the geostatic initialization, the undeformed element must carry it
+  const double sigma           = -2.0;
+  const double geostaticDef[6] = { sigma, 0.0, sigma, 1.0, 1.0, 1.0 }; // sigY(y=0), y1, sigY(y=1), y2, k11, k33
+
+  for ( const auto& [name, coordinates, nDim, nNodes] : std::vector<
+          std::tuple< std::string, std::vector< double >, int, int > >{ { "GCPE8UL", quad8Coordinates, 2, 8 },
+                                                                        { "GC3D8UL", hexa8Coordinates, 3, 8 } } ) {
+    Setup s( name, coordinates );
+    s.element->setInitialConditions( MarmotElement::GeostaticStress, geostaticDef );
+
+    Eigen::VectorXd P = Eigen::VectorXd::Zero( s.nDof() );
+    Eigen::MatrixXd K = Eigen::MatrixXd::Zero( s.nDof(), s.nDof() );
+    Eigen::VectorXd Q = Eigen::VectorXd::Zero( s.nDof() );
+    s.element->computeKernels( Q.data(), Q.data(), P.data(), K.data(), 0.0, 1.0 );
+
+    const double* tau = s.element->getStateView( "stress", 0 ).stateLocation;
+    for ( int i = 0; i < 3; i++ )
+      throwExceptionOnFailure( std::abs( tau[4 * i] - sigma ) < 1e-8 * std::abs( sigma ),
+                               MakeString() << name << ": geostatic stress not reproduced, tau_" << i << i << " = "
+                                            << tau[4 * i] );
+  }
+}
+
+void testSurfaceTractionAndBodyForce()
+{
+  // resultants: traction x face area, body force x volume (unit square / cube, unit thickness)
+  {
+    Setup                 q8( "GCPE8UL", quad8Coordinates );
+    const double          t[2] = { 0.7, -1.3 };
+    Eigen::VectorXd       P    = Eigen::VectorXd::Zero( q8.nDof() );
+    Eigen::MatrixXd       K    = Eigen::MatrixXd::Zero( q8.nDof(), q8.nDof() );
+    const Eigen::VectorXd Q    = Eigen::VectorXd::Zero( q8.nDof() );
+    q8.element->computeDistributedLoad( MarmotElement::SurfaceTraction, P.data(), K.data(), 1, t, Q.data(), 0., 1. );
+    for ( int i = 0; i < 2; i++ ) {
+      double sum = 0;
+      for ( int A = 0; A < 8; A++ )
+        sum += P[2 * A + i];
+      throwExceptionOnFailure( std::abs( sum - t[i] ) < 1e-12, "surface traction resultant (Quad8)" );
+    }
+
+    const double b[2] = { 0.4, -2.1 };
+    P.setZero();
+    q8.element->computeBodyForce( P.data(), K.data(), b, Q.data(), 0., 1. );
+    for ( int i = 0; i < 2; i++ ) {
+      double sum = 0;
+      for ( int A = 0; A < 8; A++ )
+        sum += P[2 * A + i];
+      throwExceptionOnFailure( std::abs( sum - b[i] ) < 1e-12, "body force resultant (Quad8)" );
+    }
+    throwExceptionOnFailure( P.tail( 8 ).norm() == 0.0, "loads act on the displacement field only" );
+  }
+  {
+    Setup                 h8( "GC3D8UL", hexa8Coordinates );
+    const double          b[3] = { 0.4, -2.1, 0.9 };
+    Eigen::VectorXd       P    = Eigen::VectorXd::Zero( h8.nDof() );
+    Eigen::MatrixXd       K    = Eigen::MatrixXd::Zero( h8.nDof(), h8.nDof() );
+    const Eigen::VectorXd Q    = Eigen::VectorXd::Zero( h8.nDof() );
+    h8.element->computeBodyForce( P.data(), K.data(), b, Q.data(), 0., 1. );
+    for ( int i = 0; i < 3; i++ ) {
+      double sum = 0;
+      for ( int A = 0; A < 8; A++ )
+        sum += P[3 * A + i];
+      throwExceptionOnFailure( std::abs( sum - b[i] ) < 1e-12, "body force resultant (Hexa8)" );
+    }
+  }
+}
+
+void testPressureLoadTangentHexa8()
+{
+  Setup        h8( "GC3D8UL", hexa8Coordinates );
+  const double p    = 3.0;
+  const int    face = 2;
+
+  auto load = [&]( const Eigen::VectorXd& Q ) {
+    Eigen::VectorXd P = Eigen::VectorXd::Zero( h8.nDof() );
+    Eigen::MatrixXd K = Eigen::MatrixXd::Zero( h8.nDof(), h8.nDof() );
+    h8.element->computeDistributedLoad( MarmotElement::Pressure, P.data(), K.data(), face, &p, Q.data(), 0.0, 1.0 );
+    return std::make_pair( P, K );
+  };
+
+  const Eigen::VectorXd Q0       = damagingState( 3, 8 );
+  const auto [P0, K0]            = load( Q0 );
+  const Eigen::MatrixXd numdP_dQ = numericalTangent( [&]( const Eigen::VectorXd& Q ) { return load( Q ).first; },
+                                                     Q0,
+                                                     24 );
+  throwExceptionOnFailure( P0.norm() > 0, "pressure must load the element (Hexa8)" );
+  throwExceptionOnFailure( ( K0 + numdP_dQ ).norm() < 1e-7 * numdP_dQ.norm(),
+                           "pressure load tangent is inconsistent (Hexa8)" );
+}
+
+void testCoordinatesAndStateViews()
+{
+  Setup      q8( "GCPE8UL", quad8Coordinates );
+  const auto center = q8.element->getCoordinatesAtCenter();
+  throwExceptionOnFailure( std::abs( center[0] - 0.5 ) < 1e-14 && std::abs( center[1] - 0.5 ) < 1e-14,
+                           "center of the unit square" );
+
+  const auto qps = q8.element->getCoordinatesAtQuadraturePoints();
+  throwExceptionOnFailure( (int)qps.size() == q8.element->getNumberOfQuadraturePoints(), "one coordinate per QP" );
+  for ( const auto& x : qps )
+    throwExceptionOnFailure( x[0] > 0 && x[0] < 1 && x[1] > 0 && x[1] < 1, "QPs inside the element" );
+
+  // element state and material state are both reachable by name
+  q8.kernels( damagingState( 2, 8 ) );
+  throwExceptionOnFailure( q8.element->getStateView( "stress", 0 ).stateSize == 9, "element state: stress" );
+  throwExceptionOnFailure( *q8.element->getStateView( "kappa", 0 ).stateLocation > 1e-3,
+                           "material state: kappa beyond the damage threshold" );
+}
+
+void testUnsupportedRequestsThrow()
+{
+  Setup                 q8( "GCPE8UL", quad8Coordinates );
+  const Eigen::VectorXd Q = Eigen::VectorXd::Zero( q8.nDof() );
+  Eigen::VectorXd       P = Eigen::VectorXd::Zero( q8.nDof() );
+  Eigen::MatrixXd       K = Eigen::MatrixXd::Zero( q8.nDof(), q8.nDof() );
+
+  bool explicitThrew = false;
+  try {
+    q8.element->computeKernelsExplicit( Q.data(), Q.data(), P.data(), 0., 1. );
+  }
+  catch ( const std::runtime_error& ) {
+    explicitThrew = true;
+  }
+  throwExceptionOnFailure( explicitThrew, "explicit kernels are not implemented and must say so" );
+
+  bool loadThrew = false;
+  try {
+    const double load[1] = { 1.0 };
+    q8.element->computeDistributedLoad( MarmotElement::SurfaceTorsion, P.data(), K.data(), 1, load, Q.data(), 0., 1. );
+  }
+  catch ( const std::invalid_argument& ) {
+    loadThrew = true;
+  }
+  throwExceptionOnFailure( loadThrew, "an unsupported distributed load must be rejected" );
+
+  bool initialConditionThrew = false;
+  try {
+    q8.element->setInitialConditions( MarmotElement::HydrostaticStress, nullptr );
+  }
+  catch ( const std::invalid_argument& ) {
+    initialConditionThrew = true;
+  }
+  throwExceptionOnFailure( initialConditionThrew, "an unsupported initial condition must be rejected" );
+
+  // plane stress is not registered, but the class accepts the section: it must refuse to compute
+  using Element = GradientEnhancedFiniteStrainDisplacementElement< 2, 8 >;
+  Element planeStress( 1, FiniteElement::Quadrature::IntegrationTypes::FullIntegration, Element::PlaneStress );
+  std::vector< double > elementProperties = { 1.0 };
+  planeStress.assignNodeCoordinates( quad8Coordinates.data() );
+  planeStress.assignProperty( ElementProperties( elementProperties.data(), elementProperties.size() ) );
+  planeStress.assignProperty(
+    MarmotMaterialSection( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE", matProps.data(), matProps.size() ) );
+  std::vector< double > stateVars( planeStress.getNumberOfRequiredStateVars(), 0.0 );
+  planeStress.assignStateVars( stateVars.data(), stateVars.size() );
+  planeStress.initializeYourself();
+  bool planeStressThrew = false;
+  try {
+    planeStress.computeKernels( Q.data(), Q.data(), P.data(), K.data(), 0., 1. );
+  }
+  catch ( const std::runtime_error& ) {
+    planeStressThrew = true;
+  }
+  throwExceptionOnFailure( planeStressThrew, "plane stress must be refused" );
+}
+
 int main()
 {
   auto testFunctions = std::vector< std::function< void() > >{ testBasicProperties,
@@ -238,7 +435,13 @@ int main()
                                                                testUndeformedStateIsStressFree,
                                                                testRigidRotationIsStressFree,
                                                                testInternalForcesAreSelfEquilibrated,
-                                                               testPressureLoadTangent };
+                                                               testPressureLoadTangent,
+                                                               testConsistentTangentHexa20,
+                                                               testGeostaticInitialState,
+                                                               testSurfaceTractionAndBodyForce,
+                                                               testPressureLoadTangentHexa8,
+                                                               testCoordinatesAndStateViews,
+                                                               testUnsupportedRequestsThrow };
   executeTestsAndCollectExceptions( testFunctions );
   return 0;
 }
