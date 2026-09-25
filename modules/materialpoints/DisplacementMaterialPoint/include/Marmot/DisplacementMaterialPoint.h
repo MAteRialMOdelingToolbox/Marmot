@@ -247,6 +247,8 @@ namespace Marmot::MaterialPoints {
     /* state->dx_dY.eye(); */
     this->prepareYourself( 0, 0 );
     material->initializeYourself( state->materialState.data(), state->materialState.size() );
+    // known from the start, so that inertia can be assembled before the first computation
+    _density = material->getDensity( state->materialState.data() );
   }
 
   template < int nDim >
