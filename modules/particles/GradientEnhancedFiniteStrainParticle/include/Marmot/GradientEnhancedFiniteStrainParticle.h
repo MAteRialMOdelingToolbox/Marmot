@@ -399,6 +399,7 @@ namespace Marmot::Meshfree {
     const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation )
     : _centerCoordinatesUndeformed( Eigen::Map< const Eigen::Matrix< double, nDim, 1 > >( centerCoordinates0 ) ),
       _centerReferenceIntermediate( _centerCoordinatesUndeformed ),
+      _volReferenceIntermediate( volume ), // the reference is the undeformed configuration until the first accept
       __mp( []( int elementID_, const double* coordinates_, int nCoordinates_, double volume_ )
               -> MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint< nDim >* {
         if constexpr ( nDim == 2 )
