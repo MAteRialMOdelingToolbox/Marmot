@@ -172,14 +172,14 @@ namespace Marmot::Meshfree {
     const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation,
     ParentSQCNIParticle::SmoothingDomainUpdateType       smoothingVolumeUpdateType )
     : GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices >( elementID,
-                                                                  vertexCoordinates,
-                                                                  nVertexCoordinates,
-                                                                  volume,
-                                                                  materialName,
-                                                                  materialProperties,
-                                                                  sizeMaterialProperties,
-                                                                  approximation,
-                                                                  smoothingVolumeUpdateType )
+                                                                    vertexCoordinates,
+                                                                    nVertexCoordinates,
+                                                                    volume,
+                                                                    materialName,
+                                                                    materialProperties,
+                                                                    sizeMaterialProperties,
+                                                                    approximation,
+                                                                    smoothingVolumeUpdateType )
   {
     // second moments of the undeformed particle domain about its centroid
     // (for an affinely mapped cell this is identical to the former
@@ -193,10 +193,10 @@ namespace Marmot::Meshfree {
 
   template < int nDim, int nVertices >
   void GradientEnhancedFiniteStrainParticleSQCNIxNSNI< nDim, nVertices >::computePhysicsKernels( const double* dQ,
-                                                                                               double*       fInt,
-                                                                                               double*       dFInt_ddQ,
-                                                                                               double        timeNew,
-                                                                                               double        dT )
+                                                                                                 double*       fInt,
+                                                                                                 double* dFInt_ddQ,
+                                                                                                 double  timeNew,
+                                                                                                 double  dT )
   {
     using namespace Marmot::FastorIndices;
     using namespace Fastor;
