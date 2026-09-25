@@ -70,23 +70,23 @@ namespace Marmot {
       inline const Tensor33d I = Tensor33d( ( Eigen::Matrix3d() << Eigen::Matrix3d::Identity() ).finished().data(),
                                             Fastor::ColumnMajor );
 
-      inline const Tensor333d LeviCivita = Tensor333d( Marmot::ContinuumMechanics::CommonTensors::LeviCivita3D.data(),
+      inline const Tensor333d LeviCivita = Tensor333d( Marmot::ContinuumMechanics::CommonTensors::Initialize_LeviCivita3D().data(),
                                                        Fastor::ColumnMajor );
 
-      inline const Tensor3333d IHyd = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::I2xI2.data(),
+      inline const Tensor3333d IHyd = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::Initialize_I2xI2().data(),
                                                    Fastor::ColumnMajor );
 
-      inline const Tensor3333d ISymm = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::Isym.data(),
+      inline const Tensor3333d ISymm = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::Initialize_Isym().data(),
                                                     Fastor::ColumnMajor );
 
-      inline const Tensor3333d ISkew = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::Iskew.data(),
+      inline const Tensor3333d ISkew = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::Initialize_Iskew().data(),
                                                     Fastor::ColumnMajor );
 
-      inline const Tensor3333d I4 = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::IFourthOrder.data(),
+      inline const Tensor3333d I4 = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::Initialize_IFourthOrder().data(),
                                                  Fastor::ColumnMajor );
 
       inline const Tensor3333d
-        ITranspose = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::IFourthOrderTranspose.data(),
+        ITranspose = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::Initialize_IFourthOrderTranspose().data(),
                                   Fastor::ColumnMajor );
 
       inline const Tensor3333d Deviatoric = I4 - 1. / 3 * IHyd;
