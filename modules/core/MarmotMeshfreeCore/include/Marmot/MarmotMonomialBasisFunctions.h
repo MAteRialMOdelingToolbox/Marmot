@@ -74,6 +74,8 @@ namespace Marmot::Math {
                                                      int                    idxEnd,
                                                      int                    dim )
   {
+    // the basis has the same layout as in _computeMonomialBasisRecursion; by the product rule, column k of the
+    // gradient is the product of the factors x_d^i of all dimensions d, with x_k^i replaced by its derivative
     for ( int i = 0; i <= order; i++ ) {
 
       const int idxStart = idxEnd;
@@ -83,12 +85,13 @@ namespace Marmot::Math {
       else {
         idxEnd++;
       }
-      for ( int idx = idxStart; idx < idxEnd; idx++ ) {
-        if ( i > 0 )
-          res( idx, dim - 1 ) = i * std::pow( x[dim - 1], i - 1 );
-        else
-          res( idx, dim - 1 ) = 0;
-      }
+
+      const double factor           = std::pow( x[dim - 1], i );
+      const double factorDerivative = i > 0 ? i * std::pow( x[dim - 1], i - 1 ) : 0.0;
+
+      for ( int idx = idxStart; idx < idxEnd; idx++ )
+        for ( int k = 0; k < res.cols(); k++ )
+          res( idx, k ) *= k == dim - 1 ? factorDerivative : factor;
     }
     return idxEnd;
   }

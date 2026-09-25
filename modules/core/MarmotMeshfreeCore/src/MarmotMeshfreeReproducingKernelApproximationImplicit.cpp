@@ -66,7 +66,16 @@ namespace Marmot::Meshfree {
     H0Mat.setZero();
 
     H0Mat.col( 0 ) = H0;
-    H0Mat.block( 1, 1, _dim, _dim ).diagonal().setConstant( -1.0 );
+    // the gradient columns reproduce -d(x - x_I)^alpha/dx_i at x_I, which is -1 for the linear monomial x_i and 0
+    // otherwise; the linear monomials are the rows whose gradient at the origin is nonzero
+    if ( correctedCompletenessOrder > 0 ) {
+      Eigen::MatrixXd dHOrigin( M.rows(), _dim );
+      Math::computeMonomialBasisGradient( correctedCompletenessOrder, Eigen::VectorXd::Zero( _dim ), dHOrigin );
+      for ( int k = 0; k < M.rows(); k++ )
+        for ( int i = 0; i < _dim; i++ )
+          if ( dHOrigin( k, i ) != 0.0 )
+            H0Mat( k, 1 + i ) = -1.0;
+    }
 
     const Eigen::MatrixXd bMat = M.colPivHouseholderQr().solve( H0Mat );
 
