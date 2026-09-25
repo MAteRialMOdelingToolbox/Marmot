@@ -203,15 +203,15 @@ void testObjectivity()
   }
 }
 
-void testTangentInThePlasticBranch()
+// the algorithmic tangents against central differences of the full update, from the same initial state
+void checkTangents( const Mat&                   mat,
+                    const Tensor33d&             F,
+                    double                       N,
+                    const std::vector< double >& state0,
+                    const std::string&           branch )
 {
-  const auto props = properties( 5., 30., 10., 100., 0.05, 0.5 ); // plasticity AND damage active
-  Mat        mat( props.data(), props.size(), 1 );
-
-  const std::vector< double > state0 = freshState( mat );
-  const Tensor33d             F      = testF( 0.1 );
-  const double                N      = 2e-3;
-  const auto                  res    = evaluate( mat, F, N, state0 );
+  const auto res = evaluate( mat, F, N, state0 );
+  const auto tol = [&]( double num, double scale ) { return 1e-5 * ( scale + std::abs( num ) ); };
 
   const double h = 1e-6;
   for ( int k = 0; k < 3; k++ )
@@ -224,12 +224,14 @@ void testTangentInThePlasticBranch()
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ ) {
           const double num = ( rp.tau( i, j ) - rm.tau( i, j ) ) / ( 2 * h );
-          throwExceptionOnFailure( std::abs( res.t.dTau_dF( i, j, k, l ) - num ) < 1e-3 * ( 1. + std::abs( num ) ),
-                                   "dTau_dF inconsistent" + where );
+          throwExceptionOnFailure( std::abs( res.t.dTau_dF( i, j, k, l ) - num ) < tol( num, 1.0 ),
+                                   MakeString() << branch << ": dTau_dF(" << i << j << k << l
+                                                << ") = " << res.t.dTau_dF( i, j, k, l ) << " vs " << num << where );
         }
       const double numL = ( rp.L - rm.L ) / ( 2 * h );
-      throwExceptionOnFailure( std::abs( res.t.dL_dF( k, l ) - numL ) < 1e-4 * ( 1. + std::abs( numL ) ),
-                               "dL_dF inconsistent" + where );
+      throwExceptionOnFailure( std::abs( res.t.dL_dF( k, l ) - numL ) < tol( numL, 1e-3 ),
+                               MakeString() << branch << ": dL_dF(" << k << l << ") = " << res.t.dL_dF( k, l ) << " vs "
+                                            << numL << where );
     }
 
   const double hN = 1e-7;
@@ -238,12 +240,42 @@ void testTangentInThePlasticBranch()
   for ( int i = 0; i < 3; i++ )
     for ( int j = 0; j < 3; j++ ) {
       const double num = ( rp.tau( i, j ) - rm.tau( i, j ) ) / ( 2 * hN );
-      throwExceptionOnFailure( std::abs( res.t.dTau_dN( i, j ) - num ) < 1e-3 * ( 1. + std::abs( num ) ),
-                               "dTau_dN inconsistent" + where );
+      throwExceptionOnFailure( std::abs( res.t.dTau_dN( i, j ) - num ) < tol( num, 1.0 ),
+                               branch + ": dTau_dN inconsistent" + where );
     }
   const double numL = ( rp.L - rm.L ) / ( 2 * hN );
   throwExceptionOnFailure( std::abs( res.t.dL_dN - numL ) < 1e-6 * ( 1. + std::abs( numL ) ),
-                           "dL_dN inconsistent" + where );
+                           branch + ": dL_dN inconsistent" + where );
+}
+
+void testTangentInThePlasticBranch()
+{
+  // plasticity AND damage active, with the ductility measure of the damage in play (As > 0)
+  auto props = properties( 5., 30., 10., 100., 0.05, 0.5 );
+  props[6]   = 2.0;
+  Mat mat( props.data(), props.size(), 1 );
+  checkTangents( mat, testF( 0.1 ), 2e-3, freshState( mat ), "cone" );
+
+  // from a plastic, damaged state (Fp != I)
+  std::vector< double > state = evaluate( mat, testF( 0.1 ), 2e-3, freshState( mat ) ).state;
+  checkTangents( mat, testF( 0.14 ), 3e-3, state, "cone, second increment" );
+}
+
+void testTangentAtTheApex()
+{
+  auto props = properties( 5., 30., 20., 100., 0.05, 0.5 );
+  props[6]   = 2.0;
+  Mat        mat( props.data(), props.size(), 1 );
+  const auto state0 = freshState( mat );
+
+  // a tension trial state beyond the apex, with a small deviatoric part
+  const Tensor33d       F   = stretch( 1.01, 1.012, 1.0105 );
+  const auto            res = evaluate( mat, F, 2e-3, state0 );
+  const Eigen::Matrix3d tau = toEigen( res.tau );
+  throwExceptionOnFailure( ( tau - tau.trace() / 3.0 * Eigen::Matrix3d::Identity() ).norm() <
+                             1e-9 * std::abs( tau.trace() ),
+                           "the tangent check must be at the apex" + where );
+  checkTangents( mat, F, 2e-3, state0, "apex" );
 }
 
 void testGradientEnhancedDamage()
@@ -418,6 +450,7 @@ int main()
                                                                testApexReturn,
                                                                testObjectivity,
                                                                testTangentInThePlasticBranch,
+                                                               testTangentAtTheApex,
                                                                testGradientEnhancedDamage,
                                                                testElasticUnloading,
                                                                testFactoryAndValidation,

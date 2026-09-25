@@ -10,18 +10,15 @@ Theory
 ------
 
 **Kinematics.** The deformation gradient is split multiplicatively, :math:`\boldsymbol{F} = \boldsymbol{F}^{\rm e}
-\boldsymbol{F}^{\rm p}`, with the plastic deformation gradient as state variable. The trial elastic state
-:math:`\boldsymbol{F}^{\rm e,trial} = \boldsymbol{F}\,(\boldsymbol{F}^{\rm p}_n)^{-1}` is decomposed spectrally
-through its left Cauchy-Green tensor, and the principal elastic logarithmic strains
-:math:`\varepsilon^{\rm e}_a = \ln\lambda^{\rm e}_a` are the variables of the return map. The plastic flow is
-integrated with the exponential map and the elastic rotation is frozen over the step. For isotropic elasticity and
-an isotropic yield function this makes the return map exactly the small-strain one in these variables, and the
-plastic deformation gradient is updated as
+\boldsymbol{F}^{\rm p}`, with the plastic deformation gradient as state variable. The formulation follows
+:doc:`finitestrainj2plasticity`: the yield function is evaluated on the Mandel stress
+:math:`\boldsymbol{M} = \boldsymbol{C}^{\rm e}\boldsymbol{S}`, and the plastic flow is integrated with the exponential
+map,
 
 .. math::
 
-   \boldsymbol{F}^{\rm p}_{n+1} = (\boldsymbol{F}^{\rm e,trial})^{-1}\exp(\Delta\boldsymbol{\varepsilon}^{\rm p})\,\boldsymbol{F},
-   \qquad\text{so that}\qquad \boldsymbol{F}(\boldsymbol{F}^{\rm p}_{n+1})^{-1} = \boldsymbol{V}^{\rm e}_{n+1}\boldsymbol{R}^{\rm e}.
+   \boldsymbol{F}^{\rm e,trial} = \boldsymbol{F}\,(\boldsymbol{F}^{\rm p}_n)^{-1}
+   = \boldsymbol{F}^{\rm e}\exp\!\left(\Delta\lambda\,\frac{\partial g}{\partial\boldsymbol{M}}\right) .
 
 **Elasticity** is that of :doc:`compressibleneohooke` (Pence-Gou, variant B) in the elastic stretch,
 
@@ -29,13 +26,7 @@ plastic deformation gradient is updated as
 
    \Psi = \frac{K}{8}\left(J^2 + J^{-2} - 2\right) + \frac{G}{2}\left(I_1 J^{-2/3} - 3\right),
 
-whose principal Mandel stresses, equal to the principal Kirchhoff stresses by isotropy, are available in closed form,
-
-.. math::
-
-   \Sigma_a = \frac{\partial\Psi}{\partial\varepsilon^{\rm e}_a}
-            = \frac{K}{2}\sinh(2\theta) + G\left(e^{2e_a} - \tfrac13\sum_b e^{2e_b}\right),
-   \qquad \theta = \sum_a\varepsilon^{\rm e}_a,\quad e_a = \varepsilon^{\rm e}_a - \theta/3 .
+in :math:`J = \det\boldsymbol{F}^{\rm e}` and :math:`I_1 = \operatorname{tr}\boldsymbol{C}^{\rm e}`.
 
 **Plasticity.** A Drucker-Prager yield function on the Mandel stress with linear hardening of the cohesion and a
 non-associated plastic potential,
@@ -43,7 +34,7 @@ non-associated plastic potential,
 .. math::
 
    f = \sqrt{J_2} + \eta\,p - \xi\,(c_0 + H\alpha), \qquad g = \sqrt{J_2} + \bar\eta\,p,
-   \qquad p = \tfrac13\operatorname{tr}\boldsymbol{\Sigma}\ \text{(tension positive)},
+   \qquad p = \tfrac13\operatorname{tr}\boldsymbol{M}\ \text{(tension positive)},
 
 where the cone passes through the outer edges of the Mohr-Coulomb pyramid (compressive meridian),
 
@@ -52,16 +43,21 @@ where the cone passes through the outer edges of the Mohr-Coulomb pyramid (compr
    \eta = \frac{6\sin\phi}{\sqrt3\,(3-\sin\phi)},\qquad \xi = \frac{6\cos\phi}{\sqrt3\,(3-\sin\phi)},\qquad
    \bar\eta = \frac{6\sin\psi}{\sqrt3\,(3-\sin\psi)} .
 
-The return to the cone solves
-:math:`\varepsilon^{\rm e}_a = \varepsilon^{\rm e,trial}_a - \Delta\lambda\,\partial g/\partial\Sigma_a`,
-:math:`f = 0`, :math:`\alpha = \alpha_n + \xi\,\Delta\lambda` with Newton's method and an analytic Jacobian. When
-the deviatoric stress would reverse, the state is returned to the apex of the cone instead, with the volumetric
-plastic strain increment as unknown and :math:`\alpha = \alpha_n + (\xi/\bar\eta)\,\Delta\varepsilon^{\rm p}_v`
+The return to the cone solves the flow rule above, the hardening law :math:`\alpha = \alpha_n + \xi\,\Delta\lambda`
+and the consistency condition :math:`f = 0` for :math:`\{\boldsymbol{F}^{\rm e}, \alpha, \Delta\lambda\}` with Newton's
+method. Where no solution on the cone exists (a trial state beyond the apex), the state returns to the apex: by
+isotropy, :math:`\boldsymbol{F}^{\rm p}` is determined up to a rotation only, so that
+:math:`\boldsymbol{F}^{\rm e} = J_{\rm e}^{1/3}\boldsymbol{I}` with the unknowns :math:`\{\ln J_{\rm e}, \alpha\}`,
+:math:`\eta\,p = \xi\,(c_0 + H\alpha)` and :math:`\alpha = \alpha_n + (\xi/\bar\eta)\,\Delta\varepsilon^{\rm p}_v`
 (de Souza Neto, Peric & Owen, *Computational Methods for Plasticity*, Sec. 8.3).
 
-**Damage** is the implicit-gradient damage of the finite-strain damage-plasticity models (GMCDPFiniteStrain and its
-gradient-enhanced siblings). The local variable grows with the volumetric plastic logarithmic strain, weighted by a
-ductility measure of the compressive part of the plastic flow,
+The Jacobians of both return mappings are computed by the complex-step method, and the algorithmic tangents follow
+from the same Jacobians by the implicit function theorem.
+
+**Damage** is an implicit-gradient damage driven by the plastic flow. The local variable grows with the volumetric
+plastic logarithmic strain, weighted by the ductility measure of the concrete damage-plasticity model CDPM2 (Grassl,
+Xenos, Nyström, Rempling & Gylltoft, *Int. J. Solids Struct.* 50, 2013), which reduces the damage under confined,
+compression-dominated flow,
 
 .. math::
 
@@ -80,8 +76,7 @@ irreversible,
    \boldsymbol{\tau} = (1-\omega)\,\boldsymbol{\tau}_{\rm eff}.
 
 The dissipation is cumulative: the incoming value is incremented by
-:math:`(1-\omega)\,\boldsymbol{\Sigma}:\Delta\boldsymbol{\varepsilon}^{\rm p} + \Psi_{\rm eff}\,\Delta\omega`.
-The algorithmic tangents are computed by forward finite differences of the full state update.
+:math:`(1-\omega)\,\boldsymbol{M}:\Delta\boldsymbol{\varepsilon}^{\rm p} + \Psi_{\rm eff}\,\Delta\omega`.
 
 Material parameters
 -------------------
