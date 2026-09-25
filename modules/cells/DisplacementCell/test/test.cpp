@@ -272,7 +272,7 @@ namespace {
         dQ.segment< nDim >( nDim * A ) = ( ( R - Eigen::Matrix3d::Identity() ) * X ).template head< nDim >();
       }
       const auto P = s.trial( dQ ).first;
-      throwExceptionOnFailure( P.norm() < 1e-10,
+      throwExceptionOnFailure( P.norm() < 1e-8, // round-off grows with the number of nodes (cubic B-splines)
                                MakeString()
                                  << g.name << ": rigid rotation must not load the cell, |P| = " << P.norm() );
     }

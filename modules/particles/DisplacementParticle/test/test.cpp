@@ -132,6 +132,14 @@ namespace {
     }
   };
 
+  // fill freed heap chunks of many sizes with garbage, so that members which are read before they are set show up as
+  // garbage instead of as zeros or as stale values of a previous, identical object
+  void dirtyHeap()
+  {
+    for ( int n = 1; n <= 1024; n += 1 + n / 8 )
+      std::vector< double >( n, 1.2345e300 );
+  }
+
   Eigen::VectorXd increment( int nDof, double scale )
   {
     Eigen::VectorXd dQ( nDof );
@@ -227,6 +235,7 @@ namespace {
     // particles advertise BODYFORCE, but computeBodyLoad is not implemented (empty, or throws for the SDI
     // variants), and EdelweissMeshfree applies body loads to cells only.
     {
+      dirtyHeap(); // the density must be known right after initialization, before the first increment
       Setup< nDim >   s( name, v, vol );
       const double    V           = s.particle->getVolumeUndeformed();
       Eigen::VectorXd m           = Eigen::VectorXd::Zero( s.nDof() );
@@ -395,8 +404,7 @@ namespace {
     if ( numberOfFaces( shape ) > 0 ) {
       // the host corrects before the first increment: nothing may depend on a previously accepted state. Dirty the
       // heap first, so that a basis which is never evaluated shows up as garbage instead of as zeros.
-      for ( int k = 0; k < 64; k++ )
-        std::vector< double >( 1 + k % 8, 1.2345e300 );
+      dirtyHeap();
       Setup< nDim > s( name, v, V );
       const int     nC = s.particle->vci_getNumberOfConstraints();
       throwExceptionOnFailure( nC == 1, name + ": one constraint of order 0" );
