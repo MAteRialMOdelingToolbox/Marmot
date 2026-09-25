@@ -1,5 +1,6 @@
 #include "Marmot/CompressibleNeoHooke.h"
 #include "Marmot/GradientEnhancedFiniteStrainDruckerPrager.h"
+#include "Marmot/MarmotExceptions.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotMaterialGradientEnhancedFiniteStrainFactory.h"
 #include "Marmot/MarmotMath.h"
@@ -338,14 +339,75 @@ void testFactoryAndValidation()
   };
   const auto valid = properties( 5., 30., 10. );
   rejects( std::vector< double >( valid.begin(), valid.begin() + 10 ), "a too short property array" );
-  for ( auto [idx, value, what] :
-        std::vector< std::tuple< int, double, std::string > >{ { 0, 0.0, "K = 0" },
-                                                               { 1, -1.0, "G < 0" },
-                                                               { 8, 1.0, "maxDamage = 1" },
-                                                               { 8, -0.1, "maxDamage < 0" } } ) {
+  for ( auto [idx, value, what] : std::vector< std::tuple< int, double, std::string > >{ { 0, 0.0, "K = 0" },
+                                                                                         { 1, -1.0, "G < 0" },
+                                                                                         { 8, 1.0, "maxDamage = 1" },
+                                                                                         { 8, -0.1, "maxDamage < 0" },
+                                                                                         { 2, 0.0, "c0 = 0" },
+                                                                                         { 7, 0.0, "epsF = 0" } } ) {
     std::vector< double > p( valid.begin(), valid.end() );
     p[idx] = value;
     rejects( p, what );
+  }
+}
+
+void testFailurePaths()
+{
+  // a degenerate deformation gradient cannot be decomposed
+  {
+    const auto props = properties( 5., 30., 10. );
+    Mat        mat( props.data(), props.size(), 1 );
+    Tensor33d  F = stretch( 1.0, 1.0, 1.0 );
+    F( 2, 0 ) = F( 2, 1 ) = F( 2, 2 ) = 0.0;
+    bool threw                        = false;
+    try {
+      evaluate( mat, F, 0.0, freshState( mat ) );
+    }
+    catch ( const Marmot::StressUpdateFailed& ) {
+      threw = true;
+    }
+    throwExceptionOnFailure( threw, "a singular F must raise StressUpdateFailed" + where );
+  }
+
+  // without dilatancy there is no apex to return to: hydrostatic tension beyond the cone has no admissible state
+  {
+    const auto props = properties( 5., 30., 0.0 );
+    Mat        mat( props.data(), props.size(), 1 );
+    bool       threw = false;
+    try {
+      evaluate( mat, stretch( 1.01, 1.01, 1.01 ), 0.0, freshState( mat ) );
+    }
+    catch ( const Marmot::StressUpdateFailed& ) {
+      threw = true;
+    }
+    throwExceptionOnFailure( threw, "a return map without solution must raise StressUpdateFailed" + where );
+  }
+
+  // near-apex tension with a small deviatoric part: the cone return would reverse the deviator, so the state must
+  // end on the apex
+  {
+    const auto props = properties( 5., 30., 20., 100. );
+    Mat        mat( props.data(), props.size(), 1 );
+    const auto res = evaluate( mat, stretch( 1.01, 1.01, 1.0101 ), 0.0, freshState( mat ) );
+
+    const Eigen::Matrix3d tau = toEigen( res.tau );
+    const double          p   = tau.trace() / 3.0;
+    throwExceptionOnFailure( ( tau - p * Eigen::Matrix3d::Identity() ).norm() < 1e-9 * std::abs( p ),
+                             "a near-apex trial state must return to the apex" + where );
+  }
+
+  // the density is optional in the card, but asking for it without one is an error
+  {
+    const auto props = properties( 5., 30., 10. );
+    Mat        mat( props.data(), 11, 1 );
+    bool       threw = false;
+    try {
+      mat.getDensity( nullptr );
+    }
+    catch ( const std::runtime_error& ) {
+      threw = true;
+    }
+    throwExceptionOnFailure( threw, "a missing density must be reported" + where );
   }
 }
 
@@ -358,7 +420,8 @@ int main()
                                                                testTangentInThePlasticBranch,
                                                                testGradientEnhancedDamage,
                                                                testElasticUnloading,
-                                                               testFactoryAndValidation };
+                                                               testFactoryAndValidation,
+                                                               testFailurePaths };
   executeTestsAndCollectExceptions( testFunctions );
   return 0;
 }
