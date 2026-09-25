@@ -282,7 +282,7 @@ namespace Marmot::Materials {
         return _dPsi_dCe;
       };
 
-      d2Psi_dCedCe = NumericalAlgorithms::Differentiation::TensorToTensor::forwardDifference( computeS, Ce );
+      d2Psi_dCedCe = NumericalAlgorithms::Differentiation::TensorToTensor::forwardDifference( computeS, Ce, true );
       std::tie( psi_, dPsi_dCe ) = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
       // compute Kirchhoff stress
       Tensor33d   PK2 = 2. * dPsi_dCe;
@@ -329,7 +329,7 @@ namespace Marmot::Materials {
         return _dPsi_dCe;
       };
 
-      d2Psi_dCedCe = NumericalAlgorithms::Differentiation::TensorToTensor::forwardDifference( computeS, Ce );
+      d2Psi_dCedCe = NumericalAlgorithms::Differentiation::TensorToTensor::forwardDifference( computeS, Ce, true );
 
       std::tie( psi_, dPsi_dCe ) = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
       // compute Kirchhoff stress
@@ -608,7 +608,9 @@ namespace Marmot::Materials {
         return _dPsi_dCe;
       };
 
-      d2Psi_dCedCe = NumericalAlgorithms::Differentiation::Complex::TensorToTensor::forwardDifference( computeS, Ce );
+      d2Psi_dCedCe = NumericalAlgorithms::Differentiation::Complex::TensorToTensor::forwardDifference( computeS,
+                                                                                                       Ce,
+                                                                                                       true );
       std::tie( psi_, dPsi_dCe ) = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
       // compute Kirchhoff stress
       Tensor33d   PK2 = 2. * dPsi_dCe;
@@ -655,7 +657,9 @@ namespace Marmot::Materials {
         return _dPsi_dCe;
       };
 
-      d2Psi_dCedCe = NumericalAlgorithms::Differentiation::Complex::TensorToTensor::forwardDifference( computeS, Ce );
+      d2Psi_dCedCe = NumericalAlgorithms::Differentiation::Complex::TensorToTensor::forwardDifference( computeS,
+                                                                                                       Ce,
+                                                                                                       true );
 
       std::tie( psi_, dPsi_dCe ) = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
       // compute Kirchhoff stress

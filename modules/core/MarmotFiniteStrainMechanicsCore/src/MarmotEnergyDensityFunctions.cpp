@@ -91,10 +91,10 @@ namespace Marmot::ContinuumMechanics {
         auto lnDetC_func = [=]( const Tensor33t< autodiff::dual3rd >& C_var ) { return log( determinant( C_var ) ); };
 
         Tensor333333d d3DetC_dC3 = std::get< 3 >(
-          Marmot::AutomaticDifferentiation::ThirdOrder::d3f_dT3< 3 >( detC_func, C ) );
+          Marmot::AutomaticDifferentiation::ThirdOrder::d3f_dT3< 3 >( detC_func, C, true ) );
 
         Tensor333333d d3LnDetC_dC3 = std::get< 3 >(
-          Marmot::AutomaticDifferentiation::ThirdOrder::d3f_dT3< 3 >( lnDetC_func, C ) );
+          Marmot::AutomaticDifferentiation::ThirdOrder::d3f_dT3< 3 >( lnDetC_func, C, true ) );
 
         // compare with analytical
         // std::cout << "Max abs diff d3DetC_dC3: " <<  d3DetC_dC3 - d3DetC_dC3_analytical << std::endl;

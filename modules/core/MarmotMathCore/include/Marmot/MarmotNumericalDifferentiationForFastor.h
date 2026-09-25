@@ -114,23 +114,30 @@ namespace Marmot {
        * @tparam dim The dimension of the input Tensor (assumed to be square)
        * @param f The function mapping a tensor to a scalar
        * @param T The point at which the derivative is evaluated
+       * @param isSymmetric If true, T (and thus the resulting gradient) is assumed to be symmetric, e.g. the right
+       * Cauchy-Green tensor, halving the number of function evaluations by only perturbing the upper triangle of T
+       * and mirroring the result to the lower triangle
        * @return The derivative of the function f at the point T
        */
       template < size_t dim >
       Fastor::Tensor< double, dim, dim > forwardDifference( const tensor_to_scalar_function_type< dim, dim >& f,
-                                                            const Fastor::Tensor< double, dim, dim >&         T )
+                                                            const Fastor::Tensor< double, dim, dim >&         T,
+                                                            bool isSymmetric = false )
       {
         Fastor::Tensor< double, dim, dim > T_right( T );
         Fastor::Tensor< double, dim, dim > dF_dT( 0.0 );
         const double                       f_ = f( T );
 
         for ( size_t i = 0; i < dim; i++ ) {
-          for ( size_t j = 0; j < dim; j++ ) {
+          for ( size_t j = isSymmetric ? i : 0; j < dim; j++ ) {
             double volatile h = std::max( 1.0, std::abs( T( i, j ) ) ) * Marmot::Constants::SquareRootEps;
 
             T_right( i, j ) += h;
             dF_dT( i, j ) = ( f( T_right ) - f_ ) / ( 1. * h );
             T_right( i, j ) -= h;
+
+            if ( isSymmetric && j != i )
+              dF_dT( j, i ) = dF_dT( i, j );
           }
         }
 
@@ -143,11 +150,15 @@ namespace Marmot {
        * @tparam dim The dimension of the input Tensor (assumed to be square)
        * @param F The function mapping a tensor to a scalar
        * @param T The point at which the derivative is evaluated
+       * @param isSymmetric If true, T (and thus the resulting gradient) is assumed to be symmetric, e.g. the right
+       * Cauchy-Green tensor, halving the number of function evaluations by only perturbing the upper triangle of T
+       * and mirroring the result to the lower triangle
        * @return The derivative of the function F at the point T
        */
       template < size_t dim >
       Fastor::Tensor< double, dim, dim > centralDifference( const tensor_to_scalar_function_type< dim, dim >& F,
-                                                            const Fastor::Tensor< double, dim, dim >&         T )
+                                                            const Fastor::Tensor< double, dim, dim >&         T,
+                                                            bool isSymmetric = false )
       {
 
         Fastor::Tensor< double, dim, dim > dF_dT;
@@ -155,7 +166,7 @@ namespace Marmot {
         Fastor::Tensor< double, dim, dim > T_left( T );
 
         for ( size_t i = 0; i < dim; i++ ) {
-          for ( size_t j = 0; j < dim; j++ ) {
+          for ( size_t j = isSymmetric ? i : 0; j < dim; j++ ) {
             double volatile h = std::max( 1.0, std::abs( T( i, j ) ) ) * Marmot::Constants::CubicRootEps;
 
             T_right = T;
@@ -164,6 +175,9 @@ namespace Marmot {
             T_left( i, j ) -= h;
 
             dF_dT( i, j ) = ( F( T_right ) - F( T_left ) ) / ( 2. * h );
+
+            if ( isSymmetric && j != i )
+              dF_dT( j, i ) = dF_dT( i, j );
           }
         }
 
@@ -180,12 +194,20 @@ namespace Marmot {
        * @tparam RestT The dimensions of the input Tensor
        * @param F The function mapping a tensor to a tensor
        * @param T The point at which the derivative is evaluated
+       * @param isSymmetric If true, T is a square rank-2 tensor and F's output is also a square rank-2 tensor of the
+       * same dimension (e.g. the second Piola-Kirchhoff stress as a function of the right Cauchy-Green tensor), T is
+       * assumed to be symmetric and F is assumed to be transpose-equivariant (F(A^T) = F(A)^T for general, not
+       * necessarily symmetric, A), which holds for any tensor function built from tensor invariants/products. This
+       * halves the number of function evaluations by only perturbing the upper triangle of T and, for each function
+       * evaluation, filling both the direct entry and its transpose-mirrored counterpart
+       * \f$ \partial F_{ab}/\partial T_{kl} = \partial F_{ba}/\partial T_{lk} \f$. Ignored otherwise.
        * @return The derivative of the function F at the point T
        */
       template < size_t... RestF, size_t... RestT >
       Fastor::Tensor< double, RestF..., RestT... > forwardDifference(
         const std::function< Fastor::Tensor< double, RestF... >( const Fastor::Tensor< double, RestT... >& ) >& F,
-        const Fastor::Tensor< double, RestT... >&                                                               T )
+        const Fastor::Tensor< double, RestT... >&                                                               T,
+        bool isSymmetric = false )
       {
 
         Fastor::Tensor< double, RestF..., RestT... > dF_dT( 0.0 );
@@ -198,6 +220,41 @@ namespace Marmot {
         double* T_right_data      = T_right.data();
         double* F_at_T_data       = F_at_T.data();
         double* F_at_T_right_data = F_at_T_right.data();
+
+        if constexpr ( IsSquareRank2Tensor< RestT... >::value && IsSquareRank2Tensor< RestF... >::value &&
+                       IsSquareRank2Tensor< RestT... >::dim == IsSquareRank2Tensor< RestF... >::dim ) {
+          if ( isSymmetric ) {
+            constexpr size_t dim = IsSquareRank2Tensor< RestT... >::dim;
+
+            for ( size_t row = 0; row < dim; ++row ) {
+              for ( size_t col = row; col < dim; ++col ) {
+                const Fastor::FASTOR_INDEX lin_ij          = row * dim + col;
+                const Fastor::FASTOR_INDEX lin_ji          = col * dim + row;
+                const int                  T_right_mem_idx = T_right.get_mem_index( lin_ij );
+                double volatile h = std::max( 1.0, std::abs( double( T.data()[T_right_mem_idx] ) ) ) *
+                                    Marmot::Constants::SquareRootEps;
+                T_right = T;
+                T_right_data[T_right_mem_idx] += h;
+                F_at_T_right = F( T_right );
+
+                for ( size_t outRow = 0; outRow < dim; ++outRow ) {
+                  for ( size_t outCol = 0; outCol < dim; ++outCol ) {
+                    const Fastor::FASTOR_INDEX out_ab = outRow * dim + outCol;
+                    const Fastor::FASTOR_INDEX out_ba = outCol * dim + outRow;
+                    const double               val    = ( F_at_T_right_data[F_at_T_right.get_mem_index( out_ab )] -
+                                         F_at_T_data[F_at_T.get_mem_index( out_ab )] ) /
+                                       ( 1. * h );
+                    dF_dT_data[dF_dT.get_mem_index( out_ab * T.size() + lin_ij )] = val;
+                    if ( col != row )
+                      dF_dT_data[dF_dT.get_mem_index( out_ba * T.size() + lin_ji )] = val;
+                  }
+                }
+              }
+            }
+
+            return dF_dT;
+          }
+        }
 
         for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i ) {
           const int T_right_mem_idx = T_right.get_mem_index( i );
@@ -224,12 +281,20 @@ namespace Marmot {
        * @tparam Rest2 The dimensions of the input Tensor
        * @param F The function mapping a tensor to a tensor
        * @param T The point at which the derivative is evaluated
+       * @param isSymmetric If true, T is a square rank-2 tensor and F's output is also a square rank-2 tensor of the
+       * same dimension (e.g. the second Piola-Kirchhoff stress as a function of the right Cauchy-Green tensor), T is
+       * assumed to be symmetric and F is assumed to be transpose-equivariant (F(A^T) = F(A)^T for general, not
+       * necessarily symmetric, A), which holds for any tensor function built from tensor invariants/products. This
+       * halves the number of function evaluations by only perturbing the upper triangle of T and, for each function
+       * evaluation, filling both the direct entry and its transpose-mirrored counterpart
+       * \f$ \partial F_{ab}/\partial T_{kl} = \partial F_{ba}/\partial T_{lk} \f$. Ignored otherwise.
        * @return The derivative of the function F at the point T
        */
       template < size_t... Rest1, size_t... Rest2 >
       Fastor::Tensor< double, Rest1..., Rest2... > centralDifference(
         const std::function< Fastor::Tensor< double, Rest1... >( const Fastor::Tensor< double, Rest2... >& ) >& F,
-        const Fastor::Tensor< double, Rest2... >&                                                               T )
+        const Fastor::Tensor< double, Rest2... >&                                                               T,
+        bool isSymmetric = false )
       {
 
         Fastor::Tensor< double, Rest1..., Rest2... > dF_dT( 0.0 );
@@ -244,6 +309,46 @@ namespace Marmot {
         double* T_left_data       = T_left.data();
         double* F_at_T_right_data = F_at_T_right.data();
         double* F_at_T_left_data  = F_at_T_left.data();
+
+        if constexpr ( IsSquareRank2Tensor< Rest2... >::value && IsSquareRank2Tensor< Rest1... >::value &&
+                       IsSquareRank2Tensor< Rest2... >::dim == IsSquareRank2Tensor< Rest1... >::dim ) {
+          if ( isSymmetric ) {
+            constexpr size_t dim = IsSquareRank2Tensor< Rest2... >::dim;
+
+            for ( size_t row = 0; row < dim; ++row ) {
+              for ( size_t col = row; col < dim; ++col ) {
+                const Fastor::FASTOR_INDEX lin_ij          = row * dim + col;
+                const Fastor::FASTOR_INDEX lin_ji          = col * dim + row;
+                const int                  T_right_mem_idx = T_right.get_mem_index( lin_ij );
+                const int                  T_left_mem_idx  = T_left.get_mem_index( lin_ij );
+                double volatile h = std::max( 1.0, std::abs( double( T.data()[T_right_mem_idx] ) ) ) *
+                                    Marmot::Constants::CubicRootEps;
+                T_left = T;
+                T_left_data[T_left_mem_idx] -= h;
+                F_at_T_left = F( T_left );
+
+                T_right = T;
+                T_right_data[T_right_mem_idx] += h;
+                F_at_T_right = F( T_right );
+
+                for ( size_t outRow = 0; outRow < dim; ++outRow ) {
+                  for ( size_t outCol = 0; outCol < dim; ++outCol ) {
+                    const Fastor::FASTOR_INDEX out_ab = outRow * dim + outCol;
+                    const Fastor::FASTOR_INDEX out_ba = outCol * dim + outRow;
+                    const double               val    = ( F_at_T_right_data[F_at_T_right.get_mem_index( out_ab )] -
+                                         F_at_T_left_data[F_at_T_left.get_mem_index( out_ab )] ) /
+                                       ( 2. * h );
+                    dF_dT_data[dF_dT.get_mem_index( out_ab * T.size() + lin_ij )] = val;
+                    if ( col != row )
+                      dF_dT_data[dF_dT.get_mem_index( out_ba * T.size() + lin_ji )] = val;
+                  }
+                }
+              }
+            }
+
+            return dF_dT;
+          }
+        }
 
         for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i ) {
           const int T_right_mem_idx = T_right.get_mem_index( i );
@@ -289,23 +394,30 @@ namespace Marmot {
        * @tparam dim The dimension of the input Tensor (assumed to be square)
        * @param F The function mapping a tensor to a scalar with complex numbers
        * @param T The point at which the derivative is evaluated
+       * @param isSymmetric If true, T (and thus the resulting gradient) is assumed to be symmetric, e.g. the right
+       * Cauchy-Green tensor, halving the number of function evaluations by only perturbing the upper triangle of T
+       * and mirroring the result to the lower triangle
        * @return The derivative of the function F at the point T
        */
       template < size_t dim >
       Fastor::Tensor< double, dim, dim > forwardDifference( const tensor_to_scalar_function_type< dim >& F,
-                                                            const Fastor::Tensor< double, dim, dim >&    T )
+                                                            const Fastor::Tensor< double, dim, dim >&    T,
+                                                            bool isSymmetric = false )
       {
         Fastor::Tensor< double, dim, dim > dF_dT;
         Fastor::Tensor< std::complex< double >, dim, dim >
           T_right = fastorTensorFromDoubleTensor< std::complex< double >, dim >( T );
 
         for ( size_t i = 0; i < dim; i++ ) {
-          for ( size_t j = 0; j < dim; j++ ) {
+          for ( size_t j = isSymmetric ? i : 0; j < dim; j++ ) {
             T_right( i, j ) += imaginaryPerturbation;
 
             dF_dT( i, j ) = F( T_right ).imag() / imaginaryPerturbationSize;
 
             T_right( i, j ) -= imaginaryPerturbation;
+
+            if ( isSymmetric && j != i )
+              dF_dT( j, i ) = dF_dT( i, j );
           }
         }
 
@@ -355,17 +467,21 @@ namespace Marmot {
 
         template < size_t dim >
         Fastor::Tensor< double, dim, dim > forwardDifference( const tensor_to_scalar_function_type< dim, dim >& f,
-                                                              const Fastor::Tensor< double, dim, dim >&         T )
+                                                              const Fastor::Tensor< double, dim, dim >&         T,
+                                                              bool isSymmetric = false )
         {
           Fastor::Tensor< complexDouble, dim, dim > T_right = fastorTensorFromDoubleTensor< complexDouble >( T );
           Fastor::Tensor< double, dim, dim >        dF_dT( 0.0 );
 
           for ( size_t i = 0; i < dim; i++ ) {
-            for ( size_t j = 0; j < dim; j++ ) {
+            for ( size_t j = isSymmetric ? i : 0; j < dim; j++ ) {
 
               T_right( i, j ) += imaginaryPerturbation;
               dF_dT( i, j ) = f( T_right ).imag() / imaginaryPerturbationSize;
               T_right( i, j ) -= imaginaryPerturbation;
+
+              if ( isSymmetric && j != i )
+                dF_dT( j, i ) = dF_dT( i, j );
             }
           }
 
@@ -396,13 +512,17 @@ namespace Marmot {
          * @tparam RestT The dimensions of the input Tensor
          * @param F The function mapping a tensor to a tensor
          * @param T The point at which the derivative is evaluated
+         * @param isSymmetric If true and T is a square rank-2 tensor, T is assumed to be symmetric, e.g. the right
+         * Cauchy-Green tensor, halving the number of function evaluations by only perturbing the upper triangle of T
+         * and mirroring the result to the lower triangle. Ignored for tensors that are not square rank-2.
          * @return The derivative of the function F at the point T
          */
         template < size_t... RestF, size_t... RestT >
         Fastor::Tensor< double, RestF..., RestT... > forwardDifference(
           std::function<
             Fastor::Tensor< complexDouble, RestF... >( const Fastor::Tensor< complexDouble, RestT... >& ) >& F,
-          const Fastor::Tensor< double, RestT... >&                                                          T )
+          const Fastor::Tensor< double, RestT... >&                                                          T,
+          bool isSymmetric = false )
         {
 
           Fastor::Tensor< double, RestF..., RestT... > dF_dT( 0.0 );
@@ -413,6 +533,39 @@ namespace Marmot {
           double*        dF_dT_data        = dF_dT.data();
           complexDouble* T_right_data      = T_right.data();
           complexDouble* F_at_T_right_data = F_at_T_right.data();
+
+          if constexpr ( IsSquareRank2Tensor< RestT... >::value && IsSquareRank2Tensor< RestF... >::value &&
+                         IsSquareRank2Tensor< RestT... >::dim == IsSquareRank2Tensor< RestF... >::dim ) {
+            if ( isSymmetric ) {
+              constexpr size_t dim = IsSquareRank2Tensor< RestT... >::dim;
+
+              for ( size_t row = 0; row < dim; ++row ) {
+                for ( size_t col = row; col < dim; ++col ) {
+                  const Fastor::FASTOR_INDEX lin_ij          = row * dim + col;
+                  const Fastor::FASTOR_INDEX lin_ji          = col * dim + row;
+                  const int                  T_right_mem_idx = T_right.get_mem_index( lin_ij );
+
+                  T_right_data[T_right_mem_idx] += imaginaryPerturbation;
+                  F_at_T_right = F( T_right );
+
+                  for ( size_t outRow = 0; outRow < dim; ++outRow ) {
+                    for ( size_t outCol = 0; outCol < dim; ++outCol ) {
+                      const Fastor::FASTOR_INDEX out_ab = outRow * dim + outCol;
+                      const Fastor::FASTOR_INDEX out_ba = outCol * dim + outRow;
+                      const double val = ( F_at_T_right_data[F_at_T_right.get_mem_index( out_ab )] ).imag() /
+                                         imaginaryPerturbationSize;
+                      dF_dT_data[dF_dT.get_mem_index( out_ab * T.size() + lin_ij )] = val;
+                      if ( col != row )
+                        dF_dT_data[dF_dT.get_mem_index( out_ba * T.size() + lin_ji )] = val;
+                    }
+                  }
+                  T_right_data[T_right_mem_idx] -= imaginaryPerturbation;
+                }
+              }
+
+              return dF_dT;
+            }
+          }
 
           for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i ) {
             const int T_right_mem_idx = T_right.get_mem_index( i );
