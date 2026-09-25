@@ -350,28 +350,31 @@ namespace Marmot::Meshfree {
       Eigen::Map< Eigen::MatrixXd > K( dFExt_ddQ, _nNodes * nodeBlockSize, _nNodes * nodeBlockSize );
 
       using namespace Fastor;
-      using namespace FastorIndices;
-
-      Tensor< double, nDim, nDim > Eye;
-      Eye.eye();
 
       const auto& S = _mp.response.S;
-      // const auto& t = _mp.tangents;
-      // apply Nanson's formula
+      const auto& t = _mp.tangents;
+
+      // the internal force integrates tau over the undeformed volume V0 = V_Y / J_Y, so the boundary term of the same
+      // weak form is tau * deltaF^-T * N dA_Y / J_Y, with J_Y the Jacobian of the intermediate configuration
       const auto                         deltaF    = _mp.dx_dY();
       const Tensor< double, nDim, nDim > deltaFInv = inverse( deltaF );
-      const double                       deltaJ    = determinant( deltaF );
+      const double                       JY        = determinant( _mp.dY_dX() );
 
-      const TensorD n_dA = deltaJ * transpose( deltaFInv ) % N_dAY;
+      const TensorD v        = transpose( deltaFInv ) % N_dAY / JY;
+      const TensorD traction = S % v;
 
-      const Tensor< double, nDim, nDim, nDim, nDim > dFInv_dF = -einsum< Ik, Ki, to_IikK >( deltaFInv, deltaFInv );
+      // d traction_i / d deltaF_mM: the geometric part from d(deltaF^-T), the material part from d tau
+      Tensor< double, nDim, nDim, nDim > dTraction_dDeltaF( 0.0 );
+      for ( int i = 0; i < nDim; ++i )
+        for ( int m = 0; m < nDim; ++m )
+          for ( int M = 0; M < nDim; ++M )
+            for ( int j = 0; j < nDim; ++j )
+              dTraction_dDeltaF( i, m, M ) += -S( i, j ) * v( m ) * deltaFInv( M, j ) +
+                                              t.dS_dDeltaF( i, j, m, M ) * v( j );
 
-      const Tensor< double, nDim, nDim, nDim > dndA_dDeltaF = outer( n_dA, transpose( deltaFInv ) ) +
-                                                              deltaJ * einsum< IikK, Index< I_ > >( dFInv_dF, N_dAY );
+      const TensorD dTraction_dN = t.dS_dN % v;
 
-      TensorD r_U( 0.0 );
-
-      Eigen::MatrixXd testBoundary = Eigen::MatrixXd::Zero( 1, ParentPointParticle::_nNodes );
+      Eigen::RowVectorXd testBoundary = Eigen::RowVectorXd::Zero( ParentPointParticle::_nNodes );
 
       ParentPointParticle::_meshfreeApproximation.computeShapeFunctions( Y_N.data(),
                                                                          ParentPointParticle::_assignedKernelFunctions,
@@ -380,31 +383,34 @@ namespace Marmot::Meshfree {
       for ( int A = 0; A < _nNodes; A++ ) {
         const int idxA_u = nodeBlockSize * A;
 
-        r_U = testBoundary( A ) * S % n_dA;
-
+        const TensorD r_U = testBoundary( A ) * traction;
         {
           using namespace Eigen;
-          P.template segment< nDim >( idxA_u ) -= Map< Matrix< double, nDim, 1 > >( r_U.data() );
+          P.template segment< nDim >( idxA_u ) -= Map< const Matrix< double, nDim, 1 > >( r_U.data() );
         }
-        // for ( int B = 0; B < _nNodes; B++ ) {
-        //   const int  idxB_u  = nodeBlockSize * B;
-        //   const auto dN_B_dY = TensorMap< const double, nDim >(
-        //     GradientEnhancedFiniteStrainParticle< nDim >::_dN_dY.col( B ).data() );
 
-        //  const auto dS_dqU_B = evaluate ( + einsum < ijkl, l > ( t.dS_dDeltaF, dN_B_dY ));
-        //  const auto dS_dqU_B_ndA = testBoundary(A) * dS_dqU_B % n_dA;
+        for ( int B = 0; B < _nNodes; B++ ) {
+          const int  idxB_u  = nodeBlockSize * B;
+          const int  idxB_n  = nodeBlockSize * B + nDim;
+          const auto dN_B_dY = TensorMap< const double, nDim >(
+            GradientEnhancedFiniteStrainParticle< nDim >::_dN_dY.col( B ).data() );
+          const double N_B = GradientEnhancedFiniteStrainParticle< nDim >::_N( B );
 
-        //  const Tensor< double, nDim, nDim > dndA_ddQU_B = testBoundary( A ) * einsum< ijk, k >( dndA_dDeltaF, dN_B_dY
-        //  ); const Tensor< double, nDim, nDim > S_dndA_ddQU_B = S % dndA_ddQU_B;
+          Tensor< double, nDim, nDim > k_UU( 0.0 );
+          for ( int i = 0; i < nDim; ++i )
+            for ( int m = 0; m < nDim; ++m )
+              for ( int M = 0; M < nDim; ++M )
+                k_UU( i, m ) += testBoundary( A ) * dTraction_dDeltaF( i, m, M ) * dN_B_dY( M );
 
-        //  const Tensor< double, nDim, nDim > cwfTangent = dS_dqU_B_ndA + S_dndA_ddQU_B;
+          const TensorD k_UN = testBoundary( A ) * N_B * dTraction_dN;
 
-        //  {
-        //    using namespace Eigen;
-        //    K.template block< nDim, nDim >( idxA_u, idxB_u ) -= Map< Matrix< double, nDim, nDim > >(
-        //      torowmajor( cwfTangent ).data() );
-        //  }
-        //}
+          {
+            using namespace Eigen;
+            K.template block< nDim, nDim >( idxA_u, idxB_u ) -= Map< const Matrix< double, nDim, nDim > >(
+              torowmajor( k_UU ).data() );
+            K.template block< nDim, 1 >( idxA_u, idxB_n ) -= Map< const Matrix< double, nDim, 1 > >( k_UN.data() );
+          }
+        }
       }
       break;
     }
