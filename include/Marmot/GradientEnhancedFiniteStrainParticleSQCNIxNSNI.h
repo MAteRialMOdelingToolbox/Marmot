@@ -189,6 +189,10 @@ namespace Marmot::Meshfree {
     for ( int i = 0; i < nDim; i++ )
       for ( int j = 0; j < nDim; j++ )
         _momentsOfInertia_Undeformed( i, j ) = secondMoments( i, j );
+
+    // the intermediate reference coincides with the undeformed one until the first accepted increment;
+    // without this, the stabilization of the first increment is scaled by uninitialized memory
+    _momentsOfInertia_IntermediateReference = _momentsOfInertia_Undeformed;
   }
 
   template < int nDim, int nVertices >
@@ -293,9 +297,10 @@ namespace Marmot::Meshfree {
     // Gradient of the Kirchhoff stress along Y, which is what the NSNI stabilization charges.
     // Only the deformation-gradient term survives here: the micropolar reference also carried
     // dS_dW and dS_ddWdY, and like it we do NOT include the dS_dN contribution of the nonlocal
-    // field.  That omission is inherited deliberately -- the term is a stabilization, so what
-    // matters is that the residual and its tangent below are consistent with each other, which
-    // they are; adding dS_dN would require the matching k_UN stabilization term as well.
+    // field.  Note that the tangent of the stabilization below is APPROXIMATE: it differentiates
+    // d2x_dYdY but not dS_dDeltaF itself, i.e. it omits d2tau/dF2 (not exposed by the material
+    // interface) and the dependence of dS_dDeltaF on the nonlocal field (the damage). The nonlocal
+    // rows are exact; see the module test for the measured size of the omitted terms.
     const auto dS_dY = evaluate( einsum< ijmM, mMK >( t.dS_dDeltaF, d2x_dYdY ) );
 
     // clang-format off
