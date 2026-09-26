@@ -25,15 +25,15 @@ namespace {
 
   constexpr double K = 3500., G = 1500.;
 
-  // K, G, c0, phi, psi, H, As, epsF, omegaMax, l, m, rho
-  std::array< double, 12 > properties( double c0,
+  // K, G, c0, phi, psi, H, epsF, omegaMax, l, m, rho
+  std::array< double, 11 > properties( double c0,
                                        double phi,
                                        double psi,
                                        double H    = 100.,
                                        double epsF = 1e10,
                                        double m    = 0.0 )
   {
-    return { K, G, c0, phi, psi, H, 0.0, epsF, 0.99, 2.0, m, 2.4e-9 };
+    return { K, G, c0, phi, psi, H, epsF, 0.99, 2.0, m, 2.4e-9 };
   }
 
   struct Result {
@@ -250,10 +250,9 @@ void checkTangents( const Mat&                   mat,
 
 void testTangentInThePlasticBranch()
 {
-  // plasticity AND damage active, with the ductility measure of the damage in play (As > 0)
-  auto props = properties( 5., 30., 10., 100., 0.05, 0.5 );
-  props[6]   = 2.0;
-  Mat mat( props.data(), props.size(), 1 );
+  // plasticity AND damage active
+  const auto props = properties( 5., 30., 10., 100., 0.05, 0.5 );
+  Mat        mat( props.data(), props.size(), 1 );
   checkTangents( mat, testF( 0.1 ), 2e-3, freshState( mat ), "cone" );
 
   // from a plastic, damaged state (Fp != I)
@@ -263,8 +262,7 @@ void testTangentInThePlasticBranch()
 
 void testTangentAtTheApex()
 {
-  auto props = properties( 5., 30., 20., 100., 0.05, 0.5 );
-  props[6]   = 2.0;
+  const auto props = properties( 5., 30., 20., 100., 0.05, 0.5 );
   Mat        mat( props.data(), props.size(), 1 );
   const auto state0 = freshState( mat );
 
@@ -283,7 +281,7 @@ void testNearTheVertex()
   // tension with shear, just below the apex pressure (from an MPM run, perfectly plastic cohesion): the solution
   // lies on the cone with a small deviator. The apex state here would violate its subdifferential condition, and a
   // return that falls back to it makes the response discontinuous in F.
-  const std::array< double, 12 > props = { K, G, 5.0, 30.0, 10.0, 0.0, 0.0, 0.005, 0.99, 2.0, 1.5, 1.0 };
+  const std::array< double, 11 > props = { K, G, 5.0, 30.0, 10.0, 0.0, 0.005, 0.99, 2.0, 1.5, 1.0 };
   Mat                            mat( props.data(), props.size(), 1 );
   Tensor33d                      F = stretch( 1.0056742731167041, 0.99934189820798636, 1.0 );
   F( 0, 1 )                        = -0.0045365520453929751;
@@ -397,7 +395,7 @@ void testFactoryAndValidation()
   throwExceptionOnFailure( mat != nullptr, "factory" + where );
   throwExceptionOnFailure( mat->getNumberOfRequiredStateVars() == 13,
                            "state layout: Fp, alphaP, alphaD, kappa, omega" + where );
-  throwExceptionOnFailure( mat->getDensity( nullptr ) == props[11], "density" + where );
+  throwExceptionOnFailure( mat->getDensity( nullptr ) == props[10], "density" + where );
 
   bool threw = false;
   try {
@@ -420,13 +418,13 @@ void testFactoryAndValidation()
     throwExceptionOnFailure( thrown, what + " must be rejected" + where );
   };
   const auto valid = properties( 5., 30., 10. );
-  rejects( std::vector< double >( valid.begin(), valid.begin() + 10 ), "a too short property array" );
+  rejects( std::vector< double >( valid.begin(), valid.begin() + 9 ), "a too short property array" );
   for ( auto [idx, value, what] : std::vector< std::tuple< int, double, std::string > >{ { 0, 0.0, "K = 0" },
                                                                                          { 1, -1.0, "G < 0" },
-                                                                                         { 8, 1.0, "maxDamage = 1" },
-                                                                                         { 8, -0.1, "maxDamage < 0" },
+                                                                                         { 7, 1.0, "maxDamage = 1" },
+                                                                                         { 7, -0.1, "maxDamage < 0" },
                                                                                          { 2, 0.0, "c0 = 0" },
-                                                                                         { 7, 0.0, "epsF = 0" } } ) {
+                                                                                         { 6, 0.0, "epsF = 0" } } ) {
     std::vector< double > p( valid.begin(), valid.end() );
     p[idx] = value;
     rejects( p, what );
@@ -481,7 +479,7 @@ void testFailurePaths()
   // the density is optional in the card, but asking for it without one is an error
   {
     const auto props = properties( 5., 30., 10. );
-    Mat        mat( props.data(), 11, 1 );
+    Mat        mat( props.data(), 10, 1 );
     bool       threw = false;
     try {
       mat.getDensity( nullptr );

@@ -32,6 +32,7 @@
 #include "Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
+#include <algorithm>
 #include <cmath>
 #include <utility>
 
@@ -62,10 +63,11 @@ namespace Marmot::Materials {
    * rotation, so @f$ \boldsymbol{F}^e = J_e^{1/3}\boldsymbol{I} @f$ with the unknowns @f$ \{\ln J_e, \alpha\} @f$
    * and @f$ \Delta\alpha = (\xi/\bar\eta)\,\Delta\varepsilon^p_v @f$.
    *
-   * **Damage.** The local variable grows with the volumetric plastic strain over the ductility measure of CDPM2
-   * (Grassl et al. 2013), @f$ \Delta\alpha_\mathrm{local} = \Delta\varepsilon^p_v / x_s(R_s) @f$. It is the source @f$
-   * L @f$ of the nonlocal balance, the damage follows from @f$ \kappa = \max_t( m\bar{N} + (1-m)\alpha_\mathrm{local} )
-   * @f$, and
+   * **Damage.** The local variable is the accumulated dilatant (volumetric) plastic strain,
+   * @f$ \Delta\alpha_\mathrm{local} = \langle\Delta\varepsilon^p_v\rangle @f$ (on the cone
+   * @f$ \bar\eta\,\Delta\lambda @f$). It is the source @f$ L @f$ of the nonlocal balance, the damage follows from
+   * @f$ \kappa = \max_t( m\bar{N} + (1-m)\alpha_\mathrm{local} ) @f$ with the exponential law
+   * @f$ \omega = \min( 1 - e^{-\kappa/\varepsilon_f}, \omega_\max ) @f$, and
    * @f$ \boldsymbol{\tau} = (1-\omega)\,\boldsymbol{\tau}_\mathrm{eff} @f$.
    *
    * Material properties:
@@ -77,12 +79,11 @@ namespace Marmot::Materials {
    * | 3   | @f$ \phi @f$            | friction angle [deg]                               |
    * | 4   | @f$ \psi @f$            | dilatancy angle [deg]                              |
    * | 5   | @f$ H @f$               | linear hardening modulus of the cohesion           |
-   * | 6   | @f$ A_s @f$             | ductility parameter of the damage                  |
-   * | 7   | @f$ \varepsilon_f @f$   | softening modulus of the damage                    |
-   * | 8   | @f$ \omega_\max @f$     | maximum damage                                     |
-   * | 9   | @f$ l @f$               | nonlocal radius, @f$ c = l^2 @f$                   |
-   * | 10  | @f$ m @f$               | weighting of the nonlocal measure in the damage    |
-   * | 11  | @f$ \rho @f$            | density in the reference configuration (optional)  |
+   * | 6   | @f$ \varepsilon_f @f$   | softening modulus of the damage                    |
+   * | 7   | @f$ \omega_\max @f$     | maximum damage                                     |
+   * | 8   | @f$ l @f$               | nonlocal radius, @f$ c = l^2 @f$                   |
+   * | 9   | @f$ m @f$               | weighting of the nonlocal measure in the damage    |
+   * | 10  | @f$ \rho @f$            | density in the reference configuration (optional)  |
    *
    * State variables: @c Fp (9), @c alphaP (hardening variable), @c alphaD (local damage variable),
    * @c kappa (damage history), @c omega (damage).
@@ -229,7 +230,6 @@ namespace Marmot::Materials {
     const double& frictionAngle;
     const double& dilatancyAngle;
     const double& H;
-    const double& As;
     const double& softeningModulus;
     const double& maxDamage;
     const double& nonLocalRadius;
@@ -247,25 +247,22 @@ namespace Marmot::Materials {
 
     /// the converged return mapping: the new elastic state, and the sensitivities needed for the tangents
     struct ReturnMapping {
-      bool                        plastic = false;
-      Tensor33d                   Fe;              ///< elastic deformation gradient
-      Tensor33d                   FpNew;           ///< plastic deformation gradient
-      double                      alphaP;          ///< hardening variable
-      Fastor::Tensor< double, 3 > dEpPrincipal;    ///< principal plastic log strain increment (for the damage)
-      double                      plasticWork;     ///< M : dEp
-      Eigen::MatrixXd             dFe_dF;          ///< 9 x 9, row-major flattening of both
-      Eigen::MatrixXd             dDeltaAlphaD_dF; ///< 1 x 9, sensitivity of the local damage increment
+      bool            plastic = false;
+      Tensor33d       Fe;              ///< elastic deformation gradient
+      Tensor33d       FpNew;           ///< plastic deformation gradient
+      double          alphaP;          ///< hardening variable
+      double          dEpVol;          ///< volumetric plastic log strain increment
+      double          plasticWork;     ///< M : dEp
+      Eigen::MatrixXd dFe_dF;          ///< 9 x 9, row-major flattening of both
+      Eigen::MatrixXd dDeltaAlphaD_dF; ///< 1 x 9, sensitivity of the local damage increment
     };
 
     ReturnMapping returnMapping( const Tensor33d& F, const Tensor33d& FpOld, double alphaPOld ) const;
     ReturnMapping returnToCone( const Tensor33d& F, const Tensor33d& FpOld, double alphaPOld, bool& converged ) const;
     ReturnMapping returnToApex( const Tensor33d& F, const Tensor33d& FpOld, double alphaPOld ) const;
 
-    /// the increment of the local damage variable for principal plastic log strain increments
-    double deltaAlphaLocal( const Fastor::Tensor< double, 3 >& dEpPrincipal ) const;
-
-    /// the ductility measure of CDPM2 (Grassl et al. 2013)
-    double ductility( double Rs ) const;
+    /// the increment of the local damage variable: the dilatant part of the volumetric plastic strain increment
+    static double deltaAlphaLocal( double dEpVol ) { return std::max( dEpVol, 0.0 ); }
   };
 
 } // namespace Marmot::Materials

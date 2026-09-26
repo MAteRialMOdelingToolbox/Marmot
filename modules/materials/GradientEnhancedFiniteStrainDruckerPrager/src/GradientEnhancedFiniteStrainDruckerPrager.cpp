@@ -59,7 +59,7 @@ namespace Marmot::Materials {
     /// member initializer list, i.e. before the constructor body could validate the property count
     const double& property( const double* properties, int nProperties, int i )
     {
-      constexpr int nRequired = 11;
+      constexpr int nRequired = 10;
       if ( nProperties < nRequired )
         throw std::invalid_argument( MakeString() << "GradientEnhancedFiniteStrainDruckerPrager: expected at least "
                                                   << nRequired << " material properties, got " << nProperties );
@@ -158,11 +158,10 @@ namespace Marmot::Materials {
       frictionAngle( property( materialProperties, nMaterialProperties, 3 ) ),
       dilatancyAngle( property( materialProperties, nMaterialProperties, 4 ) ),
       H( property( materialProperties, nMaterialProperties, 5 ) ),
-      As( property( materialProperties, nMaterialProperties, 6 ) ),
-      softeningModulus( property( materialProperties, nMaterialProperties, 7 ) ),
-      maxDamage( property( materialProperties, nMaterialProperties, 8 ) ),
-      nonLocalRadius( property( materialProperties, nMaterialProperties, 9 ) ),
-      weightingParameter( property( materialProperties, nMaterialProperties, 10 ) ),
+      softeningModulus( property( materialProperties, nMaterialProperties, 6 ) ),
+      maxDamage( property( materialProperties, nMaterialProperties, 7 ) ),
+      nonLocalRadius( property( materialProperties, nMaterialProperties, 8 ) ),
+      weightingParameter( property( materialProperties, nMaterialProperties, 9 ) ),
       eta( outerConeParameters( frictionAngle ).first ),
       xi( outerConeParameters( frictionAngle ).second ),
       etaBar( outerConeParameters( dilatancyAngle ).first )
@@ -196,9 +195,9 @@ namespace Marmot::Materials {
 
   double GradientEnhancedFiniteStrainDruckerPrager::getDensity( const double* stateVars ) const
   {
-    if ( nMaterialProperties <= 11 )
-      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": density not provided (property 11)" );
-    return materialProperties[11];
+    if ( nMaterialProperties <= 10 )
+      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": density not provided (property 10)" );
+    return materialProperties[10];
   }
 
   void GradientEnhancedFiniteStrainDruckerPrager::initializeYourself( double* stateVars, int nStateVars )
@@ -208,24 +207,6 @@ namespace Marmot::Materials {
 
     const Tensor33d I = identity< double >();
     std::memcpy( stateLayout.getPtr( stateVars, "Fp" ), I.data(), 9 * sizeof( double ) );
-  }
-
-  double GradientEnhancedFiniteStrainDruckerPrager::ductility( double Rs ) const
-  {
-    return Rs < 1.0 ? 1.0 + As * Rs * Rs : 1.0 + As * ( 4.0 * std::sqrt( Rs ) - 3.0 );
-  }
-
-  double GradientEnhancedFiniteStrainDruckerPrager::deltaAlphaLocal( const Fastor::Tensor< double, 3 >& dEp ) const
-  {
-    const double dEpVol = dEp( 0 ) + dEp( 1 ) + dEp( 2 );
-    if ( dEpVol <= 0.0 )
-      return 0.0; // only dilatant plastic flow drives the damage
-
-    double dEpNeg = 0.0;
-    for ( int a = 0; a < 3; a++ )
-      dEpNeg += std::max( -dEp( a ), 0.0 );
-
-    return dEpVol / ductility( dEpNeg / dEpVol );
   }
 
   GradientEnhancedFiniteStrainDruckerPrager::ReturnMapping GradientEnhancedFiniteStrainDruckerPrager::returnMapping(
@@ -245,7 +226,7 @@ namespace Marmot::Materials {
       elastic.Fe              = FeTrial;
       elastic.FpNew           = FpOld;
       elastic.alphaP          = alphaPOld;
-      elastic.dEpPrincipal    = 0.0;
+      elastic.dEpVol          = 0.0;
       elastic.plasticWork     = 0.0;
       elastic.dFe_dF          = dFeTrial_dF( FpOldInv );
       elastic.dDeltaAlphaD_dF = Eigen::RowVectorXd::Zero( 9 );
@@ -350,7 +331,7 @@ namespace Marmot::Materials {
     r.FpNew = Fastor::inverse( r.Fe ) % FeTrial % FpOld;
 
     const Tensor33d dEp = dLambda * flowDirection( M );
-    r.dEpPrincipal      = principalValues( dEp );
+    r.dEpVol            = etaBar * dLambda; // tr dg/dM = etaBar
     r.plasticWork       = Fastor::inner( M, dEp );
 
     // implicit function theorem: R( X, FeTrial ) = 0 with dR/dFeTrial = [-I; 0; 0]
@@ -359,14 +340,8 @@ namespace Marmot::Materials {
     const MatrixXd dX_dF     = -dR_dX.colPivHouseholderQr().solve( dR_dFeTrial * dFeTrial_dF( FpOldInv ) );
     r.dFe_dF                 = dX_dF.topRows( 9 );
 
-    // the local damage increment is a function of the solution X; its sensitivity by numerical differentiation
-    const auto deltaAlphaD = [&]( const VectorXd& X_ ) {
-      const Tensor33d Fe_( X_.head( 9 ).eval().data() );
-      VectorXd        out( 1 );
-      out( 0 ) = deltaAlphaLocal( principalValues( X_( 10 ) * flowDirection( mandelStress( Fe_ ) ) ) );
-      return out;
-    };
-    r.dDeltaAlphaD_dF = Differentiation::centralDifference( deltaAlphaD, X ) * dX_dF;
+    // the local damage increment etaBar dLambda (dLambda >= 0)
+    r.dDeltaAlphaD_dF = etaBar * dX_dF.row( 10 );
 
     return r;
   }
@@ -417,15 +392,16 @@ namespace Marmot::Materials {
         dEp( a ) = 0.5 * std::log( b( a ) ) - theta_ / 3.;
       return dEp;
     };
-    r.dEpPrincipal = dEpPrincipal( F, theta );
+    r.dEpVol = thetaTrial - theta;
 
     // the apex is admissible only if the plastic increment lies in the subdifferential of g at the vertex:
     // sqrt(2) |dev dEp| <= dEp_v / etaBar (otherwise the state belongs to the cone)
     {
-      const double dEpVol = r.dEpPrincipal( 0 ) + r.dEpPrincipal( 1 ) + r.dEpPrincipal( 2 );
-      double       dev2   = 0.0;
+      const Fastor::Tensor< double, 3 > dEp    = dEpPrincipal( F, theta );
+      const double                      dEpVol = dEp( 0 ) + dEp( 1 ) + dEp( 2 );
+      double                            dev2   = 0.0;
       for ( int a = 0; a < 3; a++ )
-        dev2 += std::pow( r.dEpPrincipal( a ) - dEpVol / 3., 2 );
+        dev2 += std::pow( dEp( a ) - dEpVol / 3., 2 );
       if ( std::sqrt( 2.0 * dev2 ) > ( 1.0 + 1e-8 ) * dEpVol / etaBar + 1e-14 )
         throw StressUpdateFailed( MakeString() << __PRETTY_FUNCTION__ << ": the apex state is not admissible" );
     }
@@ -441,17 +417,8 @@ namespace Marmot::Materials {
     for ( int i = 0; i < 3; i++ )
       r.dFe_dF.row( 3 * i + i ) = std::exp( theta / 3. ) / 3. * dTheta_dF;
 
-    // the local damage increment depends on F directly (the trial principal stretches) and through theta
-    const auto deltaAlphaD = [&]( const VectorXd& Y ) {
-      VectorXd out( 1 );
-      out( 0 ) = deltaAlphaLocal( dEpPrincipal( Tensor33d( Y.head( 9 ).eval().data() ), Y( 9 ) ) );
-      return out;
-    };
-    VectorXd Y( 10 );
-    Y.head( 9 )                  = Map< const Matrix< double, 9, 1 > >( F.data() );
-    Y( 9 )                       = theta;
-    const Eigen::MatrixXd dDA_dY = Differentiation::centralDifference( deltaAlphaD, Y );
-    r.dDeltaAlphaD_dF            = dDA_dY.leftCols( 9 ) + dDA_dY( 0, 9 ) * dTheta_dF;
+    // the local damage increment thetaTrial - theta (>= 0 at an admissible apex)
+    r.dDeltaAlphaD_dF = dLogDet_dF( F ) - dTheta_dF;
 
     return r;
   }
@@ -489,7 +456,7 @@ namespace Marmot::Materials {
 
     std::memcpy( stateLayout.getPtr( sv, "Fp" ), r.FpNew.data(), 9 * sizeof( double ) );
     alphaP = r.alphaP;
-    alphaD += deltaAlphaLocal( r.dEpPrincipal );
+    alphaD += deltaAlphaLocal( r.dEpVol );
 
     // implicit-gradient damage, irreversible through the history maximum kappa
     const double m             = weightingParameter;
