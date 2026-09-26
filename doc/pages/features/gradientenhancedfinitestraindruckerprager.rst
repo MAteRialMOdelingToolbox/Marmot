@@ -54,16 +54,13 @@ isotropy, :math:`\boldsymbol{F}^{\rm p}` is determined up to a rotation only, so
 The Jacobians of both return mappings are computed by the complex-step method, and the algorithmic tangents follow
 from the same Jacobians by the implicit function theorem.
 
-**Damage** is an implicit-gradient damage driven by the plastic flow. The local variable grows with the volumetric
-plastic logarithmic strain, weighted by the ductility measure of the concrete damage-plasticity model CDPM2 (Grassl,
-Xenos, Nyström, Rempling & Gylltoft, *Int. J. Solids Struct.* 50, 2013), which reduces the damage under confined,
-compression-dominated flow,
+**Damage** is an implicit-gradient damage driven by the dilatant plastic flow. The local variable is the accumulated
+volumetric plastic logarithmic strain,
 
 .. math::
 
-   \Delta\alpha_{\rm local} = \frac{\Delta\varepsilon^{\rm p}_v}{x_s(R_s)},\qquad
-   R_s = \frac{\sum_a\langle-\Delta\varepsilon^{\rm p}_a\rangle}{\Delta\varepsilon^{\rm p}_v},\qquad
-   x_s = \begin{cases} 1 + A_s R_s^2 & R_s < 1 \\ 1 + A_s(4\sqrt{R_s} - 3) & R_s \ge 1 \end{cases},
+   \Delta\alpha_{\rm local} = \langle\Delta\varepsilon^{\rm p}_v\rangle
+   \qquad(\,= \bar\eta\,\Delta\lambda\ \text{on the cone}\,),
 
 and is the source :math:`L` of the nonlocal balance :math:`\bar N - l^2\nabla^2\bar N = L`. The damage follows from
 the over-nonlocal weighting of the local and the nonlocal measure, with a history maximum that makes it
@@ -106,21 +103,18 @@ Material parameters
      - :math:`H`
      - linear hardening modulus of the cohesion
    * - 6
-     - :math:`A_s`
-     - ductility parameter of the damage
-   * - 7
      - :math:`\varepsilon_f`
      - softening modulus of the damage
-   * - 8
+   * - 7
      - :math:`\omega_{\max}`
      - maximum damage, :math:`0 \le \omega_{\max} < 1`
-   * - 9
+   * - 8
      - :math:`l`
      - nonlocal radius
-   * - 10
+   * - 9
      - :math:`m`
      - weighting of the nonlocal measure (:math:`m > 1`: over-nonlocal)
-   * - 11
+   * - 10
      - :math:`\rho`
      - density (optional)
 
