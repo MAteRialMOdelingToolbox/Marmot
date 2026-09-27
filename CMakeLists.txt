@@ -90,8 +90,13 @@ endif()
 ## find Eigen library
 ## The include directory is provided transitively via the Eigen3::Eigen imported target;
 ## no separate include_directories() call is needed.
-find_package(Eigen3 3.3 REQUIRED NO_MODULE)
-message("--> found Eigen: ${EIGEN3_INCLUDE_DIR}")
+## No version is passed to find_package(): Eigen 3.4 and Eigen 5 both install SameMajorVersion
+## config files, so neither a minimum of 3.3 nor a 3.3...5 range accepts both. Check the minimum here.
+find_package(Eigen3 REQUIRED NO_MODULE)
+if(Eigen3_VERSION VERSION_LESS 3.3)
+    message(FATAL_ERROR "Marmot requires Eigen >= 3.3, found ${Eigen3_VERSION}")
+endif()
+message("--> found Eigen ${Eigen3_VERSION}: ${Eigen3_DIR}")
 
 ## find autodiff library (https://autodiff.github.io/)
 find_path(AUTODIFF_INCLUDE_DIR autodiff)
