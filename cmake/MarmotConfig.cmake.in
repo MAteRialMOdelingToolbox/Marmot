@@ -24,7 +24,9 @@ include(CMakeFindDependencyMacro)
 
 # Eigen3 is an imported target; ensure it is available before loading
 # MarmotTargets.cmake which references Eigen3::Eigen.
-find_dependency(Eigen3 3.3 REQUIRED NO_MODULE)
+# Versionless for the same reason as in Marmot's CMakeLists.txt: Eigen 3.4 and Eigen 5 both install
+# SameMajorVersion config files, so a 3.3 minimum would reject Eigen 5.
+find_dependency(Eigen3 REQUIRED NO_MODULE)
 
 find_path(AUTODIFF_INCLUDE_DIR autodiff)
 if(NOT AUTODIFF_INCLUDE_DIR)
