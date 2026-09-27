@@ -30,6 +30,8 @@
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
+#include "Marmot/MarmotStressMeasures.h"
+#include "Marmot/MarmotTensorExponential.h"
 #include <Eigen/Dense>
 #include <algorithm>
 #include <cmath>
@@ -66,28 +68,23 @@ namespace Marmot::Materials {
       return properties[i];
     }
 
-    using Matrix9d = Eigen::Matrix< double, 9, 9 >;
+    using namespace FastorIndices;
 
-    /// d(F Fp^-1) / dF in the row-major flattening of both
-    Matrix9d dFeTrial_dF( const Tensor33d& FpInv )
+    /// the local Newton and its implicit function theorem work on Eigen vectors (as Marmot's complex step does);
+    /// these views map Fastor's row-major tensors to them
+    using Matrix9dRowMajor = Eigen::Matrix< double, 9, 9, Eigen::RowMajor >;
+    using Vector9d         = Eigen::Matrix< double, 9, 1 >;
+
+    /// d( F Fp^-1 )_iJ / dF_kL = delta_ik Fp^-1_LJ
+    Tensor3333d dFeTrial_dF( const Tensor33d& FpInv )
     {
-      Matrix9d D = Matrix9d::Zero();
-      for ( int i = 0; i < 3; i++ )
-        for ( int J = 0; J < 3; J++ )
-          for ( int L = 0; L < 3; L++ )
-            D( 3 * i + J, 3 * i + L ) = FpInv( L, J );
-      return D;
+      return einsum< IK, JL, to_IJKL >( Spatial3D::I, Fastor::transpose( FpInv ) );
     }
 
-    /// d ln det F / dF = F^-T in the row-major flattening
-    Eigen::RowVectorXd dLogDet_dF( const Tensor33d& F )
+    /// d ln det F / dF = F^-T
+    Tensor33d dLogDet_dF( const Tensor33d& F )
     {
-      const Tensor33d    Finv = Fastor::inverse( F );
-      Eigen::RowVectorXd d( 9 );
-      for ( int k = 0; k < 3; k++ )
-        for ( int L = 0; L < 3; L++ )
-          d( 3 * k + L ) = Finv( L, k );
-      return d;
+      return Fastor::transpose( Fastor::inverse( F ) );
     }
 
     /**
@@ -104,7 +101,7 @@ namespace Marmot::Materials {
       try {
         std::tie( R, dR_dX ) = Differentiation::Complex::forwardDifference( residual, X );
       }
-      catch ( const std::exception& ) {
+      catch ( const ContinuumMechanics::TensorUtility::TensorExponential::ExponentialMapFailed& ) {
         return false;
       }
       for ( int counter = 0; counter <= nMaxInnerNewtonCycles; counter++ ) {
@@ -131,7 +128,8 @@ namespace Marmot::Materials {
               break;
             }
           }
-          catch ( const std::exception& ) {
+          catch ( const ContinuumMechanics::TensorUtility::TensorExponential::ExponentialMapFailed& ) {
+            // the iterate is too far off for the exponential map: a shorter step
             if ( halving == nMaxHalvings )
               return false;
           }
@@ -205,7 +203,7 @@ namespace Marmot::Materials {
     for ( int i = 0; i < nStateVars; ++i )
       stateVars[i] = 0.0;
 
-    const Tensor33d I = identity< double >();
+    const Tensor33d I = identity3D< double >();
     std::memcpy( stateLayout.getPtr( stateVars, "Fp" ), I.data(), 9 * sizeof( double ) );
   }
 
@@ -229,7 +227,7 @@ namespace Marmot::Materials {
       elastic.dEpVol          = 0.0;
       elastic.plasticWork     = 0.0;
       elastic.dFe_dF          = dFeTrial_dF( FpOldInv );
-      elastic.dDeltaAlphaD_dF = Eigen::RowVectorXd::Zero( 9 );
+      elastic.dDeltaAlphaD_dF = Tensor33d( 0.0 );
       return elastic;
     }
 
@@ -239,12 +237,10 @@ namespace Marmot::Materials {
     const double pTrial       = Fastor::trace( mandelStress( FeTrial ) ) / 3.;
     const bool   apexPossible = eta > 0.0 && etaBar > 0.0 && pTrial >= xi * ( c0 + H * alphaPOld ) / eta;
     if ( apexPossible ) {
-      try {
-        return returnToApex( F, FpOld, alphaPOld );
-      }
-      catch ( const StressUpdateFailed& ) {
-        // not admissible: the state belongs to the cone
-      }
+      bool       admissible = false;
+      const auto apex       = returnToApex( F, FpOld, alphaPOld, admissible );
+      if ( admissible )
+        return apex;
     }
 
     bool       converged = false;
@@ -252,10 +248,9 @@ namespace Marmot::Materials {
     if ( converged )
       return cone;
 
-    if ( !apexPossible && eta > 0.0 && etaBar <= 0.0 && pTrial >= xi * ( c0 + H * alphaPOld ) / eta )
-      return returnToApex( F, FpOld, alphaPOld ); // reports that there is no apex without dilatancy
-
-    throw StressUpdateFailed( MakeString() << __PRETTY_FUNCTION__ << ": return to the cone not successful" );
+    // e.g. a tension beyond the apex without dilatancy, or an iterate of the global scheme far off
+    throw StressUpdateFailed( MakeString() << __PRETTY_FUNCTION__ << ": no admissible return, neither to the cone "
+                                           << "nor to the apex" );
   }
 
   GradientEnhancedFiniteStrainDruckerPrager::ReturnMapping GradientEnhancedFiniteStrainDruckerPrager::returnToCone(
@@ -335,13 +330,14 @@ namespace Marmot::Materials {
     r.plasticWork       = Fastor::inner( M, dEp );
 
     // implicit function theorem: R( X, FeTrial ) = 0 with dR/dFeTrial = [-I; 0; 0]
-    MatrixXd dR_dFeTrial     = MatrixXd::Zero( 11, 9 );
-    dR_dFeTrial.topRows( 9 ) = -Matrix9d::Identity();
-    const MatrixXd dX_dF     = -dR_dX.colPivHouseholderQr().solve( dR_dFeTrial * dFeTrial_dF( FpOldInv ) );
-    r.dFe_dF                 = dX_dF.topRows( 9 );
+    const Tensor3333d dFeTr_dF                 = dFeTrial_dF( FpOldInv );
+    MatrixXd          dR_dF                    = MatrixXd::Zero( 11, 9 );
+    dR_dF.topRows( 9 )                         = -Map< const Matrix9dRowMajor >( dFeTr_dF.data() );
+    const MatrixXd dX_dF                       = -dR_dX.colPivHouseholderQr().solve( dR_dF );
+    Map< Matrix9dRowMajor >( r.dFe_dF.data() ) = dX_dF.topRows( 9 );
 
     // the local damage increment etaBar dLambda (dLambda >= 0)
-    r.dDeltaAlphaD_dF = etaBar * dX_dF.row( 10 );
+    Map< Vector9d >( r.dDeltaAlphaD_dF.data() ) = etaBar * dX_dF.row( 10 ).transpose();
 
     return r;
   }
@@ -349,14 +345,15 @@ namespace Marmot::Materials {
   GradientEnhancedFiniteStrainDruckerPrager::ReturnMapping GradientEnhancedFiniteStrainDruckerPrager::returnToApex(
     const Tensor33d& F,
     const Tensor33d& FpOld,
-    double           alphaPOld ) const
+    double           alphaPOld,
+    bool&            admissible ) const
   {
     using namespace Eigen;
     using complexDouble = std::complex< double >;
 
+    admissible = false;
     if ( eta <= 0.0 || etaBar <= 0.0 )
-      throw StressUpdateFailed( MakeString()
-                                << __PRETTY_FUNCTION__ << ": no apex to return to without friction and dilatancy" );
+      return {}; // there is no apex to return to without friction and dilatancy
 
     const Tensor33d FpOldInv   = Fastor::inverse( FpOld );
     const Tensor33d FeTrial    = F % FpOldInv;
@@ -372,14 +369,14 @@ namespace Marmot::Materials {
     MatrixXd   dR_dX;
     const bool converged = newtonWithBacktracking( residual, X, R, dR_dX, []( const VectorXd& ) { return true; } );
     if ( !converged || X( 1 ) < alphaPOld )
-      throw StressUpdateFailed( MakeString() << __PRETTY_FUNCTION__ << ": return to the apex not successful" );
+      return {};
 
     const double theta = X( 0 );
 
     // by isotropy, Fp is determined up to a rotation: take Fe = Je^(1/3) I
     ReturnMapping r;
     r.plastic = true;
-    r.Fe      = std::exp( theta / 3. ) * identity< double >();
+    r.Fe      = std::exp( theta / 3. ) * identity3D< double >();
     r.FpNew   = std::exp( -theta / 3. ) * F;
     r.alphaP  = X( 1 );
 
@@ -403,19 +400,19 @@ namespace Marmot::Materials {
       for ( int a = 0; a < 3; a++ )
         dev2 += std::pow( dEp( a ) - dEpVol / 3., 2 );
       if ( std::sqrt( 2.0 * dev2 ) > ( 1.0 + 1e-8 ) * dEpVol / etaBar + 1e-14 )
-        throw StressUpdateFailed( MakeString() << __PRETTY_FUNCTION__ << ": the apex state is not admissible" );
+        return {};
     }
+    admissible     = true;
     const double p = Fastor::trace( mandelStress( r.Fe ) ) / 3.;
     r.plasticWork  = p * ( thetaTrial - theta );
 
     // implicit function theorem: R( X, thetaTrial ) = 0 with dR/dthetaTrial = [0; -xi/etaBar]
-    const Vector2d           dR_dThetaTrial( 0.0, -xi / etaBar );
-    const Vector2d           dX_dThetaTrial = -dR_dX.colPivHouseholderQr().solve( dR_dThetaTrial );
-    const Eigen::RowVectorXd dTheta_dF      = dX_dThetaTrial( 0 ) * dLogDet_dF( F );
+    const Vector2d  dR_dThetaTrial( 0.0, -xi / etaBar );
+    const Vector2d  dX_dThetaTrial = -dR_dX.colPivHouseholderQr().solve( dR_dThetaTrial );
+    const Tensor33d dTheta_dF      = dX_dThetaTrial( 0 ) * dLogDet_dF( F );
 
-    r.dFe_dF = MatrixXd::Zero( 9, 9 );
-    for ( int i = 0; i < 3; i++ )
-      r.dFe_dF.row( 3 * i + i ) = std::exp( theta / 3. ) / 3. * dTheta_dF;
+    // Fe = exp( theta / 3 ) I
+    r.dFe_dF = std::exp( theta / 3. ) / 3. * Tensor3333d( outer( Spatial3D::I, dTheta_dF ) );
 
     // the local damage increment thetaTrial - theta (>= 0 at an admissible apex)
     r.dDeltaAlphaD_dF = dLogDet_dF( F ) - dTheta_dF;
@@ -442,17 +439,7 @@ namespace Marmot::Materials {
     const Tensor33d F( deformation.F );
     const double    N = deformation.N;
 
-    ReturnMapping r;
-    try {
-      r = returnMapping( F, FpOld, alphaP );
-    }
-    catch ( const StressUpdateFailed& ) {
-      throw;
-    }
-    catch ( const std::exception& e ) {
-      // e.g. a failed tensor exponential: to the host, this is a stress update that needs a smaller increment
-      throw StressUpdateFailed( MakeString() << __PRETTY_FUNCTION__ << ": " << e.what() );
-    }
+    const ReturnMapping r = returnMapping( F, FpOld, alphaP );
 
     std::memcpy( stateLayout.getPtr( sv, "Fp" ), r.FpNew.data(), 9 * sizeof( double ) );
     alphaP = r.alphaP;
@@ -469,18 +456,15 @@ namespace Marmot::Materials {
     const bool   loading       = alphaWeighted > kappaOld && kappa > 0.0 && omegaFree < maxDamage;
     const double dOmega_dKappa = loading ? std::exp( -kappa / softeningModulus ) / softeningModulus : 0.0;
 
-    // effective Kirchhoff stress and its sensitivity to Fe, by the complex step
-    const auto tauOfFe = [&]( const VectorXcd& Fe_ ) -> VectorXcd {
-      const Tensor33t< complexDouble > tau = kirchhoffStress( Tensor33t< complexDouble >( Fe_.eval().data() ) );
-      return Map< const Matrix< complexDouble, 9, 1 > >( tau.data() );
-    };
-    const auto [tauEffFlat,
-                dTauEff_dFe] = Differentiation::Complex::forwardDifference( tauOfFe,
-                                                                            Map< const Matrix< double, 9, 1 > >(
-                                                                              r.Fe.data() ) );
-    const Tensor33d tauEff( tauEffFlat.data() );
-    const double    psiEff = ContinuumMechanics::EnergyDensityFunctions::
-      PenceGouPotentialB( Tensor33d( ContinuumMechanics::DeformationMeasures::rightCauchyGreen( r.Fe ) ), K, G );
+    // effective Kirchhoff stress and its sensitivity to Fe, as in FiniteStrainJ2Plasticity
+    using namespace ContinuumMechanics;
+    const auto [Ce, dCe_dFe]             = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( r.Fe );
+    const auto [psiEff, dPsi_dCe, d2Psi] = EnergyDensityFunctions::SecondOrderDerived::PenceGouPotentialB( Ce, K, G );
+    const Tensor33d PK2                  = 2. * dPsi_dCe;
+    const auto [tauEff, dTau_dPK2, dTau_dFePartial] = StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2( PK2,
+                                                                                                                 r.Fe );
+    const Tensor3333d dPK2_dFe                      = einsum< ijKL, KLMN >( Tensor3333d( 2. * d2Psi ), dCe_dFe );
+    const Tensor3333d dTauEff_dFe                   = einsum< ijKL, KLMN >( dTau_dPK2, dPK2_dFe ) + dTau_dFePartial;
 
     response.tau                  = ( 1.0 - omega ) * tauEff;
     response.L                    = alphaD;
@@ -490,23 +474,15 @@ namespace Marmot::Materials {
     response.dissipation += ( 1.0 - omega ) * r.plasticWork + psiEff * ( omega - omegaOld );
 
     // tangents: tau = (1 - omega) tauEff( Fe( F ) ), omega( kappa ), kappa = m N + (1 - m) alphaD( F )
-    const Eigen::RowVectorXd dL_dF      = r.dDeltaAlphaD_dF;
-    const Eigen::RowVectorXd dOmega_dF  = dOmega_dKappa * ( 1.0 - m ) * dL_dF;
-    const double             dOmega_dN  = dOmega_dKappa * m;
-    const MatrixXd           dTauEff_dF = dTauEff_dFe * r.dFe_dF;
+    const Tensor33d& dL_dF     = r.dDeltaAlphaD_dF;
+    const Tensor33d  dOmega_dF = dOmega_dKappa * ( 1.0 - m ) * dL_dF;
+    const double     dOmega_dN = dOmega_dKappa * m;
 
-    for ( int i = 0; i < 3; i++ )
-      for ( int j = 0; j < 3; j++ ) {
-        for ( int k = 0; k < 3; k++ )
-          for ( int l = 0; l < 3; l++ )
-            tangents.dTau_dF( i, j, k, l ) = ( 1.0 - omega ) * dTauEff_dF( 3 * i + j, 3 * k + l ) -
-                                             tauEff( i, j ) * dOmega_dF( 3 * k + l );
-        tangents.dTau_dN( i, j ) = -tauEff( i, j ) * dOmega_dN;
-      }
-    for ( int k = 0; k < 3; k++ )
-      for ( int l = 0; l < 3; l++ )
-        tangents.dL_dF( k, l ) = dL_dF( 3 * k + l );
-    tangents.dL_dN = 0.0;
+    tangents.dTau_dF = ( 1.0 - omega ) * Tensor3333d( einsum< ijKL, KLMN >( dTauEff_dFe, r.dFe_dF ) ) -
+                       Tensor3333d( outer( tauEff, dOmega_dF ) );
+    tangents.dTau_dN = -dOmega_dN * tauEff;
+    tangents.dL_dF   = dL_dF;
+    tangents.dL_dN   = 0.0;
   }
 
 } // namespace Marmot::Materials
