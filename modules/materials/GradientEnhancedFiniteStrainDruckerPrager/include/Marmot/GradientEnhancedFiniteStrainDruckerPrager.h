@@ -135,13 +135,6 @@ namespace Marmot::Materials {
                              secondPiolaKirchhoff( Fe ) );
     }
 
-    /// effective Kirchhoff stress Fe S Fe^T
-    template < typename T >
-    Tensor33t< T > kirchhoffStress( const Tensor33t< T >& Fe ) const
-    {
-      return Tensor33t< T >( Fe % secondPiolaKirchhoff( Fe ) % Fastor::transpose( Fe ) );
-    }
-
     /// yield function on the Mandel stress
     template < typename T >
     T yieldFunction( const Tensor33t< T >& M, const T alphaP ) const
@@ -157,7 +150,7 @@ namespace Marmot::Materials {
     {
       const Tensor33t< T > dev  = deviatoric( M );
       const T              sqJ2 = sqrt( 0.5 * Fastor::inner( dev, dev ) );
-      Tensor33t< T >       Ivol = multiplyFastorTensorWithScalar( identity< T >(), T( etaBar / 3. ) );
+      Tensor33t< T >       Ivol = multiplyFastorTensorWithScalar( identity3D< T >(), T( etaBar / 3. ) );
       return Tensor33t< T >( multiplyFastorTensorWithScalar( dev, T( 0.5 ) / sqJ2 ) + Ivol );
     }
 
@@ -214,7 +207,7 @@ namespace Marmot::Materials {
     {
       const T              theta  = X( 0 );
       const T              alphaP = X( 1 );
-      const Tensor33t< T > Fe     = multiplyFastorTensorWithScalar( identity< T >(), exp( theta / 3. ) );
+      const Tensor33t< T > Fe     = multiplyFastorTensorWithScalar( identity3D< T >(), exp( theta / 3. ) );
       const T              p      = trace( mandelStress( Fe ) ) / 3.;
 
       VectorXt< T > R( 2 );
@@ -236,30 +229,22 @@ namespace Marmot::Materials {
     const double& weightingParameter;
     const double  eta, xi, etaBar;
 
-    template < typename T >
-    static Tensor33t< T > identity()
-    {
-      Tensor33t< T > I( T( 0.0 ) );
-      for ( int i = 0; i < 3; i++ )
-        I( i, i ) = T( 1.0 );
-      return I;
-    }
-
     /// the converged return mapping: the new elastic state, and the sensitivities needed for the tangents
     struct ReturnMapping {
-      bool            plastic = false;
-      Tensor33d       Fe;              ///< elastic deformation gradient
-      Tensor33d       FpNew;           ///< plastic deformation gradient
-      double          alphaP;          ///< hardening variable
-      double          dEpVol;          ///< volumetric plastic log strain increment
-      double          plasticWork;     ///< M : dEp
-      Eigen::MatrixXd dFe_dF;          ///< 9 x 9, row-major flattening of both
-      Eigen::MatrixXd dDeltaAlphaD_dF; ///< 1 x 9, sensitivity of the local damage increment
+      bool                               plastic = false;
+      Tensor33d                          Fe;              ///< elastic deformation gradient
+      Tensor33d                          FpNew;           ///< plastic deformation gradient
+      double                             alphaP;          ///< hardening variable
+      double                             dEpVol;          ///< volumetric plastic log strain increment
+      double                             plasticWork;     ///< M : dEp
+      FastorStandardTensors::Tensor3333d dFe_dF;          ///< d Fe / d F
+      Tensor33d                          dDeltaAlphaD_dF; ///< d dalpha_local / d F
     };
 
     ReturnMapping returnMapping( const Tensor33d& F, const Tensor33d& FpOld, double alphaPOld ) const;
     ReturnMapping returnToCone( const Tensor33d& F, const Tensor33d& FpOld, double alphaPOld, bool& converged ) const;
-    ReturnMapping returnToApex( const Tensor33d& F, const Tensor33d& FpOld, double alphaPOld ) const;
+    /// the return to the apex, if it is admissible (otherwise, the state belongs to the cone)
+    ReturnMapping returnToApex( const Tensor33d& F, const Tensor33d& FpOld, double alphaPOld, bool& admissible ) const;
 
     /// the increment of the local damage variable: the dilatant part of the volumetric plastic strain increment
     static double deltaAlphaLocal( double dEpVol ) { return std::max( dEpVol, 0.0 ); }

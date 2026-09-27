@@ -659,6 +659,24 @@ namespace Marmot {
   }
 
   /**
+   * @brief The second order identity tensor in 3D
+   *
+   * For any scalar type, e.g. complex numbers for the complex step method or dual numbers for automatic
+   * differentiation (FastorStandardTensors::Spatial3D::I is the double one).
+   *
+   * @tparam T scalar type
+   * @return \f$ \delta_{ij} \f$
+   */
+  template < typename T = double >
+  FastorStandardTensors::Tensor33t< T > identity3D()
+  {
+    FastorStandardTensors::Tensor33t< T > I( T( 0.0 ) );
+    for ( int i = 0; i < 3; i++ )
+      I( i, i ) = T( 1.0 );
+    return I;
+  }
+
+  /**
    * @brief Compute the deviatoric part of a second order 3D Fastor tensor
    * @tparam T scalar type
    * @param t a second order Fastor tensor
@@ -669,10 +687,8 @@ namespace Marmot {
   template < typename T >
   FastorStandardTensors::Tensor33t< T > deviatoric( const FastorStandardTensors::Tensor33t< T >& t )
   {
-    Eigen::Matrix< T, 3, 3 >                    dummy = Eigen::Matrix< T, 3, 3 >::Identity();
-    const FastorStandardTensors::Tensor33t< T > I     = FastorStandardTensors::Tensor33t< T >( dummy.data(),
-                                                                                           Fastor::ColumnMajor );
-    const FastorStandardTensors::Tensor33t< T > dev   = t - 1. / 3 * multiplyFastorTensorWithScalar( I, trace( t ) );
+    const FastorStandardTensors::Tensor33t< T > I   = identity3D< T >();
+    const FastorStandardTensors::Tensor33t< T > dev = t - 1. / 3 * multiplyFastorTensorWithScalar( I, trace( t ) );
     return dev;
   }
 

@@ -1,5 +1,6 @@
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotTesting.h"
+#include <complex>
 
 using namespace Marmot::Testing;
 using namespace Marmot::FastorStandardTensors;
@@ -41,6 +42,21 @@ void testInvertMinorSymmetricFourthOrderTensorIsInvolutive()
                                            "recover the original tensor" );
 }
 
+void testIdentity3D()
+{
+  using namespace Marmot;
+  const auto I  = identity3D< double >();
+  const auto Ic = identity3D< std::complex< double > >();
+  for ( int i = 0; i < 3; i++ )
+    for ( int j = 0; j < 3; j++ ) {
+      throwExceptionOnFailure( I( i, j ) == ( i == j ? 1.0 : 0.0 ) &&
+                                 I( i, j ) == FastorStandardTensors::Spatial3D::I( i, j ),
+                               "identity3D< double >" );
+      throwExceptionOnFailure( Ic( i, j ) == std::complex< double >( i == j ? 1.0 : 0.0, 0.0 ),
+                               "identity3D< complex >" );
+    }
+}
+
 void testDeviatoricTransposeIsTransposeOfDeviatoric()
 {
   // DeviatoricTranspose used to self-referentially read its own (uninitialized) value in its
@@ -63,7 +79,8 @@ int main()
   auto
     tests = std::vector< std::function< void() > >{ testInvertMinorSymmetricFourthOrderTensorMatchesIsotropicCompliance,
                                                     testInvertMinorSymmetricFourthOrderTensorIsInvolutive,
-                                                    testDeviatoricTransposeIsTransposeOfDeviatoric };
+                                                    testDeviatoricTransposeIsTransposeOfDeviatoric,
+                                                    testIdentity3D };
 
   executeTestsAndCollectExceptions( tests );
 
