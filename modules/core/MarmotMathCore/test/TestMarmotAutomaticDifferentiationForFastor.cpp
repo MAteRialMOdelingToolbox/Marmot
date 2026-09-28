@@ -390,6 +390,55 @@ void testTensorToScalarThirdOrderSymmetric()
                                         << "symmetric d3f_dT3 doesn't match the dense computation" );
 }
 
+void testNonSquareRank2Shapes()
+{
+  // regression test: df_dT and dF_dT must still compile and work for tensors that are not a square rank-2 tensor
+  // (here a rank-1 vector input and, separately, a rank-1 vector output), i.e. isSymmetric=false (the default)
+  // must be usable without triggering the isSymmetric-only code path's compile-time shape requirements
+
+  // df_dT with a non-square-rank2 (rank-1 vector) input: f(T) = sum(T_i^2), gradient = 2*T
+  std::function< autodiff::dual( const Fastor::Tensor< autodiff::dual, 4 >& ) > f =
+    []( const Fastor::Tensor< autodiff::dual, 4 >& T ) {
+      autodiff::dual result = 0.0;
+      for ( size_t i = 0; i < 4; i++ )
+        result += T( i ) * T( i );
+      return result;
+    };
+
+  Fastor::Tensor< double, 4 > T{ 1., 2., 3., 4. };
+  Fastor::Tensor< double, 4 > dF_dT_result = df_dT( f, T );
+  Fastor::Tensor< double, 4 > dF_dT_target = 2. * T;
+
+  throwExceptionOnFailure( checkIfEqual< double >( dF_dT_result, dF_dT_target, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__ << "df_dT with a rank-1 vector input failed" );
+
+  // dF_dT with a non-square-rank2 (rank-1 vector) output: g(C)_0 = C_00^2, g(C)_1 = C_11 + C_22
+  std::function< Fastor::Tensor< autodiff::dual, 2 >( const Fastor::Tensor< autodiff::dual, 3, 3 >& ) > g =
+    []( const Fastor::Tensor< autodiff::dual, 3, 3 >& C_ ) {
+      Fastor::Tensor< autodiff::dual, 2 > out( 0.0 );
+      out( 0 ) = C_( 0, 0 ) * C_( 0, 0 );
+      out( 1 ) = C_( 1, 1 ) + C_( 2, 2 );
+      return out;
+    };
+
+  Tensor33d C{ { 1., 2., 3. }, { 4., 5., 6. }, { 7., 8., 9. } };
+  auto [Gval, dG_dC] = dF_dT( g, C );
+
+  Fastor::Tensor< double, 2 >       Gval_target( 0.0 );
+  Fastor::Tensor< double, 2, 3, 3 > dG_dC_target( 0.0 );
+  Gval_target( 0 )        = C( 0, 0 ) * C( 0, 0 );
+  Gval_target( 1 )        = C( 1, 1 ) + C( 2, 2 );
+  dG_dC_target( 0, 0, 0 ) = 2. * C( 0, 0 );
+  dG_dC_target( 1, 1, 1 ) = 1.;
+  dG_dC_target( 1, 2, 2 ) = 1.;
+
+  throwExceptionOnFailure( checkIfEqual< double >( Gval, Gval_target, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__ << "dF_dT with a rank-1 vector output: value failed" );
+  throwExceptionOnFailure( checkIfEqual< double >( dG_dC, dG_dC_target, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << "dF_dT with a rank-1 vector output: gradient failed" );
+}
+
 int main()
 {
 
@@ -403,7 +452,8 @@ int main()
                                                        testTensorToScalarSecondOrderMixed,
                                                        testTensorToScalarSecondOrderMixedSymmetric,
                                                        testTensorToScalarThirdOrder,
-                                                       testTensorToScalarThirdOrderSymmetric };
+                                                       testTensorToScalarThirdOrderSymmetric,
+                                                       testNonSquareRank2Shapes };
 
   executeTestsAndCollectExceptions( tests );
 }

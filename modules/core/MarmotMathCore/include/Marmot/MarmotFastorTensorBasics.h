@@ -41,6 +41,12 @@ namespace Marmot {
   template < size_t... Rest >
   struct IsSquareRank2Tensor {
     static constexpr bool value = false;
+    // a harmless placeholder: never meaningful since value is false, but its mere presence keeps
+    // `IsSquareRank2Tensor<Rest...>::dim` well-formed for non-rank-2 packs. `if constexpr` only discards the
+    // *branch* taken for an unmet condition, not name lookup within the condition expression itself, so
+    // `IsSquareRank2Tensor<Rest...>::dim` appearing alongside `::value` in an `&&` chain must resolve for every
+    // instantiation, not just the rank-2 one, even though it is never reached at runtime.
+    static constexpr size_t dim = 0;
   };
 
   template < size_t dim1, size_t dim2 >

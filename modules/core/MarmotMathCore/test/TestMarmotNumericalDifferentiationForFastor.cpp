@@ -365,6 +365,37 @@ void testTensorToTensorComplexSymmetric()
                                            "result" );
 }
 
+void testTensorToTensorNonSquareRank2Output()
+{
+  // regression test: TensorToTensor::forwardDifference/centralDifference must still compile and work for outputs
+  // that are not a square rank-2 tensor (here a rank-1 vector), i.e. isSymmetric=false (the default) must be usable
+  // without triggering the isSymmetric-only code path's compile-time shape requirements
+  std::function< Fastor::Tensor< double, 2 >( const Fastor::Tensor< double, 3, 3 >& ) > f =
+    []( const Fastor::Tensor< double, 3, 3 >& x ) {
+      Fastor::Tensor< double, 2 > out( 0.0 );
+      out( 0 ) = x( 0, 0 ) * x( 0, 0 );
+      out( 1 ) = x( 1, 1 ) + x( 2, 2 );
+      return out;
+    };
+
+  const Fastor::Tensor< double, 3, 3 > x_{ { 1., 2., 3. }, { 4., 5., 6. }, { 7., 8., 9. } };
+
+  Fastor::Tensor< double, 2, 3, 3 > dF_dX_forward = TensorToTensor::forwardDifference( f, x_ );
+  Fastor::Tensor< double, 2, 3, 3 > dF_dX_central = TensorToTensor::centralDifference( f, x_ );
+
+  Fastor::Tensor< double, 2, 3, 3 > dF_dX_target( 0.0 );
+  dF_dX_target( 0, 0, 0 ) = 2. * x_( 0, 0 );
+  dF_dX_target( 1, 1, 1 ) = 1.;
+  dF_dX_target( 1, 2, 2 ) = 1.;
+
+  throwExceptionOnFailure( Fastor::isequal( dF_dX_forward, dF_dX_target, 1e-5 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " failed: forward difference doesn't yield the right result" );
+  throwExceptionOnFailure( Fastor::isequal( dF_dX_central, dF_dX_target, 1e-8 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " failed: central difference doesn't yield the right result" );
+}
+
 int main()
 {
 
@@ -374,6 +405,7 @@ int main()
                                                        testTensorToTensor,
                                                        testTensorToTensor2,
                                                        testTensorToTensorSymmetric,
+                                                       testTensorToTensorNonSquareRank2Output,
                                                        testScalarToTensorComplex,
                                                        testTensorToScalarComplex,
                                                        testTensorToScalarComplexSymmetric,
