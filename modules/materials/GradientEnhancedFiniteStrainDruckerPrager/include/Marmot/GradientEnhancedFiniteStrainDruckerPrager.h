@@ -150,8 +150,10 @@ namespace Marmot::Materials {
     {
       const Tensor33t< T > dev  = deviatoric( M );
       const T              sqJ2 = sqrt( 0.5 * Fastor::inner( dev, dev ) );
-      Tensor33t< T >       Ivol = multiplyFastorTensorWithScalar( identity3D< T >(), T( etaBar / 3. ) );
-      return Tensor33t< T >( multiplyFastorTensorWithScalar( dev, T( 0.5 ) / sqJ2 ) + Ivol );
+      Tensor33t< T >       n    = multiplyFastorTensorWithScalar( dev, T( 0.5 ) / sqJ2 );
+      for ( int i = 0; i < 3; i++ )
+        n( i, i ) += etaBar / 3.;
+      return n;
     }
 
     /**
@@ -205,10 +207,12 @@ namespace Marmot::Materials {
     template < typename T >
     VectorXt< T > apexResidual( const VectorXt< T >& X, const double thetaTrial, const double alphaPOld ) const
     {
-      const T              theta  = X( 0 );
-      const T              alphaP = X( 1 );
-      const Tensor33t< T > Fe     = multiplyFastorTensorWithScalar( identity3D< T >(), exp( theta / 3. ) );
-      const T              p      = trace( mandelStress( Fe ) ) / 3.;
+      const T        theta  = X( 0 );
+      const T        alphaP = X( 1 );
+      Tensor33t< T > Fe( T( 0.0 ) );
+      for ( int i = 0; i < 3; i++ )
+        Fe( i, i ) = exp( theta / 3. );
+      const T p = trace( mandelStress( Fe ) ) / 3.;
 
       VectorXt< T > R( 2 );
       R( 0 ) = ( eta * p - xi * ( c0 + H * alphaP ) ) / c0;

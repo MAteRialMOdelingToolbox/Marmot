@@ -203,8 +203,7 @@ namespace Marmot::Materials {
     for ( int i = 0; i < nStateVars; ++i )
       stateVars[i] = 0.0;
 
-    const Tensor33d I = identity3D< double >();
-    std::memcpy( stateLayout.getPtr( stateVars, "Fp" ), I.data(), 9 * sizeof( double ) );
+    std::memcpy( stateLayout.getPtr( stateVars, "Fp" ), Spatial3D::I.data(), 9 * sizeof( double ) );
   }
 
   GradientEnhancedFiniteStrainDruckerPrager::ReturnMapping GradientEnhancedFiniteStrainDruckerPrager::returnMapping(
@@ -376,7 +375,7 @@ namespace Marmot::Materials {
     // by isotropy, Fp is determined up to a rotation: take Fe = Je^(1/3) I
     ReturnMapping r;
     r.plastic = true;
-    r.Fe      = std::exp( theta / 3. ) * identity3D< double >();
+    r.Fe      = std::exp( theta / 3. ) * Spatial3D::I;
     r.FpNew   = std::exp( -theta / 3. ) * F;
     r.alphaP  = X( 1 );
 
