@@ -336,6 +336,18 @@ namespace {
                                name + ": an unknown initial condition must throw" );
     }
 
+    // the states of the subdomains start at multiples of 8 doubles of the particle's state, aligned like the state of
+    // a stand-alone material point (Fastor may use aligned SIMD stores into them)
+    if ( name.find( "SDI" ) != std::string::npos ) {
+      Setup< nDim > s( name, v, V );
+      for ( int subdomain : { 0, 1 } ) {
+        const auto offset = s.particle->getStateView( "displacement", subdomain ).stateLocation - s.stateVars.data();
+        throwExceptionOnFailure( offset % 8 == 0,
+                                 MakeString() << name << ": the state of subdomain " << subdomain
+                                              << " starts at the unaligned offset " << offset );
+      }
+    }
+
     // geometry of the undeformed particle
     {
       Setup< nDim > s( name, v, V );

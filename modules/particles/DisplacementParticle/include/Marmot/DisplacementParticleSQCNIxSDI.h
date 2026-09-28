@@ -176,7 +176,7 @@ namespace Marmot::Meshfree {
       int nStateVars = 0;
 
       for ( const auto& mp : _subdomainMaterialPoints ) {
-        nStateVars += mp->getNumberOfRequiredStateVars();
+        nStateVars += this->paddedStateVarSize( mp->getNumberOfRequiredStateVars() );
       }
 
       return nStateVars;
@@ -190,7 +190,7 @@ namespace Marmot::Meshfree {
 
         int nStateVarsSubParticle = mp->getNumberOfRequiredStateVars();
         mp->assignStateVars( stateVars + offset, nStateVarsSubParticle );
-        offset += nStateVarsSubParticle;
+        offset += this->paddedStateVarSize( nStateVarsSubParticle ); // every subdomain block starts aligned
       }
 
       if ( offset != nStateVars ) {

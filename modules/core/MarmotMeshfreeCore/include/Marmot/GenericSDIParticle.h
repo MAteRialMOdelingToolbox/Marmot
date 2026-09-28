@@ -85,6 +85,8 @@ namespace Marmot::Meshfree {
     /// @brief Static constant for the number of state variables per particle.
     /// This includes vertex displacements and center displacement.
     constexpr static int nStateVarsParticle = nDim * nVertices + nDim; // vertex displacements + center displacement
+    /// center displacement, central deformation gradient and its increment
+    constexpr static int nStateVarsCenter = nDim + 2 * nDim * nDim;
 
     int _elementID;       ///< The ID of the element this particle belongs to.
     int _nNodes;          ///< The number of nodes (kernel functions) influencing this particle.
@@ -292,16 +294,17 @@ namespace Marmot::Meshfree {
      */
     virtual int getNumberOfRequiredStateVars() const override
     {
-      int nStateVars = 0;
-
-      nStateVars += nDim;        // center displacement
-      nStateVars += nDim * nDim; // central deformation gradient
-      nStateVars += nDim * nDim; // central deformation gradient delta
-
-      nStateVars += getNumberOfRequiredStateVarsOnSubdomains();
-
-      return nStateVars;
+      return paddedStateVarSize( nStateVarsCenter ) + getNumberOfRequiredStateVarsOnSubdomains();
     };
+
+    /**
+     * @brief The size of a block of state variables, rounded up to a multiple of 8 doubles (64 bytes).
+     *
+     * The blocks of the particle itself and of every subdomain start at such a multiple, so that the state of each
+     * subdomain is aligned as the state of a stand-alone material point: Fastor may use aligned SIMD stores on the
+     * tensor maps into it (seen with GCC 14.2 -O3, a segmentation fault for a block starting at an odd double).
+     */
+    static constexpr int paddedStateVarSize( int n ) { return ( n + 7 ) / 8 * 8; }
 
     /**
      * @brief Get the number of required state variables for the subdomains.
@@ -326,7 +329,7 @@ namespace Marmot::Meshfree {
       offset += nDim * nDim;
 
       new ( &_centralDeformationGradientDelta ) Eigen::Map< JacobianSized >( stateVars + offset );
-      offset += nDim * nDim;
+      offset = paddedStateVarSize( nStateVarsCenter );
 
       if ( offset > nStateVars ) {
         throw std::runtime_error( "Error: Number of state variables does not match!" );
