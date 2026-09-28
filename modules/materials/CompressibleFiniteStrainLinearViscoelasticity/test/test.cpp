@@ -1,6 +1,9 @@
+#include "Marmot/MarmotDeformationMeasures.h"
+#include "Marmot/MarmotEnergyDensityFunctions.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotMaterialPointSolverFiniteStrain.h"
 #include "Marmot/MarmotMath.h"
+#include "Marmot/MarmotStressMeasures.h"
 #include "Marmot/MarmotTesting.h"
 #include <string>
 
@@ -8,6 +11,7 @@ using namespace Marmot::Testing;
 using namespace Marmot::Solvers;
 using namespace Marmot::FastorStandardTensors;
 using namespace Marmot::FastorIndices;
+using namespace Marmot::ContinuumMechanics;
 
 // -----------------------------------------------------------------------
 // Material property helpers
@@ -26,6 +30,12 @@ static std::vector< double > getViscoelasticNeoHookeProps()
 {
   // NeoHooke, full creep, K=3500, G=1500, nMaxwell=1, gamma=0.3, tau=10
   return { 0.0, 0.0, 3500.0, 1500.0, 1.0, 0.3, 10.0 };
+}
+
+static std::vector< double > getElasticPenceGouNeoHookeProps()
+{
+  // PenceGouNeoHooke, full creep flag off, K=3500, G=1500, nMaxwell=0
+  return { 3.0, 0.0, 3500.0, 1500.0, 0.0 };
 }
 
 // Helper to create a single-step deformation solver
@@ -268,16 +278,67 @@ void testSubsteppedConsistency()
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
+// Test I-8: F=I gives zero Kirchhoff stress for elastic PenceGouNeoHooke (exercises the hyperelasticBase branches
+// of computeEnergyDensityAndDerivatives other than the default NeoHooke one, e.g. the third-derivative computation
+// via AutomaticDifferentiation::ThirdOrder::d3f_dT3)
+void testUndeformedResponsePenceGouNeoHooke()
+{
+  const std::string matName  = "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY";
+  auto              matProps = getElasticPenceGouNeoHookeProps();
+  auto              solver   = makeSolver( matName, matProps );
+
+  solver.addStep( makeStep( Tensor33d( 0.0 ), 0.0, 1.0, 1.0 ) );
+  solver.solve();
+
+  Tensor33d stressTarget( 0.0 );
+  throwExceptionOnFailure( checkIfEqual( solver.getHistory().back().stress, stressTarget, 1e-10 ),
+                           "I-8: Undeformed configuration (PenceGouNeoHooke) - stress should be zero in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+// Test I-9: Triaxial stretch for PenceGouNeoHooke matches an independently computed reference (PK2 = 2*dPsi/dC via
+// EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB, converted to Kirchhoff stress)
+void testTriaxialResponsePenceGouNeoHookeMatchesAnalytical()
+{
+  const std::string matName  = "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY";
+  auto              matProps = getElasticPenceGouNeoHookeProps();
+  auto              solver   = makeSolver( matName, matProps );
+
+  Tensor33d gradU( 0.0 );
+  gradU( 0, 0 ) = 0.1;
+  gradU( 1, 1 ) = -0.05;
+  gradU( 2, 2 ) = 0.02;
+  solver.addStep( makeStep( gradU, 0.0, 1.0, 1.0 ) );
+  solver.solve();
+
+  auto finalStress = solver.getHistory().back().stress;
+
+  const double K = matProps[2];
+  const double G = matProps[3];
+  Tensor33d    F = gradU + Spatial3D::I;
+  Tensor33d    C = DeformationMeasures::rightCauchyGreen( F );
+
+  auto [psi, dPsi_dC]    = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C, K, G );
+  Tensor33d PK2          = 2. * dPsi_dC;
+  Tensor33d stressTarget = StressMeasures::KirchhoffStressFromPK2( PK2, F );
+
+  throwExceptionOnFailure( checkIfEqual( finalStress, stressTarget, 1e-4 ),
+                           "I-9: Triaxial PenceGouNeoHooke response doesn't match the analytical reference in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{
-    testUndeformedResponse,      // I-1: F=I gives zero stress
-    testUniaxialElasticResponse, // I-2: Uniaxial elastic stretch reference values
-    testStressTensorSymmetry,    // I-3: Kirchhoff stress symmetry
-    testPureRotationZeroStress,  // I-4: Pure rotation gives zero stress
-    testObjectivity,             // I-5: Objectivity tau(Q*F) = Q*tau(F)*Q^T
-    testViscoelasticRelaxation,  // I-6: Viscoelastic relaxation
-    testSubsteppedConsistency,   // I-7: Substepped == regular
+    testUndeformedResponse,                                // I-1: F=I gives zero stress
+    testUniaxialElasticResponse,                           // I-2: Uniaxial elastic stretch reference values
+    testStressTensorSymmetry,                              // I-3: Kirchhoff stress symmetry
+    testPureRotationZeroStress,                            // I-4: Pure rotation gives zero stress
+    testObjectivity,                                       // I-5: Objectivity tau(Q*F) = Q*tau(F)*Q^T
+    testViscoelasticRelaxation,                            // I-6: Viscoelastic relaxation
+    testSubsteppedConsistency,                             // I-7: Substepped == regular
+    testUndeformedResponsePenceGouNeoHooke,                // I-8: F=I gives zero stress (PenceGouNeoHooke)
+    testTriaxialResponsePenceGouNeoHookeMatchesAnalytical, // I-9: PenceGouNeoHooke matches analytical reference
   };
 
   executeTestsAndCollectExceptions( tests );

@@ -149,6 +149,33 @@ void testTensorToScalarWith2ndOrderDuals()
                            MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC for mixed deformation failed" );
 }
 
+void testTensorToScalarWith2ndOrderDualsSymmetric()
+{
+  Tensor33d F;
+  F.eye();
+  F( 0, 0 ) += 1e-3;
+  F( 0, 1 ) += 2e-3;
+  Tensor33d                   C      = DeformationMeasures::rightCauchyGreen( F );
+  Tensor33t< autodiff::dual > C_dual = Marmot::makeDual( C );
+
+  const double K = 3500;
+  const double G = 1000;
+
+  std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >& ) > psi =
+    [&]( const Tensor33t< autodiff::dual2nd >& Ce_ ) {
+      return EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
+    };
+
+  auto [val_full, dPsi_dC_full] = df_dT< 1 >( psi, C_dual );
+  auto [val_sym, dPsi_dC_sym]   = df_dT< 1 >( psi, C_dual, true );
+
+  throwExceptionOnFailure( checkIfEqual( double( val_sym ), double( val_full ), 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__ << "function value mismatch" );
+  throwExceptionOnFailure( checkIfEqual< autodiff::dual >( dPsi_dC_sym, dPsi_dC_full, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << "symmetric higher-order df_dT doesn't match the dense computation" );
+}
+
 void testTensorToTensor()
 {
   Tensor33d F;
@@ -445,6 +472,7 @@ int main()
   auto tests = std::vector< std::function< void() > >{ testTensorToScalar,
                                                        testTensorToScalarSymmetric,
                                                        testTensorToScalarWith2ndOrderDuals,
+                                                       testTensorToScalarWith2ndOrderDualsSymmetric,
                                                        testTensorToTensor,
                                                        testTensorToTensorSymmetric,
                                                        testTensorToScalarSecondOrder,

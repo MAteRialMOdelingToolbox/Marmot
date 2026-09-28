@@ -287,6 +287,15 @@ void testTensorToScalarComplexSymmetric()
                            MakeString() << __PRETTY_FUNCTION__
                                         << " failed: symmetric complex-step derivative doesn't match the dense "
                                            "result" );
+
+  // also exercise the top-level Complex::forwardDifference (distinct from Complex::TensorToScalar::forwardDifference)
+  Fastor::Tensor< double, 3, 3 > dF_dC_full2 = Complex::forwardDifference( tensorToScalar_func, C );
+  Fastor::Tensor< double, 3, 3 > dF_dC_sym2  = Complex::forwardDifference( tensorToScalar_func, C, true );
+
+  throwExceptionOnFailure( Fastor::isequal( dF_dC_sym2, dF_dC_full2, 1e-10 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " failed: symmetric complex-step derivative (top-level function) doesn't "
+                                           "match the dense result" );
 }
 
 void testTensorToTensorComplex()
