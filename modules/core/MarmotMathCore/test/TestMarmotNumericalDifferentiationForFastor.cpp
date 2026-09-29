@@ -65,6 +65,35 @@ void testTensorToScalar()
                                         << " failed: central difference doesn't yield the right result" );
 }
 
+void testTensorToScalarSymmetric()
+{
+  std::function< double( const Fastor::Tensor< double, 3, 3 >& ) > tensorToScalar_func =
+    []( const Fastor::Tensor< double, 3, 3 >& x ) {
+      auto   frobeniusNorm_squared = Fastor::einsum< FastorIndices::ij, FastorIndices::ij >( x, x );
+      double res                   = frobeniusNorm_squared.toscalar();
+      return res;
+    };
+
+  // a genuinely symmetric tensor, e.g. akin to a right Cauchy-Green tensor
+  const Fastor::Tensor< double, 3, 3 > C{ { 4., 1., 2. }, { 1., 5., 3. }, { 2., 3., 6. } };
+
+  Fastor::Tensor< double, 3, 3 > dF_dC_forward_full = TensorToScalar::forwardDifference( tensorToScalar_func, C );
+  Fastor::Tensor< double, 3, 3 > dF_dC_forward_sym  = TensorToScalar::forwardDifference( tensorToScalar_func, C, true );
+  Fastor::Tensor< double, 3, 3 > dF_dC_central_full = TensorToScalar::centralDifference( tensorToScalar_func, C );
+  Fastor::Tensor< double, 3, 3 > dF_dC_central_sym  = TensorToScalar::centralDifference( tensorToScalar_func, C, true );
+
+  // note: the two computations perturb different (but analytically equivalent) tensor entries, so floating-point
+  // summation order can differ slightly; tolerances are chosen a couple orders of magnitude above the expected
+  // truncation error of each method rather than machine precision
+  throwExceptionOnFailure( Fastor::isequal( dF_dC_forward_sym, dF_dC_forward_full, 1e-7 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " failed: symmetric forward difference doesn't match the dense result" );
+
+  throwExceptionOnFailure( Fastor::isequal( dF_dC_central_sym, dF_dC_central_full, 1e-7 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " failed: symmetric central difference doesn't match the dense result" );
+}
+
 void testTensorToTensor()
 {
   std::function< Fastor::Tensor< double, 3, 3 >( const Fastor::Tensor< double, 3, 3 >& ) > tensorToTensor_func =
@@ -142,6 +171,35 @@ void testTensorToTensor2()
                                         << " failed: central difference doesn't yield the right result" );
 }
 
+void testTensorToTensorSymmetric()
+{
+  std::function< Fastor::Tensor< double, 3, 3 >( const Fastor::Tensor< double, 3, 3 >& ) >
+    tensorToTensor_func = hookes_law;
+
+  // a symmetric strain tensor: the resulting stiffness (4th order derivative) is symmetric wrt swapping the
+  // input tensor's index pair since the underlying stiffness tensor has minor symmetry C_ijkl = C_ijlk
+  const Fastor::Tensor< double, 3, 3 > strain{ { 1., 2., 3. }, { 2., 4., 5. }, { 3., 5., 6. } };
+
+  const Fastor::Tensor< double, 3, 3, 3, 3 >
+    dF_dX_forward_full = TensorToTensor::forwardDifference( tensorToTensor_func, strain );
+  const Fastor::Tensor< double, 3, 3, 3, 3 > dF_dX_forward_sym = TensorToTensor::forwardDifference( tensorToTensor_func,
+                                                                                                    strain,
+                                                                                                    true );
+  const Fastor::Tensor< double, 3, 3, 3, 3 >
+    dF_dX_central_full = TensorToTensor::centralDifference( tensorToTensor_func, strain );
+  const Fastor::Tensor< double, 3, 3, 3, 3 > dF_dX_central_sym = TensorToTensor::centralDifference( tensorToTensor_func,
+                                                                                                    strain,
+                                                                                                    true );
+
+  throwExceptionOnFailure( Fastor::isequal( dF_dX_forward_sym, dF_dX_forward_full, 1e-6 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " failed: symmetric forward difference doesn't match the dense result" );
+
+  throwExceptionOnFailure( Fastor::isequal( dF_dX_central_sym, dF_dX_central_full, 1e-6 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " failed: symmetric central difference doesn't match the dense result" );
+}
+
 void testScalarToTensorComplex()
 {
   std::function< Fastor::Tensor< std::complex< double >, 2, 2 >( std::complex< double > ) > scalarToTensor_func =
@@ -211,6 +269,35 @@ void testTensorToScalarComplex()
                                            "doesn't yield the right result" );
 }
 
+void testTensorToScalarComplexSymmetric()
+{
+  std::function< std::complex< double >( const Fastor::Tensor< std::complex< double >, 3, 3 >& ) > tensorToScalar_func =
+    []( const Fastor::Tensor< std::complex< double >, 3, 3 >& x ) {
+      auto                   frobeniusNorm_squared = Fastor::einsum< FastorIndices::ij, FastorIndices::ij >( x, x );
+      std::complex< double > res                   = frobeniusNorm_squared.toscalar();
+      return res;
+    };
+
+  const Fastor::Tensor< double, 3, 3 > C{ { 4., 1., 2. }, { 1., 5., 3. }, { 2., 3., 6. } };
+
+  Fastor::Tensor< double, 3, 3 > dF_dC_full = Complex::TensorToScalar::forwardDifference( tensorToScalar_func, C );
+  Fastor::Tensor< double, 3, 3 > dF_dC_sym = Complex::TensorToScalar::forwardDifference( tensorToScalar_func, C, true );
+
+  throwExceptionOnFailure( Fastor::isequal( dF_dC_sym, dF_dC_full, 1e-10 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " failed: symmetric complex-step derivative doesn't match the dense "
+                                           "result" );
+
+  // also exercise the top-level Complex::forwardDifference (distinct from Complex::TensorToScalar::forwardDifference)
+  Fastor::Tensor< double, 3, 3 > dF_dC_full2 = Complex::forwardDifference( tensorToScalar_func, C );
+  Fastor::Tensor< double, 3, 3 > dF_dC_sym2  = Complex::forwardDifference( tensorToScalar_func, C, true );
+
+  throwExceptionOnFailure( Fastor::isequal( dF_dC_sym2, dF_dC_full2, 1e-10 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " failed: symmetric complex-step derivative (top-level function) doesn't "
+                                           "match the dense result" );
+}
+
 void testTensorToTensorComplex()
 {
   std::function< Fastor::Tensor< std::complex< double >, 3, 3 >(
@@ -267,17 +354,73 @@ void testTensorToTensorComplex2()
                                         << " failed: forward difference doesn't yield the right result" );
 }
 
+void testTensorToTensorComplexSymmetric()
+{
+  std::function< Fastor::Tensor< std::complex< double >, 3, 3 >(
+    const Fastor::Tensor< std::complex< double >, 3, 3 >& ) >
+    tensorToTensor_func = static_cast< Fastor::Tensor< std::complex< double >, 3, 3 > ( * )(
+      const Fastor::Tensor< std::complex< double >, 3, 3 >& ) >( hookes_law );
+
+  const Fastor::Tensor< double, 3, 3 > strain{ { 1., 2., 3. }, { 2., 4., 5. }, { 3., 5., 6. } };
+
+  const Fastor::Tensor< double, 3, 3, 3, 3 >
+    dF_dX_full = Complex::TensorToTensor::forwardDifference( tensorToTensor_func, strain );
+  const Fastor::Tensor< double, 3, 3, 3, 3 >
+    dF_dX_sym = Complex::TensorToTensor::forwardDifference( tensorToTensor_func, strain, true );
+
+  throwExceptionOnFailure( Fastor::isequal( dF_dX_sym, dF_dX_full, 1e-10 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " failed: symmetric complex-step derivative doesn't match the dense "
+                                           "result" );
+}
+
+void testTensorToTensorNonSquareRank2Output()
+{
+  // regression test: TensorToTensor::forwardDifference/centralDifference must still compile and work for outputs
+  // that are not a square rank-2 tensor (here a rank-1 vector), i.e. isSymmetric=false (the default) must be usable
+  // without triggering the isSymmetric-only code path's compile-time shape requirements
+  std::function< Fastor::Tensor< double, 2 >( const Fastor::Tensor< double, 3, 3 >& ) > f =
+    []( const Fastor::Tensor< double, 3, 3 >& x ) {
+      Fastor::Tensor< double, 2 > out( 0.0 );
+      out( 0 ) = x( 0, 0 ) * x( 0, 0 );
+      out( 1 ) = x( 1, 1 ) + x( 2, 2 );
+      return out;
+    };
+
+  const Fastor::Tensor< double, 3, 3 > x_{ { 1., 2., 3. }, { 4., 5., 6. }, { 7., 8., 9. } };
+
+  Fastor::Tensor< double, 2, 3, 3 > dF_dX_forward = TensorToTensor::forwardDifference( f, x_ );
+  Fastor::Tensor< double, 2, 3, 3 > dF_dX_central = TensorToTensor::centralDifference( f, x_ );
+
+  Fastor::Tensor< double, 2, 3, 3 > dF_dX_target( 0.0 );
+  dF_dX_target( 0, 0, 0 ) = 2. * x_( 0, 0 );
+  dF_dX_target( 1, 1, 1 ) = 1.;
+  dF_dX_target( 1, 2, 2 ) = 1.;
+
+  throwExceptionOnFailure( Fastor::isequal( dF_dX_forward, dF_dX_target, 1e-5 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " failed: forward difference doesn't yield the right result" );
+  throwExceptionOnFailure( Fastor::isequal( dF_dX_central, dF_dX_target, 1e-8 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << " failed: central difference doesn't yield the right result" );
+}
+
 int main()
 {
 
   auto tests = std::vector< std::function< void() > >{ testScalarToTensor,
                                                        testTensorToScalar,
+                                                       testTensorToScalarSymmetric,
                                                        testTensorToTensor,
                                                        testTensorToTensor2,
+                                                       testTensorToTensorSymmetric,
+                                                       testTensorToTensorNonSquareRank2Output,
                                                        testScalarToTensorComplex,
                                                        testTensorToScalarComplex,
+                                                       testTensorToScalarComplexSymmetric,
                                                        testTensorToTensorComplex,
-                                                       testTensorToTensorComplex2 };
+                                                       testTensorToTensorComplex2,
+                                                       testTensorToTensorComplexSymmetric };
 
   executeTestsAndCollectExceptions( tests );
 
