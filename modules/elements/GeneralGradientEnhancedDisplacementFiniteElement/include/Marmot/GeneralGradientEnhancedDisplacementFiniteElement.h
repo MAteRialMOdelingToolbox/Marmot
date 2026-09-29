@@ -24,6 +24,7 @@
  */
 #pragma once
 #include "Marmot/MarmotBulkViscosity.h"
+#include "Marmot/MarmotConsistentMass.h"
 #include "Marmot/MarmotElement.h"
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotExceptions.h"
@@ -426,7 +427,12 @@ namespace Marmot::Elements {
     void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT );
     /**
      * @brief Compute consistent mass matrix using material density.
-     * @details \f$\mathbf{M}_e = \sum_{qp} \rho\, \mathbf{N}^\mathsf{T}\mathbf{N}\, J_0 w\f$.
+     * @details \f$\mathbf{M}_e = \sum_{p} \rho\, \mathbf{N}^\mathsf{T}\mathbf{N}\, J_0 w\f$ on the
+     * displacement block and the micro-inertia \f$m_k\, \mathbf{N}_k^\mathsf{T}\mathbf{N}_k\, J_0 w\f$ on
+     * the non-local block, over the points \f$p\f$ of the full Gauss rule of the element's shape,
+     * also for a reduced-integration element, whose own rule would leave the mass rank-deficient;
+     * density and micro-inertia are taken from the nearest quadrature point of the element. See
+     * Marmot::FiniteElement::ConsistentMass.
      */
     void computeConsistentInertia( double* M );
 
@@ -1145,18 +1151,26 @@ namespace Marmot::Elements {
      * provides none is correct -- the field is then first order and has no inertia. There is no
      * consistent counterpart to computeLumpedDamping() yet.
      */
-    for ( const auto& qp : qps ) {
-      const auto     N_  = localGeometryElement.NB( localGeometryElement.N( qp.xi ) );
-      const NSizedK& N_K = qp.N_K;
-      const double   rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
-      Me.topLeftCorner( sizeDoFU, sizeDoFU ) += N_.transpose() * N_ * qp.J0xW * rho;
+
+    for ( const auto& point : FiniteElement::ConsistentMass::integrationRule( localGeometryElement.shape ) ) {
+      const XiSized xi = point.xi;
+      const auto&   qp = qps[FiniteElement::ConsistentMass::nearestQuadraturePoint( point.xi, qps )];
+      // thickness (2D) or cross section (1D) exactly as initializeYourself() applied it; 1 in 3D
+      const double sectionFactor = qp.J0xW / ( qp.weight * qp.detJ );
+      const double J0xW          = point.weight *
+                          localGeometryElement.Jacobian( localGeometryElement.dNdXi( xi ) ).determinant() *
+                          sectionFactor;
+      const auto    N_  = localGeometryElement.NB( localGeometryElement.N( xi ) );
+      const NSizedK N_K = nonLocalGeometryElement.N( xi );
+      const double  rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
+      Me.topLeftCorner( sizeDoFU, sizeDoFU ) += N_.transpose() * N_ * J0xW * rho;
 
       const std::vector< double > m_k = qp.material->getNonlocalMicroInertia(
         qp.managedStateVars->materialStateVars.data() );
       for ( int n = 0; n < nNonlocalVariables; n++ ) {
         Eigen::Index idx = n * nNonLocalNodes;
         Me.bottomRightCorner( sizeDoFK, sizeDoFK )
-          .block( idx, idx, nNonLocalNodes, nNonLocalNodes ) += N_K.transpose() * N_K * qp.J0xW * m_k[n];
+          .block( idx, idx, nNonLocalNodes, nNonLocalNodes ) += N_K.transpose() * N_K * J0xW * m_k[n];
       }
     }
   }

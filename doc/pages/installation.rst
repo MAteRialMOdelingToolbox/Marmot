@@ -10,6 +10,10 @@ and `Fastor <https://github.com/romeric/Fastor>`_.
 
 These are header-only libraries, so no compilation is required.
 
+Both Eigen 3.4 and Eigen 5 are supported.
+Eigen 5 requires an autodiff version with Eigen 5 support;
+autodiff 1.1.2 and older do not compile against Eigen 5 (see `autodiff#397 <https://github.com/autodiff/autodiff/pull/397>`_).
+
 Building with Anaconda
 **********************
 

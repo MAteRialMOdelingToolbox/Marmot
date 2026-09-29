@@ -22,7 +22,7 @@ Truss in compression using a micropolar von Mises plasticity model.
 ## Quick start
 
 `Marmot` requires the
-[Eigen](https://gitlab.com/libeigen/eigen) (>3.3.8),
+[Eigen](https://gitlab.com/libeigen/eigen) (>3.3.8, including Eigen 5),
 [autodiff](https://github.com/autodiff/autodiff) (>0.6.0)
 and [Fastor](https://github.com/romeric/Fastor) (>6.4.0) libraries to be installed.
 Detailed instructions on how to install these dependencies can be found [here](https://materialmodelingtoolbox.github.io/Marmot/pages/installation.html).
