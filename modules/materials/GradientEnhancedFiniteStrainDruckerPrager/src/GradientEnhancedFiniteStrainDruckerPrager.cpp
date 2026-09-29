@@ -6,12 +6,10 @@
  * |_| |_| |_|\__,_|_|  |_| |_| |_|\___/ \__|
  *
  * Unit of Strength of Materials and Structural Analysis
- * University of Innsbruck
+ * University of Innsbruck,
  * 2020 - today
  *
  * festigkeitslehre@uibk.ac.at
- *
- * Thomas Mader thomas.mader@boku.ac.at
  *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
@@ -32,6 +30,7 @@
 #include "Marmot/MarmotNumericalDifferentiation.h"
 #include "Marmot/MarmotStressMeasures.h"
 #include "Marmot/MarmotTensorExponential.h"
+#include "Marmot/MarmotUtils.h"
 #include <Eigen/Dense>
 #include <algorithm>
 #include <cmath>
@@ -49,24 +48,17 @@ namespace Marmot::Materials {
   namespace {
 
     /// absolute tolerance of the return-map residual (the yield function is scaled by the cohesion)
-    constexpr double innerNewtonTol        = 1e-12;
-    constexpr int    nMaxInnerNewtonCycles = 50;
-    constexpr int    nMaxHalvings          = 10;
+    constexpr double innerNewtonTol = 1e-12;
+    /// maximum number of iterations of the local Newton
+    constexpr int nMaxInnerNewtonCycles = 50;
+    /// maximum number of step halvings of the line search
+    constexpr int nMaxHalvings = 10;
     /// the deviatoric Mandel stress counts as vanished (apex) below this fraction of the cohesive strength
     constexpr double apexTol = 1e-10;
     /// relative tolerance of the coaxiality of a cone solution with the trial state
     constexpr double coaxialityTol = 1e-6;
-
-    /// the i-th material property, after checking that it exists: the references below are bound in the
-    /// member initializer list, i.e. before the constructor body could validate the property count
-    const double& property( const double* properties, int nProperties, int i )
-    {
-      constexpr int nRequired = 10;
-      if ( nProperties < nRequired )
-        throw std::invalid_argument( MakeString() << "GradientEnhancedFiniteStrainDruckerPrager: expected at least "
-                                                  << nRequired << " material properties, got " << nProperties );
-      return properties[i];
-    }
+    /// number of material properties without the (optional) density
+    constexpr int nRequiredProperties = 10;
 
     using namespace FastorIndices;
 
@@ -75,22 +67,36 @@ namespace Marmot::Materials {
     using Matrix9dRowMajor = Eigen::Matrix< double, 9, 9, Eigen::RowMajor >;
     using Vector9d         = Eigen::Matrix< double, 9, 1 >;
 
-    /// d( F Fp^-1 )_iJ / dF_kL = delta_ik Fp^-1_LJ
+    /**
+     * @brief Derivative of the trial elastic deformation gradient.
+     * @param[in] FpInv Inverse of the plastic deformation gradient at the beginning of the increment.
+     * @return @f$ \partial( F_{iK} F^{p,-1}_{KJ} ) / \partial F_{kL} = \delta_{ik} F^{p,-1}_{LJ} @f$.
+     */
     Tensor3333d dFeTrial_dF( const Tensor33d& FpInv )
     {
       return einsum< IK, JL, to_IJKL >( Spatial3D::I, Fastor::transpose( FpInv ) );
     }
 
-    /// d ln det F / dF = F^-T
+    /**
+     * @brief Derivative of the logarithmic volume ratio.
+     * @param[in] F Deformation gradient.
+     * @return @f$ \partial \ln\det\boldsymbol{F} / \partial\boldsymbol{F} = \boldsymbol{F}^{-T} @f$.
+     */
     Tensor33d dLogDet_dF( const Tensor33d& F )
     {
       return Fastor::transpose( Fastor::inverse( F ) );
     }
 
     /**
-     * Newton's method for R( X ) = 0 with the Jacobian by the complex step, and a backtracking line search: a step
-     * is halved while the residual cannot be evaluated, does not decrease, or leads to an inadmissible iterate. On
-     * success, R and dR_dX belong to the converged X.
+     * @brief Newton's method with the Jacobian by the complex step, and a backtracking line search.
+     * @details A step is halved while the residual cannot be evaluated, does not decrease, or leads to an
+     * inadmissible iterate.
+     * @param[in] residual The residual function @f$ \boldsymbol{R}(\boldsymbol{X}) @f$.
+     * @param[in,out] X Initial guess; the solution on success.
+     * @param[out] R Residual at @p X on success.
+     * @param[out] dR_dX Jacobian at @p X on success.
+     * @param[in] admissible Whether an iterate is admissible.
+     * @return Whether the iteration converged.
      */
     bool newtonWithBacktracking( const Differentiation::Complex::vector_to_vector_function_type& residual,
                                  Eigen::VectorXd&                                                X,
@@ -138,6 +144,11 @@ namespace Marmot::Materials {
       return false;
     }
 
+    /**
+     * @brief Principal values of a symmetric tensor.
+     * @param[in] symmetric Symmetric tensor.
+     * @return Its eigenvalues.
+     */
     Fastor::Tensor< double, 3 > principalValues( const Tensor33d& symmetric )
     {
       return Math::computeEigenSystemJacobi( symmetric ).first;
@@ -150,16 +161,16 @@ namespace Marmot::Materials {
     int           nMaterialProperties,
     int           materialNumber )
     : MarmotMaterialGradientEnhancedFiniteStrain( materialProperties, nMaterialProperties, materialNumber ),
-      K( property( materialProperties, nMaterialProperties, 0 ) ),
-      G( property( materialProperties, nMaterialProperties, 1 ) ),
-      c0( property( materialProperties, nMaterialProperties, 2 ) ),
-      frictionAngle( property( materialProperties, nMaterialProperties, 3 ) ),
-      dilatancyAngle( property( materialProperties, nMaterialProperties, 4 ) ),
-      H( property( materialProperties, nMaterialProperties, 5 ) ),
-      softeningModulus( property( materialProperties, nMaterialProperties, 6 ) ),
-      maxDamage( property( materialProperties, nMaterialProperties, 7 ) ),
-      nonLocalRadius( property( materialProperties, nMaterialProperties, 8 ) ),
-      weightingParameter( property( materialProperties, nMaterialProperties, 9 ) ),
+      K( checkedMaterialProperty( materialProperties, nMaterialProperties, 0 ) ),
+      G( checkedMaterialProperty( materialProperties, nMaterialProperties, 1 ) ),
+      c0( checkedMaterialProperty( materialProperties, nMaterialProperties, 2 ) ),
+      frictionAngle( checkedMaterialProperty( materialProperties, nMaterialProperties, 3 ) ),
+      dilatancyAngle( checkedMaterialProperty( materialProperties, nMaterialProperties, 4 ) ),
+      H( checkedMaterialProperty( materialProperties, nMaterialProperties, 5 ) ),
+      softeningModulus( checkedMaterialProperty( materialProperties, nMaterialProperties, 6 ) ),
+      maxDamage( checkedMaterialProperty( materialProperties, nMaterialProperties, 7 ) ),
+      nonLocalRadius( checkedMaterialProperty( materialProperties, nMaterialProperties, 8 ) ),
+      weightingParameter( checkedMaterialProperty( materialProperties, nMaterialProperties, 9 ) ),
       eta( outerConeParameters( frictionAngle ).first ),
       xi( outerConeParameters( frictionAngle ).second ),
       etaBar( outerConeParameters( dilatancyAngle ).first )
@@ -174,6 +185,16 @@ namespace Marmot::Materials {
     if ( dilatancyAngle > frictionAngle || frictionAngle < 0.0 || dilatancyAngle < 0.0 || frictionAngle >= 90.0 )
       throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
                                                 << ": expected 0 <= dilatancy angle <= friction angle < 90 deg" );
+    // a softening cohesion would let the cone shrink to its apex; the softening is the damage's
+    if ( H < 0.0 )
+      throw std::invalid_argument( MakeString()
+                                   << __PRETTY_FUNCTION__ << ": the hardening modulus must not be negative" );
+    if ( nonLocalRadius <= 0.0 )
+      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": the nonlocal radius must be positive" );
+    // m > 1 is the over-nonlocal formulation
+    if ( weightingParameter < 0.0 )
+      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
+                                                << ": the nonlocal weighting parameter must not be negative" );
 
     stateLayout.add( "Fp", 9 );     // plastic deformation gradient
     stateLayout.add( "alphaP", 1 ); // plastic hardening variable
@@ -193,9 +214,9 @@ namespace Marmot::Materials {
 
   double GradientEnhancedFiniteStrainDruckerPrager::getDensity( const double* stateVars ) const
   {
-    if ( nMaterialProperties <= 10 )
+    if ( nMaterialProperties <= nRequiredProperties )
       throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": density not provided (property 10)" );
-    return materialProperties[10];
+    return materialProperties[nRequiredProperties];
   }
 
   void GradientEnhancedFiniteStrainDruckerPrager::initializeYourself( double* stateVars, int nStateVars )
@@ -207,11 +228,12 @@ namespace Marmot::Materials {
   }
 
   GradientEnhancedFiniteStrainDruckerPrager::ReturnMapping GradientEnhancedFiniteStrainDruckerPrager::returnMapping(
-    const Tensor33d& F,
-    const Tensor33d& FpOld,
-    double           alphaPOld ) const
+    const Tensor33d&    F,
+    const TensorMap33d& FpOld,
+    double              alphaPOld ) const
   {
-    const Tensor33d FpOldInv = Fastor::inverse( FpOld );
+    // computed once, for the elastic trial and both returns
+    const Tensor33d FpOldInv = Fastor::inverse( Tensor33d( FpOld ) );
     const Tensor33d FeTrial  = F % FpOldInv;
 
     const double JeTrial = Fastor::determinant( FeTrial );
@@ -237,13 +259,13 @@ namespace Marmot::Materials {
     const bool   apexPossible = eta > 0.0 && etaBar > 0.0 && pTrial >= xi * ( c0 + H * alphaPOld ) / eta;
     if ( apexPossible ) {
       bool       admissible = false;
-      const auto apex       = returnToApex( F, FpOld, alphaPOld, admissible );
+      const auto apex       = returnToApex( F, FeTrial, FpOldInv, alphaPOld, admissible );
       if ( admissible )
         return apex;
     }
 
     bool       converged = false;
-    const auto cone      = returnToCone( F, FpOld, alphaPOld, converged );
+    const auto cone      = returnToCone( FeTrial, FpOld, FpOldInv, alphaPOld, converged );
     if ( converged )
       return cone;
 
@@ -253,16 +275,14 @@ namespace Marmot::Materials {
   }
 
   GradientEnhancedFiniteStrainDruckerPrager::ReturnMapping GradientEnhancedFiniteStrainDruckerPrager::returnToCone(
-    const Tensor33d& F,
-    const Tensor33d& FpOld,
-    double           alphaPOld,
-    bool&            converged ) const
+    const Tensor33d&    FeTrial,
+    const TensorMap33d& FpOld,
+    const Tensor33d&    FpOldInv,
+    double              alphaPOld,
+    bool&               converged ) const
   {
     using namespace Eigen;
     using complexDouble = std::complex< double >;
-
-    const Tensor33d FpOldInv = Fastor::inverse( FpOld );
-    const Tensor33d FeTrial  = F % FpOldInv;
 
     auto residual = [&]( const VectorXcd& X_ ) -> VectorXcd {
       return coneResidual< complexDouble >( X_, FeTrial, alphaPOld );
@@ -286,12 +306,14 @@ namespace Marmot::Materials {
     MatrixXd dR_dX;
     converged = false;
     for ( const double fraction : { 1.0, 0.5, 0.25, 0.9, 0.0 } ) {
-      const double    dLambda0 = fraction * dLambdaLinear;
-      const Tensor33d dFp0     = exponentialMap( Tensor33d( dLambda0 * flowDirection( MTrial ) ) );
-      const Tensor33d Fe0      = FeTrial % Fastor::inverse( dFp0 );
-      X.head( 9 )              = Map< const Matrix< double, 9, 1 > >( Fe0.data() );
-      X( 9 )                   = alphaPOld + xi * dLambda0;
-      X( 10 )                  = dLambda0;
+      const double dLambda0 = fraction * dLambdaLinear;
+      const Tensor33d
+        dFp0 = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::exponentialMapScalingAndSquaring(
+          Tensor33d( dLambda0 * flowDirection( MTrial ) ) );
+      const Tensor33d Fe0 = FeTrial % Fastor::inverse( dFp0 );
+      X.head( 9 )         = Map< const Matrix< double, 9, 1 > >( Fe0.data() );
+      X( 9 )              = alphaPOld + xi * dLambda0;
+      X( 10 )             = dLambda0;
       if ( admissible( X ) && newtonWithBacktracking( residual, X, R, dR_dX, admissible ) ) {
         converged = true;
         break;
@@ -343,7 +365,8 @@ namespace Marmot::Materials {
 
   GradientEnhancedFiniteStrainDruckerPrager::ReturnMapping GradientEnhancedFiniteStrainDruckerPrager::returnToApex(
     const Tensor33d& F,
-    const Tensor33d& FpOld,
+    const Tensor33d& FeTrial,
+    const Tensor33d& FpOldInv,
     double           alphaPOld,
     bool&            admissible ) const
   {
@@ -354,9 +377,7 @@ namespace Marmot::Materials {
     if ( eta <= 0.0 || etaBar <= 0.0 )
       return {}; // there is no apex to return to without friction and dilatancy
 
-    const Tensor33d FpOldInv   = Fastor::inverse( FpOld );
-    const Tensor33d FeTrial    = F % FpOldInv;
-    const double    thetaTrial = std::log( Fastor::determinant( FeTrial ) );
+    const double thetaTrial = std::log( Fastor::determinant( FeTrial ) );
 
     auto residual = [&]( const VectorXcd& X_ ) -> VectorXcd {
       return apexResidual< complexDouble >( X_, thetaTrial, alphaPOld );
@@ -427,22 +448,26 @@ namespace Marmot::Materials {
     using namespace Eigen;
     using complexDouble = std::complex< double >;
 
-    double* sv = response.stateVars;
-    // read the plastic deformation gradient through the same Tensor33d( ptr ) construction that writes it
-    const Tensor33d FpOld( stateLayout.getPtr( sv, "Fp" ) );
-    double&         alphaP = stateLayout.getAs< double& >( sv, "alphaP" );
-    double&         alphaD = stateLayout.getAs< double& >( sv, "alphaD" );
-    double&         kappa  = stateLayout.getAs< double& >( sv, "kappa" );
-    double&         omega  = stateLayout.getAs< double& >( sv, "omega" );
+    double*      sv     = response.stateVars;
+    TensorMap33d Fp     = stateLayout.getAs< TensorMap33d >( sv, "Fp" );
+    double&      alphaP = stateLayout.getAs< double& >( sv, "alphaP" );
+    double&      alphaD = stateLayout.getAs< double& >( sv, "alphaD" );
+    double&      kappa  = stateLayout.getAs< double& >( sv, "kappa" );
+    double&      omega  = stateLayout.getAs< double& >( sv, "omega" );
 
     const Tensor33d F( deformation.F );
     const double    N = deformation.N;
 
-    const ReturnMapping r = returnMapping( F, FpOld, alphaP );
+    const ReturnMapping r = returnMapping( F, Fp, alphaP );
 
-    std::memcpy( stateLayout.getPtr( sv, "Fp" ), r.FpNew.data(), 9 * sizeof( double ) );
+    std::memcpy( Fp.data(), r.FpNew.data(), 9 * sizeof( double ) );
     alphaP = r.alphaP;
-    alphaD += deltaAlphaLocal( r.dEpVol );
+
+    // the local damage variable grows by the dilatant part of the volumetric plastic strain increment; its
+    // derivative is cut off together with it, so that L and dL/dF stay consistent at the kink
+    const bool dilatant = r.dEpVol > 0.0;
+    if ( dilatant )
+      alphaD += r.dEpVol;
 
     // implicit-gradient damage, irreversible through the history maximum kappa
     const double m             = weightingParameter;
@@ -473,9 +498,9 @@ namespace Marmot::Materials {
     response.dissipation += ( 1.0 - omega ) * r.plasticWork + psiEff * ( omega - omegaOld );
 
     // tangents: tau = (1 - omega) tauEff( Fe( F ) ), omega( kappa ), kappa = m N + (1 - m) alphaD( F )
-    const Tensor33d& dL_dF     = r.dDeltaAlphaD_dF;
-    const Tensor33d  dOmega_dF = dOmega_dKappa * ( 1.0 - m ) * dL_dF;
-    const double     dOmega_dN = dOmega_dKappa * m;
+    const Tensor33d dL_dF     = dilatant ? r.dDeltaAlphaD_dF : Tensor33d( 0.0 );
+    const Tensor33d dOmega_dF = dOmega_dKappa * ( 1.0 - m ) * dL_dF;
+    const double    dOmega_dN = dOmega_dKappa * m;
 
     tangents.dTau_dF = ( 1.0 - omega ) * Tensor3333d( einsum< ijKL, KLMN >( dTauEff_dFe, r.dFe_dF ) ) -
                        Tensor3333d( outer( tauEff, dOmega_dF ) );

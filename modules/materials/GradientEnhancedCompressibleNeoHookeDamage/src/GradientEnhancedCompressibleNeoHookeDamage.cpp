@@ -16,17 +16,8 @@ namespace Marmot::Materials {
 
   namespace {
 
-    /// the i-th material property, after checking that it exists: the references are bound in the member
-    /// initializer list, i.e. before the constructor body could validate the property count
-    const double& property( const double* properties, int nProperties, int i )
-    {
-      constexpr int nRequired = 5;
-      if ( nProperties < nRequired )
-        throw std::invalid_argument( MakeString()
-                                     << "GradientEnhancedCompressibleNeoHookeDamage: expected at least " << nRequired
-                                     << " material properties (K, G, kappa0, kappaF, l), got " << nProperties );
-      return properties[i];
-    }
+    /// number of material properties without the (optional) density
+    constexpr int nRequiredProperties = 5;
 
   } // namespace
 
@@ -35,11 +26,11 @@ namespace Marmot::Materials {
     int           nMaterialProperties,
     int           materialNumber )
     : MarmotMaterialGradientEnhancedFiniteStrain( materialProperties, nMaterialProperties, materialNumber ),
-      K( property( materialProperties, nMaterialProperties, 0 ) ),
-      G( property( materialProperties, nMaterialProperties, 1 ) ),
-      kappa0( property( materialProperties, nMaterialProperties, 2 ) ),
-      kappaF( property( materialProperties, nMaterialProperties, 3 ) ),
-      nonLocalRadius( property( materialProperties, nMaterialProperties, 4 ) )
+      K( checkedMaterialProperty( materialProperties, nMaterialProperties, 0 ) ),
+      G( checkedMaterialProperty( materialProperties, nMaterialProperties, 1 ) ),
+      kappa0( checkedMaterialProperty( materialProperties, nMaterialProperties, 2 ) ),
+      kappaF( checkedMaterialProperty( materialProperties, nMaterialProperties, 3 ) ),
+      nonLocalRadius( checkedMaterialProperty( materialProperties, nMaterialProperties, 4 ) )
   {
     if ( K <= 0.0 || G <= 0.0 )
       throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": bulk and shear modulus must be positive" );
@@ -48,6 +39,8 @@ namespace Marmot::Materials {
                                    << __PRETTY_FUNCTION__ << ": the damage threshold kappa0 must be positive" );
     if ( !( kappaF > kappa0 ) )
       throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": kappaF must be greater than kappa0" );
+    if ( nonLocalRadius <= 0.0 )
+      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": the nonlocal radius must be positive" );
 
     stateLayout.add( "kappa", 1 );
     stateLayout.finalize();
@@ -55,9 +48,9 @@ namespace Marmot::Materials {
 
   double GradientEnhancedCompressibleNeoHookeDamage::getDensity( const double* stateVars ) const
   {
-    if ( nMaterialProperties <= 5 )
+    if ( nMaterialProperties <= nRequiredProperties )
       throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": density not provided (property 5)" );
-    return materialProperties[5];
+    return materialProperties[nRequiredProperties];
   }
 
   std::pair< double, double > GradientEnhancedCompressibleNeoHookeDamage::damage( double kappa ) const

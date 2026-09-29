@@ -52,7 +52,9 @@ isotropy, :math:`\boldsymbol{F}^{\rm p}` is determined up to a rotation only, so
 (de Souza Neto, Peric & Owen, *Computational Methods for Plasticity*, Sec. 8.3).
 
 The Jacobians of both return mappings are computed by the complex-step method, and the algorithmic tangents follow
-from the same Jacobians by the implicit function theorem.
+from the same Jacobians by the implicit function theorem. The exponential map is evaluated by scaling and squaring
+(``FlowIntegration::exponentialMapScalingAndSquaring``), which also represents the large plastic increments of
+intermediate Newton iterates.
 
 **Damage** is an implicit-gradient damage driven by the dilatant plastic flow. The local variable is the accumulated
 volumetric plastic logarithmic strain,
@@ -101,7 +103,7 @@ Material parameters
      - dilatancy angle [deg], :math:`0 \le \psi \le \phi`
    * - 5
      - :math:`H`
-     - linear hardening modulus of the cohesion
+     - linear hardening modulus of the cohesion, :math:`H \ge 0`
    * - 6
      - :math:`\varepsilon_f`
      - softening modulus of the damage
@@ -110,10 +112,10 @@ Material parameters
      - maximum damage, :math:`0 \le \omega_{\max} < 1`
    * - 8
      - :math:`l`
-     - nonlocal radius
+     - nonlocal radius, :math:`l > 0`
    * - 9
      - :math:`m`
-     - weighting of the nonlocal measure (:math:`m > 1`: over-nonlocal)
+     - weighting of the nonlocal measure, :math:`m \ge 0` (:math:`m > 1`: over-nonlocal)
    * - 10
      - :math:`\rho`
      - density (optional)
