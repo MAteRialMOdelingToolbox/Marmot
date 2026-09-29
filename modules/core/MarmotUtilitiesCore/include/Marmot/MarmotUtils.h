@@ -23,6 +23,8 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
+#include <stdexcept>
+#include <string>
 
 /** @struct StateView
  * @brief Structure to hold a pointer to the state location and its size.
@@ -34,3 +36,26 @@ struct StateView {
   double* stateLocation; ///< Pointer to the first element of the state variable block.
   int     stateSize;     ///< Number of `double` values in the state variable block.
 };
+
+namespace Marmot {
+
+  /**
+   * @brief Access a material property after checking that it has been provided.
+   * @details Materials that bind their properties to references in the member initializer list cannot validate
+   * the length of the property array in the constructor body first. Binding through this accessor turns a too short
+   * property array into an error instead of a read beyond its end.
+   * @param[in] materialProperties Array of the material properties.
+   * @param[in] nMaterialProperties Length of @p materialProperties.
+   * @param[in] index Index of the requested property.
+   * @return Reference to the property.
+   * @throws std::invalid_argument if @p index is not a valid index of @p materialProperties.
+   */
+  inline const double& checkedMaterialProperty( const double* materialProperties, int nMaterialProperties, int index )
+  {
+    if ( index < 0 || index >= nMaterialProperties )
+      throw std::invalid_argument( "material property " + std::to_string( index ) + " is required, but only " +
+                                   std::to_string( nMaterialProperties ) + " material properties are given" );
+    return materialProperties[index];
+  }
+
+} // namespace Marmot
