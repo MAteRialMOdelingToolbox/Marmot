@@ -411,15 +411,6 @@ void testUnsupportedRequestsThrow()
   Eigen::VectorXd       P = Eigen::VectorXd::Zero( q8.nDof() );
   Eigen::MatrixXd       K = Eigen::MatrixXd::Zero( q8.nDof(), q8.nDof() );
 
-  bool explicitThrew = false;
-  try {
-    q8.element->computeKernelsExplicit( Q.data(), Q.data(), P.data(), 0., 1. );
-  }
-  catch ( const std::runtime_error& ) {
-    explicitThrew = true;
-  }
-  throwExceptionOnFailure( explicitThrew, "explicit kernels are not implemented and must say so" );
-
   bool loadThrew = false;
   try {
     const double load[1] = { 1.0 };
@@ -439,25 +430,41 @@ void testUnsupportedRequestsThrow()
   }
   throwExceptionOnFailure( initialConditionThrew, "an unsupported initial condition must be rejected" );
 
-  // plane stress is not registered, but the class accepts the section: it must refuse to compute
+  // plane stress is not registered, and the class refuses the section, as a solid section in 2D
   using Element = GradientEnhancedFiniteStrainDisplacementElement< 2, 8 >;
-  Element planeStress( 1, FiniteElement::Quadrature::IntegrationTypes::FullIntegration, Element::PlaneStress );
-  std::vector< double > elementProperties = { 1.0 };
-  planeStress.assignNodeCoordinates( quad8Coordinates.data() );
-  planeStress.assignProperty( ElementProperties( elementProperties.data(), elementProperties.size() ) );
-  planeStress.assignProperty(
-    MarmotMaterialSection( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE", matProps.data(), matProps.size() ) );
-  std::vector< double > stateVars( planeStress.getNumberOfRequiredStateVars(), 0.0 );
-  planeStress.assignStateVars( stateVars.data(), stateVars.size() );
-  planeStress.initializeYourself();
-  bool planeStressThrew = false;
-  try {
-    planeStress.computeKernels( Q.data(), Q.data(), P.data(), K.data(), 0., 1. );
+  for ( auto section : { Element::PlaneStress, Element::Solid } ) {
+    bool sectionThrew = false;
+    try {
+      Element element( 1, FiniteElement::Quadrature::IntegrationTypes::FullIntegration, section );
+    }
+    catch ( const std::invalid_argument& ) {
+      sectionThrew = true;
+    }
+    throwExceptionOnFailure( sectionThrew, "a 2D section other than plane strain must be refused" );
   }
-  catch ( const std::runtime_error& ) {
-    planeStressThrew = true;
+}
+
+void testExplicitKernels()
+{
+  // the explicit kernel is the residual of the implicit one, with the same state update
+  for ( auto [name, coordinates, nDim, nNodes] : std::vector<
+          std::tuple< std::string, std::vector< double >, int, int > >{ { "GCPE8UL", quad8Coordinates, 2, 8 },
+                                                                        { "GC3D8UL", hexa8Coordinates, 3, 8 } } ) {
+    Setup                 implicit( name, coordinates );
+    Setup                 explicit_( name, coordinates );
+    const Eigen::VectorXd Q = damagingState( nDim, nNodes );
+
+    const auto [P, K] = implicit.kernels( Q );
+
+    explicit_.reset();
+    Eigen::VectorXd Pexplicit = Eigen::VectorXd::Zero( explicit_.nDof() );
+    explicit_.element->computeKernelsExplicit( Q.data(), Q.data(), Pexplicit.data(), 0.0, 1.0 );
+
+    throwExceptionOnFailure( ( P - Pexplicit ).norm() <= 1e-14 * P.norm(),
+                             name + ": the explicit residual differs from the implicit one" );
+    throwExceptionOnFailure( implicit.stateVars == explicit_.stateVars,
+                             name + ": the explicit state update differs from the implicit one" );
   }
-  throwExceptionOnFailure( planeStressThrew, "plane stress must be refused" );
 }
 
 int main()
@@ -468,6 +475,7 @@ int main()
                                                                testConsistentTangentReducedQuad8,
                                                                testConsistentTangentHexa8,
                                                                testUndeformedStateIsStressFree,
+                                                               testExplicitKernels,
                                                                testRigidRotationIsStressFree,
                                                                testInternalForcesAreSelfEquilibrated,
                                                                testPressureLoadTangent,

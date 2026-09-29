@@ -6,21 +6,21 @@
  * |_| |_| |_|\__,_|_|  |_| |_| |_|\___/ \__|
  *
  * Unit of Strength of Materials and Structural Analysis
- * University of Innsbruck.
+ * University of Innsbruck,
+ * 2020 - today
  *
- * Thomas Mader thomas.mader@boku.ac.at
+ * festigkeitslehre@uibk.ac.at
  *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
- * LGPL v2.1+, see LICENSE.md at the top level directory of marmot.
- * ---------------------------------------------------------------------
  *
- * Gradient-enhanced (implicit-gradient / nonlocal) finite-strain
- * displacement element.  It is the non-micropolar sibling of
- * GradientEnhancedMicropolarULFiniteElement: the micro-rotation field W is
- * removed, leaving the displacement field U (nDim DOFs/node) coupled to a
- * single scalar nonlocal-damage field N (1 DOF/node) that regularises
- * softening.  Updated-Lagrange kinematics as in DisplacementFiniteStrainULElement.
- * Consumes a MarmotMaterialGradientEnhancedFiniteStrain.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * The full text of the license can be found in the file LICENSE.md at
+ * the top level directory of marmot.
+ * ---------------------------------------------------------------------
  */
 #pragma once
 
@@ -42,29 +42,54 @@
 
 namespace Marmot::Elements {
 
+  /**
+   * @class Marmot::Elements::GradientEnhancedFiniteStrainDisplacementElement
+   * @brief Gradient-enhanced (implicit-gradient, nonlocal) finite-strain displacement element.
+   *
+   * The displacement field @f$ \boldsymbol{u} @f$ (nDim dofs per node) is coupled to a scalar nonlocal field
+   * @f$ \bar{N} @f$ (one dof per node), which regularizes softening materials by the implicit-gradient balance in the
+   * reference configuration,
+   * @f[
+   *   \int_{\Omega_0} \boldsymbol{\tau} : \nabla_x \delta\boldsymbol{u} \, dV = \text{external work}, \qquad
+   *   \int_{\Omega_0} \left( \bar{N}\,\delta\bar{N} + c\,\nabla_X\bar{N}\cdot\nabla_X\delta\bar{N}
+   *   - L\,\delta\bar{N} \right) dV = 0,
+   * @f]
+   * with the Kirchhoff stress @f$ \boldsymbol{\tau} @f$, the local driving force @f$ L @f$ and @f$ c = l^2 @f$
+   * from the material. The kinematics are those of DisplacementFiniteStrainULElement; the element is the
+   * non-micropolar sibling of GradientEnhancedMicropolarULFiniteElement. It consumes a
+   * MarmotMaterialGradientEnhancedFiniteStrain.
+   *
+   * The residual is the internal force vector (the same sign convention as DisplacementFiniteStrainULElement), the
+   * dofs are ordered node by node, @f$ \{u_1, \dots, u_{nDim}, \bar{N}\} @f$, and internally field by field (see
+   * getDofIndicesPermutationPattern()). Plane stress is not supported.
+   *
+   * @tparam nDim Number of spatial dimensions (2: plane strain, 3: solid).
+   * @tparam nNodes Number of nodes.
+   */
   template < int nDim, int nNodes >
   class GradientEnhancedFiniteStrainDisplacementElement : public MarmotElement,
                                                           public MarmotGeometryElement< nDim, nNodes > {
 
   public:
+    /// @brief Section type of the element.
     enum SectionType {
-      PlaneStress,
-      PlaneStrain,
-      Solid,
+      PlaneStress, ///< plane stress (not supported)
+      PlaneStrain, ///< plane strain (nDim = 2)
+      Solid,       ///< three-dimensional solid (nDim = 3)
     };
 
-    static constexpr int nDofPerNodeU = nDim; // Displacement    field U
-    static constexpr int nDofPerNodeN = 1;    // Nonlocal damage  field N
+    static constexpr int nDofPerNodeU = nDim;          ///< dofs per node of the displacement field
+    static constexpr int nDofPerNodeN = 1;             ///< dofs per node of the nonlocal field
 
-    static constexpr int nCoordinates = nNodes * nDim;
+    static constexpr int nCoordinates = nNodes * nDim; ///< number of nodal coordinates
 
-    static constexpr int bsU = nNodes * nDofPerNodeU;
-    static constexpr int bsN = nNodes * nDofPerNodeN;
+    static constexpr int bsU = nNodes * nDofPerNodeU;  ///< size of the displacement block
+    static constexpr int bsN = nNodes * nDofPerNodeN;  ///< size of the nonlocal block
 
-    static constexpr int sizeLoadVector = bsU + bsN;
+    static constexpr int sizeLoadVector = bsU + bsN;   ///< number of dofs of the element
 
-    static constexpr int idxU = 0;
-    static constexpr int idxN = idxU + bsU;
+    static constexpr int idxU = 0;                     ///< first index of the displacement block
+    static constexpr int idxN = idxU + bsU;            ///< first index of the nonlocal block
 
     using ParentGeometryElement = MarmotGeometryElement< nDim, nNodes >;
     using Material              = MarmotMaterialGradientEnhancedFiniteStrain;
@@ -77,20 +102,29 @@ namespace Marmot::Elements {
     using KSizedMatrix  = Eigen::Matrix< double, sizeLoadVector, sizeLoadVector >;
     using USizedVector  = Eigen::Matrix< double, bsU, 1 >;
 
-    Eigen::Map< const Eigen::VectorXd > elementProperties;
-    const int                           elLabel;
-    const SectionType                   sectionType;
-    bool                                hasEigenDeformation;
+    Eigen::Map< const Eigen::VectorXd > elementProperties;   ///< element properties: thickness (2D)
+    const int                           elLabel;             ///< element label
+    const SectionType                   sectionType;         ///< section type
+    bool                                hasEigenDeformation; ///< whether a geostatic eigen deformation is applied
 
+    /**
+     * @struct QuadraturePoint
+     * @brief A quadrature point: its location, the cached shape functions and derivatives, state and material.
+     */
     struct QuadraturePoint {
 
-      const XiSized xi;
-      const double  weight;
+      const XiSized xi;     ///< parametric coordinates
+      const double  weight; ///< quadrature weight
 
-      dNdXiSized dNdX;
-      double     detJ;
-      double     J0xW;
+      NSized     N;         ///< shape functions at @c xi
+      dNdXiSized dNdX;      ///< shape function derivatives in the reference configuration
+      double     detJ;      ///< determinant of the reference Jacobian
+      double     J0xW;      ///< integration weight in the reference configuration (times the thickness in 2D)
 
+      /**
+       * @class QPStateVarManager
+       * @brief State of a quadrature point: stress, energies, eigen deformation, followed by the material state.
+       */
       class QPStateVarManager : public MarmotStateVarVectorManager {
 
         inline const static auto layout = makeLayout( {
@@ -104,16 +138,22 @@ namespace Marmot::Elements {
         } );
 
       public:
-        Eigen::Map< Marmot::Vector9d > stress;
-        double&                        elasticEnergyDensity; // per undeformed volume, as returned by the material
-        double&                        dissipationDensity;   // accumulated by the material over the increments
-        double&                        F0_XX;
-        double&                        F0_YY;
-        double&                        F0_ZZ;
-        Eigen::Map< Eigen::VectorXd >  materialStateVars;
+        Eigen::Map< Marmot::Vector9d > stress; ///< Kirchhoff stress (3D, also in plane strain)
+        double& elasticEnergyDensity;          ///< elastic energy per undeformed volume, as returned by the material
+        double& dissipationDensity;            ///< dissipation per undeformed volume, accumulated by the material
+        double& F0_XX;                         ///< eigen deformation, XX component
+        double& F0_YY;                         ///< eigen deformation, YY component
+        double& F0_ZZ;                         ///< eigen deformation, ZZ component
+        Eigen::Map< Eigen::VectorXd > materialStateVars; ///< state variables of the material
 
+        /// @brief Number of state variables of the quadrature point without those of the material.
         static int getNumberOfRequiredStateVarsQuadraturePointOnly() { return layout.nRequiredStateVars; };
 
+        /**
+         * @brief Map the state of a quadrature point.
+         * @param[in] theStateVarVector State variables of the quadrature point.
+         * @param[in] nStateVars Their number, including those of the material.
+         */
         QPStateVarManager( double* theStateVarVector, int nStateVars )
           : MarmotStateVarVectorManager( theStateVarVector, layout ),
             stress( &find( "stress" ) ),
@@ -126,61 +166,126 @@ namespace Marmot::Elements {
                                nStateVars - getNumberOfRequiredStateVarsQuadraturePointOnly() ){};
       };
 
-      std::unique_ptr< QPStateVarManager > managedStateVars;
-      std::unique_ptr< Material >          material;
+      std::unique_ptr< QPStateVarManager > managedStateVars; ///< state of the quadrature point
+      std::unique_ptr< Material >          material;         ///< material of the quadrature point
 
+      /// @brief Number of state variables of the quadrature point without those of the material.
       int getNumberOfRequiredStateVarsQuadraturePointOnly()
       {
         return QPStateVarManager::getNumberOfRequiredStateVarsQuadraturePointOnly();
       };
 
+      /// @brief Number of state variables of the quadrature point, including those of the material.
       int getNumberOfRequiredStateVars()
       {
         return getNumberOfRequiredStateVarsQuadraturePointOnly() + material->getNumberOfRequiredStateVars();
       };
 
+      /**
+       * @brief Assign the state variables of the quadrature point.
+       * @param[in] stateVars State variables of the quadrature point.
+       * @param[in] nStateVars Their number.
+       */
       void assignStateVars( double* stateVars, int nStateVars )
       {
         managedStateVars = std::make_unique< QPStateVarManager >( stateVars, nStateVars );
       }
 
-      QuadraturePoint( XiSized xi, double weight )
-        : xi( xi ), weight( weight ), dNdX( dNdXiSized::Zero() ), detJ( 0.0 ), J0xW( 0.0 ){};
+      /**
+       * @brief Construct a quadrature point.
+       * @param[in] xi Parametric coordinates.
+       * @param[in] weight Quadrature weight.
+       * @param[in] N Shape functions at @p xi.
+       */
+      QuadraturePoint( XiSized xi, double weight, const NSized& N )
+        : xi( xi ), weight( weight ), N( N ), dNdX( dNdXiSized::Zero() ), detJ( 0.0 ), J0xW( 0.0 ){};
     };
 
-    std::vector< QuadraturePoint > qps;
+    std::vector< QuadraturePoint > qps; ///< the quadrature points
 
+    /**
+     * @brief Construct the element.
+     * @param[in] elementID Element label.
+     * @param[in] integrationType Full or reduced integration.
+     * @param[in] sectionType Section type: PlaneStrain for nDim = 2, Solid for nDim = 3.
+     * @throws std::invalid_argument for a section type that does not match nDim, e.g. plane stress.
+     */
     GradientEnhancedFiniteStrainDisplacementElement(
       int                                                 elementID,
       Marmot::FiniteElement::Quadrature::IntegrationTypes integrationType,
       SectionType                                         sectionType );
 
+    /// @brief Number of state variables of the element (of all quadrature points).
     int getNumberOfRequiredStateVars();
 
+    /// @brief Fields per node: "displacement" and "nonlocal damage".
     std::vector< std::vector< std::string > > getNodeFields();
 
+    /// @brief Permutation from the node-by-node dof order of the host to the field-by-field order of the element.
     std::vector< int > getDofIndicesPermutationPattern();
 
+    /// @brief Number of nodes.
     int getNNodes() { return nNodes; }
 
+    /// @brief Number of spatial dimensions.
     int getNSpatialDimensions() { return nDim; }
 
+    /// @brief Number of dofs of the element.
     int getNDofPerElement() { return sizeLoadVector; }
 
+    /// @brief Shape of the element.
     std::string getElementShape() { return ParentGeometryElement::getElementShape(); }
 
+    /**
+     * @brief Assign the state variables, split evenly among the quadrature points.
+     * @param[in] managedStateVars State variables of the element.
+     * @param[in] nStateVars Their number.
+     */
     void assignStateVars( double* managedStateVars, int nStateVars );
 
+    /**
+     * @brief Assign the element properties.
+     * @param[in] MarmotElementProperty Element properties: the thickness in 2D.
+     */
     void assignProperty( const ElementProperties& MarmotElementProperty );
 
+    /**
+     * @brief Create the material of every quadrature point.
+     * @param[in] MarmotElementProperty Material name and properties.
+     */
     void assignProperty( const MarmotMaterialSection& MarmotElementProperty );
 
+    /**
+     * @brief Assign the nodal coordinates in the reference configuration.
+     * @param[in] coordinates Nodal coordinates, node by node.
+     */
     void assignNodeCoordinates( const double* coordinates );
 
+    /// @brief Compute the reference shape function derivatives and integration weights of the quadrature points.
     void initializeYourself();
 
+    /**
+     * @brief Set initial conditions.
+     * @param[in] state MarmotMaterialInitialization (initializes the material state) or GeostaticStress (finds the
+     * eigen deformation of a linearly distributed geostatic stress).
+     * @param[in] values Definition of the geostatic stress distribution.
+     * @throws std::invalid_argument for another initial condition.
+     */
     void setInitialConditions( StateTypes state, const double* values );
 
+    /**
+     * @brief Compute a distributed load on an element face.
+     * @param[in] loadType Pressure (follower load, with its stiffness @f$ K = -\partial P/\partial Q @f$) or
+     * SurfaceTraction (in the reference configuration).
+     * @param[in,out] P Load vector, added to.
+     * @param[in,out] K Stiffness matrix, added to.
+     * @param[in] elementFace Face of the element.
+     * @param[in] load Pressure, or traction vector.
+     * @param[in] QTotal Total dofs.
+     * @param[in] time Time.
+     * @param[in] dT Time increment.
+     * @throws std::invalid_argument for another load type.
+     */
     void computeDistributedLoad( MarmotElement::DistributedLoadTypes loadType,
                                  double*                             P,
                                  double*                             K,
@@ -190,19 +295,74 @@ namespace Marmot::Elements {
                                  double                              time,
                                  double                              dT );
 
+    /**
+     * @brief Compute a body force per reference volume.
+     * @param[in,out] P Load vector, added to.
+     * @param[in,out] K Stiffness matrix (not changed, the load does not depend on the dofs).
+     * @param[in] load Body force vector.
+     * @param[in] QTotal Total dofs.
+     * @param[in] time Time.
+     * @param[in] dT Time increment.
+     */
     void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, double time, double dT );
 
+    /**
+     * @brief Compute the residual (internal forces) and the stiffness matrix, and update the state.
+     * @param[in] QTotal Total dofs at the end of the increment.
+     * @param[in] dQ Dof increment.
+     * @param[in,out] Pe Residual, added to.
+     * @param[in,out] Ke Stiffness matrix, added to.
+     * @param[in] time Time.
+     * @param[in] dT Time increment.
+     */
     void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT );
 
+    /**
+     * @brief Compute the residual (internal forces) only, and update the state, for explicit time integration.
+     * @details The material is updated as in computeKernels(); its tangents are discarded.
+     * @param[in] QTotal Total dofs at the end of the increment.
+     * @param[in] dQ Dof increment.
+     * @param[in,out] Pe Residual, added to.
+     * @param[in] time Time.
+     * @param[in] dT Time increment.
+     */
     void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT );
 
+    /**
+     * @brief A view of a state of a quadrature point, of the element or of its material.
+     * @param[in] stateName Name of the state.
+     * @param[in] qpNumber Number of the quadrature point.
+     * @return The view.
+     */
     StateView getStateView( const std::string& stateName, int qpNumber );
 
+    /// @brief Coordinates of the element center in the reference configuration.
     std::vector< double > getCoordinatesAtCenter();
 
+    /// @brief Coordinates of the quadrature points in the reference configuration.
     std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints();
 
+    /// @brief Number of quadrature points.
     int getNumberOfQuadraturePoints();
+
+  private:
+    /**
+     * @brief Update the material of a quadrature point, in plane strain through its 3D response.
+     * @param[in,out] qp Quadrature point; its stress and energies are updated.
+     * @param[in] F Deformation gradient at the end of the increment.
+     * @param[in] nonlocalField Nonlocal field at the quadrature point.
+     * @param[in] time Time.
+     * @param[in] dT Time increment.
+     * @param[out] response Kirchhoff stress, local driving force, nonlocal radius and energies.
+     * @param[out] tangents Algorithmic tangents.
+     */
+    void computeMaterialResponse( QuadraturePoint&                                 qp,
+                                  const Fastor::Tensor< double, nDim, nDim >&      F,
+                                  double                                           nonlocalField,
+                                  double                                           time,
+                                  double                                           dT,
+                                  typename Material::ConstitutiveResponse< nDim >& response,
+                                  typename Material::AlgorithmicModuli< nDim >&    tangents );
   };
 
   template < int nDim, int nNodes >
@@ -229,8 +389,13 @@ namespace Marmot::Elements {
       sectionType( sectionType ),
       hasEigenDeformation( false )
   {
+    if ( ( nDim == 2 && sectionType != SectionType::PlaneStrain ) ||
+         ( nDim == 3 && sectionType != SectionType::Solid ) )
+      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
+                                                << ": only plane strain (2D) and solid (3D) sections are supported" );
+
     for ( const auto& qpInfo : Marmot::FiniteElement::Quadrature::getGaussPointInfo( this->shape, integrationType ) ) {
-      QuadraturePoint qp( qpInfo.xi, qpInfo.weight );
+      QuadraturePoint qp( qpInfo.xi, qpInfo.weight, this->N( qpInfo.xi ) );
       qps.push_back( std::move( qp ) );
     }
   }
@@ -343,6 +508,92 @@ namespace Marmot::Elements {
   }
 
   template < int nDim, int nNodes >
+  void GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::computeMaterialResponse(
+    QuadraturePoint&                                 qp,
+    const Fastor::Tensor< double, nDim, nDim >&      F,
+    double                                           nonlocalField,
+    double                                           time,
+    double                                           dT,
+    typename Material::ConstitutiveResponse< nDim >& response,
+    typename Material::AlgorithmicModuli< nDim >&    tangents )
+  {
+    using namespace Fastor;
+    using namespace Marmot::FastorIndices;
+
+    const typename Material::Deformation< nDim > deformation = { F, nonlocalField };
+
+    const typename Material::TimeIncrement timeIncrement{ time, dT };
+
+    if constexpr ( nDim == 2 ) {
+      // plane strain (the constructor admits no other 2D section): the 3D response with F_33 = 1
+
+      typename Material::ConstitutiveResponse< 3 >
+        response3D( FastorStandardTensors::Tensor33d( qp.managedStateVars->stress.data(), Fastor::ColumnMajor ),
+                    0.0,
+                    0.0,
+                    qp.managedStateVars->elasticEnergyDensity,
+                    qp.managedStateVars->dissipationDensity,
+                    qp.managedStateVars->materialStateVars.data() );
+
+      typename Material::AlgorithmicModuli< 3 > algorithmicModuli3D;
+
+      typename Material::Deformation< 3 > deformation3D{ expandTo3D( deformation.F ), deformation.N };
+      deformation3D.F( 2, 2 ) = 1.0;
+
+      if ( hasEigenDeformation )
+        qp.material->computePlaneStrain( response3D,
+                                         algorithmicModuli3D,
+                                         deformation3D,
+                                         timeIncrement,
+                                         { qp.managedStateVars->F0_XX,
+                                           qp.managedStateVars->F0_YY,
+                                           qp.managedStateVars->F0_ZZ } );
+      else
+        qp.material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
+
+      response.tau                  = reduceTo2D< U, U >( response3D.tau );
+      response.L                    = response3D.L;
+      response.nonLocalRadius       = response3D.nonLocalRadius;
+      response.elasticEnergyDensity = response3D.elasticEnergyDensity;
+      response.dissipation          = response3D.dissipation;
+
+      tangents.dTau_dF = reduceTo2D< U, U, U, U >( algorithmicModuli3D.dTau_dF );
+      tangents.dTau_dN = reduceTo2D< U, U >( algorithmicModuli3D.dTau_dN );
+      tangents.dL_dF   = reduceTo2D< U, U >( algorithmicModuli3D.dL_dF );
+      tangents.dL_dN   = algorithmicModuli3D.dL_dN;
+
+      qp.managedStateVars->stress = Marmot::mapEigenToFastor( response3D.tau ).reshaped();
+    }
+    else {
+      response = typename Material::ConstitutiveResponse< nDim >( Tensor< double, nDim, nDim >( qp.managedStateVars
+                                                                                                  ->stress.data(),
+                                                                                                ColumnMajor ),
+                                                                  0.0,
+                                                                  0.0,
+                                                                  qp.managedStateVars->elasticEnergyDensity,
+                                                                  qp.managedStateVars->dissipationDensity,
+                                                                  qp.managedStateVars->materialStateVars.data() );
+
+      // as for plane strain above: a geostatic initial state lives in the eigen deformation
+      if ( hasEigenDeformation )
+        qp.material->computeStress( response,
+                                    tangents,
+                                    deformation,
+                                    timeIncrement,
+                                    { qp.managedStateVars->F0_XX,
+                                      qp.managedStateVars->F0_YY,
+                                      qp.managedStateVars->F0_ZZ } );
+      else
+        qp.material->computeStress( response, tangents, deformation, timeIncrement );
+      qp.managedStateVars->stress = Marmot::mapEigenToFastor( response.tau ).reshaped();
+    }
+
+    // the materials accumulate the dissipation onto the incoming value: keep both with the state
+    qp.managedStateVars->elasticEnergyDensity = response.elasticEnergyDensity;
+    qp.managedStateVars->dissipationDensity   = response.dissipation;
+  }
+
+  template < int nDim, int nNodes >
   void GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::computeKernels( const double* qTotal,
                                                                                         const double* dQ,
                                                                                         double*       rightHandSide,
@@ -369,100 +620,20 @@ namespace Marmot::Elements {
     Tensor< double, nNodes, nDim, nNodes >       k_NU( 0.0 );
     Tensor< double, nNodes, nNodes >             k_NN( 0.0 );
 
-    Eigen::Map< Eigen::VectorXd > rhs( rightHandSide, sizeLoadVector );
-
     for ( auto& qp : qps ) {
 
       using namespace Marmot::FastorIndices;
 
-      auto        N_    = this->N( qp.xi );
-      const auto& dNdX_ = qp.dNdX;
-
-      const auto N    = Tensor< double, nNodes >( N_.data() );
-      const auto dNdX = Tensor< double, nDim, nNodes >( dNdX_.data(), ColumnMajor );
+      const auto N    = Tensor< double, nNodes >( qp.N.data() );
+      const auto dNdX = Tensor< double, nDim, nNodes >( qp.dNdX.data(), ColumnMajor );
 
       const auto F_np = evaluate( einsum< Ai, jA >( qU_np, dNdX ) + I );
 
       const double nonlocalField = inner( N, qN_np );
 
-      const typename Material::Deformation< nDim > deformation = { F_np, nonlocalField };
-
-      const typename Material::TimeIncrement timeIncrement{ time, dT };
-
-      typename Material::ConstitutiveResponse< nDim >
-        response( Tensor< double, nDim, nDim >( qp.managedStateVars->stress.data(), ColumnMajor ),
-                  0.0,
-                  0.0,
-                  qp.managedStateVars->elasticEnergyDensity,
-                  qp.managedStateVars->dissipationDensity,
-                  qp.managedStateVars->materialStateVars.data() );
-      typename Material::AlgorithmicModuli< nDim > tangents;
-
-      if constexpr ( nDim == 2 ) {
-
-        if ( sectionType == SectionType::PlaneStrain ) {
-
-          using namespace Marmot;
-
-          typename Material::ConstitutiveResponse< 3 >
-            response3D( FastorStandardTensors::Tensor33d( qp.managedStateVars->stress.data(), Fastor::ColumnMajor ),
-                        0.0,
-                        0.0,
-                        qp.managedStateVars->elasticEnergyDensity,
-                        qp.managedStateVars->dissipationDensity,
-                        qp.managedStateVars->materialStateVars.data() );
-
-          typename Material::AlgorithmicModuli< 3 > algorithmicModuli3D;
-
-          typename Material::Deformation< 3 > deformation3D{ expandTo3D( deformation.F ), deformation.N };
-          deformation3D.F( 2, 2 ) = 1.0;
-
-          if ( hasEigenDeformation )
-            qp.material->computePlaneStrain( response3D,
-                                             algorithmicModuli3D,
-                                             deformation3D,
-                                             timeIncrement,
-                                             { qp.managedStateVars->F0_XX,
-                                               qp.managedStateVars->F0_YY,
-                                               qp.managedStateVars->F0_ZZ } );
-          else
-            qp.material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
-
-          response.tau                  = reduceTo2D< U, U >( response3D.tau );
-          response.L                    = response3D.L;
-          response.nonLocalRadius       = response3D.nonLocalRadius;
-          response.elasticEnergyDensity = response3D.elasticEnergyDensity;
-          response.dissipation          = response3D.dissipation;
-
-          tangents.dTau_dF = reduceTo2D< U, U, U, U >( algorithmicModuli3D.dTau_dF );
-          tangents.dTau_dN = reduceTo2D< U, U >( algorithmicModuli3D.dTau_dN );
-          tangents.dL_dF   = reduceTo2D< U, U >( algorithmicModuli3D.dL_dF );
-          tangents.dL_dN   = algorithmicModuli3D.dL_dN;
-
-          qp.managedStateVars->stress = Marmot::mapEigenToFastor( response3D.tau ).reshaped();
-        }
-        else {
-          throw std::runtime_error( "Plane stress is not implemented for gradient-enhanced finite strain materials." );
-        }
-      }
-      else {
-        // as for plane strain above: a geostatic initial state lives in the eigen deformation
-        if ( hasEigenDeformation )
-          qp.material->computeStress( response,
-                                      tangents,
-                                      deformation,
-                                      timeIncrement,
-                                      { qp.managedStateVars->F0_XX,
-                                        qp.managedStateVars->F0_YY,
-                                        qp.managedStateVars->F0_ZZ } );
-        else
-          qp.material->computeStress( response, tangents, deformation, timeIncrement );
-        qp.managedStateVars->stress = Marmot::mapEigenToFastor( response.tau ).reshaped();
-      }
-
-      // the materials accumulate the dissipation onto the incoming value: keep both with the state
-      qp.managedStateVars->elasticEnergyDensity = response.elasticEnergyDensity;
-      qp.managedStateVars->dissipationDensity   = response.dissipation;
+      typename Material::ConstitutiveResponse< nDim > response;
+      typename Material::AlgorithmicModuli< nDim >    tangents;
+      computeMaterialResponse( qp, F_np, nonlocalField, time, dT, response, tangents );
 
       const auto dNdx = evaluate( einsum< ji, jA >( inv( F_np ), dNdX ) );
 
@@ -503,14 +674,46 @@ namespace Marmot::Elements {
   }
 
   template < int nDim, int nNodes >
-  void GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::computeKernelsExplicit( const double*,
-                                                                                                const double*,
-                                                                                                double*,
-                                                                                                double,
-                                                                                                double )
+  void GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::computeKernelsExplicit( const double* qTotal,
+                                                                                                const double* dQ,
+                                                                                                double* rightHandSide,
+                                                                                                double  time,
+                                                                                                double  dT )
   {
-    throw std::runtime_error(
-      "Explicit kernels are not implemented for the gradient-enhanced finite strain displacement element." );
+    using namespace Fastor;
+
+    static const Tensor< double, nDim, nDim > I(
+      ( Eigen::Matrix< double, nDim, nDim >() << Eigen::Matrix< double, nDim, nDim >::Identity() ).finished().data() );
+
+    const auto qU_np = TensorMap< const double, nNodes, nDim >( qTotal );
+    const auto qN_np = TensorMap< const double, nNodes >( qTotal + idxN );
+
+    TensorMap< double, nNodes, nDim > r_U( rightHandSide );
+    TensorMap< double, nNodes >       r_N( rightHandSide + idxN );
+
+    for ( auto& qp : qps ) {
+
+      using namespace Marmot::FastorIndices;
+
+      const auto N    = Tensor< double, nNodes >( qp.N.data() );
+      const auto dNdX = Tensor< double, nDim, nNodes >( qp.dNdX.data(), ColumnMajor );
+
+      const auto F_np = evaluate( einsum< Ai, jA >( qU_np, dNdX ) + I );
+
+      const double nonlocalField = inner( N, qN_np );
+
+      // the implicit material update; its tangents are not needed
+      typename Material::ConstitutiveResponse< nDim > response;
+      typename Material::AlgorithmicModuli< nDim >    tangents;
+      computeMaterialResponse( qp, F_np, nonlocalField, time, dT, response, tangents );
+
+      const auto dNdx = evaluate( einsum< ji, jA >( inv( F_np ), dNdX ) );
+
+      const double c = response.nonLocalRadius * response.nonLocalRadius;
+
+      r_U += ( +einsum< iA, ij >( dNdx, response.tau ) ) * qp.J0xW;
+      r_N += ( N * nonlocalField + c * einsum< iA, iB, B >( dNdX, dNdX, qN_np ) - N * response.L ) * qp.J0xW;
+    }
   }
 
   template < int nDim, int nNodes >
@@ -564,7 +767,7 @@ namespace Marmot::Elements {
       break;
     }
     default: {
-      throw std::invalid_argument( "Invalid Load Type specified" );
+      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid load type" );
     }
     }
   }
@@ -594,7 +797,7 @@ namespace Marmot::Elements {
 
         for ( QuadraturePoint& qp : qps ) {
 
-          XiSized coordAtGauss = this->NB( this->N( qp.xi ) ) * this->coordinates;
+          XiSized coordAtGauss = this->NB( qp.N ) * this->coordinates;
 
           const auto geostaticNormalStressComponents = Marmot::GeostaticStress::
             getGeostaticStressFromLinearDistribution( initialConditionDefinition, coordAtGauss[1] );
@@ -634,7 +837,7 @@ namespace Marmot::Elements {
     const Eigen::Map< const Eigen::Matrix< double, nDim, 1 > > f( load );
 
     for ( const auto& qp : qps )
-      r_U += this->NB( this->N( qp.xi ) ).transpose() * f * qp.J0xW;
+      r_U += this->NB( qp.N ).transpose() * f * qp.J0xW;
   }
 
   template < int nDim, int nNodes >
@@ -658,7 +861,7 @@ namespace Marmot::Elements {
     Eigen::Map< XiSized > coordsMap( &coords[0] );
 
     for ( const auto& qp : qps ) {
-      coordsMap = this->NB( this->N( qp.xi ) ) * this->coordinates;
+      coordsMap = this->NB( qp.N ) * this->coordinates;
       listedCoords.push_back( coords );
     }
 
