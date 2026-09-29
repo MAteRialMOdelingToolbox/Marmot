@@ -379,17 +379,28 @@ namespace Marmot::ContinuumMechanics {
      * \f$\boldsymbol C\f$, and \f$J=\sqrt{\det\boldsymbol C}\f$. Unlike every other
      * potential in this file, a general (non-quadratic) Ogden exponent is not
      * expressible purely in terms of \f$\boldsymbol C\f$'s invariants, so this requires
-     * a spectral decomposition of \f$\boldsymbol C\f$ via
-     * Marmot::Math::computeEigenSystemJacobi() -- generic over scalar type (so it
-     * differentiates correctly through autodiff::dual3rd the same way the invariant-based
-     * potentials above do) and numerically safe at repeated eigenvalues (e.g.
-     * \f$\boldsymbol C=\boldsymbol I\f$ at the reference configuration, where the Jacobi
-     * sweep converges immediately since all off-diagonal entries already vanish). The
-     * decomposition is performed once and its principal stretches reused for all three
-     * terms. Reduces exactly to the isochoric part of #standardNeoHooke if a single term
-     * has \f$\alpha_p=2\f$ and the other two have \f$\mu_p=0\f$, and is exactly
-     * stress-free at \f$\boldsymbol C=\boldsymbol I\f$ for any \f$\alpha_p\f$, since every
-     * \f$\bar\lambda_i=1\f$ there.
+     * a spectral decomposition of \f$\boldsymbol C\f$ via Marmot::Math::computeEigenSystemJacobi().
+     *
+     * @warning **Known limitation, not yet fixed:** at repeated eigenvalues of
+     * \f$\boldsymbol C\f$ (most notably \f$\boldsymbol C=\boldsymbol I\f$, i.e. every
+     * reference/undeformed configuration), computeEigenSystemJacobi() converges without
+     * performing any rotation, since its sweep- and pair-level convergence checks gate
+     * purely on the PRIMAL magnitude of the off-diagonal entries (see
+     * Marmot::Math::makeReal() there). When this function is differentiated via
+     * autodiff::dual3rd (as done by #Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity),
+     * any dual/derivative content carried in an off-diagonal entry whose PRIMAL value is
+     * (numerically) zero is silently discarded rather than propagated into the
+     * eigenvalues -- even though the true isochoric energy, being a permutation-symmetric
+     * function of the full eigenvalue set, IS mathematically smooth there. In practice this
+     * means second/third derivatives (the shear stiffness/curvature) computed through this
+     * potential are silently WRONG (spuriously zero) at \f$\boldsymbol C=\boldsymbol I\f$ and
+     * near any other repeated-eigenvalue state. Fixing this correctly requires a
+     * repeated-eigenvalue-safe closed-form spectral derivative (e.g. the eigenprojector /
+     * L'Hopital-limit formulas of Miehe (1998) or de Souza Neto et al., "Computational
+     * Methods for Plasticity"), not merely relaxing the convergence gates (which was
+     * checked and found to introduce literal primal-level 0/0 divisions -- NaN -- for
+     * genuinely uncoupled off-diagonal pairs). Until that is implemented, do not rely on
+     * this potential's tangent near an isotropic/repeated-eigenvalue state.
      *
      * @tparam T Scalar type, e.g. double, autodiff::dual3rd.
      * @param C Right Cauchy-Green tensor.

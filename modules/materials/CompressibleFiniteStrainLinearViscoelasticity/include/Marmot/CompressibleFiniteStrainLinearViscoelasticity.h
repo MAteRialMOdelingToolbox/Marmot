@@ -39,16 +39,23 @@ namespace Marmot::Materials {
    *
    * @par Material parameters
    * - @b baseModel - hyperelastic base identifier (@c NeoHooke, @c Yeoh, @c MooneyRivlin,
-   *   @c ArrudaBoyce, @c Ogden)
+   *   @c PenceGouNeoHooke, @c ArrudaBoyce, @c Ogden)
    * - @b onlyShearCreep - flag to restrict viscoelastic evolution to the deviatoric part
    * - @b elasticProperties - isochoric shape coefficients of the selected base model, followed by
    *   the bulk modulus \f$\kappa\f$ as the last entry (shared volumetric term
-   *   \f$\Psi_{\rm vol}=\frac{\kappa}{8}(\ln\det\boldsymbol C)^2\f$ for every base -- see
-   *   Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::VolumetricPenaltyPotential):
+   *   \f$\Psi_{\rm vol}=\frac{\kappa}{8}(\ln\det\boldsymbol C)^2\f$ for every base except
+   *   @c PenceGouNeoHooke, which uses its own \f$K,G\f$-based convention -- see
+   *   Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::VolumetricPenaltyPotential
+   *   and Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB):
    *   \f$\mu,\kappa\f$ for @c NeoHooke; \f$C_{10},C_{20},C_{30},\kappa\f$ for @c Yeoh;
-   *   \f$C_{10},C_{01},\kappa\f$ for @c MooneyRivlin; \f$\mu,\lambda_L,\kappa\f$ for @c ArrudaBoyce
+   *   \f$C_{10},C_{01},\kappa\f$ for @c MooneyRivlin; \f$K,G\f$ for @c PenceGouNeoHooke;
+   *   \f$\mu,\lambda_L,\kappa\f$ for @c ArrudaBoyce
    *   (isochoric 8-chain shear-modulus-like parameter and locking stretch); \f$\mu_1,\alpha_1,
-   *   \mu_2,\alpha_2,\mu_3,\alpha_3,\kappa\f$ for @c Ogden (3-term Ogden moduli and exponents)
+   *   \mu_2,\alpha_2,\mu_3,\alpha_3,\kappa\f$ for @c Ogden (3-term Ogden moduli and exponents;
+   *   @warning see the known limitation documented on
+   *   Marmot::ContinuumMechanics::EnergyDensityFunctions::OgdenPotential -- its tangent is
+   *   silently wrong at the reference configuration and other repeated-eigenvalue states, so
+   *   @c onlyShearCreep @c == @c 0 with @c Ogden is currently unreliable)
    * - @b n_Maxwell - number of Maxwell elements
    * - @b tau[i], beta[i] (i = 1..n_Maxwell) - Maxwell retardation times and relative weights
    * - @b rho - density (optional; read from the last material property entry)
@@ -102,13 +109,21 @@ namespace Marmot::Materials {
 
   protected:
     /// @brief Hyperelastic base model type.
-    enum HyperelasticBase { NeoHooke = 0, Yeoh = 1, MooneyRivlin = 2, ArrudaBoyce = 4, Ogden = 5 };
+    enum HyperelasticBase {
+      NeoHooke         = 0,
+      Yeoh             = 1,
+      MooneyRivlin     = 2,
+      PenceGouNeoHooke = 3,
+      ArrudaBoyce      = 4,
+      Ogden            = 5
+    };
 
     /// @brief Mapping from hyperelastic base model to required number of elastic properties.
     const std::map< HyperelasticBase, int > nElasticPropertiesMap = {
       { NeoHooke, 2 },
       { Yeoh, 4 },
       { MooneyRivlin, 3 },
+      { PenceGouNeoHooke, 2 },
       { ArrudaBoyce, 3 },
       { Ogden, 7 },
     };

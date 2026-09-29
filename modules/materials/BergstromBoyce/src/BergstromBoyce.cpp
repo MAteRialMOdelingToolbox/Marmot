@@ -141,8 +141,10 @@ namespace Marmot::Materials {
               dTauA_dF_partial ) = StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2( PK2_A, deformation.F );
 
     Tensor3333d dPK2A_dF = einsum< ijKL, KLMN >( 2. * d2PsiA_dCdC, dC_dF );
-    Tensor3333d dTauA_dF = einsum< IJKL, KLMN >( dTauA_dPK2, dPK2A_dF ) +
-                           einsum< ijKL, KLMN >( dTauA_dF_partial, dC_dF );
+    // dTauA_dF_partial is already the direct partial derivative w.r.t. the total F (the second
+    // argument KirchhoffStressFromPK2 was called with above), so it is added directly -- it must
+    // NOT be chain-ruled through dC_dF again (that tensor maps derivatives w.r.t. C, not F).
+    Tensor3333d dTauA_dF = einsum< IJKL, KLMN >( dTauA_dPK2, dPK2A_dF ) + dTauA_dF_partial;
 
     // --- network B: evaluation on the elastic Ce, pushed forward through Fe ---
     Tensor33d   Ce, dPsiB_dCe;
@@ -191,7 +193,11 @@ namespace Marmot::Materials {
     double    rho, gammaDot;
     std::tie( N, rho, gammaDot ) = computeFlowQuantities( Fe );
     const double dGamma          = X( 9 );
-    response.dissipation += dGamma * rho;
+    // Assign, not accumulate: the solver reuses the same response object across trial Newton
+    // iterations within one increment and does not reset dissipation between them (unlike tau
+    // and elasticEnergyDensity, which it does reset), so += would make the reported dissipation
+    // depend on iteration count rather than this constitutive update alone.
+    response.dissipation = dGamma * rho;
 
     tangents.dTau_dF = dTauA_dF + dTauB_dF;
   }

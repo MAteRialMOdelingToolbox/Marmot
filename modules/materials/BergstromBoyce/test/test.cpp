@@ -595,6 +595,70 @@ void testUniaxialRelaxationWithMPSolver( const PropsVariant& variant )
   }
 }
 
+// Test 7: algorithmic tangent dTau_dF checked against central finite differences of
+// computeStress itself (holding the starting state Fv fixed across the perturbed
+// evaluations), at a nontrivial triaxial+shear deformation and a nonzero time
+// increment -- exercising both network A's direct chain rule and network B's
+// implicit-function-theorem sensitivity dFe/dF, not just the dt=0 shortcut used by
+// testInstantaneousLimit above.
+void testTangentMatchesFiniteDifference( const PropsVariant& variant )
+{
+  BergstromBoyce mat = makeMaterial( variant.props );
+
+  Tensor33d F = Spatial3D::I;
+  F( 0, 0 ) += 0.08;
+  F( 1, 1 ) -= 0.03;
+  F( 2, 2 ) -= 0.02;
+  F( 0, 1 ) = 0.03;
+  F( 1, 2 ) = -0.02;
+
+  std::array< double, 9 > sv0{};
+  mat.initializeYourself( sv0.data(), 9 );
+
+  const double dt = 2.0;
+
+  auto evalTau = [&]( const Tensor33d& F_ ) {
+    std::array< double, 9 >                   sv = sv0;
+    BergstromBoyce::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, sv.data() );
+    BergstromBoyce::AlgorithmicModuli< 3 >    tangent;
+    BergstromBoyce::Deformation< 3 >          def{ F_ };
+    BergstromBoyce::TimeIncrement             timeInc{ 0.0, dt };
+    mat.computeStress( response, tangent, def, timeInc );
+    return response.tau;
+  };
+
+  std::array< double, 9 >                   sv = sv0;
+  BergstromBoyce::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, sv.data() );
+  BergstromBoyce::AlgorithmicModuli< 3 >    tangent;
+  BergstromBoyce::Deformation< 3 >          def{ F };
+  BergstromBoyce::TimeIncrement             timeInc{ 0.0, dt };
+  mat.computeStress( response, tangent, def, timeInc );
+
+  const double h = 1e-6;
+  for ( int k = 0; k < 3; ++k ) {
+    for ( int l = 0; l < 3; ++l ) {
+      Tensor33d Fp = F, Fm = F;
+      Fp( k, l ) += h;
+      Fm( k, l ) -= h;
+      Tensor33d tauP        = evalTau( Fp );
+      Tensor33d tauM        = evalTau( Fm );
+      Tensor33d fdDTau_dFkl = ( tauP - tauM ) / ( 2. * h );
+
+      for ( int i = 0; i < 3; ++i ) {
+        for ( int j = 0; j < 3; ++j ) {
+          throwExceptionOnFailure( std::abs( tangent.dTau_dF( i, j, k, l ) - fdDTau_dFkl( i, j ) ) <
+                                     1e-4 * ( 1. + std::abs( fdDTau_dFkl( i, j ) ) ),
+                                   "I-7 [" + variant.name + "]: dTau_dF(" + std::to_string( i ) + "," +
+                                     std::to_string( j ) + "," + std::to_string( k ) + "," + std::to_string( l ) +
+                                     ") does not match finite difference (" +
+                                     std::to_string( tangent.dTau_dF( i, j, k, l ) ) + " vs. " +
+                                     std::to_string( fdDTau_dFkl( i, j ) ) + ")" );
+        }
+      }
+    }
+  }
+}
+
 int main()
 {
   std::vector< std::function< void() > > tests = {
@@ -612,6 +676,7 @@ int main()
     tests.push_back( [variant]() { testObjectivity( variant ); } );
     tests.push_back( [variant]() { testIsotropy( variant ); } );
     tests.push_back( [variant]() { testUniaxialRelaxationWithMPSolver( variant ); } );
+    tests.push_back( [variant]() { testTangentMatchesFiniteDifference( variant ); } );
   }
 
   executeTestsAndCollectExceptions( tests );

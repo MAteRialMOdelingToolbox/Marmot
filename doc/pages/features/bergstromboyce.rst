@@ -15,19 +15,21 @@ Both networks share the same selectable hyperelastic base potential
 for network A (coefficients :math:`A_1,A_2,A_3`, bulk modulus :math:`\kappa_A`) and on the
 elastic right Cauchy-Green tensor :math:`\boldsymbol{C}^{\rm e}` for network B's spring
 (coefficients :math:`B_1,B_2,B_3`, bulk modulus :math:`\kappa_B`). NeoHooke, Yeoh and
-Mooney-Rivlin share the same volumetric term and are constructed to be stress-free at
-:math:`\boldsymbol{C}=\boldsymbol{I}`:
+Mooney-Rivlin are all built on the isochoric invariants :math:`\bar I_1=I_1\det\boldsymbol{C}^{-1/3}`,
+:math:`\bar I_2=I_2\det\boldsymbol{C}^{-2/3}` and share the same volumetric penalty term, and are
+therefore all exactly stress-free at :math:`\boldsymbol{C}=\boldsymbol{I}` with no linear-shift
+correction needed:
 
 .. math::
 
-   \Psi_{\rm NeoHooke}(\boldsymbol{C}) &= \frac{\mu}{2}\left(I_1 - 3 - \ln\det\boldsymbol{C}\right)
+   \Psi_{\rm NeoHooke}(\boldsymbol{C}) &= \frac{\mu}{2}\left(\bar I_1 - 3\right)
                         + \frac{\kappa}{8}\left(\ln\det\boldsymbol{C}\right)^2
    \qquad (\text{coefficient 1} = \mu,\ 2,3\text{ unused}) \\[4pt]
-   \Psi_{\rm Yeoh}(\boldsymbol{C}) &= C_{10}(I_1-3) + C_{20}(I_1-3)^2 + C_{30}(I_1-3)^3
-                        - C_{10}\ln\det\boldsymbol{C} + \frac{\kappa}{8}\left(\ln\det\boldsymbol{C}\right)^2
+   \Psi_{\rm Yeoh}(\boldsymbol{C}) &= C_{10}(\bar I_1-3) + C_{20}(\bar I_1-3)^2 + C_{30}(\bar I_1-3)^3
+                        + \frac{\kappa}{8}\left(\ln\det\boldsymbol{C}\right)^2
    \qquad (\text{coefficients} = C_{10},C_{20},C_{30}) \\[4pt]
-   \Psi_{\rm MooneyRivlin}(\boldsymbol{C}) &= C_{10}(I_1-3) + C_{01}(I_2-3)
-                        - (C_{10}+2C_{01})\ln\det\boldsymbol{C} + \frac{\kappa}{8}\left(\ln\det\boldsymbol{C}\right)^2
+   \Psi_{\rm MooneyRivlin}(\boldsymbol{C}) &= C_{10}(\bar I_1-3) + C_{01}(\bar I_2-3)
+                        + \frac{\kappa}{8}\left(\ln\det\boldsymbol{C}\right)^2
    \qquad (\text{coefficients} = C_{10},C_{01},\ 3\text{ unused})
 
 with :math:`I_2=\tfrac12\left(I_1^2-{\rm tr}(\boldsymbol C^2)\right)`. Yeoh reduces exactly to

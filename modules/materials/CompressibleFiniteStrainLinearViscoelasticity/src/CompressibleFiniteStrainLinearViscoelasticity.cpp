@@ -68,6 +68,12 @@ namespace Marmot::Materials {
                  autodiff::dual3rd >( C_ad, elasticProperties[3] );
       };
       break;
+    case PenceGouNeoHooke:
+      energyDensityFunction = [this]( const FastorStandardTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
+        return ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialB<
+          autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1] );
+      };
+      break;
     case MooneyRivlin:
       energyDensityFunction = [this]( const FastorStandardTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
         return ContinuumMechanics::EnergyDensityFunctions::MooneyRivlinPotential<
@@ -122,9 +128,22 @@ namespace Marmot::Materials {
       double G = 0;
       switch ( hyperelasticBase ) {
       case NeoHooke: G = elasticProperties[0]; break;
-      case Yeoh:
-      case MooneyRivlin: G = 2 * elasticProperties[0]; break;
-      case ArrudaBoyce: G = elasticProperties[0]; break;
+      case Yeoh: G = 2 * elasticProperties[0]; break;
+      // reference shear modulus of the isochoric Mooney-Rivlin potential is 2*(C10+C01), not
+      // 2*C10 alone -- C01 also contributes to dPsi/dIbar1 at the reference configuration via
+      // the Ibar2 term (dIbar2/dIbar1|C=I effectively contributes an equal weight to C01 there).
+      case MooneyRivlin: G = 2 * ( elasticProperties[0] + elasticProperties[1] ); break;
+      case PenceGouNeoHooke: G = elasticProperties[1]; break;
+      // mu is NOT the infinitesimal shear modulus at finite lambdaL: G0 = 2*dPsi_iso/dIbar1
+      // evaluated at Ibar1=3 (the reference configuration), which for the closed-form
+      // Arruda-Boyce potential (see detail::arrudaBoyce8ChainEnergyAndDerivative) works out to
+      // mu/3 + 2*mu/(3*(1-1/lambdaL^2)); only in the lambdaL->infinity limit does this reduce to mu.
+      case ArrudaBoyce: {
+        const double lambdaL = elasticProperties[1];
+        const double w0      = 1. - 1. / ( lambdaL * lambdaL );
+        G                    = elasticProperties[0] / 3. + 2. * elasticProperties[0] / ( 3. * w0 );
+        break;
+      }
       case Ogden:
         G = ( elasticProperties[0] * elasticProperties[1] + elasticProperties[2] * elasticProperties[3] +
               elasticProperties[4] * elasticProperties[5] ) /
