@@ -600,6 +600,19 @@ namespace {
 
 } // namespace
 
+// the NSNI particles keep their former names ("Displacement/SQCNIxNSNI/..." etc.) as aliases of the names of the naming
+// convention: the same particle, with the same residual
+template < int nDim >
+void checkFormerNSNIName( const std::string& name, const std::string& formerName, const std::string& shape )
+{
+  Setup< nDim >         s( name, vertices( shape ), volumeArgument( shape ) );
+  Setup< nDim >         former( formerName, vertices( shape ), volumeArgument( shape ) );
+  const Eigen::VectorXd dQ = increment( s.nDof(), 0.03 );
+  throwExceptionOnFailure( s.nDof() == former.nDof() &&
+                             ( s.trial( dQ ).first - former.trial( dQ ).first ).norm() == 0.0,
+                           formerName + " is not an alias of " + name );
+}
+
 int main()
 {
   const std::vector< std::pair< std::string, std::string > > planeStrain = {
@@ -608,18 +621,18 @@ int main()
     { "DisplacementSNNI/PlaneStrain/Quad", "Quad" },
     { "DisplacementSQCNI_R/PlaneStrain/Quad", "Quad" },
     { "DisplacementSQCNI_RU/PlaneStrain/Quad", "Quad" },
-    { "Displacement/SQCNIxNSNI/PlaneStrain/Quad", "Quad" },
-    { "Displacement/SNNIxNSNI/PlaneStrain/Quad", "Quad" },
-    { "Displacement/R-SNNIxNSNI/PlaneStrain/Quad", "Quad" },
-    { "Displacement/RS-SNNIxNSNI/PlaneStrain/Quad", "Quad" },
+    { "DisplacementSQCNIxNSNI/PlaneStrain/Quad", "Quad" },
+    { "DisplacementSNNIxNSNI/PlaneStrain/Quad", "Quad" },
+    { "DisplacementSQCNI_RxNSNI/PlaneStrain/Quad", "Quad" },
+    { "DisplacementSQCNI_RUxNSNI/PlaneStrain/Quad", "Quad" },
     { "DisplacementSQCNIxSDI/PlaneStrain/Quad", "Quad" },
   };
   const std::vector< std::pair< std::string, std::string > > solid = {
     { "DisplacementSQCNI/3D/Hexa", "Hexa" },
-    { "Displacement/SQCNIxNSNI/3D/Hexa", "Hexa" },
-    { "Displacement/SNNIxNSNI/3D/Hexa", "Hexa" },
-    { "Displacement/R-SNNIxNSNI/3D/Hexa", "Hexa" },
-    { "Displacement/RS-SNNIxNSNI/3D/Hexa", "Hexa" },
+    { "DisplacementSQCNIxNSNI/3D/Hexa", "Hexa" },
+    { "DisplacementSNNIxNSNI/3D/Hexa", "Hexa" },
+    { "DisplacementSQCNI_RxNSNI/3D/Hexa", "Hexa" },
+    { "DisplacementSQCNI_RUxNSNI/3D/Hexa", "Hexa" },
     { "DisplacementSQCNIxSDI/3D/Hexa", "Hexa" },
     { "DisplacementSNNIxSDI/3D/Hexa", "Hexa" },
     { "DisplacementR-SNNIxSDI/3D/Hexa", "Hexa" },
@@ -640,6 +653,20 @@ int main()
     testFunctions.push_back( [name = name, shape = shape]() { checkInterface< 2 >( name, shape ); } );
   for ( const auto& [name, shape] : solid )
     testFunctions.push_back( [name = name, shape = shape]() { checkInterface< 3 >( name, shape ); } );
+  for ( const auto& [name, formerName] :
+        std::vector< std::pair< std::string, std::string > >{ { "DisplacementSQCNIxNSNI", "Displacement/SQCNIxNSNI" },
+                                                              { "DisplacementSNNIxNSNI", "Displacement/SNNIxNSNI" },
+                                                              { "DisplacementSQCNI_RxNSNI",
+                                                                "Displacement/R-SNNIxNSNI" },
+                                                              { "DisplacementSQCNI_RUxNSNI",
+                                                                "Displacement/RS-SNNIxNSNI" } } ) {
+    testFunctions.push_back( [name = name, formerName = formerName]() {
+      checkFormerNSNIName< 2 >( name + "/PlaneStrain/Quad", formerName + "/PlaneStrain/Quad", "Quad" );
+    } );
+    testFunctions.push_back( [name = name, formerName = formerName]() {
+      checkFormerNSNIName< 3 >( name + "/3D/Hexa", formerName + "/3D/Hexa", "Hexa" );
+    } );
+  }
 
   executeTestsAndCollectExceptions( testFunctions );
   return 0;

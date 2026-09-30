@@ -5,197 +5,70 @@ namespace Marmot::Meshfree {
 
   using namespace MarmotLibrary;
 
-  const static bool
-    DisplacementParticleSQCNIxNSNI_PlaneStrain_Quad_isRegistered = MarmotLibrary::MarmotParticleFactory::
-      registerParticle( "Displacement/SQCNIxNSNI/PlaneStrain/Quad",
-                        []( int                                                  cellID,
-                            const double*                                        nodeCoordinates,
-                            int                                                  sizeNodeCoordinates,
-                            double                                               volume,
-                            const std::string&                                   materialName,
-                            const double*                                        materialProperties,
-                            int                                                  sizeMaterialProperties,
-                            const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation )
-                          -> Marmot::Meshfree::MarmotParticle* {
-                          return new DisplacementParticleSQCNIxNSNI<
-                            2,
-                            4 >( cellID,
-                                 nodeCoordinates,
-                                 sizeNodeCoordinates,
-                                 volume,
-                                 materialName,
-                                 materialProperties,
-                                 sizeMaterialProperties,
-                                 approximation,
-                                 DisplacementParticleSQCNIxNSNI< 2,
-                                                                 4 >::SmoothingDomainUpdateType::DeformationGradient );
-                        } );
+  namespace {
 
-  const static bool DisplacementParticleSQCNIxNSNI_3D_Hexa_isRegistered = MarmotLibrary::MarmotParticleFactory::
-    registerParticle( "Displacement/SQCNIxNSNI/3D/Hexa",
-                      []( int                                                  cellID,
-                          const double*                                        nodeCoordinates,
-                          int                                                  sizeNodeCoordinates,
-                          double                                               volume,
-                          const std::string&                                   materialName,
-                          const double*                                        materialProperties,
-                          int                                                  sizeMaterialProperties,
-                          const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation )
-                        -> Marmot::Meshfree::MarmotParticle* {
-                        return new DisplacementParticleSQCNIxNSNI<
-                          3,
-                          8 >( cellID,
-                               nodeCoordinates,
-                               sizeNodeCoordinates,
-                               volume,
-                               materialName,
-                               materialProperties,
-                               sizeMaterialProperties,
-                               approximation,
-                               DisplacementParticleSQCNIxNSNI< 3, 8 >::SmoothingDomainUpdateType::DeformationGradient );
-                      } );
+    template < int nDim, int nVertices >
+    using Particle = DisplacementParticleSQCNIxNSNI< nDim, nVertices >;
 
-  const static bool DisplacementParticleSNNIxNSNI_PlaneStrain_Quad_isRegistered = MarmotLibrary::MarmotParticleFactory::
-    registerParticle( "Displacement/SNNIxNSNI/PlaneStrain/Quad",
-                      []( int                                                  cellID,
-                          const double*                                        nodeCoordinates,
-                          int                                                  sizeNodeCoordinates,
-                          double                                               volume,
-                          const std::string&                                   materialName,
-                          const double*                                        materialProperties,
-                          int                                                  sizeMaterialProperties,
-                          const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation )
-                        -> Marmot::Meshfree::MarmotParticle* {
-                        return new DisplacementParticleSQCNIxNSNI< 2, 4 >( cellID,
-                                                                           nodeCoordinates,
-                                                                           sizeNodeCoordinates,
-                                                                           volume,
-                                                                           materialName,
-                                                                           materialProperties,
-                                                                           sizeMaterialProperties,
-                                                                           approximation,
-                                                                           DisplacementParticleSQCNIxNSNI< 2, 4 >::
-                                                                             SmoothingDomainUpdateType::None );
-                      } );
+    template < int nDim, int nVertices, typename Particle< nDim, nVertices >::SmoothingDomainUpdateType updateType >
+    MarmotParticle* create( int                                cellID,
+                            const double*                      nodeCoordinates,
+                            int                                sizeNodeCoordinates,
+                            double                             volume,
+                            const std::string&                 materialName,
+                            const double*                      materialProperties,
+                            int                                sizeMaterialProperties,
+                            const MarmotMeshfreeApproximation& approximation )
+    {
+      return new Particle< nDim, nVertices >( cellID,
+                                              nodeCoordinates,
+                                              sizeNodeCoordinates,
+                                              volume,
+                                              materialName,
+                                              materialProperties,
+                                              sizeMaterialProperties,
+                                              approximation,
+                                              updateType );
+    }
 
-  const static bool DisplacementParticleSNNIxNSNI_3D_Hexa_isRegistered = MarmotLibrary::MarmotParticleFactory::
-    registerParticle( "Displacement/SNNIxNSNI/3D/Hexa",
-                      []( int                                                  cellID,
-                          const double*                                        nodeCoordinates,
-                          int                                                  sizeNodeCoordinates,
-                          double                                               volume,
-                          const std::string&                                   materialName,
-                          const double*                                        materialProperties,
-                          int                                                  sizeMaterialProperties,
-                          const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation )
-                        -> Marmot::Meshfree::MarmotParticle* {
-                        return new DisplacementParticleSQCNIxNSNI< 3, 8 >( cellID,
-                                                                           nodeCoordinates,
-                                                                           sizeNodeCoordinates,
-                                                                           volume,
-                                                                           materialName,
-                                                                           materialProperties,
-                                                                           sizeMaterialProperties,
-                                                                           approximation,
-                                                                           DisplacementParticleSQCNIxNSNI< 3, 8 >::
-                                                                             SmoothingDomainUpdateType::None );
-                      } );
+    /// register under the name of the naming convention <Formulation><IntegrationScheme>/<Dimension>/<Shape> (as all
+    /// other particles) and under the former name of the displacement NSNI particles, kept for existing input files
+    bool registerWithFormerName( const std::string&                             name,
+                                 const std::string&                             formerName,
+                                 MarmotParticleFactory::particleFactoryFunction factoryFunction )
+    {
+      return MarmotParticleFactory::registerParticle( name, factoryFunction ) &&
+             MarmotParticleFactory::registerParticle( formerName, factoryFunction );
+    }
 
-  const static bool
-    DisplacementParticleSQCNIxNSNI_R_PlaneStrain_Quad_isRegistered = MarmotLibrary::MarmotParticleFactory::
-      registerParticle( "Displacement/R-SNNIxNSNI/PlaneStrain/Quad",
-                        []( int                                                  cellID,
-                            const double*                                        nodeCoordinates,
-                            int                                                  sizeNodeCoordinates,
-                            double                                               volume,
-                            const std::string&                                   materialName,
-                            const double*                                        materialProperties,
-                            int                                                  sizeMaterialProperties,
-                            const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation )
-                          -> Marmot::Meshfree::MarmotParticle* {
-                          return new DisplacementParticleSQCNIxNSNI<
-                            2,
-                            4 >( cellID,
-                                 nodeCoordinates,
-                                 sizeNodeCoordinates,
-                                 volume,
-                                 materialName,
-                                 materialProperties,
-                                 sizeMaterialProperties,
-                                 approximation,
-                                 DisplacementParticleSQCNIxNSNI< 2, 4 >::SmoothingDomainUpdateType::RotationOnly );
-                        } );
+    using U2 = Particle< 2, 4 >::SmoothingDomainUpdateType;
+    using U3 = Particle< 3, 8 >::SmoothingDomainUpdateType;
 
-  const static bool DisplacementParticle_R_SNNIxNSNI_3D_Hexa_isRegistered = MarmotLibrary::MarmotParticleFactory::
-    registerParticle( "Displacement/R-SNNIxNSNI/3D/Hexa",
-                      []( int                                                  cellID,
-                          const double*                                        nodeCoordinates,
-                          int                                                  sizeNodeCoordinates,
-                          double                                               volume,
-                          const std::string&                                   materialName,
-                          const double*                                        materialProperties,
-                          int                                                  sizeMaterialProperties,
-                          const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation )
-                        -> Marmot::Meshfree::MarmotParticle* {
-                        return new DisplacementParticleSQCNIxNSNI< 3, 8 >( cellID,
-                                                                           nodeCoordinates,
-                                                                           sizeNodeCoordinates,
-                                                                           volume,
-                                                                           materialName,
-                                                                           materialProperties,
-                                                                           sizeMaterialProperties,
-                                                                           approximation,
-                                                                           DisplacementParticleSQCNIxNSNI< 3, 8 >::
-                                                                             SmoothingDomainUpdateType::RotationOnly );
-                      } );
+    const static bool registered = registerWithFormerName( "DisplacementSQCNIxNSNI/PlaneStrain/Quad",
+                                                           "Displacement/SQCNIxNSNI/PlaneStrain/Quad",
+                                                           create< 2, 4, U2::DeformationGradient > ) &&
+                                   registerWithFormerName( "DisplacementSQCNIxNSNI/3D/Hexa",
+                                                           "Displacement/SQCNIxNSNI/3D/Hexa",
+                                                           create< 3, 8, U3::DeformationGradient > ) &&
+                                   registerWithFormerName( "DisplacementSNNIxNSNI/PlaneStrain/Quad",
+                                                           "Displacement/SNNIxNSNI/PlaneStrain/Quad",
+                                                           create< 2, 4, U2::None > ) &&
+                                   registerWithFormerName( "DisplacementSNNIxNSNI/3D/Hexa",
+                                                           "Displacement/SNNIxNSNI/3D/Hexa",
+                                                           create< 3, 8, U3::None > ) &&
+                                   registerWithFormerName( "DisplacementSQCNI_RxNSNI/PlaneStrain/Quad",
+                                                           "Displacement/R-SNNIxNSNI/PlaneStrain/Quad",
+                                                           create< 2, 4, U2::RotationOnly > ) &&
+                                   registerWithFormerName( "DisplacementSQCNI_RxNSNI/3D/Hexa",
+                                                           "Displacement/R-SNNIxNSNI/3D/Hexa",
+                                                           create< 3, 8, U3::RotationOnly > ) &&
+                                   registerWithFormerName( "DisplacementSQCNI_RUxNSNI/PlaneStrain/Quad",
+                                                           "Displacement/RS-SNNIxNSNI/PlaneStrain/Quad",
+                                                           create< 2, 4, U2::RotationAndPrincipalStretch > ) &&
+                                   registerWithFormerName( "DisplacementSQCNI_RUxNSNI/3D/Hexa",
+                                                           "Displacement/RS-SNNIxNSNI/3D/Hexa",
+                                                           create< 3, 8, U3::RotationAndPrincipalStretch > );
 
-  const static bool DisplacementParticle_RS_SNNIxNSNIPlaneStrain_Quad_isRegistered = MarmotLibrary::
-    MarmotParticleFactory::registerParticle( "Displacement/RS-SNNIxNSNI/PlaneStrain/Quad",
-                                             []( int                cellID,
-                                                 const double*      nodeCoordinates,
-                                                 int                sizeNodeCoordinates,
-                                                 double             volume,
-                                                 const std::string& materialName,
-                                                 const double*      materialProperties,
-                                                 int                sizeMaterialProperties,
-                                                 const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation )
-                                               -> Marmot::Meshfree::MarmotParticle* {
-                                               return new DisplacementParticleSQCNIxNSNI<
-                                                 2,
-                                                 4 >( cellID,
-                                                      nodeCoordinates,
-                                                      sizeNodeCoordinates,
-                                                      volume,
-                                                      materialName,
-                                                      materialProperties,
-                                                      sizeMaterialProperties,
-                                                      approximation,
-                                                      DisplacementParticleSQCNIxNSNI< 2, 4 >::
-                                                        SmoothingDomainUpdateType::RotationAndPrincipalStretch );
-                                             } );
-
-  const static bool DisplacementParticle_RS_SNNIxNSNI_3D_Hexa_isRegistered = MarmotLibrary::MarmotParticleFactory::
-    registerParticle( "Displacement/RS-SNNIxNSNI/3D/Hexa",
-                      []( int                                                  cellID,
-                          const double*                                        nodeCoordinates,
-                          int                                                  sizeNodeCoordinates,
-                          double                                               volume,
-                          const std::string&                                   materialName,
-                          const double*                                        materialProperties,
-                          int                                                  sizeMaterialProperties,
-                          const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation )
-                        -> Marmot::Meshfree::MarmotParticle* {
-                        return new DisplacementParticleSQCNIxNSNI< 3, 8 >( cellID,
-                                                                           nodeCoordinates,
-                                                                           sizeNodeCoordinates,
-                                                                           volume,
-                                                                           materialName,
-                                                                           materialProperties,
-                                                                           sizeMaterialProperties,
-                                                                           approximation,
-                                                                           DisplacementParticleSQCNIxNSNI< 3, 8 >::
-                                                                             SmoothingDomainUpdateType::
-                                                                               RotationAndPrincipalStretch );
-                      } );
+  } // namespace
 
 } // namespace Marmot::Meshfree

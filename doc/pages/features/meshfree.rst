@@ -79,10 +79,9 @@ The integration schemes of the particles (SQCNI, SNNI, NSNI, SDI) and the correc
 :doc:`meshfreeparticles`; the registered names of each formulation are listed on its pages.
 
 .. note::
-   Some particle names of the displacement formulation carry an additional slash between the formulation and the
-   integration scheme (``Displacement/SQCNIxNSNI/PlaneStrain/Quad``, ``Displacement/SNNIxNSNI/...``), unlike the
-   other schemes (``DisplacementSQCNI/...``, ``DisplacementSQCNIxSDI/...``). The names are kept as registered, since
-   hosts refer to them; see :doc:`displacementparticle`.
+   The displacement NSNI particles were formerly registered as ``Displacement/SQCNIxNSNI/...`` (with a slash after
+   the formulation) and ``Displacement/R-SNNIxNSNI/...``; these names remain as aliases, see
+   :doc:`displacementparticle`.
 
 Usage with EdelweissMeshfree
 ----------------------------
