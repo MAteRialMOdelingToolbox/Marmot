@@ -41,16 +41,51 @@
 namespace Marmot::Meshfree {
 
   /**
-   * @brief A generic particle class for the subdomain integration (SDI) method.
+   * @class Marmot::Meshfree::GenericSDIParticle
+   * @brief A generic, physics-independent base class for particles with subdomain integration (SDI).
    *
-   * This class extends MarmotParticle and provides common functionalities for
-   * particles used in meshfree methods, particularly those involving
-   * smoothing domains and a meshfree approximation.
-   * It handles particle domain management, shape function evaluation,
-   * and state variable management for central displacement and deformation gradient.
+   * The particle domain (a ParticleDomain, e.g., a quadrilateral or a hexahedron) is uniformly subdivided once into
+   * @f$ 2^{n_{\text{dim}}} @f$ subdomains (ParticleDomain::uniformSubdivided()). Each subdomain @f$ s @f$ is an
+   * integration point of its own: the derived class attaches a material point to it and integrates the weak form as
+   * a sum over the subdomains. The shape functions of a subdomain are evaluated at its center, and their gradients
+   * are smoothed over its smoothing domain @f$ \Omega_s @f$ by the divergence theorem, with one point (the face
+   * center @f$ \boldsymbol{Y}_f @f$) per face @f$ f @f$ and the boundary surface vector
+   * @f$ \boldsymbol{n}_f\,dA_f @f$,
+   * @f[
+   *   \frac{\partial N_A}{\partial Y_i}\bigg|_s \approx \frac{1}{|\Omega_s|} \sum_f N_A(\boldsymbol{Y}_f)\,
+   *   n_{f,i}\, dA_f
+   * @f]
+   * (see _smoothDerivativeShapeFunctionsForParticleDomain()). The test functions start as copies of the trial
+   * functions and are changed only by the VCI correction.
    *
-   * @tparam nDim The number of dimensions (e.g., 2 for 2D, 3 for 3D).
-   * @tparam nVertices The number of vertices defining the particle's geometry.
+   * The particle as a whole moves with its **center**: in computePhysicsKernels(), the displacement increment and
+   * the deformation gradient increment of the center are computed from the shape functions of the main domain,
+   * @f[
+   *   \Delta\boldsymbol{u}_c = \sum_B N_B\, \Delta\boldsymbol{q}_B, \qquad
+   *   \Delta\boldsymbol{F}_c = \boldsymbol{I} + \sum_B \Delta\boldsymbol{q}_B \otimes
+   *   \frac{\partial N_B}{\partial \boldsymbol{Y}},
+   * @f]
+   * and in acceptStateAndPosition() the total central deformation gradient
+   * @f$ \boldsymbol{F}_c \leftarrow \Delta\boldsymbol{F}_c\, \boldsymbol{F}_c @f$ and the total center displacement
+   * @f$ \boldsymbol{u}_c @f$ move the main domain and all subdomains (ParticleDomain::acceptStateAndPosition()).
+   *
+   * **State variable layout.** The block given to assignStateVars() is
+   * | offset | size | content |
+   * |---|---|---|
+   * | 0 | nDim | center displacement @f$ \boldsymbol{u}_c @f$ |
+   * | nDim | nDim * nDim | central deformation gradient @f$ \boldsymbol{F}_c @f$ (column-major) |
+   * | nDim + nDim * nDim | nDim * nDim | its increment @f$ \Delta\boldsymbol{F}_c @f$ (column-major) |
+   * | paddedStateVarSize(nStateVarsCenter) | ... | the states of the subdomains (derived class) |
+   *
+   * The center block of nStateVarsCenter doubles is padded to a multiple of 8 doubles (64 bytes), and derived
+   * classes pad the block of every subdomain in the same way (paddedStateVarSize()), so that each subdomain block
+   * starts at a multiple of 8 doubles from the start of the particle block.
+   *
+   * Derived classes implement the physics on the subdomains (the ...OnSubdomains() methods, getSubdomainVolume(),
+   * the loads and the VCI boundary integral).
+   *
+   * @tparam nDim The number of dimensions (2 or 3).
+   * @tparam nVertices The number of vertices defining the particle's geometry (4 or 8).
    */
   template < int nDim, int nVertices >
   class GenericSDIParticle : public MarmotParticle {
@@ -69,39 +104,47 @@ namespace Marmot::Meshfree {
     using ParticleDomainType = ParticleDomain< nDim, nVertices >; ///< Alias for the particle domain type.
 
     /**
-     * @brief Structure to hold shape functions and their gradients for a subdomain.
+     * @struct SubDomainShapeFunctions
+     * @brief Shape functions, test functions and VCI basis of one subdomain.
      */
     struct SubDomainShapeFunctions {
-      Eigen::MatrixXd N;          ///< Shape function values.
-      Eigen::MatrixXd dN_dY;      ///< Shape function gradients with respect to reference coordinates.
+      Eigen::MatrixXd N;          ///< Shape function values at the subdomain center (1 x nNodes).
+      Eigen::MatrixXd dN_dY;      ///< Smoothed shape function gradients with respect to the reference intermediate
+                                  ///< coordinates (nDim x nNodes).
 
       Eigen::MatrixXd T;          ///< Test function values (initially same as N).
-      Eigen::MatrixXd dT_dY;      ///< Test function gradients (initially same as dN_dY).
+      Eigen::MatrixXd dT_dY;      ///< Test function gradients (dN_dY plus the VCI correction).
 
-      Eigen::VectorXd P;          ///< Monomial basis function values.
-      Eigen::MatrixXd P_Gradient; ///< Monomial basis function gradients.
+      Eigen::VectorXd P;          ///< VCI monomial basis at the subdomain center.
+      Eigen::MatrixXd P_Gradient; ///< Gradient of the VCI monomial basis at the subdomain center
+                                  ///< (nConstraints x nDim).
     };
 
-    /// @brief Static constant for the number of state variables per particle.
-    /// This includes vertex displacements and center displacement.
+    /// @brief Size of vertex displacements plus center displacement (not used by GenericSDIParticle itself).
     constexpr static int nStateVarsParticle = nDim * nVertices + nDim; // vertex displacements + center displacement
-    /// center displacement, central deformation gradient and its increment
+    /// @brief Number of state variables of the center: center displacement, central deformation gradient and its
+    /// increment (unpadded).
     constexpr static int nStateVarsCenter = nDim + 2 * nDim * nDim;
 
-    int _elementID;       ///< The ID of the element this particle belongs to.
+    int _elementID;       ///< The number (ID) of the particle.
     int _nNodes;          ///< The number of nodes (kernel functions) influencing this particle.
-    int _vciOrder;        ///< The order of the VCI (Variational Consistent Integration) polynomial basis.
+    int _vciOrder;        ///< The order of the VCI (Variationally Consistent Integration) polynomial basis.
     int _nVCIConstraints; ///< The number of VCI constraints, derived from _vciOrder.
 
     const MarmotMeshfreeApproximation& _meshfreeApproximation;  ///< Reference to the meshfree approximation object.
 
-    ParticleDomainType                     _particleDomainMain; ///< The main smoothing domain of the particle.
+    ParticleDomainType                     _particleDomainMain; ///< Main domain (geometry, smoothing domain).
     std::vector< SubDomainShapeFunctions > _subDomainShapeFunctions; ///< Shape functions for each subdomain.
-    std::vector< ParticleDomainType >      _subDomains;              ///< Subdomains for integration.
+    std::vector< ParticleDomainType >      _subDomains;              ///< Subdomains (uniform subdivision).
 
-    Eigen::Map< CoordinatesSized > _centerDisplacement;              ///< Mapped central displacement vector.
-    Eigen::Map< JacobianSized >    _centralDeformationGradient;      ///< Mapped central deformation gradient tensor.
-    Eigen::Map< JacobianSized >    _centralDeformationGradientDelta; ///< Mapped central deformation gradient tensor.
+    /// Total center displacement @f$ \boldsymbol{u}_c @f$ (mapped state variables).
+    Eigen::Map< CoordinatesSized > _centerDisplacement;
+    /// Total central deformation gradient @f$ \boldsymbol{F}_c @f$ of the last accepted state (mapped state
+    /// variables).
+    Eigen::Map< JacobianSized > _centralDeformationGradient;
+    /// Central deformation gradient increment @f$ \Delta\boldsymbol{F}_c @f$ with respect to the last accepted
+    /// state (mapped state variables).
+    Eigen::Map< JacobianSized > _centralDeformationGradientDelta;
 
     KernelFunctionVector _assignedKernelFunctions; ///< Pointers to the kernel functions assigned to this particle.
 
@@ -115,9 +158,10 @@ namespace Marmot::Meshfree {
                                                                                      ///< update type.
 
     /**
-     * @brief Sets multiple properties of the particle.
-     * @param properties Pointer to an array of property values.
-     * @param nProperties The number of properties in the array.
+     * @brief Sets multiple properties of the particle, in the order of getPropertyNames().
+     * @param[in] properties Pointer to an array of property values.
+     * @param[in] nProperties The number of properties in the array.
+     * @throws std::invalid_argument if @p nProperties does not match the number of property names.
      */
     virtual void setProperties( const double* properties, int nProperties ) override
     {
@@ -133,8 +177,9 @@ namespace Marmot::Meshfree {
     };
     /**
      * @brief Sets a single property of the particle by name.
-     * @param propertyName The name of the property to set.
-     * @param property Pointer to the value of the property.
+     * @details "VCI order" is handled here (setVCIOrder()), all other names are passed to setPropertyOnSubdomains().
+     * @param[in] propertyName The name of the property to set.
+     * @param[in] property Pointer to the value of the property.
      */
     virtual void setProperty( const std::string& propertyName, const double* property ) override
     {
@@ -148,15 +193,15 @@ namespace Marmot::Meshfree {
     };
 
     /**
-     * @brief Sets a property on all subdomains.
-     * @param propertyName The name of the property.
-     * @param property Pointer to the property value.
+     * @brief Sets a property on all subdomains (physics-specific properties).
+     * @param[in] propertyName The name of the property.
+     * @param[in] property Pointer to the property value.
      */
     virtual void setPropertyOnSubdomains( const std::string& propertyName, const double* property ) = 0;
 
     /**
      * @brief Get the names of the properties supported by this particle.
-     * @return A vector of strings containing the property names.
+     * @return "VCI order" followed by getSubdomainPropertyNames().
      */
     virtual std::vector< std::string > getPropertyNames() const override
     {
@@ -173,15 +218,15 @@ namespace Marmot::Meshfree {
     virtual std::vector< std::string > getSubdomainPropertyNames() const = 0;
 
     /**
-     * @brief Retrieves the current coordinates of the particle's vertices.
-     * @param coordinates Pointer to an array where the vertex coordinates will be stored.
+     * @brief Retrieves the coordinates of the particle's vertices (deformed geometry of the main domain).
+     * @param[out] coordinates Pointer to an array of nDim * nVertices values.
      */
     virtual void getVertexCoordinates( double* coordinates ) const override;
 
     /**
-     * @brief Retrieves the coordinates of the center of a specific face.
-     * @param faceID The ID of the face.
-     * @param coordinates Pointer to an array where the face center coordinates will be stored.
+     * @brief Retrieves the coordinates of the center of a specific face (deformed geometry of the main domain).
+     * @param[in] faceID The ID of the face (1-based).
+     * @param[out] coordinates Pointer to an array where the face center coordinates will be stored.
      */
     virtual void getFaceCoordinates( int faceID, double* coordinates ) const override final
     {
@@ -190,8 +235,8 @@ namespace Marmot::Meshfree {
     }
 
     /**
-     * @brief Retrieves the coordinates of the particle's center.
-     * @param coordinates Pointer to an array where the center coordinates will be stored.
+     * @brief Retrieves the coordinates of the particle's center (centroid of the deformed geometry).
+     * @param[out] coordinates Pointer to an array where the center coordinates will be stored.
      */
     virtual void getCenterCoordinates( double* coordinates ) const override final
     {
@@ -200,8 +245,9 @@ namespace Marmot::Meshfree {
     }
 
     /**
-     * @brief Retrieves the coordinates of the vertices for visualization purposes.
-     * @param coordinates Pointer to an array where the visualization vertex coordinates will be stored.
+     * @brief Retrieves the coordinates of the vertices for visualization purposes (same as
+     *        getVertexCoordinates()).
+     * @param[out] coordinates Pointer to an array where the visualization vertex coordinates will be stored.
      */
     virtual void getVisualizationVertexCoordinates( double* coordinates ) const override
     {
@@ -215,15 +261,15 @@ namespace Marmot::Meshfree {
     virtual int getNumberOfVertices() const override final { return nVertices; };
 
     /**
-     * @brief Calculates the volume of a given subdomain.
-     * @param subdomain The particle domain for which to calculate the volume.
+     * @brief Calculates the volume of a given subdomain, the integration weight of the VCI integrals.
+     * @param[in] subdomain The particle domain (an element of _subDomains) for which to calculate the volume.
      * @return The volume of the subdomain.
      */
     virtual double getSubdomainVolume( const ParticleDomainType& subdomain ) const = 0;
 
     /**
-     * @brief Initializes the particle's state, setting displacements to zero and
-     *        deformation gradient to identity.
+     * @brief Initializes the particle's state, setting the center displacement to zero and the central
+     *        deformation gradient and its increment to identity, then initializes the subdomains.
      */
     void initializeYourself() override
     {
@@ -246,13 +292,13 @@ namespace Marmot::Meshfree {
     virtual std::string getParticleShape() const override final { return _particleDomainMain.getParticleShape(); };
 
     /**
-     * @brief Constructor for GenericSDIParticle.
-     * @param elementID The ID of the element this particle belongs to.
-     * @param vertexCoordinates Pointer to an array of initial vertex coordinates.
-     * @param nVertexCoordinates The number of vertex coordinates (nDim * nVertices).
-     * @param volume The initial volume of the particle.
-     * @param approximation Reference to the meshfree approximation object.
-     * @param smoothingVolumeUpdateType The type of smoothing domain update to use.
+     * @brief Constructor for GenericSDIParticle; builds the main domain and its uniform subdivision.
+     * @param[in] elementID The number (ID) of the particle.
+     * @param[in] vertexCoordinates Pointer to an array of initial vertex coordinates.
+     * @param[in] nVertexCoordinates The number of vertex coordinates (nDim * nVertices).
+     * @param[in] volume Unused; the volume follows from the vertex coordinates.
+     * @param[in] approximation Reference to the meshfree approximation object; it must outlive the particle.
+     * @param[in] smoothingVolumeUpdateType The type of smoothing domain update to use.
      */
     GenericSDIParticle( int                                elementID,
                         const double*                      vertexCoordinates,
@@ -262,14 +308,17 @@ namespace Marmot::Meshfree {
                         const SmoothingDomainUpdateType    smoothingVolumeUpdateType );
 
     /**
-     * @brief Assigns a vector of meshfree kernel functions to the particle.
-     * @param kernelFunctions A vector of pointers to the kernel functions.
+     * @brief Assigns the meshfree kernel functions and evaluates, for every subdomain, N at its center, the
+     *        smoothed gradients dN_dY, the test functions (T = N, dT_dY = dN_dY) and the VCI basis at its center.
+     * @param[in] kernelFunctions A vector of pointers to the kernel functions.
      */
     virtual void assignMeshfreeKernelFunctions( const KernelFunctionVector& kernelFunctions ) override;
 
     /**
      * @brief Accepts the current incremental state and updates the particle's position and deformation.
-     *        This typically involves adding incremental displacements and updating the deformation gradient.
+     * @details @f$ \boldsymbol{F}_c \leftarrow \Delta\boldsymbol{F}_c \boldsymbol{F}_c @f$, the increment is reset
+     *          to identity, the main domain and all subdomains are moved with @f$ \boldsymbol{F}_c @f$ and the
+     *          center displacement, and finally acceptStateAndPositionOnSubdomains() is called.
      */
     virtual void acceptStateAndPosition() override
     {
@@ -284,13 +333,13 @@ namespace Marmot::Meshfree {
     };
 
     /**
-     * @brief Accepts the current incremental state and updates the subdomains' positions and deformations.
+     * @brief Accepts the state of the subdomains (e.g., of their material points).
      */
     virtual void acceptStateAndPositionOnSubdomains() = 0;
 
     /**
      * @brief Get the total number of required state variables for this particle.
-     * @return The number of required state variables.
+     * @return The padded size of the center block plus getNumberOfRequiredStateVarsOnSubdomains().
      */
     virtual int getNumberOfRequiredStateVars() const override
     {
@@ -303,20 +352,28 @@ namespace Marmot::Meshfree {
      * The blocks of the particle itself and of every subdomain start at such a multiple, so that the state of each
      * subdomain is aligned as the state of a stand-alone material point: Fastor may use aligned SIMD stores on the
      * tensor maps into it (seen with GCC 14.2 -O3, a segmentation fault for a block starting at an odd double).
+     * The offsets are relative to the start of the particle's block, so the absolute alignment also requires the
+     * host framework to pass an aligned block.
+     * @param[in] n The unpadded number of state variables.
+     * @return @p n rounded up to a multiple of 8.
      */
     static constexpr int paddedStateVarSize( int n ) { return ( n + 7 ) / 8 * 8; }
 
     /**
      * @brief Get the number of required state variables for the subdomains.
-     * @return The number of required state variables for subdomains.
+     * @return The number of required state variables for subdomains, each subdomain block padded with
+     *         paddedStateVarSize().
      */
     virtual int getNumberOfRequiredStateVarsOnSubdomains() const = 0;
 
     /**
      * @brief Assigns a block of memory to store the particle's state variables.
-     *        This maps the internal Eigen::Map members to the provided memory block.
-     * @param stateVars Pointer to the memory block.
-     * @param nStateVars The total number of state variables available in the block.
+     *        This maps the internal Eigen::Map members to the provided memory block (layout: see the class
+     *        documentation) and passes the rest, starting at paddedStateVarSize(nStateVarsCenter), to
+     *        assignStateVarsOnSubdomains().
+     * @param[in] stateVars Pointer to the memory block.
+     * @param[in] nStateVars The total number of state variables available in the block.
+     * @throws std::runtime_error if the block is smaller than the padded center block.
      */
     void assignStateVars( double* stateVars, int nStateVars ) override final
     {
@@ -340,15 +397,17 @@ namespace Marmot::Meshfree {
 
     /**
      * @brief Assigns a block of memory to store the subdomains' state variables.
-     * @param stateVars Pointer to the memory block for subdomains.
-     * @param nStateVars The total number of state variables available for subdomains.
+     * @param[in] stateVars Pointer to the memory block for subdomains.
+     * @param[in] nStateVars The total number of state variables available for subdomains.
      */
     virtual void assignStateVarsOnSubdomains( double* stateVars, int nStateVars ) = 0;
 
     /**
      * @brief Provides a view into a specific state variable.
-     * @param stateName The name of the state variable (e.g., "vertex displacements").
-     * @param qp The index of the quadrature point or subdomain (unused for "vertex displacements").
+     * @details "vertex displacements" and "smoothing vertex displacements" (nDim * nVertices values each) refer to
+     *          the main domain; all other names are passed to getStateViewOnSubdomains().
+     * @param[in] stateName The name of the state variable (e.g., "vertex displacements").
+     * @param[in] qp The index of the subdomain (unused for the vertex displacements).
      * @return A StateView object providing access to the state variable data.
      */
     virtual StateView getStateView( const std::string& stateName, int qp ) const override final
@@ -366,19 +425,23 @@ namespace Marmot::Meshfree {
 
     /**
      * @brief Provides a view into a specific state variable for a given subdomain.
-     * @param stateName The name of the state variable.
-     * @param subdomainIndex The index of the subdomain.
+     * @param[in] stateName The name of the state variable.
+     * @param[in] subdomainIndex The index of the subdomain.
      * @return A StateView object providing access to the state variable data.
      */
     virtual StateView getStateViewOnSubdomains( const std::string& stateName, int subdomainIndex ) const = 0;
 
     /**
      * @brief Computes the physics kernels (internal forces and their derivatives) for the particle.
-     * @param dQ Incremental nodal displacements.
-     * @param fInt Internal force vector.
-     * @param dFInt_ddQ Stiffness matrix (derivative of internal forces with respect to incremental displacements).
-     * @param timeNew The current simulation time.
-     * @param dT The time step size.
+     * @details Updates the center kinematics from the main domain (the center displacement is incremented by
+     *          @f$ \sum_B N_B \Delta\boldsymbol{q}_B @f$ and @f$ \Delta\boldsymbol{F}_c @f$ is set, see the class
+     *          documentation), then calls computePhysicsKernelsOnSubdomains().
+     * @param[in] dQ Incremental nodal displacements (the first nDim dofs of each node are used).
+     * @param[in,out] fInt Internal force vector.
+     * @param[in,out] dFInt_ddQ Stiffness matrix (derivative of internal forces with respect to incremental
+     * displacements).
+     * @param[in] timeNew The current simulation time.
+     * @param[in] dT The time step size.
      */
     virtual void computePhysicsKernels( const double*           dQ,
                                         double*                 fInt,
@@ -388,11 +451,12 @@ namespace Marmot::Meshfree {
 
     /**
      * @brief Computes the physics kernels for all subdomains.
-     * @param dQ Incremental nodal displacements.
-     * @param fInt Internal force vector.
-     * @param dFInt_ddQ Stiffness matrix (derivative of internal forces with respect to incremental displacements).
-     * @param timeNew The current simulation time.
-     * @param dT The time step size.
+     * @param[in] dQ Incremental nodal displacements.
+     * @param[in,out] fInt Internal force vector.
+     * @param[in,out] dFInt_ddQ Stiffness matrix (derivative of internal forces with respect to incremental
+     * displacements).
+     * @param[in] timeNew The current simulation time.
+     * @param[in] dT The time step size.
      */
     virtual void computePhysicsKernelsOnSubdomains( const double* dQ,
                                                     double*       fInt,
@@ -402,8 +466,10 @@ namespace Marmot::Meshfree {
 
     /**
      * @brief Retrieves the intermediate configuration boundary vector and evaluation point for a given face.
-     * @param boundaryFaceID The ID of the boundary face.
-     * @param particleDomain The particle domain to consider.
+     * @details Both are taken from the deformed geometry of @p particleDomain: the boundary surface vector
+     *          @f$ \boldsymbol{N}\,dA_Y @f$ and the face center.
+     * @param[in] boundaryFaceID The ID of the boundary face (1-based).
+     * @param[in] particleDomain The particle domain to consider.
      * @return A tuple containing the boundary surface vector (TensorD) and the evaluation point (TensorD).
      */
     std::tuple< TensorD, TensorD > getIntermediateConfigurationBoundaryVector(
@@ -418,8 +484,8 @@ namespace Marmot::Meshfree {
 
     /**
      * @brief Computes the interpolation vector (shape functions) at a given coordinate.
-     * @param vec Pointer to an array where the interpolation vector will be stored.
-     * @param coordinates Pointer to the coordinates at which to evaluate.
+     * @param[out] vec Pointer to an array where the interpolation vector will be stored.
+     * @param[in] coordinates Pointer to the coordinates at which to evaluate.
      */
     virtual void getInterpolationVector( double* vec, const double* coordinates ) const override final
     {
@@ -433,10 +499,11 @@ namespace Marmot::Meshfree {
     virtual int vci_getNumberOfConstraints() override final { return _nVCIConstraints; }
 
     /**
-     * @brief Computes the boundary integral part of the VCI test function P.
-     * @param R_AiC_RowMajor Pointer to the result matrix (row-major).
-     * @param boundarySurfaceVector Pointer to the boundary surface vector.
-     * @param boundaryFaceID The ID of the boundary face.
+     * @brief Not available here: the VCI boundary integral @f$ \int T_A P_C n_i\,dA @f$ is physics-specific.
+     * @param[in,out] R_AiC_RowMajor Pointer to the result matrix (row-major).
+     * @param[in] boundarySurfaceVector Pointer to the boundary surface vector.
+     * @param[in] boundaryFaceID The ID of the boundary face.
+     * @throws std::runtime_error always; derived classes must override it.
      */
     virtual void vci_compute_Test_P_BoundaryIntegral( [[maybe_unused]] double*       R_AiC_RowMajor,
                                                       [[maybe_unused]] const double* boundarySurfaceVector,
@@ -450,8 +517,9 @@ namespace Marmot::Meshfree {
     };
 
     /**
-     * @brief Computes the integral of the VCI test function gradient P.
-     * @param R_AiC_RowMajor Pointer to the result matrix (row-major).
+     * @brief Accumulates the VCI integral of the test function gradient times the basis over the subdomains,
+     *        @f$ R_{AiC} \mathrel{+}= \sum_s \partial_i T_A|_s\, P_C|_s\, V_s @f$ (@f$ V_s @f$: getSubdomainVolume()).
+     * @param[in,out] R_AiC_RowMajor Pointer to the result matrix (row-major, nNodes x nDim x nConstraints).
      */
     virtual void vci_compute_TestGradient_P_Integral( [[maybe_unused]] double* R_AiC_RowMajor ) override
     {
@@ -471,8 +539,9 @@ namespace Marmot::Meshfree {
     };
 
     /**
-     * @brief Computes the integral of the VCI test function P gradient.
-     * @param R_AiC_RowMajor Pointer to the result matrix (row-major).
+     * @brief Accumulates the VCI integral of the test function times the basis gradient over the subdomains,
+     *        @f$ R_{AiC} \mathrel{+}= \sum_s T_A|_s\, \partial_i P_C|_s\, V_s @f$.
+     * @param[in,out] R_AiC_RowMajor Pointer to the result matrix (row-major, nNodes x nDim x nConstraints).
      */
     virtual void vci_compute_Test_PGradient_Integral( [[maybe_unused]] double* R_AiC_RowMajor ) override
     {
@@ -494,8 +563,12 @@ namespace Marmot::Meshfree {
     };
 
     /**
-     * @brief Computes the M-matrix for VCI.
-     * @param mMatrix_ACD_RowMajor Pointer to the result matrix (row-major).
+     * @brief Accumulates the VCI moment matrix over the subdomains,
+     *        @f$ M_{ACD} \mathrel{+}= \sum_s \chi_A\, P_C|_s\, P_D|_s\, V_s @f$.
+     * @details @f$ \chi_A @f$ is 1 if the center of the main domain (not of the subdomain) is in the support of
+     *          kernel function @f$ A @f$, else 0.
+     * @param[in,out] mMatrix_ACD_RowMajor Pointer to the result matrix (row-major, nNodes x nConstraints x
+     * nConstraints).
      */
     virtual void vci_compute_MMatrix( [[maybe_unused]] double* mMatrix_ACD_RowMajor ) override
     {
@@ -522,8 +595,12 @@ namespace Marmot::Meshfree {
     };
 
     /**
-     * @brief Assigns test function correction terms for VCI.
-     * @param eta_AiC_RowMajor Pointer to the correction terms matrix (row-major).
+     * @brief Assigns test function correction terms for VCI,
+     *        @f$ \partial_i T_A|_s = \partial_i N_A|_s + \chi_A \sum_C \eta_{AiC} P_C|_s @f$ for every subdomain.
+     * @details The correction is applied to the uncorrected gradients, so repeated calls do not accumulate;
+     *          @f$ \chi_A @f$ as in vci_compute_MMatrix().
+     * @param[in] eta_AiC_RowMajor Pointer to the correction terms matrix (row-major, nNodes x nDim x
+     * nConstraints).
      */
     virtual void vci_assignTestFunctionCorrectionTerms( [[maybe_unused]] const double* eta_AiC_RowMajor ) override
     {
@@ -557,27 +634,28 @@ namespace Marmot::Meshfree {
   protected:
     /**
      * @brief Evaluates the shape functions and their derivatives for a given particle domain.
-     * @details This function evaluates the shape functions and their gradients at the center
-     *          of the provided particle domain, using a smoothing approach.
-     * @param particleDomain The particle domain for which to evaluate shape functions.
+     * @details N is evaluated at the center of the provided particle domain (the centroid of its deformed
+     *          geometry), dN_dY is the smoothed gradient of _smoothDerivativeShapeFunctionsForParticleDomain().
+     * @param[in] particleDomain The particle domain for which to evaluate shape functions.
      * @return A tuple containing the shape functions (N) and their gradients (dN_dY) as Eigen matrices.
      */
     std::tuple< Eigen::MatrixXd, Eigen::MatrixXd > evaluateShapeFunctionsAndDerivativesForParticleDomain(
       const ParticleDomainType& particleDomain ) const;
 
     /**
-     * @brief Evaluates the shape functions on a specific face of a particle domain.
-     * @param particleDomain The particle domain.
-     * @param faceID The ID of the face.
+     * @brief Evaluates the shape functions at the face center of the smoothing domain of a particle domain.
+     * @param[in] particleDomain The particle domain.
+     * @param[in] faceID The ID of the face (1-based).
      * @return An Eigen::MatrixXd containing the shape functions (N) on the specified
      * face.
      */
     Eigen::MatrixXd evaluateShapeFunctionsOnFace( const ParticleDomainType& particleDomain, int faceID ) const;
 
     /**
-     * @brief Evaluates the shape functions and their derivatives on a specific face of a particle domain.
-     * @param particleDomain The particle domain.
-     * @param faceID The ID of the face.
+     * @brief Evaluates the shape functions at the face center of the smoothing domain, together with the smoothed
+     *        gradients of the whole particle domain.
+     * @param[in] particleDomain The particle domain.
+     * @param[in] faceID The ID of the face (1-based).
      * @return A tuple containing the shape functions (N) and their gradients (dN_dY) as Eigen matrices.
      */
     std::tuple< Eigen::MatrixXd, Eigen::MatrixXd > evaluateShapeFunctionsAndDerivativesOnFace(
@@ -587,15 +665,22 @@ namespace Marmot::Meshfree {
     /**
      * @brief Computes the smoothed derivatives of shape functions for a particle domain.
      * @details This method uses a boundary integral approach (SNNI/SCNI) over the smoothing domain
-     *          to compute the derivatives of the shape functions.
-     * @param particleDomain The particle domain for which to compute smoothed derivatives.
+     *          to compute the derivatives of the shape functions, with one point per face,
+     *          @f$ \partial N_A / \partial Y_i = \frac{1}{|\Omega_s|}\sum_f N_A(\boldsymbol{Y}_f)\, n_{f,i}\,dA_f @f$,
+     *          where @f$ \boldsymbol{Y}_f @f$ is the face center and @f$ \boldsymbol{n}_f\,dA_f @f$ the boundary
+     *          surface vector of the smoothing domain and @f$ |\Omega_s| @f$ its volume.
+     * @param[in] particleDomain The particle domain for which to compute smoothed derivatives.
      * @return An Eigen::MatrixXd containing the smoothed derivatives of shape functions (dN_dY).
      */
     Eigen::MatrixXd _smoothDerivativeShapeFunctionsForParticleDomain( const ParticleDomainType& particleDomain ) const;
 
     /**
      * @brief Sets the VCI order and updates the number of VCI constraints.
-     * @param order The desired VCI order.
+     * @details The number of constraints is @f$ \binom{k + n_{\text{dim}}}{n_{\text{dim}}} @f$ for the order
+     *          @f$ k @f$. Unlike GenericParticle::setVCIOrder(), the basis is not evaluated here but in
+     *          assignMeshfreeKernelFunctions() (per subdomain), which must therefore be called after the order has
+     *          been set.
+     * @param[in] order The desired VCI order.
      */
     void setVCIOrder( int order )
     {
@@ -610,7 +695,8 @@ namespace Marmot::Meshfree {
     };
   };
 
-  /**
+  /*
+   * (Definition; documented at the declaration.)
    * @brief Constructor for GenericSDIParticle.
    * @tparam nDim The number of dimensions.
    * @tparam nVertices The number of vertices.
@@ -648,7 +734,8 @@ namespace Marmot::Meshfree {
     this->setVCIOrder( _vciOrder ); // Call setVCIOrder to correctly initialize _nVCIConstraints
   }
 
-  /**
+  /*
+   * (Definition; documented at the declaration.)
    * @brief Retrieves the intermediate configuration boundary vector and evaluation point for a given face.
    * @tparam nDim The number of dimensions.
    * @tparam nVertices The number of vertices.
@@ -681,7 +768,8 @@ namespace Marmot::Meshfree {
     return { N_dAY, Y };
   }
 
-  /**
+  /*
+   * (Definition; documented at the declaration.)
    * @brief Retrieves the current coordinates of the particle's vertices.
    * @tparam nDim The number of dimensions.
    * @tparam nVertices The number of vertices.
@@ -694,7 +782,8 @@ namespace Marmot::Meshfree {
     coordinatesMap = _particleDomainMain.getGeometryDeformedVertexCoordinates();
   }
 
-  /**
+  /*
+   * (Definition; documented at the declaration.)
    * @brief Assigns a vector of meshfree kernel functions to the particle.
    * @tparam nDim The number of dimensions.
    * @tparam nVertices The number of vertices.
@@ -731,7 +820,8 @@ namespace Marmot::Meshfree {
     }
   }
 
-  /**
+  /*
+   * (Definition; documented at the declaration.)
    * @brief Evaluates the shape functions and their derivatives for a given particle domain.
    * @tparam nDim The number of dimensions.
    * @tparam nVertices The number of vertices.
@@ -758,7 +848,8 @@ namespace Marmot::Meshfree {
     return std::make_tuple( N, dN_dY );
   }
 
-  /**
+  /*
+   * (Definition; documented at the declaration.)
    * @brief Evaluates the shape functions on a specific face of a particle domain.
    * @tparam nDim The number of dimensions.
    * @tparam nVertices The number of vertices.
@@ -785,7 +876,8 @@ namespace Marmot::Meshfree {
     return N;
   }
 
-  /**
+  /*
+   * (Definition; documented at the declaration.)
    * @brief Evaluates the shape functions and their derivatives on a specific face of a particle domain.
    * @tparam nDim The number of dimensions.
    * @tparam nVertices The number of vertices.
@@ -816,7 +908,8 @@ namespace Marmot::Meshfree {
     return std::make_tuple( N, dN_dY );
   }
 
-  /**
+  /*
+   * (Definition; documented at the declaration.)
    * @brief Computes the smoothed derivatives of shape functions for a particle domain.
    * @tparam nDim The number of dimensions.
    * @tparam nVertices The number of vertices.
@@ -846,7 +939,8 @@ namespace Marmot::Meshfree {
     return dN_dY;
   }
 
-  /**
+  /*
+   * (Definition; documented at the declaration.)
    * @brief Computes the physics kernels (internal forces and their derivatives) for the particle.
    * @tparam nDim The number of dimensions.
    * @tparam nVertices The number of vertices.

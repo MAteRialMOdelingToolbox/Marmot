@@ -44,24 +44,56 @@
 namespace Marmot::Cells {
 
   /**
-   * @class GradientEnhancedFiniteStrainCell
+   * @class Marmot::Cells::GradientEnhancedFiniteStrainCell
    * @brief MPM background cell for gradient-enhanced (implicit-gradient) finite-strain materials.
    *
    * The cell carries the displacement field @f$ \boldsymbol{u} @f$ (nDim dofs per node) and one scalar nonlocal
-   * field @f$ \bar{N} @f$ (1 dof per node), and consumes GradientEnhancedFiniteStrainMaterialPoint instances,
-   * which in turn drive a MarmotMaterialGradientEnhancedFiniteStrain. It is the non-micropolar sibling of
-   * GradientEnhancedMicropolarCell.
+   * field @f$ \bar{N} @f$ (1 dof per node, field name `nonlocal damage`), and consumes
+   * Marmot::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint instances, which in turn drive a
+   * MarmotMaterialGradientEnhancedFiniteStrain. It is the MPM counterpart of the finite element
+   * GradientEnhancedFiniteStrainDisplacementElement.
    *
-   * As usual in MPM, the grid dofs are the INCREMENTS of the current step, @f$ \Delta\boldsymbol{q} @f$: the
-   * material points carry the accumulated state. Consequently, the nonlocal balance
-   * @f$ \bar{N} - c\,\nabla^2\bar{N} = L @f$ is assembled in increment form,
+   * As usual in MPM, the grid dofs are the INCREMENTS of the current step, @f$ \Delta\boldsymbol{q} @f$; the
+   * material points carry the accumulated state. The cell shape functions @f$ N_A @f$ and their gradients
+   * @f$ \nabla_Y N_A @f$ are evaluated once, at the position of each material point in the intermediate reference
+   * configuration @f$ \boldsymbol{Y} @f$ (the last accepted configuration), when the material points are assigned.
+   * The spatial and the reference gradients follow from
+   * @f[
+   *   \frac{\partial N_A}{\partial x_i} = \frac{\partial N_A}{\partial Y_j}\,\Delta F^{-1}_{ji}, \qquad
+   *   \frac{\partial N_A}{\partial X_i} = \frac{\partial N_A}{\partial Y_j}\,F_{n,ji} .
+   * @f]
+   * The momentum balance is integrated with the Kirchhoff stress over the undeformed volume @f$ V_p^0 @f$ of each
+   * material point @f$ p @f$,
+   * @f[
+   *   r_{U,Aj} = \sum_p \frac{\partial N_A}{\partial x_i}\,\tau_{ij}\,V_p^0 ,
+   * @f]
+   * and the nonlocal balance @f$ \bar{N} - c\,\nabla_X^2\bar{N} = L @f$ is assembled in increment form in the
+   * undeformed configuration,
    * @f[
    *   r_{N,A} = \sum_p \Bigl( N_A\,\Delta\bar{N}_p + c\,\nabla_X N_A \cdot \nabla_X \Delta\bar{N}_p - N_A\,\Delta L_p
    *   \Bigr) V_p^0 ,
    * @f]
-   * with the reference gradient @f$ \nabla_X = \boldsymbol{F}_n^{T}\,\nabla_Y @f$, which does not depend on the
-   * current increment, and the momentum balance with the Kirchhoff stress in the current configuration,
-   * @f$ r_{U,Ai} = \sum_p \partial_{x_j} N_A\,\tau_{ij}\,V_p^0 @f$.
+   * with @f$ \Delta\bar{N}_p = N_B\,\Delta\bar{N}_B @f$ interpolated from the grid increments, @f$ \Delta L_p @f$ the
+   * change of the local driving force reported by the material point, and @f$ c = R^2 @f$ from the material. The
+   * reference gradient @f$ \nabla_X @f$ does not depend on the current increment.
+   *
+   * The consistent tangent consists of
+   * @f[
+   *   K^{UU}_{jAkB} = \sum_p \Bigl( \frac{\partial N_A}{\partial x_i}\,
+   *     \frac{\partial\tau_{ij}}{\partial\Delta F_{kL}}\,\frac{\partial N_B}{\partial Y_L}
+   *     - \frac{\partial N_A}{\partial x_k}\,\tau_{ij}\,\frac{\partial N_B}{\partial x_i} \Bigr) V_p^0 ,\qquad
+   *   K^{UN}_{jAB} = \sum_p \frac{\partial N_A}{\partial x_i}\,\frac{\partial\tau_{ij}}{\partial\bar{N}}\,N_B\,V_p^0 ,
+   * @f]
+   * @f[
+   *   K^{NU}_{AkB} = -\sum_p N_A\,\frac{\partial L}{\partial\Delta F_{kL}}\,\frac{\partial N_B}{\partial Y_L}\,V_p^0 ,
+   *   \qquad
+   *   K^{NN}_{AB} = \sum_p \Bigl( N_A N_B \bigl( 1 - \frac{\partial L}{\partial\bar{N}} \bigr)
+   *     + c\,\nabla_X N_A\cdot\nabla_X N_B \Bigr) V_p^0 .
+   * @f]
+   * The interaction @f$ c @f$ is treated as constant in the tangent.
+   *
+   * Dofs are ordered field by field internally (all displacements, then all nonlocal dofs); see
+   * getDofIndicesPermutationPattern() for the mapping to the node-by-node layout of the host.
    *
    * @tparam nDim         Spatial dimension (2: plane strain, 3).
    * @tparam nNodes       Number of cell nodes.
@@ -72,100 +104,219 @@ namespace Marmot::Cells {
   class GradientEnhancedFiniteStrainCell : public CellBase, public GeometryCell {
 
   protected:
+    /// @brief Supported body loads.
     enum BodyLoadTypes {
-      BodyForce,
+      BodyForce, ///< body force per unit undeformed volume (`BODYFORCE`)
     };
 
-    enum DistributedLoadTypes { Pressure };
+    /// @brief Supported distributed loads.
+    enum DistributedLoadTypes {
+      Pressure ///< follower pressure acting on a material point (`PRESSURE`)
+    };
 
+    /// the nodal fields with their number of components and nodes
     static inline const std::map< std::string, std::pair< int, int > > _fields = {
       { "displacement", { nDim, nNodes } },
       { "nonlocal damage", { 1, nNodes } },
     };
 
+    /// names of the supported body loads
     static inline const std::unordered_map< std::string, int > _supportedBodyLoadTypes = { { "BODYFORCE", BodyForce } };
 
+    /// names of the supported distributed loads
     static inline const std::unordered_map< std::string, int > _supportedDistributedLoadTypes = {
       { "PRESSURE", Pressure } };
 
-    static constexpr int nDofPerNodeU = nDim; // displacement field U
-    static constexpr int nDofPerNodeN = 1;    // nonlocal field N
+    static constexpr int nDofPerNodeU = nDim; ///< dofs per node of the displacement field U
+    static constexpr int nDofPerNodeN = 1;    ///< dofs per node of the nonlocal field N
 
     // block sizes
-    static constexpr int bsU = nNodes * nDofPerNodeU;
-    static constexpr int bsN = nNodes * nDofPerNodeN;
+    static constexpr int bsU = nNodes * nDofPerNodeU; ///< size of the displacement block
+    static constexpr int bsN = nNodes * nDofPerNodeN; ///< size of the nonlocal block
 
-    static constexpr int sizeLoadVector = bsU + bsN;
+    static constexpr int sizeLoadVector = bsU + bsN;  ///< number of dofs of the cell
 
-    static constexpr int idxU = 0;
-    static constexpr int idxN = idxU + bsU;
+    static constexpr int idxU = 0;                    ///< first index of the displacement block
+    static constexpr int idxN = idxU + bsU;           ///< first index of the nonlocal block
 
-    using MaterialPoint = MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint< nDim >;
+    using MaterialPoint = MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint< nDim >; ///< consumed point type
 
-    using NSized    = typename GeometryCell::NSized;
-    using dNdXSized = typename GeometryCell::dNdXSized;
-    using XiSized   = typename GeometryCell::XiSized;
+    using NSized    = typename GeometryCell::NSized;                  ///< shape function vector of the geometry
+    using dNdXSized = typename GeometryCell::dNdXSized;               ///< shape function gradients of the geometry
+    using XiSized   = typename GeometryCell::XiSized;                 ///< parametric coordinates of the geometry
 
-    using RhsSized      = Eigen::Matrix< double, sizeLoadVector, 1 >;
-    using KeSizedMatrix = Eigen::Matrix< double, sizeLoadVector, sizeLoadVector >;
+    using RhsSized      = Eigen::Matrix< double, sizeLoadVector, 1 >; ///< cell residual vector
+    using KeSizedMatrix = Eigen::Matrix< double, sizeLoadVector, sizeLoadVector >; ///< cell tangent matrix
 
-    const int _cellLabel;
+    const int _cellLabel;                                                          ///< label of the cell
 
+    /**
+     * @struct Marmot::Cells::GradientEnhancedFiniteStrainCell::MaterialPointLocation
+     * @brief A hosted material point with its cached shape functions.
+     */
     struct MaterialPointLocation {
-      MaterialPoint*                         materialPoint;
-      XiSized                                xi;
-      Fastor::Tensor< double, nNodes >       N;
-      Fastor::Tensor< double, nDim, nNodes > dN_dY;
+      MaterialPoint*                         materialPoint; ///< the hosted material point
+      XiSized                                xi;            ///< its parametric coordinates in the cell
+      Fastor::Tensor< double, nNodes >       N;             ///< shape functions @f$ N_A @f$ at @c xi
+      Fastor::Tensor< double, nDim, nNodes > dN_dY;         ///< gradients @f$ \partial N_A/\partial Y_i @f$
     };
 
-    std::vector< MaterialPointLocation > _materialPointLocations;
+    std::vector< MaterialPointLocation > _materialPointLocations; ///< the material points currently in the cell
 
   public:
+    /**
+     * @brief Construct a cell.
+     * @param[in] cellLabel Label of the cell.
+     * @param[in] geometry  Geometry of the cell.
+     */
     GradientEnhancedFiniteStrainCell( int cellLabel, const GeometryCell& geometry )
       : GeometryCell( geometry ), _cellLabel( cellLabel ){};
 
+    /**
+     * @brief Fields per node.
+     * @return For each node, `displacement` and `nonlocal damage`.
+     */
     const std::vector< std::vector< std::string > >& getNodeFields() const;
 
+    /**
+     * @brief Permutation from the node-by-node dof layout of the host to the field-by-field layout of the cell.
+     * @return The permutation pattern.
+     */
     const std::vector< int >& getDofIndicesPermutationPattern() const;
 
+    /**
+     * @brief Supported body loads.
+     * @return `BODYFORCE`.
+     */
     const std::unordered_map< std::string, int >& getSupportedBodyLoadTypes() const { return _supportedBodyLoadTypes; }
 
+    /**
+     * @brief Supported distributed loads.
+     * @return `PRESSURE`.
+     */
     const std::unordered_map< std::string, int >& getSupportedDistributedLoadTypes() const
     {
       return _supportedDistributedLoadTypes;
     }
 
+    /**
+     * @brief Number of nodes.
+     * @return nNodes.
+     */
     int getNNodes() const { return nNodes; }
 
+    /**
+     * @brief Number of dofs of the cell.
+     * @return @f$ (n_\mathrm{dim}+1)\,n_\mathrm{nodes} @f$.
+     */
     int getNDofPerCell() const { return sizeLoadVector; }
 
+    /**
+     * @brief Shape of the cell.
+     * @return Shape name of the geometry.
+     */
     std::string getCellShape() const { return GeometryCell::getElementShape(); }
 
+    /**
+     * @brief Check whether a point lies in the cell.
+     * @param[in] coordinates Coordinates of the point.
+     * @return True if the point lies in the cell.
+     */
     bool isCoordinateInCell( const double* coordinates ) const
     {
       return GeometryCell::isCoordinateInCell( coordinates );
     }
 
+    /**
+     * @brief Axis-aligned bounding box of the cell.
+     * @param[out] boundingBoxMin Lower corner.
+     * @param[out] boundingBoxMax Upper corner.
+     */
     void getBoundingBox( double* boundingBoxMin, double* boundingBoxMax ) const
     {
       GeometryCell::getBoundingBox( boundingBoxMin, boundingBoxMax );
     }
 
+    /**
+     * @brief Assign the material points currently in the cell and cache their shape functions.
+     *
+     * The shape functions and gradients are evaluated at getCoordinatesAtCenter() of each point, i.e. at its position
+     * @f$ \boldsymbol{Y} @f$ of the last accepted state.
+     *
+     * @param[in] materialPoints The material points.
+     * @throws std::invalid_argument if a point is not a GradientEnhancedFiniteStrainMaterialPoint of this dimension.
+     */
     void assignMaterialPoints( const std::vector< MarmotMaterialPoint* >& materialPoints );
 
+    /**
+     * @brief Assemble the internal force vector and its tangent from the material points.
+     *
+     * Requires that interpolateFieldsToMaterialPoints() and the material points' computeYourself() have been called
+     * for the same increment. The contributions are ADDED to @p fInt and @p dfInt_dQ.
+     *
+     * @param[in]     dQ       Increment of the cell dofs (field-by-field layout).
+     * @param[in,out] fInt     Internal force vector.
+     * @param[in,out] dfInt_dQ Tangent, column-major.
+     * @param[in]     timeNew  Time at the end of the increment (unused).
+     * @param[in]     dT       Time increment (unused).
+     */
     void computeMaterialPointKernels( const double* dQ,
                                       double*       fInt,
                                       double*       dfInt_dQ,
                                       double        timeNew,
                                       double        dT ) const;
 
+    /**
+     * @brief Row-sum lumped mass of the displacement field.
+     * @param[out] I Lumped mass vector (overwritten); zero on the nonlocal dofs.
+     */
     void computeLumpedInertia( double* I );
 
+    /**
+     * @brief Consistent mass @f$ M_{AiBi} = \sum_p N_A N_B\,\rho_0 V_p^0 @f$ of the displacement field.
+     *
+     * The nonlocal field carries no inertia.
+     *
+     * @param[out] I Mass matrix (overwritten), column-major.
+     */
     void computeConsistentInertia( double* I );
 
+    /**
+     * @brief Body force load.
+     *
+     * `BODYFORCE`: @f$ f_{Ai} \mathrel{-}= \sum_p N_A\,b_i\,V_p^0 @f$ (sign convention of the internal force); no
+     * tangent contribution.
+     *
+     * @param[in]     type     Load type (see getSupportedBodyLoadTypes()).
+     * @param[in]     load     Body force per unit undeformed volume (nDim values).
+     * @param[in,out] fExt     Load vector.
+     * @param[in,out] dfExt_dQ Load tangent (untouched).
+     * @param[in]     timeNew  Time at the end of the increment (unused).
+     * @param[in]     dT       Time increment (unused).
+     * @throws std::invalid_argument for an unknown load type.
+     */
     void computeBodyLoad( int type, const double* load, double* fExt, double* dfExt_dQ, double timeNew, double dT )
       const;
 
+    /**
+     * @brief Follower pressure load at a single material point.
+     *
+     * `PRESSURE`: the undeformed load vector @f$ \boldsymbol{f}_0 = p\,\boldsymbol{N}\,dA_0 @f$ is pushed forward by
+     * Nanson's formula, @f$ \boldsymbol{f} = J\,\boldsymbol{F}^{-\mathsf{T}}\boldsymbol{f}_0 @f$ with the total
+     * @f$ \boldsymbol{F} = \Delta\boldsymbol{F}\,\boldsymbol{F}_n @f$, and applied as
+     * @f$ f_{Ai} \mathrel{-}= N_A f_i @f$, with the consistent load stiffness with respect to the displacement
+     * increment.
+     *
+     * @param[in]     type                Load type (see getSupportedDistributedLoadTypes()).
+     * @param[in]     surfaceID           Surface id (unused).
+     * @param[in]     materialPointNumber Label of the loaded material point; other points are skipped.
+     * @param[in]     load                Undeformed load vector @f$ \boldsymbol{f}_0 @f$ (nDim values).
+     * @param[in,out] fExt                Load vector.
+     * @param[in,out] dExt_dQ             Load tangent, column-major.
+     * @param[in]     timeNew             Time at the end of the increment (unused).
+     * @param[in]     dT                  Time increment (unused).
+     * @throws std::invalid_argument for an unknown load type.
+     */
     void computeDistributedLoad( int           type,
                                  int           surfaceID,
                                  int           materialPointNumber,
@@ -175,8 +326,22 @@ namespace Marmot::Cells {
                                  double        timeNew,
                                  double        dT ) const;
 
+    /**
+     * @brief Interpolate the grid increment to the material points.
+     *
+     * For each hosted point: @f$ \delta\boldsymbol{u} = N_A\,\Delta\boldsymbol{q}^U_A @f$,
+     * @f$ \partial\delta u_i/\partial Y_j = \Delta q^U_{Ai}\,\partial N_A/\partial Y_j @f$ and
+     * @f$ \delta\bar{N} = N_A\,\Delta q^N_A @f$ are passed to incrementDeformation() of the point.
+     *
+     * @param[in] dQ Increment of the cell dofs (field-by-field layout).
+     */
     void interpolateFieldsToMaterialPoints( const double* dQ ) const;
 
+    /**
+     * @brief Cell shape functions at a point.
+     * @param[out] vec         Shape functions @f$ N_A @f$ (nNodes values).
+     * @param[in]  coordinates Coordinates of the point.
+     */
     void getInterpolationVector( double* vec, const double* coordinates ) const;
   };
 
@@ -458,6 +623,12 @@ namespace Marmot::Cells {
     interpolationVector = GeometryCell::N( refCoord ).transpose();
   }
 
+  /**
+   * @class Marmot::Cells::LagrangianGradientEnhancedFiniteStrainCell
+   * @brief GradientEnhancedFiniteStrainCell on a Lagrangian cell geometry (Quad4, Hexa8).
+   * @tparam nDim   Spatial dimension.
+   * @tparam nNodes Number of cell nodes.
+   */
   template < int nDim, int nNodes >
   class LagrangianGradientEnhancedFiniteStrainCell
     : public GradientEnhancedFiniteStrainCell< nDim,
@@ -465,22 +636,45 @@ namespace Marmot::Cells {
                                                MarmotCell,
                                                MarmotLagrangianCellGeometry< nDim, nNodes > > {
 
-    using Geometry      = MarmotLagrangianCellGeometry< nDim, nNodes >;
-    using PhysicsParent = GradientEnhancedFiniteStrainCell< nDim, nNodes, MarmotCell, Geometry >;
+    using Geometry      = MarmotLagrangianCellGeometry< nDim, nNodes >;                           ///< cell geometry
+    using PhysicsParent = GradientEnhancedFiniteStrainCell< nDim, nNodes, MarmotCell, Geometry >; ///< physics base
+                                                                                                  ///< class
 
   public:
+    /**
+     * @brief Construct a Lagrangian cell.
+     * @param[in] cellLabel           Label of the cell.
+     * @param[in] nodeCoordinates     Node coordinates, node by node.
+     * @param[in] sizeNodeCoordinates Number of coordinates (unused).
+     */
     LagrangianGradientEnhancedFiniteStrainCell( int cellLabel, const double* nodeCoordinates, int sizeNodeCoordinates )
       : PhysicsParent( cellLabel, Geometry( nodeCoordinates ) ){};
   };
 
+  /**
+   * @class Marmot::Cells::BSplineGradientEnhancedFiniteStrainCell
+   * @brief GradientEnhancedFiniteStrainCell on a B-spline cell geometry.
+   * @tparam nDim   Spatial dimension.
+   * @tparam nNodes Number of control points of the cell, @f$ (p+1)^{n_\mathrm{dim}} @f$.
+   * @tparam order  Polynomial order @f$ p @f$ of the B-splines.
+   */
   template < int nDim, int nNodes, int order >
   class BSplineGradientEnhancedFiniteStrainCell
     : public GradientEnhancedFiniteStrainCell< nDim, nNodes, MarmotCell, MarmotBSplineCellGeometry< nDim, order > > {
 
-    using Geometry      = MarmotBSplineCellGeometry< nDim, order >;
-    using PhysicsParent = GradientEnhancedFiniteStrainCell< nDim, nNodes, MarmotCell, Geometry >;
+    using Geometry      = MarmotBSplineCellGeometry< nDim, order >;                               ///< cell geometry
+    using PhysicsParent = GradientEnhancedFiniteStrainCell< nDim, nNodes, MarmotCell, Geometry >; ///< physics base
+                                                                                                  ///< class
 
   public:
+    /**
+     * @brief Construct a B-spline cell.
+     * @param[in] cellLabel           Label of the cell.
+     * @param[in] nodeCoordinates     Control point coordinates.
+     * @param[in] sizeNodeCoordinates Number of coordinates.
+     * @param[in] knotVectors         Knot vectors of the cell.
+     * @param[in] sizeKnotVectors     Number of knot values.
+     */
     BSplineGradientEnhancedFiniteStrainCell( int           cellLabel,
                                              const double* nodeCoordinates,
                                              int           sizeNodeCoordinates,
