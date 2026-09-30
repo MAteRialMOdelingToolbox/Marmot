@@ -1,3 +1,4 @@
+#include "Marmot/CompressibleNeoHooke.h"
 #include "Marmot/DisplacementCell.h"
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotMPMLibrary.h"
@@ -333,6 +334,35 @@ namespace {
 
 } // namespace
 
+// the state "stress" of every material point is the Kirchhoff stress of its material at F = dF F_n, in 2D (plane
+// strain) and in 3D
+template < int nDim >
+void checkStressStateOfTheMaterialPoints( const CellGeometry< nDim >& g )
+{
+  Setup< nDim > s( g );
+  s.kernels( increment( s.nDof, 1e-2 ) );
+
+  using FastorStandardTensors::Tensor33d;
+  Marmot::Materials::CompressibleNeoHooke reference( matProps.data(), matProps.size(), 1 );
+  for ( auto& mp : s.mps ) {
+    const Tensor33d dF( mp->getStateView( "delta deformation gradient" ).stateLocation );
+    const Tensor33d Fn( mp->getStateView( "deformation gradient" ).stateLocation );
+    const Tensor33d stored( mp->getStateView( "stress" ).stateLocation );
+
+    MarmotMaterialFiniteStrain::ConstitutiveResponse< 3 > response{ Tensor33d( 0.0 ), 0, 0, nullptr };
+    MarmotMaterialFiniteStrain::AlgorithmicModuli< 3 >    tangents;
+    reference.computeStress( response, tangents, { Tensor33d( dF % Fn ) }, { 1.0, 1.0 } );
+
+    double error = 0.0, norm = 0.0;
+    for ( int i = 0; i < 9; i++ ) {
+      error += std::pow( stored.data()[i] - response.tau.data()[i], 2 );
+      norm += std::pow( response.tau.data()[i], 2 );
+    }
+    throwExceptionOnFailure( norm > 0.0 && std::sqrt( error ) <= 1e-12 * std::sqrt( norm ),
+                             MakeString() << g.name << ": the stress state of a material point is not its stress" );
+  }
+}
+
 void testUnknownNamesAreRejected()
 {
   const double x[2] = { 0, 0 };
@@ -359,9 +389,12 @@ void testUnknownNamesAreRejected()
 
 int main()
 {
-  std::vector< std::function< void() > > testFunctions = { testUnknownNamesAreRejected,
-                                                           []() { checkCell< 2 >( lagrangian< 2 >() ); },
-                                                           []() { checkCell< 3 >( lagrangian< 3 >() ); } };
+  std::vector< std::function< void() > > testFunctions =
+    { testUnknownNamesAreRejected,
+      []() { checkCell< 2 >( lagrangian< 2 >() ); },
+      []() { checkCell< 3 >( lagrangian< 3 >() ); },
+      []() { checkStressStateOfTheMaterialPoints< 2 >( lagrangian< 2 >() ); },
+      []() { checkStressStateOfTheMaterialPoints< 3 >( lagrangian< 3 >() ); } };
   for ( int p = 1; p <= 3; p++ ) {
     testFunctions.push_back( [p]() { checkCell< 2 >( bSpline< 2 >( p ) ); } );
     testFunctions.push_back( [p]() { checkCell< 3 >( bSpline< 3 >( p ) ); } );

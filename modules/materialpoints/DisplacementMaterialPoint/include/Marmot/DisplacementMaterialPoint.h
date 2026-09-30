@@ -484,9 +484,8 @@ namespace Marmot::MaterialPoints {
    * @class Marmot::MaterialPoints::DisplacementMaterialPoint3D
    * @brief 3D displacement material point (registered as "Displacement/3D").
    *
-   * @details The material is evaluated with the 3D deformation gradient; the call goes through
-   * MarmotMaterialFiniteStrain::computePlaneStrain(), whose default implementation forwards to computeStress().
-   * The state "stress" is not written by this class.
+   * @details The material is evaluated with the 3D deformation gradient by
+   * MarmotMaterialFiniteStrain::computeStress(); the Kirchhoff stress is written to the state "stress".
    */
   class DisplacementMaterialPoint3D : public DisplacementMaterialPoint< 3 > {
 
