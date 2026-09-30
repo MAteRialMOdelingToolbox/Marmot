@@ -123,6 +123,7 @@ Building on Windows
 *******************
 
 Marmot builds as a DLL with MSVC (Visual Studio 2022), in the ``Release`` configuration.
+It requires Eigen 3.4.1 or newer; Eigen 3.4.0's tensor module does not compile with MSVC.
 Install Eigen, autodiff and Fastor into a common prefix as above (``cmake --install`` instead of ``make install``),
 then build Marmot from a *Developer PowerShell for VS 2022*:
 
