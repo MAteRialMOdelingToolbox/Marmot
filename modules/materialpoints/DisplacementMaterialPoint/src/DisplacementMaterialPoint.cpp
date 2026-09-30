@@ -76,11 +76,13 @@ namespace Marmot::MaterialPoints {
 
     Material::Deformation< 3 > deformationIncrement3D{ dx_dX };
 
-    material->computePlaneStrain( response3D, algorithmicModuli3D, deformationIncrement3D, timeIncrement );
+    material->computeStress( response3D, algorithmicModuli3D, deformationIncrement3D, timeIncrement );
 
     // clang-format off
     this->response = { .S = ( response3D.tau ),
     };
+
+    state->stress = response3D.tau;
 
     using namespace FastorStandardTensors;
     using namespace FastorIndices;
