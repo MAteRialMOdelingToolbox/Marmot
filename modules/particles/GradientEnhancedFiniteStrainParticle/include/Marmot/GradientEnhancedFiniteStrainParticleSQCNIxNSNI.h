@@ -438,7 +438,7 @@ namespace Marmot::Meshfree {
         k_UN  = ( + einsum< i,  ij        > ( dT_A_dx, dS_dqN_B )                                                       ) * V0;
 
         k_NU  = (                                                 - ( T_A * dL_dqU_B )                                  ) * V0;
-        k_NN  = ( + T_A * N_B + inner( dT_A_dX, dN_B_dX ) *  c                                                          ) * V0;
+        k_NN  = ( + T_A * N_B + inner( dT_A_dX, dN_B_dX ) *  c - T_A * N_B * t.dL_dN                                    ) * V0;
 
         k_UU += ( - einsum< k, ij, i, to_jk >( dT_A_dx, S, dN_B_dx ) ) * V0;
 

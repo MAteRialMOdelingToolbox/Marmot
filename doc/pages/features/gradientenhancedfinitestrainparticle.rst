@@ -69,14 +69,10 @@ With the tangents of the material point with respect to :math:`\Delta\boldsymbol
    + \rho_0\,\frac{\partial a_j}{\partial\Delta u_k}\,T_A N_B \Bigr) V_0 ,\\
    K^{UN}_{AjB} &= \frac{\partial T_A}{\partial x_i}\,\frac{\partial\tau_{ij}}{\partial\bar N}\,N_B\,V_0 ,\\
    K^{NU}_{ABk} &= -T_A\,\frac{\partial L}{\partial\Delta F_{kL}}\,\frac{\partial N_B}{\partial Y_L}\,V_0 ,\\
-   K^{NN}_{AB} &= \Bigl( T_A N_B + c\,\frac{\partial T_A}{\partial X_i}\,\frac{\partial N_B}{\partial X_i} \Bigr) V_0 .
+   K^{NN}_{AB} &= \Bigl( T_A N_B\,\bigl(1 - \frac{\partial L}{\partial\bar N}\bigr)
+   + c\,\frac{\partial T_A}{\partial X_i}\,\frac{\partial N_B}{\partial X_i} \Bigr) V_0 ,
 
-.. note::
-   Unlike :doc:`gradientenhancedfinitestraincell` and :doc:`gradientenhancedfinitestraindisplacementelement`, the
-   particles' :math:`K^{NN}` does not contain the term :math:`-T_A N_B\,\partial L/\partial\bar N\,V_0`. The tangent is
-   therefore consistent for materials whose driving force does not depend on :math:`\bar N`, which is the case for
-   :doc:`gradientenhancedcompressibleneohookedamage` and :doc:`gradientenhancedfinitestraindruckerprager`
-   (both report :math:`\partial L/\partial\bar N = 0`).
+as in :doc:`gradientenhancedfinitestraincell` and :doc:`gradientenhancedfinitestraindisplacementelement`.
 
 Integration schemes
 ^^^^^^^^^^^^^^^^^^^
