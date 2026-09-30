@@ -50,7 +50,7 @@ Material parameters
      - softening parameter, :math:`\kappa_f > \kappa_0`
    * - 4
      - :math:`l`
-     - nonlocal radius
+     - nonlocal radius, :math:`l > 0`
    * - 5
      - :math:`\rho`
      - density (optional)

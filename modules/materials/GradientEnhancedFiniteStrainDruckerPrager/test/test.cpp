@@ -153,6 +153,16 @@ void testConsistencyAndFlowRule()
     const double    predicted = etaBar / xi * alphaP;
     throwExceptionOnFailure( std::abs( lnJp - predicted ) < 1e-10,
                              MakeString() << "flow rule: ln det Fp = " << lnJp << ", expected " << predicted << where );
+
+    // the local damage variable is the dilatant plastic strain: without dilatancy, L and dL/dF vanish together
+    double normdL_dF = 0.0;
+    for ( int i = 0; i < 9; i++ )
+      normdL_dF += std::abs( res.t.dL_dF.data()[i] );
+    if ( psi == 0.0 )
+      throwExceptionOnFailure( res.L == 0.0 && normdL_dF == 0.0, "without dilatancy, L and dL/dF must vanish" + where );
+    else
+      throwExceptionOnFailure( std::abs( res.L - predicted ) < 1e-10 && normdL_dF > 0.0,
+                               "with dilatancy, L must be the volumetric plastic strain" + where );
   }
 }
 
@@ -424,7 +434,11 @@ void testFactoryAndValidation()
                                                                                          { 7, 1.0, "maxDamage = 1" },
                                                                                          { 7, -0.1, "maxDamage < 0" },
                                                                                          { 2, 0.0, "c0 = 0" },
-                                                                                         { 6, 0.0, "epsF = 0" } } ) {
+                                                                                         { 6, 0.0, "epsF = 0" },
+                                                                                         { 5, -1.0, "H < 0" },
+                                                                                         { 8, 0.0, "l = 0" },
+                                                                                         { 8, -1.0, "l < 0" },
+                                                                                         { 9, -0.1, "m < 0" } } ) {
     std::vector< double > p( valid.begin(), valid.end() );
     p[idx] = value;
     rejects( p, what );

@@ -26,7 +26,8 @@ configuration, with the interaction :math:`c = R^2` from the material's nonlocal
 The consistent tangent contains the material blocks :math:`\partial\boldsymbol\tau/\partial\boldsymbol F`,
 :math:`\partial\boldsymbol\tau/\partial\bar N`, :math:`\partial L/\partial\boldsymbol F`,
 :math:`\partial L/\partial\bar N` and the geometric stiffness of the momentum balance. Plane strain is evaluated as the
-3D response with :math:`F_{33} = 1`; plane stress is not supported. Distributed loads: follower pressure (with its
+3D response with :math:`F_{33} = 1`; plane stress is not supported. The explicit kernel assembles the same residual
+with the same material update, without the tangents. Distributed loads: follower pressure (with its
 load stiffness) and surface traction; body forces; geostatic initial stresses through the material's eigen
 deformation.
 

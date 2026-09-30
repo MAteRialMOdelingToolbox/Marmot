@@ -6,12 +6,10 @@
  * |_| |_| |_|\__,_|_|  |_| |_| |_|\___/ \__|
  *
  * Unit of Strength of Materials and Structural Analysis
- * University of Innsbruck
+ * University of Innsbruck,
  * 2020 - today
  *
  * festigkeitslehre@uibk.ac.at
- *
- * Thomas Mader thomas.mader@boku.ac.at
  *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
@@ -61,6 +59,8 @@ namespace Marmot::Materials {
    * | 4   | @f$ l @f$        | nonlocal radius, @f$ c = l^2 @f$          |
    * | 5   | @f$ \rho @f$     | density in the reference configuration    |
    *
+   * Constraints: @f$ K, G, \kappa_0, l > 0 @f$ and @f$ \kappa_f > \kappa_0 @f$.
+   *
    * State variables: @c kappa, the history maximum of the nonlocal field.
    *
    * The dissipation is cumulative: the incoming ConstitutiveResponse::dissipation is incremented by the energy
@@ -68,17 +68,40 @@ namespace Marmot::Materials {
    */
   class GradientEnhancedCompressibleNeoHookeDamage : public MarmotMaterialGradientEnhancedFiniteStrain {
   public:
+    /**
+     * @brief Construct the material and validate its properties.
+     * @param[in] materialProperties Array of the material properties, see the table above.
+     * @param[in] nMaterialProperties Length of @p materialProperties (at least 5; 6 with the density).
+     * @param[in] materialNumber Material label.
+     * @throws std::invalid_argument for a too short property array or a property out of range.
+     */
     GradientEnhancedCompressibleNeoHookeDamage( const double* materialProperties,
                                                 int           nMaterialProperties,
                                                 int           materialNumber );
 
     using MarmotMaterialGradientEnhancedFiniteStrain::computeStress;
 
+    /**
+     * @brief Compute the Kirchhoff stress, the local driving force and the algorithmic tangents.
+     * @param[in,out] response Kirchhoff stress, local driving force @f$ L @f$, nonlocal radius, energy density,
+     * cumulative dissipation and the state variables, updated in place.
+     * @param[out] tangents @f$ \partial\boldsymbol{\tau}/\partial\boldsymbol{F} @f$,
+     * @f$ \partial\boldsymbol{\tau}/\partial\bar{N} @f$, @f$ \partial L/\partial\boldsymbol{F} @f$ and
+     * @f$ \partial L/\partial\bar{N} @f$.
+     * @param[in] deformation Deformation gradient and nonlocal field at the end of the increment.
+     * @param[in] timeIncrement Time and time increment (not used, the model is rate independent).
+     */
     void computeStress( ConstitutiveResponse< 3 >& response,
                         AlgorithmicModuli< 3 >&    tangents,
                         const Deformation< 3 >&    deformation,
                         const TimeIncrement&       timeIncrement ) const override;
 
+    /**
+     * @brief The density in the reference configuration.
+     * @param[in] stateVars State variables (not used).
+     * @return The density, property 5.
+     * @throws std::runtime_error if the density is not given.
+     */
     double getDensity( const double* stateVars ) const override;
 
     /**
@@ -89,11 +112,11 @@ namespace Marmot::Materials {
     std::pair< double, double > damage( double kappa ) const;
 
   private:
-    const double& K;
-    const double& G;
-    const double& kappa0;
-    const double& kappaF;
-    const double& nonLocalRadius;
+    const double& K;              ///< bulk modulus
+    const double& G;              ///< shear modulus
+    const double& kappa0;         ///< damage threshold
+    const double& kappaF;         ///< softening parameter
+    const double& nonLocalRadius; ///< nonlocal radius @f$ l @f$
   };
 
 } // namespace Marmot::Materials
