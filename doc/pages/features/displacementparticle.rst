@@ -180,35 +180,35 @@ Registered particles
      - ``DisplacementParticleSQCNI<2, 4>``
      - 2D, quadrilateral
      - rotation and principal stretch
-   * - ``Displacement/SQCNIxNSNI/PlaneStrain/Quad``
+   * - ``DisplacementSQCNIxNSNI/PlaneStrain/Quad``
      - ``DisplacementParticleSQCNIxNSNI<2, 4>``
      - 2D, quadrilateral
      - SQCNI + NSNI (deformation gradient)
-   * - ``Displacement/SQCNIxNSNI/3D/Hexa``
+   * - ``DisplacementSQCNIxNSNI/3D/Hexa``
      - ``DisplacementParticleSQCNIxNSNI<3, 8>``
      - 3D, hexahedron
      - SQCNI + NSNI (deformation gradient)
-   * - ``Displacement/SNNIxNSNI/PlaneStrain/Quad``
+   * - ``DisplacementSNNIxNSNI/PlaneStrain/Quad``
      - ``DisplacementParticleSQCNIxNSNI<2, 4>``
      - 2D, quadrilateral
      - SNNI + NSNI (none)
-   * - ``Displacement/SNNIxNSNI/3D/Hexa``
+   * - ``DisplacementSNNIxNSNI/3D/Hexa``
      - ``DisplacementParticleSQCNIxNSNI<3, 8>``
      - 3D, hexahedron
      - SNNI + NSNI (none)
-   * - ``Displacement/R-SNNIxNSNI/PlaneStrain/Quad``
+   * - ``DisplacementSQCNI_RxNSNI/PlaneStrain/Quad``
      - ``DisplacementParticleSQCNIxNSNI<2, 4>``
      - 2D, quadrilateral
      - NSNI (rotation only)
-   * - ``Displacement/R-SNNIxNSNI/3D/Hexa``
+   * - ``DisplacementSQCNI_RxNSNI/3D/Hexa``
      - ``DisplacementParticleSQCNIxNSNI<3, 8>``
      - 3D, hexahedron
      - NSNI (rotation only)
-   * - ``Displacement/RS-SNNIxNSNI/PlaneStrain/Quad``
+   * - ``DisplacementSQCNI_RUxNSNI/PlaneStrain/Quad``
      - ``DisplacementParticleSQCNIxNSNI<2, 4>``
      - 2D, quadrilateral
      - NSNI (rotation and principal stretch)
-   * - ``Displacement/RS-SNNIxNSNI/3D/Hexa``
+   * - ``DisplacementSQCNI_RUxNSNI/3D/Hexa``
      - ``DisplacementParticleSQCNIxNSNI<3, 8>``
      - 3D, hexahedron
      - NSNI (rotation and principal stretch)
@@ -235,9 +235,11 @@ Registered particles
 
 .. note::
 
-   The NSNI particles are registered with an additional slash between the formulation and the integration scheme
-   (``Displacement/SQCNIxNSNI/...``), unlike all other displacement particles (``DisplacementSQCNI/...``,
-   ``DisplacementSQCNIxSDI/...``). The names are listed here exactly as registered.
+   The NSNI particles follow the naming convention of all other particles (``<Formulation><IntegrationScheme>/...``,
+   with ``_R`` / ``_RU`` for the rotated smoothing domains, as the gradient-enhanced and the u-p-J particles). Their
+   former names, ``Displacement/SQCNIxNSNI/...``, ``Displacement/SNNIxNSNI/...``, ``Displacement/R-SNNIxNSNI/...`` and
+   ``Displacement/RS-SNNIxNSNI/...``, remain registered as aliases for existing input files. The SDI names
+   (``DisplacementR-SNNIxSDI``, ``DisplacementRS-SNNIxSDI``) are spelled as those of the u-p-J SDI particles.
 
 Supported loads
 ^^^^^^^^^^^^^^^

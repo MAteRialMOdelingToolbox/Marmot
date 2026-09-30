@@ -204,10 +204,8 @@ pattern). The abbreviations denote what the code does:
        :doc:`displacementparticle` and :doc:`gradientenhancedfinitestrainparticle`.
 
 The complete list of registered names, with their shapes and dimensions, is given on the pages of the formulations,
-:doc:`displacementparticle` and :doc:`gradientenhancedfinitestrainparticle`. The names are case-insensitive. Note the
-two spellings of the NSNI names of the displacement formulation (``Displacement/SQCNIxNSNI/PlaneStrain/Quad``, with a
-slash after the formulation) and of the gradient-enhanced formulation
-(``GradientEnhancedFiniteStrainSQCNIxNSNI/PlaneStrain/Quad``).
+:doc:`displacementparticle` and :doc:`gradientenhancedfinitestrainparticle`. The names are case-insensitive. The former
+names of the displacement NSNI particles (``Displacement/SQCNIxNSNI/...`` etc.) remain registered as aliases.
 
 GenericParticle: point particles and VCI
 ----------------------------------------
