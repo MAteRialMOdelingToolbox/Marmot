@@ -25,6 +25,7 @@
 #pragma once
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotJournal.h"
+#include "Marmot/MarmotPortability.h"
 #include "Marmot/MarmotUtils.h"
 #include <stdexcept>
 #include <string>
@@ -39,7 +40,7 @@
  * initialization, loading, and numerical integration. Concrete element
  * implementations must override the pure virtual functions.
  */
-class MarmotElement {
+class MARMOT_API MarmotElement {
 
 public:
   /** @brief Types of element state variables used in initialization and output. */

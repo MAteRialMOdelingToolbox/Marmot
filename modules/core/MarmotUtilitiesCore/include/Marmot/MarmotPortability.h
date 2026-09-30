@@ -29,7 +29,25 @@
  *
  * @details MSVC does not provide the GCC/Clang extension `__PRETTY_FUNCTION__`, which Marmot uses throughout its
  * error messages. MSVC's equivalent is `__FUNCSIG__`.
+ *
+ * MARMOT_API marks what the Marmot library exports to its consumers (EdelweissFE, the Abaqus/CADFEM interfaces).
+ * A Windows DLL exports only what is marked, and only that is available to code linking Marmot; everything else
+ * is reached through virtual functions of objects created by the Marmot factories. On other platforms, everything
+ * is exported unless Marmot is built with MARMOT_EXPORT_API_ONLY, which mimics the Windows behavior.
  */
+
+#if defined( _WIN32 )
+#  if defined( MARMOT_BUILDING_LIBRARY )
+/** @brief Exports a class or function from the Marmot library (defined while building it). */
+#    define MARMOT_API __declspec( dllexport )
+#  else
+/** @brief Imports a class or function from the Marmot library. */
+#    define MARMOT_API __declspec( dllimport )
+#  endif
+#else
+/** @brief Exports a class or function from the Marmot library, also when it is built with hidden visibility. */
+#  define MARMOT_API __attribute__( ( visibility( "default" ) ) )
+#endif
 
 #if defined( _MSC_VER ) && !defined( __PRETTY_FUNCTION__ )
 /** @brief Full signature of the enclosing function, mapped to MSVC's equivalent of the GCC/Clang extension. */

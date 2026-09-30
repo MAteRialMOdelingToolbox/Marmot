@@ -78,7 +78,7 @@ public:
    * @brief Redirect all subsequent journal output to @p newOutputStream.
    * @param newOutputStream  The output stream that warnings and notifications are written to.
    */
-  static void setMSGOutputDirection( std::ostream& newOutputStream );
+  MARMOT_API static void setMSGOutputDirection( std::ostream& newOutputStream );
 
   /**
    * @brief Write a warning message to the journal output stream.

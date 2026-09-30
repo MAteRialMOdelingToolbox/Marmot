@@ -136,9 +136,20 @@ then build Marmot from a *Developer PowerShell for VS 2022*:
 This installs ``Marmot.dll`` into ``<prefix>/bin`` and its import library ``Marmot.lib`` into ``<prefix>/lib``.
 Programs linking Marmot must find ``Marmot.dll`` at run time, e.g., through ``PATH``.
 
+A Windows DLL exports only what is marked for export, which in Marmot is ``MARMOT_API``
+(defined in ``Marmot/MarmotPortability.h``): the element and material factories,
+``MarmotElement``, ``MarmotMaterialSection``, ``ElementProperties``,
+and the few functions EdelweissFE calls directly.
+Everything else is used through the virtual functions of the objects the factories create.
+Exporting everything instead is not an option: it exceeds the limit of 65535 exported symbols of a Windows DLL,
+since that would include every Eigen, Fastor and autodiff template instantiated in Marmot.
+Code that needs more of Marmot must mark it ``MARMOT_API``.
+To check this without Windows, configure with ``-DMARMOT_EXPORT_API_ONLY=ON``,
+which exports only the ``MARMOT_API`` symbols on Linux and macOS, too.
+The tests link Marmot's object files directly and are not affected.
+
 Marmot's global constants are defined ``inline const`` in the headers, not ``extern const`` in a source file,
-since a Windows DLL does not export data (only functions and class members, via ``WINDOWS_EXPORT_ALL_SYMBOLS``).
-New modules must follow this.
+since data cannot be exported and imported like functions. New modules must follow this.
 Likewise, include ``Marmot/MarmotPortability.h`` (e.g., through ``Marmot/MarmotJournal.h``) before using
 ``__PRETTY_FUNCTION__``, which MSVC does not provide.
 The Python bindings are not yet supported on Windows.

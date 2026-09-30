@@ -122,14 +122,13 @@ message("--> found Fastor: ${FASTOR_INCLUDE_DIR}")
 enable_testing()
 
 # Custom function to add a test executable.
-# Include directories are propagated transitively from the Marmot library target
-# (PUBLIC includes), so no explicit target_include_directories call is needed here.
+# Tests link Marmot's object files directly, not the shared library: they also exercise Marmot's internals, which
+# the library does not export on Windows (or with MARMOT_EXPORT_API_ONLY), see MARMOT_API in MarmotPortability.h.
+# Include directories are propagated transitively from the object library (PUBLIC includes), so no explicit
+# target_include_directories call is needed here.
 function(add_marmot_test test_name test_source)
   add_executable(${test_name} ${test_source})
-  target_link_libraries(${test_name} PRIVATE ${PROJECT_NAME})
-  set_target_properties(${test_name} PROPERTIES
-      BUILD_RPATH "${CMAKE_BINARY_DIR}/lib"
-  )
+  target_link_libraries(${test_name} PRIVATE ${PROJECT_NAME}Objects)
   add_test(NAME ${test_name} COMMAND ${test_name} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
   # Many Marmot classes are templates (<int nDim, int nNodes>) that get implicitly
   # re-instantiated inside each test's own translation unit. An uninstrumented test
@@ -230,13 +229,23 @@ message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
 
 # ── Build the shared library ──────────────────────────────────────────────────
 
-add_library(${PROJECT_NAME} SHARED ${sources})
+# The sources are compiled once, into an object library, from which both the shared library and the tests are
+# linked (see add_marmot_test).
+add_library(${PROJECT_NAME}Objects OBJECT ${sources})
+add_library(${PROJECT_NAME} SHARED $<TARGET_OBJECTS:${PROJECT_NAME}Objects>)
 
-# On Windows, a DLL exports nothing unless told to. Export every function and class member instead of annotating
-# the API with __declspec(dllexport); global *data* is not covered, so Marmot defines its global constants as
-# `inline const` in the headers instead of `extern const`.
+# The library exports only what is marked MARMOT_API (see MarmotPortability.h), as a Windows DLL always does; on
+# other platforms only with MARMOT_EXPORT_API_ONLY, to check the exported API without a Windows build.
+target_compile_definitions(${PROJECT_NAME}Objects PRIVATE MARMOT_BUILDING_LIBRARY)
+option(MARMOT_EXPORT_API_ONLY "Export only the MARMOT_API-marked API from libMarmot, as on Windows" OFF)
+if(MARMOT_EXPORT_API_ONLY)
+    set_target_properties(${PROJECT_NAME}Objects PROPERTIES
+        CXX_VISIBILITY_PRESET     hidden
+        VISIBILITY_INLINES_HIDDEN ON
+    )
+endif()
+
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    WINDOWS_EXPORT_ALL_SYMBOLS ON
     VERSION       ${PROJECT_VERSION}
     SOVERSION     ${PROJECT_VERSION_MAJOR}
     PUBLIC_HEADER "${publicheaders}"
@@ -245,20 +254,22 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 # Include-directory strategy:
 #   BUILD_INTERFACE  – source-tree paths used when building Marmot and its tests.
 #   INSTALL_INTERFACE – the single installed include root used by find_package consumers.
-# Making these PUBLIC means test executables that link against ${PROJECT_NAME} receive
-# the include paths transitively without any explicit target_include_directories call.
-target_include_directories(${PROJECT_NAME}
-    PUBLIC
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-        $<BUILD_INTERFACE:${AUTODIFF_INCLUDE_DIR}>
-        $<BUILD_INTERFACE:${FASTOR_INCLUDE_DIR}>
-)
-foreach(_inc_dir IN LISTS INSTALLED_MODULE_INCLUDE_DIRS)
-    target_include_directories(${PROJECT_NAME}
-        PUBLIC $<BUILD_INTERFACE:${_inc_dir}>)
-endforeach()
+# Making these PUBLIC means consumers linking ${PROJECT_NAME}, and the tests linking ${PROJECT_NAME}Objects,
+# receive the include paths transitively without any explicit target_include_directories call.
+foreach(_target IN ITEMS ${PROJECT_NAME} ${PROJECT_NAME}Objects)
+    target_include_directories(${_target}
+        PUBLIC
+            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+            $<BUILD_INTERFACE:${AUTODIFF_INCLUDE_DIR}>
+            $<BUILD_INTERFACE:${FASTOR_INCLUDE_DIR}>
+    )
+    foreach(_inc_dir IN LISTS INSTALLED_MODULE_INCLUDE_DIRS)
+        target_include_directories(${_target}
+            PUBLIC $<BUILD_INTERFACE:${_inc_dir}>)
+    endforeach()
 
-target_link_libraries(${PROJECT_NAME} PUBLIC Eigen3::Eigen)
+    target_link_libraries(${_target} PUBLIC Eigen3::Eigen)
+endforeach()
 
 if(SHARED_LIBRARIES)
     message("+------------------------------------------------------------------------------+")
@@ -266,6 +277,8 @@ if(SHARED_LIBRARIES)
     foreach(SHARED_LIBRARY IN LISTS SHARED_LIBRARIES)
         message("--> ${SHARED_LIBRARY}")
         target_link_libraries(${PROJECT_NAME} PRIVATE "${SHARED_LIBRARY}")
+        # PUBLIC, so that the tests linking the objects get them too.
+        target_link_libraries(${PROJECT_NAME}Objects PUBLIC "${SHARED_LIBRARY}")
     endforeach()
     message("+------------------------------------------------------------------------------+")
 endif()
@@ -289,7 +302,7 @@ if(MARMOT_ENABLE_COVERAGE)
         message(WARNING "MARMOT_ENABLE_COVERAGE is intended to be used with -DCMAKE_BUILD_TYPE=Debug for accurate line coverage")
     endif()
     message(STATUS "Instrumenting ${PROJECT_NAME} for code coverage (--coverage)")
-    target_compile_options(${PROJECT_NAME} PRIVATE --coverage -O0)
+    target_compile_options(${PROJECT_NAME}Objects PRIVATE --coverage -O0)
     target_link_options(${PROJECT_NAME} PRIVATE --coverage)
 endif()
 
