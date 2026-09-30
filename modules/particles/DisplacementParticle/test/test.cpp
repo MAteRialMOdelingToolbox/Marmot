@@ -231,9 +231,46 @@ namespace {
                                MakeString() << name << ": rigid rotation loads the particle, |P| = " << P.norm() );
     }
 
-    // lumped mass (lumped inertia is optional in the particle interface). Body loads are not checked: the
-    // particles advertise BODYFORCE, but computeBodyLoad is not implemented (empty, or throws for the SDI
-    // variants), and EdelweissMeshfree applies body loads to cells only.
+    // body force per unit undeformed volume: by the partition of unity of the test functions, the nodal loads sum
+    // to -b V0 (the host's sign convention); a dead load has no tangent
+    {
+      Setup< nDim > s( name, v, vol );
+      s.trial( increment( s.nDof(), 0.03 ) );
+      const double    b[3] = { 1.5, -2.0, 0.7 };
+      Eigen::VectorXd P    = Eigen::VectorXd::Zero( s.nDof() );
+      Eigen::MatrixXd K    = Eigen::MatrixXd::Zero( s.nDof(), s.nDof() );
+      s.particle
+        ->computeBodyLoad( s.particle->getSupportedBodyLoadTypes().at( "BODYFORCE" ), b, P.data(), K.data(), 1.0, 1.0 );
+      const double V0 = s.particle->getVolumeUndeformed();
+      for ( int i = 0; i < nDim; i++ ) {
+        double sum = 0;
+        for ( int A = 0; A < s.nDof() / nDim; A++ )
+          sum += P[A * nDim + i];
+        throwExceptionOnFailure( std::abs( sum + b[i] * V0 ) < 1e-12 * ( 1. + V0 ),
+                                 MakeString() << name << ": body force " << sum << " != -b V0 = " << -b[i] * V0 );
+      }
+      throwExceptionOnFailure( K.norm() == 0.0, name + ": a dead body load has no tangent" );
+    }
+
+    // a point particle has no faces: no distributed loads
+    if ( shape == "Point" || shape == "Point3D" ) {
+      Setup< nDim > s( name, v, vol );
+      throwExceptionOnFailure( s.particle->getSupportedDistributedLoadTypes().empty(),
+                               name + ": a point particle advertises distributed loads" );
+      Eigen::VectorXd P     = Eigen::VectorXd::Zero( s.nDof() );
+      Eigen::MatrixXd K     = Eigen::MatrixXd::Zero( s.nDof(), s.nDof() );
+      const double    p     = 1.0;
+      bool            threw = false;
+      try {
+        s.particle->computeDistributedLoad( 0, 1, &p, P.data(), K.data(), 1.0, 1.0 );
+      }
+      catch ( const std::invalid_argument& ) {
+        threw = true;
+      }
+      throwExceptionOnFailure( threw, name + ": a distributed load on a point particle must throw" );
+    }
+
+    // lumped mass (lumped inertia is optional in the particle interface)
     {
       dirtyHeap(); // the density must be known right after initialization, before the first increment
       Setup< nDim >   s( name, v, vol );

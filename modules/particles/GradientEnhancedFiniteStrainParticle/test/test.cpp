@@ -346,6 +346,47 @@ namespace {
       checkTangent< nDim >( name + ", dynamic", K, numK, mode );
     }
 
+    // body force per unit undeformed volume: by the partition of unity of the test functions, the displacement loads
+    // sum to -b V0 (the host's sign convention); the nonlocal rows are not loaded, and a dead load has no tangent
+    {
+      Setup< nDim > s( name, v, V );
+      s.trial( increment< nDim >( s.nNodes(), 0.03, 3e-3 ) );
+      const double    b[3] = { 1.5, -2.0, 0.7 };
+      Eigen::VectorXd P    = Eigen::VectorXd::Zero( s.nDof() );
+      Eigen::MatrixXd K    = Eigen::MatrixXd::Zero( s.nDof(), s.nDof() );
+      s.particle
+        ->computeBodyLoad( s.particle->getSupportedBodyLoadTypes().at( "BODYFORCE" ), b, P.data(), K.data(), 1.0, 1.0 );
+      const double V0 = s.particle->getVolumeUndeformed();
+      for ( int i = 0; i < nDim; i++ ) {
+        double sum = 0;
+        for ( int A = 0; A < s.nNodes(); A++ )
+          sum += P[A * nB + i];
+        throwExceptionOnFailure( std::abs( sum + b[i] * V0 ) < 1e-12 * ( 1. + V0 ),
+                                 MakeString() << name << ": body force " << sum << " != -b V0 = " << -b[i] * V0 );
+      }
+      for ( int A = 0; A < s.nNodes(); A++ )
+        throwExceptionOnFailure( P[A * nB + nDim] == 0.0, name + ": the body force loads the nonlocal field" );
+      throwExceptionOnFailure( K.norm() == 0.0, name + ": a dead body load has no tangent" );
+    }
+
+    // a point particle has no faces: no distributed loads
+    if ( numberOfFaces( shape ) == 0 ) {
+      Setup< nDim > s( name, v, V );
+      throwExceptionOnFailure( s.particle->getSupportedDistributedLoadTypes().empty(),
+                               name + ": a point particle advertises distributed loads" );
+      Eigen::VectorXd P     = Eigen::VectorXd::Zero( s.nDof() );
+      Eigen::MatrixXd K     = Eigen::MatrixXd::Zero( s.nDof(), s.nDof() );
+      const double    p     = 1.0;
+      bool            threw = false;
+      try {
+        s.particle->computeDistributedLoad( 0, 1, &p, P.data(), K.data(), 1.0, 1.0 );
+      }
+      catch ( const std::invalid_argument& ) {
+        threw = true;
+      }
+      throwExceptionOnFailure( threw, name + ": a distributed load on a point particle must throw" );
+    }
+
     // distributed loads (pressure and the correction of the weak form) on a face, with their tangents
     if ( numberOfFaces( shape ) > 0 ) {
       for ( const auto& [loadName, type] : Setup< nDim >( name, v, V ).particle->getSupportedDistributedLoadTypes() ) {

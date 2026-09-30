@@ -250,17 +250,21 @@ Supported loads
      - ``CWFCORRECTION``
      - ``BODYFORCE``
    * - ``DisplacementParticle`` (point)
-     - advertised, no effect
-     - advertised, no effect
-     - advertised, no effect
+     - -- (no faces)
+     - -- (no faces)
+     - yes
    * - ``DisplacementParticleSQCNI``, ``DisplacementParticleSQCNIxNSNI``
      - yes (also explicit)
      - yes
-     - advertised, no effect
+     - yes
    * - ``DisplacementParticleSQCNIxSDI``
      - yes
      - --
-     - advertised, throws
+     - yes (over the subdomains)
+
+The body force :math:`\boldsymbol b` is a dead load per unit undeformed volume,
+:math:`P_{Ai} \mathrel{-}= T_A\,b_i\,V_0` (summed over the subdomains for SDI), with the host's sign convention for
+external loads; it has no tangent.
 
 Properties
 ----------

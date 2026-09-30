@@ -83,11 +83,10 @@ which the kernel functions were assigned, e.g., ``[node_1_displacement, node_1_t
 with ``getNBaseDof()`` dofs per node and the fields listed by ``getFields()``. The stiffness matrix is column-major.
 Contributions are accumulated (``+=``) into the arrays passed by the host.
 
-**Loads.** Body loads are currently not available for the particles, although ``BODYFORCE`` is listed as a
-supported body load type: the point particles and the SQCNI/SNNI/NSNI particles derived from them add nothing, and the
-subdomain-integration particles throw ``std::runtime_error``. Distributed loads (``PRESSURE`` and, where available,
-``CWFCORRECTION``) act on a face of a cell-shaped particle;
-point particles have no faces and add nothing.
+**Loads.** ``BODYFORCE`` is a dead load per unit undeformed volume, :math:`P_{Ai} \mathrel{-}= T_A\,b_i\,V_0`
+(summed over the subdomains of the subdomain-integration particles), with the host's sign convention for external
+loads, which is that of the cells. Distributed loads (``PRESSURE`` and, where available, ``CWFCORRECTION``) act on a
+face of a cell-shaped particle; point particles have no faces, advertise no distributed loads and reject them.
 
 **State views.** Particles with a single material point forward ``getStateView`` to it. Cell-shaped particles
 additionally provide ``vertex displacements`` and ``smoothing vertex displacements`` (``nDim * nVertices`` values
