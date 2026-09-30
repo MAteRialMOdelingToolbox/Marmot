@@ -217,6 +217,18 @@ namespace Marmot::Meshfree {
     }
 
     /**
+     * @brief Supported distributed loads, on the faces of the particle domain.
+     * @return `PRESSURE` and `CWFCORRECTION`.
+     */
+    const std::unordered_map< std::string, int >& getSupportedDistributedLoadTypes() const override
+    {
+      using Parent = GradientEnhancedFiniteStrainParticle< nDim >;
+      static const std::unordered_map< std::string, int > _supportedDistributedLoadTypes =
+        { { "PRESSURE", Parent::Pressure }, { "CWFCORRECTION", Parent::CWFCorrection } };
+      return _supportedDistributedLoadTypes;
+    };
+
+    /**
      * @brief Volume of the last accepted state, @f$ V_0\det\boldsymbol{F}_n @f$.
      * @return The volume in the intermediate reference configuration (the current increment is not included).
      */

@@ -83,7 +83,7 @@ namespace Marmot::Meshfree {
   public:
     /// Body load types.
     enum BodyLoadTypes {
-      BodyForce, ///< body force ("BODYFORCE"; advertised, but computeBodyLoad() throws)
+      BodyForce, ///< body force per unit undeformed volume ("BODYFORCE")
     };
 
     /// Distributed load types.
@@ -153,14 +153,15 @@ namespace Marmot::Meshfree {
     };
 
     /**
-     * @brief Body load: not implemented.
-     * @param[in] type The body load type.
-     * @param[in] load The load values.
-     * @param[in,out] fExt Load vector.
-     * @param[in,out] dExt_dQ Tangent.
+     * @brief Body load: a body force @f$ \boldsymbol{b} @f$ per unit undeformed volume (dead load), integrated over
+     * the subdomains, @f$ P_{Ai} \mathrel{-}= \sum_s T^s_A\,b_i\,V^s_0 @f$; the tangent is zero.
+     * @param[in] type The body load type (BodyForce).
+     * @param[in] load The body force vector (nDim values).
+     * @param[in,out] fExt Load vector, the contribution is added.
+     * @param[in,out] dExt_dQ Tangent (not modified).
      * @param[in] timeNew Time at the end of the increment.
      * @param[in] dT Time increment.
-     * @throws std::runtime_error always.
+     * @throws std::invalid_argument for another load type.
      */
     virtual void computeBodyLoad( int           type,
                                   const double* load,
@@ -169,7 +170,20 @@ namespace Marmot::Meshfree {
                                   double        timeNew,
                                   double        dT ) const override
     {
-      throw std::runtime_error( "Not implemented yet!" );
+      switch ( type ) {
+      case BodyForce: {
+        // integrated over the subdomains, with their test functions
+        for ( size_t s = 0; s < this->_subDomainShapeFunctions.size(); s++ ) {
+          const double V0 = _subdomainMaterialPoints[s]->getVolumeUndeformed();
+          const auto&  sd = this->_subDomainShapeFunctions[s];
+          for ( int A = 0; A < this->_nNodes; A++ )
+            for ( int i = 0; i < nDofPerNodeU; i++ )
+              fExt[nDofPerNodeU * A + i] -= sd.T( A ) * load[i] * V0;
+        }
+        break;
+      }
+      default: throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid body load type" );
+      }
     }
 
     /**

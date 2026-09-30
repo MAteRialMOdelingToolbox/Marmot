@@ -78,13 +78,12 @@ Integration schemes
 ^^^^^^^^^^^^^^^^^^^
 
 **Point particle.** The gradients :math:`\partial N_B/\partial\boldsymbol Y` are the point values of the meshfree
-approximation at the particle center. The point particle has no faces, so it cannot carry distributed loads; its
-``computeDistributedLoad`` adds nothing, although ``PRESSURE`` and ``CWFCORRECTION`` are listed as supported load
-types.
+approximation at the particle center. The point particle has no faces, so it supports no distributed loads (its
+``computeDistributedLoad`` throws); the SQCNI / NSNI particles support ``PRESSURE`` and ``CWFCORRECTION``.
 
-.. note::
-   ``BODYFORCE`` is listed as a supported body load of all gradient-enhanced particles, but ``computeBodyLoad`` is
-   empty (and not overridden by the SQCNI / NSNI particles), so a body force currently has no effect.
+``BODYFORCE`` (all gradient-enhanced particles) is a dead load per unit undeformed volume on the displacement field,
+:math:`P_{Ai} \mathrel{-}= T_A\,b_i\,V_0`, with the host's sign convention for external loads; it has no tangent
+and does not load the nonlocal field.
 
 **SQCNI / SNNI.** The particle is a quadrilateral (2D) or hexahedral (3D) smoothing domain :math:`\Omega_Y` with the
 material point at its centroid. As in stabilized conforming nodal integration (Chen et al., 2001), the gradients are

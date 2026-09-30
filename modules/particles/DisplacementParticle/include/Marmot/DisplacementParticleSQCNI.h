@@ -187,6 +187,18 @@ namespace Marmot::Meshfree {
     virtual double getVolumeUndeformed() const override { return this->_mp->getVolumeUndeformed(); };
 
     /**
+     * @brief Supported distributed loads, on the faces of the particle domain.
+     * @return "PRESSURE" and "CWFCORRECTION".
+     */
+    const std::unordered_map< std::string, int >& getSupportedDistributedLoadTypes() const override
+    {
+      static const std::unordered_map< std::string, int > _supportedDistributedLoadTypes =
+        { { "PRESSURE", DisplacementParticle< nDim >::Pressure },
+          { "CWFCORRECTION", DisplacementParticle< nDim >::CWFCorrection } };
+      return _supportedDistributedLoadTypes;
+    };
+
+    /**
      * @brief States: "vertex displacements" and "smoothing vertex displacements" (nDim x nVertices) of the geometry and
      * of the smoothing domain, otherwise the states of the material point.
      * @param[in] stateName Name of the state.

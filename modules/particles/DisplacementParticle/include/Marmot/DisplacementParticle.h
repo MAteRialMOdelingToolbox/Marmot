@@ -147,14 +147,13 @@ namespace Marmot::Meshfree {
     };
 
     /**
-     * @brief Supported distributed loads.
-     * @return "PRESSURE" and "CWFCORRECTION".
+     * @brief Supported distributed loads: none, a point particle has no faces. The particles with a domain
+     * (DisplacementParticleSQCNI and its derivatives) support "PRESSURE" and "CWFCORRECTION".
+     * @return An empty map.
      */
     const std::unordered_map< std::string, int >& getSupportedDistributedLoadTypes() const override
     {
-      static const std::unordered_map< std::string, int > _supportedDistributedLoadTypes = { { "PRESSURE", Pressure },
-                                                                                             { "CWFCORRECTION",
-                                                                                               CWFCorrection } };
+      static const std::unordered_map< std::string, int > _supportedDistributedLoadTypes = {};
       return _supportedDistributedLoadTypes;
     };
 
@@ -314,13 +313,16 @@ namespace Marmot::Meshfree {
                                         double        dT ) override;
 
     /**
-     * @brief Body load: not implemented for this particle, the call has no effect.
-     * @param[in] type The body load type.
-     * @param[in] load The load values.
-     * @param[in,out] fExt Load vector (not modified).
+     * @brief Body load: a body force @f$ \boldsymbol{b} @f$ per unit undeformed volume (dead load),
+     * @f$ P_{Ai} \mathrel{-}= T_A\,b_i\,V_0 @f$ (the host's sign convention for external loads, as in the cells);
+     * the tangent is zero. Used by all particles derived from this one.
+     * @param[in] type The body load type (BodyForce).
+     * @param[in] load The body force vector (nDim values).
+     * @param[in,out] fExt Load vector, the contribution is added.
      * @param[in,out] dExt_dQ Tangent (not modified).
      * @param[in] timeNew Time at the end of the increment.
      * @param[in] dT Time increment.
+     * @throws std::invalid_argument for another load type.
      */
     virtual void computeBodyLoad( int           type,
                                   const double* load,
@@ -330,8 +332,9 @@ namespace Marmot::Meshfree {
                                   double        dT ) const override;
 
     /**
-     * @brief Distributed load: not implemented for this (point) particle, which has no faces; the call has no effect.
-     * DisplacementParticleSQCNI implements it.
+     * @brief Distributed load: a point particle has no faces, so there is none (see
+     * getSupportedDistributedLoadTypes()); DisplacementParticleSQCNI implements them.
+     * @throws std::invalid_argument always.
      * @param[in] type The distributed load type.
      * @param[in] surfaceID The face of the particle.
      * @param[in] load The load values.
@@ -601,6 +604,8 @@ namespace Marmot::Meshfree {
                                                              double        timeNew,
                                                              double        dT ) const
   {
+    throw std::invalid_argument( MakeString()
+                                 << __PRETTY_FUNCTION__ << ": a point particle has no faces for a distributed load" );
   }
 
   template < int nDim >
@@ -611,6 +616,16 @@ namespace Marmot::Meshfree {
                                                       double        timeNew,
                                                       double        dT ) const
   {
+    switch ( type ) {
+    case BodyForce: {
+      const double V0 = getVolumeUndeformed();
+      for ( int A = 0; A < this->_nNodes; A++ )
+        for ( int i = 0; i < nDofPerNodeU; i++ )
+          fExt[nDofPerNodeU * A + i] -= this->_T( A ) * load[i] * V0;
+      break;
+    }
+    default: throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid body load type" );
+    }
   }
 
   template < int nDim >
