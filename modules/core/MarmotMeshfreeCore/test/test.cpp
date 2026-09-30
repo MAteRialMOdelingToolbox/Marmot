@@ -1,9 +1,11 @@
 #include "Marmot/MarmotJournal.h"
+#include "Marmot/MarmotMPMLibrary.h"
 #include "Marmot/MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed.h"
 #include "Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h"
 #include "Marmot/MarmotMeshfreeReproducingKernelApproximation.h"
 #include "Marmot/MarmotMeshfreeReproducingKernelApproximationImplicit.h"
 #include "Marmot/MarmotMonomialBasisFunctions.h"
+#include "Marmot/MarmotParticleLibrary.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
 #include <cmath>
@@ -307,6 +309,47 @@ void testCompletenessOrderIsReducedForFewNodes()
                            "two nodes in 1D still reproduce a linear field" );
 }
 
+// the factories: a Lagrangian and a B-spline cell may share a name (the B-spline registration checked the wrong map
+// for duplicates), names are case-insensitive, and an unknown name is reported by name
+void testFactories()
+{
+  using namespace MarmotLibrary;
+
+  const std::string name = "Test/FactoryCell";
+  throwExceptionOnFailure( MarmotCellFactory::registerCell( name,
+                                                            []( int, const double*, int ) -> MarmotCell* {
+                                                              return nullptr;
+                                                            } ),
+                           "Lagrangian cell registration" );
+  throwExceptionOnFailure( MarmotCellFactory::registerBSplineCell( name,
+                                                                   []( int, const double*, int, const double*, int )
+                                                                     -> MarmotCell* { return nullptr; } ),
+                           "a B-spline cell may have the name of a Lagrangian cell" );
+  throwExceptionOnFailure( MarmotCellFactory::createCell( "TEST/FACTORYCELL", 1, nullptr, 0 ) == nullptr &&
+                             MarmotCellFactory::createBSplineCell( "test/factorycell", 1, nullptr, 0, nullptr, 0 ) ==
+                               nullptr,
+                           "cells are created by their case-insensitive name" );
+
+  const std::string unknown  = "No/Such/CellElement";
+  bool              reported = false;
+  try {
+    MarmotCellElementFactory::createCellElement( unknown, 42, nullptr, 0, "gauss", 1 );
+  }
+  catch ( const std::invalid_argument& e ) {
+    reported = std::string( e.what() ).find( unknown ) != std::string::npos;
+  }
+  throwExceptionOnFailure( reported, "an unknown cell element is reported by its name" );
+
+  bool threw = false;
+  try {
+    MarmotMaterialPointFactory::createMaterialPoint( "No/Such/MaterialPoint", 1, nullptr, 0, 1.0 );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw, "an unknown material point must throw" );
+}
+
 int main()
 {
   auto testFunctions = std::vector< std::function< void() > >{ testMonomialBasis,
@@ -314,7 +357,8 @@ int main()
                                                                testReproducingKernelApproximation,
                                                                testImplicitGradientReproducingKernelApproximation,
                                                                testMomentMatrixGradient,
-                                                               testCompletenessOrderIsReducedForFewNodes };
+                                                               testCompletenessOrderIsReducedForFewNodes,
+                                                               testFactories };
   executeTestsAndCollectExceptions( testFunctions );
   return 0;
 }
