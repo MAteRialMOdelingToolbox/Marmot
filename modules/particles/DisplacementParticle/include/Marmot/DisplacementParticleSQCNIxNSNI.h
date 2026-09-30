@@ -34,8 +34,38 @@
 namespace Marmot::Meshfree {
 
   /**
+   * @class Marmot::Meshfree::DisplacementParticleSQCNIxNSNI
    * @brief Implements a Displacement Particle with Stabilized Quasi-Conforming Nodal Integration (SQCNI)
    *        and Naturally Stabilized Nodal Integration (NSNI) for enhanced stability and accuracy.
+   *
+   * @details The shape functions and their smoothed gradients are those of DisplacementParticleSQCNI (the smoothing
+   * domain follows the SmoothingDomainUpdateType, i.e. this class also provides the SNNI x NSNI variants). In
+   * addition, smoothed second derivatives are computed from the gradients at the face centers of the smoothing
+   * domain,
+   * @f[
+   *   N_{B,IJ} = \frac{1}{2}\left( \hat N_{B,IJ} + \hat N_{B,JI} \right), \qquad
+   *   \hat N_{B,IJ} = \frac{1}{V_s} \sum_f \frac{\partial N_B}{\partial Y_I}(\boldsymbol{Y}_f)\,(N_J\,dA)_f .
+   * @f]
+   * The residual of DisplacementParticle is augmented by the NSNI stabilization, the second-order term of a Taylor
+   * expansion of the test function gradient and of the stress about the particle center,
+   * @f[
+   *   r^{\mathrm{stab}}_{Aj} = \Delta F^{-1}_{Ii}\,N_{A,IJ}\,\frac{M_{JK}}{J_Y}\,
+   *   \frac{\partial \tau_{ij}}{\partial Y_K}, \qquad
+   *   \frac{\partial \tau_{ij}}{\partial Y_K} \approx \frac{\partial \tau_{ij}}{\partial \Delta F_{mM}}\,
+   *   \Delta q_{Bm}\,N_{B,MK},
+   * @f]
+   * with the second moments @f$ M_{JK} = \int_{\Omega_Y} (Y_J - Y_{c,J})(Y_K - Y_{c,K})\,dV @f$ of the particle
+   * geometry in the intermediate configuration and @f$ J_Y = \det\boldsymbol{F}_n @f$ (so that
+   * @f$ M/J_Y @f$ is referred to the undeformed volume, like @f$ V_0 @f$ in the base residual).
+   *
+   * The tangent of the stabilization differentiates the second gradient of the displacement increment and the
+   * inverse of @f$ \Delta\boldsymbol{F} @f$, but not @f$ \partial\boldsymbol{\tau}/\partial\Delta\boldsymbol{F} @f$
+   * itself: the term with @f$ \partial^2\boldsymbol{\tau}/\partial\Delta\boldsymbol{F}^2 @f$ is omitted, since the
+   * material interface does not provide it. The tangent is therefore approximate by construction (the module test
+   * measures a relative error of about @f$ 10^{-3} @f$); all other parts are exact.
+   *
+   * The second moments are initialized at construction (the intermediate configuration coincides with the undeformed
+   * one until the first accepted increment) and updated in acceptStateAndPosition().
    *
    * @tparam nDim The number of spatial dimensions (e.g., 2 for 2D, 3 for 3D).
    * @tparam nVertices The number of vertices defining the particle's geometry.
@@ -43,13 +73,13 @@ namespace Marmot::Meshfree {
   template < int nDim, int nVertices >
   class DisplacementParticleSQCNIxNSNI : public DisplacementParticleSQCNI< nDim, nVertices > {
 
-    using ParentPointParticle = DisplacementParticle< nDim >;
-    using ParentSQCNIParticle = DisplacementParticleSQCNI< nDim, nVertices >;
+    using ParentPointParticle = DisplacementParticle< nDim >;                 ///< the point particle base class
+    using ParentSQCNIParticle = DisplacementParticleSQCNI< nDim, nVertices >; ///< the SQCNI base class
 
-    using TensorD    = Fastor::Tensor< double, nDim >;
-    using TensorDD   = Fastor::Tensor< double, nDim, nDim >;
-    using TensorDDD  = Fastor::Tensor< double, nDim, nDim, nDim >;
-    using TensorDDDD = Fastor::Tensor< double, nDim, nDim, nDim, nDim >;
+    using TensorD    = Fastor::Tensor< double, nDim >;                        ///< vector of size nDim
+    using TensorDD   = Fastor::Tensor< double, nDim, nDim >;                  ///< second-order tensor of size nDim
+    using TensorDDD  = Fastor::Tensor< double, nDim, nDim, nDim >;            ///< third-order tensor of size nDim
+    using TensorDDDD = Fastor::Tensor< double, nDim, nDim, nDim, nDim >;      ///< fourth-order tensor of size nDim
 
     /**
      * @brief Moments of inertia of the particle in the intermediate reference configuration.
@@ -59,11 +89,14 @@ namespace Marmot::Meshfree {
      */
     TensorDD _momentsOfInertia_IntermediateReference;
 
+    /// second gradient of the displacement increment, @f$ \partial \Delta F_{iJ}/\partial Y_K @f$ (explicit scheme
+    /// only)
     TensorDDD _d2x_dYdY;
 
+    /// velocity gradient with respect to @f$ \boldsymbol{Y} @f$ (explicit scheme only, used by computeLumpedMomentum())
     TensorDD _dv_dY = TensorDD( 0.0 );
 
-    double dT = 0.0;
+    double dT = 0.0; ///< not used (the methods take the time increment as an argument)
     /**
      * @brief Second derivatives of the shape functions with respect to the intermediate coordinates.
      *
@@ -77,15 +110,16 @@ namespace Marmot::Meshfree {
     /**
      * @brief Constructor for DisplacementParticleSQCNIxNSNI.
      *
-     * @param elementID Unique identifier for the particle.
-     * @param nodeCoordinates Pointer to an array of node coordinates defining the particle's initial geometry.
-     * @param nNodeCoordiantes Number of node coordinates.
-     * @param volume Initial volume of the particle.
-     * @param materialName Name of the material assigned to the particle.
-     * @param materialProperties Pointer to an array of material properties.
-     * @param sizeMaterialProperties Size of the material properties array.
-     * @param approximation Reference to the meshfree approximation object.
-     * @param smoothingVolumeUpdateType Type of update strategy for the smoothing domain volume.
+     * @param[in] elementID Unique identifier for the particle.
+     * @param[in] nodeCoordinates Pointer to an array of node coordinates defining the particle's initial geometry.
+     * @param[in] nNodeCoordiantes Number of node coordinates.
+     * @param[in] volume Initial volume of the particle; must be 0 (see DisplacementParticleSQCNI).
+     * @param[in] materialName Name of the material assigned to the particle.
+     * @param[in] materialProperties Pointer to an array of material properties.
+     * @param[in] sizeMaterialProperties Size of the material properties array.
+     * @param[in] approximation Reference to the meshfree approximation object.
+     * @param[in] smoothingVolumeUpdateType Type of update strategy for the smoothing domain volume.
+     * @throws std::invalid_argument if the provided volume is not zero.
      */
     DisplacementParticleSQCNIxNSNI( int                                            elementID,
                                     const double*                                  nodeCoordinates,
@@ -105,7 +139,7 @@ namespace Marmot::Meshfree {
      * (`_d2N_dYdY`) required for the NSNI formulation. It uses a boundary integral
      * approach to compute the derivatives.
      *
-     * @param kernelFunctions A vector of pointers to the meshfree kernel functions
+     * @param[in] kernelFunctions A vector of pointers to the meshfree kernel functions
      *                        associated with the surrounding nodes.
      */
     void assignMeshfreeKernelFunctions(
@@ -162,25 +196,46 @@ namespace Marmot::Meshfree {
      *
      * This method implements the core physics computations for the NSNI particle.
      * It calculates the internal forces (`fInt`) and the tangent stiffness matrix (`dFInt_ddQ`)
-     * based on the current deformation, material response, and the NSNI stabilization terms.
+     * based on the current deformation, material response, and the NSNI stabilization terms (see the class
+     * description; the tangent of the stabilization is approximate). Inertia is included as in DisplacementParticle.
      *
-     * @param dQ Pointer to the incremental nodal displacement vector.
-     * @param fInt Pointer to the output internal force vector.
-     * @param dFInt_ddQ Pointer to the output tangent stiffness matrix.
-     * @param timeNew Current simulation time.
-     * @param dT Time step size.
+     * @param[in] dQ Pointer to the incremental nodal displacement vector.
+     * @param[in,out] fInt Pointer to the output internal force vector (the contribution is added).
+     * @param[in,out] dFInt_ddQ Pointer to the output tangent stiffness matrix (the contribution is added).
+     * @param[in] timeNew Current simulation time.
+     * @param[in] dT Time step size.
      */
     void computePhysicsKernels( const double* dQ, double* fInt, double* dFInt_ddQ, double timeNew, double dT ) override;
 
+    /**
+     * @brief Explicit scheme: updates the material point with the increment dQ, stores the second gradient of the
+     * increment, and sets @f$ \boldsymbol{v}_{n+1} = \Delta\boldsymbol{u}/\Delta t @f$,
+     * @f$ \boldsymbol{a} = (\boldsymbol{v}_{n+1} - \boldsymbol{v}_n)/\Delta t @f$ and the velocity gradient
+     * (skipped for @f$ \Delta t \le 10^{-16} @f$).
+     * @param[in] dQ Pointer to the incremental nodal displacement vector.
+     * @param[in] timeNew Current simulation time.
+     * @param[in] dT Time step size.
+     */
     void updatePhysicsExplicit( const double* dQ, double timeNew, double dT ) override;
 
+    /**
+     * @brief Explicit scheme: internal force of the current state (as computePhysicsKernels(), without inertia and
+     * tangent), including the NSNI stabilization.
+     * @param[in,out] fInt Pointer to the internal force vector (the contribution is added).
+     */
     void computePhysicsKernelsExplicit( double* fInt ) override;
 
+    /**
+     * @brief Lumped momentum, @f$ p_{Ai} \mathrel{+}= \rho_0\,T_A\,V_0\,v_i
+     * + \rho_0\,(\partial v_i/\partial Y_J)\,M_{JK}\,(\partial T_A/\partial Y_K)/J_Y @f$, with the velocity gradient
+     * of the last updatePhysicsExplicit().
+     * @param[in,out] mLumped Lumped momentum vector (nDim values per node), the contribution is added.
+     */
     virtual void computeLumpedMomentum( double* mLumped ) const override;
 
     /// \brief Extract the second derivative of the shape function for a given node
-    /// \param d2N_dYdY The second derivative of the shape function
-    /// \param node The node for which the second derivative is extracted
+    /// \param[in] d2N_dYdY The second derivative of the shape function
+    /// \param[in] node The node for which the second derivative is extracted
     /// \return The second derivative of the shape function for the given node
     /// \details The second derivative is averaged over the two indices to ensure symmetry.
     inline TensorDD extract_d2N_dYdY_for_node( const std::array< Eigen::MatrixXd, nDim >& d2N_dYdY, int node ) const

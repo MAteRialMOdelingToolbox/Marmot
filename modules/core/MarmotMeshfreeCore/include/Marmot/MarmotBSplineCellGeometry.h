@@ -32,25 +32,49 @@
 
 namespace Marmot::Cells {
 
+  /**
+   * @class Marmot::Cells::MarmotBSplineCellGeometry
+   * @brief B-spline cell geometry (one knot span), a geometry policy for the MPM cells.
+   *
+   * @details Wraps Marmot::FiniteElement::MarmotBSplineGeometryElement for use as the @c GeometryCell of a cell
+   * (see GeometryCellPolicy). The cell is the knot span
+   * @f$ [u_{p}, u_{p+1}] @f$ of each direction; the knot vectors are given in **physical coordinates**, so the
+   * parametric coordinate of a point is the point itself: findReferenceCoordinate() is the identity and dNdX()
+   * returns the parametric derivatives unchanged. This is exact for a B-spline grid whose geometry map is the
+   * identity @f$ \boldsymbol{X}(\boldsymbol{\xi}) = \boldsymbol{\xi} @f$ (control points at the Greville abscissae,
+   * e.g. a uniform, axis-aligned background grid); the control point coordinates enter only detJ().
+   *
+   * @tparam nDim  Spatial dimension (2 or 3).
+   * @tparam order Polynomial degree @f$ p @f$ (1, 2 or 3 are registered).
+   */
   template < int nDim, int order >
   class MarmotBSplineCellGeometry : public Marmot::FiniteElement::MarmotBSplineGeometryElement< nDim, order >
 
   {
 
+    /// The underlying B-spline geometry element.
     using ParentBSplineGeometryElement = Marmot::FiniteElement::MarmotBSplineGeometryElement< nDim, order >;
-    using JacobianSized                = ParentBSplineGeometryElement::JacobianSized;
+    using JacobianSized                = ParentBSplineGeometryElement::JacobianSized; ///< Jacobian matrix type.
 
-    Eigen::Matrix< double, nDim, 1 > _boundingBoxMin;
-    Eigen::Matrix< double, nDim, 1 > _boundingBoxMax;
+    Eigen::Matrix< double, nDim, 1 > _boundingBoxMin; ///< Lower corner of the knot span, @f$ u_p @f$ per direction.
+    Eigen::Matrix< double, nDim, 1 > _boundingBoxMax; ///< Upper corner of the knot span, @f$ u_{p+1} @f$ per direction.
 
-    bool _boundingBoxMatchesGeometryExactly;
+    bool _boundingBoxMatchesGeometryExactly;          ///< Always @c true; currently not used.
 
   public:
-    using NSized           = ParentBSplineGeometryElement::NSized;
-    using dNdXSized        = ParentBSplineGeometryElement::dNdXSized;
-    using CoordinateVector = ParentBSplineGeometryElement::CoordinateVector;
-    using XiSized          = ParentBSplineGeometryElement::XiSized;
+    using NSized           = ParentBSplineGeometryElement::NSized;           ///< Row vector of shape function values.
+    using dNdXSized        = ParentBSplineGeometryElement::dNdXSized;        ///< Shape function gradients.
+    using CoordinateVector = ParentBSplineGeometryElement::CoordinateVector; ///< Flat control point coordinates.
+    using XiSized          = ParentBSplineGeometryElement::XiSized;          ///< Parametric (= physical) point.
 
+    /**
+     * @brief Constructs the geometry and its bounding box (the knot span).
+     * @param[in] nodeCoordinates     Control point coordinates, point by point; mapped, not copied.
+     * @param[in] sizeNodeCoordinates Size of @p nodeCoordinates.
+     * @param[in] knotVectors         Knot vectors (@f$ 2p+2 @f$ knots per direction, direction by direction), in
+     *                                physical coordinates.
+     * @param[in] sizeKnotVectors     Size of @p knotVectors.
+     */
     MarmotBSplineCellGeometry( const double* nodeCoordinates,
                                int           sizeNodeCoordinates,
                                const double* knotVectors,
@@ -67,20 +91,50 @@ namespace Marmot::Cells {
       _boundingBoxMatchesGeometryExactly = true;
     }
 
+    /**
+     * @brief Knot span test @f$ u_{p,i} \le x_i < u_{p+1,i} @f$ (half-open).
+     * @param[in] coordinates Point coordinates (nDim values).
+     * @return @c true if the point is inside the knot span.
+     */
     bool isCoordinateInCell( const double* coordinates ) const;
 
+    /**
+     * @brief Bounding box of the cell, i.e. the knot span.
+     * @param[out] boundingBoxMin Lower corner (nDim values).
+     * @param[out] boundingBoxMax Upper corner (nDim values).
+     */
     void getBoundingBox( double* boundingBoxMin, double* boundingBoxMax ) const;
 
+    /**
+     * @brief Inverse geometry map; the identity, since the knots are physical coordinates.
+     * @param[in] coord Physical coordinates.
+     * @return @p coord.
+     */
     XiSized findReferenceCoordinate( const XiSized& coord ) const;
 
+    /**
+     * @brief Tensor-product B-spline shape functions.
+     * @param[in] xi Parametric (= physical) coordinates.
+     * @return @f$ N_a(\boldsymbol{\xi}) @f$.
+     */
     NSized N( const XiSized& xi ) const { return ParentBSplineGeometryElement::N( xi ); }
 
+    /**
+     * @brief Shape function gradients; the parametric derivatives, no Jacobian transformation (identity map).
+     * @param[in] xi Parametric (= physical) coordinates.
+     * @return @f$ \partial N_a/\partial \xi_i @f$ (row @f$ i @f$, column @f$ a @f$).
+     */
     dNdXSized dNdX( const XiSized& xi ) const
     {
       const auto dN_dXi = ParentBSplineGeometryElement::dNdXi( xi );
       return dN_dXi;
     }
 
+    /**
+     * @brief Determinant of the Jacobian of the geometry map defined by the control points.
+     * @param[in] xi Parametric coordinates.
+     * @return @f$ \det \boldsymbol{J}(\boldsymbol{\xi}) @f$.
+     */
     double detJ( const XiSized& xi ) const
     {
       const auto dN_dXi = ParentBSplineGeometryElement::dNdXi( xi );

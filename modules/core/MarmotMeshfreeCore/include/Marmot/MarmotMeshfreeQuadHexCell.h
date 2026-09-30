@@ -22,6 +22,7 @@
 namespace Marmot::Meshfree {
 
   /**
+   * @struct Marmot::Meshfree::GaussRule
    * @brief Generic Gauss rule definition.
    * @tparam nDim The dimension of the space (e.g., 2 for 2D, 3 for 3D).
    *
@@ -32,6 +33,7 @@ namespace Marmot::Meshfree {
   struct GaussRule;
 
   /**
+   * @struct Marmot::Meshfree::GaussRule< 2 >
    * @brief Specialization of GaussRule for 2D (2x2 Gauss points).
    */
   template <>
@@ -57,6 +59,7 @@ namespace Marmot::Meshfree {
   };
 
   /**
+   * @struct Marmot::Meshfree::GaussRule< 3 >
    * @brief Specialization of GaussRule for 3D (2x2x2 Gauss points).
    */
   template <>
@@ -91,6 +94,7 @@ namespace Marmot::Meshfree {
   };
 
   /**
+   * @class Marmot::Meshfree::MarmotLagrangeCell
    * @brief Generic isoparametric Lagrange element.
    * @tparam nDim The dimension of the element (e.g., 2 for Quad4, 3 for Hex8).
    * @tparam nNodes The number of nodes in the element (e.g., 4 for Quad4, 8 for Hex8).
@@ -99,7 +103,9 @@ namespace Marmot::Meshfree {
    * mapping from natural to physical coordinates, Jacobian computation, and
    * integration-based properties like centroid and volume.
    *
-   * Specific shape functions and derivatives must be specialized for concrete topologies.
+   * Specific shape functions and derivatives must be specialized for concrete topologies. Specializations exist
+   * for Quad4 (2, 4) and Hex8 (3, 8). The class owns a copy of the node coordinates (unlike the MPM cell geometries,
+   * which map an external array); it is used as the geometry of particle domains (see MarmotParticleDomain.h).
    */
   template < int nDim, int nNodes >
   class MarmotLagrangeCell {
@@ -443,11 +449,15 @@ namespace Marmot::Meshfree {
   private:
     Mat _nodes; ///< Matrix storing the physical coordinates of the element's nodes.
 
-    // Helper to get global grid coordinates for a sub-cell
-    // This function determines the (i,j) or (i,j,k) grid position
-    // of a sub-cell given its flat index in the `uniformSubdivided` vector
-    // The coordinates are 0-indexed, from 0 to (2^levels - 1) along each dimension.
-    // NOTE: This helper is now only relevant for levels=1, simplifying its usage.
+    /**
+     * @brief Grid position of a sub-cell of a single uniform subdivision.
+     *
+     * Maps the flat index of a sub-cell in the vector returned by uniformSubdivided() to its (i,j) or (i,j,k)
+     * position, each index 0 or 1 (one subdivision level). Currently not called.
+     *
+     * @param cell_idx Flat index of the sub-cell (0-3 in 2D, 0-7 in 3D).
+     * @return The 0-based grid position of the sub-cell.
+     */
     std::array< int, nDim > getGlobalGridCoords( int cell_idx ) const
     {
 

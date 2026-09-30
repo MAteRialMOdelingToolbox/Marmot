@@ -34,37 +34,90 @@
 namespace Marmot::Meshfree {
 
   /**
-   * @brief SQCNI with NATURALLY STABILIZED nodal integration (NSNI), non-micropolar.
+   * @class Marmot::Meshfree::GradientEnhancedFiniteStrainParticleSQCNIxNSNI
+   * @brief SQCNI / SNNI particle with naturally stabilized nodal integration (NSNI) for gradient-enhanced
+   *        finite-strain materials.
    *
-   * The non-micropolar port of @ref GradientEnhancedMicropolarParticleSQCNIxNSNI.  On top of
-   * the smoothed gradients of @ref GradientEnhancedFiniteStrainParticleSQCNI it adds the NSNI
-   * stabilization term, built from the SECOND derivatives of the shape functions (also obtained
-   * by boundary integration over the smoothing domain) contracted with the second moments of
-   * the particle domain about its centroid.  That term is what removes the spurious zero-energy
-   * modes of nodal integration -- which matters precisely on a fine mesh in softening, where an
-   * unstabilised nodal scheme can produce oscillations that look like localisation.
+   * On top of the smoothed gradients of GradientEnhancedFiniteStrainParticleSQCNI, the momentum residual receives the
+   * NSNI stabilization term: the integrand is expanded to first order about the particle
+   * center, and the second-order term of the integral is kept, with the second moments of the particle domain. The
+   * second derivatives of the shape functions are smoothed like the first ones, by the gradients at the face centers,
+   * @f[
+   *   \frac{\partial^2 N_B}{\partial Y_I\,\partial Y_J} \approx \frac{1}{2V_{\Omega_Y}} \sum_f \Bigl(
+   *   \frac{\partial N_B}{\partial Y_I}(\boldsymbol{Y}_f)\,n_J + \frac{\partial N_B}{\partial
+   * Y_J}(\boldsymbol{Y}_f)\,n_I \Bigr) dA_f
+   * @f]
+   * (symmetrized), and the Kirchhoff stress gradient along @f$ \boldsymbol{Y} @f$ is linearized as
+   * @f[
+   *   \frac{\partial\tau_{ij}}{\partial Y_K} \approx \frac{\partial\tau_{ij}}{\partial\Delta F_{mM}}\,
+   *   \frac{\partial^2\Delta x_m}{\partial Y_M\,\partial Y_K}, \qquad
+   *   \frac{\partial^2\Delta x_m}{\partial Y_M\,\partial Y_K} = \Delta q^U_{Bm}\,
+   *   \frac{\partial^2 N_B}{\partial Y_M\,\partial Y_K} .
+   * @f]
+   * The stabilization residual added to @f$ r^U_{Aj} @f$ is
+   * @f[
+   *   r^{U,\mathrm{stab}}_{Aj} = \frac{\partial}{\partial x_i}\Bigl(\frac{\partial N_A}{\partial Y_L}\Bigr)
+   *   \frac{M^Y_{LK}}{J_Y}\,\frac{\partial\tau_{ij}}{\partial Y_K}, \qquad
+   *   \frac{\partial}{\partial x_i}\Bigl(\frac{\partial N_A}{\partial Y_L}\Bigr) =
+   *   \Delta F^{-1}_{mi}\,\frac{\partial^2 N_A}{\partial Y_m\,\partial Y_L},
+   * @f]
+   * with the second moments @f$ \boldsymbol{M}^Y = J_Y\,\boldsymbol{F}_n\,\boldsymbol{M}^0\,\boldsymbol{F}_n^\mathsf{T}
+   * @f$ of the particle domain about its centroid in the intermediate reference configuration (updated at each
+   * accepted increment from those, @f$ \boldsymbol{M}^0 @f$, of the undeformed cell) and @f$ J_Y = \det\boldsymbol{F}_n
+   * @f$. Note that the stabilization uses the trial second derivatives for both the test and the trial side, i.e.
+   * it is not affected by VCI.
    *
-   * The micropolar version's `stabilize angular momentum` option and every couple-stress /
-   * Levi-Civita term are gone: there is no micro-rotation field here to stabilise.
+   * The stabilization acts on the momentum balance only; the nonlocal residual and its rows of the tangent are those
+   * of the SQCNI particle. The stress gradient does not contain the contribution
+   * @f$ \partial\boldsymbol{\tau}/\partial\bar{N}\,\nabla_Y\Delta\bar{N} @f$ of the nonlocal field.
+   *
+   * The tangent of the stabilization term is APPROXIMATE by construction: it differentiates
+   * @f$ \partial^2\Delta\boldsymbol{x}/\partial\boldsymbol{Y}^2 @f$ and @f$ \Delta\boldsymbol{F}^{-1} @f$, but not
+   * @f$ \partial\boldsymbol{\tau}/\partial\Delta\boldsymbol{F} @f$ itself, i.e. it omits
+   * @f$ \partial^2\boldsymbol{\tau}/\partial\boldsymbol{F}^2 @f$ (not exposed by the material interface) and the
+   * dependence of @f$ \partial\boldsymbol{\tau}/\partial\Delta\boldsymbol{F} @f$ on @f$ \bar{N} @f$; the U-N block
+   * therefore has no stabilization contribution at all. The nonlocal rows are exact; the module test bounds the
+   * error of the U-U block and does not check the U-N block for this particle.
+   *
+   * @tparam nDim      Spatial dimension (2: plane strain, 3: 3D).
+   * @tparam nVertices Number of vertices of the smoothing domain (4: Quad, 8: Hexa).
    */
   template < int nDim, int nVertices >
   class GradientEnhancedFiniteStrainParticleSQCNIxNSNI
     : public GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices > {
 
-    using ParentPointParticle = GradientEnhancedFiniteStrainParticle< nDim >;
-    using ParentSQCNIParticle = GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices >;
-    using LagrangeCellType    = ParentSQCNIParticle::LagrangeCellType;
+    using ParentPointParticle = GradientEnhancedFiniteStrainParticle< nDim >;                 ///< point particle base
+    using ParentSQCNIParticle = GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices >; ///< SQCNI base
+    using LagrangeCellType    = ParentSQCNIParticle::LagrangeCellType;   ///< geometry of the smoothing domain
 
-    using TensorD    = Fastor::Tensor< double, nDim >;
-    using TensorDD   = Fastor::Tensor< double, nDim, nDim >;
-    using TensorDDD  = Fastor::Tensor< double, nDim, nDim, nDim >;
-    using TensorDDDD = Fastor::Tensor< double, nDim, nDim, nDim, nDim >;
+    using TensorD    = Fastor::Tensor< double, nDim >;                   ///< vector of size nDim
+    using TensorDD   = Fastor::Tensor< double, nDim, nDim >;             ///< second-order tensor
+    using TensorDDD  = Fastor::Tensor< double, nDim, nDim, nDim >;       ///< third-order tensor
+    using TensorDDDD = Fastor::Tensor< double, nDim, nDim, nDim, nDim >; ///< fourth-order tensor
 
-    TensorDD                            _momentsOfInertia_Undeformed;
-    TensorDD                            _momentsOfInertia_IntermediateReference;
-    std::array< Eigen::MatrixXd, nDim > _d2N_dYdY;
+    TensorDD _momentsOfInertia_Undeformed; ///< second moments @f$ \boldsymbol{M}^0 @f$ of the undeformed domain
+    TensorDD _momentsOfInertia_IntermediateReference; ///< second moments @f$ \boldsymbol{M}^Y @f$ in the
+                                                      ///< intermediate reference configuration
+    std::array< Eigen::MatrixXd, nDim > _d2N_dYdY;    ///< smoothed second derivatives; `_d2N_dYdY[J](I, B)` is the
+                                                      ///< face sum of @f$ \partial N_B/\partial Y_I\,n_J\,dA/V @f$
 
   public:
+    /**
+     * @brief Construct the particle and compute the second moments of the undeformed domain.
+     *
+     * @f$ \boldsymbol{M}^Y @f$ is initialized to @f$ \boldsymbol{M}^0 @f$, since the intermediate reference coincides
+     * with the undeformed configuration until the first accepted increment.
+     *
+     * @param[in] elementID                 Label of the particle.
+     * @param[in] nodeCoordinates           Undeformed vertex coordinates, vertex by vertex.
+     * @param[in] nNodeCoordiantes          Number of coordinates (unused).
+     * @param[in] volume                    Volume (unused, computed from the vertices).
+     * @param[in] materialName              Name of a MarmotMaterialGradientEnhancedFiniteStrain material.
+     * @param[in] materialProperties        Material properties.
+     * @param[in] sizeMaterialProperties    Number of material properties.
+     * @param[in] approximation             Meshfree approximation used for the shape functions.
+     * @param[in] smoothingVolumeUpdateType Update type of the smoothing domain.
+     */
     GradientEnhancedFiniteStrainParticleSQCNIxNSNI(
       int                                            elementID,
       const double*                                  nodeCoordinates,
@@ -76,6 +129,15 @@ namespace Marmot::Meshfree {
       const MarmotMeshfreeApproximation&             approximation,
       ParentSQCNIParticle::SmoothingDomainUpdateType smoothingVolumeUpdateType );
 
+    /**
+     * @brief Assign the kernel functions and compute the smoothed first and second shape function derivatives.
+     *
+     * One boundary integration over the current smoothing domain (one point per face) gives both
+     * @f$ \partial N_B/\partial\boldsymbol{Y} @f$ (from @f$ N_B @f$ at the face centers) and the second derivatives
+     * (from @f$ \partial N_B/\partial\boldsymbol{Y} @f$ at the face centers).
+     *
+     * @param[in] kernelFunctions Kernel functions of the nodes that support the particle.
+     */
     void assignMeshfreeKernelFunctions(
       const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) override
     {
@@ -130,11 +192,23 @@ namespace Marmot::Meshfree {
       ParentPointParticle::_dT_dY = ParentPointParticle::_dN_dY;
     }
 
+    /**
+     * @brief Residual and tangent of the particle for the increment @p dQ, including the NSNI stabilization.
+     *
+     * The same as GradientEnhancedFiniteStrainParticle::computePhysicsKernels, plus the stabilization residual and its
+     * (approximate) tangent given in the class description. The results are ADDED to @p fInt and @p dFInt_ddQ.
+     *
+     * @param[in]     dQ        Increment of the nodal dofs since the last accepted state.
+     * @param[in,out] fInt      Internal force vector.
+     * @param[in,out] dFInt_ddQ Tangent, column-major.
+     * @param[in]     timeNew   Time at the end of the increment.
+     * @param[in]     dT        Time increment.
+     */
     void computePhysicsKernels( const double* dQ, double* fInt, double* dFInt_ddQ, double timeNew, double dT ) override;
 
     /// \brief Extract the second derivative of the shape function for a given node
-    /// \param d2N_dYdY The second derivative of the shape function
-    /// \param node The node for which the second derivative is extracted
+    /// \param[in] d2N_dYdY The second derivative of the shape function
+    /// \param[in] node The node for which the second derivative is extracted
     /// \return The second derivative of the shape function for the given node
     /// \details The second derivative is averaged over the two indices to ensure symmetry.
     inline TensorDD extract_d2N_dYdY_for_node( const std::array< Eigen::MatrixXd, nDim >& d2N_dYdY, int node ) const
@@ -148,6 +222,12 @@ namespace Marmot::Meshfree {
       return d2Nnode_dYdY;
     }
 
+    /**
+     * @brief Accept the increment (see GradientEnhancedFiniteStrainParticle::acceptStateAndPosition) and push the
+     * second moments forward, @f$ \boldsymbol{M}^Y =
+     * J_Y\,\boldsymbol{F}_n\,\boldsymbol{M}^0\,\boldsymbol{F}_n^\mathsf{T}
+     * @f$.
+     */
     virtual void acceptStateAndPosition() override
     {
       ParentSQCNIParticle::acceptStateAndPosition();

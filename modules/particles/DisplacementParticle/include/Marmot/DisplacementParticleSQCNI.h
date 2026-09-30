@@ -38,11 +38,28 @@
 namespace Marmot::Meshfree {
 
   /**
+   * @class Marmot::Meshfree::DisplacementParticleSQCNI
    * @brief A displacement particle implementing the Stabilized Quasi-Conforming Nodal Integration (SQCNI) method.
    *
-   * This class extends the basic DisplacementParticle to incorporate the SQCNI formulation,
+   * @details This class extends the basic DisplacementParticle to incorporate the SQCNI formulation,
    * which involves smoothing domains for integration and specific handling of deformation.
    * It uses a ParticleDomain object for its geometric representation via composition.
+   *
+   * The residual and the tangent are those of DisplacementParticle, evaluated with the shape functions
+   * @f$ N_B @f$ at the particle center and the smoothed gradients over the smoothing domain @f$ \Omega_s @f$ of the
+   * particle (in the intermediate configuration @f$ \boldsymbol{Y} @f$), computed by a one-point rule at the face
+   * centers @f$ \boldsymbol{Y}_f @f$ of the smoothing domain,
+   * @f[
+   *   \frac{\partial N_B}{\partial Y_J} \approx \frac{1}{V_s} \int_{\partial\Omega_s} N_B\,N_J\,dA
+   *   \approx \frac{1}{V_s} \sum_f N_B(\boldsymbol{Y}_f)\,(N_J\,dA)_f .
+   * @f]
+   * The test functions are the trial functions (unless VCI corrects the test gradients). How the smoothing domain
+   * follows the deformation is set by the SmoothingDomainUpdateType: with the deformation gradient (SQCNI, the
+   * smoothing domain conforms to the deformed particle), not at all (SNNI, it is only translated), with the rotation
+   * only, or with the rotation and the principal stretches.
+   *
+   * The particle geometry also provides the faces for distributed loads: a follower pressure and the consistent weak
+   * form (CWF) correction, see computeDistributedLoad().
    *
    * @tparam nDim The number of dimensions (e.g., 2 for 2D, 3 for 3D).
    * @tparam nVertices The number of vertices defining the particle's geometry.
@@ -50,30 +67,32 @@ namespace Marmot::Meshfree {
   template < int nDim, int nVertices >
   class DisplacementParticleSQCNI : public DisplacementParticle< nDim > {
 
-    using TensorD  = Fastor::Tensor< double, nDim >;
-    using TensorDD = Fastor::Tensor< double, nDim, nDim >;
+    using TensorD  = Fastor::Tensor< double, nDim >;       ///< vector of size nDim
+    using TensorDD = Fastor::Tensor< double, nDim, nDim >; ///< second-order tensor of size nDim
 
   protected:
-    using ParentPointParticle = DisplacementParticle< nDim >;
-    using ParticleDomainType  = ParticleDomain< nDim, nVertices >;
+    using ParentPointParticle = DisplacementParticle< nDim >;      ///< the point particle base class
+    using ParticleDomainType  = ParticleDomain< nDim, nVertices >; ///< the particle geometry type
 
-    ParticleDomainType _particleDomain;
+    ParticleDomainType _particleDomain;                            ///< geometry and smoothing domain of the particle
 
   public:
+    /// how the smoothing domain follows the deformation
     using SmoothingDomainUpdateType = ParticleDomainType::SmoothingDomainUpdateType;
 
     /**
      * @brief Constructs a new DisplacementParticleSQCNI object.
      *
-     * @param elementID The unique identifier for the element.
-     * @param nodeCoordinates Pointer to an array of node coordinates (nDim * nVertices).
-     * @param nNodeCoordiantes The total number of coordinate values (nDim * nVertices).
-     * @param volume The volume of the particle. Must be 0, as the volume is computed from vertex coordinates.
-     * @param materialName The name of the material assigned to the particle.
-     * @param materialProperties Pointer to an array of material properties.
-     * @param sizeMaterialProperties The size of the material properties array.
-     * @param approximation The meshfree approximation object used for shape functions.
-     * @param smoothingVolumeUpdateType The strategy for updating the smoothing domain's volume.
+     * @param[in] elementID The unique identifier for the element.
+     * @param[in] nodeCoordinates Pointer to an array of vertex coordinates (nDim * nVertices) in the undeformed
+     * configuration; the center and the volume of the particle follow from them.
+     * @param[in] nNodeCoordiantes The total number of coordinate values (nDim * nVertices).
+     * @param[in] volume The volume of the particle. Must be 0, as the volume is computed from vertex coordinates.
+     * @param[in] materialName The name of the material assigned to the particle.
+     * @param[in] materialProperties Pointer to an array of material properties.
+     * @param[in] sizeMaterialProperties The size of the material properties array.
+     * @param[in] approximation The meshfree approximation object used for shape functions.
+     * @param[in] smoothingVolumeUpdateType The strategy for updating the smoothing domain's volume.
      * @throws std::invalid_argument if the provided volume is not zero.
      */
     DisplacementParticleSQCNI( int                                                          elementID,
@@ -87,28 +106,53 @@ namespace Marmot::Meshfree {
                                const typename ParticleDomainType::SmoothingDomainUpdateType smoothingVolumeUpdateType );
 
     // Override MarmotParticle interface methods to delegate to _particleDomain
+    /**
+     * @brief Vertices of the particle geometry in the intermediate configuration.
+     * @param[out] coordinates The vertex coordinates (nDim x nVertices, column major).
+     */
     virtual void getVertexCoordinates( double* coordinates ) const override
     {
       Eigen::Map< Eigen::Matrix< double, nDim, nVertices > > coordinatesMap( coordinates );
       coordinatesMap = _particleDomain.getGeometryDeformedVertexCoordinates();
     }
 
+    /**
+     * @brief Vertices of the smoothing domain, used for visualization.
+     * @param[out] coordinates The vertex coordinates (nDim x nVertices, column major).
+     */
     virtual void getVisualizationVertexCoordinates( double* coordinates ) const override
     {
       Eigen::Map< Eigen::Matrix< double, nDim, nVertices > > coordinatesMap( coordinates );
       coordinatesMap = _particleDomain.getSmoothingVertexCoordinates();
     }
 
+    /**
+     * @brief Number of vertices of the particle geometry.
+     * @return nVertices.
+     */
     virtual int getNumberOfVertices() const override { return _particleDomain.getNumberOfVertices(); }
 
+    /**
+     * @brief Shape of the particle geometry.
+     * @return The shape name, e.g. "quad4" or "hexa8".
+     */
     virtual std::string getParticleShape() const override { return _particleDomain.getParticleShape(); }
 
+    /**
+     * @brief Center of a face of the particle geometry (intermediate configuration).
+     * @param[in] faceID The face ID (1-based).
+     * @param[out] coordinates The coordinates (nDim values).
+     */
     virtual void getFaceCoordinates( int faceID, double* coordinates ) const override
     {
       Eigen::Map< Eigen::Matrix< double, nDim, 1 > > coordinatesMap( coordinates );
       coordinatesMap = _particleDomain.getFaceCenterCoordinates( faceID );
     }
 
+    /**
+     * @brief Evaluation points of the shape functions: the face centers of the smoothing domain.
+     * @param[out] coordinates The coordinates (nDim x number of faces, column major).
+     */
     virtual void getEvaluationCoordinates( double* coordinates ) const override
     {
       Eigen::Map< Eigen::Matrix< double, nDim, Eigen::Dynamic > > coordinatesMap( coordinates,
@@ -120,16 +164,35 @@ namespace Marmot::Meshfree {
       }
     }
 
+    /**
+     * @brief Number of evaluation points.
+     * @return The number of faces of the smoothing domain.
+     */
     virtual int getNumberOfEvaluationPoints() const override { return _particleDomain.getNumberOfFaces(); }
 
+    /**
+     * @brief Center of the particle in the intermediate configuration, from the material point.
+     * @param[out] coordinates The coordinates (nDim values).
+     */
     virtual void getCenterCoordinates( double* coordinates ) const override
     {
       // Use the material point's center coordinates, which is physics-specific
       this->_mp->getCoordinatesAtCenter( coordinates );
     }
 
+    /**
+     * @brief Volume in the undeformed configuration.
+     * @return @f$ V_0 @f$.
+     */
     virtual double getVolumeUndeformed() const override { return this->_mp->getVolumeUndeformed(); };
 
+    /**
+     * @brief States: "vertex displacements" and "smoothing vertex displacements" (nDim x nVertices) of the geometry and
+     * of the smoothing domain, otherwise the states of the material point.
+     * @param[in] stateName Name of the state.
+     * @param[in] qp Evaluation point (not used).
+     * @return The view on the state.
+     */
     virtual StateView getStateView( const std::string& stateName, int qp ) const override
     {
       if ( stateName == "vertex displacements" )
@@ -146,13 +209,18 @@ namespace Marmot::Meshfree {
     /**
      * @brief Computes the deformed volume of the particle.
      * @return The deformed volume, calculated as undeformed volume multiplied by the determinant of the deformation
-     * gradient.
+     * gradient @f$ \boldsymbol{F}_n @f$ of the last accepted state (i.e., the volume in the intermediate
+     * configuration).
      */
     virtual double getVolumeDeformed() const
     {
       return this->getVolumeUndeformed() * Fastor::determinant( this->dY_dX() );
     }
 
+    /**
+     * @brief Accepts the increment (see DisplacementParticle::acceptStateAndPosition()) and moves the particle geometry
+     * and the smoothing domain to the new intermediate configuration.
+     */
     virtual void acceptStateAndPosition() override
     {
       // First, call the DisplacementParticle's acceptStateAndPosition to update material point and GenericParticle's
@@ -173,7 +241,7 @@ namespace Marmot::Meshfree {
      * their derivatives (T, dT_dY) based on the assigned kernel functions and
      * the current smoothing volume.
      *
-     * @param kernelFunctions A vector of pointers to the meshfree kernel functions.
+     * @param[in] kernelFunctions A vector of pointers to the meshfree kernel functions.
      */
     virtual void assignMeshfreeKernelFunctions(
       const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) override
@@ -214,11 +282,14 @@ namespace Marmot::Meshfree {
      * @brief Computes the boundary integral part for the VCI (Variational Consistent Integration) test function.
      *
      * This method contributes to the R_AiC_RowMajor matrix, which is part of the VCI formulation.
-     * It involves shape functions, monomial basis, and boundary surface vectors.
+     * It involves shape functions, monomial basis, and boundary surface vectors:
+     * @f$ R_{AiC} \mathrel{+}= T_A(\boldsymbol{Y}_N)\,P_C(\boldsymbol{Y}_N)\,(N\,dA_Y)_i @f$, with the evaluation
+     * point and the boundary vector of getBoundaryVectorIntermediate().
      *
-     * @param R_AiC_RowMajor Pointer to the row-major matrix for VCI constraints.
-     * @param boundarySurfaceVector Pointer to the boundary surface vector.
-     * @param boundaryFaceID The ID of the boundary face.
+     * @param[in,out] R_AiC_RowMajor Pointer to the row-major matrix for VCI constraints.
+     * @param[in] boundarySurfaceVector Pointer to the boundary surface vector (not used; the face of the particle
+     * geometry is used instead).
+     * @param[in] boundaryFaceID The ID of the boundary face.
      */
     virtual void vci_compute_Test_P_BoundaryIntegral( double*       R_AiC_RowMajor,
                                                       const double* boundarySurfaceVector,
@@ -247,7 +318,10 @@ namespace Marmot::Meshfree {
 
     /**
      * @brief Retrieves the boundary surface vector and the face center coordinates in the intermediate configuration.
-     * @param boundaryFaceID The ID of the boundary face.
+     * @details The boundary vector @f$ \boldsymbol{N}\,dA_Y @f$ is that of the face of the particle geometry. The
+     * evaluation point is the face center of the smoothing domain for the update type DeformationGradient (SQCNI),
+     * and the face center of the particle geometry otherwise.
+     * @param[in] boundaryFaceID The ID of the boundary face.
      * @return A tuple containing the boundary surface vector (N_dAY) and the face center coordinates (Y_N).
      */
     std::tuple< TensorD, TensorD > getBoundaryVectorIntermediate( int boundaryFaceID ) const;
@@ -256,16 +330,26 @@ namespace Marmot::Meshfree {
      * @brief Computes the distributed load and its derivative with respect to nodal displacements.
      *
      * This method handles different types of distributed loads, such as pressure,
-     * and calculates the external force vector and its tangent matrix.
+     * and calculates the external force vector and its tangent matrix. With @f$ \boldsymbol{N}\,dA_Y @f$ and
+     * @f$ \boldsymbol{Y}_N @f$ from getBoundaryVectorIntermediate(), both types assemble a face force
+     * @f$ \boldsymbol{f} @f$ as @f$ r_{Aj} \mathrel{-}= T_A(\boldsymbol{Y}_N)\,f_j @f$, together with
+     * @f$ \partial f_j/\partial \Delta F_{kL}\,\partial N_B/\partial Y_L @f$ in the tangent:
+     * - Pressure: @f$ \boldsymbol{f} = \Delta J\,\Delta\boldsymbol{F}^{-\mathsf T}\,p\,\boldsymbol{N}\,dA_Y @f$
+     *   (Nanson's formula from @f$ \boldsymbol{Y} @f$ to @f$ \boldsymbol{x} @f$), with @f$ p @f$ = load[0].
+     * - CWFCorrection: @f$ \boldsymbol{f} = \boldsymbol{\tau}\,\Delta\boldsymbol{F}^{-\mathsf T}\,\boldsymbol{N}\,
+     *   dA_Y / J_Y @f$, @f$ J_Y = \det\boldsymbol{F}_n @f$, i.e. the Cauchy traction
+     *   @f$ \boldsymbol{\sigma}\,\boldsymbol{n}\,da @f$ of the particle's own stress on the face; its tangent
+     *   contains the material part (from @f$ \partial\boldsymbol{\tau}/\partial\Delta\boldsymbol{F} @f$) and the
+     *   geometric part (from @f$ \Delta\boldsymbol{F}^{-\mathsf T} @f$). load is not used.
      *
-     * @param type The type of distributed load (e.g., DisplacementParticle::Pressure).
-     * @param surfaceID The ID of the boundary face where the load is applied.
-     * @param load Pointer to the load value(s).
-     * @param fExt Pointer to the array where the external force vector will be accumulated.
-     * @param dExt_dQ Pointer to the array where the derivative of the external force with respect to nodal
+     * @param[in] type The type of distributed load (e.g., DisplacementParticle::Pressure).
+     * @param[in] surfaceID The ID of the boundary face where the load is applied.
+     * @param[in] load Pointer to the load value(s).
+     * @param[in,out] fExt Pointer to the array where the external force vector will be accumulated.
+     * @param[in,out] dExt_dQ Pointer to the array where the derivative of the external force with respect to nodal
      * displacements will be accumulated.
-     * @param timeNew The current time.
-     * @param dT The time increment.
+     * @param[in] timeNew The current time.
+     * @param[in] dT The time increment.
      * @throws std::invalid_argument if an invalid DistributedLoad type is specified.
      */
     virtual void computeDistributedLoad( int           type,
@@ -276,6 +360,17 @@ namespace Marmot::Meshfree {
                                          double        timeNew,
                                          double        dT ) const override;
 
+    /**
+     * @brief Distributed load for explicit time integration: the Pressure force of computeDistributedLoad(), without
+     * the tangent.
+     * @param[in] type The type of distributed load (only DisplacementParticle::Pressure).
+     * @param[in] boundaryFaceID The ID of the boundary face where the load is applied.
+     * @param[in] load Pointer to the load value (the pressure).
+     * @param[in,out] fExt Pointer to the array where the external force vector will be accumulated.
+     * @param[in] timeNew The current time.
+     * @param[in] dT The time increment.
+     * @throws std::invalid_argument if an invalid DistributedLoad type is specified.
+     */
     virtual void computeDistributedLoadExplicit( int           type,
                                                  int           boundaryFaceID,
                                                  const double* load,

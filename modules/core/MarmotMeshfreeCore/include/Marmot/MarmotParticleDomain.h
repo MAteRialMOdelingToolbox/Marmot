@@ -35,14 +35,30 @@
 namespace Marmot::Meshfree {
 
   /**
-   * @brief A generic class for cell-based particle geometry, independent of physics or meshfree approximation.
-   * @details This class provides the geometric representation and operations for particles
-   *          defined by a cell (e.g., quadrilateral, hexahedral). It manages undeformed,
-   *          intermediate, and smoothing domain geometries. It also defines how the
-   *          smoothing domain's deformation is updated based on different strategies.
+   * @class Marmot::Meshfree::ParticleDomain
+   * @brief The geometry of a cell-shaped particle, independent of physics or meshfree approximation.
+   * @details A particle domain is a Lagrangian cell (MarmotLagrangeCell, e.g., a 4-node quadrilateral or an 8-node
+   * hexahedron) that is kept in three versions:
+   *  - the **undeformed geometry** with the vertices @f$ \boldsymbol{X}_v @f$ and the centroid
+   *    @f$ \boldsymbol{X}_c @f$ given at construction,
+   *  - the **deformed geometry** (the geometry in the reference intermediate configuration, i.e., the last accepted
+   *    configuration), used for the particle position, the face centers, the boundary surface vectors of
+   *    distributed loads and the second moments of the NSNI stabilization,
+   *  - the **smoothing domain**, over whose boundary the smoothed shape function gradients are integrated (see
+   *    GenericSDIParticle and the SQCNI particles).
    *
-   * @tparam nDim The number of dimensions (e.g., 2 for 2D, 3 for 3D).
-   * @tparam nVertices The number of vertices defining the particle's geometry.
+   * Both deformed versions are obtained from the undeformed geometry by a homogeneous deformation about the
+   * centroid plus the displacement of the center (see acceptStateAndPosition()),
+   * @f[
+   *   \boldsymbol{x}_v = \boldsymbol{X}_c + \boldsymbol{F}\,(\boldsymbol{X}_v - \boldsymbol{X}_c)
+   *   + \boldsymbol{u}_c ,
+   * @f]
+   * with the total deformation gradient @f$ \boldsymbol{F} @f$ of the particle for the deformed geometry, and a
+   * tensor @f$ \boldsymbol{F}_s @f$ derived from it according to SmoothingDomainUpdateType for the smoothing domain.
+   * Face IDs are 1-based and follow the Abaqus convention of MarmotLagrangeCell.
+   *
+   * @tparam nDim The number of dimensions (2 or 3).
+   * @tparam nVertices The number of vertices of the cell (4 for a quadrilateral, 8 for a hexahedron).
    */
   template < int nDim, int nVertices >
   class ParticleDomain {
@@ -57,27 +73,37 @@ namespace Marmot::Meshfree {
     using LagrangeCellType = MarmotLagrangeCell< nDim, nVertices >; ///< Alias for the underlying Lagrange cell type.
 
     /**
-     * @brief Defines how the smoothing domain's volume is updated.
+     * @brief Defines how the smoothing domain follows the deformation of the particle.
+     * @details The smoothing domain is mapped with the tensor @f$ \boldsymbol{F}_s @f$ computed by
+     * _computeSmoothingDomainDeformationTensorTotal(); in all cases it is translated by the center displacement.
+     * The registered particle names encode the choice (e.g., SQCNI: DeformationGradient, SNNI: None, suffix _R or
+     * prefix R-: RotationOnly, suffix _RU or prefix RS-: RotationAndPrincipalStretch).
      */
     enum SmoothingDomainUpdateType {
-      None,                       ///< No update to the smoothing domain's deformation tensor (identity).
-      DeformationGradient,        ///< Update using the total deformation gradient F.
-      RotationOnly,               ///< Update using only the rotation part R from F = RU.
-      RotationAndPrincipalStretch ///< Update using the rotation R and principal stretches from U.
+      None,                       ///< @f$ \boldsymbol{F}_s = \boldsymbol{I} @f$: the smoothing domain keeps its
+                                  ///< undeformed shape and is only translated.
+      DeformationGradient,        ///< @f$ \boldsymbol{F}_s = \boldsymbol{F} @f$: the smoothing domain deforms with
+                                  ///< the particle (it coincides with the deformed geometry).
+      RotationOnly,               ///< @f$ \boldsymbol{F}_s = \boldsymbol{R} @f$, the rotation of the polar
+                                  ///< decomposition @f$ \boldsymbol{F} = \boldsymbol{R}\boldsymbol{U} @f$ (from an
+                                  ///< SVD).
+      RotationAndPrincipalStretch ///< @f$ \boldsymbol{F}_s = \boldsymbol{R}\,\mathrm{diag}(\boldsymbol{R}^T
+                                  ///< \boldsymbol{F}) @f$: the rotation and the diagonal entries of
+                                  ///< @f$ \boldsymbol{U} @f$ in the global basis.
     };
 
     /**
-     * @brief Constructs a new ParticleDomain object.
-     * @param vertexCoordinates Pointer to an array of vertex coordinates (nDim * nVertices) in the undeformed
-     * configuration.
-     * @param nVertexCoordinates The total number of coordinate values (nDim * nVertices).
-     * @param smoothingVolumeUpdateType The strategy for updating the smoothing domain's volume.
+     * @brief Constructs a new ParticleDomain object; all three geometries start as the undeformed geometry.
+     * @param[in] vertexCoordinates Pointer to an array of vertex coordinates (nDim * nVertices, vertex by vertex)
+     * in the undeformed configuration.
+     * @param[in] nVertexCoordinates The total number of coordinate values (nDim * nVertices).
+     * @param[in] smoothingVolumeUpdateType The strategy for updating the smoothing domain.
      */
     ParticleDomain( const double*                   vertexCoordinates,
                     int                             nVertexCoordinates,
                     const SmoothingDomainUpdateType smoothingVolumeUpdateType );
 
-    const SmoothingDomainUpdateType smoothingVolumeUpdateType; ///< Type of update for the smoothing volume.
+    const SmoothingDomainUpdateType smoothingVolumeUpdateType; ///< Type of update of the smoothing domain.
 
     /**
      * @brief Gets the coordinates of the particle's vertices in the intermediate (deformed) configuration.
@@ -109,7 +135,7 @@ namespace Marmot::Meshfree {
     /**
      * @brief Gets the coordinates of a specific face's center in the intermediate (deformed) configuration.
      *        This refers to the faces of the *deformed geometry*.
-     * @param faceID The ID of the face (1-based index).
+     * @param[in] faceID The ID of the face (1-based index).
      * @return An Eigen vector representing the face center coordinates.
      */
     CoordinatesSized getFaceCenterCoordinates( int faceID ) const
@@ -119,7 +145,7 @@ namespace Marmot::Meshfree {
 
     /**
      * @brief Gets the coordinates of a specific evaluation point (face center of the smoothing domain).
-     * @param faceID The ID of the face (1-based index).
+     * @param[in] faceID The ID of the face (1-based index).
      * @return An Eigen vector representing the evaluation point coordinate.
      */
     CoordinatesSized getSmoothingDomainFaceCenterCoordinates( int faceID ) const
@@ -128,13 +154,14 @@ namespace Marmot::Meshfree {
     }
 
     /**
-     * @brief Gets the number of evaluation points (number of faces of the smoothing domain).
-     * @return The number of evaluation points.
+     * @brief Gets the number of faces of the cell (the same for all three geometries); this is also the number of
+     *        evaluation points of the smoothing boundary integral.
+     * @return The number of faces.
      */
     int getNumberOfFaces() const { return _cellForGeometryDeformed.getNumberOfFaces(); }
 
     /**
-     * @brief Get the smoothing volume of the particle.
+     * @brief Get the volume of the smoothing domain in its current state.
      * @return The smoothing volume of the particle.
      */
     double getSmoothingVolume() const { return _cellForSmoothing.volume(); }
@@ -152,7 +179,8 @@ namespace Marmot::Meshfree {
     double getVolumeUndeformed() const { return _cellForGeometryUndeformed.volume(); }
 
     /**
-     * @brief Provides a const reference to the vertex displacements of the smoothing domain.
+     * @brief Provides a const reference to the vertex displacements of the smoothing domain (smoothing domain
+     *        vertices minus undeformed vertices).
      * @return A const reference to an Eigen matrix containing the vertex displacements.
      */
     const VertexCoordinatesSized& getSmoothingDomainVertexDisplacements() const
@@ -161,7 +189,8 @@ namespace Marmot::Meshfree {
     }
 
     /**
-     * @brief Provides a const reference to the vertex displacements of the geometry.
+     * @brief Provides a const reference to the vertex displacements of the geometry (deformed minus undeformed
+     *        vertices).
      * @return A const reference to an Eigen matrix containing the vertex displacements.
      */
     const VertexCoordinatesSized& getGeometryDeformedVertexDisplacements() const
@@ -172,7 +201,9 @@ namespace Marmot::Meshfree {
     /**
      * @brief Returns the boundary surface vector for a given face ID, from the *deformed geometry*.
      *        This is typically used for distributed loads.
-     * @param faceID The ID of the face (1-based index).
+     * @details The vector is the outward normal scaled by the face area (edge length in 2D), @f$ \boldsymbol{n}\,dA
+     * @f$.
+     * @param[in] faceID The ID of the face (1-based index).
      * @return An Eigen vector representing the boundary surface vector.
      */
     CoordinatesSized getFaceBoundaryVector( int faceID ) const
@@ -181,8 +212,8 @@ namespace Marmot::Meshfree {
     }
 
     /**
-     * @brief Returns the indices of sub-cells that lie on a given parent face.
-     * @param parentFaceId The ID of the parent face.
+     * @brief Returns the indices of sub-cells (of uniformSubdivided()) that lie on a given parent face.
+     * @param[in] parentFaceId The ID of the parent face (1-based).
      * @return A vector of integers representing the sub-cell indices.
      */
     inline std::vector< int > getSubCellIndicesOnParentFace( int parentFaceId ) const
@@ -193,7 +224,7 @@ namespace Marmot::Meshfree {
     /**
      * @brief Returns the boundary surface vector for a given face ID, from the *smoothing domain*.
      *        This is typically used for computing smoothed shape function gradients.
-     * @param faceID The ID of the face (1-based index).
+     * @param[in] faceID The ID of the face (1-based index).
      * @return An Eigen vector representing the boundary surface vector.
      */
     CoordinatesSized getSmoothingBoundarySurfaceVector( int faceID ) const
@@ -202,15 +233,23 @@ namespace Marmot::Meshfree {
     }
 
     /**
-     * @brief Returns the second moments of area/volume for the deformed geometry.
+     * @brief Returns the second moments of area/volume for the deformed geometry,
+     *        @f$ \int (\boldsymbol{x} - \boldsymbol{x}_c) \otimes (\boldsymbol{x} - \boldsymbol{x}_c)\, dV @f$ about
+     * the centroid (Gauss quadrature on the cell).
      * @return An Eigen matrix representing the second moments.
      */
     DeformationGradientSized getGeometrySecondMoments() const { return _cellForGeometryDeformed.secondMoments(); }
 
     /**
      * @brief Updates the particle's position and volume to the reference intermediate configuration.
-     * @param F_physics The physics-specific deformation gradient (total deformation gradient).
-     * @param centerDisplacement The uniform displacement of the particle's center.
+     * @details The deformed geometry and the smoothing domain are rebuilt from the undeformed geometry,
+     *          @f$ \boldsymbol{x}_v = \boldsymbol{X}_c + \boldsymbol{F}(\boldsymbol{X}_v - \boldsymbol{X}_c) +
+     *          \boldsymbol{u}_c @f$, with @f$ \boldsymbol{F} @f$ = @p F_physics for the geometry and
+     *          @f$ \boldsymbol{F}_s @f$ (see SmoothingDomainUpdateType) for the smoothing domain. The vertex
+     *          displacements are updated accordingly.
+     * @param[in] F_physics The total deformation gradient of the particle (with respect to the undeformed
+     * configuration).
+     * @param[in] centerDisplacement The total displacement of the particle's center.
      */
     void acceptStateAndPosition( const DeformationGradientSized& F_physics, const CoordinatesSized& centerDisplacement )
     {
@@ -232,7 +271,9 @@ namespace Marmot::Meshfree {
     /**
      * @brief Uniformly subdivides the particle domain into smaller domains.
      * @details This method creates a vector of new `ParticleDomain` instances, each representing
-     *          a uniformly subdivided portion of the original undeformed particle domain.
+     *          a uniformly subdivided portion of the original undeformed particle domain (one level of bisection
+     *          in each direction, i.e., 4 quadrilaterals or 8 hexahedra), with the same smoothing domain update
+     *          type.
      * @return A vector of `ParticleDomain` instances representing the subdivided particles.
      */
     std::vector< ParticleDomain > uniformSubdivided() const
@@ -251,7 +292,7 @@ namespace Marmot::Meshfree {
 
     /**
      * @brief Computes the centroid coordinates from a given set of vertex coordinates.
-     * @param vertexCoordinates An Eigen matrix containing the vertex coordinates.
+     * @param[in] vertexCoordinates An Eigen matrix containing the vertex coordinates.
      * @return An Eigen vector representing the centroid coordinates.
      */
     static CoordinatesSized getCenterFromVertices( const VertexCoordinatesSized& vertexCoordinates )
@@ -262,7 +303,7 @@ namespace Marmot::Meshfree {
 
     /**
      * @brief Computes the volume of a cell defined by a given set of vertex coordinates.
-     * @param vertexCoordinates An Eigen matrix containing the vertex coordinates.
+     * @param[in] vertexCoordinates An Eigen matrix containing the vertex coordinates.
      * @return The computed volume.
      */
     static double getVolumeFromVertices( const VertexCoordinatesSized& vertexCoordinates )
@@ -281,8 +322,9 @@ namespace Marmot::Meshfree {
     VertexCoordinatesSized _vertex_displacements_geometry; ///< Displacements of vertices of the geometry.
 
     /**
-     * @brief Computes the total deformation tensor for the smoothing domain based on the configured update type.
-     * @param F_physics The physics-specific deformation gradient.
+     * @brief Computes the total deformation tensor @f$ \boldsymbol{F}_s @f$ for the smoothing domain based on the
+     *        configured update type (see SmoothingDomainUpdateType).
+     * @param[in] F_physics The total deformation gradient of the particle.
      * @return An Eigen matrix representing the deformation tensor for the smoothing domain.
      */
     DeformationGradientSized _computeSmoothingDomainDeformationTensorTotal(
@@ -313,14 +355,15 @@ namespace Marmot::Meshfree {
     }
   };
 
-  /**
+  /*
+   * (Definition; documented at the declaration.)
    * @brief Constructor for ParticleDomain.
    * @tparam nDim The number of dimensions.
    * @tparam nVertices The number of vertices.
-   * @param vertexCoordinates Pointer to an array of vertex coordinates (nDim * nVertices) in the undeformed
+   * @param[in] vertexCoordinates Pointer to an array of vertex coordinates (nDim * nVertices) in the undeformed
    * configuration.
-   * @param nVertexCoordinates The total number of coordinate values (nDim * nVertices).
-   * @param smoothingVolumeUpdateType The strategy for updating the smoothing domain's volume.
+   * @param[in] nVertexCoordinates The total number of coordinate values (nDim * nVertices).
+   * @param[in] smoothingVolumeUpdateType The strategy for updating the smoothing domain.
    */
   template < int nDim, int nVertices >
   ParticleDomain< nDim, nVertices >::ParticleDomain( const double*                   vertexCoordinates,

@@ -32,6 +32,17 @@
 
 namespace Marmot::Math {
 
+  /**
+   * @brief Compute the size of the complete monomial basis of a given order.
+   *
+   * Computes the size of the H vector based on the completeness order and the dimension, cf. Eq. (3.67) in the
+   * book by Belytschko, Chen, Hillman, i.e., the number of monomials @f$ \boldsymbol{x}^{\boldsymbol{\alpha}} @f$
+   * with @f$ |\boldsymbol{\alpha}| \le n @f$ in @f$ d @f$ dimensions, @f$ \binom{d + n}{d} @f$.
+   *
+   * @param[in] order Completeness order @f$ n @f$ (zero for a negative order).
+   * @param[in] dim   Spatial dimension @f$ d \ge 1 @f$.
+   * @return The number of monomials.
+   */
   inline int computeSizeOfMonomialBasisVector( int order, int dim )
   {
     // compute the size of the H vector based on the completeness order and the dimension
@@ -47,6 +58,20 @@ namespace Marmot::Math {
     return size;
   }
 
+  /**
+   * @brief Recursive kernel of computeMonomialBasis().
+   *
+   * Multiplies the entries starting at @p idxEnd by the powers @f$ x_k^i @f$ of the coordinates
+   * @f$ k \le @f$ @p dim, for all exponent combinations of total degree @f$ \le @f$ @p order. The loop over the
+   * exponent of coordinate @p dim is the outermost one, the recursion handles the lower coordinates.
+   *
+   * @param[in]     order  Remaining total degree.
+   * @param[in]     x      Coordinates.
+   * @param[in,out] res    Basis vector, initialized with ones by the caller.
+   * @param[in]     idxEnd First entry of @p res treated by this call.
+   * @param[in]     dim    Number of (leading) coordinates treated by this call.
+   * @return One past the last entry of @p res treated by this call.
+   */
   inline int _computeMonomialBasisRecursion( int                    order,
                                              const Eigen::VectorXd& x,
                                              Eigen::VectorXd&       res,
@@ -68,6 +93,20 @@ namespace Marmot::Math {
     return idxEnd;
   }
 
+  /**
+   * @brief Recursive kernel of computeMonomialBasisGradient().
+   *
+   * Same traversal as _computeMonomialBasisRecursion(). By the product rule, column @f$ k @f$ of an entry is
+   * multiplied by @f$ \partial x_k^i / \partial x_k = i\, x_k^{i-1} @f$ for its own coordinate and by
+   * @f$ x_j^i @f$ for all other coordinates @f$ j \neq k @f$.
+   *
+   * @param[in]     order  Remaining total degree.
+   * @param[in]     x      Coordinates.
+   * @param[in,out] res    Gradient matrix (basis size @f$ \times d @f$), initialized with ones by the caller.
+   * @param[in]     idxEnd First row of @p res treated by this call.
+   * @param[in]     dim    Number of (leading) coordinates treated by this call.
+   * @return One past the last row of @p res treated by this call.
+   */
   inline int _computeMonomialBasisGradientRecursion( int                    order,
                                                      const Eigen::VectorXd& x,
                                                      Eigen::MatrixXd&       res,
@@ -96,12 +135,36 @@ namespace Marmot::Math {
     return idxEnd;
   }
 
+  /**
+   * @brief Evaluate the complete monomial basis @f$ \boldsymbol{H}(\boldsymbol{x}) @f$ of order @f$ n @f$.
+   *
+   * The entries are all monomials @f$ x_1^{\alpha_1} \cdots x_d^{\alpha_d} @f$ with
+   * @f$ \alpha_1 + \dots + \alpha_d \le n @f$, ordered with the exponent of the last coordinate varying slowest
+   * and that of the first coordinate fastest. For example, in 2D with @f$ n = 2 @f$:
+   * @f$ \boldsymbol{H} = [1,\ x_1,\ x_1^2,\ x_2,\ x_1 x_2,\ x_2^2]^T @f$; in 3D with @f$ n = 1 @f$:
+   * @f$ \boldsymbol{H} = [1,\ x_1,\ x_2,\ x_3]^T @f$. The first entry is always @f$ 1 @f$.
+   *
+   * @param[in]  order Completeness order @f$ n @f$.
+   * @param[in]  x     Coordinates @f$ \boldsymbol{x} @f$ (the dimension @f$ d @f$ is taken from its size).
+   * @param[out] res   Basis vector; must already have the size computeSizeOfMonomialBasisVector( order, d ).
+   */
   inline void computeMonomialBasis( int order, const Eigen::VectorXd& x, Eigen::VectorXd& res )
   {
     res.setOnes();
     _computeMonomialBasisRecursion( order, x, res, 0, x.size() );
   }
 
+  /**
+   * @brief Evaluate the gradient @f$ \partial \boldsymbol{H} / \partial \boldsymbol{x} @f$ of the monomial basis.
+   *
+   * Row @f$ k @f$ corresponds to entry @f$ k @f$ of computeMonomialBasis() (same ordering), column @f$ i @f$ to
+   * @f$ \partial / \partial x_i @f$.
+   *
+   * @param[in]  order Completeness order @f$ n @f$.
+   * @param[in]  x     Coordinates @f$ \boldsymbol{x} @f$ (the dimension @f$ d @f$ is taken from its size).
+   * @param[out] res   Gradient matrix; must already have the size computeSizeOfMonomialBasisVector( order, d )
+   *                   @f$ \times d @f$.
+   */
   inline void computeMonomialBasisGradient( int order, const Eigen::VectorXd& x, Eigen::MatrixXd& res )
   {
     res.setOnes();

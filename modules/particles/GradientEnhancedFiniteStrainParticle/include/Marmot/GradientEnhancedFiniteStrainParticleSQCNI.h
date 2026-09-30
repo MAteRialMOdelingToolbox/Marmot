@@ -37,47 +37,67 @@
 namespace Marmot::Meshfree {
 
   /**
-   * @brief Stabilized-conforming nodal integration (SQCNI) particle for gradient-enhanced
-   *        finite-strain materials WITHOUT a micropolar continuum.
+   * @class Marmot::Meshfree::GradientEnhancedFiniteStrainParticleSQCNI
+   * @brief Stabilized quasi-conforming nodal integration (SQCNI / SNNI) particle for gradient-enhanced finite-strain
+   *        materials without a micropolar continuum.
    *
-   * The non-micropolar sibling of @ref GradientEnhancedMicropolarParticleSQCNI, and a near
-   * verbatim port of it: apart from the node block losing the micro-rotation slot
-   * (@f$n_\mathrm{dim}+1@f$ instead of @f$n_\mathrm{dim}+n_\mathrm{rot}+1@f$) nothing in the
-   * smoothing-domain machinery is micropolar.
+   * The particle is a quadrilateral (2D) or hexahedral (3D) smoothing domain with one material point at its centroid.
+   * The weak forms, the material point and the tangent are those of GradientEnhancedFiniteStrainParticle; what
+   * changes is how the shape function gradients are obtained:
    *
-   * What it adds over the plain @ref GradientEnhancedFiniteStrainParticle point particle:
-   *  - the shape-function GRADIENTS come from a divergence (boundary) integral over the
-   *    smoothing domain rather than from a point evaluation, which is what makes nodal
-   *    integration stable;
-   *  - the particle has VERTICES and FACES, so it can carry a distributed load.  This is what
-   *    makes a constant-pressure confinement (a genuine triaxial test) possible at all --
-   *    the point particle cannot take one, having no faces.
+   * - **Smoothed gradients.** As in stabilized conforming nodal integration (Chen et al., 2001), the gradient is
+   *   replaced by its average over the smoothing domain @f$ \Omega_Y @f$, turned into a boundary integral by the
+   *   divergence theorem and evaluated with one point per face @f$ f @f$ (the face center @f$ \boldsymbol{Y}_f @f$),
+   *   @f[
+   *     \frac{\partial N_B}{\partial Y_i} \approx \frac{1}{V_{\Omega_Y}} \sum_f N_B(\boldsymbol{Y}_f)\,n_i\,dA_f .
+   *   @f]
+   *   The shape function values @f$ N_B @f$ remain the point values at the center. Both the displacement gradient
+   *   @f$ \Delta\boldsymbol{F} @f$ and the gradient of the nonlocal field use the smoothed gradients.
+   * - **Faces.** The particle has vertices and faces and therefore supports the distributed loads `PRESSURE` and
+   *   `CWFCORRECTION` (computeDistributedLoad()); the point particle has none.
    *
-   * `SmoothingDomainUpdateType` selects how the smoothing domain follows the deformation:
-   * `DeformationGradient` (full SQCNI), `None` (SNNI, domain fixed), `RotationOnly` and
-   * `RotationAndPrincipalStretch`.
+   * The smoothing domain is stored by the displacements of its vertices (appended to the state variables as
+   * `vertex displacements`) and is updated at each accepted increment from the deformation gradient
+   * @f$ \boldsymbol{F}_n @f$ of the material point, according to SmoothingDomainUpdateType:
+   * `DeformationGradient` (SQCNI: the domain follows @f$ \boldsymbol{F}_n @f$), `None` (SNNI: the domain is only
+   * translated with the particle), `RotationOnly` (the rotation @f$ \boldsymbol{R} @f$ of the polar decomposition)
+   * and `RotationAndPrincipalStretch` (@f$ \boldsymbol{R} @f$ times the diagonal of
+   * @f$ \boldsymbol{R}^\mathsf{T}\boldsymbol{F}_n @f$). Only for `DeformationGradient` does the smoothing domain
+   * coincide with the physical domain of the particle.
+   *
+   * @tparam nDim      Spatial dimension (2: plane strain, 3: 3D).
+   * @tparam nVertices Number of vertices of the smoothing domain (4: Quad, 8: Hexa).
    */
   template < int nDim, int nVertices >
   class GradientEnhancedFiniteStrainParticleSQCNI : public GradientEnhancedFiniteStrainParticle< nDim > {
 
-    using TensorD          = Fastor::Tensor< double, nDim >;
-    using CoordinatesSized = Eigen::Matrix< double, nDim, 1 >;
+    using TensorD          = Fastor::Tensor< double, nDim >;   ///< vector of size nDim
+    using CoordinatesSized = Eigen::Matrix< double, nDim, 1 >; ///< coordinate vector
 
   public:
-    enum SmoothingDomainUpdateType { None, DeformationGradient, RotationOnly, RotationAndPrincipalStretch };
+    /// @brief How the smoothing domain follows the deformation at each accepted increment.
+    enum SmoothingDomainUpdateType {
+      None,                       ///< translation only (SNNI)
+      DeformationGradient,        ///< mapped by @f$ \boldsymbol{F}_n @f$ (SQCNI)
+      RotationOnly,               ///< mapped by the rotation @f$ \boldsymbol{R} @f$ of @f$ \boldsymbol{F}_n @f$
+      RotationAndPrincipalStretch ///< mapped by @f$
+                                  ///< \boldsymbol{R}\,\mathrm{diag}(\boldsymbol{R}^\mathsf{T}\boldsymbol{F}_n) @f$
+    };
 
   protected:
-    using LagrangeCellType = MarmotLagrangeCell< nDim, nVertices >;
+    using LagrangeCellType = MarmotLagrangeCell< nDim, nVertices >; ///< geometry of the smoothing domain
 
-    const SmoothingDomainUpdateType _smoothingVolumeUpdateType;
+    const SmoothingDomainUpdateType _smoothingVolumeUpdateType;     ///< update type of the smoothing domain
 
-    const Eigen::Matrix< double, nDim, nVertices > _vertexCoordinates_Undeformed;
+    const Eigen::Matrix< double, nDim, nVertices > _vertexCoordinates_Undeformed; ///< undeformed vertex coordinates
 
-    double* _vertexDisplacements_SmoothingDomain;
+    double*
+      _vertexDisplacements_SmoothingDomain; ///< vertex displacements of the smoothing domain (in the state vector)
 
-    using ParentPointParticle = GradientEnhancedFiniteStrainParticle< nDim >;
+    using ParentPointParticle = GradientEnhancedFiniteStrainParticle< nDim >; ///< the point particle base
 
     /// \brief Build a Lagrange cell from the current (deformed) smoothing domain vertex coordinates
+    /// \return The smoothing domain in the intermediate reference configuration.
     LagrangeCellType _makeSmoothingDomainCell() const
     {
       Eigen::Matrix< double, nDim, nVertices > vertexCoordinates;
@@ -86,23 +106,56 @@ namespace Marmot::Meshfree {
     }
 
     /// \brief Build a Lagrange cell from the undeformed vertex coordinates
+    /// \return The smoothing domain in the undeformed configuration.
     LagrangeCellType _makeUndeformedCell() const
     {
       return LagrangeCellType( _vertexCoordinates_Undeformed.data(), nDim * nVertices );
     }
 
   public:
+    /**
+     * @brief Vertex coordinates of the smoothing domain: undeformed coordinates plus `vertex displacements`.
+     * @param[out] coordinates Coordinates, vertex by vertex (nDim x nVertices).
+     */
     virtual void getVertexCoordinates( double* coordinates ) const override;
 
+    /**
+     * @brief Vertex coordinates for visualization, identical to getVertexCoordinates().
+     * @param[out] coordinates Coordinates, vertex by vertex.
+     */
     virtual void getVisualizationVertexCoordinates( double* coordinates ) const override
     {
       getVertexCoordinates( coordinates );
     };
 
+    /**
+     * @brief Number of vertices.
+     * @return nVertices.
+     */
     virtual int getNumberOfVertices() const override { return nVertices; };
 
+    /**
+     * @brief Shape of the particle.
+     * @return Shape name of the undeformed smoothing domain cell.
+     */
     virtual std::string getParticleShape() const override { return _makeUndeformedCell().getCellShape(); }
 
+    /**
+     * @brief Construct the particle from its vertices.
+     *
+     * The material point is placed at the centroid of the vertices, with the volume of the cell they span; the
+     * @p volume argument is not used.
+     *
+     * @param[in] elementID                 Label of the particle.
+     * @param[in] nodeCoordinates           Undeformed vertex coordinates, vertex by vertex.
+     * @param[in] nNodeCoordiantes          Number of coordinates (unused).
+     * @param[in] volume                    Volume (unused, computed from the vertices).
+     * @param[in] materialName              Name of a MarmotMaterialGradientEnhancedFiniteStrain material.
+     * @param[in] materialProperties        Material properties.
+     * @param[in] sizeMaterialProperties    Number of material properties.
+     * @param[in] approximation             Meshfree approximation used for the shape functions.
+     * @param[in] smoothingVolumeUpdateType Update type of the smoothing domain.
+     */
     GradientEnhancedFiniteStrainParticleSQCNI( int                                elementID,
                                                const double*                      nodeCoordinates,
                                                int                                nNodeCoordiantes,
@@ -113,6 +166,15 @@ namespace Marmot::Meshfree {
                                                const MarmotMeshfreeApproximation& approximation,
                                                const SmoothingDomainUpdateType    smoothingVolumeUpdateType );
 
+    /**
+     * @brief Assign the kernel functions and compute the smoothed shape function gradients.
+     *
+     * @f$ N_B @f$ is evaluated at the material point position, @f$ \partial N_B/\partial\boldsymbol{Y} @f$ as the
+     * boundary integral over the current smoothing domain with one point per face (see the class description); the
+     * test functions are set equal to the trial functions (before any VCI correction).
+     *
+     * @param[in] kernelFunctions Kernel functions of the nodes that support the particle.
+     */
     virtual void assignMeshfreeKernelFunctions(
       const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) override;
 
@@ -124,38 +186,71 @@ namespace Marmot::Meshfree {
     ///
     virtual double getSmoothingVolume() const { return _makeSmoothingDomainCell().volume(); }
 
+    /**
+     * @brief Center coordinates: the material point position of the last accepted state.
+     * @param[out] coordinates Coordinates (nDim values).
+     */
     virtual void getCenterCoordinates( double* coordinates ) const override
     {
       this->_mp.getCoordinatesAtCenter( coordinates );
     }
 
+    /**
+     * @brief Centroid of a cell spanned by given vertices.
+     * @param[in] vertexCoordinates Vertex coordinates.
+     * @return The centroid.
+     */
     virtual CoordinatesSized getCenterFromVertices(
       const Eigen::Matrix< double, nDim, nVertices >& vertexCoordinates ) const
     {
       return LagrangeCellType( vertexCoordinates.data(), nDim * nVertices ).centroid();
     }
 
+    /**
+     * @brief Volume of a cell spanned by given vertices.
+     * @param[in] vertexCoordinates Vertex coordinates.
+     * @return The volume.
+     */
     virtual double getVolumeFromVertices( const Eigen::Matrix< double, nDim, nVertices >& vertexCoordinates ) const
     {
       return LagrangeCellType( vertexCoordinates.data(), nDim * nVertices ).volume();
     }
 
+    /**
+     * @brief Volume of the last accepted state, @f$ V_0\det\boldsymbol{F}_n @f$.
+     * @return The volume in the intermediate reference configuration (the current increment is not included).
+     */
     virtual double getVolumeDeformed() const
     {
       return this->getVolumeUndeformed() * Fastor::determinant( this->_mp.dY_dX() );
     }
 
+    /**
+     * @brief Number of state variables: those of the point particle plus the vertex displacements.
+     * @return Required size of the state variable vector.
+     */
     virtual int getNumberOfRequiredStateVars() const override
     {
       return GradientEnhancedFiniteStrainParticle< nDim >::getNumberOfRequiredStateVars() + nDim * nVertices;
     };
 
+    /**
+     * @brief Assign the state variable vector; the last nDim x nVertices entries hold the vertex displacements.
+     * @param[in,out] stateVars  State variable vector.
+     * @param[in]     nStateVars Its size.
+     */
     void assignStateVars( double* stateVars, int nStateVars ) override
     {
       GradientEnhancedFiniteStrainParticle< nDim >::assignStateVars( stateVars, nStateVars - nDim * nVertices );
       _vertexDisplacements_SmoothingDomain = stateVars + nStateVars - nDim * nVertices;
     }
 
+    /**
+     * @brief Access a state variable; `vertex displacements` are those of the smoothing domain.
+     * @param[in] stateName Name of the state variable.
+     * @param[in] qp        Evaluation point (unused).
+     * @return View on the state variable.
+     */
     virtual StateView getStateView( const std::string& stateName, int qp ) const override
     {
       if ( stateName == "vertex displacements" ) {
@@ -164,6 +259,36 @@ namespace Marmot::Meshfree {
       return GradientEnhancedFiniteStrainParticle< nDim >::getStateView( stateName, qp );
     }
 
+    /**
+     * @brief Distributed loads on a face of the particle.
+     *
+     * Both loads use the surface vector @f$ \boldsymbol{N}\,dA_Y @f$ and center @f$ \boldsymbol{Y}_f @f$ of the face
+     * in the intermediate reference configuration (getIntermediateConfBoundaryVector()), test functions
+     * @f$ T_A(\boldsymbol{Y}_f) @f$ evaluated by the meshfree approximation at the face center, and are subtracted
+     * from @p fExt (sign convention of the internal force), with the consistent tangent with respect to the
+     * displacement increment:
+     *
+     * - `PRESSURE` (follower pressure @f$ p @f$ = `load[0]`):
+     *   @f$ \boldsymbol{f} = \Delta J\,\Delta\boldsymbol{F}^{-\mathsf{T}}\,p\,\boldsymbol{N}\,dA_Y @f$,
+     *   @f$ f_{Ai} \mathrel{-}= T_A(\boldsymbol{Y}_f)\,f_i @f$.
+     * - `CWFCORRECTION` (consistent weak form correction, no load value): the boundary term of the momentum weak
+     *   form, @f$ \boldsymbol{t} = \boldsymbol{\tau}\,\Delta\boldsymbol{F}^{-\mathsf{T}}\,\boldsymbol{N}\,dA_Y / J_Y
+     *   @f$ with @f$ J_Y = \det\boldsymbol{F}_n @f$, @f$ f_{Ai} \mathrel{-}= T_A(\boldsymbol{Y}_f)\,t_i @f$; its
+     * tangent contains the geometric part from @f$ \Delta\boldsymbol{F}^{-\mathsf{T}} @f$, the material part from
+     *   @f$ \partial\boldsymbol{\tau}/\partial\Delta\boldsymbol{F} @f$ and the coupling
+     *   @f$ \partial\boldsymbol{\tau}/\partial\bar{N} @f$ to the nonlocal dofs.
+     *
+     * Neither load contributes to the nonlocal residual. Both read the state of the last computePhysicsKernels().
+     *
+     * @param[in]     type      Load type (see getSupportedDistributedLoadTypes()).
+     * @param[in]     surfaceID Face id of the smoothing domain (1-based).
+     * @param[in]     load      Load values (`PRESSURE`: the pressure; `CWFCORRECTION`: unused).
+     * @param[in,out] fExt      Load vector.
+     * @param[in,out] dExt_dQ   Load tangent, column-major.
+     * @param[in]     timeNew   Time at the end of the increment (unused).
+     * @param[in]     dT        Time increment (unused).
+     * @throws std::invalid_argument for an unknown load type.
+     */
     virtual void computeDistributedLoad( int           type,
                                          int           surfaceID,
                                          const double* load,
@@ -172,8 +297,30 @@ namespace Marmot::Meshfree {
                                          double        timeNew,
                                          double        dT ) const override;
 
+    /**
+     * @brief Surface vector and center of a face in the intermediate reference configuration.
+     *
+     * For `DeformationGradient` they are taken from the current smoothing domain, which coincides with the
+     * particle. For the other update types the undeformed surface vector is mapped by Nanson's formula,
+     * @f$ \boldsymbol{N}\,dA_Y = J_n\,\boldsymbol{F}_n^{-\mathsf{T}}\,\boldsymbol{N}\,dA_0 @f$, and the undeformed
+     * face center is translated by the particle displacement.
+     *
+     * @param[in] boundaryFaceID Face id (1-based).
+     * @return Tuple of the surface vector @f$ \boldsymbol{N}\,dA_Y @f$ and the face center @f$ \boldsymbol{Y}_f @f$.
+     */
     std::tuple< TensorD, TensorD > getIntermediateConfBoundaryVector( int boundaryFaceID ) const;
 
+    /**
+     * @brief Add the boundary term @f$ T_A(\boldsymbol{Y}_f)\,P_C(\boldsymbol{Y}_f)\,N_i\,dA_Y @f$ of the VCI
+     * integration constraint for a face of the particle.
+     *
+     * Overrides the point version: the surface vector and the location come from getIntermediateConfBoundaryVector(),
+     * and @f$ T_A @f$ and @f$ P_C @f$ are evaluated at the face center.
+     *
+     * @param[in,out] R_AiC_RowMajor        Constraint residual @f$ R_{AiC} @f$, row-major.
+     * @param[in]     boundarySurfaceVector Unused.
+     * @param[in]     boundaryFaceID        Face id (1-based).
+     */
     virtual void vci_compute_Test_P_BoundaryIntegral( double*       R_AiC_RowMajor,
                                                       const double* boundarySurfaceVector,
                                                       int           boundaryFaceID )
@@ -198,6 +345,10 @@ namespace Marmot::Meshfree {
                            i * ParentPointParticle::_nVCIConstraints + C] += TBoundary( A ) * PBoundary( C ) * N_dAY[i];
     };
 
+    /**
+     * @brief Coordinates of the evaluation points: the face centers of the smoothing domain.
+     * @param[out] coordinates Coordinates, face by face (nDim x number of faces).
+     */
     virtual void getEvaluationCoordinates( double* coordinates ) const
     {
       const auto cell = _makeSmoothingDomainCell();
@@ -210,17 +361,29 @@ namespace Marmot::Meshfree {
         faceCenters.col( i ) = cell.getFaceCenterCoordinates( i + 1 );
     }
 
+    /**
+     * @brief Center of a face of the current smoothing domain.
+     * @param[in]  faceID      Face id (1-based).
+     * @param[out] coordinates Face center (nDim values).
+     */
     virtual void getFaceCoordinates( int faceID, double* coordinates ) const
     {
       Eigen::Map< Eigen::Matrix< double, nDim, 1 > > faceCenter( coordinates );
       faceCenter = _makeSmoothingDomainCell().getFaceCenterCoordinates( faceID );
     }
 
+    /**
+     * @brief Number of evaluation points.
+     * @return Number of faces of the smoothing domain.
+     */
     virtual int getNumberOfEvaluationPoints() const { return _makeUndeformedCell().getNumberOfFaces(); };
 
   private:
+    /// @brief Update the vertex displacements of the smoothing domain from @f$ \boldsymbol{F}_n @f$ and the particle
+    /// displacement, according to the SmoothingDomainUpdateType.
     void _updateVertexDisplacementsFromMaterialPointDeformation();
 
+    /// @brief Update the smoothing domain, then set the center to the accepted material point position.
     virtual void updateParticlePositionToReferenceIntermediate() override
     {
       _updateVertexDisplacementsFromMaterialPointDeformation();
