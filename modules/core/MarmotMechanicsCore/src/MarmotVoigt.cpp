@@ -639,14 +639,14 @@ namespace Marmot {
         stiffnessTensorGlobal.setZero();
         Matrix3d N = transformedCoordinateSystem.transpose();
 
-        for ( size_t i = 0; i < 3; i++ )
-          for ( size_t j = 0; j < 3; j++ )
-            for ( size_t k = 0; k < 3; k++ )
-              for ( size_t l = 0; l < 3; l++ )
-                for ( size_t m = 0; m < 3; m++ )
-                  for ( size_t n = 0; n < 3; n++ )
-                    for ( size_t o = 0; o < 3; o++ )
-                      for ( size_t p = 0; p < 3; p++ )
+        for ( int i = 0; i < 3; i++ )
+          for ( int j = 0; j < 3; j++ )
+            for ( int k = 0; k < 3; k++ )
+              for ( int l = 0; l < 3; l++ )
+                for ( int m = 0; m < 3; m++ )
+                  for ( int n = 0; n < 3; n++ )
+                    for ( int o = 0; o < 3; o++ )
+                      for ( int p = 0; p < 3; p++ )
                         stiffnessTensorGlobal( i, j, k, l ) += N( i, m ) * N( j, n ) * N( k, o ) * N( l, p ) *
                                                                stiffnessTensorLocal( m, n, o, p );
 

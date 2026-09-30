@@ -20,11 +20,10 @@ jobs:
         run: |
           cmake --version
 
-      # Eigen 3.4.1, not 3.4.0: 3.4.0's TensorFixedSize does not compile with MSVC (C2397, narrowing size_t).
       # Build directories are named _build: autodiff ships a BUILD file, and Windows paths are case-insensitive.
       - name: Install Eigen
         run: |
-          git clone --depth 1 --branch 3.4.1 https://gitlab.com/libeigen/eigen.git
+          git clone --depth 1 --branch 3.4.0 https://gitlab.com/libeigen/eigen.git
           cmake -S eigen -B eigen/_build -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX="$env:DEPS_PREFIX"
           cmake --install eigen/_build
 
