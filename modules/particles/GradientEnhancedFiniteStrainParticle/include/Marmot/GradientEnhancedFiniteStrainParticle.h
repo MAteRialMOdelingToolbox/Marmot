@@ -75,11 +75,10 @@ namespace Marmot::Meshfree {
    * @f]
    * @f[
    *   K^{NU}_{ABk} = -T_A\,\frac{\partial L}{\partial\Delta F_{kL}}\frac{\partial N_B}{\partial Y_L}\,V_0 ,\qquad
-   *   K^{NN}_{AB} = \Bigl( T_A N_B + c\,\frac{\partial T_A}{\partial X_i}\frac{\partial N_B}{\partial X_i} \Bigr) V_0 .
+   *   K^{NN}_{AB} = \Bigl( T_A N_B \bigl( 1 - \frac{\partial L}{\partial\bar{N}} \bigr)
+   *     + c\,\frac{\partial T_A}{\partial X_i}\frac{\partial N_B}{\partial X_i} \Bigr) V_0 ,
    * @f]
-   * Note that @f$ K^{NN} @f$ does not contain the term @f$ -T_A N_B\,\partial L/\partial\bar{N}\,V_0 @f$ (the MPM
-   * cell and the finite element do); this is exact for materials whose driving force does not depend on
-   * @f$ \bar{N} @f$.
+   * as in the MPM cell and the finite element.
    *
    * **VCI.** The particle implements the variationally consistent integration hooks of MarmotParticle: the test
    * function gradients are corrected by @f$ \partial T_A/\partial Y_i \mathrel{+}= \eta_{AiC}\,P_C(\boldsymbol{Y}) @f$
@@ -813,7 +812,7 @@ namespace Marmot::Meshfree {
           k_UN  = ( + einsum< i,  ij > ( dT_A_dx, dS_dqN_B )                              ) * V0;
 
           k_NU  = (                     - ( T_A * dL_dqU_B )                              ) * V0;
-          k_NN  = ( + T_A * N_B + inner( dT_A_dX, dN_B_dX ) * c                           ) * V0;
+          k_NN  = ( + T_A * N_B + inner( dT_A_dX, dN_B_dX ) * c - T_A * N_B * t.dL_dN     ) * V0;
 
           k_UU += ( - einsum< k, ij, i, to_jk >( dT_A_dx, S, dN_B_dx ) ) * V0;
 

@@ -1,4 +1,6 @@
+#include "Marmot/GradientEnhancedCompressibleNeoHookeDamage.h"
 #include "Marmot/GradientEnhancedFiniteStrainParticle.h"
+#include "Marmot/MarmotMaterialGradientEnhancedFiniteStrainFactory.h"
 #include "Marmot/MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed.h"
 #include "Marmot/MarmotMeshfreeReproducingKernelApproximation.h"
 #include "Marmot/MarmotParticleLibrary.h"
@@ -21,6 +23,31 @@ namespace {
 
   // GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE: K, G, kappa0, kappaF, l, rho
   const std::vector< double > matProps = { 3500., 1500., 1e-3, 1e-2, 0.3, 2.0 };
+
+  // Both registered materials have dL/dN = 0. This one adds beta * N to the local driving force, so that the
+  // dL/dN block of the nonlocal balance is tested as well.
+  class LocalFieldDependingOnTheNonlocalField : public Materials::GradientEnhancedCompressibleNeoHookeDamage {
+  public:
+    static constexpr double beta = 0.3;
+
+    using GradientEnhancedCompressibleNeoHookeDamage::computeStress;
+    using GradientEnhancedCompressibleNeoHookeDamage::GradientEnhancedCompressibleNeoHookeDamage;
+
+    void computeStress( ConstitutiveResponse< 3 >& response,
+                        AlgorithmicModuli< 3 >&    tangents,
+                        const Deformation< 3 >&    deformation,
+                        const TimeIncrement&       timeIncrement ) const override
+    {
+      GradientEnhancedCompressibleNeoHookeDamage::computeStress( response, tangents, deformation, timeIncrement );
+      response.L += beta * deformation.N;
+      tangents.dL_dN += beta;
+    }
+  };
+
+  const std::string testMaterialName = "TESTLOCALFIELDDEPENDINGONTHENONLOCALFIELD";
+
+  const bool testMaterialRegistered = MarmotLibrary::MarmotMaterialGradientEnhancedFiniteStrainFactory::
+    registerMaterial< LocalFieldDependingOnTheNonlocalField >( testMaterialName );
 
   // a grid of 5^nDim 2nd order B-spline kernels with spacing 1 around the particle
   template < int nDim >
@@ -54,18 +81,20 @@ namespace {
     std::vector< double >                        stateVars;
     std::vector< int >                           assignedGridIndices;
 
-    Setup( const std::string& name, const std::vector< double >& vertices, double volume )
+    Setup( const std::string&           name,
+           const std::vector< double >& vertices,
+           double                       volume,
+           const std::string&           materialName = "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE" )
     {
-      particle.reset(
-        MarmotLibrary::MarmotParticleFactory::createParticle( name,
-                                                              1,
-                                                              vertices.data(),
-                                                              vertices.size(),
-                                                              volume,
-                                                              "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
-                                                              matProps.data(),
-                                                              matProps.size(),
-                                                              approximation ) );
+      particle.reset( MarmotLibrary::MarmotParticleFactory::createParticle( name,
+                                                                            1,
+                                                                            vertices.data(),
+                                                                            vertices.size(),
+                                                                            volume,
+                                                                            materialName,
+                                                                            matProps.data(),
+                                                                            matProps.size(),
+                                                                            approximation ) );
       stateVars.assign( particle->getNumberOfRequiredStateVars(), 0.0 );
       particle->assignStateVars( stateVars.data(), stateVars.size() );
       particle->initializeYourself();
@@ -357,6 +386,17 @@ namespace {
   // the weak-form correction on all faces balances the displacement residual of a homogeneous deformation
   // (divergence theorem of the smoothed gradient); after a step, only the full SQCNI smooths over the deformed
   // particle itself, which makes the balance exact
+  // the tangent including dL/dN, with a material whose local driving force depends on the nonlocal field
+  template < int nDim >
+  void checkTangentWithdL_dN( const std::string& name, const std::string& shape )
+  {
+    Setup< nDim >         s( name, vertices( shape ), volume( shape ), testMaterialName );
+    const Eigen::VectorXd dQ = increment< nDim >( s.nNodes(), 0.02, 3e-3 );
+    const auto [P, K]        = s.trial( dQ );
+    const auto numK = numericalTangent< nDim >( [&]( const Eigen::VectorXd& q ) { return s.trial( q ).first; }, dQ );
+    checkTangent< nDim >( name + ", dL/dN != 0", K, numK, tangentMode( name ) );
+  }
+
   template < int nDim >
   void checkWeakFormCorrection( const std::string& name, const std::string& shape )
   {
@@ -630,12 +670,14 @@ int main()
   std::vector< std::function< void() > > testFunctions;
   for ( const auto& [name, shape] : planeStrain ) {
     testFunctions.push_back( [name = name, shape = shape]() { checkParticle< 2 >( name, shape ); } );
+    testFunctions.push_back( [name = name, shape = shape]() { checkTangentWithdL_dN< 2 >( name, shape ); } );
     if ( shape == "Quad" )
       testFunctions.push_back( [name = name, shape = shape]() { checkWeakFormCorrection< 2 >( name, shape ); } );
     testFunctions.push_back( [name = name, shape = shape]() { checkInterface< 2 >( name, shape ); } );
   }
   for ( const auto& [name, shape] : solid ) {
     testFunctions.push_back( [name = name, shape = shape]() { checkParticle< 3 >( name, shape ); } );
+    testFunctions.push_back( [name = name, shape = shape]() { checkTangentWithdL_dN< 3 >( name, shape ); } );
     if ( shape == "Hexa" )
       testFunctions.push_back( [name = name, shape = shape]() { checkWeakFormCorrection< 3 >( name, shape ); } );
     testFunctions.push_back( [name = name, shape = shape]() { checkInterface< 3 >( name, shape ); } );
