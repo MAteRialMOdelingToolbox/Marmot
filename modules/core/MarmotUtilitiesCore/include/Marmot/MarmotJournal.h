@@ -23,6 +23,7 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
+#include "Marmot/MarmotPortability.h"
 #include <iostream>
 #include <sstream>
 #include <string>

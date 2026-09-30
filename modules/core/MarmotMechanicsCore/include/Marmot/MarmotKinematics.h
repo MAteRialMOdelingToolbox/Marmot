@@ -48,14 +48,27 @@ namespace Marmot {
     } // namespace Strain
 
     namespace VelocityGradient {
+      /** @brief Computes \f$ \frac{\partial \Omega}{\partial l} \f$ once, for initializing dOmega_dVelocityGradient.
+       * @return The 4th-order derivative of the spin tensor with respect to the velocity gradient.
+       */
+      Eigen::TensorFixedSize< double, Eigen::Sizes< 3, 3, 3, 3 > > initializeDOmega_dVelocityGradient();
+
+      /** @brief Computes the derivative of the stretching rate with respect to the velocity gradient once, for
+       * initializing dStretchingRate_dVelocityGradient.
+       * @return The \f$ 6 \times 3 \times 3 \f$ derivative, stretching rate in engineering Voigt notation.
+       */
+      Eigen::TensorFixedSize< double, Eigen::Sizes< 6, 3, 3 > > initializeDStretchingRate_dVelocityGradient();
+
       /**
        * @brief A 4th-order tensor representing the derivative of the spin tensor \f$ \Omega \f$
        *        with respect to the velocity gradient tensor.
        */
-      extern const Eigen::TensorFixedSize< double, Eigen::Sizes< 3, 3, 3, 3 > > dOmega_dVelocityGradient;
+      inline const Eigen::TensorFixedSize< double, Eigen::Sizes< 3, 3, 3, 3 > >
+        dOmega_dVelocityGradient = initializeDOmega_dVelocityGradient();
 
       /** @brief Tensor representing the derivative of the stretching rate with respect to the velocity gradient.*/
-      extern const Eigen::TensorFixedSize< double, Eigen::Sizes< 6, 3, 3 > > dStretchingRate_dVelocityGradient;
+      inline const Eigen::TensorFixedSize< double, Eigen::Sizes< 6, 3, 3 > >
+        dStretchingRate_dVelocityGradient = initializeDStretchingRate_dVelocityGradient();
     } // namespace VelocityGradient
 
     namespace DeformationGradient {

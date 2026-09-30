@@ -75,6 +75,12 @@ elseif(MSVC)
     else()
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
     endif()
+    # /bigobj: the template-heavy (Eigen/Fastor/autodiff) translation units exceed MSVC's default section limit.
+    # /permissive-: standard-conforming two-phase lookup, as GCC/Clang do.
+    # /Zc:__cplusplus: report the real language level in __cplusplus, which Eigen and Fastor check.
+    add_compile_options(/bigobj /permissive- /Zc:__cplusplus)
+    # Keep MSVC's secure-CRT deprecation warnings (C4996 for std::getenv, sscanf, ...) out of the /W4 output.
+    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 endif()
 
 # If no build type was specified, Release is default
@@ -226,7 +232,11 @@ message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
 
 add_library(${PROJECT_NAME} SHARED ${sources})
 
+# On Windows, a DLL exports nothing unless told to. Export every function and class member instead of annotating
+# the API with __declspec(dllexport); global *data* is not covered, so Marmot defines its global constants as
+# `inline const` in the headers instead of `extern const`.
 set_target_properties(${PROJECT_NAME} PROPERTIES
+    WINDOWS_EXPORT_ALL_SYMBOLS ON
     VERSION       ${PROJECT_VERSION}
     SOVERSION     ${PROJECT_VERSION_MAJOR}
     PUBLIC_HEADER "${publicheaders}"
@@ -306,6 +316,9 @@ endif()
 install(TARGETS ${PROJECT_NAME}
     EXPORT        MarmotTargets
     LIBRARY       DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    # Windows: the DLL is a RUNTIME artifact, its import library (.lib) an ARCHIVE one.
+    RUNTIME       DESTINATION "${CMAKE_INSTALL_BINDIR}"
+    ARCHIVE       DESTINATION "${CMAKE_INSTALL_LIBDIR}"
     PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/Marmot"
 )
 

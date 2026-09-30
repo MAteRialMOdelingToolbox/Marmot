@@ -21,7 +21,6 @@ namespace Marmot {
               }
         return dwdl;
       }
-      const EigenTensors::Tensor3333d dOmega_dVelocityGradient = initializeDOmega_dVelocityGradient();
 
       EigenTensors::Tensor633d initializeDStretchingRate_dVelocityGradient()
       {
@@ -39,8 +38,6 @@ namespace Marmot {
               }
         return dddl;
       }
-
-      const EigenTensors::Tensor633d dStretchingRate_dVelocityGradient = initializeDStretchingRate_dVelocityGradient();
 
     } // namespace VelocityGradient
 

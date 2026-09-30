@@ -1,0 +1,68 @@
+# This is a workflow to build the repo on Windows (x64, MSVC), Release only.
+name: build_windows
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-2022
+    env:
+      # All dependencies are header-only; they are installed into this prefix, and Marmot is found through it.
+      DEPS_PREFIX: ${{ github.workspace }}/deps
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Show toolchain
+        run: |
+          cmake --version
+
+      - name: Install Eigen
+        run: |
+          git clone --depth 1 --branch 3.4.0 https://gitlab.com/libeigen/eigen.git
+          cmake -S eigen -B eigen/build -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX="$env:DEPS_PREFIX"
+          cmake --install eigen/build
+
+      - name: Install Autodiff
+        run: |
+          git clone --depth 1 --branch v1.1.0 https://github.com/autodiff/autodiff.git
+          cmake -S autodiff -B autodiff/build -DCMAKE_INSTALL_PREFIX="$env:DEPS_PREFIX" `
+            -DAUTODIFF_BUILD_TESTS=OFF -DAUTODIFF_BUILD_PYTHON=OFF -DAUTODIFF_BUILD_EXAMPLES=OFF -DAUTODIFF_BUILD_DOCS=OFF
+          cmake --install autodiff/build
+
+      - name: Install Fastor
+        run: |
+          git clone --depth 1 --branch V0.6.4 https://github.com/romeric/Fastor.git
+          cmake -S Fastor -B Fastor/build -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX="$env:DEPS_PREFIX"
+          cmake --install Fastor/build
+
+      - name: Check out Marmot
+        uses: actions/checkout@v4
+        with:
+          path: Marmot
+
+      - name: Build Marmot
+        run: |
+          cmake -S Marmot -B Marmot/build -DCMAKE_PREFIX_PATH="$env:DEPS_PREFIX" `
+            -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}/marmot-install"
+          cmake --build Marmot/build --config Release --parallel
+
+      - name: Run tests
+        working-directory: Marmot/build
+        run: |
+          # --no-tests=error: ctest exits 0 on an empty test set, which would
+          # report success for a build that produced no tests at all.
+          ctest -C Release --output-on-failure --no-tests=error
+
+      - name: Install Marmot
+        run: |
+          cmake --install Marmot/build --config Release
+
+      - name: Upload Marmot
+        uses: actions/upload-artifact@v4
+        with:
+          name: Marmot-windows-x64-Release
+          path: marmot-install

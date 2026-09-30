@@ -119,6 +119,30 @@ Get Marmot:
     make install
     ctest --output-on-failure
 
+Building on Windows
+*******************
+
+Marmot builds as a DLL with MSVC (Visual Studio 2022), in the ``Release`` configuration.
+Install Eigen, autodiff and Fastor into a common prefix as above (``cmake --install`` instead of ``make install``),
+then build Marmot from a *Developer PowerShell for VS 2022*:
+
+.. code-block:: console
+
+    cmake -S Marmot -B Marmot/build -DCMAKE_PREFIX_PATH=<prefix> -DCMAKE_INSTALL_PREFIX=<prefix>
+    cmake --build Marmot/build --config Release --parallel
+    ctest --test-dir Marmot/build -C Release --output-on-failure
+    cmake --install Marmot/build --config Release
+
+This installs ``Marmot.dll`` into ``<prefix>/bin`` and its import library ``Marmot.lib`` into ``<prefix>/lib``.
+Programs linking Marmot must find ``Marmot.dll`` at run time, e.g., through ``PATH``.
+
+Marmot's global constants are defined ``inline const`` in the headers, not ``extern const`` in a source file,
+since a Windows DLL does not export data (only functions and class members, via ``WINDOWS_EXPORT_ALL_SYMBOLS``).
+New modules must follow this.
+Likewise, include ``Marmot/MarmotPortability.h`` (e.g., through ``Marmot/MarmotJournal.h``) before using
+``__PRETTY_FUNCTION__``, which MSVC does not provide.
+The Python bindings are not yet supported on Windows.
+
 Building with Python Bindings
 *****************************
 
