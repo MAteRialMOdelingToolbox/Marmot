@@ -435,7 +435,11 @@ namespace Marmot::Meshfree {
      * @brief Computes the physics kernels (internal forces and their derivatives) for the particle.
      * @details Updates the center kinematics from the main domain (the center displacement is incremented by
      *          @f$ \sum_B N_B \Delta\boldsymbol{q}_B @f$ and @f$ \Delta\boldsymbol{F}_c @f$ is set, see the class
-     *          documentation), then calls computePhysicsKernelsOnSubdomains().
+     *          documentation), then calls computePhysicsKernelsOnSubdomains(). As for all Marmot entities, the
+     *          state variables are updated in place, and the host restores them to the last accepted state before
+     *          each evaluation (EdelweissMeshfree does so in every computePhysicsKernels call): the center
+     *          displacement thus stays the total one, which acceptStateAndPosition() applies to the undeformed
+     *          domain.
      * @param[in] dQ Incremental nodal displacements (the first nDim dofs of each node are used).
      * @param[in,out] fInt Internal force vector.
      * @param[in,out] dFInt_ddQ Stiffness matrix (derivative of internal forces with respect to incremental
