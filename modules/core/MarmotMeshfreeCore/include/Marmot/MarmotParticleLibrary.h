@@ -115,8 +115,10 @@ namespace MarmotLibrary {
      */
     bool checkIfParticleIsRegistered( const std::string& particleName );
 
-    /// @brief Registered factory functions by upper-case particle name.
-    static std::unordered_map< std::string, particleFactoryFunction > particleFactoryFunctionByName;
+    /// @brief Registered factory functions by upper-case particle name (a function-local static: registrations run
+    /// during static initialization, possibly before a static data member of this translation unit would be
+    /// constructed).
+    static std::unordered_map< std::string, particleFactoryFunction >& particleFactoryFunctionByName();
   };
 
 } // namespace MarmotLibrary

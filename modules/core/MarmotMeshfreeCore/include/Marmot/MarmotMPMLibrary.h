@@ -100,8 +100,9 @@ namespace MarmotLibrary {
      */
     bool checkIfMaterialPointIsRegistered( const std::string& materialPointName );
 
-    /// Factory functions by upper-case name.
-    static std::unordered_map< std::string, materialPointFactoryFunction > materialPointFactoryFunctionByName;
+    /// Factory functions by upper-case name (a function-local static: registrations run during static initialization,
+    /// possibly before a static data member of this translation unit would be constructed).
+    static std::unordered_map< std::string, materialPointFactoryFunction >& materialPointFactoryFunctionByName();
   };
 
   /**
@@ -180,17 +181,19 @@ namespace MarmotLibrary {
     static bool registerCell( const std::string& cellName, cellFactoryFunction factoryFunction );
     /**
      * @brief Registers a B-spline cell type.
-     * @param[in] cellName        Name (case-insensitive).
+     * @param[in] cellName        Name (case-insensitive); registering a B-spline name twice fails an @c assert, a
+     *                            Lagrangian cell of the same name is independent.
      * @param[in] factoryFunction Function creating an instance.
      * @return @c true (used to initialize a static flag).
      */
     static bool registerBSplineCell( const std::string& cellName, bSplineCellFactoryFunction factoryFunction );
 
   private:
-    /// Lagrangian cell factory functions by upper-case name.
-    static std::unordered_map< std::string, cellFactoryFunction > cellFactoryFunctionByName;
-    /// B-spline cell factory functions by upper-case name.
-    static std::unordered_map< std::string, bSplineCellFactoryFunction > bSplineCellFactoryFunctionByName;
+    /// Lagrangian cell factory functions by upper-case name (a function-local static: registrations run during static
+    /// initialization, possibly before a static data member of this translation unit would be constructed).
+    static std::unordered_map< std::string, cellFactoryFunction >& cellFactoryFunctionByName();
+    /// B-spline cell factory functions by upper-case name (a function-local static, see above).
+    static std::unordered_map< std::string, bSplineCellFactoryFunction >& bSplineCellFactoryFunctionByName();
   };
 
   /**
@@ -242,9 +245,10 @@ namespace MarmotLibrary {
      */
     static bool registerCellElement( const std::string& cellElementName, cellElementFactoryFunction factoryFunction );
 
-    /* private: */
-    /// Cell element factory functions by upper-case name (public, the @c private specifier is commented out).
-    static std::unordered_map< std::string, cellElementFactoryFunction > cellElementFactoryFunctionByName;
+  private:
+    /// Cell element factory functions by upper-case name (a function-local static: registrations run during static
+    /// initialization, possibly before a static data member of this translation unit would be constructed).
+    static std::unordered_map< std::string, cellElementFactoryFunction >& cellElementFactoryFunctionByName();
   };
 
 } // namespace MarmotLibrary
