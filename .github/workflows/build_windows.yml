@@ -3,7 +3,7 @@ name: build_windows
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, 'next_v*' ]
   pull_request:
 
 jobs:
@@ -20,14 +20,24 @@ jobs:
         run: |
           cmake --version
 
+      # The dependencies are pinned to tags, so their install prefix is cached, keyed on those tags.
+      - name: Cache dependencies
+        id: deps-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.DEPS_PREFIX }}
+          key: deps-windows-2022-eigen-3.4.0-autodiff-v1.1.0-fastor-V0.6.4
+
       # Build directories are named _build: autodiff ships a BUILD file, and Windows paths are case-insensitive.
       - name: Install Eigen
+        if: steps.deps-cache.outputs.cache-hit != 'true'
         run: |
           git clone --depth 1 --branch 3.4.0 https://gitlab.com/libeigen/eigen.git
           cmake -S eigen -B eigen/_build -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX="$env:DEPS_PREFIX"
           cmake --install eigen/_build
 
       - name: Install Autodiff
+        if: steps.deps-cache.outputs.cache-hit != 'true'
         run: |
           git clone --depth 1 --branch v1.1.0 https://github.com/autodiff/autodiff.git
           cmake -S autodiff -B autodiff/_build -DCMAKE_INSTALL_PREFIX="$env:DEPS_PREFIX" `
@@ -35,6 +45,7 @@ jobs:
           cmake --install autodiff/_build
 
       - name: Install Fastor
+        if: steps.deps-cache.outputs.cache-hit != 'true'
         run: |
           git clone --depth 1 --branch V0.6.4 https://github.com/romeric/Fastor.git
           cmake -S Fastor -B Fastor/_build -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX="$env:DEPS_PREFIX"
