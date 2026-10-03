@@ -122,13 +122,19 @@ message("--> found Fastor: ${FASTOR_INCLUDE_DIR}")
 enable_testing()
 
 # Custom function to add a test executable.
-# Tests link Marmot's object files directly, not the shared library: they also exercise Marmot's internals, which
-# the library does not export on Windows (or with MARMOT_EXPORT_API_ONLY), see MARMOT_API in MarmotPortability.h.
-# Include directories are propagated transitively from the object library (PUBLIC includes), so no explicit
+# The tests also exercise Marmot's internals, which the library does not export on Windows (or with
+# MARMOT_EXPORT_API_ONLY), see MARMOT_API in MarmotPortability.h. There, the tests link Marmot's object files
+# directly. Elsewhere, they link the shared library, as every consumer does: an object library is not dead-stripped,
+# linking it copies every Marmot object file into each of the many test executables.
+# Include directories are propagated transitively from both targets (PUBLIC includes), so no explicit
 # target_include_directories call is needed here.
 function(add_marmot_test test_name test_source)
   add_executable(${test_name} ${test_source})
-  target_link_libraries(${test_name} PRIVATE ${PROJECT_NAME}Objects)
+  if(WIN32 OR MARMOT_EXPORT_API_ONLY)
+    target_link_libraries(${test_name} PRIVATE ${PROJECT_NAME}Objects)
+  else()
+    target_link_libraries(${test_name} PRIVATE ${PROJECT_NAME})
+  endif()
   add_test(NAME ${test_name} COMMAND ${test_name} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
   # Many Marmot classes are templates (<int nDim, int nNodes>) that get implicitly
   # re-instantiated inside each test's own translation unit. An uninstrumented test
@@ -236,7 +242,10 @@ add_library(${PROJECT_NAME} SHARED $<TARGET_OBJECTS:${PROJECT_NAME}Objects>)
 
 # The library exports only what is marked MARMOT_API (see MarmotPortability.h), as a Windows DLL always does; on
 # other platforms only with MARMOT_EXPORT_API_ONLY, to check the exported API without a Windows build.
-target_compile_definitions(${PROJECT_NAME}Objects PRIVATE MARMOT_BUILDING_LIBRARY)
+# PUBLIC: the tests linking the objects (see add_marmot_test) must compile with the same, exporting definition of
+# MARMOT_API as the objects they link, or MSVC imports locally defined symbols through thunks (LNK4217/LNK4286).
+# The shared library is assembled from the objects, not linked to this target, so consumers never see the definition.
+target_compile_definitions(${PROJECT_NAME}Objects PUBLIC MARMOT_BUILDING_LIBRARY)
 option(MARMOT_EXPORT_API_ONLY "Export only the MARMOT_API-marked API from libMarmot, as on Windows" OFF)
 if(MARMOT_EXPORT_API_ONLY)
     set_target_properties(${PROJECT_NAME}Objects PROPERTIES
@@ -320,6 +329,13 @@ endforeach()
 option(MARMOT_BUILD_PYTHON_BINDINGS "Build the Marmot Python bindings" OFF)
 
 if(MARMOT_BUILD_PYTHON_BINDINGS)
+    # The bindings wrap Marmot API that is not marked MARMOT_API, which the shared library they link does not export
+    # on Windows or with MARMOT_EXPORT_API_ONLY; they would fail to link (or to import), so fail early instead.
+    if(WIN32 OR MARMOT_EXPORT_API_ONLY)
+        message(FATAL_ERROR "The Marmot Python bindings are not supported on Windows or with MARMOT_EXPORT_API_ONLY: "
+                            "they use API that the library does not export then. Build them on Linux or macOS "
+                            "without MARMOT_EXPORT_API_ONLY.")
+    endif()
     message(STATUS "Building the Marmot Python bindings")
     add_subdirectory(modules/python)
 endif()

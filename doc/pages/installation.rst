@@ -146,13 +146,17 @@ since that would include every Eigen, Fastor and autodiff template instantiated 
 Code that needs more of Marmot must mark it ``MARMOT_API``.
 To check this without Windows, configure with ``-DMARMOT_EXPORT_API_ONLY=ON``,
 which exports only the ``MARMOT_API`` symbols on Linux and macOS, too.
-The tests link Marmot's object files directly and are not affected.
+On Windows and with ``MARMOT_EXPORT_API_ONLY``, the tests link Marmot's object files directly and are not affected.
 
-Marmot's global constants are defined ``inline const`` in the headers, not ``extern const`` in a source file,
-since data cannot be exported and imported like functions. New modules must follow this.
+Marmot's global constants are defined ``inline const`` in the headers, not ``extern const`` in a source file:
+exported data would have to be marked ``MARMOT_API`` as well, and could not be used in constant expressions
+across the DLL boundary.
+An ``inline`` variable is instantiated in every translation unit that includes its header, so everything its
+initializer calls must be defined in a header, too (or be marked ``MARMOT_API``). New modules must follow this.
 Likewise, include ``Marmot/MarmotPortability.h`` (e.g., through ``Marmot/MarmotJournal.h``) before using
 ``__PRETTY_FUNCTION__``, which MSVC does not provide.
-The Python bindings are not yet supported on Windows.
+The Python bindings are not yet supported on Windows, nor with ``MARMOT_EXPORT_API_ONLY``;
+configuring with ``-DMARMOT_BUILD_PYTHON_BINDINGS=ON`` fails there.
 
 Building with Python Bindings
 *****************************
