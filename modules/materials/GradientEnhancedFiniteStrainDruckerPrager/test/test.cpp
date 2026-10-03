@@ -10,6 +10,7 @@
 #include <cmath>
 #include <functional>
 #include <memory>
+#include <random>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -218,12 +219,15 @@ void checkTangents( const Mat&                   mat,
                     const Tensor33d&             F,
                     double                       N,
                     const std::vector< double >& state0,
-                    const std::string&           branch )
+                    const std::string&           branch,
+                    double                       h           = 1e-6,
+                    double                       relativeTol = 1e-5,
+                    double                       scaleTau    = 1.0,
+                    double                       scaleL      = 1e-3 )
 {
   const auto res = evaluate( mat, F, N, state0 );
-  const auto tol = [&]( double num, double scale ) { return 1e-5 * ( scale + std::abs( num ) ); };
+  const auto tol = [&]( double num, double scale ) { return relativeTol * ( scale + std::abs( num ) ); };
 
-  const double h = 1e-6;
   for ( int k = 0; k < 3; k++ )
     for ( int l = 0; l < 3; l++ ) {
       Tensor33d Fp = F, Fm = F;
@@ -234,12 +238,12 @@ void checkTangents( const Mat&                   mat,
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ ) {
           const double num = ( rp.tau( i, j ) - rm.tau( i, j ) ) / ( 2 * h );
-          throwExceptionOnFailure( std::abs( res.t.dTau_dF( i, j, k, l ) - num ) < tol( num, 1.0 ),
+          throwExceptionOnFailure( std::abs( res.t.dTau_dF( i, j, k, l ) - num ) < tol( num, scaleTau ),
                                    MakeString() << branch << ": dTau_dF(" << i << j << k << l
                                                 << ") = " << res.t.dTau_dF( i, j, k, l ) << " vs " << num << where );
         }
       const double numL = ( rp.L - rm.L ) / ( 2 * h );
-      throwExceptionOnFailure( std::abs( res.t.dL_dF( k, l ) - numL ) < tol( numL, 1e-3 ),
+      throwExceptionOnFailure( std::abs( res.t.dL_dF( k, l ) - numL ) < tol( numL, scaleL ),
                                MakeString() << branch << ": dL_dF(" << k << l << ") = " << res.t.dL_dF( k, l ) << " vs "
                                             << numL << where );
     }
@@ -505,6 +509,191 @@ void testFailurePaths()
   }
 }
 
+// issue #111: trial states around an apex state (plane-strain compression benchmark, after the peak) have a return,
+// either to the apex or to the cone with a vanishing deviator; formerly, neither return was found for some of them
+// ("no admissible return"), down to perturbations of 1e-9
+const std::array< double, 11 > issue111Properties =
+  { 2142.857, 1956.522, 20., 30., 10., 0.0, 0.1, 0.99, 4.0, 1.05, 2.5e-9 };
+
+void testNoGapBetweenApexAndCone()
+{
+  Mat mat( issue111Properties.data(), issue111Properties.size(), 1 );
+  const auto [eta, xi] = Mat::outerConeParameters( 30. );
+
+  // a committed apex state: hydrostatic tension beyond the apex
+  const Tensor33d F0   = stretch( 1.0105, 1.0105, 1.0105 );
+  const auto      apex = evaluate( mat, F0, 0.0, freshState( mat ) );
+  throwExceptionOnFailure( stateValue( mat, apex.state, "alphaP" ) > 0.0,
+                           "the committed state must be plastic" + where );
+
+  std::mt19937                       gen( 7 );
+  std::normal_distribution< double > nd( 0.0, 1.0 );
+  for ( double eps : { 1e-9, 1e-7, 1e-5, 1e-3, 1e-2 } )
+    for ( int k = 0; k < 300; k++ ) {
+      Tensor33d A( 0.0 );
+      for ( int i = 0; i < 2; i++ )
+        for ( int j = 0; j < 2; j++ )
+          A( i, j ) = nd( gen );
+      const Tensor33d F = Tensor33d( Spatial3D::I + eps * A ) % F0;
+      Result          res;
+      try {
+        res = evaluate( mat, F, 0.0, apex.state );
+      }
+      catch ( const Marmot::StressUpdateFailed& e ) {
+        throw std::runtime_error( MakeString()
+                                  << "no return for a perturbation of " << eps << " of an apex state" << where );
+      }
+      // on or inside the yield surface (H = 0), with the effective stress
+      const double omega = stateValue( mat, res.state, "omega" );
+      const double f = yieldFunction( Tensor33d( res.tau / ( 1.0 - omega ) ), 0.0, issue111Properties[2], 30., 0.0 );
+      throwExceptionOnFailure( f < 1e-6 * xi * issue111Properties[2],
+                               MakeString() << "outside the yield surface, f = " << f << where );
+    }
+}
+
+void testConeWithAVanishingDeviator()
+{
+  // from a committed plastic state, a trial state just above the apex pressure whose cone solution has a tiny
+  // deviator (sqrt(J2) ~ 2e-4 with c0 = 20): formerly no return was found
+  Mat                   mat( issue111Properties.data(), issue111Properties.size(), 1 );
+  std::vector< double > state = freshState( mat );
+  const double          Fp[9] = { 1.061058648907552,
+                                  -0.022238713166511867,
+                                  0.016297257832311202,
+                                  -0.022241826972965565,
+                                  1.02442289243619,
+                                  0.028762554042779789,
+                                  0.016300848222986331,
+                                  0.028761766238191811,
+                                  0.99623415122824777 };
+  std::copy( Fp, Fp + 9, mat.getStateView( "Fp", state.data() ).stateLocation );
+  *mat.getStateView( "alphaP", state.data() ).stateLocation = 0.44027183345510623;
+  *mat.getStateView( "alphaD", state.data() ).stateLocation = 0.07808619979768304;
+  const double    F_[9]                                     = { 1.067890814675696,
+                                                                -0.025222277070330892,
+                                                                0.018087468585373259,
+                                                                -0.019519028290101159,
+                                                                1.0308423013860897,
+                                                                0.032036190679491733,
+                                                                0.016451889752772578,
+                                                                0.028838194946912019,
+                                                                1.000702249395053 };
+  const Tensor33d F( F_ );
+
+  const auto      res    = evaluate( mat, F, 0.0, state );
+  const double    alphaP = stateValue( mat, res.state, "alphaP" );
+  const Tensor33d dev    = Marmot::deviatoric( res.tau );
+  const double    q      = std::sqrt( 0.5 * inner( dev, dev ) );
+  throwExceptionOnFailure( q > 0.0 && q < 1e-3, MakeString() << "a cone solution near the vertex, q = " << q << where );
+  throwExceptionOnFailure( std::abs( yieldFunction( res.tau, alphaP, issue111Properties[2], 30., 0.0 ) ) < 1e-8,
+                           "on the cone" + where );
+  // the state is ~1e-7 (in strain) away from the vertex: the difference step must stay below that, and the central
+  // differences then carry the noise of the local solver tolerance; checked relative to the size of the tangent
+  double normTangent = 0.0;
+  for ( int i = 0; i < 81; i++ )
+    normTangent += std::pow( res.t.dTau_dF.data()[i], 2 );
+  double normdL = 0.0;
+  for ( int i = 0; i < 9; i++ )
+    normdL += std::pow( res.t.dL_dF.data()[i], 2 );
+  checkTangents( mat,
+                 F,
+                 0.0,
+                 state,
+                 "cone near the vertex",
+                 1e-8,
+                 1e-4,
+                 std::sqrt( normTangent ),
+                 std::sqrt( normdL ) );
+}
+
+void testApexReturnIsObjective()
+{
+  // the apex return keeps the elastic rotation of the trial state: Fp does not see a superposed rotation
+  const auto props = properties( 5., 30., 20., 100. );
+  Mat        mat( props.data(), props.size(), 1 );
+  Tensor33d  F        = stretch( 1.01, 1.012, 1.0105 );
+  F( 0, 1 )           = 1e-4;
+  const auto      ref = evaluate( mat, F, 0.0, freshState( mat ) );
+  const Tensor33d Fp0( mat.getStateView( "Fp", const_cast< double* >( ref.state.data() ) ).stateLocation );
+  const Tensor33d dev = Marmot::deviatoric( ref.tau );
+  throwExceptionOnFailure( std::sqrt( inner( dev, dev ) ) < 1e-9 * std::abs( trace( ref.tau ) ),
+                           "the objectivity check must be at the apex" + where );
+
+  const double phi = Marmot::Math::degToRad( 70. );
+  Tensor33d    Q( 0.0 );
+  Q( 0, 0 )           = cos( phi );
+  Q( 0, 1 )           = -sin( phi );
+  Q( 1, 0 )           = sin( phi );
+  Q( 1, 1 )           = cos( phi );
+  Q( 2, 2 )           = 1.;
+  const auto      rot = evaluate( mat, Tensor33d( Q % F ), 0.0, freshState( mat ) );
+  const Tensor33d Fp( mat.getStateView( "Fp", const_cast< double* >( rot.state.data() ) ).stateLocation );
+  throwExceptionOnFailure( checkIfEqual( rot.tau, Tensor33d( Q % ref.tau % transpose( Q ) ), 1e-9 * norm( ref.tau ) ),
+                           "tau at the apex is not objective" + where );
+  throwExceptionOnFailure( checkIfEqual( Fp, Fp0, 1e-10 ),
+                           "Fp at the apex must not see a superposed rotation" + where );
+}
+
+void testOnlyStressUpdateFailedEscapes()
+{
+  // large increments from plastic states: a failure must be a StressUpdateFailed (which makes the host cut back)
+  Mat mat( issue111Properties.data(), issue111Properties.size(), 1 );
+
+  // a 30 % increment from a plastic state, for which ExponentialMapFailed (a plain std::exception) escaped
+  {
+    std::vector< double > state = freshState( mat );
+    const double          Fp[9] = { 0.97252882326803025,
+                                    0.013494334684246552,
+                                    0.0041589908154704485,
+                                    0.013492300936829888,
+                                    1.057476950380001,
+                                    -0.036557078947446649,
+                                    0.0041588962485361843,
+                                    -0.036560668765297961,
+                                    0.99784031076632096 };
+    std::copy( Fp, Fp + 9, mat.getStateView( "Fp", state.data() ).stateLocation );
+    *mat.getStateView( "alphaP", state.data() ).stateLocation = 0.13758343687357175;
+    *mat.getStateView( "alphaD", state.data() ).stateLocation = 0.024401669432839446;
+    const double F[9]                                         = { 0.80297664561175253,
+                                                                  -0.085255427080209736,
+                                                                  -0.23897596856160094,
+                                                                  0.26365265237989555,
+                                                                  1.5105159180774763,
+                                                                  -0.6458584484334684,
+                                                                  0.12288397865280005,
+                                                                  -0.6346164378075474,
+                                                                  1.1249140641194582 };
+    try {
+      evaluate( mat, Tensor33d( F ), 0.0, state );
+    }
+    catch ( const Marmot::StressUpdateFailed& ) {
+    }
+    catch ( const std::exception& e ) {
+      throw std::runtime_error( MakeString() << "an exception other than StressUpdateFailed escaped" << where );
+    }
+  }
+
+  std::mt19937                       gen( 3 );
+  std::normal_distribution< double > nd( 0.0, 1.0 );
+  for ( const Tensor33d& F0 : { stretch( 1.0105, 1.0105, 1.0105 ), testF( 0.2 ), stretch( 0.9, 1.05, 1.0 ) } ) {
+    const auto committed = evaluate( mat, F0, 0.0, freshState( mat ) );
+    for ( double eps : { 0.1, 0.3 } )
+      for ( int k = 0; k < 50; k++ ) {
+        Tensor33d A;
+        for ( int i = 0; i < 9; i++ )
+          A.data()[i] = nd( gen );
+        try {
+          evaluate( mat, Tensor33d( Tensor33d( Spatial3D::I + eps * A ) % F0 ), 0.0, committed.state );
+        }
+        catch ( const Marmot::StressUpdateFailed& ) {
+        }
+        catch ( const std::exception& e ) {
+          throw std::runtime_error( MakeString() << "an exception other than StressUpdateFailed escaped" << where );
+        }
+      }
+  }
+}
+
 int main()
 {
   auto testFunctions = std::vector< std::function< void() > >{ testElasticRangeIsCompressibleNeoHooke,
@@ -518,7 +707,11 @@ int main()
                                                                testGradientEnhancedDamage,
                                                                testElasticUnloading,
                                                                testFactoryAndValidation,
-                                                               testFailurePaths };
+                                                               testFailurePaths,
+                                                               testNoGapBetweenApexAndCone,
+                                                               testConeWithAVanishingDeviator,
+                                                               testApexReturnIsObjective,
+                                                               testOnlyStressUpdateFailedEscapes };
   executeTestsAndCollectExceptions( testFunctions );
   return 0;
 }

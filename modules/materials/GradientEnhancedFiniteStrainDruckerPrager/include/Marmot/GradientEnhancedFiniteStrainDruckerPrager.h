@@ -31,6 +31,7 @@
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <utility>
 
@@ -58,8 +59,14 @@ namespace Marmot::Materials {
    * @f$ \eta = \frac{6\sin\phi}{\sqrt3\,(3-\sin\phi)} @f$, @f$ \xi = \frac{6\cos\phi}{\sqrt3\,(3-\sin\phi)} @f$,
    * @f$ \bar\eta @f$ as @f$ \eta @f$ with the dilatancy angle. Where the cone return does not exist (a trial state
    * beyond the apex), the state returns to the apex: by isotropy, @f$ \boldsymbol{F}^p @f$ is determined up to a
-   * rotation, so @f$ \boldsymbol{F}^e = J_e^{1/3}\boldsymbol{I} @f$ with the unknowns @f$ \{\ln J_e, \alpha\} @f$
-   * and @f$ \Delta\alpha = (\xi/\bar\eta)\,\Delta\varepsilon^p_v @f$.
+   * rotation, so @f$ \boldsymbol{F}^e = J_e^{1/3}\boldsymbol{R}^{\mathrm{trial}} @f$ (the elastic rotation of the trial
+   * state is kept, so that @f$ \boldsymbol{F}^p @f$ is objective) with the unknowns @f$ \{\ln J_e, \alpha\} @f$ and
+   * @f$ \Delta\alpha = (\xi/\bar\eta)\,\Delta\varepsilon^p_v @f$.
+   *
+   * The decision between the cone and the apex, and the starting point of the cone return, come from the return in
+   * the principal elastic log strains (principalResidual()), which is coaxial with the trial state and is posed with
+   * a signed deviatoric radius: its equations are smooth across the vertex, where those of the full return are
+   * singular, so that every trial state beyond the cone has a return, to the cone or to the apex.
    *
    * **Damage.** The local variable is the accumulated dilatant (volumetric) plastic strain,
    * @f$ \Delta\alpha_\mathrm{local} = \langle\Delta\varepsilon^p_v\rangle @f$ (on the cone
@@ -274,6 +281,81 @@ namespace Marmot::Materials {
       return R;
     }
 
+    /**
+     * @brief An orthonormal basis of the deviatoric plane of the principal space.
+     * @param[in] i 0 or 1.
+     * @return @f$ (1,-1,0)/\sqrt2 @f$ or @f$ (1,1,-2)/\sqrt6 @f$.
+     */
+    static Eigen::Vector3d deviatoricBasis( int i )
+    {
+      return i == 0 ? Eigen::Vector3d( 1., -1., 0. ) / std::sqrt( 2. )
+                    : Eigen::Vector3d( 1., 1., -2. ) / std::sqrt( 6. );
+    }
+
+    /**
+     * @brief Residual of the return in the principal elastic logarithmic strains, smooth across the vertex.
+     * @details For isotropic elasticity and an isotropic yield function, the return is coaxial with the trial state:
+     * in the principal elastic log strains @f$ \varepsilon_a @f$ the flow rule reads
+     * @f$ \varepsilon_a - \varepsilon^{\mathrm{trial}}_a + \Delta\lambda\,(\partial g/\partial M)_a = 0 @f$, with the
+     * principal Mandel stresses of @f$ \boldsymbol{F}^e = \mathrm{diag}(e^{\varepsilon_a}) @f$. The deviatoric part
+     * @f$ \boldsymbol{e} = \rho\,(\cos\varphi\,\boldsymbol{b}_1 + \sin\varphi\,\boldsymbol{b}_2) @f$ has a signed
+     * radius
+     * @f$ \rho @f$, and the flow direction and @f$ \sqrt{J_2} @f$ are multiplied by @f$ \mathrm{sign}\,\rho @f$: the
+     * equations then continue smoothly through the vertex (as @f$ \sqrt{J_2^{\mathrm{trial}}} - G\Delta\lambda @f$ of
+     * the small-strain return), whose singularity @f$ \partial(\partial
+     * g/\partial\boldsymbol{M})/\partial\boldsymbol{M} \sim 1/\sqrt{J_2} @f$ is removed. A solution with @f$ \rho > 0
+     * @f$ lies on the cone, one with @f$ \rho < 0 @f$ beyond the vertex: the state returns to the apex.
+     * @tparam T Scalar type.
+     * @param[in] X Unknowns @f$ \{\rho, \varphi, \theta = \mathrm{tr}\,\boldsymbol{\varepsilon}, \Delta\lambda\} @f$.
+     * @param[in] epsTrial Principal elastic log strains of the trial state.
+     * @param[in] alphaPOld Hardening variable at the beginning of the increment.
+     * @return The residual (4): the two deviatoric components and the volumetric part of the flow rule, and the
+     * yield function (with the hardening law substituted) scaled by @f$ c_0 @f$.
+     */
+    template < typename T >
+    VectorXt< T > principalResidual( const VectorXt< T >&   X,
+                                     const Eigen::Vector3d& epsTrial,
+                                     const double           alphaPOld ) const
+    {
+      // the radius enters through rho d only, and the flow direction through dev M / sqrt(J2), both ~ rho: a radius
+      // of exactly zero is shifted to a value far below every tolerance
+      const double sign    = Math::makeReal( X( 0 ) ) >= 0.0 ? 1.0 : -1.0;
+      const T      rho     = std::abs( Math::makeReal( X( 0 ) ) ) < 1e-14 ? X( 0 ) + T( sign * 1e-14 ) : X( 0 );
+      const T      phi     = X( 1 );
+      const T      theta   = X( 2 );
+      const T      dLambda = X( 3 );
+
+      std::array< T, 3 > e;
+      for ( int a = 0; a < 3; a++ )
+        e[a] = rho * ( cos( phi ) * deviatoricBasis( 0 )( a ) + sin( phi ) * deviatoricBasis( 1 )( a ) );
+
+      Tensor33t< T > Fe( T( 0.0 ) );
+      for ( int a = 0; a < 3; a++ )
+        Fe( a, a ) = exp( e[a] + theta / 3. );
+      const Tensor33t< T > M = mandelStress( Fe );
+      const T              p = ( M( 0, 0 ) + M( 1, 1 ) + M( 2, 2 ) ) / 3.;
+      T                    J2( 0.0 );
+      for ( int a = 0; a < 3; a++ )
+        J2 += 0.5 * ( M( a, a ) - p ) * ( M( a, a ) - p );
+      const T sqJ2 = sqrt( J2 );
+
+      // the deviatoric flow rule, projected onto the deviatoric plane
+      std::array< T, 3 > devResidual;
+      for ( int a = 0; a < 3; a++ )
+        devResidual[a] = e[a] - ( epsTrial( a ) - epsTrial.mean() ) +
+                         dLambda * sign * ( M( a, a ) - p ) / ( 2. * sqJ2 );
+
+      VectorXt< T > R( 4 );
+      for ( int i = 0; i < 2; i++ ) {
+        R( i ) = T( 0.0 );
+        for ( int a = 0; a < 3; a++ )
+          R( i ) += deviatoricBasis( i )( a ) * devResidual[a];
+      }
+      R( 2 ) = theta - 3. * epsTrial.mean() + etaBar * dLambda;
+      R( 3 ) = ( sign * sqJ2 + eta * p - xi * ( c0 + H * ( alphaPOld + xi * dLambda ) ) ) / c0;
+      return R;
+    }
+
   protected:
     const double& K;                  ///< bulk modulus
     const double& G;                  ///< shear modulus
@@ -315,19 +397,48 @@ namespace Marmot::Materials {
     ReturnMapping returnMapping( const Tensor33d& F, const TensorMap33d& FpOld, double alphaPOld ) const;
 
     /**
+     * @brief The return in the principal elastic log strains (see principalResidual()).
+     * @details Started from the radial return of the linearized (Hencky) problem, which is exact for small strains.
+     * @param[in] FeTrial Trial elastic deformation gradient.
+     * @param[in] alphaPOld Hardening variable at the beginning of the increment.
+     * @param[out] Fe The elastic deformation gradient of the solution,
+     * @f$ \boldsymbol{F}^{e,\mathrm{trial}}\,\boldsymbol{Q}\,\mathrm{diag}(e^{\varepsilon_a -
+     * \varepsilon^{\mathrm{trial}}_a})\,\boldsymbol{Q}^T @f$ with the principal directions @f$ \boldsymbol{Q} @f$ of
+     * @f$ \boldsymbol{C}^{e,\mathrm{trial}} @f$ (meaningful for @p rho > 0).
+     * @param[out] dLambda The plastic multiplier of the solution.
+     * @param[out] rho The signed deviatoric radius of the solution: > 0 on the cone, < 0 beyond the vertex (apex).
+     * @return Whether the return converged.
+     */
+    bool principalReturn( const Tensor33d& FeTrial,
+                          double           alphaPOld,
+                          Tensor33d&       Fe,
+                          double&          dLambda,
+                          double&          rho ) const;
+
+    /**
      * @brief The return to the cone.
+     * @details Started from the principal-space return (principalReturn()), or from fractions of the linearized
+     * return.
      * @param[in] FeTrial Trial elastic deformation gradient @f$ \boldsymbol{F}\boldsymbol{F}^{p,-1}_n @f$.
      * @param[in] FpOld Plastic deformation gradient at the beginning of the increment.
      * @param[in] FpOldInv Its inverse.
      * @param[in] alphaPOld Hardening variable at the beginning of the increment.
      * @param[out] converged Whether a solution on the cone was found.
+     * @param[in] FeGuess The solution of the principal-space return, if available (nullptr: the fractions of the
+     * linearized return are the initial guesses).
+     * @param[in] dLambdaGuess The plastic multiplier of @p FeGuess.
+     * @param[in] acceptVanishingDeviator Accept also a solution with a deviator below the apex threshold: the last
+     * resort if the apex is not admissible either (a trial state just below the apex pressure with a tiny deviator).
      * @return The converged return mapping (undefined if not @p converged).
      */
     ReturnMapping returnToCone( const Tensor33d&    FeTrial,
                                 const TensorMap33d& FpOld,
                                 const Tensor33d&    FpOldInv,
                                 double              alphaPOld,
-                                bool&               converged ) const;
+                                bool&               converged,
+                                const Tensor33d*    FeGuess                 = nullptr,
+                                double              dLambdaGuess            = 0.0,
+                                bool                acceptVanishingDeviator = false ) const;
 
     /**
      * @brief The return to the apex, if it is admissible (otherwise, the state belongs to the cone).

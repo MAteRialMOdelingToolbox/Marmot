@@ -47,9 +47,22 @@ The return to the cone solves the flow rule above, the hardening law :math:`\alp
 and the consistency condition :math:`f = 0` for :math:`\{\boldsymbol{F}^{\rm e}, \alpha, \Delta\lambda\}` with Newton's
 method. Where no solution on the cone exists (a trial state beyond the apex), the state returns to the apex: by
 isotropy, :math:`\boldsymbol{F}^{\rm p}` is determined up to a rotation only, so that
-:math:`\boldsymbol{F}^{\rm e} = J_{\rm e}^{1/3}\boldsymbol{I}` with the unknowns :math:`\{\ln J_{\rm e}, \alpha\}`,
+:math:`\boldsymbol{F}^{\rm e} = J_{\rm e}^{1/3}\boldsymbol{R}^{\rm trial}` (the elastic rotation of the trial state is
+kept, so that :math:`\boldsymbol{F}^{\rm p}` is objective) with the unknowns :math:`\{\ln J_{\rm e}, \alpha\}`,
 :math:`\eta\,p = \xi\,(c_0 + H\alpha)` and :math:`\alpha = \alpha_n + (\xi/\bar\eta)\,\Delta\varepsilon^{\rm p}_v`
 (de Souza Neto, Peric & Owen, *Computational Methods for Plasticity*, Sec. 8.3).
+
+**Cone or apex.** Near the vertex, the return to the cone is ill-conditioned, since
+:math:`\partial(\partial g/\partial\boldsymbol{M})/\partial\boldsymbol{M} \sim 1/\sqrt{J_2}`. The decision between the
+cone and the apex, and the starting point of the cone return, therefore come from the same return posed in the
+principal elastic logarithmic strains :math:`\varepsilon_a` (coaxial with the trial state, as for every isotropic
+model): the deviatoric part is written as
+:math:`\boldsymbol{e} = \rho\,(\cos\varphi\,\boldsymbol{b}_1 + \sin\varphi\,\boldsymbol{b}_2)` with a *signed* radius
+:math:`\rho` in the deviatoric plane, and the flow direction and :math:`\sqrt{J_2}` are multiplied by
+:math:`\operatorname{sign}\rho`. The four equations for :math:`\{\rho, \varphi, \ln J_{\rm e}, \Delta\lambda\}` then
+continue smoothly through the vertex, as :math:`\sqrt{J_2^{\rm trial}} - G\,\Delta\lambda` of the small-strain return
+does: :math:`\rho > 0` is a solution on the cone, :math:`\rho < 0` lies beyond the vertex and the state returns to the
+apex. Every trial state beyond the cone thus has a return, without a gap between the two (issue #111).
 
 The Jacobians of both return mappings are computed by the complex-step method, and the algorithmic tangents follow
 from the same Jacobians by the implicit function theorem. The exponential map is evaluated by scaling and squaring
