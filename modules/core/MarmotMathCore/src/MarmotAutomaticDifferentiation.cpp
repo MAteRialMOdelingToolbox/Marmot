@@ -19,8 +19,8 @@ namespace Marmot {
 
     VectorXdual2nd shiftTo2ndOrderDual( const VectorXdual& X )
     {
-      VectorXdual2nd X_;
       const size_t   sizeX = X.size();
+      VectorXdual2nd X_( sizeX );
 
       for ( size_t j = 0; j < sizeX; j++ ) {
         X_( j ) = shiftTo2ndOrderDual( X( j ) );

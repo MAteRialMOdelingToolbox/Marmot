@@ -151,6 +151,15 @@ namespace Marmot {
 
       } // end of namespace Quad8
 
+    }   // end of namespace Spatial2D
+  }     // end of namespace FiniteElement
+
+  // Declared under Marmot::FiniteElement::Quadrature::Spatial2D (see MarmotFiniteElement.h); this
+  // definition previously lived one namespace level too shallow (Marmot::FiniteElement::Spatial2D,
+  // missing the Quadrature level), so it could never actually be linked against its own
+  // declaration -- and, with no callers anywhere in the codebase, nothing noticed.
+  namespace FiniteElement::Quadrature {
+    namespace Spatial2D {
       void modifyCharElemLengthAbaqusLike( double& charElemLength, int intPoint )
       {
         switch ( intPoint ) {
@@ -167,6 +176,6 @@ namespace Marmot {
         case 8: charElemLength *= std::sqrt( 5. / 18. ); break;
         }
       }
-    } // end of namespace Spatial2D
-  }   // end of namespace FiniteElement
+    } // namespace Spatial2D
+  }   // namespace FiniteElement::Quadrature
 } // end of namespace Marmot
