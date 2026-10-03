@@ -75,6 +75,12 @@ elseif(MSVC)
     else()
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
     endif()
+    # /bigobj: the template-heavy (Eigen/Fastor/autodiff) translation units exceed MSVC's default section limit.
+    # /permissive-: standard-conforming two-phase lookup, as GCC/Clang do.
+    # /Zc:__cplusplus: report the real language level in __cplusplus, which Eigen and Fastor check.
+    add_compile_options(/bigobj /permissive- /Zc:__cplusplus)
+    # Keep MSVC's secure-CRT deprecation warnings (C4996 for std::getenv, sscanf, ...) out of the /W4 output.
+    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 endif()
 
 # If no build type was specified, Release is default
@@ -116,14 +122,15 @@ message("--> found Fastor: ${FASTOR_INCLUDE_DIR}")
 enable_testing()
 
 # Custom function to add a test executable.
-# Include directories are propagated transitively from the Marmot library target
-# (PUBLIC includes), so no explicit target_include_directories call is needed here.
+# Tests link Marmot's object files directly, not the shared library: they also exercise Marmot's internals, which
+# the library does not export on Windows (or with MARMOT_EXPORT_API_ONLY), see MARMOT_API in MarmotPortability.h.
+# The same on every platform, so that the tests are built alike everywhere. Whether a consumer can link the shared
+# library is checked by the one test that does, tests/consumer.
+# Include directories are propagated transitively from the object library (PUBLIC includes), so no explicit
+# target_include_directories call is needed here.
 function(add_marmot_test test_name test_source)
   add_executable(${test_name} ${test_source})
-  target_link_libraries(${test_name} PRIVATE ${PROJECT_NAME})
-  set_target_properties(${test_name} PROPERTIES
-      BUILD_RPATH "${CMAKE_BINARY_DIR}/lib"
-  )
+  target_link_libraries(${test_name} PRIVATE ${PROJECT_NAME}Objects)
   add_test(NAME ${test_name} COMMAND ${test_name} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
   # Many Marmot classes are templates (<int nDim, int nNodes>) that get implicitly
   # re-instantiated inside each test's own translation unit. An uninstrumented test
@@ -224,7 +231,24 @@ message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
 
 # ── Build the shared library ──────────────────────────────────────────────────
 
-add_library(${PROJECT_NAME} SHARED ${sources})
+# The sources are compiled once, into an object library, from which both the shared library and the tests are
+# linked (see add_marmot_test).
+add_library(${PROJECT_NAME}Objects OBJECT ${sources})
+add_library(${PROJECT_NAME} SHARED $<TARGET_OBJECTS:${PROJECT_NAME}Objects>)
+
+# The library exports only what is marked MARMOT_API (see MarmotPortability.h), as a Windows DLL always does; on
+# other platforms only with MARMOT_EXPORT_API_ONLY, to check the exported API without a Windows build.
+# PUBLIC: the tests linking the objects (see add_marmot_test) must compile with the same, exporting definition of
+# MARMOT_API as the objects they link, or MSVC imports locally defined symbols through thunks (LNK4217/LNK4286).
+# The shared library is assembled from the objects, not linked to this target, so consumers never see the definition.
+target_compile_definitions(${PROJECT_NAME}Objects PUBLIC MARMOT_BUILDING_LIBRARY)
+option(MARMOT_EXPORT_API_ONLY "Export only the MARMOT_API-marked API from libMarmot, as on Windows" OFF)
+if(MARMOT_EXPORT_API_ONLY)
+    set_target_properties(${PROJECT_NAME}Objects PROPERTIES
+        CXX_VISIBILITY_PRESET     hidden
+        VISIBILITY_INLINES_HIDDEN ON
+    )
+endif()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
     VERSION       ${PROJECT_VERSION}
@@ -235,20 +259,22 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 # Include-directory strategy:
 #   BUILD_INTERFACE  – source-tree paths used when building Marmot and its tests.
 #   INSTALL_INTERFACE – the single installed include root used by find_package consumers.
-# Making these PUBLIC means test executables that link against ${PROJECT_NAME} receive
-# the include paths transitively without any explicit target_include_directories call.
-target_include_directories(${PROJECT_NAME}
-    PUBLIC
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-        $<BUILD_INTERFACE:${AUTODIFF_INCLUDE_DIR}>
-        $<BUILD_INTERFACE:${FASTOR_INCLUDE_DIR}>
-)
-foreach(_inc_dir IN LISTS INSTALLED_MODULE_INCLUDE_DIRS)
-    target_include_directories(${PROJECT_NAME}
-        PUBLIC $<BUILD_INTERFACE:${_inc_dir}>)
-endforeach()
+# Making these PUBLIC means consumers linking ${PROJECT_NAME}, and the tests linking ${PROJECT_NAME}Objects,
+# receive the include paths transitively without any explicit target_include_directories call.
+foreach(_target IN ITEMS ${PROJECT_NAME} ${PROJECT_NAME}Objects)
+    target_include_directories(${_target}
+        PUBLIC
+            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+            $<BUILD_INTERFACE:${AUTODIFF_INCLUDE_DIR}>
+            $<BUILD_INTERFACE:${FASTOR_INCLUDE_DIR}>
+    )
+    foreach(_inc_dir IN LISTS INSTALLED_MODULE_INCLUDE_DIRS)
+        target_include_directories(${_target}
+            PUBLIC $<BUILD_INTERFACE:${_inc_dir}>)
+    endforeach()
 
-target_link_libraries(${PROJECT_NAME} PUBLIC Eigen3::Eigen)
+    target_link_libraries(${_target} PUBLIC Eigen3::Eigen)
+endforeach()
 
 if(SHARED_LIBRARIES)
     message("+------------------------------------------------------------------------------+")
@@ -256,6 +282,8 @@ if(SHARED_LIBRARIES)
     foreach(SHARED_LIBRARY IN LISTS SHARED_LIBRARIES)
         message("--> ${SHARED_LIBRARY}")
         target_link_libraries(${PROJECT_NAME} PRIVATE "${SHARED_LIBRARY}")
+        # PUBLIC, so that the tests linking the objects get them too.
+        target_link_libraries(${PROJECT_NAME}Objects PUBLIC "${SHARED_LIBRARY}")
     endforeach()
     message("+------------------------------------------------------------------------------+")
 endif()
@@ -279,7 +307,7 @@ if(MARMOT_ENABLE_COVERAGE)
         message(WARNING "MARMOT_ENABLE_COVERAGE is intended to be used with -DCMAKE_BUILD_TYPE=Debug for accurate line coverage")
     endif()
     message(STATUS "Instrumenting ${PROJECT_NAME} for code coverage (--coverage)")
-    target_compile_options(${PROJECT_NAME} PRIVATE --coverage -O0)
+    target_compile_options(${PROJECT_NAME}Objects PRIVATE --coverage -O0)
     target_link_options(${PROJECT_NAME} PRIVATE --coverage)
 endif()
 
@@ -290,6 +318,14 @@ foreach(MODULEPATH IN LISTS INSTALLED_MODULEPATHS)
     endif()
 endforeach()
 
+# The consumer test, linking the shared library only (see tests/consumer/CMakeLists.txt). It creates a CPS4 element
+# with a LINEARELASTIC material through the factories, so it needs both modules.
+if("DisplacementFiniteElement" IN_LIST INSTALLED_MODULES AND "LinearElastic" IN_LIST INSTALLED_MODULES)
+    add_subdirectory(tests/consumer)
+else()
+    message(STATUS "tests/consumer skipped: it requires the DisplacementFiniteElement and LinearElastic modules")
+endif()
+
 # ── Python bindings ───────────────────────────────────────────────────────────
 
 # Opt-in: building the bindings requires the Python development headers and
@@ -297,6 +333,13 @@ endforeach()
 option(MARMOT_BUILD_PYTHON_BINDINGS "Build the Marmot Python bindings" OFF)
 
 if(MARMOT_BUILD_PYTHON_BINDINGS)
+    # The bindings wrap Marmot API that is not marked MARMOT_API, which the shared library they link does not export
+    # on Windows or with MARMOT_EXPORT_API_ONLY; they would fail to link (or to import), so fail early instead.
+    if(WIN32 OR MARMOT_EXPORT_API_ONLY)
+        message(FATAL_ERROR "The Marmot Python bindings are not supported on Windows or with MARMOT_EXPORT_API_ONLY: "
+                            "they use API that the library does not export then. Build them on Linux or macOS "
+                            "without MARMOT_EXPORT_API_ONLY.")
+    endif()
     message(STATUS "Building the Marmot Python bindings")
     add_subdirectory(modules/python)
 endif()
@@ -306,6 +349,9 @@ endif()
 install(TARGETS ${PROJECT_NAME}
     EXPORT        MarmotTargets
     LIBRARY       DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    # Windows: the DLL is a RUNTIME artifact, its import library (.lib) an ARCHIVE one.
+    RUNTIME       DESTINATION "${CMAKE_INSTALL_BINDIR}"
+    ARCHIVE       DESTINATION "${CMAKE_INSTALL_LIBDIR}"
     PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/Marmot"
 )
 

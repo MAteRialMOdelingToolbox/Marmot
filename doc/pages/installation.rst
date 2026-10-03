@@ -119,6 +119,50 @@ Get Marmot:
     make install
     ctest --output-on-failure
 
+Building on Windows
+*******************
+
+Marmot builds as a DLL with MSVC (Visual Studio 2022), in the ``Release`` configuration.
+Install Eigen, autodiff and Fastor into a common prefix as above (``cmake --install`` instead of ``make install``),
+then build Marmot from a *Developer PowerShell for VS 2022*:
+
+.. code-block:: console
+
+    cmake -S Marmot -B Marmot/build -DCMAKE_PREFIX_PATH=<prefix> -DCMAKE_INSTALL_PREFIX=<prefix>
+    cmake --build Marmot/build --config Release --parallel
+    ctest --test-dir Marmot/build -C Release --output-on-failure
+    cmake --install Marmot/build --config Release
+
+This installs ``Marmot.dll`` into ``<prefix>/bin`` and its import library ``Marmot.lib`` into ``<prefix>/lib``.
+Programs linking Marmot must find ``Marmot.dll`` at run time, e.g., through ``PATH``.
+
+A Windows DLL exports only what is marked for export, which in Marmot is ``MARMOT_API``
+(defined in ``Marmot/MarmotPortability.h``).
+The rule for what is marked: the exported API is the interface layer through which a consumer drives Marmot,
+that is, the element and material factories, the interface classes they hand out (``MarmotElement``,
+``MarmotMaterialSection``, ``ElementProperties``), and the few non-virtual functions a consumer calls on them,
+marked at the smallest granularity that links (a single member rather than its class, where the class is otherwise
+reached through virtual functions only).
+Everything else is used through the virtual functions of the objects the factories create.
+Exporting everything instead is not an option: it exceeds the limit of 65535 exported symbols of a Windows DLL,
+since that would include every Eigen, Fastor and autodiff template instantiated in Marmot.
+Code that needs more of Marmot must mark it ``MARMOT_API``, following the rule above.
+To check this without Windows, configure with ``-DMARMOT_EXPORT_API_ONLY=ON``,
+which exports only the ``MARMOT_API`` symbols on Linux and macOS, too; the Ubuntu CI builds this way as well.
+The module tests link Marmot's object files directly and are not affected.
+The one test that is, ``TestExportedAPI`` in ``tests/consumer``, links the shared library only and uses Marmot
+as a consumer does; it is the test that fails when the exported API is incomplete.
+
+Marmot's global constants are defined ``inline const`` in the headers, not ``extern const`` in a source file:
+exported data would have to be marked ``MARMOT_API`` as well, and could not be used in constant expressions
+across the DLL boundary.
+An ``inline`` variable is instantiated in every translation unit that includes its header, so everything its
+initializer calls must be defined in a header, too (or be marked ``MARMOT_API``). New modules must follow this.
+Likewise, include ``Marmot/MarmotPortability.h`` (e.g., through ``Marmot/MarmotJournal.h``) before using
+``__PRETTY_FUNCTION__``, which MSVC does not provide.
+The Python bindings are not yet supported on Windows, nor with ``MARMOT_EXPORT_API_ONLY``;
+configuring with ``-DMARMOT_BUILD_PYTHON_BINDINGS=ON`` fails there.
+
 Building with Python Bindings
 *****************************
 

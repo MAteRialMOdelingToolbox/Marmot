@@ -414,7 +414,7 @@ namespace Marmot {
       {
         Fastor::Tensor< double, dim, dim > dF_dT;
         Fastor::Tensor< std::complex< double >, dim, dim >
-          T_right = fastorTensorFromDoubleTensor< std::complex< double >, dim >( T );
+          T_right = fastorTensorFromDoubleTensor< std::complex< double > >( T );
 
         for ( size_t i = 0; i < dim; i++ ) {
           for ( size_t j = isSymmetric ? i : 0; j < dim; j++ ) {

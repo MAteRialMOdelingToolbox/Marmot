@@ -192,7 +192,9 @@ namespace Marmot {
 
         for ( int k = 0; k < 3; ++k ) {
           // T(2.0) and T(3.0) ensure we don't accidentally cast down to double
-          eigenvalues( k ) = T( 2.0 ) * r * cos( ( theta - T( 2.0 ) * T( M_PI ) * T( k ) ) / T( 3.0 ) ) - p1 / T( 3.0 );
+          eigenvalues( k ) = T( 2.0 ) * r *
+                               cos( ( theta - T( 2.0 ) * T( Marmot::Constants::Pi ) * T( k ) ) / T( 3.0 ) ) -
+                             p1 / T( 3.0 );
         }
       }
 

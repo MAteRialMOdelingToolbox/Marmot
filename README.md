@@ -66,6 +66,9 @@ Within this build directory, the tests can be executed by running
 ctest --output-on-failure
 ```
 
+On Windows, Marmot builds as a DLL with MSVC (Release configuration), see the
+[installation instructions](https://materialmodelingtoolbox.github.io/Marmot/pages/installation.html#building-on-windows).
+
 ### Python bindings
 
 `Marmot` optionally provides a Python interface to the material point solvers. It requires the
