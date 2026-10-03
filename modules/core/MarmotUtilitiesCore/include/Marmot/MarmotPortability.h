@@ -28,7 +28,9 @@
  * @brief Compiler portability shims, included by the Marmot utility headers that (almost) every Marmot file uses.
  *
  * @details MSVC does not provide the GCC/Clang extension `__PRETTY_FUNCTION__`, which Marmot uses throughout its
- * error messages. MSVC's equivalent is `__FUNCSIG__`.
+ * error messages. MSVC's equivalent is `__FUNCSIG__`. `__PRETTY_FUNCTION__` is a predefined identifier, not a macro,
+ * so its presence cannot be tested with `defined`; the shim is keyed on the compiler instead, and excludes clang-cl,
+ * which defines `_MSC_VER` but provides `__PRETTY_FUNCTION__` natively.
  *
  * MARMOT_API marks what the Marmot library exports to its consumers (EdelweissFE, the Abaqus/CADFEM interfaces).
  * A Windows DLL exports only what is marked, and only that is available to code linking Marmot; everything else
@@ -49,7 +51,7 @@
 #  define MARMOT_API __attribute__( ( visibility( "default" ) ) )
 #endif
 
-#if defined( _MSC_VER ) && !defined( __PRETTY_FUNCTION__ )
+#if defined( _MSC_VER ) && !defined( __clang__ )
 /** @brief Full signature of the enclosing function, mapped to MSVC's equivalent of the GCC/Clang extension. */
 #  define __PRETTY_FUNCTION__ __FUNCSIG__
 #endif
