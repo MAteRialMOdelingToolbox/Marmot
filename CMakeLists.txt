@@ -122,19 +122,15 @@ message("--> found Fastor: ${FASTOR_INCLUDE_DIR}")
 enable_testing()
 
 # Custom function to add a test executable.
-# The tests also exercise Marmot's internals, which the library does not export on Windows (or with
-# MARMOT_EXPORT_API_ONLY), see MARMOT_API in MarmotPortability.h. There, the tests link Marmot's object files
-# directly. Elsewhere, they link the shared library, as every consumer does: an object library is not dead-stripped,
-# linking it copies every Marmot object file into each of the many test executables.
-# Include directories are propagated transitively from both targets (PUBLIC includes), so no explicit
+# Tests link Marmot's object files directly, not the shared library: they also exercise Marmot's internals, which
+# the library does not export on Windows (or with MARMOT_EXPORT_API_ONLY), see MARMOT_API in MarmotPortability.h.
+# The same on every platform, so that the tests are built alike everywhere. Whether a consumer can link the shared
+# library is checked by the one test that does, tests/consumer.
+# Include directories are propagated transitively from the object library (PUBLIC includes), so no explicit
 # target_include_directories call is needed here.
 function(add_marmot_test test_name test_source)
   add_executable(${test_name} ${test_source})
-  if(WIN32 OR MARMOT_EXPORT_API_ONLY)
-    target_link_libraries(${test_name} PRIVATE ${PROJECT_NAME}Objects)
-  else()
-    target_link_libraries(${test_name} PRIVATE ${PROJECT_NAME})
-  endif()
+  target_link_libraries(${test_name} PRIVATE ${PROJECT_NAME}Objects)
   add_test(NAME ${test_name} COMMAND ${test_name} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
   # Many Marmot classes are templates (<int nDim, int nNodes>) that get implicitly
   # re-instantiated inside each test's own translation unit. An uninstrumented test
@@ -321,6 +317,14 @@ foreach(MODULEPATH IN LISTS INSTALLED_MODULEPATHS)
         include("${MODULEPATH}/test.cmake")
     endif()
 endforeach()
+
+# The consumer test, linking the shared library only (see tests/consumer/CMakeLists.txt). It creates a CPS4 element
+# with a LINEARELASTIC material through the factories, so it needs both modules.
+if("DisplacementFiniteElement" IN_LIST INSTALLED_MODULES AND "LinearElastic" IN_LIST INSTALLED_MODULES)
+    add_subdirectory(tests/consumer)
+else()
+    message(STATUS "tests/consumer skipped: it requires the DisplacementFiniteElement and LinearElastic modules")
+endif()
 
 # ── Python bindings ───────────────────────────────────────────────────────────
 
