@@ -119,6 +119,28 @@ Get Marmot:
     make install
     ctest --output-on-failure
 
+Build options
+*************
+
+The following CMake options adjust the build:
+
+* ``-DBUILD_TESTING=OFF`` skips the test executables, e.g., for install-only builds.
+* ``-DMARMOT_MARCH_NATIVE=ON`` compiles for the host CPU (``-march=native``, GCC/Clang only), which lets Fastor
+  vectorize with AVX2/FMA. The resulting library does not run on older CPUs.
+* ``-DMARMOT_ENABLE_COVERAGE=ON`` instruments the library and the tests for ``gcov`` (with ``-DCMAKE_BUILD_TYPE=Debug``).
+* ``-DMARMOT_BUILD_PYTHON_BINDINGS=ON`` builds the Python bindings.
+
+Installing copies the headers of every built module to ``<prefix>/include/Marmot``.
+Other CMake projects use the installed library through ``find_package``:
+
+.. code-block:: cmake
+
+    find_package(Marmot REQUIRED)
+    target_link_libraries(<target> PRIVATE Marmot::Marmot)
+
+``Marmot::Marmot`` brings along Eigen, autodiff and Fastor; autodiff and Fastor are found either through their
+CMake packages or, if they were installed as plain headers, through a header search.
+
 Building on Windows
 *******************
 
