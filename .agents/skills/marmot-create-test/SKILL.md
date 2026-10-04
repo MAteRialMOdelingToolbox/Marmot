@@ -88,7 +88,8 @@ int main() {
 ```cmake
 SET(CURR_TEST_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/test")
 add_marmot_test("TestMarmotMyModule" "${CURR_TEST_SOURCE_DIR}/test.cpp")
-# a test including headers of modules beyond its module's REQUIRES lists them; it is skipped if one is not built:
+# a test sees its module's headers and MarmotTesting.h; one including headers of further modules, or creating their
+# materials/elements by name through the factories, lists them; it is skipped if one is not built:
 # add_marmot_test("TestMarmotMyModule" "${CURR_TEST_SOURCE_DIR}/test.cpp" REQUIRES LinearElastic)
 ```
 

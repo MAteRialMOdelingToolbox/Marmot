@@ -138,17 +138,19 @@ Marmot consists of modules, one directory ``modules/<category>/<Name>/`` each, w
 Every such directory containing a ``module.cmake`` is found automatically; a module of your own is added by placing
 its directory there. The variables ``CORE_MODULES``, ``MATERIAL_MODULES``, ``ELEMENT_MODULES``, ``PARTICLE_MODULES``,
 ``MATERIALPOINT_MODULES``, ``CELL_MODULES`` and ``CELLELEMENT_MODULES`` (default ``all``) select a subset, e.g.,
-``-DMATERIAL_MODULES="LinearElastic;VonMises"``.
+``-DMATERIAL_MODULES="LinearElastic;VonMises"``; a name matching no module, e.g., ``none``, selects none of that category.
 
-A ``module.cmake`` declares the module and the modules whose headers it includes:
+A ``module.cmake`` declares the module and, with ``REQUIRES``, the modules whose headers it includes, except modules
+already required by a listed one:
 
 .. code-block:: cmake
 
     marmot_add_module(MyMaterial
         REQUIRES MarmotFiniteStrainMechanicsCore)
 
-A module whose required module is not built is skipped with a warning; if it was selected explicitly, configuring
-fails. A module sees only the headers of the modules it requires, so a missing ``REQUIRES`` shows as a compile error.
+Requiring a module that does not exist fails configuring. A module whose required module is not built (filtered out)
+is skipped with a warning; if it was selected explicitly, or if no filter is set, configuring fails instead.
+A module sees only the headers of the modules it requires, so a missing ``REQUIRES`` shows as a compile error.
 All modules are compiled into the one library ``libMarmot``.
 
 Installing copies the headers of every built module to ``<prefix>/include/Marmot``.

@@ -141,11 +141,6 @@ include(cmake/MarmotModules.cmake)
 
 set(MODULES_DIR ${CMAKE_SOURCE_DIR}/modules)
 
-# Accumulated by module.cmake files of the older style (see cmake/MarmotModules.cmake)
-set(sources "")
-set(INSTALLED_MODULE_INCLUDE_DIRS "")
-set(SHARED_LIBRARIES "")
-
 # ── Module discovery helpers ──────────────────────────────────────────────────
 
 # subdirlist: populate <result> with the names of immediate subdirectories of <curdir>.
@@ -163,7 +158,8 @@ endfunction()
 # register_module_category: scan <category_path> for subdirectories that contain a
 # module.cmake file, apply the optional filter list stored in the variable named
 # <filter_var>, and append matching entries to INSTALLED_MODULES and
-# INSTALLED_MODULEPATHS in the calling scope.
+# INSTALLED_MODULEPATHS in the calling scope. Every module found, filtered or not, is
+# appended to MARMOT_EXISTING_MODULES; the modules named in a filter to MARMOT_EXPLICIT_MODULES.
 #
 # Usage:
 #   register_module_category(<path> <filter-variable-name> "<label>")
@@ -180,6 +176,7 @@ macro(register_module_category category_path filter_var category_label)
     foreach(_rmc_dir IN LISTS _rmc_dirs)
       set(_rmc_modulepath "${category_path}/${_rmc_dir}")
       if(EXISTS "${_rmc_modulepath}/module.cmake")
+        list(APPEND MARMOT_EXISTING_MODULES "${_rmc_dir}")
         if(NOT DEFINED ${filter_var})
           set(${filter_var} "all")
         endif()
@@ -190,6 +187,9 @@ macro(register_module_category category_path filter_var category_label)
             list(APPEND MARMOT_EXPLICIT_MODULES "${_rmc_dir}")
           endif()
           list(APPEND INSTALLED_MODULEPATHS "${_rmc_modulepath}")
+        endif()
+        if(NOT "${${filter_var}}" STREQUAL "all")
+          set(MARMOT_MODULES_FILTERED TRUE)
         endif()
       endif()
     endforeach()
@@ -204,6 +204,8 @@ endmacro()
 set(INSTALLED_MODULES "")
 set(INSTALLED_MODULEPATHS "")
 set(MARMOT_EXPLICIT_MODULES "")
+set(MARMOT_EXISTING_MODULES "")
+set(MARMOT_MODULES_FILTERED FALSE)
 
 register_module_category("${MODULES_DIR}/core"           CORE_MODULES          "Core")
 register_module_category("${MODULES_DIR}/materials"      MATERIAL_MODULES      "Material")
@@ -218,36 +220,14 @@ message("Check the list above: if a module is missing despite being in the corre
 message("directory, verify that it has a proper module.cmake file.")
 message("+------------------------------------------------------------------------------+")
 
-# Read all discovered module.cmake files. A module.cmake declaring its module with marmot_add_module() only records
-# it; one that doesn't is of the older style and appends to `sources` and the include directories directly.
-set(_legacy_modules "")
-set(_legacy_modulepaths "")
-foreach(MODULEPATH IN LISTS INSTALLED_MODULEPATHS)
-    get_property(_declared_before GLOBAL PROPERTY MARMOT_DECLARED_MODULES)
-    include("${MODULEPATH}/module.cmake")
-    get_property(_declared_after GLOBAL PROPERTY MARMOT_DECLARED_MODULES)
-    if("${_declared_before}" STREQUAL "${_declared_after}")
-        get_filename_component(_module "${MODULEPATH}" NAME)
-        list(APPEND _legacy_modules "${_module}")
-        list(APPEND _legacy_modulepaths "${MODULEPATH}")
-    endif()
-endforeach()
-
-# Include directories registered through include_directories() by older module.cmake files.
-get_directory_property(_directory_include_dirs INCLUDE_DIRECTORIES)
-foreach(_inc_dir IN LISTS _directory_include_dirs)
-    if(_inc_dir MATCHES "^${MODULES_DIR}/")
-        list(APPEND INSTALLED_MODULE_INCLUDE_DIRS "${_inc_dir}")
-    endif()
-endforeach()
-list(REMOVE_DUPLICATES INSTALLED_MODULE_INCLUDE_DIRS)
-
-# Resolve the dependencies and create one target Marmot_<Name> per module.
-marmot_build_modules("${_legacy_modules}" "${sources}" "${INSTALLED_MODULE_INCLUDE_DIRS}" "${MARMOT_EXPLICIT_MODULES}")
-target_link_libraries(MarmotModuleSettings INTERFACE ${SHARED_LIBRARIES})
+# Read all discovered module.cmake files, resolve the dependencies and create one target per module
+# (see cmake/MarmotModules.cmake).
+marmot_read_modules("${INSTALLED_MODULEPATHS}")
+marmot_build_modules("${INSTALLED_MODULES}" "${MARMOT_EXISTING_MODULES}" "${MARMOT_EXPLICIT_MODULES}"
+                     ${MARMOT_MODULES_FILTERED})
 
 message("+------------------------------------------------------------------------------+")
-message(STATUS "Building modules: ${MARMOT_BUILT_MODULES} ${_legacy_modules}")
+message(STATUS "Building modules: ${MARMOT_BUILT_MODULES}")
 message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
 
 # ── Build the shared library ──────────────────────────────────────────────────
@@ -260,6 +240,9 @@ foreach(_target IN LISTS MARMOT_MODULE_TARGETS)
         list(APPEND MARMOT_MODULE_OBJECTS $<TARGET_OBJECTS:${_target}>)
     endif()
 endforeach()
+if(NOT MARMOT_MODULE_OBJECTS)
+    message(FATAL_ERROR "No module with sources is selected; check the *_MODULES filters.")
+endif()
 
 add_library(${PROJECT_NAME} SHARED ${MARMOT_MODULE_OBJECTS})
 
@@ -281,7 +264,7 @@ endforeach()
 # PUBLIC: Marmot's headers include Eigen, autodiff and Fastor, so consumers need them too
 # (MarmotConfig.cmake recreates these targets on the consumer side).
 target_link_libraries(${PROJECT_NAME} PUBLIC Eigen3::Eigen autodiff::autodiff Fastor::Fastor)
-target_link_libraries(${PROJECT_NAME} PRIVATE ${MARMOT_MODULE_LINK_LIBRARIES} ${SHARED_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${MARMOT_MODULE_LINK_LIBRARIES})
 
 if(MARMOT_ENABLE_COVERAGE)
     target_link_options(${PROJECT_NAME} PRIVATE --coverage)
@@ -298,25 +281,29 @@ endif()
 # own translation unit; with MARMOT_ENABLE_COVERAGE the tests are instrumented too (through MarmotModuleSettings),
 # as otherwise an uninstrumented test binary's own copy of such a template method wins symbol resolution over the
 # library's instrumented copy, so gcov never sees it.
-# A test sees the headers of its own module (and the modules that one requires); a test including headers of further
-# modules lists them, and is skipped if one is not built:
+# A test sees the headers of its own module (and the modules that one requires) and of the module providing
+# MarmotTesting.h; a test including headers of further modules, or creating their materials or elements by name
+# through the factories, lists them, and is skipped if one is not built:
 #   add_marmot_test(<name> <source> [REQUIRES <module>...])
+set(MARMOT_TESTING_MODULE MarmotMechanicsCore)
 function(add_marmot_test test_name test_source)
   cmake_parse_arguments(PARSE_ARGV 2 _arg "" "" "REQUIRES")
-  foreach(_module IN LISTS _arg_REQUIRES)
-    if(NOT _module IN_LIST MARMOT_BUILT_MODULES AND NOT _module IN_LIST _legacy_modules)
+  if(_arg_UNPARSED_ARGUMENTS)
+    message(FATAL_ERROR "add_marmot_test(${test_name}): unknown arguments: ${_arg_UNPARSED_ARGUMENTS}")
+  endif()
+  set(_modules ${MARMOT_CURRENT_MODULE} ${MARMOT_TESTING_MODULE} ${_arg_REQUIRES})
+  foreach(_module IN LISTS _modules)
+    if(NOT _module IN_LIST MARMOT_BUILT_MODULES)
       message(STATUS "Test ${test_name} skipped: it requires module ${_module}, which is not built")
       return()
     endif()
   endforeach()
   set(_usage "")
-  foreach(_module IN ITEMS ${MARMOT_CURRENT_MODULE} ${_arg_REQUIRES})
-    if(_module IN_LIST _legacy_modules)
-      list(APPEND _usage Marmot_legacy)
-    else()
-      list(APPEND _usage Marmot_${_module})
-    endif()
+  foreach(_module IN LISTS _modules)
+    marmot_module_target(_target ${_module})
+    list(APPEND _usage ${_target})
   endforeach()
+  list(REMOVE_DUPLICATES _usage)
   # Linking a module target directly links its objects; the objects of all other modules are added explicitly.
   set(_objects "")
   foreach(_target IN LISTS MARMOT_MODULE_TARGETS)
@@ -327,7 +314,7 @@ function(add_marmot_test test_name test_source)
   endforeach()
   add_executable(${test_name} ${test_source} ${_objects})
   # the objects of all modules are linked, so their libraries are needed too
-  target_link_libraries(${test_name} PRIVATE ${_usage} ${MARMOT_MODULE_LINK_LIBRARIES} ${SHARED_LIBRARIES})
+  target_link_libraries(${test_name} PRIVATE ${_usage} ${MARMOT_MODULE_LINK_LIBRARIES})
   add_test(NAME ${test_name} COMMAND ${test_name} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
   if(MARMOT_ENABLE_COVERAGE)
     target_link_options(${test_name} PRIVATE --coverage)
@@ -336,15 +323,10 @@ endfunction()
 
 if(BUILD_TESTING)
     # Include the test definitions of the built modules only.
-    set(_built_modulepaths "${_legacy_modulepaths}")
-    foreach(_module IN LISTS MARMOT_BUILT_MODULES)
-        get_property(_dir GLOBAL PROPERTY MARMOT_MODULE_${_module}_DIR)
-        list(APPEND _built_modulepaths "${_dir}")
-    endforeach()
-    foreach(MODULEPATH IN LISTS _built_modulepaths)
-        get_filename_component(MARMOT_CURRENT_MODULE "${MODULEPATH}" NAME)
-        if(EXISTS "${MODULEPATH}/test.cmake")
-            include("${MODULEPATH}/test.cmake")
+    foreach(MARMOT_CURRENT_MODULE IN LISTS MARMOT_BUILT_MODULES)
+        get_property(_dir GLOBAL PROPERTY MARMOT_MODULE_${MARMOT_CURRENT_MODULE}_DIR)
+        if(EXISTS "${_dir}/test.cmake")
+            include("${_dir}/test.cmake")
         endif()
     endforeach()
 

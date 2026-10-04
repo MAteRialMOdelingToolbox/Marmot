@@ -42,10 +42,10 @@ modules/<category>/<ModuleName>/
 3. **Module CMake**:
    ```cmake
    marmot_add_module(<ModuleName>
-       REQUIRES MarmotFiniteStrainMechanicsCore)   # every module whose headers you include
+       REQUIRES MarmotFiniteStrainMechanicsCore)
    ```
-   The name must equal the directory name. An include of a module not listed (directly or through a listed
-   module's own `REQUIRES`) fails to compile. See `cmake/MarmotModules.cmake`.
+   `REQUIRES` lists every module whose headers the module includes, except modules already required (directly or transitively) by a listed module. The name must equal the directory name. An include of a module not
+   required (directly or transitively) fails to compile. See `cmake/MarmotModules.cmake`.
 4. **Registration**: Register with the appropriate factory in `src/<Name>Registration.cpp`.
 5. **Testing**: Follow [`marmot-create-test`](../marmot-create-test/SKILL.md) (analytical benchmark + `MarmotMathCore` tangent test).
 6. **Documentation**: Follow [`marmot-documentation`](../marmot-documentation/SKILL.md) (Doxygen + Sphinx `.rst`).
