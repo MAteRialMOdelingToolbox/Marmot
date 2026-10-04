@@ -61,14 +61,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # set install directories
 include(GNUInstallDirs)
 
-# Compiler-specific settings
-if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+# Compiler-specific settings.
+# Optimization/debug flags (-O3, -g, ...) come from CMake's per-configuration defaults.
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     add_compile_options(-Wall -Wextra -Wno-unused-parameter -Wno-long-long -pedantic)
-    # -O3 belongs only in Release builds, not Debug.
-    add_compile_options($<$<CONFIG:Release>:-O3>)
-    # add_compile_options(-mavx)
-    # add_compile_options(-ffast-math)
-    add_compile_options($<$<CONFIG:Debug>:-g>)
 elseif(MSVC)
     if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
         string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
@@ -89,37 +85,32 @@ if(NOT CMAKE_BUILD_TYPE)
     message("--> setting to default CMAKE_BUILD_TYPE Release")
 endif()
 
+# Opt-in tuning for the host CPU. Fastor's SIMD kernels only vectorize beyond the SSE2 baseline when the
+# target architecture allows it (AVX2/FMA). OFF by default because the binaries are not portable.
+option(MARMOT_MARCH_NATIVE "Compile with -march=native (non-portable binaries)" OFF)
+if(MARMOT_MARCH_NATIVE)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+        add_compile_options(-march=native)
+    else()
+        message(WARNING "MARMOT_MARCH_NATIVE is only supported for GCC/Clang and is ignored.")
+    endif()
+endif()
+
 # Disable (shared memory) parallelization within Marmot - such a parallelization is usually not desired
 # add_compile_definitions(EIGEN_DONT_PARALLELIZE)                     # for Eigen
 # add_compile_definitions(BLAZE_USE_SHARED_MEMORY_PARALLELIZATION=0)  # for Blaze
 
-## find Eigen library
-## The include directory is provided transitively via the Eigen3::Eigen imported target;
-## no separate include_directories() call is needed.
-## No version is passed to find_package(): Eigen 3.4 and Eigen 5 both install SameMajorVersion
-## config files, so neither a minimum of 3.3 nor a 3.3...5 range accepts both. Check the minimum here.
-find_package(Eigen3 REQUIRED NO_MODULE)
-if(Eigen3_VERSION VERSION_LESS 3.3)
-    message(FATAL_ERROR "Marmot requires Eigen >= 3.3, found ${Eigen3_VERSION}")
+## find Eigen, autodiff and Fastor as imported targets (Eigen3::Eigen, autodiff::autodiff, Fastor::Fastor).
+## The same file is installed and used by MarmotConfig.cmake, so consumers resolve them alike.
+include(cmake/MarmotDependencies.cmake)
+if(NOT MARMOT_DEPENDENCIES_FOUND)
+    message(FATAL_ERROR "${MARMOT_DEPENDENCIES_MESSAGE}")
 endif()
-message("--> found Eigen ${Eigen3_VERSION}: ${Eigen3_DIR}")
+message("--> found Eigen ${Eigen3_VERSION}")
 
-## find autodiff library (https://autodiff.github.io/)
-find_path(AUTODIFF_INCLUDE_DIR autodiff)
-if(NOT AUTODIFF_INCLUDE_DIR)
-    message(FATAL_ERROR "autodiff include directory not found")
-endif()
-message("--> found autodiff: ${AUTODIFF_INCLUDE_DIR}")
-
-## find Fastor library (https://github.com/romeric/Fastor)
-find_path(FASTOR_INCLUDE_DIR Fastor)
-if(NOT FASTOR_INCLUDE_DIR)
-    message(FATAL_ERROR "Fastor include directory not found")
-endif()
-message("--> found Fastor: ${FASTOR_INCLUDE_DIR}")
-
-# enable testing
-enable_testing()
+# Testing: include(CTest) provides the standard BUILD_TESTING option (default ON) and calls enable_testing().
+# Configure with -DBUILD_TESTING=OFF to skip the test executables, e.g. for install-only builds.
+include(CTest)
 
 # Custom function to add a test executable.
 # Tests link Marmot's object files directly, not the shared library: they also exercise Marmot's internals, which
@@ -144,12 +135,31 @@ function(add_marmot_test test_name test_source)
   endif()
 endfunction()
 
+# marmot_module_requires: check that every listed dependency of <module_name> is among the discovered
+# INSTALLED_MODULES, so a module can skip itself instead of failing at compile or link time. Emits a warning
+# for each missing dependency and sets <result_var> to TRUE or FALSE in the calling scope.
+#
+# Usage (from a module.cmake):
+#   marmot_module_requires(_deps_ok MyModule MarmotMechanicsCore MarmotCosseratCore)
+#   if(_deps_ok)
+#     # register include directory and sources
+#   endif()
+function(marmot_module_requires result_var module_name)
+  set(_ok TRUE)
+  foreach(_dep IN LISTS ARGN)
+    if(NOT _dep IN_LIST INSTALLED_MODULES)
+      message(WARNING "Module ${module_name} will NOT be built: required module '${_dep}' is not enabled.")
+      set(_ok FALSE)
+    endif()
+  endforeach()
+  set(${result_var} ${_ok} PARENT_SCOPE)
+endfunction()
+
 set(MODULES_DIR ${CMAKE_SOURCE_DIR}/modules)
 set(SHARED_LIBRARIES "")
 
 # Accumulated lists populated by module.cmake files
 set(sources "")
-set(publicheaders "")
 set(INSTALLED_MODULE_INCLUDE_DIRS "")
 
 # ── Module discovery helpers ──────────────────────────────────────────────────
@@ -221,10 +231,20 @@ message("directory, verify that it has a proper module.cmake file.")
 message("+------------------------------------------------------------------------------+")
 
 # Include all discovered module.cmake files.
-# Each file appends to: sources, publicheaders, INSTALLED_MODULE_INCLUDE_DIRS.
+# Each file appends to: sources, INSTALLED_MODULE_INCLUDE_DIRS.
+# Older module.cmake files call include_directories() instead; their directories are picked up below.
 foreach(MODULEPATH IN LISTS INSTALLED_MODULEPATHS)
     include("${MODULEPATH}/module.cmake")
 endforeach()
+
+# Module include directories registered through include_directories() by older module.cmake files.
+get_directory_property(_legacy_include_dirs INCLUDE_DIRECTORIES)
+foreach(_inc_dir IN LISTS _legacy_include_dirs)
+    if(_inc_dir MATCHES "^${MODULES_DIR}/")
+        list(APPEND INSTALLED_MODULE_INCLUDE_DIRS "${_inc_dir}")
+    endif()
+endforeach()
+list(REMOVE_DUPLICATES INSTALLED_MODULE_INCLUDE_DIRS)
 
 message("+------------------------------------------------------------------------------+")
 message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
@@ -251,9 +271,8 @@ if(MARMOT_EXPORT_API_ONLY)
 endif()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    VERSION       ${PROJECT_VERSION}
-    SOVERSION     ${PROJECT_VERSION_MAJOR}
-    PUBLIC_HEADER "${publicheaders}"
+    VERSION   ${PROJECT_VERSION}
+    SOVERSION ${PROJECT_VERSION_MAJOR}
 )
 
 # Include-directory strategy:
@@ -265,15 +284,15 @@ foreach(_target IN ITEMS ${PROJECT_NAME} ${PROJECT_NAME}Objects)
     target_include_directories(${_target}
         PUBLIC
             $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-            $<BUILD_INTERFACE:${AUTODIFF_INCLUDE_DIR}>
-            $<BUILD_INTERFACE:${FASTOR_INCLUDE_DIR}>
     )
     foreach(_inc_dir IN LISTS INSTALLED_MODULE_INCLUDE_DIRS)
         target_include_directories(${_target}
             PUBLIC $<BUILD_INTERFACE:${_inc_dir}>)
     endforeach()
 
-    target_link_libraries(${_target} PUBLIC Eigen3::Eigen)
+    # PUBLIC: Marmot's headers include Eigen, autodiff and Fastor, so consumers need them too
+    # (MarmotConfig.cmake recreates these targets on the consumer side).
+    target_link_libraries(${_target} PUBLIC Eigen3::Eigen autodiff::autodiff Fastor::Fastor)
 endforeach()
 
 if(SHARED_LIBRARIES)
@@ -311,19 +330,21 @@ if(MARMOT_ENABLE_COVERAGE)
     target_link_options(${PROJECT_NAME} PRIVATE --coverage)
 endif()
 
-# Include test definitions for all installed modules
-foreach(MODULEPATH IN LISTS INSTALLED_MODULEPATHS)
-    if(EXISTS "${MODULEPATH}/test.cmake")
-        include("${MODULEPATH}/test.cmake")
-    endif()
-endforeach()
+if(BUILD_TESTING)
+    # Include test definitions for all installed modules
+    foreach(MODULEPATH IN LISTS INSTALLED_MODULEPATHS)
+        if(EXISTS "${MODULEPATH}/test.cmake")
+            include("${MODULEPATH}/test.cmake")
+        endif()
+    endforeach()
 
-# The consumer test, linking the shared library only (see tests/consumer/CMakeLists.txt). It creates a CPS4 element
-# with a LINEARELASTIC material through the factories, so it needs both modules.
-if("DisplacementFiniteElement" IN_LIST INSTALLED_MODULES AND "LinearElastic" IN_LIST INSTALLED_MODULES)
-    add_subdirectory(tests/consumer)
-else()
-    message(STATUS "tests/consumer skipped: it requires the DisplacementFiniteElement and LinearElastic modules")
+    # The consumer test, linking the shared library only (see tests/consumer/CMakeLists.txt). It creates a CPS4
+    # element with a LINEARELASTIC material through the factories, so it needs both modules.
+    if("DisplacementFiniteElement" IN_LIST INSTALLED_MODULES AND "LinearElastic" IN_LIST INSTALLED_MODULES)
+        add_subdirectory(tests/consumer)
+    else()
+        message(STATUS "tests/consumer skipped: it requires the DisplacementFiniteElement and LinearElastic modules")
+    endif()
 endif()
 
 # ── Python bindings ───────────────────────────────────────────────────────────
@@ -352,8 +373,16 @@ install(TARGETS ${PROJECT_NAME}
     # Windows: the DLL is a RUNTIME artifact, its import library (.lib) an ARCHIVE one.
     RUNTIME       DESTINATION "${CMAKE_INSTALL_BINDIR}"
     ARCHIVE       DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/Marmot"
 )
+
+# Install the include tree of every built module wholesale. Headers are laid out as
+# <module>/include/Marmot/<Header>.h, so they all land in <prefix>/include/Marmot/.
+foreach(_inc_dir IN LISTS INSTALLED_MODULE_INCLUDE_DIRS)
+    install(DIRECTORY "${_inc_dir}/"
+        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+        FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
+    )
+endforeach()
 
 install(EXPORT MarmotTargets
     FILE        MarmotTargets.cmake
@@ -376,6 +405,7 @@ write_basic_package_version_file(
 )
 
 install(FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/MarmotDependencies.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/MarmotConfig.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/MarmotConfigVersion.cmake"
     DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/Marmot"
