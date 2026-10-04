@@ -77,11 +77,12 @@ Standard `module.cmake` (name = directory name; sources default to `src/*.cpp`):
 marmot_add_module(MyMaterial
     REQUIRES MarmotFiniteStrainMechanicsCore)
 ```
-`REQUIRES` lists every module whose headers the module includes, except modules already required (directly or transitively) by a listed module; naming a module that does not exist fails configuring. Each module is an
-OBJECT library `Marmot_<Name>` that sees only its own and its required modules' headers, so an undeclared dependency
-is a compile error. A module with a requirement that is not built is skipped; configuring fails instead if it was
-requested explicitly in a filter, or if no filter is set. All objects are assembled into the one `libMarmot`.
-Details: `cmake/MarmotModules.cmake`.
+`REQUIRES` lists every module whose headers the module includes, except modules already required (directly or
+transitively) by a listed module. Each module is an OBJECT library `Marmot_<Name>` that sees only its own and its
+required modules' headers, so an undeclared dependency is a compile error. Without a `*_MODULES` filter every module
+must be buildable: requiring a module that does not exist (misspelled, or its repository not checked out) fails
+configuring. With a filter, a module whose requirement is filtered out or does not exist is skipped, unless it was
+requested explicitly. All objects are assembled into the one `libMarmot`. Details: `cmake/MarmotModules.cmake`.
 
 Standard `test.cmake`. A test sees its module's headers and `MarmotTesting.h`; `REQUIRES` lists further modules whose
 headers it includes or whose materials/elements it creates by name through the factories (the test is skipped if

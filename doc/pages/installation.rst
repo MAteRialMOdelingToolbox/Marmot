@@ -148,8 +148,9 @@ already required by a listed one:
     marmot_add_module(MyMaterial
         REQUIRES MarmotFiniteStrainMechanicsCore)
 
-Requiring a module that does not exist fails configuring. A module whose required module is not built (filtered out)
-is skipped with a warning; if it was selected explicitly, or if no filter is set, configuring fails instead.
+Without a filter, every module must be buildable: requiring a module that does not exist (e.g., a misspelled name, or
+a module whose repository is not checked out) fails configuring. With a filter, a module whose required module is
+filtered out or does not exist is skipped with a warning; if it was selected explicitly, configuring fails instead.
 A module sees only the headers of the modules it requires, so a missing ``REQUIRES`` shows as a compile error.
 All modules are compiled into the one library ``libMarmot``.
 

@@ -14,7 +14,9 @@
 # *                                 target given here must also be found by consumers of the installed Marmot
 # *
 # * REQUIRES lists every module whose headers the module includes, except modules already required (directly or
-# * transitively) by a listed module. A module requiring a module that does not exist fails configuring.
+# * transitively) by a listed module. A module requiring a module that does not exist fails configuring, unless a
+# * *_MODULES filter is set: then it is skipped like a module whose requirement is filtered out (e.g. a module whose
+# * dependency's repository is not checked out, on a machine building a filtered selection).
 # *
 # * marmot_add_module() only records the declaration. After all module.cmake files are read,
 # * marmot_build_modules() resolves the dependencies and creates one OBJECT library Marmot_<Name> per module:
@@ -33,7 +35,8 @@
 # * built if its module.cmake added sources or include directories, its marmot_module_requires() dependencies take
 # * part in the resolution above, and the sources of all of them are compiled into one object library
 # * Marmot_legacy, which sees the headers of all modules. A module of the new style requiring one of the older
-# * style sees the headers of all modules, too.
+# * style sees the headers of all modules, too, so its REQUIRES are not checked by compiling. Include directories
+# * outside modules/ added by an older module.cmake are used to compile Marmot_legacy only, never installed.
 # *
 # * ---------------------------------------------------------------------
 # */
@@ -113,10 +116,22 @@ function(_marmot_read_module module_dir)
     include("${module_dir}/module.cmake")
 
     get_directory_property(_dir_includes_after INCLUDE_DIRECTORIES)
-    set(_include_dirs ${INSTALLED_MODULE_INCLUDE_DIRS})
+    set(_added_dirs ${INSTALLED_MODULE_INCLUDE_DIRS})
     foreach(_dir IN LISTS _dir_includes_after)
         if(NOT _dir IN_LIST _dir_includes_before)
+            list(APPEND _added_dirs "${_dir}")
+        endif()
+    endforeach()
+    # Directories within modules/ hold module headers (installed, and part of libMarmot's interface); any other
+    # directory is used only to compile Marmot_legacy.
+    set(_include_dirs "")
+    set(_extra_include_dirs "")
+    foreach(_dir IN LISTS _added_dirs)
+        string(FIND "${_dir}" "${MODULES_DIR}/" _pos)
+        if(_pos EQUAL 0)
             list(APPEND _include_dirs "${_dir}")
+        else()
+            list(APPEND _extra_include_dirs "${_dir}")
         endif()
     endforeach()
     # include_directories() of an older module.cmake would apply to every target of this directory; the module's
@@ -125,7 +140,7 @@ function(_marmot_read_module module_dir)
 
     get_property(_declared GLOBAL PROPERTY MARMOT_MODULE_${_module}_DECLARED)
     if(_declared)
-        if(sources OR _include_dirs OR SHARED_LIBRARIES)
+        if(sources OR _added_dirs OR SHARED_LIBRARIES)
             message(FATAL_ERROR "${module_dir}/module.cmake calls marmot_add_module() and also uses the older "
                                 "style (sources, include directories or SHARED_LIBRARIES); use marmot_add_module() only.")
         endif()
@@ -134,11 +149,13 @@ function(_marmot_read_module module_dir)
     endif()
 
     set_property(GLOBAL PROPERTY MARMOT_MODULE_${_module}_LEGACY TRUE)
-    if(sources OR _include_dirs)
+    if(sources OR _added_dirs)
         list(REMOVE_DUPLICATES _include_dirs)
+        list(REMOVE_DUPLICATES _extra_include_dirs)
         set_property(GLOBAL PROPERTY MARMOT_MODULE_${_module}_DECLARED TRUE)
         set_property(GLOBAL PROPERTY MARMOT_MODULE_${_module}_SOURCES "${sources}")
         set_property(GLOBAL PROPERTY MARMOT_MODULE_${_module}_INCLUDE_DIRS "${_include_dirs}")
+        set_property(GLOBAL PROPERTY MARMOT_MODULE_${_module}_EXTRA_INCLUDE_DIRS "${_extra_include_dirs}")
         set_property(GLOBAL PROPERTY MARMOT_MODULE_${_module}_LINK "${SHARED_LIBRARIES}")
     else()
         # it gated itself off (and said so)
@@ -151,6 +168,10 @@ endfunction()
 function(marmot_read_modules module_dirs)
     foreach(_module_dir IN LISTS module_dirs)
         get_filename_component(_module "${_module_dir}" NAME)
+        get_property(_known_dir GLOBAL PROPERTY MARMOT_MODULE_${_module}_DIR)
+        if(_known_dir AND NOT _known_dir STREQUAL _module_dir)
+            message(FATAL_ERROR "Two modules are named ${_module}: ${_known_dir} and ${_module_dir}.")
+        endif()
         set_property(GLOBAL PROPERTY MARMOT_MODULE_${_module}_DIR "${_module_dir}")
         _marmot_read_module("${_module_dir}")
     endforeach()
@@ -229,11 +250,14 @@ function(marmot_build_modules discovered_modules existing_modules explicit_modul
         get_property(_declared GLOBAL PROPERTY MARMOT_MODULE_${_module}_DECLARED)
         get_property(_legacy GLOBAL PROPERTY MARMOT_MODULE_${_module}_LEGACY)
         get_property(_requires GLOBAL PROPERTY MARMOT_MODULE_${_module}_REQUIRES)
-        if(NOT _legacy)
+        # Without a filter, a required module that does not exist is an error (typically a misspelled REQUIRES);
+        # with one, it is treated like a filtered-out module below.
+        if(NOT _legacy AND NOT filtered)
             foreach(_dep IN LISTS _requires)
                 if(NOT _dep IN_LIST existing_modules)
-                    message(FATAL_ERROR "Module ${_module} requires '${_dep}', which does not exist in modules/ "
-                                        "(misspelled, or its repository is not checked out).")
+                    message(FATAL_ERROR "Module ${_module} requires '${_dep}', which does not exist in modules/. "
+                                        "Fix the name if it is misspelled; if its repository is not checked out, "
+                                        "check it out or exclude ${_module} with a *_MODULES filter.")
                 endif()
             endforeach()
         endif()
@@ -257,13 +281,17 @@ function(marmot_build_modules discovered_modules existing_modules explicit_modul
             get_property(_legacy GLOBAL PROPERTY MARMOT_MODULE_${_module}_LEGACY)
             foreach(_dep IN LISTS _requires)
                 if(NOT _dep IN_LIST _candidates OR _dep IN_LIST _dropped)
-                    set(_reason "required module '${_dep}' is not built")
+                    if(_dep IN_LIST existing_modules)
+                        set(_reason "required module '${_dep}' is not built")
+                    else()
+                        set(_reason "required module '${_dep}' does not exist in modules/")
+                    endif()
                     if(_module IN_LIST explicit_modules)
                         message(FATAL_ERROR "Module ${_module} was requested explicitly, but cannot be built: ${_reason}.")
                     endif()
                     if(NOT filtered AND NOT _legacy)
                         message(FATAL_ERROR "Module ${_module} cannot be built: ${_reason}. Without a *_MODULES "
-                                            "filter, every module must be buildable.")
+                                            "filter, every module must be buildable; exclude ${_module} with a filter.")
                     endif()
                     message(WARNING "Module ${_module} will NOT be built: ${_reason}.")
                     list(APPEND _dropped "${_module}")
@@ -348,9 +376,10 @@ function(marmot_build_modules discovered_modules existing_modules explicit_modul
         foreach(_module IN LISTS _legacy_modules)
             get_property(_sources GLOBAL PROPERTY MARMOT_MODULE_${_module}_SOURCES)
             get_property(_module_include_dirs GLOBAL PROPERTY MARMOT_MODULE_${_module}_INCLUDE_DIRS)
+            get_property(_extra_include_dirs GLOBAL PROPERTY MARMOT_MODULE_${_module}_EXTRA_INCLUDE_DIRS)
             get_property(_link GLOBAL PROPERTY MARMOT_MODULE_${_module}_LINK)
             list(APPEND _legacy_sources ${_sources})
-            list(APPEND _legacy_include_dirs ${_module_include_dirs})
+            list(APPEND _legacy_include_dirs ${_module_include_dirs} ${_extra_include_dirs})
             list(APPEND _legacy_link ${_link})
         endforeach()
         if(_legacy_sources)
