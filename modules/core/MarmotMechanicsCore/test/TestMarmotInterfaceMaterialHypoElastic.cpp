@@ -1,3 +1,4 @@
+#include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotInterfaceMaterialHelperFunctions.h"
 #include "Marmot/MarmotInterfaceMaterialHypoElastic.h"
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
@@ -8,6 +9,7 @@
 
 #include <functional>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -207,6 +209,75 @@ namespace {
                              "Generic Wiechert interface density delegation failed." );
   }
 
+  void testInterfaceMaterialRejectsInvalidInput()
+  {
+    // E and nu alone are not enough: the interface thickness h is the third required property
+    const double tooFewProperties[2] = { 1e5, 0.3 };
+    bool         rejectedProperties  = false;
+    try {
+      MarmotInterfaceMaterialHypoElastic material( "LINEARELASTIC", tooFewProperties, 2, 1 );
+    }
+    catch ( const std::invalid_argument& ) {
+      rejectedProperties = true;
+    }
+    throwExceptionOnFailure( rejectedProperties, "Interface material accepted fewer than three properties." );
+
+    const double properties[3]   = { 1e5, 0.3, 0.01 };
+    bool         rejectedUnknown = false;
+    try {
+      MarmotInterfaceMaterialHypoElastic material( "NOT_A_REGISTERED_MATERIAL", properties, 3, 1 );
+    }
+    catch ( const std::invalid_argument& ) {
+      rejectedUnknown = true;
+    }
+    throwExceptionOnFailure( rejectedUnknown, "Interface material accepted an unregistered base material." );
+  }
+
+  void testStateViewExposesBaseMaterialStateVariables()
+  {
+    const double                       properties[8] = { 2e5, 0.2, 0.01, 0.5, 0.1, 10., 0.0001, 1. };
+    MarmotInterfaceMaterialHypoElastic material( "LINEARVISCOELASTICPOWERLAW", properties, 8, 1 );
+
+    Eigen::VectorXd stateVars = Eigen::VectorXd::Zero( material.getNumberOfRequiredStateVars() );
+    const StateView view      = material.getStateView( "baseMaterialStateVars", stateVars.data() );
+
+    throwExceptionOnFailure( view.stateLocation == stateVars.data() && view.stateSize == stateVars.size() &&
+                               view.stateSize > 0,
+                             "The base-material state variables must be exposed as one block of the state array." );
+  }
+
+  void testUnitModulusOverloadMatchesStiffnessOverload()
+  {
+    // The (normal, nu) overload is the (normal, C) overload for the unit-modulus isotropic stiffness
+    using Marmot::FastorStandardTensors::Tensor3d;
+    using Marmot::Materials::InterfaceMaterialHelperFunctions::calculateInterfaceMaterialParameters;
+
+    const double normals[3][3] = { { 0., 0., 1. },
+                                   { 1., 0., 0. },
+                                   { 1. / std::sqrt( 3. ), 1. / std::sqrt( 3. ), 1. / std::sqrt( 3. ) } };
+    const double poisson[3]    = { 0.0, 0.25, 0.4 };
+
+    const auto asVector = []( const auto& tensor ) {
+      return Eigen::VectorXd( Eigen::Map< const Eigen::VectorXd >( tensor.data(), tensor.size() ) );
+    };
+
+    for ( const auto& normalArray : normals ) {
+      for ( const double nu : poisson ) {
+        const Tensor3d         normal( normalArray );
+        const Marmot::Matrix6d stiffness = Marmot::ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( 1.0,
+                                                                                                               nu );
+
+        const auto [Z1, Q1, H1, Y1] = calculateInterfaceMaterialParameters( normal, nu );
+        const auto [Z2, Q2, H2, Y2] = calculateInterfaceMaterialParameters( normal, stiffness );
+
+        throwExceptionOnFailure( checkIfEqual< double >( asVector( Z1 ), asVector( Z2 ), 1e-9 ), "Z mismatch." );
+        throwExceptionOnFailure( checkIfEqual< double >( asVector( Q1 ), asVector( Q2 ), 1e-9 ), "Q mismatch." );
+        throwExceptionOnFailure( checkIfEqual< double >( asVector( H1 ), asVector( H2 ), 1e-9 ), "H mismatch." );
+        throwExceptionOnFailure( checkIfEqual< double >( asVector( Y1 ), asVector( Y2 ), 1e-9 ), "Y mismatch." );
+      }
+    }
+  }
+
 } // namespace
 
 int main()
@@ -214,7 +285,10 @@ int main()
   std::vector< std::function< void() > > tests = { testGenericLinearElasticInterface,
                                                    testGenericVonMisesInterface,
                                                    testGenericKelvinChainInterface,
-                                                   testGenericWiechertInterface };
+                                                   testGenericWiechertInterface,
+                                                   testInterfaceMaterialRejectsInvalidInput,
+                                                   testStateViewExposesBaseMaterialStateVariables,
+                                                   testUnitModulusOverloadMatchesStiffnessOverload };
   executeTestsAndCollectExceptions( tests );
   return 0;
 }

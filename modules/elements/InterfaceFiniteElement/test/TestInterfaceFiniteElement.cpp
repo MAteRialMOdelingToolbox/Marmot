@@ -1,4 +1,5 @@
 #include "Marmot/InterfaceFiniteElement.h"
+#include "Marmot/MarmotElementFactory.h"
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotTesting.h"
 
@@ -1029,6 +1030,236 @@ void TestElementShapeKeywordsAreEnSightNames()
   }
 }
 
+void TestElementDescriptorsAndFields()
+{
+  std::cout << "\n--- TestElementDescriptorsAndFields ---\n";
+
+  auto element3D = makeSingleInputFileInterfaceElement();
+  auto element2D = makeTwoDimensionalInterfaceElement();
+
+  throwExceptionOnFailure( element3D->getNNodes() == 8 && element3D->getNSpatialDimensions() == 3 &&
+                             element3D->getNDofPerElement() == 24,
+                           "3D interface element reports wrong node, dimension or DOF count." );
+  throwExceptionOnFailure( element2D->getNNodes() == 4 && element2D->getNSpatialDimensions() == 2 &&
+                             element2D->getNDofPerElement() == 8,
+                           "2D interface element reports wrong node, dimension or DOF count." );
+
+  const auto checkNodeFields = []( auto& element, size_t expectedNodes ) {
+    const auto fields = element->getNodeFields();
+    throwExceptionOnFailure( fields.size() == expectedNodes, "Interface element must report one field list per node." );
+    for ( const auto& nodeFields : fields )
+      throwExceptionOnFailure( nodeFields.size() == 1 && nodeFields[0] == "displacement",
+                               "Every interface node carries exactly the displacement field." );
+  };
+  checkNodeFields( element3D, 8 );
+  checkNodeFields( element2D, 4 );
+
+  const auto checkPermutation = []( auto& element, size_t expectedDofs ) {
+    const auto permutation = element->getDofIndicesPermutationPattern();
+    throwExceptionOnFailure( permutation.size() == expectedDofs, "Permutation pattern must cover every DOF." );
+    for ( size_t i = 0; i < permutation.size(); ++i )
+      throwExceptionOnFailure( permutation[i] == static_cast< int >( i ), "DOF permutation must be the identity." );
+  };
+  checkPermutation( element3D, 24 );
+  checkPermutation( element2D, 8 );
+}
+
+template < typename ElementType >
+void checkStateViews( ElementType& element, int nDim )
+{
+  std::vector< double > stateVars;
+  initializeStateAndMaterial( element, stateVars );
+
+  const auto force = element.getStateView( "force", 0 );
+  throwExceptionOnFailure( force.stateSize == nDim && force.stateLocation != nullptr,
+                           "The element's own 'force' state must be an nDim-vector view." );
+
+  const auto displacement = element.getStateView( "displacement", 0 );
+  throwExceptionOnFailure( displacement.stateSize == 2 * nDim,
+                           "The 'displacement' state holds both sides (2 * nDim)." );
+
+  const auto& materialStateVars = element.qps[0].managedStateVars->materialStateVars;
+
+  const auto sdv = element.getStateView( "sdv", 0 );
+  throwExceptionOnFailure( sdv.stateLocation == materialStateVars.data() &&
+                             sdv.stateSize == static_cast< int >( materialStateVars.size() ),
+                           "The deprecated 'sdv' alias must expose all material state variables." );
+
+  // names the element does not know are forwarded to the interface material
+  const auto baseState = element.getStateView( "baseMaterialStateVars", 0 );
+  throwExceptionOnFailure( baseState.stateLocation == materialStateVars.data() &&
+                             baseState.stateSize == static_cast< int >( materialStateVars.size() ),
+                           "Unknown state names must be forwarded to the interface material." );
+}
+
+void TestStateViewAccess()
+{
+  std::cout << "\n--- TestStateViewAccess ---\n";
+
+  auto element3D = makeSingleInputFileInterfaceElement();
+  auto element2D = makeTwoDimensionalInterfaceElement();
+  checkStateViews( *element3D, 3 );
+  checkStateViews( *element2D, 2 );
+}
+
+template < typename ElementType >
+void checkUnsupportedOperationsThrow( ElementType& element )
+{
+  const auto throwsInvalidArgument = []( const std::function< void() >& call ) {
+    try {
+      call();
+    }
+    catch ( const std::invalid_argument& ) {
+      return true;
+    }
+    return false;
+  };
+
+  throwExceptionOnFailure( throwsInvalidArgument(
+                             [&] { element.setInitialConditions( MarmotElement::MarmotMaterialStateVars, nullptr ); } ),
+                           "Setting material state variables through the element must be rejected." );
+  throwExceptionOnFailure( throwsInvalidArgument(
+                             [&] { element.setInitialConditions( MarmotElement::GeostaticStress, nullptr ); } ),
+                           "A geostatic stress state is not an interface initial condition." );
+
+  const int                     nDofs = element.getNDofPerElement();
+  std::vector< double >         P( nDofs, 0.0 );
+  std::vector< double >         K( nDofs * nDofs, 0.0 );
+  const std::array< double, 3 > load = { 0., 0., 0. };
+
+  throwExceptionOnFailure( throwsInvalidArgument( [&] {
+                             element.computeDistributedLoad( MarmotElement::Pressure,
+                                                             P.data(),
+                                                             K.data(),
+                                                             1,
+                                                             load.data(),
+                                                             P.data(),
+                                                             0.0,
+                                                             1.0 );
+                           } ),
+                           "Distributed loads are not implemented for interface elements." );
+  throwExceptionOnFailure( throwsInvalidArgument(
+                             [&] { element.computeBodyForce( P.data(), K.data(), load.data(), P.data(), 0.0, 1.0 ); } ),
+                           "Body forces are not implemented for interface elements." );
+
+  const auto throwsRuntimeError = []( const std::function< void() >& call ) {
+    try {
+      call();
+    }
+    catch ( const std::runtime_error& ) {
+      return true;
+    }
+    return false;
+  };
+  throwExceptionOnFailure( throwsRuntimeError( [&] { element.computeConsistentInertia( K.data() ); } ),
+                           "Consistent inertia is not implemented for interface elements." );
+  throwExceptionOnFailure( throwsRuntimeError( [&] { element.computeLumpedInertia( P.data() ); } ),
+                           "Lumped inertia is not implemented for interface elements." );
+}
+
+void TestUnsupportedInitialConditionsAndLoadsThrow()
+{
+  std::cout << "\n--- TestUnsupportedInitialConditionsAndLoadsThrow ---\n";
+
+  auto element3D = makeSingleInputFileInterfaceElement();
+  auto element2D = makeTwoDimensionalInterfaceElement();
+  checkUnsupportedOperationsThrow( *element3D );
+  checkUnsupportedOperationsThrow( *element2D );
+}
+
+template < int nDim, int nNodes >
+void checkMaterialAssignmentThroughSection( const std::array< double, nDim * nNodes >& coordinates )
+{
+  auto element = std::make_unique<
+    InterfaceFiniteElement< nDim, nNodes > >( 7, FiniteElement::Quadrature::IntegrationTypes::FullIntegration );
+  element->assignNodeCoordinates( coordinates.data() );
+
+  throwExceptionOnFailure( element->getNumberOfRequiredStateVars() > 0,
+                           "The state-variable count must be available before a material is assigned." );
+
+  const std::array< double, 8 > properties = { 4000.0, 0.30, 0.01, 1.06e-3, 0.334, 12, 1.0e-2, 1 };
+  const MarmotMaterialSection   section( "LINEARVISCOELASTICPOWERLAW", properties.data(), properties.size() );
+  element->assignProperty( section );
+
+  throwExceptionOnFailure( element->material != nullptr, "A material section must create the interface material." );
+
+  // the material's state variables are part of the element's requirement once it is assigned
+  const int nWithMaterial = element->getNumberOfRequiredStateVars();
+  element->assignMaterial( "LINEARELASTIC", properties.data(), 3 );
+  throwExceptionOnFailure( nWithMaterial > element->getNumberOfRequiredStateVars(),
+                           "A material with internal variables must enlarge the element state vector." );
+}
+
+void TestMaterialAssignmentThroughSection()
+{
+  std::cout << "\n--- TestMaterialAssignmentThroughSection ---\n";
+
+  checkMaterialAssignmentThroughSection< 3, 8 >( { -0.5, -0.5, 0.0, 0.5, -0.5, 0.0, 0.5, 0.5, 0.0, -0.5, 0.5, 0.0,
+                                                   -0.5, -0.5, 0.1, 0.5, -0.5, 0.1, 0.5, 0.5, 0.1, -0.5, 0.5, 0.1 } );
+  checkMaterialAssignmentThroughSection< 2, 4 >( { 0.0, 0.0, 1.0, 0.0, 0.0, 0.1, 1.0, 0.1 } );
+}
+
+void TestCoordinateGetters()
+{
+  std::cout << "\n--- TestCoordinateGetters ---\n";
+
+  {
+    // 3D: the reference side is the quadrilateral z = +-0.088163 over [-0.5, 0.5]^2, symmetric about the origin
+    auto element = makeSingleInputFileInterfaceElement();
+    element->initializeYourself(); // the quadrature-point geometry is evaluated here
+
+    const auto center = element->getCoordinatesAtCenter();
+    throwExceptionOnFailure( center.size() == 3 && std::abs( center[0] ) < 1e-12 && std::abs( center[1] ) < 1e-12 &&
+                               std::abs( center[2] ) < 1e-12,
+                             "Center of the symmetric 3D interface must be the origin." );
+
+    const auto qpCoordinates = element->getCoordinatesAtQuadraturePoints();
+    throwExceptionOnFailure( qpCoordinates.size() == element->qps.size(),
+                             "One coordinate triple per quadrature point expected." );
+    for ( const auto& coordinates : qpCoordinates )
+      // 2 x 2 Gauss points of [-0.5, 0.5]^2 sit at +-0.5 / sqrt( 3 )
+      throwExceptionOnFailure( coordinates.size() == 3 &&
+                                 std::abs( std::abs( coordinates[0] ) - 0.5 / std::sqrt( 3. ) ) < 1e-12 &&
+                                 std::abs( std::abs( coordinates[1] ) - 0.5 / std::sqrt( 3. ) ) < 1e-12,
+                               "Quadrature points must be the 2 x 2 Gauss points of the interface surface." );
+  }
+
+  {
+    // 2D: the reference side is the segment from (0, 0) to (1, 0)
+    auto element = makeTwoDimensionalInterfaceElement();
+    element->initializeYourself();
+
+    const auto center = element->getCoordinatesAtCenter();
+    throwExceptionOnFailure( center.size() == 2 && std::abs( center[0] - 0.5 ) < 1e-12 && std::abs( center[1] ) < 1e-12,
+                             "Center of the 2D interface must be the segment midpoint." );
+
+    const auto qpCoordinates = element->getCoordinatesAtQuadraturePoints();
+    throwExceptionOnFailure( qpCoordinates.size() == element->qps.size(),
+                             "One coordinate pair per quadrature point expected." );
+    const double gauss = 0.5 / std::sqrt( 3. );
+    for ( const auto& coordinates : qpCoordinates )
+      // 2 Gauss points of the segment [0, 1]
+      throwExceptionOnFailure( coordinates.size() == 2 &&
+                                 ( std::abs( coordinates[0] - ( 0.5 - gauss ) ) < 1e-12 ||
+                                   std::abs( coordinates[0] - ( 0.5 + gauss ) ) < 1e-12 ) &&
+                                 std::abs( coordinates[1] ) < 1e-12,
+                               "Quadrature points must be the Gauss points of the interface segment." );
+  }
+}
+
+void TestFactoryCreatesRegisteredInterfaceElements()
+{
+  std::cout << "\n--- TestFactoryCreatesRegisteredInterfaceElements ---\n";
+
+  const std::pair< std::string, std::string > registered[] = { { "IQUAD4", "hexa8" }, { "ILINE2", "bar2" } };
+  for ( const auto& [name, shape] : registered ) {
+    std::unique_ptr< MarmotElement > element( MarmotLibrary::MarmotElementFactory::createElement( name, 1 ) );
+    throwExceptionOnFailure( element != nullptr, name + " is not registered with the element factory." );
+    throwExceptionOnFailure( element->getElementShape() == shape,
+                             name + " reports the wrong result-file shape: " + element->getElementShape() );
+  }
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{ TestMaterialInitializationResetsMaterialState,
@@ -1043,7 +1274,13 @@ int main()
                                                        TestTwoDimensionalInterfaceElementComputesWithEmbeddedMaterial,
                                                        TestAngledInterfaceKinematics,
                                                        TestSharedMaterialSeesEachQuadraturePointCharacteristicLength,
-                                                       TestElementShapeKeywordsAreEnSightNames };
+                                                       TestElementShapeKeywordsAreEnSightNames,
+                                                       TestElementDescriptorsAndFields,
+                                                       TestStateViewAccess,
+                                                       TestUnsupportedInitialConditionsAndLoadsThrow,
+                                                       TestMaterialAssignmentThroughSection,
+                                                       TestCoordinateGetters,
+                                                       TestFactoryCreatesRegisteredInterfaceElements };
 
   executeTestsAndCollectExceptions( tests );
 
