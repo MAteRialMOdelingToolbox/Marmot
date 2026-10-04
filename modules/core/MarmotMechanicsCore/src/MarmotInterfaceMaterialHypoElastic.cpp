@@ -9,12 +9,25 @@
 #include "Fastor/Fastor.h"
 #include <Eigen/Dense>
 
+#include <algorithm>
 #include <stdexcept>
 #include <string>
 
 using namespace Marmot;
 using namespace Marmot::FastorIndices;
 using namespace Marmot::FastorStandardTensors;
+
+namespace {
+  // The TensorMaps handed to computeStress view memory owned by the caller, which is not necessarily
+  // aligned to the SIMD width. Assigning to a TensorMap can use aligned vector stores (Fastor 0.6.4) and
+  // crashes on such memory, so results are copied out as plain doubles.
+  template < typename MapType, typename TensorType >
+  void storeInto( MapType& destination, const TensorType& source )
+  {
+    static_assert( MapType::size() == TensorType::size(), "size mismatch between map and tensor" );
+    std::copy_n( source.data(), TensorType::size(), destination.data() );
+  }
+} // namespace
 
 MarmotInterfaceMaterialHypoElastic::MarmotInterfaceMaterialHypoElastic( const std::string& materialName,
                                                                         const double*      matProperties_,
@@ -102,16 +115,17 @@ void MarmotInterfaceMaterialHypoElastic::computeStress( State&               sta
   baseMaterial->computeStress( baseState, tangent, strainIncrementVoigt, timeInfo );
 
   auto [Z, Q, H, Y] = calculateInterfaceMaterialParameters( normal, tangent );
-  Q_ij              = ( 1. / h ) * Q;
-  Z_ijkl            = h * Z;
-  H_ijk             = H;
-  Y_ijkl            = h * Y;
+  storeInto( Q_ij, Tensor33d( ( 1. / h ) * Q ) );
+  storeInto( Z_ijkl, Tensor3333d( h * Z ) );
+  storeInto( H_ijk, H );
+  storeInto( Y_ijkl, Tensor3333d( h * Y ) );
 
   const Eigen::Matrix< double, 3, 3, Eigen::RowMajor > scaledStress = h *
                                                                       ContinuumMechanics::VoigtNotation::voigtToStress(
                                                                         baseState.stress );
-  surfaceStress = Tensor33d( scaledStress.data() );
-  force         = ( 1. / h ) * Fastor::einsum< ij, j, to_i >( surfaceStress, normal );
+  const Tensor33d newSurfaceStress( scaledStress.data() );
+  storeInto( surfaceStress, newSurfaceStress );
+  storeInto( force, Tensor3d( ( 1. / h ) * Fastor::einsum< ij, j, to_i >( newSurfaceStress, normal ) ) );
 }
 
 void MarmotInterfaceMaterialHypoElastic::initializeYourself( double* stateVars, int )
