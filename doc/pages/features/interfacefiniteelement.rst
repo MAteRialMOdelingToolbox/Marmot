@@ -54,9 +54,6 @@ surface metric), :math:`w` the quadrature weight, and :math:`\sum_{qp}` the sum 
 The sign convention is :math:`\mathbf{K}_e = +\partial \mathbf{P}_e / \partial \mathbf{q}`. The element has
 no inertia terms.
 
-The characteristic length passed to the material for regularization of softening laws is
-:math:`\sqrt{J_0}` in 3D and :math:`J_0` in 2D.
-
 Elements
 --------
 
