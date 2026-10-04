@@ -112,55 +112,39 @@ message("--> found Eigen ${Eigen3_VERSION}")
 # Configure with -DBUILD_TESTING=OFF to skip the test executables, e.g. for install-only builds.
 include(CTest)
 
-# Custom function to add a test executable.
-# Tests link Marmot's object files directly, not the shared library: they also exercise Marmot's internals, which
-# the library does not export on Windows (or with MARMOT_EXPORT_API_ONLY), see MARMOT_API in MarmotPortability.h.
-# The same on every platform, so that the tests are built alike everywhere. Whether a consumer can link the shared
-# library is checked by the one test that does, tests/consumer.
-# Include directories are propagated transitively from the object library (PUBLIC includes), so no explicit
-# target_include_directories call is needed here.
-function(add_marmot_test test_name test_source)
-  add_executable(${test_name} ${test_source})
-  target_link_libraries(${test_name} PRIVATE ${PROJECT_NAME}Objects)
-  add_test(NAME ${test_name} COMMAND ${test_name} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
-  # Many Marmot classes are templates (<int nDim, int nNodes>) that get implicitly
-  # re-instantiated inside each test's own translation unit. An uninstrumented test
-  # binary's own copy of such a template method wins symbol resolution over the
-  # library's instrumented copy, so gcov never sees it. Instrumenting the tests too
-  # (MARMOT_ENABLE_COVERAGE, set further down before this function is ever called)
-  # avoids that blind spot.
-  if(MARMOT_ENABLE_COVERAGE)
-    target_compile_options(${test_name} PRIVATE --coverage -O0)
-    target_link_options(${test_name} PRIVATE --coverage)
-  endif()
-endfunction()
+# ── Options affecting the module objects ─────────────────────────────────────
 
-# marmot_module_requires: check that every listed dependency of <module_name> is among the discovered
-# INSTALLED_MODULES, so a module can skip itself instead of failing at compile or link time. Emits a warning
-# for each missing dependency and sets <result_var> to TRUE or FALSE in the calling scope.
-#
-# Usage (from a module.cmake):
-#   marmot_module_requires(_deps_ok MyModule MarmotMechanicsCore MarmotCosseratCore)
-#   if(_deps_ok)
-#     # register include directory and sources
-#   endif()
-function(marmot_module_requires result_var module_name)
-  set(_ok TRUE)
-  foreach(_dep IN LISTS ARGN)
-    if(NOT _dep IN_LIST INSTALLED_MODULES)
-      message(WARNING "Module ${module_name} will NOT be built: required module '${_dep}' is not enabled.")
-      set(_ok FALSE)
+# The library exports only what is marked MARMOT_API (see MarmotPortability.h), as a Windows DLL always does; on
+# other platforms only with MARMOT_EXPORT_API_ONLY, to check the exported API without a Windows build.
+option(MARMOT_EXPORT_API_ONLY "Export only the MARMOT_API-marked API from libMarmot, as on Windows" OFF)
+
+# Opt-in: instruments the Marmot library with gcov. Test executables are instrumented
+# too (see add_marmot_test) because templated classes get re-instantiated per
+# translation unit, and an uninstrumented test binary's own copy of a template method
+# otherwise wins symbol resolution over the library's instrumented one, hiding it from
+# coverage entirely. Flags are kept PRIVATE: PUBLIC link options would be exported into
+# MarmotTargets.cmake, silently forcing --coverage onto any downstream consumer that
+# links Marmot::Marmot from a coverage-enabled install.
+option(MARMOT_ENABLE_COVERAGE "Instrument libMarmot and its tests with gcov code coverage (GCC/Clang only)" OFF)
+
+if(MARMOT_ENABLE_COVERAGE)
+    if(NOT CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+        message(FATAL_ERROR "MARMOT_ENABLE_COVERAGE requires GCC or Clang")
     endif()
-  endforeach()
-  set(${result_var} ${_ok} PARENT_SCOPE)
-endfunction()
+    if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+        message(WARNING "MARMOT_ENABLE_COVERAGE is intended to be used with -DCMAKE_BUILD_TYPE=Debug for accurate line coverage")
+    endif()
+    message(STATUS "Instrumenting ${PROJECT_NAME} for code coverage (--coverage)")
+endif()
+
+include(cmake/MarmotModules.cmake)
 
 set(MODULES_DIR ${CMAKE_SOURCE_DIR}/modules)
-set(SHARED_LIBRARIES "")
 
-# Accumulated lists populated by module.cmake files
+# Accumulated by module.cmake files of the older style (see cmake/MarmotModules.cmake)
 set(sources "")
 set(INSTALLED_MODULE_INCLUDE_DIRS "")
+set(SHARED_LIBRARIES "")
 
 # ── Module discovery helpers ──────────────────────────────────────────────────
 
@@ -202,6 +186,9 @@ macro(register_module_category category_path filter_var category_label)
         if("${${filter_var}}" STREQUAL "all" OR ${_rmc_dir} IN_LIST ${filter_var})
           message("--> found ${_rmc_dir}")
           list(APPEND INSTALLED_MODULES "${_rmc_dir}")
+          if(NOT "${${filter_var}}" STREQUAL "all")
+            list(APPEND MARMOT_EXPLICIT_MODULES "${_rmc_dir}")
+          endif()
           list(APPEND INSTALLED_MODULEPATHS "${_rmc_modulepath}")
         endif()
       endif()
@@ -216,6 +203,7 @@ endmacro()
 
 set(INSTALLED_MODULES "")
 set(INSTALLED_MODULEPATHS "")
+set(MARMOT_EXPLICIT_MODULES "")
 
 register_module_category("${MODULES_DIR}/core"           CORE_MODULES          "Core")
 register_module_category("${MODULES_DIR}/materials"      MATERIAL_MODULES      "Material")
@@ -230,45 +218,50 @@ message("Check the list above: if a module is missing despite being in the corre
 message("directory, verify that it has a proper module.cmake file.")
 message("+------------------------------------------------------------------------------+")
 
-# Include all discovered module.cmake files.
-# Each file appends to: sources, INSTALLED_MODULE_INCLUDE_DIRS.
-# Older module.cmake files call include_directories() instead; their directories are picked up below.
+# Read all discovered module.cmake files. A module.cmake declaring its module with marmot_add_module() only records
+# it; one that doesn't is of the older style and appends to `sources` and the include directories directly.
+set(_legacy_modules "")
+set(_legacy_modulepaths "")
 foreach(MODULEPATH IN LISTS INSTALLED_MODULEPATHS)
+    get_property(_declared_before GLOBAL PROPERTY MARMOT_DECLARED_MODULES)
     include("${MODULEPATH}/module.cmake")
+    get_property(_declared_after GLOBAL PROPERTY MARMOT_DECLARED_MODULES)
+    if("${_declared_before}" STREQUAL "${_declared_after}")
+        get_filename_component(_module "${MODULEPATH}" NAME)
+        list(APPEND _legacy_modules "${_module}")
+        list(APPEND _legacy_modulepaths "${MODULEPATH}")
+    endif()
 endforeach()
 
-# Module include directories registered through include_directories() by older module.cmake files.
-get_directory_property(_legacy_include_dirs INCLUDE_DIRECTORIES)
-foreach(_inc_dir IN LISTS _legacy_include_dirs)
+# Include directories registered through include_directories() by older module.cmake files.
+get_directory_property(_directory_include_dirs INCLUDE_DIRECTORIES)
+foreach(_inc_dir IN LISTS _directory_include_dirs)
     if(_inc_dir MATCHES "^${MODULES_DIR}/")
         list(APPEND INSTALLED_MODULE_INCLUDE_DIRS "${_inc_dir}")
     endif()
 endforeach()
 list(REMOVE_DUPLICATES INSTALLED_MODULE_INCLUDE_DIRS)
 
+# Resolve the dependencies and create one target Marmot_<Name> per module.
+marmot_build_modules("${_legacy_modules}" "${sources}" "${INSTALLED_MODULE_INCLUDE_DIRS}" "${MARMOT_EXPLICIT_MODULES}")
+target_link_libraries(MarmotModuleSettings INTERFACE ${SHARED_LIBRARIES})
+
 message("+------------------------------------------------------------------------------+")
+message(STATUS "Building modules: ${MARMOT_BUILT_MODULES} ${_legacy_modules}")
 message(STATUS "CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
 
 # ── Build the shared library ──────────────────────────────────────────────────
 
-# The sources are compiled once, into an object library, from which both the shared library and the tests are
-# linked (see add_marmot_test).
-add_library(${PROJECT_NAME}Objects OBJECT ${sources})
-add_library(${PROJECT_NAME} SHARED $<TARGET_OBJECTS:${PROJECT_NAME}Objects>)
+# All module objects, compiled once, from which both the shared library and the tests are linked.
+set(MARMOT_MODULE_OBJECTS "")
+foreach(_target IN LISTS MARMOT_MODULE_TARGETS)
+    get_target_property(_type ${_target} TYPE)
+    if(_type STREQUAL "OBJECT_LIBRARY")
+        list(APPEND MARMOT_MODULE_OBJECTS $<TARGET_OBJECTS:${_target}>)
+    endif()
+endforeach()
 
-# The library exports only what is marked MARMOT_API (see MarmotPortability.h), as a Windows DLL always does; on
-# other platforms only with MARMOT_EXPORT_API_ONLY, to check the exported API without a Windows build.
-# PUBLIC: the tests linking the objects (see add_marmot_test) must compile with the same, exporting definition of
-# MARMOT_API as the objects they link, or MSVC imports locally defined symbols through thunks (LNK4217/LNK4286).
-# The shared library is assembled from the objects, not linked to this target, so consumers never see the definition.
-target_compile_definitions(${PROJECT_NAME}Objects PUBLIC MARMOT_BUILDING_LIBRARY)
-option(MARMOT_EXPORT_API_ONLY "Export only the MARMOT_API-marked API from libMarmot, as on Windows" OFF)
-if(MARMOT_EXPORT_API_ONLY)
-    set_target_properties(${PROJECT_NAME}Objects PROPERTIES
-        CXX_VISIBILITY_PRESET     hidden
-        VISIBILITY_INLINES_HIDDEN ON
-    )
-endif()
+add_library(${PROJECT_NAME} SHARED ${MARMOT_MODULE_OBJECTS})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
     VERSION   ${PROJECT_VERSION}
@@ -276,63 +269,80 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 )
 
 # Include-directory strategy:
-#   BUILD_INTERFACE  – source-tree paths used when building Marmot and its tests.
+#   BUILD_INTERFACE  – source-tree paths, for targets of this build linking ${PROJECT_NAME} (e.g. the bindings).
 #   INSTALL_INTERFACE – the single installed include root used by find_package consumers.
-# Making these PUBLIC means consumers linking ${PROJECT_NAME}, and the tests linking ${PROJECT_NAME}Objects,
-# receive the include paths transitively without any explicit target_include_directories call.
-foreach(_target IN ITEMS ${PROJECT_NAME} ${PROJECT_NAME}Objects)
-    target_include_directories(${_target}
-        PUBLIC
-            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-    )
-    foreach(_inc_dir IN LISTS INSTALLED_MODULE_INCLUDE_DIRS)
-        target_include_directories(${_target}
-            PUBLIC $<BUILD_INTERFACE:${_inc_dir}>)
-    endforeach()
-
-    # PUBLIC: Marmot's headers include Eigen, autodiff and Fastor, so consumers need them too
-    # (MarmotConfig.cmake recreates these targets on the consumer side).
-    target_link_libraries(${_target} PUBLIC Eigen3::Eigen autodiff::autodiff Fastor::Fastor)
+# The shared library does not link the module targets: MARMOT_BUILDING_LIBRARY and the coverage flags stay
+# private to the module objects.
+target_include_directories(${PROJECT_NAME} PUBLIC $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+foreach(_inc_dir IN LISTS MARMOT_INCLUDE_DIRS)
+    target_include_directories(${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${_inc_dir}>)
 endforeach()
 
-if(SHARED_LIBRARIES)
-    message("+------------------------------------------------------------------------------+")
-    message("Marmot modules have requested to link against following shared libraries:")
-    foreach(SHARED_LIBRARY IN LISTS SHARED_LIBRARIES)
-        message("--> ${SHARED_LIBRARY}")
-        target_link_libraries(${PROJECT_NAME} PRIVATE "${SHARED_LIBRARY}")
-        # PUBLIC, so that the tests linking the objects get them too.
-        target_link_libraries(${PROJECT_NAME}Objects PUBLIC "${SHARED_LIBRARY}")
-    endforeach()
-    message("+------------------------------------------------------------------------------+")
-endif()
-
-# ── Code coverage ──────────────────────────────────────────────────────────────
-
-# Opt-in: instruments the Marmot library with gcov. Test executables are instrumented
-# too (see add_marmot_test below) because templated classes get re-instantiated per
-# translation unit, and an uninstrumented test binary's own copy of a template method
-# otherwise wins symbol resolution over the library's instrumented one, hiding it from
-# coverage entirely. Flags are kept PRIVATE: PUBLIC link options would be exported into
-# MarmotTargets.cmake, silently forcing --coverage onto any downstream consumer that
-# links Marmot::Marmot from a coverage-enabled install.
-option(MARMOT_ENABLE_COVERAGE "Instrument libMarmot and its tests with gcov code coverage (GCC/Clang only)" OFF)
+# PUBLIC: Marmot's headers include Eigen, autodiff and Fastor, so consumers need them too
+# (MarmotConfig.cmake recreates these targets on the consumer side).
+target_link_libraries(${PROJECT_NAME} PUBLIC Eigen3::Eigen autodiff::autodiff Fastor::Fastor)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${MARMOT_MODULE_LINK_LIBRARIES} ${SHARED_LIBRARIES})
 
 if(MARMOT_ENABLE_COVERAGE)
-    if(NOT CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-        message(FATAL_ERROR "MARMOT_ENABLE_COVERAGE requires GCC or Clang")
-    endif()
-    if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
-        message(WARNING "MARMOT_ENABLE_COVERAGE is intended to be used with -DCMAKE_BUILD_TYPE=Debug for accurate line coverage")
-    endif()
-    message(STATUS "Instrumenting ${PROJECT_NAME} for code coverage (--coverage)")
-    target_compile_options(${PROJECT_NAME}Objects PRIVATE --coverage -O0)
     target_link_options(${PROJECT_NAME} PRIVATE --coverage)
 endif()
 
+# ── Tests ─────────────────────────────────────────────────────────────────────
+
+# Custom function to add a test executable.
+# Tests link Marmot's object files directly, not the shared library: they also exercise Marmot's internals, which
+# the library does not export on Windows (or with MARMOT_EXPORT_API_ONLY), see MARMOT_API in MarmotPortability.h.
+# The same on every platform, so that the tests are built alike everywhere. Whether a consumer can link the shared
+# library is checked by the one test that does, tests/consumer.
+# Many Marmot classes are templates (<int nDim, int nNodes>) that get implicitly re-instantiated inside each test's
+# own translation unit; with MARMOT_ENABLE_COVERAGE the tests are instrumented too (through MarmotModuleSettings),
+# as otherwise an uninstrumented test binary's own copy of such a template method wins symbol resolution over the
+# library's instrumented copy, so gcov never sees it.
+# A test sees the headers of its own module (and the modules that one requires); a test including headers of further
+# modules lists them, and is skipped if one is not built:
+#   add_marmot_test(<name> <source> [REQUIRES <module>...])
+function(add_marmot_test test_name test_source)
+  cmake_parse_arguments(PARSE_ARGV 2 _arg "" "" "REQUIRES")
+  foreach(_module IN LISTS _arg_REQUIRES)
+    if(NOT _module IN_LIST MARMOT_BUILT_MODULES AND NOT _module IN_LIST _legacy_modules)
+      message(STATUS "Test ${test_name} skipped: it requires module ${_module}, which is not built")
+      return()
+    endif()
+  endforeach()
+  set(_usage "")
+  foreach(_module IN ITEMS ${MARMOT_CURRENT_MODULE} ${_arg_REQUIRES})
+    if(_module IN_LIST _legacy_modules)
+      list(APPEND _usage Marmot_legacy)
+    else()
+      list(APPEND _usage Marmot_${_module})
+    endif()
+  endforeach()
+  # Linking a module target directly links its objects; the objects of all other modules are added explicitly.
+  set(_objects "")
+  foreach(_target IN LISTS MARMOT_MODULE_TARGETS)
+    get_target_property(_type ${_target} TYPE)
+    if(_type STREQUAL "OBJECT_LIBRARY" AND NOT _target IN_LIST _usage)
+      list(APPEND _objects $<TARGET_OBJECTS:${_target}>)
+    endif()
+  endforeach()
+  add_executable(${test_name} ${test_source} ${_objects})
+  # the objects of all modules are linked, so their libraries are needed too
+  target_link_libraries(${test_name} PRIVATE ${_usage} ${MARMOT_MODULE_LINK_LIBRARIES} ${SHARED_LIBRARIES})
+  add_test(NAME ${test_name} COMMAND ${test_name} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+  if(MARMOT_ENABLE_COVERAGE)
+    target_link_options(${test_name} PRIVATE --coverage)
+  endif()
+endfunction()
+
 if(BUILD_TESTING)
-    # Include test definitions for all installed modules
-    foreach(MODULEPATH IN LISTS INSTALLED_MODULEPATHS)
+    # Include the test definitions of the built modules only.
+    set(_built_modulepaths "${_legacy_modulepaths}")
+    foreach(_module IN LISTS MARMOT_BUILT_MODULES)
+        get_property(_dir GLOBAL PROPERTY MARMOT_MODULE_${_module}_DIR)
+        list(APPEND _built_modulepaths "${_dir}")
+    endforeach()
+    foreach(MODULEPATH IN LISTS _built_modulepaths)
+        get_filename_component(MARMOT_CURRENT_MODULE "${MODULEPATH}" NAME)
         if(EXISTS "${MODULEPATH}/test.cmake")
             include("${MODULEPATH}/test.cmake")
         endif()
@@ -340,7 +350,7 @@ if(BUILD_TESTING)
 
     # The consumer test, linking the shared library only (see tests/consumer/CMakeLists.txt). It creates a CPS4
     # element with a LINEARELASTIC material through the factories, so it needs both modules.
-    if("DisplacementFiniteElement" IN_LIST INSTALLED_MODULES AND "LinearElastic" IN_LIST INSTALLED_MODULES)
+    if("DisplacementFiniteElement" IN_LIST MARMOT_BUILT_MODULES AND "LinearElastic" IN_LIST MARMOT_BUILT_MODULES)
         add_subdirectory(tests/consumer)
     else()
         message(STATUS "tests/consumer skipped: it requires the DisplacementFiniteElement and LinearElastic modules")
@@ -377,7 +387,7 @@ install(TARGETS ${PROJECT_NAME}
 
 # Install the include tree of every built module wholesale. Headers are laid out as
 # <module>/include/Marmot/<Header>.h, so they all land in <prefix>/include/Marmot/.
-foreach(_inc_dir IN LISTS INSTALLED_MODULE_INCLUDE_DIRS)
+foreach(_inc_dir IN LISTS MARMOT_INCLUDE_DIRS)
     install(DIRECTORY "${_inc_dir}/"
         DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
         FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"

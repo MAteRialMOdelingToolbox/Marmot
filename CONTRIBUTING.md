@@ -166,6 +166,8 @@ If you are adding tests, please:
    # modules/my-specific-module/test.cmake
    add_marmot_test("TestMarmotMyNewFeature" "${CURR_TEST_SOURCE_DIR}/TestMarmotMyNewFeature.cpp")
    ```
+   If the test includes headers of modules beyond those its module requires, list them with
+   `REQUIRES <module>...`; the test is then skipped when one of them is not built.
 5. Ensure tests are **deterministic** and run quickly.
 6. Verify with:
    ```bash

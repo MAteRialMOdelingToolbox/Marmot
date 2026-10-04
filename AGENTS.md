@@ -8,7 +8,7 @@ Marmot is a high-performance C++20 shared library (`libMarmot`) providing finite
 
 Optional Python bindings (`modules/python`, built with [nanobind](https://github.com/wjakob/nanobind)) expose material point solvers (`marmot.solvers.HypoElasticSolver`, `marmot.solvers.FiniteStrainSolver`) for quick material testing and prototyping — see `doc/pages/python_bindings.md`.
 
-Dependencies (discovered via top-level `CMakeLists.txt`): Eigen (`find_package(Eigen3 3.3 REQUIRED)`), autodiff and Fastor (located via `find_path()`, no version enforced — CI pins autodiff v1.1.0 and Fastor V0.6.4).
+Dependencies (located by `cmake/MarmotDependencies.cmake` as imported targets): Eigen (>= 3.3, incl. Eigen 5), autodiff and Fastor (CMake package, or a plain header search; no version enforced — CI pins autodiff v1.1.0 and Fastor V0.6.4).
 
 ## Build & Test
 
@@ -64,7 +64,7 @@ CI runs the same instrumentation on every push/PR (`.github/workflows/coverage.y
 
 ### Module System & Category Scanning Order
 
-Categories are auto-discovered in strict dependency order (modules only depend on earlier categories):
+Every `modules/<category>/<Name>/` with a `module.cmake` is auto-discovered (filters: `CORE_MODULES`, `MATERIAL_MODULES`, ... default `all`). Categories:
 1. `core` — shared utilities (`MarmotMathCore`, `MarmotMechanicsCore`, `MarmotFiniteElementCore`, `MarmotUtilitiesCore`)
 2. `materials` — constitutive models (`MarmotMaterialHypoElastic`, `MarmotMaterialFiniteStrain`, `MarmotMaterialGeneralGradientEnhancedHypoElastic`)
 3. `elements` — formulations (`MarmotElement`, `MarmotGeometryElement<nDim, nNodes>`)
@@ -72,16 +72,21 @@ Categories are auto-discovered in strict dependency order (modules only depend o
 
 `modules/python` is *not* a category in this scan — it is a single, standalone nanobind extension (`modules/python/CMakeLists.txt`) added via `add_subdirectory` only when `MARMOT_BUILD_PYTHON_BINDINGS=ON`, wrapping the material point solvers on top of `libMarmot`. New materials/elements are registered through the C++ factories above; they do not need bindings added by hand.
 
-Standard `module.cmake`:
+Standard `module.cmake` (name = directory name; sources default to `src/*.cpp`):
 ```cmake
-list(APPEND INSTALLED_MODULE_INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/include")
-file(GLOB module_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_LIST_DIR}/src/*.cpp")
-list(APPEND sources ${module_sources})
+marmot_add_module(MyMaterial
+    REQUIRES MarmotFiniteStrainMechanicsCore)
 ```
-Standard `test.cmake`:
+`REQUIRES` lists every module whose headers the module includes (transitive ones may be omitted). Each module is an
+OBJECT library `Marmot_<Name>` that sees only its own and its required modules' headers, so an undeclared dependency
+is a compile error; a module with a missing requirement is skipped (or fails configuring if explicitly requested in a
+filter); all objects are assembled into the one `libMarmot`. Details: `cmake/MarmotModules.cmake`.
+
+Standard `test.cmake` (`REQUIRES` only for headers of modules beyond the module's own dependencies; the test is
+skipped if one is not built):
 ```cmake
 SET(CURR_TEST_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/test")
-add_marmot_test("TestMyModule" "${CURR_TEST_SOURCE_DIR}/test.cpp")
+add_marmot_test("TestMyModule" "${CURR_TEST_SOURCE_DIR}/test.cpp" [REQUIRES OtherModule])
 ```
 
 ### Self-Registering Factory Pattern

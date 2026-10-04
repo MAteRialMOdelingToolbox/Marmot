@@ -130,6 +130,27 @@ The following CMake options adjust the build:
 * ``-DMARMOT_ENABLE_COVERAGE=ON`` instruments the library and the tests for ``gcov`` (with ``-DCMAKE_BUILD_TYPE=Debug``).
 * ``-DMARMOT_BUILD_PYTHON_BINDINGS=ON`` builds the Python bindings.
 
+Modules
+*******
+
+Marmot consists of modules, one directory ``modules/<category>/<Name>/`` each, with the categories
+``core``, ``materials``, ``elements``, ``particles``, ``materialpoints``, ``cells`` and ``cellelements``.
+Every such directory containing a ``module.cmake`` is found automatically; a module of your own is added by placing
+its directory there. The variables ``CORE_MODULES``, ``MATERIAL_MODULES``, ``ELEMENT_MODULES``, ``PARTICLE_MODULES``,
+``MATERIALPOINT_MODULES``, ``CELL_MODULES`` and ``CELLELEMENT_MODULES`` (default ``all``) select a subset, e.g.,
+``-DMATERIAL_MODULES="LinearElastic;VonMises"``.
+
+A ``module.cmake`` declares the module and the modules whose headers it includes:
+
+.. code-block:: cmake
+
+    marmot_add_module(MyMaterial
+        REQUIRES MarmotFiniteStrainMechanicsCore)
+
+A module whose required module is not built is skipped with a warning; if it was selected explicitly, configuring
+fails. A module sees only the headers of the modules it requires, so a missing ``REQUIRES`` shows as a compile error.
+All modules are compiled into the one library ``libMarmot``.
+
 Installing copies the headers of every built module to ``<prefix>/include/Marmot``.
 Other CMake projects use the installed library through ``find_package``:
 

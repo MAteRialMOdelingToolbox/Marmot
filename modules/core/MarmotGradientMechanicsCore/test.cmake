@@ -2,13 +2,13 @@
 SET(CURR_TEST_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/test")
 
 # Tests for MarmotPhaseFieldEnergyDegradation
-add_marmot_test("TestMarmotPhaseFieldEnergyDegradation" "${CURR_TEST_SOURCE_DIR}/TestMarmotPhaseFieldEnergyDegradation.cpp")
+add_marmot_test("TestMarmotPhaseFieldEnergyDegradation" "${CURR_TEST_SOURCE_DIR}/TestMarmotPhaseFieldEnergyDegradation.cpp" REQUIRES MarmotMechanicsCore)
 
 # Tests for MarmotDecreasingInteractions
-add_marmot_test("TestMarmotDecreasingInteractions" "${CURR_TEST_SOURCE_DIR}/TestMarmotDecreasingInteractions.cpp")
+add_marmot_test("TestMarmotDecreasingInteractions" "${CURR_TEST_SOURCE_DIR}/TestMarmotDecreasingInteractions.cpp" REQUIRES MarmotMechanicsCore)
 
 # Tests for MarmotMaterialGeneralGradientEnhancedHypoElastic
-add_marmot_test("TestMarmotMaterialGeneralGradientEnhancedHypoElastic" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialGeneralGradientEnhancedHypoElastic.cpp")
+add_marmot_test("TestMarmotMaterialGeneralGradientEnhancedHypoElastic" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialGeneralGradientEnhancedHypoElastic.cpp" REQUIRES MarmotMechanicsCore)
 
 # Tests for MarmotMaterialGeneralGradientEnhancedHypoElasticFactory
-add_marmot_test("TestMarmotMaterialGeneralGradientEnhancedHypoElasticFactory" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialGeneralGradientEnhancedHypoElasticFactory.cpp")
+add_marmot_test("TestMarmotMaterialGeneralGradientEnhancedHypoElasticFactory" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialGeneralGradientEnhancedHypoElasticFactory.cpp" REQUIRES MarmotMechanicsCore AT2PhaseField)
