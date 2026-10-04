@@ -25,7 +25,7 @@ Scan order: `core` -> `materials` -> `elements` -> `particles` -> `materialpoint
 
 ```
 modules/<category>/<ModuleName>/
-├── module.cmake                  # CMake includes & source GLOB
+├── module.cmake                  # marmot_add_module(<Name> REQUIRES ...)
 ├── test.cmake                    # ctest registration
 ├── include/Marmot/<Name>.h       # Public Doxygen header
 ├── src/<Name>.cpp                # Implementation
@@ -41,10 +41,12 @@ modules/<category>/<ModuleName>/
 2. **Reuse Core Utilities**: Do not re-implement math, kinematics, or shape functions in `modules/core/`.
 3. **Module CMake**:
    ```cmake
-   list(APPEND INSTALLED_MODULE_INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/include")
-   file(GLOB module_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_LIST_DIR}/src/*.cpp")
-   list(APPEND sources ${module_sources})
+   marmot_add_module(<ModuleName>
+       REQUIRES MarmotFiniteStrainMechanicsCore)
    ```
+   `REQUIRES` lists every module whose headers the module includes, except modules already required (directly or
+   transitively) by a listed module. The name must equal the directory name. An include of a module not
+   required (directly or transitively) fails to compile. See `cmake/MarmotModules.cmake`.
 4. **Registration**: Register with the appropriate factory in `src/<Name>Registration.cpp`.
 5. **Testing**: Follow [`marmot-create-test`](../marmot-create-test/SKILL.md) (analytical benchmark + `MarmotMathCore` tangent test).
 6. **Documentation**: Follow [`marmot-documentation`](../marmot-documentation/SKILL.md) (Doxygen + Sphinx `.rst`).

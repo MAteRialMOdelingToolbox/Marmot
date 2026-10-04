@@ -130,6 +130,30 @@ The following CMake options adjust the build:
 * ``-DMARMOT_ENABLE_COVERAGE=ON`` instruments the library and the tests for ``gcov`` (with ``-DCMAKE_BUILD_TYPE=Debug``).
 * ``-DMARMOT_BUILD_PYTHON_BINDINGS=ON`` builds the Python bindings.
 
+Modules
+*******
+
+Marmot consists of modules, one directory ``modules/<category>/<Name>/`` each, with the categories
+``core``, ``materials``, ``elements``, ``particles``, ``materialpoints``, ``cells`` and ``cellelements``.
+Every such directory containing a ``module.cmake`` is found automatically; a module of your own is added by placing
+its directory there. The variables ``CORE_MODULES``, ``MATERIAL_MODULES``, ``ELEMENT_MODULES``, ``PARTICLE_MODULES``,
+``MATERIALPOINT_MODULES``, ``CELL_MODULES`` and ``CELLELEMENT_MODULES`` (default ``all``) select a subset, e.g.,
+``-DMATERIAL_MODULES="LinearElastic;VonMises"``; a name matching no module, e.g., ``none``, selects none of that category.
+
+A ``module.cmake`` declares the module and, with ``REQUIRES``, the modules whose headers it includes, except modules
+already required by a listed one:
+
+.. code-block:: cmake
+
+    marmot_add_module(MyMaterial
+        REQUIRES MarmotFiniteStrainMechanicsCore)
+
+Without a filter, every module must be buildable: requiring a module that does not exist (e.g., a misspelled name, or
+a module whose repository is not checked out) fails configuring. With a filter, a module whose required module is
+filtered out or does not exist is skipped with a warning; if it was selected explicitly, configuring fails instead.
+A module sees only the headers of the modules it requires, so a missing ``REQUIRES`` shows as a compile error.
+All modules are compiled into the one library ``libMarmot``.
+
 Installing copies the headers of every built module to ``<prefix>/include/Marmot``.
 Other CMake projects use the installed library through ``find_package``:
 
