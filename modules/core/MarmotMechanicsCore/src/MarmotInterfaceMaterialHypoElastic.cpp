@@ -9,7 +9,7 @@
 #include "Fastor/Fastor.h"
 #include <Eigen/Dense>
 
-#include <algorithm>
+#include <cstring>
 #include <stdexcept>
 #include <string>
 
@@ -20,12 +20,13 @@ using namespace Marmot::FastorStandardTensors;
 namespace {
   // The TensorMaps handed to computeStress view memory owned by the caller, which is not necessarily
   // aligned to the SIMD width. Assigning to a TensorMap can use aligned vector stores (Fastor 0.6.4) and
-  // crashes on such memory, so results are copied out as plain doubles.
+  // crashes on such memory, so, like the state updates of the other materials, results are written
+  // through the raw pointer.
   template < typename MapType, typename TensorType >
   void storeInto( MapType& destination, const TensorType& source )
   {
     static_assert( MapType::size() == TensorType::size(), "size mismatch between map and tensor" );
-    std::copy_n( source.data(), TensorType::size(), destination.data() );
+    std::memcpy( destination.data(), source.data(), TensorType::size() * sizeof( double ) );
   }
 } // namespace
 
