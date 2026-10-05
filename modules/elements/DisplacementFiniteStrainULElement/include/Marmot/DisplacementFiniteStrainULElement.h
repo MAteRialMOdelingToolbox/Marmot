@@ -1060,9 +1060,17 @@ namespace Marmot::Elements {
        * reproduces the previous expressions exactly -- a cube of side h gives h either way --
        * so the estimate is tightened only where it was previously wrong.
        */
-      const JacobianSized J_                          = this->Jacobian( this->dNdXi( qp.xi ) );
-      const double        characteristicElementLength = 2.0 *
+      const JacobianSized J_ = this->Jacobian( this->dNdXi( qp.xi ) );
+      // GCC reports a spurious -Wmaybe-uninitialized from inside Eigen's small fixed-size JacobiSVD.
+#if defined( __GNUC__ ) && !defined( __clang__ )
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
+      const double characteristicElementLength = 2.0 *
                                                  Eigen::JacobiSVD< JacobianSized >( J_ ).singularValues().minCoeff();
+#if defined( __GNUC__ ) && !defined( __clang__ )
+#  pragma GCC diagnostic pop
+#endif
 
       using namespace Marmot::FastorIndices;
       const auto                         dNdX = Tensor< double, nDim, nNodes >( qp.dNdX.data(), ColumnMajor );
