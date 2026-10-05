@@ -30,6 +30,7 @@
 #include "Marmot/MarmotMeshfreeApproximation.h"
 #include "Marmot/MarmotMeshfreeKernelFunction.h"
 #include <Eigen/Core>
+#include <Eigen/QR>
 #include <cmath>
 #include <vector>
 
@@ -174,6 +175,22 @@ namespace Marmot::Meshfree {
      * @return The first unit vector of the given size.
      */
     static Eigen::VectorXd H0Vector( int sizeHVector );
+
+    /**
+     * @brief Factorize the moment matrix @f$ \boldsymbol{M}(\boldsymbol{x}) @f$ and check that it is regular.
+     * @details checkNonSingularity() only compares the number of covering kernels with the size of the basis, which
+     *          is necessary but not sufficient: for nodes in a degenerate arrangement (e.g. collinear nodes in 2D at
+     *          order 1), or for a point covered by no kernel at all, @f$ \boldsymbol{M} @f$ is singular, and solving
+     *          it would silently give shape functions without partition of unity.
+     * @param[in] M                 Moment matrix.
+     * @param[in] coord             Evaluation point (for the error message).
+     * @param[in] nCoveringKernels  Number of kernels covering the point (for the error message).
+     * @return The column-pivoting Householder QR factorization of @p M.
+     * @throws std::runtime_error if @p M is rank deficient.
+     */
+    Eigen::ColPivHouseholderQR< Eigen::MatrixXd > factorizeMomentMatrix( const Eigen::MatrixXd& M,
+                                                                         const double*          coord,
+                                                                         int nCoveringKernels ) const;
 
     /**
      * @brief Compute the factorial @f$ n! @f$ recursively.

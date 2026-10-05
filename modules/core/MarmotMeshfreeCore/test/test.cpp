@@ -1,10 +1,12 @@
 #include "Marmot/MarmotJournal.h"
+#include "Marmot/MarmotLagrangianCellGeometry.h"
 #include "Marmot/MarmotMPMLibrary.h"
 #include "Marmot/MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed.h"
 #include "Marmot/MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h"
 #include "Marmot/MarmotMeshfreeReproducingKernelApproximation.h"
 #include "Marmot/MarmotMeshfreeReproducingKernelApproximationImplicit.h"
 #include "Marmot/MarmotMonomialBasisFunctions.h"
+#include "Marmot/MarmotParticleDomain.h"
 #include "Marmot/MarmotParticleLibrary.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
@@ -51,6 +53,17 @@ namespace {
       if ( int( d ) != i )
         m *= std::pow( x[d], a[d] );
     return m;
+  }
+
+  bool throws( const std::function< void() >& f )
+  {
+    try {
+      f();
+    }
+    catch ( const std::exception& ) {
+      return true;
+    }
+    return false;
   }
 
   Eigen::VectorXd point( int dim, double offset )
@@ -309,6 +322,105 @@ void testCompletenessOrderIsReducedForFewNodes()
                            "two nodes in 1D still reproduce a linear field" );
 }
 
+// a singular moment matrix must throw instead of silently losing the partition of unity: three collinear nodes in 2D
+// pass the node count check of a linear basis, and a point outside all supports has no kernel at all
+void testSingularMomentMatrixThrows()
+{
+  using K                                                    = MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed;
+  std::vector< Eigen::VectorXd >                     centers = { Eigen::Vector2d( 0, 0 ),
+                                                                 Eigen::Vector2d( 1, 0 ),
+                                                                 Eigen::Vector2d( 2, 0 ) };
+  std::vector< std::unique_ptr< K > >                kernels;
+  std::vector< const MarmotMeshfreeKernelFunction* > pointers;
+  for ( auto& c : centers ) {
+    kernels.emplace_back( std::make_unique< K >( c.data(), 2, 1.6 ) );
+    pointers.push_back( kernels.back().get() );
+  }
+  const MarmotMeshfreeReproducingKernelApproximation         rk( 2, 1 );
+  const MarmotMeshfreeReproducingKernelApproximationImplicit irk( 2, 1 );
+
+  for ( const Eigen::Vector2d x : { Eigen::Vector2d( 1.1, 0.2 ), Eigen::Vector2d( 10, 10 ) } ) {
+    double N[3], dN[6];
+    throwExceptionOnFailure( throws( [&]() { rk.computeShapeFunctions( x.data(), pointers, N ); } ) &&
+                               throws( [&]() { rk.computeShapeFunctionsAndGradients( x.data(), pointers, N, dN ); } ) &&
+                               throws( [&]() { irk.computeShapeFunctionsAndGradients( x.data(), pointers, N, dN ); } ),
+                             MakeString() << "a singular moment matrix at " << x.transpose() << " must throw" );
+  }
+}
+
+// the inverse isoparametric map and the point location test of a distorted cell (Newton's method), and of a box cell
+template < int nDim, int nNodes >
+void checkLagrangianCellInverseMap( const std::vector< double >& nodes, bool box )
+{
+  using Geometry = MarmotLagrangianCellGeometry< nDim, nNodes >;
+  using Xi       = typename Geometry::XiSized;
+  const Geometry geometry( nodes.data() );
+  const auto     X = Eigen::Map< const Eigen::Matrix< double, nDim, nNodes > >( nodes.data() );
+
+  for ( const double a : { -0.9, -0.3, 0.0, 0.45, 0.8 } ) {
+    Xi xi;
+    for ( int i = 0; i < nDim; i++ )
+      xi( i ) = a + 0.07 * i;
+    const Xi x = X * geometry.N( xi ).transpose();
+    throwExceptionOnFailure( ( geometry.findReferenceCoordinate( x ) - xi ).norm() < 1e-10,
+                             MakeString() << nDim << "D cell: inverse map of " << xi.transpose() );
+    throwExceptionOnFailure( geometry.isCoordinateInCell( x.data() ),
+                             MakeString() << nDim << "D cell: a point at " << xi.transpose() << " is in the cell" );
+  }
+
+  // a point of the bounding box outside a distorted cell: xi_0 = 1.2 (inside its bounding box for these cells)
+  Xi xi      = Xi::Zero();
+  xi( 0 )    = 1.2;
+  const Xi x = X * geometry.N( xi ).transpose();
+  double   lo[nDim], hi[nDim];
+  geometry.getBoundingBox( lo, hi );
+  bool inBox = true;
+  for ( int i = 0; i < nDim; i++ )
+    inBox = inBox && x( i ) >= lo[i] && x( i ) < hi[i];
+  if ( !box && inBox )
+    throwExceptionOnFailure( !geometry.isCoordinateInCell( x.data() ),
+                             MakeString() << nDim << "D cell: a point outside the distorted cell is not in it" );
+}
+
+void testLagrangianCellInverseMap()
+{
+  checkLagrangianCellInverseMap< 2, 4 >( { 0, 0, 2, 0, 2, 1, 0, 1 }, true );
+  checkLagrangianCellInverseMap< 2, 4 >( { 0, 0, 2, 0.3, 2.6, 1.4, -0.2, 1 }, false );
+  checkLagrangianCellInverseMap< 3, 8 >( { 0, 0, 0, 2, 0, 0, 2, 1, 0, 0, 1, 0, 0, 0, 1, 2, 0, 1, 2, 1, 1, 0, 1, 1 },
+                                         true );
+  checkLagrangianCellInverseMap< 3, 8 >( { 0, 0, 0, 2,   0.2, 0,   2.4, 1.3, 0.1, -0.1, 1, 0,
+                                           0, 0, 1, 2.2, 0,   1.2, 2.5, 1.2, 1.3, 0,    1, 1.1 },
+                                         false );
+}
+
+// the subdomains of a particle domain are deformed about the centroid of the parent, so that they tile the
+// deformed parent (about their own centroids, they would overlap or leave gaps for any F != I)
+void testSubdomainsTileTheDeformedDomain()
+{
+  using Domain               = ParticleDomain< 2, 4 >;
+  const double    vertices[] = { -1, -1, 1, -1, 1, 1, -1, 1 };
+  Domain          main( vertices, 8, Domain::DeformationGradient );
+  auto            subdomains = main.uniformSubdivided();
+  Eigen::Matrix2d F;
+  F << 2, 0.3, 0.1, 1;
+  const Eigen::Vector2d u( 0.4, -0.2 );
+
+  main.acceptStateAndPosition( F, u );
+  double volume = 0;
+  for ( auto& sd : subdomains ) {
+    const Eigen::Matrix< double, 2, 4 > X = sd.getGeometryDeformedVertexCoordinates(); // undeformed, not accepted
+    sd.acceptStateAndPosition( F, u );
+    const Eigen::Matrix< double, 2, 4 > x = sd.getGeometryDeformedVertexCoordinates();
+    throwExceptionOnFailure( ( x - ( ( F * X ).colwise() + u ) ).norm() < 1e-13,
+                             "a subdomain follows the homogeneous map of the parent about the parent centroid" );
+    volume += Domain::getVolumeFromVertices( x );
+  }
+  throwExceptionOnFailure( checkIfEqual( volume,
+                                         Domain::getVolumeFromVertices( main.getGeometryDeformedVertexCoordinates() ),
+                                         1e-12 ),
+                           "the deformed subdomains tile the deformed domain" );
+}
+
 // the factories: a Lagrangian and a B-spline cell may share a name (the B-spline registration checked the wrong map
 // for duplicates), names are case-insensitive, and an unknown name is reported by name
 void testFactories()
@@ -358,6 +470,9 @@ int main()
                                                                testImplicitGradientReproducingKernelApproximation,
                                                                testMomentMatrixGradient,
                                                                testCompletenessOrderIsReducedForFewNodes,
+                                                               testSingularMomentMatrixThrows,
+                                                               testLagrangianCellInverseMap,
+                                                               testSubdomainsTileTheDeformedDomain,
                                                                testFactories };
   executeTestsAndCollectExceptions( testFunctions );
   return 0;

@@ -63,6 +63,14 @@ namespace Marmot::Meshfree {
    * -# per increment: assignMeshfreeKernelFunctions(), optionally the VCI methods (vci_...), then repeatedly
    *    computePhysicsKernels() and the load methods, and after convergence acceptStateAndPosition().
    *
+   * **State contract:** the state variable block is a *trial* copy. Before every call of computePhysicsKernels(),
+   * the host restores it to the values committed by the last acceptStateAndPosition(), and @c dQ is the total
+   * increment since that state (not the Newton correction). Implementations may therefore update their state in
+   * place during computePhysicsKernels() (e.g. add the increment of the center displacement or of a nonlocal field
+   * to its committed value, or integrate velocities and accelerations), since every call starts again from the
+   * committed state; a cutback is simply a restore. EdelweissMeshfree implements this by copying the committed
+   * block into the trial block before each computePhysicsKernels() and back in acceptStateAndPosition().
+   *
    * For the residual vector and the stiffness matrix, unlike elements and cells, no (field-)blocked layout is
    * possible. This is due to the fact that the number of nodes per particle is not fixed and may vary, and
    * accordingly, the dofIndicesPermutationPattern used to designate the structure of a blocked storage may vary.
@@ -198,7 +206,8 @@ namespace Marmot::Meshfree {
     /**
      * @brief Compute the internal force vector and its derivative with respect to the dof increment.
      * @details Both are accumulated (+=) in the node-wise layout described in the class documentation.
-     * @param[in] dQ Increment of the nodal dofs since the last accepted state, node-wise.
+     * @param[in] dQ Increment of the nodal dofs since the last accepted state, node-wise (the state variables are
+     * restored to the accepted state before each call, see the state contract in the class documentation).
      * @param[in,out] fInt Internal force vector of size @f$ n_{\text{nodes}} \cdot @f$ getNBaseDof().
      * @param[in,out] dFInt_ddQ Stiffness matrix, column-major, square of the same size.
      * @param[in] timeNew Time at the end of the increment.

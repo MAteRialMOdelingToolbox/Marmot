@@ -647,7 +647,10 @@ namespace Marmot::Meshfree {
       const ParticleDomainType& particleDomain ) const;
 
     /**
-     * @brief Evaluates the shape functions at the face center of the smoothing domain of a particle domain.
+     * @brief Evaluates the shape functions at the face center of the (deformed) geometry of a particle domain.
+     * @details This is the point at which getIntermediateConfigurationBoundaryVector() returns the face center and
+     *          at which the VCI boundary term is evaluated; it differs from the face center of the smoothing domain
+     *          unless the smoothing domain follows the full deformation gradient.
      * @param[in] particleDomain The particle domain.
      * @param[in] faceID The ID of the face (1-based).
      * @return An Eigen::MatrixXd containing the shape functions (N) on the specified
@@ -867,13 +870,11 @@ namespace Marmot::Meshfree {
     int                       faceID ) const
   {
 
-    CoordinatesSized coordsFaceCenter; // Use alias
-    // Use the center of the provided particleDomain
-    coordsFaceCenter = particleDomain.getSmoothingDomainFaceCenterCoordinates( faceID );
+    // the face center of the geometry, consistent with getIntermediateConfigurationBoundaryVector()
+    const CoordinatesSized coordsFaceCenter = particleDomain.getFaceCenterCoordinates( faceID );
 
     Eigen::MatrixXd N = Eigen::MatrixXd::Zero( 1, this->_nNodes );
 
-    // Compute N at the particle center (from GenericParticle)
     this->_meshfreeApproximation.computeShapeFunctions( coordsFaceCenter.data(),
                                                         this->_assignedKernelFunctions,
                                                         N.data() );
@@ -992,6 +993,8 @@ namespace Marmot::Meshfree {
       _du_center += du;
     }
 
+    // the state is restored to the accepted one before every call (see the state contract of MarmotParticle), so
+    // this adds the increment of the step to the accepted center displacement once per iteration, not cumulatively
     Eigen::Map< CoordinatesSized > du_center_eigen( _du_center.data() ); // Use alias
     _centerDisplacement += du_center_eigen;
 

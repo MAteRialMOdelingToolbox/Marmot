@@ -335,7 +335,18 @@ namespace Marmot::Meshfree {
      */
     void applyDeformationGradient( const Eigen::Matrix< Scalar, nDim, nDim >& F )
     {
-      Vec C = centroid();
+      applyDeformationGradient( F, centroid() );
+    }
+
+    /**
+     * @brief Applies a deformation gradient relative to a given point: x_new = C + F * (x_old - C).
+     *
+     * @param F The deformation gradient matrix.
+     * @param C The fixed point of the map (e.g. the centroid of a parent cell, so that the subcells of a
+     * subdivision stay a tiling of the deformed parent).
+     */
+    void applyDeformationGradient( const Eigen::Matrix< Scalar, nDim, nDim >& F, const Vec& C )
+    {
       for ( int i = 0; i < nNodes; ++i ) {
         Vec Xrel        = _nodes.col( i ) - C;
         _nodes.col( i ) = C + F * Xrel;

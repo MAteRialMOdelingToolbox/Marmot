@@ -35,6 +35,7 @@
 #include "Marmot/MarmotTensor.h"
 
 #include <memory>
+#include <stdexcept>
 #include <vector>
 
 namespace Marmot::MaterialPoints {
@@ -396,11 +397,18 @@ namespace Marmot::MaterialPoints {
     };
 
     /**
-     * @brief Initial conditions are not supported: the call has no effect.
-     * @param[in] conditionName Name of the initial condition (ignored).
-     * @param[in] value Values of the initial condition (ignored).
+     * @brief Initial conditions are not supported (in particular not `geostaticstress`, which would need an eigen
+     *        deformation as in GradientEnhancedFiniteStrainMaterialPoint).
+     * @param[in] conditionName Name of the initial condition.
+     * @param[in] value Values of the initial condition (unused).
+     * @throws std::invalid_argument always, so that an input with an initial condition does not silently start from
+     *         the unloaded state.
      */
-    virtual void setInitialCondition( const std::string& conditionName, const double* value ) override{};
+    virtual void setInitialCondition( const std::string& conditionName, const double* value ) override
+    {
+      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": initial condition '" << conditionName
+                                                << "' is not supported" );
+    };
   };
 
   template < int nDim >

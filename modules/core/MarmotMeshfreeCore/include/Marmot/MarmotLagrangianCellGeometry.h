@@ -30,6 +30,7 @@
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotGeometryElement.h"
 #include "Marmot/MarmotJournal.h"
+#include <cmath>
 #include <stdexcept>
 
 /**
@@ -42,10 +43,9 @@
  * @f$ \boldsymbol{X}_A @f$, and provides the inverse map, the physical gradients and the point location test
  * required by GeometryCellPolicy.
  *
- * @warning The inverse map findReferenceCoordinate() and the point location test isCoordinateInCell() are based on
- * the axis-aligned bounding box of the nodes, and are therefore only valid for **axis-aligned rectangular
- * (box-shaped) cells**. For a distorted cell, findReferenceCoordinate() throws (the Newton update of the inverse map is
- * not implemented yet).
+ * For axis-aligned rectangular (box-shaped) cells, the inverse map findReferenceCoordinate() and the point location
+ * test isCoordinateInCell() are exact and cheap (affine map of the bounding box); for distorted cells, the inverse map
+ * is computed by Newton's method, and the point location test uses it.
  *
  * @tparam nDim   Spatial dimension (2 or 3).
  * @tparam nNodes Number of nodes (4 in 2D, 8 in 3D).
@@ -60,7 +60,7 @@ class MarmotLagrangianCellGeometry : public MarmotGeometryElement< nDim, nNodes 
   Eigen::Matrix< double, nDim, 1 > _boundingBoxMin;                              ///< Lower corner of the bounding box.
   Eigen::Matrix< double, nDim, 1 > _boundingBoxMax;                              ///< Upper corner of the bounding box.
 
-  bool _boundingBoxMatchesGeometryExactly; ///< Always @c true (assumes a box-shaped cell); currently not used.
+  bool _boundingBoxMatchesGeometryExactly; ///< @c true for an axis-aligned box-shaped cell (every node is a box corner)
 
 public:
   using NSized    = typename ParentLagrangianGeometryElement::NSized;     ///< Row vector of shape function values.
@@ -80,14 +80,23 @@ public:
     _boundingBoxMin = nodeCoords.rowwise().minCoeff();
     _boundingBoxMax = nodeCoords.rowwise().maxCoeff();
 
+    // a box-shaped cell has all its nodes at corners of its bounding box
+    const double tol                   = 1e-12 * ( _boundingBoxMax - _boundingBoxMin ).norm();
     _boundingBoxMatchesGeometryExactly = true;
+    for ( int A = 0; A < nNodes; A++ )
+      for ( int i = 0; i < nDim; i++ )
+        if ( std::abs( nodeCoords( i, A ) - _boundingBoxMin( i ) ) > tol &&
+             std::abs( nodeCoords( i, A ) - _boundingBoxMax( i ) ) > tol )
+          _boundingBoxMatchesGeometryExactly = false;
   }
 
   /**
-   * @brief Bounding box test @f$ X_{\min,i} \le x_i < X_{\max,i} @f$ (half-open, so that a point on a shared face
-   * belongs to exactly one of two neighbouring cells). Exact only for axis-aligned box-shaped cells.
+   * @brief Point location test: bounding box test @f$ X_{\min,i} \le x_i < X_{\max,i} @f$, and for a distorted
+   * cell additionally @f$ -1 \le \xi_i < 1 @f$ for the parametric coordinates of findReferenceCoordinate().
+   * @details Both tests are half-open, so that a point on a face shared by two cells belongs to exactly one of them;
+   * consequently, a point exactly on the upper boundary of the whole mesh belongs to no cell.
    * @param[in] coordinates Point coordinates (nDim values).
-   * @return @c true if the point is inside the bounding box.
+   * @return @c true if the point is inside the cell.
    */
   bool isCoordinateInCell( const double* coordinates ) const;
 
@@ -100,13 +109,15 @@ public:
 
   /**
    * @brief Inverse isoparametric map @f$ \boldsymbol{\xi}(\boldsymbol{X}) @f$.
-   * @details Uses the affine map of the bounding box,
-   * @f$ \xi_i = 2\,(X_i - \tfrac12(X_{\max,i}+X_{\min,i}))/(X_{\max,i}-X_{\min,i}) @f$, and checks the residual
-   * @f$ \|\boldsymbol{X} - \sum_A N_A(\boldsymbol{\xi})\boldsymbol{X}_A\| / \|\boldsymbol{X}\| < 10^{-12} @f$. There is
-   * no Newton update yet, so the result is correct only for axis-aligned box-shaped cells.
+   * @details Starts from the affine map of the bounding box,
+   * @f$ \xi_i = 2\,(X_i - \tfrac12(X_{\max,i}+X_{\min,i}))/(X_{\max,i}-X_{\min,i}) @f$, which is exact for an
+   * axis-aligned box-shaped cell, and applies Newton's method,
+   * @f$ \boldsymbol{\xi} \leftarrow \boldsymbol{\xi} + \boldsymbol{J}^{-1}(\boldsymbol{X} - \sum_A
+   * N_A(\boldsymbol{\xi})\boldsymbol{X}_A) @f$, until the residual is below @f$ 10^{-12} @f$ times the diagonal of the
+   * bounding box.
    * @param[in] coord Physical coordinates.
    * @return Parametric coordinates @f$ \boldsymbol{\xi} @f$.
-   * @throws std::runtime_error if the residual check fails (distorted cell).
+   * @throws std::runtime_error if Newton's method does not converge within 20 iterations.
    */
   XiSized findReferenceCoordinate( const XiSized& coord ) const;
 
@@ -160,6 +171,20 @@ bool MarmotLagrangianCellGeometry< nDim, nNodes >::isCoordinateInCell( const dou
     if ( coordinates[i] < _boundingBoxMin( i ) || coordinates[i] >= _boundingBoxMax( i ) )
       return false;
 
+  if ( _boundingBoxMatchesGeometryExactly )
+    return true;
+
+  XiSized xi;
+  try {
+    xi = findReferenceCoordinate( Eigen::Map< const XiSized >( coordinates ) );
+  }
+  catch ( const std::runtime_error& ) {
+    return false; // far outside a strongly distorted cell
+  }
+  for ( auto i = 0; i < nDim; i++ )
+    if ( xi( i ) < -1 || xi( i ) >= 1 )
+      return false;
+
   return true;
 }
 
@@ -175,25 +200,22 @@ template < int nDim, int nNodes >
 MarmotLagrangianCellGeometry< nDim, nNodes >::XiSized MarmotLagrangianCellGeometry< nDim, nNodes >::
   findReferenceCoordinate( const XiSized& coord ) const
 {
-  // initial guess:
-  XiSized xi = 2 * ( coord - ( _boundingBoxMax + _boundingBoxMin ) / 2 )
-                     .cwiseProduct( ( _boundingBoxMax - _boundingBoxMin ).cwiseInverse() );
+  const auto    X = ParentLagrangianGeometryElement::coordinates.reshaped( nDim, nNodes );
+  const XiSized h = _boundingBoxMax - _boundingBoxMin;
 
-  XiSized r = coord - ParentLagrangianGeometryElement::coordinates.reshaped( nDim, nNodes ) * N( xi ).transpose();
+  // initial guess: the affine map of the bounding box, exact for a box-shaped cell
+  XiSized xi = 2 * ( coord - ( _boundingBoxMax + _boundingBoxMin ) / 2 ).cwiseProduct( h.cwiseInverse() );
+  XiSized r  = coord - X * N( xi ).transpose();
 
-  int nCounter = 0;
-  while ( r.norm() / coord.norm() >= 1e-12 ) {
-
-    // TODO
-    /* xi += */
-
-    r = coord - ParentLagrangianGeometryElement::coordinates.reshaped( nDim, nNodes ) * N( xi ).transpose();
-    nCounter++;
-    if ( nCounter >= 5 ) {
+  for ( int iteration = 0; r.norm() > 1e-12 * h.norm(); iteration++ ) {
+    if ( iteration >= 20 )
       throw std::runtime_error( MakeString()
                                 << __PRETTY_FUNCTION__ << ": failed to determine inverse map for coordinate "
                                 << coord.transpose() );
-    }
+
+    const JacobianSized J = ParentLagrangianGeometryElement::Jacobian( ParentLagrangianGeometryElement::dNdXi( xi ) );
+    xi += J.partialPivLu().solve( r );
+    r = coord - X * N( xi ).transpose();
   }
 
   return xi;

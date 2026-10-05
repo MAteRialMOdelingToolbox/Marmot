@@ -1,10 +1,12 @@
 #include "Marmot/MarmotMeshfreeReproducingKernelApproximation.h"
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMeshfreeKernelFunction.h"
 #include "Marmot/MarmotMonomialBasisFunctions.h"
 #include <Eigen/Core>
 #include <Eigen/Dense>
 #include <Eigen/src/Core/Matrix.h>
 #include <cmath>
+#include <stdexcept>
 #include <vector>
 
 namespace Marmot::Meshfree {
@@ -47,6 +49,22 @@ namespace Marmot::Meshfree {
     Eigen::VectorXd H0 = Eigen::VectorXd::Zero( sizeHVector );
     H0( 0 )            = 1;
     return H0;
+  }
+
+  Eigen::ColPivHouseholderQR< Eigen::MatrixXd > MarmotMeshfreeReproducingKernelApproximation::factorizeMomentMatrix(
+    const Eigen::MatrixXd& M,
+    const double*          coord,
+    int                    nCoveringKernels ) const
+  {
+    Eigen::ColPivHouseholderQR< Eigen::MatrixXd > MQr( M );
+    if ( MQr.rank() < M.rows() )
+      throw std::runtime_error( MakeString()
+                                << __PRETTY_FUNCTION__ << ": singular moment matrix (rank " << MQr.rank() << " < "
+                                << M.rows() << ") at " << Eigen::Map< const Eigen::VectorXd >( coord, _dim ).transpose()
+                                << ", covered by " << nCoveringKernels
+                                << " kernels: no kernel covers the point, or the nodes are in a "
+                                   "degenerate arrangement for the completeness order" );
+    return MQr;
   }
 
   Eigen::MatrixXd MarmotMeshfreeReproducingKernelApproximation::computeMMatrix(
@@ -131,7 +149,7 @@ namespace Marmot::Meshfree {
     // b = M^-1 * H0
     const auto H0 = H0Vector( M.rows() );
 
-    const Eigen::VectorXd b = M.colPivHouseholderQr().solve( H0 );
+    const Eigen::VectorXd b = factorizeMomentMatrix( M, coord, coveringKernelFunctionsIndices.size() ).solve( H0 );
 
     // compute the shape function values
 
@@ -242,7 +260,7 @@ namespace Marmot::Meshfree {
     // b = M^-1 * H0
     const auto H0 = H0Vector( sizeH );
 
-    const auto MHr = M.colPivHouseholderQr();
+    const auto MHr = factorizeMomentMatrix( M, coord, coveringKernelFunctionIndices.size() );
 
     const Eigen::VectorXd b = MHr.solve( H0 );
 

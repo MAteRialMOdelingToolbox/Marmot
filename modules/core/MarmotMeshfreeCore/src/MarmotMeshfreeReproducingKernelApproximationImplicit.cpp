@@ -77,7 +77,7 @@ namespace Marmot::Meshfree {
             H0Mat( k, 1 + i ) = -1.0;
     }
 
-    const Eigen::MatrixXd bMat = M.colPivHouseholderQr().solve( H0Mat );
+    const Eigen::MatrixXd bMat = factorizeMomentMatrix( M, coord, coveringKernelFunctionIndices.size() ).solve( H0Mat );
 
     const VectorXd b0    = bMat.col( 0 );
     const MatrixXd bGrad = bMat.block( 0, 1, M.rows(), _dim );

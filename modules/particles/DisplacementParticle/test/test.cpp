@@ -371,6 +371,8 @@ namespace {
       throwExceptionOnFailure( !s.particle->getParticleShape().empty(), name + ": shape" );
       throwExceptionOnFailure( throws( [&]() { s.particle->setInitialCondition( "no such condition", &one ); } ),
                                name + ": an unknown initial condition must throw" );
+      throwExceptionOnFailure( throws( [&]() { s.particle->setInitialCondition( "geostaticstress", &one ); } ),
+                               name + ": the unsupported geostatic stress must throw, not be ignored" );
     }
 
     // the states of the subdomains start at multiples of 8 doubles of the particle's state, aligned like the state of

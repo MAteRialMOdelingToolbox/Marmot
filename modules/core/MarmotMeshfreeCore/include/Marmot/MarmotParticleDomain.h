@@ -53,6 +53,8 @@ namespace Marmot::Meshfree {
    *   \boldsymbol{x}_v = \boldsymbol{X}_c + \boldsymbol{F}\,(\boldsymbol{X}_v - \boldsymbol{X}_c)
    *   + \boldsymbol{u}_c ,
    * @f]
+   * where @f$ \boldsymbol{X}_c @f$ is the centroid of the particle; for the subdomains of uniformSubdivided() it is
+   * the centroid of the parent domain, so that the subdomains remain a tiling of the deformed parent.
    * with the total deformation gradient @f$ \boldsymbol{F} @f$ of the particle for the deformed geometry, and a
    * tensor @f$ \boldsymbol{F}_s @f$ derived from it according to SmoothingDomainUpdateType for the smoothing domain.
    * Face IDs are 1-based and follow the Abaqus convention of MarmotLagrangeCell.
@@ -244,7 +246,8 @@ namespace Marmot::Meshfree {
      * @brief Updates the particle's position and volume to the reference intermediate configuration.
      * @details The deformed geometry and the smoothing domain are rebuilt from the undeformed geometry,
      *          @f$ \boldsymbol{x}_v = \boldsymbol{X}_c + \boldsymbol{F}(\boldsymbol{X}_v - \boldsymbol{X}_c) +
-     *          \boldsymbol{u}_c @f$, with @f$ \boldsymbol{F} @f$ = @p F_physics for the geometry and
+     *          \boldsymbol{u}_c @f$ (@f$ \boldsymbol{X}_c @f$: the centroid, of the parent domain for a subdomain),
+     *          with @f$ \boldsymbol{F} @f$ = @p F_physics for the geometry and
      *          @f$ \boldsymbol{F}_s @f$ (see SmoothingDomainUpdateType) for the smoothing domain. The vertex
      *          displacements are updated accordingly.
      * @param[in] F_physics The total deformation gradient of the particle (with respect to the undeformed
@@ -254,7 +257,7 @@ namespace Marmot::Meshfree {
     void acceptStateAndPosition( const DeformationGradientSized& F_physics, const CoordinatesSized& centerDisplacement )
     {
       _cellForGeometryDeformed.updateVertexCoordinates( _cellForGeometryUndeformed.nodes() );
-      _cellForGeometryDeformed.applyDeformationGradient( F_physics );
+      _cellForGeometryDeformed.applyDeformationGradient( F_physics, _deformationCenter );
       _cellForGeometryDeformed.applyUniformDisplacement( centerDisplacement );
 
       const auto FSmoothing = _computeSmoothingDomainDeformationTensorTotal( F_physics );
@@ -262,7 +265,7 @@ namespace Marmot::Meshfree {
       _vertex_displacements_geometry = _cellForGeometryDeformed.nodes() - _cellForGeometryUndeformed.nodes();
 
       _cellForSmoothing.updateVertexCoordinates( _cellForGeometryUndeformed.nodes() );
-      _cellForSmoothing.applyDeformationGradient( FSmoothing );
+      _cellForSmoothing.applyDeformationGradient( FSmoothing, _deformationCenter );
       _cellForSmoothing.applyUniformDisplacement( centerDisplacement );
 
       _vertex_displacements_smoothingDomain = _cellForSmoothing.nodes() - _cellForGeometryUndeformed.nodes();
@@ -273,7 +276,8 @@ namespace Marmot::Meshfree {
      * @details This method creates a vector of new `ParticleDomain` instances, each representing
      *          a uniformly subdivided portion of the original undeformed particle domain (one level of bisection
      *          in each direction, i.e., 4 quadrilaterals or 8 hexahedra), with the same smoothing domain update
-     *          type.
+     *          type. The subdomains are deformed about the centroid of this domain (not their own), so that the
+     *          deformed subdomains tile the deformed domain.
      * @return A vector of `ParticleDomain` instances representing the subdivided particles.
      */
     std::vector< ParticleDomain > uniformSubdivided() const
@@ -284,6 +288,7 @@ namespace Marmot::Meshfree {
 
       for ( const auto& cell : subdividedCells ) {
         ParticleDomain newDomain( cell.nodes().data(), nDim * nVertices, smoothingVolumeUpdateType );
+        newDomain._deformationCenter = _deformationCenter;
         subdividedDomains.push_back( newDomain );
       }
 
@@ -320,6 +325,7 @@ namespace Marmot::Meshfree {
     VertexCoordinatesSized
       _vertex_displacements_smoothingDomain;               ///< Displacements of vertices in the smoothing domain.
     VertexCoordinatesSized _vertex_displacements_geometry; ///< Displacements of vertices of the geometry.
+    CoordinatesSized       _deformationCenter; ///< Fixed point @f$ \boldsymbol{X}_c @f$ of the homogeneous deformation.
 
     /**
      * @brief Computes the total deformation tensor @f$ \boldsymbol{F}_s @f$ for the smoothing domain based on the
@@ -375,7 +381,8 @@ namespace Marmot::Meshfree {
       _cellForGeometryDeformed( vertexCoordinates, nVertexCoordinates ),
       _cellForSmoothing( vertexCoordinates, nVertexCoordinates ),
       _vertex_displacements_smoothingDomain( VertexCoordinatesSized::Zero() ),
-      _vertex_displacements_geometry( VertexCoordinatesSized::Zero() )
+      _vertex_displacements_geometry( VertexCoordinatesSized::Zero() ),
+      _deformationCenter( _cellForGeometryUndeformed.centroid() )
   {
   }
 

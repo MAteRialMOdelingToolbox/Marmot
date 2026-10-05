@@ -410,19 +410,14 @@ namespace Marmot::Meshfree {
     virtual double getVolumeUndeformed() const { return _mp->getVolumeUndeformed(); };
 
     /**
-     * @brief Initial conditions: "geostaticstress" is forwarded to the material point (which ignores it).
+     * @brief Initial conditions are forwarded to the material point, which supports none.
      * @param[in] conditionName Name of the initial condition.
      * @param[in] value Its values.
-     * @throws std::invalid_argument for any other name.
+     * @throws std::invalid_argument always (from DisplacementMaterialPoint::setInitialCondition()).
      */
     virtual void setInitialCondition( const std::string& conditionName, const double* value ) override
     {
-      if ( conditionName == "geostaticstress" ) {
-        _mp->setInitialCondition( conditionName, value );
-      }
-      else {
-        throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
-      }
+      _mp->setInitialCondition( conditionName, value );
     };
 
   private:

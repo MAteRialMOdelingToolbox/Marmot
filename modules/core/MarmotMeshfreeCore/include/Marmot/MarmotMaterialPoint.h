@@ -50,6 +50,14 @@
  *  4. acceptStateAndPosition() after convergence of the increment, which commits the increment
  *     (e.g. updates position and deformation gradient).
  *
+ * **State contract:** the state variable array is a *trial* copy. Before every iteration (i.e. before
+ * prepareYourself()), the host restores it to the values committed by the last acceptStateAndPosition(), and the
+ * cells interpolate the total increment since that state (not the Newton correction). Implementations may
+ * therefore update their state in place during an iteration (e.g. add the interpolated increment of a field to its
+ * committed value), since each iteration starts again from the committed state; a cutback is simply a restore.
+ * EdelweissMeshfree implements this by copying the committed array into the trial array in prepareYourself() and
+ * back in acceptStateAndPosition().
+ *
  * The kinematic update from the cell (e.g. @c incrementDeformation) and the response/tangent quantities
  * read by the cell are not part of this interface: they are specific to each pair of concrete cell and
  * material point (see e.g. Marmot::MaterialPoints::DisplacementMaterialPoint), and the cell obtains them by
