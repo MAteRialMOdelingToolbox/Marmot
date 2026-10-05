@@ -292,15 +292,27 @@ namespace {
       Eigen::MatrixXd H   = Eigen::MatrixXd::Zero( nDim, nTensor );
       Eigen::MatrixXd Y   = Eigen::MatrixXd::Zero( nTensor, nTensor );
 
-      MarmotInterfaceMaterialHypoElastic::State         state{ force.data(),
-                                                       surfaceStress.data(),
-                                                       qp.managedStateVars->materialStateVars.data() };
-      MarmotInterfaceMaterialHypoElastic::Tangents      tangents{ Qij.data(), Z.data(), H.data(), Y.data() };
-      MarmotInterfaceMaterialHypoElastic::Deformation   deformation{ dUGp.data(),
-                                                                   dSurfaceStrainGp.data(),
-                                                                   qp.normal.data() };
-      MarmotInterfaceMaterialHypoElastic::TimeIncrement timeIncrement{ time[0], dT };
+      using Material = MarmotInterfaceMaterialHypoElastic;
+
+      Material::State         state{ Material::Tensor3d( force.data() ),
+                             Material::Tensor33d( surfaceStress.data() ),
+                             qp.managedStateVars->materialStateVars.data() };
+      Material::Tangents      tangents{ Material::Tensor33d( 0.0 ),
+                                   Material::Tensor3333d( 0.0 ),
+                                   Material::Tensor333d( 0.0 ),
+                                   Material::Tensor3333d( 0.0 ) };
+      Material::Deformation   deformation{ Material::Tensor6d( dUGp.data() ),
+                                         Material::Tensor18d( dSurfaceStrainGp.data() ),
+                                         Material::Tensor3d( qp.normal.data() ) };
+      Material::TimeIncrement timeIncrement{ time[0], dT };
       element.material->computeStress( state, tangents, deformation, timeIncrement );
+
+      force         = mapEigenToFastor( state.force );
+      surfaceStress = Eigen::Map< const Eigen::VectorXd >( state.surfaceStress.data(), surfaceStress.size() );
+      Qij           = mapEigenToFastor( tangents.Q_ij );
+      Z             = mapEigenToFastor( tangents.Z_ijkl );
+      H             = mapEigenToFastor( tangents.H_ijk );
+      Y             = mapEigenToFastor( tangents.Y_ijkl );
 
       const double J0xW = integrationWeight( qp );
 
@@ -805,15 +817,27 @@ void TestTwoDimensionalInterfaceElementComputesWithEmbeddedMaterial()
 
     std::vector< double > materialStateVars( qp.managedStateVars->materialStateVars.size(), 0.0 );
 
-    MarmotInterfaceMaterialHypoElastic::State       materialState{ force3d.data(),
-                                                             surfaceStress3d.data(),
-                                                             materialStateVars.data() };
-    MarmotInterfaceMaterialHypoElastic::Tangents    materialTangents{ Q3d.data(), Z3d.data(), H3d.data(), Y3d.data() };
-    MarmotInterfaceMaterialHypoElastic::Deformation materialDeformation{ dU3d.data(),
-                                                                         dSurfaceStrain3d.data(),
-                                                                         normal3d.data() };
-    MarmotInterfaceMaterialHypoElastic::TimeIncrement materialTimeIncrement{ time, dT };
+    using Material = MarmotInterfaceMaterialHypoElastic;
+
+    Material::State         materialState{ Material::Tensor3d( force3d.data() ),
+                                   Material::Tensor33d( surfaceStress3d.data() ),
+                                   materialStateVars.data() };
+    Material::Tangents      materialTangents{ Material::Tensor33d( 0.0 ),
+                                         Material::Tensor3333d( 0.0 ),
+                                         Material::Tensor333d( 0.0 ),
+                                         Material::Tensor3333d( 0.0 ) };
+    Material::Deformation   materialDeformation{ Material::Tensor6d( dU3d.data() ),
+                                               Material::Tensor18d( dSurfaceStrain3d.data() ),
+                                               Material::Tensor3d( normal3d.data() ) };
+    Material::TimeIncrement materialTimeIncrement{ time, dT };
     element->material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
+
+    force3d         = mapEigenToFastor( materialState.force );
+    surfaceStress3d = Eigen::Map< const Eigen::Matrix< double, 9, 1 > >( materialState.surfaceStress.data() );
+    Q3d             = mapEigenToFastor( materialTangents.Q_ij );
+    Z3d             = mapEigenToFastor( materialTangents.Z_ijkl );
+    H3d             = mapEigenToFastor( materialTangents.H_ijk );
+    Y3d             = mapEigenToFastor( materialTangents.Y_ijkl );
 
     Eigen::Matrix< double, nDim, 1 >                           force2d;
     Eigen::Matrix< double, nTensor, 1 >                        surfaceStress2d;

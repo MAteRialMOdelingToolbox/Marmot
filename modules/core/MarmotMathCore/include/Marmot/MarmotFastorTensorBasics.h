@@ -419,6 +419,76 @@ namespace Marmot {
   }
 
   /**
+   * @brief Map a Fastor Tensor (const) to an Eigen Map (row-major, const)
+   * @tparam T scalar type
+   * @tparam n1 size of the first dimension
+   * @tparam n2 size of the second dimension
+   * @tparam n3 size of the third dimension
+   * @param fastor a Fastor Tensor
+   * @return an Eigen Map
+   * @note This function works for third rank tensors of size n1 x n2 x n3. The map has n1 rows and n2 * n3 columns,
+   * i.e. fastor(i, j, k) = map(i, j * n3 + k).
+   */
+  template < typename T, size_t n1, size_t n2, size_t n3 >
+  auto inline mapEigenToFastor( const Fastor::Tensor< T, n1, n2, n3 >& fastor )
+  {
+    return Eigen::Map< const Eigen::Matrix< T, n1, n2 * n3, Eigen::RowMajor > >( fastor.data() );
+  }
+
+  /**
+   * @brief Map a Fastor Tensor to an Eigen Map (row-major)
+   * @tparam T scalar type
+   * @tparam n1 size of the first dimension
+   * @tparam n2 size of the second dimension
+   * @tparam n3 size of the third dimension
+   * @param fastor a Fastor Tensor
+   * @return an Eigen Map
+   * @note This function works for third rank tensors of size n1 x n2 x n3. The map has n1 rows and n2 * n3 columns,
+   * i.e. fastor(i, j, k) = map(i, j * n3 + k).
+   */
+  template < typename T, size_t n1, size_t n2, size_t n3 >
+  auto inline mapEigenToFastor( Fastor::Tensor< T, n1, n2, n3 >& fastor )
+  {
+    return Eigen::Map< Eigen::Matrix< T, n1, n2 * n3, Eigen::RowMajor > >( fastor.data() );
+  }
+
+  /**
+   * @brief Map a Fastor Tensor (const) to an Eigen Map (row-major, const)
+   * @tparam T scalar type
+   * @tparam n1 size of the first dimension
+   * @tparam n2 size of the second dimension
+   * @tparam n3 size of the third dimension
+   * @tparam n4 size of the fourth dimension
+   * @param fastor a Fastor Tensor
+   * @return an Eigen Map
+   * @note This function works for fourth rank tensors of size n1 x n2 x n3 x n4. The map has n1 * n2 rows and
+   * n3 * n4 columns, i.e. fastor(i, j, k, l) = map(i * n2 + j, k * n4 + l).
+   */
+  template < typename T, size_t n1, size_t n2, size_t n3, size_t n4 >
+  auto inline mapEigenToFastor( const Fastor::Tensor< T, n1, n2, n3, n4 >& fastor )
+  {
+    return Eigen::Map< const Eigen::Matrix< T, n1 * n2, n3 * n4, Eigen::RowMajor > >( fastor.data() );
+  }
+
+  /**
+   * @brief Map a Fastor Tensor to an Eigen Map (row-major)
+   * @tparam T scalar type
+   * @tparam n1 size of the first dimension
+   * @tparam n2 size of the second dimension
+   * @tparam n3 size of the third dimension
+   * @tparam n4 size of the fourth dimension
+   * @param fastor a Fastor Tensor
+   * @return an Eigen Map
+   * @note This function works for fourth rank tensors of size n1 x n2 x n3 x n4. The map has n1 * n2 rows and
+   * n3 * n4 columns, i.e. fastor(i, j, k, l) = map(i * n2 + j, k * n4 + l).
+   */
+  template < typename T, size_t n1, size_t n2, size_t n3, size_t n4 >
+  auto inline mapEigenToFastor( Fastor::Tensor< T, n1, n2, n3, n4 >& fastor )
+  {
+    return Eigen::Map< Eigen::Matrix< T, n1 * n2, n3 * n4, Eigen::RowMajor > >( fastor.data() );
+  }
+
+  /**
    * @brief Copy a Fastor tensor to a column-major array
    * @tparam TensorType a Fastor tensor type
    * @tparam T scalar type

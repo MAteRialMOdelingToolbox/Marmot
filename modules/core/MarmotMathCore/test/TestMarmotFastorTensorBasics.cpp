@@ -58,12 +58,62 @@ void testDeviatoricTransposeIsTransposeOfDeviatoric()
                                            "produced by the old self-referential initialization bug" );
 }
 
+void testMapEigenToFastorThirdRankTensor()
+{
+  // non-cubic sizes, so that a wrong index convention cannot pass by coincidence
+  Fastor::Tensor< double, 2, 3, 4 > tensor;
+  for ( size_t i = 0; i < 2; ++i )
+    for ( size_t j = 0; j < 3; ++j )
+      for ( size_t k = 0; k < 4; ++k )
+        tensor( i, j, k ) = 100. * i + 10. * j + k;
+
+  const auto matrix = Marmot::mapEigenToFastor( tensor );
+  throwExceptionOnFailure( matrix.rows() == 2 && matrix.cols() == 12, "Wrong shape of the third rank tensor map." );
+
+  for ( size_t i = 0; i < 2; ++i )
+    for ( size_t j = 0; j < 3; ++j )
+      for ( size_t k = 0; k < 4; ++k )
+        throwExceptionOnFailure( matrix( i, j * 4 + k ) == tensor( i, j, k ),
+                                 MakeString() << __PRETTY_FUNCTION__ << " map(i, j * n3 + k) != tensor(i, j, k)" );
+
+  // the non-const overload writes through to the tensor
+  Marmot::mapEigenToFastor( tensor )( 1, 2 * 4 + 3 ) = -1.;
+  throwExceptionOnFailure( tensor( 1, 2, 3 ) == -1., "Writing through the third rank tensor map failed." );
+}
+
+void testMapEigenToFastorFourthRankTensor()
+{
+  Fastor::Tensor< double, 2, 3, 4, 5 > tensor;
+  for ( size_t i = 0; i < 2; ++i )
+    for ( size_t j = 0; j < 3; ++j )
+      for ( size_t k = 0; k < 4; ++k )
+        for ( size_t l = 0; l < 5; ++l )
+          tensor( i, j, k, l ) = 1000. * i + 100. * j + 10. * k + l;
+
+  const auto matrix = Marmot::mapEigenToFastor( tensor );
+  throwExceptionOnFailure( matrix.rows() == 6 && matrix.cols() == 20, "Wrong shape of the fourth rank tensor map." );
+
+  for ( size_t i = 0; i < 2; ++i )
+    for ( size_t j = 0; j < 3; ++j )
+      for ( size_t k = 0; k < 4; ++k )
+        for ( size_t l = 0; l < 5; ++l )
+          throwExceptionOnFailure( matrix( i * 3 + j, k * 5 + l ) == tensor( i, j, k, l ),
+                                   MakeString()
+                                     << __PRETTY_FUNCTION__ << " map(i * n2 + j, k * n4 + l) != tensor(i, j, k, l)" );
+
+  // the non-const overload writes through to the tensor
+  Marmot::mapEigenToFastor( tensor )( 1 * 3 + 2, 3 * 5 + 4 ) = -1.;
+  throwExceptionOnFailure( tensor( 1, 2, 3, 4 ) == -1., "Writing through the fourth rank tensor map failed." );
+}
+
 int main()
 {
   auto
     tests = std::vector< std::function< void() > >{ testInvertMinorSymmetricFourthOrderTensorMatchesIsotropicCompliance,
                                                     testInvertMinorSymmetricFourthOrderTensorIsInvolutive,
-                                                    testDeviatoricTransposeIsTransposeOfDeviatoric };
+                                                    testDeviatoricTransposeIsTransposeOfDeviatoric,
+                                                    testMapEigenToFastorThirdRankTensor,
+                                                    testMapEigenToFastorFourthRankTensor };
 
   executeTestsAndCollectExceptions( tests );
 

@@ -53,12 +53,12 @@ protected:
   std::unique_ptr< MarmotMaterialHypoElastic > baseMaterial;
 
 public:
-  using TensorMap3d    = Marmot::FastorStandardTensors::TensorMap3d;
-  using TensorMap33d   = Marmot::FastorStandardTensors::TensorMap33d;
-  using TensorMap333d  = Marmot::FastorStandardTensors::TensorMap333d;
-  using TensorMap3333d = Marmot::FastorStandardTensors::TensorMap3333d;
-  using TensorMap6d    = Marmot::FastorStandardTensors::TensorMap6d;
-  using TensorMap18d   = Marmot::FastorStandardTensors::TensorMap18d;
+  using Tensor3d    = Marmot::FastorStandardTensors::Tensor3d;
+  using Tensor33d   = Marmot::FastorStandardTensors::Tensor33d;
+  using Tensor333d  = Marmot::FastorStandardTensors::Tensor333d;
+  using Tensor3333d = Marmot::FastorStandardTensors::Tensor3333d;
+  using Tensor6d    = Marmot::FastorStandardTensors::Tensor6d;
+  using Tensor18d   = Marmot::FastorStandardTensors::Tensor18d;
 
   const int materialNumber;
 
@@ -86,32 +86,26 @@ public:
    */
   void setCharacteristicElementLength( double length );
 
+  /// Interface response: holds the previous values on entry and the updated ones on exit.
   struct State {
-    TensorMap3d  force;
-    TensorMap33d surfaceStress;
-    double*      stateVars;
+    Tensor3d  force;         ///< traction on the interface
+    Tensor33d surfaceStress; ///< surface stress
+    double*   stateVars;     ///< pointer to the state variables
   };
 
+  /// Algorithmic tangent terms, set by computeStress().
   struct Tangents {
-    TensorMap33d   Q_ij;
-    TensorMap3333d Z_ijkl;
-    TensorMap333d  H_ijk;
-    TensorMap3333d Y_ijkl;
+    Tensor33d   Q_ij;
+    Tensor3333d Z_ijkl;
+    Tensor333d  H_ijk;
+    Tensor3333d Y_ijkl;
   };
 
+  /// Increment of the interface kinematics.
   struct Deformation {
-    TensorMap6d  dU;
-    TensorMap18d dSurfaceStrain;
-    TensorMap3d  normal;
-
-    // Fastor's const TensorMap cannot be used with slicing and norm operations.
-    // These views are therefore mutable types but are exposed through const Deformation&.
-    Deformation( const double* dU_, const double* dSurfaceStrain_, const double* normal_ )
-      : dU( const_cast< double* >( dU_ ) ),
-        dSurfaceStrain( const_cast< double* >( dSurfaceStrain_ ) ),
-        normal( const_cast< double* >( normal_ ) )
-    {
-    }
+    Tensor6d  dU;             ///< displacement jump increment of the two interface sides
+    Tensor18d dSurfaceStrain; ///< surface displacement gradient increment of the two interface sides
+    Tensor3d  normal;         ///< interface normal
   };
 
   struct TimeIncrement {

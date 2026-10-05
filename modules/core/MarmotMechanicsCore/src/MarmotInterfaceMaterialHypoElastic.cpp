@@ -9,26 +9,12 @@
 #include "Fastor/Fastor.h"
 #include <Eigen/Dense>
 
-#include <cstring>
 #include <stdexcept>
 #include <string>
 
 using namespace Marmot;
 using namespace Marmot::FastorIndices;
 using namespace Marmot::FastorStandardTensors;
-
-namespace {
-  // The TensorMaps handed to computeStress view memory owned by the caller, which is not necessarily
-  // aligned to the SIMD width. Assigning to a TensorMap can use aligned vector stores (Fastor 0.6.4) and
-  // crashes on such memory, so, like the state updates of the other materials, results are written
-  // through the raw pointer.
-  template < typename MapType, typename TensorType >
-  void storeInto( MapType& destination, const TensorType& source )
-  {
-    static_assert( MapType::size() == TensorType::size(), "size mismatch between map and tensor" );
-    std::memcpy( destination.data(), source.data(), TensorType::size() * sizeof( double ) );
-  }
-} // namespace
 
 MarmotInterfaceMaterialHypoElastic::MarmotInterfaceMaterialHypoElastic( const std::string& materialName,
                                                                         const double*      matProperties_,
@@ -99,13 +85,11 @@ void MarmotInterfaceMaterialHypoElastic::computeStress( State&               sta
                                          averageSurfaceGradient;
   const Tensor33d strainIncrement = 0.5 * ( displacementGradient + Fastor::transpose( displacementGradient ) );
 
-  const Eigen::Map< const Eigen::Matrix< double, 3, 3, Eigen::RowMajor > > strainIncrementEigen(
-    strainIncrement.data() );
-  const Vector6d strainIncrementVoigt = ContinuumMechanics::VoigtNotation::strainToVoigt( strainIncrementEigen );
+  const Vector6d strainIncrementVoigt = ContinuumMechanics::VoigtNotation::strainToVoigt(
+    mapEigenToFastor( strainIncrement ) );
 
-  const Eigen::Map< const Eigen::Matrix< double, 3, 3, Eigen::RowMajor > > scaledStressCurrent(
-    state.surfaceStress.data() );
-  const Eigen::Matrix3d scaledStressSym = 0.5 * ( scaledStressCurrent + scaledStressCurrent.transpose() );
+  const auto            scaledStressCurrent = mapEigenToFastor( state.surfaceStress );
+  const Eigen::Matrix3d scaledStressSym     = 0.5 * ( scaledStressCurrent + scaledStressCurrent.transpose() );
   const Vector6d        stressVoigt = ( 1. / h ) * ContinuumMechanics::VoigtNotation::stressToVoigt( scaledStressSym );
 
   Matrix6d tangent               = Matrix6d::Zero();
@@ -116,17 +100,13 @@ void MarmotInterfaceMaterialHypoElastic::computeStress( State&               sta
   baseMaterial->computeStress( baseState, tangent, strainIncrementVoigt, timeInfo );
 
   auto [Z, Q, H, Y] = calculateInterfaceMaterialParameters( normal, tangent );
-  storeInto( Q_ij, Tensor33d( ( 1. / h ) * Q ) );
-  storeInto( Z_ijkl, Tensor3333d( h * Z ) );
-  storeInto( H_ijk, H );
-  storeInto( Y_ijkl, Tensor3333d( h * Y ) );
+  Q_ij              = ( 1. / h ) * Q;
+  Z_ijkl            = h * Z;
+  H_ijk             = H;
+  Y_ijkl            = h * Y;
 
-  const Eigen::Matrix< double, 3, 3, Eigen::RowMajor > scaledStress = h *
-                                                                      ContinuumMechanics::VoigtNotation::voigtToStress(
-                                                                        baseState.stress );
-  const Tensor33d newSurfaceStress( scaledStress.data() );
-  storeInto( surfaceStress, newSurfaceStress );
-  storeInto( force, Tensor3d( ( 1. / h ) * Fastor::einsum< ij, j, to_i >( newSurfaceStress, normal ) ) );
+  mapEigenToFastor( surfaceStress ) = h * ContinuumMechanics::VoigtNotation::voigtToStress( baseState.stress );
+  force                             = ( 1. / h ) * Fastor::einsum< ij, j, to_i >( surfaceStress, normal );
 }
 
 void MarmotInterfaceMaterialHypoElastic::initializeYourself( double* stateVars, int )

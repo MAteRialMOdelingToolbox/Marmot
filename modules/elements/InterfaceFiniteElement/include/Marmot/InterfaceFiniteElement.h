@@ -631,14 +631,26 @@ namespace Marmot::Elements {
       Y_ijkl.setZero();
 
       if constexpr ( nDim == 3 ) {
-        Material::State         materialState{ force.data(),
-                                       surface_stress.data(),
+        Material::State         materialState{ Material::Tensor3d( force.data() ),
+                                       Material::Tensor33d( surface_stress.data() ),
                                        qp.managedStateVars->materialStateVars.data() };
-        Material::Tangents      materialTangents{ Q_ij.data(), Z_ijkl.data(), H_ijk.data(), Y_ijkl.data() };
-        Material::Deformation   materialDeformation{ dU_GPs.data(), dSurface_strain_GPs.data(), qp.normal.data() };
+        Material::Tangents      materialTangents{ Material::Tensor33d( 0.0 ),
+                                             Material::Tensor3333d( 0.0 ),
+                                             Material::Tensor333d( 0.0 ),
+                                             Material::Tensor3333d( 0.0 ) };
+        Material::Deformation   materialDeformation{ Material::Tensor6d( dU_GPs.data() ),
+                                                   Material::Tensor18d( dSurface_strain_GPs.data() ),
+                                                   Material::Tensor3d( qp.normal.data() ) };
         Material::TimeIncrement materialTimeIncrement{ time, dT };
 
         material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
+
+        force          = mapEigenToFastor( materialState.force );
+        surface_stress = Eigen::Map< const SurfaceStressSized >( materialState.surfaceStress.data() );
+        Q_ij           = mapEigenToFastor( materialTangents.Q_ij );
+        H_ijk          = mapEigenToFastor( materialTangents.H_ijk );
+        Z_ijkl         = mapEigenToFastor( materialTangents.Z_ijkl );
+        Y_ijkl         = mapEigenToFastor( materialTangents.Y_ijkl );
       }
       else if constexpr ( nDim == 2 ) {
         using namespace Marmot;
@@ -647,8 +659,7 @@ namespace Marmot::Elements {
          * MarmotInterfaceMaterialHypoElastic is fixed to 3D Fastor tensor types, so a 2D element has
          * to embed its quadrature-point state into the 3D layout and pull the response back out.
          * expandTo3D / reduceTo2D do exactly that, and both place the 2D block at indices [0,2),
-         * which is the layout the material's buffers expect. Every tensor below is stored row major
-         * and contiguously, so .data() can be handed to the material unchanged.
+         * which is the layout the material's tensors expect.
          */
         Fastor::Tensor< double, 3 >    force3d         = expandTo3D( Fastor::Tensor< double, 2 >( force.data() ) );
         Fastor::Tensor< double, 3 >    normal3d        = expandTo3D( Fastor::Tensor< double, 2 >( qp.normal.data() ) );
@@ -670,33 +681,31 @@ namespace Marmot::Elements {
             dSurfaceStrainSide3d.data() );
         }
 
-        Fastor::Tensor< double, 3, 3 >       Q3d( 0.0 );
-        Fastor::Tensor< double, 3, 3, 3, 3 > Z3d( 0.0 );
-        Fastor::Tensor< double, 3, 3, 3 >    H3d( 0.0 );
-        Fastor::Tensor< double, 3, 3, 3, 3 > Y3d( 0.0 );
-
-        Material::State         materialState{ force3d.data(),
-                                       surfaceStress3d.data(),
-                                       qp.managedStateVars->materialStateVars.data() };
-        Material::Tangents      materialTangents{ Q3d.data(), Z3d.data(), H3d.data(), Y3d.data() };
-        Material::Deformation   materialDeformation{ dU3d.data(), dSurfaceStrain3d.data(), normal3d.data() };
+        Material::State       materialState{ force3d, surfaceStress3d, qp.managedStateVars->materialStateVars.data() };
+        Material::Tangents    materialTangents{ Material::Tensor33d( 0.0 ),
+                                             Material::Tensor3333d( 0.0 ),
+                                             Material::Tensor333d( 0.0 ),
+                                             Material::Tensor3333d( 0.0 ) };
+        Material::Deformation materialDeformation{ Material::Tensor6d( dU3d.data() ),
+                                                   Material::Tensor18d( dSurfaceStrain3d.data() ),
+                                                   normal3d };
         Material::TimeIncrement materialTimeIncrement{ time, dT };
 
         material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
 
-        const Fastor::Tensor< double, 2 >          force2d         = reduceTo2D< U >( force3d );
-        const Fastor::Tensor< double, 2, 2 >       surfaceStress2d = reduceTo2D< U, U >( surfaceStress3d );
-        const Fastor::Tensor< double, 2, 2 >       Q2d             = reduceTo2D< U, U >( Q3d );
-        const Fastor::Tensor< double, 2, 2, 2 >    H2d             = reduceTo2D< U, U, U >( H3d );
-        const Fastor::Tensor< double, 2, 2, 2, 2 > Z2d             = reduceTo2D< U, U, U, U >( Z3d );
-        const Fastor::Tensor< double, 2, 2, 2, 2 > Y2d             = reduceTo2D< U, U, U, U >( Y3d );
+        const Fastor::Tensor< double, 2 >          force2d         = reduceTo2D< U >( materialState.force );
+        const Fastor::Tensor< double, 2, 2 >       surfaceStress2d = reduceTo2D< U, U >( materialState.surfaceStress );
+        const Fastor::Tensor< double, 2, 2 >       Q2d             = reduceTo2D< U, U >( materialTangents.Q_ij );
+        const Fastor::Tensor< double, 2, 2, 2 >    H2d             = reduceTo2D< U, U, U >( materialTangents.H_ijk );
+        const Fastor::Tensor< double, 2, 2, 2, 2 > Z2d = reduceTo2D< U, U, U, U >( materialTangents.Z_ijkl );
+        const Fastor::Tensor< double, 2, 2, 2, 2 > Y2d = reduceTo2D< U, U, U, U >( materialTangents.Y_ijkl );
 
-        force          = Eigen::Map< const ForceSized >( force2d.data() );
+        force          = mapEigenToFastor( force2d );
         surface_stress = Eigen::Map< const SurfaceStressSized >( surfaceStress2d.data() );
-        Q_ij           = Eigen::Map< const QMatrixSized >( Q2d.data() );
-        H_ijk          = Eigen::Map< const HMatrixSized >( H2d.data() );
-        Z_ijkl         = Eigen::Map< const ZMatrixSized >( Z2d.data() );
-        Y_ijkl         = Eigen::Map< const YMatrixSized >( Y2d.data() );
+        Q_ij           = mapEigenToFastor( Q2d );
+        H_ijk          = mapEigenToFastor( H2d );
+        Z_ijkl         = mapEigenToFastor( Z2d );
+        Y_ijkl         = mapEigenToFastor( Y2d );
       }
 
       qp.managedStateVars->force         = force;

@@ -44,22 +44,28 @@ namespace {
                                double                              timeOld,
                                double                              dT )
   {
-    double Q[9]  = { 0. };
-    double Z[81] = { 0. };
-    double H[27] = { 0. };
-    double Y[81] = { 0. };
+    using Material = MarmotInterfaceMaterialHypoElastic;
 
-    MarmotInterfaceMaterialHypoElastic::State state{ response.force.data(), response.surfaceStress.data(), stateVars };
-    MarmotInterfaceMaterialHypoElastic::Tangents      tangents{ Q, Z, H, Y };
-    MarmotInterfaceMaterialHypoElastic::Deformation   deformation{ dU, dSurfaceStrain, normal };
-    MarmotInterfaceMaterialHypoElastic::TimeIncrement timeIncrement{ timeOld, dT };
+    Material::State         state{ Material::Tensor3d( response.force.data() ),
+                           Material::Tensor33d( response.surfaceStress.data() ),
+                           stateVars };
+    Material::Tangents      tangents{ Material::Tensor33d( 0.0 ),
+                                 Material::Tensor3333d( 0.0 ),
+                                 Material::Tensor333d( 0.0 ),
+                                 Material::Tensor3333d( 0.0 ) };
+    Material::Deformation   deformation{ Material::Tensor6d( dU ),
+                                       Material::Tensor18d( dSurfaceStrain ),
+                                       Material::Tensor3d( normal ) };
+    Material::TimeIncrement timeIncrement{ timeOld, dT };
 
     interfaceMaterial.computeStress( state, tangents, deformation, timeIncrement );
 
-    response.Q = Eigen::Map< const Eigen::VectorXd >( Q, 9 );
-    response.Z = Eigen::Map< const Eigen::VectorXd >( Z, 81 );
-    response.H = Eigen::Map< const Eigen::VectorXd >( H, 27 );
-    response.Y = Eigen::Map< const Eigen::VectorXd >( Y, 81 );
+    response.force         = Marmot::mapEigenToFastor( state.force );
+    response.surfaceStress = Marmot::mapEigenToFastor( state.surfaceStress );
+    response.Q             = Eigen::Map< const Eigen::VectorXd >( tangents.Q_ij.data(), 9 );
+    response.Z             = Eigen::Map< const Eigen::VectorXd >( tangents.Z_ijkl.data(), 81 );
+    response.H             = Eigen::Map< const Eigen::VectorXd >( tangents.H_ijk.data(), 27 );
+    response.Y             = Eigen::Map< const Eigen::VectorXd >( tangents.Y_ijkl.data(), 81 );
   }
 
   void testGenericInterfaceAgainstBulkMaterial( const std::string& materialName,
