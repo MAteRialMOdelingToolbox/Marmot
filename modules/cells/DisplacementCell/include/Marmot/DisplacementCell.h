@@ -383,8 +383,11 @@ namespace Marmot::Cells {
     using namespace Fastor;
     using namespace Marmot::FastorIndices;
 
-    Tensor< double, nNodes, nDim >               r_U( 0.0 );
-    Tensor< double, nDim, nNodes, nDim, nNodes > k_UU( 0.0 );
+    Tensor< double, nNodes, nDim > r_U( 0.0 );
+
+    // the tangent is assembled directly into the output: a fixed-size nDim*nNodes x nDim*nNodes tensor and its einsum
+    // temporaries (~300 kB each for a 64-node hexahedron) overflow the 1 MB default stack of Windows
+    Eigen::Map< Eigen::MatrixXd > K( dfInt_dQ_, sizeLoadVector, sizeLoadVector );
 
     for ( const auto& mpl : _materialPointLocations ) {
 
@@ -399,14 +402,24 @@ namespace Marmot::Cells {
       const auto dS_dqU = evaluate( einsum< ijkl, lB >( mp->tangents.dS_dDeltaF, dN_dY ) );
 
       r_U += einsum< iA, ij >( dN_dx, S ) * V0;
-      k_UU += ( einsum< iA, ijkB, to_jAkB >( dN_dx, dS_dqU ) - einsum< kA, ij, iB, to_jAkB >( dN_dx, S, dN_dx ) ) * V0;
+
+      // K_(Aj)(Bk) = ( dN_A/dx_i dS_ij/dq_Bk - dN_A/dx_k S_ij dN_B/dx_i ) V0
+      const auto SdN_dx = evaluate( einsum< ij, iB >( S, dN_dx ) ); // S_ij dN_B/dx_i
+      for ( int A = 0; A < nNodes; A++ )
+        for ( int j = 0; j < nDim; j++ )
+          for ( int B = 0; B < nNodes; B++ )
+            for ( int k = 0; k < nDim; k++ ) {
+              double kAjBk = -dN_dx( k, A ) * SdN_dx( j, B );
+              for ( int i = 0; i < nDim; i++ )
+                kAjBk += dN_dx( i, A ) * dS_dqU( i, j, k, B );
+              K( A * nDim + j, B * nDim + k ) += kAjBk * V0;
+            }
     }
 
     using namespace Eigen;
 
     // Due to Fastor Bug #139, we cannot directly write using a TensorMap
     Map< RhsSized >( fInt_ ) += Map< Matrix< double, bsU, 1 > >( r_U.data() );
-    Map< KeSizedMatrix >( dfInt_dQ_ ) += Map< Matrix< double, bsU, bsU > >( torowmajor( k_UU ).data() );
   }
 
   template < int nDim, int nNodes, class CellBase, GeometryCellPolicy< nDim, nNodes > GeometryCell >

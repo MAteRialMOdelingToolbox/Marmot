@@ -75,7 +75,7 @@ namespace Marmot::Meshfree {
     using ParentPointParticle = DisplacementParticle< nDim >;      ///< the point particle base class
     using ParticleDomainType  = ParticleDomain< nDim, nVertices >; ///< the particle geometry type
 
-    ParticleDomainType _particleDomain; ///< geometry and smoothing domain of the particle
+    ParticleDomainType _particleDomain;                            ///< geometry and smoothing domain of the particle
 
   public:
     /// how the smoothing domain follows the deformation

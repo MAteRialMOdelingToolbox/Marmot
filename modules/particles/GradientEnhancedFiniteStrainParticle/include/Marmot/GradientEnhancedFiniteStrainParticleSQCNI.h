@@ -88,7 +88,7 @@ namespace Marmot::Meshfree {
   protected:
     using LagrangeCellType = MarmotLagrangeCell< nDim, nVertices >; ///< geometry of the smoothing domain
 
-    const SmoothingDomainUpdateType _smoothingVolumeUpdateType; ///< update type of the smoothing domain
+    const SmoothingDomainUpdateType _smoothingVolumeUpdateType;     ///< update type of the smoothing domain
 
     const Eigen::Matrix< double, nDim, nVertices > _vertexCoordinates_Undeformed; ///< undeformed vertex coordinates
 

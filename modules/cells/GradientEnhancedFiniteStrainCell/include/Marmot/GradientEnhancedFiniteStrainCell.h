@@ -438,10 +438,9 @@ namespace Marmot::Cells {
     Tensor< double, nNodes, nDim > r_U( 0.0 );
     Tensor< double, nNodes >       r_N( 0.0 );
 
-    Tensor< double, nDim, nNodes, nDim, nNodes > k_UU( 0.0 );
-    Tensor< double, nDim, nNodes, nNodes >       k_UN( 0.0 );
-    Tensor< double, nNodes, nDim, nNodes >       k_NU( 0.0 );
-    Tensor< double, nNodes, nNodes >             k_NN( 0.0 );
+    // the tangent is assembled directly into the output: fixed-size nNodes x nNodes blocks and their einsum temporaries
+    // (~300 kB each for the displacement block of a 64-node hexahedron) overflow the 1 MB default stack of Windows
+    Eigen::Map< Eigen::MatrixXd > K( dfInt_dQ_, sizeLoadVector, sizeLoadVector );
 
     for ( const auto& mpl : _materialPointLocations ) {
 
@@ -465,18 +464,40 @@ namespace Marmot::Cells {
 
       // clang-format off
       const auto dS_dqU = evaluate( + einsum< ijkl, lB >( t.dS_dDeltaF, dN_dY ) );
-      const auto dS_dqN = evaluate( + einsum< ij,    B >( t.dS_dN,      N     ) );
       const auto dL_dqU = evaluate( + einsum< kl,   lB >( t.dL_dDeltaF, dN_dY ) );
 
       r_U  += ( + einsum< iA, ij >( dN_dx, S )                                                          ) * V0;
       r_N  += ( N * dNonLocalField + c * einsum< iA, iB, B >( dN_dX, dN_dX, dQN ) - N * dLocalField    ) * V0;
-
-      k_UU += ( + einsum< iA, ijkB, to_jAkB >( dN_dx, dS_dqU ) - einsum< kA, ij, iB, to_jAkB >( dN_dx, S, dN_dx ) ) * V0;
-      k_UN += ( + einsum< iA,  ijB,  to_jAB >( dN_dx, dS_dqN )                                          ) * V0;
-      k_NU += ( - einsum<  A,   kB          >( N,     dL_dqU )                                          ) * V0;
-      k_NN += ( + einsum<  A,    B          >( N,     N      ) * ( 1. - t.dL_dN )
-                + einsum< iA,   iB          >( dN_dX, dN_dX  ) * c                                      ) * V0;
       // clang-format on
+
+      const auto SdN_dx  = evaluate( einsum< ij, iB >( S, dN_dx ) );       // S_ij dN_B/dx_i
+      const auto dSdN_dx = evaluate( einsum< ij, iA >( t.dS_dN, dN_dx ) ); // dS_ij/dN dN_A/dx_i
+      const auto dNdN_dX = evaluate( einsum< iA, iB >( dN_dX, dN_dX ) );   // dN_A/dX_i dN_B/dX_i
+
+      for ( int A = 0; A < nNodes; A++ ) {
+        for ( int j = 0; j < nDim; j++ ) {
+          const int rowU = idxU + A * nDim + j;
+          for ( int B = 0; B < nNodes; B++ ) {
+            // K_UU: ( dN_A/dx_i dS_ij/dq_Bk - dN_A/dx_k S_ij dN_B/dx_i ) V0
+            for ( int k = 0; k < nDim; k++ ) {
+              double kAjBk = -dN_dx( k, A ) * SdN_dx( j, B );
+              for ( int i = 0; i < nDim; i++ )
+                kAjBk += dN_dx( i, A ) * dS_dqU( i, j, k, B );
+              K( rowU, idxU + B * nDim + k ) += kAjBk * V0;
+            }
+            // K_UN: dN_A/dx_i dS_ij/dN N_B V0
+            K( rowU, idxN + B ) += dSdN_dx( j, A ) * N( B ) * V0;
+          }
+        }
+        const int rowN = idxN + A;
+        for ( int B = 0; B < nNodes; B++ ) {
+          // K_NU: - N_A dL/dq_Bk V0
+          for ( int k = 0; k < nDim; k++ )
+            K( rowN, idxU + B * nDim + k ) -= N( A ) * dL_dqU( k, B ) * V0;
+          // K_NN: ( N_A N_B ( 1 - dL/dN ) + c dN_A/dX_i dN_B/dX_i ) V0
+          K( rowN, idxN + B ) += ( N( A ) * N( B ) * ( 1. - t.dL_dN ) + c * dNdN_dX( A, B ) ) * V0;
+        }
+      }
     }
 
     using namespace Eigen;
@@ -485,12 +506,6 @@ namespace Marmot::Cells {
     Map< RhsSized > P( fInt_ );
     P.template segment< bsU >( idxU ) += Map< Matrix< double, bsU, 1 > >( r_U.data() );
     P.template segment< bsN >( idxN ) += Map< Matrix< double, bsN, 1 > >( r_N.data() );
-
-    Map< KeSizedMatrix > K( dfInt_dQ_ );
-    K.template block< bsU, bsU >( idxU, idxU ) += Map< Matrix< double, bsU, bsU > >( torowmajor( k_UU ).data() );
-    K.template block< bsU, bsN >( idxU, idxN ) += Map< Matrix< double, bsU, bsN > >( torowmajor( k_UN ).data() );
-    K.template block< bsN, bsU >( idxN, idxU ) += Map< Matrix< double, bsN, bsU > >( torowmajor( k_NU ).data() );
-    K.template block< bsN, bsN >( idxN, idxN ) += Map< Matrix< double, bsN, bsN > >( torowmajor( k_NN ).data() );
   }
 
   template < int nDim, int nNodes, class CellBase, GeometryCellPolicy< nDim, nNodes > GeometryCell >
