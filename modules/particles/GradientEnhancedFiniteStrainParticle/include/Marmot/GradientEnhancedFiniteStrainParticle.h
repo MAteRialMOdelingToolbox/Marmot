@@ -63,8 +63,13 @@ namespace Marmot::Meshfree {
    * @f]
    * i.e. the Helmholtz equation @f$ \bar{N} - c\,\nabla_X^2\bar{N} = L @f$ is solved in the undeformed configuration
    * for the INCREMENT of the nonlocal field, with the change @f$ \Delta L @f$ of the local driving force
-   * (GradientEnhancedFiniteStrainMaterialPoint::response) as its source. The acceleration @f$ \boldsymbol{a} @f$
-   * follows from the Newmark-beta update of @f$ \Delta\boldsymbol{u} @f$ (@f$ \beta = 0 @f$ switches the inertia off).
+   * (GradientEnhancedFiniteStrainMaterialPoint::response) as its source: the nodal values of the reproducing kernels
+   * carry only the increment of the step, and the kernels are rebuilt on the moved nodes every increment, so the total
+   * form @f$ T_A(\bar{N} - L) + c\,\nabla_X T_A\cdot\nabla_X\bar{N} @f$ would need @f$ \nabla_X\bar{N} @f$ as an
+   * accumulated state of the particle (tested: it changed the nonlocal field by less than the step dependence of the
+   * kinematics, without bringing it closer to the result of a single increment). The acceleration @f$ \boldsymbol{a}
+   * @f$ follows from the Newmark-beta update of @f$ \Delta\boldsymbol{u} @f$ (@f$ \beta = 0 @f$ switches the inertia
+   * off).
    *
    * **Tangent.** With @f$ \partial\boldsymbol{\tau}/\partial\Delta\boldsymbol{F} @f$ etc. from the material point,
    * @f[

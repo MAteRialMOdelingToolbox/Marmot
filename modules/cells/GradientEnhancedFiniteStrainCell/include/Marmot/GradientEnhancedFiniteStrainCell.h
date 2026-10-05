@@ -77,6 +77,14 @@ namespace Marmot::Cells {
    * change of the local driving force reported by the material point, and @f$ c = R^2 @f$ from the material. The
    * reference gradient @f$ \nabla_X @f$ does not depend on the current increment.
    *
+   * The increment form is used because the grid is reset every increment, so its nodal values carry only the
+   * increment of the step; the total form of the element of the finite element method,
+   * @f$ N_A(\bar{N} - L) + c\,\nabla_X N_A\cdot\nabla_X\bar{N} @f$, would need @f$ \nabla_X\bar{N} @f$ as an
+   * accumulated state of the material point. It thus assumes that the equation of the previous increment holds with
+   * the current grid and point positions; storing @f$ \nabla_X\bar{N} @f$ instead was tested and changed the
+   * nonlocal field by less than the step dependence of the kinematics, without bringing it closer to the result of
+   * a single increment.
+   *
    * The consistent tangent consists of
    * @f[
    *   K^{UU}_{jAkB} = \sum_p \Bigl( \frac{\partial N_A}{\partial x_i}\,
@@ -613,11 +621,14 @@ namespace Marmot::Cells {
 
         r_U -= outer( mpl.N, f );
 
-        const Tensor< double, nDim, nNodes, nDim, nNodes > dRU_dQU = -einsum< A, jkB, to_jAkB >( mpl.N, df_dQU );
-
-        Eigen::Map< KeSizedMatrix > K( dFExt_dQ_ );
-        K.template block< bsU, bsU >( idxU, idxU ) += Eigen::Map< const Eigen::Matrix< double, bsU, bsU > >(
-          torowmajor( dRU_dQU ).data() );
+        // dR_(Aj)/dQ_(Bk) = -N_A df_j/dQ_Bk, assembled directly: a fixed-size tensor of the full block (~300 kB for a
+        // 64-node hexahedron) and its temporaries overflow the 1 MB default stack of Windows
+        Eigen::Map< Eigen::MatrixXd > K( dFExt_dQ_, sizeLoadVector, sizeLoadVector );
+        for ( int A = 0; A < nNodes; A++ )
+          for ( int j = 0; j < nDim; j++ )
+            for ( int B = 0; B < nNodes; B++ )
+              for ( int k = 0; k < nDim; k++ )
+                K( idxU + A * nDim + j, idxU + B * nDim + k ) -= mpl.N( A ) * df_dQU( j, k, B );
       }
       break;
     }

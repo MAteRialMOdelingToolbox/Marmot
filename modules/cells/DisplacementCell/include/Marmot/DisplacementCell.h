@@ -525,11 +525,14 @@ namespace Marmot::Cells {
 
         r_U -= outer( mpl.N, f );
 
-        const Tensor< double, nDim, nNodes, nDim, nNodes > dRU_dQU = -einsum< A, jkB, to_jAkB >( mpl.N, df_dQU );
-
-        Eigen::Map< KeSizedMatrix > K( dFExt_dQ_ );
-        K.template block< bsU, bsU >( idxU, idxU ) += Eigen::Map< const Eigen::Matrix< double, bsU, bsU > >(
-          torowmajor( dRU_dQU ).data() );
+        // dR_(Aj)/dQ_(Bk) = -N_A df_j/dQ_Bk, assembled directly: a fixed-size tensor of the full block (~300 kB for a
+        // 64-node hexahedron) and its temporaries overflow the 1 MB default stack of Windows
+        Eigen::Map< Eigen::MatrixXd > K( dFExt_dQ_, sizeLoadVector, sizeLoadVector );
+        for ( int A = 0; A < nNodes; A++ )
+          for ( int j = 0; j < nDim; j++ )
+            for ( int B = 0; B < nNodes; B++ )
+              for ( int k = 0; k < nDim; k++ )
+                K( idxU + A * nDim + j, idxU + B * nDim + k ) -= mpl.N( A ) * df_dQU( j, k, B );
       }
       break;
     }
