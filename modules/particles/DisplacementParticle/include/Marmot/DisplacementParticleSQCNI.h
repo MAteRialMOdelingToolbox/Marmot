@@ -34,6 +34,7 @@
 #include <Eigen/Dense>
 #include <Eigen/src/Core/util/Constants.h>
 #include <Fastor/Fastor.h>
+#include <cmath>
 
 namespace Marmot::Meshfree {
 
@@ -74,7 +75,7 @@ namespace Marmot::Meshfree {
     using ParentPointParticle = DisplacementParticle< nDim >;      ///< the point particle base class
     using ParticleDomainType  = ParticleDomain< nDim, nVertices >; ///< the particle geometry type
 
-    ParticleDomainType _particleDomain;                            ///< geometry and smoothing domain of the particle
+    ParticleDomainType _particleDomain; ///< geometry and smoothing domain of the particle
 
   public:
     /// how the smoothing domain follows the deformation
@@ -352,7 +353,8 @@ namespace Marmot::Meshfree {
      *   dA_Y / J_Y @f$, @f$ J_Y = \det\boldsymbol{F}_n @f$, i.e. the Cauchy traction
      *   @f$ \boldsymbol{\sigma}\,\boldsymbol{n}\,da @f$ of the particle's own stress on the face; its tangent
      *   contains the material part (from @f$ \partial\boldsymbol{\tau}/\partial\Delta\boldsymbol{F} @f$) and the
-     *   geometric part (from @f$ \Delta\boldsymbol{F}^{-\mathsf T} @f$). load is not used.
+     *   geometric part (from @f$ \Delta\boldsymbol{F}^{-\mathsf T} @f$). load[0] (or no load) selects the
+     *   corrected components as a bit mask: 1 = x, 2 = y, 4 = z, 0 = all.
      *
      * @param[in] type The type of distributed load (e.g., DisplacementParticle::Pressure).
      * @param[in] surfaceID The ID of the boundary face where the load is applied.
@@ -525,7 +527,7 @@ namespace Marmot::Meshfree {
       // weak form is tau * deltaF^-T * N dA_Y / J_Y, with J_Y the Jacobian of the intermediate configuration
       const double  JY       = determinant( this->dY_dX() );
       const TensorD v        = transpose( deltaFInv ) % N_dAY / JY; // F^-T * N * dA / J_Y
-      const TensorD traction = S % v;                               // tau * v
+      TensorD       traction = S % v;                               // tau * v
 
       Tensor< double, nDim, nDim, nDim > df_dDeltaF;
       df_dDeltaF.zeros();
@@ -548,6 +550,20 @@ namespace Marmot::Meshfree {
             df_dDeltaF( i, m, M ) = geo + mat;
           }
         }
+      }
+
+      // load[0] selects the corrected components as a bit mask (1 = x, 2 = y, 4 = z; 0 or no load = all): on a face
+      // where only the normal displacement is prescribed (symmetry plane, frictionless platen) only that component of
+      // the traction is a reaction, the tangential one is a natural (zero) condition
+      const int mask = load_ ? static_cast< int >( std::lround( load_[0] ) ) : 0;
+      TensorD   sel;
+      for ( int i = 0; i < nDim; ++i )
+        sel( i ) = ( mask == 0 || ( mask >> i ) & 1 ) ? 1.0 : 0.0;
+      for ( int i = 0; i < nDim; ++i ) {
+        traction( i ) *= sel( i );
+        for ( int m = 0; m < nDim; ++m )
+          for ( int M = 0; M < nDim; ++M )
+            df_dDeltaF( i, m, M ) *= sel( i );
       }
 
       Eigen::RowVectorXd testBoundary = Eigen::RowVectorXd::Zero( this->_nNodes );

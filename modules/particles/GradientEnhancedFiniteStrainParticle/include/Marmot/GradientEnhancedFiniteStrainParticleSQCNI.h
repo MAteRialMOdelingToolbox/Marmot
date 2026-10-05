@@ -33,6 +33,7 @@
 #include <Eigen/Core>
 #include <Eigen/Dense>
 #include <Fastor/Fastor.h>
+#include <cmath>
 
 namespace Marmot::Meshfree {
 
@@ -87,7 +88,7 @@ namespace Marmot::Meshfree {
   protected:
     using LagrangeCellType = MarmotLagrangeCell< nDim, nVertices >; ///< geometry of the smoothing domain
 
-    const SmoothingDomainUpdateType _smoothingVolumeUpdateType;     ///< update type of the smoothing domain
+    const SmoothingDomainUpdateType _smoothingVolumeUpdateType; ///< update type of the smoothing domain
 
     const Eigen::Matrix< double, nDim, nVertices > _vertexCoordinates_Undeformed; ///< undeformed vertex coordinates
 
@@ -283,18 +284,19 @@ namespace Marmot::Meshfree {
      * - `PRESSURE` (follower pressure @f$ p @f$ = `load[0]`):
      *   @f$ \boldsymbol{f} = \Delta J\,\Delta\boldsymbol{F}^{-\mathsf{T}}\,p\,\boldsymbol{N}\,dA_Y @f$,
      *   @f$ f_{Ai} \mathrel{-}= T_A(\boldsymbol{Y}_f)\,f_i @f$.
-     * - `CWFCORRECTION` (consistent weak form correction, no load value): the boundary term of the momentum weak
+     * - `CWFCORRECTION` (consistent weak form correction): the boundary term of the momentum weak
      *   form, @f$ \boldsymbol{t} = \boldsymbol{\tau}\,\Delta\boldsymbol{F}^{-\mathsf{T}}\,\boldsymbol{N}\,dA_Y / J_Y
      *   @f$ with @f$ J_Y = \det\boldsymbol{F}_n @f$, @f$ f_{Ai} \mathrel{-}= T_A(\boldsymbol{Y}_f)\,t_i @f$; its
      * tangent contains the geometric part from @f$ \Delta\boldsymbol{F}^{-\mathsf{T}} @f$, the material part from
      *   @f$ \partial\boldsymbol{\tau}/\partial\Delta\boldsymbol{F} @f$ and the coupling
-     *   @f$ \partial\boldsymbol{\tau}/\partial\bar{N} @f$ to the nonlocal dofs.
+     *   @f$ \partial\boldsymbol{\tau}/\partial\bar{N} @f$ to the nonlocal dofs. `load[0]` (or no load) selects
+     *   the corrected components as a bit mask: 1 = x, 2 = y, 4 = z, 0 = all.
      *
      * Neither load contributes to the nonlocal residual. Both read the state of the last computePhysicsKernels().
      *
      * @param[in]     type      Load type (see getSupportedDistributedLoadTypes()).
      * @param[in]     surfaceID Face id of the smoothing domain (1-based).
-     * @param[in]     load      Load values (`PRESSURE`: the pressure; `CWFCORRECTION`: unused).
+     * @param[in]     load      Load values (`PRESSURE`: the pressure; `CWFCORRECTION`: component mask, may be null).
      * @param[in,out] fExt      Load vector.
      * @param[in,out] dExt_dQ   Load tangent, column-major.
      * @param[in]     timeNew   Time at the end of the increment (unused).
@@ -536,7 +538,7 @@ namespace Marmot::Meshfree {
       const double                       JY        = determinant( _mp.dY_dX() );
 
       const TensorD v        = transpose( deltaFInv ) % N_dAY / JY;
-      const TensorD traction = S % v;
+      TensorD       traction = S % v;
 
       // d traction_i / d deltaF_mM: the geometric part from d(deltaF^-T), the material part from d tau
       Tensor< double, nDim, nDim, nDim > dTraction_dDeltaF( 0.0 );
@@ -547,7 +549,22 @@ namespace Marmot::Meshfree {
               dTraction_dDeltaF( i, m, M ) += -S( i, j ) * v( m ) * deltaFInv( M, j ) +
                                               t.dS_dDeltaF( i, j, m, M ) * v( j );
 
-      const TensorD dTraction_dN = t.dS_dN % v;
+      TensorD dTraction_dN = t.dS_dN % v;
+
+      // load[0] selects the corrected components as a bit mask (1 = x, 2 = y, 4 = z; 0 or no load = all): on a face
+      // where only the normal displacement is prescribed (symmetry plane, frictionless platen) only that component of
+      // the traction is a reaction, the tangential one is a natural (zero) condition
+      const int mask = load_ ? static_cast< int >( std::lround( load_[0] ) ) : 0;
+      TensorD   sel;
+      for ( int i = 0; i < nDim; ++i )
+        sel( i ) = ( mask == 0 || ( mask >> i ) & 1 ) ? 1.0 : 0.0;
+      for ( int i = 0; i < nDim; ++i ) {
+        traction( i ) *= sel( i );
+        dTraction_dN( i ) *= sel( i );
+        for ( int m = 0; m < nDim; ++m )
+          for ( int M = 0; M < nDim; ++M )
+            dTraction_dDeltaF( i, m, M ) *= sel( i );
+      }
 
       Eigen::RowVectorXd testBoundary = Eigen::RowVectorXd::Zero( ParentPointParticle::_nNodes );
 

@@ -481,6 +481,23 @@ namespace {
                                MakeString() << name << ( afterStep ? ", second step" : ", first step" )
                                             << ": weak-form correction does not balance a homogeneous state, "
                                             << std::sqrt( res / ref ) );
+
+      // a component mask (load 1 = x only) keeps exactly those rows of the full correction, residual and tangent
+      {
+        Eigen::VectorXd Pm    = Eigen::VectorXd::Zero( s.nDof() );
+        Eigen::MatrixXd Km    = Eigen::MatrixXd::Zero( s.nDof(), s.nDof() );
+        const double    xOnly = 1.0;
+        for ( int f = 1; f <= numberOfFaces( shape ); f++ )
+          s.particle->computeDistributedLoad( cwf, f, &xOnly, Pm.data(), Km.data(), 1.0, 1.0 );
+        double err = 0;
+        for ( int r = 0; r < s.nDof(); r++ ) {
+          const double kept = r % nB == 0 ? 1.0 : 0.0;
+          err += std::abs( Pm( r ) - kept * Pc( r ) ) + ( Km.row( r ) - kept * Kc.row( r ) ).cwiseAbs().sum();
+        }
+        throwExceptionOnFailure( err < 1e-12 * ( 1 + Pc.norm() + Kc.norm() ),
+                                 MakeString()
+                                   << name << ": masked weak-form correction differs from the selected rows, " << err );
+      }
     }
   }
 
