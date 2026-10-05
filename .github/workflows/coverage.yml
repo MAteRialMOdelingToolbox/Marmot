@@ -61,7 +61,9 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Debug -DMARMOT_ENABLE_COVERAGE=ON ..
+          # -O0 without -g: line coverage only needs the gcov notes, not DWARF. Since every test executable links the
+          # objects of all modules, the debug info made each one ~480 MB, ~37 GB in total, more than the runner's disk.
+          cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS_DEBUG=-O0 -DMARMOT_ENABLE_COVERAGE=ON ..
           make -j$(nproc)
 
       - name: Run tests
