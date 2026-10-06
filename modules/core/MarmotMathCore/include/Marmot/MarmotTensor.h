@@ -262,7 +262,15 @@ namespace Marmot {
 
     /**
      * @brief Map an object's raw data as a fixed-size Eigen matrix (const version).
-     * @copydetails as
+     *
+     * @details Creates an `Eigen::Map` view of @p t reinterpreted as an `x`-by-`y` matrix. No data is copied; the map
+     * directly references the storage returned by `t.data()`.
+     *
+     * @tparam x Number of rows (compile-time).
+     * @tparam y Number of columns (compile-time).
+     * @tparam T Object type, must define `Scalar` and provide `data()`.
+     * @param t Input object.
+     * @return `Eigen::Map<const Eigen::Matrix<typename T::Scalar, x, y>>`.
      */
     template < int x, int y, typename T, typename = void >
     auto as( const T& t )

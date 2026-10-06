@@ -84,7 +84,7 @@ jobs:
             '*/Fastor/*' \
             '*/build/*' \
             --output-file coverage.filtered.info \
-            --ignore-errors unused
+            --ignore-errors unused,unused
           lcov --list coverage.filtered.info
 
       - name: Upload coverage to Codecov
