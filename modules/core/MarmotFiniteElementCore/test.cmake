@@ -5,7 +5,7 @@ SET(CURR_TEST_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/test")
 add_marmot_test("TestMarmotFiniteElementBoundary" "${CURR_TEST_SOURCE_DIR}/TestMarmotFiniteElementBoundary.cpp")
 
 # Tests for MarmotFiniteElementSpatialWrapper
-add_marmot_test("TestMarmotFiniteElementSpatialWrapper" "${CURR_TEST_SOURCE_DIR}/TestMarmotFiniteElementSpatialWrapper.cpp")
+add_marmot_test("TestMarmotFiniteElementSpatialWrapper" "${CURR_TEST_SOURCE_DIR}/TestMarmotFiniteElementSpatialWrapper.cpp" REQUIRES DisplacementFiniteElement LinearElastic)
 
 # Tests for MarmotDofLayoutTools
 add_marmot_test("TestMarmotDofLayoutTools" "${CURR_TEST_SOURCE_DIR}/TestMarmotDofLayoutTools.cpp")
@@ -21,3 +21,6 @@ add_marmot_test("TestMarmotGeometryElement" "${CURR_TEST_SOURCE_DIR}/TestMarmotG
 
 # Tests for MarmotFiniteElementBasic
 add_marmot_test("TestMarmotFiniteElementBasic" "${CURR_TEST_SOURCE_DIR}/TestMarmotFiniteElementBasic.cpp")
+
+# Tests for MarmotBulkViscosity
+add_marmot_test("TestMarmotBulkViscosity" "${CURR_TEST_SOURCE_DIR}/TestMarmotBulkViscosity.cpp")

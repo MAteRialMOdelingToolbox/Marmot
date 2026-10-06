@@ -2,4 +2,4 @@
 SET(CURR_TEST_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/test")
 
 # Tests for B4 material
-add_marmot_test("TestB4" "${CURR_TEST_SOURCE_DIR}/test.cpp" -s)
+add_marmot_test("TestB4" "${CURR_TEST_SOURCE_DIR}/test.cpp")

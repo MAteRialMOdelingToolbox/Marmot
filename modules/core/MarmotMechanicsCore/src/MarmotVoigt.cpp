@@ -12,22 +12,6 @@ namespace Marmot {
     using namespace Constants;
     using namespace ContinuumMechanics::HaighWestergaard;
 
-    const Vector6d P    = ( Vector6d() << 1, 1, 1, 2, 2, 2 ).finished();
-    const Vector6d PInv = ( Vector6d() << 1, 1, 1, .5, .5, .5 ).finished();
-
-    const Vector6d I    = ( Vector6d() << 1, 1, 1, 0, 0, 0 ).finished();
-    const Vector6d IHyd = ( Vector6d() << 1. / 3, 1. / 3, 1. / 3, 0, 0, 0 ).finished();
-
-    const Matrix6d IDev = ( Matrix6d() <<
-                              // clang-format off
-        2./3,    -1./3,   -1./3,    0,  0,  0,
-        -1./3,   2./3,    -1./3,    0,  0,  0,
-        -1./3,   -1./3,   2./3,     0,  0,  0,
-        0,          0,      0,      1,  0,  0,
-        0,          0,      0,      0,  1,  0,
-        0,          0,      0,      0,  0,  1).finished();
-    // clang-format on
-
     Vector6d strainToVoigt( const Matrix3d& strainTensor )
     {
       Vector6d strain;
@@ -198,7 +182,7 @@ namespace Marmot {
           dPhi_dR = 0.0;
         }
         else if ( r >= 1 ) {
-          phi     = 1.0;
+          phi     = 0.0;
           dPhi_dR = 0.0;
         }
         else {
@@ -461,9 +445,9 @@ namespace Marmot {
 
         // clang-format off
                 Matrix36d projectMatrix;
-                projectMatrix << n( 0 ),      0,      0, n( 1 ), 0,      n( 2 ),
-                                      0, n( 1 ),      0, n( 0 ), n( 2 ),      0,
-                                      0,      0, n( 2 ),      0, n( 1 ), n( 0 );
+                projectMatrix << n( 0 ),      0,      0, n( 1 ), n( 2 ),      0,
+                                      0, n( 1 ),      0, n( 0 ),      0, n( 2 ),
+                                      0,      0, n( 2 ),      0, n( 0 ), n( 1 );
         // clang-format on
         return projectMatrix;
       }
@@ -523,14 +507,14 @@ namespace Marmot {
         stiffnessTensorGlobal.setZero();
         Matrix3d N = transformedCoordinateSystem.transpose();
 
-        for ( size_t i = 0; i < 3; i++ )
-          for ( size_t j = 0; j < 3; j++ )
-            for ( size_t k = 0; k < 3; k++ )
-              for ( size_t l = 0; l < 3; l++ )
-                for ( size_t m = 0; m < 3; m++ )
-                  for ( size_t n = 0; n < 3; n++ )
-                    for ( size_t o = 0; o < 3; o++ )
-                      for ( size_t p = 0; p < 3; p++ )
+        for ( int i = 0; i < 3; i++ )
+          for ( int j = 0; j < 3; j++ )
+            for ( int k = 0; k < 3; k++ )
+              for ( int l = 0; l < 3; l++ )
+                for ( int m = 0; m < 3; m++ )
+                  for ( int n = 0; n < 3; n++ )
+                    for ( int o = 0; o < 3; o++ )
+                      for ( int p = 0; p < 3; p++ )
                         stiffnessTensorGlobal( i, j, k, l ) += N( i, m ) * N( j, n ) * N( k, o ) * N( l, p ) *
                                                                stiffnessTensorLocal( m, n, o, p );
 

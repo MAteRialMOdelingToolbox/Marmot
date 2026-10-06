@@ -2,6 +2,8 @@
 #include "Marmot/MarmotMaterialPointSolverHypoElastic.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
+#include <algorithm>
+#include <array>
 
 // Use namespaces for brevity
 using namespace Marmot::Testing;
@@ -383,6 +385,156 @@ void testGetDensityOrthotropic()
                            "Density retrieval failed for isotropic material in " + std::string( __PRETTY_FUNCTION__ ) );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// The following tests exercise MarmotMaterialHypoElastic's default (base-class)
+// implementations, none of which LinearElastic overrides: computeStressExplicit,
+// computePlaneStress, computeUniaxialStress, getMaximumWaveSpeed, getStateView,
+// initializeYourself and setCharacteristicElementLength.
+// ─────────────────────────────────────────────────────────────────────────────
+
+namespace {
+  std::array< double, 2 >          isotropicProps_ = { 20000., 0.25 };
+  Marmot::Materials::LinearElastic makeIsotropicMaterial()
+  {
+    return { isotropicProps_.data(), 2, 1 };
+  }
+} // namespace
+
+void testComputeStressExplicitMatchesComputeStress()
+{
+  using namespace Marmot;
+  auto matA = makeIsotropicMaterial();
+  auto matB = makeIsotropicMaterial();
+
+  Vector6d dStrain = Vector6d::Zero();
+  dStrain( 0 )     = 1e-3;
+  dStrain( 3 )     = 2e-4;
+
+  MarmotMaterialHypoElastic::timeInfo timeInfo{ 0., 1. };
+
+  MarmotMaterialHypoElastic::state3D stateA;
+  Matrix6d                           tanA;
+  // LinearElastic re-declares computeStress() under `protected`, so call it through the base
+  // class (as production code always does, via a MarmotMaterialHypoElastic*).
+  MarmotMaterialHypoElastic& matABase = matA;
+  matABase.computeStress( stateA, tanA, dStrain, timeInfo );
+
+  MarmotMaterialHypoElastic::state3D stateB;
+  matB.computeStressExplicit( stateB, dStrain, timeInfo );
+
+  throwExceptionOnFailure( checkIfEqual< double >( stateA.stress, stateB.stress, 1e-12 ),
+                           "computeStressExplicit() must match computeStress() ignoring the tangent in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+void testComputePlaneStressMatchesClassicalPlaneStressLaw()
+{
+  using namespace Marmot;
+  auto mat = makeIsotropicMaterial();
+
+  const double E = isotropicProps_[0], nu = isotropicProps_[1];
+
+  Vector3d dStrain2D;
+  dStrain2D << 1e-3, 0.5e-3, 2e-4; // eps_xx, eps_yy, gamma_xy
+
+  MarmotMaterialHypoElastic::timeInfo timeInfo{ 0., 1. };
+  MarmotMaterialHypoElastic::state2D  state2D;
+  Matrix3d                            tan2D;
+
+  mat.computePlaneStress( state2D, tan2D, dStrain2D, timeInfo );
+
+  // Classical isotropic plane-stress law (sigma_zz = 0, both eps_xx and eps_yy prescribed):
+  //   sigma_xx = E/(1-nu^2) * (eps_xx + nu*eps_yy)
+  //   sigma_yy = E/(1-nu^2) * (eps_yy + nu*eps_xx)
+  //   sigma_xy = G * gamma_xy
+  const double planeStressModulus = E / ( 1. - nu * nu );
+  const double G                  = E / ( 2. * ( 1. + nu ) );
+  Vector3d     expected;
+  expected << planeStressModulus * ( dStrain2D( 0 ) + nu * dStrain2D( 1 ) ),
+    planeStressModulus * ( dStrain2D( 1 ) + nu * dStrain2D( 0 ) ), G * dStrain2D( 2 );
+
+  throwExceptionOnFailure( checkIfEqual< double >( state2D.stress, expected, 1e-6 ),
+                           "computePlaneStress() does not match the classical isotropic plane-stress law in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+void testComputeUniaxialStressMatchesE()
+{
+  using namespace Marmot;
+  auto mat = makeIsotropicMaterial();
+
+  const double E         = isotropicProps_[0];
+  const double dStrain1D = 1e-3;
+
+  MarmotMaterialHypoElastic::timeInfo timeInfo{ 0., 1. };
+  MarmotMaterialHypoElastic::state1D  state1D;
+  double                              tan1D;
+
+  mat.computeUniaxialStress( state1D, tan1D, dStrain1D, timeInfo );
+
+  throwExceptionOnFailure( checkIfEqual( state1D.stress, E * dStrain1D, 1e-6 ),
+                           "computeUniaxialStress() does not reduce to sigma = E*eps in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+  throwExceptionOnFailure( checkIfEqual( tan1D, E, 1e-6 ),
+                           "computeUniaxialStress() tangent does not reduce to E in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+void testGetMaximumWaveSpeedMatchesPWaveModulus()
+{
+  using namespace Marmot;
+  const std::array< double, 3 > props = { 20000., 0.25, 2400. };
+  auto                          mat   = Marmot::Materials::LinearElastic( props.data(), 3, 1 );
+
+  const double E = props[0], nu = props[1], rho = props[2];
+  const double mu       = E / ( 2. * ( 1. + nu ) );
+  const double lambda   = E * nu / ( ( 1. + nu ) * ( 1. - 2. * nu ) );
+  const double expected = std::sqrt( ( lambda + 2. * mu ) / rho );
+
+  MarmotMaterialHypoElastic::state3D state;
+  const double                       waveSpeed = mat.getMaximumWaveSpeed( state );
+
+  throwExceptionOnFailure( checkIfEqual( waveSpeed, expected, 1e-5 ),
+                           "getMaximumWaveSpeed() does not match sqrt((lambda+2*mu)/rho) in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+void testGetStateViewThrowsForMaterialWithNoStateVars()
+{
+  auto mat = makeIsotropicMaterial();
+
+  bool threw = false;
+  try {
+    mat.getStateView( "anything", nullptr );
+  }
+  catch ( const std::runtime_error& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw,
+                           "getStateView() must throw for a material with no registered state variables in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+void testInitializeYourselfZeroesStateVars()
+{
+  auto                  mat = makeIsotropicMaterial();
+  std::vector< double > stateVars( 3, 42.0 );
+  mat.initializeYourself( stateVars.data(), static_cast< int >( stateVars.size() ) );
+
+  throwExceptionOnFailure( std::all_of( stateVars.begin(), stateVars.end(), []( double v ) { return v == 0.0; } ),
+                           "initializeYourself() must zero all state variables in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+void testSetCharacteristicElementLengthIsStored()
+{
+  auto mat = makeIsotropicMaterial();
+  mat.setCharacteristicElementLength( 0.5 );
+  throwExceptionOnFailure( mat.characteristicElementLength == 0.5,
+                           "setCharacteristicElementLength() must store the given length in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
 int main()
 {
 
@@ -396,7 +548,14 @@ int main()
     testOrthotropicMaterialResponseRotation,      // test for orthotropic normal strain with rotation
     testGetDensityIsotropic,                      // test for density retrieval for isotropic case
     testGetDensityTransverselyIsotropic,          // test for density retrieval for transversely isotropic case
-    testGetDensityOrthotropic                     // test for density retrieval for orthotropic case
+    testGetDensityOrthotropic,                    // test for density retrieval for orthotropic case
+    testComputeStressExplicitMatchesComputeStress,
+    testComputePlaneStressMatchesClassicalPlaneStressLaw,
+    testComputeUniaxialStressMatchesE,
+    testGetMaximumWaveSpeedMatchesPWaveModulus,
+    testGetStateViewThrowsForMaterialWithNoStateVars,
+    testInitializeYourselfZeroesStateVars,
+    testSetCharacteristicElementLengthIsStored,
   };
 
   executeTestsAndCollectExceptions( tests );

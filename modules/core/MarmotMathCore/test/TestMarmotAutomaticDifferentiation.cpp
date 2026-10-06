@@ -76,11 +76,50 @@ void testADForVectorValuedFunctions()
                            "Error in vector function jacobian with autodiff::dual2nd" );
 }
 
+void testShiftTo2ndOrderDualForVectors()
+{
+  using namespace Marmot::AutomaticDifferentiation;
+
+  // seed both the value AND the first-order derivative of every input, so that
+  // this test actually exercises shiftTo2ndOrderDual's documented behavior of
+  // moving each input's first-order derivative into dual2nd.val.grad. With an
+  // all-zero seed (as before), a broken implementation that drops the incoming
+  // gradient entirely would still pass this test.
+  autodiff::VectorXdual X( 3 );
+  X( 0 ).val  = 1.5;
+  X( 0 ).grad = 0.5;
+  X( 1 ).val  = -2.5;
+  X( 1 ).grad = -1.25;
+  X( 2 ).val  = 3.5;
+  X( 2 ).grad = 2.0;
+
+  const autodiff::VectorXdual2nd X2nd = shiftTo2ndOrderDual( X );
+
+  throwExceptionOnFailure( static_cast< int >( X2nd.size() ) == 3,
+                           "shiftTo2ndOrderDual(VectorXdual) returned the wrong size in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+
+  for ( int i = 0; i < 3; i++ ) {
+    // ground truth: the already-tested scalar overload of shiftTo2ndOrderDual
+    const autodiff::dual2nd expected = shiftTo2ndOrderDual( X( i ) );
+
+    throwExceptionOnFailure( checkIfEqual( X2nd( i ).val.val, expected.val.val ),
+                             "shiftTo2ndOrderDual(VectorXdual) does not match the scalar overload's value at index " +
+                               std::to_string( i ) + " in " + std::string( __PRETTY_FUNCTION__ ) );
+
+    throwExceptionOnFailure( checkIfEqual( X2nd( i ).val.grad, expected.val.grad ),
+                             "shiftTo2ndOrderDual(VectorXdual) does not match the scalar overload's "
+                             "first-order derivative (val.grad) at index " +
+                               std::to_string( i ) + " in " + std::string( __PRETTY_FUNCTION__ ) );
+  }
+}
+
 int main()
 {
 
   auto tests = std::vector< std::function< void() > >{ testAutomaticDifferentiationForScalars,
-                                                       testADForVectorValuedFunctions };
+                                                       testADForVectorValuedFunctions,
+                                                       testShiftTo2ndOrderDualForVectors };
 
   executeTestsAndCollectExceptions( tests );
 

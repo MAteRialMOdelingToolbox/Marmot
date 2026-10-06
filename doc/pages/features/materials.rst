@@ -21,3 +21,6 @@ This section contains the ready to use available material models.
   vonmises
   advonmises
   hugheswinget
+  gradientenhancedhugheswinget
+  gradientenhancedcompressibleneohookedamage
+  gradientenhancedfinitestraindruckerprager

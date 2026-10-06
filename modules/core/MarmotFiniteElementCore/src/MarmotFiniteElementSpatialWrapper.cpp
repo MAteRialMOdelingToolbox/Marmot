@@ -63,9 +63,11 @@ void MarmotElementSpatialWrapper::assignProperty( const ElementProperties& prope
   childElement->assignProperty( property );
 }
 
-void MarmotElementSpatialWrapper::assignProperty( const std::string& propertyName, const double* properties )
+void MarmotElementSpatialWrapper::assignProperty( const std::string& propertyName,
+                                                  const double*      properties,
+                                                  int                nProperties )
 {
-  childElement->assignProperty( propertyName, properties );
+  childElement->assignProperty( propertyName, properties, nProperties );
 }
 
 std::vector< std::string > MarmotElementSpatialWrapper::getPropertyNames() const
