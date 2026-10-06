@@ -237,6 +237,15 @@ namespace {
       rejectedUnknown = true;
     }
     throwExceptionOnFailure( rejectedUnknown, "Interface material accepted an unregistered base material." );
+
+    bool rejectedMissingArray = false;
+    try {
+      MarmotInterfaceMaterialHypoElastic material( "LINEARELASTIC", nullptr, 3, 1 );
+    }
+    catch ( const std::invalid_argument& ) {
+      rejectedMissingArray = true;
+    }
+    throwExceptionOnFailure( rejectedMissingArray, "Interface material accepted a missing property array." );
   }
 
   void testStateViewExposesBaseMaterialStateVariables()

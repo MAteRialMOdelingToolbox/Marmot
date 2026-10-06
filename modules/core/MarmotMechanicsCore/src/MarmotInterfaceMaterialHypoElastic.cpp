@@ -16,18 +16,34 @@ using namespace Marmot;
 using namespace Marmot::FastorIndices;
 using namespace Marmot::FastorStandardTensors;
 
+namespace {
+
+  // The thickness is a constant member and is therefore initialized before the body of the constructor runs, so
+  // the material properties have to be validated here.
+  double checkedThickness( const double* materialProperties, int nMaterialProperties )
+  {
+    if ( nMaterialProperties < 3 ) {
+      throw std::invalid_argument(
+        "MarmotInterfaceMaterialHypoElastic requires at least E, nu, and interface thickness h." );
+    }
+    if ( materialProperties == nullptr ) {
+      throw std::invalid_argument( "MarmotInterfaceMaterialHypoElastic requires a valid material property array." );
+    }
+
+    return materialProperties[2];
+  }
+
+} // namespace
+
 MarmotInterfaceMaterialHypoElastic::MarmotInterfaceMaterialHypoElastic( const std::string& materialName,
                                                                         const double*      matProperties_,
                                                                         int                nMaterialProperties_,
                                                                         int                materialNumber_ )
-  : materialProperties( matProperties_ ), nMaterialProperties( nMaterialProperties_ ), materialNumber( materialNumber_ )
+  : materialProperties( matProperties_ ),
+    nMaterialProperties( nMaterialProperties_ ),
+    h( checkedThickness( matProperties_, nMaterialProperties_ ) ),
+    materialNumber( materialNumber_ )
 {
-  if ( nMaterialProperties < 3 ) {
-    throw std::invalid_argument(
-      "MarmotInterfaceMaterialHypoElastic requires at least E, nu, and interface thickness h." );
-  }
-
-  h = materialProperties[2];
   baseMaterialProperties.reserve( nMaterialProperties - 1 );
   baseMaterialProperties.push_back( materialProperties[0] );
   baseMaterialProperties.push_back( materialProperties[1] );

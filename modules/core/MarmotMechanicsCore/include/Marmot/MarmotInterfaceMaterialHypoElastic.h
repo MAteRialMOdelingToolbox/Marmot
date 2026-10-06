@@ -48,7 +48,7 @@ class MarmotInterfaceMaterialHypoElastic {
 protected:
   const double*         materialProperties;     ///< material properties [E, nu, h, properties of the base material...]
   const int             nMaterialProperties;    ///< number of material properties
-  double                h;                      ///< thickness of the interface, the third material property
+  const double          h;                      ///< thickness of the interface, the third material property
   std::vector< double > baseMaterialProperties; ///< properties handed to the base material
   std::unique_ptr< MarmotMaterialHypoElastic > baseMaterial; ///< hypoelastic material of the bulk
 
