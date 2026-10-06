@@ -51,13 +51,42 @@ namespace Marmot::Materials {
     const double& timeToDays;
 
   public:
+    /**
+     * @brief Construct the material and discretize the relaxation function.
+     *
+     * @param[in] materialProperties properties [E, nu, m, n, nMaxwell, minTau, timeToDays, optional density]
+     * @param[in] nMaterialProperties number of properties, at least 7
+     * @param[in] materialNumber number of the material
+     *
+     * @throws std::invalid_argument if fewer than seven properties or no property array are given, if there is
+     * less than one Maxwell unit, if @p minTau is not positive, or if m < 0 or n <= 0
+     */
     LinearViscoElasticWiechert( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
+    /**
+     * @brief Compute the stress and the algorithmic tangent for a strain increment.
+     *
+     * The stress increment is the elastic response with the current effective stiffness, reduced by the stress
+     * released by the relaxation of the Maxwell units. The stresses of the Maxwell units are updated afterwards.
+     *
+     * @param[in,out] state stress and state variables, which hold the stresses of the Maxwell units
+     * @param[out] dStressDDStrain algorithmic tangent
+     * @param[in] dStrain strain increment in Voigt notation
+     * @param[in] timeInfo time and time increment
+     */
     void computeStress( state3D&                state,
                         Marmot::Matrix6d&       dStressDDStrain,
                         const Marmot::Vector6d& dStrain,
                         const timeInfo&         timeInfo ) const override;
 
+    /**
+     * @brief Get the density of the material.
+     *
+     * @param[in] stateVars state variables, not used
+     * @return the density, which is the eighth material property
+     *
+     * @throws std::runtime_error if the density is not provided
+     */
     double getDensity( const double* stateVars ) const override;
 
   private:

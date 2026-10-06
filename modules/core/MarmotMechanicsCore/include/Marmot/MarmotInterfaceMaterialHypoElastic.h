@@ -46,22 +46,35 @@
 class MarmotInterfaceMaterialHypoElastic {
 
 protected:
-  const double*                                materialProperties;
-  const int                                    nMaterialProperties;
-  double                                       h = 0.0;
-  std::vector< double >                        baseMaterialProperties;
-  std::unique_ptr< MarmotMaterialHypoElastic > baseMaterial;
+  const double*         materialProperties;     ///< material properties [E, nu, h, properties of the base material...]
+  const int             nMaterialProperties;    ///< number of material properties
+  double                h = 0.0;                ///< thickness of the interface
+  std::vector< double > baseMaterialProperties; ///< properties handed to the base material
+  std::unique_ptr< MarmotMaterialHypoElastic > baseMaterial; ///< hypoelastic material of the bulk
 
 public:
-  using Tensor3d    = Marmot::FastorStandardTensors::Tensor3d;
-  using Tensor33d   = Marmot::FastorStandardTensors::Tensor33d;
-  using Tensor333d  = Marmot::FastorStandardTensors::Tensor333d;
-  using Tensor3333d = Marmot::FastorStandardTensors::Tensor3333d;
-  using Tensor6d    = Marmot::FastorStandardTensors::Tensor6d;
-  using Tensor18d   = Marmot::FastorStandardTensors::Tensor18d;
+  using Tensor3d    = Marmot::FastorStandardTensors::Tensor3d;    ///< first order tensor in 3D
+  using Tensor33d   = Marmot::FastorStandardTensors::Tensor33d;   ///< second order tensor in 3D
+  using Tensor333d  = Marmot::FastorStandardTensors::Tensor333d;  ///< third order tensor in 3D
+  using Tensor3333d = Marmot::FastorStandardTensors::Tensor3333d; ///< fourth order tensor in 3D
+  using Tensor6d    = Marmot::FastorStandardTensors::Tensor6d;    ///< vector of six components, one block per side
+  using Tensor18d   = Marmot::FastorStandardTensors::Tensor18d;   ///< vector of 18 components, one block per side
 
-  const int materialNumber;
+  const int materialNumber; ///< number of the material
 
+  /**
+   * @brief Construct an interface material from a registered hypoelastic material.
+   *
+   * The material properties are [E, nu, h, properties of the base material...], where h is the thickness of the
+   * interface. The base material receives E, nu and the properties after h.
+   *
+   * @param[in] materialName name of the base material, registered in the MarmotMaterialHypoElasticFactory
+   * @param[in] matProperties_ material properties
+   * @param[in] nMaterialProperties_ number of material properties, at least three
+   * @param[in] materialNumber_ number of the material
+   *
+   * @throws std::invalid_argument if fewer than three properties are given or the base material is not registered
+   */
   MarmotInterfaceMaterialHypoElastic( const std::string& materialName,
                                       const double*      matProperties_,
                                       int                nMaterialProperties_,
@@ -95,10 +108,10 @@ public:
 
   /// Algorithmic tangent terms, set by computeStress().
   struct Tangents {
-    Tensor33d   Q_ij;
-    Tensor3333d Z_ijkl;
-    Tensor333d  H_ijk;
-    Tensor3333d Y_ijkl;
+    Tensor33d   Q_ij;   ///< tangent term acting on the displacement jump
+    Tensor3333d Z_ijkl; ///< tangent term acting on the average surface gradient
+    Tensor333d  H_ijk;  ///< coupling term between the displacement jump and the average surface gradient
+    Tensor3333d Y_ijkl; ///< additional tangent term acting on the average surface gradient
   };
 
   /// Increment of the interface kinematics.
@@ -108,9 +121,10 @@ public:
     Tensor3d  normal;         ///< interface normal
   };
 
+  /// Time at the beginning of the increment and time increment.
   struct TimeIncrement {
-    double timeOld;
-    double dT;
+    double timeOld; ///< time at the beginning of the increment
+    double dT;      ///< time increment
   };
 
   /**
@@ -149,5 +163,10 @@ public:
    */
   virtual void initializeYourself( double* stateVars, int nStateVars );
 
+  /**
+   * @brief Get the density of the material.
+   *
+   * @return the density of the base material
+   */
   virtual double getDensity();
 };

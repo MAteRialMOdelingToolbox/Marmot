@@ -209,8 +209,19 @@ namespace Marmot::Elements {
 
         Eigen::Map< Eigen::VectorXd > materialStateVars;
 
+        /**
+         * @brief Number of state variables of the quadrature point itself, without the material state variables.
+         *
+         * @return the number of state variables up to the begin of the material state
+         */
         static int getNumberOfRequiredStateVarsQuadraturePointOnly() { return layout.nRequiredStateVars; }
 
+        /**
+         * @brief Map the state variables of one quadrature point.
+         *
+         * @param[in] theStateVarVector first state variable of the quadrature point
+         * @param[in] nStateVars number of state variables of the quadrature point, including the material state
+         */
         QPStateVarManager( double* theStateVarVector, int nStateVars )
           : MarmotStateVarVectorManager( theStateVarVector, layout ),
             force( &find( "force" ) ),
@@ -322,10 +333,13 @@ namespace Marmot::Elements {
      */
     std::vector< int > getDofIndicesPermutationPattern();
 
+    /** @brief Number of nodes of the element, i.e. of both interface sides. */
     int getNNodes() { return nNodes; }
 
+    /** @brief Number of spatial dimensions of the element. */
     int getNSpatialDimensions() { return nDim; }
 
+    /** @brief Number of degrees of freedom of the element. */
     int getNDofPerElement() { return sizeLoadVector; }
 
     /** @brief Result-file geometry keyword, delegated to the geometry element. */
@@ -386,9 +400,14 @@ namespace Marmot::Elements {
     /**
      * @brief Assemble internal force and tangent for one increment.
      *
+     * @param QTotal Total displacement vector.
+     * @param dQ Incremental displacement.
      * @param Pe Internal force vector (accumulated), same convention as every other element:
      *           Pe = +Pint, so that Ke = +dPe/dQ. External loads are accumulated separately
      *           by computeDistributedLoad() and computeBodyForce() into Pext.
+     * @param Ke Tangent stiffness matrix (accumulated).
+     * @param time Time data forwarded to materials.
+     * @param dT Time increment.
      */
     void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT );
 

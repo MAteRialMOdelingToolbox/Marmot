@@ -4,6 +4,14 @@
 
 namespace Marmot::Elements::Registration {
 
+  /**
+   * @brief Create the factory function of an element type.
+   *
+   * @tparam T element type
+   * @tparam integrationType integration type of the created elements
+   * @tparam sectionType section type of the created elements
+   * @return a function that creates an element of type T from an element number
+   */
   template < class T,
              Marmot::FiniteElement::Quadrature::IntegrationTypes integrationType,
              typename T::SectionType                             sectionType >
