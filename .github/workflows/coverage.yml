@@ -76,7 +76,9 @@ jobs:
         shell: bash -leo pipefail {0}
         run: |
           cd build
-          lcov --gcov-tool gcov-14 --directory . --capture --output-file coverage.info
+          # gcov,gcov: geninfo's notices about unexecuted blocks stem from the system and third-party headers,
+          # which are removed from the report below anyway.
+          lcov --gcov-tool gcov-14 --directory . --capture --output-file coverage.info --ignore-errors gcov,gcov
           lcov --remove coverage.info \
             '/usr/*' \
             '*/eigen/*' \
