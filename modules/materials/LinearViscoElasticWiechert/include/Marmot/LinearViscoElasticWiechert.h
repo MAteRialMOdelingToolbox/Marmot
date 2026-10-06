@@ -58,8 +58,8 @@ namespace Marmot::Materials {
      * @param[in] nMaterialProperties number of properties, at least 7
      * @param[in] materialNumber number of the material
      *
-     * @throws std::invalid_argument if fewer than seven properties or no property array are given, if there is
-     * less than one Maxwell unit, if @p minTau is not positive, or if m < 0 or n <= 0
+     * @throws std::invalid_argument if fewer than seven properties are given, if there is less than one Maxwell
+     * unit, if @p minTau is not positive, or if m < 0 or n <= 0
      */
     LinearViscoElasticWiechert( const double* materialProperties, int nMaterialProperties, int materialNumber );
 

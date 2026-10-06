@@ -77,8 +77,6 @@ namespace {
 
     throwExceptionOnFailure( throwsInvalidArgument( [&] { LinearViscoElasticWiechert material( valid, 6, 1 ); } ),
                              "Fewer than seven properties must be rejected." );
-    throwExceptionOnFailure( throwsInvalidArgument( [&] { LinearViscoElasticWiechert material( nullptr, 7, 1 ); } ),
-                             "A missing property array must be rejected." );
 
     const auto withProperty = [&]( int index, double value ) {
       std::array< double, 7 > properties;

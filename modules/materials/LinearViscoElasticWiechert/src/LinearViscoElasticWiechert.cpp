@@ -2,6 +2,7 @@
 
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotTypedefs.h"
+#include "Marmot/MarmotUtils.h"
 #include "Marmot/MarmotViscoelasticity.h"
 
 #include <Eigen/Core>
@@ -9,22 +10,6 @@
 #include <stdexcept>
 
 namespace Marmot::Materials {
-
-  namespace {
-
-    const double& checkedMaterialProperty( const double* materialProperties, int nMaterialProperties, int index )
-    {
-      if ( nMaterialProperties < 7 ) {
-        throw std::invalid_argument( "LinearViscoElasticWiechert requires at least 7 material properties." );
-      }
-      if ( materialProperties == nullptr ) {
-        throw std::invalid_argument( "LinearViscoElasticWiechert requires a valid material property array." );
-      }
-
-      return materialProperties[index];
-    }
-
-  } // namespace
 
   LinearViscoElasticWiechert::LinearViscoElasticWiechert( const double* materialProperties,
                                                           int           nMaterialProperties,
