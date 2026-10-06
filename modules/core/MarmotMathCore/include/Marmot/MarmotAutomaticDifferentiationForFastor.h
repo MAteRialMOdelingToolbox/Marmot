@@ -99,7 +99,7 @@ namespace Marmot {
             for ( size_t col = row; col < dim; ++col ) {
               const Fastor::FASTOR_INDEX lin_ij  = row * dim + col;
               const Fastor::FASTOR_INDEX lin_ji  = col * dim + row;
-              const int                  mem_idx = T_right.get_mem_index( lin_ij );
+              const int                  mem_idx = static_cast< int >( T_right.get_mem_index( lin_ij ) );
 
               seed< 1 >( T_right_data[mem_idx], 1.0 );
               const double val = derivative< 1 >( f( T_right ) );
@@ -116,7 +116,7 @@ namespace Marmot {
       }
 
       for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i ) {
-        const int T_right_mem_idx = T_right.get_mem_index( i );
+        const int T_right_mem_idx = static_cast< int >( T_right.get_mem_index( i ) );
         seed< 1 >( T_right_data[T_right_mem_idx], 1.0 );
         df_dT_data[df_dT.get_mem_index( i )] = derivative< 1 >( f( T_right ) );
         seed< 1 >( T_right_data[T_right_mem_idx], 0.0 );
@@ -240,7 +240,7 @@ namespace Marmot {
             for ( size_t col = row; col < dim; ++col ) {
               const Fastor::FASTOR_INDEX lin_ij          = row * dim + col;
               const Fastor::FASTOR_INDEX lin_ji          = col * dim + row;
-              const int                  T_right_mem_idx = T_right.get_mem_index( lin_ij );
+              const int                  T_right_mem_idx = static_cast< int >( T_right.get_mem_index( lin_ij ) );
               T_right_data[T_right_mem_idx].grad += 1.0;
               F_at_T_right = F( T_right );
 
@@ -264,7 +264,7 @@ namespace Marmot {
       }
 
       for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i ) {
-        const int T_right_mem_idx = T_right.get_mem_index( i );
+        const int T_right_mem_idx = static_cast< int >( T_right.get_mem_index( i ) );
         T_right_data[T_right_mem_idx].grad += 1.0;
         F_at_T_right = F( T_right );
 

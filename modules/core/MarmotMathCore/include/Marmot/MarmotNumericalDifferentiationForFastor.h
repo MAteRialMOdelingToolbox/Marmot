@@ -99,8 +99,8 @@ namespace Marmot {
       /*   double* T_right_data = T_right.data(); */
 
       /*   for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i ) { */
-      /*     const int dF_dT_mem_idx   = dF_dT.get_mem_index( i ); */
-      /*     const int T_right_mem_idx = T_right.get_mem_index( i ); */
+      /*     const int dF_dT_mem_idx   = static_cast< int >( dF_dT.get_mem_index( i ) ); */
+      /*     const int T_right_mem_idx = static_cast< int >( T_right.get_mem_index( i ) ); */
       /*     double volatile h         = std::max( 1.0, std::abs( double( T_right_data[T_right_mem_idx] ) ) ) * */
       /*                         Marmot::Constants::SquareRootEps; */
       /*     T_right_data[T_right_mem_idx] += h; */
@@ -235,7 +235,7 @@ namespace Marmot {
               for ( size_t col = row; col < dim; ++col ) {
                 const Fastor::FASTOR_INDEX lin_ij          = row * dim + col;
                 const Fastor::FASTOR_INDEX lin_ji          = col * dim + row;
-                const int                  T_right_mem_idx = T_right.get_mem_index( lin_ij );
+                const int                  T_right_mem_idx = static_cast< int >( T_right.get_mem_index( lin_ij ) );
                 double volatile h = std::max( 1.0, std::abs( double( T.data()[T_right_mem_idx] ) ) ) *
                                     Marmot::Constants::SquareRootEps;
                 T_right = T;
@@ -262,7 +262,7 @@ namespace Marmot {
         }
 
         for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i ) {
-          const int T_right_mem_idx = T_right.get_mem_index( i );
+          const int T_right_mem_idx = static_cast< int >( T_right.get_mem_index( i ) );
           double volatile h         = std::max( 1.0, std::abs( double( T.data()[T_right_mem_idx] ) ) ) *
                               Marmot::Constants::SquareRootEps;
           T_right = T;
@@ -325,8 +325,8 @@ namespace Marmot {
               for ( size_t col = row; col < dim; ++col ) {
                 const Fastor::FASTOR_INDEX lin_ij          = row * dim + col;
                 const Fastor::FASTOR_INDEX lin_ji          = col * dim + row;
-                const int                  T_right_mem_idx = T_right.get_mem_index( lin_ij );
-                const int                  T_left_mem_idx  = T_left.get_mem_index( lin_ij );
+                const int                  T_right_mem_idx = static_cast< int >( T_right.get_mem_index( lin_ij ) );
+                const int                  T_left_mem_idx  = static_cast< int >( T_left.get_mem_index( lin_ij ) );
                 double volatile h = std::max( 1.0, std::abs( double( T.data()[T_right_mem_idx] ) ) ) *
                                     Marmot::Constants::CubicRootEps;
                 T_left = T;
@@ -357,8 +357,8 @@ namespace Marmot {
         }
 
         for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i ) {
-          const int T_right_mem_idx = T_right.get_mem_index( i );
-          const int T_left_mem_idx  = T_left.get_mem_index( i );
+          const int T_right_mem_idx = static_cast< int >( T_right.get_mem_index( i ) );
+          const int T_left_mem_idx  = static_cast< int >( T_left.get_mem_index( i ) );
           double volatile h         = std::max( 1.0, std::abs( double( T.data()[T_right_mem_idx] ) ) ) *
                               Marmot::Constants::CubicRootEps;
           T_left = T;
@@ -514,8 +514,8 @@ namespace Marmot {
           /* complexDouble* T_right_data = T_right.data(); */
 
           /* for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i ) { */
-          /*   const int dF_dT_mem_idx   = dF_dT.get_mem_index( i ); */
-          /*   const int T_right_mem_idx = T_right.get_mem_index( i ); */
+          /*   const int dF_dT_mem_idx   = static_cast< int >( dF_dT.get_mem_index( i ) ); */
+          /*   const int T_right_mem_idx = static_cast< int >( T_right.get_mem_index( i ) ); */
           /*   T_right_data[T_right_mem_idx] += imaginaryPerturbation; */
           /*   dF_dT_data[dF_dT_mem_idx] = f( T_right )/ imaginaryPerturbationSize; */
           /*   T_right_data[T_right_mem_idx] -= imaginaryPerturbation; */
@@ -570,7 +570,7 @@ namespace Marmot {
                 for ( size_t col = row; col < dim; ++col ) {
                   const Fastor::FASTOR_INDEX lin_ij          = row * dim + col;
                   const Fastor::FASTOR_INDEX lin_ji          = col * dim + row;
-                  const int                  T_right_mem_idx = T_right.get_mem_index( lin_ij );
+                  const int                  T_right_mem_idx = static_cast< int >( T_right.get_mem_index( lin_ij ) );
 
                   T_right_data[T_right_mem_idx] += imaginaryPerturbation;
                   F_at_T_right = F( T_right );
@@ -595,7 +595,7 @@ namespace Marmot {
           }
 
           for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i ) {
-            const int T_right_mem_idx = T_right.get_mem_index( i );
+            const int T_right_mem_idx = static_cast< int >( T_right.get_mem_index( i ) );
 
             T_right_data[T_right_mem_idx] += imaginaryPerturbation;
             F_at_T_right = F( T_right );

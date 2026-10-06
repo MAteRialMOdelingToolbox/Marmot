@@ -101,12 +101,12 @@ struct StateMapper< Fastor::TensorMap< double, 3, 3 > > {
 template <>
 struct StateMapper< Eigen::Map< Eigen::MatrixXd > > {
   template < class... Args >
-  static Eigen::Map< Eigen::MatrixXd > map( double* ptr, std::size_t n, int Rows, int Cols )
+  static Eigen::Map< Eigen::MatrixXd > map( double* ptr, std::size_t n, Eigen::Index Rows, Eigen::Index Cols )
   {
     // read size form Args
-    if ( int( n ) != Rows * Cols )
+    if ( static_cast< Eigen::Index >( n ) != Rows * Cols )
       throw std::runtime_error( "Size mismatch for Eigen::Map." );
-    return Eigen::Map< Eigen::MatrixXd >( ptr, Rows, n / Rows );
+    return Eigen::Map< Eigen::MatrixXd >( ptr, Rows, static_cast< Eigen::Index >( n ) / Rows );
   }
 };
 
@@ -186,7 +186,7 @@ public:
       v.offset = offset;
       offset += v.size;
     }
-    total_sz  = offset;
+    total_sz  = static_cast< int >( offset );
     finalized = true;
   }
 

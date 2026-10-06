@@ -244,7 +244,7 @@ namespace Marmot {
     Eigen::VectorXd makeReal( Eigen::Vector< T, Eigen::Dynamic > in )
     {
 
-      int             inSize = in.size();
+      int             inSize = static_cast< int >( in.size() );
       Eigen::VectorXd out( inSize );
       for ( int i = 0; i < inSize; i++ ) {
         out( i ) = double( in( i ) );

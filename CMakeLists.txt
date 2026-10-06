@@ -65,6 +65,14 @@ include(GNUInstallDirs)
 # Optimization/debug flags (-O3, -g, ...) come from CMake's per-configuration defaults.
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     add_compile_options(-Wall -Wextra -Wno-unused-parameter -Wno-long-long -pedantic)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        # Third-party headers are found via plain -I paths on some platforms (e.g. /usr/local/include is not
+        # an implicit system directory for Apple clang), where their warnings would not be suppressed.
+        # Treat them as system headers by name instead.
+        add_compile_options(--system-header-prefix=Eigen/ --system-header-prefix=eigen3/
+                            --system-header-prefix=unsupported/ --system-header-prefix=Fastor/
+                            --system-header-prefix=autodiff/ --system-header-prefix=nanobind/)
+    endif()
 elseif(MSVC)
     if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
         string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
@@ -75,6 +83,10 @@ elseif(MSVC)
     # /permissive-: standard-conforming two-phase lookup, as GCC/Clang do.
     # /Zc:__cplusplus: report the real language level in __cplusplus, which Eigen and Fastor check.
     add_compile_options(/bigobj /permissive- /Zc:__cplusplus)
+    # Like -Wno-unused-parameter above: unused parameters are common in the interface implementations (C4100).
+    # /external:W0 silences warnings from the headers of imported targets (Eigen, autodiff, Fastor), which CMake
+    # passes with /external:I.
+    add_compile_options(/wd4100 /external:W0)
     # Keep MSVC's secure-CRT deprecation warnings (C4996 for std::getenv, sscanf, ...) out of the /W4 output.
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 endif()

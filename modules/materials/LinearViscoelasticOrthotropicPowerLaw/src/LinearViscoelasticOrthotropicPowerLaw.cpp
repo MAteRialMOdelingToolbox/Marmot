@@ -56,7 +56,7 @@ namespace Marmot::Materials {
     stateLayout.add( "kelvinStateVars", 6 * nKelvin );
     stateLayout.finalize();
 
-    retardationTimes = KelvinChain::generateRetardationTimes( nKelvin, minTau, spacing );
+    retardationTimes = KelvinChain::generateRetardationTimes( static_cast< int >( nKelvin ), minTau, spacing );
 
     auto computeZerothKelvinChainCompliance = [&]( const int order, double tau ) {
       const int& k   = order;

@@ -306,7 +306,7 @@ namespace Marmot::Elements {
     void computeDistributedLoad( MarmotElement::DistributedLoadTypes loadType,
                                  double*                             P,
                                  double*                             K,
-                                 const int                           elementFace,
+                                 int                                 elementFace,
                                  const double*                       load,
                                  const double*                       QTotal,
                                  double                              time,
@@ -485,7 +485,7 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   int DisplacementFiniteStrainULElement< nDim, nNodes >::getNumberOfRequiredStateVars()
   {
-    return qps[0].getNumberOfRequiredStateVars() * qps.size();
+    return qps[0].getNumberOfRequiredStateVars() * static_cast< int >( qps.size() );
   }
 
   template < int nDim, int nNodes >
@@ -494,12 +494,12 @@ namespace Marmot::Elements {
     using namespace std;
 
     static const vector< vector< string > > nodeFields = [] {
-      vector< vector< string > > nodeFields;
+      vector< vector< string > > fields;
       for ( int i = 0; i < nNodes; i++ ) {
-        nodeFields.push_back( vector< string >() );
-        nodeFields[i].push_back( "displacement" );
+        fields.push_back( vector< string >() );
+        fields[i].push_back( "displacement" );
       }
-      return nodeFields;
+      return fields;
     }();
 
     return nodeFields;
@@ -509,11 +509,11 @@ namespace Marmot::Elements {
   std::vector< int > DisplacementFiniteStrainULElement< nDim, nNodes >::getDofIndicesPermutationPattern()
   {
     static const std::vector< int > permutationPattern = [] {
-      std::vector< int > permutationPattern;
+      std::vector< int > pattern;
       for ( int i = 0; i < nNodes; i++ )
         for ( int j = 0; j < nDim; j++ )
-          permutationPattern.push_back( i * nDim + j );
-      return permutationPattern;
+          pattern.push_back( i * nDim + j );
+      return pattern;
     }();
 
     return permutationPattern;
@@ -522,7 +522,7 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   void DisplacementFiniteStrainULElement< nDim, nNodes >::assignStateVars( double* managedStateVars, int nStateVars )
   {
-    const int nQpStateVars = nStateVars / qps.size();
+    const int nQpStateVars = nStateVars / static_cast< int >( qps.size() );
 
     for ( size_t i = 0; i < qps.size(); i++ ) {
       auto&   qp          = qps[i];
@@ -822,7 +822,7 @@ namespace Marmot::Elements {
     MarmotElement::DistributedLoadTypes loadType,
     double*                             rightHandSide,
     double*                             stiffnessMatrix,
-    const int                           elementFace,
+    int                                 elementFace,
     const double*                       load,
     const double*                       QTotal_,
     double                              time,
@@ -846,7 +846,7 @@ namespace Marmot::Elements {
       Eigen::VectorXd Pb = -p * boundaryEl.computeSurfaceNormalVectorialLoadVector();
       Eigen::MatrixXd Kb = -p * boundaryEl.computeDSurfaceNormalVectorialLoadVector_dCoordinates();
 
-      if ( nDim == 2 ) {
+      if constexpr ( nDim == 2 ) {
         Pb *= elementProperties[0]; // thickness
         Kb *= elementProperties[0];
       }
@@ -863,7 +863,7 @@ namespace Marmot::Elements {
       const XiSized tractionVector( load );
 
       auto Pk = boundaryEl.computeVectorialLoadVector( tractionVector );
-      if ( nDim == 2 )
+      if constexpr ( nDim == 2 )
         Pk *= elementProperties[0]; // thickness
       boundaryEl.assembleIntoParentVectorial( Pk, r_U );
 
@@ -891,7 +891,7 @@ namespace Marmot::Elements {
           qp.managedStateVars->F0_ZZ = 1.0;
 
           qp.material->initializeYourself( qp.managedStateVars->materialStateVars.data(),
-                                           qp.managedStateVars->materialStateVars.size() );
+                                           static_cast< int >( qp.managedStateVars->materialStateVars.size() ) );
         }
         break;
       }
@@ -1135,7 +1135,7 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   int DisplacementFiniteStrainULElement< nDim, nNodes >::getNumberOfQuadraturePoints()
   {
-    return qps.size();
+    return static_cast< int >( qps.size() );
   }
 
   template < int nNodes >

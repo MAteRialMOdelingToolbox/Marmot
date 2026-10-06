@@ -43,12 +43,12 @@ namespace {
 
     wrapper->assignNodeCoordinates( nodeCoordsVec.data() );
 
-    MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+    MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
     // assignProperty(ElementProperties&) stores a zero-copy view into this array (see
     // DisplacementFiniteElement::assignProperty), so it must outlive the element; `static`
     // gives it program lifetime rather than dangling once this factory function returns.
     static const std::vector< double > elPropsVec = { 1.0 }; // cross-section area
-    ElementProperties                  elProps( elPropsVec.data(), elPropsVec.size() );
+    ElementProperties                  elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
     wrapper->assignProperty( elProps );
     wrapper->assignProperty( materialSection );
 

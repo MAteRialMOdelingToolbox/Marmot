@@ -462,12 +462,12 @@ namespace Marmot::Materials {
       response.dissipation          = J * res.dissipation;
 
       if ( computeTangent ) {
-        const Tensor33d P  = Ident - 0.5 * dl;
+        const Tensor33d Pm = Ident - 0.5 * dl;
         const Tensor33d Mt = transpose( M );
 
         // d(dl)_ij/dF_kl = P_ik M_lj ; the transposed pattern gives d(dl)_ji/dF_kl
-        const Tensor3333d dl_dF   = einsum< ik, jl, to_ijkl >( P, Mt );
-        const Tensor3333d dlT_dF  = einsum< jk, il, to_ijkl >( P, Mt );
+        const Tensor3333d dl_dF   = einsum< ik, jl, to_ijkl >( Pm, Mt );
+        const Tensor3333d dlT_dF  = einsum< jk, il, to_ijkl >( Pm, Mt );
         const Tensor3333d dEps_dF = 0.5 * ( dl_dF + dlT_dF );
         const Tensor3333d dOm_dF  = 0.5 * ( dl_dF - dlT_dF );
 

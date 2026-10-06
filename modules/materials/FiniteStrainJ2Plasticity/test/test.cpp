@@ -47,7 +47,9 @@ void testSetup( const std::string& testName,
     const int               elLabel             = 1;
 
     // Create material instance
-    FiniteStrainJ2Plasticity mat = FiniteStrainJ2Plasticity( &materialProperties_[0], nMaterialProperties, elLabel );
+    FiniteStrainJ2Plasticity mat = FiniteStrainJ2Plasticity( &materialProperties_[0],
+                                                             static_cast< int >( nMaterialProperties ),
+                                                             elLabel );
 
     if ( mat.getNumberOfRequiredStateVars() > 10 ) {
       throw std::runtime_error( "Number of required state vars changed!" );
@@ -496,7 +498,7 @@ void testWithMPSolver()
   std::string matName            = "FINITESTRAINJ2PLASTICITY";
   auto        solver             = MarmotMaterialPointSolverFiniteStrain( matName,
                                                        materialProperties.data(),
-                                                       materialProperties.size(),
+                                                       static_cast< int >( materialProperties.size() ),
                                                        solveropts );
 
   // create a step with controlled shear strain increment
@@ -550,7 +552,7 @@ void testWithMPSolverSubstepped()
   std::string matName            = "FINITESTRAINJ2PLASTICITY_SUBSTEPPED";
   auto        solver             = MarmotMaterialPointSolverFiniteStrain( matName,
                                                        materialProperties.data(),
-                                                       materialProperties.size(),
+                                                       static_cast< int >( materialProperties.size() ),
                                                        solveropts );
 
   // create a step with controlled shear strain increment

@@ -54,27 +54,27 @@ namespace Marmot::NumericalAlgorithms {
     for ( int ij = 0; ij < 6; ij++ ) {
       auto [i, j] = IndexNotation::fromVoigt< 3 >( ij );
       for ( int k = 0; k < 3; k++ )
-        for ( int l = 0; l < 3; l++ )
+        for ( int ll = 0; ll < 3; ll++ )
           for ( int m = 0; m < 3; m++ )
-            dStressRotational_dl( ij, k, l ) += dOmega_dVelocityGradient( i, m, k, l ) * stressNew( m, j ) +
-                                                dOmega_dVelocityGradient( j, m, k, l ) * stressNew( i, m );
+            dStressRotational_dl( ij, k, ll ) += dOmega_dVelocityGradient( i, m, k, ll ) * stressNew( m, j ) +
+                                                 dOmega_dVelocityGradient( j, m, k, ll ) * stressNew( i, m );
     }
 
     dStressJaumann_dl.setZero();
     for ( int ij = 0; ij < 6; ij++ )
       for ( int k = 0; k < 3; k++ )
-        for ( int l = 0; l < 3; l++ )
+        for ( int ll = 0; ll < 3; ll++ )
           for ( int mn = 0; mn < 6; mn++ )
-            dStressJaumann_dl( ij, k, l ) += dChauchydEps( ij, mn ) * dStretchingRate_dVelocityGradient( mn, k, l );
+            dStressJaumann_dl( ij, k, ll ) += dChauchydEps( ij, mn ) * dStretchingRate_dVelocityGradient( mn, k, ll );
 
     dS_dl = dStressJaumann_dl + dStressRotational_dl;
 
     dS_dF.setZero();
     for ( int ij = 0; ij < 6; ij++ )
       for ( int k = 0; k < 3; k++ )
-        for ( int l = 0; l < 3; l++ )
+        for ( int ll = 0; ll < 3; ll++ )
           for ( int m = 0; m < 3; m++ )
-            dS_dF( ij, k, l ) += dS_dl( ij, k, m ) * FInv( l, m );
+            dS_dF( ij, k, ll ) += dS_dl( ij, k, m ) * FInv( ll, m );
 
     return dS_dF;
   }
@@ -85,9 +85,9 @@ namespace Marmot::NumericalAlgorithms {
     using namespace Marmot::ContinuumMechanics::Kinematics::VelocityGradient;
     Matrix3d dScalar_dl = Matrix3d::Zero();
     for ( int k = 0; k < 3; k++ )
-      for ( int l = 0; l < 3; l++ )
+      for ( int ll = 0; ll < 3; ll++ )
         for ( int ij = 0; ij < 6; ij++ )
-          dScalar_dl( k, l ) += dScalarDEps( ij ) * dStretchingRate_dVelocityGradient( ij, k, l );
+          dScalar_dl( k, ll ) += dScalarDEps( ij ) * dStretchingRate_dVelocityGradient( ij, k, ll );
 
     return dScalar_dl * FInv;
   }

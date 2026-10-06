@@ -48,9 +48,8 @@ namespace Marmot::Materials {
     stateLayout.add( "basicCreepStateVars", nKelvinBasic * 6 );
     stateLayout.add( "dryingCreepStateVars", nKelvinDrying * 6 );
     stateLayout.finalize();
-    solidificationKelvinProperties.retardationTimes = KelvinChain::generateRetardationTimes( nKelvinBasic,
-                                                                                             minTauBasic,
-                                                                                             10. );
+    solidificationKelvinProperties
+      .retardationTimes = KelvinChain::generateRetardationTimes( static_cast< int >( nKelvinBasic ), minTauBasic, 10. );
 
     auto phiBasic = [&]( autodiff::Real< basicCreepComplianceApproximationOrder, double > tau ) {
       return SolidificationTheory::phi( tau, solidificationParameters );
@@ -110,7 +109,8 @@ namespace Marmot::Materials {
                                                           basicCreepStateVars );
 
     // compute drying creep strains and compliancei
-    KelvinChain::Properties dryingCreepRetardationTimes = KelvinChain::generateRetardationTimes( nKelvinDrying,
+    KelvinChain::Properties dryingCreepRetardationTimes = KelvinChain::generateRetardationTimes( static_cast< int >(
+                                                                                                   nKelvinDrying ),
                                                                                                  minTauDrying,
                                                                                                  sqrt( 10. ) );
     double                  b                           = 8. * ( 1. - hEnv );

@@ -51,7 +51,7 @@ namespace Marmot {
       // into the int return type. Guard on |x| explicitly instead.
       if ( std::abs( x ) < 1e-16 )
         return 0;
-      return floor( log10( std::abs( x ) ) );
+      return static_cast< int >( floor( log10( std::abs( x ) ) ) );
     }
 
     Matrix3d orthonormalCoordinateSystem( Vector3d& normalVector )

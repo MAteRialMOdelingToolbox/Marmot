@@ -255,36 +255,36 @@ namespace Marmot::Elements {
                                                       SectionType                                 sectionType );
 
     /** @brief Total number of required state variables for this element (sum over all quadrature points). */
-    int getNumberOfRequiredStateVars();
+    int getNumberOfRequiredStateVars() override;
 
     /** @brief Node-level fields exposed by the element. Returns ["displacement", "nonlocal field", "strain symmetric"]
      * for the respective nodes. */
-    std::vector< std::vector< std::string > > getNodeFields();
+    std::vector< std::vector< std::string > > getNodeFields() override;
 
     /** @brief The permutation pattern for the residual vector and the stiffness matrix to aggregate all entries in
      * order to resemble the defined fields nodewise.  */
-    std::vector< int > getDofIndicesPermutationPattern();
+    std::vector< int > getDofIndicesPermutationPattern() override;
 
     /** @brief Number of nodes of this element type. */
-    int getNNodes() { return nNodes; }
+    int getNNodes() override { return nNodes; }
 
     /** @brief Number of spatial dimensions. */
-    int getNSpatialDimensions() { return nDim; }
+    int getNSpatialDimensions() override { return nDim; }
 
     /** @brief Number of degrees of freedom per element. */
-    int getNDofPerElement() { return sizeLoadVector; }
+    int getNDofPerElement() override { return sizeLoadVector; }
 
     /** @brief Geometric shape of the element (as reported by the local geometry element). */
-    std::string getElementShape() { return localGeometryElement.getElementShape(); }
+    std::string getElementShape() override { return localGeometryElement.getElementShape(); }
 
     /** @brief Map the provided element state vector to all quadrature points. */
-    void assignStateVars( double* stateVars, int nStateVars );
+    void assignStateVars( double* stateVars, int nStateVars ) override;
 
     /** @brief Assign element properties (e.g., thickness in 2D, area in 1D). */
-    void assignProperty( const ElementProperties& marmotElementProperty );
+    void assignProperty( const ElementProperties& marmotElementProperty ) override;
 
     /** @brief Assign material section and instantiate per-quadrature-point materials. */
-    void assignProperty( const MarmotMaterialSection& marmotElementProperty );
+    void assignProperty( const MarmotMaterialSection& marmotElementProperty ) override;
 
     /**
      * @brief Assign a named element property.
@@ -321,17 +321,17 @@ namespace Marmot::Elements {
     double characteristicElementLengthAt( const XiSized& xi );
 
     /** @brief Provide nodal coordinates to local and non-local geometry elements. */
-    void assignNodeCoordinates( const double* coordinates );
+    void assignNodeCoordinates( const double* coordinates ) override;
 
     /** @brief Precompute geometry-related quantities at quadrature points (B, detJ, J0xW, N_K, dNdX_K). */
-    void initializeYourself();
+    void initializeYourself() override;
 
     /**
      * @brief Initialize state or materials.
      * @param state MarmotMaterialInitialization, GeostaticStress or MarmotMaterialStateVars.
      * @param values For GeostaticStress: [sigmaY(z1), y1, sigmaY(z2), y2, kx, kz].
      */
-    void setInitialConditions( StateTypes state, const double* values );
+    void setInitialConditions( StateTypes state, const double* values ) override;
 
     /**
      * @brief Assemble distributed surface loads on a boundary face.
@@ -351,11 +351,11 @@ namespace Marmot::Elements {
     void computeDistributedLoad( MarmotElement::DistributedLoadTypes loadType,
                                  double*                             P,
                                  double*                             K,
-                                 const int                           elementFace,
+                                 int                                 elementFace,
                                  const double*                       load,
                                  const double*                       QTotal,
                                  double                              time,
-                                 double                              dT );
+                                 double                              dT ) override;
 
     /**
      * @brief Assemble body force contribution.
@@ -368,7 +368,7 @@ namespace Marmot::Elements {
                            const double* load,
                            const double* QTotal,
                            double        time,
-                           double        dT );
+                           double        dT ) override;
 
     /**
      * @brief Compute internal force and consistent tangent stiffness.
@@ -405,7 +405,8 @@ namespace Marmot::Elements {
      * @param time Time data forwarded to materials.
      * @param dT Time increment.
      */
-    void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT );
+    void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT )
+      override;
 
     /**
      * @brief Compute internal force without tangents.
@@ -424,7 +425,7 @@ namespace Marmot::Elements {
      * @param time Time data forwarded to materials.
      * @param dT Time increment.
      */
-    void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT );
+    void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT ) override;
     /**
      * @brief Compute consistent mass matrix using material density.
      * @details \f$\mathbf{M}_e = \sum_{p} \rho\, \mathbf{N}^\mathsf{T}\mathbf{N}\, J_0 w\f$ on the
@@ -434,7 +435,7 @@ namespace Marmot::Elements {
      * density and micro-inertia are taken from the nearest quadrature point of the element. See
      * Marmot::FiniteElement::ConsistentMass.
      */
-    void computeConsistentInertia( double* M );
+    void computeConsistentInertia( double* M ) override;
 
     /**
      * @brief Compute the lumped (diagonal) mass matrix.
@@ -477,7 +478,7 @@ namespace Marmot::Elements {
      * integrates a first-order field, and that damps a second-order one, comes from the same
      * material and is reported separately by computeLumpedDamping().
      */
-    void computeLumpedInertia( double* M );
+    void computeLumpedInertia( double* M ) override;
 
     /**
      * @brief Compute the lumped (diagonal) damping of the non-local degrees of freedom.
@@ -528,20 +529,20 @@ namespace Marmot::Elements {
      * loose by up to a factor of three in the eigenvalue, which costs nothing there because that
      * part is then negligible.
      */
-    void computeCriticalTimeStepForExplicitDynamics( double& criticalTimeStep, const double* QTotal );
+    void computeCriticalTimeStepForExplicitDynamics( double& criticalTimeStep, const double* QTotal ) override;
 
     /**
      * @brief Compute the internal energy of the element by summing the strain energy contributions from all quadrature
      * points.
      * @param internalEnergy Output parameter for the computed internal energy.
      */
-    void computeInternalEnergy( double& internalEnergy );
+    void computeInternalEnergy( double& internalEnergy ) override;
 
     /**
      * @brief Access a named state view at a quadrature point.
      * @note Using "sdv" returns the raw material state vector and is deprecated.
      */
-    StateView getStateView( const std::string& stateName, int qpNumber )
+    StateView getStateView( const std::string& stateName, int qpNumber ) override
     {
       const auto& qp = qps[qpNumber];
 
@@ -562,13 +563,13 @@ namespace Marmot::Elements {
     }
 
     /** @brief Get physical coordinates at the element center. */
-    std::vector< double > getCoordinatesAtCenter();
+    std::vector< double > getCoordinatesAtCenter() override;
 
     /** @brief Get physical coordinates at each quadrature point. */
-    std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints();
+    std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints() override;
 
     /** @brief Number of quadrature points of this element. */
-    int getNumberOfQuadraturePoints();
+    int getNumberOfQuadraturePoints() override;
   };
 
   template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
@@ -588,14 +589,14 @@ namespace Marmot::Elements {
   int GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
     getNumberOfRequiredStateVars()
   {
-    return qps[0].getNumberOfRequiredStateVars() * qps.size();
+    return qps[0].getNumberOfRequiredStateVars() * static_cast< int >( qps.size() );
   }
 
   template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
   void GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
     assignStateVars( double* stateVars, int nStateVars )
   {
-    const int nQpStateVars = nStateVars / qps.size();
+    const int nQpStateVars = nStateVars / static_cast< int >( qps.size() );
 
     for ( size_t i = 0; i < qps.size(); i++ ) {
       auto&   qp          = qps[i];
@@ -734,21 +735,21 @@ namespace Marmot::Elements {
     using namespace std;
 
     static const vector< vector< string > > nodeFields = [] {
-      vector< vector< string > > nodeFields;
+      vector< vector< string > > fields;
       for ( int i = 0; i < nNodes; i++ ) {
-        nodeFields.push_back( vector< string >() );
-        nodeFields[i].push_back( "displacement" );
+        fields.push_back( vector< string >() );
+        fields[i].push_back( "displacement" );
         if ( i < nNonLocalNodes ) {
           if constexpr ( nNonlocalVariables == 6 )
-            nodeFields[i].push_back( "strain symmetric" );
+            fields[i].push_back( "strain symmetric" );
           else {
-            nodeFields[i].push_back( "nonlocal damage" );
+            fields[i].push_back( "nonlocal damage" );
             for ( int j = 1; j < nNonlocalVariables; j++ )
-              nodeFields[i].push_back( "nonlocal damage " + to_string( j + 1 ) );
+              fields[i].push_back( "nonlocal damage " + to_string( j + 1 ) );
           }
         }
       }
-      return nodeFields;
+      return fields;
     }();
     return nodeFields;
   }
@@ -761,15 +762,14 @@ namespace Marmot::Elements {
     nNonLocalNodes >::getDofIndicesPermutationPattern()
   {
     static const std::vector< int > permutationPattern = [] {
-      std::vector< int > permutationPattern;
+      std::vector< int > pattern;
       for ( int i = 0; i < nNodes; i++ )
         for ( int j = 0; j < nDim; j++ )
-          permutationPattern.push_back( i * nDim + nNonlocalVariables * ( i < nNonLocalNodes ? i : nNonLocalNodes ) +
-                                        j );
+          pattern.push_back( i * nDim + nNonlocalVariables * ( i < nNonLocalNodes ? i : nNonLocalNodes ) + j );
       for ( int j = 0; j < nNonlocalVariables; j++ )
         for ( int i = 0; i < nNonLocalNodes; i++ )
-          permutationPattern.push_back( i * ( nDim + nNonlocalVariables ) + nDim + j );
-      return permutationPattern;
+          pattern.push_back( i * ( nDim + nNonlocalVariables ) + nDim + j );
+      return pattern;
     }();
     return permutationPattern;
   }
@@ -927,7 +927,7 @@ namespace Marmot::Elements {
         }
       }
 
-      else if ( nDim == 3 ) {
+      else if constexpr ( nDim == 3 ) {
         if ( sectionType == Solid ) {
 
           res.stress               = qp.managedStateVars->stress;
@@ -1102,7 +1102,7 @@ namespace Marmot::Elements {
         }
       }
 
-      else if ( nDim == 3 ) {
+      else if constexpr ( nDim == 3 ) {
         if ( sectionType == Solid ) {
 
           res.stress               = qp.managedStateVars->stress;
@@ -1220,7 +1220,7 @@ namespace Marmot::Elements {
 
       // when nNodes == nNonlocalNodes
       VectorXd N_weighted_nonlocal;
-      if ( nNodes != nNonLocalNodes ) {
+      if constexpr ( nNodes != nNonLocalNodes ) {
         N_weighted_nonlocal = VectorXd::Zero( nNonLocalNodes );
         N_weighted_nonlocal = N_lin;
       }
@@ -1292,7 +1292,7 @@ namespace Marmot::Elements {
       N_weighted.head( nNodesLinear ) += ( 1.0 - weight ) * N_lin;
 
       VectorXd N_weighted_nonlocal;
-      if ( nNodes != nNonLocalNodes )
+      if constexpr ( nNodes != nNonLocalNodes )
         N_weighted_nonlocal = N_lin;
       else
         N_weighted_nonlocal = N_weighted;
@@ -1551,7 +1551,7 @@ namespace Marmot::Elements {
     computeDistributedLoad( MarmotElement::DistributedLoadTypes loadType,
                             double*                             P,
                             double*                             K,
-                            const int                           elementFace,
+                            int                                 elementFace,
                             const double*                       load,
                             const double*                       QTotal,
                             double                              time,
@@ -1573,7 +1573,7 @@ namespace Marmot::Elements {
 
       VectorXd Pk = -p * boundaryEl.computeSurfaceNormalVectorialLoadVector();
 
-      if ( nDim == 2 )
+      if constexpr ( nDim == 2 )
         Pk *= elementProperties[0]; // thickness
 
       boundaryEl.assembleIntoParentVectorial( Pk, fU );
@@ -1616,7 +1616,7 @@ namespace Marmot::Elements {
       case MarmotElement::MarmotMaterialInitialization: {
         for ( QuadraturePoint& qp : qps ) {
           qp.material->initializeYourself( qp.managedStateVars->materialStateVars.data(),
-                                           qp.managedStateVars->materialStateVars.size() );
+                                           static_cast< int >( qp.managedStateVars->materialStateVars.size() ) );
         }
         break;
       }
@@ -1681,6 +1681,6 @@ namespace Marmot::Elements {
   int GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
     getNumberOfQuadraturePoints()
   {
-    return qps.size();
+    return static_cast< int >( qps.size() );
   }
 } // namespace Marmot::Elements
