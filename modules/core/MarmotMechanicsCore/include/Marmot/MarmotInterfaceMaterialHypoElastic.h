@@ -60,7 +60,8 @@ public:
   using Tensor6d    = Marmot::FastorStandardTensors::Tensor6d;    ///< vector of six components, one block per side
   using Tensor18d   = Marmot::FastorStandardTensors::Tensor18d;   ///< vector of 18 components, one block per side
 
-  const int materialNumber; ///< number of the material
+  /// number of the material
+  const int materialNumber;
 
   /**
    * @brief Construct an interface material from a registered hypoelastic material.
