@@ -407,7 +407,8 @@ namespace Marmot::Elements {
 
     /**
      * @brief Compute the critical time step for explicit dynamics.
-     * @param criticalTimeStep Output parameter for the computed critical time step.
+     * @param[out] criticalTimeStep Computed critical time step.
+     * @param[in] QTotal Total (current) degrees of freedom of the element.
      * @details The estimate is \f$l / c\f$, scaled by the factor
      * Marmot::FiniteElement::MassLumping::timeStepFactorFromMassDistribution() derives from the
      * same lumped mass fractions computeLumpedInertia() assembles: \f$l/c\f$ is the stable

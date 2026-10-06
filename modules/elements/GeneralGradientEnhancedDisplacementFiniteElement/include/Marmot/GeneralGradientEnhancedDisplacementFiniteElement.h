@@ -413,6 +413,7 @@ namespace Marmot::Elements {
      * @details Uses the small-strain relation \f$\Delta \eps = \mathbf{B}\, \Delta \mathbf{\qu}\f$,
      * interpolates the non-local variables as \f$ \knl = \Nk\, \mathbf{\qk}\f$. Internal forces
      * are evaluated by Gauss quadrature:
+     * \f[
      * \mathbf{\fk} = \sum_{qp} \left (\mathbf{\Nk}^\mathsf{T}\, \knl\, + c\, \partial_\mathbf{x}
      * \mathbf{\Nk}^\mathsf{T}\,\partial_\mathbf{x} \mathbf{\Nk}\, \mathbf{\qk} - \mathbf{\Nk}^\mathsf{T}\, \kl \right )
      * J_0\, w_{qp} \, .
@@ -494,7 +495,8 @@ namespace Marmot::Elements {
     /**
      * @brief Compute the critical time step for explicit dynamics based on
      * the dilatational wave speed and the element size.
-     * @param criticalTimeStep Output parameter for the computed critical time step.
+     * @param[out] criticalTimeStep Computed critical time step.
+     * @param[in] QTotal Total (current) degrees of freedom of the element.
      * @details The estimate is \f$l / c\f$, scaled by the factor
      * Marmot::FiniteElement::MassLumping::timeStepFactorFromMassDistribution() derives from the
      * same lumped mass fractions computeLumpedInertia() assembles: \f$l/c\f$ is the stable

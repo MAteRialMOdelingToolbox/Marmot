@@ -41,7 +41,7 @@ namespace Marmot::Materials {
 
   /**
    * @brief Selects how the algorithmic tangent @f$ \partial\boldsymbol{\tau}/\partial\boldsymbol{F} @f$
-   *        of @ref HughesWingetWrapper is evaluated.
+   *        of @ref Marmot::Materials::HughesWingetWrapper is evaluated.
    */
   enum class HughesWingetTangent {
     /**

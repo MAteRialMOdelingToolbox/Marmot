@@ -87,6 +87,9 @@ elseif(MSVC)
     # /external:W0 silences warnings from the headers of imported targets (Eigen, autodiff, Fastor), which CMake
     # passes with /external:I.
     add_compile_options(/wd4100 /external:W0)
+    # C4702 (unreachable code) is a code-generation warning that /external:W0 does not cover; it is reported
+    # for every translation unit instantiating Fastor's matmul and SIMD kernels, which we cannot change.
+    add_compile_options(/wd4702)
     # Keep MSVC's secure-CRT deprecation warnings (C4996 for std::getenv, sscanf, ...) out of the /W4 output.
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 endif()

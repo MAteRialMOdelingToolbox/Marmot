@@ -81,6 +81,7 @@ namespace Marmot::Materials {
      */
     template < int N >
     struct Factorial {
+      /// Enumeration holding the factorial of N as its enumerator @c value.
       enum factorial { value = N * Factorial< N - 1 >::value };
     };
     /// \cond DOXYGEN_SKIP

@@ -292,6 +292,8 @@ namespace Marmot::Materials {
      * @param[in] sigmaRotVoigt Rotated stress that was handed to the wrapped material.
      * @param[in] baseStateOld  Wrapped material state *before* the unperturbed evaluation.
      * @param[in] inc           Increment handed to the wrapped material.
+     * @param[in] elasticEnergyDensity Elastic energy density of the unperturbed evaluation.
+     * @param[in] dissipation   Dissipation of the unperturbed evaluation.
      * @return The sensitivity in Voigt form, with its three shear **columns** halved so that the result
      *         may be contracted as a full fourth-order tensor without double counting.
      */

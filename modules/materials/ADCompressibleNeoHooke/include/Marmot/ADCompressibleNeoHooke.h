@@ -39,7 +39,6 @@ namespace Marmot::Materials {
    * @par State variables
    * - No state variables required.
    *
-   * @ingroup materials_hyperelastic
    */
 
   class ADCompressibleNeoHooke : public MarmotMaterialFiniteStrainAD {

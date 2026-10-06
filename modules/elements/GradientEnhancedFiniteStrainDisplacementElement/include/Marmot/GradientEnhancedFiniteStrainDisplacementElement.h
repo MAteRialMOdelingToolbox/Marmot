@@ -127,6 +127,7 @@ namespace Marmot::Elements {
        */
       class QPStateVarManager : public MarmotStateVarVectorManager {
 
+        /// @cond INTERNAL (designated initializers are not parseable by the Sphinx C++ domain)
         inline const static auto layout = makeLayout( {
           { .name = "stress", .length = 9 },
           { .name = "elastic energy density", .length = 1 },
@@ -136,6 +137,7 @@ namespace Marmot::Elements {
           { .name = "F0 ZZ", .length = 1 },
           { .name = "begin of material state", .length = 0 },
         } );
+        /// @endcond
 
       public:
         Eigen::Map< Marmot::Vector9d > stress; ///< Kirchhoff stress (3D, also in plane strain)
