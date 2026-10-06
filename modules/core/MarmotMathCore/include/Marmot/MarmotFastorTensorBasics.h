@@ -26,6 +26,7 @@
 #include "Eigen/Core"
 #include "Fastor/Fastor.h"
 #include "Marmot/MarmotConstants.h"
+#include "Marmot/MarmotMsvcWarnings.h"
 #include "Marmot/MarmotTensor.h"
 #include <autodiff/forward/dual/dual.hpp>
 

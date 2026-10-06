@@ -25,6 +25,7 @@
 #pragma once
 #include "Fastor/Fastor.h"
 #include "Marmot/MarmotMath.h"
+#include "Marmot/MarmotMsvcWarnings.h"
 #include <iostream>
 
 namespace Marmot {

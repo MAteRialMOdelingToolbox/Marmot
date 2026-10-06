@@ -25,6 +25,7 @@
 
 #pragma once
 #include "Fastor/Fastor.h"
+#include "Marmot/MarmotMsvcWarnings.h"
 #include "Marmot/MarmotUtils.h"
 #include <Eigen/Dense>
 #include <cstddef>

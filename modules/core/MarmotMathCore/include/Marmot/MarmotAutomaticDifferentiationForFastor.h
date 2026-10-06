@@ -27,6 +27,7 @@
 #include "Fastor/Fastor.h"
 #include "Marmot/MarmotAutomaticDifferentiation.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
+#include "Marmot/MarmotMsvcWarnings.h"
 #include "autodiff/forward/dual.hpp"
 #include "autodiff/forward/dual/eigen.hpp"
 #include <autodiff/forward/dual/dual.hpp>

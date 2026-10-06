@@ -26,6 +26,7 @@
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotMaterialPointSolverHypoElastic.h"
+#include "Marmot/MarmotMsvcWarnings.h"
 #include "autodiff/forward/dual/dual.hpp"
 #include "unsupported/Eigen/CXX11/Tensor"
 #include <Eigen/Core>

@@ -120,6 +120,19 @@ if(NOT MARMOT_DEPENDENCIES_FOUND)
 endif()
 message("--> found Eigen ${Eigen3_VERSION}")
 
+# MSVC: hand the dependencies' header directories to the compiler as external includes explicitly, so that
+# /external:W0 (above) silences their warnings (e.g. C4702 in Fastor) whatever the generator does with SYSTEM.
+if(MSVC)
+    foreach(_dep_target Eigen3::Eigen autodiff::autodiff Fastor::Fastor)
+        get_target_property(_dep_include_dirs ${_dep_target} INTERFACE_INCLUDE_DIRECTORIES)
+        foreach(_dep_include_dir IN LISTS _dep_include_dirs)
+            if(_dep_include_dir AND NOT _dep_include_dir MATCHES "\\$<")
+                add_compile_options("/external:I${_dep_include_dir}")
+            endif()
+        endforeach()
+    endforeach()
+endif()
+
 # Testing: include(CTest) provides the standard BUILD_TESTING option (default ON) and calls enable_testing().
 # Configure with -DBUILD_TESTING=OFF to skip the test executables, e.g. for install-only builds.
 include(CTest)
