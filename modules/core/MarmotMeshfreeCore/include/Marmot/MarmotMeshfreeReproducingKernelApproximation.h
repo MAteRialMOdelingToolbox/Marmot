@@ -184,7 +184,9 @@ namespace Marmot::Meshfree {
      * @param[in] coord             Evaluation point (for the error message).
      * @param[in] nCoveringKernels  Number of kernels covering the point (for the error message).
      * @return The column-pivoting Householder QR factorization of @p M.
-     * @throws std::runtime_error if @p M is rank deficient.
+     * @throws std::runtime_error if @p M is rank deficient. A common cause in 3D is a single layer of particles
+     *         through the thickness: all kernel centres are coplanar, so a linear basis cannot be reproduced; use at
+     *         least two layers of kernels, larger supports, or a lower completeness order.
      */
     Eigen::ColPivHouseholderQR< Eigen::MatrixXd > factorizeMomentMatrix( const Eigen::MatrixXd& M,
                                                                          const double*          coord,

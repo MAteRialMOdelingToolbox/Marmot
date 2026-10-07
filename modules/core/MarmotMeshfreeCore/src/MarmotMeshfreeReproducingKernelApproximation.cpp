@@ -82,12 +82,14 @@ namespace Marmot::Meshfree {
   {
     Eigen::ColPivHouseholderQR< Eigen::MatrixXd > MQr( M );
     if ( MQr.rank() < M.rows() )
-      throw std::runtime_error( MakeString()
-                                << __PRETTY_FUNCTION__ << ": singular moment matrix (rank " << MQr.rank() << " < "
-                                << M.rows() << ") at " << Eigen::Map< const Eigen::VectorXd >( coord, _dim ).transpose()
-                                << ", covered by " << nCoveringKernels
-                                << " kernels: no kernel covers the point, or the nodes are in a "
-                                   "degenerate arrangement for the completeness order" );
+      throw std::runtime_error(
+        MakeString() << __PRETTY_FUNCTION__ << ": singular moment matrix (rank " << MQr.rank() << " < " << M.rows()
+                     << ") at " << Eigen::Map< const Eigen::VectorXd >( coord, _dim ).transpose() << ", covered by "
+                     << nCoveringKernels
+                     << " kernels: no kernel covers the point, or the kernel centres are degenerate for the "
+                        "completeness order (e.g. all coplanar in 3D, as for a single layer of particles through the "
+                        "thickness). Use at least two layers of kernels in every direction, larger supports, or a "
+                        "lower completeness order" );
     return MQr;
   }
 
