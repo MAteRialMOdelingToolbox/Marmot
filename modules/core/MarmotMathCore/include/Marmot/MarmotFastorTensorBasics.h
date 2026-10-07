@@ -24,9 +24,16 @@
  */
 #pragma once
 #include "Eigen/Core"
+/* Fastor/Fastor.h ends with `#pragma warning( default : ... )`; scope it so it neither overrides the build's warning
+ * flags nor leaks into consumers. */
+#ifdef _MSC_VER
+#  pragma warning( push )
+#endif
 #include "Fastor/Fastor.h"
+#ifdef _MSC_VER
+#  pragma warning( pop )
+#endif
 #include "Marmot/MarmotConstants.h"
-#include "Marmot/MarmotMsvcWarnings.h"
 #include "Marmot/MarmotTensor.h"
 #include <autodiff/forward/dual/dual.hpp>
 
