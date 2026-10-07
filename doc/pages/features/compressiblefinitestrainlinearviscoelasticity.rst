@@ -70,11 +70,6 @@ The material parameters are provided as a flat vector with the following layout:
      - 3
      - :math:`\mu` (shear-modulus-like parameter), :math:`\lambda_L` (locking stretch),
        :math:`\kappa` (bulk modulus)
-   * - Ogden
-     - 5
-     - 7
-     - :math:`\mu_1,\alpha_1,\mu_2,\alpha_2,\mu_3,\alpha_3` (3-term Ogden moduli/exponents),
-       :math:`\kappa` (bulk modulus)
 
 .. list-table::
    :header-rows: 1
@@ -94,19 +89,9 @@ The ``ArrudaBoyce`` base reuses the isochoric 8-chain potential
 :math:`\Psi_{\rm iso}(\bar I_1;\mu,\lambda_L)` shared with :doc:`bergstromboyce` (see that page
 for the closed-form derivation and its stress-free/reduction properties), and adds the shared
 volumetric penalty term :math:`\frac{\kappa}{8}\left(\ln\det\boldsymbol C\right)^2` -- the same
-convention used here by ``NeoHooke``/``Yeoh``/``MooneyRivlin``/``Ogden`` (as opposed to
+convention used here by ``NeoHooke``/``Yeoh``/``MooneyRivlin`` (as opposed to
 ``PenceGouNeoHooke``'s own :math:`K,G`-based convention, which bundles its volumetric response
 into a single potential rather than adding this shared term).
-
-.. warning::
-
-   The ``Ogden`` base's tangent (second/third derivative of the energy density) is currently
-   **silently wrong at the reference configuration** :math:`\boldsymbol C=\boldsymbol I` and at
-   any other state with repeated eigenvalues of :math:`\boldsymbol C` -- see the known
-   limitation documented on
-   :cpp:func:`Marmot::ContinuumMechanics::EnergyDensityFunctions::OgdenPotential`. Until that is
-   fixed, avoid ``onlyShearCreep = 0`` (which evaluates the tangent at :math:`\boldsymbol C
-   =\boldsymbol I` during construction) with the ``Ogden`` base.
 
 The model is a finite-strain generalization of the linear viscoelastic model
 described, e.g., in Liu et al. (2021). A generalized Maxwell model is employed

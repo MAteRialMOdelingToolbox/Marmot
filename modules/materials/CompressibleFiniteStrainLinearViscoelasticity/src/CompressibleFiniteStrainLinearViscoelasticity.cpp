@@ -90,19 +90,6 @@ namespace Marmot::Materials {
                  autodiff::dual3rd >( C_ad, elasticProperties[2] );
       };
       break;
-    case Ogden:
-      energyDensityFunction = [this]( const FastorStandardTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
-        return ContinuumMechanics::EnergyDensityFunctions::OgdenPotential< autodiff::dual3rd >( C_ad,
-                                                                                                elasticProperties[0],
-                                                                                                elasticProperties[1],
-                                                                                                elasticProperties[2],
-                                                                                                elasticProperties[3],
-                                                                                                elasticProperties[4],
-                                                                                                elasticProperties[5] ) +
-               ContinuumMechanics::EnergyDensityFunctions::VolumetricPenaltyPotential<
-                 autodiff::dual3rd >( C_ad, elasticProperties[6] );
-      };
-      break;
     default:
       throw std::runtime_error( "CompressibleFiniteStrainLinearViscoelasticity::computeEnergyDensityAndDerivatives: "
                                 "Unknown hyperelastic base." );
@@ -144,11 +131,6 @@ namespace Marmot::Materials {
         G                    = elasticProperties[0] / 3. + 2. * elasticProperties[0] / ( 3. * w0 );
         break;
       }
-      case Ogden:
-        G = ( elasticProperties[0] * elasticProperties[1] + elasticProperties[2] * elasticProperties[3] +
-              elasticProperties[4] * elasticProperties[5] ) /
-            2;
-        break;
       default:
         throw std::runtime_error( "CompressibleFiniteStrainLinearViscoelasticity::"
                                   "CompressibleFiniteStrainLinearViscoelasticity: Unknown hyperelastic base." );

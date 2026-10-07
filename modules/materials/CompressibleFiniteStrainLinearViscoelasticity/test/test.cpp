@@ -18,7 +18,7 @@ using namespace Marmot::ContinuumMechanics;
 // -----------------------------------------------------------------------
 
 // Layout: [hyperelasticBase, onlyShearCreep, <isochoric shape params...>, kappa, nMaxwell, (gamma1, tau1, ...)]
-// hyperelasticBase: 0=NeoHooke, 1=Yeoh, 2=MooneyRivlin, 4=ArrudaBoyce, 5=Ogden
+// hyperelasticBase: 0=NeoHooke, 1=Yeoh, 2=MooneyRivlin, 4=ArrudaBoyce
 // Every base now composes Psi = Psi_iso(shape params) + kappa/8*(ln det C)^2,
 // with kappa always the LAST elasticProperties entry (see the class docs).
 

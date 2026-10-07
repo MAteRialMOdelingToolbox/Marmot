@@ -24,7 +24,6 @@
  */
 
 #pragma once
-#include "Marmot/MarmotEigenSystems.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotMath.h"
 
@@ -362,84 +361,6 @@ namespace Marmot::ContinuumMechanics {
       const T Ibar1 = I1 * pow( J, -2. / 3 );
 
       return detail::arrudaBoyce8ChainEnergyAndDerivative( Ibar1, mu, lambdaL ).first;
-    }
-
-    /** @brief Classical 3-term Ogden isochoric hyperelastic energy density function
-     * (isochoric part only -- no volumetric term, same convention as
-     * #ArrudaBoyce8ChainPotential: each consuming material adds its own volumetric
-     * penalty).
-     *
-     * The isochoric energy density is
-     * \f[
-     *   \Psi_\mathrm{iso}(\bar\lambda) = \sum_{p=1}^{3} \frac{\mu_p}{\alpha_p}\left(
-     *   \bar\lambda_1^{\alpha_p} + \bar\lambda_2^{\alpha_p} + \bar\lambda_3^{\alpha_p} - 3\right)
-     * \f]
-     * with isochoric principal stretches \f$\bar\lambda_i = J^{-1/3}\lambda_i\f$,
-     * \f$\lambda_i = \sqrt{\mathrm{eig}_i(\boldsymbol C)}\f$ the principal stretches of
-     * \f$\boldsymbol C\f$, and \f$J=\sqrt{\det\boldsymbol C}\f$. Unlike every other
-     * potential in this file, a general (non-quadratic) Ogden exponent is not
-     * expressible purely in terms of \f$\boldsymbol C\f$'s invariants, so this requires
-     * a spectral decomposition of \f$\boldsymbol C\f$ via Marmot::Math::computeEigenSystemJacobi().
-     *
-     * @warning **Known limitation, not yet fixed:** at repeated eigenvalues of
-     * \f$\boldsymbol C\f$ (most notably \f$\boldsymbol C=\boldsymbol I\f$, i.e. every
-     * reference/undeformed configuration), computeEigenSystemJacobi() converges without
-     * performing any rotation, since its sweep- and pair-level convergence checks gate
-     * purely on the PRIMAL magnitude of the off-diagonal entries (see
-     * Marmot::Math::makeReal() there). When this function is differentiated via
-     * autodiff::dual3rd (as done by #Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity),
-     * any dual/derivative content carried in an off-diagonal entry whose PRIMAL value is
-     * (numerically) zero is silently discarded rather than propagated into the
-     * eigenvalues -- even though the true isochoric energy, being a permutation-symmetric
-     * function of the full eigenvalue set, IS mathematically smooth there. In practice this
-     * means second/third derivatives (the shear stiffness/curvature) computed through this
-     * potential are silently WRONG (spuriously zero) at \f$\boldsymbol C=\boldsymbol I\f$ and
-     * near any other repeated-eigenvalue state. Fixing this correctly requires a
-     * repeated-eigenvalue-safe closed-form spectral derivative (e.g. the eigenprojector /
-     * L'Hopital-limit formulas of Miehe (1998) or de Souza Neto et al., "Computational
-     * Methods for Plasticity"), not merely relaxing the convergence gates (which was
-     * checked and found to introduce literal primal-level 0/0 divisions -- NaN -- for
-     * genuinely uncoupled off-diagonal pairs). Until that is implemented, do not rely on
-     * this potential's tangent near an isotropic/repeated-eigenvalue state.
-     *
-     * @tparam T Scalar type, e.g. double, autodiff::dual3rd.
-     * @param C Right Cauchy-Green tensor.
-     * @param mu1 First-term Ogden modulus.
-     * @param alpha1 First-term Ogden exponent.
-     * @param mu2 Second-term Ogden modulus.
-     * @param alpha2 Second-term Ogden exponent.
-     * @param mu3 Third-term Ogden modulus.
-     * @param alpha3 Third-term Ogden exponent.
-     * @return Energy density (isochoric part only).
-     */
-    template < typename T >
-    T OgdenPotential( const Tensor33t< T >& C,
-                      const double          mu1,
-                      const double          alpha1,
-                      const double          mu2,
-                      const double          alpha2,
-                      const double          mu3,
-                      const double          alpha3 )
-    {
-      const T J            = sqrt( determinant( C ) );
-      const T Jm13         = pow( J, -1. / 3. );
-      const auto [eigC, Q] = Marmot::Math::computeEigenSystemJacobi( C );
-
-      Tensor3t< T > lambdaBar;
-      for ( int i = 0; i < 3; ++i )
-        lambdaBar( i ) = Jm13 * sqrt( eigC( i ) );
-
-      const double mu[3]    = { mu1, mu2, mu3 };
-      const double alpha[3] = { alpha1, alpha2, alpha3 };
-
-      T psi( 0. );
-      for ( int p = 0; p < 3; ++p ) {
-        T sumPow( 0. );
-        for ( int i = 0; i < 3; ++i )
-          sumPow += pow( lambdaBar( i ), alpha[p] );
-        psi += mu[p] / alpha[p] * ( sumPow - 3.0 );
-      }
-      return psi;
     }
 
     namespace FirstOrderDerived {
