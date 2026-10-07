@@ -5,13 +5,11 @@
  * | | | | | | (_| | |  | | | | | | (_) | |_
  * |_| |_| |_|\__,_|_|  |_| |_| |_|\___/ \__|
  *
- * Unit of Strength of MaterialPoints and Structural Analysis
- * University of Innsbruck,
+ * Unit of Strength of Materials and Structural Analysis
+ * University of Innsbruck
  * 2020 - today
  *
  * festigkeitslehre@uibk.ac.at
- *
- * Matthias Neuner matthias.neuner@uibk.ac.at
  *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *

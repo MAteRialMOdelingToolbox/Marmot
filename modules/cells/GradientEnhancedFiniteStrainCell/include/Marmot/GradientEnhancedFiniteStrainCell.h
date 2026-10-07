@@ -9,10 +9,7 @@
  * University of Innsbruck
  * 2020 - today
  *
- * Research Group for Computational Mechanics of Materials
- * Institute of Structural Engineering, BOKU University, Vienna
- *
- * Thomas Mader thomas.mader@boku.ac.at
+ * festigkeitslehre@uibk.ac.at
  *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
