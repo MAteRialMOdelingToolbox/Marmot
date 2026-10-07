@@ -95,6 +95,18 @@ Feature PRs **must** include:
 - **Documentation** updates (README, docs site, or inline comments) explaining the new behavior and public APIs.
 - **Automated tests** registered with **ctest** that cover the new behavior and edge cases.
 
+### Importing a module with its history
+A module that was developed in a repository of its own is imported with its full history, `git subtree add
+--prefix=modules/<category>/<Name> <repository> <commit>`, from a verbatim commit of the source repository (do not
+rewrite it; display names are fixed in `.mailmap`). Such a PR is merged with **"Create a merge commit"**, not
+squashed or rebased, so that the imported commits keep their SHAs and can be checked against the source. The
+Conventional Commits rule applies to the commits of the PR itself, not to the imported history. After the merge,
+development continues in Marmot and the source repository is archived.
+
+### Changelog
+Behaviour changes, in particular those that break existing input or code or change numerical results, are listed
+in `CHANGELOG.md` under `[Unreleased]`.
+
 ### PR Checklist
 - [ ] My PR title follows Conventional Commits
 - [ ] `pre-commit run --all-files` passes locally
@@ -102,6 +114,7 @@ Feature PRs **must** include:
 - [ ] All **tests pass** locally via `ctest`
 - [ ] New/changed behavior is **documented**
 - [ ] I added/updated **ctest** tests for features/bug fixes
+- [ ] Behaviour changes are listed in `CHANGELOG.md`
 
 ---
 
