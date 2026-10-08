@@ -18,6 +18,8 @@ This section contains the ready to use available material models.
   adlinearelastic
   linearviscoelasticpowerlaw
   linearviscoelasticorthotropicpowerlaw
+  linearviscoelasticwiechert
+  interfacematerialhypoelastic
   vonmises
   advonmises
   hugheswinget

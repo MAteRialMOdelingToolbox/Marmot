@@ -1,4 +1,5 @@
 #include "Marmot/MarmotTensor.h"
+#include "Marmot/MarmotFastorTensorBasics.h"
 
 namespace Marmot {
   namespace ContinuumMechanics::TensorUtility {
@@ -12,5 +13,6 @@ namespace Marmot {
 
       return dyade;
     }
+
   } // namespace ContinuumMechanics::TensorUtility
 } // namespace Marmot
