@@ -1,0 +1,2 @@
+marmot_add_module(DisplacementMaterialPoint
+    REQUIRES MarmotMeshfreeCore MarmotFiniteStrainMechanicsCore)

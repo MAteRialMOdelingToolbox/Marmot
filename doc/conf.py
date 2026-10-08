@@ -103,6 +103,10 @@ breathe_projects_source = {
         "../modules/core/MarmotUtilitiesCore/include/Marmot",
         getAllHeadersInFolder("../modules/core/MarmotUtilitiesCore/include/Marmot/"),
     ),
+    "MarmotMeshfreeCore": (
+        "../modules/core/MarmotMeshfreeCore/include/Marmot",
+        getAllHeadersInFolder("../modules/core/MarmotMeshfreeCore/include/Marmot/"),
+    ),
     "MarmotGradientMechanicsCore": (
         "../modules/core/MarmotGradientMechanicsCore/include/Marmot",
         getAllHeadersInFolder("../modules/core/MarmotGradientMechanicsCore/include/Marmot/"),
