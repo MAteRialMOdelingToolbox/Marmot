@@ -1,0 +1,4 @@
+# Formatting-only commits, ignored by git blame (git config blame.ignoreRevsFile .git-blame-ignore-revs; GitHub reads it by default).
+
+# style: clang-format the imported meshfree modules
+ec379513b822bbf12b32b20009a8a91ecfb78ce4
