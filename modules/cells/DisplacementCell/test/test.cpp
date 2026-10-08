@@ -31,6 +31,7 @@
 #include <cmath>
 #include <functional>
 #include <memory>
+#include <random>
 #include <string>
 #include <vector>
 
@@ -210,18 +211,82 @@ namespace {
     return dQ;
   }
 
-  Eigen::MatrixXd numericalTangent( const std::function< Eigen::VectorXd( const Eigen::VectorXd& ) >& f,
-                                    const Eigen::VectorXd&                                            Q0 )
-  {
-    const double    h = 1e-7;
-    Eigen::MatrixXd numK( f( Q0 ).size(), Q0.size() );
-    for ( int j = 0; j < Q0.size(); j++ ) {
-      Eigen::VectorXd Qp = Q0, Qm = Q0;
-      Qp[j] += h;
-      Qm[j] -= h;
-      numK.col( j ) = ( f( Qp ) - f( Qm ) ) / ( 2 * h );
+  // A finite-difference check of a tangent K = df/dQ at Q0: the central differences f'(Q0) D along the columns of D,
+  // compared with K D. Up to 64 dofs, D is the identity, i.e. the full finite-difference Jacobian with its column-wise
+  // diagnostics; beyond, three fixed random unit directions per field, which exercise the same code with O(1) instead
+  // of O(nDof) residual evaluations, so that the tests of the higher-order cells and of the particles with many nodes
+  // stay fast also at -O0 (coverage). A wrong tangent fails the directional check with probability one.
+  struct NumericalTangent {
+    Eigen::MatrixXd     D;        ///< the directions, one per column
+    Eigen::MatrixXd     KD;       ///< f'(Q0) D by central differences
+    std::vector< bool > nonlocal; ///< direction j acts on the nonlocal dofs only
+
+    /// relative error of K against the difference quotients
+    double error( const Eigen::MatrixXd& K ) const { return ( K * D - KD ).norm() / KD.norm(); }
+
+    /// relative error of the rows selected by @p row, along the directions of one field
+    double error( const Eigen::MatrixXd& K, const std::function< bool( int ) >& row, bool nonlocalDirections ) const
+    {
+      const Eigen::MatrixXd KDa = K * D;
+      double                num = 0, den = 0;
+      for ( int j = 0; j < D.cols(); j++ )
+        if ( nonlocal[j] == nonlocalDirections )
+          for ( int a = 0; a < KD.rows(); a++ )
+            if ( row( a ) ) {
+              num += std::pow( KDa( a, j ) - KD( a, j ), 2 );
+              den += std::pow( KD( a, j ), 2 );
+            }
+      return std::sqrt( num / std::max( den, 1e-300 ) );
     }
-    return numK;
+  };
+
+  NumericalTangent numericalTangentAlong( const std::function< Eigen::VectorXd( const Eigen::VectorXd& ) >& f,
+                                          const Eigen::VectorXd&                                            Q0,
+                                          const std::function< bool( int ) >&                               isNonlocal,
+                                          double                                                            hU,
+                                          double                                                            hN )
+  {
+    const int        n = Q0.size();
+    NumericalTangent t;
+    if ( n <= 64 ) {
+      t.D = Eigen::MatrixXd::Identity( n, n );
+      for ( int j = 0; j < n; j++ )
+        t.nonlocal.push_back( isNonlocal( j ) );
+    }
+    else {
+      std::mt19937                             rng( 1 );
+      std::uniform_real_distribution< double > uniform( -1.0, 1.0 );
+      std::vector< Eigen::VectorXd >           directions;
+      for ( bool field : { false, true } ) {
+        bool any = false;
+        for ( int j = 0; j < n; j++ )
+          any = any || isNonlocal( j ) == field;
+        for ( int k = 0; any && k < 3; k++ ) {
+          Eigen::VectorXd d = Eigen::VectorXd::Zero( n );
+          for ( int j = 0; j < n; j++ )
+            if ( isNonlocal( j ) == field )
+              d[j] = uniform( rng );
+          directions.push_back( d.normalized() );
+          t.nonlocal.push_back( field );
+        }
+      }
+      t.D.resize( n, directions.size() );
+      for ( size_t k = 0; k < directions.size(); k++ )
+        t.D.col( k ) = directions[k];
+    }
+    t.KD.resize( f( Q0 ).size(), t.D.cols() );
+    for ( int j = 0; j < t.D.cols(); j++ ) {
+      const double h = t.nonlocal[j] ? hN : hU;
+      t.KD.col( j )  = ( f( Q0 + h * t.D.col( j ) ) - f( Q0 - h * t.D.col( j ) ) ) / ( 2 * h );
+    }
+    return t;
+  }
+
+  NumericalTangent numericalTangent( const std::function< Eigen::VectorXd( const Eigen::VectorXd& ) >& f,
+                                     const Eigen::VectorXd&                                            Q0 )
+  {
+    return numericalTangentAlong(
+      f, Q0, []( int ) { return false; }, 1e-7, 1e-7 );
   }
 
   template < int nDim >
@@ -278,7 +343,7 @@ namespace {
       const Eigen::VectorXd dQ = increment( s.nDof, afterStep ? 0.02 : 0.05 );
       const auto [P, K]        = s.trial( dQ );
       const auto   numK        = numericalTangent( [&]( const Eigen::VectorXd& q ) { return s.trial( q ).first; }, dQ );
-      const double err         = ( K - numK ).norm() / numK.norm();
+      const double err         = numK.error( K );
       throwExceptionOnFailure( err < 1e-7,
                                MakeString() << g.name << ( afterStep ? ", second" : ", first" )
                                             << " step: tangent inconsistent, relative error " << err );
@@ -351,8 +416,7 @@ namespace {
       const auto numK     = numericalTangent( [&]( const Eigen::VectorXd& q ) { return load( q ).first; }, dQ );
 
       throwExceptionOnFailure( f0.norm() > 0, g.name + ": pressure must load the cell" );
-      throwExceptionOnFailure( ( K0 - numK ).norm() < 1e-7 * numK.norm(),
-                               g.name + ": pressure load tangent inconsistent" );
+      throwExceptionOnFailure( numK.error( K0 ) < 1e-7, g.name + ": pressure load tangent inconsistent" );
     }
   }
 
