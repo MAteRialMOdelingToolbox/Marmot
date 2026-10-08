@@ -222,7 +222,7 @@ namespace Marmot::Materials {
     {
       using namespace Marmot::FastorStandardTensors;
 
-      TensorMap33d Fn = this->stateLayout.getAs< TensorMap33d >( stateVars, deformationGradientSlot );
+      TensorMap33d Fn = this->stateLayout.template getAs< TensorMap33d >( stateVars, deformationGradientSlot );
       std::memcpy( Fn.data(), Spatial3D::I.data(), 9 * sizeof( double ) );
 
       double* sigmaN = this->stateLayout.getPtr( stateVars, stressSlot );
@@ -359,9 +359,10 @@ namespace Marmot::Materials {
 
       const Tensor33d& Ident = Spatial3D::I;
 
-      TensorMap33d Fn_ref = this->stateLayout.getAs< TensorMap33d >( response.stateVars, deformationGradientSlot );
+      TensorMap33d Fn_ref = this->stateLayout.template getAs< TensorMap33d >( response.stateVars,
+                                                                              deformationGradientSlot );
       Eigen::Map< Marmot::Vector6d >
-              sigmaN_n  = this->stateLayout.getAs< Eigen::Map< Marmot::Vector6d > >( response.stateVars, stressSlot );
+        sigmaN_n = this->stateLayout.template getAs< Eigen::Map< Marmot::Vector6d > >( response.stateVars, stressSlot );
       double* nPtr      = this->stateLayout.getPtr( response.stateVars, nonlocalFieldSlot );
       double* baseState = this->stateLayout.getPtr( response.stateVars, baseMaterialSlot );
 
