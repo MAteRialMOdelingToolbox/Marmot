@@ -72,7 +72,8 @@ jobs:
           cd build
           # --no-tests=error: ctest exits 0 on an empty test set, which would
           # report success for a build that produced no coverage at all.
-          ctest --output-on-failure --no-tests=error
+          # in parallel: the tests share the .gcda files of the module objects, which libgcov merges under a file lock
+          ctest -j$(nproc) --output-on-failure --no-tests=error
 
       - name: Capture coverage
         shell: bash -leo pipefail {0}

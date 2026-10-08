@@ -284,10 +284,14 @@ endif()
 # A test sees the headers of its own module (and the modules that one requires) and of the module providing
 # MarmotTesting.h; a test including headers of further modules, or creating their materials or elements by name
 # through the factories, lists them, and is skipped if one is not built:
-#   add_marmot_test(<name> <source> [REQUIRES <module>...])
+#   add_marmot_test(<name> <source> [REQUIRES <module>...] [TIMEOUT <seconds>])
+# Every test has a timeout (default MARMOT_TEST_TIMEOUT, well below ctest's implicit 1500 s), so that a test which
+# becomes too slow fails as such instead of passing on a fast runner and timing out on a slow one; it must hold also
+# for the -O0 coverage build.
 set(MARMOT_TESTING_MODULE MarmotMechanicsCore)
+set(MARMOT_TEST_TIMEOUT 300 CACHE STRING "Default timeout of each Marmot test in seconds")
 function(add_marmot_test test_name test_source)
-  cmake_parse_arguments(PARSE_ARGV 2 _arg "" "" "REQUIRES")
+  cmake_parse_arguments(PARSE_ARGV 2 _arg "" "TIMEOUT" "REQUIRES")
   if(_arg_UNPARSED_ARGUMENTS)
     message(FATAL_ERROR "add_marmot_test(${test_name}): unknown arguments: ${_arg_UNPARSED_ARGUMENTS}")
   endif()
@@ -316,6 +320,10 @@ function(add_marmot_test test_name test_source)
   # the objects of all modules are linked, so their libraries are needed too
   target_link_libraries(${test_name} PRIVATE ${_usage} ${MARMOT_MODULE_LINK_LIBRARIES})
   add_test(NAME ${test_name} COMMAND ${test_name} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+  if(NOT _arg_TIMEOUT)
+    set(_arg_TIMEOUT ${MARMOT_TEST_TIMEOUT})
+  endif()
+  set_tests_properties(${test_name} PROPERTIES TIMEOUT ${_arg_TIMEOUT})
   if(MARMOT_ENABLE_COVERAGE)
     target_link_options(${test_name} PRIVATE --coverage)
   endif()
