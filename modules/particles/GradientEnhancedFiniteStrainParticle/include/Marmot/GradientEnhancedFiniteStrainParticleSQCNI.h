@@ -334,7 +334,7 @@ namespace Marmot::Meshfree {
      */
     virtual void vci_compute_Test_P_BoundaryIntegral( double*       R_AiC_RowMajor,
                                                       const double* boundarySurfaceVector,
-                                                      int           boundaryFaceID )
+                                                      int           boundaryFaceID ) override
     {
       using namespace Fastor;
 
@@ -360,7 +360,7 @@ namespace Marmot::Meshfree {
      * @brief Coordinates of the evaluation points: the face centers of the smoothing domain.
      * @param[out] coordinates Coordinates, face by face (nDim x number of faces).
      */
-    virtual void getEvaluationCoordinates( double* coordinates ) const
+    virtual void getEvaluationCoordinates( double* coordinates ) const override
     {
       const auto cell = _makeSmoothingDomainCell();
 
@@ -377,7 +377,7 @@ namespace Marmot::Meshfree {
      * @param[in]  faceID      Face id (1-based).
      * @param[out] coordinates Face center (nDim values).
      */
-    virtual void getFaceCoordinates( int faceID, double* coordinates ) const
+    virtual void getFaceCoordinates( int faceID, double* coordinates ) const override
     {
       Eigen::Map< Eigen::Matrix< double, nDim, 1 > > faceCenter( coordinates );
       faceCenter = _makeSmoothingDomainCell().getFaceCenterCoordinates( faceID );
@@ -387,7 +387,7 @@ namespace Marmot::Meshfree {
      * @brief Number of evaluation points.
      * @return Number of faces of the smoothing domain.
      */
-    virtual int getNumberOfEvaluationPoints() const { return _makeUndeformedCell().getNumberOfFaces(); };
+    virtual int getNumberOfEvaluationPoints() const override { return _makeUndeformedCell().getNumberOfFaces(); };
 
   private:
     /// @brief Update the vertex displacements of the smoothing domain from @f$ \boldsymbol{F}_n @f$ and the particle
@@ -674,7 +674,7 @@ namespace Marmot::Meshfree {
                                                   nVertices >::_updateVertexDisplacementsFromMaterialPointDeformation()
   {
 
-    Eigen::Matrix< double, nDim, nDim > F;
+    Eigen::Matrix< double, nDim, nDim > F = Eigen::Matrix< double, nDim, nDim >::Identity();
 
     switch ( _smoothingVolumeUpdateType ) {
 
@@ -744,7 +744,8 @@ namespace Marmot::Meshfree {
 
     ParentPointParticle::_assignedKernelFunctions = kernelFunctions;
 
-    ParentPointParticle::_nNodes = GradientEnhancedFiniteStrainParticle< nDim >::_assignedKernelFunctions.size();
+    ParentPointParticle::_nNodes = static_cast< int >(
+      GradientEnhancedFiniteStrainParticle< nDim >::_assignedKernelFunctions.size() );
 
     Eigen::Matrix< double, nDim, 1 > coords;
     ParentPointParticle::_mp.getCoordinatesAtCenter( coords.data() );

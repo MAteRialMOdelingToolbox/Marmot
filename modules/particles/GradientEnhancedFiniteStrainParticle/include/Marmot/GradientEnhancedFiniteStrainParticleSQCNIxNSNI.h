@@ -141,7 +141,8 @@ namespace Marmot::Meshfree {
     {
       ParentPointParticle::_assignedKernelFunctions = kernelFunctions;
 
-      ParentPointParticle::_nNodes = GradientEnhancedFiniteStrainParticle< nDim >::_assignedKernelFunctions.size();
+      ParentPointParticle::_nNodes = static_cast< int >(
+        GradientEnhancedFiniteStrainParticle< nDim >::_assignedKernelFunctions.size() );
 
       Eigen::Matrix< double, nDim, 1 > coords;
       ParentPointParticle::_mp.getCoordinatesAtCenter( coords.data() );
@@ -282,7 +283,6 @@ namespace Marmot::Meshfree {
   {
     using namespace Marmot::FastorIndices;
     using namespace Fastor;
-    using ink   = Fastor::Index< i_, n_, k_ >;
     using to_jk = Fastor::OIndex< j_, k_ >;
     using ijmM  = Index< i_, j_, m_, M_ >;
     using mMK   = Index< m_, M_, K_ >;
@@ -404,7 +404,6 @@ namespace Marmot::Meshfree {
 
       const TensorDD d2NA_dYdY_x_MOIScaled = einsum< ij, jk >( d2NA_dYdY, _momentsOfInertia_IntermediateReference ) / detJIntermediate;
       const TensorDD d2NA_dxdY_x_MOIScaled = einsum< ji, jk >( dY_dx, d2NA_dYdY_x_MOIScaled ) ;
-      const TensorD dTA_dY_x_MOIScaled = einsum< j, jk >( dT_A_dY, _momentsOfInertia_IntermediateReference ) / detJIntermediate;
 
       TensorD rU_Stab = einsum< iK, ijK >( d2NA_dxdY_x_MOIScaled, dS_dY );
 

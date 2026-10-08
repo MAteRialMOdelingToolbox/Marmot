@@ -52,10 +52,11 @@ namespace {
                                          : "GradientEnhancedFiniteStrain/3D";
       const double      x[3] = { 0.1, 0.2, 0.3 };
       mp.reset( MarmotLibrary::MarmotMaterialPointFactory::createMaterialPoint( name, 1, x, nDim, 0.5 ) );
-      mp->assignMaterial(
-        MarmotMaterialSection( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE", matProps.data(), matProps.size() ) );
+      mp->assignMaterial( MarmotMaterialSection( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
+                                                 matProps.data(),
+                                                 static_cast< int >( matProps.size() ) ) );
       stateVars.assign( mp->getNumberOfRequiredStateVars(), 0.0 );
-      mp->assignStateVars( stateVars.data(), stateVars.size() );
+      mp->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
       mp->initializeYourself();
     }
 

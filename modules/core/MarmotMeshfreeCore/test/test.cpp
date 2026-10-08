@@ -107,7 +107,7 @@ namespace {
 
     KernelGrid( int dim, int n, double supportRadius )
     {
-      const int nTotal = std::pow( n, dim );
+      const int nTotal = static_cast< int >( std::pow( n, dim ) );
       centers.reserve( nTotal ); // the kernels keep pointers to their centres
       for ( int k = 0; k < nTotal; k++ ) {
         Eigen::VectorXd c( dim );
@@ -217,7 +217,7 @@ void checkApproximation( const std::string& name, int dim, int order, double sup
 {
   KernelGrid< Kernel > grid( dim, 6, supportRadius );
   const Approximation  approximation( dim, order );
-  const int            nNodes = grid.pointers.size();
+  const int            nNodes = static_cast< int >( grid.pointers.size() );
   const auto           a      = exponents( order, dim );
 
   auto values = [&]( const Eigen::VectorXd& x ) {
@@ -363,7 +363,7 @@ void testSingularMomentMatrixThrows()
   const MarmotMeshfreeReproducingKernelApproximation         rk( 2, 1 );
   const MarmotMeshfreeReproducingKernelApproximationImplicit irk( 2, 1 );
 
-  for ( const Eigen::Vector2d x : { Eigen::Vector2d( 1.1, 0.2 ), Eigen::Vector2d( 10, 10 ) } ) {
+  for ( const Eigen::Vector2d& x : { Eigen::Vector2d( 1.1, 0.2 ), Eigen::Vector2d( 10, 10 ) } ) {
     double N[3], dN[6];
     throwExceptionOnFailure( throws( [&]() { rk.computeShapeFunctions( x.data(), pointers, N ); } ) &&
                                throws( [&]() { rk.computeShapeFunctionsAndGradients( x.data(), pointers, N, dN ); } ) &&
