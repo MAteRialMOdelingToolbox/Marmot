@@ -43,6 +43,9 @@ All notable changes to Marmot are documented in this file. The format follows
   are unchanged.
 
 ### Fixed
+- **Results:** sign of the hoop term in the axisymmetric finite-strain UL elements (`CX8UL`, `CX8RUL`, residual and
+  stiffness): it was subtracted, so any state with nonzero hoop stress was wrong (e.g. homogeneous radial expansion
+  off by a factor of 15–60). Uniaxial loading with zero hoop stress was unaffected.
 - Uninitialized intermediate second moments of the SQCNIxNSNI particles in the first increment.
 - The inverse isoparametric map of distorted Lagrangian cells (it threw) and their point location test.
 - Stack overflows of the 64-node B-spline cells on Windows (1 MB default stack).
