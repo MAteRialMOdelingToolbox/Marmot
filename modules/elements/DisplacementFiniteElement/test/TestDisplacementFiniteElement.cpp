@@ -89,9 +89,9 @@ void testInstantiationAndBasicProperties()
 
   const static std::vector< double > matProps = { 10000.0, 0.2, 1 };
   const std::string                  matName  = "LINEARELASTIC"; // Linear Elastic
-  MarmotMaterialSection              materialSection( matName, matProps.data(), matProps.size() );
+  MarmotMaterialSection              materialSection( matName, matProps.data(), static_cast< int >( matProps.size() ) );
   const static std::vector< double > elPropsVec = { 0.1 };
-  ElementProperties                  elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties                  elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -155,11 +155,11 @@ void testStiffnessMatrixCalculationPlaneStress()
   // Material properties: E = 10000, nu = 0.2, density = 1 (density not used in static analysis)
   const static std::vector< double > matProps = { 10000.0, 0.2, 1 };
   const std::string                  matName  = "LINEARELASTIC"; // Linear Elastic
-  MarmotMaterialSection              materialSection( matName, matProps.data(), matProps.size() );
+  MarmotMaterialSection              materialSection( matName, matProps.data(), static_cast< int >( matProps.size() ) );
 
   // Element properties: thickness = 1.0
   const static std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties                  elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties                  elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -228,11 +228,11 @@ void testInitializeYourselfAndShapeFunctions()
   // Dummy material properties (not strictly needed for this test but required by assignProperty)
   const static std::vector< double > matProps = { 10000.0, 0.2, 1 };
   const std::string                  matName  = "LINEARELASTIC"; // Linear Elastic
-  MarmotMaterialSection              materialSection( matName, matProps.data(), matProps.size() );
+  MarmotMaterialSection              materialSection( matName, matProps.data(), static_cast< int >( matProps.size() ) );
 
   // Element properties: thickness = 1.0
   const static std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties                  elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties                  elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection ); // Material assignment needed to avoid nullptrs if density is accessed
@@ -320,9 +320,9 @@ void testLumpedInertiaQuad4RegularElementIsPositiveAndConservesMass()
 
   const double                density  = 1.0;
   const std::vector< double > matProps = { 10000.0, 0.2, density };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 }; // thickness
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -360,7 +360,7 @@ void testLumpedInertiaHexa8RegularElementIsPositiveAndConservesMass()
 
   const double                density  = 1.0;
   const std::vector< double > matProps = { 10000.0, 0.2, density };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
 
   element->assignProperty( materialSection );
 
@@ -411,9 +411,9 @@ void checkQuad8AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes
 
   const double                density  = 1.0;
   const std::vector< double > matProps = { 10000.0, 0.2, density };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -495,9 +495,9 @@ void checkQuad8DistortedElementStaysNonSingular( FiniteElement::Quadrature::Inte
 
   const double                density  = 1.0;
   const std::vector< double > matProps = { 10000.0, 0.2, density };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -622,7 +622,7 @@ void checkHexa20AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationType
 
   const double                density  = 1.0;
   const std::vector< double > matProps = { 10000.0, 0.2, density };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
 
   element->assignProperty( materialSection );
 
@@ -718,9 +718,9 @@ void testCriticalTimeStepQuad4RegularElementMatchesUnitMassDistributionFactor()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 }; // thickness
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -753,7 +753,7 @@ void testCriticalTimeStepHexa8RegularElementMatchesUnitMassDistributionFactor()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
 
   element->assignProperty( materialSection );
 
@@ -801,9 +801,9 @@ void testCriticalTimeStepQuad8RegularElementMatchesAnalyticMassDistributionFacto
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 }; // thickness
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -845,7 +845,7 @@ void testCriticalTimeStepHexa20RegularElementMatchesAnalyticMassDistributionFact
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
 
   element->assignProperty( materialSection );
 
@@ -888,9 +888,9 @@ void testComputeKernelsPlaneStrainTangentMatchesNumericalDifferentiation()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 }; // E, nu, density
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };             // thickness
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -946,7 +946,7 @@ void testComputeKernelsSolid3DTangentMatchesNumericalDifferentiation()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
 
   const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
@@ -1000,9 +1000,9 @@ void testComputeKernelsUniaxialStressTangentMatchesNumericalDifferentiation()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 }; // E, nu, density
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };             // cross-section area
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -1058,9 +1058,9 @@ void testComputeKernelsExplicitThrowsForUniaxialStress()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1096,8 +1096,10 @@ void testComputeKernelsExplicitMatchesImplicitResidualPlaneStrain()
 
   auto elementImplicit = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
   elementImplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSectionImplicit( "LINEARELASTIC", matProps.data(), matProps.size() );
-  ElementProperties     elPropsImplicit( elPropsVec.data(), elPropsVec.size() );
+  MarmotMaterialSection materialSectionImplicit( "LINEARELASTIC",
+                                                 matProps.data(),
+                                                 static_cast< int >( matProps.size() ) );
+  ElementProperties     elPropsImplicit( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   elementImplicit->assignProperty( elPropsImplicit );
   elementImplicit->assignProperty( materialSectionImplicit );
   const int             nStateVarsTotalImplicit = elementImplicit->getNumberOfRequiredStateVars();
@@ -1107,8 +1109,10 @@ void testComputeKernelsExplicitMatchesImplicitResidualPlaneStrain()
 
   auto elementExplicit = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
   elementExplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSectionExplicit( "LINEARELASTIC", matProps.data(), matProps.size() );
-  ElementProperties     elPropsExplicit( elPropsVec.data(), elPropsVec.size() );
+  MarmotMaterialSection materialSectionExplicit( "LINEARELASTIC",
+                                                 matProps.data(),
+                                                 static_cast< int >( matProps.size() ) );
+  ElementProperties     elPropsExplicit( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   elementExplicit->assignProperty( elPropsExplicit );
   elementExplicit->assignProperty( materialSectionExplicit );
   const int             nStateVarsTotalExplicit = elementExplicit->getNumberOfRequiredStateVars();
@@ -1149,7 +1153,9 @@ void testComputeKernelsExplicitMatchesImplicitResidualSolid3D()
 
   auto elementImplicit = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
   elementImplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSectionImplicit( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSectionImplicit( "LINEARELASTIC",
+                                                 matProps.data(),
+                                                 static_cast< int >( matProps.size() ) );
   elementImplicit->assignProperty( materialSectionImplicit );
   const int             nStateVarsTotalImplicit = elementImplicit->getNumberOfRequiredStateVars();
   std::vector< double > stateVarsImplicit( nStateVarsTotalImplicit, 0.0 );
@@ -1158,7 +1164,9 @@ void testComputeKernelsExplicitMatchesImplicitResidualSolid3D()
 
   auto elementExplicit = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
   elementExplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSectionExplicit( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSectionExplicit( "LINEARELASTIC",
+                                                 matProps.data(),
+                                                 static_cast< int >( matProps.size() ) );
   elementExplicit->assignProperty( materialSectionExplicit );
   const int             nStateVarsTotalExplicit = elementExplicit->getNumberOfRequiredStateVars();
   std::vector< double > stateVarsExplicit( nStateVarsTotalExplicit, 0.0 );
@@ -1202,9 +1210,9 @@ void testSetInitialConditionsGeostaticStressAssignsInterpolatedStress()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1244,9 +1252,9 @@ void testSetInitialConditionsMaterialInitializationDoesNotThrow()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1307,7 +1315,7 @@ void testComputeConsistentInertiaConservesTotalMass()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 }; // density = 1
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
 
   const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
@@ -1363,7 +1371,7 @@ std::vector< double > distortedNodeCoordinates( const std::vector< std::vector< 
   const double          scale[3] = { 1.0, 1.3, 0.7 };
   std::vector< double > coordinates;
   for ( const auto& xi : parentNodes ) {
-    const int nDim = xi.size();
+    const int nDim = static_cast< int >( xi.size() );
     for ( int i = 0; i < nDim; i++ ) {
       const double next = xi[( i + 1 ) % nDim];
       coordinates.push_back( scale[i] * ( 0.5 * ( xi[i] + 1.0 ) + 0.08 * xi[i] * next + 0.05 * next * next ) );
@@ -1381,9 +1389,9 @@ Eigen::MatrixXd consistentMassOf( FiniteElement::Quadrature::IntegrationTypes   
   element->assignNodeCoordinates( nodeCoordinates.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 2.5 }; // density = 2.5
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 0.3 };             // thickness; unused in 3D
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   if constexpr ( nDim < 3 )
     element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -1456,7 +1464,7 @@ void testComputeBodyForceConservesTotalForcePerDirection()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
 
   const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
@@ -1502,9 +1510,9 @@ void testComputeDistributedLoadThrowsForUnhandledLoadType()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1554,9 +1562,9 @@ void testComputeInternalEnergyMatchesSumOverQuadraturePoints()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1601,9 +1609,9 @@ void testGetStateViewVariants()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1726,11 +1734,11 @@ namespace {
     element->assignNodeCoordinates( nodeCoordsVec.data() );
 
     const std::vector< double > matProps = { 10000.0, 0.2, density };
-    MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+    MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), static_cast< int >( matProps.size() ) );
     element->assignProperty( materialSection );
 
     const std::vector< double > bulkViscosity = { bulkViscosityLinear, bulkViscosityQuadratic };
-    element->assignProperty( "bulk viscosity", bulkViscosity.data(), bulkViscosity.size() );
+    element->assignProperty( "bulk viscosity", bulkViscosity.data(), static_cast< int >( bulkViscosity.size() ) );
 
     const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
     std::vector< double > stateVars( nStateVarsTotal, 0.0 );
@@ -1896,7 +1904,7 @@ void testBulkViscosityRejectsNegativeCoefficients()
   for ( const auto& coefficients : { std::vector< double >{ -0.06, 0.0 }, std::vector< double >{ 0.0, -1.2 } } ) {
     bool threw = false;
     try {
-      element->assignProperty( "bulk viscosity", coefficients.data(), coefficients.size() );
+      element->assignProperty( "bulk viscosity", coefficients.data(), static_cast< int >( coefficients.size() ) );
     }
     catch ( const std::invalid_argument& ) {
       threw = true;

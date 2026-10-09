@@ -82,7 +82,7 @@ void MarmotMaterialGradientEnhancedFiniteStrain::computePlaneStrain(
  */
 std::tuple< double, double, double > MarmotMaterialGradientEnhancedFiniteStrain::findEigenDeformationForEigenStress(
   const std::tuple< double, double, double >& initialGuess,
-  const std::tuple< double, double, double >& eigenStressComponents,
+  const std::tuple< double, double, double >& eigenStress,
   double*                                     stateVars ) const
 {
   using namespace Marmot;
@@ -113,7 +113,7 @@ std::tuple< double, double, double > MarmotMaterialGradientEnhancedFiniteStrain:
   };
 
   const auto& [F0_XX, F0_YY, F0_ZZ] = initialGuess;
-  const auto& [S_XX, S_YY, S_ZZ]    = eigenStressComponents;
+  const auto& [S_XX, S_YY, S_ZZ]    = eigenStress;
   Eigen::Vector3d def               = { F0_XX, F0_YY, F0_ZZ };
   Eigen::Vector3d eigenNormalStress = { S_XX, S_YY, S_ZZ };
   Eigen::Vector3d R, dF;

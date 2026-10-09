@@ -219,7 +219,7 @@ namespace Marmot::Meshfree {
      * @param[in] property     Pointer to the value.
      * @throws std::runtime_error for an unknown property.
      */
-    virtual void setProperty( const std::string& propertyName, const double* property )
+    virtual void setProperty( const std::string& propertyName, const double* property ) override
     {
       if ( propertyName == "newmark-beta beta" ) {
         _newmark_beta = property[0];
@@ -245,7 +245,7 @@ namespace Marmot::Meshfree {
      * @brief Names of the properties.
      * @return `newmark-beta beta`, `newmark-beta gamma`, `VCI order`.
      */
-    virtual std::vector< std::string > getPropertyNames() const { return _validProperties; };
+    virtual std::vector< std::string > getPropertyNames() const override { return _validProperties; };
 
     /**
      * @brief Number of state variables: those of the material point (including the material).
@@ -274,7 +274,7 @@ namespace Marmot::Meshfree {
     {
       _assignedKernelFunctions = kernelFunctions;
 
-      _nNodes = _assignedKernelFunctions.size();
+      _nNodes = static_cast< int >( _assignedKernelFunctions.size() );
 
       Eigen::Matrix< double, nDim, 1 > coords;
       _mp.getCoordinatesAtCenter( coords.data() );
@@ -295,7 +295,7 @@ namespace Marmot::Meshfree {
      * @brief Number of dofs per node.
      * @return @f$ n_\mathrm{dim} + 1 @f$.
      */
-    virtual int getNBaseDof() const { return nDofPerNodeU + nDofPerNodeN; }
+    virtual int getNBaseDof() const override { return nDofPerNodeU + nDofPerNodeN; }
 
     /**
      * @brief Fields per node.
@@ -592,7 +592,7 @@ namespace Marmot::Meshfree {
      * @brief Undeformed volume.
      * @return @f$ V_0 @f$ of the material point.
      */
-    virtual double getVolumeUndeformed() const { return _mp.getVolumeUndeformed(); };
+    virtual double getVolumeUndeformed() const override { return _mp.getVolumeUndeformed(); };
 
     /**
      * @brief Apply an initial condition; `geostaticstress` is forwarded to the material point.
@@ -644,13 +644,13 @@ namespace Marmot::Meshfree {
      * @brief Coordinates of the evaluation points: the particle center.
      * @param[out] coordinates Coordinates (nDim values).
      */
-    virtual void getEvaluationCoordinates( double* coordinates ) const { getVertexCoordinates( coordinates ); }
+    virtual void getEvaluationCoordinates( double* coordinates ) const override { getVertexCoordinates( coordinates ); }
 
     /**
      * @brief Number of evaluation points.
      * @return 1.
      */
-    virtual int getNumberOfEvaluationPoints() const
+    virtual int getNumberOfEvaluationPoints() const override
     {
       return 1; // only one evaluation point at the center of the particle
     };
@@ -690,7 +690,10 @@ namespace Marmot::Meshfree {
                                                                                   coordinates_,
                                                                                   nCoordinates_,
                                                                                   volume_ );
-      }( elementID, _centerCoordinatesUndeformed.data(), _centerCoordinatesUndeformed.size(), volume ) ),
+      }( elementID,
+              _centerCoordinatesUndeformed.data(),
+              static_cast< int >( _centerCoordinatesUndeformed.size() ),
+              volume ) ),
       _mp( *__mp ),
       _meshfreeApproximation( approximation ),
       _newmark_beta( 0. ),

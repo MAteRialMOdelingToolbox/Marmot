@@ -81,8 +81,10 @@ def getAllHeadersInFolder(folder):
 # Breathe configuration
 breathe_default_project = "Marmot"
 
+# The default project is documented from the XML that scripts/buildDocumentation.py generates with the Doxyfile.
+breathe_projects = {"Marmot": "doc_out/xml"}
+
 breathe_projects_source = {
-    "Marmot": ("../", []),
     "MarmotFiniteElementCore": (
         "../modules/core/MarmotFiniteElementCore/include/Marmot",
         getAllHeadersInFolder("../modules/core/MarmotFiniteElementCore/include/Marmot/"),
@@ -111,6 +113,14 @@ breathe_projects_source = {
         "../modules/core/MarmotGradientMechanicsCore/include/Marmot",
         getAllHeadersInFolder("../modules/core/MarmotGradientMechanicsCore/include/Marmot/"),
     ),
+}
+
+# Options for the Doxygen runs Breathe starts for breathe_projects_source: MARMOT_API (symbol export marker, see
+# MarmotPortability.h) has to vanish, or Sphinx cannot parse the declarations of exported free functions.
+breathe_doxygen_config_options = {
+    "PREDEFINED": "MARMOT_API=",
+    "MACRO_EXPANSION": "YES",
+    "EXPAND_ONLY_PREDEF": "YES",
 }
 
 breathe_default_members = ("members", "private-members", "protected-members", "undoc-members")

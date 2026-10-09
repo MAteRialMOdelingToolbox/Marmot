@@ -39,7 +39,7 @@ namespace Marmot::Materials {
     stateLayout.finalize();
 
     // assume sqrt( 10 ) spacing between retardation times
-    retardationTimes = KelvinChain::generateRetardationTimes( nKelvin, minTau, sqrt( 10. ) );
+    retardationTimes = KelvinChain::generateRetardationTimes( static_cast< int >( nKelvin ), minTau, sqrt( 10. ) );
 
     using namespace Marmot::ContinuumMechanics::Viscoelasticity;
     auto phi_ = [&]( autodiff::Real< powerLawApproximationOrder, double > tau ) {

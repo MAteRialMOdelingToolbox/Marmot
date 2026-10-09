@@ -26,6 +26,13 @@
 #include "Marmot/MarmotPortability.h"
 #include <string>
 
+#ifdef _MSC_VER
+// C4251: the std::string member is only used inside the library's inline interface; the standard library types are
+// not exported (no dll-interface), which is harmless as long as consumers are built with the same toolset.
+#  pragma warning( push )
+#  pragma warning( disable : 4251 )
+#endif
+
 /** @struct MarmotMaterialSection
  * @brief Structure to hold material section properties.
  *
@@ -49,6 +56,10 @@ public:
       materialProperties( materialProperties ),
       nMaterialProperties( nMaterialProperties ){};
 };
+
+#ifdef _MSC_VER
+#  pragma warning( pop )
+#endif
 
 /** @struct ElementProperties
  * @brief Structure to hold element properties.

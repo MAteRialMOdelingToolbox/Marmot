@@ -222,7 +222,7 @@ namespace Marmot::Materials {
     {
       using namespace Marmot::FastorStandardTensors;
 
-      TensorMap33d Fn = this->stateLayout.getAs< TensorMap33d >( stateVars, deformationGradientSlot );
+      TensorMap33d Fn = this->stateLayout.template getAs< TensorMap33d >( stateVars, deformationGradientSlot );
       std::memcpy( Fn.data(), Spatial3D::I.data(), 9 * sizeof( double ) );
 
       double* sigmaN = this->stateLayout.getPtr( stateVars, stressSlot );
@@ -292,6 +292,8 @@ namespace Marmot::Materials {
      * @param[in] sigmaRotVoigt Rotated stress that was handed to the wrapped material.
      * @param[in] baseStateOld  Wrapped material state *before* the unperturbed evaluation.
      * @param[in] inc           Increment handed to the wrapped material.
+     * @param[in] elasticEnergyDensity Elastic energy density of the unperturbed evaluation.
+     * @param[in] dissipation   Dissipation of the unperturbed evaluation.
      * @return The sensitivity in Voigt form, with its three shear **columns** halved so that the result
      *         may be contracted as a full fourth-order tensor without double counting.
      */
@@ -357,9 +359,10 @@ namespace Marmot::Materials {
 
       const Tensor33d& Ident = Spatial3D::I;
 
-      TensorMap33d Fn_ref = this->stateLayout.getAs< TensorMap33d >( response.stateVars, deformationGradientSlot );
+      TensorMap33d Fn_ref = this->stateLayout.template getAs< TensorMap33d >( response.stateVars,
+                                                                              deformationGradientSlot );
       Eigen::Map< Marmot::Vector6d >
-              sigmaN_n  = this->stateLayout.getAs< Eigen::Map< Marmot::Vector6d > >( response.stateVars, stressSlot );
+        sigmaN_n = this->stateLayout.template getAs< Eigen::Map< Marmot::Vector6d > >( response.stateVars, stressSlot );
       double* nPtr      = this->stateLayout.getPtr( response.stateVars, nonlocalFieldSlot );
       double* baseState = this->stateLayout.getPtr( response.stateVars, baseMaterialSlot );
 
@@ -462,12 +465,12 @@ namespace Marmot::Materials {
       response.dissipation          = J * res.dissipation;
 
       if ( computeTangent ) {
-        const Tensor33d P  = Ident - 0.5 * dl;
+        const Tensor33d Pm = Ident - 0.5 * dl;
         const Tensor33d Mt = transpose( M );
 
         // d(dl)_ij/dF_kl = P_ik M_lj ; the transposed pattern gives d(dl)_ji/dF_kl
-        const Tensor3333d dl_dF   = einsum< ik, jl, to_ijkl >( P, Mt );
-        const Tensor3333d dlT_dF  = einsum< jk, il, to_ijkl >( P, Mt );
+        const Tensor3333d dl_dF   = einsum< ik, jl, to_ijkl >( Pm, Mt );
+        const Tensor3333d dlT_dF  = einsum< jk, il, to_ijkl >( Pm, Mt );
         const Tensor3333d dEps_dF = 0.5 * ( dl_dF + dlT_dF );
         const Tensor3333d dOm_dF  = 0.5 * ( dl_dF - dlT_dF );
 

@@ -13,7 +13,9 @@ void testMarmotLocalization()
   Eigen::Vector< double, 6 > materialProperties;
   materialProperties << 210000., 0.3, 200., 0., 0., 0.;
 
-  auto material = Marmot::Materials::VonMisesModel( materialProperties.data(), materialProperties.size(), 0 );
+  auto material = Marmot::Materials::VonMisesModel( materialProperties.data(),
+                                                    static_cast< int >( materialProperties.size() ),
+                                                    0 );
 
   // set state vars
   if ( material.getNumberOfRequiredStateVars() > 1 ) {

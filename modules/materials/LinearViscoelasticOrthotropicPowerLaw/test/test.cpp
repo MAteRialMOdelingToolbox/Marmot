@@ -52,7 +52,7 @@ void testLinearViscoelasticOrthotropicPowerLawIsotropic()
   std::string matName            = "LINEARVISCOELASTICORTHOTROPICPOWERLAW";
   auto        solver             = MarmotMaterialPointSolverHypoElastic( matName,
                                                       &materialProperties[0],
-                                                      materialProperties.size(),
+                                                      static_cast< int >( materialProperties.size() ),
                                                       solveropts );
 
   // step 1: advance time to 28 days

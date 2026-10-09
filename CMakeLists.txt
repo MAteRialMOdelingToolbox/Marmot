@@ -65,6 +65,14 @@ include(GNUInstallDirs)
 # Optimization/debug flags (-O3, -g, ...) come from CMake's per-configuration defaults.
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     add_compile_options(-Wall -Wextra -Wno-unused-parameter -Wno-long-long -pedantic)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        # Third-party headers are found via plain -I paths on some platforms (e.g. /usr/local/include is not
+        # an implicit system directory for Apple clang), where their warnings would not be suppressed.
+        # Treat them as system headers by name instead.
+        add_compile_options(--system-header-prefix=Eigen/ --system-header-prefix=eigen3/
+                            --system-header-prefix=unsupported/ --system-header-prefix=Fastor/
+                            --system-header-prefix=autodiff/ --system-header-prefix=nanobind/)
+    endif()
 elseif(MSVC)
     if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
         string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
@@ -75,6 +83,13 @@ elseif(MSVC)
     # /permissive-: standard-conforming two-phase lookup, as GCC/Clang do.
     # /Zc:__cplusplus: report the real language level in __cplusplus, which Eigen and Fastor check.
     add_compile_options(/bigobj /permissive- /Zc:__cplusplus)
+    # Like -Wno-unused-parameter above: unused parameters are common in the interface implementations (C4100).
+    # /external:W0 silences warnings from the headers of imported targets (Eigen, autodiff, Fastor), which CMake
+    # passes with /external:I.
+    add_compile_options(/wd4100 /external:W0)
+    # C4702 (unreachable code) is a code-generation warning that /external:W0 does not cover; it is reported
+    # for every translation unit instantiating Fastor's matmul and SIMD kernels, which we cannot change.
+    add_compile_options(/wd4702)
     # Keep MSVC's secure-CRT deprecation warnings (C4996 for std::getenv, sscanf, ...) out of the /W4 output.
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 endif()
@@ -107,6 +122,19 @@ if(NOT MARMOT_DEPENDENCIES_FOUND)
     message(FATAL_ERROR "${MARMOT_DEPENDENCIES_MESSAGE}")
 endif()
 message("--> found Eigen ${Eigen3_VERSION}")
+
+# MSVC: hand the dependencies' header directories to the compiler as external includes explicitly, so that
+# /external:W0 (above) silences their warnings (e.g. C4702 in Fastor) whatever the generator does with SYSTEM.
+if(MSVC)
+    foreach(_dep_target Eigen3::Eigen autodiff::autodiff Fastor::Fastor)
+        get_target_property(_dep_include_dirs ${_dep_target} INTERFACE_INCLUDE_DIRECTORIES)
+        foreach(_dep_include_dir IN LISTS _dep_include_dirs)
+            if(_dep_include_dir AND NOT _dep_include_dir MATCHES "\\$<")
+                add_compile_options("/external:I${_dep_include_dir}")
+            endif()
+        endforeach()
+    endforeach()
+endif()
 
 # Testing: include(CTest) provides the standard BUILD_TESTING option (default ON) and calls enable_testing().
 # Configure with -DBUILD_TESTING=OFF to skip the test executables, e.g. for install-only builds.

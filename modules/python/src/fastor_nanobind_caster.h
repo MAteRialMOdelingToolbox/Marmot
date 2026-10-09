@@ -35,7 +35,7 @@ namespace nanobind::detail {
   template < typename T, size_t... Dims >
   struct type_caster< Fastor::Tensor< T, Dims... > > {
     using TensorType = Fastor::Tensor< T, Dims... >;
-    NB_TYPE_CASTER( TensorType, const_name( "numpy.ndarray[" ) + make_caster< T >::Name + const_name( "]" ) );
+    NB_TYPE_CASTER( TensorType, const_name( "numpy.ndarray[" ) + make_caster< T >::Name + const_name( "]" ) )
 
     bool from_python( handle src, uint8_t flags, cleanup_list* cleanup ) noexcept
     {

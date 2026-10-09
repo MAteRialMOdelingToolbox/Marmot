@@ -149,7 +149,7 @@ namespace Marmot::Math {
   inline void computeMonomialBasis( int order, const Eigen::VectorXd& x, Eigen::VectorXd& res )
   {
     res.setOnes();
-    _computeMonomialBasisRecursion( order, x, res, 0, x.size() );
+    _computeMonomialBasisRecursion( order, x, res, 0, static_cast< int >( x.size() ) );
   }
 
   /**
@@ -166,7 +166,7 @@ namespace Marmot::Math {
   inline void computeMonomialBasisGradient( int order, const Eigen::VectorXd& x, Eigen::MatrixXd& res )
   {
     res.setOnes();
-    _computeMonomialBasisGradientRecursion( order, x, res, 0, x.size() );
+    _computeMonomialBasisGradientRecursion( order, x, res, 0, static_cast< int >( x.size() ) );
   }
 
 } // namespace Marmot::Math

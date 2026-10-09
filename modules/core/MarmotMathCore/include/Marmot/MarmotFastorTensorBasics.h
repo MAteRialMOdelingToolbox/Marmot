@@ -24,7 +24,15 @@
  */
 #pragma once
 #include "Eigen/Core"
+/* Fastor/Fastor.h ends with `#pragma warning( default : ... )`; scope it so it neither overrides the build's warning
+ * flags nor leaks into consumers. */
+#ifdef _MSC_VER
+#  pragma warning( push )
+#endif
 #include "Fastor/Fastor.h"
+#ifdef _MSC_VER
+#  pragma warning( pop )
+#endif
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotTensor.h"
 #include <autodiff/forward/dual/dual.hpp>
@@ -40,20 +48,26 @@ namespace Marmot {
    */
   template < size_t... Rest >
   struct IsSquareRank2Tensor {
+    /// @c true if the pack describes a square rank-2 tensor (never, for the general case).
     static constexpr bool value = false;
     // a harmless placeholder: never meaningful since value is false, but its mere presence keeps
     // `IsSquareRank2Tensor<Rest...>::dim` well-formed for non-rank-2 packs. `if constexpr` only discards the
     // *branch* taken for an unmet condition, not name lookup within the condition expression itself, so
     // `IsSquareRank2Tensor<Rest...>::dim` appearing alongside `::value` in an `&&` chain must resolve for every
     // instantiation, not just the rank-2 one, even though it is never reached at runtime.
+    /// Dimension of the square rank-2 tensor (0 for the general case).
     static constexpr size_t dim = 0;
   };
 
+  /// \cond DOXYGEN_SKIP
+  // Specialisation for two dimensions is hidden from Doxygen: both the primary template and this specialisation
+  // would get the same documentation IDs (duplicate targets in the Sphinx build).
   template < size_t dim1, size_t dim2 >
   struct IsSquareRank2Tensor< dim1, dim2 > {
     static constexpr bool   value = ( dim1 == dim2 );
     static constexpr size_t dim   = dim1;
   };
+  /// \endcond
 
   namespace FastorStandardTensors {
 

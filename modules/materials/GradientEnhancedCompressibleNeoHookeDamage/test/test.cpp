@@ -22,7 +22,7 @@ namespace {
 
   const Mat& material()
   {
-    static const Mat mat( props.data(), props.size(), 1 );
+    static const Mat mat( props.data(), static_cast< int >( props.size() ), 1 );
     return mat;
   }
 
@@ -171,7 +171,10 @@ void testFactoryAndProperties()
 {
   std::unique_ptr< MarmotMaterialGradientEnhancedFiniteStrain > mat(
     MarmotLibrary::MarmotMaterialGradientEnhancedFiniteStrainFactory::
-      createMaterial( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE", props.data(), props.size(), 7 ) );
+      createMaterial( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
+                      props.data(),
+                      static_cast< int >( props.size() ),
+                      7 ) );
   throwExceptionOnFailure( mat != nullptr, "factory did not create the material" + where );
   throwExceptionOnFailure( mat->getNumberOfRequiredStateVars() == 1, "expected one state variable (kappa)" + where );
   throwExceptionOnFailure( checkIfEqual( mat->getDensity( nullptr ), props[5] ), "density" + where );
@@ -179,7 +182,7 @@ void testFactoryAndProperties()
   bool threw = false;
   try {
     std::array< double, 5 > bad = { 3500., 1500., 1e-2, 1e-3, 1. }; // kappaF < kappa0
-    Mat                     m( bad.data(), bad.size(), 1 );
+    Mat                     m( bad.data(), static_cast< int >( bad.size() ), 1 );
   }
   catch ( const std::invalid_argument& ) {
     threw = true;
@@ -208,7 +211,7 @@ void testPropertyValidation()
   auto rejects = [&]( std::vector< double > p, const std::string& what ) {
     bool thrown = false;
     try {
-      Mat m( p.data(), p.size(), 1 );
+      Mat m( p.data(), static_cast< int >( p.size() ), 1 );
     }
     catch ( const std::invalid_argument& ) {
       thrown = true;
@@ -224,7 +227,7 @@ void testPropertyValidation()
 
   // the density is optional in the card, but asking for it without one is an error
   const std::vector< double > noDensity = { 3500., 1500., 1e-3, 1e-2, 1. };
-  Mat                         m( noDensity.data(), noDensity.size(), 1 );
+  Mat                         m( noDensity.data(), static_cast< int >( noDensity.size() ), 1 );
   bool                        threw = false;
   try {
     m.getDensity( nullptr );

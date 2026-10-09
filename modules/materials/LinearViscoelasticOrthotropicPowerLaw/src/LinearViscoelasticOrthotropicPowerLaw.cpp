@@ -43,7 +43,7 @@ namespace Marmot::Materials {
       // viscoelastic parameters
       m                                 ( materialProperties[10] ),
       n                                 ( materialProperties[11] ),
-      powerLawApproximationOrder        ( static_cast< size_t > ( materialProperties[12] ) ),
+      powerLawApproximationOrder        ( static_cast< int >( materialProperties[12] ) ),
       nKelvin                           ( static_cast< size_t > ( materialProperties[13] ) ),
       minTau                            ( materialProperties[14] ),
       spacing                           ( materialProperties[15] ),
@@ -56,7 +56,7 @@ namespace Marmot::Materials {
     stateLayout.add( "kelvinStateVars", 6 * nKelvin );
     stateLayout.finalize();
 
-    retardationTimes = KelvinChain::generateRetardationTimes( nKelvin, minTau, spacing );
+    retardationTimes = KelvinChain::generateRetardationTimes( static_cast< int >( nKelvin ), minTau, spacing );
 
     auto computeZerothKelvinChainCompliance = [&]( const int order, double tau ) {
       const int& k   = order;
