@@ -120,11 +120,13 @@ namespace Marmot::MaterialPoints {
         { .name = "deformation gradient", .length = 9 },
         { .name = "nonlocal damage", .length = 1 },
         { .name = "local damage", .length = 1 },
-        { .name = "nonlocal damage gradient", .length = 3 },
         { .name = "stress", .length = 9 },
         { .name = "F0 XX", .length = 1 },
         { .name = "F0 YY", .length = 1 },
         { .name = "F0 ZZ", .length = 1 },
+        // Appended after every pre-existing entry, and padded to 4, so that neither `stress` nor the material state
+        // moves off its alignment: gcc emits aligned SSE stores (movaps) into these maps at -O3.
+        { .name = "nonlocal damage gradient", .length = 4 },
         { .name = "begin of material state", .length = 0 },
       } );
 
@@ -138,13 +140,13 @@ namespace Marmot::MaterialPoints {
       double& nonLocalDamage; ///< nonlocal field @f$ \bar{N} @f$ (total; incrementDeformation() adds the increment of
                               ///< the step to the committed value, see the state contract of MarmotMaterialPoint)
       double& localDamage;    ///< local driving force @f$ L @f$ of the last material evaluation
+      FastorStandardTensors::TensorMap33d stress; ///< Kirchhoff stress @f$ \boldsymbol{\tau} @f$ (3x3)
+      double&                             F0_XX;  ///< eigen deformation (geostatic stress), XX component
+      double&                             F0_YY;  ///< eigen deformation (geostatic stress), YY component
+      double&                             F0_ZZ;  ///< eigen deformation (geostatic stress), ZZ component
       /// running sum of @f$ \nabla_X\Delta\bar{N} @f$, see getNonLocalDamageGradient()
-      FastorStandardTensors::TensorMap3d  nonLocalDamageGradient;
-      FastorStandardTensors::TensorMap33d stress;        ///< Kirchhoff stress @f$ \boldsymbol{\tau} @f$ (3x3)
-      double&                             F0_XX;         ///< eigen deformation (geostatic stress), XX component
-      double&                             F0_YY;         ///< eigen deformation (geostatic stress), YY component
-      double&                             F0_ZZ;         ///< eigen deformation (geostatic stress), ZZ component
-      Eigen::Map< Eigen::VectorXd >       materialState; ///< state variables of the material
+      FastorStandardTensors::TensorMap3d nonLocalDamageGradient;
+      Eigen::Map< Eigen::VectorXd >      materialState; ///< state variables of the material
 
       /**
        * @brief Number of state variables of the material point itself (without the material).
@@ -167,11 +169,11 @@ namespace Marmot::MaterialPoints {
           dY_dX( &find( "deformation gradient" ) ),
           nonLocalDamage( find( "nonlocal damage" ) ),
           localDamage( find( "local damage" ) ),
-          nonLocalDamageGradient( &find( "nonlocal damage gradient" ) ),
           stress( &find( "stress" ) ),
           F0_XX( find( "F0 XX" ) ),
           F0_YY( find( "F0 YY" ) ),
           F0_ZZ( find( "F0 ZZ" ) ),
+          nonLocalDamageGradient( &find( "nonlocal damage gradient" ) ),
           materialState( &find( "begin of material state" ), nStateVars - getNumberOfRequiredStateVars() ){};
     };
 
