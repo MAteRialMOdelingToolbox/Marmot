@@ -23,6 +23,7 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
+
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotJournal.h"
@@ -31,6 +32,8 @@
 #include "Marmot/MarmotMaterialPoint.h"
 #include "Marmot/MarmotStateVarVectorManager.h"
 #include "Marmot/MarmotTensor.h"
+#include <cmath>
+#include <limits>
 
 #include <memory>
 #include <stdexcept>
@@ -94,6 +97,11 @@ namespace Marmot::MaterialPoints {
     using Material = MarmotMaterialFiniteStrain; ///< material interface consumed by the material point
 
     std::unique_ptr< Material > material;        ///< the finite-strain material
+
+    /// Characteristic element length, forwarded to the material. NaN until explicitly assigned.
+    double _characteristicElementLength = std::numeric_limits< double >::quiet_NaN();
+    /// Length as a multiple of this point's own size; NaN until assigned.
+    double _characteristicElementLengthFactor = std::numeric_limits< double >::quiet_NaN();
 
     /**
      * @class Marmot::MaterialPoints::DisplacementMaterialPoint::MPStateVarManager
@@ -293,6 +301,27 @@ namespace Marmot::MaterialPoints {
     const TensorD& getCoordinatesUndeformed() const { return _x0; };
 
     /**
+     * @brief Forward the characteristic element length to the assigned material.
+     * @param[in] length Characteristic element length.
+     */
+    void setCharacteristicElementLength( double length ) override
+    {
+      _characteristicElementLength = length;
+      if ( material )
+        material->setCharacteristicElementLength( length );
+    };
+
+    /**
+     * @brief Resolve a characteristic-length factor against this material point's own size.
+     * @param[in] factor Multiple of the material point size, size = vol^(1/nDim).
+     */
+    void setCharacteristicElementLengthFactor( double factor ) override
+    {
+      _characteristicElementLengthFactor = factor;
+      setCharacteristicElementLength( factor * std::pow( _vol0, 1.0 / nDim ) );
+    };
+
+    /**
      * @brief Starts a new evaluation of the increment: resets @f$ \Delta\boldsymbol{u} = \boldsymbol{0} @f$ and
      * @f$ \Delta\boldsymbol{F} = \boldsymbol{I} @f$, so that incrementDeformation() can accumulate the full
      * increment again.
@@ -437,6 +466,13 @@ namespace Marmot::MaterialPoints {
     if ( !material )
       throw std::invalid_argument( MakeString()
                                    << __PRETTY_FUNCTION__ << ": invalid finite strain material assigned!" );
+
+    // A length assigned before the material existed must not be silently dropped. A factor takes
+    // precedence, since it is resolved against this point's own size.
+    if ( !std::isnan( _characteristicElementLengthFactor ) )
+      material->setCharacteristicElementLength( _characteristicElementLengthFactor * std::pow( _vol0, 1.0 / nDim ) );
+    else
+      material->setCharacteristicElementLength( _characteristicElementLength );
   }
 
   template < int nDim >
