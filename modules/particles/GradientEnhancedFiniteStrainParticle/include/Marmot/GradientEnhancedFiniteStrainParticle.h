@@ -464,6 +464,44 @@ namespace Marmot::Meshfree {
                                          double        dT ) const override;
 
     /**
+     * @brief Compute the lumped (nodal, non-blocked) inertia of the particle, for both fields.
+     * @param mLumped Pointer to the lumped inertia vector to accumulate into; node-wise layout
+     *                @f$ [u_1^{(1)},\dots,u_{n_\mathrm{dim}}^{(1)},\bar N^{(1)},u_1^{(2)},\dots] @f$.
+     *
+     * @details Displacement rows get @f$ M_A = T_A\,\rho_0\,V_0 @f$, the nonlocal row
+     * @f$ M_A = T_A\,m_k\,V_0 @f$ with @f$ m_k @f$ the material's nonlocal micro-inertia
+     * (@ref MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::getNonlocalMicroInertia). Zero
+     * for a material that does not report one, the quasi-static (first-order-in-time) model.
+     */
+    virtual void computeLumpedInertia( double* mLumped ) const override;
+
+    /**
+     * @brief Compute the lumped (nodal, non-blocked) momentum of the particle.
+     * @param mLumped Pointer to the lumped momentum vector to accumulate into; same layout as
+     *                @ref computeLumpedInertia.
+     *
+     * @details Only the displacement block is populated, @f$ p_A = T_A\,\rho_0\,V_0\,v_i @f$: the
+     * material point carries no rate for the nonlocal field (it is not needed for
+     * @ref computePhysicsKernelsExplicit, whose nonlocal row has no inertial or damping term of its
+     * own -- those are lumped separately, see @ref computeLumpedInertia and @ref computeLumpedDamping),
+     * so the nonlocal row is left at zero. That is exact whenever the nonlocal field starts at rest,
+     * which every explicit run here does.
+     */
+    virtual void computeLumpedMomentum( double* mLumped ) const override;
+
+    /**
+     * @brief Compute the lumped (nodal, non-blocked) damping of the particle.
+     * @param cLumped Pointer to the lumped damping vector to accumulate into; same layout as
+     *                @ref computeLumpedInertia.
+     *
+     * @details Only the nonlocal row is populated, @f$ C_A = T_A\,\eta\,V_0 @f$ with @f$ \eta @f$ the
+     * material's nonlocal viscosity
+     * (@ref MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::getNonlocalViscosity); the
+     * displacement rows have no damping term in this formulation and are left at zero.
+     */
+    virtual void computeLumpedDamping( double* cLumped ) const override;
+
+    /**
      * @brief Access a state variable.
      *
      * `vertex displacements` is the displacement of the material point (the single vertex); every other name is
@@ -878,6 +916,77 @@ namespace Marmot::Meshfree {
       break;
     }
     default: throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid body load type" );
+    }
+  }
+
+  template < int nDim >
+  void GradientEnhancedFiniteStrainParticle< nDim >::computeLumpedInertia( double* mLumped ) const
+  {
+    constexpr int nodeBlockSize = nDofPerNodeU + nDofPerNodeN;
+
+    const double density0 = _mp.getDensityUndeformed();
+    const double V0       = getVolumeUndeformed();
+
+    // The coefficient of the nonlocal field's HIGHEST time derivative, which is what an explicit
+    // integrator divides the residual by. With a micro-inertia the balance is second order,
+    // m_k N'' + eta N' + N - c lap N = L, and that coefficient is m_k -- the field is integrated by
+    // central differences. With m_k = 0 the balance is first order and the viscosity takes that role:
+    // eta N' + N - c lap N = L, integrated by forward Euler. Reporting eta here in that case is what
+    // makes the parabolic scheme reachable at all, and it mirrors what the element side does
+    // (see Marmot #84 and doc/pages/features/explicitdynamicsdevices.rst). Reporting a zero would
+    // instead be clamped to 1e-12 by the solver and integrate garbage.
+    const double m_k             = _mp.getNonlocalMicroInertia();
+    const double nonlocalInertia = ( m_k > 0.0 ) ? m_k : _mp.getNonlocalViscosity();
+
+    for ( int A = 0; A < _nNodes; A++ ) {
+      const double T_A    = _T( A );
+      const int    idxA_u = nodeBlockSize * A;
+      const int    idxA_n = nodeBlockSize * A + nDim;
+
+      for ( int i = 0; i < nDofPerNodeU; i++ ) {
+        mLumped[idxA_u + i] += density0 * T_A * V0;
+      }
+
+      mLumped[idxA_n] += nonlocalInertia * T_A * V0;
+    }
+  }
+
+  template < int nDim >
+  void GradientEnhancedFiniteStrainParticle< nDim >::computeLumpedMomentum( double* mLumped ) const
+  {
+    constexpr int nodeBlockSize = nDofPerNodeU + nDofPerNodeN;
+
+    const double density0 = _mp.getDensityUndeformed();
+    const double V0       = getVolumeUndeformed();
+    const auto   v        = _mp.getVelocity();
+
+    for ( int A = 0; A < _nNodes; A++ ) {
+      const double T_A    = _T( A );
+      const int    idxA_u = nodeBlockSize * A;
+
+      for ( int i = 0; i < nDofPerNodeU; i++ ) {
+        mLumped[idxA_u + i] += density0 * T_A * V0 * v[i];
+      }
+
+      // the nonlocal row is left at zero -- see the doxygen note on the declaration.
+    }
+  }
+
+  template < int nDim >
+  void GradientEnhancedFiniteStrainParticle< nDim >::computeLumpedDamping( double* cLumped ) const
+  {
+    constexpr int nodeBlockSize = nDofPerNodeU + nDofPerNodeN;
+
+    const double eta = _mp.getNonlocalViscosity();
+    const double V0  = getVolumeUndeformed();
+
+    for ( int A = 0; A < _nNodes; A++ ) {
+      const double T_A    = _T( A );
+      const int    idxA_n = nodeBlockSize * A + nDim;
+
+      cLumped[idxA_n] += eta * T_A * V0;
+
+      // the displacement rows are left at zero: this formulation has no damping term on displacement.
     }
   }
 
