@@ -1,6 +1,7 @@
 # Builds the `marmot` conda package (conda/recipe.yaml) on every platform, for every PR and push to the development
 # branch, and uploads it to the prefix.dev channel matthiasneuner/edelweiss for a release tag (v26.11 -> 26.11).
-# Uploading needs the PREFIX_API_KEY repository secret.
+#
+# Uploading uses trusted publishing (no secret), see the upload job.
 name: conda
 
 on:
@@ -65,6 +66,12 @@ jobs:
     needs: build
     if: github.ref_type == 'tag'
     runs-on: ubuntu-24.04
+    # Trusted publishing: prefix.dev accepts this workflow's GitHub identity token (registered in the channel's
+    # settings), so no API key is stored. The `release` environment can require an approval before uploading.
+    environment: release
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/download-artifact@v4
         with:
@@ -76,8 +83,6 @@ jobs:
           run-install: false
 
       - name: Upload to prefix.dev
-        env:
-          PREFIX_API_KEY: ${{ secrets.PREFIX_API_KEY }}
         run: |
           pixi global install rattler-build
           find output -name '*.conda' -print0 | xargs -0 rattler-build upload prefix --skip-existing --channel "$CHANNEL"
