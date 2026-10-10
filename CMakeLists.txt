@@ -39,7 +39,9 @@ message(STATUS "")
 
 # Fortran is not used by Marmot; keep the language list to CXX only so that
 # a Fortran compiler is not required.
-project(Marmot VERSION 1.0.0 LANGUAGES CXX)
+# The release this source tree is (or leads up to), as in the release tag (v26.11 -> 26.11.0); set to the next release
+# right after tagging. The conda workflow refuses a tag that does not match it.
+project(Marmot VERSION 26.11.0 LANGUAGES CXX)
 
 # avoid in-source compilation
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})

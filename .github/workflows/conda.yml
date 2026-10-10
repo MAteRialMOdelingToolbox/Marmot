@@ -33,9 +33,9 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
-      - uses: prefix-dev/setup-pixi@v0.9.1
+      - uses: prefix-dev/setup-pixi@194d461b21b6c5717c722ffc597fa91ed2ff29fa # v0.9.1
         with:
           run-install: false
 
@@ -43,6 +43,12 @@ jobs:
         run: |
           if [ "${{ github.ref_type }}" = tag ]; then
             version=${GITHUB_REF_NAME#v}
+            # find_package(Marmot <version>) checks the version in CMakeLists.txt, which must match the package's.
+            cmake_version=$(sed -nE 's/^project\(Marmot VERSION ([0-9.]+).*/\1/p' CMakeLists.txt)
+            case "$cmake_version" in
+              "$version" | "$version".0) ;;
+              *) echo "::error::Tag $GITHUB_REF_NAME does not match project(Marmot VERSION $cmake_version) in CMakeLists.txt."; exit 1 ;;
+            esac
           else
             version="$NEXT_RELEASE.dev$(git log -1 --format=%cd --date=format:%Y%m%d%H%M)"
           fi
@@ -56,7 +62,7 @@ jobs:
           rattler-build build --recipe conda -c "https://repo.prefix.dev/$CHANNEL" -c conda-forge \
             --output-dir output --log-style plain
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: conda-${{ matrix.subdir }}
           path: output/${{ matrix.subdir }}/*.conda
@@ -73,12 +79,12 @@ jobs:
       id-token: write
       contents: read
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           pattern: conda-*
           path: output
 
-      - uses: prefix-dev/setup-pixi@v0.9.1
+      - uses: prefix-dev/setup-pixi@194d461b21b6c5717c722ffc597fa91ed2ff29fa # v0.9.1
         with:
           run-install: false
 

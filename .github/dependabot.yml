@@ -1,0 +1,11 @@
+# Keeps the GitHub Actions used by the workflows up to date. The workflows pin them by commit SHA (the tag in a
+# comment), so that a moved tag cannot change what a publishing workflow runs; Dependabot proposes the updates.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
