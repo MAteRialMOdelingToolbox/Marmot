@@ -135,11 +135,11 @@ namespace Marmot::MaterialPoints {
       FastorStandardTensors::TensorMap3d  du;    ///< displacement increment of the current step
       FastorStandardTensors::TensorMap33d dx_dY; ///< deformation gradient increment @f$ \Delta\boldsymbol{F} @f$
       FastorStandardTensors::TensorMap33d dY_dX; ///< deformation gradient @f$ \boldsymbol{F}_n @f$, last accepted
-      double& nonLocalDamage;   ///< nonlocal field @f$ \bar{N} @f$ (total; incrementDeformation() adds the increment of
-                                ///< the step to the committed value, see the state contract of MarmotMaterialPoint)
-      double& localDamage;      ///< local driving force @f$ L @f$ of the last material evaluation
-      FastorStandardTensors::TensorMap3d
-        nonLocalDamageGradient; ///< running sum of @f$ \nabla_X\Delta\bar{N} @f$, see getNonLocalDamageGradient()
+      double& nonLocalDamage; ///< nonlocal field @f$ \bar{N} @f$ (total; incrementDeformation() adds the increment of
+                              ///< the step to the committed value, see the state contract of MarmotMaterialPoint)
+      double& localDamage;    ///< local driving force @f$ L @f$ of the last material evaluation
+      /// running sum of @f$ \nabla_X\Delta\bar{N} @f$, see getNonLocalDamageGradient()
+      FastorStandardTensors::TensorMap3d  nonLocalDamageGradient;
       FastorStandardTensors::TensorMap33d stress;        ///< Kirchhoff stress @f$ \boldsymbol{\tau} @f$ (3x3)
       double&                             F0_XX;         ///< eigen deformation (geostatic stress), XX component
       double&                             F0_YY;         ///< eigen deformation (geostatic stress), YY component
