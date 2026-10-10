@@ -120,6 +120,7 @@ namespace Marmot::MaterialPoints {
         { .name = "deformation gradient", .length = 9 },
         { .name = "nonlocal damage", .length = 1 },
         { .name = "local damage", .length = 1 },
+        { .name = "nonlocal damage gradient", .length = 3 },
         { .name = "stress", .length = 9 },
         { .name = "F0 XX", .length = 1 },
         { .name = "F0 YY", .length = 1 },
@@ -134,9 +135,11 @@ namespace Marmot::MaterialPoints {
       FastorStandardTensors::TensorMap3d  du;    ///< displacement increment of the current step
       FastorStandardTensors::TensorMap33d dx_dY; ///< deformation gradient increment @f$ \Delta\boldsymbol{F} @f$
       FastorStandardTensors::TensorMap33d dY_dX; ///< deformation gradient @f$ \boldsymbol{F}_n @f$, last accepted
-      double& nonLocalDamage; ///< nonlocal field @f$ \bar{N} @f$ (total; incrementDeformation() adds the increment of
-                              ///< the step to the committed value, see the state contract of MarmotMaterialPoint)
-      double& localDamage;    ///< local driving force @f$ L @f$ of the last material evaluation
+      double& nonLocalDamage;   ///< nonlocal field @f$ \bar{N} @f$ (total; incrementDeformation() adds the increment of
+                                ///< the step to the committed value, see the state contract of MarmotMaterialPoint)
+      double& localDamage;      ///< local driving force @f$ L @f$ of the last material evaluation
+      FastorStandardTensors::TensorMap3d
+        nonLocalDamageGradient; ///< running sum of @f$ \nabla_X\Delta\bar{N} @f$, see getNonLocalDamageGradient()
       FastorStandardTensors::TensorMap33d stress;        ///< Kirchhoff stress @f$ \boldsymbol{\tau} @f$ (3x3)
       double&                             F0_XX;         ///< eigen deformation (geostatic stress), XX component
       double&                             F0_YY;         ///< eigen deformation (geostatic stress), YY component
@@ -164,6 +167,7 @@ namespace Marmot::MaterialPoints {
           dY_dX( &find( "deformation gradient" ) ),
           nonLocalDamage( find( "nonlocal damage" ) ),
           localDamage( find( "local damage" ) ),
+          nonLocalDamageGradient( &find( "nonlocal damage gradient" ) ),
           stress( &find( "stress" ) ),
           F0_XX( find( "F0 XX" ) ),
           F0_YY( find( "F0 YY" ) ),
@@ -318,6 +322,64 @@ namespace Marmot::MaterialPoints {
      * @return @f$ \boldsymbol{X} @f$.
      */
     const TensorD& coordinates() const { return _x0; };
+
+    /**
+     * @brief Get the TOTAL nonlocal field, for consumers that need the total (not incremental) form of
+     *        the nonlocal balance, e.g. an explicit-dynamics residual.
+     * @return The current value of the accumulated nonlocal field @f$ \bar N @f$.
+     */
+    double getNonLocalDamage() const { return state->nonLocalDamage; };
+
+    /**
+     * @brief Get the TOTAL local driving force @f$ L @f$ last reported by the material, for consumers
+     *        that need the total (not incremental) form of the nonlocal balance.
+     *
+     * @note Only meaningful after computeYourself() has run at least once: that call is what sets this
+     *       slot to the current @f$ L @f$ (it is what response.dL is differenced against, and what the
+     *       NEXT call to computeYourself() will treat as @f$ L_n @f$).
+     * @return The current value of the local driving force @f$ L @f$.
+     */
+    double getLocalDamage() const { return state->localDamage; };
+
+    /**
+     * @brief Get the nonlocal viscosity @f$ \eta @f$ of the assigned material.
+     * @return Nonlocal viscosity, the damping coefficient of the nonlocal balance.
+     */
+    double getNonlocalViscosity() const { return material->getNonlocalViscosity( state->materialState.data() ); };
+
+    /**
+     * @brief Get the nonlocal micro-inertia @f$ m_k @f$ of the assigned material.
+     * @return Nonlocal micro-inertia, in units of [time]^2; zero for a material that does not report
+     *         one, which is the quasi-static (first-order-in-time) model.
+     */
+    double getNonlocalMicroInertia() const { return material->getNonlocalMicroInertia( state->materialState.data() ); };
+
+    /**
+     * @brief Get the material-configuration gradient of the TOTAL nonlocal field, @f$ \nabla_X\bar N @f$.
+     *
+     * @details Only the increment of the nonlocal field ever reaches a material point (via
+     * incrementDeformation(), driven by a particle's @c dQ, which itself is only ever an increment --
+     * no consumer in this codebase ever hands over absolute nodal values). The TOTAL field itself is
+     * nonetheless available, honestly, as the running sum kept in @c state->nonLocalDamage. Its
+     * gradient has no such existing running sum, so incrementNonlocalDamageGradient() below adds one,
+     * one differential order higher, updated by whichever consumer forms grad_X(increment) for its own
+     * purposes anyway. Exact as long as the assigned node set does not change between calls -- the same
+     * limitation already shared by every other history-carrying quantity here (state->u,
+     * state->nonLocalDamage, ...).
+     * @return @f$ \nabla_X\bar N @f$, accumulated via incrementNonlocalDamageGradient().
+     */
+    TensorD getNonLocalDamageGradient() const { return state->nonLocalDamageGradient( Fastor::seq( 0, nDim ) ); };
+
+    /**
+     * @brief Accumulate the material-configuration gradient of an increment of the nonlocal field.
+     * @param dn_dX Gradient (with respect to the reference configuration @f$ X @f$) of the CURRENT
+     *              increment of the nonlocal field, i.e. @f$ \nabla_X(\Delta\bar N) @f$ for this call.
+     */
+    void incrementNonlocalDamageGradient( const TensorD& dn_dX )
+    {
+      for ( int i = 0; i < nDim; i++ )
+        state->nonLocalDamageGradient( i ) += dn_dX( i );
+    };
 
     /**
      * @brief Reset the increment of the current step: @f$ \Delta\boldsymbol{u} = \boldsymbol{0} @f$,
