@@ -1,0 +1,83 @@
+# Builds the `marmot` conda package (conda/recipe.yaml) on every platform, for every PR and push to the development
+# branch, and uploads it to the prefix.dev channel matthiasneuner/edelweiss for a release tag (v26.11 -> 26.11).
+# Uploading needs the PREFIX_API_KEY repository secret.
+name: conda
+
+on:
+  push:
+    branches: [next_v26.11]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+env:
+  CHANNEL: matthiasneuner/edelweiss
+  # The release the development snapshots lead up to: they are versioned <NEXT_RELEASE>.dev<commit time>.
+  NEXT_RELEASE: "26.11"
+
+jobs:
+  build:
+    name: ${{ matrix.subdir }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { subdir: linux-64, os: ubuntu-24.04 }
+          - { subdir: osx-arm64, os: macos-15 }
+          - { subdir: osx-64, os: macos-15-intel }
+          - { subdir: win-64, os: windows-2022 }
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: prefix-dev/setup-pixi@v0.9.1
+        with:
+          run-install: false
+
+      - name: Version
+        run: |
+          if [ "${{ github.ref_type }}" = tag ]; then
+            version=${GITHUB_REF_NAME#v}
+          else
+            version="$NEXT_RELEASE.dev$(git log -1 --format=%cd --date=format:%Y%m%d%H%M)"
+          fi
+          echo "MARMOT_CONDA_VERSION=$version" >> "$GITHUB_ENV"
+          echo "version: $version"
+
+      # The package tests run as part of the build (a find_package consumer of the installed library).
+      - name: Build
+        run: |
+          pixi global install rattler-build
+          rattler-build build --recipe conda -c "https://repo.prefix.dev/$CHANNEL" -c conda-forge \
+            --output-dir output --log-style plain
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: conda-${{ matrix.subdir }}
+          path: output/${{ matrix.subdir }}/*.conda
+
+  upload:
+    name: upload
+    needs: build
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: conda-*
+          path: output
+
+      - uses: prefix-dev/setup-pixi@v0.9.1
+        with:
+          run-install: false
+
+      - name: Upload to prefix.dev
+        env:
+          PREFIX_API_KEY: ${{ secrets.PREFIX_API_KEY }}
+        run: |
+          pixi global install rattler-build
+          find output -name '*.conda' -print0 | xargs -0 rattler-build upload prefix --skip-existing --channel "$CHANNEL"
