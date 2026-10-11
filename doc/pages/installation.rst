@@ -14,6 +14,29 @@ Both Eigen 3.4 and Eigen 5 are supported.
 Eigen 5 requires an autodiff version with Eigen 5 support;
 autodiff 1.1.2 and older do not compile against Eigen 5 (see `autodiff#397 <https://github.com/autodiff/autodiff/pull/397>`_).
 
+Prebuilt conda package
+**********************
+
+Released versions of Marmot are available as the conda package ``marmot``
+(Linux x86-64, macOS arm64 and x86-64, Windows x86-64), together with its dependencies:
+
+.. code-block:: console
+
+    conda create -n marmot -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge marmot
+
+The package contains the library, the headers and the CMake package files (``find_package(Marmot)``),
+built from the public modules of this repository with portable compiler flags.
+EdelweissFE's conda package ``edelweissfe`` depends on it.
+
+Build Marmot yourself instead (see below) to develop it, to add modules
+(including private ones), or to optimize for your CPU (``-DMARMOT_MARCH_NATIVE=ON``).
+Do this in a separate environment, never in one with the ``marmot`` package installed:
+installing a self-built Marmot there overwrites files conda manages, and packages compiled against the
+packaged Marmot (such as ``edelweissfe``) would then run against a library they were not compiled for.
+
+The package recipe is ``conda/recipe.yaml``; the ``conda`` workflow builds and tests it on every pull request
+and uploads it for a release tag.
+
 Building with Anaconda
 **********************
 

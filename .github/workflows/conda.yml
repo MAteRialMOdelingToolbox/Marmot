@@ -1,0 +1,115 @@
+# Builds the `marmot` conda package (conda/recipe.yaml) on every platform, for every PR and push to a development
+# branch, and uploads it to the prefix.dev channel matthiasneuner/edelweiss for a release tag (v26.11 -> 26.11).
+#
+# Versions come from project(Marmot VERSION ...) in CMakeLists.txt, the single place to bump after a release: a tag
+# must match it, and untagged builds are development snapshots <that version>.dev<commit time>, which conda orders
+# before the release itself.
+#
+# Uploading uses trusted publishing (no secret), see the upload job. An upload never overwrites: to republish a fixed
+# build of a release, run this workflow on the tag with a higher build number.
+name: conda
+
+on:
+  push:
+    branches: [master, "next_v*"]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      build_number:
+        description: "Build number (raise it to republish a fixed build of a release tag)"
+        default: "0"
+
+env:
+  CHANNEL: matthiasneuner/edelweiss
+  # Pinned like the actions, so that a new release cannot change what a tag builds or uploads; bump deliberately.
+  RATTLER_BUILD_VERSION: "0.76.1"
+
+jobs:
+  build:
+    name: ${{ matrix.subdir }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { subdir: linux-64, os: ubuntu-24.04 }
+          - { subdir: osx-arm64, os: macos-15 }
+          - { subdir: osx-64, os: macos-15-intel }
+          - { subdir: win-64, os: windows-2022 }
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - uses: prefix-dev/setup-pixi@194d461b21b6c5717c722ffc597fa91ed2ff29fa # v0.9.1
+        with:
+          run-install: false
+
+      - name: Install rattler-build
+        run: pixi global install "rattler-build==$RATTLER_BUILD_VERSION"
+
+      - name: Version
+        env:
+          REF_TYPE: ${{ github.ref_type }}
+          BUILD_NUMBER: ${{ inputs.build_number || '0' }}
+        run: |
+          cmake_version=$(sed -nE 's/^project\(Marmot VERSION ([0-9]+\.[0-9]+\.[0-9]+).*/\1/p' CMakeLists.txt)
+          release=${cmake_version%.0}  # 26.11.0 -> 26.11, 26.11.1 stays
+          if [ "$REF_TYPE" = tag ]; then
+            if ! [[ "$GITHUB_REF_NAME" =~ ^v[0-9]+\.[0-9]+(\.[0-9]+)?$ ]]; then
+              echo "::error::Tag $GITHUB_REF_NAME is not a release tag v<YY>.<MM>[.<patch>]."; exit 1
+            fi
+            version=${GITHUB_REF_NAME#v}
+            if [ "$version" != "$release" ]; then
+              echo "::error::Tag $GITHUB_REF_NAME does not match project(Marmot VERSION $cmake_version) in CMakeLists.txt."; exit 1
+            fi
+          else
+            version="$release.dev$(git log -1 --format=%cd --date=format:%Y%m%d%H%M)"
+          fi
+          [[ "$BUILD_NUMBER" =~ ^[0-9]+$ ]] || { echo "::error::build_number must be a number."; exit 1; }
+          echo "MARMOT_CONDA_VERSION=$version" >> "$GITHUB_ENV"
+          echo "MARMOT_CONDA_BUILD_NUMBER=$BUILD_NUMBER" >> "$GITHUB_ENV"
+          echo "version: $version, build number: $BUILD_NUMBER"
+
+      # The package tests run as part of the build (a find_package consumer of the installed library). The output
+      # directory is outside the checkout, which the recipe copies as its source.
+      - name: Build
+        run: |
+          rattler-build build --recipe conda -c "https://repo.prefix.dev/$CHANNEL" -c conda-forge \
+            --output-dir "$RUNNER_TEMP/output" --log-style plain
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: conda-${{ matrix.subdir }}
+          path: ${{ runner.temp }}/output/${{ matrix.subdir }}/*.conda
+
+  upload:
+    name: upload
+    needs: build
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-24.04
+    # Trusted publishing: prefix.dev accepts this workflow's GitHub identity token (registered in the channel's
+    # settings), so no API key is stored. The `release` environment can require an approval before uploading.
+    environment: release
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: conda-*
+          path: output
+
+      - uses: prefix-dev/setup-pixi@194d461b21b6c5717c722ffc597fa91ed2ff29fa # v0.9.1
+        with:
+          run-install: false
+
+      # No --skip-existing: a package that is already on the channel fails the upload instead of being skipped
+      # silently, so a fixed rebuild is never mistaken for a published one (raise the build number instead).
+      - name: Upload to prefix.dev
+        run: |
+          pixi global install "rattler-build==$RATTLER_BUILD_VERSION"
+          find output -name '*.conda' -print0 | xargs -0 rattler-build upload prefix --channel "$CHANNEL"
