@@ -41,7 +41,7 @@ message(STATUS "")
 # a Fortran compiler is not required.
 # The release this source tree is (or leads up to), as in the release tag (v26.11 -> 26.11.0); set to the next release
 # right after tagging. The conda workflow refuses a tag that does not match it.
-project(Marmot VERSION 26.11.0 LANGUAGES CXX)
+project(Marmot VERSION 27.05.0 LANGUAGES CXX)
 
 # avoid in-source compilation
 if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
