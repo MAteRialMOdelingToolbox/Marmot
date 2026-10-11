@@ -9,16 +9,19 @@ source:
   path: ..
   use_gitignore: true
 build:
-  number: 0
+  # Set by .github/workflows/conda.yml (workflow_dispatch input): raise it to republish a fixed build of a release.
+  number: ${{ env.get("MARMOT_CONDA_BUILD_NUMBER", default="0") | int }}
   # Builds every module in the source tree. CI's checkout has the public ones only; a local build of this recipe
   # would also package any nested private module repository present - never publish such a build.
   # Portable binaries: no -march=native (MARMOT_MARCH_NATIVE is off by default; stated here explicitly).
   # The tests are not built: the package test below checks the installed library from a consumer's side.
-  # Windows: build in a short directory, as object paths under rattler-build's work directory exceed MAX_PATH
+  # Windows: build in a short directory (removed first, as it outlives the build), as object paths under
+  # rattler-build's work directory exceed MAX_PATH
   # (MSVC C1083 "Cannot open compiler generated file"). ninja -k 0: report every failing file in one run.
   script:
     - if: win
       then:
+        - if exist %TEMP%\mb rmdir /s /q %TEMP%\mb
         - cmake -S . -B %TEMP%\mb -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -DMARMOT_MARCH_NATIVE=OFF -DCMAKE_FIND_USE_PACKAGE_REGISTRY=OFF -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% -DCMAKE_PREFIX_PATH=%LIBRARY_PREFIX%
         - if errorlevel 1 exit 1
         - cmake --build %TEMP%\mb --parallel %CPU_COUNT% -- -k 0
@@ -34,6 +37,8 @@ requirements:
     - ninja
     - ${{ compiler('cxx') }}
   host:
+    # Eigen 3.4 or 5: the autodiff 1.1.2 of the matthiasneuner/edelweiss channel carries the Eigen 5 patch
+    # (autodiff#397). EdelweissFE environments have Eigen 5 (vtk-base requires it).
     - eigen
     - autodiff ==1.1.2
     - fastor

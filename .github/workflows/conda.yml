@@ -1,20 +1,29 @@
-# Builds the `marmot` conda package (conda/recipe.yaml) on every platform, for every PR and push to the development
+# Builds the `marmot` conda package (conda/recipe.yaml) on every platform, for every PR and push to a development
 # branch, and uploads it to the prefix.dev channel matthiasneuner/edelweiss for a release tag (v26.11 -> 26.11).
 #
-# Uploading uses trusted publishing (no secret), see the upload job.
+# Versions come from project(Marmot VERSION ...) in CMakeLists.txt, the single place to bump after a release: a tag
+# must match it, and untagged builds are development snapshots <that version>.dev<commit time>, which conda orders
+# before the release itself.
+#
+# Uploading uses trusted publishing (no secret), see the upload job. An upload never overwrites: to republish a fixed
+# build of a release, run this workflow on the tag with a higher build number.
 name: conda
 
 on:
   push:
-    branches: [next_v26.11]
+    branches: [master, "next_v*"]
     tags: ["v*"]
   pull_request:
   workflow_dispatch:
+    inputs:
+      build_number:
+        description: "Build number (raise it to republish a fixed build of a release tag)"
+        default: "0"
 
 env:
   CHANNEL: matthiasneuner/edelweiss
-  # The release the development snapshots lead up to: they are versioned <NEXT_RELEASE>.dev<commit time>.
-  NEXT_RELEASE: "26.11"
+  # Pinned like the actions, so that a new release cannot change what a tag builds or uploads; bump deliberately.
+  RATTLER_BUILD_VERSION: "0.76.1"
 
 jobs:
   build:
@@ -39,33 +48,43 @@ jobs:
         with:
           run-install: false
 
-      - name: Version
-        run: |
-          if [ "${{ github.ref_type }}" = tag ]; then
-            version=${GITHUB_REF_NAME#v}
-            # find_package(Marmot <version>) checks the version in CMakeLists.txt, which must match the package's.
-            cmake_version=$(sed -nE 's/^project\(Marmot VERSION ([0-9.]+).*/\1/p' CMakeLists.txt)
-            case "$cmake_version" in
-              "$version" | "$version".0) ;;
-              *) echo "::error::Tag $GITHUB_REF_NAME does not match project(Marmot VERSION $cmake_version) in CMakeLists.txt."; exit 1 ;;
-            esac
-          else
-            version="$NEXT_RELEASE.dev$(git log -1 --format=%cd --date=format:%Y%m%d%H%M)"
-          fi
-          echo "MARMOT_CONDA_VERSION=$version" >> "$GITHUB_ENV"
-          echo "version: $version"
+      - name: Install rattler-build
+        run: pixi global install "rattler-build==$RATTLER_BUILD_VERSION"
 
-      # The package tests run as part of the build (a find_package consumer of the installed library).
+      - name: Version
+        env:
+          REF_TYPE: ${{ github.ref_type }}
+          BUILD_NUMBER: ${{ inputs.build_number || '0' }}
+        run: |
+          cmake_version=$(sed -nE 's/^project\(Marmot VERSION ([0-9]+\.[0-9]+\.[0-9]+).*/\1/p' CMakeLists.txt)
+          release=${cmake_version%.0}  # 26.11.0 -> 26.11, 26.11.1 stays
+          if [ "$REF_TYPE" = tag ]; then
+            if ! [[ "$GITHUB_REF_NAME" =~ ^v[0-9]+\.[0-9]+(\.[0-9]+)?$ ]]; then
+              echo "::error::Tag $GITHUB_REF_NAME is not a release tag v<YY>.<MM>[.<patch>]."; exit 1
+            fi
+            version=${GITHUB_REF_NAME#v}
+            if [ "$version" != "$release" ]; then
+              echo "::error::Tag $GITHUB_REF_NAME does not match project(Marmot VERSION $cmake_version) in CMakeLists.txt."; exit 1
+            fi
+          else
+            version="$release.dev$(git log -1 --format=%cd --date=format:%Y%m%d%H%M)"
+          fi
+          [[ "$BUILD_NUMBER" =~ ^[0-9]+$ ]] || { echo "::error::build_number must be a number."; exit 1; }
+          echo "MARMOT_CONDA_VERSION=$version" >> "$GITHUB_ENV"
+          echo "MARMOT_CONDA_BUILD_NUMBER=$BUILD_NUMBER" >> "$GITHUB_ENV"
+          echo "version: $version, build number: $BUILD_NUMBER"
+
+      # The package tests run as part of the build (a find_package consumer of the installed library). The output
+      # directory is outside the checkout, which the recipe copies as its source.
       - name: Build
         run: |
-          pixi global install rattler-build
           rattler-build build --recipe conda -c "https://repo.prefix.dev/$CHANNEL" -c conda-forge \
-            --output-dir output --log-style plain
+            --output-dir "$RUNNER_TEMP/output" --log-style plain
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: conda-${{ matrix.subdir }}
-          path: output/${{ matrix.subdir }}/*.conda
+          path: ${{ runner.temp }}/output/${{ matrix.subdir }}/*.conda
 
   upload:
     name: upload
@@ -88,7 +107,9 @@ jobs:
         with:
           run-install: false
 
+      # No --skip-existing: a package that is already on the channel fails the upload instead of being skipped
+      # silently, so a fixed rebuild is never mistaken for a published one (raise the build number instead).
       - name: Upload to prefix.dev
         run: |
-          pixi global install rattler-build
-          find output -name '*.conda' -print0 | xargs -0 rattler-build upload prefix --skip-existing --channel "$CHANNEL"
+          pixi global install "rattler-build==$RATTLER_BUILD_VERSION"
+          find output -name '*.conda' -print0 | xargs -0 rattler-build upload prefix --channel "$CHANNEL"

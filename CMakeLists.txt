@@ -250,8 +250,14 @@ add_library(${PROJECT_NAME} SHARED ${MARMOT_MODULE_OBJECTS})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
     VERSION   ${PROJECT_VERSION}
-    SOVERSION ${PROJECT_VERSION_MAJOR}
+    # MAJOR.MINOR (libMarmot.so.26.11): the major number alone (26) is shared by the 26.05 and 26.11 releases, whose
+    # ABIs differ, so the loader must not treat them as interchangeable.
+    SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
 )
+
+# Marmot's headers need these MSVC options in every translation unit that includes them (Eigen and Fastor check
+# __cplusplus, which MSVC only reports correctly with /Zc:__cplusplus), so consumers of Marmot::Marmot get them too.
+target_compile_options(${PROJECT_NAME} INTERFACE "$<$<CXX_COMPILER_ID:MSVC>:/bigobj;/permissive-;/Zc:__cplusplus>")
 
 # Include-directory strategy:
 #   BUILD_INTERFACE  – source-tree paths, for targets of this build linking ${PROJECT_NAME} (e.g. the bindings).
@@ -403,7 +409,8 @@ configure_package_config_file(
 write_basic_package_version_file(
     "${CMAKE_CURRENT_BINARY_DIR}/MarmotConfigVersion.cmake"
     VERSION       ${PROJECT_VERSION}
-    COMPATIBILITY SameMajorVersion
+    # Releases are versioned YY.MM, and each has its own ABI: find_package(Marmot 26.11) accepts 26.11.x only.
+    COMPATIBILITY SameMinorVersion
 )
 
 install(FILES

@@ -4,9 +4,6 @@ project(MarmotConsumer LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-if(MSVC)
-  add_compile_options(/bigobj /permissive- /Zc:__cplusplus)
-endif()
 
 find_package(Marmot REQUIRED CONFIG)
 
