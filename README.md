@@ -1,6 +1,6 @@
 ![build](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/build_ubuntu.yml/badge.svg)
 [![codecov](https://codecov.io/gh/MAteRialMOdelingToolbox/Marmot/branch/master/graph/badge.svg)](https://codecov.io/gh/MAteRialMOdelingToolbox/Marmot)
-[![codecov (next_v26.11)](https://codecov.io/gh/MAteRialMOdelingToolbox/Marmot/branch/next_v26.11/graph/badge.svg)](https://codecov.io/gh/MAteRialMOdelingToolbox/Marmot/branch/next_v26.11)
+[![codecov](https://codecov.io/gh/MAteRialMOdelingToolbox/Marmot/branch/master/graph/badge.svg)](https://codecov.io/gh/MAteRialMOdelingToolbox/Marmot/branch/master)
 ![clang-format](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/indent.yml/badge.svg)
 [![documentation](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/sphinx.yml/badge.svg)](https://materialmodelingtoolbox.github.io/Marmot/)
 [![license](https://img.shields.io/badge/license-LGPLv2-blue.svg)](LICENSE.md)
@@ -20,6 +20,14 @@ Standard interfaces for commercial finite element codes, such as Abaqus, Plaxis 
 Truss in compression using a micropolar von Mises plasticity model.
 
 ## Quick start
+
+Prebuilt packages of released versions (Linux, macOS, Windows):
+
+```bash
+conda create -n marmot -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge marmot
+```
+
+To develop Marmot or add modules, build it yourself as described below, in a separate environment.
 
 `Marmot` requires the
 [Eigen](https://gitlab.com/libeigen/eigen) (>3.3.8, including Eigen 5),

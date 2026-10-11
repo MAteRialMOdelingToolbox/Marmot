@@ -30,5 +30,5 @@ pre-commit run --all-files
 
 ## 4. Commits & PR Targeting
 - [ ] **Conventional Commits**: `<type>(<scope>): <summary>` (e.g. `feat(materials): add von Mises yield surface`).
-- [ ] **PR Target Branch**: Targets active integration branch `next_v<YY>.<MM>` (e.g., `next_v26.11`).
+- [ ] **PR Target Branch**: Targets `master`, the development branch (releases are tags `v<YY>.<MM>`).
 - [ ] **Guidance Maintenance**: Update `AGENTS.md` or `.agents/skills/` if conventions change.
