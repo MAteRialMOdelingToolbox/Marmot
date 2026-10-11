@@ -6,44 +6,6 @@ using namespace Eigen;
 namespace Marmot {
   namespace ContinuumMechanics::Kinematics {
 
-    namespace VelocityGradient {
-
-      EigenTensors::Tensor3333d initializeDOmega_dVelocityGradient()
-      {
-        EigenTensors::Tensor3333d dwdl;
-
-        for ( int i = 0; i < 3; i++ )
-          for ( int j = 0; j < 3; j++ )
-            for ( int k = 0; k < 3; k++ )
-              for ( int l = 0; l < 3; l++ ) {
-                dwdl( i, j, k, l ) = 0.5 * ( ( i == k ? 1 : 0 ) * ( j == l ? 1 : 0 ) -
-                                             ( k == j ? 1 : 0 ) * ( i == l ? 1 : 0 ) );
-              }
-        return dwdl;
-      }
-      const EigenTensors::Tensor3333d dOmega_dVelocityGradient = initializeDOmega_dVelocityGradient();
-
-      EigenTensors::Tensor633d initializeDStretchingRate_dVelocityGradient()
-      {
-        EigenTensors::Tensor633d dddl;
-
-        for ( int i = 0; i < 3; i++ )
-          for ( int j = 0; j < 3; j++ )
-            for ( int k = 0; k < 3; k++ )
-              for ( int l = 0; l < 3; l++ ) {
-                dddl( ContinuumMechanics::TensorUtility::IndexNotation::toVoigt< 3 >( i, j ),
-                      k,
-                      l ) = 0.5 *
-                            ( ( i == k ? 1 : 0 ) * ( j == l ? 1 : 0 ) + ( j == k ? 1 : 0 ) * ( i == l ? 1 : 0 ) ) *
-                            ( i == j ? 1 : 2 ); // strain-engineering-notation correction
-              }
-        return dddl;
-      }
-
-      const EigenTensors::Tensor633d dStretchingRate_dVelocityGradient = initializeDStretchingRate_dVelocityGradient();
-
-    } // namespace VelocityGradient
-
     namespace Strain {
 
       Marmot::Vector6d GreenLagrange( const Eigen::Matrix3d& F )

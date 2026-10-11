@@ -36,10 +36,6 @@ namespace Marmot {
     {
       return double( value );
     }
-    double makeReal( const autodiff::dual& value )
-    {
-      return double( value );
-    }
 
     double makeReal( const double& value )
     {
@@ -49,12 +45,13 @@ namespace Marmot {
     // return the exponent to the power of ten of an expression like 5*10^5 --> return 5
     int getExponentPowerTen( const double x )
     {
-      if ( x >= 1e-16 )      // positive number
-        return floor( log10( x ) );
-      else if ( x <= 1e-16 ) // negative number
-        return floor( log10( abs( x ) ) );
-      else                   // number close to 0
+      // "x >= 1e-16" and "x <= 1e-16" are collectively exhaustive over all reals, so a
+      // three-way branch on those two conditions can never reach a "close to 0" case;
+      // in particular x == 0 fell through to log10(0) == -inf, which is UB once floor()'d
+      // into the int return type. Guard on |x| explicitly instead.
+      if ( std::abs( x ) < 1e-16 )
         return 0;
+      return floor( log10( std::abs( x ) ) );
     }
 
     Matrix3d orthonormalCoordinateSystem( Vector3d& normalVector )

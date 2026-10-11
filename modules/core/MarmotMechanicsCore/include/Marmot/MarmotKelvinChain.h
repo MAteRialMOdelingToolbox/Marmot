@@ -26,7 +26,8 @@
 #pragma once
 #include "Marmot/MarmotNumericalIntegration.h"
 #include "Marmot/MarmotTypedefs.h"
-#include "autodiff/forward/real.hpp"
+#include "Marmot/MarmotViscoelasticity.h"
+
 #include <functional>
 
 namespace Marmot::Materials {
@@ -40,7 +41,7 @@ namespace Marmot::Materials {
      * Convenience typedef for an Eigen dynamic-size vector (`Eigen::VectorXd`)
      * that holds the material or model parameters of the Kelvin chain.
      */
-    typedef Eigen::VectorXd Properties;
+    using Properties = Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::Properties;
 
     /**
      * @typedef mapProperties
@@ -49,7 +50,7 @@ namespace Marmot::Materials {
      * Alias for `Eigen::Map<Properties>`, which allows mapping an existing
      * contiguous memory block as a `Properties` vector without copying.
      */
-    typedef Eigen::Map< Properties > mapProperties;
+    using mapProperties = Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::mapProperties;
     /**
      * @typedef StateVarMatrix
      * @brief Matrix of state variables.
@@ -57,7 +58,7 @@ namespace Marmot::Materials {
      * Alias for an Eigen matrix of shape 6 × N (`Eigen::Matrix<double, 6, Eigen::Dynamic>`),
      * storing viscoelastic strain variables for each Kelvin unit.
      */
-    typedef Eigen::Matrix< double, 6, Eigen::Dynamic > StateVarMatrix;
+    using StateVarMatrix = Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::StateVarMatrix;
 
     /**
      * @typedef mapStateVarMatrix
@@ -66,37 +67,7 @@ namespace Marmot::Materials {
      * Alias for `Eigen::Map<StateVarMatrix>`, allowing access to an existing
      * state variable array as an Eigen matrix without copying.
      */
-    typedef Eigen::Map< StateVarMatrix > mapStateVarMatrix;
-    /**
-     * @brief Compile-time factorial.
-     *
-     * Recursive template structure computing the factorial of N at compile time.
-     *
-     * Example:
-     * @code
-     *   int f = Factorial<5>::value; // f = 120
-     * @endcode
-     *
-     * @tparam N Non-negative integer whose factorial is to be computed.
-     */
-    template < int N >
-    struct Factorial {
-      enum factorial { value = N * Factorial< N - 1 >::value };
-    };
-    /// \cond DOXYGEN_SKIP
-    // Specialisation Factorial<0> is hidden from Doxygen: both the primary
-    // template and this specialisation would get the same documentation ID,
-    // causing a CRITICAL "Duplicate ID" error during the Sphinx build.
-    /**
-     * @brief Template specialization of Factorial for 0.
-     *
-     * Defines the base case of the factorial recursion, setting 0! = 1.
-     */
-    template <>
-    struct Factorial< 0 > {
-      enum factorial { value = 1 };
-    };
-    /// \endcond
+    using mapStateVarMatrix = Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::mapStateVarMatrix;
     /**
      * @brief Evaluates the Post–Widder inversion formula to approximate the discrete retardance function
      * \f$L_k(\tau)\f$.
@@ -117,11 +88,9 @@ namespace Marmot::Materials {
     double evaluatePostWidderFormula( std::function< autodiff::Real< k, double >( autodiff::Real< k, double > ) > phi,
                                       double                                                                      tau )
     {
-      autodiff::Real< k, double > tau_( tau * k );
-
-      double val = -pow( -tau * k, k ) / double( Factorial< k - 1 >::value );
-      val *= autodiff::derivatives( phi, autodiff::along( 1. ), autodiff::at( tau_ ) )[k];
-      return val;
+      using Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::PostWidderCoefficientSign;
+      return Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::evaluatePostWidderFormula<
+        k >( phi, tau, PostWidderCoefficientSign::Negative );
     }
     /**
      * @brief Computes the zeroth-order (instantaneous) elastic compliance by numerically integrating the retardance
@@ -153,7 +122,7 @@ namespace Marmot::Materials {
                                         double spacing = 10. )
     {
       NumericalAlgorithms::Integration::scalar_to_scalar_function_type f = [&]( double tau ) {
-        double                      val_ = -pow( -k, k ) * pow( tau, k - 1 ) / double( Factorial< k - 1 >::value );
+        double val_ = -pow( -k, k ) * pow( tau, k - 1 ) / static_cast< double >( Marmot::Math::factorial( k - 1 ) );
         autodiff::Real< k, double > tau_( tau * k );
         val_ *= autodiff::derivatives( phi, autodiff::along( 1. ), autodiff::at( tau_ ) )[k];
         return val_;

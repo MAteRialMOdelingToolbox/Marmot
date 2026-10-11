@@ -64,6 +64,30 @@ void testTensorToScalar()
                            MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC for mixed deformation failed" );
 }
 
+void testTensorToScalarSymmetric()
+{
+  Tensor33d F;
+  F.eye();
+  F( 0, 0 ) += 1e-3;
+  F( 0, 1 ) += 2e-3;
+  Tensor33d C = DeformationMeasures::rightCauchyGreen( F );
+
+  const double K = 3500;
+  const double G = 1000;
+
+  std::function< autodiff::dual( const Fastor::Tensor< autodiff::dual, 3, 3 >& ) > psi =
+    [&]( const Fastor::Tensor< autodiff::dual, 3, 3 >& Ce_ ) {
+      return EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
+    };
+
+  Tensor33d dPsi_dC_full = df_dT( psi, C );
+  Tensor33d dPsi_dC_sym  = df_dT( psi, C, true );
+
+  throwExceptionOnFailure( checkIfEqual< double >( dPsi_dC_sym, dPsi_dC_full, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << "symmetric df_dT doesn't match the dense computation" );
+}
+
 void testTensorToScalarWith2ndOrderDuals()
 {
 
@@ -125,6 +149,33 @@ void testTensorToScalarWith2ndOrderDuals()
                            MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC for mixed deformation failed" );
 }
 
+void testTensorToScalarWith2ndOrderDualsSymmetric()
+{
+  Tensor33d F;
+  F.eye();
+  F( 0, 0 ) += 1e-3;
+  F( 0, 1 ) += 2e-3;
+  Tensor33d                   C      = DeformationMeasures::rightCauchyGreen( F );
+  Tensor33t< autodiff::dual > C_dual = Marmot::makeDual( C );
+
+  const double K = 3500;
+  const double G = 1000;
+
+  std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >& ) > psi =
+    [&]( const Tensor33t< autodiff::dual2nd >& Ce_ ) {
+      return EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
+    };
+
+  auto [val_full, dPsi_dC_full] = df_dT< 1 >( psi, C_dual );
+  auto [val_sym, dPsi_dC_sym]   = df_dT< 1 >( psi, C_dual, true );
+
+  throwExceptionOnFailure( checkIfEqual( double( val_sym ), double( val_full ), 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__ << "function value mismatch" );
+  throwExceptionOnFailure( checkIfEqual< autodiff::dual >( dPsi_dC_sym, dPsi_dC_full, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << "symmetric higher-order df_dT doesn't match the dense computation" );
+}
+
 void testTensorToTensor()
 {
   Tensor33d F;
@@ -149,6 +200,31 @@ void testTensorToTensor()
   // check results for dC_dF
   throwExceptionOnFailure( checkIfEqual< double >( dC_dF, dC_dF_analytical, 1e-12 ),
                            MakeString() << __PRETTY_FUNCTION__ << "computation of dC_dF failed" );
+}
+
+void testTensorToTensorSymmetric()
+{
+  Tensor33d F;
+  F.eye();
+  F( 0, 0 ) += 1e-3;
+  F( 0, 1 ) += 2e-3;
+  Tensor33d C = DeformationMeasures::rightCauchyGreen( F );
+
+  // f(C) = C*C: transpose-equivariant (f(A^T) = f(A)^T for any A), same-dimension square output, so the
+  // symmetry-exploiting path (which relies on that property) is applicable
+  std::function< Tensor33t< autodiff::dual >( const Tensor33t< autodiff::dual >& ) > f =
+    []( const Fastor::Tensor< autodiff::dual, 3, 3 >& C_ ) {
+      return Fastor::einsum< Marmot::FastorIndices::ij, Marmot::FastorIndices::jk >( C_, C_ );
+    };
+
+  auto [Fval_full, dF_dC_full] = dF_dT( f, C );
+  auto [Fval_sym, dF_dC_sym]   = dF_dT( f, C, true );
+
+  throwExceptionOnFailure( checkIfEqual< double >( Fval_sym, Fval_full, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__ << "function value mismatch" );
+  throwExceptionOnFailure( checkIfEqual< double >( dF_dC_sym, dF_dC_full, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << "symmetric dF_dT doesn't match the dense computation" );
 }
 
 void testTensorToScalarSecondOrder()
@@ -182,6 +258,34 @@ void testTensorToScalarSecondOrder()
                            MakeString() << __PRETTY_FUNCTION__ << "computation of d2Psi_dC2 failed" );
 }
 
+void testTensorToScalarSecondOrderSymmetric()
+{
+  Tensor33d F;
+  F.eye();
+  F( 0, 0 ) += 1e-3;
+  F( 1, 2 ) += 2e-3;
+  Tensor33d C = DeformationMeasures::rightCauchyGreen( F );
+
+  const double K = 3500;
+  const double G = 1000;
+
+  std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >& ) > f =
+    [&]( const Fastor::Tensor< autodiff::dual2nd, 3, 3 >& C_ ) {
+      return EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
+    };
+
+  auto [psi_full, dPsi_dC_full, d2Psi_dC2_full] = SecondOrder::d2f_dT2( f, C );
+  auto [psi_sym, dPsi_dC_sym, d2Psi_dC2_sym]    = SecondOrder::d2f_dT2( f, C, true );
+
+  throwExceptionOnFailure( checkIfEqual( psi_sym, psi_full, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__ << "psi mismatch" );
+  throwExceptionOnFailure( checkIfEqual< double >( dPsi_dC_sym, dPsi_dC_full, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC mismatch" );
+  throwExceptionOnFailure( checkIfEqual< double >( d2Psi_dC2_sym, d2Psi_dC2_full, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << "symmetric d2f_dT2 doesn't match the dense computation" );
+}
+
 void testTensorToScalarSecondOrderMixed()
 {
 
@@ -213,6 +317,34 @@ void testTensorToScalarSecondOrderMixed()
 
   throwExceptionOnFailure( checkIfEqual< double >( d2Psi_dCdOmega, d2Psi_dCdOmega_analytical, 1e-12 ),
                            MakeString() << __PRETTY_FUNCTION__ << "computation of d2Psi_dC_dOmega failed" );
+}
+
+void testTensorToScalarSecondOrderMixedSymmetric()
+{
+  Tensor33d F;
+  F.eye();
+  F( 1, 2 ) += 1e-4;
+
+  Tensor33d C = DeformationMeasures::rightCauchyGreen( F );
+
+  const double K = 3500;
+  const double G = 1000;
+
+  std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >&, const autodiff::dual2nd ) > f =
+    [&]( const Fastor::Tensor< autodiff::dual2nd, 3, 3 >& C_, const autodiff::dual2nd omega_ ) {
+      const dual2nd psi = EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
+      const dual2nd res = ( -pow( omega_, 2. ) + 1. ) * psi;
+      return res;
+    };
+
+  const double omega = 0.5;
+
+  auto d2Psi_dCdOmega_full = SecondOrder::d2f_dTensor_dScalar( f, C, omega );
+  auto d2Psi_dCdOmega_sym  = SecondOrder::d2f_dTensor_dScalar( f, C, omega, true );
+
+  throwExceptionOnFailure( checkIfEqual< double >( d2Psi_dCdOmega_sym, d2Psi_dCdOmega_full, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << "symmetric d2f_dTensor_dScalar doesn't match the dense computation" );
 }
 
 void testTensorToScalarThirdOrder()
@@ -254,15 +386,102 @@ void testTensorToScalarThirdOrder()
                            MakeString() << __PRETTY_FUNCTION__ << "d3Psi_dC3 is not equal to zero tensor as expected" );
 }
 
+void testTensorToScalarThirdOrderSymmetric()
+{
+  Tensor33d F;
+  F.eye();
+  F( 0, 0 ) += 1e-3;
+  F( 1, 2 ) += 2e-3;
+  Tensor33d C = DeformationMeasures::rightCauchyGreen( F );
+
+  // det(C): a transpose-invariant scalar function with genuinely nonzero third derivatives, unlike the trivial
+  // sum(C^2) used above, so the symmetry-exploiting mirroring is actually exercised
+  std::function< autodiff::dual3rd( const Tensor33t< autodiff::dual3rd >& ) > f =
+    []( const Fastor::Tensor< autodiff::dual3rd, 3, 3 >& C_ ) {
+      return C_( 0, 0 ) * ( C_( 1, 1 ) * C_( 2, 2 ) - C_( 1, 2 ) * C_( 2, 1 ) ) -
+             C_( 0, 1 ) * ( C_( 1, 0 ) * C_( 2, 2 ) - C_( 1, 2 ) * C_( 2, 0 ) ) +
+             C_( 0, 2 ) * ( C_( 1, 0 ) * C_( 2, 1 ) - C_( 1, 1 ) * C_( 2, 0 ) );
+    };
+
+  auto [psi_full, dPsi_dC_full, d2Psi_dC2_full, d3Psi_dC3_full] = ThirdOrder::d3f_dT3( f, C );
+  auto [psi_sym, dPsi_dC_sym, d2Psi_dC2_sym, d3Psi_dC3_sym]     = ThirdOrder::d3f_dT3( f, C, true );
+
+  throwExceptionOnFailure( checkIfEqual( psi_sym, psi_full, 1e-10 ),
+                           MakeString() << __PRETTY_FUNCTION__ << "psi mismatch" );
+  throwExceptionOnFailure( checkIfEqual< double >( dPsi_dC_sym, dPsi_dC_full, 1e-10 ),
+                           MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC mismatch" );
+  throwExceptionOnFailure( checkIfEqual< double >( d2Psi_dC2_sym, d2Psi_dC2_full, 1e-10 ),
+                           MakeString() << __PRETTY_FUNCTION__ << "d2Psi_dC2 mismatch" );
+  throwExceptionOnFailure( checkIfEqual< double >( d3Psi_dC3_sym, d3Psi_dC3_full, 1e-10 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << "symmetric d3f_dT3 doesn't match the dense computation" );
+}
+
+void testNonSquareRank2Shapes()
+{
+  // regression test: df_dT and dF_dT must still compile and work for tensors that are not a square rank-2 tensor
+  // (here a rank-1 vector input and, separately, a rank-1 vector output), i.e. isSymmetric=false (the default)
+  // must be usable without triggering the isSymmetric-only code path's compile-time shape requirements
+
+  // df_dT with a non-square-rank2 (rank-1 vector) input: f(T) = sum(T_i^2), gradient = 2*T
+  std::function< autodiff::dual( const Fastor::Tensor< autodiff::dual, 4 >& ) > f =
+    []( const Fastor::Tensor< autodiff::dual, 4 >& T ) {
+      autodiff::dual result = 0.0;
+      for ( size_t i = 0; i < 4; i++ )
+        result += T( i ) * T( i );
+      return result;
+    };
+
+  Fastor::Tensor< double, 4 > T{ 1., 2., 3., 4. };
+  Fastor::Tensor< double, 4 > dF_dT_result = df_dT( f, T );
+  Fastor::Tensor< double, 4 > dF_dT_target = 2. * T;
+
+  throwExceptionOnFailure( checkIfEqual< double >( dF_dT_result, dF_dT_target, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__ << "df_dT with a rank-1 vector input failed" );
+
+  // dF_dT with a non-square-rank2 (rank-1 vector) output: g(C)_0 = C_00^2, g(C)_1 = C_11 + C_22
+  std::function< Fastor::Tensor< autodiff::dual, 2 >( const Fastor::Tensor< autodiff::dual, 3, 3 >& ) > g =
+    []( const Fastor::Tensor< autodiff::dual, 3, 3 >& C_ ) {
+      Fastor::Tensor< autodiff::dual, 2 > out( 0.0 );
+      out( 0 ) = C_( 0, 0 ) * C_( 0, 0 );
+      out( 1 ) = C_( 1, 1 ) + C_( 2, 2 );
+      return out;
+    };
+
+  Tensor33d C{ { 1., 2., 3. }, { 4., 5., 6. }, { 7., 8., 9. } };
+  auto [Gval, dG_dC] = dF_dT( g, C );
+
+  Fastor::Tensor< double, 2 >       Gval_target( 0.0 );
+  Fastor::Tensor< double, 2, 3, 3 > dG_dC_target( 0.0 );
+  Gval_target( 0 )        = C( 0, 0 ) * C( 0, 0 );
+  Gval_target( 1 )        = C( 1, 1 ) + C( 2, 2 );
+  dG_dC_target( 0, 0, 0 ) = 2. * C( 0, 0 );
+  dG_dC_target( 1, 1, 1 ) = 1.;
+  dG_dC_target( 1, 2, 2 ) = 1.;
+
+  throwExceptionOnFailure( checkIfEqual< double >( Gval, Gval_target, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__ << "dF_dT with a rank-1 vector output: value failed" );
+  throwExceptionOnFailure( checkIfEqual< double >( dG_dC, dG_dC_target, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__
+                                        << "dF_dT with a rank-1 vector output: gradient failed" );
+}
+
 int main()
 {
 
   auto tests = std::vector< std::function< void() > >{ testTensorToScalar,
+                                                       testTensorToScalarSymmetric,
                                                        testTensorToScalarWith2ndOrderDuals,
+                                                       testTensorToScalarWith2ndOrderDualsSymmetric,
                                                        testTensorToTensor,
+                                                       testTensorToTensorSymmetric,
                                                        testTensorToScalarSecondOrder,
+                                                       testTensorToScalarSecondOrderSymmetric,
                                                        testTensorToScalarSecondOrderMixed,
-                                                       testTensorToScalarThirdOrder };
+                                                       testTensorToScalarSecondOrderMixedSymmetric,
+                                                       testTensorToScalarThirdOrder,
+                                                       testTensorToScalarThirdOrderSymmetric,
+                                                       testNonSquareRank2Shapes };
 
   executeTestsAndCollectExceptions( tests );
 }

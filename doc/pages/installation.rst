@@ -10,6 +10,33 @@ and `Fastor <https://github.com/romeric/Fastor>`_.
 
 These are header-only libraries, so no compilation is required.
 
+Both Eigen 3.4 and Eigen 5 are supported.
+Eigen 5 requires an autodiff version with Eigen 5 support;
+autodiff 1.1.2 and older do not compile against Eigen 5 (see `autodiff#397 <https://github.com/autodiff/autodiff/pull/397>`_).
+
+Prebuilt conda package
+**********************
+
+Released versions of Marmot are available as the conda package ``marmot``
+(Linux x86-64, macOS arm64 and x86-64, Windows x86-64), together with its dependencies:
+
+.. code-block:: console
+
+    conda create -n marmot -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge marmot
+
+The package contains the library, the headers and the CMake package files (``find_package(Marmot)``),
+built from the public modules of this repository with portable compiler flags.
+EdelweissFE's conda package ``edelweissfe`` depends on it.
+
+Build Marmot yourself instead (see below) to develop it, to add modules
+(including private ones), or to optimize for your CPU (``-DMARMOT_MARCH_NATIVE=ON``).
+Do this in a separate environment, never in one with the ``marmot`` package installed:
+installing a self-built Marmot there overwrites files conda manages, and packages compiled against the
+packaged Marmot (such as ``edelweissfe``) would then run against a library they were not compiled for.
+
+The package recipe is ``conda/recipe.yaml``; the ``conda`` workflow builds and tests it on every pull request
+and uploads it for a release tag.
+
 Building with Anaconda
 **********************
 
@@ -110,7 +137,121 @@ Get Marmot:
     cd build
     cmake \
         -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \
+        -DMARMOT_BUILD_PYTHON_BINDINGS=ON \
         ..
     make install
     ctest --output-on-failure
+
+Build options
+*************
+
+The following CMake options adjust the build:
+
+* ``-DBUILD_TESTING=OFF`` skips the test executables, e.g., for install-only builds.
+* ``-DMARMOT_MARCH_NATIVE=ON`` compiles for the host CPU (``-march=native``, GCC/Clang only), which lets Fastor
+  vectorize with AVX2/FMA. The resulting library does not run on older CPUs.
+* ``-DMARMOT_ENABLE_COVERAGE=ON`` instruments the library and the tests for ``gcov`` (with ``-DCMAKE_BUILD_TYPE=Debug``).
+* ``-DMARMOT_BUILD_PYTHON_BINDINGS=ON`` builds the Python bindings.
+
+Modules
+*******
+
+Marmot consists of modules, one directory ``modules/<category>/<Name>/`` each, with the categories
+``core``, ``materials``, ``elements``, ``particles``, ``materialpoints``, ``cells`` and ``cellelements``.
+Every such directory containing a ``module.cmake`` is found automatically; a module of your own is added by placing
+its directory there. The variables ``CORE_MODULES``, ``MATERIAL_MODULES``, ``ELEMENT_MODULES``, ``PARTICLE_MODULES``,
+``MATERIALPOINT_MODULES``, ``CELL_MODULES`` and ``CELLELEMENT_MODULES`` (default ``all``) select a subset, e.g.,
+``-DMATERIAL_MODULES="LinearElastic;VonMises"``; a name matching no module, e.g., ``none``, selects none of that category.
+
+A ``module.cmake`` declares the module and, with ``REQUIRES``, the modules whose headers it includes, except modules
+already required by a listed one:
+
+.. code-block:: cmake
+
+    marmot_add_module(MyMaterial
+        REQUIRES MarmotFiniteStrainMechanicsCore)
+
+Without a filter, every module must be buildable: requiring a module that does not exist (e.g., a misspelled name, or
+a module whose repository is not checked out) fails configuring. With a filter, a module whose required module is
+filtered out or does not exist is skipped with a warning; if it was selected explicitly, configuring fails instead.
+A module sees only the headers of the modules it requires, so a missing ``REQUIRES`` shows as a compile error.
+All modules are compiled into the one library ``libMarmot``.
+
+Installing copies the headers of every built module to ``<prefix>/include/Marmot``.
+Other CMake projects use the installed library through ``find_package``:
+
+.. code-block:: cmake
+
+    find_package(Marmot REQUIRED)
+    target_link_libraries(<target> PRIVATE Marmot::Marmot)
+
+``Marmot::Marmot`` brings along Eigen, autodiff and Fastor; autodiff and Fastor are found either through their
+CMake packages or, if they were installed as plain headers, through a header search.
+
+Building on Windows
+*******************
+
+Marmot builds as a DLL with MSVC (Visual Studio 2022), in the ``Release`` configuration.
+Install Eigen, autodiff and Fastor into a common prefix as above (``cmake --install`` instead of ``make install``),
+then build Marmot from a *Developer PowerShell for VS 2022*:
+
+.. code-block:: console
+
+    cmake -S Marmot -B Marmot/build -DCMAKE_PREFIX_PATH=<prefix> -DCMAKE_INSTALL_PREFIX=<prefix>
+    cmake --build Marmot/build --config Release --parallel
+    ctest --test-dir Marmot/build -C Release --output-on-failure
+    cmake --install Marmot/build --config Release
+
+This installs ``Marmot.dll`` into ``<prefix>/bin`` and its import library ``Marmot.lib`` into ``<prefix>/lib``.
+Programs linking Marmot must find ``Marmot.dll`` at run time, e.g., through ``PATH``.
+
+A Windows DLL exports only what is marked for export, which in Marmot is ``MARMOT_API``
+(defined in ``Marmot/MarmotPortability.h``).
+The rule for what is marked: the exported API is the interface layer through which a consumer drives Marmot,
+that is, the element and material factories, the interface classes they hand out (``MarmotElement``,
+``MarmotMaterialSection``, ``ElementProperties``), and the few non-virtual functions a consumer calls on them,
+marked at the smallest granularity that links (a single member rather than its class, where the class is otherwise
+reached through virtual functions only).
+Everything else is used through the virtual functions of the objects the factories create.
+Exporting everything instead is not an option: it exceeds the limit of 65535 exported symbols of a Windows DLL,
+since that would include every Eigen, Fastor and autodiff template instantiated in Marmot.
+Code that needs more of Marmot must mark it ``MARMOT_API``, following the rule above.
+To check this without Windows, configure with ``-DMARMOT_EXPORT_API_ONLY=ON``,
+which exports only the ``MARMOT_API`` symbols on Linux and macOS, too; the Ubuntu CI builds this way as well.
+The module tests link Marmot's object files directly and are not affected.
+The one test that is, ``TestExportedAPI`` in ``tests/consumer``, links the shared library only and uses Marmot
+as a consumer does; it is the test that fails when the exported API is incomplete.
+
+Marmot's global constants are defined ``inline const`` in the headers, not ``extern const`` in a source file:
+exported data would have to be marked ``MARMOT_API`` as well, and could not be used in constant expressions
+across the DLL boundary.
+An ``inline`` variable is instantiated in every translation unit that includes its header, so everything its
+initializer calls must be defined in a header, too (or be marked ``MARMOT_API``). New modules must follow this.
+Likewise, include ``Marmot/MarmotPortability.h`` (e.g., through ``Marmot/MarmotJournal.h``) before using
+``__PRETTY_FUNCTION__``, which MSVC does not provide.
+The Python bindings are not yet supported on Windows, nor with ``MARMOT_EXPORT_API_ONLY``;
+configuring with ``-DMARMOT_BUILD_PYTHON_BINDINGS=ON`` fails there.
+
+Building with Python Bindings
+*****************************
+
+Marmot optionally provides a Python interface using `nanobind <https://github.com/wjakob/nanobind>`_.
+To enable the Python module, configure CMake with `-DMARMOT_BUILD_PYTHON_BINDINGS=ON`:
+
+.. code-block:: console
+
+    cmake -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DMARMOT_BUILD_PYTHON_BINDINGS=ON ..
+    make install
+    ctest --output-on-failure
+
+After installation, the ``marmot`` package is available directly in Python:
+
+.. code-block:: python
+
+    import marmot
+    import numpy as np
+
+    props = np.array([20000.0, 0.25])
+    solver = marmot.solvers.HypoElasticSolver("LINEARELASTIC", props)
+
 

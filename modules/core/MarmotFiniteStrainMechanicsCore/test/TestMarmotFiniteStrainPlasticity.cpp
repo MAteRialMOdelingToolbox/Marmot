@@ -73,6 +73,41 @@ auto testExplicitIntegration()
     }
 }
 
+auto testExponentialMapScalingAndSquaring()
+{
+  using namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration;
+
+  // below the scaling threshold, the result is that of exponentialMap
+  const Tensor33d dGpSmall = make_dGp();
+  const Tensor33d small    = exponentialMapScalingAndSquaring( dGpSmall );
+  const Tensor33d series   = exponentialMap( dGpSmall );
+  for ( int i = 0; i < 3; i++ )
+    for ( int j = 0; j < 3; j++ )
+      throwExceptionOnFailure( small( i, j ) == series( i, j ),
+                               MakeString()
+                                 << __PRETTY_FUNCTION__ << " differs from exponentialMap for |dGp| <= 1/2." );
+
+  // a large increment (|dGp| ~ 1.9, i.e. two squarings), with the same structure as make_dGp and the exact solution
+  const double a = std::log( 3.0 );
+  const double b = std::log( 2.5 );
+  Tensor33d    dGp( 0.0 );
+  dGp( 0, 0 ) = a;
+  dGp( 1, 1 ) = b;
+  dGp( 1, 2 ) = b;
+  dGp( 2, 2 ) = b;
+  Tensor33d expected( 0.0 );
+  expected( 0, 0 ) = 3.0;
+  expected( 1, 1 ) = 2.5;
+  expected( 2, 2 ) = 2.5;
+  expected( 2, 1 ) = 2.5 * b;
+
+  const Tensor33d large = exponentialMapScalingAndSquaring( dGp );
+  for ( int i = 0; i < 3; i++ )
+    for ( int j = 0; j < 3; j++ )
+      throwExceptionOnFailure( checkIfEqual( large( i, j ), expected( i, j ), 1e-13 ),
+                               MakeString() << __PRETTY_FUNCTION__ << " exponential map of a large increment failed." );
+}
+
 auto testExponentialMapAndDerivative()
 {
   using namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrderDerived;
@@ -98,6 +133,11 @@ auto testExponentialMapAndDerivative()
   double      a2 = 0.051617096256127606;
   double      a3 = 0.05242059889237864;
   Tensor3333d DexMapexpect;
+  // Fastor tensors are not zero-initialized by default, and the reference below sets only the
+  // non-zero components, so the remainder must be zeroed explicitly. Reading them otherwise is
+  // undefined behaviour: it happens to work while the stack is still zeroed, but once the stack
+  // has been written to beforehand the unset entries hold garbage (values up to ~1e29 observed).
+  DexMapexpect.zeros();
   DexMapexpect( 0, 0, 0, 0 ) = 1.05;
   DexMapexpect( 0, 1, 0, 1 ) = a1;
   DexMapexpect( 1, 0, 1, 0 ) = a1;
@@ -134,6 +174,7 @@ auto testExponentialMapAndDerivative()
 int main()
 {
   auto tests = std::vector< std::function< void() > >{ testExponentialMap,
+                                                       testExponentialMapScalingAndSquaring,
                                                        testExplicitIntegration,
                                                        testExponentialMapAndDerivative };
 

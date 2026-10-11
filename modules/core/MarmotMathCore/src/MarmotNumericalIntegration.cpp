@@ -1,6 +1,7 @@
 #include "Marmot/MarmotNumericalIntegration.h"
 #include <algorithm>
 #include <stdexcept>
+#include <vector>
 
 namespace Marmot {
   namespace NumericalAlgorithms::Integration {
