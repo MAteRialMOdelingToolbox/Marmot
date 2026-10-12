@@ -263,7 +263,15 @@ namespace Marmot {
 
     /**
      * @brief Map an object's raw data as a fixed-size Eigen matrix (const version).
-     * @copydetails as
+     *
+     * @details Creates an `Eigen::Map` view of @p t reinterpreted as an `x`-by-`y` matrix. No data is copied; the map
+     * directly references the storage returned by `t.data()`.
+     *
+     * @tparam x Number of rows (compile-time).
+     * @tparam y Number of columns (compile-time).
+     * @tparam T Object type, must define `Scalar` and provide `data()`.
+     * @param t Input object.
+     * @return `Eigen::Map<const Eigen::Matrix<typename T::Scalar, x, y>>`.
      */
     template < int x, int y, typename T, typename = void >
     auto as( const T& t )
@@ -362,14 +370,14 @@ namespace Marmot {
       {
         if constexpr ( nDim == 1 )
           return std::pair< int, int >( 0, 0 );
-        else if ( nDim == 2 )
+        else if constexpr ( nDim == 2 )
           switch ( ij ) {
           case 0: return std::pair< int, int >( 0, 0 );
           case 1: return std::pair< int, int >( 1, 1 );
           case 2: return std::pair< int, int >( 0, 1 );
           }
 
-        else if ( nDim == 3 ) {
+        else if constexpr ( nDim == 3 ) {
           switch ( ij ) {
           case 0: return std::pair< int, int >( 0, 0 );
           case 1: return std::pair< int, int >( 1, 1 );
@@ -399,10 +407,10 @@ namespace Marmot {
       {
         if constexpr ( nDim == 1 )
           return 0;
-        else if ( nDim == 2 )
+        else if constexpr ( nDim == 2 )
           return ( i == j ) ? ( i == 0 ? 0 : 1 ) : 2;
 
-        else if ( nDim == 3 ) {
+        else if constexpr ( nDim == 3 ) {
           constexpr int tensor2VoigtNotationIndicesMapping[3][3] = { { 0, 3, 4 }, { 3, 1, 5 }, { 4, 5, 2 } };
           return tensor2VoigtNotationIndicesMapping[i][j];
         }
@@ -472,54 +480,54 @@ namespace Marmot {
 
     EigenTensors::Tensor3333d Initialize_I2xI2()
     {
-      EigenTensors::Tensor3333d I2xI2;
+      EigenTensors::Tensor3333d result;
 
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ )
           for ( int k = 0; k < 3; k++ )
             for ( int l = 0; l < 3; l++ ) {
-              I2xI2( i, j, k, l ) = TensorUtility::d( i, j ) * TensorUtility::d( k, l );
+              result( i, j, k, l ) = TensorUtility::d( i, j ) * TensorUtility::d( k, l );
             }
-      return I2xI2;
+      return result;
     }
 
     EigenTensors::Tensor33d Initialize_I2()
     {
-      EigenTensors::Tensor33d I2;
+      EigenTensors::Tensor33d result;
 
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ )
-          I2( i, j ) = TensorUtility::d( i, j );
+          result( i, j ) = TensorUtility::d( i, j );
 
-      return I2;
+      return result;
     }
 
     EigenTensors::Tensor3333d Initialize_Isym()
     {
-      EigenTensors::Tensor3333d Isym;
+      EigenTensors::Tensor3333d result;
 
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ )
           for ( int k = 0; k < 3; k++ )
             for ( int l = 0; l < 3; l++ ) {
-              Isym( i, j, k, l ) = 0.5 * ( TensorUtility::d( i, k ) * TensorUtility::d( j, l ) +
-                                           TensorUtility::d( i, l ) * TensorUtility::d( j, k ) );
+              result( i, j, k, l ) = 0.5 * ( TensorUtility::d( i, k ) * TensorUtility::d( j, l ) +
+                                             TensorUtility::d( i, l ) * TensorUtility::d( j, k ) );
             }
-      return Isym;
+      return result;
     }
 
     EigenTensors::Tensor3333d Initialize_Iskew()
     {
-      EigenTensors::Tensor3333d Iskew;
+      EigenTensors::Tensor3333d result;
 
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ )
           for ( int k = 0; k < 3; k++ )
             for ( int l = 0; l < 3; l++ ) {
-              Iskew( i, j, k, l ) = 0.5 * ( TensorUtility::d( i, k ) * TensorUtility::d( j, l ) -
-                                            TensorUtility::d( i, l ) * TensorUtility::d( j, k ) );
+              result( i, j, k, l ) = 0.5 * ( TensorUtility::d( i, k ) * TensorUtility::d( j, l ) -
+                                             TensorUtility::d( i, l ) * TensorUtility::d( j, k ) );
             }
-      return Iskew;
+      return result;
     }
 
     EigenTensors::Tensor3333d Initialize_dDeviatoricStress_dStress()

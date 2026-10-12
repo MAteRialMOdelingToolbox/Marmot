@@ -578,14 +578,12 @@ namespace Marmot::Meshfree {
       auto particleCenter = _particleDomainMain.getCenterCoordinates();
 
       for ( size_t s = 0; s < _subDomains.size(); ++s ) { // ( const auto& sd : _subDomains)
-        const auto&  sd     = _subDomains[s];
-        const auto&  sdf    = _subDomainShapeFunctions[s];
-        const double vol    = getSubdomainVolume( sd );
-        auto         center = sd.getCenterCoordinates();
+        const auto&  sd  = _subDomains[s];
+        const auto&  sdf = _subDomainShapeFunctions[s];
+        const double vol = getSubdomainVolume( sd );
 
         for ( int A = 0; A < _nNodes; A++ ) {
           const double R_A = _assignedKernelFunctions[A]->isInSupport( particleCenter.data() ) ? 1.0 : 0.0;
-          // const double R_A = _assignedKernelFunctions[A]->isInSupport( center.data() ) ? 1.0 : 0.0;
           //  const double R_A = 1.0;
 
           for ( int C = 0; C < _nVCIConstraints; C++ )
@@ -609,13 +607,10 @@ namespace Marmot::Meshfree {
       auto particleCenter = _particleDomainMain.getCenterCoordinates();
 
       for ( size_t s = 0; s < _subDomains.size(); ++s ) { // ( auto& sd : _subDomains)
-        const auto& sd     = _subDomains[s];
-        auto&       sdf    = _subDomainShapeFunctions[s];
-        auto        center = sd.getCenterCoordinates();
+        auto& sdf = _subDomainShapeFunctions[s];
 
         for ( int A = 0; A < _nNodes; A++ ) {
           const double R_A = _assignedKernelFunctions[A]->isInSupport( particleCenter.data() ) ? 1.0 : 0.0;
-          // const double R_A = _assignedKernelFunctions[A]->isInSupport( center.data() ) ? 1.0 : 0.0;
           //  const double R_A = 1.0;
           for ( int i = 0; i < nDim; i++ ) {
             double correction = 0.0;

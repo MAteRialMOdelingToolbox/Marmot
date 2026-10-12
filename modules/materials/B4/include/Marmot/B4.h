@@ -37,7 +37,7 @@ namespace Marmot::Materials {
    * according to the B4 model by Bazant et al. (2015)
    * generalized for 3D stress states.
    *
-   * For further information see \ref b4.
+   * For further information see the B4 page of the feature documentation.
    */
   class B4 : public MarmotMaterialHypoElastic {
 

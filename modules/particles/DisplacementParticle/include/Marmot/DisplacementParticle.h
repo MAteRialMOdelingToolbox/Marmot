@@ -239,7 +239,7 @@ namespace Marmot::Meshfree {
      * @brief Number of dofs per node.
      * @return nDim.
      */
-    virtual int getNBaseDof() const { return nDofPerNodeU; }
+    virtual int getNBaseDof() const override { return nDofPerNodeU; }
 
     /**
      * @brief Node fields.
@@ -404,7 +404,7 @@ namespace Marmot::Meshfree {
      * @brief Volume in the undeformed configuration.
      * @return @f$ V_0 @f$ of the material point.
      */
-    virtual double getVolumeUndeformed() const { return _mp->getVolumeUndeformed(); };
+    virtual double getVolumeUndeformed() const override { return _mp->getVolumeUndeformed(); };
 
     /**
      * @brief Initial conditions are forwarded to the material point, which supports none.

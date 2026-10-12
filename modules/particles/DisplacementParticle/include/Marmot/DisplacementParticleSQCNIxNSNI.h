@@ -94,7 +94,6 @@ namespace Marmot::Meshfree {
     /// velocity gradient with respect to @f$ \boldsymbol{Y} @f$ (explicit scheme only, used by computeLumpedMomentum())
     TensorDD _dv_dY = TensorDD( 0.0 );
 
-    double dT = 0.0; ///< not used (the methods take the time increment as an argument)
     /**
      * @brief Second derivatives of the shape functions with respect to the intermediate coordinates.
      *
@@ -145,7 +144,8 @@ namespace Marmot::Meshfree {
     {
       ParentPointParticle::_assignedKernelFunctions = kernelFunctions;
 
-      ParentPointParticle::_nNodes = DisplacementParticle< nDim >::_assignedKernelFunctions.size();
+      ParentPointParticle::_nNodes = static_cast< int >(
+        DisplacementParticle< nDim >::_assignedKernelFunctions.size() );
 
       Eigen::Matrix< double, nDim, 1 > centerCoordinates;
       this->getCenterCoordinates( centerCoordinates.data() );

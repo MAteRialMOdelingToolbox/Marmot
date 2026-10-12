@@ -127,6 +127,7 @@ namespace Marmot::Elements {
        */
       class QPStateVarManager : public MarmotStateVarVectorManager {
 
+        /// @cond INTERNAL (designated initializers are not parseable by the Sphinx C++ domain)
         inline const static auto layout = makeLayout( {
           { .name = "stress", .length = 9 },
           { .name = "elastic energy density", .length = 1 },
@@ -136,6 +137,7 @@ namespace Marmot::Elements {
           { .name = "F0 ZZ", .length = 1 },
           { .name = "begin of material state", .length = 0 },
         } );
+        /// @endcond
 
       public:
         Eigen::Map< Marmot::Vector9d > stress; ///< Kirchhoff stress (3D, also in plane strain)
@@ -289,7 +291,7 @@ namespace Marmot::Elements {
     void computeDistributedLoad( MarmotElement::DistributedLoadTypes loadType,
                                  double*                             P,
                                  double*                             K,
-                                 const int                           elementFace,
+                                 int                                 elementFace,
                                  const double*                       load,
                                  const double*                       QTotal,
                                  double                              time,
@@ -403,7 +405,7 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   int GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::getNumberOfRequiredStateVars()
   {
-    return qps[0].getNumberOfRequiredStateVars() * qps.size();
+    return qps[0].getNumberOfRequiredStateVars() * static_cast< int >( qps.size() );
   }
 
   template < int nDim, int nNodes >
@@ -442,7 +444,7 @@ namespace Marmot::Elements {
   void GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::assignStateVars( double* managedStateVars,
                                                                                          int     nStateVars )
   {
-    const int nQpStateVars = nStateVars / qps.size();
+    const int nQpStateVars = nStateVars / static_cast< int >( qps.size() );
 
     for ( size_t i = 0; i < qps.size(); i++ ) {
       auto&   qp          = qps[i];
@@ -721,7 +723,7 @@ namespace Marmot::Elements {
     MarmotElement::DistributedLoadTypes loadType,
     double*                             rightHandSide,
     double*                             stiffnessMatrix,
-    const int                           elementFace,
+    int                                 elementFace,
     const double*                       load,
     const double*                       QTotal_,
     double                              time,
@@ -743,7 +745,7 @@ namespace Marmot::Elements {
       Eigen::VectorXd Pb = -p * boundaryEl.computeSurfaceNormalVectorialLoadVector();
       Eigen::MatrixXd Kb = -p * boundaryEl.computeDSurfaceNormalVectorialLoadVector_dCoordinates();
 
-      if ( nDim == 2 ) {
+      if constexpr ( nDim == 2 ) {
         Pb *= elementProperties[0]; // thickness
         Kb *= elementProperties[0];
       }
@@ -760,7 +762,7 @@ namespace Marmot::Elements {
       const XiSized tractionVector( load );
 
       auto Pk = boundaryEl.computeVectorialLoadVector( tractionVector );
-      if ( nDim == 2 )
+      if constexpr ( nDim == 2 )
         Pk *= elementProperties[0]; // thickness
       boundaryEl.assembleIntoParentVectorial( Pk, r_U );
 
@@ -788,7 +790,7 @@ namespace Marmot::Elements {
           qp.managedStateVars->F0_ZZ = 1.0;
 
           qp.material->initializeYourself( qp.managedStateVars->materialStateVars.data(),
-                                           qp.managedStateVars->materialStateVars.size() );
+                                           static_cast< int >( qp.managedStateVars->materialStateVars.size() ) );
         }
         break;
       }
@@ -871,7 +873,7 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   int GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::getNumberOfQuadraturePoints()
   {
-    return qps.size();
+    return static_cast< int >( qps.size() );
   }
 
 } // namespace Marmot::Elements

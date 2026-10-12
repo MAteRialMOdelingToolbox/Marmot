@@ -19,7 +19,7 @@ void testMaterialResponse()
   std::string matName    = "LINEARELASTIC";
   auto        solver     = MarmotMaterialPointSolverHypoElastic( matName,
                                                       &materialProperties[0],
-                                                      materialProperties.size(),
+                                                      static_cast< int >( materialProperties.size() ),
                                                       solveropts );
 
   // define step: apply normal strain increment
@@ -58,7 +58,7 @@ void testShearMaterialResponse()
   std::string matName    = "LINEARELASTIC";
   auto        solver     = MarmotMaterialPointSolverHypoElastic( matName,
                                                       &materialProperties[0],
-                                                      materialProperties.size(),
+                                                      static_cast< int >( materialProperties.size() ),
                                                       solveropts );
 
   // define step: apply normal strain increment
@@ -101,7 +101,7 @@ void testTransverseIsotropicMaterialResponse()
   std::string matName    = "LINEARELASTIC";
   auto        solver     = MarmotMaterialPointSolverHypoElastic( matName,
                                                       &materialProperties[0],
-                                                      materialProperties.size(),
+                                                      static_cast< int >( materialProperties.size() ),
                                                       solveropts );
 
   // define step: apply normal strain increment
@@ -145,7 +145,7 @@ void testTransverseIsotropicShearMaterialResponse()
   std::string matName    = "LINEARELASTIC";
   auto        solver     = MarmotMaterialPointSolverHypoElastic( matName,
                                                       &materialProperties[0],
-                                                      materialProperties.size(),
+                                                      static_cast< int >( materialProperties.size() ),
                                                       solveropts );
 
   // define step: apply normal strain increment
@@ -194,7 +194,7 @@ void testOrthotropicMaterialResponse()
   std::string matName    = "LINEARELASTIC";
   auto        solver     = MarmotMaterialPointSolverHypoElastic( matName,
                                                       &materialProperties[0],
-                                                      materialProperties.size(),
+                                                      static_cast< int >( materialProperties.size() ),
                                                       solveropts );
 
   // define step: apply normal strain increment
@@ -242,7 +242,7 @@ void testOrthotropicShearMaterialResponse()
   std::string matName    = "LINEARELASTIC";
   auto        solver     = MarmotMaterialPointSolverHypoElastic( matName,
                                                       &materialProperties[0],
-                                                      materialProperties.size(),
+                                                      static_cast< int >( materialProperties.size() ),
                                                       solveropts );
 
   // define step: apply normal strain increment
@@ -290,7 +290,7 @@ void testOrthotropicMaterialResponseRotation()
   std::string matName    = "LINEARELASTIC";
   auto        solver     = MarmotMaterialPointSolverHypoElastic( matName,
                                                       &materialProperties[0],
-                                                      materialProperties.size(),
+                                                      static_cast< int >( materialProperties.size() ),
                                                       solveropts );
 
   // define step: apply normal strain increment

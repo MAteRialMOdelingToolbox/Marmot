@@ -275,10 +275,10 @@ void testTangentConsistency()
     dEp( j ) += h;
     dEm( j ) -= h;
     stateVars             = stateVarsOld; // reset state variables before each perturbation
-    auto [sp, kp]         = evalAt( dEp, phi, stateVars );
+    auto [spe, kpe]       = evalAt( dEp, phi, stateVars );
     stateVars             = stateVarsOld; // reset again before second perturbation
-    auto [sm, km]         = evalAt( dEm, phi, stateVars );
-    const double dKdE_num = ( kp - km ) / ( 2. * h );
+    auto [sme, kme]       = evalAt( dEm, phi, stateVars );
+    const double dKdE_num = ( kpe - kme ) / ( 2. * h );
     const double dKdE_ana = tanBase.dKLocalddStrain( 0, j );
     throwExceptionOnFailure( checkIfEqual( dKdE_ana, dKdE_num, 1e-5 ),
                              "dKLocalddStrain col " + std::to_string( j ) + " mismatch in " +
@@ -288,10 +288,10 @@ void testTangentConsistency()
   // ── dKLocalddK (0,0) ──
   {
     stateVars             = stateVarsOld; // reset state variables before perturbation
-    auto [sp, kp]         = evalAt( dEps, phi + h, stateVars );
+    auto [spe, kpe]       = evalAt( dEps, phi + h, stateVars );
     stateVars             = stateVarsOld; // reset again before second perturbation
-    auto [sm, km]         = evalAt( dEps, phi - h, stateVars );
-    const double dKdK_num = ( kp - km ) / ( 2. * h );
+    auto [sme, kme]       = evalAt( dEps, phi - h, stateVars );
+    const double dKdK_num = ( kpe - kme ) / ( 2. * h );
     const double dKdK_ana = tanBase.dKLocalddK( 0, 0 );
     throwExceptionOnFailure( checkIfEqual( dKdK_ana, dKdK_num, 1e-5 ),
                              "dKLocalddK mismatch in " + std::string( __PRETTY_FUNCTION__ ) );

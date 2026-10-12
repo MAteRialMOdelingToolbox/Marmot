@@ -257,7 +257,7 @@ namespace Marmot::Meshfree {
       const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) override
     {
       this->_assignedKernelFunctions = kernelFunctions;
-      this->_nNodes                  = this->_assignedKernelFunctions.size();
+      this->_nNodes                  = static_cast< int >( this->_assignedKernelFunctions.size() );
 
       Eigen::Matrix< double, nDim, 1 > coords;
       this->getCenterCoordinates( coords.data() ); // Uses DisplacementParticleSQCNI's getCenterCoordinates
@@ -518,7 +518,6 @@ namespace Marmot::Meshfree {
 
       const auto                         deltaF    = this->dx_dY();
       const Tensor< double, nDim, nDim > deltaFInv = inverse( deltaF );
-      const double                       deltaJ    = determinant( deltaF );
 
       // the internal force integrates tau over the undeformed volume V0 = V_Y / J_Y, so the boundary term of the same
       // weak form is tau * deltaF^-T * N dA_Y / J_Y, with J_Y the Jacobian of the intermediate configuration

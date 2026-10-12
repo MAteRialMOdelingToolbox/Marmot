@@ -222,7 +222,7 @@ namespace Marmot::Meshfree {
      * @brief Volume in the undeformed configuration, the sum over the subdomains.
      * @return @f$ V_0 = \sum_s V_{0,s} @f$.
      */
-    virtual double getVolumeUndeformed() const
+    virtual double getVolumeUndeformed() const override
     {
 
       double V0 = 0.0;
@@ -320,7 +320,7 @@ namespace Marmot::Meshfree {
      * @param[in] subdomainIndex Index of the subdomain.
      * @return The view on the state.
      */
-    virtual StateView getStateViewOnSubdomains( const std::string& stateName, int subdomainIndex ) const
+    virtual StateView getStateViewOnSubdomains( const std::string& stateName, int subdomainIndex ) const override
     {
       return _subdomainMaterialPoints[subdomainIndex]->getStateView( stateName );
     }
@@ -338,7 +338,7 @@ namespace Marmot::Meshfree {
                                                     double*       fInt,
                                                     double*       dFInt_ddQ,
                                                     double        timeNew,
-                                                    double        dT );
+                                                    double        dT ) override;
 
     /**
      * @brief Follower pressure on a face of the particle geometry.
@@ -427,7 +427,7 @@ namespace Marmot::Meshfree {
      * @brief Number of evaluation points, see getEvaluationCoordinates().
      * @return The number of evaluation points.
      */
-    virtual int getNumberOfEvaluationPoints() const
+    virtual int getNumberOfEvaluationPoints() const override
     {
 
       int nEvalPoints = 0;

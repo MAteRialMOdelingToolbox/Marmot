@@ -251,8 +251,8 @@ limit is
    \Delta t_\infty = 2\sqrt{m_k} \left( \sqrt{1+\zeta_\infty^2} - \zeta_\infty \right) .
 
 At the recommended :math:`m_k = \eta^2/4` that is :math:`\zeta_\infty = 1` exactly, so
-:math:`\Delta t_\infty = (\sqrt{2}-1)\,\eta \approx 0.414\,\eta` -- for :math:`\eta = 10^{-4}\,`s,
-:math:`4.14 \times 10^{-5}\,`s rather than the :math:`10^{-4}\,`s the undamped expression suggests.
+:math:`\Delta t_\infty = (\sqrt{2}-1)\,\eta \approx 0.414\,\eta` -- for :math:`\eta = 10^{-4}\,\mathrm{s}`,
+:math:`4.14 \times 10^{-5}\,\mathrm{s}` rather than the :math:`10^{-4}\,\mathrm{s}` the undamped expression suggests.
 That is the largest increment the field will ever permit, however coarse the mesh.
 
 Two things are easy to get wrong here, each costing a factor of two or more: the continuum estimate

@@ -569,7 +569,6 @@ namespace Marmot::Materials {
                                                                  const TimeIncrement&       timeIncrement ) const
   {
     using namespace Eigen;
-    using complexDouble = std::complex< double >;
 
     double*      sv     = response.stateVars;
     TensorMap33d Fp     = stateLayout.getAs< TensorMap33d >( sv, "Fp" );
