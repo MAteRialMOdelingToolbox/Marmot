@@ -25,11 +25,13 @@
 
 #pragma once
 #include "Marmot/MarmotExceptions.h"
+#include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotStateHelpers.h"
 #include "Marmot/MarmotTypedefs.h"
 #include <algorithm>
 #include <cmath>
+#include <stdexcept>
 #include <vector>
 
 /**
@@ -76,6 +78,19 @@ public:
       materialNumber( materialNumber_ )
   {
   }
+
+  /**
+   * @brief Virtual destructor.
+   *
+   * This class is abstract and instances are owned through base-class pointers
+   * (e.g. the std::unique_ptr held by the gradient-enhanced elements), so the
+   * destructor must be virtual — destroying a derived object through a base
+   * pointer with a non-virtual destructor is undefined behaviour. libstdc++
+   * silently invokes the wrong destructor, while libc++/clang diagnoses it
+   * (-Wdelete-abstract-non-virtual-dtor) and emits a trap instruction, which
+   * aborted every simulation using such a material on macOS/arm64.
+   */
+  virtual ~MarmotMaterialGeneralGradientEnhancedHypoElastic() = default;
 
   /// @brief Struct to hold the increment information.
   struct increment {
@@ -284,11 +299,21 @@ public:
   /**
    * @brief Get the maximum wave speed for the current response state.
    * @param currentResponse Current response state
+   * @param K The non-local field values the tangent is to be evaluated at; zero (the default)
+   *          asks for the response of the material with its non-local field undamaged.
    * @return Maximum wave speed
    * @details The default implementation computes the 3D algorithmic tangent and returns
    *          `sqrt(max(C_ii) / rho)` with `C_ii` from the Voigt tangent diagonal entries.
+   *
+   * @note The field is passed in because it is an INPUT to the constitutive law, not a state the
+   *       response carries. Leaving it at zero therefore means "zero", not "whatever it currently
+   *       is" -- and where damage is driven by that field alone (`m = 1` in GCDP) that is the
+   *       virgin tangent however damaged the point is. Pass the current field for the current wave
+   *       speed; take the default for an undamaged reference or a conservative critical time step.
    */
-  virtual double getMaximumWaveSpeed( const response& currentResponse ) const
+  virtual double getMaximumWaveSpeed(
+    const response&                                    currentResponse,
+    const Eigen::Vector< double, nNonlocalVariables >& K = Eigen::Vector< double, nNonlocalVariables >::Zero() ) const
   {
     const int nStateVars = getNumberOfRequiredStateVars();
 
@@ -303,7 +328,7 @@ public:
     tangents  tan;
     increment inc;
     inc.dStrain = Marmot::Vector6d::Zero();
-    inc.K       = Eigen::Vector< double, nNonlocalVariables >::Zero();
+    inc.K       = K;
     inc.dK      = Eigen::Vector< double, nNonlocalVariables >::Zero();
     inc.time    = 0.0;
     inc.dT      = 1.0;
@@ -331,4 +356,94 @@ public:
    * `nNonlocalVariables`.
    */
   virtual std::vector< double > getNonlocalViscosity( const double* stateVars ) const = 0;
+
+  /**
+   * @brief Get the micro-inertia \f$m_k\f$ of each nonlocal variable.
+   * @param stateVars Pointer to the array of state variables
+   * @return Vector containing the micro-inertia of each nonlocal variable, in seconds squared
+   *
+   * @details It multiplies the second time derivative of the nonlocal variable, turning its balance from the
+   * parabolic (viscous) equation
+   * \f$ \eta\,\dot{\bar\varepsilon} + \bar\varepsilon - c\,\nabla^2\bar\varepsilon = \tilde\varepsilon \f$
+   * into the damped hyperbolic one
+   * \f$ m_k\,\ddot{\bar\varepsilon} + \eta\,\dot{\bar\varepsilon} + \bar\varepsilon -
+   * c\,\nabla^2\bar\varepsilon = \tilde\varepsilon \f$, whose stable increment falls off with \f$h\f$ rather than
+   * with \f$h^2\f$. The nonlocal viscosity keeps its meaning exactly: what was the coefficient of the highest time
+   * derivative becomes the damping.
+   *
+   * It sits here, next to getNonlocalViscosity(), because the two are **one parameter and not two**: the zeroth-order
+   * reaction mode does not ring only while \f$m_k \le \eta^2/4\f$, and the largest admissible value is the best one
+   * because the stable increment grows with \f$\sqrt{m_k}\f$. Nothing could check that while the two lived at
+   * different levels of the stack, and the deck author computed \f$\eta^2/4\f$ by hand; see
+   * validatedNonlocalMicroInertia(), which derived classes should return through.
+   *
+   * @note The default is zero for every nonlocal variable, which is the quasi-static model and the behaviour of every
+   * material that predates this interface: the field is then first order in time and is integrated by its viscosity
+   * alone. A derived class opts in by overriding this, and a run opts in by giving the material the property the
+   * override reads -- so this is deliberately not pure virtual, unlike getNonlocalViscosity(), which a
+   * gradient-enhanced material must answer for any explicit path to exist at all.
+   */
+  virtual std::vector< double > getNonlocalMicroInertia( const double* stateVars ) const
+  {
+    return std::vector< double >( nNonlocalVariables, 0.0 );
+  }
+
+protected:
+  /**
+   * @brief Validate a micro-inertia against this material's own nonlocal viscosity.
+   * @param microInertia The micro-inertia of each nonlocal variable, as read from the material properties
+   * @param stateVars Pointer to the array of state variables, to evaluate the nonlocal viscosity at
+   * @return @p microInertia unchanged, if every entry is admissible
+   * @throws std::invalid_argument if an entry is non-finite, negative, or exceeds \f$\eta^2/4\f$
+   *
+   * @details Three failures, each of which is silent without this check:
+   *
+   * - a **non-finite** micro-inertia passes every ordering test, so a NaN would propagate into the lumped inertia
+   *   and from there into every increment;
+   * - a **negative** one would make the nonlocal field integrate backwards in time;
+   * - one **above \f$\eta^2/4\f$** leaves the zeroth-order reaction mode underdamped, so the regularisation rings.
+   *   That does not present as a failure but as noise on the nonlocal field, which is indistinguishable by eye from
+   *   the mesh-scale oscillation the gradient enhancement exists to remove.
+   *
+   * A viscosity of zero admits no micro-inertia at all: an undamped second-order field rings forever.
+   */
+  std::vector< double > validatedNonlocalMicroInertia( std::vector< double > microInertia,
+                                                       const double*         stateVars ) const
+  {
+    const std::vector< double > eta = getNonlocalViscosity( stateVars );
+
+    for ( size_t n = 0; n < microInertia.size(); n++ ) {
+
+      if ( !std::isfinite( microInertia[n] ) )
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__ << ": the micro-inertia of nonlocal variable " << n
+                                     << " is not a finite number; a NaN passes every ordering test and would "
+                                        "propagate into the lumped inertia." );
+
+      if ( microInertia[n] < 0.0 )
+        throw std::invalid_argument( MakeString()
+                                     << __PRETTY_FUNCTION__ << ": the micro-inertia of nonlocal variable " << n
+                                     << " is negative, which would make the nonlocal field integrate backwards in "
+                                        "time." );
+
+      /* The relative slack is what makes the RECOMMENDED value reachable. m_k = eta^2/4 is the best
+       * choice, and a deck states both numbers in decimal -- eta = 2e-7 with m_k = 1e-14, say --
+       * which rounds to 9.999999999999998e-15 here and would miss a bare `>` by one ulp. Rejecting
+       * the one pairing the documentation asks for is not a defensible reading of a bound whose
+       * violation is a matter of degree.
+       */
+      const double admissible = 0.25 * eta[n] * eta[n];
+      if ( microInertia[n] > admissible * ( 1.0 + 1e-9 ) )
+        throw std::invalid_argument(
+          MakeString() << __PRETTY_FUNCTION__ << ": the micro-inertia of nonlocal variable " << n << " is "
+                       << microInertia[n] << ", above the largest admissible eta^2/4 = " << admissible
+                       << " for a nonlocal viscosity of " << eta[n]
+                       << ". Above it the zeroth-order reaction mode is underdamped and the regularisation rings, "
+                          "which looks like the mesh-scale oscillation the gradient enhancement exists to remove. "
+                          "Take exactly eta^2/4: it is the largest admissible value and hence the best one, since "
+                          "the stable increment grows with sqrt(m_k)." );
+    }
+
+    return microInertia;
+  }
 };

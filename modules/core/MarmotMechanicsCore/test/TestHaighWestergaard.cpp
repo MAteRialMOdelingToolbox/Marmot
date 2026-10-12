@@ -93,8 +93,8 @@ void testHaighWestergaardDual()
 
   throwExceptionOnFailure( checkIfEqual( hwoutput.xi, hwref.xi, 1e-13 ),
                            MakeString() << __PRETTY_FUNCTION__ << " test 1  failed: error in xi" );
-  // throwExceptionOnFailure( checkIfEqual( hwoutput.rho, hwref.rho ),
-  //                          MakeString() << __PRETTY_FUNCTION__ << " test 1  failed: error in rho" );
+  throwExceptionOnFailure( checkIfEqual( hwoutput.rho, hwref.rho ),
+                           MakeString() << __PRETTY_FUNCTION__ << " test 1  failed: error in rho" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.theta, hwref.theta ),
                            MakeString() << __PRETTY_FUNCTION__ << " test 1  failed: error in theta" );
 

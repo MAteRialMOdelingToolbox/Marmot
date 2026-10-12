@@ -162,6 +162,19 @@ namespace Marmot {
 
     /**
      * @brief Functions for the description of transversely isotropic elastic behavior
+     *
+     * Poisson's ratio \f$\nu_{ij}\f$ is defined as the negative ratio of the lateral strain in
+     * direction \f$x_j\f$ to the axial strain in direction \f$x_i\f$ for uniaxial stress applied
+     * in direction \f$x_i\f$,
+     *
+     \f[
+       \displaystyle \nu_{ij} = -\frac{\varepsilon_j}{\varepsilon_i}
+       \quad\text{for}\quad \sigma_i \neq 0,\ \sigma_k = 0\ (k \neq i),
+     \f]
+     *
+     * so the corresponding compliance entry reads \f$ \mathbb{C}^{-1}_{ji} = -\nu_{ij}/E_i \f$.
+     * Symmetry of the compliance tensor implies \f$ \nu_{ij}/E_i = \nu_{ji}/E_j \f$, hence only
+     * \f$\nu_{12}\f$ and \f$\nu_{23}\f$ are independent.
      */
     namespace Elasticity::TransverseIsotropic {
 
@@ -221,6 +234,19 @@ namespace Marmot {
 
     /**
      * @brief Functions for the description of orthotropic elastic behavior
+     *
+     * Poisson's ratio \f$\nu_{ij}\f$ is defined as the negative ratio of the lateral strain in
+     * direction \f$x_j\f$ to the axial strain in direction \f$x_i\f$ for uniaxial stress applied
+     * in direction \f$x_i\f$,
+     *
+     \f[
+       \displaystyle \nu_{ij} = -\frac{\varepsilon_j}{\varepsilon_i}
+       \quad\text{for}\quad \sigma_i \neq 0,\ \sigma_k = 0\ (k \neq i),
+     \f]
+     *
+     * so the corresponding compliance entry reads \f$ \mathbb{C}^{-1}_{ji} = -\nu_{ij}/E_i \f$.
+     * Symmetry of the compliance tensor implies \f$ \nu_{ij}/E_i = \nu_{ji}/E_j \f$, hence only
+     * \f$\nu_{12}\f$, \f$\nu_{13}\f$ and \f$\nu_{23}\f$ are independent.
      */
     namespace Elasticity::Orthotropic {
       /**
@@ -229,9 +255,9 @@ namespace Marmot {
        *
        *\f[
           \displaystyle \mathbb{ C }^{-1} = \begin{bmatrix}
-                         \frac{1}{E_1} & \frac{-\nu_{12}}{E_2} & \frac{-\nu_{13}}{E_3} & 0 & 0 & 0 \\
-                         \frac{-\nu_{12}}{E_2} & \frac{1}{E_2} & \frac{-\nu_{23}}{E_3} & 0 & 0 & 0 \\
-                         \frac{-\nu_{13}}{E_3} & \frac{-\nu_{23}}{E_3} & \frac{1}{E_3} & 0 & 0 & 0 \\
+                         \frac{1}{E_1} & \frac{-\nu_{12}}{E_1} & \frac{-\nu_{13}}{E_1} & 0 & 0 & 0 \\
+                         \frac{-\nu_{12}}{E_1} & \frac{1}{E_2} & \frac{-\nu_{23}}{E_2} & 0 & 0 & 0 \\
+                         \frac{-\nu_{13}}{E_1} & \frac{-\nu_{23}}{E_2} & \frac{1}{E_3} & 0 & 0 & 0 \\
                        0 & 0 & 0 & \frac{1}{G_{12}} & 0 & 0 \\
                        0 & 0 & 0 & 0 & \frac{1}{G_{13}} & 0 \\
                        0 & 0 & 0 & 0 & 0 & \frac{1}{G_{23}}

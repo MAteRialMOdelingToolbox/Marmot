@@ -28,6 +28,19 @@ namespace Marmot::Materials {
       throw std::runtime_error( "Viscosity not provided in material properties for AT2PhaseField." );
     return { materialProperties[5] };
   }
+
+  std::vector< double > AT2PhaseField::getNonlocalMicroInertia( const double* stateVars ) const
+  {
+    /* OPTIONAL, and absent means zero: the phase field is then first order in time and is
+     * integrated by its viscosity alone, which is what every deck written before this property
+     * existed asks for and must keep getting.
+     */
+    if ( nMaterialProperties <= 6 )
+      return { 0.0 };
+
+    return validatedNonlocalMicroInertia( { materialProperties[6] }, stateVars );
+  }
+
   void AT2PhaseField::computeStress( response& res, tangents& tan, const increment& inc ) const
   {
     // material properties

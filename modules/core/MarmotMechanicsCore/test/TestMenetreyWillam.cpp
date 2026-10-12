@@ -213,6 +213,20 @@ void testd2PolarRadius_dTheta2()
                                         << " failed: 2nd derivative of polar radius for shear meridian is wrong" );
 }
 
+void testSetParametersThrowsForUnknownType()
+{
+  bool threw = false;
+  try {
+    MenetreyWillam( 2.1, static_cast< MenetreyWillam::MenetreyWillamType >( 99 ) );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw,
+                           "MenetreyWillam::setParameters() must throw for an unknown MenetreyWillamType in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{ testYieldFunctions,
@@ -220,7 +234,8 @@ int main()
                                                        testInlineFunctions,
                                                        testDerivatives,
                                                        testdPolarRadius_dTheta,
-                                                       testd2PolarRadius_dTheta2 };
+                                                       testd2PolarRadius_dTheta2,
+                                                       testSetParametersThrowsForUnknownType };
 
   executeTestsAndCollectExceptions( tests );
 

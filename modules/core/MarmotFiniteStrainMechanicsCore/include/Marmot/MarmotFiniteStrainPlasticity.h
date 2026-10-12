@@ -25,7 +25,9 @@
 #pragma once
 
 #include "Marmot/MarmotFastorTensorBasics.h"
+#include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTensorExponential.h"
+#include <cmath>
 
 /**
  * @file MarmotFiniteStrainPlasticity.h
@@ -65,6 +67,38 @@ namespace Marmot {
         const Tensor33t< T > out  = permute< Index< 1, 0 > >( dFpT );
         return out;
       }
+
+      /** Computes the incremental plastic deformation gradient from the plastic velocity gradient
+       *  using the exponential map, evaluated by scaling and squaring.
+       *
+       *  The result is that of exponentialMap(), but the series is only evaluated for
+       *  \f$ \Delta\boldsymbol{G}^p / 2^s \f$ with \f$ |\Delta\boldsymbol{G}^p| / 2^s \leq 1/2 \f$, and then squared
+       *  \f$ s \f$ times,
+       *  \f[
+       *    \exp( \Delta\boldsymbol{G}^p ) = \left( \exp( \Delta\boldsymbol{G}^p / 2^s ) \right)^{2^s}.
+       *  \f]
+       *  For \f$ |\Delta\boldsymbol{G}^p| \leq 1/2 \f$, \f$ s = 0 \f$ and the result is identical to that of
+       *  exponentialMap(). Larger increments, e.g. those of the intermediate iterates of a return mapping, are
+       *  represented as well, where the truncated series of exponentialMap() fails.
+       *
+       *  @tparam T Scalar type, real or complex (the scaling is chosen from the real part).
+       *  @param dGp Incremental plastic velocity gradient.
+       *  @return Incremental plastic deformation gradient.
+       */
+      template < typename T >
+      Tensor33t< T > exponentialMapScalingAndSquaring( const Tensor33t< T >& dGp )
+      {
+        double norm2 = 0.0;
+        for ( int i = 0; i < 9; i++ )
+          norm2 += std::pow( std::abs( Math::makeReal( dGp.data()[i] ) ), 2 );
+        const int      s   = norm2 > 0.25 ? int( std::ceil( std::log2( std::sqrt( norm2 ) / 0.5 ) ) ) : 0;
+        Tensor33t< T > dFp = exponentialMap(
+          Tensor33t< T >( multiplyFastorTensorWithScalar( dGp, T( std::ldexp( 1.0, -s ) ) ) ) );
+        for ( int k = 0; k < s; k++ )
+          dFp = Tensor33t< T >( dFp % dFp );
+        return dFp;
+      }
+
       namespace FirstOrderDerived {
 
         /** Computes the incremental plastic deformation gradient from the plastic velocity gradient

@@ -131,6 +131,36 @@ Running the above example will print information about each load step and increm
 
 The history can be exported as a CSV file (``mp_history.csv``) for visualization or analysis.
 
+Python Example
+______________
+
+When built with ``-DMARMOT_BUILD_PYTHON_BINDINGS=ON``, the solver can be driven directly from Python:
+
+.. code-block:: python
+
+   import marmot
+   import numpy as np
+
+   # Define material and properties
+   properties = np.array([210e9, 0.3])
+   solver = marmot.solvers.HypoElasticSolver("LINEARELASTIC", properties)
+
+   # Define loading step
+   step = marmot.solvers.HypoElasticSolver.Step()
+   step.timeStart = 0.0
+   step.timeEnd = 1.0
+   step.dTStart = 0.1
+   step.strainIncrementTarget = np.array([0.001, 0.0, 0.0, 0.0, 0.0, 0.0])
+   step.isStrainComponentControlled = np.array([True, True, True, True, True, True])
+   step.isStressComponentControlled = np.logical_not(step.isStrainComponentControlled)
+
+   solver.addStep(step)
+   solver.solve()
+
+   for entry in solver.getHistory():
+       print(f"Time: {entry.time:.2f}, Stress XX: {entry.stress[0]:.4e}")
+
+
 Guidelines and Notes
 --------------------
 

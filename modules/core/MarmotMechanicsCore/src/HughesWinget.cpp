@@ -26,7 +26,7 @@ namespace Marmot::NumericalAlgorithms {
 
   Matrix3d HughesWinget::getRotationIncrement()
   {
-    return dOmega;
+    return dR;
   }
 
   Marmot::Vector6d HughesWinget::rotateTensor( const Marmot::Vector6d& tensor )

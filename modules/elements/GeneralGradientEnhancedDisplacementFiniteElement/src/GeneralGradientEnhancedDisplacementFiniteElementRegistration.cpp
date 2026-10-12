@@ -140,8 +140,8 @@ namespace Marmot::Elements::Registration {
                        ReducedIntegration,
                        GeneralGradientEnhancedDisplacementFiniteElement< 3, 20, 6 >::SectionType::Solid >() );
 
-  const static bool G6GCPS84_isRegistered = MarmotElementFactory::
-    registerElement( "G6GCPS84",
+  const static bool G6GCPS8M_isRegistered = MarmotElementFactory::
+    registerElement( "G6GCPS8M",
                      makeFactoryFunction<
                        GeneralGradientEnhancedDisplacementFiniteElement< 2, 8, 6, 4 >,
                        FullIntegration,

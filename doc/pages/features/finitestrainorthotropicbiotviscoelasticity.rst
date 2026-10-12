@@ -51,9 +51,11 @@ The consistent algorithmic tangent is computed via automatic differentiation.
      - :math:`\rho`
      - Density
 
-The Poisson's ratio :math:`\nu_{ij}` is defined as the ratio of lateral strain in
+The Poisson's ratio :math:`\nu_{ij}` is defined as the negative ratio of lateral strain in
 direction :math:`x_j` to axial strain in direction :math:`x_i` under uniaxial stress in
-direction :math:`x_i`. See namespace ``Marmot::ContinuumMechanics::Elasticity`` for details.
+direction :math:`x_i`, :math:`\nu_{ij} = -\varepsilon_j / \varepsilon_i`, so that the
+corresponding compliance entry reads :math:`\CelInv_{ji} = -\nu_{ij} / E_i`.
+See namespace ``Marmot::ContinuumMechanics::Elasticity`` for details.
 
 .. list-table::
    :header-rows: 1

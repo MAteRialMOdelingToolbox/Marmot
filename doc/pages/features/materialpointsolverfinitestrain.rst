@@ -111,5 +111,36 @@ The history can be exported to CSV. The columns are formatted as follows:
 - **F[9]**: Deformation gradient components (11, 12, 13, 21, 22, 23, 31, 32, 33).
 - **SV[N]**: Internal state variables (SV1, SV2, ...).
 
+Python Example
+--------------
+
+When built with ``-DMARMOT_BUILD_PYTHON_BINDINGS=ON``, the solver can be driven directly from Python:
+
+.. code-block:: python
+
+   import marmot
+   import numpy as np
+
+   # Define material and properties
+   properties = np.array([20000.0, 0.25])
+   solver = marmot.solvers.FiniteStrainSolver("COMPRESSIBLENEOHOOKE", properties)
+
+   # Define loading step
+   step = marmot.solvers.FiniteStrainSolver.Step()
+   step.timeStart = 0.0
+   step.timeEnd = 1.0
+   step.dTStart = 0.1
+   step.gradUIncrementTarget = np.array([[0.01, 0.0, 0.0],
+                                         [0.0, 0.0, 0.0],
+                                         [0.0, 0.0, 0.0]])
+   step.isGradUComponentControlled = np.ones((3, 3), dtype=bool)
+   step.isStressComponentControlled = np.zeros((3, 3), dtype=bool)
+
+   solver.addStep(step)
+   solver.solve()
+
+   for entry in solver.getHistory():
+       print(f"Time: {entry.time:.2f}, Kirchhoff Stress 11: {entry.stress[0, 0]:.4e}")
+
 .. doxygenclass:: Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain
    :allow-dot-graphs:

@@ -45,7 +45,7 @@ namespace Marmot::Materials {
       maxwellProperties(
         ContinuumMechanics::FiniteStrain::Viscoelasticity::createMaxwellProperties( materialProperties[9],
                                                                                     &materialProperties[10] ) ),
-      dBiotStress_dU( makeDual( ContinuumMechanics::VoigtNotation::voigtToStiffnessFastor(
+      dBiotStress_dU( makeDual( ContinuumMechanics::VoigtNotation::voigtToStiffness(
         ContinuumMechanics::Elasticity::Orthotropic::
           stiffnessTensor( E1, E2, E3, nu12, nu23, nu13, G12, G23, G13 ) ) ) )
   {

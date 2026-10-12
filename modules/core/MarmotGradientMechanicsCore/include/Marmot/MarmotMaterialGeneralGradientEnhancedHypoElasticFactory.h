@@ -83,4 +83,15 @@ namespace MarmotLibrary {
     /// @brief Get the map of material factory functions by material name.
     static MaterialFactoryMap& materialFactoryFunctionByName();
   };
+
+  /**
+   * @brief Specialization for one nonlocal variable, exported from the Marmot library for its consumers
+   * (EdelweissFE's gradient-enhanced point-wise materials); defined in the source file.
+   */
+  template <>
+  MARMOT_API MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >* MarmotMaterialGeneralGradientEnhancedHypoElasticFactory<
+    1 >::createMaterial( const std::string& materialName,
+                         const double*      materialProperties,
+                         int                nMaterialProperties,
+                         int                materialNumber );
 } // namespace MarmotLibrary
