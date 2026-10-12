@@ -1263,16 +1263,15 @@ namespace Marmot::Elements {
       const double dInvF33_dF33 = -1. / ( F33 * F33 );
 
       for ( int A = 0; A < nNodes; A++ ) {
-        r_U( A, 0 ) -= ( +N( A ) * invF33 * response3D.tau( 2, 2 ) / r ) * J0xWxRx2Pi;
+        r_U( A, 0 ) += ( +N( A ) * invF33 * response3D.tau( 2, 2 ) / r ) * J0xWxRx2Pi;
 
         for ( int B = 0; B < nNodes; B++ ) {
-          // K = d(r_U)/d(qU), and r_U(A,0) has a "-= N(A)*invF33*tau33/r" contribution above, so
-          // its Jacobian contributions here carry the matching minus sign.
+          // hoop contribution N(A)*invF33*tau33/r enters r_U(A,0) with the same sign as the in-plane term
           for ( int j = 0; j < 2; j++ ) {
-            k_UU( 0, A, j, B ) -= ( +N( A ) * invF33 * dTau33_dqU( j, B ) / r ) * J0xWxRx2Pi;
+            k_UU( 0, A, j, B ) += ( +N( A ) * invF33 * dTau33_dqU( j, B ) / r ) * J0xWxRx2Pi;
           }
           const double dF33_dN_qU_0 = ( N( B ) / r );
-          k_UU( 0, A, 0, B ) -= ( +N( A ) * dInvF33_dF33 * dF33_dN_qU_0 * response3D.tau( 2, 2 ) / r ) * J0xWxRx2Pi;
+          k_UU( 0, A, 0, B ) += ( +N( A ) * dInvF33_dF33 * dF33_dN_qU_0 * response3D.tau( 2, 2 ) / r ) * J0xWxRx2Pi;
         }
       }
 
@@ -1382,7 +1381,7 @@ namespace Marmot::Elements {
       const double invF33 = 1. / F33;
 
       for ( int A = 0; A < nNodes; A++ ) {
-        r_U( A, 0 ) -= ( +N( A ) * invF33 * response3D.tau( 2, 2 ) / r ) * J0xWxRx2Pi;
+        r_U( A, 0 ) += ( +N( A ) * invF33 * response3D.tau( 2, 2 ) / r ) * J0xWxRx2Pi;
       }
     }
   }
