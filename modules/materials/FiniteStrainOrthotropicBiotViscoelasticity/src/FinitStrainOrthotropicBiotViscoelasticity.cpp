@@ -17,8 +17,8 @@ namespace Marmot::Materials {
 
   using namespace Marmot;
   using namespace Fastor;
-  using namespace Marmot::Math::Indices;
-  using namespace Marmot::Math::FastorTensors;
+  using namespace Marmot::Math::Tensors::FastorIndices;
+  using namespace Marmot::Math::Tensors::FastorTensors;
 
   double FiniteStrainOrthotropicBiotViscoelasticity::getDensity( const double* stateVars ) const
   {
@@ -45,7 +45,7 @@ namespace Marmot::Materials {
       maxwellProperties(
         ContinuumMechanics::FiniteStrain::Viscoelasticity::createMaxwellProperties( materialProperties[9],
                                                                                     &materialProperties[10] ) ),
-      dBiotStress_dU( Marmot::Math::makeDual( ContinuumMechanics::VoigtNotation::voigtToStiffness(
+      dBiotStress_dU( Marmot::Math::Tensors::makeDual( ContinuumMechanics::VoigtNotation::voigtToStiffness(
         ContinuumMechanics::Elasticity::Orthotropic::
           stiffnessTensor( E1, E2, E3, nu12, nu23, nu13, G12, G23, G13 ) ) ) )
   {
@@ -75,7 +75,7 @@ namespace Marmot::Materials {
     // compute right stretch tensor in the original configuration
     const Tensor33t< scalar > U = Q % principalStretch % transpose( Q );
 
-    const Tensor33t< scalar > I = Marmot::Math::makeDual( Spatial3D::I );
+    const Tensor33t< scalar > I = Marmot::Math::Tensors::makeDual( Spatial3D::I );
 
     // compute Biot stress
     Tensor33t< scalar > S_biot = einsum< ijkl, kl >( dBiotStress_dU, evaluate( U - I ) );
@@ -84,11 +84,11 @@ namespace Marmot::Materials {
     Tensor33d S_biot_old( stateLayout.getPtr( response.stateVars, "S0_old" ) );
 
     // compute change in Biot stress
-    const Tensor33t< scalar > dS_biot = S_biot - Marmot::Math::makeDual( S_biot_old );
+    const Tensor33t< scalar > dS_biot = S_biot - Marmot::Math::Tensors::makeDual( S_biot_old );
 
     // store current Biot stress in state variables
     memcpy( stateLayout.getPtr( response.stateVars, "S0_old" ),
-            Marmot::Math::makeReal( S_biot ).data(),
+            Marmot::Math::Tensors::makeReal( S_biot ).data(),
             9 * sizeof( double ) );
 
     // add viscoelastic contribution to Biot stress
@@ -114,8 +114,8 @@ namespace Marmot::Materials {
     const Tensor33t< scalar >
       tau        = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::KirchhoffStressFromPK2( PK2, F );
     response.tau = tau;
-    response.elasticEnergyDensity = 0.5 * einsum< ij, ij >( Marmot::Math::makeReal( S_biot ),
-                                                            Marmot::Math::makeReal( evaluate( U - I ) ) )
+    response.elasticEnergyDensity = 0.5 * einsum< ij, ij >( Marmot::Math::Tensors::makeReal( S_biot ),
+                                                            Marmot::Math::Tensors::makeReal( evaluate( U - I ) ) )
                                             .toscalar();
   }
 } // namespace Marmot::Materials

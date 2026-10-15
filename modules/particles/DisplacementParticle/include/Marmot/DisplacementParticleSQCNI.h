@@ -452,7 +452,7 @@ namespace Marmot::Discretizations::Meshfree {
       Eigen::Map< Eigen::MatrixXd > K( dFExt_ddQ, _nNodes * nodeBlockSize, _nNodes * nodeBlockSize );
 
       using namespace Fastor;
-      using namespace Marmot::Math::Indices;
+      using namespace Marmot::Math::Tensors::FastorIndices;
 
       Tensor< double, nDim, nDim > Eye;
       Eye.eye();
@@ -639,7 +639,7 @@ namespace Marmot::Discretizations::Meshfree {
       Eigen::Map< Eigen::VectorXd > P( fExt, _nNodes * nodeBlockSize );
 
       using namespace Fastor;
-      using namespace Marmot::Math::Indices;
+      using namespace Marmot::Math::Tensors::FastorIndices;
 
       Tensor< double, nDim, nDim > Eye;
       Eye.eye();

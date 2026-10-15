@@ -2,7 +2,7 @@
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotTesting.h"
 
-using namespace Marmot::Math::FastorTensors;
+using namespace Marmot::Math::Tensors::FastorTensors;
 using namespace Fastor;
 
 using namespace Marmot;
@@ -11,9 +11,9 @@ using namespace Marmot::ContinuumMechanics;
 using namespace Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures;
 
 // Expected C = F^T * F
-Tensor33d C_expected( const Marmot::Math::FastorTensors::Tensor33d& F_ )
+Tensor33d C_expected( const Marmot::Math::Tensors::FastorTensors::Tensor33d& F_ )
 {
-  Marmot::Math::FastorTensors::Tensor33d temp( 0.0 );
+  Marmot::Math::Tensors::FastorTensors::Tensor33d temp( 0.0 );
   for ( int I = 0; I < 3; ++I )
     for ( int J = 0; J < 3; ++J )
       for ( int K = 0; K < 3; ++K )
@@ -22,9 +22,9 @@ Tensor33d C_expected( const Marmot::Math::FastorTensors::Tensor33d& F_ )
 };
 
 // Expected derivative dC_IJ / dF_KL = delta_IL * F_KJ + F_KI * delta_JL
-Tensor3333d dC_dF_expected( const Marmot::Math::FastorTensors::Tensor33d& F_ )
+Tensor3333d dC_dF_expected( const Marmot::Math::Tensors::FastorTensors::Tensor33d& F_ )
 {
-  Marmot::Math::FastorTensors::Tensor3333d temp( 0.0 );
+  Marmot::Math::Tensors::FastorTensors::Tensor3333d temp( 0.0 );
   for ( int I = 0; I < 3; ++I )
     for ( int J = 0; J < 3; ++J )
       for ( int K = 0; K < 3; ++K )
@@ -40,7 +40,7 @@ void test_rightCauchyGreen()
 {
   // Testcase 1: Identity matrix: F = I  -->  C = I
   {
-    Marmot::Math::FastorTensors::Tensor33t< double > F;
+    Marmot::Math::Tensors::FastorTensors::Tensor33t< double > F;
     // clang-format off
     F = { {1.,0.,0.},
           {0.,1.,0.},
@@ -55,7 +55,7 @@ void test_rightCauchyGreen()
 
   // Testcase 2: Diagonal matrix: F = diag(2,3,4)  -->  C = diag(4,9,16)
   {
-    Marmot::Math::FastorTensors::Tensor33t< double > F;
+    Marmot::Math::Tensors::FastorTensors::Tensor33t< double > F;
     // clang-format off
     F = { {2.,0.,0.},
           {0.,3.,0.},
@@ -70,7 +70,7 @@ void test_rightCauchyGreen()
 
   // Testcase 3: Non-diagonal matrix:
   {
-    Marmot::Math::FastorTensors::Tensor33t< double > F;
+    Marmot::Math::Tensors::FastorTensors::Tensor33t< double > F;
     // clang-format off
     F = { {1., 1., 1.},
           {0., 1., 1.},
@@ -87,7 +87,7 @@ void test_rightCauchyGreen()
 void test_rightCauchyGreenirstOrderDerived()
 {
   // Testcase 1: Identity matrix F
-  Marmot::Math::FastorTensors::Tensor33t< double > F;
+  Marmot::Math::Tensors::FastorTensors::Tensor33t< double > F;
   F = { { 1., 0., 0. }, { 0., 1., 0. }, { 0., 0., 1. } };
 
   auto [C_computed, dC_dF_computed] = FirstOrder::rightCauchyGreen( F );
@@ -127,9 +127,9 @@ void test_rightCauchyGreenirstOrderDerived()
                              << __PRETTY_FUNCTION__ << " failed for Testcase 3 (computation of dC_dF)" );
 }
 
-Tensor33d b_expected( const Marmot::Math::FastorTensors::Tensor33d& F_ )
+Tensor33d b_expected( const Marmot::Math::Tensors::FastorTensors::Tensor33d& F_ )
 {
-  Marmot::Math::FastorTensors::Tensor33d temp( 0.0 );
+  Marmot::Math::Tensors::FastorTensors::Tensor33d temp( 0.0 );
   for ( int i = 0; i < 3; ++i )
     for ( int j = 0; j < 3; ++j )
       for ( int K = 0; K < 3; ++K )
@@ -137,9 +137,9 @@ Tensor33d b_expected( const Marmot::Math::FastorTensors::Tensor33d& F_ )
   return temp;
 };
 
-Tensor3333d db_dF_expected( const Marmot::Math::FastorTensors::Tensor33d& F_ )
+Tensor3333d db_dF_expected( const Marmot::Math::Tensors::FastorTensors::Tensor33d& F_ )
 {
-  Marmot::Math::FastorTensors::Tensor3333d temp( 0.0 );
+  Marmot::Math::Tensors::FastorTensors::Tensor3333d temp( 0.0 );
   for ( int i = 0; i < 3; ++i )
     for ( int j = 0; j < 3; ++j )
       for ( int k = 0; k < 3; ++k )
@@ -154,8 +154,8 @@ Tensor3333d db_dF_expected( const Marmot::Math::FastorTensors::Tensor33d& F_ )
 void test_leftCauchyGreen()
 {
   // Simple test: for F = I, B = I
-  Marmot::Math::FastorTensors::Tensor33d F = Marmot::Math::FastorTensors::Spatial3D::I;
-  auto                                   b = leftCauchyGreen( F );
+  Marmot::Math::Tensors::FastorTensors::Tensor33d F = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
+  auto                                            b = leftCauchyGreen( F );
   throwExceptionOnFailure( checkIfEqual( b, F ), "test_leftCauchGreen failed for zero deformation" );
 
   // Simple test: for F = 2*I, B = 4*I
@@ -164,7 +164,7 @@ void test_leftCauchyGreen()
   throwExceptionOnFailure( checkIfEqual( b, Tensor33d( 2. * F ) ), "failed for uniform expansion" );
 
   // Simple test: for F = diag(1,2,3), B = diag(1,4,9)
-  F         = Marmot::Math::FastorTensors::Spatial3D::I;
+  F         = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
   F( 1, 1 ) = 2.0;
   F( 2, 2 ) = 3.0;
   b         = leftCauchyGreen( F );
@@ -172,7 +172,7 @@ void test_leftCauchyGreen()
   throwExceptionOnFailure( checkIfEqual( b, b_expected( F ) ), "failed for non-uniform expansion" );
 
   // test for simple shear
-  F         = Marmot::Math::FastorTensors::Spatial3D::I;
+  F         = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
   F( 0, 1 ) = 1.0; // simple shear in x-y plane
   b         = leftCauchyGreen( F );
   throwExceptionOnFailure( checkIfEqual( b, b_expected( F ) ), "failed for simple shear" );
@@ -181,7 +181,7 @@ void test_leftCauchyGreen()
 void test_leftCauchyGreenFirstOrderDerived()
 {
   // Testcase 1: Identity matrix F
-  Marmot::Math::FastorTensors::Tensor33t< double > F;
+  Marmot::Math::Tensors::FastorTensors::Tensor33t< double > F;
   F = { { 1., 0., 0. }, { 0., 1., 0. }, { 0., 0., 1. } };
 
   auto [b_computed, db_dF_computed] = FirstOrder::leftCauchyGreen( F );
@@ -197,7 +197,7 @@ void test_leftCauchyGreenFirstOrderDerived()
                              << __PRETTY_FUNCTION__ << " failed for zero deformation (computation of db_dF)" );
 
   // simple shear test
-  F                                             = Marmot::Math::FastorTensors::Spatial3D::I;
+  F                                             = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
   F( 0, 1 )                                     = 1.0; // simple shear in x-y
   auto [b_shear_computed, db_dF_shear_computed] = FirstOrder::leftCauchyGreen( F );
 

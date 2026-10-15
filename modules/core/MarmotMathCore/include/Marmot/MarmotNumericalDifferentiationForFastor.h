@@ -31,7 +31,7 @@
 #include <Fastor/tensor/Tensor.h>
 #include <functional>
 
-namespace Marmot::Math::NumericalDifferentiation {
+namespace Marmot::Math::Differentiation::Numerical {
 
   namespace ScalarToTensor {
 
@@ -51,7 +51,7 @@ namespace Marmot::Math::NumericalDifferentiation {
 
       double volatile h                       = std::max( 1.0, std::abs( x ) ) * Marmot::Math::Constants::SquareRootEps;
       Fastor::Tensor< double, Rest... > dF    = F( x + h ) - F( x );
-      Fastor::Tensor< double, Rest... > dF_dx = multiplyFastorTensorWithScalar( dF, 1. / h );
+      Fastor::Tensor< double, Rest... > dF_dx = Tensors::multiplyFastorTensorWithScalar( dF, 1. / h );
       return dF_dx;
     }
 
@@ -71,7 +71,7 @@ namespace Marmot::Math::NumericalDifferentiation {
 
       double volatile h                       = std::max( 1.0, std::abs( x ) ) * Marmot::Math::Constants::CubicRootEps;
       Fastor::Tensor< double, Rest... > dF    = F( x + h ) - F( x - h );
-      Fastor::Tensor< double, Rest... > dF_dx = multiplyFastorTensorWithScalar( dF, 1. / ( 2. * h ) );
+      Fastor::Tensor< double, Rest... > dF_dx = Tensors::multiplyFastorTensorWithScalar( dF, 1. / ( 2. * h ) );
       return dF_dx;
     }
   } // namespace ScalarToTensor
@@ -225,12 +225,12 @@ namespace Marmot::Math::NumericalDifferentiation {
       double* F_at_T_data       = F_at_T.data();
       double* F_at_T_right_data = F_at_T_right.data();
 
-      if constexpr ( Marmot::Math::IsSquareRank2Tensor< RestT... >::value &&
-                     Marmot::Math::IsSquareRank2Tensor< RestF... >::value &&
-                     Marmot::Math::IsSquareRank2Tensor< RestT... >::dim ==
-                       Marmot::Math::IsSquareRank2Tensor< RestF... >::dim ) {
+      if constexpr ( Marmot::Math::Tensors::IsSquareRank2Tensor< RestT... >::value &&
+                     Marmot::Math::Tensors::IsSquareRank2Tensor< RestF... >::value &&
+                     Marmot::Math::Tensors::IsSquareRank2Tensor< RestT... >::dim ==
+                       Marmot::Math::Tensors::IsSquareRank2Tensor< RestF... >::dim ) {
         if ( isSymmetric ) {
-          constexpr size_t dim = Marmot::Math::IsSquareRank2Tensor< RestT... >::dim;
+          constexpr size_t dim = Marmot::Math::Tensors::IsSquareRank2Tensor< RestT... >::dim;
 
           for ( size_t row = 0; row < dim; ++row ) {
             for ( size_t col = row; col < dim; ++col ) {
@@ -317,12 +317,12 @@ namespace Marmot::Math::NumericalDifferentiation {
       double* F_at_T_right_data = F_at_T_right.data();
       double* F_at_T_left_data  = F_at_T_left.data();
 
-      if constexpr ( Marmot::Math::IsSquareRank2Tensor< Rest2... >::value &&
-                     Marmot::Math::IsSquareRank2Tensor< Rest1... >::value &&
-                     Marmot::Math::IsSquareRank2Tensor< Rest2... >::dim ==
-                       Marmot::Math::IsSquareRank2Tensor< Rest1... >::dim ) {
+      if constexpr ( Marmot::Math::Tensors::IsSquareRank2Tensor< Rest2... >::value &&
+                     Marmot::Math::Tensors::IsSquareRank2Tensor< Rest1... >::value &&
+                     Marmot::Math::Tensors::IsSquareRank2Tensor< Rest2... >::dim ==
+                       Marmot::Math::Tensors::IsSquareRank2Tensor< Rest1... >::dim ) {
         if ( isSymmetric ) {
-          constexpr size_t dim = Marmot::Math::IsSquareRank2Tensor< Rest2... >::dim;
+          constexpr size_t dim = Marmot::Math::Tensors::IsSquareRank2Tensor< Rest2... >::dim;
 
           for ( size_t row = 0; row < dim; ++row ) {
             for ( size_t col = row; col < dim; ++col ) {
@@ -416,7 +416,7 @@ namespace Marmot::Math::NumericalDifferentiation {
     {
       Fastor::Tensor< double, dim, dim > dF_dT;
       Fastor::Tensor< std::complex< double >, dim, dim >
-        T_right = fastorTensorFromDoubleTensor< std::complex< double > >( T );
+        T_right = Tensors::fastorTensorFromDoubleTensor< std::complex< double > >( T );
 
       for ( size_t i = 0; i < dim; i++ ) {
         for ( size_t j = isSymmetric ? i : 0; j < dim; j++ ) {
@@ -495,7 +495,7 @@ namespace Marmot::Math::NumericalDifferentiation {
                                                             bool isSymmetric = false )
       {
         Fastor::Tensor< Marmot::Math::complexDouble, dim, dim >
-                                           T_right = fastorTensorFromDoubleTensor< Marmot::Math::complexDouble >( T );
+          T_right = Tensors::fastorTensorFromDoubleTensor< Marmot::Math::complexDouble >( T );
         Fastor::Tensor< double, dim, dim > dF_dT( 0.0 );
 
         for ( size_t i = 0; i < dim; i++ ) {
@@ -513,7 +513,7 @@ namespace Marmot::Math::NumericalDifferentiation {
         return dF_dT;
         /* Fastor::Tensor< double, Rest... >       dF_dT; */
         /* Fastor::Tensor< Marmot::Math::complexDouble, Rest... >       T_right =
-         * fastorTensorFromDoubleTensor<Marmot::Math::complexDouble>(T); */
+         * Tensors::fastorTensorFromDoubleTensor<Marmot::Math::complexDouble>(T); */
 
         /* double* dF_dT_data   = dF_dT.data(); */
         /* Marmot::Math::complexDouble* T_right_data = T_right.data(); */
@@ -559,7 +559,7 @@ namespace Marmot::Math::NumericalDifferentiation {
 
         Fastor::Tensor< double, RestF..., RestT... > dF_dT( 0.0 );
         Fastor::Tensor< Marmot::Math::complexDouble, RestT... >
-          T_right = fastorTensorFromDoubleTensor< Marmot::Math::complexDouble >( T );
+          T_right = Tensors::fastorTensorFromDoubleTensor< Marmot::Math::complexDouble >( T );
 
         Fastor::Tensor< Marmot::Math::complexDouble, RestF... > F_at_T_right( 0.0 );
 
@@ -567,12 +567,12 @@ namespace Marmot::Math::NumericalDifferentiation {
         Marmot::Math::complexDouble* T_right_data      = T_right.data();
         Marmot::Math::complexDouble* F_at_T_right_data = F_at_T_right.data();
 
-        if constexpr ( Marmot::Math::IsSquareRank2Tensor< RestT... >::value &&
-                       Marmot::Math::IsSquareRank2Tensor< RestF... >::value &&
-                       Marmot::Math::IsSquareRank2Tensor< RestT... >::dim ==
-                         Marmot::Math::IsSquareRank2Tensor< RestF... >::dim ) {
+        if constexpr ( Marmot::Math::Tensors::IsSquareRank2Tensor< RestT... >::value &&
+                       Marmot::Math::Tensors::IsSquareRank2Tensor< RestF... >::value &&
+                       Marmot::Math::Tensors::IsSquareRank2Tensor< RestT... >::dim ==
+                         Marmot::Math::Tensors::IsSquareRank2Tensor< RestF... >::dim ) {
           if ( isSymmetric ) {
-            constexpr size_t dim = Marmot::Math::IsSquareRank2Tensor< RestT... >::dim;
+            constexpr size_t dim = Marmot::Math::Tensors::IsSquareRank2Tensor< RestT... >::dim;
 
             for ( size_t row = 0; row < dim; ++row ) {
               for ( size_t col = row; col < dim; ++col ) {
@@ -620,4 +620,4 @@ namespace Marmot::Math::NumericalDifferentiation {
       }
     } // namespace TensorToTensor
   }   // namespace Complex
-} // namespace Marmot::Math::NumericalDifferentiation
+} // namespace Marmot::Math::Differentiation::Numerical

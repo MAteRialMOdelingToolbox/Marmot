@@ -62,7 +62,7 @@ namespace Marmot::Materials {
     using namespace ContinuumMechanics::VoigtNotation;
     const dual rhoTrial = sqrt( 2. * Invariants::J2( trialStress ) );
 
-    if ( Math::makeReal( f( rhoTrial, kappa ) ) >= 0.0 ) {
+    if ( Math::Tensors::makeReal( f( rhoTrial, kappa ) ) >= 0.0 ) {
 
       // variables for return mapping
       size_t counter = 0;
@@ -101,14 +101,14 @@ namespace Marmot::Materials {
       auto dS    = Cel * dEpsE;
       kappa += dKappa.val;
       auto stressAvg = S - 0.5 * Cel * dEpsE;
-      state.elasticEnergyDensity += Math::makeReal( dEpsE.dot( stressAvg ) );
-      state.dissipation += Math::makeReal( dEpsP.dot( dS ) );
+      state.elasticEnergyDensity += Math::Tensors::makeReal( dEpsE.dot( stressAvg ) );
+      state.dissipation += Math::Tensors::makeReal( dEpsP.dot( dS ) );
     }
     else {
       // elastic step
       S              = trialStress;
       auto stressAvg = S - 0.5 * Cel * dE;
-      state.elasticEnergyDensity += Math::makeReal( stressAvg.dot( dE ) );
+      state.elasticEnergyDensity += Math::Tensors::makeReal( stressAvg.dot( dE ) );
       state.dissipation += 0.0;
     }
   }

@@ -2,8 +2,8 @@
 #include "Marmot/MarmotTesting.h"
 
 using namespace Marmot::Testing;
-using namespace Marmot::Math::FastorTensors;
-using namespace Marmot::Math::FastorTensors::Spatial3D;
+using namespace Marmot::Math::Tensors::FastorTensors;
+using namespace Marmot::Math::Tensors::FastorTensors::Spatial3D;
 
 void testInvertMinorSymmetricFourthOrderTensorMatchesIsotropicCompliance()
 {
@@ -13,7 +13,7 @@ void testInvertMinorSymmetricFourthOrderTensorMatchesIsotropicCompliance()
 
   const Tensor3333d C = lambda * IHyd + 2. * mu * ISymm;
 
-  const Tensor3333d Cinv = Marmot::Math::invertMinorSymmetricFourthOrderTensor( C );
+  const Tensor3333d Cinv = Marmot::Math::Tensors::invertMinorSymmetricFourthOrderTensor( C );
 
   // analytical isotropic compliance tensor: S = 1/(2*mu) * Isym - lambda / ( 2*mu*(3*lambda + 2*mu) ) * I2xI2
   const double      nuOverE   = lambda / ( 2. * mu * ( 3. * lambda + 2. * mu ) );
@@ -33,8 +33,8 @@ void testInvertMinorSymmetricFourthOrderTensorIsInvolutive()
   const double mu     = 0.7;
 
   const Tensor3333d C       = lambda * IHyd + 2. * mu * ISymm;
-  const Tensor3333d Cinv    = Marmot::Math::invertMinorSymmetricFourthOrderTensor( C );
-  const Tensor3333d CinvInv = Marmot::Math::invertMinorSymmetricFourthOrderTensor( Cinv );
+  const Tensor3333d Cinv    = Marmot::Math::Tensors::invertMinorSymmetricFourthOrderTensor( C );
+  const Tensor3333d CinvInv = Marmot::Math::Tensors::invertMinorSymmetricFourthOrderTensor( Cinv );
 
   throwExceptionOnFailure( checkIfEqual( CinvInv, C, 1e-8 ),
                            Marmot::Utilities::MakeString()
@@ -70,7 +70,7 @@ void testMapEigenToFastorThirdRankTensor()
       for ( size_t k = 0; k < 4; ++k )
         tensor( i, j, k ) = 100. * i + 10. * j + k;
 
-  const auto matrix = Marmot::Math::mapEigenToFastor( tensor );
+  const auto matrix = Marmot::Math::Tensors::mapEigenToFastor( tensor );
   throwExceptionOnFailure( matrix.rows() == 2 && matrix.cols() == 12, "Wrong shape of the third rank tensor map." );
 
   for ( size_t i = 0; i < 2; ++i )
@@ -81,7 +81,7 @@ void testMapEigenToFastorThirdRankTensor()
                                    << __PRETTY_FUNCTION__ << " map(i, j * n3 + k) != tensor(i, j, k)" );
 
   // the non-const overload writes through to the tensor
-  Marmot::Math::mapEigenToFastor( tensor )( 1, 2 * 4 + 3 ) = -1.;
+  Marmot::Math::Tensors::mapEigenToFastor( tensor )( 1, 2 * 4 + 3 ) = -1.;
   throwExceptionOnFailure( tensor( 1, 2, 3 ) == -1., "Writing through the third rank tensor map failed." );
 }
 
@@ -94,7 +94,7 @@ void testMapEigenToFastorFourthRankTensor()
         for ( size_t l = 0; l < 5; ++l )
           tensor( i, j, k, l ) = 1000. * i + 100. * j + 10. * k + l;
 
-  const auto matrix = Marmot::Math::mapEigenToFastor( tensor );
+  const auto matrix = Marmot::Math::Tensors::mapEigenToFastor( tensor );
   throwExceptionOnFailure( matrix.rows() == 6 && matrix.cols() == 20, "Wrong shape of the fourth rank tensor map." );
 
   for ( size_t i = 0; i < 2; ++i )
@@ -106,7 +106,7 @@ void testMapEigenToFastorFourthRankTensor()
                                      << __PRETTY_FUNCTION__ << " map(i * n2 + j, k * n4 + l) != tensor(i, j, k, l)" );
 
   // the non-const overload writes through to the tensor
-  Marmot::Math::mapEigenToFastor( tensor )( 1 * 3 + 2, 3 * 5 + 4 ) = -1.;
+  Marmot::Math::Tensors::mapEigenToFastor( tensor )( 1 * 3 + 2, 3 * 5 + 4 ) = -1.;
   throwExceptionOnFailure( tensor( 1, 2, 3, 4 ) == -1., "Writing through the fourth rank tensor map failed." );
 }
 

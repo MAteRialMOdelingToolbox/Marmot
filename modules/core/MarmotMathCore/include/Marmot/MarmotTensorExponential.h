@@ -27,7 +27,7 @@
 #include "Marmot/MarmotMath.h"
 #include <iostream>
 
-namespace Marmot::Math::TensorExponential {
+namespace Marmot::Math::Tensors::TensorExponential {
   struct ExponentialMapFailed : std::exception {};
 
   /**
@@ -79,7 +79,7 @@ namespace Marmot::Math::TensorExponential {
       Fastor::Tensor< double, tensorSize, tensorSize > series_real;
       for ( size_t i = 0; i < tensorSize; i++ ) {
         for ( size_t j = 0; j < tensorSize; j++ ) {
-          series_real( i, j ) = Math::makeReal( series( i, j ) );
+          series_real( i, j ) = Math::Tensors::makeReal( series( i, j ) );
         }
       }
       norm = Fastor::norm( series_real );
@@ -166,4 +166,4 @@ namespace Marmot::Math::TensorExponential {
       return theResult;
     }
   } // namespace FirstOrder
-} // namespace Marmot::Math::TensorExponential
+} // namespace Marmot::Math::Tensors::TensorExponential

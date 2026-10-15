@@ -4,7 +4,7 @@
 
 using namespace Eigen;
 
-namespace Marmot::Math::NumericalDifferentiation {
+namespace Marmot::Math::Differentiation::Numerical {
 
   double forwardDifference( const scalar_to_scalar_function_type& f, const double x )
   {
@@ -187,4 +187,4 @@ namespace Marmot::Math::NumericalDifferentiation {
     }
   } // namespace Complex
 
-} // namespace Marmot::Math::NumericalDifferentiation
+} // namespace Marmot::Math::Differentiation::Numerical

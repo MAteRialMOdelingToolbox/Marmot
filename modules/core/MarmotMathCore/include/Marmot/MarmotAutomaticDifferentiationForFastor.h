@@ -32,7 +32,7 @@
 #include <autodiff/forward/dual/dual.hpp>
 #include <functional>
 
-namespace Marmot::Math::AutomaticDifferentiation {
+namespace Marmot::Math::Differentiation::Automatic {
 
   using namespace autodiff;
 
@@ -84,14 +84,14 @@ namespace Marmot::Math::AutomaticDifferentiation {
                                            bool                                             isSymmetric = false )
   {
     Fastor::Tensor< double, Rest... > df_dT( 0.0 );
-    Fastor::Tensor< dual, Rest... >   T_right = makeDual( T );
+    Fastor::Tensor< dual, Rest... >   T_right = Tensors::makeDual( T );
 
     double* df_dT_data   = df_dT.data();
     dual*   T_right_data = T_right.data();
 
-    if constexpr ( Marmot::Math::IsSquareRank2Tensor< Rest... >::value ) {
+    if constexpr ( Marmot::Math::Tensors::IsSquareRank2Tensor< Rest... >::value ) {
       if ( isSymmetric ) {
-        constexpr size_t dim = Marmot::Math::IsSquareRank2Tensor< Rest... >::dim;
+        constexpr size_t dim = Marmot::Math::Tensors::IsSquareRank2Tensor< Rest... >::dim;
 
         for ( size_t row = 0; row < dim; ++row ) {
           for ( size_t col = row; col < dim; ++col ) {
@@ -162,9 +162,9 @@ namespace Marmot::Math::AutomaticDifferentiation {
     higherOrderScalartype* T_right_data = T_right.data();
     scalartype*            df_dT_data   = df_dT_.data();
 
-    if constexpr ( Marmot::Math::IsSquareRank2Tensor< Rest... >::value ) {
+    if constexpr ( Marmot::Math::Tensors::IsSquareRank2Tensor< Rest... >::value ) {
       if ( isSymmetric ) {
-        constexpr size_t dim = Marmot::Math::IsSquareRank2Tensor< Rest... >::dim;
+        constexpr size_t dim = Marmot::Math::Tensors::IsSquareRank2Tensor< Rest... >::dim;
 
         for ( size_t row = 0; row < dim; ++row ) {
           for ( size_t col = row; col < dim; ++col ) {
@@ -221,7 +221,7 @@ namespace Marmot::Math::AutomaticDifferentiation {
 
     Fastor::Tensor< double, RestF... >           F_( 0.0 );
     Fastor::Tensor< double, RestF..., RestT... > dF_dT_( 0.0 );
-    Fastor::Tensor< dual, RestT... >             T_right = makeDual( T );
+    Fastor::Tensor< dual, RestT... >             T_right = Tensors::makeDual( T );
 
     Fastor::Tensor< dual, RestF... > F_at_T_right( 0.0 );
 
@@ -229,12 +229,12 @@ namespace Marmot::Math::AutomaticDifferentiation {
     dual*   T_right_data      = T_right.data();
     dual*   F_at_T_right_data = F_at_T_right.data();
 
-    if constexpr ( Marmot::Math::IsSquareRank2Tensor< RestT... >::value &&
-                   Marmot::Math::IsSquareRank2Tensor< RestF... >::value &&
-                   Marmot::Math::IsSquareRank2Tensor< RestT... >::dim ==
-                     Marmot::Math::IsSquareRank2Tensor< RestF... >::dim ) {
+    if constexpr ( Marmot::Math::Tensors::IsSquareRank2Tensor< RestT... >::value &&
+                   Marmot::Math::Tensors::IsSquareRank2Tensor< RestF... >::value &&
+                   Marmot::Math::Tensors::IsSquareRank2Tensor< RestT... >::dim ==
+                     Marmot::Math::Tensors::IsSquareRank2Tensor< RestF... >::dim ) {
       if ( isSymmetric ) {
-        constexpr size_t dim = Marmot::Math::IsSquareRank2Tensor< RestT... >::dim;
+        constexpr size_t dim = Marmot::Math::Tensors::IsSquareRank2Tensor< RestT... >::dim;
 
         for ( size_t row = 0; row < dim; ++row ) {
           for ( size_t col = row; col < dim; ++col ) {
@@ -258,7 +258,7 @@ namespace Marmot::Math::AutomaticDifferentiation {
           }
         }
 
-        F_ = makeReal( F_at_T_right );
+        F_ = Tensors::makeReal( F_at_T_right );
         return { F_, dF_dT_ };
       }
     }
@@ -274,7 +274,7 @@ namespace Marmot::Math::AutomaticDifferentiation {
       T_right_data[T_right_mem_idx].grad -= 1.0;
     }
 
-    F_ = makeReal( F_at_T_right );
+    F_ = Tensors::makeReal( F_at_T_right );
 
     return { F_, dF_dT_ };
   }
@@ -318,7 +318,7 @@ namespace Marmot::Math::AutomaticDifferentiation {
       dual2nd                                      F_right;
       Fastor::Tensor< double, dim, dim >           dF_dT_;
       Fastor::Tensor< double, dim, dim, dim, dim > d2F_dT2;
-      Fastor::Tensor< dual2nd, dim, dim >          T_right = makeHigherOrderDual< 2 >( T );
+      Fastor::Tensor< dual2nd, dim, dim >          T_right = Tensors::makeHigherOrderDual< 2 >( T );
 
       for ( size_t i = 0; i < dim; i++ ) {
         for ( size_t j = isSymmetric ? i : 0; j < dim; j++ ) {
@@ -380,7 +380,7 @@ namespace Marmot::Math::AutomaticDifferentiation {
                                                             bool         isSymmetric = false )
     {
       Fastor::Tensor< double, dim, dim >  d2F_dTdScalar;
-      Fastor::Tensor< dual2nd, dim, dim > T_right = makeHigherOrderDual< 2 >( T );
+      Fastor::Tensor< dual2nd, dim, dim > T_right = Tensors::makeHigherOrderDual< 2 >( T );
 
       dual2nd scalar_right( scalar );
       seed< 2 >( scalar_right, 1.0 );
@@ -446,7 +446,7 @@ namespace Marmot::Math::AutomaticDifferentiation {
       Fastor::Tensor< double, dim, dim >                     dF_dT_;
       Fastor::Tensor< double, dim, dim, dim, dim >           d2F_dT2;
       Fastor::Tensor< double, dim, dim, dim, dim, dim, dim > d3F_dT3;
-      Fastor::Tensor< dual3rd, dim, dim >                    T_right = makeHigherOrderDual< 3 >( T );
+      Fastor::Tensor< dual3rd, dim, dim >                    T_right = Tensors::makeHigherOrderDual< 3 >( T );
 
       for ( size_t i = 0; i < dim; i++ ) {
         for ( size_t j = isSymmetric ? i : 0; j < dim; j++ ) {
@@ -493,4 +493,4 @@ namespace Marmot::Math::AutomaticDifferentiation {
 
   } // namespace ThirdOrder
 
-} // namespace Marmot::Math::AutomaticDifferentiation
+} // namespace Marmot::Math::Differentiation::Automatic

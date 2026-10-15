@@ -181,75 +181,79 @@ namespace Marmot::Math {
     return ( T( 0 ) < val ) - ( val < T( 0 ) );
   }
 
-  /** @brief Converts various scalar types to double precision floating point numbers
-   *  @param value Input value of various numeric types
-   *  @return Converted value as double
-   *
-   *  This function converts input values of different numeric types, including:
-   *  - double
-   *  - std::complex<double>
-   *  - autodiff::real
-   *  - autodiff::dual
-   *  - Eigen::Matrix with elements of any type convertible to double
-   *
-   *  The function is overloaded and templated to handle these different types appropriately.
-   */
-  double makeReal( const double& value );
-  double makeReal( const std::complex< double >& value );
-  double makeReal( const autodiff::real& value );
+  namespace Tensors {
 
-  /** @brief Converts autodiff::dual numbers to double precision floating point numbers
-   *  @tparam T Underlying type of the autodiff::dual number
-   *  @tparam G Gradient type of the autodiff::dual number
-   *  @param number Input autodiff::dual number
-   *  @return Converted value as double
-   *
-   *  This function converts an autodiff::dual number to a double precision floating point number.
-   *  It is templated to handle dual numbers with different underlying types.
-   */
-  template < typename T, typename G >
-  double makeReal( const autodiff::detail::Dual< T, G >& number )
-  {
-    return double( number );
-  }
+    /** @brief Converts various scalar types to double precision floating point numbers
+     *  @param value Input value of various numeric types
+     *  @return Converted value as double
+     *
+     *  This function converts input values of different numeric types, including:
+     *  - double
+     *  - std::complex<double>
+     *  - autodiff::real
+     *  - autodiff::dual
+     *  - Eigen::Matrix with elements of any type convertible to double
+     *
+     *  The function is overloaded and templated to handle these different types appropriately.
+     */
+    double makeReal( const double& value );
+    double makeReal( const std::complex< double >& value );
+    double makeReal( const autodiff::real& value );
 
-  /** @brief Extracts the real part of a arbitrary scalartype-valued Matrix
-   *  @tparam T scalar type
-   *  @tparam Rest... parameter pack for additional matrix information, e.g, dimensions
-   *  @param mat T-valued matrix
-   *  @return double-valued matrix
-   */
-  template < typename T, int... Rest >
-  Eigen::Matrix< double, Rest... > makeReal( const Eigen::Matrix< T, Rest... > mat )
-  {
-    Eigen::Matrix< double, Rest... > out;
-    const size_t                     m = static_cast< size_t >( mat.rows() );
-    const size_t                     n = static_cast< size_t >( mat.cols() );
+    /** @brief Converts autodiff::dual numbers to double precision floating point numbers
+     *  @tparam T Underlying type of the autodiff::dual number
+     *  @tparam G Gradient type of the autodiff::dual number
+     *  @param number Input autodiff::dual number
+     *  @return Converted value as double
+     *
+     *  This function converts an autodiff::dual number to a double precision floating point number.
+     *  It is templated to handle dual numbers with different underlying types.
+     */
+    template < typename T, typename G >
+    double makeReal( const autodiff::detail::Dual< T, G >& number )
+    {
+      return double( number );
+    }
 
-    for ( size_t i = 0; i < m; i++ ) {
-      for ( size_t j = 0; j < n; j++ ) {
-        out( i, j ) = makeReal( mat( i, j ) );
+    /** @brief Extracts the real part of a arbitrary scalartype-valued Matrix
+     *  @tparam T scalar type
+     *  @tparam Rest... parameter pack for additional matrix information, e.g, dimensions
+     *  @param mat T-valued matrix
+     *  @return double-valued matrix
+     */
+    template < typename T, int... Rest >
+    Eigen::Matrix< double, Rest... > makeReal( const Eigen::Matrix< T, Rest... > mat )
+    {
+      Eigen::Matrix< double, Rest... > out;
+      const size_t                     m = static_cast< size_t >( mat.rows() );
+      const size_t                     n = static_cast< size_t >( mat.cols() );
+
+      for ( size_t i = 0; i < m; i++ ) {
+        for ( size_t j = 0; j < n; j++ ) {
+          out( i, j ) = makeReal( mat( i, j ) );
+        }
       }
+      return out;
     }
-    return out;
-  }
 
-  /** @brief Extracts the real part of a arbitrary scalartype-valued Vector
-   *  @tparam T scalar type
-   *  @param in T-valued vector
-   *  @return double-valued vector
-   */
-  template < typename T >
-  Eigen::VectorXd makeReal( Eigen::Vector< T, Eigen::Dynamic > in )
-  {
+    /** @brief Extracts the real part of a arbitrary scalartype-valued Vector
+     *  @tparam T scalar type
+     *  @param in T-valued vector
+     *  @return double-valued vector
+     */
+    template < typename T >
+    Eigen::VectorXd makeReal( Eigen::Vector< T, Eigen::Dynamic > in )
+    {
 
-    int             inSize = in.size();
-    Eigen::VectorXd out( inSize );
-    for ( int i = 0; i < inSize; i++ ) {
-      out( i ) = double( in( i ) );
+      int             inSize = in.size();
+      Eigen::VectorXd out( inSize );
+      for ( int i = 0; i < inSize; i++ ) {
+        out( i ) = double( in( i ) );
+      }
+      return out;
     }
-    return out;
-  }
+
+  } // namespace Tensors
 
   /**
    * @brief Apply Macaulay function to a matrix

@@ -44,11 +44,11 @@ namespace Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures {
    * \f]
    */
   template < typename T >
-  Math::FastorTensors::Tensor33t< T > rightCauchyGreen( const Math::FastorTensors::Tensor33t< T >& F )
+  Math::Tensors::FastorTensors::Tensor33t< T > rightCauchyGreen( const Math::Tensors::FastorTensors::Tensor33t< T >& F )
   {
     using namespace Fastor;
-    using namespace Marmot::Math::Indices;
-    const Math::FastorTensors::Tensor33t< T > C = einsum< iI, iJ >( F, F );
+    using namespace Marmot::Math::Tensors::FastorIndices;
+    const Math::Tensors::FastorTensors::Tensor33t< T > C = einsum< iI, iJ >( F, F );
     return C;
   }
 
@@ -67,11 +67,11 @@ namespace Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures {
    * \f]
    */
   template < typename T >
-  Math::FastorTensors::Tensor33t< T > leftCauchyGreen( const Math::FastorTensors::Tensor33t< T >& F )
+  Math::Tensors::FastorTensors::Tensor33t< T > leftCauchyGreen( const Math::Tensors::FastorTensors::Tensor33t< T >& F )
   {
     using namespace Fastor;
-    using namespace Marmot::Math::Indices;
-    const Math::FastorTensors::Tensor33t< T > b = einsum< iJ, jJ >( F, F );
+    using namespace Marmot::Math::Tensors::FastorIndices;
+    const Math::Tensors::FastorTensors::Tensor33t< T > b = einsum< iJ, jJ >( F, F );
     return b;
   }
 
@@ -97,17 +97,17 @@ namespace Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures {
      * \f]
      */
     template < typename T >
-    std::pair< Math::FastorTensors::Tensor33t< T >, Math::FastorTensors::Tensor3333t< T > > rightCauchyGreen(
-      const Math::FastorTensors::Tensor33t< T >& F )
+    std::pair< Math::Tensors::FastorTensors::Tensor33t< T >, Math::Tensors::FastorTensors::Tensor3333t< T > > rightCauchyGreen(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& F )
     {
       using namespace Fastor;
-      using namespace Marmot::Math::Indices;
-      const Math::FastorTensors::Tensor33t< T >
+      using namespace Marmot::Math::Tensors::FastorIndices;
+      const Math::Tensors::FastorTensors::Tensor33t< T >
         C = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( F );
 
-      const Math::FastorTensors::Tensor3333t< T >
-        dC_dF = einsum< IK, kJ, to_IJkK >( Math::FastorTensors::Spatial3D::I, F ) +
-                einsum< kI, JK, to_IJkK >( F, Math::FastorTensors::Spatial3D::I );
+      const Math::Tensors::FastorTensors::Tensor3333t< T >
+        dC_dF = einsum< IK, kJ, to_IJkK >( Math::Tensors::FastorTensors::Spatial3D::I, F ) +
+                einsum< kI, JK, to_IJkK >( F, Math::Tensors::FastorTensors::Spatial3D::I );
 
       return { C, dC_dF };
     }
@@ -132,17 +132,17 @@ namespace Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures {
      * \f]
      */
     template < typename T >
-    std::pair< Math::FastorTensors::Tensor33t< T >, Math::FastorTensors::Tensor3333t< T > > leftCauchyGreen(
-      const Math::FastorTensors::Tensor33t< T >& F )
+    std::pair< Math::Tensors::FastorTensors::Tensor33t< T >, Math::Tensors::FastorTensors::Tensor3333t< T > > leftCauchyGreen(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& F )
     {
       using namespace Fastor;
-      using namespace Marmot::Math::Indices;
-      Math::FastorTensors::Tensor33t< T >
+      using namespace Marmot::Math::Tensors::FastorIndices;
+      Math::Tensors::FastorTensors::Tensor33t< T >
         b = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::leftCauchyGreen( F );
 
-      const Math::FastorTensors::Tensor3333t< T >
-        db_dF = einsum< ik, jK, to_ijkK >( Math::FastorTensors::Spatial3D::I, F ) +
-                einsum< iK, jk, to_ijkK >( F, Math::FastorTensors::Spatial3D::I );
+      const Math::Tensors::FastorTensors::Tensor3333t< T >
+        db_dF = einsum< ik, jK, to_ijkK >( Math::Tensors::FastorTensors::Spatial3D::I, F ) +
+                einsum< iK, jk, to_ijkK >( F, Math::Tensors::FastorTensors::Spatial3D::I );
 
       return { b, db_dF };
     }
@@ -165,7 +165,7 @@ namespace Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures {
       const Fastor::Tensor< double, nDim >&       N_x_dA0 )
     {
       using namespace Fastor;
-      using namespace Marmot::Math::Indices;
+      using namespace Marmot::Math::Tensors::FastorIndices;
 
       using TensorDd   = Tensor< double, nDim >;
       using TensorDDd  = Tensor< double, nDim, nDim >;
@@ -173,7 +173,7 @@ namespace Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures {
 
       const static TensorDDd Eye = []() {
         using namespace Fastor;
-        using namespace Marmot::Math::Indices;
+        using namespace Marmot::Math::Tensors::FastorIndices;
         TensorDDd I;
         I.eye();
         return I;
@@ -218,7 +218,7 @@ namespace Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures {
       const Fastor::Tensor< double, nDim >&       N_x_dA0 )
     {
       using namespace Fastor;
-      using namespace Marmot::Math::Indices;
+      using namespace Marmot::Math::Tensors::FastorIndices;
 
       using TensorDDd   = Tensor< double, nDim, nDim >;
       using TensorDDDDd = Tensor< double, nDim, nDim, nDim, nDim >;
@@ -252,7 +252,7 @@ namespace Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures {
       const Fastor::Tensor< double, nDim, nDim >& F )
     {
       using namespace Fastor;
-      using namespace Marmot::Math::Indices;
+      using namespace Marmot::Math::Tensors::FastorIndices;
 
       using TensorDDd   = Tensor< double, nDim, nDim >;
       using TensorDDDDd = Tensor< double, nDim, nDim, nDim, nDim >;

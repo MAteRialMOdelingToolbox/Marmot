@@ -33,10 +33,10 @@
 namespace Marmot::Math {
 
   template < typename T = double >
-  std::pair< Marmot::Math::FastorTensors::Tensor3t< T >, Marmot::Math::FastorTensors::Tensor33t< T > > computeEigenSystemJacobi(
-    const Marmot::Math::FastorTensors::Tensor33t< T >& A_in )
+  std::pair< Marmot::Math::Tensors::FastorTensors::Tensor3t< T >, Marmot::Math::Tensors::FastorTensors::Tensor33t< T > > computeEigenSystemJacobi(
+    const Marmot::Math::Tensors::FastorTensors::Tensor33t< T >& A_in )
   {
-    using namespace Marmot::Math::FastorTensors;
+    using namespace Marmot::Math::Tensors::FastorTensors;
 
     Tensor33t< T > A = A_in; // Copy to manipulate internally
     Tensor33t< T > V;
@@ -56,8 +56,8 @@ namespace Marmot::Math {
 
     for ( int sweep = 0; sweep < max_sweeps; ++sweep ) {
       // Evaluate primal sum of off-diagonals to check for convergence
-      double sm = std::abs( Math::makeReal( A( 0, 1 ) ) ) + std::abs( Math::makeReal( A( 0, 2 ) ) ) +
-                  std::abs( Math::makeReal( A( 1, 2 ) ) );
+      double sm = std::abs( Math::Tensors::makeReal( A( 0, 1 ) ) ) + std::abs( Math::Tensors::makeReal( A( 0, 2 ) ) ) +
+                  std::abs( Math::Tensors::makeReal( A( 1, 2 ) ) );
 
       if ( sm < 1e-13 )
         break; // Converged
@@ -66,13 +66,13 @@ namespace Marmot::Math {
       for ( int p = 0; p < 2; ++p ) {
         for ( int q = p + 1; q < 3; ++q ) {
 
-          double apq_real = std::abs( Math::makeReal( A( p, q ) ) );
+          double apq_real = std::abs( Math::Tensors::makeReal( A( p, q ) ) );
 
           // Only rotate if the off-diagonal is non-zero in the primal space
           if ( apq_real > 1e-14 ) {
             T      h = A( q, q ) - A( p, p );
             T      t;
-            double h_real = std::abs( Math::makeReal( h ) );
+            double h_real = std::abs( Math::Tensors::makeReal( h ) );
 
             // Prevent division by zero and catastrophic cancellation
             if ( apq_real < 1e-6 * h_real ) {
@@ -82,7 +82,7 @@ namespace Marmot::Math {
               T theta = T( 0.5 ) * h / A( p, q );
               T denom = sqrt( T( 1.0 ) + theta * theta );
               // Branch strictly on primal sign to maintain derivative continuity
-              if ( Math::makeReal( theta ) < 0.0 ) {
+              if ( Math::Tensors::makeReal( theta ) < 0.0 ) {
                 t = T( -1.0 ) / ( -theta + denom );
               }
               else {
@@ -132,7 +132,7 @@ namespace Marmot::Math {
     // Sort descending (must swap eigenvectors to match)
     for ( int i = 0; i < 2; ++i ) {
       for ( int j = i + 1; j < 3; ++j ) {
-        if ( Math::makeReal( eigenvalues( i ) ) < Math::makeReal( eigenvalues( j ) ) ) {
+        if ( Math::Tensors::makeReal( eigenvalues( i ) ) < Math::Tensors::makeReal( eigenvalues( j ) ) ) {
           std::swap( eigenvalues( i ), eigenvalues( j ) );
           for ( int r = 0; r < 3; ++r ) {
             std::swap( V( r, i ), V( r, j ) );
@@ -145,10 +145,10 @@ namespace Marmot::Math {
   }
 
   template < typename T = double >
-  std::pair< Marmot::Math::FastorTensors::Tensor3t< T >, Marmot::Math::FastorTensors::Tensor33t< T > > computeEigenSystemWithCardano(
-    const Marmot::Math::FastorTensors::Tensor33t< T >& A )
+  std::pair< Marmot::Math::Tensors::FastorTensors::Tensor3t< T >, Marmot::Math::Tensors::FastorTensors::Tensor33t< T > > computeEigenSystemWithCardano(
+    const Marmot::Math::Tensors::FastorTensors::Tensor33t< T >& A )
   {
-    using namespace Marmot::Math::FastorTensors;
+    using namespace Marmot::Math::Tensors::FastorTensors;
 
     const T trA = trace( A );
 
@@ -163,7 +163,7 @@ namespace Marmot::Math {
 
     // 1. SAFE BRANCHING: Use the primal value to check for isotropic/repeated states
     // This prevents the derivative of sqrt(-a) from exploding when 'a' approaches 0.
-    if ( std::abs( Math::makeReal( a ) ) < 1e-14 ) {
+    if ( std::abs( Math::Tensors::makeReal( a ) ) < 1e-14 ) {
       T root           = -p1 / 3.0;
       eigenvalues( 0 ) = root;
       eigenvalues( 1 ) = root;
@@ -179,7 +179,7 @@ namespace Marmot::Math {
       // but if we hardcode `aux = 1.0`, we kill the derivative.
       // A common AD trick is to let the dual library handle the clamp,
       // or re-assign with a zeroed dual part if exactly at the boundary.
-      double aux_real = Math::makeReal( aux );
+      double aux_real = Math::Tensors::makeReal( aux );
       if ( aux_real <= -1.0 ) {
         aux = T( -1.0 ); // Kills gradient at exact boundary to prevent NaN in acos derivative
       }
@@ -198,11 +198,11 @@ namespace Marmot::Math {
     }
 
     // Sort descending (using primal values for the logic operators)
-    if ( Math::makeReal( eigenvalues( 0 ) ) < Math::makeReal( eigenvalues( 1 ) ) )
+    if ( Math::Tensors::makeReal( eigenvalues( 0 ) ) < Math::Tensors::makeReal( eigenvalues( 1 ) ) )
       std::swap( eigenvalues( 0 ), eigenvalues( 1 ) );
-    if ( Math::makeReal( eigenvalues( 1 ) ) < Math::makeReal( eigenvalues( 2 ) ) )
+    if ( Math::Tensors::makeReal( eigenvalues( 1 ) ) < Math::Tensors::makeReal( eigenvalues( 2 ) ) )
       std::swap( eigenvalues( 1 ), eigenvalues( 2 ) );
-    if ( Math::makeReal( eigenvalues( 0 ) ) < Math::makeReal( eigenvalues( 1 ) ) )
+    if ( Math::Tensors::makeReal( eigenvalues( 0 ) ) < Math::Tensors::makeReal( eigenvalues( 1 ) ) )
       std::swap( eigenvalues( 0 ), eigenvalues( 1 ) );
 
     // ------------------------------------------------------------------
@@ -226,9 +226,9 @@ namespace Marmot::Math {
                   B[0][0] * B[1][1] - B[0][1] * B[1][0] };
 
       // 3. USE PRIMAL FOR NORM COMPARISONS, BUT PRESERVE `T` FOR THE DIVISION
-      double n1_real = Math::makeReal( T( sqrt( v1[0] * v1[0] + v1[1] * v1[1] + v1[2] * v1[2] ) ) );
-      double n2_real = Math::makeReal( T( sqrt( v2[0] * v2[0] + v2[1] * v2[1] + v2[2] * v2[2] ) ) );
-      double n3_real = Math::makeReal( T( sqrt( v3[0] * v3[0] + v3[1] * v3[1] + v3[2] * v3[2] ) ) );
+      double n1_real = Math::Tensors::makeReal( T( sqrt( v1[0] * v1[0] + v1[1] * v1[1] + v1[2] * v1[2] ) ) );
+      double n2_real = Math::Tensors::makeReal( T( sqrt( v2[0] * v2[0] + v2[1] * v2[1] + v2[2] * v2[2] ) ) );
+      double n3_real = Math::Tensors::makeReal( T( sqrt( v3[0] * v3[0] + v3[1] * v3[1] + v3[2] * v3[2] ) ) );
 
       double max_norm_real = n1_real;
       T*     best_v        = v1;
@@ -259,9 +259,9 @@ namespace Marmot::Math {
 
     auto make_orthogonal = []( const Tensor3t< T >& v, Tensor3t< T >& n ) {
       // Use real parts to find the smallest axis
-      double abs_x = std::abs( Math::makeReal( v( 0 ) ) );
-      double abs_y = std::abs( Math::makeReal( v( 1 ) ) );
-      double abs_z = std::abs( Math::makeReal( v( 2 ) ) );
+      double abs_x = std::abs( Math::Tensors::makeReal( v( 0 ) ) );
+      double abs_y = std::abs( Math::Tensors::makeReal( v( 1 ) ) );
+      double abs_z = std::abs( Math::Tensors::makeReal( v( 2 ) ) );
 
       Tensor3t< T > axis;
       axis( 0 ) = T( 0 );
@@ -287,13 +287,13 @@ namespace Marmot::Math {
 
     Tensor3t< T > e1, e2, e3;
 
-    double max_eig = std::max( { std::abs( Math::makeReal( eigenvalues( 0 ) ) ),
-                                 std::abs( Math::makeReal( eigenvalues( 1 ) ) ),
-                                 std::abs( Math::makeReal( eigenvalues( 2 ) ) ) } );
+    double max_eig = std::max( { std::abs( Math::Tensors::makeReal( eigenvalues( 0 ) ) ),
+                                 std::abs( Math::Tensors::makeReal( eigenvalues( 1 ) ) ),
+                                 std::abs( Math::Tensors::makeReal( eigenvalues( 2 ) ) ) } );
     double tol     = 1e-6 * std::max( max_eig, 1.0 );
 
-    bool root_01_repeated = std::abs( Math::makeReal( T( eigenvalues( 0 ) - eigenvalues( 1 ) ) ) ) < tol;
-    bool root_12_repeated = std::abs( Math::makeReal( T( eigenvalues( 1 ) - eigenvalues( 2 ) ) ) ) < tol;
+    bool root_01_repeated = std::abs( Math::Tensors::makeReal( T( eigenvalues( 0 ) - eigenvalues( 1 ) ) ) ) < tol;
+    bool root_12_repeated = std::abs( Math::Tensors::makeReal( T( eigenvalues( 1 ) - eigenvalues( 2 ) ) ) ) < tol;
 
     if ( root_01_repeated && root_12_repeated ) {
       e1( 0 ) = T( 1.0 );

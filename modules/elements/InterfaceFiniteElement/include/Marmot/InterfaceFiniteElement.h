@@ -667,12 +667,12 @@ namespace Marmot::Discretizations::Elements {
 
         material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
 
-        force          = Marmot::Math::mapEigenToFastor( materialState.force );
+        force          = Marmot::Math::Tensors::mapEigenToFastor( materialState.force );
         surface_stress = Eigen::Map< const SurfaceStressSized >( materialState.surfaceStress.data() );
-        Q_ij           = Marmot::Math::mapEigenToFastor( materialTangents.Q_ij );
-        H_ijk          = Marmot::Math::mapEigenToFastor( materialTangents.H_ijk );
-        Z_ijkl         = Marmot::Math::mapEigenToFastor( materialTangents.Z_ijkl );
-        Y_ijkl         = Marmot::Math::mapEigenToFastor( materialTangents.Y_ijkl );
+        Q_ij           = Marmot::Math::Tensors::mapEigenToFastor( materialTangents.Q_ij );
+        H_ijk          = Marmot::Math::Tensors::mapEigenToFastor( materialTangents.H_ijk );
+        Z_ijkl         = Marmot::Math::Tensors::mapEigenToFastor( materialTangents.Z_ijkl );
+        Y_ijkl         = Marmot::Math::Tensors::mapEigenToFastor( materialTangents.Y_ijkl );
       }
       else if constexpr ( nDim == 2 ) {
         using namespace Marmot;
@@ -680,13 +680,14 @@ namespace Marmot::Discretizations::Elements {
         /*
          * Marmot::Materials::InterfaceMaterialHypoElastic is fixed to 3D Fastor tensor types, so a 2D element has
          * to embed its quadrature-point state into the 3D layout and pull the response back out.
-         * Marmot::Math::expandTo3D / Marmot::Math::reduceTo2D do exactly that, and both place the 2D block at indices
-         * [0,2), which is the layout the material's tensors expect.
+         * Marmot::Math::Tensors::expandTo3D / Marmot::Math::Tensors::reduceTo2D do exactly that, and both place the 2D
+         * block at indices [0,2), which is the layout the material's tensors expect.
          */
-        Fastor::Tensor< double, 3 > force3d  = Marmot::Math::expandTo3D( Fastor::Tensor< double, 2 >( force.data() ) );
-        Fastor::Tensor< double, 3 > normal3d = Marmot::Math::expandTo3D(
+        Fastor::Tensor< double, 3 > force3d = Marmot::Math::Tensors::expandTo3D(
+          Fastor::Tensor< double, 2 >( force.data() ) );
+        Fastor::Tensor< double, 3 > normal3d = Marmot::Math::Tensors::expandTo3D(
           Fastor::Tensor< double, 2 >( qp.normal.data() ) );
-        Fastor::Tensor< double, 3, 3 > surfaceStress3d = Marmot::Math::expandTo3D(
+        Fastor::Tensor< double, 3, 3 > surfaceStress3d = Marmot::Math::Tensors::expandTo3D(
           Fastor::Tensor< double, 2, 2 >( surface_stress.data() ) );
 
         // the jump and surface-gradient buffers carry one block per interface side
@@ -694,9 +695,9 @@ namespace Marmot::Discretizations::Elements {
         Eigen::Matrix< double, 18, 1 > dSurfaceStrain3d = Eigen::Matrix< double, 18, 1 >::Zero();
 
         for ( int side = 0; side < 2; ++side ) {
-          const Fastor::Tensor< double, 3 > dUSide3d = Marmot::Math::expandTo3D(
+          const Fastor::Tensor< double, 3 > dUSide3d = Marmot::Math::Tensors::expandTo3D(
             Fastor::Tensor< double, 2 >( dU_GPs.data() + side * nDim ) );
-          const Fastor::Tensor< double, 3, 3 > dSurfaceStrainSide3d = Marmot::Math::expandTo3D(
+          const Fastor::Tensor< double, 3, 3 > dSurfaceStrainSide3d = Marmot::Math::Tensors::expandTo3D(
             Fastor::Tensor< double, 2, 2 >( dSurface_strain_GPs.data() + side * nTensor ) );
 
           dU3d.template segment< 3 >( side * 3 ) = Eigen::Map< const Eigen::Matrix< double, 3, 1 > >( dUSide3d.data() );
@@ -716,26 +717,34 @@ namespace Marmot::Discretizations::Elements {
 
         material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
 
-        const Fastor::Tensor< double, 2 > force2d = Marmot::Math::reduceTo2D< Marmot::Math::U >( materialState.force );
+        const Fastor::Tensor< double, 2 > force2d = Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U >(
+          materialState.force );
         const Fastor::Tensor< double, 2, 2 >
-          surfaceStress2d = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >( materialState.surfaceStress );
-        const Fastor::Tensor< double, 2, 2 > Q2d = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >(
-          materialTangents.Q_ij );
-        const Fastor::Tensor< double, 2, 2, 2 >
-          H2d = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >( materialTangents.H_ijk );
-        const Fastor::Tensor< double, 2, 2, 2, 2 >
-          Z2d = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >(
-            materialTangents.Z_ijkl );
-        const Fastor::Tensor< double, 2, 2, 2, 2 >
-          Y2d = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >(
-            materialTangents.Y_ijkl );
+          surfaceStress2d = Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U, Marmot::Math::Tensors::U >(
+            materialState.surfaceStress );
+        const Fastor::Tensor< double, 2, 2 >
+          Q2d = Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U, Marmot::Math::Tensors::U >(
+            materialTangents.Q_ij );
+        const Fastor::Tensor< double, 2, 2, 2 > H2d = Marmot::Math::Tensors::
+          reduceTo2D< Marmot::Math::Tensors::U, Marmot::Math::Tensors::U, Marmot::Math::Tensors::U >(
+            materialTangents.H_ijk );
+        const Fastor::Tensor< double, 2, 2, 2, 2 > Z2d = Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U,
+                                                                                            Marmot::Math::Tensors::U,
+                                                                                            Marmot::Math::Tensors::U,
+                                                                                            Marmot::Math::Tensors::U >(
+          materialTangents.Z_ijkl );
+        const Fastor::Tensor< double, 2, 2, 2, 2 > Y2d = Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U,
+                                                                                            Marmot::Math::Tensors::U,
+                                                                                            Marmot::Math::Tensors::U,
+                                                                                            Marmot::Math::Tensors::U >(
+          materialTangents.Y_ijkl );
 
-        force          = Marmot::Math::mapEigenToFastor( force2d );
+        force          = Marmot::Math::Tensors::mapEigenToFastor( force2d );
         surface_stress = Eigen::Map< const SurfaceStressSized >( surfaceStress2d.data() );
-        Q_ij           = Marmot::Math::mapEigenToFastor( Q2d );
-        H_ijk          = Marmot::Math::mapEigenToFastor( H2d );
-        Z_ijkl         = Marmot::Math::mapEigenToFastor( Z2d );
-        Y_ijkl         = Marmot::Math::mapEigenToFastor( Y2d );
+        Q_ij           = Marmot::Math::Tensors::mapEigenToFastor( Q2d );
+        H_ijk          = Marmot::Math::Tensors::mapEigenToFastor( H2d );
+        Z_ijkl         = Marmot::Math::Tensors::mapEigenToFastor( Z2d );
+        Y_ijkl         = Marmot::Math::Tensors::mapEigenToFastor( Y2d );
       }
 
       qp.managedStateVars->force         = force;

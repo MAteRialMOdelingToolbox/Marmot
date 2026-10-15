@@ -29,7 +29,7 @@
 #include "Marmot/MarmotTensor.h"
 #include <autodiff/forward/dual/dual.hpp>
 
-namespace Marmot::Math {
+namespace Marmot::Math::Tensors {
 
   /**
    * @brief Compile-time trait to detect whether a pack of tensor dimensions describes a square rank-2 tensor
@@ -133,7 +133,7 @@ namespace Marmot::Math {
 
   }   // namespace FastorTensors
 
-  namespace Indices {
+  namespace FastorIndices {
     enum IndexTag { i_, j_, k_, l_, m_, n_, o_, p_, A_, B_, I_, J_, K_, L_, M_, N_, P_ };
 
     using A      = Fastor::Index< A_ >;
@@ -329,7 +329,7 @@ namespace Marmot::Math {
     using to_kK     = Fastor::OIndex< k_, K_ >;
     using to_kL     = Fastor::OIndex< k_, L_ >;
     using to_ijklmn = Fastor::OIndex< i_, j_, k_, l_, m_, n_ >;
-  } // namespace Indices
+  } // namespace FastorIndices
 
   /**
    * @brief Map a Fastor Tensor (const) to an Eigen Map (row-major, const)
@@ -814,4 +814,4 @@ namespace Marmot::Math {
    * function for second order tensors.
    */
   FastorTensors::Tensor3333d invertMinorSymmetricFourthOrderTensor( const FastorTensors::Tensor3333d& C );
-} // namespace Marmot::Math
+} // namespace Marmot::Math::Tensors

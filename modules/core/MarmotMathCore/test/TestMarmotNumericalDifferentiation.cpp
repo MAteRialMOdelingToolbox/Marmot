@@ -5,7 +5,7 @@
 #include "Marmot/MarmotConstants.h"
 
 using namespace Marmot::Testing;
-using namespace Marmot::Math::NumericalDifferentiation;
+using namespace Marmot::Math::Differentiation::Numerical;
 
 // test numeric differentiation for scalar functions
 void testNumericDifferentiationForScalars()

@@ -14,7 +14,7 @@
 using namespace Marmot;
 using namespace Marmot::Discretizations::Elements;
 using namespace Marmot::Testing;
-namespace NumDiff = Marmot::Math::NumericalDifferentiation;
+namespace NumDiff = Marmot::Math::Differentiation::Numerical;
 
 void testBasicPropertiesQuad4PlaneStress()
 {

@@ -965,7 +965,7 @@ namespace Marmot::Discretizations::Meshfree {
     [[maybe_unused]] double dT )     // Marked as unused
   {
     using namespace Fastor;
-    using namespace Marmot::Math::Indices;
+    using namespace Marmot::Math::Tensors::FastorIndices;
     constexpr int nodeBlockSize = nDim;
     // update central deformation and displacement.
     TensorD  _du_center( 0.0 );

@@ -132,7 +132,7 @@ void test_makeReal()
   // Testcase 1: Input is a complex number
   {
     std::complex< double > complexInput( 3.0, 4.0 );
-    double                 computed = Marmot::Math::makeReal( complexInput );
+    double                 computed = Marmot::Math::Tensors::makeReal( complexInput );
     double                 expected = 3.0; // real part of the complex number
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
@@ -141,7 +141,7 @@ void test_makeReal()
   // Testcase 2: Input is an autodiff::real
   {
     autodiff::real realInput = 5.5;
-    double         computed  = Marmot::Math::makeReal( realInput );
+    double         computed  = Marmot::Math::Tensors::makeReal( realInput );
     double         expected  = 5.5;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
@@ -150,7 +150,7 @@ void test_makeReal()
   // Testcase 3: Input is an autodiff::dual
   {
     autodiff::dual dualInput = 7.7;
-    double         computed  = Marmot::Math::makeReal( dualInput );
+    double         computed  = Marmot::Math::Tensors::makeReal( dualInput );
     double         expected  = 7.7;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
@@ -159,7 +159,7 @@ void test_makeReal()
   // Testcase 4: Input is a plain double
   {
     double doubleInput = 9.9;
-    double computed    = Marmot::Math::makeReal( doubleInput );
+    double computed    = Marmot::Math::Tensors::makeReal( doubleInput );
     double expected    = 9.9;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 4" );
@@ -170,7 +170,7 @@ void test_makeReal()
     Eigen::Matrix< autodiff::dual, 2, 2 > matrixInput;
     matrixInput << autodiff::dual( 1.1 ), autodiff::dual( 2.2 ), autodiff::dual( 3.3 ), autodiff::dual( 4.4 );
 
-    Eigen::Matrix< double, 2, 2 > computed = Marmot::Math::makeReal( matrixInput );
+    Eigen::Matrix< double, 2, 2 > computed = Marmot::Math::Tensors::makeReal( matrixInput );
 
     Eigen::Matrix< double, 2, 2 > expected;
     // clang-format off
@@ -187,7 +187,7 @@ void test_makeReal()
     Eigen::Vector< autodiff::real, Eigen::Dynamic > vectorInput( 3 );
     vectorInput << autodiff::real( 1.5 ), autodiff::real( 2.5 ), autodiff::real( 3.5 );
 
-    Eigen::VectorXd computed = Marmot::Math::makeReal( vectorInput );
+    Eigen::VectorXd computed = Marmot::Math::Tensors::makeReal( vectorInput );
 
     Eigen::VectorXd expected( 3 );
     expected << 1.5, 2.5, 3.5;
@@ -205,7 +205,7 @@ void test_makeReal()
                    7.7, 8.8, 9.9;
     // clang-format on
 
-    Eigen::Matrix< double, 3, 3 > computed = Marmot::Math::makeReal( matrixInput );
+    Eigen::Matrix< double, 3, 3 > computed = Marmot::Math::Tensors::makeReal( matrixInput );
 
     Eigen::Matrix< double, 3, 3 > expected;
     // clang-format off

@@ -4,7 +4,7 @@
 #include "Marmot/MarmotTesting.h"
 
 using namespace Marmot::Testing;
-using namespace Marmot::Math::FastorTensors;
+using namespace Marmot::Math::Tensors::FastorTensors;
 
 Tensor33d make_dGp()
 {

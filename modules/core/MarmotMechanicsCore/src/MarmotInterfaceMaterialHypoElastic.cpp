@@ -14,8 +14,8 @@
 #include <string>
 
 using namespace Marmot;
-using namespace Marmot::Math::Indices;
-using namespace Marmot::Math::FastorTensors;
+using namespace Marmot::Math::Tensors::FastorIndices;
+using namespace Marmot::Math::Tensors::FastorTensors;
 
 Marmot::Materials::InterfaceMaterialHypoElastic::InterfaceMaterialHypoElastic( const std::string& materialName,
                                                                                const double*      matProperties_,
@@ -84,9 +84,9 @@ void Marmot::Materials::InterfaceMaterialHypoElastic::computeStress( State&     
   const Tensor33d strainIncrement = 0.5 * ( displacementGradient + Fastor::transpose( displacementGradient ) );
 
   const Marmot::Math::Vector6d strainIncrementVoigt = ContinuumMechanics::VoigtNotation::strainToVoigt(
-    Marmot::Math::mapEigenToFastor( strainIncrement ) );
+    Marmot::Math::Tensors::mapEigenToFastor( strainIncrement ) );
 
-  const auto                   scaledStressCurrent = Marmot::Math::mapEigenToFastor( state.surfaceStress );
+  const auto                   scaledStressCurrent = Marmot::Math::Tensors::mapEigenToFastor( state.surfaceStress );
   const Eigen::Matrix3d        scaledStressSym     = 0.5 * ( scaledStressCurrent + scaledStressCurrent.transpose() );
   const Marmot::Math::Vector6d stressVoigt         = ( 1. / h ) *
                                              ContinuumMechanics::VoigtNotation::stressToVoigt( scaledStressSym );
@@ -105,8 +105,8 @@ void Marmot::Materials::InterfaceMaterialHypoElastic::computeStress( State&     
   H_ijk             = H;
   Y_ijkl            = h * Y;
 
-  Marmot::Math::mapEigenToFastor( surfaceStress ) = h * ContinuumMechanics::VoigtNotation::voigtToStress(
-                                                          baseState.stress );
+  Marmot::Math::Tensors::mapEigenToFastor( surfaceStress ) = h * ContinuumMechanics::VoigtNotation::voigtToStress(
+                                                                   baseState.stress );
   force = ( 1. / h ) * Fastor::einsum< ij, j, to_i >( surfaceStress, normal );
 }
 

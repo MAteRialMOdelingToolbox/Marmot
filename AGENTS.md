@@ -45,7 +45,7 @@ All code lives in the global `Marmot` namespace. The second level is a **closed 
 | Namespace | Contents |
 |---|---|
 | `Marmot::Utilities` | Journal, MakeString, exceptions, state bookkeeping (`StateMapper`, `StateView`, `StateLayoutDynamic`, `StateVarVectorManager`) |
-| `Marmot::Math` | Pure numerics: `Constants`, `Tensors` (Eigen), `FastorTensors`, `Indices` (einsum index symbols), `AutomaticDifferentiation`, `NumericalDifferentiation`, `Integration`, `TensorExponential`, eigen systems, basis functions |
+| `Marmot::Math` | Pure numerics: `Constants`, `Tensors` (all tensor types and functions, with `::FastorTensors`, `::FastorIndices` for einsum index symbols, `::TensorExponential`), `Differentiation` (`::Automatic`, `::Numerical`), `Integration`, plus root-level linear-algebra typedefs (`Vector6d`, `Matrix6d`, …), general math functions, eigen systems and basis functions |
 | `Marmot::ContinuumMechanics` | Constitutive theory in descriptive topic sub-namespaces: `VoigtNotation`, `Elasticity`, `Kinematics`, `HaighWestergaard`, `CommonConstitutiveModels`, `Viscoelasticity`, `FiniteStrain`, `GradientDamage`, `PhaseField`, `LocalizationAnalysis`, `GeostaticStress`, `TimeIntegration`, `Algorithms` (substeppers/return mapping) |
 | `Marmot::Materials` | Material base classes (`MaterialHypoElastic`, `MaterialFiniteStrain`, …), all concrete materials, material helpers (`KelvinChain`, `Wiechert`, `SolidificationTheory`), material-point solvers |
 | `Marmot::Discretizations` | Everything spatial: `::Elements` (FE bases, shape functions, quadrature, concrete elements), `::Meshfree` (RKPM, particles), `::MaterialPoints`, `::Cells`. Root holds `MaterialSection`, `ElementProperties` |
@@ -62,7 +62,7 @@ Rules:
 6. Base classes at the root of their audience namespace; concrete implementations beside their base; factories in `Registry`.
 7. Registration statics go in **unnamed namespaces** in `src/<Name>Registration.cpp`.
 8. C++17 nested namespace syntax only (`namespace Marmot::ContinuumMechanics::Elasticity {`); namespaces are PascalCase.
-9. No `using namespace` and no using-declarations at global or namespace scope in headers — function bodies and class scope only. (Sanctioned exception: `Marmot::Math::AutomaticDifferentiation` imports `autodiff` inside its own leaf namespace.) `Marmot::Math::Indices` exists precisely for function-local `using namespace` in einsum-heavy code.
+9. No `using namespace` and no using-declarations at global or namespace scope in headers — function bodies and class scope only. (Sanctioned exception: `Marmot::Math::Differentiation::Automatic` imports `autodiff` inside its own leaf namespace.) `Marmot::Math::Tensors::FastorIndices` exists precisely for function-local `using namespace` in einsum-heavy code.
 
 `scripts/checkNamespaceConventions.sh` greps for violations; CI treats findings as errors.
 

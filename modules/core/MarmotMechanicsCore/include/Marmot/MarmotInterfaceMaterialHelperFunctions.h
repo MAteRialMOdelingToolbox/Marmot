@@ -32,10 +32,10 @@
 
 namespace Marmot::Materials::InterfaceMaterialHelperFunctions {
 
-  using Marmot::Math::FastorTensors::Tensor3333d;
-  using Marmot::Math::FastorTensors::Tensor333d;
-  using Marmot::Math::FastorTensors::Tensor33d;
-  using Marmot::Math::FastorTensors::Tensor3d;
+  using Marmot::Math::Tensors::FastorTensors::Tensor3333d;
+  using Marmot::Math::Tensors::FastorTensors::Tensor333d;
+  using Marmot::Math::Tensors::FastorTensors::Tensor33d;
+  using Marmot::Math::Tensors::FastorTensors::Tensor3d;
 
   /**
    * @brief Computes the geometry-system coupling tensors for an interface.

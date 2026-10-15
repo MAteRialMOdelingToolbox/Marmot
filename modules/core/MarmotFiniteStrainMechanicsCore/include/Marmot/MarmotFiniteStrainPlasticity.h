@@ -55,15 +55,13 @@ namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration 
    *  @return Incremental plastic deformation gradient.
    */
   template < typename T >
-  Math::FastorTensors::Tensor33t< T > exponentialMap( const Math::FastorTensors::Tensor33t< T >& dGp )
+  Math::Tensors::FastorTensors::Tensor33t< T > exponentialMap( const Math::Tensors::FastorTensors::Tensor33t< T >& dGp )
   {
     using namespace Fastor;
-    using namespace Marmot::Math::Indices;
-    const Math::FastorTensors::Tensor33t< T > dFpT = Marmot::Math::TensorExponential::computeTensorExponential( dGp,
-                                                                                                                15,
-                                                                                                                1e-14,
-                                                                                                                1e-14 );
-    const Math::FastorTensors::Tensor33t< T > out  = permute< Index< 1, 0 > >( dFpT );
+    using namespace Marmot::Math::Tensors::FastorIndices;
+    const Math::Tensors::FastorTensors::Tensor33t< T >
+      dFpT = Marmot::Math::Tensors::TensorExponential::computeTensorExponential( dGp, 15, 1e-14, 1e-14 );
+    const Math::Tensors::FastorTensors::Tensor33t< T > out = permute< Index< 1, 0 > >( dFpT );
     return out;
   }
 
@@ -85,18 +83,19 @@ namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration 
    *  @return Incremental plastic deformation gradient.
    */
   template < typename T >
-  Math::FastorTensors::Tensor33t< T > exponentialMapScalingAndSquaring( const Math::FastorTensors::Tensor33t< T >& dGp )
+  Math::Tensors::FastorTensors::Tensor33t< T > exponentialMapScalingAndSquaring(
+    const Math::Tensors::FastorTensors::Tensor33t< T >& dGp )
   {
     using namespace Fastor;
-    using namespace Marmot::Math::Indices;
+    using namespace Marmot::Math::Tensors::FastorIndices;
     double norm2 = 0.0;
     for ( int i = 0; i < 9; i++ )
-      norm2 += std::pow( std::abs( Math::makeReal( dGp.data()[i] ) ), 2 );
+      norm2 += std::pow( std::abs( Math::Tensors::makeReal( dGp.data()[i] ) ), 2 );
     const int s = norm2 > 0.25 ? int( std::ceil( std::log2( std::sqrt( norm2 ) / 0.5 ) ) ) : 0;
-    Math::FastorTensors::Tensor33t< T > dFp = exponentialMap( Math::FastorTensors::Tensor33t< T >(
-      Marmot::Math::multiplyFastorTensorWithScalar( dGp, T( std::ldexp( 1.0, -s ) ) ) ) );
+    Math::Tensors::FastorTensors::Tensor33t< T > dFp = exponentialMap( Math::Tensors::FastorTensors::Tensor33t< T >(
+      Marmot::Math::Tensors::multiplyFastorTensorWithScalar( dGp, T( std::ldexp( 1.0, -s ) ) ) ) );
     for ( int k = 0; k < s; k++ )
-      dFp = Math::FastorTensors::Tensor33t< T >( dFp % dFp );
+      dFp = Math::Tensors::FastorTensors::Tensor33t< T >( dFp % dFp );
     return dFp;
   }
 
@@ -114,8 +113,8 @@ namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration 
      *  @return A pair of the incremental plastic deformation gradient and its derivative w.r.t. the plastic
      * velocity gradient.
      */
-    std::pair< Math::FastorTensors::Tensor33d, Math::FastorTensors::Tensor3333d > explicitIntegration(
-      const Math::FastorTensors::Tensor33d& deltaGp );
+    std::pair< Math::Tensors::FastorTensors::Tensor33d, Math::Tensors::FastorTensors::Tensor3333d > explicitIntegration(
+      const Math::Tensors::FastorTensors::Tensor33d& deltaGp );
 
     /** Computes the incremental plastic deformation gradient from the plastic velocity gradient
      *  using the exponential map.
@@ -130,8 +129,8 @@ namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration 
      *  @return A pair of the incremental plastic deformation gradient and its derivative w.r.t. the plastic
      * velocity gradient.
      */
-    std::pair< Math::FastorTensors::Tensor33d, Math::FastorTensors::Tensor3333d > exponentialMap(
-      const Math::FastorTensors::Tensor33d& deltaGp );
+    std::pair< Math::Tensors::FastorTensors::Tensor33d, Math::Tensors::FastorTensors::Tensor3333d > exponentialMap(
+      const Math::Tensors::FastorTensors::Tensor33d& deltaGp );
   } // namespace FirstOrder
 
 } // namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration

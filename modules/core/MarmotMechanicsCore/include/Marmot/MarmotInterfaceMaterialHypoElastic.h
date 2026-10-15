@@ -55,12 +55,12 @@ namespace Marmot::Materials {
     std::unique_ptr< MaterialHypoElastic > baseMaterial; ///< hypoelastic material of the bulk
 
   public:
-    using Tensor3d    = Marmot::Math::FastorTensors::Tensor3d;    ///< first order tensor in 3D
-    using Tensor33d   = Marmot::Math::FastorTensors::Tensor33d;   ///< second order tensor in 3D
-    using Tensor333d  = Marmot::Math::FastorTensors::Tensor333d;  ///< third order tensor in 3D
-    using Tensor3333d = Marmot::Math::FastorTensors::Tensor3333d; ///< fourth order tensor in 3D
-    using Tensor6d    = Marmot::Math::FastorTensors::Tensor6d;    ///< vector of six components, one block per side
-    using Tensor18d   = Marmot::Math::FastorTensors::Tensor18d;   ///< vector of 18 components, one block per side
+    using Tensor3d    = Marmot::Math::Tensors::FastorTensors::Tensor3d;    ///< first order tensor in 3D
+    using Tensor33d   = Marmot::Math::Tensors::FastorTensors::Tensor33d;   ///< second order tensor in 3D
+    using Tensor333d  = Marmot::Math::Tensors::FastorTensors::Tensor333d;  ///< third order tensor in 3D
+    using Tensor3333d = Marmot::Math::Tensors::FastorTensors::Tensor3333d; ///< fourth order tensor in 3D
+    using Tensor6d  = Marmot::Math::Tensors::FastorTensors::Tensor6d;  ///< vector of six components, one block per side
+    using Tensor18d = Marmot::Math::Tensors::FastorTensors::Tensor18d; ///< vector of 18 components, one block per side
 
     /// number of the material
     const int materialNumber;

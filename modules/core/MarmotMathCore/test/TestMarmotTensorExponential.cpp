@@ -13,20 +13,18 @@ void test_tensorExponential()
 
   Fastor::Tensor< double, 2, 2 > tensor2d = { { .1, 0. }, { 0., .2 } };
 
-  const auto tExp2D = Marmot::Math::TensorExponential::computeTensorExponential< double, 2 >( tensor2d,
-                                                                                              2000,
-                                                                                              1e-8,
-                                                                                              1e-8 );
+  const auto tExp2D = Marmot::Math::Tensors::TensorExponential::computeTensorExponential< double, 2 >( tensor2d,
+                                                                                                       2000,
+                                                                                                       1e-8,
+                                                                                                       1e-8 );
 
   throwExceptionOnFailure( checkIfEqual( ( tExp2D( 0, 0 ) ), std::exp( 0.1 ), 1e-8 ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
   throwExceptionOnFailure( checkIfEqual( ( tExp2D( 1, 1 ) ), std::exp( 0.2 ), 1e-8 ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 
-  const auto [tExp2D_2,
-              tExp2D_2_d_dExp2D] = Marmot::Math::TensorExponential::FirstOrder::computeTensorExponential( tensor2d,
-                                                                                                          1000,
-                                                                                                          1e-10 );
+  const auto [tExp2D_2, tExp2D_2_d_dExp2D] = Marmot::Math::Tensors::TensorExponential::FirstOrder::
+    computeTensorExponential( tensor2d, 1000, 1e-10 );
 
   throwExceptionOnFailure( checkIfEqual( ( tExp2D_2_d_dExp2D( 0, 0, 0, 0 ) ), std::exp( 0.1 ), 1e-8 ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );

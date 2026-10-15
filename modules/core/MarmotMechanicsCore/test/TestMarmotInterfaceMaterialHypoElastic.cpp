@@ -13,7 +13,7 @@
 #include <string>
 #include <vector>
 
-using namespace Marmot::Math::FastorTensors;
+using namespace Marmot::Math::Tensors::FastorTensors;
 using namespace Fastor;
 
 using namespace Marmot::Testing;
@@ -63,8 +63,8 @@ namespace {
 
     interfaceMaterial.computeStress( state, tangents, deformation, timeIncrement );
 
-    response.force         = Marmot::Math::mapEigenToFastor( state.force );
-    response.surfaceStress = Marmot::Math::mapEigenToFastor( state.surfaceStress );
+    response.force         = Marmot::Math::Tensors::mapEigenToFastor( state.force );
+    response.surfaceStress = Marmot::Math::Tensors::mapEigenToFastor( state.surfaceStress );
     response.Q             = Eigen::Map< const Eigen::VectorXd >( tangents.Q_ij.data(), 9 );
     response.Z             = Eigen::Map< const Eigen::VectorXd >( tangents.Z_ijkl.data(), 81 );
     response.H             = Eigen::Map< const Eigen::VectorXd >( tangents.H_ijk.data(), 27 );
@@ -157,7 +157,7 @@ namespace {
       throwExceptionOnFailure( checkIfEqual< double >( interfaceStateVars, bulkStateVars, 1e-10 ),
                                materialName + ": interface state variables do not match bulk state variables." );
 
-      const Marmot::Math::FastorTensors::Tensor3d normalTensor( normal );
+      const Marmot::Math::Tensors::FastorTensors::Tensor3d normalTensor( normal );
       auto [expectedZ, expectedQ, expectedH, expectedY] = Marmot::Materials::InterfaceMaterialHelperFunctions::
         calculateInterfaceMaterialParameters( normalTensor, bulkTangent );
 
@@ -257,7 +257,7 @@ namespace {
   {
     // The (normal, nu) overload is the (normal, C) overload for the unit-modulus isotropic stiffness
     using Marmot::Materials::InterfaceMaterialHelperFunctions::calculateInterfaceMaterialParameters;
-    using Marmot::Math::FastorTensors::Tensor3d;
+    using Marmot::Math::Tensors::FastorTensors::Tensor3d;
 
     const double normals[3][3] = { { 0., 0., 1. },
                                    { 1., 0., 0. },

@@ -13,8 +13,8 @@ namespace Marmot::Materials {
 
   using namespace Marmot;
   using namespace Fastor;
-  using namespace Marmot::Math::Indices;
-  using namespace Marmot::Math::FastorTensors;
+  using namespace Marmot::Math::Tensors::FastorIndices;
+  using namespace Marmot::Math::Tensors::FastorTensors;
 
   FiniteStrainJ2Plasticity::FiniteStrainJ2Plasticity( const double* materialProperties,
                                                       int           nMaterialProperties,
@@ -75,8 +75,8 @@ namespace Marmot::Materials {
     using namespace Fastor;
     using namespace Eigen;
     using namespace autodiff;
-    using namespace Marmot::Math::Indices;
-    using namespace Marmot::Math::FastorTensors;
+    using namespace Marmot::Math::Tensors::FastorIndices;
+    using namespace Marmot::Math::Tensors::FastorTensors;
 
     Tensor33d FeTrial = deformation.F % Fastor::inverse( FpOld );
     double    betaP, dBetaP_dAlphaP;
@@ -202,8 +202,8 @@ namespace Marmot::Materials {
     using namespace Fastor;
     using namespace Eigen;
     using namespace autodiff;
-    using namespace Marmot::Math::Indices;
-    using namespace Marmot::Math::FastorTensors;
+    using namespace Marmot::Math::Tensors::FastorIndices;
+    using namespace Marmot::Math::Tensors::FastorTensors;
 
     Tensor33d FeTrial = deformation.F % Fastor::inverse( FpOld );
     double    betaP, dBetaP_dAlphaP;
@@ -229,7 +229,7 @@ namespace Marmot::Materials {
       /* std::tie( R, dR_dX ) = computeResidualVectorAndTangent( X, FeTrial,
        * alphaPOld ); */
       R     = computeResidualVector( X, FeTrial, alphaP );
-      dR_dX = Marmot::Math::NumericalDifferentiation::forwardDifference(
+      dR_dX = Marmot::Math::Differentiation::Numerical::forwardDifference(
         [&]( const VectorXd& X_ ) {
           VectorXd Xout = computeResidualVector( X_, FeTrial, alphaP );
           return Xout;
@@ -246,7 +246,7 @@ namespace Marmot::Materials {
           /* std::tie( R, dR_dX ) = computeResidualVectorAndTangent( X, FeTrial,
            * alphaPOld ); */
           R     = computeResidualVector( X, FeTrial, alphaP );
-          dR_dX = Marmot::Math::NumericalDifferentiation::forwardDifference(
+          dR_dX = Marmot::Math::Differentiation::Numerical::forwardDifference(
             [&]( const VectorXd& X_ ) {
               VectorXd Xout = computeResidualVector( X_, FeTrial, alphaP );
               return Xout;
@@ -283,7 +283,7 @@ namespace Marmot::Materials {
         return _dPsi_dCe;
       };
 
-      d2Psi_dCedCe = Marmot::Math::NumericalDifferentiation::TensorToTensor::forwardDifference( computeS, Ce, true );
+      d2Psi_dCedCe = Marmot::Math::Differentiation::Numerical::TensorToTensor::forwardDifference( computeS, Ce, true );
       std::tie( psi_, dPsi_dCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
         PenceGouPotentialB( Ce, K, G );
       // compute Kirchhoff stress
@@ -333,7 +333,7 @@ namespace Marmot::Materials {
         return _dPsi_dCe;
       };
 
-      d2Psi_dCedCe = Marmot::Math::NumericalDifferentiation::TensorToTensor::forwardDifference( computeS, Ce, true );
+      d2Psi_dCedCe = Marmot::Math::Differentiation::Numerical::TensorToTensor::forwardDifference( computeS, Ce, true );
 
       std::tie( psi_, dPsi_dCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
         PenceGouPotentialB( Ce, K, G );
@@ -369,8 +369,8 @@ namespace Marmot::Materials {
     using namespace Fastor;
     using namespace Eigen;
     using namespace autodiff;
-    using namespace Marmot::Math::Indices;
-    using namespace Marmot::Math::FastorTensors;
+    using namespace Marmot::Math::Tensors::FastorIndices;
+    using namespace Marmot::Math::Tensors::FastorTensors;
 
     Tensor33d FeTrial = deformation.F % Fastor::inverse( FpOld );
     double    betaP, dBetaP_dAlphaP;
@@ -396,7 +396,7 @@ namespace Marmot::Materials {
       /* std::tie( R, dR_dX ) = computeResidualVectorAndTangent( X, FeTrial,
        * alphaPOld ); */
       R     = computeResidualVector( X, FeTrial, alphaP );
-      dR_dX = Marmot::Math::NumericalDifferentiation::centralDifference(
+      dR_dX = Marmot::Math::Differentiation::Numerical::centralDifference(
         [&]( const VectorXd& X_ ) {
           VectorXd Xout = computeResidualVector( X_, FeTrial, alphaP );
           return Xout;
@@ -413,7 +413,7 @@ namespace Marmot::Materials {
           /* std::tie( R, dR_dX ) = computeResidualVectorAndTangent( X, FeTrial,
            * alphaPOld ); */
           R     = computeResidualVector( X, FeTrial, alphaP );
-          dR_dX = Marmot::Math::NumericalDifferentiation::centralDifference(
+          dR_dX = Marmot::Math::Differentiation::Numerical::centralDifference(
             [&]( const VectorXd& X_ ) {
               VectorXd Xout = computeResidualVector( X_, FeTrial, alphaP );
               return Xout;
@@ -450,7 +450,7 @@ namespace Marmot::Materials {
         return _dPsi_dCe;
       };
 
-      d2Psi_dCedCe = Marmot::Math::NumericalDifferentiation::TensorToTensor::centralDifference( computeS, Ce, true );
+      d2Psi_dCedCe = Marmot::Math::Differentiation::Numerical::TensorToTensor::centralDifference( computeS, Ce, true );
       std::tie( psi_, dPsi_dCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
         PenceGouPotentialB( Ce, K, G );
       // compute Kirchhoff stress
@@ -500,7 +500,7 @@ namespace Marmot::Materials {
         return _dPsi_dCe;
       };
 
-      d2Psi_dCedCe = Marmot::Math::NumericalDifferentiation::TensorToTensor::centralDifference( computeS, Ce, true );
+      d2Psi_dCedCe = Marmot::Math::Differentiation::Numerical::TensorToTensor::centralDifference( computeS, Ce, true );
 
       std::tie( psi_, dPsi_dCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
         PenceGouPotentialB( Ce, K, G );
@@ -539,8 +539,8 @@ namespace Marmot::Materials {
     using namespace Fastor;
     using namespace Eigen;
     using namespace autodiff;
-    using namespace Marmot::Math::Indices;
-    using namespace Marmot::Math::FastorTensors;
+    using namespace Marmot::Math::Tensors::FastorIndices;
+    using namespace Marmot::Math::Tensors::FastorTensors;
 
     Tensor33d FeTrial = deformation.F % Fastor::inverse( FpOld );
     double    betaP, dBetaP_dAlphaP;
@@ -566,7 +566,7 @@ namespace Marmot::Materials {
       /* std::tie( R, dR_dX ) = computeResidualVectorAndTangent( X, FeTrial,
        * alphaPOld ); */
       /* R     = computeResidualVector( X, FeTrial, alphaP ); */
-      std::tie( R, dR_dX ) = Marmot::Math::NumericalDifferentiation::Complex::forwardDifference(
+      std::tie( R, dR_dX ) = Marmot::Math::Differentiation::Numerical::Complex::forwardDifference(
         [&]( const VectorXcd& X_ ) {
           VectorXcd Xout = computeResidualVector( X_, FeTrial, alphaP );
           return Xout;
@@ -581,7 +581,7 @@ namespace Marmot::Materials {
 
           dX = -dR_dX.colPivHouseholderQr().solve( R );
           X += dX;
-          std::tie( R, dR_dX ) = Marmot::Math::NumericalDifferentiation::Complex::forwardDifference(
+          std::tie( R, dR_dX ) = Marmot::Math::Differentiation::Numerical::Complex::forwardDifference(
             [&]( const VectorXcd& X_ ) {
               VectorXcd Xout = computeResidualVector( X_, FeTrial, alphaP );
               return Xout;
@@ -620,9 +620,9 @@ namespace Marmot::Materials {
         return _dPsi_dCe;
       };
 
-      d2Psi_dCedCe = Marmot::Math::NumericalDifferentiation::Complex::TensorToTensor::forwardDifference( computeS,
-                                                                                                         Ce,
-                                                                                                         true );
+      d2Psi_dCedCe = Marmot::Math::Differentiation::Numerical::Complex::TensorToTensor::forwardDifference( computeS,
+                                                                                                           Ce,
+                                                                                                           true );
       std::tie( psi_, dPsi_dCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
         PenceGouPotentialB( Ce, K, G );
       // compute Kirchhoff stress
@@ -673,9 +673,9 @@ namespace Marmot::Materials {
         return _dPsi_dCe;
       };
 
-      d2Psi_dCedCe = Marmot::Math::NumericalDifferentiation::Complex::TensorToTensor::forwardDifference( computeS,
-                                                                                                         Ce,
-                                                                                                         true );
+      d2Psi_dCedCe = Marmot::Math::Differentiation::Numerical::Complex::TensorToTensor::forwardDifference( computeS,
+                                                                                                           Ce,
+                                                                                                           true );
 
       std::tie( psi_, dPsi_dCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
         PenceGouPotentialB( Ce, K, G );

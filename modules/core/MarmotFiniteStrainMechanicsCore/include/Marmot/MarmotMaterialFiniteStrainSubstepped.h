@@ -132,9 +132,10 @@ namespace Marmot::Materials {
 
       baseMaterial->initializeYourself( stateLayout.getPtr( stateVars, "materialstate" ), baseVarsCount );
 
-      Marmot::Math::FastorTensors::TensorMap33d
-        Fn = this->stateLayout.getAs< Marmot::Math::FastorTensors::TensorMap33d >( stateVars, "Substepping_F_n" );
-      memcpy( Fn.data(), Marmot::Math::FastorTensors::Spatial3D::I.data(), 9 * sizeof( double ) );
+      Marmot::Math::Tensors::FastorTensors::TensorMap33d
+        Fn = this->stateLayout.getAs< Marmot::Math::Tensors::FastorTensors::TensorMap33d >( stateVars,
+                                                                                            "Substepping_F_n" );
+      memcpy( Fn.data(), Marmot::Math::Tensors::FastorTensors::Spatial3D::I.data(), 9 * sizeof( double ) );
     }
 
     /**
@@ -157,7 +158,7 @@ namespace Marmot::Materials {
     {
       using namespace Fastor;
       using namespace Eigen;
-      using namespace Marmot::Math::NumericalDifferentiation;
+      using namespace Marmot::Math::Differentiation::Numerical;
 
       int nState = baseMaterial->getNumberOfRequiredStateVars();
 
@@ -224,7 +225,7 @@ namespace Marmot::Materials {
 
       // possibiblity to take fd tangent directly
       tangents.dTau_dF = reshape< 3, 3, 3, 3 >(
-        Fastor::transpose( Marmot::Math::FastorTensors::Tensor99d( dStress_dF_flat.data() ) ) );
+        Fastor::transpose( Marmot::Math::Tensors::FastorTensors::Tensor99d( dStress_dF_flat.data() ) ) );
 
       // Extract dState/dF_new
       sensitivities.dState_dF = dStressAndState_dF.block( 9, 0, nState, 9 );
@@ -259,10 +260,11 @@ namespace Marmot::Materials {
       using namespace Fastor;
       using namespace Eigen;
 
-      Math::FastorTensors::TensorMap33d
-        Fn_ref = this->stateLayout.getAs< Math::FastorTensors::TensorMap33d >( response.stateVars, "Substepping_F_n" );
-      const Math::FastorTensors::Tensor33d Fn  = Fn_ref;
-      const Math::FastorTensors::Tensor33d Fn1 = deformation.F;
+      Math::Tensors::FastorTensors::TensorMap33d
+        Fn_ref = this->stateLayout.getAs< Math::Tensors::FastorTensors::TensorMap33d >( response.stateVars,
+                                                                                        "Substepping_F_n" );
+      const Math::Tensors::FastorTensors::Tensor33d Fn  = Fn_ref;
+      const Math::Tensors::FastorTensors::Tensor33d Fn1 = deformation.F;
 
       int nBaseState = baseMaterial->getNumberOfRequiredStateVars();
 
@@ -277,9 +279,9 @@ namespace Marmot::Materials {
                                              response.dissipation,
                                              this->stateLayout.getPtr( response.stateVars, "materialstate" ) );
 
-      AlgorithmicModuli< 3 > subTangents      = { Math::FastorTensors::Tensor3333d( 0.0 ) };
+      AlgorithmicModuli< 3 > subTangents      = { Math::Tensors::FastorTensors::Tensor3333d( 0.0 ) };
       StateSensitivities     subSensitivities = { MatrixXd(), MatrixXd(), MatrixXd() };
-      Deformation< 3 >       subDef           = { Math::FastorTensors::Tensor33d( 0.0 ) };
+      Deformation< 3 >       subDef           = { Math::Tensors::FastorTensors::Tensor33d( 0.0 ) };
 
       for ( int i = 1; i <= nSubsteps; ++i ) {
         double xi = static_cast< double >( i ) / static_cast< double >( nSubsteps );

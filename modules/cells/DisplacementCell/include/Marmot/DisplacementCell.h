@@ -359,7 +359,7 @@ namespace Marmot::Discretizations::Cells {
   void DisplacementCell< nDim, nNodes, CellBase, GeometryCell >::interpolateFieldsToMaterialPoints(
     const double* dQ ) const
   {
-    using namespace Marmot::Math::Indices;
+    using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Fastor;
 
     const auto dQU = TensorMap< const double, nNodes, nDim >( dQ );
@@ -381,7 +381,7 @@ namespace Marmot::Discretizations::Cells {
                                                                                               double        dT ) const
   {
     using namespace Fastor;
-    using namespace Marmot::Math::Indices;
+    using namespace Marmot::Math::Tensors::FastorIndices;
 
     Tensor< double, nNodes, nDim > r_U( 0.0 );
 
@@ -490,7 +490,7 @@ namespace Marmot::Discretizations::Cells {
     case Pressure: {
 
       using namespace Fastor;
-      using namespace Marmot::Math::Indices;
+      using namespace Marmot::Math::Tensors::FastorIndices;
 
       TensorMap< double, nNodes, nDim > r_U( fExt_ );
 

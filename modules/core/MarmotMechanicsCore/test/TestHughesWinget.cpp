@@ -21,7 +21,7 @@ using namespace Marmot::ContinuumMechanics::Algorithms;
 
 void testPureStretchHasNoRotation()
 {
-  // FOld = I, FNew = a small Marmot::Math::symmetric (diagonal) stretch: no rotation should be detected.
+  // FOld = I, FNew = a small Marmot::Math::Tensors::symmetric (diagonal) stretch: no rotation should be detected.
   Eigen::Matrix3d FOld = Eigen::Matrix3d::Identity();
   Eigen::Matrix3d FNew = Eigen::Matrix3d::Identity();
   FNew( 0, 0 )         = 1.002;

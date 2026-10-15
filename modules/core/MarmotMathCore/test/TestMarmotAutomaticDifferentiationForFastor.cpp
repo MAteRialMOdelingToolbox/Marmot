@@ -6,9 +6,9 @@
 #include "Marmot/MarmotTesting.h"
 
 using namespace Fastor;
-using namespace Marmot::Math::AutomaticDifferentiation;
+using namespace Marmot::Math::Differentiation::Automatic;
 using namespace Marmot::Testing;
-using namespace Marmot::Math::FastorTensors;
+using namespace Marmot::Math::Tensors::FastorTensors;
 using namespace Marmot::ContinuumMechanics;
 
 void testTensorToScalar()
@@ -99,7 +99,7 @@ void testTensorToScalarWith2ndOrderDuals()
   // initialise F with identity tensor
   Tensor33d F;
   F.eye();
-  Tensor33t< autodiff::dual > F_dual = Marmot::Math::makeDual( F );
+  Tensor33t< autodiff::dual > F_dual = Marmot::Math::Tensors::makeDual( F );
 
   // seed F_dual to check if shifting to higher order duals works
   seed< 1 >( F_dual( 0, 0 ), 1 );
@@ -167,7 +167,7 @@ void testTensorToScalarWith2ndOrderDualsSymmetric()
   F( 0, 0 ) += 1e-3;
   F( 0, 1 ) += 2e-3;
   Tensor33d                   C = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( F );
-  Tensor33t< autodiff::dual > C_dual = Marmot::Math::makeDual( C );
+  Tensor33t< autodiff::dual > C_dual = Marmot::Math::Tensors::makeDual( C );
 
   const double K = 3500;
   const double G = 1000;
@@ -228,7 +228,8 @@ void testTensorToTensorSymmetric()
   // symmetry-exploiting path (which relies on that property) is applicable
   std::function< Tensor33t< autodiff::dual >( const Tensor33t< autodiff::dual >& ) > f =
     []( const Fastor::Tensor< autodiff::dual, 3, 3 >& C_ ) {
-      return Fastor::einsum< Marmot::Math::Indices::ij, Marmot::Math::Indices::jk >( C_, C_ );
+      return Fastor::einsum< Marmot::Math::Tensors::FastorIndices::ij, Marmot::Math::Tensors::FastorIndices::jk >( C_,
+                                                                                                                   C_ );
     };
 
   auto [Fval_full, dF_dC_full] = dF_dT( f, C );

@@ -33,22 +33,23 @@ namespace Marmot::ContinuumMechanics::FiniteStrain::Viscoelasticity {
     return MaxwellProperties( nMaxwell, gamma, sumGamma, tau );
   }
 
-  void evaluateGeneralizedMaxwellModel( Marmot::Math::FastorTensors::Tensor33d&           stress,
-                                        Marmot::Math::FastorTensors::Tensor3333d&         tangent,
-                                        const Marmot::Math::FastorTensors::Tensor333333d& dTangent_dDeformation,
-                                        const Marmot::Math::FastorTensors::Tensor3333d&   initialCompliance,
-                                        const Marmot::Math::FastorTensors::Tensor33d&     dStress,
-                                        const double                                      dT,
-                                        const MaxwellProperties&                          maxwellProperties,
-                                        double*                                           stateVars )
+  void evaluateGeneralizedMaxwellModel(
+    Marmot::Math::Tensors::FastorTensors::Tensor33d&           stress,
+    Marmot::Math::Tensors::FastorTensors::Tensor3333d&         tangent,
+    const Marmot::Math::Tensors::FastorTensors::Tensor333333d& dTangent_dDeformation,
+    const Marmot::Math::Tensors::FastorTensors::Tensor3333d&   initialCompliance,
+    const Marmot::Math::Tensors::FastorTensors::Tensor33d&     dStress,
+    const double                                               dT,
+    const MaxwellProperties&                                   maxwellProperties,
+    double*                                                    stateVars )
   {
 
     if ( maxwellProperties.nMaxwell == 0 )
       return;
 
     using namespace Fastor;
-    using namespace Marmot::Math::FastorTensors;
-    using namespace Marmot::Math::Indices;
+    using namespace Marmot::Math::Tensors::FastorTensors;
+    using namespace Marmot::Math::Tensors::FastorIndices;
 
     // copy of tangent to be incremented
     const Tensor3333d initialTangent = tangent;
@@ -99,20 +100,20 @@ namespace Marmot::ContinuumMechanics::FiniteStrain::Viscoelasticity {
     }
   }
 
-  void evaluateGeneralizedMaxwellModel( Marmot::Math::FastorTensors::Tensor33d&       stress,
-                                        Marmot::Math::FastorTensors::Tensor3333d&     tangent,
-                                        const Marmot::Math::FastorTensors::Tensor33d& dStress,
-                                        const double                                  dT,
-                                        const MaxwellProperties&                      maxwellProperties,
-                                        double*                                       stateVars )
+  void evaluateGeneralizedMaxwellModel( Marmot::Math::Tensors::FastorTensors::Tensor33d&       stress,
+                                        Marmot::Math::Tensors::FastorTensors::Tensor3333d&     tangent,
+                                        const Marmot::Math::Tensors::FastorTensors::Tensor33d& dStress,
+                                        const double                                           dT,
+                                        const MaxwellProperties&                               maxwellProperties,
+                                        double*                                                stateVars )
   {
 
     if ( maxwellProperties.nMaxwell == 0 )
       return;
 
     using namespace Fastor;
-    using namespace Marmot::Math::FastorTensors;
-    using namespace Marmot::Math::Indices;
+    using namespace Marmot::Math::Tensors::FastorTensors;
+    using namespace Marmot::Math::Tensors::FastorIndices;
 
     // copy of tangent to be incremented
     const Tensor3333d initialTangent = tangent;

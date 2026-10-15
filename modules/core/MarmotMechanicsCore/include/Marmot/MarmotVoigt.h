@@ -367,7 +367,7 @@ namespace Marmot::ContinuumMechanics::VoigtNotation {
    * (\f$ 3 \times 3 \times 3 \times 3 \f$ tensor).
    * @tparam FourthOrderTensorType Desired result type; cannot be deduced from @p voigtStiffness alone
    *         (the same input matrix type can be converted to either an Eigen or a Fastor result), so it
-   *         defaults to Marmot::Math::FastorTensors::Tensor3333d, the type most call sites want. Specify it
+   *         defaults to Marmot::Math::Tensors::FastorTensors::Tensor3333d, the type most call sites want. Specify it
    *         explicitly (e.g. `voigtToStiffness< Marmot::Math::Tensors::Tensor3333d >( m )`) to obtain an
    *         Eigen::TensorFixedSize result instead.
    * @tparam VoigtMatrixType Matrix type of @p voigtStiffness (e.g. Eigen::Matrix<double, 6, 6> or
@@ -376,7 +376,8 @@ namespace Marmot::ContinuumMechanics::VoigtNotation {
    * @return A fourth-order tensor of type @p FourthOrderTensorType representing the stiffness tensor.
    *         The dimensions of the tensor are \f$ 3 \times 3 \times 3 \times 3 \f$.
    */
-  template < typename FourthOrderTensorType = Marmot::Math::FastorTensors::Tensor3333d, typename VoigtMatrixType >
+  template < typename FourthOrderTensorType = Marmot::Math::Tensors::FastorTensors::Tensor3333d,
+             typename VoigtMatrixType >
   FourthOrderTensorType voigtToStiffness( const VoigtMatrixType& voigtStiffness )
   {
     using namespace Marmot::Math::Tensors::IndexNotation;
@@ -771,7 +772,7 @@ namespace Marmot::ContinuumMechanics::VoigtNotation {
       const T I1_ = I1( stress );
       const T I2_ = I2( stress );
       const T res = ( 1. / 3 ) * I1_ * I1_ - I2_;
-      return Marmot::Math::makeReal( res ) >= 0 ? res : T( 0.0 );
+      return Marmot::Math::Tensors::makeReal( res ) >= 0 ? res : T( 0.0 );
     }
 
     /**
@@ -872,7 +873,7 @@ namespace Marmot::ContinuumMechanics::VoigtNotation {
     template < typename T >
     Eigen::Matrix< T, 6, 1 > dRho_dStress( T rho, const Eigen::Matrix< T, 6, 1 >& stress )
     {
-      if ( Marmot::Math::makeReal( rho ) <= 1e-16 )
+      if ( Marmot::Math::Tensors::makeReal( rho ) <= 1e-16 )
         return Eigen::Matrix< T, 6, 1 >::Zero();
 
       Eigen::Matrix< T, 6, 1 > s = IDev * stress;
@@ -887,7 +888,7 @@ namespace Marmot::ContinuumMechanics::VoigtNotation {
     template < typename T >
     Eigen::Matrix< T, 6, 1 > dRhoStrain_dStrain( T rhoStrain, const Eigen::Matrix< T, 6, 1 >& strain )
     {
-      if ( Marmot::Math::makeReal( rhoStrain ) <= 1e-16 )
+      if ( Marmot::Math::Tensors::makeReal( rhoStrain ) <= 1e-16 )
         return Eigen::Matrix< T, 6, 1 >::Zero();
 
       Eigen::Matrix< T, 6, 1 > e = IDev * strain;
@@ -1267,7 +1268,7 @@ namespace Marmot::ContinuumMechanics::VoigtNotation::Derivatives {
     const T J2_ = Invariants::J2( stress );
     const T J3_ = Invariants::J3( stress );
 
-    if ( Math::makeReal( J2_ ) < 1e-12 ) {
+    if ( Math::Tensors::makeReal( J2_ ) < 1e-12 ) {
       // Hydrostatic axis regularization
       return T( 0.0 );
     }
@@ -1277,9 +1278,9 @@ namespace Marmot::ContinuumMechanics::VoigtNotation::Derivatives {
     T                                 theta = hw.theta;
 
     double threshold = 1e-10;
-    if ( Math::makeReal( theta ) <= threshold )
+    if ( Math::Tensors::makeReal( theta ) <= threshold )
       theta = T( threshold );
-    else if ( Math::makeReal( theta ) >= Math::Constants::Pi / 3. - threshold )
+    else if ( Math::Tensors::makeReal( theta ) >= Math::Constants::Pi / 3. - threshold )
       theta = T( Math::Constants::Pi / 3. - threshold );
 
     const T dThetadJ2 = 3 * Math::Constants::sqrt3 / 4 * J3_ / ( pow( J2_, 2.5 ) * sin( 3. * theta ) );
@@ -1291,7 +1292,7 @@ namespace Marmot::ContinuumMechanics::VoigtNotation::Derivatives {
   {
     const T J2_ = Invariants::J2( stress );
 
-    if ( Math::makeReal( J2_ ) < 1e-12 ) {
+    if ( Math::Tensors::makeReal( J2_ ) < 1e-12 ) {
       // Hydrostatic axis regularization
       return T( 0.0 );
     }
@@ -1301,9 +1302,9 @@ namespace Marmot::ContinuumMechanics::VoigtNotation::Derivatives {
     T                                 theta = hw.theta;
 
     double threshold = 1e-10;
-    if ( Math::makeReal( theta ) <= threshold )
+    if ( Math::Tensors::makeReal( theta ) <= threshold )
       theta = T( threshold );
-    else if ( Math::makeReal( theta ) >= Math::Constants::Pi / 3. - threshold )
+    else if ( Math::Tensors::makeReal( theta ) >= Math::Constants::Pi / 3. - threshold )
       theta = T( Math::Constants::Pi / 3. - threshold );
 
     const T dThetadJ3 = -Math::Constants::sqrt3 / 2. * 1. / ( pow( J2_, 1.5 ) * sin( 3. * theta ) );

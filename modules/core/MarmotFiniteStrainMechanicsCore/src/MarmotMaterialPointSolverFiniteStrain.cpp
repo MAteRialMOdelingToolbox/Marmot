@@ -9,7 +9,7 @@
 
 using namespace Marmot;
 using namespace Fastor;
-using namespace Marmot::Math::FastorTensors;
+using namespace Marmot::Math::Tensors::FastorTensors;
 
 namespace Marmot::Materials {
 
@@ -54,8 +54,9 @@ namespace Marmot::Materials {
     }
   }
 
-  void MaterialPointSolverFiniteStrain::setInitialState( const Marmot::Math::FastorTensors::Tensor33d& initialStress,
-                                                         const Eigen::VectorXd& initialStateVars )
+  void MaterialPointSolverFiniteStrain::setInitialState(
+    const Marmot::Math::Tensors::FastorTensors::Tensor33d& initialStress,
+    const Eigen::VectorXd&                                 initialStateVars )
   {
     _initialStress    = initialStress;
     _initialStateVars = initialStateVars;
@@ -255,10 +256,10 @@ namespace Marmot::Materials {
       HistoryEntry( increment.timeOld + increment.dT, stress, Spatial3D::I + gradU, dTau_dF, stateVars ) );
   }
 
-  Marmot::Math::FastorTensors::Tensor9d MaterialPointSolverFiniteStrain::computeResidual(
-    const Marmot::Math::FastorTensors::Tensor9d& stressIncrement,
-    const Marmot::Math::FastorTensors::Tensor9d& target,
-    const Increment&                             increment )
+  Marmot::Math::Tensors::FastorTensors::Tensor9d MaterialPointSolverFiniteStrain::computeResidual(
+    const Marmot::Math::Tensors::FastorTensors::Tensor9d& stressIncrement,
+    const Marmot::Math::Tensors::FastorTensors::Tensor9d& target,
+    const Increment&                                      increment )
   {
     Tensor9d residual = stressIncrement;
     // replace displacement gradient controlled components
@@ -271,8 +272,8 @@ namespace Marmot::Materials {
     return residual;
   }
 
-  void MaterialPointSolverFiniteStrain::modifyTangent( Marmot::Math::FastorTensors::Tensor99d& tangent,
-                                                       const Increment&                        increment )
+  void MaterialPointSolverFiniteStrain::modifyTangent( Marmot::Math::Tensors::FastorTensors::Tensor99d& tangent,
+                                                       const Increment&                                 increment )
   {
     // modify the tangent matrix based on control type
     for ( int i = 0; i < 9; i++ ) {

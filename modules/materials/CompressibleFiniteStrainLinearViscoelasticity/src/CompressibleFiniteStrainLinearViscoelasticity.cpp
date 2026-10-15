@@ -17,8 +17,8 @@ namespace Marmot::Materials {
 
   using namespace Marmot;
   using namespace Fastor;
-  using namespace Marmot::Math::Indices;
-  using namespace Marmot::Math::FastorTensors;
+  using namespace Marmot::Math::Tensors::FastorIndices;
+  using namespace Marmot::Math::Tensors::FastorTensors;
 
   double CompressibleFiniteStrainLinearViscoelasticity::getDensity( const double* stateVars ) const
   {
@@ -33,18 +33,18 @@ namespace Marmot::Materials {
   }
 
   std::tuple< double,
-              Marmot::Math::FastorTensors::Tensor33d,
-              Marmot::Math::FastorTensors::Tensor3333d,
-              Marmot::Math::FastorTensors::Tensor333333d >
+              Marmot::Math::Tensors::FastorTensors::Tensor33d,
+              Marmot::Math::Tensors::FastorTensors::Tensor3333d,
+              Marmot::Math::Tensors::FastorTensors::Tensor333333d >
   CompressibleFiniteStrainLinearViscoelasticity::computeEnergyDensityAndDerivatives(
-    const Marmot::Math::FastorTensors::Tensor33d& C ) const
+    const Marmot::Math::Tensors::FastorTensors::Tensor33d& C ) const
   {
 
     // select hyperelastic base
     // compute enregy density and derivatives
     // with autodiff
     // we need a function mapping from tensor33 with dual3rd to dual3rd
-    std::function< autodiff::dual3rd( const Marmot::Math::FastorTensors::Tensor33t< autodiff::dual3rd >& ) >
+    std::function< autodiff::dual3rd( const Marmot::Math::Tensors::FastorTensors::Tensor33t< autodiff::dual3rd >& ) >
       energyDensityFunction;
 
     switch ( hyperelasticBase ) {
@@ -52,35 +52,38 @@ namespace Marmot::Materials {
       return ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::ThirdOrder::
         standardNeoHooke( C, elasticProperties[0], elasticProperties[1] );
     case PenceGouNeoHooke:
-      energyDensityFunction = [this]( const Marmot::Math::FastorTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
-        autodiff::dual3rd res = ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::PenceGouPotentialB<
-          autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1] );
-        return res;
-      };
+      energyDensityFunction =
+        [this]( const Marmot::Math::Tensors::FastorTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
+          autodiff::dual3rd res = ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::PenceGouPotentialB<
+            autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1] );
+          return res;
+        };
       break;
     case Yeoh:
-      energyDensityFunction = [this]( const Marmot::Math::FastorTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
-        autodiff::dual3rd res = ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::YeohPotential<
-          autodiff::dual3rd >( C_ad,
-                               elasticProperties[0],
-                               elasticProperties[1],
-                               elasticProperties[2],
-                               elasticProperties[3] );
-        return res;
-      };
+      energyDensityFunction =
+        [this]( const Marmot::Math::Tensors::FastorTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
+          autodiff::dual3rd res = ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::YeohPotential<
+            autodiff::dual3rd >( C_ad,
+                                 elasticProperties[0],
+                                 elasticProperties[1],
+                                 elasticProperties[2],
+                                 elasticProperties[3] );
+          return res;
+        };
       break;
     case MooneyRivlin:
-      energyDensityFunction = [this]( const Marmot::Math::FastorTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
-        autodiff::dual3rd res = ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::MooneyRivlinPotential<
-          autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1], elasticProperties[2] );
-        return res;
-      };
+      energyDensityFunction =
+        [this]( const Marmot::Math::Tensors::FastorTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
+          autodiff::dual3rd res = ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::MooneyRivlinPotential<
+            autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1], elasticProperties[2] );
+          return res;
+        };
       break;
     default:
       throw std::runtime_error( "CompressibleFiniteStrainLinearViscoelasticity::computeEnergyDensityAndDerivatives: "
                                 "Unknown hyperelastic base." );
     }
-    return Marmot::Math::AutomaticDifferentiation::ThirdOrder::d3f_dT3< 3 >( energyDensityFunction, C, true );
+    return Marmot::Math::Differentiation::Automatic::ThirdOrder::d3f_dT3< 3 >( energyDensityFunction, C, true );
   }
 
   CompressibleFiniteStrainLinearViscoelasticity::CompressibleFiniteStrainLinearViscoelasticity(
@@ -118,7 +121,7 @@ namespace Marmot::Materials {
       Tensor3333d initialStiffness = 4. *
                                      std::get< 2 >( computeEnergyDensityAndDerivatives( evaluate( Spatial3D::I ) ) );
 
-      initialCompliance = Marmot::Math::invertMinorSymmetricFourthOrderTensor( initialStiffness );
+      initialCompliance = Marmot::Math::Tensors::invertMinorSymmetricFourthOrderTensor( initialStiffness );
     }
 
     initializeStateLayout();

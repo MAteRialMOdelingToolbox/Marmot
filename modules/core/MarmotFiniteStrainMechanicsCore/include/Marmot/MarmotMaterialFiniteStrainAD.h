@@ -83,7 +83,7 @@ namespace Marmot::Materials {
        * @param response ConstitutiveResponse instance to initialize from.
        */
       ConstitutiveResponseAD( const ConstitutiveResponse< nDim >& response )
-        : tau( Marmot::Math::makeDual( response.tau ) ),
+        : tau( Marmot::Math::Tensors::makeDual( response.tau ) ),
           elasticEnergyDensity( response.elasticEnergyDensity ),
           dissipation( response.dissipation ),
           stateVars( response.stateVars )
@@ -111,7 +111,7 @@ namespace Marmot::Materials {
      *
      * The child class must implement computeStressAD(), which evaluates the constitutive response
      * (Kirchhoff stress and any state updates) for a dual-valued deformation gradient. This base
-     * implementation then uses Marmot::Math::AutomaticDifferentiation::dF_dT() to:
+     * implementation then uses Marmot::Math::Differentiation::Automatic::dF_dT() to:
      *  - compute the Kirchhoff stress \f$\boldsymbol{\tau}\f$ for the given deformation, and
      *  - compute the consistent algorithmic tangent \f$\partial \boldsymbol{\tau} / \partial \boldsymbol{F}\f$.
      *
@@ -131,7 +131,7 @@ namespace Marmot::Materials {
                         const TimeIncrement&       timeIncrement ) const override
     {
       using namespace Marmot;
-      using namespace Marmot::Math::FastorTensors;
+      using namespace Marmot::Math::Tensors::FastorTensors;
       using scalar = autodiff::dual;
 
       Eigen::Map< Eigen::VectorXd > stateVars( response.stateVars, this->getNumberOfRequiredStateVars() );
@@ -151,7 +151,7 @@ namespace Marmot::Materials {
           DeformationAD< 3 > deformationAD;
           deformationAD.F = F_;
 
-          responseAD.tau = Marmot::Math::makeDual( tauOld ); // Initialize tau with old value for consistency
+          responseAD.tau = Marmot::Math::Tensors::makeDual( tauOld ); // Initialize tau with old value for consistency
           responseAD.elasticEnergyDensity = response.elasticEnergyDensity; // Initialize energy density
           responseAD.dissipation          = response.dissipation;          // Initialize dissipation
 
@@ -165,8 +165,8 @@ namespace Marmot::Materials {
         };
 
       // Compute Kirchhoff stress (tau) and algorithmic tangent (dTau_dF) with autodiff
-      std::tie( response.tau, tangents.dTau_dF ) = Marmot::Math::AutomaticDifferentiation::dF_dT( computeTauAD,
-                                                                                                  deformation.F );
+      std::tie( response.tau, tangents.dTau_dF ) = Marmot::Math::Differentiation::Automatic::dF_dT( computeTauAD,
+                                                                                                    deformation.F );
       response.elasticEnergyDensity              = responseAD.elasticEnergyDensity;
       response.dissipation                       = responseAD.dissipation;
     }
@@ -177,7 +177,7 @@ namespace Marmot::Materials {
      * This pure virtual function must be implemented by derived material models to compute
      * the Kirchhoff stress tensor in \p response.tau for a given deformation in dual number
      * form. The base class uses this AD formulation together with
-     * Marmot::Math::AutomaticDifferentiation utilities to obtain algorithmic tangents by
+     * Marmot::Math::Differentiation::Automatic utilities to obtain algorithmic tangents by
      * differentiating the stress with respect to the deformation gradient.
      *
      * Implementations may update the provided state variables via \p response.stateVars

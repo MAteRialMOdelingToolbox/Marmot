@@ -11,7 +11,7 @@
 using namespace Marmot;
 using namespace Marmot::Discretizations::Elements;
 using namespace Marmot::Testing;
-namespace NumDiff = Marmot::Math::NumericalDifferentiation;
+namespace NumDiff = Marmot::Math::Differentiation::Numerical;
 
 // ---------------------------------------------------------------------------------------------
 // Lumped (diagonal) mass matrix tests

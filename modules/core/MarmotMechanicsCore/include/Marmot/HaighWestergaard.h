@@ -99,14 +99,14 @@ namespace Marmot::ContinuumMechanics::HaighWestergaard {
     // (rho = sqrt(2*J2) <= 1e-16  <=>  J2 <= 5e-33) -- rather than letting sqrt() propagate a
     // NaN derivative. This also absorbs J2 rounding to a tiny negative value for
     // near-hydrostatic states.
-    hw.rho = Marmot::Math::makeReal( J2_ ) <= 5e-33 ? T( 0. ) : sqrt( 2. * J2_ );
+    hw.rho = Marmot::Math::Tensors::makeReal( J2_ ) <= 5e-33 ? T( 0. ) : sqrt( 2. * J2_ );
 
-    if ( Marmot::Math::makeReal( hw.rho ) != 0 ) {
+    if ( Marmot::Math::Tensors::makeReal( hw.rho ) != 0 ) {
       const T J3_ = J3( stress );
       const T x   = 3. * ( sqrt3 / 2. ) * J3_ / ( pow( J2_, 3. / 2 ) );
-      if ( Marmot::Math::makeReal( x ) <= -1 )
+      if ( Marmot::Math::Tensors::makeReal( x ) <= -1 )
         hw.theta = 1. / 3 * Pi;
-      else if ( Marmot::Math::makeReal( x ) >= 1 )
+      else if ( Marmot::Math::Tensors::makeReal( x ) >= 1 )
         hw.theta = 0.;
       else if ( x != x )
         hw.theta = 1. / 3 * Marmot::Math::Constants::Pi;

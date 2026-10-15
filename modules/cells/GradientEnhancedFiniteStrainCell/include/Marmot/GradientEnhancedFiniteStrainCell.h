@@ -415,7 +415,7 @@ namespace Marmot::Discretizations::Cells {
   void GradientEnhancedFiniteStrainCell< nDim, nNodes, CellBase, GeometryCell >::interpolateFieldsToMaterialPoints(
     const double* dQ ) const
   {
-    using namespace Marmot::Math::Indices;
+    using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Fastor;
 
     const auto dQU = TensorMap< const double, nNodes, nDim >( dQ );
@@ -439,7 +439,7 @@ namespace Marmot::Discretizations::Cells {
     double        dT ) const
   {
     using namespace Fastor;
-    using namespace Marmot::Math::Indices;
+    using namespace Marmot::Math::Tensors::FastorIndices;
 
     const auto dQN = TensorMap< const double, nNodes >( dQ + idxN );
 
@@ -586,7 +586,7 @@ namespace Marmot::Discretizations::Cells {
     case Pressure: {
 
       using namespace Fastor;
-      using namespace Marmot::Math::Indices;
+      using namespace Marmot::Math::Tensors::FastorIndices;
 
       TensorMap< double, nNodes, nDim > r_U( fExt_ );
 

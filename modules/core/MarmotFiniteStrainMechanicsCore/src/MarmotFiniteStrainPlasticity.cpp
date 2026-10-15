@@ -4,8 +4,8 @@
 namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrder {
 
   using namespace Fastor;
-  using namespace Marmot::Math::FastorTensors;
-  using namespace Marmot::Math::Indices;
+  using namespace Marmot::Math::Tensors::FastorTensors;
+  using namespace Marmot::Math::Tensors::FastorIndices;
 
   std::pair< Tensor33d, Tensor3333d > explicitIntegration( const Tensor33d& dGp )
   {
@@ -18,7 +18,9 @@ namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration:
   std::pair< Tensor33d, Tensor3333d > exponentialMap( const Tensor33d& dGp )
   {
     const auto [dFpT,
-                dFpT_dGp] = Marmot::Math::TensorExponential::FirstOrder::computeTensorExponential( dGp, 15, 1e-14 );
+                dFpT_dGp] = Marmot::Math::Tensors::TensorExponential::FirstOrder::computeTensorExponential( dGp,
+                                                                                                            15,
+                                                                                                            1e-14 );
     // clang-format off
             return { permute< Index< 1, 0 > >      ( dFpT     ),
                      permute< Index< 1, 0, 2, 3 > >( dFpT_dGp ) };

@@ -38,7 +38,7 @@
 using namespace Marmot;
 using namespace Marmot::Materials;
 using namespace Marmot::Testing;
-using namespace Marmot::Math::FastorTensors;
+using namespace Marmot::Math::Tensors::FastorTensors;
 
 namespace {
 
@@ -166,7 +166,7 @@ namespace {
   {
     const Eigen::Matrix3d Q = Eigen::AngleAxisd( angle, axis.normalized() ).toRotationMatrix();
     Tensor33d             t;
-    Marmot::Math::mapEigenToFastor( t ) = Q;
+    Marmot::Math::Tensors::mapEigenToFastor( t ) = Q;
     return t;
   }
 
@@ -330,7 +330,7 @@ void testSmallStrainAgreement()
     Nrun += dN;
 
     Tensor33d F;
-    Marmot::Math::mapEigenToFastor( F ) = Ftotal;
+    Marmot::Math::Tensors::mapEigenToFastor( F ) = Ftotal;
     step( w, state, F, Nrun );
 
     IncrementalGradientStub::increment inc;
@@ -344,15 +344,15 @@ void testSmallStrainAgreement()
   }
 
   Tensor33d Ffinal;
-  Marmot::Math::mapEigenToFastor( Ffinal ) = Ftotal;
-  const auto s                             = step( w, state, Ffinal, Nrun );
+  Marmot::Math::Tensors::mapEigenToFastor( Ffinal ) = Ftotal;
+  const auto s                                      = step( w, state, Ffinal, Nrun );
 
   // Compare the Cauchy stress: tau = J sigma, and the J factor alone is larger than the tolerance below.
   const Tensor33d sigma = Tensor33d( s.tau / Ftotal.determinant() );
 
   Tensor33d expectedSigma;
-  Marmot::Math::mapEigenToFastor( expectedSigma ) = ContinuumMechanics::VoigtNotation::stressMatrixFromVoigt< 3 >(
-    directRes.stress );
+  Marmot::Math::Tensors::mapEigenToFastor(
+    expectedSigma ) = ContinuumMechanics::VoigtNotation::stressMatrixFromVoigt< 3 >( directRes.stress );
 
   // The mid-step objective rate and the naive additive strain differ at O(total strain), the same
   // O(1e-5) deviation documented in the small-strain HughesWingetWrapper test.

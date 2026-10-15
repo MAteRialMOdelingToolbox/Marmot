@@ -28,7 +28,7 @@
 #include "Marmot/MarmotTypedefs.h"
 #include <functional>
 
-namespace Marmot::Math::NumericalDifferentiation {
+namespace Marmot::Math::Differentiation::Numerical {
 
   /** @typedef scalar_to_scalar_function_type
    *  @brief Type definition for a function that maps a double to another double.
@@ -190,4 +190,4 @@ namespace Marmot::Math::NumericalDifferentiation {
     Eigen::MatrixXd fourthOrderAccurateDerivative( const vector_to_vector_function_type& F, const Eigen::VectorXd& X );
 
   } // namespace Complex
-} // namespace Marmot::Math::NumericalDifferentiation
+} // namespace Marmot::Math::Differentiation::Numerical

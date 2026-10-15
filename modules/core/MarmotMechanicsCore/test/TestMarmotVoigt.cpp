@@ -218,7 +218,7 @@ void test_dRho_dStress()
     return rho;
   };
 
-  const auto dRho_dStress_FD = Marmot::Math::NumericalDifferentiation::forwardDifference( rho, stress );
+  const auto dRho_dStress_FD = Marmot::Math::Differentiation::Numerical::forwardDifference( rho, stress );
 
   throwExceptionOnFailure( checkIfEqual( Marmot::ContinuumMechanics::VoigtNotation::Derivatives::dRho_dStress( hw.rho,
                                                                                                                stress )
@@ -242,7 +242,7 @@ void test_dRhoStrain_dStrain()
     return rho;
   };
 
-  const auto dRho_dStress_FD = Marmot::Math::NumericalDifferentiation::forwardDifference( rho, strain );
+  const auto dRho_dStress_FD = Marmot::Math::Differentiation::Numerical::forwardDifference( rho, strain );
 
   throwExceptionOnFailure( checkIfEqual( Marmot::ContinuumMechanics::VoigtNotation::Derivatives::
                                            dRhoStrain_dStrain( hw.rho, strain )
@@ -264,7 +264,7 @@ void test_dTheta_dStress()
     return theta;
   };
 
-  const auto dTheta_dStress_FD = Marmot::Math::NumericalDifferentiation::forwardDifference( theta, stress );
+  const auto dTheta_dStress_FD = Marmot::Math::Differentiation::Numerical::forwardDifference( theta, stress );
 
   throwExceptionOnFailure( checkIfEqual( Marmot::ContinuumMechanics::VoigtNotation::Derivatives::dTheta_dStress(
                                            stress )
@@ -286,7 +286,7 @@ void test_dJ2_dStress()
     return j2;
   };
 
-  const auto dJ2_dStress_FD = Marmot::Math::NumericalDifferentiation::forwardDifference( J2, stress );
+  const auto dJ2_dStress_FD = Marmot::Math::Differentiation::Numerical::forwardDifference( J2, stress );
 
   throwExceptionOnFailure( checkIfEqual( Marmot::ContinuumMechanics::VoigtNotation::Derivatives::dJ2_dStress( stress )
                                            .norm(),
@@ -307,7 +307,7 @@ void test_dJ3_dStress()
     return j3;
   };
 
-  const auto dJ3_dStress_FD = Marmot::Math::NumericalDifferentiation::forwardDifference( J3, stress );
+  const auto dJ3_dStress_FD = Marmot::Math::Differentiation::Numerical::forwardDifference( J3, stress );
 
   throwExceptionOnFailure( checkIfEqual( Marmot::ContinuumMechanics::VoigtNotation::Derivatives::dJ3_dStress( stress )
                                            .norm(),
@@ -328,7 +328,7 @@ void test_dJ2Strain_dStrain()
     return j2;
   };
 
-  const auto dJ2_dStrain_FD = Marmot::Math::NumericalDifferentiation::forwardDifference( J2, strain );
+  const auto dJ2_dStrain_FD = Marmot::Math::Differentiation::Numerical::forwardDifference( J2, strain );
 
   throwExceptionOnFailure( checkIfEqual( Marmot::ContinuumMechanics::VoigtNotation::Derivatives::dJ2Strain_dStrain(
                                            strain )
@@ -349,7 +349,7 @@ void test_dJ3Strain_dStrain()
     return j3;
   };
 
-  const auto dJ3_dStrain_FD = Marmot::Math::NumericalDifferentiation::forwardDifference( J3, strain );
+  const auto dJ3_dStrain_FD = Marmot::Math::Differentiation::Numerical::forwardDifference( J3, strain );
 
   throwExceptionOnFailure( checkIfEqual( Marmot::ContinuumMechanics::VoigtNotation::Derivatives::dJ3Strain_dStrain(
                                            strain )
@@ -371,7 +371,7 @@ void test_dSortedPrincipalStrains_dStrain()
     return sortedPrincipalStrains;
   };
 
-  const auto dSortedPrincipalStrains_dStrain_FD = Marmot::Math::NumericalDifferentiation::
+  const auto dSortedPrincipalStrains_dStrain_FD = Marmot::Math::Differentiation::Numerical::
     forwardDifference( sortedPrincipalStrains, strain );
 
   throwExceptionOnFailure( checkIfEqual( Marmot::ContinuumMechanics::VoigtNotation::Derivatives::
@@ -472,13 +472,11 @@ void testVoigtToStiffnessMatchesAnalyticIsotropicTensor()
   Fastor::Tensor< double, 3, 3 > delta;
   delta.eye2();
 
-  using namespace Marmot::Math::Indices;
-  Marmot::Math::FastorTensors::Tensor3333d expectedStiffnessTensor = lambda * Fastor::outer( delta, delta ) +
-                                                                     mu *
-                                                                       ( Fastor::einsum< ik, jl, to_ijkl >( delta,
-                                                                                                            delta ) +
-                                                                         Fastor::einsum< il, jk, to_ijkl >( delta,
-                                                                                                            delta ) );
+  using namespace Marmot::Math::Tensors::FastorIndices;
+  Marmot::Math::Tensors::FastorTensors::Tensor3333d
+    expectedStiffnessTensor = lambda * Fastor::outer( delta, delta ) +
+                              mu * ( Fastor::einsum< ik, jl, to_ijkl >( delta, delta ) +
+                                     Fastor::einsum< il, jk, to_ijkl >( delta, delta ) );
 
   const Marmot::Math::Matrix6d
     voigtStiffness = Marmot::ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
@@ -898,7 +896,7 @@ void testDThetaStrainDStrainMatchesNumericalDifferentiation()
     return theta;
   };
 
-  const auto dTheta_dStrain_FD = Marmot::Math::NumericalDifferentiation::forwardDifference( theta, strain );
+  const auto dTheta_dStrain_FD = Marmot::Math::Differentiation::Numerical::forwardDifference( theta, strain );
 
   throwExceptionOnFailure( checkIfEqual< double >( dThetaStrain_dStrain( strain ).transpose(),
                                                    dTheta_dStrain_FD,

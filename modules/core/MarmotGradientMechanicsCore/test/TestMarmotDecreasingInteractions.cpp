@@ -5,7 +5,7 @@
 #include <cmath>
 
 using namespace Marmot::Testing;
-using namespace Marmot::Math::NumericalDifferentiation;
+using namespace Marmot::Math::Differentiation::Numerical;
 using namespace Marmot::ContinuumMechanics::GradientDamage::DecreasingInteractions;
 
 void testPohTemplate()

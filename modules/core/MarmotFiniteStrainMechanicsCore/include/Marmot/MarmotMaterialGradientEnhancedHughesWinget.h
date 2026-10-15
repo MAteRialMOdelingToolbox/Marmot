@@ -222,7 +222,7 @@ namespace Marmot::Materials {
      */
     void initializeYourself( double* stateVars, int nStateVars ) override
     {
-      using namespace Marmot::Math::FastorTensors;
+      using namespace Marmot::Math::Tensors::FastorTensors;
 
       TensorMap33d Fn = this->stateLayout.getAs< TensorMap33d >( stateVars, deformationGradientSlot );
       std::memcpy( Fn.data(), Spatial3D::I.data(), 9 * sizeof( double ) );
@@ -275,17 +275,17 @@ namespace Marmot::Materials {
 
   protected:
     /// @brief Convert an Eigen 3x3 matrix into a Fastor tensor.
-    static Marmot::Math::FastorTensors::Tensor33d fromEigen( const Eigen::Matrix3d& m )
+    static Marmot::Math::Tensors::FastorTensors::Tensor33d fromEigen( const Eigen::Matrix3d& m )
     {
-      Marmot::Math::FastorTensors::Tensor33d t;
-      Marmot::Math::mapEigenToFastor( t ) = m;
+      Marmot::Math::Tensors::FastorTensors::Tensor33d t;
+      Marmot::Math::Tensors::mapEigenToFastor( t ) = m;
       return t;
     }
 
     /// @brief Convert a Fastor 3x3 tensor into an Eigen matrix.
-    static Eigen::Matrix3d toEigen( const Marmot::Math::FastorTensors::Tensor33d& t )
+    static Eigen::Matrix3d toEigen( const Marmot::Math::Tensors::FastorTensors::Tensor33d& t )
     {
-      return Eigen::Matrix3d( Marmot::Math::mapEigenToFastor( t ) );
+      return Eigen::Matrix3d( Marmot::Math::Tensors::mapEigenToFastor( t ) );
     }
 
     /**
@@ -329,7 +329,7 @@ namespace Marmot::Materials {
         return perturbed.stress;
       };
 
-      Marmot::Math::Matrix6d S = Marmot::Math::NumericalDifferentiation::forwardDifference( evaluate, sigmaRotVoigt );
+      Marmot::Math::Matrix6d S = Marmot::Math::Differentiation::Numerical::forwardDifference( evaluate, sigmaRotVoigt );
 
       // Halve the shear columns: contracting S as a fourth-order tensor sums over both the (m,n) and
       // (n,m) entries of a symmetric stress, which would otherwise count each off-diagonal twice.
@@ -353,8 +353,8 @@ namespace Marmot::Materials {
                             bool                       computeTangent ) const
     {
       using namespace Fastor;
-      using namespace Marmot::Math::FastorTensors;
-      using namespace Marmot::Math::Indices;
+      using namespace Marmot::Math::Tensors::FastorTensors;
+      using namespace Marmot::Math::Tensors::FastorIndices;
       using namespace Marmot::ContinuumMechanics::VoigtNotation;
 
       const Tensor33d& Ident = Spatial3D::I;
@@ -537,7 +537,7 @@ namespace Marmot::Materials {
                                   const Deformation< 3 >&          deformation,
                                   const TimeIncrement&             timeIncrement ) const
     {
-      using namespace Marmot::Math::FastorTensors;
+      using namespace Marmot::Math::Tensors::FastorTensors;
 
       const int             nTotal = this->getNumberOfRequiredStateVars();
       std::vector< double > stateOld( nTotal );

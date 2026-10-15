@@ -17,8 +17,8 @@
 
 using namespace Marmot::Testing;
 using namespace Marmot::Materials;
-using namespace Marmot::Math::FastorTensors;
-using namespace Marmot::Math::Indices;
+using namespace Marmot::Math::Tensors::FastorTensors;
+using namespace Marmot::Math::Tensors::FastorIndices;
 
 using Mat = GradientEnhancedFiniteStrainDruckerPrager;
 
@@ -588,7 +588,7 @@ void testConeWithAVanishingDeviator()
 
   const auto      res    = evaluate( mat, F, 0.0, state );
   const double    alphaP = stateValue( mat, res.state, "alphaP" );
-  const Tensor33d dev    = Marmot::Math::deviatoric( res.tau );
+  const Tensor33d dev    = Marmot::Math::Tensors::deviatoric( res.tau );
   const double    q      = std::sqrt( 0.5 * inner( dev, dev ) );
   throwExceptionOnFailure( q > 0.0 && q < 1e-3,
                            Marmot::Utilities::MakeString() << "a cone solution near the vertex, q = " << q << where );
@@ -622,7 +622,7 @@ void testApexReturnIsObjective()
   F( 0, 1 )           = 1e-4;
   const auto      ref = evaluate( mat, F, 0.0, freshState( mat ) );
   const Tensor33d Fp0( mat.getStateView( "Fp", const_cast< double* >( ref.state.data() ) ).stateLocation );
-  const Tensor33d dev = Marmot::Math::deviatoric( ref.tau );
+  const Tensor33d dev = Marmot::Math::Tensors::deviatoric( ref.tau );
   throwExceptionOnFailure( std::sqrt( inner( dev, dev ) ) < 1e-9 * std::abs( trace( ref.tau ) ),
                            "the objectivity check must be at the apex" + where );
 

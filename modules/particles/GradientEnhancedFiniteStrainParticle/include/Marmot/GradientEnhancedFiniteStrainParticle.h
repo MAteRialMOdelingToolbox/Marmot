@@ -719,7 +719,7 @@ namespace Marmot::Discretizations::Meshfree {
                                                                             double        timeNew,
                                                                             double        dT )
   {
-    using namespace Marmot::Math::Indices;
+    using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Fastor;
     using to_jk = Fastor::OIndex< j_, k_ >;
 

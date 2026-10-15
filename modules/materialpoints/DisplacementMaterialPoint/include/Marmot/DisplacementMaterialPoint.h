@@ -121,16 +121,16 @@ namespace Marmot::Discretizations::MaterialPoints {
       } );
 
     public:
-      Marmot::Math::FastorTensors::TensorMap3d u;  ///< total displacement of the last accepted state
-      Marmot::Math::FastorTensors::TensorMap3d v;  ///< velocity
-      Marmot::Math::FastorTensors::TensorMap3d a;  ///< acceleration
-      Marmot::Math::FastorTensors::TensorMap3d du; ///< displacement increment @f$ \Delta\boldsymbol{u} @f$
-      Marmot::Math::FastorTensors::TensorMap33d
-        dx_dY;                                     ///< incremental deformation gradient @f$ \Delta\boldsymbol{F} @f$
-      Marmot::Math::FastorTensors::TensorMap33d
+      Marmot::Math::Tensors::FastorTensors::TensorMap3d u;  ///< total displacement of the last accepted state
+      Marmot::Math::Tensors::FastorTensors::TensorMap3d v;  ///< velocity
+      Marmot::Math::Tensors::FastorTensors::TensorMap3d a;  ///< acceleration
+      Marmot::Math::Tensors::FastorTensors::TensorMap3d du; ///< displacement increment @f$ \Delta\boldsymbol{u} @f$
+      Marmot::Math::Tensors::FastorTensors::TensorMap33d
+        dx_dY; ///< incremental deformation gradient @f$ \Delta\boldsymbol{F} @f$
+      Marmot::Math::Tensors::FastorTensors::TensorMap33d
         dY_dX; ///< deformation gradient of the last accepted state @f$ \boldsymbol{F}_n @f$
-      Marmot::Math::FastorTensors::TensorMap33d stress;        ///< Kirchhoff stress (see computeYourself())
-      Eigen::Map< Eigen::VectorXd >             materialState; ///< state variables of the material
+      Marmot::Math::Tensors::FastorTensors::TensorMap33d stress;        ///< Kirchhoff stress (see computeYourself())
+      Eigen::Map< Eigen::VectorXd >                      materialState; ///< state variables of the material
 
       /**
        * @brief Number of state variables required by the material point itself, without the material state.
@@ -318,15 +318,15 @@ namespace Marmot::Discretizations::MaterialPoints {
     virtual void acceptStateAndPosition()
     {
 
-      const auto&                                 u_n  = state->u;
-      const Marmot::Math::FastorTensors::Tensor3d u_np = u_n + state->du;
+      const auto&                                          u_n  = state->u;
+      const Marmot::Math::Tensors::FastorTensors::Tensor3d u_np = u_n + state->du;
 
       // TODO: make auto&
-      const Marmot::Math::FastorTensors::Tensor33d dx_dX_n  = state->dY_dX;
-      const Marmot::Math::FastorTensors::Tensor33d dx_dX_np = state->dx_dY % dx_dX_n;
+      const Marmot::Math::Tensors::FastorTensors::Tensor33d dx_dX_n  = state->dY_dX;
+      const Marmot::Math::Tensors::FastorTensors::Tensor33d dx_dX_np = state->dx_dY % dx_dX_n;
 
-      Marmot::Math::mapEigenToFastor( state->u )     = Marmot::Math::mapEigenToFastor( u_np );
-      Marmot::Math::mapEigenToFastor( state->dY_dX ) = Marmot::Math::mapEigenToFastor( dx_dX_np );
+      Marmot::Math::Tensors::mapEigenToFastor( state->u )     = Marmot::Math::Tensors::mapEigenToFastor( u_np );
+      Marmot::Math::Tensors::mapEigenToFastor( state->dY_dX ) = Marmot::Math::Tensors::mapEigenToFastor( dx_dX_np );
     };
 
     /**

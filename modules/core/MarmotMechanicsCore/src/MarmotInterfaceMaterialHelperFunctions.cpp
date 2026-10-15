@@ -27,8 +27,8 @@
 #include "Marmot/MarmotInterfaceMaterialHelperFunctions.h"
 #include "Marmot/MarmotElasticity.h"
 
-using namespace Marmot::Math::FastorTensors;
-using namespace Marmot::Math::Indices;
+using namespace Marmot::Math::Tensors::FastorTensors;
+using namespace Marmot::Math::Tensors::FastorIndices;
 namespace Marmot::Materials::InterfaceMaterialHelperFunctions {
 
   std::tuple< Tensor3333d, const Tensor3333d, Tensor3333d, Tensor33d > interfaceGeometrySystemCouplings(

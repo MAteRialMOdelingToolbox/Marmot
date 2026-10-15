@@ -18,8 +18,8 @@
 namespace Marmot::Materials {
 
   using namespace Fastor;
-  using namespace Marmot::Math::FastorTensors;
-  namespace Differentiation = Marmot::Math::NumericalDifferentiation;
+  using namespace Marmot::Math::Tensors::FastorTensors;
+  namespace Differentiation = Marmot::Math::Differentiation::Numerical;
 
   namespace {
 
@@ -44,7 +44,7 @@ namespace Marmot::Materials {
     /// number of material properties without the (optional) density
     constexpr int nRequiredProperties = 10;
 
-    using namespace Marmot::Math::Indices;
+    using namespace Marmot::Math::Tensors::FastorIndices;
 
     /// the local Newton and its implicit function theorem work on Eigen vectors (as Marmot's complex step does);
     /// these views map Fastor's row-major tensors to them
@@ -92,7 +92,7 @@ namespace Marmot::Materials {
       try {
         std::tie( R, dR_dX ) = Differentiation::Complex::forwardDifference( residual, X );
       }
-      catch ( const Marmot::Math::TensorExponential::ExponentialMapFailed& ) {
+      catch ( const Marmot::Math::Tensors::TensorExponential::ExponentialMapFailed& ) {
         return false;
       }
       for ( int counter = 0; counter <= nMaxInnerNewtonCycles; counter++ ) {
@@ -119,7 +119,7 @@ namespace Marmot::Materials {
               break;
             }
           }
-          catch ( const Marmot::Math::TensorExponential::ExponentialMapFailed& ) {
+          catch ( const Marmot::Math::Tensors::TensorExponential::ExponentialMapFailed& ) {
             // the iterate is too far off for the exponential map: a shorter step
             if ( halving == nMaxHalvings )
               return false;
@@ -334,7 +334,7 @@ namespace Marmot::Materials {
       FeTrialPrincipal( a, a ) = std::exp( epsTrial( a ) );
     const Tensor33d MTrial = mandelStress( FeTrialPrincipal );
     const double    qTrial = std::sqrt(
-      0.5 * Fastor::inner( Marmot::Math::deviatoric( MTrial ), Marmot::Math::deviatoric( MTrial ) ) );
+      0.5 * Fastor::inner( Marmot::Math::Tensors::deviatoric( MTrial ), Marmot::Math::Tensors::deviatoric( MTrial ) ) );
     const double dLambdaLin = std::max( 0.0,
                                         yieldFunction( MTrial, alphaPOld ) / ( G + K * eta * etaBar + xi * xi * H ) );
 
@@ -388,14 +388,15 @@ namespace Marmot::Materials {
     // initial guesses: the return of the linearized (Hencky) problem, exact for small strains, and fractions of it,
     // which keep the iterates away from the singular vertex of the cone
     const Tensor33d MTrial        = mandelStress( FeTrial );
-    const Tensor33d devTrial      = Marmot::Math::deviatoric( MTrial );
+    const Tensor33d devTrial      = Marmot::Math::Tensors::deviatoric( MTrial );
     const double    dLambdaLinear = std::max( 0.0,
                                            yieldFunction( MTrial, alphaPOld ) /
                                              ( G + K * eta * etaBar + xi * xi * H ) );
 
     // an iterate whose deviator has turned against the trial deviator has crossed the vertex of the cone
     const auto admissible = [&]( const VectorXd& X_ ) {
-      const Tensor33d dev_ = Marmot::Math::deviatoric( mandelStress( Tensor33d( X_.head( 9 ).eval().data() ) ) );
+      const Tensor33d dev_ = Marmot::Math::Tensors::deviatoric(
+        mandelStress( Tensor33d( X_.head( 9 ).eval().data() ) ) );
       return Fastor::inner( dev_, devTrial ) > 0.0;
     };
 
@@ -418,7 +419,7 @@ namespace Marmot::Materials {
           std::tie( R, dR_dX ) = Differentiation::Complex::forwardDifference( residual, X );
           converged            = R.allFinite() && dR_dX.allFinite() && R.norm() < principalAcceptanceTol;
         }
-        catch ( const Marmot::Math::TensorExponential::ExponentialMapFailed& ) {
+        catch ( const Marmot::Math::Tensors::TensorExponential::ExponentialMapFailed& ) {
           converged = false;
         }
       }
@@ -431,7 +432,7 @@ namespace Marmot::Materials {
           dFp0 = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::exponentialMapScalingAndSquaring(
             Tensor33d( dLambda0 * flowDirection( MTrial ) ) );
         }
-        catch ( const Marmot::Math::TensorExponential::ExponentialMapFailed& ) {
+        catch ( const Marmot::Math::Tensors::TensorExponential::ExponentialMapFailed& ) {
           continue; // e.g. a vanishing trial deviator: no flow direction for this guess
         }
         const Tensor33d Fe0 = FeTrial % Fastor::inverse( dFp0 );
@@ -457,7 +458,7 @@ namespace Marmot::Materials {
     // moreover coaxial with the trial state (M and M_trial commute), with a deviator that points the same way as the
     // trial deviator (the finite-strain analogue of sqrt(J2_trial) - G dLambda >= 0); near the apex, Newton may
     // also converge to a spurious, non-coaxial solution. In all these cases the apex takes over.
-    const Tensor33d dev        = Marmot::Math::deviatoric( M );
+    const Tensor33d dev        = Marmot::Math::Tensors::deviatoric( M );
     const double    normDev    = std::sqrt( Fastor::inner( dev, dev ) );
     const double    normTr     = std::sqrt( Fastor::inner( devTrial, devTrial ) );
     const Tensor33d commutator = dev % devTrial - devTrial % dev;

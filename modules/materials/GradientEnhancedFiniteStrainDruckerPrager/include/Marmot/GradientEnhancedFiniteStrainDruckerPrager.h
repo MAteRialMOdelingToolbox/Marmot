@@ -103,9 +103,9 @@ namespace Marmot::Materials {
 
   public:
     template < typename T >
-    using Tensor33t    = Marmot::Math::FastorTensors::Tensor33t< T >;
-    using Tensor33d    = Marmot::Math::FastorTensors::Tensor33d;
-    using TensorMap33d = Marmot::Math::FastorTensors::TensorMap33d;
+    using Tensor33t    = Marmot::Math::Tensors::FastorTensors::Tensor33t< T >;
+    using Tensor33d    = Marmot::Math::Tensors::FastorTensors::Tensor33d;
+    using TensorMap33d = Marmot::Math::Tensors::FastorTensors::TensorMap33d;
 
     /**
      * @brief Construct the material and validate its properties.
@@ -175,7 +175,7 @@ namespace Marmot::Materials {
       const Tensor33t< T > Ce = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( Fe );
       const auto [psi_, dPsi_dCe] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
         PenceGouPotentialB( Ce, K, G );
-      return Marmot::Math::multiplyFastorTensorWithScalar( dPsi_dCe, T( 2.0 ) );
+      return Marmot::Math::Tensors::multiplyFastorTensorWithScalar( dPsi_dCe, T( 2.0 ) );
     }
 
     /**
@@ -201,7 +201,7 @@ namespace Marmot::Materials {
     template < typename T >
     T yieldFunction( const Tensor33t< T >& M, const T alphaP ) const
     {
-      const Tensor33t< T > dev = Marmot::Math::deviatoric( M );
+      const Tensor33t< T > dev = Marmot::Math::Tensors::deviatoric( M );
       const T              p   = trace( M ) / 3.;
       return sqrt( 0.5 * Fastor::inner( dev, dev ) ) + eta * p - xi * ( c0 + H * alphaP );
     }
@@ -215,9 +215,9 @@ namespace Marmot::Materials {
     template < typename T >
     Tensor33t< T > flowDirection( const Tensor33t< T >& M ) const
     {
-      const Tensor33t< T > dev  = Marmot::Math::deviatoric( M );
+      const Tensor33t< T > dev  = Marmot::Math::Tensors::deviatoric( M );
       const T              sqJ2 = sqrt( 0.5 * Fastor::inner( dev, dev ) );
-      Tensor33t< T >       n    = Marmot::Math::multiplyFastorTensorWithScalar( dev, T( 0.5 ) / sqJ2 );
+      Tensor33t< T >       n    = Marmot::Math::Tensors::multiplyFastorTensorWithScalar( dev, T( 0.5 ) / sqJ2 );
       for ( int i = 0; i < 3; i++ )
         n( i, i ) += etaBar / 3.;
       return n;
@@ -240,13 +240,13 @@ namespace Marmot::Materials {
                                               const Tensor33d&                   FeTrial,
                                               const double                       alphaPOld ) const
     {
-      using namespace Marmot::Math::Indices;
+      using namespace Marmot::Math::Tensors::FastorIndices;
       const Tensor33t< T > Fe( X.segment( 0, 9 ).eval().data() );
       const T              alphaP  = X( 9 );
       const T              dLambda = X( 10 );
 
       const Tensor33t< T > M   = mandelStress( Fe );
-      const Tensor33t< T > dGp = Marmot::Math::multiplyFastorTensorWithScalar( flowDirection( M ), dLambda );
+      const Tensor33t< T > dGp = Marmot::Math::Tensors::multiplyFastorTensorWithScalar( flowDirection( M ), dLambda );
       const Tensor33t< T >
         dFp = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::exponentialMapScalingAndSquaring( dGp );
       const Tensor33t< T > Fe_dFp = Fastor::einsum< iJ, JK >( Fe, dFp );
@@ -325,10 +325,10 @@ namespace Marmot::Materials {
     {
       // the radius enters through rho d only, and the flow direction through dev M / sqrt(J2), both ~ rho: a radius
       // of exactly zero is shifted to a value far below every tolerance
-      const double sign    = Math::makeReal( X( 0 ) ) >= 0.0 ? 1.0 : -1.0;
-      const T      rho     = std::abs( Math::makeReal( X( 0 ) ) ) < 1e-14 ? X( 0 ) + T( sign * 1e-14 ) : X( 0 );
-      const T      phi     = X( 1 );
-      const T      theta   = X( 2 );
+      const double sign  = Math::Tensors::makeReal( X( 0 ) ) >= 0.0 ? 1.0 : -1.0;
+      const T      rho   = std::abs( Math::Tensors::makeReal( X( 0 ) ) ) < 1e-14 ? X( 0 ) + T( sign * 1e-14 ) : X( 0 );
+      const T      phi   = X( 1 );
+      const T      theta = X( 2 );
       const T      dLambda = X( 3 );
 
       std::array< T, 3 > e;
@@ -382,14 +382,14 @@ namespace Marmot::Materials {
      * @brief The converged return mapping: the new elastic state, and the sensitivities needed for the tangents.
      */
     struct ReturnMapping {
-      bool                                     plastic = false; ///< the state has returned to the cone or the apex
-      Tensor33d                                Fe;              ///< elastic deformation gradient
-      Tensor33d                                FpNew;           ///< plastic deformation gradient
-      double                                   alphaP;          ///< hardening variable
-      double                                   dEpVol;          ///< volumetric plastic log strain increment
-      double                                   plasticWork;     ///< M : dEp
-      Marmot::Math::FastorTensors::Tensor3333d dFe_dF;          ///< d Fe / d F
-      Tensor33d                                dDeltaAlphaD_dF; ///< d dalpha_local / d F
+      bool      plastic = false;                                ///< the state has returned to the cone or the apex
+      Tensor33d Fe;                                             ///< elastic deformation gradient
+      Tensor33d FpNew;                                          ///< plastic deformation gradient
+      double    alphaP;                                         ///< hardening variable
+      double    dEpVol;                                         ///< volumetric plastic log strain increment
+      double    plasticWork;                                    ///< M : dEp
+      Marmot::Math::Tensors::FastorTensors::Tensor3333d dFe_dF; ///< d Fe / d F
+      Tensor33d                                         dDeltaAlphaD_dF; ///< d dalpha_local / d F
     };
 
     /**

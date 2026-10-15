@@ -39,15 +39,17 @@ All notable changes to Marmot are documented in this file. The format follows
   | `::MarmotJournal`, `::MakeString`, `::StateView`, `::MarmotStateVarVectorManager` | `Marmot::Utilities::{Journal, MakeString, StateView, StateVarVectorManager}` |
   | `Marmot::Elements` / `Marmot::Meshfree` / `Marmot::MaterialPoints` / `Marmot::Cells` | `Marmot::Discretizations::{Elements, Meshfree, MaterialPoints, Cells}` (meshfree classes dropped prefixes: `Particle`, `Approximation`, `KernelFunction*`) |
   | `Marmot::FiniteElement::*` (shape functions, quadrature, EAS, …) | `Marmot::Discretizations::Elements::*` (`Spatial2D::axisymmetric` → `Axisymmetric`) |
-  | `Marmot::Constants`, `Marmot::EigenTensors` + `ContinuumMechanics::{CommonTensors, TensorUtility}`, `Marmot::FastorStandardTensors`, `Marmot::FastorIndices` | `Marmot::Math::{Constants, Tensors, FastorTensors, Indices}` |
-  | `Marmot::NumericalAlgorithms::{Differentiation, Integration}`, `Marmot::AutomaticDifferentiation` | `Marmot::Math::{NumericalDifferentiation, Integration, AutomaticDifferentiation}` |
+  | `Marmot::Constants`, `Marmot::EigenTensors` + `ContinuumMechanics::{CommonTensors, TensorUtility}` | `Marmot::Math::{Constants, Tensors}` |
+  | `Marmot::FastorStandardTensors`, `Marmot::FastorIndices`, `ContinuumMechanics::TensorUtility::TensorExponential`, plain-`Marmot` Fastor helpers (`mapEigenToFastor`, `makeDual`/`makeReal`, `deviatoric`, `expandTo3D`/`reduceTo2D`, …) | `Marmot::Math::Tensors::{FastorTensors, FastorIndices, TensorExponential}` and functions directly in `Marmot::Math::Tensors` |
+  | `Marmot::AutomaticDifferentiation`, `Marmot::NumericalAlgorithms::Differentiation` | `Marmot::Math::Differentiation::{Automatic, Numerical}` |
+  | `Marmot::NumericalAlgorithms::Integration` | `Marmot::Math::Integration` |
   | `Marmot::NumericalAlgorithms` (substeppers, `HughesWinget`, `YieldSurfaceCombinationManager`) | `Marmot::ContinuumMechanics::Algorithms` |
   | `Marmot::TimeIntegration`, `Marmot::GeostaticStress`, `Marmot::GradientDamage`, `Marmot::PhaseField` | under `Marmot::ContinuumMechanics` |
   | `Marmot::Solvers::MarmotMaterialPointSolver{HypoElastic, FiniteStrain}` | `Marmot::Materials::MaterialPointSolver{HypoElastic, FiniteStrain}` |
   | `ContinuumMechanics::{DeformationMeasures, StressMeasures, EnergyDensityFunctions}` | `ContinuumMechanics::FiniteStrain::{…}` |
   | derivative namespaces `*OrderDerived` / `VoigtNotation::Derivatives` spellings | unified `FirstOrder` / `SecondOrder` / `ThirdOrder` (`Derivatives` kept for Voigt notation) |
   | `Marmot::Materials::Shrinkage::B4` | `Marmot::Materials::B4Shrinkage` |
-  | plain-`Marmot` typedefs (`Vector6d`, `Matrix6d`, `mVector6d`, …) and Fastor/B-spline helpers | `Marmot::Math::*` |
+  | plain-`Marmot` typedefs (`Vector6d`, `Matrix6d`, `mVector6d`, …), general math functions and B-spline/monomial bases | `Marmot::Math::*` (root) |
 
   Factory registration **string keys are unchanged**, so name-based material/element creation through the
   factories behaves identically. Registration translation units now use unnamed namespaces. The convention and

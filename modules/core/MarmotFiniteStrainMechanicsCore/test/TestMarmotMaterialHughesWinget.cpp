@@ -36,7 +36,7 @@
 using namespace Marmot;
 using namespace Marmot::Materials;
 using namespace Marmot::Testing;
-using namespace Marmot::Math::FastorTensors;
+using namespace Marmot::Math::Tensors::FastorTensors;
 
 namespace {
 
@@ -123,7 +123,7 @@ namespace {
   {
     const Eigen::Matrix3d Q = Eigen::AngleAxisd( angle, axis.normalized() ).toRotationMatrix();
     Tensor33d             t;
-    Marmot::Math::mapEigenToFastor( t ) = Q;
+    Marmot::Math::Tensors::mapEigenToFastor( t ) = Q;
     return t;
   }
 
@@ -318,7 +318,7 @@ void testSmallStrainAgreement()
   for ( int n = 0; n < 20; n++ ) {
     Ftotal += H;
     Tensor33d F;
-    Marmot::Math::mapEigenToFastor( F ) = Ftotal;
+    Marmot::Math::Tensors::mapEigenToFastor( F ) = Ftotal;
     step( w, state, F );
 
     Marmot::Math::Matrix6d C = Marmot::Math::Matrix6d::Zero();
@@ -329,13 +329,13 @@ void testSmallStrainAgreement()
   }
 
   Tensor33d Ffinal;
-  Marmot::Math::mapEigenToFastor( Ffinal ) = Ftotal;
-  const auto [tau, dTau_dF]                = step( w, state, Ffinal );
+  Marmot::Math::Tensors::mapEigenToFastor( Ffinal ) = Ftotal;
+  const auto [tau, dTau_dF]                         = step( w, state, Ffinal );
 
   const Eigen::Matrix3d sigmaDirect = ContinuumMechanics::VoigtNotation::stressMatrixFromVoigt< 3 >(
     directState.stress );
   Tensor33d expected;
-  Marmot::Math::mapEigenToFastor( expected ) = sigmaDirect;
+  Marmot::Math::Tensors::mapEigenToFastor( expected ) = sigmaDirect;
 
   // Compare the Cauchy stress: tau = J sigma, and the J factor alone is larger than the tolerance below.
   const Tensor33d sigma = Tensor33d( tau / Ftotal.determinant() );
@@ -498,8 +498,8 @@ void testVolumetricScaling()
 
   const double J = lambda * lambda * lambda;
   Tensor33d    expected;
-  Marmot::Math::mapEigenToFastor( expected ) = J * ContinuumMechanics::VoigtNotation::stressMatrixFromVoigt< 3 >(
-                                                     ds.stress );
+  Marmot::Math::Tensors::mapEigenToFastor(
+    expected ) = J * ContinuumMechanics::VoigtNotation::stressMatrixFromVoigt< 3 >( ds.stress );
 
   throwExceptionOnFailure( checkIfEqual( tau, expected, 1e-10 ),
                            "volumetric response does not match J * sigma in " + std::string( __PRETTY_FUNCTION__ ) );

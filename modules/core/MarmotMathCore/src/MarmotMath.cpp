@@ -26,20 +26,24 @@ namespace Marmot::Math {
     return n * factorial( n - 1 );
   }
 
-  double makeReal( const Marmot::Math::complexDouble& value )
-  {
-    return value.real();
-  }
+  namespace Tensors {
 
-  double makeReal( const autodiff::real& value )
-  {
-    return double( value );
-  }
+    double makeReal( const Marmot::Math::complexDouble& value )
+    {
+      return value.real();
+    }
 
-  double makeReal( const double& value )
-  {
-    return value;
-  }
+    double makeReal( const autodiff::real& value )
+    {
+      return double( value );
+    }
+
+    double makeReal( const double& value )
+    {
+      return value;
+    }
+
+  } // namespace Tensors
 
   // return the exponent to the power of ten of an expression like 5*10^5 --> return 5
   int getExponentPowerTen( const double x )

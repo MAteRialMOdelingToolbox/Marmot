@@ -9,8 +9,8 @@
 
 using namespace Marmot::Testing;
 using namespace Marmot::Materials;
-using namespace Marmot::Math::FastorTensors;
-using namespace Marmot::Math::Indices;
+using namespace Marmot::Math::Tensors::FastorTensors;
+using namespace Marmot::Math::Tensors::FastorIndices;
 using namespace Marmot::ContinuumMechanics;
 
 // -----------------------------------------------------------------------
@@ -281,7 +281,7 @@ void testSubsteppedConsistency()
 
 // Test I-8: F=I gives zero Kirchhoff stress for elastic PenceGouNeoHooke (exercises the hyperelasticBase branches
 // of computeEnergyDensityAndDerivatives other than the default NeoHooke one, e.g. the third-derivative computation
-// via Marmot::Math::AutomaticDifferentiation::ThirdOrder::d3f_dT3)
+// via Marmot::Math::Differentiation::Automatic::ThirdOrder::d3f_dT3)
 void testUndeformedResponsePenceGouNeoHooke()
 {
   const std::string matName  = "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY";
