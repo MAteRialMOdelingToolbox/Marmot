@@ -106,7 +106,7 @@ public:
    * @param[in] stateName Name of the state.
    * @return View (location and size) into the state variable array.
    */
-  virtual StateView getStateView( const std::string& stateName ) const = 0;
+  virtual Marmot::Utilities::StateView getStateView( const std::string& stateName ) const = 0;
 
   /**
    * @brief Number of state variables required by the material point and its material.

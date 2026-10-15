@@ -207,7 +207,7 @@ MarmotLagrangianCellGeometry< nDim, nNodes >::XiSized MarmotLagrangianCellGeomet
 
   for ( int iteration = 0; r.norm() > 1e-12 * h.norm(); iteration++ ) {
     if ( iteration >= 20 )
-      throw std::runtime_error( MakeString()
+      throw std::runtime_error( Marmot::Utilities::MakeString()
                                 << __PRETTY_FUNCTION__ << ": failed to determine inverse map for coordinate "
                                 << coord.transpose() );
 

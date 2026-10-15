@@ -541,12 +541,12 @@ namespace Marmot::Elements {
      * @brief Access a named state view at a quadrature point.
      * @note Using "sdv" returns the raw material state vector and is deprecated.
      */
-    StateView getStateView( const std::string& stateName, int qpNumber )
+    Marmot::Utilities::StateView getStateView( const std::string& stateName, int qpNumber )
     {
       const auto& qp = qps[qpNumber];
 
       if ( stateName == "sdv" ) {
-        MarmotJournal::warningToMSG( MakeString()
+        Marmot::Utilities::Journal::warningToMSG( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__
                                      << " on 'sdv' is discouraged and deprecated, please use precise state name" );
         return { qp.managedStateVars->materialStateVars.data(),
@@ -629,7 +629,7 @@ namespace Marmot::Elements {
   {
     if ( propertyName == "bulk viscosity" ) {
       if ( nProperties != 2 )
-        throw std::invalid_argument( MakeString()
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__
                                      << ": the named property 'bulk viscosity' takes exactly "
                                         "2 values, the linear coefficient b1 and the quadratic coefficient b2, but "
@@ -640,11 +640,11 @@ namespace Marmot::Elements {
        * NaN is false, so a NaN would pass a `< 0.0` test and propagate into the viscous stress.
        */
       if ( !std::isfinite( properties[0] ) || !std::isfinite( properties[1] ) )
-        throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
+        throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                                   << ": both bulk viscosity coefficients must be finite numbers." );
 
       if ( properties[0] < 0.0 || properties[1] < 0.0 )
-        throw std::invalid_argument( MakeString()
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__
                                      << ": both bulk viscosity coefficients must be non-negative, a negative one "
                                         "would feed energy into the solution rather than remove it." );
@@ -659,7 +659,7 @@ namespace Marmot::Elements {
     }
     else if ( propertyName == "bulk viscosity damage degradation" ) {
       if ( nProperties != 1 )
-        throw std::invalid_argument( MakeString()
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__
                                      << ": the named property 'bulk viscosity damage degradation' takes exactly "
                                         "1 value, the exponent n of (c/c_0)^n, but "
@@ -671,13 +671,13 @@ namespace Marmot::Elements {
        * current tangent, not a damage variable.
        */
       if ( !std::isfinite( properties[0] ) )
-        throw std::invalid_argument( MakeString()
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__
                                      << ": the bulk viscosity damage degradation exponent must be a finite number; a "
                                         "NaN passes every ordering test and would silently disable the option." );
 
       if ( properties[0] < 0.0 )
-        throw std::invalid_argument( MakeString()
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__
                                      << ": the bulk viscosity damage degradation exponent must be non-negative, a "
                                         "negative one would AMPLIFY the viscous stress as the material fails." );
@@ -696,7 +696,7 @@ namespace Marmot::Elements {
        * their own input file and believes the field is hyperbolic.
        */
       throw std::invalid_argument(
-        MakeString() << __PRETTY_FUNCTION__
+        Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                      << ": 'nonlocal micro inertia' is no longer an element property. It is now a material "
                         "property, alongside the non-local viscosity it is bounded by (m_k <= eta^2/4): give it "
                         "to the material instead of to the element set." );
@@ -1515,7 +1515,7 @@ namespace Marmot::Elements {
      * since no density enters this bound, and needs a larger micro-inertia -- and hence, once that
      * is at its non-ringing cap of eta^2/4, a larger non-local viscosity to raise the cap. Both
      * limits are linear in h once h << l, so whichever is in charge stays in charge under
-     * refinement. Warned once per element type, since MarmotJournal has no verbosity levels.
+     * refinement. Warned once per element type, since Marmot::Utilities::Journal has no verbosity levels.
      */
     /* Atomic because the critical time step may be evaluated per element in parallel: a plain bool
      * is a data race, and the exchange is what makes "once" once rather than once per thread. Being
@@ -1524,7 +1524,7 @@ namespace Marmot::Elements {
      */
     static std::atomic< bool > nonlocalLimitAlreadyReported{ false };
     if ( criticalTimeStep < mechanicalTimeStep && !nonlocalLimitAlreadyReported.exchange( true ) ) {
-      MarmotJournal::warningToMSG( MakeString()
+      Marmot::Utilities::Journal::warningToMSG( Marmot::Utilities::MakeString()
                                    << "element " << elLabel << ": the stable increment is bounded by the NON-LOCAL "
                                    << "field (" << criticalTimeStep << " s), not by the mesh (" << mechanicalTimeStep
                                    << " s). Mass scaling cannot raise it -- no density enters "
@@ -1620,7 +1620,7 @@ namespace Marmot::Elements {
         }
         break;
       }
-      default: throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
+      default: throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
       }
     }
   }

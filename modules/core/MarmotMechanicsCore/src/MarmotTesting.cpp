@@ -130,7 +130,7 @@ namespace Marmot::Testing {
     // solveStep()'s internal loop run zero times, recording no history entry for it.
     // Guard against history.back() on an empty history in that (or any other) case.
     if ( history.empty() )
-      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__
+      throw std::runtime_error( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                              << ": solver.solve() produced no history entries (check for "
                                                 "zero-duration steps, i.e. timeStart == timeEnd)" );
     const Vector6d refStress( history.back().stress );

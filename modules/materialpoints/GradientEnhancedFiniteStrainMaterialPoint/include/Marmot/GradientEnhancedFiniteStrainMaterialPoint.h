@@ -205,7 +205,7 @@ namespace Marmot::MaterialPoints {
      * @param[in] stateName Name of the state variable (see MPStateVarManager).
      * @return View on the state variable.
      */
-    StateView getStateView( const std::string& stateName ) const;
+    Marmot::Utilities::StateView getStateView( const std::string& stateName ) const;
 
     /**
      * @brief Shape of the material point.
@@ -463,7 +463,7 @@ namespace Marmot::MaterialPoints {
         hasEigenDeformation = true;
       }
       else {
-        throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
+        throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
       }
     }
   };
@@ -475,7 +475,7 @@ namespace Marmot::MaterialPoints {
   }
 
   template < int nDim >
-  StateView GradientEnhancedFiniteStrainMaterialPoint< nDim >::getStateView( const std::string& stateName ) const
+  Marmot::Utilities::StateView GradientEnhancedFiniteStrainMaterialPoint< nDim >::getStateView( const std::string& stateName ) const
   {
     if ( state->contains( stateName ) )
       return state->getStateView( stateName );
@@ -494,7 +494,7 @@ namespace Marmot::MaterialPoints {
                                                                                           _mpNumber ) ) );
 
     if ( !material )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                                 << ": invalid material assigned; cannot cast to "
                                                    "MarmotMaterialGradientEnhancedFiniteStrain!" );
   }

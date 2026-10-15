@@ -473,7 +473,7 @@ namespace Marmot::Meshfree {
      * @param[in] qp        Evaluation point (unused, there is only one).
      * @return View on the state variable.
      */
-    virtual StateView getStateView( const std::string& stateName, int qp ) const override;
+    virtual Marmot::Utilities::StateView getStateView( const std::string& stateName, int qp ) const override;
 
     /**
      * @brief Meshfree shape functions of the assigned nodes at a point.
@@ -606,7 +606,7 @@ namespace Marmot::Meshfree {
         _mp.setInitialCondition( conditionName, value );
       }
       else {
-        throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
+        throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
       }
     };
 
@@ -657,7 +657,7 @@ namespace Marmot::Meshfree {
   };
 
   template < int nDim >
-  StateView GradientEnhancedFiniteStrainParticle< nDim >::getStateView( const std::string& stateName, int qp ) const
+  Marmot::Utilities::StateView GradientEnhancedFiniteStrainParticle< nDim >::getStateView( const std::string& stateName, int qp ) const
   {
     if ( stateName == "vertex displacements" )
       // the point particle's single vertex is the material point itself
@@ -698,7 +698,7 @@ namespace Marmot::Meshfree {
       _vciOrder( 0 )
   {
     if ( sizeCenterCoordinates0 != nDim ) {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": size of center coordinates must be "
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": size of center coordinates must be "
                                                 << nDim << ", but got " << sizeCenterCoordinates0 );
     }
 
@@ -856,7 +856,7 @@ namespace Marmot::Meshfree {
                                                                              double        timeNew,
                                                                              double        dT ) const
   {
-    throw std::invalid_argument( MakeString()
+    throw std::invalid_argument( Marmot::Utilities::MakeString()
                                  << __PRETTY_FUNCTION__ << ": a point particle has no faces for a distributed load" );
   }
 
@@ -877,7 +877,7 @@ namespace Marmot::Meshfree {
           fExt[nodeBlockSize * A + i] -= this->_T( A ) * load[i] * V0;
       break;
     }
-    default: throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid body load type" );
+    default: throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid body load type" );
     }
   }
 

@@ -345,7 +345,7 @@ namespace {
       const auto   numK        = numericalTangent( [&]( const Eigen::VectorXd& q ) { return s.trial( q ).first; }, dQ );
       const double err         = numK.error( K );
       throwExceptionOnFailure( err < 1e-7,
-                               MakeString() << g.name << ( afterStep ? ", second" : ", first" )
+                               Marmot::Utilities::MakeString() << g.name << ( afterStep ? ", second" : ", first" )
                                             << " step: tangent inconsistent, relative error " << err );
     }
 
@@ -363,7 +363,7 @@ namespace {
       }
       const auto P = s.trial( dQ ).first;
       throwExceptionOnFailure( P.norm() < 1e-8, // round-off grows with the number of nodes (cubic B-splines)
-                               MakeString()
+                               Marmot::Utilities::MakeString()
                                  << g.name << ": rigid rotation must not load the cell, |P| = " << P.norm() );
     }
 
@@ -447,7 +447,7 @@ void checkStressStateOfTheMaterialPoints( const CellGeometry< nDim >& g )
       norm += std::pow( response.tau.data()[i], 2 );
     }
     throwExceptionOnFailure( norm > 0.0 && std::sqrt( error ) <= 1e-12 * std::sqrt( norm ),
-                             MakeString() << g.name << ": the stress state of a material point is not its stress" );
+                             Marmot::Utilities::MakeString() << g.name << ": the stress state of a material point is not its stress" );
   }
 }
 

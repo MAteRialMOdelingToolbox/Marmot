@@ -179,7 +179,7 @@ namespace Marmot::Meshfree {
         }
         break;
       }
-      default: throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid body load type" );
+      default: throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid body load type" );
       }
     }
 
@@ -320,7 +320,7 @@ namespace Marmot::Meshfree {
      * @param[in] subdomainIndex Index of the subdomain.
      * @return The view on the state.
      */
-    virtual StateView getStateViewOnSubdomains( const std::string& stateName, int subdomainIndex ) const
+    virtual Marmot::Utilities::StateView getStateViewOnSubdomains( const std::string& stateName, int subdomainIndex ) const
     {
       return _subdomainMaterialPoints[subdomainIndex]->getStateView( stateName );
     }
@@ -446,7 +446,7 @@ namespace Marmot::Meshfree {
      */
     virtual void setInitialCondition( const std::string& conditionName, const double* value ) override
     {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
     };
   };
 
@@ -564,7 +564,7 @@ namespace Marmot::Meshfree {
       break;
     }
     default: {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
     }
     }
   }

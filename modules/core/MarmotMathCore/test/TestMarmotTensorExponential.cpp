@@ -20,17 +20,17 @@ void test_tensorExponential()
                                                                                                           1e-8 );
 
   throwExceptionOnFailure( checkIfEqual( ( tExp2D( 0, 0 ) ), std::exp( 0.1 ), 1e-8 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
   throwExceptionOnFailure( checkIfEqual( ( tExp2D( 1, 1 ) ), std::exp( 0.2 ), 1e-8 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 
   const auto [tExp2D_2, tExp2D_2_d_dExp2D] = ContinuumMechanics::TensorUtility::TensorExponential::FirstOrderDerived::
     computeTensorExponential( tensor2d, 1000, 1e-10 );
 
   throwExceptionOnFailure( checkIfEqual( ( tExp2D_2_d_dExp2D( 0, 0, 0, 0 ) ), std::exp( 0.1 ), 1e-8 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
   throwExceptionOnFailure( checkIfEqual( ( tExp2D_2_d_dExp2D( 1, 1, 1, 1 ) ), std::exp( 0.2 ), 1e-8 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 int main()

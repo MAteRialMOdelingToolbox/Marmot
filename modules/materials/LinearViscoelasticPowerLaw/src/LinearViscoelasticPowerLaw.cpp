@@ -12,7 +12,7 @@ namespace Marmot::Materials {
   double LinearViscoelasticPowerLaw::getDensity( const double* stateVars ) const
   {
     if ( nMaterialProperties < 8 ) {
-      throw std::runtime_error( MakeString()
+      throw std::runtime_error( Marmot::Utilities::MakeString()
                                 << __PRETTY_FUNCTION__ << ": Density not provided in material properties array!" );
     }
     else {

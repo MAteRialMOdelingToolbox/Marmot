@@ -406,16 +406,16 @@ namespace Marmot::Meshfree {
      *          the main domain; all other names are passed to getStateViewOnSubdomains().
      * @param[in] stateName The name of the state variable (e.g., "vertex displacements").
      * @param[in] qp The index of the subdomain (unused for the vertex displacements).
-     * @return A StateView object providing access to the state variable data.
+     * @return A Marmot::Utilities::StateView object providing access to the state variable data.
      */
-    virtual StateView getStateView( const std::string& stateName, int qp ) const override final
+    virtual Marmot::Utilities::StateView getStateView( const std::string& stateName, int qp ) const override final
     {
       if ( stateName == "vertex displacements" )
-        return StateView( const_cast< double* >( _particleDomainMain.getGeometryDeformedVertexDisplacements().data() ),
+        return Marmot::Utilities::StateView( const_cast< double* >( _particleDomainMain.getGeometryDeformedVertexDisplacements().data() ),
                           nDim * nVertices );
 
       if ( stateName == "smoothing vertex displacements" )
-        return StateView( const_cast< double* >( _particleDomainMain.getSmoothingDomainVertexDisplacements().data() ),
+        return Marmot::Utilities::StateView( const_cast< double* >( _particleDomainMain.getSmoothingDomainVertexDisplacements().data() ),
                           nDim * nVertices );
 
       return getStateViewOnSubdomains( stateName, qp );
@@ -425,9 +425,9 @@ namespace Marmot::Meshfree {
      * @brief Provides a view into a specific state variable for a given subdomain.
      * @param[in] stateName The name of the state variable.
      * @param[in] subdomainIndex The index of the subdomain.
-     * @return A StateView object providing access to the state variable data.
+     * @return A Marmot::Utilities::StateView object providing access to the state variable data.
      */
-    virtual StateView getStateViewOnSubdomains( const std::string& stateName, int subdomainIndex ) const = 0;
+    virtual Marmot::Utilities::StateView getStateViewOnSubdomains( const std::string& stateName, int subdomainIndex ) const = 0;
 
     /**
      * @brief Computes the physics kernels (internal forces and their derivatives) for the particle.

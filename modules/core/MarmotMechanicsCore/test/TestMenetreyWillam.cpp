@@ -18,22 +18,22 @@ void testYieldFunctions()
 
   auto mwVM = MenetreyWillam( ft, MenetreyWillam::MenetreyWillamType::Mises );
   throwExceptionOnFailure( checkIfEqual( mwVM.yieldFunction( hw ), 4.8321184351980424 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Von Mises yield criterion doen't yield the right result" );
 
   auto mwR = MenetreyWillam( ft, MenetreyWillam::MenetreyWillamType::Rankine );
   throwExceptionOnFailure( checkIfEqual( mwR.yieldFunction( hw ), 2.2381914955371371 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Rankine yield criterion doen't yield the right result" );
 
   auto mwDP = MenetreyWillam( ft, MenetreyWillam::MenetreyWillamType::DruckerPrager, fc );
   throwExceptionOnFailure( checkIfEqual( mwDP.yieldFunction( hw ), 1.5483064286295773 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Drucker-Prager yield criterion doen't yield the right result" );
 
   auto mwMC = MenetreyWillam( ft, MenetreyWillam::MenetreyWillamType::MohrCoulomb, fc );
   throwExceptionOnFailure( checkIfEqual( mwMC.yieldFunction( hw ), 2.5218527589353812 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Mohr-Coulomb yield criterion doen't yield the right result" );
 }
 
@@ -46,12 +46,12 @@ void testSmoothingWithFillet()
 
   auto mwDP = MenetreyWillam( ft, MenetreyWillam::MenetreyWillamType::DruckerPrager, fc );
   throwExceptionOnFailure( checkIfEqual( mwDP.yieldFunction( hw, varEps ), 0.4922077922077921 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Smoothing with fillet doesn't work for Drucker-Prager" );
 
   auto mwMC = MenetreyWillam( ft, MenetreyWillam::MenetreyWillamType::MohrCoulomb, fc );
   throwExceptionOnFailure( checkIfEqual( mwMC.yieldFunction( hw, varEps ), 0. - 0.3026289888799327 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Smoothing with fillet doesn't work for Mohr-Coulomb" );
 }
 
@@ -65,13 +65,13 @@ void testInlineFunctions()
   const double fc_ = MenetreyWillam::fc( c, phi );
 
   throwExceptionOnFailure( checkIfEqual( ft, ft_, 1e-13 ) && checkIfEqual( fc, fc_, 1e-13 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Bug in inline conversion functions (ft, fc, phi, c)" );
 
   auto mw = MenetreyWillam( ft, MenetreyWillam::MenetreyWillamType::MohrCoulomb, fc );
   const HaighWestergaardCoordinates< double > hw = { -1.0, 10., 0.4 };
   throwExceptionOnFailure( checkIfEqual( mw.yieldFunction( hw ), 2.5218527589353812 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Mohr-Coulomb yield criterion doen't yield the right result" );
 }
 
@@ -98,13 +98,13 @@ void testDerivatives()
   const double dYddTheta = mwMC.yieldFunction( hw_dual ).grad;
 
   throwExceptionOnFailure( checkIfEqual( std::get< 0 >( dYdHW ), dYddXi ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Derivative of yield function with respect to xi is wrong" );
   throwExceptionOnFailure( checkIfEqual( std::get< 1 >( dYdHW ), dYddRho ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Derivative of yield function with respect to rho is wrong" );
   throwExceptionOnFailure( checkIfEqual( std::get< 2 >( dYdHW ), dYddTheta ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Derivative of yield function with respect to theta is wrong" );
 }
 
@@ -131,28 +131,28 @@ void testdPolarRadius_dTheta()
   const double         drdThetaDualShear = rDualShear.grad;
 
   throwExceptionOnFailure( checkIfEqual( r_Ext, r_ExtTarget ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Polar radius for extension meridian is wrong" );
 
   throwExceptionOnFailure( checkIfEqual( r_Comp, r_CompTarget ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Polar radius for compression meridian is wrong" );
 
   throwExceptionOnFailure( checkIfEqual( drdThetaExt, drdThetaExtTarget ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Derivative of polar radius for extension meridian is wrong" );
 
   throwExceptionOnFailure( checkIfEqual( drdThetaComp, drdThetaCompTarget, 1e-13 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Derivative of polar radius for compression meridian is wrong" );
 
   throwExceptionOnFailure( checkIfEqual( r_Shear, val( rDualShear ) ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Polar radius for shear meridian doesn't yield the same result for "
                                            "autodiff::dual" );
 
   throwExceptionOnFailure( checkIfEqual( drdThetaShear, drdThetaDualShear ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Derivative of polar radius for shear meridian is wrong" );
 }
 
@@ -184,32 +184,32 @@ void testd2PolarRadius_dTheta2()
                                                             autodiff::at( thetaShearDual, e ) );
 
   throwExceptionOnFailure( checkIfEqual( r_Ext, r_ExtTarget ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Polar radius for extension meridian is wrong" );
 
   throwExceptionOnFailure( checkIfEqual( r_Comp, r_CompTarget ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Polar radius for compression meridian is wrong" );
 
   throwExceptionOnFailure( checkIfEqual( drdThetaExt, drdThetaExtTarget ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Derivative of polar radius for extension meridian is wrong" );
 
   throwExceptionOnFailure( checkIfEqual( drdThetaComp, drdThetaCompTarget, 1e-13 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Derivative of polar radius for compression meridian is wrong" );
 
   throwExceptionOnFailure( checkIfEqual( r_Shear, rvalDual ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: Polar radius for shear meridian doesn't yield the same result for "
                                            "autodiff::dual" );
 
   throwExceptionOnFailure( checkIfEqual( drdThetaShear, drDual ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: 1st derivative of polar radius for shear meridian is wrong" );
 
   throwExceptionOnFailure( checkIfEqual( d2rdTheta2Shear, d2rDual ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed: 2nd derivative of polar radius for shear meridian is wrong" );
 }
 

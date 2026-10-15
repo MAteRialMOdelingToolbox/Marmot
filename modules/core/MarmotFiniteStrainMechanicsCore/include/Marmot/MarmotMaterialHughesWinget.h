@@ -170,7 +170,7 @@ namespace Marmot::Materials {
      * @param[in] stateVars Pointer to the state variable array of this wrapper.
      * @return A view of the requested state variable.
      */
-    StateView getStateView( const std::string& stateName, double* stateVars ) const override
+    Marmot::Utilities::StateView getStateView( const std::string& stateName, double* stateVars ) const override
     {
       if ( stateName == deformationGradientSlot || stateName == stressSlot || stateName == baseMaterialSlot )
         return this->stateLayout.getStateView( stateVars, stateName );

@@ -79,7 +79,7 @@ public:
   virtual ~MarmotMaterialHypoElastic() = default;
 
   /// Layout of the state variables
-  MarmotStateLayoutDynamic stateLayout;
+  Marmot::Utilities::StateLayoutDynamic stateLayout;
 
   /// Structure to hold the material state at a material point in 3D
   struct state3D {
@@ -207,7 +207,7 @@ public:
    * @param stateVars Pointer to the state variable array
    * @return StatView to access the state variable
    */
-  StateView getStateView( const std::string& stateName, double* stateVars ) const
+  Marmot::Utilities::StateView getStateView( const std::string& stateName, double* stateVars ) const
   {
     return stateLayout.getStateView( stateVars, stateName );
   }

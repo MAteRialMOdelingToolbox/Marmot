@@ -33,7 +33,7 @@ void testTensorToScalar()
 
   // check results for dPsi_dC
   throwExceptionOnFailure( checkIfEqual< double >( dPsi_dC, Tensor33d( 0.0 ) ),
-                           MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC should be zero for the F = I" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC should be zero for the F = I" );
 
   // extension in first direction
   F( 0, 0 ) += 1e-3;
@@ -47,7 +47,7 @@ void testTensorToScalar()
 
   // check results for dPsi_dC
   throwExceptionOnFailure( checkIfEqual< double >( dPsi_dC, dPsi_dC_analytical, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC for odometric extension failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC for odometric extension failed" );
 
   // shear deformation
   F( 0, 1 ) += 1e-3;
@@ -61,7 +61,7 @@ void testTensorToScalar()
 
   // check results for dPsi_dC
   throwExceptionOnFailure( checkIfEqual< double >( dPsi_dC, dPsi_dC_analytical, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC for mixed deformation failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC for mixed deformation failed" );
 }
 
 void testTensorToScalarSymmetric()
@@ -84,7 +84,7 @@ void testTensorToScalarSymmetric()
   Tensor33d dPsi_dC_sym  = df_dT( psi, C, true );
 
   throwExceptionOnFailure( checkIfEqual< double >( dPsi_dC_sym, dPsi_dC_full, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << "symmetric df_dT doesn't match the dense computation" );
 }
 
@@ -119,7 +119,7 @@ void testTensorToScalarWith2ndOrderDuals()
 
   // check results for dPsi_dC
   throwExceptionOnFailure( checkIfEqual< autodiff::dual >( dPsi_dC, dPsi_dC_analytical, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "dPsi_dPsi for F = I failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "dPsi_dPsi for F = I failed" );
 
   // extension in first direction
   F_dual( 0, 0 ) += 1e-3;
@@ -133,7 +133,7 @@ void testTensorToScalarWith2ndOrderDuals()
 
   // check results for dPsi_dC
   throwExceptionOnFailure( checkIfEqual< autodiff::dual >( dPsi_dC, dPsi_dC_analytical, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC for odometric extension failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC for odometric extension failed" );
 
   // shear deformation
   F_dual( 0, 1 ) += 1e-3;
@@ -146,7 +146,7 @@ void testTensorToScalarWith2ndOrderDuals()
   dPsi_dC = df_dT< 1 >( psi, C_dual ).second;
 
   throwExceptionOnFailure( checkIfEqual< autodiff::dual >( dPsi_dC, dPsi_dC_analytical, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC for mixed deformation failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC for mixed deformation failed" );
 }
 
 void testTensorToScalarWith2ndOrderDualsSymmetric()
@@ -170,9 +170,9 @@ void testTensorToScalarWith2ndOrderDualsSymmetric()
   auto [val_sym, dPsi_dC_sym]   = df_dT< 1 >( psi, C_dual, true );
 
   throwExceptionOnFailure( checkIfEqual( double( val_sym ), double( val_full ), 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "function value mismatch" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "function value mismatch" );
   throwExceptionOnFailure( checkIfEqual< autodiff::dual >( dPsi_dC_sym, dPsi_dC_full, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << "symmetric higher-order df_dT doesn't match the dense computation" );
 }
 
@@ -195,11 +195,11 @@ void testTensorToTensor()
 
   // check results for C
   throwExceptionOnFailure( checkIfEqual< double >( C, C_analytical, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "computation of C failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "computation of C failed" );
 
   // check results for dC_dF
   throwExceptionOnFailure( checkIfEqual< double >( dC_dF, dC_dF_analytical, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "computation of dC_dF failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "computation of dC_dF failed" );
 }
 
 void testTensorToTensorSymmetric()
@@ -221,9 +221,9 @@ void testTensorToTensorSymmetric()
   auto [Fval_sym, dF_dC_sym]   = dF_dT( f, C, true );
 
   throwExceptionOnFailure( checkIfEqual< double >( Fval_sym, Fval_full, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "function value mismatch" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "function value mismatch" );
   throwExceptionOnFailure( checkIfEqual< double >( dF_dC_sym, dF_dC_full, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << "symmetric dF_dT doesn't match the dense computation" );
 }
 
@@ -249,13 +249,13 @@ void testTensorToScalarSecondOrder()
         d2Psi_dC2_analytical] = EnergyDensityFunctions::SecondOrderDerived::PenceGouPotentialB( C, K, G );
 
   throwExceptionOnFailure( checkIfEqual( psi, psi_, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "computation of psi failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "computation of psi failed" );
 
   throwExceptionOnFailure( checkIfEqual< double >( dPsi_dC, dPsi_dC_analytical, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "computation of dPsi_dC failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "computation of dPsi_dC failed" );
 
   throwExceptionOnFailure( checkIfEqual< double >( d2Psi_dC2, d2Psi_dC2_analytical, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "computation of d2Psi_dC2 failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "computation of d2Psi_dC2 failed" );
 }
 
 void testTensorToScalarSecondOrderSymmetric()
@@ -278,11 +278,11 @@ void testTensorToScalarSecondOrderSymmetric()
   auto [psi_sym, dPsi_dC_sym, d2Psi_dC2_sym]    = SecondOrder::d2f_dT2( f, C, true );
 
   throwExceptionOnFailure( checkIfEqual( psi_sym, psi_full, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "psi mismatch" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "psi mismatch" );
   throwExceptionOnFailure( checkIfEqual< double >( dPsi_dC_sym, dPsi_dC_full, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC mismatch" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC mismatch" );
   throwExceptionOnFailure( checkIfEqual< double >( d2Psi_dC2_sym, d2Psi_dC2_full, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << "symmetric d2f_dT2 doesn't match the dense computation" );
 }
 
@@ -316,7 +316,7 @@ void testTensorToScalarSecondOrderMixed()
   Tensor33d d2Psi_dCdOmega_analytical = -2. * omega * dPsi_dC_analytical;
 
   throwExceptionOnFailure( checkIfEqual< double >( d2Psi_dCdOmega, d2Psi_dCdOmega_analytical, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "computation of d2Psi_dC_dOmega failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "computation of d2Psi_dC_dOmega failed" );
 }
 
 void testTensorToScalarSecondOrderMixedSymmetric()
@@ -343,7 +343,7 @@ void testTensorToScalarSecondOrderMixedSymmetric()
   auto d2Psi_dCdOmega_sym  = SecondOrder::d2f_dTensor_dScalar( f, C, omega, true );
 
   throwExceptionOnFailure( checkIfEqual< double >( d2Psi_dCdOmega_sym, d2Psi_dCdOmega_full, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << "symmetric d2f_dTensor_dScalar doesn't match the dense computation" );
 }
 
@@ -371,19 +371,19 @@ void testTensorToScalarThirdOrder()
   double expected_psi = 3.0;
 
   throwExceptionOnFailure( std::isfinite( psi ),
-                           MakeString() << __PRETTY_FUNCTION__ << "psi is not finite (NaN or Inf)" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "psi is not finite (NaN or Inf)" );
 
   throwExceptionOnFailure( checkIfEqual( psi, expected_psi, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "computation of psi failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "computation of psi failed" );
 
   // check that the third derivative tensor has the correct shape (3x3x3x3x3x3)
   throwExceptionOnFailure( d3Psi_dC3.dimension( 0 ) == 3 && d3Psi_dC3.dimension( 1 ) == 3 &&
                              d3Psi_dC3.dimension( 2 ) == 3 && d3Psi_dC3.dimension( 3 ) == 3 &&
                              d3Psi_dC3.dimension( 4 ) == 3 && d3Psi_dC3.dimension( 5 ) == 3,
-                           MakeString() << __PRETTY_FUNCTION__ << "d3Psi_dC3 has incorrect dimensions" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "d3Psi_dC3 has incorrect dimensions" );
 
   throwExceptionOnFailure( checkIfEqual( d3Psi_dC3, Tensor333333d( 0.0 ) ),
-                           MakeString() << __PRETTY_FUNCTION__ << "d3Psi_dC3 is not equal to zero tensor as expected" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "d3Psi_dC3 is not equal to zero tensor as expected" );
 }
 
 void testTensorToScalarThirdOrderSymmetric()
@@ -407,13 +407,13 @@ void testTensorToScalarThirdOrderSymmetric()
   auto [psi_sym, dPsi_dC_sym, d2Psi_dC2_sym, d3Psi_dC3_sym]     = ThirdOrder::d3f_dT3( f, C, true );
 
   throwExceptionOnFailure( checkIfEqual( psi_sym, psi_full, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "psi mismatch" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "psi mismatch" );
   throwExceptionOnFailure( checkIfEqual< double >( dPsi_dC_sym, dPsi_dC_full, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC mismatch" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC mismatch" );
   throwExceptionOnFailure( checkIfEqual< double >( d2Psi_dC2_sym, d2Psi_dC2_full, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "d2Psi_dC2 mismatch" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "d2Psi_dC2 mismatch" );
   throwExceptionOnFailure( checkIfEqual< double >( d3Psi_dC3_sym, d3Psi_dC3_full, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << "symmetric d3f_dT3 doesn't match the dense computation" );
 }
 
@@ -437,7 +437,7 @@ void testNonSquareRank2Shapes()
   Fastor::Tensor< double, 4 > dF_dT_target = 2. * T;
 
   throwExceptionOnFailure( checkIfEqual< double >( dF_dT_result, dF_dT_target, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "df_dT with a rank-1 vector input failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "df_dT with a rank-1 vector input failed" );
 
   // dF_dT with a non-square-rank2 (rank-1 vector) output: g(C)_0 = C_00^2, g(C)_1 = C_11 + C_22
   std::function< Fastor::Tensor< autodiff::dual, 2 >( const Fastor::Tensor< autodiff::dual, 3, 3 >& ) > g =
@@ -460,9 +460,9 @@ void testNonSquareRank2Shapes()
   dG_dC_target( 1, 2, 2 ) = 1.;
 
   throwExceptionOnFailure( checkIfEqual< double >( Gval, Gval_target, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "dF_dT with a rank-1 vector output: value failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "dF_dT with a rank-1 vector output: value failed" );
   throwExceptionOnFailure( checkIfEqual< double >( dG_dC, dG_dC_target, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << "dF_dT with a rank-1 vector output: gradient failed" );
 }
 

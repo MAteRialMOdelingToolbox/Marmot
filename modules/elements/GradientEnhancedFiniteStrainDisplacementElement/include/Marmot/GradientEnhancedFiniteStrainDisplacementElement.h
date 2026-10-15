@@ -334,7 +334,7 @@ namespace Marmot::Elements {
      * @param[in] qpNumber Number of the quadrature point.
      * @return The view.
      */
-    StateView getStateView( const std::string& stateName, int qpNumber );
+    Marmot::Utilities::StateView getStateView( const std::string& stateName, int qpNumber );
 
     /// @brief Coordinates of the element center in the reference configuration.
     std::vector< double > getCoordinatesAtCenter();
@@ -366,7 +366,7 @@ namespace Marmot::Elements {
   };
 
   template < int nDim, int nNodes >
-  StateView GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::getStateView( const std::string& stateName,
+  Marmot::Utilities::StateView GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::getStateView( const std::string& stateName,
                                                                                            int                qpNumber )
   {
     const auto& qp = qps[qpNumber];
@@ -391,7 +391,7 @@ namespace Marmot::Elements {
   {
     if ( ( nDim == 2 && sectionType != SectionType::PlaneStrain ) ||
          ( nDim == 3 && sectionType != SectionType::Solid ) )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                                 << ": only plane strain (2D) and solid (3D) sections are supported" );
 
     for ( const auto& qpInfo : Marmot::FiniteElement::Quadrature::getGaussPointInfo( this->shape, integrationType ) ) {
@@ -767,7 +767,7 @@ namespace Marmot::Elements {
       break;
     }
     default: {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid load type" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid load type" );
     }
     }
   }
@@ -819,7 +819,7 @@ namespace Marmot::Elements {
         }
         break;
       }
-      default: throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
+      default: throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
       }
     }
   }

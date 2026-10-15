@@ -434,7 +434,7 @@ namespace Marmot::Elements {
      * @param qpNumber[in] Number of the quadrature point where the state variable is stored
      * @return View to the requested state variable at the specified quadrature point
      */
-    StateView getStateView( const std::string& stateName, int qpNumber );
+    Marmot::Utilities::StateView getStateView( const std::string& stateName, int qpNumber );
 
     /** @brief Get the coordinates of the element center
      * @return Coordinates of the element center
@@ -453,7 +453,7 @@ namespace Marmot::Elements {
   };
 
   template < int nDim, int nNodes >
-  StateView DisplacementFiniteStrainULElement< nDim, nNodes >::getStateView( const std::string& stateName,
+  Marmot::Utilities::StateView DisplacementFiniteStrainULElement< nDim, nNodes >::getStateView( const std::string& stateName,
                                                                              int                qpNumber )
   {
     const auto& qp = qps[qpNumber];
@@ -922,7 +922,7 @@ namespace Marmot::Elements {
         }
         break;
       }
-      default: throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
+      default: throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
       }
     }
   }

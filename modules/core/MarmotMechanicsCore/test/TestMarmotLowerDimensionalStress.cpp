@@ -36,7 +36,7 @@ void test_getUniaxialStressTangent()
   double expectedResult = 1000.0;
 
   throwExceptionOnFailure( checkIfEqual( computedResult, expectedResult, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void test_reduce3D_dStress_dDeformationGradient()
@@ -103,7 +103,7 @@ void test_reduce3D_dStress_dDeformationGradient()
   */
 
   throwExceptionOnFailure( checkIfEqual< double, 3, 2, 2 >( computedResult, expectedResult ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void test_getPlaneStrainTangent()
@@ -123,7 +123,7 @@ void test_getPlaneStrainTangent()
   // clang-format on
 
   throwExceptionOnFailure( checkIfEqual< double >( computedResult, expectedResult ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void test_dStrainDStrainPlaneStrain()
@@ -143,7 +143,7 @@ void test_dStrainDStrainPlaneStrain()
   // clang-format on
 
   throwExceptionOnFailure( checkIfEqual< double >( computedResult, expectedResult ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void test_compute_dStress_dDeformationGradient()
@@ -210,7 +210,7 @@ void test_compute_dStress_dDeformationGradient()
   */
 
   throwExceptionOnFailure( checkIfEqual< double, 3, 2, 2 >( computedResult, expectedResult ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void test_dStressPlaneStressDStress()
@@ -227,7 +227,7 @@ void test_dStressPlaneStressDStress()
   // clang-format on
 
   throwExceptionOnFailure( checkIfEqual< double >( computedResult, expectedResult ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void test_getPlaneStressTangent()
@@ -260,7 +260,7 @@ void test_getPlaneStressTangent()
   Matrix3d expectedResult = dStressPlaneStressDStress * C * dStrainDStrainPlaneStress;
 
   throwExceptionOnFailure( checkIfEqual< double >( computedResult, expectedResult ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void test_planeStressCompensationStrain()
@@ -277,7 +277,7 @@ void test_planeStressCompensationStrain()
   expectedResult << 0, 0, -0.025, 0, 0, 0;
 
   throwExceptionOnFailure( checkIfEqual< double >( computedResult, expectedResult ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void test_planeStressTangentTransformationMatrix()
@@ -300,7 +300,7 @@ void test_planeStressTangentTransformationMatrix()
   // clang-format on
 
   throwExceptionOnFailure( checkIfEqual< double >( computedResult, expectedResult ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void test_dStrainDStrainPlaneStress()
@@ -323,7 +323,7 @@ void test_dStrainDStrainPlaneStress()
   // clang-format on
 
   throwExceptionOnFailure( checkIfEqual< double >( computedResult, expectedResult ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 int main()

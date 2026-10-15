@@ -35,8 +35,8 @@
 class MarmotStateVarVectorManager {
 
 public:
-  /// get a StateView for a statevar entry
-  inline StateView getStateView( const std::string& name ) const
+  /// get a Marmot::Utilities::StateView for a statevar entry
+  inline Marmot::Utilities::StateView getStateView( const std::string& name ) const
   {
     auto entry = theLayout.entries.at( name );
     return { theStateVars + entry.index, entry.length };

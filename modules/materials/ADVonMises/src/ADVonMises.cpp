@@ -20,7 +20,7 @@ namespace Marmot::Materials {
   double ADVonMises::getDensity( const double* stateVars ) const
   {
     if ( nMaterialProperties < 7 ) {
-      throw std::runtime_error( MakeString()
+      throw std::runtime_error( Marmot::Utilities::MakeString()
                                 << __PRETTY_FUNCTION__ << ": Density not provided in material properties array!" );
     }
     else {
@@ -74,7 +74,7 @@ namespace Marmot::Materials {
       while ( abs( g( (double)rhoTrial, kappa, (double)dKappa ) ) > ADVonMisesConstants::innerNewtonTol ) {
 
         if ( counter == ADVonMisesConstants::nMaxInnerNewtonCycles ) {
-          throw StressUpdateFailed( MakeString()
+          throw Marmot::Utilities::StressUpdateFailed( Marmot::Utilities::MakeString()
                                     << __PRETTY_FUNCTION__
                                     << ": Return mapping did not converge within maximum number of iterations!" );
         }

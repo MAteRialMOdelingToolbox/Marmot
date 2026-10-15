@@ -126,7 +126,7 @@ namespace {
 
     const double relError = ( K - numK ).norm() / numK.norm();
     throwExceptionOnFailure( relError < 1e-7,
-                             MakeString() << name << ": stiffness does not match the numerical tangent, relative error "
+                             Marmot::Utilities::MakeString() << name << ": stiffness does not match the numerical tangent, relative error "
                                           << relError );
 
     // the coupling block dr_U/dN is small against the total, so check it on its own scale as well
@@ -134,7 +134,7 @@ namespace {
     const double relErrUN = ( K.block( 0, nU, nU, nNodes ) - numK.block( 0, nU, nU, nNodes ) ).norm() /
                             numK.block( 0, nU, nU, nNodes ).norm();
     throwExceptionOnFailure( relErrUN < 1e-6,
-                             MakeString()
+                             Marmot::Utilities::MakeString()
                                << name << ": coupling block dr_U/dN inconsistent, relative error " << relErrUN );
   }
 
@@ -211,7 +211,7 @@ void testRigidRotationIsStressFree()
 
   const auto P = h8.kernels( Q ).first;
   throwExceptionOnFailure( P.norm() < 1e-9,
-                           MakeString() << "rigid rotation must not load the element, |P| = " << P.norm() );
+                           Marmot::Utilities::MakeString() << "rigid rotation must not load the element, |P| = " << P.norm() );
 }
 
 void testInternalForcesAreSelfEquilibrated()
@@ -278,7 +278,7 @@ void testGeostaticInitialState()
     const double* tau = s.element->getStateView( "stress", 0 ).stateLocation;
     for ( int i = 0; i < 3; i++ )
       throwExceptionOnFailure( std::abs( tau[4 * i] - sigma ) < 1e-8 * std::abs( sigma ),
-                               MakeString() << name << ": geostatic stress not reproduced, tau_" << i << i << " = "
+                               Marmot::Utilities::MakeString() << name << ": geostatic stress not reproduced, tau_" << i << i << " = "
                                             << tau[4 * i] );
   }
 }
@@ -391,7 +391,7 @@ void testEnergyAndDissipationArePersisted()
   K.setZero();
   q8.element->computeKernels( Q2.data(), dQ.data(), P.data(), K.data(), 1.0, 1.0 );
   const double d2 = *q8.element->getStateView( "dissipation density", 0 ).stateLocation;
-  throwExceptionOnFailure( d2 > d1, MakeString() << "dissipation must accumulate: " << d1 << " -> " << d2 );
+  throwExceptionOnFailure( d2 > d1, Marmot::Utilities::MakeString() << "dissipation must accumulate: " << d1 << " -> " << d2 );
 
   // the increment alone: the same second increment from a fresh state that only knows the damage history
   Setup fresh( "GCPE8UL", quad8Coordinates );

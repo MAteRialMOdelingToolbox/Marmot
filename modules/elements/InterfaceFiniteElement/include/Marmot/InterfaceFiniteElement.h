@@ -424,7 +424,7 @@ namespace Marmot::Elements {
     /**
      * @brief Access a named state view at a quadrature point.
      */
-    StateView getStateView( const std::string& stateName, int qpNumber )
+    Marmot::Utilities::StateView getStateView( const std::string& stateName, int qpNumber )
     {
       const auto& qp = qps[qpNumber];
 
@@ -758,7 +758,7 @@ namespace Marmot::Elements {
     }
 
     default:
-      throw std::invalid_argument( MakeString()
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
                                    << __PRETTY_FUNCTION__ << ": invalid initial condition for InterfaceFiniteElement" );
     }
   }
@@ -774,7 +774,7 @@ namespace Marmot::Elements {
                                                                        double                              dT )
   {
     throw std::invalid_argument(
-      MakeString() << __PRETTY_FUNCTION__ << ": distributed loads are not implemented for InterfaceFiniteElement." );
+      Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": distributed loads are not implemented for InterfaceFiniteElement." );
   }
 
   template < int nDim, int nNodes >
@@ -785,21 +785,21 @@ namespace Marmot::Elements {
                                                                  double        time,
                                                                  double        dT )
   {
-    throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
+    throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                               << ": body forces are not implemented for InterfaceFiniteElement." );
   }
 
   template < int nDim, int nNodes >
   void InterfaceFiniteElement< nDim, nNodes >::computeConsistentInertia( double* M )
   {
-    throw std::runtime_error( MakeString()
+    throw std::runtime_error( Marmot::Utilities::MakeString()
                               << __PRETTY_FUNCTION__ << ": inertia is not implemented for InterfaceFiniteElement." );
   }
 
   template < int nDim, int nNodes >
   void InterfaceFiniteElement< nDim, nNodes >::computeLumpedInertia( double* M )
   {
-    throw std::runtime_error( MakeString()
+    throw std::runtime_error( Marmot::Utilities::MakeString()
                               << __PRETTY_FUNCTION__ << ": inertia is not implemented for InterfaceFiniteElement." );
   }
 

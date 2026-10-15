@@ -71,7 +71,7 @@ void MarmotMaterialFiniteStrain::computePlaneStress( ConstitutiveResponse< 2 >& 
                                                      const Deformation< 2 >&    deformation,
                                                      const TimeIncrement&       timeIncrement ) const
 {
-  throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "Not yet implemented." );
+  throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "Not yet implemented." );
 }
 
 /** The basic implementation here assumes non-chirial, isotropic elastic behavior.
@@ -128,7 +128,7 @@ std::tuple< double, double, double > MarmotMaterialFiniteStrain::findEigenDeform
       break;
 
     if ( itCounter > 5 )
-      throw std::invalid_argument( MakeString()
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
                                    << __PRETTY_FUNCTION__ << ": failed to find eigen deformation within 5 iterations" );
 
     itCounter++;

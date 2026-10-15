@@ -184,7 +184,7 @@ namespace Marmot::MaterialPoints {
      * @param[in] stateName Name of the state, e.g. "deformation gradient", "stress" or a material state.
      * @return The view on the state.
      */
-    StateView getStateView( const std::string& stateName ) const;
+    Marmot::Utilities::StateView getStateView( const std::string& stateName ) const;
 
     /**
      * @brief Shape of the material point.
@@ -404,7 +404,7 @@ namespace Marmot::MaterialPoints {
      */
     virtual void setInitialCondition( const std::string& conditionName, const double* value ) override
     {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": initial condition '" << conditionName
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": initial condition '" << conditionName
                                                 << "' is not supported" );
     };
   };
@@ -416,7 +416,7 @@ namespace Marmot::MaterialPoints {
   }
 
   template < int nDim >
-  StateView DisplacementMaterialPoint< nDim >::getStateView( const std::string& stateName ) const
+  Marmot::Utilities::StateView DisplacementMaterialPoint< nDim >::getStateView( const std::string& stateName ) const
   {
 
     if ( state->contains( stateName ) )
@@ -435,7 +435,7 @@ namespace Marmot::MaterialPoints {
                                                                         _mpNumber ) );
 
     if ( !material )
-      throw std::invalid_argument( MakeString()
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
                                    << __PRETTY_FUNCTION__ << ": invalid finite strain material assigned!" );
   }
 

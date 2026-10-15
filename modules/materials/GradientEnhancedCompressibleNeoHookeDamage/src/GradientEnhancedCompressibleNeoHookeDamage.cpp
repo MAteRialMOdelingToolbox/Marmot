@@ -26,21 +26,21 @@ namespace Marmot::Materials {
     int           nMaterialProperties,
     int           materialNumber )
     : MarmotMaterialGradientEnhancedFiniteStrain( materialProperties, nMaterialProperties, materialNumber ),
-      K( checkedMaterialProperty( materialProperties, nMaterialProperties, 0 ) ),
-      G( checkedMaterialProperty( materialProperties, nMaterialProperties, 1 ) ),
-      kappa0( checkedMaterialProperty( materialProperties, nMaterialProperties, 2 ) ),
-      kappaF( checkedMaterialProperty( materialProperties, nMaterialProperties, 3 ) ),
-      nonLocalRadius( checkedMaterialProperty( materialProperties, nMaterialProperties, 4 ) )
+      K( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 0 ) ),
+      G( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 1 ) ),
+      kappa0( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 2 ) ),
+      kappaF( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 3 ) ),
+      nonLocalRadius( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 4 ) )
   {
     if ( K <= 0.0 || G <= 0.0 )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": bulk and shear modulus must be positive" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": bulk and shear modulus must be positive" );
     if ( kappa0 <= 0.0 )
-      throw std::invalid_argument( MakeString()
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
                                    << __PRETTY_FUNCTION__ << ": the damage threshold kappa0 must be positive" );
     if ( !( kappaF > kappa0 ) )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": kappaF must be greater than kappa0" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": kappaF must be greater than kappa0" );
     if ( nonLocalRadius <= 0.0 )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": the nonlocal radius must be positive" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": the nonlocal radius must be positive" );
 
     stateLayout.add( "kappa", 1 );
     stateLayout.finalize();
@@ -49,7 +49,7 @@ namespace Marmot::Materials {
   double GradientEnhancedCompressibleNeoHookeDamage::getDensity( const double* stateVars ) const
   {
     if ( nMaterialProperties <= nRequiredProperties )
-      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": density not provided (property 5)" );
+      throw std::runtime_error( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": density not provided (property 5)" );
     return materialProperties[nRequiredProperties];
   }
 

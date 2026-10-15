@@ -357,13 +357,13 @@ namespace {
     const auto be = blockErrors< nDim >( K, numK );
     if ( mode == Tangent::Exact ) {
       const double err = numK.error( K );
-      throwExceptionOnFailure( err < 1e-7, MakeString() << what << ": tangent inconsistent, relative error " << err );
+      throwExceptionOnFailure( err < 1e-7, Marmot::Utilities::MakeString() << what << ": tangent inconsistent, relative error " << err );
     }
     else {
       throwExceptionOnFailure( be[2] < 5e-5 && be[3] < 1e-7,
-                               MakeString() << what << ": nonlocal rows inconsistent, " << be[2] << ", " << be[3] );
+                               Marmot::Utilities::MakeString() << what << ": nonlocal rows inconsistent, " << be[2] << ", " << be[3] );
       throwExceptionOnFailure( be[0] < 5e-3,
-                               MakeString() << what << ": U-U block beyond the NSNI approximation, " << be[0] );
+                               Marmot::Utilities::MakeString() << what << ": U-U block beyond the NSNI approximation, " << be[0] );
     }
   }
 
@@ -415,7 +415,7 @@ namespace {
       }
       const auto P = s.trial( dQ ).first;
       throwExceptionOnFailure( P.norm() < 1e-8,
-                               MakeString() << name << ": rigid rotation loads the particle, |P| = " << P.norm() );
+                               Marmot::Utilities::MakeString() << name << ": rigid rotation loads the particle, |P| = " << P.norm() );
     }
 
     // dynamics: with Newmark integration, the inertia enters residual and tangent consistently
@@ -446,7 +446,7 @@ namespace {
         for ( int A = 0; A < s.nNodes(); A++ )
           sum += P[A * nB + i];
         throwExceptionOnFailure( std::abs( sum + b[i] * V0 ) < 1e-12 * ( 1. + V0 ),
-                                 MakeString() << name << ": body force " << sum << " != -b V0 = " << -b[i] * V0 );
+                                 Marmot::Utilities::MakeString() << name << ": body force " << sum << " != -b V0 = " << -b[i] * V0 );
       }
       for ( int A = 0; A < s.nNodes(); A++ )
         throwExceptionOnFailure( P[A * nB + nDim] == 0.0, name + ": the body force loads the nonlocal field" );
@@ -500,7 +500,7 @@ namespace {
         throwExceptionOnFailure( P0.norm() > 0, name + ": " + loadName + " must load the particle" );
         const double err = std::min( numK.error( K0 ), numK.error( -K0 ) );
         throwExceptionOnFailure( err < 1e-6,
-                                 MakeString() << name << ": " << loadName << " load tangent inconsistent, " << err );
+                                 Marmot::Utilities::MakeString() << name << ": " << loadName << " load tangent inconsistent, " << err );
         for ( int A = 0; A < s.nNodes(); A++ )
           throwExceptionOnFailure( P0[A * nB + nDim] == 0,
                                    name + ": " + loadName + " must not load the nonlocal field" );
@@ -562,7 +562,7 @@ namespace {
         ref += P.template segment< nDim >( A * nB ).squaredNorm();
       }
       throwExceptionOnFailure( std::sqrt( res ) < 1e-10 * std::sqrt( ref ),
-                               MakeString() << name << ( afterStep ? ", second step" : ", first step" )
+                               Marmot::Utilities::MakeString() << name << ( afterStep ? ", second step" : ", first step" )
                                             << ": weak-form correction does not balance a homogeneous state, "
                                             << std::sqrt( res / ref ) );
 
@@ -579,7 +579,7 @@ namespace {
           err += std::abs( Pm( r ) - kept * Pc( r ) ) + ( Km.row( r ) - kept * Kc.row( r ) ).cwiseAbs().sum();
         }
         throwExceptionOnFailure( err < 1e-12 * ( 1 + Pc.norm() + Kc.norm() ),
-                                 MakeString()
+                                 Marmot::Utilities::MakeString()
                                    << name << ": masked weak-form correction differs from the selected rows, " << err );
       }
     }
@@ -711,7 +711,7 @@ namespace {
       Eigen::VectorXd M = Eigen::VectorXd::Zero( s.nNodes() );
       s.particle->vci_compute_MMatrix( M.data() );
       throwExceptionOnFailure( std::abs( M.maxCoeff() - V ) < 1e-12,
-                               MakeString()
+                               Marmot::Utilities::MakeString()
                                  << name << ": M of order 0 is the volume, " << M.maxCoeff() << " vs " << V );
 
       const Eigen::VectorXd R0 = residual();
@@ -725,7 +725,7 @@ namespace {
       for ( int A = 0; A < s.nNodes(); A++ )
         if ( M[A] > 0 )
           throwExceptionOnFailure( R1.template segment< nDim >( A * nDim ).norm() < 1e-12,
-                                   MakeString() << name << ": VCI residual after the correction, "
+                                   Marmot::Utilities::MakeString() << name << ": VCI residual after the correction, "
                                                 << R1.template segment< nDim >( A * nDim ).norm() );
     }
     else {

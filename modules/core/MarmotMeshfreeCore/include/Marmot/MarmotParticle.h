@@ -148,9 +148,9 @@ namespace Marmot::Meshfree {
      * @brief Get a view on a named state (e.g., a state variable of the material point).
      * @param[in] stateName Name of the state.
      * @param[in] qp Index of the evaluation point or subdomain; ignored by particles with a single material point.
-     * @return A StateView (pointer and size) into the state storage.
+     * @return A Marmot::Utilities::StateView (pointer and size) into the state storage.
      */
-    virtual StateView getStateView( const std::string& stateName, int qp ) const = 0;
+    virtual Marmot::Utilities::StateView getStateView( const std::string& stateName, int qp ) const = 0;
 
     /// @brief Get the number of state variables (doubles) required by the particle.
     /// @return The size of the block to be passed to assignStateVars().

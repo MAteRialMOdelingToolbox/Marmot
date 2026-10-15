@@ -163,39 +163,39 @@ namespace Marmot::Materials {
     int           nMaterialProperties,
     int           materialNumber )
     : MarmotMaterialGradientEnhancedFiniteStrain( materialProperties, nMaterialProperties, materialNumber ),
-      K( checkedMaterialProperty( materialProperties, nMaterialProperties, 0 ) ),
-      G( checkedMaterialProperty( materialProperties, nMaterialProperties, 1 ) ),
-      c0( checkedMaterialProperty( materialProperties, nMaterialProperties, 2 ) ),
-      frictionAngle( checkedMaterialProperty( materialProperties, nMaterialProperties, 3 ) ),
-      dilatancyAngle( checkedMaterialProperty( materialProperties, nMaterialProperties, 4 ) ),
-      H( checkedMaterialProperty( materialProperties, nMaterialProperties, 5 ) ),
-      softeningModulus( checkedMaterialProperty( materialProperties, nMaterialProperties, 6 ) ),
-      maxDamage( checkedMaterialProperty( materialProperties, nMaterialProperties, 7 ) ),
-      nonLocalRadius( checkedMaterialProperty( materialProperties, nMaterialProperties, 8 ) ),
-      weightingParameter( checkedMaterialProperty( materialProperties, nMaterialProperties, 9 ) ),
+      K( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 0 ) ),
+      G( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 1 ) ),
+      c0( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 2 ) ),
+      frictionAngle( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 3 ) ),
+      dilatancyAngle( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 4 ) ),
+      H( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 5 ) ),
+      softeningModulus( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 6 ) ),
+      maxDamage( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 7 ) ),
+      nonLocalRadius( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 8 ) ),
+      weightingParameter( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 9 ) ),
       eta( outerConeParameters( frictionAngle ).first ),
       xi( outerConeParameters( frictionAngle ).second ),
       etaBar( outerConeParameters( dilatancyAngle ).first )
   {
     if ( K <= 0.0 || G <= 0.0 )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": bulk and shear modulus must be positive" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": bulk and shear modulus must be positive" );
     if ( maxDamage < 0.0 || maxDamage >= 1.0 )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": expected 0 <= maximum damage < 1" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": expected 0 <= maximum damage < 1" );
     if ( c0 <= 0.0 || softeningModulus <= 0.0 )
-      throw std::invalid_argument( MakeString()
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
                                    << __PRETTY_FUNCTION__ << ": cohesion and softening modulus must be positive" );
     if ( dilatancyAngle > frictionAngle || frictionAngle < 0.0 || dilatancyAngle < 0.0 || frictionAngle >= 90.0 )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                                 << ": expected 0 <= dilatancy angle <= friction angle < 90 deg" );
     // a softening cohesion would let the cone shrink to its apex; the softening is the damage's
     if ( H < 0.0 )
-      throw std::invalid_argument( MakeString()
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
                                    << __PRETTY_FUNCTION__ << ": the hardening modulus must not be negative" );
     if ( nonLocalRadius <= 0.0 )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": the nonlocal radius must be positive" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": the nonlocal radius must be positive" );
     // m > 1 is the over-nonlocal formulation
     if ( weightingParameter < 0.0 )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                                 << ": the nonlocal weighting parameter must not be negative" );
 
     stateLayout.add( "Fp", 9 );     // plastic deformation gradient
@@ -217,7 +217,7 @@ namespace Marmot::Materials {
   double GradientEnhancedFiniteStrainDruckerPrager::getDensity( const double* stateVars ) const
   {
     if ( nMaterialProperties <= nRequiredProperties )
-      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": density not provided (property 10)" );
+      throw std::runtime_error( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": density not provided (property 10)" );
     return materialProperties[nRequiredProperties];
   }
 
@@ -240,7 +240,7 @@ namespace Marmot::Materials {
 
     const double JeTrial = Fastor::determinant( FeTrial );
     if ( !( JeTrial > 0.0 ) || !std::isfinite( JeTrial ) )
-      throw StressUpdateFailed( MakeString() << __PRETTY_FUNCTION__ << ": non-positive elastic volume ratio" );
+      throw Marmot::Utilities::StressUpdateFailed( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": non-positive elastic volume ratio" );
 
     if ( yieldFunction( mandelStress( FeTrial ), alphaPOld ) <= 0.0 ) {
       ReturnMapping elastic;
@@ -292,7 +292,7 @@ namespace Marmot::Materials {
       return coneNearVertex;
 
     // e.g. a tension beyond the apex without dilatancy, or an iterate of the global scheme far off
-    throw StressUpdateFailed( MakeString() << __PRETTY_FUNCTION__ << ": no admissible return, neither to the cone "
+    throw Marmot::Utilities::StressUpdateFailed( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": no admissible return, neither to the cone "
                                            << "nor to the apex" );
   }
 

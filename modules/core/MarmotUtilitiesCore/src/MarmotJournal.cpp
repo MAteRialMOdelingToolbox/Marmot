@@ -1,21 +1,23 @@
 #include "Marmot/MarmotJournal.h"
 #include <ostream>
 
-MarmotJournal& MarmotJournal::getInstance()
+namespace Marmot::Utilities {
+
+Journal& Journal::getInstance()
 {
-  static MarmotJournal instance;
+  static Journal instance;
 
   return instance;
 }
 
-MarmotJournal::MarmotJournal() : output( nullptr ) {}
+Journal::Journal() : output( nullptr ) {}
 
-void MarmotJournal::setMSGOutputDirection( std::ostream& newOutputStream )
+void Journal::setMSGOutputDirection( std::ostream& newOutputStream )
 {
   getInstance().output.rdbuf( newOutputStream.rdbuf() );
 }
 
-bool MarmotJournal::warningToMSG( const std::string& message )
+bool Journal::warningToMSG( const std::string& message )
 {
   // Flushed, not merely written: otherwise a warning sits in the sink's buffer until the process
   // terminates normally, and an explicit run stopped by a timeout or a scheduler discards every
@@ -24,7 +26,7 @@ bool MarmotJournal::warningToMSG( const std::string& message )
   return true;
 }
 
-bool MarmotJournal::notificationToMSG( const std::string& message )
+bool Journal::notificationToMSG( const std::string& message )
 {
   // A newline, deliberately NOT a flush: notifications come in bulk -- the substeppers emit one
   // per rejected substep, per quadrature point per increment -- and only WARNINGS need to survive
@@ -32,3 +34,5 @@ bool MarmotJournal::notificationToMSG( const std::string& message )
   getInstance().output << message << '\n';
   return true;
 }
+
+} // namespace Marmot::Utilities

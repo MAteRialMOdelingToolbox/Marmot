@@ -20,7 +20,7 @@ void testInvertMinorSymmetricFourthOrderTensorMatchesIsotropicCompliance()
   const Tensor3333d Sexpected = 1. / ( 2. * mu ) * ISymm - nuOverE * IHyd;
 
   throwExceptionOnFailure( checkIfEqual( Cinv, Sexpected, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " invertMinorSymmetricFourthOrderTensor does not match the analytical "
                                            "isotropic compliance tensor" );
 }
@@ -36,7 +36,7 @@ void testInvertMinorSymmetricFourthOrderTensorIsInvolutive()
   const Tensor3333d CinvInv = Marmot::invertMinorSymmetricFourthOrderTensor( Cinv );
 
   throwExceptionOnFailure( checkIfEqual( CinvInv, C, 1e-8 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " inverting the inverse of a minor-symmetric fourth order tensor must "
                                            "recover the original tensor" );
 }
@@ -48,12 +48,12 @@ void testDeviatoricTransposeIsTransposeOfDeviatoric()
   const Tensor3333d expected = Fastor::transpose( Deviatoric );
 
   throwExceptionOnFailure( checkIfEqual( DeviatoricTranspose, expected ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " DeviatoricTranspose must equal transpose(Deviatoric)" );
 
   const Tensor3333d zero( 0.0 );
   throwExceptionOnFailure( !checkIfEqual( DeviatoricTranspose, zero, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " DeviatoricTranspose must not degenerate to the all-zero tensor "
                                            "produced by the old self-referential initialization bug" );
 }
@@ -74,7 +74,7 @@ void testMapEigenToFastorThirdRankTensor()
     for ( size_t j = 0; j < 3; ++j )
       for ( size_t k = 0; k < 4; ++k )
         throwExceptionOnFailure( matrix( i, j * 4 + k ) == tensor( i, j, k ),
-                                 MakeString() << __PRETTY_FUNCTION__ << " map(i, j * n3 + k) != tensor(i, j, k)" );
+                                 Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " map(i, j * n3 + k) != tensor(i, j, k)" );
 
   // the non-const overload writes through to the tensor
   Marmot::mapEigenToFastor( tensor )( 1, 2 * 4 + 3 ) = -1.;
@@ -98,7 +98,7 @@ void testMapEigenToFastorFourthRankTensor()
       for ( size_t k = 0; k < 4; ++k )
         for ( size_t l = 0; l < 5; ++l )
           throwExceptionOnFailure( matrix( i * 3 + j, k * 5 + l ) == tensor( i, j, k, l ),
-                                   MakeString()
+                                   Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__ << " map(i * n2 + j, k * n4 + l) != tensor(i, j, k, l)" );
 
   // the non-const overload writes through to the tensor

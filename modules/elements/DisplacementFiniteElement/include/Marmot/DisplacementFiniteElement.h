@@ -434,7 +434,7 @@ namespace Marmot::Elements {
      * @brief Access a named state view at a quadrature point.
      * @note Using "sdv" returns the raw material state vector and is deprecated.
      */
-    StateView getStateView( const std::string& stateName, int qpNumber )
+    Marmot::Utilities::StateView getStateView( const std::string& stateName, int qpNumber )
     {
       const auto& qp = qps[qpNumber];
 
@@ -545,7 +545,7 @@ namespace Marmot::Elements {
                                                                          elLabel ) );
 
       if ( !qp.material )
-        throw std::invalid_argument( MakeString()
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__
                                      << ": invalid material assigned; cannot cast to MarmotMaterialHypoElastic!" );
 
@@ -573,7 +573,7 @@ namespace Marmot::Elements {
   {
     if ( propertyName == "bulk viscosity" ) {
       if ( nProperties != 2 )
-        throw std::invalid_argument( MakeString()
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__
                                      << ": the named property 'bulk viscosity' takes exactly "
                                         "2 values, the linear coefficient b1 and the quadratic coefficient b2, but "
@@ -584,11 +584,11 @@ namespace Marmot::Elements {
        * NaN is false, so a NaN would pass a `< 0.0` test and propagate into the viscous stress.
        */
       if ( !std::isfinite( properties[0] ) || !std::isfinite( properties[1] ) )
-        throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
+        throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                                   << ": both bulk viscosity coefficients must be finite numbers." );
 
       if ( properties[0] < 0.0 || properties[1] < 0.0 )
-        throw std::invalid_argument( MakeString()
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__
                                      << ": both bulk viscosity coefficients must be non-negative, a negative one "
                                         "would feed energy into the solution rather than remove it." );
@@ -603,7 +603,7 @@ namespace Marmot::Elements {
     }
     else if ( propertyName == "bulk viscosity damage degradation" ) {
       if ( nProperties != 1 )
-        throw std::invalid_argument( MakeString()
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__
                                      << ": the named property 'bulk viscosity damage degradation' takes exactly "
                                         "1 value, the exponent n of (c/c_0)^n, but "
@@ -615,13 +615,13 @@ namespace Marmot::Elements {
        * current tangent, not a damage variable.
        */
       if ( !std::isfinite( properties[0] ) )
-        throw std::invalid_argument( MakeString()
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__
                                      << ": the bulk viscosity damage degradation exponent must be a finite number; a "
                                         "NaN passes every ordering test and would silently disable the option." );
 
       if ( properties[0] < 0.0 )
-        throw std::invalid_argument( MakeString()
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__
                                      << ": the bulk viscosity damage degradation exponent must be non-negative, a "
                                         "negative one would AMPLIFY the viscous stress as the material fails." );
@@ -1008,7 +1008,7 @@ namespace Marmot::Elements {
     case MarmotElement::MarmotMaterialStateVars: {
       throw std::invalid_argument( "Please use initializeStateVars directly on material" );
     }
-    default: throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
+    default: throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
     }
   }
 

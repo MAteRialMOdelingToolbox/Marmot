@@ -261,7 +261,7 @@ namespace Marmot::Meshfree {
      * @param[in] qp        Evaluation point (unused).
      * @return View on the state variable.
      */
-    virtual StateView getStateView( const std::string& stateName, int qp ) const override
+    virtual Marmot::Utilities::StateView getStateView( const std::string& stateName, int qp ) const override
     {
       if ( stateName == "vertex displacements" ) {
         return { _vertexDisplacements_SmoothingDomain, nDim * nVertices };
@@ -604,7 +604,7 @@ namespace Marmot::Meshfree {
       break;
     }
     default: {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
     }
     }
   }

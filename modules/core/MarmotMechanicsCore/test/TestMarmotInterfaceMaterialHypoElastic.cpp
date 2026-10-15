@@ -245,7 +245,7 @@ namespace {
     MarmotInterfaceMaterialHypoElastic material( "LINEARVISCOELASTICPOWERLAW", properties, 8, 1 );
 
     Eigen::VectorXd stateVars = Eigen::VectorXd::Zero( material.getNumberOfRequiredStateVars() );
-    const StateView view      = material.getStateView( "baseMaterialStateVars", stateVars.data() );
+    const Marmot::Utilities::StateView view      = material.getStateView( "baseMaterialStateVars", stateVars.data() );
 
     throwExceptionOnFailure( view.stateLocation == stateVars.data() && view.stateSize == stateVars.size() &&
                                view.stateSize > 0,

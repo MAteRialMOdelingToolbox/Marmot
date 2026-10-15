@@ -386,9 +386,9 @@ namespace Marmot::Meshfree {
      * @return Never returns.
      * @throws std::runtime_error always.
      */
-    virtual StateView getStateView( const std::string& stateName, int qp ) const override
+    virtual Marmot::Utilities::StateView getStateView( const std::string& stateName, int qp ) const override
     {
-      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": State " << stateName
+      throw std::runtime_error( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": State " << stateName
                                              << " not supported by GenericParticle." );
     }
   };
@@ -408,7 +408,7 @@ namespace Marmot::Meshfree {
       _nVCIConstraints( 0 )
   {
     if ( nCenterCoordinates0 != nDim ) {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": size of center coordinates must be "
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": size of center coordinates must be "
                                                 << nDim << ", but got " << nCenterCoordinates0 );
     }
     this->setVCIOrder( _vciOrder ); // Initialize VCI members

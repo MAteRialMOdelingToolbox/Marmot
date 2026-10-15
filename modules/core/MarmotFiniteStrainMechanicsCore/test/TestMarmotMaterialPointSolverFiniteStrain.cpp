@@ -26,7 +26,7 @@ namespace {
                         const Deformation< 3 >&,
                         const TimeIncrement& ) const override
     {
-      throw Marmot::StressUpdateFailed( "test-only material always fails" );
+      throw Marmot::Utilities::StressUpdateFailed( "test-only material always fails" );
     }
 
     double getDensity( const double* ) const override { return 1.0; }
@@ -94,7 +94,7 @@ namespace {
                         const TimeIncrement& timeIncrement ) const override
     {
       if ( timeIncrement.dT > 0.0 )
-        throw Marmot::StressUpdateFailed( "test-only material fails for any nonzero time increment" );
+        throw Marmot::Utilities::StressUpdateFailed( "test-only material fails for any nonzero time increment" );
       response.tau                  = Tensor33d( 0.0 );
       response.elasticEnergyDensity = 0.0;
       response.dissipation          = 0.0;
@@ -203,8 +203,8 @@ void testSetInitialStateSeedsStateVariables()
 }
 
 // ---------------------------------------------------------------------------------------------
-// solveStep(): retries with a halved time step on StressUpdateFailed, then gives up with
-// SolverTimestepExhausted once the time step can no longer be halved below dTMin.
+// solveStep(): retries with a halved time step on Marmot::Utilities::StressUpdateFailed, then gives up with
+// Marmot::Utilities::SolverTimestepExhausted once the time step can no longer be halved below dTMin.
 // ---------------------------------------------------------------------------------------------
 void testSolveStepRetriesThenThrowsSolverTimestepExhausted()
 {
@@ -231,17 +231,17 @@ void testSolveStepRetriesThenThrowsSolverTimestepExhausted()
   try {
     solver.solve();
   }
-  catch ( const Marmot::SolverTimestepExhausted& ) {
+  catch ( const Marmot::Utilities::SolverTimestepExhausted& ) {
     threw = true;
   }
   throwExceptionOnFailure( threw,
-                           "solveStep() must throw SolverTimestepExhausted once the time step cannot be halved "
+                           "solveStep() must throw Marmot::Utilities::SolverTimestepExhausted once the time step cannot be halved "
                            "below dTMin in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
 // ---------------------------------------------------------------------------------------------
-// solveStep(): throws SolverIncrementsExhausted when maxIncrements is reached before timeEnd.
+// solveStep(): throws Marmot::Utilities::SolverIncrementsExhausted when maxIncrements is reached before timeEnd.
 // ---------------------------------------------------------------------------------------------
 void testSolveStepThrowsSolverIncrementsExhausted()
 {
@@ -270,11 +270,11 @@ void testSolveStepThrowsSolverIncrementsExhausted()
   try {
     solver.solve();
   }
-  catch ( const Marmot::SolverIncrementsExhausted& ) {
+  catch ( const Marmot::Utilities::SolverIncrementsExhausted& ) {
     threw = true;
   }
   throwExceptionOnFailure( threw,
-                           "solveStep() must throw SolverIncrementsExhausted when maxIncrements is reached "
+                           "solveStep() must throw Marmot::Utilities::SolverIncrementsExhausted when maxIncrements is reached "
                            "before timeEnd in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
@@ -314,7 +314,7 @@ void testSolveStepCapsNewlyAssignedDTStartToAvoidOvershoot()
 }
 
 // ---------------------------------------------------------------------------------------------
-// solveStep(): a StressUpdateFailed on a genuinely nonzero time increment must halve that
+// solveStep(): a Marmot::Utilities::StressUpdateFailed on a genuinely nonzero time increment must halve that
 // (already-nonzero) dT and retry, rather than immediately hitting dTMin -- unlike a material that
 // fails even on the trivial dT==0 first pass.
 // ---------------------------------------------------------------------------------------------
@@ -342,17 +342,17 @@ void testSolveStepHalvesDTOnRetryBeforeExhaustingIt()
   try {
     solver.solve();
   }
-  catch ( const Marmot::SolverTimestepExhausted& ) {
+  catch ( const Marmot::Utilities::SolverTimestepExhausted& ) {
     threw = true;
   }
   throwExceptionOnFailure( threw,
-                           "solveStep() must throw SolverTimestepExhausted after halving dT once it is exhausted "
+                           "solveStep() must throw Marmot::Utilities::SolverTimestepExhausted after halving dT once it is exhausted "
                            "in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
 // ---------------------------------------------------------------------------------------------
-// solveIncrement(): throws SolverConvergenceFailed with a "NaN encountered" message when the
+// solveIncrement(): throws Marmot::Utilities::SolverConvergenceFailed with a "NaN encountered" message when the
 // tangent is singular.
 // ---------------------------------------------------------------------------------------------
 void testSolveIncrementThrowsOnNaN()
@@ -378,20 +378,20 @@ void testSolveIncrementThrowsOnNaN()
   try {
     solver.solve();
   }
-  catch ( const Marmot::SolverConvergenceFailed& e ) {
+  catch ( const Marmot::Utilities::SolverConvergenceFailed& e ) {
     threw = true;
     throwExceptionOnFailure( std::string( e.what() ).find( "NaN encountered" ) != std::string::npos,
-                             "solveIncrement() must throw SolverConvergenceFailed with a NaN-specific message for a "
+                             "solveIncrement() must throw Marmot::Utilities::SolverConvergenceFailed with a NaN-specific message for a "
                              "singular tangent in " +
                                std::string( __PRETTY_FUNCTION__ ) );
   }
   throwExceptionOnFailure( threw,
-                           "solveIncrement() must throw SolverConvergenceFailed for a singular tangent in " +
+                           "solveIncrement() must throw Marmot::Utilities::SolverConvergenceFailed for a singular tangent in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
 // ---------------------------------------------------------------------------------------------
-// solveIncrement(): throws SolverConvergenceFailed after exhausting maxIterations when the
+// solveIncrement(): throws Marmot::Utilities::SolverConvergenceFailed after exhausting maxIterations when the
 // residual can never be driven to zero, even with a well-conditioned (non-singular) tangent.
 // ---------------------------------------------------------------------------------------------
 void testSolveIncrementThrowsWhenIterationsExhausted()
@@ -418,16 +418,16 @@ void testSolveIncrementThrowsWhenIterationsExhausted()
   try {
     solver.solve();
   }
-  catch ( const Marmot::SolverConvergenceFailed& e ) {
+  catch ( const Marmot::Utilities::SolverConvergenceFailed& e ) {
     threw = true;
     throwExceptionOnFailure( std::string( e.what() ).find( "Maximum number of iterations reached" ) !=
                                std::string::npos,
-                             "solveIncrement() must throw SolverConvergenceFailed with an iterations-exhausted "
+                             "solveIncrement() must throw Marmot::Utilities::SolverConvergenceFailed with an iterations-exhausted "
                              "message when the residual can never be driven to zero in " +
                                std::string( __PRETTY_FUNCTION__ ) );
   }
   throwExceptionOnFailure( threw,
-                           "solveIncrement() must throw SolverConvergenceFailed when the residual can never be "
+                           "solveIncrement() must throw Marmot::Utilities::SolverConvergenceFailed when the residual can never be "
                            "driven to zero in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }

@@ -53,7 +53,7 @@ namespace {
 
     void computeStress( State&, Tangents&, const Deformation&, const TimeIncrement& ) override
     {
-      throw Marmot::StressUpdateFailed( "Deliberate interface-material update failure." );
+      throw Marmot::Utilities::StressUpdateFailed( "Deliberate interface-material update failure." );
     }
 
   private:
@@ -234,11 +234,11 @@ namespace {
     try {
       element->computeKernels( QTotal.data(), dQ.data(), Pe.data(), Ke.data(), time[0], 1.0 );
     }
-    catch ( const Marmot::StressUpdateFailed& ) {
+    catch ( const Marmot::Utilities::StressUpdateFailed& ) {
       stressUpdateFailed = true;
     }
 
-    throwExceptionOnFailure( stressUpdateFailed, "InterfaceFiniteElement did not propagate StressUpdateFailed." );
+    throwExceptionOnFailure( stressUpdateFailed, "InterfaceFiniteElement did not propagate Marmot::Utilities::StressUpdateFailed." );
   }
 
   template < typename QuadraturePointType >

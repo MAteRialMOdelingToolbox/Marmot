@@ -153,9 +153,9 @@ namespace Marmot::NumericalAlgorithms {
     currentSubstepSize *= scaleDownFactor;
 
     if ( currentSubstepSize < minimumStepSize )
-      return MarmotJournal::warningToMSG( "UMAT: Substepper: Minimal step size reached" );
+      return Marmot::Utilities::Journal::warningToMSG( "UMAT: Substepper: Minimal step size reached" );
     else
-      return MarmotJournal::notificationToMSG( "UMAT: Substepper: Decreasing stepsize" );
+      return Marmot::Utilities::Journal::notificationToMSG( "UMAT: Substepper: Decreasing stepsize" );
   }
 
   template < int n >

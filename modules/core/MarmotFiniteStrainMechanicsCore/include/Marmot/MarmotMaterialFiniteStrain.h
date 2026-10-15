@@ -62,7 +62,7 @@ public:
   virtual ~MarmotMaterialFiniteStrain() = default;
 
   /// Layout of the state variables
-  MarmotStateLayoutDynamic stateLayout;
+  Marmot::Utilities::StateLayoutDynamic stateLayout;
 
   /**
    * @struct ConstitutiveResponse
@@ -299,7 +299,7 @@ public:
    * @param stateVars Pointer to the state variable array
    * @return StatView to access the state variable
    */
-  virtual StateView getStateView( const std::string& stateName, double* stateVars ) const
+  virtual Marmot::Utilities::StateView getStateView( const std::string& stateName, double* stateVars ) const
   {
     return stateLayout.getStateView( stateVars, stateName );
   }

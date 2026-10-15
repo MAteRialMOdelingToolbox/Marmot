@@ -164,7 +164,7 @@ public:
   void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, double time, double dT );
 
   /// @copydoc MarmotElement::getStateView
-  StateView getStateView( const std::string& stateName, int quadraturePoint );
+  Marmot::Utilities::StateView getStateView( const std::string& stateName, int quadraturePoint );
 
   /// @copydoc MarmotElement::getCoordinatesAtCenter
   std::vector< double > getCoordinatesAtCenter();

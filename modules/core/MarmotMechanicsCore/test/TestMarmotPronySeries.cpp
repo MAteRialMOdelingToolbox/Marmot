@@ -37,10 +37,10 @@ void testPronySeriesWithZeroMaxwellElements()
   evaluatePronySeries( props, stress, stiffness, stateVars, dStrain, 1.0, false );
 
   throwExceptionOnFailure( checkIfEqual< double >( stress, C0 * dStrain ),
-                           MakeString() << __PRETTY_FUNCTION__ << "stress computation failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "stress computation failed" );
 
   throwExceptionOnFailure( checkIfEqual< double >( stiffness, C0 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "stiffness computation failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "stiffness computation failed" );
 }
 
 void testPronySeriesWithOneMaxwellElement()
@@ -84,13 +84,13 @@ void testPronySeriesWithOneMaxwellElement()
   // test for a huge time step, where the Prony series should converge to the Elastic case
   evaluatePronySeries( props, stress, stiffness, stateVars, dStrain, 1e10, false );
   throwExceptionOnFailure( checkIfEqual< double >( stress, C0 * dStrain, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "stress computation failed (t -> inf)" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "stress computation failed (t -> inf)" );
 
   // testfor zero time step, where the Prony series should converge to the Elastic case
   stress.setZero();
   evaluatePronySeries( props, stress, stiffness, stateVars, dStrain, 0, true );
   throwExceptionOnFailure( checkIfEqual< double >( stress, C0 * dStrain, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "stress computation failed (dT = 0)" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "stress computation failed (dT = 0)" );
 
   // test for a small time step
   const double     dt           = 0.2;
@@ -99,7 +99,7 @@ void testPronySeriesWithOneMaxwellElement()
   evaluatePronySeries( props, stress, stiffness, stateVars, dStrain, dt, true );
 
   throwExceptionOnFailure( checkIfEqual< double >( stress, stressTarget, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "stress computation failed (loading dT != 0)" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "stress computation failed (loading dT != 0)" );
 
   // new stress target for zero strain increment (relaxation)
   stressTarget = 2 * C0 * dStrain + ( stress - 2 * C0 * dStrain ) * std::exp( -dt );
@@ -107,7 +107,7 @@ void testPronySeriesWithOneMaxwellElement()
   evaluatePronySeries( props, stress, stiffness, stateVars, Vector6d::Zero(), dt, false );
 
   throwExceptionOnFailure( checkIfEqual< double >( stress, stressTarget, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "stress computation failed (relaxation)" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "stress computation failed (relaxation)" );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -154,7 +154,7 @@ void testUpdateStateVarsMatchesEvaluatePronySeries()
   updateStateVars( props, stateVarsViaUpdate, dStrain, dt );
 
   throwExceptionOnFailure( checkIfEqual< double >( stateVarsViaUpdate, stateVarsViaEvaluate, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " updateStateVars() does not match evaluatePronySeries()'s own "
                                            "state-variable update" );
 }

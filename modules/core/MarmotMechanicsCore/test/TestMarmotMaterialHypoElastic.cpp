@@ -52,7 +52,7 @@ namespace {
 } // namespace
 
 // ---------------------------------------------------------------------------------------------
-// computePlaneStress(): must throw StressUpdateFailed after exhausting its cutback attempts when
+// computePlaneStress(): must throw Marmot::Utilities::StressUpdateFailed after exhausting its cutback attempts when
 // the out-of-plane stress can never be driven to zero, hitting the near-singular tangent
 // (dStress_dStrain(2,2) == 0) "cap the compliance instead of dividing by zero" branch first.
 // ---------------------------------------------------------------------------------------------
@@ -71,11 +71,11 @@ void testComputePlaneStressThrowsWhenItCannotConverge()
   try {
     mat.computePlaneStress( state2D, tan2D, dStrain2D, timeInfo );
   }
-  catch ( const Marmot::StressUpdateFailed& ) {
+  catch ( const Marmot::Utilities::StressUpdateFailed& ) {
     threw = true;
   }
   throwExceptionOnFailure( threw,
-                           "computePlaneStress() must throw StressUpdateFailed when it cannot converge in " +
+                           "computePlaneStress() must throw Marmot::Utilities::StressUpdateFailed when it cannot converge in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
@@ -97,11 +97,11 @@ void testComputeUniaxialStressThrowsWhenItCannotConverge()
   try {
     mat.computeUniaxialStress( state1D, tan1D, dStrain1D, timeInfo );
   }
-  catch ( const Marmot::StressUpdateFailed& ) {
+  catch ( const Marmot::Utilities::StressUpdateFailed& ) {
     threw = true;
   }
   throwExceptionOnFailure( threw,
-                           "computeUniaxialStress() must throw StressUpdateFailed when it cannot converge in " +
+                           "computeUniaxialStress() must throw Marmot::Utilities::StressUpdateFailed when it cannot converge in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 

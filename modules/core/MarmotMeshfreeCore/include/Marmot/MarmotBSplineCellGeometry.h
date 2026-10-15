@@ -186,7 +186,7 @@ namespace Marmot::Cells {
      */
     /*   nCounter++; */
     /*   if ( nCounter >= 5 ) { */
-    /*     throw std::runtime_error( MakeString() */
+    /*     throw std::runtime_error( Marmot::Utilities::MakeString() */
     /*                               << __PRETTY_FUNCTION__ << ": failed to determine inverse map for coordinate " */
     /*                               << coord.transpose() ); */
     /*   } */

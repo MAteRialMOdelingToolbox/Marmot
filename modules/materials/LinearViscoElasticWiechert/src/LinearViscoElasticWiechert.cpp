@@ -15,13 +15,13 @@ namespace Marmot::Materials {
                                                           int           nMaterialProperties,
                                                           int           materialNumber )
     : MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialNumber ),
-      E( checkedMaterialProperty( materialProperties, nMaterialProperties, 0 ) ),
-      nu( checkedMaterialProperty( materialProperties, nMaterialProperties, 1 ) ),
-      m( checkedMaterialProperty( materialProperties, nMaterialProperties, 2 ) ),
-      n( checkedMaterialProperty( materialProperties, nMaterialProperties, 3 ) ),
-      nMaxwell( static_cast< size_t >( checkedMaterialProperty( materialProperties, nMaterialProperties, 4 ) ) ),
-      minTau( checkedMaterialProperty( materialProperties, nMaterialProperties, 5 ) ),
-      timeToDays( checkedMaterialProperty( materialProperties, nMaterialProperties, 6 ) ),
+      E( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 0 ) ),
+      nu( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 1 ) ),
+      m( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 2 ) ),
+      n( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 3 ) ),
+      nMaxwell( static_cast< size_t >( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 4 ) ) ),
+      minTau( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 5 ) ),
+      timeToDays( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 6 ) ),
       zerothWiechertStiffness( 0.0 )
   {
     if ( materialProperties[4] < 1.0 ) {
@@ -104,7 +104,7 @@ namespace Marmot::Materials {
   double LinearViscoElasticWiechert::getDensity( const double* ) const
   {
     if ( nMaterialProperties < 8 ) {
-      throw std::runtime_error( MakeString()
+      throw std::runtime_error( Marmot::Utilities::MakeString()
                                 << __PRETTY_FUNCTION__ << ": Density not provided in material properties array!" );
     }
 

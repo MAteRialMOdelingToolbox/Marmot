@@ -41,7 +41,7 @@ void testADLinearElasticObjectivity()
   solver.addStep( step );
   // check coordinate invariance
   throwExceptionOnFailure( spinTurbokreisel( solver, 1e-10, 1e-8 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "Turbokreisel failed!" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "Turbokreisel failed!" );
 }
 
 void testADLinearElastic()
@@ -77,7 +77,7 @@ void testADLinearElastic()
 
   // compare solutions
   throwExceptionOnFailure( checkIfEqual< double >( history.back().stress, stressTarget, 1e-8 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "comparison with reference solution failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "comparison with reference solution failed" );
 }
 
 int main()

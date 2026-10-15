@@ -121,16 +121,16 @@ namespace Marmot {
           stateVars = stateVarsTemp;
           counter++;
         }
-        catch ( const Marmot::StressUpdateFailed& e ) {
+        catch ( const Marmot::Utilities::StressUpdateFailed& e ) {
           // if failed, reduce time step and retry
           if ( dT <= step.dTMin )
-            throw Marmot::SolverTimestepExhausted( "Minimum time step reached, cannot proceed." );
+            throw Marmot::Utilities::SolverTimestepExhausted( "Minimum time step reached, cannot proceed." );
           dT = std::max( dT / 2.0, step.dTMin );
         }
       }
 
       if ( std::abs( time - step.timeEnd ) > 1e-12 )
-        throw Marmot::SolverIncrementsExhausted( "Maximum number of increments reached, cannot proceed." );
+        throw Marmot::Utilities::SolverIncrementsExhausted( "Maximum number of increments reached, cannot proceed." );
     }
 
     void MarmotMaterialPointSolverFiniteStrain::solveIncrement( const Increment& increment )
@@ -217,7 +217,7 @@ namespace Marmot {
 
         // if nan encountered
         if ( std::isnan( resNorm ) || std::isnan( corNorm ) )
-          throw Marmot::SolverConvergenceFailed( "NaN encountered in Newton-Raphson iteration." );
+          throw Marmot::Utilities::SolverConvergenceFailed( "NaN encountered in Newton-Raphson iteration." );
 
         // convergence check
         if ( corNorm < options.correctionTolerance && resNorm < options.residualTolerance )
@@ -225,7 +225,7 @@ namespace Marmot {
 
         // if not converged,
         if ( counter == options.maxIterations - 1 )
-          throw Marmot::SolverConvergenceFailed( "Maximum number of iterations reached, no convergence." );
+          throw Marmot::Utilities::SolverConvergenceFailed( "Maximum number of iterations reached, no convergence." );
 
         // solve for correction
         Tensor9d correction = Fastor::solve( fullTangent, residual );

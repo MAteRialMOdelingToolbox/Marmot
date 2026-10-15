@@ -131,7 +131,7 @@ namespace Marmot::Materials {
      * @f$ \partial L/\partial\bar{N} @f$.
      * @param[in] deformation Deformation gradient and nonlocal field at the end of the increment.
      * @param[in] timeIncrement Time and time increment (not used, the model is rate independent).
-     * @throws StressUpdateFailed if the elastic volume ratio is not positive or no admissible return exists.
+     * @throws Marmot::Utilities::StressUpdateFailed if the elastic volume ratio is not positive or no admissible return exists.
      */
     void computeStress( ConstitutiveResponse< 3 >& response,
                         AlgorithmicModuli< 3 >&    tangents,
@@ -392,7 +392,7 @@ namespace Marmot::Materials {
      * @param[in] FpOld Plastic deformation gradient at the beginning of the increment, a view of the state.
      * @param[in] alphaPOld Hardening variable at the beginning of the increment.
      * @return The converged return mapping.
-     * @throws StressUpdateFailed if the elastic volume ratio is not positive or no admissible return exists.
+     * @throws Marmot::Utilities::StressUpdateFailed if the elastic volume ratio is not positive or no admissible return exists.
      */
     ReturnMapping returnMapping( const Tensor33d& F, const TensorMap33d& FpOld, double alphaPOld ) const;
 

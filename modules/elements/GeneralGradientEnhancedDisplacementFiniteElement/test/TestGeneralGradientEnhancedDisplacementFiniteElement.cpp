@@ -30,20 +30,20 @@ void testBasicPropertiesQuad4PlaneStress()
   auto element = std::make_unique< ElemType >( elId, intType, ElemType::SectionType::PlaneStress );
 
   throwExceptionOnFailure( element->getNNodes() == nNodes,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect nNodes" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect nNodes" );
   throwExceptionOnFailure( element->getNSpatialDimensions() == nDim,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDim" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDim" );
 
   // sizeLoadVector = nNodes*nDim + nNodes*nNonlocalVars = 4*2 + 4*1 = 12
   throwExceptionOnFailure( element->getNDofPerElement() == 12,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDof" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDof" );
 
   throwExceptionOnFailure( element->getElementShape() == "quad4",
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect element shape" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect element shape" );
 
   // Full integration of Quad4 uses 2x2 = 4 Gauss points
   throwExceptionOnFailure( element->getNumberOfQuadraturePoints() == 4,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect number of QPs" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect number of QPs" );
 }
 
 void testBasicPropertiesQuad8PlaneStrain()
@@ -60,20 +60,20 @@ void testBasicPropertiesQuad8PlaneStrain()
   auto element = std::make_unique< ElemType >( elId, intType, ElemType::SectionType::PlaneStrain );
 
   throwExceptionOnFailure( element->getNNodes() == nNodes,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect nNodes" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect nNodes" );
   throwExceptionOnFailure( element->getNSpatialDimensions() == nDim,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDim" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDim" );
 
   // sizeLoadVector = 8*2 + 8*1 = 24
   throwExceptionOnFailure( element->getNDofPerElement() == 24,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDof" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDof" );
 
   throwExceptionOnFailure( element->getElementShape() == "quad8",
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect element shape" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect element shape" );
 
   // Full integration of Quad8 uses 3x3 = 9 Gauss points
   throwExceptionOnFailure( element->getNumberOfQuadraturePoints() == 9,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect number of QPs" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect number of QPs" );
 }
 
 void testBasicPropertiesHex8Solid()
@@ -90,20 +90,20 @@ void testBasicPropertiesHex8Solid()
   auto element = std::make_unique< ElemType >( elId, intType, ElemType::SectionType::Solid );
 
   throwExceptionOnFailure( element->getNNodes() == nNodes,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect nNodes" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect nNodes" );
   throwExceptionOnFailure( element->getNSpatialDimensions() == nDim,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDim" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDim" );
 
   // sizeLoadVector = 8*3 + 8*1 = 32
   throwExceptionOnFailure( element->getNDofPerElement() == 32,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDof" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDof" );
 
   throwExceptionOnFailure( element->getElementShape() == "hexa8",
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect element shape" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect element shape" );
 
   // Full integration of Hex8 uses 2x2x2 = 8 Gauss points
   throwExceptionOnFailure( element->getNumberOfQuadraturePoints() == 8,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect number of QPs" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect number of QPs" );
 }
 
 void testDofIndicesPermutationPatternQuad4()
@@ -126,10 +126,10 @@ void testDofIndicesPermutationPatternQuad4()
   const std::vector< int > expected = { 0, 1, 3, 4, 6, 7, 9, 10, 2, 5, 8, 11 };
 
   throwExceptionOnFailure( pattern.size() == expected.size(),
-                           MakeString() << __PRETTY_FUNCTION__ << ": pattern size mismatch" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": pattern size mismatch" );
   for ( std::size_t i = 0; i < expected.size(); ++i ) {
     throwExceptionOnFailure( pattern[i] == expected[i],
-                             MakeString() << __PRETTY_FUNCTION__ << ": pattern[" << i << "] mismatch" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": pattern[" << i << "] mismatch" );
   }
 }
 
@@ -151,10 +151,10 @@ void testDofIndicesPermutationPatternQuad4TwoNonlocalVars()
   const std::vector< int > expected = { 0, 1, 4, 5, 8, 9, 12, 13, 2, 6, 10, 14, 3, 7, 11, 15 };
 
   throwExceptionOnFailure( pattern.size() == expected.size(),
-                           MakeString() << __PRETTY_FUNCTION__ << ": pattern size mismatch" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": pattern size mismatch" );
   for ( std::size_t i = 0; i < expected.size(); ++i ) {
     throwExceptionOnFailure( pattern[i] == expected[i],
-                             MakeString() << __PRETTY_FUNCTION__ << ": pattern[" << i << "] mismatch" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": pattern[" << i << "] mismatch" );
   }
 }
 
@@ -173,14 +173,14 @@ void testNodeFieldsOneNonlocalVar()
 
   const auto nodeFields = element->getNodeFields();
   throwExceptionOnFailure( static_cast< int >( nodeFields.size() ) == nNodes,
-                           MakeString() << __PRETTY_FUNCTION__ << ": nodeFields size mismatch" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": nodeFields size mismatch" );
   for ( int i = 0; i < nNodes; ++i ) {
     throwExceptionOnFailure( nodeFields[i].size() == 2,
-                             MakeString() << __PRETTY_FUNCTION__ << ": node " << i << " should have 2 fields" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": node " << i << " should have 2 fields" );
     throwExceptionOnFailure( nodeFields[i][0] == "displacement",
-                             MakeString() << __PRETTY_FUNCTION__ << ": node " << i << " first field != displacement" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": node " << i << " first field != displacement" );
     throwExceptionOnFailure( nodeFields[i][1] == "nonlocal damage",
-                             MakeString()
+                             Marmot::Utilities::MakeString()
                                << __PRETTY_FUNCTION__ << ": node " << i << " second field != nonlocal damage" );
   }
 }
@@ -202,11 +202,11 @@ void testCoordinatesAtCenter()
 
   const auto centerCoords = element->getCoordinatesAtCenter();
   throwExceptionOnFailure( static_cast< int >( centerCoords.size() ) == nDim,
-                           MakeString() << __PRETTY_FUNCTION__ << ": wrong dimension of center coordinates" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": wrong dimension of center coordinates" );
   throwExceptionOnFailure( checkIfEqual( centerCoords[0], 0.5 ),
-                           MakeString() << __PRETTY_FUNCTION__ << ": wrong x-coordinate at center" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": wrong x-coordinate at center" );
   throwExceptionOnFailure( checkIfEqual( centerCoords[1], 0.5 ),
-                           MakeString() << __PRETTY_FUNCTION__ << ": wrong y-coordinate at center" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": wrong y-coordinate at center" );
 }
 
 void testCoordinatesAtQuadraturePoints()
@@ -226,15 +226,15 @@ void testCoordinatesAtQuadraturePoints()
 
   const auto qpCoords = element->getCoordinatesAtQuadraturePoints();
   throwExceptionOnFailure( static_cast< int >( qpCoords.size() ) == element->getNumberOfQuadraturePoints(),
-                           MakeString() << __PRETTY_FUNCTION__ << ": wrong number of QP coordinate sets" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": wrong number of QP coordinate sets" );
 
   for ( const auto& coords : qpCoords ) {
     throwExceptionOnFailure( static_cast< int >( coords.size() ) == nDim,
-                             MakeString() << __PRETTY_FUNCTION__ << ": wrong QP coordinate dimension" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": wrong QP coordinate dimension" );
     throwExceptionOnFailure( coords[0] > 0.0 && coords[0] < 1.0,
-                             MakeString() << __PRETTY_FUNCTION__ << ": QP x-coordinate out of element bounds" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": QP x-coordinate out of element bounds" );
     throwExceptionOnFailure( coords[1] > 0.0 && coords[1] < 1.0,
-                             MakeString() << __PRETTY_FUNCTION__ << ": QP y-coordinate out of element bounds" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": QP y-coordinate out of element bounds" );
   }
 }
 
@@ -1688,7 +1688,7 @@ void testNonlocalMicroInertiaIsZeroUnlessAssigned()
 
   for ( size_t i = sizeDoFU; i < microInertia.size(); i++ )
     throwExceptionOnFailure( microInertia[i] == 0.0,
-                             MakeString()
+                             Marmot::Utilities::MakeString()
                                << __PRETTY_FUNCTION__
                                << ": an element whose material gives no micro-inertia reported one at dof " << i );
 }
@@ -1737,7 +1737,7 @@ void testNonlocalMicroInertiaSumsToMicroInertiaTimesVolume()
   // do between nodes, so this is an exact statement and not a tolerance-fitted one. It also fails
   // loudly on a mis-ordered node list, which would fold the cube inside out and change its volume.
   throwExceptionOnFailure( checkIfEqual( total, microInertiaValue * h * h * h, 1e-14 ),
-                           MakeString() << __PRETTY_FUNCTION__ << ": the lumped micro-inertia sums to " << total
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": the lumped micro-inertia sums to " << total
                                         << " instead of " << microInertiaValue * h * h * h );
 }
 
@@ -1770,12 +1770,12 @@ void testRetiredNonlocalMicroInertiaElementPropertyIsRejected()
     threw = true;
   }
   throwExceptionOnFailure( threw,
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << ": the retired 'nonlocal micro inertia' element property was accepted" );
 
   const auto names = base->getPropertyNames();
   throwExceptionOnFailure( std::find( names.begin(), names.end(), "nonlocal micro inertia" ) == names.end(),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << ": the retired property is still reported by getPropertyNames()" );
 }
 
@@ -1805,24 +1805,24 @@ void testBulkViscosityDamageDegradationIsValidated()
 
   const std::vector< double > twoValues = { 2.0, 2.0 };
   throwExceptionOnFailure( rejects( twoValues.data(), 2 ),
-                           MakeString() << __PRETTY_FUNCTION__ << ": the single-value arity was not enforced" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": the single-value arity was not enforced" );
 
   const double negative = -1.0;
   throwExceptionOnFailure( rejects( &negative, 1 ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << ": a negative exponent was accepted, which would amplify the viscous stress "
                                            "as "
                                            "the material fails" );
 
   const double exponent = 2.0;
   throwExceptionOnFailure( !rejects( &exponent, 1 ),
-                           MakeString() << __PRETTY_FUNCTION__ << ": a valid exponent was rejected" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": a valid exponent was rejected" );
 
   // The element must also report the name, or a deck asking for it would be silently ignored by
   // whatever validates against getPropertyNames().
   const auto names = base->getPropertyNames();
   throwExceptionOnFailure( std::find( names.begin(), names.end(), "bulk viscosity damage degradation" ) != names.end(),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << ": the degradation is assignable but not reported by getPropertyNames()" );
 }
 
@@ -1846,14 +1846,14 @@ void testNonlocalCriticalTimeStepScalesWithSqrtOfMicroInertia()
   const double dtMechanica = criticalTimeStepOfCube( 0.2, 0.0, 0.0, density );
 
   throwExceptionOnFailure( dtBase < dtMechanica,
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << ": the non-local field did not govern, so the ratio below would be "
                                            "measuring the mechanical limit instead" );
 
   // A second-order field's limit goes with the square root of its inertia. A first-order (viscous)
   // one would go with the coefficient itself, so this ratio is what separates the two.
   throwExceptionOnFailure( checkIfEqual( dtFourfold / dtBase, 2.0, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << ": expected a ratio of 2, got "
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": expected a ratio of 2, got "
                                         << dtFourfold / dtBase );
 }
 
@@ -1873,14 +1873,14 @@ void testNonlocalCriticalTimeStepScalesLinearlyWithElementSize()
   const double dtFine   = criticalTimeStepOfCube( 0.1, 1.0e-4, 2.0e-2, density );
 
   throwExceptionOnFailure( dtFine < criticalTimeStepOfCube( 0.1, 0.0, 0.0, density ),
-                           MakeString() << __PRETTY_FUNCTION__ << ": the non-local field did not govern" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": the non-local field did not govern" );
 
   // This is the whole point of the micro-inertia: halving the element size halves the stable
   // increment. The parabolic scheme it replaces would have quartered it, so 0.25 is what this test
   // exists to exclude.
   const double ratio = dtFine / dtCoarse;
   throwExceptionOnFailure( std::abs( ratio - 0.5 ) < 0.01,
-                           MakeString() << __PRETTY_FUNCTION__ << ": expected a ratio of 0.5, got " << ratio );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": expected a ratio of 0.5, got " << ratio );
 }
 
 namespace {
@@ -1953,7 +1953,7 @@ void testBulkViscosityDegradesWithTheNonlocalField()
   const Eigen::VectorXd undamaged = viscousForceAtNonlocalField( 0.0, 2.0 );
 
   throwExceptionOnFailure( undamaged.norm() > 0.0,
-                           MakeString() << __PRETTY_FUNCTION__ << ": the viscous force vanishes at phi = 0, so this "
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": the viscous force vanishes at phi = 0, so this "
                                         << "test would pass on any implementation" );
 
   for ( const double phi : { 0.25, 0.5, 0.75 } ) {
@@ -1965,7 +1965,7 @@ void testBulkViscosityDegradesWithTheNonlocalField()
       throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( damaged ),
                                              Eigen::MatrixXd( expected * undamaged ),
                                              1e-12 ),
-                               MakeString() << __PRETTY_FUNCTION__ << ": at a non-local field of " << phi
+                               Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": at a non-local field of " << phi
                                             << " and exponent " << exponent << " the viscous force is not " << expected
                                             << " times the undamaged one" );
     }
@@ -1984,7 +1984,7 @@ void testBulkViscosityIsUndegradedByDefault()
     throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( viscousForceAtNonlocalField( phi, 0.0 ) ),
                                            Eigen::MatrixXd( atZero ),
                                            1e-12 ),
-                             MakeString() << __PRETTY_FUNCTION__
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                           << ": the viscous force depends on the non-local field although the "
                                           << "degradation was not requested" );
 }
@@ -2033,7 +2033,7 @@ void testRejectedPropertyAssignmentLeavesTheElementUnchanged()
       threw = true;
     }
     throwExceptionOnFailure( threw,
-                             MakeString() << __PRETTY_FUNCTION__
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                           << ": a negative or non-finite bulk viscosity coefficient was accepted" );
   }
 
@@ -2041,7 +2041,7 @@ void testRejectedPropertyAssignmentLeavesTheElementUnchanged()
   Eigen::VectorXd lumpedInertia = Eigen::VectorXd::Zero( element->getNDofPerElement() );
   element->computeLumpedInertia( lumpedInertia.data() );
   throwExceptionOnFailure( lumpedInertia.allFinite(),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << ": a rejected coefficient reached the assembled inertia" );
 }
 
@@ -2061,7 +2061,7 @@ void testTinyMicroInertiaIsNotTreatedAsAbsent()
   const double dtMechanical = criticalTimeStepOfCube( 0.2, 0.0, 0.0, density );
 
   throwExceptionOnFailure( dtWithTiny < dtMechanical,
-                           MakeString() << __PRETTY_FUNCTION__ << ": a micro-inertia of " << tinyMicroInertia
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": a micro-inertia of " << tinyMicroInertia
                                         << " was ignored -- the stable increment stayed at the mechanical "
                                         << dtMechanical );
 
@@ -2101,7 +2101,7 @@ void testTinyMicroInertiaIsNotTreatedAsAbsent()
     total += microInertia[i];
 
   throwExceptionOnFailure( checkIfEqual( total, tinyMicroInertia, 1e-24 ),
-                           MakeString() << __PRETTY_FUNCTION__ << ": the lumped micro-inertia sums to " << total
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": the lumped micro-inertia sums to " << total
                                         << " instead of " << tinyMicroInertia );
 }
 
@@ -2120,7 +2120,7 @@ void testNonlocalViscosityLowersTheCriticalTimeStep()
   // Damping never buys time step under central differences, it costs it. Getting the sign of that
   // wrong would leave a damped run integrating above its limit while the estimate reported safety.
   throwExceptionOnFailure( dtDamped < dtLeastDamped,
-                           MakeString() << __PRETTY_FUNCTION__ << ": damping did not lower the stable increment ("
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": damping did not lower the stable increment ("
                                         << dtDamped << " against " << dtLeastDamped << ")" );
 }
 

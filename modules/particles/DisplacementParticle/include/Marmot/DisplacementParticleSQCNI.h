@@ -203,14 +203,14 @@ namespace Marmot::Meshfree {
      * @param[in] qp Evaluation point (not used).
      * @return The view on the state.
      */
-    virtual StateView getStateView( const std::string& stateName, int qp ) const override
+    virtual Marmot::Utilities::StateView getStateView( const std::string& stateName, int qp ) const override
     {
       if ( stateName == "vertex displacements" )
-        return StateView( const_cast< double* >( _particleDomain.getGeometryDeformedVertexDisplacements().data() ),
+        return Marmot::Utilities::StateView( const_cast< double* >( _particleDomain.getGeometryDeformedVertexDisplacements().data() ),
                           nDim * nVertices );
 
       if ( stateName == "smoothing vertex displacements" )
-        return StateView( const_cast< double* >( _particleDomain.getSmoothingDomainVertexDisplacements().data() ),
+        return Marmot::Utilities::StateView( const_cast< double* >( _particleDomain.getSmoothingDomainVertexDisplacements().data() ),
                           nDim * nVertices );
 
       return ParentPointParticle::getStateView( stateName, qp );
@@ -418,7 +418,7 @@ namespace Marmot::Meshfree {
   {
     if ( volume != 0 ) {
       throw std::invalid_argument(
-        MakeString() << __PRETTY_FUNCTION__
+        Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                      << ": volume argument must be zero for DisplacementParticleSQCNI, as volume is computed from "
                         "vertex coordinates." );
     }
@@ -608,7 +608,7 @@ namespace Marmot::Meshfree {
       break;
     }
     default: {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
     }
     }
   }
@@ -670,7 +670,7 @@ namespace Marmot::Meshfree {
       break;
     }
     default: {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
     }
     }
   }

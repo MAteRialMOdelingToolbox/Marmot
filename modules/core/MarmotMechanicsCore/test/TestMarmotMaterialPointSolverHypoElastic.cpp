@@ -22,7 +22,7 @@ namespace {
 
     void computeStress( state3D&, Marmot::Matrix6d&, const Marmot::Vector6d&, const timeInfo& ) const override
     {
-      throw Marmot::StressUpdateFailed( "test-only material always fails" );
+      throw Marmot::Utilities::StressUpdateFailed( "test-only material always fails" );
     }
 
     double getDensity( const double* ) const override { return 1.0; }
@@ -109,8 +109,8 @@ void testSetInitialStateAndResetToInitialState()
 }
 
 // ---------------------------------------------------------------------------------------------
-// solveStep(): retries with a halved time step on StressUpdateFailed, then gives up with
-// SolverTimestepExhausted once the time step can no longer be halved below dTMin.
+// solveStep(): retries with a halved time step on Marmot::Utilities::StressUpdateFailed, then gives up with
+// Marmot::Utilities::SolverTimestepExhausted once the time step can no longer be halved below dTMin.
 // ---------------------------------------------------------------------------------------------
 void testSolveStepRetriesThenThrowsSolverTimestepExhausted()
 {
@@ -137,17 +137,17 @@ void testSolveStepRetriesThenThrowsSolverTimestepExhausted()
   try {
     solver.solve();
   }
-  catch ( const Marmot::SolverTimestepExhausted& ) {
+  catch ( const Marmot::Utilities::SolverTimestepExhausted& ) {
     threw = true;
   }
   throwExceptionOnFailure( threw,
-                           "solveStep() must throw SolverTimestepExhausted once the time step cannot be halved "
+                           "solveStep() must throw Marmot::Utilities::SolverTimestepExhausted once the time step cannot be halved "
                            "below dTMin in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
 // ---------------------------------------------------------------------------------------------
-// solveStep(): throws SolverIncrementsExhausted when maxIncrements is reached before timeEnd.
+// solveStep(): throws Marmot::Utilities::SolverIncrementsExhausted when maxIncrements is reached before timeEnd.
 // ---------------------------------------------------------------------------------------------
 void testSolveStepThrowsSolverIncrementsExhausted()
 {
@@ -176,11 +176,11 @@ void testSolveStepThrowsSolverIncrementsExhausted()
   try {
     solver.solve();
   }
-  catch ( const Marmot::SolverIncrementsExhausted& ) {
+  catch ( const Marmot::Utilities::SolverIncrementsExhausted& ) {
     threw = true;
   }
   throwExceptionOnFailure( threw,
-                           "solveStep() must throw SolverIncrementsExhausted when maxIncrements is reached "
+                           "solveStep() must throw Marmot::Utilities::SolverIncrementsExhausted when maxIncrements is reached "
                            "before timeEnd in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
@@ -234,7 +234,7 @@ void testSolveIncrementMixedControlNeedsNewtonCorrection()
 }
 
 // ---------------------------------------------------------------------------------------------
-// solveIncrement(): throws SolverConvergenceFailed when the Newton loop cannot drive the residual
+// solveIncrement(): throws Marmot::Utilities::SolverConvergenceFailed when the Newton loop cannot drive the residual
 // below tolerance within maxIterations.
 // ---------------------------------------------------------------------------------------------
 void testSolveIncrementThrowsSolverConvergenceFailed()
@@ -261,11 +261,11 @@ void testSolveIncrementThrowsSolverConvergenceFailed()
   try {
     solver.solve();
   }
-  catch ( const Marmot::SolverConvergenceFailed& ) {
+  catch ( const Marmot::Utilities::SolverConvergenceFailed& ) {
     threw = true;
   }
   throwExceptionOnFailure( threw,
-                           "solveIncrement() must throw SolverConvergenceFailed when the residual can never be "
+                           "solveIncrement() must throw Marmot::Utilities::SolverConvergenceFailed when the residual can never be "
                            "driven to zero in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }

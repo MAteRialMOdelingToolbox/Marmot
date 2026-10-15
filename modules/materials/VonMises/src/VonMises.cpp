@@ -14,7 +14,7 @@ namespace Marmot::Materials {
   {
     if ( this->nMaterialProperties < 7 ) {
       throw std::runtime_error(
-        std::string( MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 7." ) );
+        std::string( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 7." ) );
     }
     return this->materialProperties[6];
   }
@@ -97,7 +97,7 @@ namespace Marmot::Materials {
       while ( std::abs( g( dKappa ) ) > VonMisesConstants::innerNewtonTol ) {
 
         if ( counter == VonMisesConstants::nMaxInnerNewtonCycles ) {
-          throw StressUpdateFailed( "return mapping failed to converge in VonMisesModel::computeStress" );
+          throw Marmot::Utilities::StressUpdateFailed( "return mapping failed to converge in VonMisesModel::computeStress" );
         }
         // compute derivative of g wrt kappa
         dg_ddKappa = -Constants::sqrt6 * G - Constants::sqrt2_3 * dfy_ddKappa( kappa + dKappa );
@@ -210,7 +210,7 @@ namespace Marmot::Materials {
       }
 
       if ( std::abs( g_val ) > VonMisesConstants::innerNewtonTol ) {
-        throw Marmot::StressUpdateFailed( "return mapping failed to converge in VonMisesModel::computeStressExplicit" );
+        throw Marmot::Utilities::StressUpdateFailed( "return mapping failed to converge in VonMisesModel::computeStressExplicit" );
       }
 
       dLambda = Constants::sqrt3_2 * dKappa;

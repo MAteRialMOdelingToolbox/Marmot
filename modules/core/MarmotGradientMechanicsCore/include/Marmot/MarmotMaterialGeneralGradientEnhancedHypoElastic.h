@@ -137,7 +137,7 @@ public:
    * @note Must be defined in derived classes to specify the structure and organization of the state variables used in
    * the material model.
    */
-  MarmotStateLayoutDynamic stateLayout;
+  Marmot::Utilities::StateLayoutDynamic stateLayout;
 
   /**
    * @brief Compute the stress response of the material model including the algorithmic tangents.
@@ -232,7 +232,7 @@ public:
 
       planeStressCount += 1;
       if ( planeStressCount > 13 ) {
-        throw Marmot::StressUpdateFailed( "PlaneStressWrapper requires cutback" );
+        throw Marmot::Utilities::StressUpdateFailed( "PlaneStressWrapper requires cutback" );
       }
     }
 
@@ -262,7 +262,7 @@ public:
    * @param stateVars Pointer to the state variable array
    * @return StatView to access the state variable
    */
-  StateView getStateView( const std::string& stateName, double* stateVars ) const
+  Marmot::Utilities::StateView getStateView( const std::string& stateName, double* stateVars ) const
   {
     return stateLayout.getStateView( stateVars, stateName );
   }
@@ -415,13 +415,13 @@ protected:
     for ( size_t n = 0; n < microInertia.size(); n++ ) {
 
       if ( !std::isfinite( microInertia[n] ) )
-        throw std::invalid_argument( MakeString()
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__ << ": the micro-inertia of nonlocal variable " << n
                                      << " is not a finite number; a NaN passes every ordering test and would "
                                         "propagate into the lumped inertia." );
 
       if ( microInertia[n] < 0.0 )
-        throw std::invalid_argument( MakeString()
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__ << ": the micro-inertia of nonlocal variable " << n
                                      << " is negative, which would make the nonlocal field integrate backwards in "
                                         "time." );
@@ -435,7 +435,7 @@ protected:
       const double admissible = 0.25 * eta[n] * eta[n];
       if ( microInertia[n] > admissible * ( 1.0 + 1e-9 ) )
         throw std::invalid_argument(
-          MakeString() << __PRETTY_FUNCTION__ << ": the micro-inertia of nonlocal variable " << n << " is "
+          Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": the micro-inertia of nonlocal variable " << n << " is "
                        << microInertia[n] << ", above the largest admissible eta^2/4 = " << admissible
                        << " for a nonlocal viscosity of " << eta[n]
                        << ". Above it the zeroth-order reaction mode is underdamped and the regularisation rings, "

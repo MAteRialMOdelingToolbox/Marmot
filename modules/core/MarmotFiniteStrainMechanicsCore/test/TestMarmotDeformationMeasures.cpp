@@ -47,7 +47,7 @@ void test_rightCauchyGreen()
     auto C_computed = DeformationMeasures::rightCauchyGreen( F );
 
     throwExceptionOnFailure( checkIfEqual( C_computed, C_expected( F ) ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
   }
 
   // Testcase 2: Diagonal matrix: F = diag(2,3,4)  -->  C = diag(4,9,16)
@@ -62,7 +62,7 @@ void test_rightCauchyGreen()
     auto C_computed = DeformationMeasures::rightCauchyGreen( F );
 
     throwExceptionOnFailure( checkIfEqual( C_computed, C_expected( F ) ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
   }
 
   // Testcase 3: Non-diagonal matrix:
@@ -77,7 +77,7 @@ void test_rightCauchyGreen()
     auto C_computed = DeformationMeasures::rightCauchyGreen( F );
 
     throwExceptionOnFailure( checkIfEqual( C_computed, C_expected( F ) ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
   }
 }
 
@@ -90,10 +90,10 @@ void test_rightCauchyGreenirstOrderDerived()
   auto [C_computed, dC_dF_computed] = FirstOrderDerived::rightCauchyGreen( F );
 
   throwExceptionOnFailure( checkIfEqual( C_computed, C_expected( F ) ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1 (computation of C)" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1 (computation of C)" );
 
   throwExceptionOnFailure( checkIfEqual( dC_dF_computed, dC_dF_expected( F ) ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1 (computation of dC_dF)" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1 (computation of dC_dF)" );
 
   // Testcase 2: Diagonal matrix F
   F = { { 2., 0., 0. }, { 0., 3., 0. }, { 0., 0., 4. } };
@@ -101,10 +101,10 @@ void test_rightCauchyGreenirstOrderDerived()
   std::tie( C_computed, dC_dF_computed ) = FirstOrderDerived::rightCauchyGreen( F );
 
   throwExceptionOnFailure( checkIfEqual( C_computed, C_expected( F ) ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2 (computation of C)" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2 (computation of C)" );
 
   throwExceptionOnFailure( checkIfEqual( dC_dF_computed, dC_dF_expected( F ) ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2 (computation of dC_dF)" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2 (computation of dC_dF)" );
 
   // Testcase 3: Non-diagonal matrix F
   F = { { 1., 1., 1. }, { 0., 1., 1. }, { 0., 0., 1. } };
@@ -112,10 +112,10 @@ void test_rightCauchyGreenirstOrderDerived()
   std::tie( C_computed, dC_dF_computed ) = FirstOrderDerived::rightCauchyGreen( F );
 
   throwExceptionOnFailure( checkIfEqual( C_computed, C_expected( F ) ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3 (computation of C)" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3 (computation of C)" );
 
   throwExceptionOnFailure( checkIfEqual( dC_dF_computed, dC_dF_expected( F ) ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3 (computation of dC_dF)" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3 (computation of dC_dF)" );
 }
 
 Tensor33d b_expected( const FastorStandardTensors::Tensor33d& F_ )
@@ -178,12 +178,12 @@ void test_leftCauchyGreenFirstOrderDerived()
   auto [b_computed, db_dF_computed] = FirstOrderDerived::leftCauchyGreen( F );
 
   throwExceptionOnFailure( checkIfEqual( b_computed, b_expected( F ) ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed for zero deformation (computation of b)" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for zero deformation (computation of b)" );
 
   // Expected derivative db_ij / dF_kK = delta_ik * F_jK + F_iK * delta_jk
 
   throwExceptionOnFailure( checkIfEqual( db_dF_computed, db_dF_expected( F ) ),
-                           MakeString() << __PRETTY_FUNCTION__
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " failed for zero deformation (computation of db_dF)" );
 
   // simple shear test
@@ -192,10 +192,10 @@ void test_leftCauchyGreenFirstOrderDerived()
   auto [b_shear_computed, db_dF_shear_computed] = FirstOrderDerived::leftCauchyGreen( F );
 
   throwExceptionOnFailure( checkIfEqual( b_shear_computed, b_expected( F ) ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed for simple shear (computation of b)" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for simple shear (computation of b)" );
 
   throwExceptionOnFailure( checkIfEqual( db_dF_shear_computed, db_dF_expected( F ) ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed for simple shear (computation of db_dF)" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for simple shear (computation of db_dF)" );
 }
 int main()
 {

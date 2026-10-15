@@ -366,7 +366,7 @@ namespace Marmot::Meshfree {
      * @param[in] qp Evaluation point (not used; the particle has a single material point).
      * @return The view on the state.
      */
-    virtual StateView getStateView( const std::string& stateName, int qp ) const override;
+    virtual Marmot::Utilities::StateView getStateView( const std::string& stateName, int qp ) const override;
 
     // VCI methods are now in GenericParticle, but vci_compute_Test_P_BoundaryIntegral needs override
     // because it depends on dY_dX() which is physics-specific.
@@ -439,7 +439,7 @@ namespace Marmot::Meshfree {
   };
 
   template < int nDim >
-  StateView DisplacementParticle< nDim >::getStateView( const std::string& stateName, int qp ) const
+  Marmot::Utilities::StateView DisplacementParticle< nDim >::getStateView( const std::string& stateName, int qp ) const
   {
     return _mp->getStateView( stateName );
   }
@@ -596,7 +596,7 @@ namespace Marmot::Meshfree {
                                                              double        timeNew,
                                                              double        dT ) const
   {
-    throw std::invalid_argument( MakeString()
+    throw std::invalid_argument( Marmot::Utilities::MakeString()
                                  << __PRETTY_FUNCTION__ << ": a point particle has no faces for a distributed load" );
   }
 
@@ -616,7 +616,7 @@ namespace Marmot::Meshfree {
           fExt[nDofPerNodeU * A + i] -= this->_T( A ) * load[i] * V0;
       break;
     }
-    default: throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid body load type" );
+    default: throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid body load type" );
     }
   }
 

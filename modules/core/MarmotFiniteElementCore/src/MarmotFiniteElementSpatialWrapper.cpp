@@ -233,7 +233,7 @@ void MarmotElementSpatialWrapper::computeBodyForce( double*       P_,
   Ke_Unprojected = P.transpose() * Ke_Projected * P;
 }
 
-StateView MarmotElementSpatialWrapper::getStateView( const std::string& stateName, int quadraturePoint )
+Marmot::Utilities::StateView MarmotElementSpatialWrapper::getStateView( const std::string& stateName, int quadraturePoint )
 {
   if ( stateName == "MarmotElementSpatialWrapper.T" ) {
     return { T.data(), static_cast< int >( T.size() ) };

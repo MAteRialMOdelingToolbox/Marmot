@@ -104,7 +104,7 @@ namespace Marmot::Materials {
       while ( R.norm() > 1e-12 || dX.norm() > 1e-12 ) {
 
         if ( counter > 10 )
-          throw StressUpdateFailed( "inner newton not converged" );
+          throw Marmot::Utilities::StressUpdateFailed( "inner newton not converged" );
 
         dX = -dR_dX.colPivHouseholderQr().solve( R );
         X += dX;
@@ -240,7 +240,7 @@ namespace Marmot::Materials {
         while ( R.norm() > 1e-12 || dX.norm() > 1e-12 ) {
 
           if ( counter > 10 )
-            throw StressUpdateFailed( "inner newton not converged" );
+            throw Marmot::Utilities::StressUpdateFailed( "inner newton not converged" );
 
           dX = -dR_dX.colPivHouseholderQr().solve( R );
           X += dX;
@@ -257,7 +257,7 @@ namespace Marmot::Materials {
         }
       }
       catch ( std::exception& e ) {
-        throw StressUpdateFailed( "return mapping failed: " + std::string( e.what() ) );
+        throw Marmot::Utilities::StressUpdateFailed( "return mapping failed: " + std::string( e.what() ) );
       }
       /* std::cout << "inner newton iters: " << counter << std::endl; */
 
@@ -402,7 +402,7 @@ namespace Marmot::Materials {
         while ( R.norm() > 1e-12 || dX.norm() > 1e-12 ) {
 
           if ( counter > 10 )
-            throw StressUpdateFailed( "inner newton not converged" );
+            throw Marmot::Utilities::StressUpdateFailed( "inner newton not converged" );
 
           dX = -dR_dX.colPivHouseholderQr().solve( R );
           X += dX;
@@ -419,7 +419,7 @@ namespace Marmot::Materials {
         }
       }
       catch ( std::exception& e ) {
-        throw StressUpdateFailed( "return mapping failed: " + std::string( e.what() ) );
+        throw Marmot::Utilities::StressUpdateFailed( "return mapping failed: " + std::string( e.what() ) );
       }
       /* std::cout << "inner newton iters: " << counter << std::endl; */
 
@@ -568,7 +568,7 @@ namespace Marmot::Materials {
         while ( R.norm() > 1e-12 || dX.norm() > 1e-12 ) {
 
           if ( counter > 10 )
-            throw StressUpdateFailed( "inner newton not converged" );
+            throw Marmot::Utilities::StressUpdateFailed( "inner newton not converged" );
 
           dX = -dR_dX.colPivHouseholderQr().solve( R );
           X += dX;
@@ -583,7 +583,7 @@ namespace Marmot::Materials {
         }
       }
       catch ( std::exception& e ) {
-        throw StressUpdateFailed( "return mapping failed: " + std::string( e.what() ) );
+        throw Marmot::Utilities::StressUpdateFailed( "return mapping failed: " + std::string( e.what() ) );
       }
       /* std::cout << "inner newton iters: " << counter << std::endl; */
 

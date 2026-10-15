@@ -175,7 +175,7 @@ namespace {
  */
 int main()
 {
-  MarmotJournal::setMSGOutputDirection( std::cout );
+  Marmot::Utilities::Journal::setMSGOutputDirection( std::cout );
 
   const std::vector< std::pair< std::string, std::function< void() > > > tests{
     { "header-defined constants", testHeaderDefinedConstants },

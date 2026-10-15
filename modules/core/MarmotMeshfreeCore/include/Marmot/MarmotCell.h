@@ -150,7 +150,7 @@ public:
    */
   virtual void computeLumpedInertia( double* I )
   {
-    throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "not yet implemented" );
+    throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "not yet implemented" );
   }
 
   /**
@@ -160,7 +160,7 @@ public:
    */
   virtual void computeConsistentInertia( double* I )
   {
-    throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "not yet implemented" );
+    throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "not yet implemented" );
   }
 
   /**

@@ -362,7 +362,7 @@ namespace Marmot::Cells {
 
       auto geMp = dynamic_cast< MaterialPoint* >( mp );
       if ( !geMp )
-        throw std::invalid_argument( MakeString()
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__ << ": material point " << mp->getMaterialPointNumber()
                                      << " is not a GradientEnhancedFiniteStrainMaterialPoint" );
 
@@ -561,7 +561,7 @@ namespace Marmot::Cells {
       break;
     }
     default: {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid BodyLoadType specified" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid BodyLoadType specified" );
     }
     }
   }
@@ -630,7 +630,7 @@ namespace Marmot::Cells {
       break;
     }
     default: {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoadType specified" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoadType specified" );
     }
     }
   }

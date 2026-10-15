@@ -139,7 +139,7 @@ namespace Marmot {
 
     MatrixXd BoundaryElement::computeDScalarLoadVector_dCoordinates()
     {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "Not yet implemented" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "Not yet implemented" );
       VectorXd Pk = VectorXd::Zero( nNodes );
 
       return Pk;
@@ -240,7 +240,7 @@ namespace Marmot {
 
     MatrixXd BoundaryElement::computeDVectorialLoadVector_dCoordinates( const Eigen::VectorXd& direction )
     {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "Not yet implemented" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "Not yet implemented" );
       VectorXd Pk = VectorXd::Zero( coordinates.size() );
 
       return Pk;

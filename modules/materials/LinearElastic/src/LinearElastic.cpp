@@ -91,7 +91,7 @@ namespace Marmot::Materials {
       return materialProperties[base_props];
     else {
       throw std::runtime_error(
-        std::string( MakeString() << __PRETTY_FUNCTION__ << ": Density not specified for this material." ) );
+        std::string( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": Density not specified for this material." ) );
     }
   }
 

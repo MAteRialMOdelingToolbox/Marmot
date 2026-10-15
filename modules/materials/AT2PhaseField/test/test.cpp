@@ -491,7 +491,7 @@ void testGetStateViewReturnsAliasingView()
   const std::vector< double > properties = std::vector< double >{ E, nu, Gc, l };
   auto [mat, stateVars]                  = makeMaterial( properties );
 
-  const StateView view = mat.getStateView( "maxCrackDrivingForce", stateVars.data() );
+  const Marmot::Utilities::StateView view = mat.getStateView( "maxCrackDrivingForce", stateVars.data() );
 
   throwExceptionOnFailure( view.stateSize == 1,
                            "getStateView() returned the wrong size in " + std::string( __PRETTY_FUNCTION__ ) );

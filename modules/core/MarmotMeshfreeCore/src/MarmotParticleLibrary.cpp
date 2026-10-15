@@ -86,7 +86,7 @@ namespace MarmotLibrary {
                                                                           approximation );
     }
     catch ( const std::out_of_range& e ) {
-      throw std::invalid_argument( MakeString() << "Invalid particle " << particleName << " requested!" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << "Invalid particle " << particleName << " requested!" );
     }
   }
 

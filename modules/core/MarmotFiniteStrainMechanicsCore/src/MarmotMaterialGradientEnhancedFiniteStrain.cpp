@@ -149,7 +149,7 @@ std::tuple< double, double, double > MarmotMaterialGradientEnhancedFiniteStrain:
       break;
 
     if ( itCounter > 5 )
-      throw std::invalid_argument( MakeString()
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
                                    << __PRETTY_FUNCTION__ << ": failed to find eigen deformation within 5 iterations" );
 
     itCounter++;

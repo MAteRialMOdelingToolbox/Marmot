@@ -129,7 +129,7 @@ namespace {
     auto                        res = virginResponse( stateVars );
 
     throwExceptionOnFailure( checkIfEqual( mat.getMaximumWaveSpeed( res ), expectedWaveSpeed( 0.0 ), 1e-10 ),
-                             MakeString()
+                             Marmot::Utilities::MakeString()
                                << __PRETTY_FUNCTION__ << ": the default query is not the undamaged wave speed" );
   }
 
@@ -154,17 +154,17 @@ namespace {
       const double c = mat.getMaximumWaveSpeed( res, K );
 
       throwExceptionOnFailure( checkIfEqual( c, expectedWaveSpeed( omega ), 1e-10 ),
-                               MakeString() << __PRETTY_FUNCTION__ << ": the wave speed at a non-local field of "
+                               Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": the wave speed at a non-local field of "
                                             << omega << " is " << c << ", expected " << expectedWaveSpeed( omega ) );
 
       throwExceptionOnFailure( c < c0,
-                               MakeString() << __PRETTY_FUNCTION__ << ": a damaged point reports the virgin wave "
+                               Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": a damaged point reports the virgin wave "
                                             << "speed, so the bulk viscosity's degradation factor would be 1.0" );
 
       // (c/c_0)^2 is exactly (1 - omega) for this material, which is what the degradation
       // exponent n = 2 reproduces.
       throwExceptionOnFailure( checkIfEqual( ( c / c0 ) * ( c / c0 ), 1.0 - omega, 1e-10 ),
-                               MakeString() << __PRETTY_FUNCTION__ << ": (c/c_0)^2 is not 1 - omega" );
+                               Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": (c/c_0)^2 is not 1 - omega" );
     }
   }
 
@@ -186,7 +186,7 @@ namespace {
     throwExceptionOnFailure( checkIfEqual( mat.getMaximumWaveSpeed( virginRes ),
                                            mat.getMaximumWaveSpeed( carriedRes ),
                                            1e-10 ),
-                             MakeString()
+                             Marmot::Utilities::MakeString()
                                << __PRETTY_FUNCTION__ << ": the undamaged reference depends on the carried state" );
   }
 
@@ -226,10 +226,10 @@ namespace {
     const auto m_k = mat.getNonlocalMicroInertia( nullptr );
 
     throwExceptionOnFailure( m_k.size() == 1,
-                             MakeString()
+                             Marmot::Utilities::MakeString()
                                << __PRETTY_FUNCTION__ << ": the default must return one entry per non-local variable" );
     throwExceptionOnFailure( m_k[0] == 0.0,
-                             MakeString()
+                             Marmot::Utilities::MakeString()
                                << __PRETTY_FUNCTION__ << ": the default micro-inertia is " << m_k[0] << ", not zero" );
   }
 
@@ -255,27 +255,27 @@ namespace {
 
     // The recommended value is the largest admissible one, so the bound has to accept it exactly.
     throwExceptionOnFailure( accepts( admissible ),
-                             MakeString() << __PRETTY_FUNCTION__ << ": eta^2/4 = " << admissible
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": eta^2/4 = " << admissible
                                           << " was rejected, which is the value the documentation recommends" );
     throwExceptionOnFailure( accepts( 0.5 * admissible ),
-                             MakeString() << __PRETTY_FUNCTION__ << ": an admissible micro-inertia was rejected" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": an admissible micro-inertia was rejected" );
     throwExceptionOnFailure( accepts( 0.0 ),
-                             MakeString() << __PRETTY_FUNCTION__ << ": a zero micro-inertia was rejected" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": a zero micro-inertia was rejected" );
 
     throwExceptionOnFailure( !accepts( 2.0 * admissible ),
-                             MakeString() << __PRETTY_FUNCTION__
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                           << ": a micro-inertia of twice eta^2/4 was accepted; the reaction mode "
                                              "rings there" );
     throwExceptionOnFailure( !accepts( -admissible ),
-                             MakeString() << __PRETTY_FUNCTION__ << ": a negative micro-inertia was accepted" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": a negative micro-inertia was accepted" );
     throwExceptionOnFailure( !accepts( std::numeric_limits< double >::quiet_NaN() ),
-                             MakeString() << __PRETTY_FUNCTION__ << ": a non-finite micro-inertia was accepted" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": a non-finite micro-inertia was accepted" );
   }
 
 } // namespace
 
 // ---------------------------------------------------------------------------------------------
-// computePlaneStress(): must throw StressUpdateFailed after exhausting its cutback attempts when
+// computePlaneStress(): must throw Marmot::Utilities::StressUpdateFailed after exhausting its cutback attempts when
 // the out-of-plane stress can never be driven to zero. Along the way, the near-singular tangent
 // (dStressddStrain(2,2) == 0) must hit the "cap the compliance instead of dividing by zero" branch
 // rather than propagating a NaN/inf strain correction.
@@ -303,11 +303,11 @@ void testComputePlaneStressThrowsWhenItCannotConverge()
   try {
     mat.computePlaneStress( res, tan, inc );
   }
-  catch ( const Marmot::StressUpdateFailed& ) {
+  catch ( const Marmot::Utilities::StressUpdateFailed& ) {
     threw = true;
   }
   throwExceptionOnFailure( threw,
-                           "computePlaneStress() must throw StressUpdateFailed when it cannot converge in " +
+                           "computePlaneStress() must throw Marmot::Utilities::StressUpdateFailed when it cannot converge in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 

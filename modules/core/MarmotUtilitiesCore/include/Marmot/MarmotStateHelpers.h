@@ -34,6 +34,8 @@
 #include <unordered_map>
 #include <vector>
 
+namespace Marmot::Utilities {
+
 /**
  * @struct StateMapper
  * @brief Template struct to map raw double pointers and sizes to specific views.
@@ -130,7 +132,7 @@ struct StateMapper< Eigen::Map< Eigen::Matrix< Scalar, Rows, Cols > > > {
 /// \endcond
 
 /**
- * @class MarmotStateLayoutDynamic
+ * @class StateLayoutDynamic
  * @brief Runtime-defined layout for a flat array of named `double` state variables.
  *
  * Variables are registered by name and size via add(), then the layout is locked
@@ -138,7 +140,7 @@ struct StateMapper< Eigen::Map< Eigen::Matrix< Scalar, Rows, Cols > > > {
  * various `get*` accessors can be used to reach individual variables inside any
  * conforming state vector.
  */
-class MarmotStateLayoutDynamic {
+class StateLayoutDynamic {
 public:
   /**
    * @brief Describes a single named state variable registered in the layout.
@@ -323,3 +325,5 @@ private:
   bool finalized = false;
   int  total_sz  = 0;
 };
+
+} // namespace Marmot::Utilities

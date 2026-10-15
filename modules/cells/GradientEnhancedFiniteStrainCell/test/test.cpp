@@ -355,13 +355,13 @@ namespace {
       const auto   numK = numericalTangent( [&]( const Eigen::VectorXd& q ) { return s.trial( q ).first; }, dQ, nU );
       const double err  = numK.error( K );
       throwExceptionOnFailure( err < 1e-7,
-                               MakeString() << g.name << ( afterStep ? ", second" : ", first" )
+                               Marmot::Utilities::MakeString() << g.name << ( afterStep ? ", second" : ", first" )
                                             << " step: tangent inconsistent, relative error " << err );
       if ( afterStep ) {
         const double errUN = numK.error(
           K, [nU]( int a ) { return a < nU; }, true );
         throwExceptionOnFailure( errUN < 1e-6,
-                                 MakeString() << g.name << ": dr_U/dN inconsistent, relative error " << errUN );
+                                 Marmot::Utilities::MakeString() << g.name << ": dr_U/dN inconsistent, relative error " << errUN );
       }
     }
 
@@ -379,7 +379,7 @@ namespace {
       }
       const auto P = s.trial( dQ ).first;
       throwExceptionOnFailure( P.norm() < 1e-8, // round-off grows with the number of nodes (cubic B-splines)
-                               MakeString()
+                               Marmot::Utilities::MakeString()
                                  << g.name << ": rigid rotation must not load the cell, |P| = " << P.norm() );
     }
 

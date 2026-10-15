@@ -23,7 +23,7 @@ MarmotInterfaceMaterialHypoElastic::MarmotInterfaceMaterialHypoElastic( const st
                                                                         int                materialNumber_ )
   : materialProperties( matProperties_ ),
     nMaterialProperties( nMaterialProperties_ ),
-    h( checkedMaterialProperty( matProperties_, nMaterialProperties_, 2 ) ),
+    h( Marmot::Utilities::checkedMaterialProperty( matProperties_, nMaterialProperties_, 2 ) ),
     materialNumber( materialNumber_ )
 {
   baseMaterialProperties.reserve( nMaterialProperties - 1 );

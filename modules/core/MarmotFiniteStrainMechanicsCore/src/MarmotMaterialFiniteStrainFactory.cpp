@@ -15,7 +15,7 @@ MarmotMaterialFiniteStrain* MarmotMaterialFiniteStrainFactory::createMaterial( c
     for ( const auto& pair : map ) {
       reg += pair.first + ", ";
     }
-    throw std::invalid_argument( MakeString()
+    throw std::invalid_argument( Marmot::Utilities::MakeString()
                                  << __PRETTY_FUNCTION__ << " Material " + materialName + " not registered!" + reg );
   }
 

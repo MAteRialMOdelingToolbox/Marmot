@@ -380,7 +380,7 @@ namespace Marmot {
           }
         }
 
-        throw std::invalid_argument( MakeString()
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__ << ": invalid dimension / voigt index specified" );
       }
 
@@ -407,7 +407,7 @@ namespace Marmot {
           return tensor2VoigtNotationIndicesMapping[i][j];
         }
 
-        throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
+        throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
       }
 
       /**

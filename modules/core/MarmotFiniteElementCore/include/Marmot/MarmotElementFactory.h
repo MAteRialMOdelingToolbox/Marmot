@@ -54,7 +54,7 @@ namespace MarmotLibrary {
       auto& map = elementFactoryFunctionByName();
       auto  it  = map.find( elementName );
       if ( it == map.end() ) {
-        throw std::invalid_argument( MakeString()
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__ << "Element " + elementName + " not registered!" );
       }
 

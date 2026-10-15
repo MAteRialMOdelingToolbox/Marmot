@@ -642,7 +642,7 @@ void testEnergyDensityRoundTripAtNonUnitJacobian()
     // i increments of `perIncrement` in the wrapped material's own density, reported per reference
     // volume. Without the inverse conversion this grows by a further factor of J each time.
     throwExceptionOnFailure( checkIfEqual( r.dissipation, i * perIncrement * J, 1e-10 ),
-                             MakeString() << __PRETTY_FUNCTION__ << ": after " << i << " increments the dissipation is "
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": after " << i << " increments the dissipation is "
                                           << r.dissipation << ", expected " << i * perIncrement * J );
   }
 }

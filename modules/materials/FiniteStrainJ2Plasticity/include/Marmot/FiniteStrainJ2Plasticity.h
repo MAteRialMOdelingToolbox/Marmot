@@ -185,7 +185,7 @@ namespace Marmot::Materials {
     {
       if ( this->nMaterialProperties < 8 ) {
         throw std::runtime_error(
-          std::string( MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 8." ) );
+          std::string( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 8." ) );
       }
       return this->density;
     }

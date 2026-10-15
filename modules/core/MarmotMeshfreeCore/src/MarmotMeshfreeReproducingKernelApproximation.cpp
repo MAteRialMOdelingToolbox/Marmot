@@ -83,7 +83,7 @@ namespace Marmot::Meshfree {
     Eigen::ColPivHouseholderQR< Eigen::MatrixXd > MQr( M );
     if ( MQr.rank() < M.rows() )
       throw std::runtime_error(
-        MakeString() << __PRETTY_FUNCTION__ << ": singular moment matrix (rank " << MQr.rank() << " < " << M.rows()
+        Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": singular moment matrix (rank " << MQr.rank() << " < " << M.rows()
                      << ") at " << Eigen::Map< const Eigen::VectorXd >( coord, _dim ).transpose() << ", covered by "
                      << nCoveringKernels
                      << " kernels: no kernel covers the point, or the kernel centres are degenerate for the "

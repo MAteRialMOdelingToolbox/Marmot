@@ -28,6 +28,8 @@
 #include <sstream>
 #include <string>
 
+namespace Marmot::Utilities {
+
 /** @class MakeString
  * @brief Utility class for constructing strings with stream-like syntax.
  *
@@ -56,23 +58,23 @@ public:
 };
 
 /**
- * @class MarmotJournal
+ * @class Journal
  * @brief Singleton class for managing output messages in the Marmot framework.
  *
  * This class provides a centralized way to handle warning and notification messages,
  * allowing them to be directed to a specified output stream (e.g., console, file).
  */
-class MarmotJournal {
+class Journal {
 private:
-  static MarmotJournal& getInstance();
+  static Journal& getInstance();
 
   std::ostream output;
 
-  MarmotJournal();
+  Journal();
 
 public:
-  MarmotJournal( MarmotJournal const& )  = delete;
-  void operator=( MarmotJournal const& ) = delete;
+  Journal( Journal const& )              = delete;
+  void operator=( Journal const& )       = delete;
 
   /**
    * @brief Redirect all subsequent journal output to @p newOutputStream.
@@ -94,3 +96,5 @@ public:
    */
   static bool notificationToMSG( const std::string& message );
 };
+
+} // namespace Marmot::Utilities

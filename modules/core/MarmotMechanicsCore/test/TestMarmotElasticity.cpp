@@ -30,7 +30,7 @@ void testStiffnessTensor_Isotropic()
 
   // Check if the computed stiffness matrix is equal to the expected stiffness matrix
   throwExceptionOnFailure( checkIfEqual< double >( computedC, expectedC, 1e-15 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void testStiffnessTensorKG_Isotropic()
@@ -58,7 +58,7 @@ void testStiffnessTensorKG_Isotropic()
 
   // Check if the computed stiffness matrix using stiffnessTensorKG is equal to the expected stiffness matrix
   throwExceptionOnFailure( checkIfEqual< double >( computedC_KG, expectedC_KG, 1e-15 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void testComplianceTensor_Isotropic()
@@ -84,7 +84,7 @@ void testComplianceTensor_Isotropic()
 
   // Check if the computed compliance matrix is equal to the expected compliance matrix
   throwExceptionOnFailure( checkIfEqual< double >( computedCInv, expectedCInv, 1e-15 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void testComplianceTensor_TransverseIsotropic()
@@ -114,7 +114,7 @@ void testComplianceTensor_TransverseIsotropic()
 
   // Check if the computed compliance matrix is equal to the expected compliance matrix
   throwExceptionOnFailure( checkIfEqual< double >( computedCInv, expectedCInv, 1e-15 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void testStiffnessTensor_TransverseIsotropic()
@@ -143,7 +143,7 @@ void testStiffnessTensor_TransverseIsotropic()
 
   // Check if the computed stiffness matrix is equal to the expected stiffness matrix
   throwExceptionOnFailure( checkIfEqual< double >( computedC, expectedC, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void testComplianceTensor_Orthotropic()
@@ -176,7 +176,7 @@ void testComplianceTensor_Orthotropic()
 
   // Check if the computed compliance matrix is equal to the expected compliance matrix
   throwExceptionOnFailure( checkIfEqual< double >( computedCInv, expectedCInv, 1e-15 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void testStiffnessTensor_Orthotropic()
@@ -209,7 +209,7 @@ void testStiffnessTensor_Orthotropic()
 
   // Check if the computed stiffness matrix is equal to the expected stiffness matrix
   throwExceptionOnFailure( checkIfEqual< double >( computedC, expectedC, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 int main()

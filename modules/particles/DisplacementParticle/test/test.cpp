@@ -292,7 +292,7 @@ namespace {
       const auto   numK        = numericalTangent( [&]( const Eigen::VectorXd& q ) { return s.trial( q ).first; }, dQ );
       const double err         = numK.error( K );
       throwExceptionOnFailure( err < tangentTolerance,
-                               MakeString() << name << ( afterStep ? ", second" : ", first" )
+                               Marmot::Utilities::MakeString() << name << ( afterStep ? ", second" : ", first" )
                                             << " step: tangent inconsistent, relative error " << err );
 
       // translation invariance: the residuals of every direction sum to zero
@@ -317,7 +317,7 @@ namespace {
       }
       const auto P = s.trial( dQ ).first;
       throwExceptionOnFailure( P.norm() < 1e-8,
-                               MakeString() << name << ": rigid rotation loads the particle, |P| = " << P.norm() );
+                               Marmot::Utilities::MakeString() << name << ": rigid rotation loads the particle, |P| = " << P.norm() );
     }
 
     // body force per unit undeformed volume: by the partition of unity of the test functions, the nodal loads sum
@@ -336,7 +336,7 @@ namespace {
         for ( int A = 0; A < s.nDof() / nDim; A++ )
           sum += P[A * nDim + i];
         throwExceptionOnFailure( std::abs( sum + b[i] * V0 ) < 1e-12 * ( 1. + V0 ),
-                                 MakeString() << name << ": body force " << sum << " != -b V0 = " << -b[i] * V0 );
+                                 Marmot::Utilities::MakeString() << name << ": body force " << sum << " != -b V0 = " << -b[i] * V0 );
       }
       throwExceptionOnFailure( K.norm() == 0.0, name + ": a dead body load has no tangent" );
     }
@@ -374,7 +374,7 @@ namespace {
       }
       if ( implemented )
         throwExceptionOnFailure( std::abs( m.sum() - nDim * matProps[2] * V ) < 1e-12 * ( 1. + V ),
-                                 MakeString() << name << ": lumped mass " << m.sum() << " != nDim rho V" );
+                                 Marmot::Utilities::MakeString() << name << ": lumped mass " << m.sum() << " != nDim rho V" );
     }
 
     // pressure load tangent on the first face of particles that have faces
@@ -406,7 +406,7 @@ namespace {
       s.stateVars = backup;
       throwExceptionOnFailure( P0.norm() > 0, name + ": pressure must load the particle" );
       const double err = std::min( numK.error( K0 ), numK.error( -K0 ) );
-      throwExceptionOnFailure( err < 1e-6, MakeString() << name << ": pressure load tangent inconsistent, " << err );
+      throwExceptionOnFailure( err < 1e-6, Marmot::Utilities::MakeString() << name << ": pressure load tangent inconsistent, " << err );
     }
   }
 
@@ -450,7 +450,7 @@ namespace {
       // the number of VCI constraints is the size of the complete basis in nDim dimensions
       s.setProperties( { { "VCI order", 1.0 } } );
       throwExceptionOnFailure( s.particle->vci_getNumberOfConstraints() == nDim + 1,
-                               MakeString() << name << ": " << s.particle->vci_getNumberOfConstraints()
+                               Marmot::Utilities::MakeString() << name << ": " << s.particle->vci_getNumberOfConstraints()
                                             << " linear VCI constraints in " << nDim << "D" );
 
       throwExceptionOnFailure( s.particle->getFields() == std::vector< std::string >{ "displacement" },
@@ -471,7 +471,7 @@ namespace {
       for ( int subdomain : { 0, 1 } ) {
         const auto offset = s.particle->getStateView( "displacement", subdomain ).stateLocation - s.stateVars.data();
         throwExceptionOnFailure( offset % 8 == 0,
-                                 MakeString() << name << ": the state of subdomain " << subdomain
+                                 Marmot::Utilities::MakeString() << name << ": the state of subdomain " << subdomain
                                               << " starts at the unaligned offset " << offset );
       }
     }
@@ -573,7 +573,7 @@ namespace {
       for ( int A = 0; A < s.nNodes(); A++ )
         if ( M[A] > 0 )
           throwExceptionOnFailure( R1.template segment< nDim >( A * nDim ).norm() < 1e-12,
-                                   MakeString() << name << ": VCI residual after the correction, "
+                                   Marmot::Utilities::MakeString() << name << ": VCI residual after the correction, "
                                                 << R1.template segment< nDim >( A * nDim ).norm() );
     }
     else {
@@ -599,7 +599,7 @@ namespace {
       const auto   numK = numericalTangent( [&]( const Eigen::VectorXd& q ) { return s.trial( q, dT ).first; }, dQ );
       const double err  = numK.error( K );
       throwExceptionOnFailure( err < ( name.find( "NSNI" ) != std::string::npos ? 5e-3 : 1e-7 ),
-                               MakeString() << name << ": dynamic tangent inconsistent, " << err );
+                               Marmot::Utilities::MakeString() << name << ": dynamic tangent inconsistent, " << err );
 
       // lumped momentum of the accepted state: m v
       s.accept( dQ, dT );
@@ -626,7 +626,7 @@ namespace {
       s.particle->updatePhysicsExplicit( dQ.data(), 1.0, 1.0 );
       s.particle->computePhysicsKernelsExplicit( PExplicit.data() );
       throwExceptionOnFailure( ( P - PExplicit ).norm() < 1e-10 * P.norm(),
-                               MakeString() << name << ": explicit internal force differs from the implicit one, "
+                               Marmot::Utilities::MakeString() << name << ": explicit internal force differs from the implicit one, "
                                             << ( P - PExplicit ).norm() / P.norm() );
     }
 
@@ -662,7 +662,7 @@ namespace {
         for ( int f = 1; f <= numberOfFaces( shape ); f++ )
           s.particle->computeDistributedLoad( cwf, f, nullptr, Pc.data(), Kc.data(), 1.0, 1.0 );
         throwExceptionOnFailure( ( P + Pc ).norm() < 1e-10 * P.norm(),
-                                 MakeString() << name << ( afterStep ? ", second step" : ", first step" )
+                                 Marmot::Utilities::MakeString() << name << ( afterStep ? ", second step" : ", first step" )
                                               << ": weak-form correction does not balance a homogeneous state, "
                                               << ( P + Pc ).norm() / P.norm() );
 
@@ -679,7 +679,7 @@ namespace {
             err += std::abs( Pm( r ) - kept * Pc( r ) ) + ( Km.row( r ) - kept * Kc.row( r ) ).cwiseAbs().sum();
           }
           throwExceptionOnFailure( err < 1e-12 * ( 1 + Pc.norm() + Kc.norm() ),
-                                   MakeString()
+                                   Marmot::Utilities::MakeString()
                                      << name << ": masked weak-form correction differs from the selected rows, "
                                      << err );
         }

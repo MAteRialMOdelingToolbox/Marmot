@@ -157,7 +157,7 @@ namespace Marmot {
       else if constexpr ( voigtSize == ThreeD )
         return Voigt3D;
       else
-        throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
+        throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
     }
 
     /**
@@ -188,7 +188,7 @@ namespace Marmot {
       else if constexpr ( voigtSize == Axial )
         return axisymmetricVoigtToVoigt( Voigt );
       else
-        throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
+        throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
     }
 
     // function prototypes for  Marmot::Vector6d handling
@@ -430,7 +430,7 @@ namespace Marmot {
       else if constexpr ( nDim == 3 )
         return voigtToStress( Voigt );
       else
-        throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
+        throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
     }
 
     /**
@@ -465,7 +465,7 @@ namespace Marmot {
       else if constexpr ( nDim == 3 )
         return strainToVoigt( strain );
       else
-        throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
+        throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
     }
 
     namespace Invariants {

@@ -125,7 +125,7 @@ public:
    */
   virtual void assignProperty( const std::string& propertyName, const double* properties, int nProperties )
   {
-    throw std::invalid_argument( MakeString()
+    throw std::invalid_argument( Marmot::Utilities::MakeString()
                                  << __PRETTY_FUNCTION__ << ": unsupported named property '" << propertyName << "'" );
   };
 
@@ -181,7 +181,7 @@ public:
    */
   virtual void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pint, double time, double dT )
   {
-    throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << " not yet implemented" );
+    throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " not yet implemented" );
   };
   /**
    * @brief Compute contribution from distributed surface loads.
@@ -230,7 +230,7 @@ public:
    */
   virtual void computeLumpedInertia( double* I )
   {
-    throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << " not yet implemented" );
+    throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " not yet implemented" );
   };
 
   /**
@@ -240,7 +240,7 @@ public:
    */
   virtual void computeConsistentInertia( double* I )
   {
-    throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << " not yet implemented" );
+    throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " not yet implemented" );
   };
 
   /**
@@ -251,7 +251,7 @@ public:
    */
   virtual void computeCriticalTimeStepForExplicitDynamics( double& criticalTimeStep, const double* QTotal )
   {
-    throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << " not yet implemented" );
+    throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " not yet implemented" );
   };
 
   /**
@@ -261,7 +261,7 @@ public:
    */
   virtual void computeInternalEnergy( double& internalEnergy )
   {
-    throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << " not yet implemented" );
+    throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " not yet implemented" );
   };
 
   /**
@@ -270,7 +270,7 @@ public:
    * @param[in] quadraturePoint Index of quadrature point.
    * @return View into state variable.
    */
-  virtual StateView getStateView( const std::string& stateName, int quadraturePoint ) = 0;
+  virtual Marmot::Utilities::StateView getStateView( const std::string& stateName, int quadraturePoint ) = 0;
 
   /**
    * @brief Get coordinates of element center.

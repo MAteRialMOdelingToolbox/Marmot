@@ -24,7 +24,7 @@ namespace Marmot::Materials {
     if ( nMaterialProperties >= 3 )
       return materialProperties[2];
     throw std::runtime_error(
-      std::string( MakeString() << __PRETTY_FUNCTION__ << ": Density not specified for ADLinearElastic." ) );
+      std::string( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": Density not specified for ADLinearElastic." ) );
   }
 
   void ADLinearElastic::computeStressAD( state3DAD&                 state,

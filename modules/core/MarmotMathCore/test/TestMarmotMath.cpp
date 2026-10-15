@@ -16,7 +16,7 @@ void test_linearInterpolation()
     double computed = linearInterpolation( x, x0, x1, y0, y1 );
 
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
   }
 
   // Testcase 2: x equals x0
@@ -28,7 +28,7 @@ void test_linearInterpolation()
     double computed = linearInterpolation( x, x0, x1, y0, y1 );
 
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
   }
 
   // Testcase 3: x equals x1
@@ -40,7 +40,7 @@ void test_linearInterpolation()
     double computed = linearInterpolation( x, x0, x1, y0, y1 );
 
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
   }
 
   // Testcase 4: Negative values
@@ -52,7 +52,7 @@ void test_linearInterpolation()
     double computed = linearInterpolation( x, x0, x1, y0, y1 );
 
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 4" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 4" );
   }
 
   // Testcase 5: x is outside the range (extrapolation)
@@ -64,7 +64,7 @@ void test_linearInterpolation()
     double computed = linearInterpolation( x, x0, x1, y0, y1 );
 
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 5" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 5" );
   }
 }
 
@@ -75,7 +75,7 @@ void test_exp()
     double computed = Marmot::Math::exp( 0.0 );
     double expected = 1.0;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
   }
 
   // Testcase 2: x = -64, should return 0.0
@@ -83,7 +83,7 @@ void test_exp()
     double computed = Marmot::Math::exp( -64.0 );
     double expected = 0.0;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
   }
 
   // Testcase 3: x = 64, should return exp(64)
@@ -91,7 +91,7 @@ void test_exp()
     double computed = Marmot::Math::exp( 64.0 );
     double expected = 6.235149080811617e+27;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
   }
 
   // Testcase 4: x = -100, should return 0.0 (underflow)
@@ -99,7 +99,7 @@ void test_exp()
     double computed = Marmot::Math::exp( -100.0 );
     double expected = 0.0;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 4" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 4" );
   }
 
   // Testcase 5: x = 100, should return exp(64) (overflow)
@@ -107,7 +107,7 @@ void test_exp()
     double computed = Marmot::Math::exp( 100.0 );
     double expected = 6.235149080811617e+27;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 5" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 5" );
   }
 
   // Testcase 6: x = 10, within bounds
@@ -115,7 +115,7 @@ void test_exp()
     double computed = Marmot::Math::exp( 10.0 );
     double expected = 22026.465794806718;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 6" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 6" );
   }
 
   // Testcase 7: x = -10, within bounds
@@ -123,7 +123,7 @@ void test_exp()
     double computed = Marmot::Math::exp( -10.0 );
     double expected = 0.0000453999298;
     throwExceptionOnFailure( checkIfEqual( computed, expected, 1e-13 ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 7" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 7" );
   }
 }
 
@@ -135,7 +135,7 @@ void test_makeReal()
     double                 computed = makeReal( complexInput );
     double                 expected = 3.0; // real part of the complex number
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
   }
 
   // Testcase 2: Input is an autodiff::real
@@ -144,7 +144,7 @@ void test_makeReal()
     double         computed  = makeReal( realInput );
     double         expected  = 5.5;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
   }
 
   // Testcase 3: Input is an autodiff::dual
@@ -153,7 +153,7 @@ void test_makeReal()
     double         computed  = makeReal( dualInput );
     double         expected  = 7.7;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
   }
 
   // Testcase 4: Input is a plain double
@@ -162,7 +162,7 @@ void test_makeReal()
     double computed    = makeReal( doubleInput );
     double expected    = 9.9;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 4" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 4" );
   }
 
   // Testcase 5: Input is an Eigen::Matrix with autodiff::dual elements
@@ -179,7 +179,7 @@ void test_makeReal()
     // clang-format on
 
     throwExceptionOnFailure( checkIfEqual< double >( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 5" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 5" );
   }
 
   // Testcase 6: Input is an Eigen::Vector with autodiff::real elements
@@ -193,7 +193,7 @@ void test_makeReal()
     expected << 1.5, 2.5, 3.5;
 
     throwExceptionOnFailure( checkIfEqual< double >( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 6" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 6" );
   }
 
   // Testcase 7: Input is an Eigen::Matrix with double elements
@@ -215,7 +215,7 @@ void test_makeReal()
     // clang-format on
 
     throwExceptionOnFailure( checkIfEqual< double >( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 7" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 7" );
   }
 }
 
@@ -226,19 +226,19 @@ void test_getExponentPowerTen()
     double computed = getExponentPowerTen( 5e5 );
     double expected = 5;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
   }
   {
     double computed = getExponentPowerTen( 1000 );
     double expected = 3;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
   }
   {
     double computed = getExponentPowerTen( 0.0000001 );
     double expected = -7;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
   }
 
   // Testcase 2: negative numbers
@@ -246,13 +246,13 @@ void test_getExponentPowerTen()
     double computed = getExponentPowerTen( -7e4 );
     double expected = 4;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
   }
   {
     double computed = getExponentPowerTen( -0.0001 );
     double expected = -4;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
   }
 
   // Testcase 3: value exactly zero must return 0, not floor(log10(0)) == -inf
@@ -260,7 +260,7 @@ void test_getExponentPowerTen()
     double computed = getExponentPowerTen( 0.0 );
     double expected = 0;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3 (x == 0)" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3 (x == 0)" );
   }
 
   // Testcase 4: value close to (but not exactly) zero, on both sides
@@ -268,25 +268,25 @@ void test_getExponentPowerTen()
     double computed = getExponentPowerTen( 5e-17 );
     double expected = 0;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 4 (positive, close to 0)" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 4 (positive, close to 0)" );
   }
   {
     double computed = getExponentPowerTen( -5e-17 );
     double expected = 0;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 4 (negative, close to 0)" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 4 (negative, close to 0)" );
   }
 }
 
 void test_factorial()
 {
   throwExceptionOnFailure( checkIfEqual( static_cast< double >( factorial( 0 ) ), 1.0 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed for n = 0" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for n = 0" );
   throwExceptionOnFailure( checkIfEqual( static_cast< double >( factorial( 1 ) ), 1.0 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed for n = 1" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for n = 1" );
   // n = 5 exercises the recursive branch: 5! = 120
   throwExceptionOnFailure( checkIfEqual( static_cast< double >( factorial( 5 ) ), 120.0 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed for n = 5" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for n = 5" );
 }
 
 void test_orthonormalCoordinateSystem()
@@ -304,7 +304,7 @@ void test_orthonormalCoordinateSystem()
     // clang-format on
 
     throwExceptionOnFailure( checkIfEqual< double >( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
   }
 
   {
@@ -322,7 +322,7 @@ void test_orthonormalCoordinateSystem()
     // clang-format on
 
     throwExceptionOnFailure( checkIfEqual< double >( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
   }
 
   {
@@ -342,7 +342,7 @@ void test_orthonormalCoordinateSystem()
     // clang-format on
 
     throwExceptionOnFailure( checkIfEqual< double >( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3 (normal along z-axis)" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3 (normal along z-axis)" );
   }
 
   {
@@ -359,7 +359,7 @@ void test_orthonormalCoordinateSystem()
     }
 
     throwExceptionOnFailure( threw,
-                             MakeString()
+                             Marmot::Utilities::MakeString()
                                << __PRETTY_FUNCTION__ << " failed to throw for non-orthogonal n1, n2 (Testcase 4)" );
   }
 }
@@ -385,7 +385,7 @@ void test_directionCosines()
   // clang-format on
 
   throwExceptionOnFailure( checkIfEqual< double >( computed, expected ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void test_isNaN()
@@ -395,35 +395,35 @@ void test_isNaN()
   bool   computed = isNaN( nanValue );
   bool   expected = true;
   throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
 
   // Testcase 2: Normal value
   double normalValue = 42.0;
   computed           = isNaN( normalValue );
   expected           = false;
   throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
 
   // Testcase 3: Infinity
   double infValue = std::numeric_limits< double >::infinity();
   computed        = isNaN( infValue );
   expected        = false;
   throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
 
   // Testcase 4: -Infinity
   double negInfValue = -std::numeric_limits< double >::infinity();
   computed           = isNaN( negInfValue );
   expected           = false;
   throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 4" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 4" );
 
   // Testcase 5: zero value
   double zeroValue = 0.0;
   computed         = isNaN( zeroValue );
   expected         = false;
   throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 5" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 5" );
 }
 
 void test_radToDeg()
@@ -432,7 +432,7 @@ void test_radToDeg()
   double computed = radToDeg( alpha );
   double expected = 45.0;
 
-  throwExceptionOnFailure( checkIfEqual( computed, expected ), MakeString() << __PRETTY_FUNCTION__ << " failed" );
+  throwExceptionOnFailure( checkIfEqual( computed, expected ), Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void test_degToRad()
@@ -441,7 +441,7 @@ void test_degToRad()
   double computed = degToRad( alpha );
   double expected = Marmot::Constants::Pi / 2; // radians
 
-  throwExceptionOnFailure( checkIfEqual( computed, expected ), MakeString() << __PRETTY_FUNCTION__ << " failed" );
+  throwExceptionOnFailure( checkIfEqual( computed, expected ), Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void test_macauly()
@@ -453,7 +453,7 @@ void test_macauly()
     double expected      = 5.0;
 
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
   }
 
   {
@@ -463,7 +463,7 @@ void test_macauly()
     double expected  = 0.0;
 
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
   }
 
   {
@@ -473,7 +473,7 @@ void test_macauly()
     double expected      = 0.0;
 
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
   }
 }
 
@@ -496,7 +496,7 @@ void test_macaulyMatrix()
     // clang-format on
 
     throwExceptionOnFailure( checkIfEqual< double >( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
   }
 
   {
@@ -507,7 +507,7 @@ void test_macaulyMatrix()
     Eigen::Matrix2d expected = Eigen::Matrix2d::Zero();
 
     throwExceptionOnFailure( checkIfEqual< double >( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
   }
 
   {
@@ -527,7 +527,7 @@ void test_macaulyMatrix()
     // clang-format on
 
     throwExceptionOnFailure( checkIfEqual< double >( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
   }
 
   {
@@ -543,7 +543,7 @@ void test_macaulyMatrix()
     Eigen::Matrix2d expected = Eigen::Matrix2d::Zero();
 
     throwExceptionOnFailure( checkIfEqual< double >( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 4" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 4" );
   }
 }
 
@@ -556,7 +556,7 @@ void test_heaviside()
     int    expected      = 1;
 
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
   }
 
   {
@@ -566,7 +566,7 @@ void test_heaviside()
     int    expected  = 1;
 
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
   }
 
   {
@@ -576,7 +576,7 @@ void test_heaviside()
     int    expected      = 0;
 
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
   }
 }
 
@@ -589,7 +589,7 @@ void test_sgn()
     double expected      = 1.0;
 
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
   }
 
   {
@@ -599,7 +599,7 @@ void test_sgn()
     double expected  = 0.0;
 
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
   }
 
   {
@@ -609,7 +609,7 @@ void test_sgn()
     double expected      = -1.0;
 
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
   }
 }
 
@@ -639,7 +639,7 @@ void test_explicitEuler()
   // Expected: f(2) = 2^2 = 4
   double expected = 4.0;
 
-  throwExceptionOnFailure( checkIfEqual( computed, expected, 1e-5 ), MakeString() << __PRETTY_FUNCTION__ << " failed" );
+  throwExceptionOnFailure( checkIfEqual( computed, expected, 1e-5 ), Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void test_semiImplicitEuler()
@@ -676,7 +676,7 @@ void test_semiImplicitEuler()
     double expected = 4.0;
 
     throwExceptionOnFailure( checkIfEqual( computed, expected, 1e-5 ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
   }
 
   {
@@ -714,7 +714,7 @@ void test_semiImplicitEuler()
     expected( 2 ) = std::exp( 3.0 ); // e^3
 
     throwExceptionOnFailure( checkIfEqual< double >( y, expected, 1e-4 ),
-                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
   }
 }
 
@@ -744,7 +744,7 @@ void test_explicitEulerRichardson()
   // Expected: f(2) = 4
   double expected = 4.0;
 
-  throwExceptionOnFailure( checkIfEqual( computed, expected, 1e-5 ), MakeString() << __PRETTY_FUNCTION__ << " failed" );
+  throwExceptionOnFailure( checkIfEqual( computed, expected, 1e-5 ), Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void test_explicitEulerRichardsonWithErrorEstimator()
@@ -783,7 +783,7 @@ void test_explicitEulerRichardsonWithErrorEstimator()
   // Expected: f(2) = 4
   double expected = 4.0;
 
-  throwExceptionOnFailure( checkIfEqual( computed, expected, 1e-6 ), MakeString() << __PRETTY_FUNCTION__ << " failed" );
+  throwExceptionOnFailure( checkIfEqual( computed, expected, 1e-6 ), Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 int main()

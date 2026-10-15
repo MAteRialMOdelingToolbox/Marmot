@@ -129,7 +129,7 @@ void testMonomialBasis()
       const auto a = exponents( order, dim );
       const int  n = Math::computeSizeOfMonomialBasisVector( order, dim );
       throwExceptionOnFailure( n == int( a.size() ),
-                               MakeString() << "size of the basis of order " << order << " in " << dim << "D" );
+                               Marmot::Utilities::MakeString() << "size of the basis of order " << order << " in " << dim << "D" );
 
       const Eigen::VectorXd x = point( dim, 0.7 );
       Eigen::VectorXd       H( n );
@@ -140,10 +140,10 @@ void testMonomialBasis()
       // the basis is ordered as the exponent tuples above; compare with the direct evaluation
       for ( int k = 0; k < n; k++ ) {
         throwExceptionOnFailure( checkIfEqual( H[k], monomial( a[k], x ), 1e-14 ),
-                                 MakeString() << "monomial " << k << " of order " << order << " in " << dim << "D" );
+                                 Marmot::Utilities::MakeString() << "monomial " << k << " of order " << order << " in " << dim << "D" );
         for ( int i = 0; i < dim; i++ )
           throwExceptionOnFailure( checkIfEqual( dH( k, i ), monomialDerivative( a[k], x, i ), 1e-13 ),
-                                   MakeString()
+                                   Marmot::Utilities::MakeString()
                                      << "derivative " << i << " of monomial " << k << " of order " << order << " in "
                                      << dim << "D: " << dH( k, i ) << " vs " << monomialDerivative( a[k], x, i ) );
       }
@@ -191,7 +191,7 @@ void checkKernel( const std::string& name )
         const double fd = ( kernel.computeKernelFunction( xp.data() ) - kernel.computeKernelFunction( xm.data() ) ) /
                           ( 2 * h );
         throwExceptionOnFailure( std::abs( grad[i] - fd ) < 1e-7 * ( 1 + std::abs( fd ) ),
-                                 MakeString() << name << ": gradient " << i << " in " << dim << "D" );
+                                 Marmot::Utilities::MakeString() << name << ": gradient " << i << " in " << dim << "D" );
       }
     }
 
@@ -242,11 +242,11 @@ void checkApproximation( const std::string& name, int dim, int order, double sup
         reproducedGradient += dN.col( A ) * monomial( alpha, grid.centers[A] );
       }
       throwExceptionOnFailure( std::abs( reproduced - monomial( alpha, x ) ) < 1e-10,
-                               MakeString()
+                               Marmot::Utilities::MakeString()
                                  << name << ", order " << order << " in " << dim << "D: monomial not reproduced" );
       for ( int i = 0; i < dim; i++ )
         throwExceptionOnFailure( std::abs( reproducedGradient[i] - monomialDerivative( alpha, x, i ) ) < 1e-9,
-                                 MakeString() << name << ", order " << order << " in " << dim
+                                 Marmot::Utilities::MakeString() << name << ", order " << order << " in " << dim
                                               << "D: derivative of a monomial not reproduced, " << reproducedGradient[i]
                                               << " vs " << monomialDerivative( alpha, x, i ) );
     }
@@ -259,7 +259,7 @@ void checkApproximation( const std::string& name, int dim, int order, double sup
         xm[i] -= h;
         const Eigen::VectorXd fd = ( values( xp ) - values( xm ) ) / ( 2 * h );
         throwExceptionOnFailure( ( dN.row( i ).transpose() - fd ).norm() < 1e-6 * ( 1 + fd.norm() ),
-                                 MakeString() << name << ", order " << order << " in " << dim
+                                 Marmot::Utilities::MakeString() << name << ", order " << order << " in " << dim
                                               << "D: gradients are not the derivatives of the values" );
       }
   }
@@ -327,7 +327,7 @@ void testMomentMatrixGradient()
                                      RK::computeMMatrix( xm, grid.pointers, order ) ) /
                                    ( 2 * h );
         throwExceptionOnFailure( ( dM[i] - fd ).norm() < 1e-6 * ( 1 + fd.norm() ),
-                                 MakeString() << "gradient " << i << " of the moment matrix of order " << order
+                                 Marmot::Utilities::MakeString() << "gradient " << i << " of the moment matrix of order " << order
                                               << " in " << dim << "D" );
       }
     }
@@ -368,7 +368,7 @@ void testSingularMomentMatrixThrows()
     throwExceptionOnFailure( throws( [&]() { rk.computeShapeFunctions( x.data(), pointers, N ); } ) &&
                                throws( [&]() { rk.computeShapeFunctionsAndGradients( x.data(), pointers, N, dN ); } ) &&
                                throws( [&]() { irk.computeShapeFunctionsAndGradients( x.data(), pointers, N, dN ); } ),
-                             MakeString() << "a singular moment matrix at " << x.transpose() << " must throw" );
+                             Marmot::Utilities::MakeString() << "a singular moment matrix at " << x.transpose() << " must throw" );
   }
 }
 
@@ -387,9 +387,9 @@ void checkLagrangianCellInverseMap( const std::vector< double >& nodes, bool box
       xi( i ) = a + 0.07 * i;
     const Xi x = X * geometry.N( xi ).transpose();
     throwExceptionOnFailure( ( geometry.findReferenceCoordinate( x ) - xi ).norm() < 1e-10,
-                             MakeString() << nDim << "D cell: inverse map of " << xi.transpose() );
+                             Marmot::Utilities::MakeString() << nDim << "D cell: inverse map of " << xi.transpose() );
     throwExceptionOnFailure( geometry.isCoordinateInCell( x.data() ),
-                             MakeString() << nDim << "D cell: a point at " << xi.transpose() << " is in the cell" );
+                             Marmot::Utilities::MakeString() << nDim << "D cell: a point at " << xi.transpose() << " is in the cell" );
   }
 
   // a point of the bounding box outside a distorted cell: xi_0 = 1.2 (inside its bounding box for these cells)
@@ -403,7 +403,7 @@ void checkLagrangianCellInverseMap( const std::vector< double >& nodes, bool box
     inBox = inBox && x( i ) >= lo[i] && x( i ) < hi[i];
   if ( !box && inBox )
     throwExceptionOnFailure( !geometry.isCoordinateInCell( x.data() ),
-                             MakeString() << nDim << "D cell: a point outside the distorted cell is not in it" );
+                             Marmot::Utilities::MakeString() << nDim << "D cell: a point outside the distorted cell is not in it" );
 }
 
 void testLagrangianCellInverseMap()
