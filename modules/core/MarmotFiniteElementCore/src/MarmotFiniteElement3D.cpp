@@ -3,8 +3,7 @@
 #include <iostream>
 
 using namespace Eigen;
-namespace Marmot {
-  namespace FiniteElement {
+namespace Marmot::Discretizations::Elements {
     namespace Spatial3D {
       namespace Tetra4 {
 
@@ -442,5 +441,4 @@ namespace Marmot {
         }
       } // end of namespace Hexa20
     }   // end of namespace Spatial3D
-  }     // namespace FiniteElement
-} // end of namespace Marmot
+} // namespace Marmot::Discretizations::Elements

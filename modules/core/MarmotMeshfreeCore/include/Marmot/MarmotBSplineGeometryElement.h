@@ -29,10 +29,10 @@
 #include <iostream>
 #include <map>
 
-namespace Marmot::FiniteElement {
+namespace Marmot::Discretizations::Elements {
 
   /**
-   * @class Marmot::FiniteElement::MarmotBSplineGeometryElement
+   * @class Marmot::Discretizations::Elements::MarmotBSplineGeometryElement
    * @brief Geometry of a single knot span of a tensor-product B-spline of degree @p order.
    *
    * @details The element is one knot span @f$ [u_p, u_{p+1}] @f$ per direction of a B-spline of degree
@@ -80,7 +80,7 @@ namespace Marmot::FiniteElement {
 
     const Eigen::Map< const CoordinateVector > _mapCoordinates; ///< Map to the externally owned control point
                                                                 ///< coordinates (point by point).
-    const Marmot::FiniteElement::ElementShapes _shape;          ///< Shape deduced from nDim and nNodes.
+    const Marmot::Discretizations::Elements::ElementShapes _shape;          ///< Shape deduced from nDim and nNodes.
 
     KnotVectors _knotVectors;                                   ///< Knot vectors as passed to the constructor.
     KnotVectors _knotVectorsNormalized; ///< Knot vectors used for evaluation; currently a copy of #_knotVectors.
@@ -99,7 +99,7 @@ namespace Marmot::FiniteElement {
                                   const double* knotVectors_,
                                   int           sizeKnotVectors )
       : _mapCoordinates( Eigen::Map< const CoordinateVector >( nodeCoordinates_ ) ),
-        _shape( Marmot::FiniteElement::getElementShapeByMetric( nDim, nNodes ) )
+        _shape( Marmot::Discretizations::Elements::getElementShapeByMetric( nDim, nNodes ) )
     {
       _knotVectors = Eigen::Map< const KnotVectors >( knotVectors_ );
 
@@ -122,7 +122,7 @@ namespace Marmot::FiniteElement {
      */
     std::string getElementShape() const
     {
-      using namespace Marmot::FiniteElement;
+      using namespace Marmot::Discretizations::Elements;
       static std::map< ElementShapes, std::string > shapes = {
         { Bar2, "bar2" },
         { Quad4, "quad4" },
@@ -221,7 +221,7 @@ namespace Marmot::FiniteElement {
      */
     JacobianSized Jacobian( const dNdXSized& dNdXi ) const
     {
-      return Marmot::FiniteElement::Jacobian< nDim, nNodes >( dNdXi, _mapCoordinates );
+      return Marmot::Discretizations::Elements::Jacobian< nDim, nNodes >( dNdXi, _mapCoordinates );
     }
 
     /**
@@ -236,4 +236,4 @@ namespace Marmot::FiniteElement {
     }
   };
 
-} // namespace Marmot::FiniteElement
+} // namespace Marmot::Discretizations::Elements

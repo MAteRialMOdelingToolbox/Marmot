@@ -1,9 +1,11 @@
 #include "Marmot/MarmotElementFactory.h"
 
-using namespace MarmotLibrary;
+namespace Marmot::Registry {
 
-MarmotElementFactory::ElementFactoryMap& MarmotElementFactory::elementFactoryFunctionByName()
+ElementFactory::ElementFactoryMap& ElementFactory::elementFactoryFunctionByName()
 {
   static ElementFactoryMap map;
   return map;
 }
+
+} // namespace Marmot::Registry

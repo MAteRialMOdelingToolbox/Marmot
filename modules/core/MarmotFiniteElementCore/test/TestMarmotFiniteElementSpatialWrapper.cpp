@@ -16,24 +16,24 @@ namespace NumDiff = Marmot::Math::NumericalDifferentiation;
 // ---------------------------------------------------------------------------------------------
 // All tests below embed a 2-node 1D truss (DisplacementFiniteElement<1,2>, UniaxialStress) into
 // 2D ambient space, exactly matching the production "T2D2" element registered in
-// DisplacementFiniteElementRegistration.cpp: MarmotElementSpatialWrapper(nDim=2, nDimChild=1,
+// DisplacementFiniteElementRegistration.cpp: Marmot::Discretizations::Elements::ElementSpatialWrapper(nDim=2, nDimChild=1,
 // nNodes=2, nRhsChild=2, rhsIndicesToBeWrapped={0,1}, nIndicesToBeWrapped=2, child).
 // ---------------------------------------------------------------------------------------------
 
 namespace {
 
-  std::unique_ptr< MarmotElementSpatialWrapper > makeT2D2( const std::vector< double >& nodeCoordsVec,
+  std::unique_ptr< Marmot::Discretizations::Elements::ElementSpatialWrapper > makeT2D2( const std::vector< double >& nodeCoordsVec,
                                                            const std::vector< double >& matProps,
                                                            std::vector< double >&       stateVarsOut )
   {
     auto child = std::make_unique<
       DisplacementFiniteElement< 1, 2 > >( 1,
-                                           FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                           Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
                                            DisplacementFiniteElement< 1, 2 >::SectionType::UniaxialStress );
 
     static constexpr int indicesToBeWrapped[] = { 0, 1 };
 
-    auto wrapper = std::make_unique< MarmotElementSpatialWrapper >( 2,
+    auto wrapper = std::make_unique< Marmot::Discretizations::Elements::ElementSpatialWrapper >( 2,
                                                                     1,
                                                                     2,
                                                                     2,
@@ -43,12 +43,12 @@ namespace {
 
     wrapper->assignNodeCoordinates( nodeCoordsVec.data() );
 
-    MarmotMaterialSection materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
-    // assignProperty(ElementProperties&) stores a zero-copy view into this array (see
+    Marmot::Discretizations::MaterialSection materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+    // assignProperty(Marmot::Discretizations::ElementProperties&) stores a zero-copy view into this array (see
     // DisplacementFiniteElement::assignProperty), so it must outlive the element; `static`
     // gives it program lifetime rather than dangling once this factory function returns.
     static const std::vector< double > elPropsVec = { 1.0 }; // cross-section area
-    ElementProperties                  elProps( elPropsVec.data(), elPropsVec.size() );
+    Marmot::Discretizations::ElementProperties                  elProps( elPropsVec.data(), elPropsVec.size() );
     wrapper->assignProperty( elProps );
     wrapper->assignProperty( materialSection );
 
@@ -93,7 +93,7 @@ void testBasicAccessorsDelegateToChild()
   const auto expectedPropertyNames = DisplacementFiniteElement<
                                        1,
                                        2 >( 1,
-                                            FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                            Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
                                             DisplacementFiniteElement< 1, 2 >::SectionType::UniaxialStress )
                                        .getPropertyNames();
   throwExceptionOnFailure( wrapper->getPropertyNames() == expectedPropertyNames,
@@ -171,7 +171,7 @@ void testComputeKernelsTangentMatchesNumericalDifferentiation()
   const Eigen::MatrixXd numK = NumDiff::centralDifference( residual, Q0 );
 
   throwExceptionOnFailure( checkIfEqual( K, numK, 1e-6 ),
-                           "MarmotElementSpatialWrapper::computeKernels() stiffness matrix does not match "
+                           "Marmot::Discretizations::Elements::ElementSpatialWrapper::computeKernels() stiffness matrix does not match "
                            "the numerical tangent." );
 }
 
@@ -229,7 +229,7 @@ void testComputeKernelsExplicitThrowsNotImplemented()
   }
   throwExceptionOnFailure( threw,
                            "computeKernelsExplicit() is not overridden by the wrapper, so it must fall back to "
-                           "MarmotElement's default (throwing) implementation." );
+                           "Marmot::Discretizations::Elements::Element's default (throwing) implementation." );
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -280,11 +280,11 @@ void testSetInitialConditionsDelegatesToChild()
   // MarmotMaterialInitialization and MarmotMaterialStateVars (throws) and rejects GeostaticStress
   // implicitly via its default branch, since nDim=1 there. MarmotMaterialInitialization must not
   // throw.
-  wrapper->setInitialConditions( MarmotElement::MarmotMaterialInitialization, nullptr );
+  wrapper->setInitialConditions( Marmot::Discretizations::Elements::Element::MarmotMaterialInitialization, nullptr );
 
   bool threw = false;
   try {
-    wrapper->setInitialConditions( MarmotElement::MarmotMaterialStateVars, nullptr );
+    wrapper->setInitialConditions( Marmot::Discretizations::Elements::Element::MarmotMaterialStateVars, nullptr );
   }
   catch ( const std::invalid_argument& ) {
     threw = true;
@@ -293,7 +293,7 @@ void testSetInitialConditionsDelegatesToChild()
 }
 
 // ---------------------------------------------------------------------------------------------
-// getStateView(): "MarmotElementSpatialWrapper.T" is handled directly by the wrapper; anything
+// getStateView(): "Marmot::Discretizations::Elements::ElementSpatialWrapper.T" is handled directly by the wrapper; anything
 // else must delegate to the child.
 // ---------------------------------------------------------------------------------------------
 
@@ -305,7 +305,7 @@ void testGetStateViewReturnsTransformationMatrixAndDelegatesOtherwise()
 
   auto wrapper = makeT2D2( nodeCoordsVec, matProps, stateVars );
 
-  const auto tView = wrapper->getStateView( "MarmotElementSpatialWrapper.T", 0 );
+  const auto tView = wrapper->getStateView( "Marmot::Discretizations::Elements::ElementSpatialWrapper.T", 0 );
   throwExceptionOnFailure( tView.stateSize == 2, "getStateView(\"...T\") returned the wrong size." );
   throwExceptionOnFailure( checkIfEqual( tView.stateLocation[0], 0.6, 1e-10 ) &&
                              checkIfEqual( tView.stateLocation[1], 0.8, 1e-10 ),
@@ -374,10 +374,10 @@ void testGetCoordinatesAtQuadraturePointsMatchesChildCoordinatesInAmbientSpace()
 
 // ---------------------------------------------------------------------------------------------
 // computeDistributedLoad(): forwards to the child (with load/QTotal in the correct order --
-// verified by inspection against MarmotElement's declared signature, since the only production
+// verified by inspection against Marmot::Discretizations::Elements::Element's declared signature, since the only production
 // child of this wrapper is a 1D bar, and DisplacementFiniteElement<1,...>::computeDistributedLoad
 // always throws before it would ever read those arguments -- see
-// FiniteElement::BoundaryElement's constructor, which has no 1D "Bar2" parent-shape branch).
+// Marmot::Discretizations::Elements::BoundaryElement's constructor, which has no 1D "Bar2" parent-shape branch).
 // ---------------------------------------------------------------------------------------------
 
 void testComputeDistributedLoadDelegatesAndThrowsForUnsupported1DChild()
@@ -397,7 +397,7 @@ void testComputeDistributedLoadDelegatesAndThrowsForUnsupported1DChild()
   bool threw = false;
   try {
     wrapper
-      ->computeDistributedLoad( MarmotElement::Pressure, P.data(), K.data(), 0, load.data(), QTotal.data(), 0.0, 1.0 );
+      ->computeDistributedLoad( Marmot::Discretizations::Elements::Element::Pressure, P.data(), K.data(), 0, load.data(), QTotal.data(), 0.0, 1.0 );
   }
   catch ( const std::invalid_argument& ) {
     threw = true;
@@ -408,9 +408,9 @@ void testComputeDistributedLoadDelegatesAndThrowsForUnsupported1DChild()
 }
 
 // ---------------------------------------------------------------------------------------------
-// MarmotElementSpatialWrapper does not override computeLumpedInertia(), computeConsistentInertia(),
+// Marmot::Discretizations::Elements::ElementSpatialWrapper does not override computeLumpedInertia(), computeConsistentInertia(),
 // computeCriticalTimeStepForExplicitDynamics(), or computeInternalEnergy(), so calling any of them
-// falls through to MarmotElement's default (throwing) implementation -- otherwise untested,
+// falls through to Marmot::Discretizations::Elements::Element's default (throwing) implementation -- otherwise untested,
 // since every OTHER element in this codebase does override all four.
 // ---------------------------------------------------------------------------------------------
 

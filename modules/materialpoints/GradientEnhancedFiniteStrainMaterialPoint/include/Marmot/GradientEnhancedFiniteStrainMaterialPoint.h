@@ -218,7 +218,7 @@ namespace Marmot::MaterialPoints {
      * @param[in] property Material section (name and properties).
      * @throws std::invalid_argument if the material does not implement Marmot::Materials::MaterialGradientEnhancedFiniteStrain.
      */
-    void assignMaterial( const MarmotMaterialSection& property );
+    void assignMaterial( const Marmot::Discretizations::MaterialSection& property );
 
     /**
      * @brief Initialize the state: @f$ \boldsymbol{F}_n = \boldsymbol{I} @f$, unit eigen deformation, a zero
@@ -484,7 +484,7 @@ namespace Marmot::MaterialPoints {
   }
 
   template < int nDim >
-  void GradientEnhancedFiniteStrainMaterialPoint< nDim >::assignMaterial( const MarmotMaterialSection& section )
+  void GradientEnhancedFiniteStrainMaterialPoint< nDim >::assignMaterial( const Marmot::Discretizations::MaterialSection& section )
   {
     material = std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedFiniteStrain >(
       dynamic_cast< Marmot::Materials::MaterialGradientEnhancedFiniteStrain* >(

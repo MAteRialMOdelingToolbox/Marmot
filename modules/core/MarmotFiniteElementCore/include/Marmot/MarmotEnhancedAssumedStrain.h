@@ -25,7 +25,7 @@
 #pragma once
 #include "Marmot/MarmotTypedefs.h"
 
-namespace Marmot {
+namespace Marmot::Discretizations::Elements::EAS {
   /**
    * @brief Enhanced Assumed Strain (EAS) element enrichment utilities.
    *
@@ -33,7 +33,6 @@ namespace Marmot {
    * used in incompatible-mode and enhanced assumed strain finite element
    * formulations (de Borst, Simo & Rifai variants).
    */
-  namespace FiniteElement::EAS {
 
     /**
      * @brief Supported EAS enrichment types.
@@ -63,5 +62,4 @@ namespace Marmot {
      */
     Eigen::MatrixXd EASInterpolation( EASType type, const Eigen::VectorXd& xi );
 
-  } // namespace FiniteElement::EAS
-} // namespace Marmot
+  } // namespace Marmot::Discretizations::Elements::EAS

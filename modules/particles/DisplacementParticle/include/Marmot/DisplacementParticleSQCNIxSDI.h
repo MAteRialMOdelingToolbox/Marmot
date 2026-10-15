@@ -470,7 +470,7 @@ namespace Marmot::Meshfree {
       _newmark_beta( 0. ),
       _newmark_gamma( 0. )
   {
-    MarmotMaterialSection section( materialName, materialProperties, sizeMaterialProperties );
+    Marmot::Discretizations::MaterialSection section( materialName, materialProperties, sizeMaterialProperties );
 
     for ( size_t i = 0; i < this->_subDomains.size(); i++ ) {
 

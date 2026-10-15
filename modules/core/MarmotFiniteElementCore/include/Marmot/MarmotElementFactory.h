@@ -28,28 +28,28 @@
 #include <string>
 #include <unordered_map>
 
-namespace MarmotLibrary {
+namespace Marmot::Registry {
 
   /**
-   * @class MarmotElementFactory
+   * @class ElementFactory
    * @brief Factory class for creating element instances.
    * This class provides a mechanism to register elements by their code and name,
    * and to create element instances based on their properties.
    */
-  class MARMOT_API MarmotElementFactory {
+  class MARMOT_API ElementFactory {
   public:
-    /// @brief Factory function pointer type: takes an element number and returns a new MarmotElement.
-    using elementFactoryFunction = MarmotElement* (*)( int elementNumber );
-    MarmotElementFactory()       = delete;
+    /// @brief Factory function pointer type: takes an element number and returns a new Marmot::Discretizations::Elements::Element.
+    using elementFactoryFunction = Marmot::Discretizations::Elements::Element* (*)( int elementNumber );
+    ElementFactory()       = delete;
 
     /**
      * @brief Create an element instance based on its name and number.
      * @param[in] elementName   Registered name of the element type.
      * @param[in] elementNumber Unique identifier for the element instance.
-     * @return Pointer to the created MarmotElement instance.
+     * @return Pointer to the created Marmot::Discretizations::Elements::Element instance.
      * @throws std::invalid_argument if @p elementName is not registered.
      */
-    static MarmotElement* createElement( const std::string& elementName, int elementNumber )
+    static Marmot::Discretizations::Elements::Element* createElement( const std::string& elementName, int elementNumber )
     {
       auto& map = elementFactoryFunctionByName();
       auto  it  = map.find( elementName );
@@ -82,4 +82,4 @@ namespace MarmotLibrary {
     static ElementFactoryMap& elementFactoryFunctionByName();
   };
 
-} // namespace MarmotLibrary
+} // namespace Marmot::Registry

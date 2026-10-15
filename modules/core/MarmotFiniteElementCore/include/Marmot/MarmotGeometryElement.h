@@ -29,8 +29,10 @@
 #include <iostream>
 #include <map>
 
+namespace Marmot::Discretizations::Elements {
+
 /**
- * @class MarmotGeometryElement
+ * @class GeometryElement
  * @brief Statically-sized geometry base class for all isoparametric Marmot elements.
  *
  * @tparam nDim   Number of spatial dimensions (1, 2 or 3).
@@ -40,11 +42,11 @@
  * the B-operator @c B, and the element Jacobian.  The element shape is determined
  * automatically from the template parameters.
  *
- * Concrete MarmotElement classes inherit from this class to access the geometric
+ * Concrete Marmot::Discretizations::Elements::Element classes inherit from this class to access the geometric
  * infrastructure without code duplication.
  */
 template < int nDim, int nNodes >
-class MarmotGeometryElement {
+class GeometryElement {
 
 public:
   /*Typedefs*/
@@ -65,17 +67,17 @@ public:
 
   /*Properties*/
   Eigen::Map< const CoordinateVector >       coordinates; ///< Map into the externally-owned nodal-coordinate array.
-  const Marmot::FiniteElement::ElementShapes shape;       ///< Element shape determined from @p nDim and @p nNodes.
+  const Marmot::Discretizations::Elements::ElementShapes shape;       ///< Element shape determined from @p nDim and @p nNodes.
 
   /*Methods*/
   /// @brief Default constructor. Initialises the coordinate map to @c nullptr and deduces the element shape.
-  MarmotGeometryElement()
-    : coordinates( nullptr ), shape( Marmot::FiniteElement::getElementShapeByMetric( nDim, nNodes ) ){};
+  GeometryElement()
+    : coordinates( nullptr ), shape( Marmot::Discretizations::Elements::getElementShapeByMetric( nDim, nNodes ) ){};
 
   /// @brief Returns an Ensight Gold shape string (e.g. @c quad4, @c hexa8) for this element.
   std::string getElementShape() const
   {
-    using namespace Marmot::FiniteElement;
+    using namespace Marmot::Discretizations::Elements;
     static std::map< ElementShapes, std::string > shapes = { { Bar2, "bar2" },
                                                              { Quad4, "quad4" },
                                                              { Quad8, "quad8" },
@@ -114,12 +116,12 @@ public:
 
   /*These functions are equal for each element and independent of node number and  nDimension*/
   /// @brief Compute the expanded interpolation operator N_B from shape function values @p N.
-  NBSized NB( const NSized& N ) const { return Marmot::FiniteElement::NB< nDim, nNodes >( N ); }
+  NBSized NB( const NSized& N ) const { return Marmot::Discretizations::Elements::NB< nDim, nNodes >( N ); }
 
   /// @brief Compute the element Jacobian from natural derivatives @p dNdXi and the stored nodal coordinates.
   JacobianSized Jacobian( const dNdXiSized& dNdXi ) const
   {
-    return Marmot::FiniteElement::Jacobian< nDim, nNodes >( dNdXi, coordinates );
+    return Marmot::Discretizations::Elements::Jacobian< nDim, nNodes >( dNdXi, coordinates );
   }
 
   /// @brief Compute physical derivatives @p dN/dX from natural derivatives and the inverse Jacobian.
@@ -135,6 +137,8 @@ public:
   /// @param[in] Q    Element displacement vector.
   JacobianSized F( const dNdXiSized& dNdX, const CoordinateVector& Q ) const
   {
-    return Marmot::FiniteElement::Jacobian< nDim, nNodes >( dNdX, Q ) + JacobianSized::Identity();
+    return Marmot::Discretizations::Elements::Jacobian< nDim, nNodes >( dNdX, Q ) + JacobianSized::Identity();
   }
 };
+
+} // namespace Marmot::Discretizations::Elements

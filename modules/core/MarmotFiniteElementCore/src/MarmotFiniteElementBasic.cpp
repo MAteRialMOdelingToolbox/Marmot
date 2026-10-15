@@ -2,8 +2,7 @@
 #include "Marmot/MarmotTypedefs.h"
 
 using namespace Eigen;
-namespace Marmot {
-  namespace FiniteElement {
+namespace Marmot::Discretizations::Elements {
     ElementShapes getElementShapeByMetric( int nDim, int nNodes )
     {
 
@@ -94,13 +93,12 @@ namespace Marmot {
 
       return indices;
     }
-  } // namespace FiniteElement
 
-  namespace FiniteElement::Quadrature {
-    const std::vector< QuadraturePointInfo >& getGaussPointInfo( Marmot::FiniteElement::ElementShapes shape,
+  namespace Quadrature {
+    const std::vector< QuadraturePointInfo >& getGaussPointInfo( Marmot::Discretizations::Elements::ElementShapes shape,
                                                                  IntegrationTypes                     integrationType )
     {
-      using Marmot::FiniteElement::ElementShapes;
+      using Marmot::Discretizations::Elements::ElementShapes;
       switch ( shape ) {
       case ( ElementShapes::Bar2 ): {
         if ( integrationType == IntegrationTypes::FullIntegration )
@@ -157,10 +155,10 @@ namespace Marmot {
       }
     }
 
-    int getNumGaussPoints( Marmot::FiniteElement::ElementShapes shape, IntegrationTypes integrationType )
+    int getNumGaussPoints( Marmot::Discretizations::Elements::ElementShapes shape, IntegrationTypes integrationType )
     {
       return getGaussPointInfo( shape, integrationType ).size();
     }
 
-  } // end of namespace FiniteElement::Quadrature
-} // end of namespace Marmot
+  } // namespace Quadrature
+} // namespace Marmot::Discretizations::Elements

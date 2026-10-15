@@ -60,7 +60,7 @@ namespace Marmot::Elements {
    * @brief Interface finite element with displacement-jump kinematics.
    *
    * The element combines geometric interface operators from
-   * `MarmotGeometryInterfaceElement<nDim, nNodes>` with an interface-material
+   * `Marmot::Discretizations::Elements::GeometryInterfaceElement<nDim, nNodes>` with an interface-material
    * update (`Marmot::Materials::InterfaceMaterialHypoElastic`) at each quadrature point.
    * The current formulation uses linearized, small-deformation kinematics.
    * It stores quadrature-point state variables and assembles:
@@ -69,7 +69,7 @@ namespace Marmot::Elements {
    * - zero inertia terms (current formulation).
    */
   template < int nDim, int nNodes >
-  class InterfaceFiniteElement : public MarmotElement, public MarmotGeometryInterfaceElement< nDim, nNodes > {
+  class InterfaceFiniteElement : public Marmot::Discretizations::Elements::Element, public Marmot::Discretizations::Elements::GeometryInterfaceElement< nDim, nNodes > {
 
   public:
     /**
@@ -88,7 +88,7 @@ namespace Marmot::Elements {
     static constexpr int nSideDofs = nInterfaceNodes * nDim;
     static constexpr int nTensor   = nDim * nDim;
 
-    using ParentGeometryElement = MarmotGeometryInterfaceElement< nDim, nNodes >;
+    using ParentGeometryElement = Marmot::Discretizations::Elements::GeometryInterfaceElement< nDim, nNodes >;
 
     using XiSized              = typename ParentGeometryElement::XiSized;
     using NSized               = typename ParentGeometryElement::NSized;
@@ -315,7 +315,7 @@ namespace Marmot::Elements {
      * @param[in] sectionType Interface section type.
      */
     InterfaceFiniteElement( int                                         elementID,
-                            FiniteElement::Quadrature::IntegrationTypes integrationType,
+                            Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
                             SectionType                                 sectionType = SectionType::Interface );
 
     /**
@@ -353,12 +353,12 @@ namespace Marmot::Elements {
     /**
      * @brief Assign element-level properties (e.g., extrusion thickness of the element).
      */
-    void assignProperty( const ElementProperties& marmotElementProperty );
+    void assignProperty( const Marmot::Discretizations::ElementProperties& marmotElementProperty );
 
     /**
      * @brief Assign a material section to all quadrature points.
      */
-    void assignProperty( const MarmotMaterialSection& marmotElementProperty );
+    void assignProperty( const Marmot::Discretizations::MaterialSection& marmotElementProperty );
 
     /**
      * @brief Assign a material by name and property array to all quadrature points.
@@ -383,7 +383,7 @@ namespace Marmot::Elements {
     /**
      * @brief Distributed-load routine (currently not implemented).
      */
-    void computeDistributedLoad( MarmotElement::DistributedLoadTypes loadType,
+    void computeDistributedLoad( Marmot::Discretizations::Elements::Element::DistributedLoadTypes loadType,
                                  double*                             P,
                                  double*                             K,
                                  const int                           elementFace,
@@ -466,14 +466,14 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   InterfaceFiniteElement< nDim, nNodes >::InterfaceFiniteElement(
     int                                         elementID,
-    FiniteElement::Quadrature::IntegrationTypes integrationType,
+    Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
     SectionType                                 sectionType )
     : ParentGeometryElement(),
       elementProperties( Eigen::Map< const Eigen::VectorXd >( nullptr, 0 ) ),
       elLabel( elementID ),
       sectionType( sectionType )
   {
-    const auto qpInfos = FiniteElement::Quadrature::getGaussPointInfo( this->shape, integrationType );
+    const auto qpInfos = Marmot::Discretizations::Elements::Quadrature::getGaussPointInfo( this->shape, integrationType );
 
     for ( const auto& qpInfo : qpInfos ) {
       QuadraturePoint qp( qpInfo.xi, qpInfo.weight );
@@ -532,14 +532,14 @@ namespace Marmot::Elements {
   }
 
   template < int nDim, int nNodes >
-  void InterfaceFiniteElement< nDim, nNodes >::assignProperty( const ElementProperties& elementPropertiesInfo )
+  void InterfaceFiniteElement< nDim, nNodes >::assignProperty( const Marmot::Discretizations::ElementProperties& elementPropertiesInfo )
   {
     new ( &elementProperties ) Eigen::Map< const Eigen::VectorXd >( elementPropertiesInfo.elementProperties,
                                                                     elementPropertiesInfo.nElementProperties );
   }
 
   template < int nDim, int nNodes >
-  void InterfaceFiniteElement< nDim, nNodes >::assignProperty( const MarmotMaterialSection& section )
+  void InterfaceFiniteElement< nDim, nNodes >::assignProperty( const Marmot::Discretizations::MaterialSection& section )
   {
     material = std::make_unique< Marmot::Materials::InterfaceMaterialHypoElastic >( section.materialName,
                                                                        section.materialProperties,
@@ -745,7 +745,7 @@ namespace Marmot::Elements {
   void InterfaceFiniteElement< nDim, nNodes >::setInitialConditions( StateTypes state, const double* values )
   {
     switch ( state ) {
-    case MarmotElement::MarmotMaterialInitialization: {
+    case Marmot::Discretizations::Elements::Element::MarmotMaterialInitialization: {
       for ( QuadraturePoint& qp : qps ) {
         material->initializeYourself( qp.managedStateVars->materialStateVars.data(),
                                       qp.managedStateVars->materialStateVars.size() );
@@ -753,7 +753,7 @@ namespace Marmot::Elements {
       break;
     }
 
-    case MarmotElement::MarmotMaterialStateVars: {
+    case Marmot::Discretizations::Elements::Element::MarmotMaterialStateVars: {
       throw std::invalid_argument( "Please use initializeStateVars directly on material" );
     }
 
@@ -764,7 +764,7 @@ namespace Marmot::Elements {
   }
 
   template < int nDim, int nNodes >
-  void InterfaceFiniteElement< nDim, nNodes >::computeDistributedLoad( MarmotElement::DistributedLoadTypes loadType,
+  void InterfaceFiniteElement< nDim, nNodes >::computeDistributedLoad( Marmot::Discretizations::Elements::Element::DistributedLoadTypes loadType,
                                                                        double*                             P,
                                                                        double*                             K,
                                                                        const int                           elementFace,

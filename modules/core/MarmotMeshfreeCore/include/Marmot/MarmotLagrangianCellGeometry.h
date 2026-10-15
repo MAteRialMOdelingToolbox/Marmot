@@ -36,7 +36,7 @@
  * @brief Isoparametric Lagrangian cell geometry (Quad4, Hexa8), a geometry policy for the MPM cells.
  *
  * @details Uses the shape functions @f$ N_A(\boldsymbol{\xi}) @f$, @f$ \boldsymbol{\xi}\in[-1,1]^{n_\mathrm{dim}} @f$,
- * of MarmotGeometryElement and the isoparametric map
+ * of Marmot::Discretizations::Elements::GeometryElement and the isoparametric map
  * @f$ \boldsymbol{X}(\boldsymbol{\xi}) = \sum_A N_A(\boldsymbol{\xi})\,\boldsymbol{X}_A @f$ with the nodal coordinates
  * @f$ \boldsymbol{X}_A @f$, and provides the inverse map, the physical gradients and the point location test
  * required by GeometryCellPolicy.
@@ -49,11 +49,11 @@
  * @tparam nNodes Number of nodes (4 in 2D, 8 in 3D).
  */
 template < int nDim, int nNodes >
-class MarmotLagrangianCellGeometry : public MarmotGeometryElement< nDim, nNodes >
+class MarmotLagrangianCellGeometry : public Marmot::Discretizations::Elements::GeometryElement< nDim, nNodes >
 
 {
 
-  using ParentLagrangianGeometryElement = MarmotGeometryElement< nDim, nNodes >; ///< Lagrangian geometry element.
+  using ParentLagrangianGeometryElement = Marmot::Discretizations::Elements::GeometryElement< nDim, nNodes >; ///< Lagrangian geometry element.
   using JacobianSized = typename ParentLagrangianGeometryElement::JacobianSized; ///< Jacobian matrix type.
   Eigen::Matrix< double, nDim, 1 > _boundingBoxMin;                              ///< Lower corner of the bounding box.
   Eigen::Matrix< double, nDim, 1 > _boundingBoxMax;                              ///< Upper corner of the bounding box.

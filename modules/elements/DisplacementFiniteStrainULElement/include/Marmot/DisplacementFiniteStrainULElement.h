@@ -52,7 +52,7 @@ namespace Marmot::Elements {
    * @tparam nNodes Number of nodes of the element
    */
   template < int nDim, int nNodes >
-  class DisplacementFiniteStrainULElement : public MarmotElement, public MarmotGeometryElement< nDim, nNodes > {
+  class DisplacementFiniteStrainULElement : public Marmot::Discretizations::Elements::Element, public Marmot::Discretizations::Elements::GeometryElement< nDim, nNodes > {
 
   public:
     /**
@@ -80,7 +80,7 @@ namespace Marmot::Elements {
     static constexpr int idxU = 0;
 
     /// @brief Parent element class for geometry related operations as, e.g., shape functions
-    using ParentGeometryElement = MarmotGeometryElement< nDim, nNodes >;
+    using ParentGeometryElement = Marmot::Discretizations::Elements::GeometryElement< nDim, nNodes >;
     /// @brief Material class for finite strain material formulations
     using Material = Marmot::Materials::MaterialFiniteStrain;
     /// @brief Sized matrix type used for Jacobian matrix (inherited from ParentGeometryElement)
@@ -224,7 +224,7 @@ namespace Marmot::Elements {
      * @param sectionType[in] Section type of the element
      */
     DisplacementFiniteStrainULElement( int                                                 elementID,
-                                       Marmot::FiniteElement::Quadrature::IntegrationTypes integrationType,
+                                       Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
                                        SectionType                                         sectionType );
 
     /// @brief Get the total number of required state variables of the element
@@ -265,12 +265,12 @@ namespace Marmot::Elements {
     /** @brief Assign the element properties of the element
      * @param MarmotElementProperty[in] Element properties
      */
-    void assignProperty( const ElementProperties& MarmotElementProperty );
+    void assignProperty( const Marmot::Discretizations::ElementProperties& MarmotElementProperty );
 
     /** @brief Assign the material section of the element
      * @param MarmotElementProperty[in] Material section
      */
-    void assignProperty( const MarmotMaterialSection& MarmotElementProperty );
+    void assignProperty( const Marmot::Discretizations::MaterialSection& MarmotElementProperty );
 
     /** @brief Assign the nodal coordinates of the element
      * @param coordinates[in] Pointer to the nodal coordinates of the element
@@ -303,7 +303,7 @@ namespace Marmot::Elements {
      * @param time[in] Pointer to the time at the beginning of the current time step
      * @param dT[in] Length of the current time step
      */
-    void computeDistributedLoad( MarmotElement::DistributedLoadTypes loadType,
+    void computeDistributedLoad( Marmot::Discretizations::Elements::Element::DistributedLoadTypes loadType,
                                  double*                             P,
                                  double*                             K,
                                  const int                           elementFace,
@@ -363,7 +363,7 @@ namespace Marmot::Elements {
      * points \f$p\f$ of the full Gauss rule of the element's shape, in the undeformed configuration,
      * also for a reduced-integration element, whose own rule would leave the mass rank-deficient;
      * the density is taken from the nearest quadrature point of the element. See
-     * Marmot::FiniteElement::ConsistentMass.
+     * Marmot::Discretizations::Elements::ConsistentMass.
      */
     void computeConsistentInertia( double* M );
 
@@ -387,7 +387,7 @@ namespace Marmot::Elements {
      * yields an exactly zero corner mass for any regular (affinely-mapped) element.
      *
      * The weight is therefore derived per element by
-     * Marmot::FiniteElement::MassLumping::manifoldBlendWeight(), which returns
+     * Marmot::Discretizations::Elements::MassLumping::manifoldBlendWeight(), which returns
      * \f$w = \min(\tfrac{1}{2}, \tfrac{2}{3}\,w_\mathrm{max})\f$: exactly \f$\tfrac{1}{2}\f$
      * wherever that is safe -- every 2D serendipity element, and every linear element, where the
      * result does not depend on \f$w\f$ at all -- and \f$\tfrac{1}{3}\f$ for a hexa20. It
@@ -406,7 +406,7 @@ namespace Marmot::Elements {
      * @brief Compute the critical time step for explicit dynamics.
      * @param criticalTimeStep Output parameter for the computed critical time step.
      * @details The estimate is \f$l / c\f$, scaled by the factor
-     * Marmot::FiniteElement::MassLumping::timeStepFactorFromMassDistribution() derives from the
+     * Marmot::Discretizations::Elements::MassLumping::timeStepFactorFromMassDistribution() derives from the
      * same lumped mass fractions computeLumpedInertia() assembles: \f$l/c\f$ is the stable
      * increment for an element whose mass is spread uniformly over its nodes, which lumping does
      * not do, and the lightest node sets the highest frequency. \f$l\f$ is twice the smallest
@@ -468,7 +468,7 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   DisplacementFiniteStrainULElement< nDim, nNodes >::DisplacementFiniteStrainULElement(
     int                                                 elementID,
-    Marmot::FiniteElement::Quadrature::IntegrationTypes integrationType,
+    Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
     SectionType                                         sectionType )
     : ParentGeometryElement(),
       elementProperties( Eigen::Map< const Eigen::VectorXd >( nullptr, 0 ) ),
@@ -476,7 +476,7 @@ namespace Marmot::Elements {
       sectionType( sectionType ),
       hasEigenDeformation( false )
   {
-    for ( const auto& qpInfo : Marmot::FiniteElement::Quadrature::getGaussPointInfo( this->shape, integrationType ) ) {
+    for ( const auto& qpInfo : Marmot::Discretizations::Elements::Quadrature::getGaussPointInfo( this->shape, integrationType ) ) {
       QuadraturePoint qp( qpInfo.xi, qpInfo.weight );
       qps.push_back( std::move( qp ) );
     }
@@ -533,14 +533,14 @@ namespace Marmot::Elements {
 
   template < int nDim, int nNodes >
   void DisplacementFiniteStrainULElement< nDim, nNodes >::assignProperty(
-    const ElementProperties& elementPropertiesInfo )
+    const Marmot::Discretizations::ElementProperties& elementPropertiesInfo )
   {
     new ( &elementProperties ) Eigen::Map< const Eigen::VectorXd >( elementPropertiesInfo.elementProperties,
                                                                     elementPropertiesInfo.nElementProperties );
   }
 
   template < int nDim, int nNodes >
-  void DisplacementFiniteStrainULElement< nDim, nNodes >::assignProperty( const MarmotMaterialSection& section )
+  void DisplacementFiniteStrainULElement< nDim, nNodes >::assignProperty( const Marmot::Discretizations::MaterialSection& section )
   {
 
     for ( auto& qp : qps ) {
@@ -819,7 +819,7 @@ namespace Marmot::Elements {
 
   template < int nDim, int nNodes >
   void DisplacementFiniteStrainULElement< nDim, nNodes >::computeDistributedLoad(
-    MarmotElement::DistributedLoadTypes loadType,
+    Marmot::Discretizations::Elements::Element::DistributedLoadTypes loadType,
     double*                             rightHandSide,
     double*                             stiffnessMatrix,
     const int                           elementFace,
@@ -833,7 +833,7 @@ namespace Marmot::Elements {
 
     switch ( loadType ) {
 
-    case MarmotElement::Pressure: {
+    case Marmot::Discretizations::Elements::Element::Pressure: {
       const double                                                          p = load[0];
       const Eigen::Map< const RhsSized >                                    QTotal( QTotal_ );
       const Eigen::Ref< const USizedVector >                                qU( QTotal.head( bsU ) );
@@ -841,7 +841,7 @@ namespace Marmot::Elements {
       Eigen::Ref< Eigen::Matrix< double, bsU, bsU > >                       kUU( K.topLeftCorner( bsU, bsU ) );
 
       const USizedVector             coordinates_np = this->coordinates + qU;
-      FiniteElement::BoundaryElement boundaryEl( this->shape, elementFace, nDim, coordinates_np );
+      Marmot::Discretizations::Elements::BoundaryElement boundaryEl( this->shape, elementFace, nDim, coordinates_np );
 
       Eigen::VectorXd Pb = -p * boundaryEl.computeSurfaceNormalVectorialLoadVector();
       Eigen::MatrixXd Kb = -p * boundaryEl.computeDSurfaceNormalVectorialLoadVector_dCoordinates();
@@ -856,9 +856,9 @@ namespace Marmot::Elements {
 
       break;
     }
-    case MarmotElement::SurfaceTraction: {
+    case Marmot::Discretizations::Elements::Element::SurfaceTraction: {
 
-      FiniteElement::BoundaryElement boundaryEl( this->shape, elementFace, nDim, this->coordinates );
+      Marmot::Discretizations::Elements::BoundaryElement boundaryEl( this->shape, elementFace, nDim, this->coordinates );
 
       const XiSized tractionVector( load );
 
@@ -883,7 +883,7 @@ namespace Marmot::Elements {
     if constexpr ( nDim > 1 ) {
       switch ( state ) {
 
-      case MarmotElement::MarmotMaterialInitialization: {
+      case Marmot::Discretizations::Elements::Element::MarmotMaterialInitialization: {
         for ( QuadraturePoint& qp : qps ) {
 
           qp.managedStateVars->F0_XX = 1.0;
@@ -896,7 +896,7 @@ namespace Marmot::Elements {
         break;
       }
 
-      case MarmotElement::GeostaticStress: {
+      case Marmot::Discretizations::Elements::Element::GeostaticStress: {
 
         for ( QuadraturePoint& qp : qps ) {
 
@@ -950,9 +950,9 @@ namespace Marmot::Elements {
     Eigen::Map< KSizedMatrix > Me( M );
     Me.setZero();
 
-    for ( const auto& point : Marmot::FiniteElement::ConsistentMass::integrationRule( this->shape ) ) {
+    for ( const auto& point : Marmot::Discretizations::Elements::ConsistentMass::integrationRule( this->shape ) ) {
       const XiSized xi = point.xi;
-      const auto&   qp = qps[Marmot::FiniteElement::ConsistentMass::nearestQuadraturePoint( point.xi, qps )];
+      const auto&   qp = qps[Marmot::Discretizations::Elements::ConsistentMass::nearestQuadraturePoint( point.xi, qps )];
       // thickness (2D) or cross section (1D) exactly as initializeYourself() applied it; 1 in 3D
       const double sectionFactor = qp.J0xW / ( qp.weight * qp.detJ );
       const double rho           = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
@@ -979,14 +979,14 @@ namespace Marmot::Elements {
     // 2^nDim. std::pow is not constexpr in the standard (libstdc++ offers it as an
     // extension, libc++ does not), so compute it with a shift to stay portable.
     constexpr int   nNodesLinear     = ( 1 << nDim );
-    auto            linGeometryEl    = MarmotGeometryElement< nDim, nNodesLinear >();
+    auto            linGeometryEl    = Marmot::Discretizations::Elements::GeometryElement< nDim, nNodesLinear >();
     Eigen::VectorXd rowSumsHighOrder = Eigen::VectorXd::Zero( nNodes );
     Eigen::VectorXd rowSumsLinear    = Eigen::VectorXd::Zero( nNodesLinear );
     for ( const auto& qp : qps ) {
       rowSumsHighOrder += Eigen::VectorXd( this->N( qp.xi ) ) * qp.J0xW;
       rowSumsLinear += Eigen::VectorXd( linGeometryEl.N( qp.xi ) ) * qp.J0xW;
     }
-    const double weight = FiniteElement::MassLumping::manifoldBlendWeight( rowSumsHighOrder, rowSumsLinear );
+    const double weight = Marmot::Discretizations::Elements::MassLumping::manifoldBlendWeight( rowSumsHighOrder, rowSumsLinear );
 
     for ( const auto& qp : qps ) {
       const auto N_    = this->N( qp.xi );
@@ -1034,16 +1034,16 @@ namespace Marmot::Elements {
      * tighter limit than its volume alone suggests.
      */
     constexpr int   nNodesLinear     = ( 1 << nDim );
-    auto            linGeometryEl    = MarmotGeometryElement< nDim, nNodesLinear >();
+    auto            linGeometryEl    = Marmot::Discretizations::Elements::GeometryElement< nDim, nNodesLinear >();
     Eigen::VectorXd rowSumsHighOrder = Eigen::VectorXd::Zero( nNodes );
     Eigen::VectorXd rowSumsLinear    = Eigen::VectorXd::Zero( nNodesLinear );
     for ( const auto& qp : qps ) {
       rowSumsHighOrder += Eigen::VectorXd( this->N( qp.xi ) ) * qp.J0xW;
       rowSumsLinear += Eigen::VectorXd( linGeometryEl.N( qp.xi ) ) * qp.J0xW;
     }
-    const double weight = FiniteElement::MassLumping::manifoldBlendWeight( rowSumsHighOrder, rowSumsLinear );
-    const double lumpedMassTimeStepFactor = FiniteElement::MassLumping::timeStepFactorFromMassDistribution(
-      FiniteElement::MassLumping::manifoldMassFractions( rowSumsHighOrder, rowSumsLinear, weight ) );
+    const double weight = Marmot::Discretizations::Elements::MassLumping::manifoldBlendWeight( rowSumsHighOrder, rowSumsLinear );
+    const double lumpedMassTimeStepFactor = Marmot::Discretizations::Elements::MassLumping::timeStepFactorFromMassDistribution(
+      Marmot::Discretizations::Elements::MassLumping::manifoldMassFractions( rowSumsHighOrder, rowSumsLinear, weight ) );
 
     criticalTimeStep = std::numeric_limits< double >::max();
     for ( const auto& qp : qps ) {

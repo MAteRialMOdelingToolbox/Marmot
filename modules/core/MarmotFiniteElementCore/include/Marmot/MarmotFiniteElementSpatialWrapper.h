@@ -29,8 +29,10 @@
 #include <functional>
 #include <memory>
 
+namespace Marmot::Discretizations::Elements {
+
 /**
- * @class MarmotElementSpatialWrapper
+ * @class ElementSpatialWrapper
  * @brief Wrapper that embeds a lower-dimensional child element (e.g.\ a truss) into a
  *        higher-dimensional ambient space (2-D or 3-D).
  *
@@ -38,7 +40,7 @@
  * nodal coordinates.  The child element is created via a user-provided factory
  * functor so that the wrapper remains independent of the concrete child type.
  */
-class MarmotElementSpatialWrapper : public MarmotElement {
+class ElementSpatialWrapper : public Element {
 
 public:
   const int nDim;                                ///< Number of spatial dimensions of the ambient space.
@@ -50,7 +52,7 @@ public:
   const int projectedSize;                       ///< Number of projected DOFs (child-element dimension).
   const int unprojectedSize;                     ///< Number of unprojected DOFs (ambient-space dimension).
 
-  std::unique_ptr< MarmotElement > childElement; ///< Owned child element instance.
+  std::unique_ptr< Element > childElement; ///< Owned child element instance.
   Eigen::MatrixXd                  T;            ///< Coordinate transformation matrix from child to parent space.
   Eigen::MatrixXd                  P;            ///< Projection matrix mapping parent DOFs to child DOFs.
   Eigen::MatrixXd                  projectedCoordinates; ///< Nodal coordinates expressed in the child (local) frame.
@@ -68,54 +70,54 @@ public:
    * @param[in] nRhsIndicesToBeWrapped    Length of @p rhsIndicesToBeWrapped_.
    * @param[in] childElement              Owning pointer to the child element instance.
    */
-  MarmotElementSpatialWrapper( int                              nDim,
+  ElementSpatialWrapper( int                              nDim,
                                int                              nChildDim,
                                int                              nNodes,
                                int                              sizeRhsChild,
                                const int                        rhsIndicesToBeWrapped_[],
                                int                              nRhsIndicesToBeWrapped,
-                               std::unique_ptr< MarmotElement > childElement );
+                               std::unique_ptr< Element > childElement );
 
-  /// @copydoc MarmotElement::getNumberOfRequiredStateVars
+  /// @copydoc Element::getNumberOfRequiredStateVars
   int getNumberOfRequiredStateVars();
 
-  /// @copydoc MarmotElement::getNodeFields
+  /// @copydoc Element::getNodeFields
   std::vector< std::vector< std::string > > getNodeFields();
 
-  /// @copydoc MarmotElement::getDofIndicesPermutationPattern
+  /// @copydoc Element::getDofIndicesPermutationPattern
   std::vector< int > getDofIndicesPermutationPattern();
 
-  /// @copydoc MarmotElement::getNNodes
+  /// @copydoc Element::getNNodes
   int getNNodes();
 
-  /// @copydoc MarmotElement::getNSpatialDimensions
+  /// @copydoc Element::getNSpatialDimensions
   int getNSpatialDimensions();
 
-  /// @copydoc MarmotElement::getNDofPerElement
+  /// @copydoc Element::getNDofPerElement
   int getNDofPerElement();
 
-  /// @copydoc MarmotElement::getElementShape
+  /// @copydoc Element::getElementShape
   std::string getElementShape();
 
-  /// @copydoc MarmotElement::assignStateVars
+  /// @copydoc Element::assignStateVars
   void assignStateVars( double* stateVars, int nStateVars );
 
-  /// @copydoc MarmotElement::assignProperty(const ElementProperties&)
-  void assignProperty( const ElementProperties& property );
+  /// @copydoc Element::assignProperty(const Marmot::Discretizations::ElementProperties&)
+  void assignProperty( const Marmot::Discretizations::ElementProperties& property );
 
-  /// @copydoc MarmotElement::assignProperty(const MarmotMaterialSection&)
-  void assignProperty( const MarmotMaterialSection& property );
+  /// @copydoc Element::assignProperty(const Marmot::Discretizations::MaterialSection&)
+  void assignProperty( const Marmot::Discretizations::MaterialSection& property );
 
-  /// @copydoc MarmotElement::assignProperty(const std::string&, const double*, int)
+  /// @copydoc Element::assignProperty(const std::string&, const double*, int)
   void assignProperty( const std::string& propertyName, const double* properties, int nProperties ) override;
 
-  /// @copydoc MarmotElement::getPropertyNames
+  /// @copydoc Element::getPropertyNames
   std::vector< std::string > getPropertyNames() const override;
 
-  /// @copydoc MarmotElement::assignNodeCoordinates
+  /// @copydoc Element::assignNodeCoordinates
   void assignNodeCoordinates( const double* coordinates );
 
-  /// @copydoc MarmotElement::initializeYourself
+  /// @copydoc Element::initializeYourself
   void initializeYourself();
 
   /**
@@ -129,7 +131,7 @@ public:
    */
   void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT );
 
-  /// @copydoc MarmotElement::setInitialConditions
+  /// @copydoc Element::setInitialConditions
   void setInitialConditions( StateTypes state, const double* values );
 
   /**
@@ -163,15 +165,17 @@ public:
    */
   void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, double time, double dT );
 
-  /// @copydoc MarmotElement::getStateView
+  /// @copydoc Element::getStateView
   Marmot::Utilities::StateView getStateView( const std::string& stateName, int quadraturePoint );
 
-  /// @copydoc MarmotElement::getCoordinatesAtCenter
+  /// @copydoc Element::getCoordinatesAtCenter
   std::vector< double > getCoordinatesAtCenter();
 
-  /// @copydoc MarmotElement::getCoordinatesAtQuadraturePoints
+  /// @copydoc Element::getCoordinatesAtQuadraturePoints
   std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints();
 
-  /// @copydoc MarmotElement::getNumberOfQuadraturePoints
+  /// @copydoc Element::getNumberOfQuadraturePoints
   int getNumberOfQuadraturePoints();
 };
+
+} // namespace Marmot::Discretizations::Elements

@@ -468,7 +468,7 @@ namespace Marmot::Meshfree {
       _newmark_beta( 0. ),
       _newmark_gamma( 0. )
   {
-    MarmotMaterialSection section( materialName, materialProperties, nMaterialProperties );
+    Marmot::Discretizations::MaterialSection section( materialName, materialProperties, nMaterialProperties );
 
     _mp->assignMaterial( section );
   }

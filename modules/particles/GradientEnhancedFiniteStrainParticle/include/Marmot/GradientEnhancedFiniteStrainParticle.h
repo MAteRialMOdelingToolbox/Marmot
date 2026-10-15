@@ -702,7 +702,7 @@ namespace Marmot::Meshfree {
                                                 << nDim << ", but got " << sizeCenterCoordinates0 );
     }
 
-    MarmotMaterialSection section( materialName, materialProperties, nMaterialProperties );
+    Marmot::Discretizations::MaterialSection section( materialName, materialProperties, nMaterialProperties );
 
     _mp.assignMaterial( section );
 

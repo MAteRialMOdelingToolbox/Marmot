@@ -77,7 +77,7 @@ public:
    * @brief Creates and assigns the constitutive model.
    * @param[in] material Material section (material name and properties).
    */
-  virtual void assignMaterial( const MarmotMaterialSection& material ) = 0;
+  virtual void assignMaterial( const Marmot::Discretizations::MaterialSection& material ) = 0;
 
   /**
    * @brief Initializes the state (e.g. deformation gradient and material state) before the first increment.

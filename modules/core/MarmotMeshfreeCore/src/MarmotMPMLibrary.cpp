@@ -81,7 +81,7 @@ namespace MarmotLibrary {
                                                                         const double*      vertexCoordinates,
                                                                         int                sizeVertexCoordinates,
                                                                         double             volume
-                                                                        /* const MarmotMaterialSection& material */
+                                                                        /* const Marmot::Discretizations::MaterialSection& material */
   )
   {
     const auto materialPointNameUpperCase = makeStringUpperCase( materialPointName );

@@ -19,7 +19,7 @@ namespace NumDiff = Marmot::Math::NumericalDifferentiation;
 
 void testTetra4PartitionOfUnityAndKroneckerDeltaAtNodes()
 {
-  using namespace Marmot::FiniteElement::Spatial3D;
+  using namespace Marmot::Discretizations::Elements::Spatial3D;
 
   // Derived directly from N: N0=1-xi0-xi1-xi2, N1=xi0, N2=xi1, N3=xi2.
   const std::vector< Eigen::Vector3d > nodalXi = { { 0.0, 0.0, 0.0 },
@@ -40,7 +40,7 @@ void testTetra4PartitionOfUnityAndKroneckerDeltaAtNodes()
 
 void testTetra4DNdXiMatchesNumericalDifferentiationOfN()
 {
-  using namespace Marmot::FiniteElement::Spatial3D;
+  using namespace Marmot::Discretizations::Elements::Spatial3D;
 
   const Eigen::Vector3d xi( 0.2, 0.3, 0.1 );
 
@@ -58,7 +58,7 @@ void testTetra4DNdXiMatchesNumericalDifferentiationOfN()
 
 void testTetra10PartitionOfUnityAtSamplePoints()
 {
-  using namespace Marmot::FiniteElement::Spatial3D;
+  using namespace Marmot::Discretizations::Elements::Spatial3D;
 
   const std::vector< Eigen::Vector3d > samples = { { 0.0, 0.0, 0.0 },
                                                    { 1.0, 0.0, 0.0 },
@@ -75,7 +75,7 @@ void testTetra10PartitionOfUnityAtSamplePoints()
 
 void testTetra10DNdXiMatchesNumericalDifferentiationOfN()
 {
-  using namespace Marmot::FiniteElement::Spatial3D;
+  using namespace Marmot::Discretizations::Elements::Spatial3D;
 
   const Eigen::Vector3d xi( 0.2, 0.3, 0.1 );
 
@@ -95,7 +95,7 @@ void testTetra10DNdXiMatchesNumericalDifferentiationOfN()
 // BGreen(dNdX, F): at F = Identity, the Green-Lagrange strain operator reduces algebraically to
 // the standard linear B-operator (every cross term multiplies a zero off-diagonal entry of F, and
 // every retained term multiplies F's unit diagonal) -- an exact identity, not an approximation,
-// and one that exercises MarmotGeometryElement's BGreen() specialization (which has no callers
+// and one that exercises Marmot::Discretizations::Elements::GeometryElement's BGreen() specialization (which has no callers
 // anywhere in the codebase) for every shape.
 // ---------------------------------------------------------------------------------------------
 
@@ -104,7 +104,7 @@ void checkBGreenAtIdentityMatchesB( const std::vector< double >&            node
                                     const Eigen::Matrix< double, nDim, 1 >& xi,
                                     const std::string&                      label )
 {
-  MarmotGeometryElement< nDim, nNodes > geo;
+  Marmot::Discretizations::Elements::GeometryElement< nDim, nNodes > geo;
   geo.assignNodeCoordinates( nodeCoordsVec.data() );
 
   const auto dNdXi = geo.dNdXi( xi );
@@ -155,7 +155,7 @@ void testBBarAtEqualPointsMatchesBForHexa8()
   const std::vector< double > hexa8Coords = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
                                               0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
 
-  MarmotGeometryElement< 3, 8 > geo;
+  Marmot::Discretizations::Elements::GeometryElement< 3, 8 > geo;
   geo.assignNodeCoordinates( hexa8Coords.data() );
 
   const Eigen::Vector3d xi( 0.2, 0.3, 0.1 );
@@ -177,15 +177,15 @@ void testBBarAtEqualPointsMatchesBForHexa8()
 
 void testBAxisymmetricMatchesHandDerivedValuesQuad4()
 {
-  MarmotGeometryElement< 2, 4 >::dNdXiSized dNdX;
+  Marmot::Discretizations::Elements::GeometryElement< 2, 4 >::dNdXiSized dNdX;
   dNdX << 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0; // arbitrary but fixed 2x4 values
 
-  MarmotGeometryElement< 2, 4 >::NSized N;
+  Marmot::Discretizations::Elements::GeometryElement< 2, 4 >::NSized N;
   N << 0.1, 0.2, 0.3, 0.4;
 
   const Eigen::Vector2d x_gauss( 2.0, 0.0 ); // r = 2
 
-  MarmotGeometryElement< 2, 4 > geo;
+  Marmot::Discretizations::Elements::GeometryElement< 2, 4 > geo;
   const auto                    B = geo.B_axisymmetric( dNdX, N, x_gauss );
 
   throwExceptionOnFailure( B.rows() == 4 && B.cols() == 8, "B_axisymmetric() returned the wrong size." );

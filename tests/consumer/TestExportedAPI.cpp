@@ -123,7 +123,7 @@ namespace {
   /** @brief Creates an element through the factory, as EdelweissFE does, and checks the assembled kernels. */
   void testElementThroughFactory()
   {
-    std::unique_ptr< MarmotElement > element( MarmotLibrary::MarmotElementFactory::createElement( "CPS4", 1 ) );
+    std::unique_ptr< Marmot::Discretizations::Elements::Element > element( Marmot::Registry::ElementFactory::createElement( "CPS4", 1 ) );
     require( element != nullptr, "the factory must create CPS4" );
     require( element->getNNodes() == 4 && element->getNSpatialDimensions() == 2, "CPS4 is a 4-node 2D element" );
 
@@ -132,8 +132,8 @@ namespace {
     const std::vector< double > materialProperties{ 210e3, 0.3 };
     element->assignNodeCoordinates( coordinates.data() );
     element->assignProperty(
-      ElementProperties( elementProperties.data(), static_cast< int >( elementProperties.size() ) ) );
-    element->assignProperty( MarmotMaterialSection( "LINEARELASTIC",
+      Marmot::Discretizations::ElementProperties( elementProperties.data(), static_cast< int >( elementProperties.size() ) ) );
+    element->assignProperty( Marmot::Discretizations::MaterialSection( "LINEARELASTIC",
                                                     materialProperties.data(),
                                                     static_cast< int >( materialProperties.size() ) ) );
     std::vector< double > stateVars( element->getNumberOfRequiredStateVars(), 0.0 );

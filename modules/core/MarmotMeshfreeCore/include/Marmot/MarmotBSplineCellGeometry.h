@@ -34,7 +34,7 @@ namespace Marmot::Cells {
    * @class Marmot::Cells::MarmotBSplineCellGeometry
    * @brief B-spline cell geometry (one knot span), a geometry policy for the MPM cells.
    *
-   * @details Wraps Marmot::FiniteElement::MarmotBSplineGeometryElement for use as the @c GeometryCell of a cell
+   * @details Wraps Marmot::Discretizations::Elements::MarmotBSplineGeometryElement for use as the @c GeometryCell of a cell
    * (see GeometryCellPolicy). The cell is the knot span
    * @f$ [u_{p}, u_{p+1}] @f$ of each direction; the knot vectors are given in **physical coordinates**, so the
    * parametric coordinate of a point is the point itself: findReferenceCoordinate() is the identity and dNdX()
@@ -46,12 +46,12 @@ namespace Marmot::Cells {
    * @tparam order Polynomial degree @f$ p @f$ (1, 2 or 3 are registered).
    */
   template < int nDim, int order >
-  class MarmotBSplineCellGeometry : public Marmot::FiniteElement::MarmotBSplineGeometryElement< nDim, order >
+  class MarmotBSplineCellGeometry : public Marmot::Discretizations::Elements::MarmotBSplineGeometryElement< nDim, order >
 
   {
 
     /// The underlying B-spline geometry element.
-    using ParentBSplineGeometryElement = Marmot::FiniteElement::MarmotBSplineGeometryElement< nDim, order >;
+    using ParentBSplineGeometryElement = Marmot::Discretizations::Elements::MarmotBSplineGeometryElement< nDim, order >;
     using JacobianSized                = ParentBSplineGeometryElement::JacobianSized; ///< Jacobian matrix type.
 
     Eigen::Matrix< double, nDim, 1 > _boundingBoxMin; ///< Lower corner of the knot span, @f$ u_p @f$ per direction.

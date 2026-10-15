@@ -59,7 +59,7 @@ namespace MarmotLibrary {
                                                                    const double* vertexCoordinates,
                                                                    int           sizeVertexCoordinates,
                                                                    double        volume
-                                                                   /* const MarmotMaterialSection& material */
+                                                                   /* const Marmot::Discretizations::MaterialSection& material */
     );
     MarmotMaterialPointFactory()       = delete;
 
@@ -78,7 +78,7 @@ namespace MarmotLibrary {
                                                      const double*      vertexCoordinates,
                                                      int                sizeVertexCoordinates,
                                                      double             volume
-                                                     /* const MarmotMaterialSection& material */
+                                                     /* const Marmot::Discretizations::MaterialSection& material */
     );
 
     /**

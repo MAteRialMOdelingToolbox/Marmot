@@ -32,9 +32,7 @@
  *        and B-operator for 1-D, 2-D and 3-D isoparametric elements.
  */
 
-namespace Marmot {
-
-  namespace FiniteElement {
+namespace Marmot::Discretizations::Elements {
     /**
      * @brief Supported isoparametric element shapes.
      */
@@ -178,7 +176,7 @@ namespace Marmot {
         }
         return B_;
       }
-      namespace axisymmetric {
+      namespace Axisymmetric {
         constexpr int voigtSize = 4; ///< Voigt vector size for axisymmetric elements (σ_rr, σ_zz, σ_θθ, σ_rz).
 
         /**
@@ -206,7 +204,7 @@ namespace Marmot {
           }
           return B_;
         }
-      } // namespace axisymmetric
+      } // namespace Axisymmetric
 
       /**
        * @brief Compute the 2-D Green–Lagrange B-operator.
@@ -563,9 +561,8 @@ namespace Marmot {
       void assembleIntoParentStiffnessVectorial( const Eigen::MatrixXd&        KBoundary,
                                                  Eigen::Ref< Eigen::MatrixXd > KParent );
     };
-  } // namespace FiniteElement
 
-  namespace FiniteElement::Quadrature {
+  namespace Quadrature {
     constexpr double gp2 = 0.577350269189625764509; ///< Gauss point abscissa for 2-point rule: @f$1/\sqrt{3}@f$.
     constexpr double gp3 = 0.774596669241483;       ///< Gauss point abscissa for 3-point rule: @f$\sqrt{3/5}@f$.
 
@@ -590,9 +587,9 @@ namespace Marmot {
      * @param[in] shape           Element shape enumerator.
      * @param[in] integrationType Full or reduced integration.
      * @return Const reference to the corresponding vector of
-     *         @ref Marmot::FiniteElement::Quadrature::QuadraturePointInfo entries.
+     *         @ref Marmot::Discretizations::Elements::Quadrature::QuadraturePointInfo entries.
      */
-    const std::vector< QuadraturePointInfo >& getGaussPointInfo( Marmot::FiniteElement::ElementShapes shape,
+    const std::vector< QuadraturePointInfo >& getGaussPointInfo( Marmot::Discretizations::Elements::ElementShapes shape,
                                                                  IntegrationTypes                     integrationType );
 
     /**
@@ -601,7 +598,7 @@ namespace Marmot {
      * @param[in] integrationType Full or reduced integration.
      * @return Number of quadrature points.
      */
-    int getNumGaussPoints( Marmot::FiniteElement::ElementShapes shape, IntegrationTypes integrationType );
+    int getNumGaussPoints( Marmot::Discretizations::Elements::ElementShapes shape, IntegrationTypes integrationType );
 
     namespace Spatial1D {
       constexpr int nDim = 1; ///< Number of spatial dimensions for 1-D quadrature.
@@ -736,5 +733,5 @@ namespace Marmot {
       // clang-format on
 
     } // namespace Spatial3D
-  }   // namespace FiniteElement::Quadrature
-} // namespace Marmot
+  }   // namespace Marmot::Discretizations::Elements::Quadrature
+} // namespace Marmot::Discretizations::Elements

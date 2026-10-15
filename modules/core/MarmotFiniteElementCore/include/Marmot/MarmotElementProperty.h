@@ -26,25 +26,27 @@
 #include "Marmot/MarmotPortability.h"
 #include <string>
 
-/** @struct MarmotMaterialSection
+namespace Marmot::Discretizations {
+
+/** @struct MaterialSection
  * @brief Structure to hold material section properties.
  *
  * This structure is used to define a material section with its code and properties,
  * allowing for flexible material definitions in finite element analysis.
  */
-class MARMOT_API MarmotMaterialSection {
+class MARMOT_API MaterialSection {
 public:
   const std::string materialName;        ///< Name identifying the material model.
   const double*     materialProperties;  ///< Pointer to the array of material property values.
   int               nMaterialProperties; ///< Number of material property values.
 
   /**
-   * @brief Construct a MarmotMaterialSection.
+   * @brief Construct a MaterialSection.
    * @param[in] materialName       Name identifying the material model.
    * @param[in] materialProperties Pointer to the array of material property values.
    * @param[in] nMaterialProperties Number of material property values.
    */
-  MarmotMaterialSection( const std::string materialName, const double* materialProperties, int nMaterialProperties )
+  MaterialSection( const std::string materialName, const double* materialProperties, int nMaterialProperties )
     : materialName( materialName ),
       materialProperties( materialProperties ),
       nMaterialProperties( nMaterialProperties ){};
@@ -69,3 +71,5 @@ public:
   ElementProperties( const double* elementProperties, int nElementProperties )
     : elementProperties( elementProperties ), nElementProperties( nElementProperties ){};
 };
+
+} // namespace Marmot::Discretizations

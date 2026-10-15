@@ -335,7 +335,7 @@ namespace Marmot::Cells {
     static std::vector< std::vector< std::string > > nodeFields;
 
     if ( nodeFields.empty() )
-      nodeFields = FiniteElement::makeNodeFieldLayout( _fields );
+      nodeFields = Marmot::Discretizations::Elements::makeNodeFieldLayout( _fields );
 
     return nodeFields;
   }
@@ -347,7 +347,7 @@ namespace Marmot::Cells {
     static std::vector< int > permutationPattern;
 
     if ( permutationPattern.empty() )
-      permutationPattern = FiniteElement::makeBlockedLayoutPermutationPattern( getNodeFields(), _fields );
+      permutationPattern = Marmot::Discretizations::Elements::makeBlockedLayoutPermutationPattern( getNodeFields(), _fields );
 
     return permutationPattern;
   }

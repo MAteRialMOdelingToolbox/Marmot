@@ -36,8 +36,10 @@
 #include <stdexcept>
 #include <string>
 
+namespace Marmot::Discretizations::Elements {
+
 /**
- * @class MarmotGeometryInterfaceElement
+ * @class GeometryInterfaceElement
  * @brief Geometry helper for zero-thickness interface elements.
  *
  * @tparam nDim Spatial embedding dimension of the interface element. Supported values are 2 and 3.
@@ -57,10 +59,10 @@
  * - nodes `nInterfaceNodes ... nNodes - 1`: top side.
  */
 template < int nDim, int nNodes >
-class MarmotGeometryInterfaceElement {
+class GeometryInterfaceElement {
 public:
   static_assert( nDim == 2 || nDim == 3,
-                 "MarmotGeometryInterfaceElement supports interfaces embedded in 2D or 3D only." );
+                 "GeometryInterfaceElement supports interfaces embedded in 2D or 3D only." );
 
   static_assert( nNodes % 2 == 0, "Interface element must have bottom and top sides, so nNodes must be even." );
 
@@ -125,7 +127,7 @@ public:
   Eigen::Map< const CoordinateVector > coordinates;
 
   /// @brief Internal Marmot shape identifier for the computational interface interpolation.
-  const Marmot::FiniteElement::ElementShapes shape;
+  const Marmot::Discretizations::Elements::ElementShapes shape;
 
   /**
    * @brief Construct an interface geometry object without assigned coordinates.
@@ -133,16 +135,16 @@ public:
    * @details
    * Coordinates must be attached later with assignNodeCoordinates() before any geometry evaluation is performed.
    */
-  MarmotGeometryInterfaceElement() : coordinates( nullptr ), shape( getInterfaceElementShape() ) {}
+  GeometryInterfaceElement() : coordinates( nullptr ), shape( getInterfaceElementShape() ) {}
 
   /**
    * @brief Return the Marmot element shape associated with the template parameters.
    *
    * @return `Bar2` for 2D line interfaces and `Quad4` for 3D quadrilateral interfaces.
    */
-  static constexpr Marmot::FiniteElement::ElementShapes getInterfaceElementShape()
+  static constexpr Marmot::Discretizations::Elements::ElementShapes getInterfaceElementShape()
   {
-    using namespace Marmot::FiniteElement;
+    using namespace Marmot::Discretizations::Elements;
 
     if constexpr ( nDim == 2 && nInterfaceNodes == 2 ) {
       return Bar2;
@@ -151,7 +153,7 @@ public:
       return Quad4;
     }
     else {
-      static_assert( nDim == -1, "Unsupported MarmotGeometryInterfaceElement interpolation in the current build." );
+      static_assert( nDim == -1, "Unsupported GeometryInterfaceElement interpolation in the current build." );
     }
   }
 
@@ -172,7 +174,7 @@ public:
    */
   std::string getElementShape() const
   {
-    using namespace Marmot::FiniteElement;
+    using namespace Marmot::Discretizations::Elements;
 
     static const std::map< ElementShapes, std::string > shapes = {
       { Bar2, "bar2" },
@@ -256,7 +258,7 @@ public:
      * The shared dynamic Jacobian is documented as "not necessarily square" and is what
      * BoundaryElement uses for the same nDim x (nDim-1) surface case.
      *
-     * The arguments must be converted to dynamic types first. FiniteElement::Jacobian is
+     * The arguments must be converted to dynamic types first. Marmot::Discretizations::Elements::Jacobian is
      * overloaded, and on fixed-size arguments the templated overload wins: it deduces
      * nDim and nNodes from dNdXi and returns a SQUARE nDim x nDim Jacobian, which is not
      * what a surface needs. Passing dynamic types selects the non-square overload, exactly
@@ -265,7 +267,7 @@ public:
     const Eigen::MatrixXd dNdXiDynamic = dN;
     const Eigen::VectorXd xSideDynamic = xSide;
 
-    return Marmot::FiniteElement::Jacobian( dNdXiDynamic, xSideDynamic );
+    return Marmot::Discretizations::Elements::Jacobian( dNdXiDynamic, xSideDynamic );
   }
 
   /**
@@ -374,7 +376,7 @@ public:
    * @param N_ Scalar shape-function row vector.
    * @return Matrix mapping side nodal displacements to interpolated displacement.
    */
-  NMatrixSized NMatrix( const NSized& N_ ) const { return Marmot::FiniteElement::NB< nDim, nInterfaceNodes >( N_ ); }
+  NMatrixSized NMatrix( const NSized& N_ ) const { return Marmot::Discretizations::Elements::NB< nDim, nInterfaceNodes >( N_ ); }
 
   /**
    * @brief Build the displacement-jump interpolation matrix.
@@ -557,3 +559,5 @@ public:
     return q;
   }
 };
+
+} // namespace Marmot::Discretizations::Elements

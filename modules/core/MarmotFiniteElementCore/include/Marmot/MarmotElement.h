@@ -31,8 +31,10 @@
 #include <string>
 #include <vector>
 
+namespace Marmot::Discretizations::Elements {
+
 /**
- * @class MarmotElement
+ * @class Element
  * @brief Abstract base class for finite elements in the Marmot framework.
  *
  * This class defines the generic interface for finite elements, including
@@ -40,7 +42,7 @@
  * initialization, loading, and numerical integration. Concrete element
  * implementations must override the pure virtual functions.
  */
-class MARMOT_API MarmotElement {
+class MARMOT_API Element {
 
 public:
   /** @brief Types of element state variables used in initialization and output. */
@@ -64,7 +66,7 @@ public:
   };
 
   /** @brief Virtual destructor for safe polymorphic cleanup. */
-  virtual ~MarmotElement();
+  virtual ~Element();
 
   /** @return Number of state variables required by the element. */
   virtual int getNumberOfRequiredStateVars() = 0;
@@ -104,13 +106,13 @@ public:
    * @brief Assign element property set.
    * @param[in] property Element property object containing material, geometry, etc.
    */
-  virtual void assignProperty( const ElementProperties& property );
+  virtual void assignProperty( const Marmot::Discretizations::ElementProperties& property );
 
   /**
    * @brief Assign material section property.
    * @param[in] property Material section definition (e.g. cross-sectional data).
    */
-  virtual void assignProperty( const MarmotMaterialSection& property );
+  virtual void assignProperty( const Marmot::Discretizations::MaterialSection& property );
 
   /**
    * @brief Assign a single property of the element by name.
@@ -304,3 +306,5 @@ public:
    */
   virtual void computeLumpedDamping( double* C ) { static_cast< void >( C ); };
 };
+
+} // namespace Marmot::Discretizations::Elements

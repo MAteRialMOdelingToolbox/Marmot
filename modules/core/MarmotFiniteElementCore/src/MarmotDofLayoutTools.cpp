@@ -1,9 +1,7 @@
 #include <Marmot/MarmotDofLayoutTools.h>
 #include <vector>
 
-namespace Marmot {
-
-  namespace FiniteElement {
+namespace Marmot::Discretizations::Elements {
 
     using namespace std;
 
@@ -58,5 +56,4 @@ namespace Marmot {
       return permutationPattern;
     }
 
-  } // namespace FiniteElement
-} // namespace Marmot
+  } // namespace Marmot::Discretizations::Elements

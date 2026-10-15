@@ -5,8 +5,7 @@
 #include <stdexcept>
 
 using namespace Eigen;
-namespace Marmot {
-  namespace FiniteElement {
+namespace Marmot::Discretizations::Elements {
 
     BoundaryElement::BoundaryElement( ElementShapes   parentShape,
                                       int             parentFaceNumber,
@@ -61,8 +60,8 @@ namespace Marmot {
       // - dNdXi
       // - Jacobian pp(x,xi)
       // - areaVector
-      for ( const auto& quadraturePointInfo : FiniteElement::Quadrature::
-              getGaussPointInfo( boundaryShape, FiniteElement::Quadrature::IntegrationTypes::FullIntegration ) ) {
+      for ( const auto& quadraturePointInfo : Marmot::Discretizations::Elements::Quadrature::
+              getGaussPointInfo( boundaryShape, Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration ) ) {
 
         BoundaryElementQuadraturePoint qp;
         qp.xi     = quadraturePointInfo.xi;
@@ -310,5 +309,4 @@ namespace Marmot {
           KParent( mapBoundaryToParentVectorial( i ), mapBoundaryToParentVectorial( j ) ) -= KBoundary( i, j );
     }
 
-  } // namespace FiniteElement
-} // namespace Marmot
+  } // namespace Marmot::Discretizations::Elements

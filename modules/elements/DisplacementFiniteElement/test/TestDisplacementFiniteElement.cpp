@@ -18,14 +18,14 @@ void testDefaultNamedPropertyInterface()
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4; // Quad4
   const int     elId    = 1;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStress;
 
   auto element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( elId, intType, secType );
 
   // callers (e.g. the EdelweissFE Cython wrapper) reach the named-property interface
-  // through the MarmotElement base pointer, so exercise it the same way here
-  MarmotElement* base = element.get();
+  // through the Marmot::Discretizations::Elements::Element base pointer, so exercise it the same way here
+  Marmot::Discretizations::Elements::Element* base = element.get();
 
   // this element overrides the named-property interface for the artificial bulk viscosity and for
   // its optional degradation with damage, and that is the complete list of names it understands
@@ -78,7 +78,7 @@ void testInstantiationAndBasicProperties()
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4; // Quad4
   const int     elId    = 1;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
   const auto                  secType       = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStress;
@@ -89,9 +89,9 @@ void testInstantiationAndBasicProperties()
 
   const static std::vector< double > matProps = { 10000.0, 0.2, 1 };
   const std::string                  matName  = "LINEARELASTIC"; // Linear Elastic
-  MarmotMaterialSection              materialSection( matName, matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection              materialSection( matName, matProps.data(), matProps.size() );
   const static std::vector< double > elPropsVec = { 0.1 };
-  ElementProperties                  elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties                  elProps( elPropsVec.data(), elPropsVec.size() );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -135,7 +135,7 @@ void testStiffnessMatrixCalculationPlaneStress()
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4; // Quad4
   const int     elId    = 1;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
 
   // Node coordinates defining a general quadrilateral
   const std::vector< double > nodeCoordsVec = { 0.0,
@@ -155,11 +155,11 @@ void testStiffnessMatrixCalculationPlaneStress()
   // Material properties: E = 10000, nu = 0.2, density = 1 (density not used in static analysis)
   const static std::vector< double > matProps = { 10000.0, 0.2, 1 };
   const std::string                  matName  = "LINEARELASTIC"; // Linear Elastic
-  MarmotMaterialSection              materialSection( matName, matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection              materialSection( matName, matProps.data(), matProps.size() );
 
   // Element properties: thickness = 1.0
   const static std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties                  elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties                  elProps( elPropsVec.data(), elPropsVec.size() );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -215,7 +215,7 @@ void testInitializeYourselfAndShapeFunctions()
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4; // Quad4
   const int     elId    = 1;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
 
   // Unit square coordinates
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -228,11 +228,11 @@ void testInitializeYourselfAndShapeFunctions()
   // Dummy material properties (not strictly needed for this test but required by assignProperty)
   const static std::vector< double > matProps = { 10000.0, 0.2, 1 };
   const std::string                  matName  = "LINEARELASTIC"; // Linear Elastic
-  MarmotMaterialSection              materialSection( matName, matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection              materialSection( matName, matProps.data(), matProps.size() );
 
   // Element properties: thickness = 1.0
   const static std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties                  elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties                  elProps( elPropsVec.data(), elPropsVec.size() );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection ); // Material assignment needed to avoid nullptrs if density is accessed
@@ -310,7 +310,7 @@ void testLumpedInertiaQuad4RegularElementIsPositiveAndConservesMass()
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4; // Quad4 (linear)
   const int     elId    = 1;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 }; // unit square
@@ -320,9 +320,9 @@ void testLumpedInertiaQuad4RegularElementIsPositiveAndConservesMass()
 
   const double                density  = 1.0;
   const std::vector< double > matProps = { 10000.0, 0.2, density };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
   const std::vector< double > elPropsVec = { 1.0 }; // thickness
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -348,7 +348,7 @@ void testLumpedInertiaHexa8RegularElementIsPositiveAndConservesMass()
   constexpr int nDim    = 3;
   constexpr int nNodes  = 8; // Hexa8 (linear)
   const int     elId    = 1;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
 
   // Unit cube; node ordering per MarmotFiniteElement3D.cpp Hexa8::N.
@@ -360,7 +360,7 @@ void testLumpedInertiaHexa8RegularElementIsPositiveAndConservesMass()
 
   const double                density  = 1.0;
   const std::vector< double > matProps = { 10000.0, 0.2, density };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
 
   element->assignProperty( materialSection );
 
@@ -380,7 +380,7 @@ void testLumpedInertiaHexa8RegularElementIsPositiveAndConservesMass()
   }
 }
 
-void checkQuad8AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes intType, const std::string& label )
+void checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes intType, const std::string& label )
 {
   constexpr int nDim    = 2;
   constexpr int nNodes  = 8; // Quad8 (quadratic serendipity)
@@ -411,9 +411,9 @@ void checkQuad8AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes
 
   const double                density  = 1.0;
   const std::vector< double > matProps = { 10000.0, 0.2, density };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -451,16 +451,16 @@ void checkQuad8AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes
 
 void testLumpedInertiaQuad8FullIntegrationMatchesAnalyticValues()
 {
-  checkQuad8AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes::FullIntegration, "FullIntegration" );
+  checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration, "FullIntegration" );
 }
 
 void testLumpedInertiaQuad8ReducedIntegrationMatchesAnalyticValues()
 {
-  checkQuad8AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes::ReducedIntegration,
+  checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::ReducedIntegration,
                                   "ReducedIntegration" );
 }
 
-void checkQuad8DistortedElementStaysNonSingular( FiniteElement::Quadrature::IntegrationTypes intType,
+void checkQuad8DistortedElementStaysNonSingular( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes intType,
                                                  const std::string&                          label )
 {
   constexpr int nDim    = 2;
@@ -495,9 +495,9 @@ void checkQuad8DistortedElementStaysNonSingular( FiniteElement::Quadrature::Inte
 
   const double                density  = 1.0;
   const std::vector< double > matProps = { 10000.0, 0.2, density };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -533,17 +533,17 @@ void checkQuad8DistortedElementStaysNonSingular( FiniteElement::Quadrature::Inte
 
 void testLumpedInertiaQuad8DistortedElementFullIntegrationStaysNonSingular()
 {
-  checkQuad8DistortedElementStaysNonSingular( FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+  checkQuad8DistortedElementStaysNonSingular( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
                                               "FullIntegration" );
 }
 
 void testLumpedInertiaQuad8DistortedElementReducedIntegrationStaysNonSingular()
 {
-  checkQuad8DistortedElementStaysNonSingular( FiniteElement::Quadrature::IntegrationTypes::ReducedIntegration,
+  checkQuad8DistortedElementStaysNonSingular( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::ReducedIntegration,
                                               "ReducedIntegration" );
 }
 
-void checkHexa20AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes intType, const std::string& label )
+void checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes intType, const std::string& label )
 {
   constexpr int nDim    = 3;
   constexpr int nNodes  = 20; // Hexa20 (quadratic serendipity)
@@ -622,7 +622,7 @@ void checkHexa20AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationType
 
   const double                density  = 1.0;
   const std::vector< double > matProps = { 10000.0, 0.2, density };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
 
   element->assignProperty( materialSection );
 
@@ -665,12 +665,12 @@ void checkHexa20AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationType
 
 void testLumpedInertiaHexa20FullIntegrationMatchesAnalyticValues()
 {
-  checkHexa20AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes::FullIntegration, "FullIntegration" );
+  checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration, "FullIntegration" );
 }
 
 void testLumpedInertiaHexa20ReducedIntegrationMatchesAnalyticValues()
 {
-  checkHexa20AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes::ReducedIntegration,
+  checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::ReducedIntegration,
                                    "ReducedIntegration" );
 }
 
@@ -709,7 +709,7 @@ void testCriticalTimeStepQuad4RegularElementMatchesUnitMassDistributionFactor()
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4; // Quad4 (linear)
   const int     elId    = 1;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 }; // unit square
@@ -718,9 +718,9 @@ void testCriticalTimeStepQuad4RegularElementMatchesUnitMassDistributionFactor()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
   const std::vector< double > elPropsVec = { 1.0 }; // thickness
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -743,7 +743,7 @@ void testCriticalTimeStepHexa8RegularElementMatchesUnitMassDistributionFactor()
   constexpr int nDim    = 3;
   constexpr int nNodes  = 8; // Hexa8 (linear)
   const int     elId    = 1;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0,
@@ -753,7 +753,7 @@ void testCriticalTimeStepHexa8RegularElementMatchesUnitMassDistributionFactor()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
 
   element->assignProperty( materialSection );
 
@@ -775,7 +775,7 @@ void testCriticalTimeStepQuad8RegularElementMatchesAnalyticMassDistributionFacto
   constexpr int nDim    = 2;
   constexpr int nNodes  = 8; // Quad8 (quadratic serendipity)
   const int     elId    = 1;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
 
   // Unit square with midside nodes at exact edge midpoints (straight edges); same geometry as
@@ -801,9 +801,9 @@ void testCriticalTimeStepQuad8RegularElementMatchesAnalyticMassDistributionFacto
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
   const std::vector< double > elPropsVec = { 1.0 }; // thickness
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -827,7 +827,7 @@ void testCriticalTimeStepHexa20RegularElementMatchesAnalyticMassDistributionFact
   constexpr int nDim    = 3;
   constexpr int nNodes  = 20; // Hexa20 (quadratic serendipity)
   const int     elId    = 1;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
 
   // Unit cube with edge-midside nodes at exact midpoints (straight edges); same geometry as
@@ -845,7 +845,7 @@ void testCriticalTimeStepHexa20RegularElementMatchesAnalyticMassDistributionFact
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
 
   element->assignProperty( materialSection );
 
@@ -879,7 +879,7 @@ void testComputeKernelsPlaneStrainTangentMatchesNumericalDifferentiation()
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4;
   const int     elId    = 1;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -888,9 +888,9 @@ void testComputeKernelsPlaneStrainTangentMatchesNumericalDifferentiation()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 }; // E, nu, density
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
   const std::vector< double > elPropsVec = { 1.0 };             // thickness
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -936,7 +936,7 @@ void testComputeKernelsSolid3DTangentMatchesNumericalDifferentiation()
   constexpr int nDim    = 3;
   constexpr int nNodes  = 8;
   const int     elId    = 1;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
@@ -946,7 +946,7 @@ void testComputeKernelsSolid3DTangentMatchesNumericalDifferentiation()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
   element->assignProperty( materialSection );
 
   const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
@@ -991,7 +991,7 @@ void testComputeKernelsUniaxialStressTangentMatchesNumericalDifferentiation()
   constexpr int nDim    = 1;
   constexpr int nNodes  = 2;
   const int     elId    = 1;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::UniaxialStress;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 1.0 }; // unit-length bar
@@ -1000,9 +1000,9 @@ void testComputeKernelsUniaxialStressTangentMatchesNumericalDifferentiation()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 }; // E, nu, density
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
   const std::vector< double > elPropsVec = { 1.0 };             // cross-section area
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -1052,15 +1052,15 @@ void testComputeKernelsExplicitThrowsForUniaxialStress()
 
   auto element = std::make_unique<
     DisplacementFiniteElement< nDim, nNodes > >( 1,
-                                                 FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                                 Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
                                                  DisplacementFiniteElement< nDim,
                                                                             nNodes >::SectionType::UniaxialStress );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1087,7 +1087,7 @@ void testComputeKernelsExplicitMatchesImplicitResidualPlaneStrain()
 {
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -1096,8 +1096,8 @@ void testComputeKernelsExplicitMatchesImplicitResidualPlaneStrain()
 
   auto elementImplicit = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
   elementImplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSectionImplicit( "LINEARELASTIC", matProps.data(), matProps.size() );
-  ElementProperties     elPropsImplicit( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::MaterialSection materialSectionImplicit( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::ElementProperties     elPropsImplicit( elPropsVec.data(), elPropsVec.size() );
   elementImplicit->assignProperty( elPropsImplicit );
   elementImplicit->assignProperty( materialSectionImplicit );
   const int             nStateVarsTotalImplicit = elementImplicit->getNumberOfRequiredStateVars();
@@ -1107,8 +1107,8 @@ void testComputeKernelsExplicitMatchesImplicitResidualPlaneStrain()
 
   auto elementExplicit = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
   elementExplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSectionExplicit( "LINEARELASTIC", matProps.data(), matProps.size() );
-  ElementProperties     elPropsExplicit( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::MaterialSection materialSectionExplicit( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::ElementProperties     elPropsExplicit( elPropsVec.data(), elPropsVec.size() );
   elementExplicit->assignProperty( elPropsExplicit );
   elementExplicit->assignProperty( materialSectionExplicit );
   const int             nStateVarsTotalExplicit = elementExplicit->getNumberOfRequiredStateVars();
@@ -1140,7 +1140,7 @@ void testComputeKernelsExplicitMatchesImplicitResidualSolid3D()
 {
   constexpr int nDim    = 3;
   constexpr int nNodes  = 8;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
@@ -1149,7 +1149,7 @@ void testComputeKernelsExplicitMatchesImplicitResidualSolid3D()
 
   auto elementImplicit = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
   elementImplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSectionImplicit( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection materialSectionImplicit( "LINEARELASTIC", matProps.data(), matProps.size() );
   elementImplicit->assignProperty( materialSectionImplicit );
   const int             nStateVarsTotalImplicit = elementImplicit->getNumberOfRequiredStateVars();
   std::vector< double > stateVarsImplicit( nStateVarsTotalImplicit, 0.0 );
@@ -1158,7 +1158,7 @@ void testComputeKernelsExplicitMatchesImplicitResidualSolid3D()
 
   auto elementExplicit = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
   elementExplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSectionExplicit( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection materialSectionExplicit( "LINEARELASTIC", matProps.data(), matProps.size() );
   elementExplicit->assignProperty( materialSectionExplicit );
   const int             nStateVarsTotalExplicit = elementExplicit->getNumberOfRequiredStateVars();
   std::vector< double > stateVarsExplicit( nStateVarsTotalExplicit, 0.0 );
@@ -1193,7 +1193,7 @@ void testSetInitialConditionsGeostaticStressAssignsInterpolatedStress()
 {
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -1202,9 +1202,9 @@ void testSetInitialConditionsGeostaticStressAssignsInterpolatedStress()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1215,7 +1215,7 @@ void testSetInitialConditionsGeostaticStressAssignsInterpolatedStress()
 
   // sigmaY(y=0) = -10, sigmaY(y=1) = -20, kx = 0.5, kz = 0.25
   const std::vector< double > geostaticDefinition = { -10.0, 0.0, -20.0, 1.0, 0.5, 0.25 };
-  element->setInitialConditions( MarmotElement::GeostaticStress, geostaticDefinition.data() );
+  element->setInitialConditions( Marmot::Discretizations::Elements::Element::GeostaticStress, geostaticDefinition.data() );
 
   for ( const auto& qp : element->qps ) {
     const Eigen::Vector2d physicalCoords = element->NB( element->N( qp.xi ) ) * element->coordinates;
@@ -1235,7 +1235,7 @@ void testSetInitialConditionsMaterialInitializationDoesNotThrow()
 {
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -1244,9 +1244,9 @@ void testSetInitialConditionsMaterialInitializationDoesNotThrow()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1255,7 +1255,7 @@ void testSetInitialConditionsMaterialInitializationDoesNotThrow()
   element->assignStateVars( stateVars.data(), nStateVarsTotal );
   element->initializeYourself();
 
-  element->setInitialConditions( MarmotElement::MarmotMaterialInitialization, nullptr );
+  element->setInitialConditions( Marmot::Discretizations::Elements::Element::MarmotMaterialInitialization, nullptr );
 }
 
 void testSetInitialConditionsRejectsUnsupportedStateTypes()
@@ -1265,12 +1265,12 @@ void testSetInitialConditionsRejectsUnsupportedStateTypes()
 
   auto element = std::make_unique<
     DisplacementFiniteElement< nDim, nNodes > >( 1,
-                                                 FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                                 Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
                                                  DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain );
 
   bool threwForStateVars = false;
   try {
-    element->setInitialConditions( MarmotElement::MarmotMaterialStateVars, nullptr );
+    element->setInitialConditions( Marmot::Discretizations::Elements::Element::MarmotMaterialStateVars, nullptr );
   }
   catch ( const std::invalid_argument& ) {
     threwForStateVars = true;
@@ -1281,7 +1281,7 @@ void testSetInitialConditionsRejectsUnsupportedStateTypes()
 
   bool threwForUnhandled = false;
   try {
-    element->setInitialConditions( MarmotElement::Sigma11, nullptr );
+    element->setInitialConditions( Marmot::Discretizations::Elements::Element::Sigma11, nullptr );
   }
   catch ( const std::invalid_argument& ) {
     threwForUnhandled = true;
@@ -1297,7 +1297,7 @@ void testComputeConsistentInertiaConservesTotalMass()
 {
   constexpr int nDim    = 3;
   constexpr int nNodes  = 8;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
@@ -1307,7 +1307,7 @@ void testComputeConsistentInertiaConservesTotalMass()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 }; // density = 1
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
   element->assignProperty( materialSection );
 
   const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
@@ -1341,7 +1341,7 @@ void testComputeConsistentInertiaConservesTotalMass()
 // never with the element's own reduced rule, which cannot give a mass of full rank (8 points for a
 // Hexa20 give rank 24 out of 60). On a distorted element with a constant density, the reduced and
 // the full-integration element must therefore produce the same matrix, and it must be positive
-// definite. See Marmot::FiniteElement::ConsistentMass.
+// definite. See Marmot::Discretizations::Elements::ConsistentMass.
 
 /// Nodal parent coordinates of a Quad8 (0-3 corners, 4-7 midsides 0-1, 1-2, 2-3, 3-0).
 const std::vector< std::vector< double > > quad8ParentNodes =
@@ -1373,7 +1373,7 @@ std::vector< double > distortedNodeCoordinates( const std::vector< std::vector< 
 }
 
 template < int nDim, int nNodes >
-Eigen::MatrixXd consistentMassOf( FiniteElement::Quadrature::IntegrationTypes                     intType,
+Eigen::MatrixXd consistentMassOf( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes                     intType,
                                   typename DisplacementFiniteElement< nDim, nNodes >::SectionType secType,
                                   const std::vector< double >&                                    nodeCoordinates )
 {
@@ -1381,9 +1381,9 @@ Eigen::MatrixXd consistentMassOf( FiniteElement::Quadrature::IntegrationTypes   
   element->assignNodeCoordinates( nodeCoordinates.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 2.5 }; // density = 2.5
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
   const std::vector< double > elPropsVec = { 0.3 };             // thickness; unused in 3D
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
   if constexpr ( nDim < 3 )
     element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -1416,11 +1416,11 @@ void testConsistentInertiaQuad8ReducedIntegrationIsIntegratedWithTheFullRule()
 {
   using Element     = DisplacementFiniteElement< 2, 8 >;
   const auto coords = distortedNodeCoordinates( quad8ParentNodes );
-  checkReducedIntegrationConsistentMassIsTheFullOne( consistentMassOf< 2, 8 >( FiniteElement::Quadrature::
+  checkReducedIntegrationConsistentMassIsTheFullOne( consistentMassOf< 2, 8 >( Marmot::Discretizations::Elements::Quadrature::
                                                                                  IntegrationTypes::ReducedIntegration,
                                                                                Element::SectionType::PlaneStrain,
                                                                                coords ),
-                                                     consistentMassOf< 2, 8 >( FiniteElement::Quadrature::
+                                                     consistentMassOf< 2, 8 >( Marmot::Discretizations::Elements::Quadrature::
                                                                                  IntegrationTypes::FullIntegration,
                                                                                Element::SectionType::PlaneStrain,
                                                                                coords ),
@@ -1431,11 +1431,11 @@ void testConsistentInertiaHexa20ReducedIntegrationIsIntegratedWithTheFullRule()
 {
   using Element     = DisplacementFiniteElement< 3, 20 >;
   const auto coords = distortedNodeCoordinates( hexa20ParentNodes );
-  checkReducedIntegrationConsistentMassIsTheFullOne( consistentMassOf< 3, 20 >( FiniteElement::Quadrature::
+  checkReducedIntegrationConsistentMassIsTheFullOne( consistentMassOf< 3, 20 >( Marmot::Discretizations::Elements::Quadrature::
                                                                                   IntegrationTypes::ReducedIntegration,
                                                                                 Element::SectionType::Solid,
                                                                                 coords ),
-                                                     consistentMassOf< 3, 20 >( FiniteElement::Quadrature::
+                                                     consistentMassOf< 3, 20 >( Marmot::Discretizations::Elements::Quadrature::
                                                                                   IntegrationTypes::FullIntegration,
                                                                                 Element::SectionType::Solid,
                                                                                 coords ),
@@ -1446,7 +1446,7 @@ void testComputeBodyForceConservesTotalForcePerDirection()
 {
   constexpr int nDim    = 3;
   constexpr int nNodes  = 8;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
@@ -1456,7 +1456,7 @@ void testComputeBodyForceConservesTotalForcePerDirection()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
   element->assignProperty( materialSection );
 
   const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
@@ -1493,7 +1493,7 @@ void testComputeDistributedLoadThrowsForUnhandledLoadType()
 {
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -1502,9 +1502,9 @@ void testComputeDistributedLoadThrowsForUnhandledLoadType()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1522,7 +1522,7 @@ void testComputeDistributedLoadThrowsForUnhandledLoadType()
 
   bool threw = false;
   try {
-    element->computeDistributedLoad( MarmotElement::SurfaceTorsion,
+    element->computeDistributedLoad( Marmot::Discretizations::Elements::Element::SurfaceTorsion,
                                      P.data(),
                                      K.data(),
                                      0,
@@ -1545,7 +1545,7 @@ void testComputeInternalEnergyMatchesSumOverQuadraturePoints()
 {
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -1554,9 +1554,9 @@ void testComputeInternalEnergyMatchesSumOverQuadraturePoints()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1592,7 +1592,7 @@ void testGetStateViewVariants()
 {
   constexpr int nDim    = 2;
   constexpr int nNodes  = 4;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -1601,9 +1601,9 @@ void testGetStateViewVariants()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 10000.0, 0.2, 1.0 };
-  MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1656,7 +1656,7 @@ void testGetCoordinatesAtQuadraturePoints()
 
   auto element = std::make_unique<
     DisplacementFiniteElement< nDim, nNodes > >( 1,
-                                                 FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                                 Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
                                                  DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStress );
 
   const std::vector< double > nodeCoords = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -1680,7 +1680,7 @@ void testGetNodeFieldsAndDofIndicesPermutationPattern()
 
   auto element = std::make_unique<
     DisplacementFiniteElement< nDim, nNodes > >( 1,
-                                                 FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                                 Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
                                                  DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStress );
 
   const auto nodeFields = element->getNodeFields();
@@ -1715,7 +1715,7 @@ namespace {
   {
     constexpr int nDim    = 3;
     constexpr int nNodes  = 8;
-    const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+    const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
     const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
 
     // Unit cube; node ordering per MarmotFiniteElement3D.cpp Hexa8::N.
@@ -1726,7 +1726,7 @@ namespace {
     element->assignNodeCoordinates( nodeCoordsVec.data() );
 
     const std::vector< double > matProps = { 10000.0, 0.2, density };
-    MarmotMaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+    Marmot::Discretizations::MaterialSection       materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
     element->assignProperty( materialSection );
 
     const std::vector< double > bulkViscosity = { bulkViscosityLinear, bulkViscosityQuadratic };
@@ -1886,7 +1886,7 @@ void testBulkViscosityRejectsNegativeCoefficients()
 {
   constexpr int nDim    = 3;
   constexpr int nNodes  = 8;
-  const auto    intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::Solid;
 
   auto element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );

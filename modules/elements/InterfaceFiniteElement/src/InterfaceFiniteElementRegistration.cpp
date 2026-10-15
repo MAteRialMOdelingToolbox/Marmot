@@ -13,23 +13,22 @@ namespace Marmot::Elements::Registration {
    * @return a function that creates an element of type T from an element number
    */
   template < class T,
-             Marmot::FiniteElement::Quadrature::IntegrationTypes integrationType,
+             Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
              typename T::SectionType                             sectionType >
-  MarmotLibrary::MarmotElementFactory::elementFactoryFunction makeFactoryFunction()
+  Marmot::Registry::ElementFactory::elementFactoryFunction makeFactoryFunction()
   {
-    return []( int elementID ) -> MarmotElement* { return new T( elementID, integrationType, sectionType ); };
+    return []( int elementID ) -> Marmot::Discretizations::Elements::Element* { return new T( elementID, integrationType, sectionType ); };
   }
 
-  using namespace MarmotLibrary;
-  using namespace Marmot::FiniteElement::Quadrature;
+  using namespace Marmot::Discretizations::Elements::Quadrature;
 
-  const static bool ILINE2_isRegistered = MarmotElementFactory::
+  const static bool ILINE2_isRegistered = Marmot::Registry::ElementFactory::
     registerElement( "ILINE2",
                      makeFactoryFunction< InterfaceFiniteElement< 2, 4 >,
                                           FullIntegration,
                                           InterfaceFiniteElement< 2, 4 >::SectionType::Interface >() );
 
-  const static bool IQUAD4_isRegistered = MarmotElementFactory::
+  const static bool IQUAD4_isRegistered = Marmot::Registry::ElementFactory::
     registerElement( "IQUAD4",
                      makeFactoryFunction< InterfaceFiniteElement< 3, 8 >,
                                           FullIntegration,

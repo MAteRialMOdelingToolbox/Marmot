@@ -53,7 +53,7 @@ namespace {
       const double      x[3] = { 0.1, 0.2, 0.3 };
       mp.reset( MarmotLibrary::MarmotMaterialPointFactory::createMaterialPoint( name, 1, x, nDim, 0.5 ) );
       mp->assignMaterial(
-        MarmotMaterialSection( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE", matProps.data(), matProps.size() ) );
+        Marmot::Discretizations::MaterialSection( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE", matProps.data(), matProps.size() ) );
       stateVars.assign( mp->getNumberOfRequiredStateVars(), 0.0 );
       mp->assignStateVars( stateVars.data(), stateVars.size() );
       mp->initializeYourself();

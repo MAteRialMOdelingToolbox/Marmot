@@ -197,7 +197,7 @@ namespace Marmot::MaterialPoints {
      * @param[in] property Section with the material name and properties.
      * @throws std::invalid_argument if no finite-strain material of that name exists.
      */
-    void assignMaterial( const MarmotMaterialSection& property );
+    void assignMaterial( const Marmot::Discretizations::MaterialSection& property );
 
     /**
      * @brief Initializes the state: @f$ \boldsymbol{F}_n = \boldsymbol{I} @f$, a zero increment, the material state
@@ -426,7 +426,7 @@ namespace Marmot::MaterialPoints {
   }
 
   template < int nDim >
-  void DisplacementMaterialPoint< nDim >::assignMaterial( const MarmotMaterialSection& section )
+  void DisplacementMaterialPoint< nDim >::assignMaterial( const Marmot::Discretizations::MaterialSection& section )
   {
     material = std::unique_ptr< Material >(
       Marmot::Registry::MaterialFiniteStrainFactory::createMaterial( section.materialName,

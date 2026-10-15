@@ -6,7 +6,7 @@
 
 using namespace Marmot;
 using namespace Marmot::Testing;
-using namespace Marmot::FiniteElement;
+using namespace Marmot::Discretizations::Elements;
 
 // ---------------------------------------------------------------------------------------------
 // BoundaryElement has no public accessors for its (private) condensed boundary coordinates or its

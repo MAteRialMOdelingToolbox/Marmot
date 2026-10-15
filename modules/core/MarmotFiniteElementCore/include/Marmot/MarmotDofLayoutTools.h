@@ -27,12 +27,11 @@
 #include <map>
 #include <vector>
 
-namespace Marmot {
+namespace Marmot::Discretizations::Elements {
 
   /**
    * @brief Utilities for constructing DOF-layout structures in finite element assemblies.
    */
-  namespace FiniteElement {
 
     /**
      * @brief Builds a node-field layout from a map of field names to their DOF dimensions.
@@ -58,5 +57,4 @@ namespace Marmot {
       const std::vector< std::vector< std::string > >&      nodeFields,
       const std::map< std::string, std::pair< int, int > >& fieldSizes );
 
-  } // namespace FiniteElement
-} // namespace Marmot
+  } // namespace Marmot::Discretizations::Elements

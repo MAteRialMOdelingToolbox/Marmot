@@ -124,7 +124,7 @@ namespace {
     std::unique_ptr< MarmotCell >                         cell;
     std::vector< std::unique_ptr< MarmotMaterialPoint > > mps;
     std::vector< std::vector< double > >                  stateVars;
-    MarmotMaterialSection section{ "COMPRESSIBLENEOHOOKE", matProps.data(), (int)matProps.size() };
+    Marmot::Discretizations::MaterialSection section{ "COMPRESSIBLENEOHOOKE", matProps.data(), (int)matProps.size() };
     int                   nDof;
     double                mpVolume;
 

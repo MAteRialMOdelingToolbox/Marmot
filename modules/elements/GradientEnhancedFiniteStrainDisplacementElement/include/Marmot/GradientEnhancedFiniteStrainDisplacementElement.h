@@ -67,8 +67,8 @@ namespace Marmot::Elements {
    * @tparam nNodes Number of nodes.
    */
   template < int nDim, int nNodes >
-  class GradientEnhancedFiniteStrainDisplacementElement : public MarmotElement,
-                                                          public MarmotGeometryElement< nDim, nNodes > {
+  class GradientEnhancedFiniteStrainDisplacementElement : public Marmot::Discretizations::Elements::Element,
+                                                          public Marmot::Discretizations::Elements::GeometryElement< nDim, nNodes > {
 
   public:
     /// @brief Section type of the element.
@@ -91,7 +91,7 @@ namespace Marmot::Elements {
     static constexpr int idxU = 0;                     ///< first index of the displacement block
     static constexpr int idxN = idxU + bsU;            ///< first index of the nonlocal block
 
-    using ParentGeometryElement = MarmotGeometryElement< nDim, nNodes >;
+    using ParentGeometryElement = Marmot::Discretizations::Elements::GeometryElement< nDim, nNodes >;
     using Material              = Marmot::Materials::MaterialGradientEnhancedFiniteStrain;
 
     using JacobianSized = typename ParentGeometryElement::JacobianSized;
@@ -212,7 +212,7 @@ namespace Marmot::Elements {
      */
     GradientEnhancedFiniteStrainDisplacementElement(
       int                                                 elementID,
-      Marmot::FiniteElement::Quadrature::IntegrationTypes integrationType,
+      Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
       SectionType                                         sectionType );
 
     /// @brief Number of state variables of the element (of all quadrature points).
@@ -247,13 +247,13 @@ namespace Marmot::Elements {
      * @brief Assign the element properties.
      * @param[in] MarmotElementProperty Element properties: the thickness in 2D.
      */
-    void assignProperty( const ElementProperties& MarmotElementProperty );
+    void assignProperty( const Marmot::Discretizations::ElementProperties& MarmotElementProperty );
 
     /**
      * @brief Create the material of every quadrature point.
      * @param[in] MarmotElementProperty Material name and properties.
      */
-    void assignProperty( const MarmotMaterialSection& MarmotElementProperty );
+    void assignProperty( const Marmot::Discretizations::MaterialSection& MarmotElementProperty );
 
     /**
      * @brief Assign the nodal coordinates in the reference configuration.
@@ -286,7 +286,7 @@ namespace Marmot::Elements {
      * @param[in] dT Time increment.
      * @throws std::invalid_argument for another load type.
      */
-    void computeDistributedLoad( MarmotElement::DistributedLoadTypes loadType,
+    void computeDistributedLoad( Marmot::Discretizations::Elements::Element::DistributedLoadTypes loadType,
                                  double*                             P,
                                  double*                             K,
                                  const int                           elementFace,
@@ -381,7 +381,7 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::GradientEnhancedFiniteStrainDisplacementElement(
     int                                                 elementID,
-    Marmot::FiniteElement::Quadrature::IntegrationTypes integrationType,
+    Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
     SectionType                                         sectionType )
     : ParentGeometryElement(),
       elementProperties( Eigen::Map< const Eigen::VectorXd >( nullptr, 0 ) ),
@@ -394,7 +394,7 @@ namespace Marmot::Elements {
       throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                                 << ": only plane strain (2D) and solid (3D) sections are supported" );
 
-    for ( const auto& qpInfo : Marmot::FiniteElement::Quadrature::getGaussPointInfo( this->shape, integrationType ) ) {
+    for ( const auto& qpInfo : Marmot::Discretizations::Elements::Quadrature::getGaussPointInfo( this->shape, integrationType ) ) {
       QuadraturePoint qp( qpInfo.xi, qpInfo.weight, this->N( qpInfo.xi ) );
       qps.push_back( std::move( qp ) );
     }
@@ -453,7 +453,7 @@ namespace Marmot::Elements {
 
   template < int nDim, int nNodes >
   void GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::assignProperty(
-    const ElementProperties& elementPropertiesInfo )
+    const Marmot::Discretizations::ElementProperties& elementPropertiesInfo )
   {
     new ( &elementProperties ) Eigen::Map< const Eigen::VectorXd >( elementPropertiesInfo.elementProperties,
                                                                     elementPropertiesInfo.nElementProperties );
@@ -461,7 +461,7 @@ namespace Marmot::Elements {
 
   template < int nDim, int nNodes >
   void GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::assignProperty(
-    const MarmotMaterialSection& section )
+    const Marmot::Discretizations::MaterialSection& section )
   {
     for ( auto& qp : qps ) {
       qp.material = std::unique_ptr< Material >(
@@ -718,7 +718,7 @@ namespace Marmot::Elements {
 
   template < int nDim, int nNodes >
   void GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::computeDistributedLoad(
-    MarmotElement::DistributedLoadTypes loadType,
+    Marmot::Discretizations::Elements::Element::DistributedLoadTypes loadType,
     double*                             rightHandSide,
     double*                             stiffnessMatrix,
     const int                           elementFace,
@@ -731,14 +731,14 @@ namespace Marmot::Elements {
 
     switch ( loadType ) {
 
-    case MarmotElement::Pressure: {
+    case Marmot::Discretizations::Elements::Element::Pressure: {
       const double                                                          p = load[0];
       const Eigen::Map< const RhsSized >                                    QTotal( QTotal_ );
       const Eigen::Ref< const USizedVector >                                qU( QTotal.head( bsU ) );
       Eigen::Map< Eigen::Matrix< double, sizeLoadVector, sizeLoadVector > > K( stiffnessMatrix );
 
       const USizedVector             coordinates_np = this->coordinates + qU;
-      FiniteElement::BoundaryElement boundaryEl( this->shape, elementFace, nDim, coordinates_np );
+      Marmot::Discretizations::Elements::BoundaryElement boundaryEl( this->shape, elementFace, nDim, coordinates_np );
 
       Eigen::VectorXd Pb = -p * boundaryEl.computeSurfaceNormalVectorialLoadVector();
       Eigen::MatrixXd Kb = -p * boundaryEl.computeDSurfaceNormalVectorialLoadVector_dCoordinates();
@@ -753,9 +753,9 @@ namespace Marmot::Elements {
 
       break;
     }
-    case MarmotElement::SurfaceTraction: {
+    case Marmot::Discretizations::Elements::Element::SurfaceTraction: {
 
-      FiniteElement::BoundaryElement boundaryEl( this->shape, elementFace, nDim, this->coordinates );
+      Marmot::Discretizations::Elements::BoundaryElement boundaryEl( this->shape, elementFace, nDim, this->coordinates );
 
       const XiSized tractionVector( load );
 
@@ -780,7 +780,7 @@ namespace Marmot::Elements {
     if constexpr ( nDim > 1 ) {
       switch ( state ) {
 
-      case MarmotElement::MarmotMaterialInitialization: {
+      case Marmot::Discretizations::Elements::Element::MarmotMaterialInitialization: {
         for ( QuadraturePoint& qp : qps ) {
 
           qp.managedStateVars->F0_XX = 1.0;
@@ -793,7 +793,7 @@ namespace Marmot::Elements {
         break;
       }
 
-      case MarmotElement::GeostaticStress: {
+      case Marmot::Discretizations::Elements::Element::GeostaticStress: {
 
         for ( QuadraturePoint& qp : qps ) {
 

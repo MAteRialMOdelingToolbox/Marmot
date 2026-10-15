@@ -1,8 +1,7 @@
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotTypedefs.h"
 
-namespace Marmot {
-  namespace FiniteElement {
+namespace Marmot::Discretizations::Elements {
     namespace Spatial1D {
       namespace Bar2 {
         /*  (0)            (1)
@@ -55,5 +54,4 @@ namespace Marmot {
 
       } // end of namespace Bar3
     }   // namespace Spatial1D
-  }     // namespace FiniteElement
-} // namespace Marmot
+  }     // namespace Marmot::Discretizations::Elements
