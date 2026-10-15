@@ -101,7 +101,7 @@ namespace Marmot::Materials {
    *       wrapped material that relies on it fails loudly instead of silently regularising incorrectly.
    */
   template < typename BaseMaterialType, HughesWingetTangent tangentMode = HughesWingetTangent::Analytic >
-  class HughesWingetWrapper : public MarmotMaterialFiniteStrain {
+  class HughesWingetWrapper : public Marmot::Materials::MaterialFiniteStrain {
 
     static_assert( std::is_base_of_v< Marmot::Materials::MaterialHypoElastic, BaseMaterialType >,
                    "HughesWingetWrapper can only wrap materials derived from Marmot::Materials::MaterialHypoElastic." );
@@ -126,7 +126,7 @@ namespace Marmot::Materials {
      * @param[in] materialNumber_      Unique identifier for this material instance.
      */
     HughesWingetWrapper( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
-      : MarmotMaterialFiniteStrain( matProperties_, nMaterialProperties_, materialNumber_ ),
+      : Marmot::Materials::MaterialFiniteStrain( matProperties_, nMaterialProperties_, materialNumber_ ),
         baseMaterial( std::make_unique< BaseMaterialType >( matProperties_, nMaterialProperties_, materialNumber_ ) )
     {
       // Deliberately poisoned: an unassigned characteristic length must not silently behave like a valid

@@ -6,7 +6,7 @@
 
 using namespace Marmot::Testing;
 using namespace Marmot::Math::NumericalDifferentiation;
-using namespace Marmot::GradientDamage::DecreasingInteractions;
+using namespace Marmot::ContinuumMechanics::GradientDamage::DecreasingInteractions;
 
 void testPohTemplate()
 {
@@ -38,10 +38,10 @@ void testPohTemplate()
 
 void testFirstOrderDerivedPoh()
 {
-  // FirstOrderDerived::poh returns {value, dvalue/domega}
+  // FirstOrder::poh returns {value, dvalue/domega}
   // For omega <= 0: returns {1, 0}
   {
-    auto [g, dg] = FirstOrderDerived::poh( 0.0, 1.0, 0.0 );
+    auto [g, dg] = FirstOrder::poh( 0.0, 1.0, 0.0 );
     throwExceptionOnFailure( checkIfEqual( g, 1.0 ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": value at omega=0 must be 1" );
     throwExceptionOnFailure( checkIfEqual( dg, 0.0 ),
@@ -54,7 +54,7 @@ void testFirstOrderDerivedPoh()
     const double omega = 0.5;
     const double eta   = 1.0;
     const double R     = 0.0;
-    auto [g, dg]       = FirstOrderDerived::poh( omega, eta, R );
+    auto [g, dg]       = FirstOrder::poh( omega, eta, R );
 
     const double expected_g  = poh( omega, eta, R );
     const double expected_dg = -( 1.0 - R ) * eta * std::exp( -eta * omega ) / ( 1.0 - std::exp( -eta ) );
@@ -69,7 +69,7 @@ void testFirstOrderDerivedPoh()
     const double omega      = 0.5;
     const double eta        = 1.0;
     const double R          = 0.0;
-    auto [g, dg]            = FirstOrderDerived::poh( omega, eta, R );
+    auto [g, dg]            = FirstOrder::poh( omega, eta, R );
     const double dg_numdiff = centralDifference( [eta, R]( const double w ) { return poh( w, eta, R ); }, omega );
     throwExceptionOnFailure( checkIfEqual( dg, dg_numdiff, 1e-6 ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": derivative numdiff check failed at omega=0.5" );
@@ -78,7 +78,7 @@ void testFirstOrderDerivedPoh()
 
 void testSecondOrderDerivedPoh()
 {
-  // SecondOrderDerived::poh returns {value, dvalue/domega, d2value/domega2}
+  // SecondOrder::poh returns {value, dvalue/domega, d2value/domega2}
   // d2g/domega2 = (1-R)*eta^2*exp(-eta*omega) / (1 - exp(-eta))
   // Note: -d2g/domega2 = -eta * dg/domega  (i.e. d2g = -eta * dg_domega)
 
@@ -87,7 +87,7 @@ void testSecondOrderDerivedPoh()
     const double omega = 0.5;
     const double eta   = 1.0;
     const double R     = 0.0;
-    auto [g, dg, d2g]  = SecondOrderDerived::poh( omega, eta, R );
+    auto [g, dg, d2g]  = SecondOrder::poh( omega, eta, R );
 
     const double expected_g   = poh( omega, eta, R );
     const double expected_dg  = -( 1.0 - R ) * eta * std::exp( -eta * omega ) / ( 1.0 - std::exp( -eta ) );
@@ -106,7 +106,7 @@ void testSecondOrderDerivedPoh()
     const double omega = 0.5;
     const double eta   = 2.0;
     const double R     = 0.2;
-    auto [g, dg, d2g]  = SecondOrderDerived::poh( omega, eta, R );
+    auto [g, dg, d2g]  = SecondOrder::poh( omega, eta, R );
 
     const double expected_g   = poh( omega, eta, R );
     const double expected_dg  = -( 1.0 - R ) * eta * std::exp( -eta * omega ) / ( 1.0 - std::exp( -eta ) );
@@ -127,10 +127,10 @@ void testSecondOrderDerivedPoh()
     const double omega = 0.5;
     const double eta   = 1.0;
     const double R     = 0.0;
-    auto [g, dg, d2g]  = SecondOrderDerived::poh( omega, eta, R );
+    auto [g, dg, d2g]  = SecondOrder::poh( omega, eta, R );
     const double
       d2g_numdiff = centralDifference( [eta, R]( const double
-                                                   w ) { return std::get< 1 >( FirstOrderDerived::poh( w, eta, R ) ); },
+                                                   w ) { return std::get< 1 >( FirstOrder::poh( w, eta, R ) ); },
                                        omega );
     throwExceptionOnFailure( checkIfEqual( d2g, d2g_numdiff, 1e-6 ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": second derivative numdiff check failed" );

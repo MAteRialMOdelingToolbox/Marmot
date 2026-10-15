@@ -82,7 +82,7 @@ namespace Marmot::Elements {
     /// @brief Parent element class for geometry related operations as, e.g., shape functions
     using ParentGeometryElement = MarmotGeometryElement< nDim, nNodes >;
     /// @brief Material class for finite strain material formulations
-    using Material = MarmotMaterialFiniteStrain;
+    using Material = Marmot::Materials::MaterialFiniteStrain;
     /// @brief Sized matrix type used for Jacobian matrix (inherited from ParentGeometryElement)
     using JacobianSized = typename ParentGeometryElement::JacobianSized;
     /// @brief Sized matrix type used for shape function matrix (inherited from ParentGeometryElement)
@@ -545,7 +545,7 @@ namespace Marmot::Elements {
 
     for ( auto& qp : qps ) {
       qp.material = std::unique_ptr< Material >(
-        MarmotLibrary::MarmotMaterialFiniteStrainFactory::createMaterial( section.materialName,
+        Marmot::Registry::MaterialFiniteStrainFactory::createMaterial( section.materialName,
                                                                           section.materialProperties,
                                                                           section.nMaterialProperties,
                                                                           elLabel ) );
@@ -1153,7 +1153,7 @@ namespace Marmot::Elements {
     using Parent              = DisplacementFiniteStrainULElement< 2, nNodes >;
     const auto idxU           = Parent::idxU;
     const auto sizeLoadVector = DisplacementFiniteStrainULElement< 2, nNodes >::sizeLoadVector;
-    using Material            = MarmotMaterialFiniteStrain;
+    using Material            = Marmot::Materials::MaterialFiniteStrain;
 
     using namespace Fastor;
 
@@ -1304,7 +1304,7 @@ namespace Marmot::Elements {
 
     using Parent              = DisplacementFiniteStrainULElement< 2, nNodes >;
     const auto sizeLoadVector = DisplacementFiniteStrainULElement< 2, nNodes >::sizeLoadVector;
-    using Material            = MarmotMaterialFiniteStrain;
+    using Material            = Marmot::Materials::MaterialFiniteStrain;
 
     using namespace Fastor;
 

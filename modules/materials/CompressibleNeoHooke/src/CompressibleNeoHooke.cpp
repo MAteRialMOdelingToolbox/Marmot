@@ -19,7 +19,7 @@ namespace Marmot::Materials {
   CompressibleNeoHooke::CompressibleNeoHooke( const double* materialProperties,
                                               int           nMaterialProperties,
                                               int           materialLabel )
-    : MarmotMaterialFiniteStrain( materialProperties, nMaterialProperties, materialLabel )
+    : Marmot::Materials::MaterialFiniteStrain( materialProperties, nMaterialProperties, materialLabel )
   {
     stateLayout.finalize();
   }
@@ -36,15 +36,15 @@ namespace Marmot::Materials {
 
     using namespace ContinuumMechanics;
     // compute Cauchy-Green deformation
-    const auto [C, dC_dF] = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( F_ );
+    const auto [C, dC_dF] = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::rightCauchyGreen( F_ );
 
     // compute energy density, first and second partial derivatives wrt Cauchy Green deformation
-    const auto [psi_, dPsi_dC, d2Psi_dCdC] = EnergyDensityFunctions::SecondOrderDerived::PenceGouPotentialB( C, K, G );
+    const auto [psi_, dPsi_dC, d2Psi_dCdC] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::SecondOrder::PenceGouPotentialB( C, K, G );
 
     // compute Kirchhoff stress
     Tensor33d PK2 = 2. * dPsi_dC;
 
-    const auto [tau, dTau_dPK2, dTau_dF] = StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2( PK2, F_ );
+    const auto [tau, dTau_dPK2, dTau_dF] = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::FirstOrder::KirchhoffStressFromPK2( PK2, F_ );
     response.tau                         = tau;
     response.elasticEnergyDensity        = psi_;
     response.dissipation                 = 0.0;

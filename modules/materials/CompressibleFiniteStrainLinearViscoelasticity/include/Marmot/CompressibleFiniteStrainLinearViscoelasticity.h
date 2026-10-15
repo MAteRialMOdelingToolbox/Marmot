@@ -49,9 +49,9 @@ namespace Marmot::Materials {
    * - @c S0_old - previous step stress-like internal variable used in viscoelastic update
    * - @c creepStateVars - internal variables for the generalized Maxwell chain
    */
-  class CompressibleFiniteStrainLinearViscoelasticity : public MarmotMaterialFiniteStrain {
+  class CompressibleFiniteStrainLinearViscoelasticity : public Marmot::Materials::MaterialFiniteStrain {
   public:
-    using MarmotMaterialFiniteStrain::MarmotMaterialFiniteStrain;
+    using Marmot::Materials::MaterialFiniteStrain::MaterialFiniteStrain;
 
     /**
      * @brief Construct a CompressibleFiniteStrainLinearViscoelasticity material.

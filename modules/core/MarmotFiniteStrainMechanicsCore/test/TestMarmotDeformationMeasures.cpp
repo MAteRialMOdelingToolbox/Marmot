@@ -5,7 +5,7 @@
 using namespace Marmot;
 using namespace Marmot::Testing;
 using namespace Marmot::ContinuumMechanics;
-using namespace Marmot::ContinuumMechanics::DeformationMeasures;
+using namespace Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures;
 
 // Expected C = F^T * F
 Tensor33d C_expected( const Marmot::Math::FastorTensors::Tensor33d& F_ )
@@ -44,7 +44,7 @@ void test_rightCauchyGreen()
           {0.,0.,1.} };
     // clang-format on
 
-    auto C_computed = DeformationMeasures::rightCauchyGreen( F );
+    auto C_computed = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( F );
 
     throwExceptionOnFailure( checkIfEqual( C_computed, C_expected( F ) ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
@@ -59,7 +59,7 @@ void test_rightCauchyGreen()
           {0.,0.,4.} };
     // clang-format on
 
-    auto C_computed = DeformationMeasures::rightCauchyGreen( F );
+    auto C_computed = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( F );
 
     throwExceptionOnFailure( checkIfEqual( C_computed, C_expected( F ) ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
@@ -74,7 +74,7 @@ void test_rightCauchyGreen()
           {0., 0., 1.} };
     // clang-format on
 
-    auto C_computed = DeformationMeasures::rightCauchyGreen( F );
+    auto C_computed = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( F );
 
     throwExceptionOnFailure( checkIfEqual( C_computed, C_expected( F ) ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
@@ -87,7 +87,7 @@ void test_rightCauchyGreenirstOrderDerived()
   Marmot::Math::FastorTensors::Tensor33t< double > F;
   F = { { 1., 0., 0. }, { 0., 1., 0. }, { 0., 0., 1. } };
 
-  auto [C_computed, dC_dF_computed] = FirstOrderDerived::rightCauchyGreen( F );
+  auto [C_computed, dC_dF_computed] = FirstOrder::rightCauchyGreen( F );
 
   throwExceptionOnFailure( checkIfEqual( C_computed, C_expected( F ) ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1 (computation of C)" );
@@ -98,7 +98,7 @@ void test_rightCauchyGreenirstOrderDerived()
   // Testcase 2: Diagonal matrix F
   F = { { 2., 0., 0. }, { 0., 3., 0. }, { 0., 0., 4. } };
 
-  std::tie( C_computed, dC_dF_computed ) = FirstOrderDerived::rightCauchyGreen( F );
+  std::tie( C_computed, dC_dF_computed ) = FirstOrder::rightCauchyGreen( F );
 
   throwExceptionOnFailure( checkIfEqual( C_computed, C_expected( F ) ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2 (computation of C)" );
@@ -109,7 +109,7 @@ void test_rightCauchyGreenirstOrderDerived()
   // Testcase 3: Non-diagonal matrix F
   F = { { 1., 1., 1. }, { 0., 1., 1. }, { 0., 0., 1. } };
 
-  std::tie( C_computed, dC_dF_computed ) = FirstOrderDerived::rightCauchyGreen( F );
+  std::tie( C_computed, dC_dF_computed ) = FirstOrder::rightCauchyGreen( F );
 
   throwExceptionOnFailure( checkIfEqual( C_computed, C_expected( F ) ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3 (computation of C)" );
@@ -175,7 +175,7 @@ void test_leftCauchyGreenFirstOrderDerived()
   Marmot::Math::FastorTensors::Tensor33t< double > F;
   F = { { 1., 0., 0. }, { 0., 1., 0. }, { 0., 0., 1. } };
 
-  auto [b_computed, db_dF_computed] = FirstOrderDerived::leftCauchyGreen( F );
+  auto [b_computed, db_dF_computed] = FirstOrder::leftCauchyGreen( F );
 
   throwExceptionOnFailure( checkIfEqual( b_computed, b_expected( F ) ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for zero deformation (computation of b)" );
@@ -189,7 +189,7 @@ void test_leftCauchyGreenFirstOrderDerived()
   // simple shear test
   F                                             = Marmot::Math::FastorTensors::Spatial3D::I;
   F( 0, 1 )                                     = 1.0; // simple shear in x-y
-  auto [b_shear_computed, db_dF_shear_computed] = FirstOrderDerived::leftCauchyGreen( F );
+  auto [b_shear_computed, db_dF_shear_computed] = FirstOrder::leftCauchyGreen( F );
 
   throwExceptionOnFailure( checkIfEqual( b_shear_computed, b_expected( F ) ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for simple shear (computation of b)" );

@@ -1371,7 +1371,7 @@ void testComputeCriticalTimeStepMatchesMaterialWaveSpeedForRegularHexa8()
   constexpr int nNodes        = 8;
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
-  using Response              = typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVars >::response;
+  using Response              = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVars >::response;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
                                                 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };

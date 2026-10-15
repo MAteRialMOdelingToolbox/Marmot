@@ -1,10 +1,10 @@
 #include "Marmot/MarmotEnergyDensityFunctions.h"
 #include "Marmot/MarmotAutomaticDifferentiationForFastor.h"
-namespace Marmot::ContinuumMechanics {
+namespace Marmot::ContinuumMechanics::FiniteStrain {
 
   namespace EnergyDensityFunctions {
 
-    namespace ThirdOrderDerived {
+    namespace ThirdOrder {
       using namespace Fastor;
       using namespace Marmot::Math::FastorTensors;
       std::tuple< double, Marmot::Math::FastorTensors::Tensor33d, Marmot::Math::FastorTensors::Tensor3333d, Marmot::Math::FastorTensors::Tensor333333d > standardNeoHooke(
@@ -105,6 +105,6 @@ namespace Marmot::ContinuumMechanics {
 
         return { psi, dPsi_dC, d2Psi_dC2, d3Psi_dC3 };
       }
-    } // namespace ThirdOrderDerived
+    } // namespace ThirdOrder
   }   // namespace EnergyDensityFunctions
 } // namespace Marmot::ContinuumMechanics

@@ -1,9 +1,10 @@
 #include "Marmot/MarmotMaterialGradientEnhancedFiniteStrainFactory.h"
 #include "Marmot/MarmotJournal.h"
 
-using namespace MarmotLibrary;
+namespace Marmot::Registry {
 
-MarmotMaterialGradientEnhancedFiniteStrain* MarmotMaterialGradientEnhancedFiniteStrainFactory::createMaterial(
+
+Marmot::Materials::MaterialGradientEnhancedFiniteStrain* MaterialGradientEnhancedFiniteStrainFactory::createMaterial(
   const std::string& materialName,
   const double*      materialProperties,
   int                nMaterialProperties,
@@ -23,9 +24,11 @@ MarmotMaterialGradientEnhancedFiniteStrain* MarmotMaterialGradientEnhancedFinite
   return it->second( materialProperties, nMaterialProperties, materialNumber );
 }
 
-MarmotMaterialGradientEnhancedFiniteStrainFactory::MaterialFactoryMap& MarmotMaterialGradientEnhancedFiniteStrainFactory::
+MaterialGradientEnhancedFiniteStrainFactory::MaterialFactoryMap& MaterialGradientEnhancedFiniteStrainFactory::
   materialFactoryFunctionByName()
 {
   static MaterialFactoryMap map;
   return map;
 }
+
+} // namespace Marmot::Registry

@@ -49,7 +49,7 @@ namespace Marmot::MaterialPoints {
    *        continuum.
    *
    * The material point carries the displacement field @f$ \boldsymbol{u} @f$ and a single scalar nonlocal field
-   * @f$ \bar{N} @f$ and drives a MarmotMaterialGradientEnhancedFiniteStrain, which returns the Kirchhoff stress
+   * @f$ \bar{N} @f$ and drives a Marmot::Materials::MaterialGradientEnhancedFiniteStrain, which returns the Kirchhoff stress
    * @f$ \boldsymbol{\tau} @f$, the local driving force @f$ L @f$ (the source of @f$ \bar{N} - c\,\nabla^2\bar{N} = L
    * @f$, @f$ c = R^2 @f$ with the nonlocal radius @f$ R @f$) and the four algorithmic tangents. It is the material
    * point both of the MPM cell GradientEnhancedFiniteStrainCell and of the RKPM particle
@@ -77,7 +77,7 @@ namespace Marmot::MaterialPoints {
    * and stores them in #tangents together with the response in #response.
    *
    * In plane strain (@c nDim = 2) all tensors are stored in 3D, the material is evaluated through
-   * MarmotMaterialGradientEnhancedFiniteStrain::computePlaneStrain, and the in-plane parts are handed out.
+   * Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain, and the in-plane parts are handed out.
    *
    * @tparam nDim Spatial dimension (2: plane strain, 3: 3D).
    */
@@ -98,9 +98,9 @@ namespace Marmot::MaterialPoints {
     double _vol0;    ///< volume @f$ V_0 @f$ in the undeformed configuration
     double _density; ///< mass density in the reference configuration, as reported by the material
 
-    using Material = MarmotMaterialGradientEnhancedFiniteStrain;            ///< the consumed material interface
+    using Material = Marmot::Materials::MaterialGradientEnhancedFiniteStrain;            ///< the consumed material interface
 
-    std::unique_ptr< MarmotMaterialGradientEnhancedFiniteStrain > material; ///< the assigned material
+    std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedFiniteStrain > material; ///< the assigned material
 
     /**
      * @class Marmot::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::MPStateVarManager
@@ -214,9 +214,9 @@ namespace Marmot::MaterialPoints {
     std::string getMaterialPointShape() const { return "point"; };
 
     /**
-     * @brief Create the material from the MarmotMaterialGradientEnhancedFiniteStrainFactory.
+     * @brief Create the material from the Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory.
      * @param[in] property Material section (name and properties).
-     * @throws std::invalid_argument if the material does not implement MarmotMaterialGradientEnhancedFiniteStrain.
+     * @throws std::invalid_argument if the material does not implement Marmot::Materials::MaterialGradientEnhancedFiniteStrain.
      */
     void assignMaterial( const MarmotMaterialSection& property );
 
@@ -439,7 +439,7 @@ namespace Marmot::MaterialPoints {
      *
      * Only `geostaticstress` is supported: the eigen deformation that produces the hydrostatic stress
      * @f$ \tau_{XX} = \tau_{YY} = \tau_{ZZ} = \mathrm{value}[0] @f$ is found by
-     * MarmotMaterialGradientEnhancedFiniteStrain::findEigenDeformationForEigenStress and applied in every subsequent
+     * Marmot::Materials::MaterialGradientEnhancedFiniteStrain::findEigenDeformationForEigenStress and applied in every subsequent
      * material evaluation.
      *
      * @param[in] conditionName Name of the condition.
@@ -486,9 +486,9 @@ namespace Marmot::MaterialPoints {
   template < int nDim >
   void GradientEnhancedFiniteStrainMaterialPoint< nDim >::assignMaterial( const MarmotMaterialSection& section )
   {
-    material = std::unique_ptr< MarmotMaterialGradientEnhancedFiniteStrain >(
-      dynamic_cast< MarmotMaterialGradientEnhancedFiniteStrain* >(
-        MarmotLibrary::MarmotMaterialGradientEnhancedFiniteStrainFactory::createMaterial( section.materialName,
+    material = std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedFiniteStrain >(
+      dynamic_cast< Marmot::Materials::MaterialGradientEnhancedFiniteStrain* >(
+        Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory::createMaterial( section.materialName,
                                                                                           section.materialProperties,
                                                                                           section.nMaterialProperties,
                                                                                           _mpNumber ) ) );
@@ -496,7 +496,7 @@ namespace Marmot::MaterialPoints {
     if ( !material )
       throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                                 << ": invalid material assigned; cannot cast to "
-                                                   "MarmotMaterialGradientEnhancedFiniteStrain!" );
+                                                   "Marmot::Materials::MaterialGradientEnhancedFiniteStrain!" );
   }
 
   template < int nDim >
@@ -524,7 +524,7 @@ namespace Marmot::MaterialPoints {
    * @brief Plane-strain gradient-enhanced finite-strain material point (registered as
    *        `GradientEnhancedFiniteStrain/PlaneStrain`).
    *
-   * The material is evaluated through MarmotMaterialGradientEnhancedFiniteStrain::computePlaneStrain with the 3D
+   * The material is evaluated through Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain with the 3D
    * deformation gradient whose out-of-plane entries are those of the identity; the response and tangents are reduced
    * to their in-plane components.
    */

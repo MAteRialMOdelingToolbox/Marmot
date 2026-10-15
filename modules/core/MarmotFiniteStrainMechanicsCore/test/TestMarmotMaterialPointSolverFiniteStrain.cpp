@@ -17,9 +17,9 @@ namespace {
 
   // A material that always fails to update its stress, used to exercise solveStep()'s
   // cutback-retry-then-give-up logic deterministically (no real material fails unconditionally).
-  class AlwaysFailingFiniteStrainMaterial : public MarmotMaterialFiniteStrain {
+  class AlwaysFailingFiniteStrainMaterial : public Marmot::Materials::MaterialFiniteStrain {
   public:
-    using MarmotMaterialFiniteStrain::MarmotMaterialFiniteStrain;
+    using Marmot::Materials::MaterialFiniteStrain::MaterialFiniteStrain;
 
     void computeStress( ConstitutiveResponse< 3 >&,
                         AlgorithmicModuli< 3 >&,
@@ -34,9 +34,9 @@ namespace {
 
   // A material whose Kirchhoff stress output is constant (independent of deformation) with a
   // singular (zero) tangent, used to force a NaN out of the Newton-loop's linear solve.
-  class SingularTangentMaterial : public MarmotMaterialFiniteStrain {
+  class SingularTangentMaterial : public Marmot::Materials::MaterialFiniteStrain {
   public:
-    using MarmotMaterialFiniteStrain::MarmotMaterialFiniteStrain;
+    using Marmot::Materials::MaterialFiniteStrain::MaterialFiniteStrain;
 
     void computeStress( ConstitutiveResponse< 3 >& response,
                         AlgorithmicModuli< 3 >&    tangents,
@@ -56,9 +56,9 @@ namespace {
   // A material whose Kirchhoff stress output is constant (independent of deformation), but with a
   // well-conditioned (identity) tangent, so the Newton loop computes well-defined, non-NaN
   // corrections every iteration without the residual ever actually shrinking.
-  class WellConditionedNeverConvergingMaterial : public MarmotMaterialFiniteStrain {
+  class WellConditionedNeverConvergingMaterial : public Marmot::Materials::MaterialFiniteStrain {
   public:
-    using MarmotMaterialFiniteStrain::MarmotMaterialFiniteStrain;
+    using Marmot::Materials::MaterialFiniteStrain::MaterialFiniteStrain;
 
     void computeStress( ConstitutiveResponse< 3 >& response,
                         AlgorithmicModuli< 3 >&    tangents,
@@ -84,9 +84,9 @@ namespace {
   // the first successful increment), so this succeeds once before it starts failing -- letting a
   // subsequent retry actually halve an already-nonzero dT, rather than immediately hitting the
   // "dT already at or below dTMin" exhaustion check with the still-zero initial dT.
-  class FailsForNonzeroTimeIncrementMaterial : public MarmotMaterialFiniteStrain {
+  class FailsForNonzeroTimeIncrementMaterial : public Marmot::Materials::MaterialFiniteStrain {
   public:
-    using MarmotMaterialFiniteStrain::MarmotMaterialFiniteStrain;
+    using Marmot::Materials::MaterialFiniteStrain::MaterialFiniteStrain;
 
     void computeStress( ConstitutiveResponse< 3 >& response,
                         AlgorithmicModuli< 3 >&    tangents,
@@ -104,13 +104,13 @@ namespace {
     double getDensity( const double* ) const override { return 1.0; }
   };
 
-  const bool alwaysFailingRegistered = MarmotLibrary::MarmotMaterialFiniteStrainFactory::registerMaterial<
+  const bool alwaysFailingRegistered = Marmot::Registry::MaterialFiniteStrainFactory::registerMaterial<
     AlwaysFailingFiniteStrainMaterial >( "TESTALWAYSFAILINGFINITESTRAIN" );
-  const bool failsForNonzeroDTRegistered = MarmotLibrary::MarmotMaterialFiniteStrainFactory::registerMaterial<
+  const bool failsForNonzeroDTRegistered = Marmot::Registry::MaterialFiniteStrainFactory::registerMaterial<
     FailsForNonzeroTimeIncrementMaterial >( "TESTFAILSFORNONZERODTFINITESTRAIN" );
-  const bool singularTangentRegistered = MarmotLibrary::MarmotMaterialFiniteStrainFactory::registerMaterial<
+  const bool singularTangentRegistered = Marmot::Registry::MaterialFiniteStrainFactory::registerMaterial<
     SingularTangentMaterial >( "TESTSINGULARTANGENTFINITESTRAIN" );
-  const bool neverConvergingRegistered = MarmotLibrary::MarmotMaterialFiniteStrainFactory::registerMaterial<
+  const bool neverConvergingRegistered = Marmot::Registry::MaterialFiniteStrainFactory::registerMaterial<
     WellConditionedNeverConvergingMaterial >( "TESTNEVERCONVERGINGFINITESTRAINSOLVER" );
 
 } // namespace

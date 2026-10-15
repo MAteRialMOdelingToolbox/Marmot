@@ -29,14 +29,16 @@
 #include <cmath>
 #include <vector>
 
+namespace Marmot::Materials {
+
 /**
- * @class MarmotMaterialFiniteStrain
+ * @class MaterialFiniteStrain
  * @brief Abstract base class for mechanical materials in the finite strain regime.
  *
  * Derived classes implement computeStress() to provide the constitutive response
  * (Kirchhoff stress, density, elastic energy density) and the algorithmic tangent.
  */
-class MarmotMaterialFiniteStrain {
+class MaterialFiniteStrain {
 
 protected:
   const double* materialProperties;  ///< Pointer to the array of material property values.
@@ -46,12 +48,12 @@ public:
   const int materialNumber; ///< Unique identifier for this material instance.
 
   /**
-   * @brief Construct a MarmotMaterialFiniteStrain.
+   * @brief Construct a MaterialFiniteStrain.
    * @param[in] matProperties_       Pointer to the array of material property values.
    * @param[in] nMaterialProperties_ Number of material property values.
    * @param[in] materialNumber_      Unique identifier for this material instance.
    */
-  MarmotMaterialFiniteStrain( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
+  MaterialFiniteStrain( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
     : materialProperties( matProperties_ ),
       nMaterialProperties( nMaterialProperties_ ),
       materialNumber( materialNumber_ )
@@ -59,7 +61,7 @@ public:
   }
 
   /// Default destructor
-  virtual ~MarmotMaterialFiniteStrain() = default;
+  virtual ~MaterialFiniteStrain() = default;
 
   /// Layout of the state variables
   Marmot::Utilities::StateLayoutDynamic stateLayout;
@@ -389,3 +391,5 @@ public:
    */
   virtual double getDensity( const double* stateVars ) const = 0;
 };
+
+} // namespace Marmot::Materials

@@ -45,7 +45,7 @@ namespace Marmot::Meshfree {
    * @f$ \bar{N} @f$ (nodal fields `displacement` and `nonlocal damage`, node block
    * @f$ n_\mathrm{dim}+1 @f$, dofs ordered node by node as @f$ \{u_1,\dots,u_{n_\mathrm{dim}},\bar{N}\} @f$). It owns
    * a single Marmot::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint, which drives a
-   * MarmotMaterialGradientEnhancedFiniteStrain, and is integrated with that single point (direct nodal integration).
+   * Marmot::Materials::MaterialGradientEnhancedFiniteStrain, and is integrated with that single point (direct nodal integration).
    *
    * **Kinematics.** The dofs are the increments of the current step. The trial shape functions @f$ N_B @f$ and
    * gradients @f$ \partial N_B/\partial\boldsymbol{Y} @f$ are those of the meshfree approximation at the particle
@@ -182,7 +182,7 @@ namespace Marmot::Meshfree {
     static constexpr int nDofPerNodeU = nDim;                    ///< dofs per node of the displacement field U
     static constexpr int nDofPerNodeN = 1;                       ///< dofs per node of the nonlocal field N
 
-    using Material = MarmotMaterialGradientEnhancedFiniteStrain; ///< the consumed material interface
+    using Material = Marmot::Materials::MaterialGradientEnhancedFiniteStrain; ///< the consumed material interface
 
     using ForceSized = Eigen::Matrix< double, nDim, 1 >;         ///< force vector of size nDim
 
@@ -363,7 +363,7 @@ namespace Marmot::Meshfree {
      * @param[in] nodeCoordinates     Undeformed center coordinates (nDim values).
      * @param[in] nNodeCoordiantes    Number of coordinates; must equal nDim.
      * @param[in] volume              Undeformed volume @f$ V_0 @f$.
-     * @param[in] materialName        Name of a MarmotMaterialGradientEnhancedFiniteStrain material.
+     * @param[in] materialName        Name of a Marmot::Materials::MaterialGradientEnhancedFiniteStrain material.
      * @param[in] materialProperties  Material properties.
      * @param[in] nMaterialProperties Number of material properties.
      * @param[in] approximation       Meshfree approximation used for the shape functions.

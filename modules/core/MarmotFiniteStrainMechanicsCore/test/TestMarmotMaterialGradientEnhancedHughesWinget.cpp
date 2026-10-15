@@ -76,10 +76,10 @@ namespace {
    * nonlocal field (the same isotropic degradation) makes @c dStressddK -- the wrapper's @c dTau_dN --
    * non-trivial without disturbing the exact incremental structure above.
    */
-  class IncrementalGradientStub : public MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 > {
+  class IncrementalGradientStub : public Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 > {
   public:
     IncrementalGradientStub( const double* props, int nProps, int matNumber )
-      : MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >( props, nProps, matNumber )
+      : Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >( props, nProps, matNumber )
     {
       stateLayout.add( "equivalentStrain", 1 );
       stateLayout.finalize();
@@ -124,7 +124,7 @@ namespace {
   using WrapperNumerical = GradientEnhancedHughesWingetWrapper< IncrementalGradientStub,
                                                                 HughesWingetTangent::Numerical >;
 
-  using GEFiniteStrain  = MarmotMaterialGradientEnhancedFiniteStrain;
+  using GEFiniteStrain  = Marmot::Materials::MaterialGradientEnhancedFiniteStrain;
   using GEResponse      = GEFiniteStrain::ConstitutiveResponse< 3 >;
   using GETangents      = GEFiniteStrain::AlgorithmicModuli< 3 >;
   using GEDeformation   = GEFiniteStrain::Deformation< 3 >;
@@ -183,10 +183,10 @@ namespace {
    * Used exclusively by testNonlocalIncrementBookkeeping() to verify that the wrapper hands the
    * wrapped material @f$ dK = \bar N - \bar N^{(n)} @f$, not the total field.
    */
-  class RecordingIncrementMaterial : public MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 > {
+  class RecordingIncrementMaterial : public Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 > {
   public:
     RecordingIncrementMaterial( const double* props, int nProps, int matNumber )
-      : MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >( props, nProps, matNumber )
+      : Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >( props, nProps, matNumber )
     {
       stateLayout.add( "recordedIncrement", 1 );
       stateLayout.finalize();
@@ -678,7 +678,7 @@ void testEigenDeformationAndPlaneStrainOverloads()
   /* Through a base reference, which is how the element holds it. The wrapper overrides the
    * four-argument computeStress and thereby HIDES the five-argument eigen-deformation overload for
    * anyone calling on the derived type -- harmless in practice, since every consumer works through
-   * MarmotMaterialGradientEnhancedFiniteStrain*, but worth knowing.
+   * Marmot::Materials::MaterialGradientEnhancedFiniteStrain*, but worth knowing.
    */
   GEFiniteStrain& baseEig = wEig;
   baseEig.computeStress( rEig,
@@ -768,7 +768,7 @@ void testEigenDeformationAndPlaneStrainOverloads()
  */
 void testFactoryRoundTripAndUnknownName()
 {
-  using Factory = MarmotLibrary::MarmotMaterialGradientEnhancedFiniteStrainFactory;
+  using Factory = Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory;
 
   const std::string name = "TESTONLY/GRADIENT-ENHANCED-HUGHES-WINGET";
 
@@ -776,7 +776,7 @@ void testFactoryRoundTripAndUnknownName()
   throwExceptionOnFailure( registered,
                            "registerMaterial did not report success in " + std::string( __PRETTY_FUNCTION__ ) );
 
-  std::unique_ptr< MarmotMaterialGradientEnhancedFiniteStrain > created(
+  std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedFiniteStrain > created(
     Factory::createMaterial( name, stubProps.data(), int( stubProps.size() ), 1 ) );
 
   throwExceptionOnFailure( created != nullptr,

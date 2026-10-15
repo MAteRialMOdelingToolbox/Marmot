@@ -27,7 +27,7 @@
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include <Fastor/tensor_algebra/permute.h>
 
-namespace Marmot::ContinuumMechanics {
+namespace Marmot::ContinuumMechanics::FiniteStrain {
 
   namespace DeformationMeasures {
 
@@ -76,7 +76,7 @@ namespace Marmot::ContinuumMechanics {
       return b;
     }
 
-    namespace FirstOrderDerived {
+    namespace FirstOrder {
 
       /** @brief Computes the right Cauchy-Green tensor \f$\boldsymbol{C}\f$ and its derivative with respect to
        * \f$\boldsymbol{F}\f$.
@@ -100,7 +100,7 @@ namespace Marmot::ContinuumMechanics {
       template < typename T >
       std::pair< Tensor33t< T >, Tensor3333t< T > > rightCauchyGreen( const Tensor33t< T >& F )
       {
-        const Tensor33t< T > C = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
+        const Tensor33t< T > C = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( F );
 
         const Tensor3333t< T > dC_dF = einsum< IK, kJ, to_IJkK >( Spatial3D::I, F ) +
                                        einsum< kI, JK, to_IJkK >( F, Spatial3D::I );
@@ -130,7 +130,7 @@ namespace Marmot::ContinuumMechanics {
       template < typename T >
       std::pair< Tensor33t< T >, Tensor3333t< T > > leftCauchyGreen( const Tensor33t< T >& F )
       {
-        Tensor33t< T > b = Marmot::ContinuumMechanics::DeformationMeasures::leftCauchyGreen( F );
+        Tensor33t< T > b = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::leftCauchyGreen( F );
 
         const Tensor3333t< T > db_dF = einsum< ik, jK, to_ijkK >( Spatial3D::I, F ) +
                                        einsum< iK, jk, to_ijkK >( F, Spatial3D::I );
@@ -253,7 +253,7 @@ namespace Marmot::ContinuumMechanics {
         return { FInv, dFInv_dF };
       }
 
-    } // namespace FirstOrderDerived
+    } // namespace FirstOrder
 
   }   // namespace DeformationMeasures
 } // namespace Marmot::ContinuumMechanics

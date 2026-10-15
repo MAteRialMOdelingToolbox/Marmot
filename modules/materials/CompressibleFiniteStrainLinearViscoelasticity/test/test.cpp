@@ -297,7 +297,7 @@ void testUndeformedResponsePenceGouNeoHooke()
 }
 
 // Test I-9: Triaxial stretch for PenceGouNeoHooke matches an independently computed reference (PK2 = 2*dPsi/dC via
-// EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB, converted to Kirchhoff stress)
+// Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB, converted to Kirchhoff stress)
 void testTriaxialResponsePenceGouNeoHookeMatchesAnalytical()
 {
   const std::string matName  = "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY";
@@ -316,11 +316,11 @@ void testTriaxialResponsePenceGouNeoHookeMatchesAnalytical()
   const double K = matProps[2];
   const double G = matProps[3];
   Tensor33d    F = gradU + Spatial3D::I;
-  Tensor33d    C = DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d    C = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( F );
 
-  auto [psi, dPsi_dC]    = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C, K, G );
+  auto [psi, dPsi_dC]    = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( C, K, G );
   Tensor33d PK2          = 2. * dPsi_dC;
-  Tensor33d stressTarget = StressMeasures::KirchhoffStressFromPK2( PK2, F );
+  Tensor33d stressTarget = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::KirchhoffStressFromPK2( PK2, F );
 
   throwExceptionOnFailure( checkIfEqual( finalStress, stressTarget, 1e-4 ),
                            "I-9: Triaxial PenceGouNeoHooke response doesn't match the analytical reference in " +

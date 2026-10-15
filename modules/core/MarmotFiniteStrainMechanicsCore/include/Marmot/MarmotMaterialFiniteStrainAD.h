@@ -29,25 +29,27 @@
 #include <Eigen/Core>
 #include <functional>
 
+namespace Marmot::Materials {
+
 /**
  * @brief Base class for finite strain materials using automatic differentiation.
  *
- * This class extends MarmotMaterialFiniteStrain by providing an interface for
+ * This class extends MaterialFiniteStrain by providing an interface for
  * computing stresses and algorithmic tangent moduli using automatic
  * differentiation. Derived material models implement computeStressAD() to
  * supply the AD-based constitutive response.
  */
-class MarmotMaterialFiniteStrainAD : public MarmotMaterialFiniteStrain {
+class MaterialFiniteStrainAD : public MaterialFiniteStrain {
 
 public:
   /**
-   * @brief Construct a MarmotMaterialFiniteStrainAD.
+   * @brief Construct a MaterialFiniteStrainAD.
    * @param[in] matProperties_       Pointer to the array of material property values.
    * @param[in] nMaterialProperties_ Number of material property values.
    * @param[in] materialNumber_      Unique identifier for this material instance.
    */
-  MarmotMaterialFiniteStrainAD( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
-    : MarmotMaterialFiniteStrain( matProperties_, nMaterialProperties_, materialNumber_ )
+  MaterialFiniteStrainAD( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
+    : MaterialFiniteStrain( matProperties_, nMaterialProperties_, materialNumber_ )
   {
   }
   /**
@@ -104,7 +106,7 @@ public:
   /**
    * @brief Compute Kirchhoff stress and algorithmic tangent using automatic differentiation.
    *
-   * This method overrides MarmotMaterialFiniteStrain::computeStress() and provides a generic
+   * This method overrides MaterialFiniteStrain::computeStress() and provides a generic
    * AD-based implementation for finite strain material models.
    *
    * The child class must implement computeStressAD(), which evaluates the constitutive response
@@ -190,3 +192,5 @@ public:
                                 const DeformationAD< 3 >&    deformation,
                                 const TimeIncrement&         timeIncrement ) const = 0;
 };
+
+} // namespace Marmot::Materials

@@ -5,10 +5,9 @@ namespace Marmot::Materials {
 
   namespace Registration {
 
-    using namespace MarmotLibrary;
 
     const static bool
-      ADCompressibleNeoHookeRegistered = MarmotMaterialFiniteStrainFactory::registerMaterial< ADCompressibleNeoHooke >(
+      ADCompressibleNeoHookeRegistered = Marmot::Registry::MaterialFiniteStrainFactory::registerMaterial< ADCompressibleNeoHooke >(
         "ADCOMPRESSIBLENEOHOOKE" );
 
   } // namespace Registration

@@ -72,9 +72,9 @@ namespace Marmot::Materials {
    * Plasticity material model.
    */
 
-  class FiniteStrainJ2Plasticity : public MarmotMaterialFiniteStrain {
+  class FiniteStrainJ2Plasticity : public Marmot::Materials::MaterialFiniteStrain {
   public:
-    using MarmotMaterialFiniteStrain::MarmotMaterialFiniteStrain;
+    using Marmot::Materials::MaterialFiniteStrain::MaterialFiniteStrain;
 
     // elastic constants
     /** Bulk modulus (read from @c materialProperties[0]) */
@@ -317,13 +317,13 @@ namespace Marmot::Materials {
       using namespace Marmot::ContinuumMechanics;
       Tensor33d   Ce;
       Tensor3333d dCe_dFe;
-      std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( Fe );
+      std::tie( Ce, dCe_dFe ) = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::rightCauchyGreen( Fe );
 
       double      psi_;
       Tensor33d   dPsi_dCe;
       Tensor3333d d2Psi_dCedCe, dMandel_dCe;
 
-      std::tie( psi_, dPsi_dCe, d2Psi_dCedCe ) = EnergyDensityFunctions::SecondOrderDerived::PenceGouPotentialB( Ce,
+      std::tie( psi_, dPsi_dCe, d2Psi_dCedCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::SecondOrder::PenceGouPotentialB( Ce,
                                                                                                                  K,
                                                                                                                  G );
       Tensor33d       PK2                      = 2.0 * dPsi_dCe;
@@ -345,12 +345,12 @@ namespace Marmot::Materials {
     Tensor33t< T > computeMandelStressOnly( const Tensor33t< T >& Fe ) const
     {
       using namespace Marmot::ContinuumMechanics;
-      Tensor33t< T > Ce = DeformationMeasures::rightCauchyGreen( Fe );
+      Tensor33t< T > Ce = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( Fe );
 
       T              psi_;
       Tensor33t< T > dPsi_dCe;
 
-      std::tie( psi_, dPsi_dCe )  = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
+      std::tie( psi_, dPsi_dCe )  = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( Ce, K, G );
       Tensor33t< T >       PK2    = Marmot::Math::multiplyFastorTensorWithScalar( dPsi_dCe, T( 2.0 ) );
       const Tensor33t< T > mandel = Ce % PK2;
       return mandel;
@@ -437,7 +437,7 @@ namespace Marmot::Materials {
       Tensor33d   dGp = Marmot::Math::multiplyFastorTensorWithScalar( df_dS, dLambda );
       Tensor33d   dFp;
       Tensor3333d ddFp_ddGp;
-      std::tie( dFp, ddFp_ddGp ) = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrderDerived::
+      std::tie( dFp, ddFp_ddGp ) = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrder::
         exponentialMap( dGp );
 
       return { dFp, einsum< IJKL, KL >( ddFp_ddGp, df_dS ) };
@@ -554,7 +554,7 @@ namespace Marmot::Materials {
       Tensor33d   dGp = dLambda * df_dMandel;
       Tensor33d   dFp;
       Tensor3333d ddFp_ddGp;
-      std::tie( dFp, ddFp_ddGp ) = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrderDerived::
+      std::tie( dFp, ddFp_ddGp ) = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrder::
         exponentialMap( dGp );
 
       Tensor3333d ddGp_dFe      = dLambda * einsum< ijmn, mnkL >( d2f_dMandel_dMandel, dMandel_dFe );

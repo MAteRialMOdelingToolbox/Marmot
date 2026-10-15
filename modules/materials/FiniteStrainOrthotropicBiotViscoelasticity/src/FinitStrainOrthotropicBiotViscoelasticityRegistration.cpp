@@ -6,14 +6,13 @@ namespace Marmot::Materials {
 
   namespace Registration {
 
-    using namespace MarmotLibrary;
 
-    const static bool FiniteStrainOrthotropicBiotViscoelasticityRegistered = MarmotMaterialFiniteStrainFactory::
+    const static bool FiniteStrainOrthotropicBiotViscoelasticityRegistered = Marmot::Registry::MaterialFiniteStrainFactory::
       registerMaterial< FiniteStrainOrthotropicBiotViscoelasticity >( "FINITESTRAINORTHOTROPICBIOTVISCOELASTICITY" );
 
     const static bool
-      FiniteStrainOrthotropicBiotViscoelasticitySubsteppedRegistered = MarmotMaterialFiniteStrainFactory::
-        registerMaterial< MarmotMaterialFiniteStrainSubstepped< FiniteStrainOrthotropicBiotViscoelasticity > >(
+      FiniteStrainOrthotropicBiotViscoelasticitySubsteppedRegistered = Marmot::Registry::MaterialFiniteStrainFactory::
+        registerMaterial< Marmot::Materials::MaterialFiniteStrainSubstepped< FiniteStrainOrthotropicBiotViscoelasticity > >(
           "FINITESTRAINORTHOTROPICBIOTVISCOELASTICITY_SUBSTEPPED" );
 
   } // namespace Registration

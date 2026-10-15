@@ -27,7 +27,7 @@
 #include <cmath>
 #include <tuple>
 
-namespace Marmot::GradientDamage {
+namespace Marmot::ContinuumMechanics::GradientDamage {
 
   namespace DecreasingInteractions {
 
@@ -53,7 +53,7 @@ namespace Marmot::GradientDamage {
       return g;
     }
 
-    namespace FirstOrderDerived {
+    namespace FirstOrder {
 
       /**
        * @brief First-order derivative of the Poh & Sun (2017) interaction function with respect to damage
@@ -65,9 +65,9 @@ namespace Marmot::GradientDamage {
        */
       std::tuple< double, double > poh( double omega, double eta, double R );
 
-    } // namespace FirstOrderDerived
+    } // namespace FirstOrder
 
-    namespace SecondOrderDerived {
+    namespace SecondOrder {
 
       /**
        * @brief Second-order derivative of the Poh & Sun (2017) interaction function with respect to damage
@@ -80,7 +80,7 @@ namespace Marmot::GradientDamage {
        */
       std::tuple< double, double, double > poh( double omega, double eta, double R );
 
-    } // namespace SecondOrderDerived
+    } // namespace SecondOrder
   }   // namespace DecreasingInteractions
 
-} // namespace Marmot::GradientDamage
+} // namespace Marmot::ContinuumMechanics::GradientDamage

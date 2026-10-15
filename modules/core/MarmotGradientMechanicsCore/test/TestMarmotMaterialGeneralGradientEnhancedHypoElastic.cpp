@@ -17,7 +17,7 @@ using namespace Marmot::Testing;
 
 namespace {
 
-  using Mat1 = MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >;
+  using Mat1 = Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >;
 
   // ---------------------------------------------------------------------------------------------
   // A minimal test-only material whose out-of-plane stress component (index 2) is a positive
@@ -71,13 +71,13 @@ namespace {
    * INPUT is what makes the query worth a test: without it, the answer is the virgin one however
    * damaged the point is.
    */
-  class FieldDegradedMaterial : public MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 > {
+  class FieldDegradedMaterial : public Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 > {
   public:
     static constexpr double stiffness = 30000.0;
     static constexpr double density_  = 3e-9;
 
     FieldDegradedMaterial( const double* props, int nProps, int matNumber )
-      : MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >( props, nProps, matNumber )
+      : Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >( props, nProps, matNumber )
     {
     }
 
@@ -193,12 +193,12 @@ namespace {
   /* A material that reads a micro-inertia out of its properties and returns it through the base
    * class's validation, which is how every material in this stack is expected to answer.
    */
-  class MicroInertiaMaterial : public MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 > {
+  class MicroInertiaMaterial : public Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 > {
   public:
     static constexpr double viscosity = 1e-4;
 
     MicroInertiaMaterial( const double* props, int nProps, int matNumber )
-      : MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >( props, nProps, matNumber )
+      : Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >( props, nProps, matNumber )
     {
     }
 

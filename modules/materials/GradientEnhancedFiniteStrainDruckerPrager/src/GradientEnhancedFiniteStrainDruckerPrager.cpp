@@ -161,7 +161,7 @@ namespace Marmot::Materials {
     const double* materialProperties,
     int           nMaterialProperties,
     int           materialNumber )
-    : MarmotMaterialGradientEnhancedFiniteStrain( materialProperties, nMaterialProperties, materialNumber ),
+    : Marmot::Materials::MaterialGradientEnhancedFiniteStrain( materialProperties, nMaterialProperties, materialNumber ),
       K( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 0 ) ),
       G( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 1 ) ),
       c0( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 2 ) ),
@@ -600,10 +600,10 @@ namespace Marmot::Materials {
 
     // effective Kirchhoff stress and its sensitivity to Fe, as in FiniteStrainJ2Plasticity
     using namespace ContinuumMechanics;
-    const auto [Ce, dCe_dFe]             = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( r.Fe );
-    const auto [psiEff, dPsi_dCe, d2Psi] = EnergyDensityFunctions::SecondOrderDerived::PenceGouPotentialB( Ce, K, G );
+    const auto [Ce, dCe_dFe]             = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::rightCauchyGreen( r.Fe );
+    const auto [psiEff, dPsi_dCe, d2Psi] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::SecondOrder::PenceGouPotentialB( Ce, K, G );
     const Tensor33d PK2                  = 2. * dPsi_dCe;
-    const auto [tauEff, dTau_dPK2, dTau_dFePartial] = StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2( PK2,
+    const auto [tauEff, dTau_dPK2, dTau_dFePartial] = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::FirstOrder::KirchhoffStressFromPK2( PK2,
                                                                                                                  r.Fe );
     const Tensor3333d dPK2_dFe                      = einsum< ijKL, KLMN >( Tensor3333d( 2. * d2Psi ), dCe_dFe );
     const Tensor3333d dTauEff_dFe                   = einsum< ijKL, KLMN >( dTau_dPK2, dPK2_dFe ) + dTau_dFePartial;

@@ -19,11 +19,10 @@ namespace Marmot::Materials {
                                                                                   const SolverOptions& options )
       : options( options )
     {
-      using namespace MarmotLibrary;
 
       // create material instance
-      material = std::unique_ptr< MarmotMaterialFiniteStrain >( dynamic_cast< MarmotMaterialFiniteStrain* >(
-        MarmotMaterialFiniteStrainFactory::createMaterial( materialName,
+      material = std::unique_ptr< Marmot::Materials::MaterialFiniteStrain >( dynamic_cast< Marmot::Materials::MaterialFiniteStrain* >(
+        Marmot::Registry::MaterialFiniteStrainFactory::createMaterial( materialName,
                                                            materialProperties,
                                                            nMaterialProperties,
                                                            1 ) ) );
@@ -149,10 +148,10 @@ namespace Marmot::Materials {
       double corNorm = 0.0;
 
       // temporary variables for material state
-      MarmotMaterialFiniteStrain::ConstitutiveResponse< 3 > state;
-      MarmotMaterialFiniteStrain::Deformation< 3 >          deformation;
-      MarmotMaterialFiniteStrain::AlgorithmicModuli< 3 >    algorithmicModuli;
-      MarmotMaterialFiniteStrain::TimeIncrement timeInfo = { increment.timeOld + increment.dT, increment.dT };
+      Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse< 3 > state;
+      Marmot::Materials::MaterialFiniteStrain::Deformation< 3 >          deformation;
+      Marmot::Materials::MaterialFiniteStrain::AlgorithmicModuli< 3 >    algorithmicModuli;
+      Marmot::Materials::MaterialFiniteStrain::TimeIncrement timeInfo = { increment.timeOld + increment.dT, increment.dT };
 
       // store identical rows
       std::vector< std::pair< size_t, size_t > > identicalRows;

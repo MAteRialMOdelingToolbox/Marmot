@@ -40,7 +40,7 @@ namespace {
 
 } // namespace
 
-void MarmotMaterialGradientEnhancedFiniteStrain::computeStress(
+void Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computeStress(
   ConstitutiveResponse< 3 >&                  response,
   AlgorithmicModuli< 3 >&                     tangents,
   const Deformation< 3 >&                     deformation,
@@ -59,7 +59,7 @@ void MarmotMaterialGradientEnhancedFiniteStrain::computeStress(
   applyEigenDeformationToTangent( tangents.dL_dF, F0_XX, F0_YY, F0_ZZ );
 }
 
-void MarmotMaterialGradientEnhancedFiniteStrain::computePlaneStrain( ConstitutiveResponse< 3 >& response,
+void Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain( ConstitutiveResponse< 3 >& response,
                                                                      AlgorithmicModuli< 3 >&    algorithmicModuli,
                                                                      const Deformation< 3 >&    deformation,
                                                                      const TimeIncrement&       timeIncrement ) const
@@ -67,7 +67,7 @@ void MarmotMaterialGradientEnhancedFiniteStrain::computePlaneStrain( Constitutiv
   return computeStress( response, algorithmicModuli, deformation, timeIncrement );
 }
 
-void MarmotMaterialGradientEnhancedFiniteStrain::computePlaneStrain(
+void Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain(
   ConstitutiveResponse< 3 >&                  response,
   AlgorithmicModuli< 3 >&                     algorithmicModuli,
   const Deformation< 3 >&                     deformation,
@@ -80,7 +80,7 @@ void MarmotMaterialGradientEnhancedFiniteStrain::computePlaneStrain(
 /** The basic implementation here assumes non-chiral, isotropic elastic behavior, and an undamaged
  * initial state: the nonlocal field is held at zero throughout the iteration.
  */
-std::tuple< double, double, double > MarmotMaterialGradientEnhancedFiniteStrain::findEigenDeformationForEigenStress(
+std::tuple< double, double, double > Marmot::Materials::MaterialGradientEnhancedFiniteStrain::findEigenDeformationForEigenStress(
   const std::tuple< double, double, double >& initialGuess,
   const std::tuple< double, double, double >& eigenStressComponents,
   double*                                     stateVars ) const

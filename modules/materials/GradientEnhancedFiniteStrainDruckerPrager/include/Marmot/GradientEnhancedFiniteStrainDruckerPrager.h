@@ -99,7 +99,7 @@ namespace Marmot::Materials {
    * The dissipation is cumulative: the incoming ConstitutiveResponse::dissipation is incremented by
    * @f$ (1-\omega)\,\boldsymbol{M}:\Delta\boldsymbol{\varepsilon}^p + \psi_\mathrm{eff}\,\Delta\omega @f$.
    */
-  class GradientEnhancedFiniteStrainDruckerPrager : public MarmotMaterialGradientEnhancedFiniteStrain {
+  class GradientEnhancedFiniteStrainDruckerPrager : public Marmot::Materials::MaterialGradientEnhancedFiniteStrain {
 
   public:
     template < typename T >
@@ -118,7 +118,7 @@ namespace Marmot::Materials {
                                                int           nMaterialProperties,
                                                int           materialNumber );
 
-    using MarmotMaterialGradientEnhancedFiniteStrain::computeStress;
+    using Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computeStress;
 
     /**
      * @brief Compute the Kirchhoff stress, the local driving force and the algorithmic tangents.
@@ -171,8 +171,8 @@ namespace Marmot::Materials {
     Tensor33t< T > secondPiolaKirchhoff( const Tensor33t< T >& Fe ) const
     {
       using namespace ContinuumMechanics;
-      const Tensor33t< T > Ce     = DeformationMeasures::rightCauchyGreen( Fe );
-      const auto [psi_, dPsi_dCe] = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
+      const Tensor33t< T > Ce     = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( Fe );
+      const auto [psi_, dPsi_dCe] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( Ce, K, G );
       return Marmot::Math::multiplyFastorTensorWithScalar( dPsi_dCe, T( 2.0 ) );
     }
 
@@ -185,7 +185,7 @@ namespace Marmot::Materials {
     template < typename T >
     Tensor33t< T > mandelStress( const Tensor33t< T >& Fe ) const
     {
-      return Tensor33t< T >( ContinuumMechanics::DeformationMeasures::rightCauchyGreen( Fe ) %
+      return Tensor33t< T >( ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( Fe ) %
                              secondPiolaKirchhoff( Fe ) );
     }
 

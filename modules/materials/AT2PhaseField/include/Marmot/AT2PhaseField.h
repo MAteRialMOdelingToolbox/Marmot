@@ -45,9 +45,9 @@ namespace Marmot::Materials {
    *  - \f$ \eta \f$ : phase-field viscosity (optional, mandatory for dynamic simulations)
    *  - \f$ m_k \f$ : phase-field micro-inertia (optional; zero, i.e. a first-order phase field,
    *    unless given. Admissible up to \f$ \eta^2/4 \f$, where it is best -- see
-   *    MarmotMaterialGeneralGradientEnhancedHypoElastic::getNonlocalMicroInertia)
+   *    Marmot::Materials::MaterialGradientEnhancedHypoElastic::getNonlocalMicroInertia)
    */
-  class AT2PhaseField : public MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 > {
+  class AT2PhaseField : public Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 > {
 
   public:
     AT2PhaseField( const double* materialProperties, int nMaterialProperties, int materialNumber );

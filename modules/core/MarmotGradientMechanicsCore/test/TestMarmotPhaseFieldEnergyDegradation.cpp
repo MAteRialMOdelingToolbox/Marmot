@@ -5,7 +5,7 @@
 
 using namespace Marmot::Testing;
 using namespace Marmot::Math::NumericalDifferentiation;
-using namespace Marmot::PhaseField::EnergyDegradationFunctions;
+using namespace Marmot::ContinuumMechanics::PhaseField::EnergyDegradationFunctions;
 
 void testQuadratic()
 {
@@ -48,12 +48,12 @@ void testQuartic()
 
 void testSecondOrderDerivedQuadratic()
 {
-  // SecondOrderDerived::quadratic returns {value, first_derivative, second_derivative}
+  // SecondOrder::quadratic returns {value, first_derivative, second_derivative}
   // g(pf) = (1-pf)^2,  dg/dpf = -2(1-pf),  d2g/dpf2 = 2
 
   // At pf = 0: g=1, dg=-2, d2g=2
   {
-    auto [g, dg, d2g] = SecondOrderDerived::quadratic( 0.0 );
+    auto [g, dg, d2g] = SecondOrder::quadratic( 0.0 );
     throwExceptionOnFailure( checkIfEqual( g, 1.0 ), Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": value at pf=0 failed" );
     throwExceptionOnFailure( checkIfEqual( dg, -2.0 ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": first derivative at pf=0 failed" );
@@ -63,7 +63,7 @@ void testSecondOrderDerivedQuadratic()
 
   // At pf = 0.3: g=0.49, dg=-1.4, d2g=2
   {
-    auto [g, dg, d2g] = SecondOrderDerived::quadratic( 0.3 );
+    auto [g, dg, d2g] = SecondOrder::quadratic( 0.3 );
     throwExceptionOnFailure( checkIfEqual( g, 0.49, 1e-14 ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": value at pf=0.3 failed" );
     throwExceptionOnFailure( checkIfEqual( dg, -1.4, 1e-14 ),
@@ -74,7 +74,7 @@ void testSecondOrderDerivedQuadratic()
 
   // At pf = 1: g=0, dg=0, d2g=2
   {
-    auto [g, dg, d2g] = SecondOrderDerived::quadratic( 1.0 );
+    auto [g, dg, d2g] = SecondOrder::quadratic( 1.0 );
     throwExceptionOnFailure( checkIfEqual( g, 0.0 ), Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": value at pf=1 failed" );
     throwExceptionOnFailure( checkIfEqual( d2g, 2.0 ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": second derivative at pf=1 failed" );
@@ -82,7 +82,7 @@ void testSecondOrderDerivedQuadratic()
 
   // Consistency: returned value must match template function
   for ( const double pf : { 0.0, 0.25, 0.5, 0.75, 1.0 } ) {
-    auto [g, dg, d2g] = SecondOrderDerived::quadratic( pf );
+    auto [g, dg, d2g] = SecondOrder::quadratic( pf );
     throwExceptionOnFailure( checkIfEqual( g, quadratic( pf ) ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": value inconsistency at pf=" << pf );
   }
@@ -90,14 +90,14 @@ void testSecondOrderDerivedQuadratic()
 
 void testSecondOrderDerivedCubic()
 {
-  // SecondOrderDerived::cubic returns {value, first_derivative, second_derivative}
+  // SecondOrder::cubic returns {value, first_derivative, second_derivative}
   // g(pf) = 3s^2 - 2s^3  with s=1-pf
   // dg/dpf = -6s + 6s^2
   // d2g/dpf2 = 6 - 12s
 
   // At pf = 0.3: g=0.784, dg=-1.26, d2g=-2.4
   {
-    auto [g, dg, d2g] = SecondOrderDerived::cubic( 0.3 );
+    auto [g, dg, d2g] = SecondOrder::cubic( 0.3 );
     throwExceptionOnFailure( checkIfEqual( g, 0.784, 1e-14 ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": value at pf=0.3 failed" );
     throwExceptionOnFailure( checkIfEqual( dg, -1.26, 1e-14 ),
@@ -108,7 +108,7 @@ void testSecondOrderDerivedCubic()
 
   // At pf = 0.5: g=0.5, dg=-1.5, d2g=0
   {
-    auto [g, dg, d2g] = SecondOrderDerived::cubic( 0.5 );
+    auto [g, dg, d2g] = SecondOrder::cubic( 0.5 );
     throwExceptionOnFailure( checkIfEqual( g, 0.5 ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": value at pf=0.5 failed" );
     throwExceptionOnFailure( checkIfEqual( dg, -1.5 ),
@@ -119,7 +119,7 @@ void testSecondOrderDerivedCubic()
 
   // Consistency: returned value must match template function
   for ( const double pf : { 0.0, 0.25, 0.5, 0.75, 1.0 } ) {
-    auto [g, dg, d2g] = SecondOrderDerived::cubic( pf );
+    auto [g, dg, d2g] = SecondOrder::cubic( pf );
     throwExceptionOnFailure( checkIfEqual( g, cubic( pf ) ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": value inconsistency at pf=" << pf );
   }
@@ -127,14 +127,14 @@ void testSecondOrderDerivedCubic()
 
 void testSecondOrderDerivedQuartic()
 {
-  // SecondOrderDerived::quartic returns {value, first_derivative, second_derivative}
+  // SecondOrder::quartic returns {value, first_derivative, second_derivative}
   // g(pf) = 4s^3 - 3s^4  with s=1-pf
   // dg/dpf = -12s^2 + 12s^3
   // d2g/dpf2 = 24s - 36s^2
 
   // At pf = 0.3: g=0.6517, dg=-1.764, d2g=-0.84
   {
-    auto [g, dg, d2g] = SecondOrderDerived::quartic( 0.3 );
+    auto [g, dg, d2g] = SecondOrder::quartic( 0.3 );
     throwExceptionOnFailure( checkIfEqual( g, 0.6517, 1e-14 ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": value at pf=0.3 failed" );
     throwExceptionOnFailure( checkIfEqual( dg, -1.764, 1e-14 ),
@@ -145,7 +145,7 @@ void testSecondOrderDerivedQuartic()
 
   // At pf = 0.5: g=0.3125, dg=-1.5, d2g=3
   {
-    auto [g, dg, d2g] = SecondOrderDerived::quartic( 0.5 );
+    auto [g, dg, d2g] = SecondOrder::quartic( 0.5 );
     throwExceptionOnFailure( checkIfEqual( g, 0.3125 ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": value at pf=0.5 failed" );
     throwExceptionOnFailure( checkIfEqual( dg, -1.5 ),
@@ -156,7 +156,7 @@ void testSecondOrderDerivedQuartic()
 
   // Consistency: returned value must match template function
   for ( const double pf : { 0.0, 0.25, 0.5, 0.75, 1.0 } ) {
-    auto [g, dg, d2g] = SecondOrderDerived::quartic( pf );
+    auto [g, dg, d2g] = SecondOrder::quartic( pf );
     throwExceptionOnFailure( checkIfEqual( g, quartic( pf ) ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": value inconsistency at pf=" << pf );
   }
@@ -164,25 +164,25 @@ void testSecondOrderDerivedQuartic()
 
 void testSecondOrderDerivedGeneric()
 {
-  // SecondOrderDerived::generic uses autodiff to compute derivatives
+  // SecondOrder::generic uses autodiff to compute derivatives
   // For p=2, a1=2, a2=0, a3=0: g(pf) = (1-pf)^2 / ((1-pf)^2 + 2*pf)
   // This is a known closed-form case
 
   // Boundary conditions must hold for all sensible parameter choices
   {
-    auto [g0, dg0, d2g0] = SecondOrderDerived::generic( 0.0, 2.0, 2.0, 0.0, 0.0 );
+    auto [g0, dg0, d2g0] = SecondOrder::generic( 0.0, 2.0, 2.0, 0.0, 0.0 );
     throwExceptionOnFailure( checkIfEqual( g0, 1.0 ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": generic(pf=0) must equal 1" );
   }
   {
-    auto [g1, dg1, d2g1] = SecondOrderDerived::generic( 1.0, 2.0, 2.0, 0.0, 0.0 );
+    auto [g1, dg1, d2g1] = SecondOrder::generic( 1.0, 2.0, 2.0, 0.0, 0.0 );
     throwExceptionOnFailure( checkIfEqual( g1, 0.0 ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": generic(pf=1) must equal 0" );
   }
 
   // Consistency: returned value must match template function
   for ( const double pf : { 0.0, 0.25, 0.5, 0.75 } ) {
-    auto [g, dg, d2g] = SecondOrderDerived::generic( pf, 2.0, 2.0, 0.0, 0.0 );
+    auto [g, dg, d2g] = SecondOrder::generic( pf, 2.0, 2.0, 0.0, 0.0 );
     throwExceptionOnFailure( checkIfEqual( g, generic( pf, 2.0, 2.0, 0.0, 0.0 ) ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": value inconsistency at pf=" << pf );
   }
@@ -193,7 +193,7 @@ void testSecondOrderDerivedGeneric()
   const double a1         = 2.0;
   const double a2         = 0.5;
   const double a3         = 0.0;
-  auto [g, dg, d2g]       = SecondOrderDerived::generic( pf, p, a1, a2, a3 );
+  auto [g, dg, d2g]       = SecondOrder::generic( pf, p, a1, a2, a3 );
   const double dg_numdiff = centralDifference( [p, a1, a2, a3](
                                                  const double x ) { return generic( x, p, a1, a2, a3 ); },
                                                pf );

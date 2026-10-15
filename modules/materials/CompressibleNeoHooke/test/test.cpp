@@ -341,7 +341,7 @@ void testWithMPSolver()
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 // ─────────────────────────────────────────────────────────────────────────────
-// The following tests exercise MarmotMaterialFiniteStrain's default (base-class)
+// The following tests exercise Marmot::Materials::MaterialFiniteStrain's default (base-class)
 // implementations, none of which CompressibleNeoHooke overrides: computeStressExplicit,
 // computeStress(..., eigenDeformation), computePlaneStrain(Explicit) (with and without
 // eigenDeformation), computePlaneStress(Explicit), getStateView, getMaximumWaveSpeed,
@@ -407,8 +407,8 @@ void testComputeStressWithEigenDeformation()
   CompressibleNeoHooke::AlgorithmicModuli< 3 >    tan = { Tensor3333d( 0.0 ) };
   // CompressibleNeoHooke's own 4-arg computeStress() override hides the base class's 5-arg
   // (eigenDeformation) overload for a concretely-typed instance -- call through an explicit
-  // base-class reference, as production code does (always via a MarmotMaterialFiniteStrain*).
-  MarmotMaterialFiniteStrain& matBase = mat;
+  // base-class reference, as production code does (always via a Marmot::Materials::MaterialFiniteStrain*).
+  Marmot::Materials::MaterialFiniteStrain& matBase = mat;
   matBase.computeStress( res, tan, def, timeInc, { F0_XX, F0_YY, F0_ZZ } );
 
   throwExceptionOnFailure( checkIfEqual( res.tau, resRef.tau, 1e-10 ),
@@ -453,14 +453,14 @@ void testComputePlaneStrainMatchesComputeStress()
 
   throwExceptionOnFailure( checkIfEqual( resStress.tau, resStrain.tau, 1e-14 ) &&
                              checkIfEqual( tanStress.dTau_dF, tanStrain.dTau_dF, 1e-14 ),
-                           "computePlaneStrain() must match computeStress() for MarmotMaterialFiniteStrain's "
+                           "computePlaneStrain() must match computeStress() for Marmot::Materials::MaterialFiniteStrain's "
                            "default (pass-through) implementation in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
   // ... and the eigen-deformation overload must match computeStress(..., eigenDeformation) likewise.
   CompressibleNeoHooke::ConstitutiveResponse< 3 > resStressEigen( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
   CompressibleNeoHooke::AlgorithmicModuli< 3 >    tanStressEigen  = { Tensor3333d( 0.0 ) };
-  MarmotMaterialFiniteStrain&                     matBaseForEigen = mat;
+  Marmot::Materials::MaterialFiniteStrain&                     matBaseForEigen = mat;
   matBaseForEigen.computeStress( resStressEigen, tanStressEigen, def, timeInc, { 1.01, 0.99, 1.02 } );
 
   CompressibleNeoHooke::ConstitutiveResponse< 3 > resStrainEigen( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );

@@ -57,7 +57,7 @@ namespace Marmot::Elements {
    * with the Kirchhoff stress @f$ \boldsymbol{\tau} @f$, the local driving force @f$ L @f$ and @f$ c = l^2 @f$
    * from the material. The kinematics are those of DisplacementFiniteStrainULElement; the element is the
    * non-micropolar sibling of GradientEnhancedMicropolarULFiniteElement. It consumes a
-   * MarmotMaterialGradientEnhancedFiniteStrain.
+   * Marmot::Materials::MaterialGradientEnhancedFiniteStrain.
    *
    * The residual is the internal force vector (the same sign convention as DisplacementFiniteStrainULElement), the
    * dofs are ordered node by node, @f$ \{u_1, \dots, u_{nDim}, \bar{N}\} @f$, and internally field by field (see
@@ -92,7 +92,7 @@ namespace Marmot::Elements {
     static constexpr int idxN = idxU + bsU;            ///< first index of the nonlocal block
 
     using ParentGeometryElement = MarmotGeometryElement< nDim, nNodes >;
-    using Material              = MarmotMaterialGradientEnhancedFiniteStrain;
+    using Material              = Marmot::Materials::MaterialGradientEnhancedFiniteStrain;
 
     using JacobianSized = typename ParentGeometryElement::JacobianSized;
     using NSized        = typename ParentGeometryElement::NSized;
@@ -465,7 +465,7 @@ namespace Marmot::Elements {
   {
     for ( auto& qp : qps ) {
       qp.material = std::unique_ptr< Material >(
-        MarmotLibrary::MarmotMaterialGradientEnhancedFiniteStrainFactory::createMaterial( section.materialName,
+        Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory::createMaterial( section.materialName,
                                                                                           section.materialProperties,
                                                                                           section.nMaterialProperties,
                                                                                           elLabel ) );

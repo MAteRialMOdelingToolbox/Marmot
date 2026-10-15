@@ -5,7 +5,7 @@ namespace Marmot {
   namespace ContinuumMechanics::FiniteStrain::Plasticity {
     namespace FlowIntegration {
 
-      namespace FirstOrderDerived {
+      namespace FirstOrder {
 
         using namespace Fastor;
         using namespace Marmot::Math::FastorTensors;
@@ -29,7 +29,7 @@ namespace Marmot {
           // clang-format on
         }
 
-      } // namespace FirstOrderDerived
+      } // namespace FirstOrder
 
     }   // namespace FlowIntegration
 

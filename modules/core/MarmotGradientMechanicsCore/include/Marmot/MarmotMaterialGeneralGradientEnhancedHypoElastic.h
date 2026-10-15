@@ -34,6 +34,8 @@
 #include <stdexcept>
 #include <vector>
 
+namespace Marmot::Materials {
+
 /**
  * @brief Base class for general gradient-enhanced hypoelastic material models.
  * @details This class defines the interface for general gradient-enhanced hypoelastic material models,
@@ -52,7 +54,7 @@
  * tensor.
  */
 template < int nNonlocalVariables >
-class MarmotMaterialGeneralGradientEnhancedHypoElastic {
+class MaterialGradientEnhancedHypoElastic {
 
 protected:
   /// @brief Pointer to the array of material properties.
@@ -70,7 +72,7 @@ public:
    * @param nMaterialProperties_ Number of material properties.
    * @param materialNumber_ Material number (identifier for the material).
    */
-  MarmotMaterialGeneralGradientEnhancedHypoElastic( const double* matProperties_,
+  MaterialGradientEnhancedHypoElastic( const double* matProperties_,
                                                     int           nMaterialProperties_,
                                                     int           materialNumber_ )
     : materialProperties( matProperties_ ),
@@ -90,7 +92,7 @@ public:
    * (-Wdelete-abstract-non-virtual-dtor) and emits a trap instruction, which
    * aborted every simulation using such a material on macOS/arm64.
    */
-  virtual ~MarmotMaterialGeneralGradientEnhancedHypoElastic() = default;
+  virtual ~MaterialGradientEnhancedHypoElastic() = default;
 
   /// @brief Struct to hold the increment information.
   struct increment {
@@ -447,3 +449,5 @@ protected:
     return microInertia;
   }
 };
+
+} // namespace Marmot::Materials

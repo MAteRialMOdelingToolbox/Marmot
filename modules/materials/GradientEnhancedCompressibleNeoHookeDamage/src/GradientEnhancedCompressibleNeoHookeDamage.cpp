@@ -25,7 +25,7 @@ namespace Marmot::Materials {
     const double* materialProperties,
     int           nMaterialProperties,
     int           materialNumber )
-    : MarmotMaterialGradientEnhancedFiniteStrain( materialProperties, nMaterialProperties, materialNumber ),
+    : Marmot::Materials::MaterialGradientEnhancedFiniteStrain( materialProperties, nMaterialProperties, materialNumber ),
       K( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 0 ) ),
       G( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 1 ) ),
       kappa0( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 2 ) ),
@@ -76,11 +76,11 @@ namespace Marmot::Materials {
     const auto& F = deformation.F;
 
     // undamaged neo-Hookean response, as in CompressibleNeoHooke
-    const auto [C, dC_dF]                  = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( F );
-    const auto [psi0, dPsi_dC, d2Psi_dCdC] = EnergyDensityFunctions::SecondOrderDerived::PenceGouPotentialB( C, K, G );
+    const auto [C, dC_dF]                  = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::rightCauchyGreen( F );
+    const auto [psi0, dPsi_dC, d2Psi_dCdC] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::SecondOrder::PenceGouPotentialB( C, K, G );
 
     const Tensor33d PK2                     = 2. * dPsi_dC;
-    const auto [tau0, dTau_dPK2, dTau0_dFe] = StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2( PK2, F );
+    const auto [tau0, dTau_dPK2, dTau0_dFe] = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::FirstOrder::KirchhoffStressFromPK2( PK2, F );
     const Tensor3333d dTau0_dF = 2.0 * einsum< ijKL, KLMN >( einsum< ijKL, IJKL >( dTau_dPK2, d2Psi_dCdC ), dC_dF ) +
                                  dTau0_dFe;
 

@@ -209,7 +209,7 @@ namespace Marmot::Elements {
 
       std::unique_ptr< QPStateVarManager > managedStateVars;
 
-      std::unique_ptr< MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables > > material;
+      std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables > > material;
 
       int getNumberOfRequiredStateVarsQuadraturePointOnly()
       {
@@ -298,7 +298,7 @@ namespace Marmot::Elements {
      * @throws std::invalid_argument if the name is not understood, if the count does not match
      *         what the property expects, or if a coefficient is negative.
      * @note The micro-inertia of the non-local field was an element property here and is now a
-     *       MATERIAL one -- see MarmotMaterialGeneralGradientEnhancedHypoElastic::getNonlocalMicroInertia().
+     *       MATERIAL one -- see Marmot::Materials::MaterialGradientEnhancedHypoElastic::getNonlocalMicroInertia().
      *       It is inseparable from the non-local viscosity, which has always been a material
      *       property: the two are one parameter, bounded by \f$m_k \le \eta^2/4\f$, and that bound
      *       is checkable only where both are visible. The retired name is deliberately not
@@ -471,7 +471,7 @@ namespace Marmot::Elements {
      * hence the model mass, perfectly correct -- and is invisible to any check on totals.
      *
      * @note The non-local block reports the micro-inertia the MATERIAL provides through
-     * MarmotMaterialGeneralGradientEnhancedHypoElastic::getNonlocalMicroInertia(), weighted with
+     * Marmot::Materials::MaterialGradientEnhancedHypoElastic::getNonlocalMicroInertia(), weighted with
      * the same scheme -- zero for a non-local variable whose material gives none, which is how the
      * solver tells a second-order non-local field from a first-order one. The viscosity that
      * integrates a first-order field, and that damps a second-order one, comes from the same
@@ -617,8 +617,8 @@ namespace Marmot::Elements {
     assignProperty( const MarmotMaterialSection& section )
   {
     for ( auto& qp : qps ) {
-      qp.material = std::unique_ptr< MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables > >(
-        MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< nNonlocalVariables >::
+      qp.material = std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables > >(
+        Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory< nNonlocalVariables >::
           createMaterial( section.materialName, section.materialProperties, section.nMaterialProperties, elLabel ) );
     }
   }
@@ -851,9 +851,9 @@ namespace Marmot::Elements {
     using namespace Marmot;
     using namespace ContinuumMechanics::VoigtNotation;
 
-    using response  = typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >::response;
-    using tangents  = typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >::tangents;
-    using increment = typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >::increment;
+    using response  = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >::response;
+    using tangents  = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >::tangents;
+    using increment = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >::increment;
 
     for ( size_t i = 0; i < this->qps.size(); i++ ) {
 
@@ -994,8 +994,8 @@ namespace Marmot::Elements {
     using namespace Marmot;
     using namespace ContinuumMechanics::VoigtNotation;
 
-    using response  = typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >::response;
-    using increment = typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >::increment;
+    using response  = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >::response;
+    using increment = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >::increment;
 
     for ( size_t i = 0; i < this->qps.size(); i++ ) {
 
@@ -1312,8 +1312,8 @@ namespace Marmot::Elements {
   void GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
     computeCriticalTimeStepForExplicitDynamics( double& criticalTimeStep, const double* QTotal )
   {
-    using response  = typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >::response;
-    using increment = typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >::increment;
+    using response  = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >::response;
+    using increment = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >::increment;
 
     /* The l / c estimate below assumes the element's mass is spread UNIFORMLY over its nodes, each
      * carrying 1 / nNodes of it. The lumping scheme computeLumpedInertia applies does not do that:

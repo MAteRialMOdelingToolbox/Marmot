@@ -403,8 +403,8 @@ void testCumulativeDissipation()
 void testFactoryAndValidation()
 {
   const auto                                                    props = properties( 5., 30., 10. );
-  std::unique_ptr< MarmotMaterialGradientEnhancedFiniteStrain > mat(
-    MarmotLibrary::MarmotMaterialGradientEnhancedFiniteStrainFactory::
+  std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedFiniteStrain > mat(
+    Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory::
       createMaterial( "GRADIENTENHANCEDFINITESTRAINDRUCKERPRAGER", props.data(), props.size(), 1 ) );
   throwExceptionOnFailure( mat != nullptr, "factory" + where );
   throwExceptionOnFailure( mat->getNumberOfRequiredStateVars() == 13,

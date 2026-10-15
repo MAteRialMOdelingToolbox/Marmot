@@ -24,7 +24,7 @@ static std::pair< AT2PhaseField, std::vector< double > > makeMaterial( const std
 }
 
 // Convenience typedef
-using Mat1 = MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >;
+using Mat1 = Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >;
 using Res1 = Mat1::response;
 using Tan1 = Mat1::tangents;
 using Inc1 = Mat1::increment;

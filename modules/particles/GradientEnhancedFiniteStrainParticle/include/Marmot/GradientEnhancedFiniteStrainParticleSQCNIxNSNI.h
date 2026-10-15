@@ -110,7 +110,7 @@ namespace Marmot::Meshfree {
      * @param[in] nodeCoordinates           Undeformed vertex coordinates, vertex by vertex.
      * @param[in] nNodeCoordiantes          Number of coordinates (unused).
      * @param[in] volume                    Volume (unused, computed from the vertices).
-     * @param[in] materialName              Name of a MarmotMaterialGradientEnhancedFiniteStrain material.
+     * @param[in] materialName              Name of a Marmot::Materials::MaterialGradientEnhancedFiniteStrain material.
      * @param[in] materialProperties        Material properties.
      * @param[in] sizeMaterialProperties    Number of material properties.
      * @param[in] approximation             Meshfree approximation used for the shape functions.

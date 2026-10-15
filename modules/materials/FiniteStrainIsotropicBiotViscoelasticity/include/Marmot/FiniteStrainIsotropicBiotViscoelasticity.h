@@ -47,9 +47,9 @@ namespace Marmot::Materials {
    * - @c S0_old - Biot stress from the previous increment
    * - @c creepStateVars - internal variables for the generalized Maxwell chain
    */
-  class FiniteStrainIsotropicBiotViscoelasticity : public MarmotMaterialFiniteStrainAD {
+  class FiniteStrainIsotropicBiotViscoelasticity : public Marmot::Materials::MaterialFiniteStrainAD {
   public:
-    using MarmotMaterialFiniteStrainAD::MarmotMaterialFiniteStrainAD;
+    using Marmot::Materials::MaterialFiniteStrainAD::MaterialFiniteStrainAD;
 
     /**
      * @brief Construct a FiniteStrainIsotropicBiotViscoelasticity material.

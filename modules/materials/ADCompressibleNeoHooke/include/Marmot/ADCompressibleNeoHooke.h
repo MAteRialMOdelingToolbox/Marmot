@@ -42,9 +42,9 @@ namespace Marmot::Materials {
    * @ingroup materials_hyperelastic
    */
 
-  class ADCompressibleNeoHooke : public MarmotMaterialFiniteStrainAD {
+  class ADCompressibleNeoHooke : public Marmot::Materials::MaterialFiniteStrainAD {
   public:
-    using MarmotMaterialFiniteStrainAD::MarmotMaterialFiniteStrainAD;
+    using Marmot::Materials::MaterialFiniteStrainAD::MaterialFiniteStrainAD;
 
     /**
      * @brief Construct a ADCompressibleNeoHooke material.

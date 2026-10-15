@@ -45,7 +45,7 @@ namespace Marmot::Materials {
    * @class GradientEnhancedHughesWingetWrapper
    * @brief Decorator presenting a small-strain gradient-enhanced material as a finite-strain one.
    *
-   * @tparam BaseMaterialType A concrete class derived from MarmotMaterialGeneralGradientEnhancedHypoElastic<1>.
+   * @tparam BaseMaterialType A concrete class derived from Marmot::Materials::MaterialGradientEnhancedHypoElastic<1>.
    * @tparam tangentMode      How the algorithmic tangent is evaluated, see Marmot::Materials::HughesWingetTangent.
    *
    * The gradient-enhanced sibling of HughesWingetWrapper, and it works the same way: the wrapped material
@@ -105,13 +105,13 @@ namespace Marmot::Materials {
    * pushed forward nor weighted by @f$ J @f$.
    */
   template < typename BaseMaterialType, HughesWingetTangent tangentMode = HughesWingetTangent::Analytic >
-  class GradientEnhancedHughesWingetWrapper : public MarmotMaterialGradientEnhancedFiniteStrain {
+  class GradientEnhancedHughesWingetWrapper : public Marmot::Materials::MaterialGradientEnhancedFiniteStrain {
 
-    static_assert( std::is_base_of_v< MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >, BaseMaterialType >,
+    static_assert( std::is_base_of_v< Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >, BaseMaterialType >,
                    "GradientEnhancedHughesWingetWrapper can only wrap materials derived from "
-                   "MarmotMaterialGeneralGradientEnhancedHypoElastic<1>." );
+                   "Marmot::Materials::MaterialGradientEnhancedHypoElastic<1>." );
 
-    using BaseMaterial = MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >;
+    using BaseMaterial = Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >;
 
   protected:
     /// The wrapped small-strain material, held as the base interface.
@@ -134,7 +134,7 @@ namespace Marmot::Materials {
      * @param[in] materialNumber_      Unique identifier for this material instance.
      */
     GradientEnhancedHughesWingetWrapper( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
-      : MarmotMaterialGradientEnhancedFiniteStrain( matProperties_, nMaterialProperties_, materialNumber_ ),
+      : Marmot::Materials::MaterialGradientEnhancedFiniteStrain( matProperties_, nMaterialProperties_, materialNumber_ ),
         baseMaterial( std::make_unique< BaseMaterialType >( matProperties_, nMaterialProperties_, materialNumber_ ) )
     {
       initializeStateLayout();
@@ -144,8 +144,8 @@ namespace Marmot::Materials {
 
     // The four-argument override below would otherwise hide the base class' five-argument
     // eigen-deformation overload for a caller holding a GradientEnhancedHughesWingetWrapper<...>
-    // rather than a MarmotMaterialGradientEnhancedFiniteStrain*.
-    using MarmotMaterialGradientEnhancedFiniteStrain::computeStress;
+    // rather than a Marmot::Materials::MaterialGradientEnhancedFiniteStrain*.
+    using Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computeStress;
 
     /**
      * @brief Register the state layout: the carried-over deformation gradient, Cauchy stress and nonlocal

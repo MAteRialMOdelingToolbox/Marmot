@@ -99,7 +99,7 @@ namespace Marmot {
         return dFp;
       }
 
-      namespace FirstOrderDerived {
+      namespace FirstOrder {
 
         /** Computes the incremental plastic deformation gradient from the plastic velocity gradient
          *  using a first order approximation.
@@ -129,7 +129,7 @@ namespace Marmot {
          * velocity gradient.
          */
         std::pair< Tensor33d, Tensor3333d > exponentialMap( const Tensor33d& deltaGp );
-      } // namespace FirstOrderDerived
+      } // namespace FirstOrder
 
     }   // namespace FlowIntegration
   }     // namespace ContinuumMechanics::FiniteStrain::Plasticity

@@ -49,7 +49,7 @@ namespace Marmot::Meshfree {
    * integration); registered as "Displacement/PlaneStrain/Point".
    *
    * @details The particle owns one DisplacementMaterialPoint (see MaterialPointType), which carries the kinematics and
-   * the state of a MarmotMaterialFiniteStrain; configurations and deformation gradients are those of the material
+   * the state of a Marmot::Materials::MaterialFiniteStrain; configurations and deformation gradients are those of the material
    * point:
    * @f$ \boldsymbol{X} @f$ undeformed, @f$ \boldsymbol{Y} @f$ intermediate (last accepted state), @f$ \boldsymbol{x}
    * @f$ current, @f$ \boldsymbol{F} = \Delta\boldsymbol{F}\,\boldsymbol{F}_n @f$. The dofs @f$ \Delta q_{Bk} @f$ are
@@ -156,7 +156,7 @@ namespace Marmot::Meshfree {
 
     static constexpr int nDofPerNodeU = nDim;            ///< dofs per node of the displacement field
 
-    using Material = MarmotMaterialFiniteStrain;         ///< material interface consumed by the material point
+    using Material = Marmot::Materials::MaterialFiniteStrain;         ///< material interface consumed by the material point
 
     using ForceSized = Eigen::Matrix< double, nDim, 1 >; ///< a force vector
 

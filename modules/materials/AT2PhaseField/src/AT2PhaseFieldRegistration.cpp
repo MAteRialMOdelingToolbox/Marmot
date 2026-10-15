@@ -30,9 +30,8 @@ namespace Marmot::Materials {
 
   namespace Registration {
 
-    using namespace MarmotLibrary;
 
-    const static bool AT2PhaseFieldIsRegistered = MarmotMaterialGeneralGradientEnhancedHypoElasticFactory<
+    const static bool AT2PhaseFieldIsRegistered = Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory<
       1 >::registerMaterial< AT2PhaseField >( "AT2PHASEFIELD" );
 
     // NOT registered with GradientEnhancedHughesWingetWrapper, deliberately. That wrapper hands the

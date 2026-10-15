@@ -29,7 +29,7 @@ void applyEigenDeformationToTangent_( Fastor::Tensor< double, 3, 3, 3, 3 >& dT2_
     }
   }
 }
-void MarmotMaterialFiniteStrain::computeStress( ConstitutiveResponse< 3 >&                  response,
+void Marmot::Materials::MaterialFiniteStrain::computeStress( ConstitutiveResponse< 3 >&                  response,
                                                 AlgorithmicModuli< 3 >&                     tangents,
                                                 const Deformation< 3 >&                     deformation,
                                                 const TimeIncrement&                        timeIncrement,
@@ -48,7 +48,7 @@ void MarmotMaterialFiniteStrain::computeStress( ConstitutiveResponse< 3 >&      
   return;
 }
 
-void MarmotMaterialFiniteStrain::computePlaneStrain( ConstitutiveResponse< 3 >& response,
+void Marmot::Materials::MaterialFiniteStrain::computePlaneStrain( ConstitutiveResponse< 3 >& response,
                                                      AlgorithmicModuli< 3 >&    algorithmicModuli,
                                                      const Deformation< 3 >&    deformation,
                                                      const TimeIncrement&       timeIncrement ) const
@@ -56,7 +56,7 @@ void MarmotMaterialFiniteStrain::computePlaneStrain( ConstitutiveResponse< 3 >& 
   return computeStress( response, algorithmicModuli, deformation, timeIncrement );
 }
 
-void MarmotMaterialFiniteStrain::computePlaneStrain(
+void Marmot::Materials::MaterialFiniteStrain::computePlaneStrain(
   ConstitutiveResponse< 3 >&                  response,
   AlgorithmicModuli< 3 >&                     algorithmicModuli,
   const Deformation< 3 >&                     deformation,
@@ -66,7 +66,7 @@ void MarmotMaterialFiniteStrain::computePlaneStrain(
   return computeStress( response, algorithmicModuli, deformation, timeIncrement, eigenDeformation );
 }
 
-void MarmotMaterialFiniteStrain::computePlaneStress( ConstitutiveResponse< 2 >& response,
+void Marmot::Materials::MaterialFiniteStrain::computePlaneStress( ConstitutiveResponse< 2 >& response,
                                                      AlgorithmicModuli< 2 >&    algorithmicModuli,
                                                      const Deformation< 2 >&    deformation,
                                                      const TimeIncrement&       timeIncrement ) const
@@ -76,7 +76,7 @@ void MarmotMaterialFiniteStrain::computePlaneStress( ConstitutiveResponse< 2 >& 
 
 /** The basic implementation here assumes non-chirial, isotropic elastic behavior.
  */
-std::tuple< double, double, double > MarmotMaterialFiniteStrain::findEigenDeformationForEigenStress(
+std::tuple< double, double, double > Marmot::Materials::MaterialFiniteStrain::findEigenDeformationForEigenStress(
   const std::tuple< double, double, double >& initialGuess,
   const std::tuple< double, double, double >& eigenStressComponents,
   double*                                     stateVars ) const

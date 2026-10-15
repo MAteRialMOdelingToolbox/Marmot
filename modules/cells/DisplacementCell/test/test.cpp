@@ -437,8 +437,8 @@ void checkStressStateOfTheMaterialPoints( const CellGeometry< nDim >& g )
     const Tensor33d Fn( mp->getStateView( "deformation gradient" ).stateLocation );
     const Tensor33d stored( mp->getStateView( "stress" ).stateLocation );
 
-    MarmotMaterialFiniteStrain::ConstitutiveResponse< 3 > response{ Tensor33d( 0.0 ), 0, 0, nullptr };
-    MarmotMaterialFiniteStrain::AlgorithmicModuli< 3 >    tangents;
+    Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse< 3 > response{ Tensor33d( 0.0 ), 0, 0, nullptr };
+    Marmot::Materials::MaterialFiniteStrain::AlgorithmicModuli< 3 >    tangents;
     reference.computeStress( response, tangents, { Tensor33d( dF % Fn ) }, { 1.0, 1.0 } );
 
     double error = 0.0, norm = 0.0;

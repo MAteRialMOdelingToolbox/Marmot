@@ -32,7 +32,7 @@ namespace Marmot::Materials {
     const double* materialProperties,
     int           nMaterialProperties,
     int           materialLabel )
-    : MarmotMaterialFiniteStrainAD( materialProperties, nMaterialProperties, materialLabel ),
+    : Marmot::Materials::MaterialFiniteStrainAD( materialProperties, nMaterialProperties, materialLabel ),
       E1( materialProperties[0] ),
       E2( materialProperties[1] ),
       E3( materialProperties[2] ),
@@ -63,7 +63,7 @@ namespace Marmot::Materials {
 
     using namespace ContinuumMechanics;
     // compute Cauchy-Green deformation
-    const Tensor33t< scalar > C = DeformationMeasures::rightCauchyGreen( F );
+    const Tensor33t< scalar > C = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( F );
 
     // compute principal stretches and directions
     auto [lam, Q] = Math::computeEigenSystemJacobi( C );
@@ -109,7 +109,7 @@ namespace Marmot::Materials {
     Tensor33t< scalar > PK2 = Q % PK2_rotated % transpose( Q );
 
     // transform to Kirchhoff stress
-    const Tensor33t< scalar > tau = StressMeasures::KirchhoffStressFromPK2( PK2, F );
+    const Tensor33t< scalar > tau = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::KirchhoffStressFromPK2( PK2, F );
     response.tau                  = tau;
     response.elasticEnergyDensity = 0.5 *
                                     einsum< ij, ij >( Marmot::Math::makeReal( S_biot ), Marmot::Math::makeReal( evaluate( U - I ) ) ).toscalar();

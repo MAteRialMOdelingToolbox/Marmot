@@ -42,7 +42,7 @@ namespace Marmot::MaterialPoints {
    * @class Marmot::MaterialPoints::DisplacementMaterialPoint
    * @brief MPM material point of the finite-strain displacement formulation.
    *
-   * @details The material point carries the state of a MarmotMaterialFiniteStrain and the kinematics of a total
+   * @details The material point carries the state of a Marmot::Materials::MaterialFiniteStrain and the kinematics of a total
    * deformation gradient that is updated multiplicatively, increment by increment. Three configurations are
    * distinguished: the undeformed configuration @f$ \boldsymbol{X} @f$, the intermediate configuration
    * @f$ \boldsymbol{Y} @f$ (the last accepted state, i.e., the configuration at the beginning of the current
@@ -91,7 +91,7 @@ namespace Marmot::MaterialPoints {
     double _vol0;    ///< volume in the undeformed configuration @f$ V_0 @f$
     double _density; ///< mass density in the undeformed configuration, as provided by the material
 
-    using Material = MarmotMaterialFiniteStrain; ///< material interface consumed by the material point
+    using Material = Marmot::Materials::MaterialFiniteStrain; ///< material interface consumed by the material point
 
     std::unique_ptr< Material > material;        ///< the finite-strain material
 
@@ -193,7 +193,7 @@ namespace Marmot::MaterialPoints {
     std::string getMaterialPointShape() const { return "point"; };
 
     /**
-     * @brief Creates the material through the MarmotMaterialFiniteStrainFactory.
+     * @brief Creates the material through the Marmot::Registry::MaterialFiniteStrainFactory.
      * @param[in] property Section with the material name and properties.
      * @throws std::invalid_argument if no finite-strain material of that name exists.
      */
@@ -429,7 +429,7 @@ namespace Marmot::MaterialPoints {
   void DisplacementMaterialPoint< nDim >::assignMaterial( const MarmotMaterialSection& section )
   {
     material = std::unique_ptr< Material >(
-      MarmotLibrary::MarmotMaterialFiniteStrainFactory::createMaterial( section.materialName,
+      Marmot::Registry::MaterialFiniteStrainFactory::createMaterial( section.materialName,
                                                                         section.materialProperties,
                                                                         section.nMaterialProperties,
                                                                         _mpNumber ) );
@@ -462,7 +462,7 @@ namespace Marmot::MaterialPoints {
    * @brief Plane-strain displacement material point (registered as "Displacement/PlaneStrain").
    *
    * @details The in-plane increment is expanded to 3D (out-of-plane components of the identity), the material is
-   * evaluated by MarmotMaterialFiniteStrain::computePlaneStrain() with the 3D deformation gradient, and the in-plane
+   * evaluated by Marmot::Materials::MaterialFiniteStrain::computePlaneStrain() with the 3D deformation gradient, and the in-plane
    * parts of @f$ \boldsymbol{\tau} @f$ and @f$ \partial\boldsymbol{\tau}/\partial\Delta\boldsymbol{F} @f$ are
    * kept. The full 3D Kirchhoff stress is also written to the state "stress".
    */
@@ -491,7 +491,7 @@ namespace Marmot::MaterialPoints {
    * @brief 3D displacement material point (registered as "Displacement/3D").
    *
    * @details The material is evaluated with the 3D deformation gradient by
-   * MarmotMaterialFiniteStrain::computeStress(); the Kirchhoff stress is written to the state "stress".
+   * Marmot::Materials::MaterialFiniteStrain::computeStress(); the Kirchhoff stress is written to the state "stress".
    */
   class DisplacementMaterialPoint3D : public DisplacementMaterialPoint< 3 > {
 

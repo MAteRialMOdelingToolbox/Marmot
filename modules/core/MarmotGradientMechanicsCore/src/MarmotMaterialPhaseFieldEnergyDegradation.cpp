@@ -2,11 +2,11 @@
 #include <autodiff/forward/dual.hpp>
 #include <cmath>
 
-namespace Marmot::PhaseField {
+namespace Marmot::ContinuumMechanics::PhaseField {
 
   namespace EnergyDegradationFunctions {
 
-    namespace SecondOrderDerived {
+    namespace SecondOrder {
 
       std::tuple< double, double, double > quadratic( const double pf )
       {
@@ -46,10 +46,10 @@ namespace Marmot::PhaseField {
         autodiff::seed< 1 >( pf_dual, 1 );
         autodiff::seed< 2 >( pf_dual, 1 );
 
-        const dual2nd result = Marmot::PhaseField::EnergyDegradationFunctions::generic( pf_dual, p, a1, a2, a3 );
+        const dual2nd result = Marmot::ContinuumMechanics::PhaseField::EnergyDegradationFunctions::generic( pf_dual, p, a1, a2, a3 );
 
         return { result.val.val, derivative< 1 >( result ), derivative< 2 >( result ) };
       }
-    }; // namespace SecondOrderDerived
+    }; // namespace SecondOrder
   }    // namespace EnergyDegradationFunctions
-};     // namespace Marmot::PhaseField
+};     // namespace Marmot::ContinuumMechanics::PhaseField

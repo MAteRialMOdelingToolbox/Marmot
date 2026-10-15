@@ -38,13 +38,13 @@ namespace Marmot::Materials {
   using namespace Fastor;
 
   /**
-   * @class MarmotMaterialFiniteStrainSubstepped
+   * @class MaterialFiniteStrainSubstepped
    * @brief A decorator that applies time substepping with analytical tangent accumulation.
    * @tparam BaseMaterialType The concrete material class to wrap.
    * Properties: [nSubsteps, Prop1, Prop2, ...]
    */
   template < typename BaseMaterialType >
-  class MarmotMaterialFiniteStrainSubstepped : public MarmotMaterialFiniteStrain {
+  class MaterialFiniteStrainSubstepped : public Marmot::Materials::MaterialFiniteStrain {
   protected:
     std::unique_ptr< BaseMaterialType > baseMaterial; ///< Wrapped base material instance.
     int                                 nSubsteps;    ///< Number of sub-steps for time substepping.
@@ -73,19 +73,19 @@ namespace Marmot::Materials {
     };
 
     /**
-     * @brief Construct a MarmotMaterialFiniteStrainSubstepped.
+     * @brief Construct a MaterialFiniteStrainSubstepped.
      * @param[in] matProperties_       Pointer to the array of material property values.
      *                                 The first entry is interpreted as the number of sub-steps;
      *                                 the remaining entries are forwarded to the wrapped base material.
      * @param[in] nMaterialProperties_ Total number of material property values (including nSubsteps).
      * @param[in] materialNumber_      Unique identifier for this material instance.
      */
-    MarmotMaterialFiniteStrainSubstepped( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
-      : MarmotMaterialFiniteStrain( matProperties_, nMaterialProperties_, materialNumber_ )
+    MaterialFiniteStrainSubstepped( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
+      : Marmot::Materials::MaterialFiniteStrain( matProperties_, nMaterialProperties_, materialNumber_ )
     {
       // 1. Parse Substepping parameters
       if ( nMaterialProperties_ < 1 ) {
-        throw std::invalid_argument( "MarmotMaterialFiniteStrainSubstepped requires at least 1 property (nSubsteps)" );
+        throw std::invalid_argument( "MaterialFiniteStrainSubstepped requires at least 1 property (nSubsteps)" );
       }
       this->nSubsteps = static_cast< int >( matProperties_[0] );
       if ( this->nSubsteps < 1 )
@@ -97,7 +97,7 @@ namespace Marmot::Materials {
       initializeStateLayout();
     }
 
-    virtual ~MarmotMaterialFiniteStrainSubstepped() = default;
+    virtual ~MaterialFiniteStrainSubstepped() = default;
 
     double getDensity( const double* stateVars ) const override { return baseMaterial->getDensity( stateVars ); }
 

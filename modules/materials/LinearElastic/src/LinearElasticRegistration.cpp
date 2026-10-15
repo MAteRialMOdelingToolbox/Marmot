@@ -7,14 +7,13 @@ namespace Marmot::Materials {
 
   namespace Registration {
 
-    using namespace MarmotLibrary;
 
     const static bool LinearElasticIsRegistered = Marmot::Registry::MaterialHypoElasticFactory::registerMaterial< LinearElastic >(
       "LINEARELASTIC" );
 
-    // Co-rotational Hughes-Winget wrapper, usable wherever a MarmotMaterialFiniteStrain is expected
+    // Co-rotational Hughes-Winget wrapper, usable wherever a Marmot::Materials::MaterialFiniteStrain is expected
     // (finite-strain elements, meshfree particles and material points).
-    const static bool LinearElasticHughesWingetIsRegistered = MarmotMaterialFiniteStrainFactory::registerMaterial<
+    const static bool LinearElasticHughesWingetIsRegistered = Marmot::Registry::MaterialFiniteStrainFactory::registerMaterial<
       HughesWingetWrapper< LinearElastic > >( "LINEARELASTIC/HUGHES-WINGET" );
 
   } // namespace Registration

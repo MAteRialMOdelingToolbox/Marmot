@@ -45,7 +45,7 @@ namespace Marmot::Cells {
    * @brief MPM background cell for finite-strain displacement material points.
    *
    * @details The cell carries the displacement field (nDim dofs per node) and consumes DisplacementMaterialPoint
-   * instances, which drive a MarmotMaterialFiniteStrain. As usual in MPM, the grid dofs @f$ \Delta q_{Bk} @f$ are the
+   * instances, which drive a Marmot::Materials::MaterialFiniteStrain. As usual in MPM, the grid dofs @f$ \Delta q_{Bk} @f$ are the
    * INCREMENTS of the current step, and the material points carry the accumulated state. The cell nodes define the
    * intermediate configuration @f$ \boldsymbol{Y} @f$ (the configuration at the beginning of the increment); the
    * shape functions @f$ N_A @f$ and their gradients @f$ \partial N_A/\partial Y_J @f$ are evaluated once per

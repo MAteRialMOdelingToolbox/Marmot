@@ -47,7 +47,7 @@ namespace Marmot::Cells {
    * The cell carries the displacement field @f$ \boldsymbol{u} @f$ (nDim dofs per node) and one scalar nonlocal
    * field @f$ \bar{N} @f$ (1 dof per node, field name `nonlocal damage`), and consumes
    * Marmot::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint instances, which in turn drive a
-   * MarmotMaterialGradientEnhancedFiniteStrain. It is the MPM counterpart of the finite element
+   * Marmot::Materials::MaterialGradientEnhancedFiniteStrain. It is the MPM counterpart of the finite element
    * GradientEnhancedFiniteStrainDisplacementElement.
    *
    * As usual in MPM, the grid dofs are the INCREMENTS of the current step, @f$ \Delta\boldsymbol{q} @f$; the

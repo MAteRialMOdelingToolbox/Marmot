@@ -268,7 +268,7 @@ void testLumpedInertiaHexa20ReducedIntegrationMatchesAnalyticValues()
 // ---------------------------------------------------------------------------------------------
 // The setup below (nodal coordinates, material properties, state vars) is always kept alive in
 // the SAME function scope as the element that uses it: assignNodeCoordinates()/assignProperty()
-// store zero-copy Eigen::Map views (and MarmotMaterialFiniteStrain stores a raw pointer to its
+// store zero-copy Eigen::Map views (and Marmot::Materials::MaterialFiniteStrain stores a raw pointer to its
 // property array) directly into the caller-owned buffers rather than copying them, so factoring
 // this setup into a helper that returns only the element -- while its backing vectors go out of
 // scope -- leaves the element holding dangling pointers (confirmed via AddressSanitizer:
@@ -656,11 +656,11 @@ void testSetInitialConditionsGeostaticStressMatchesPrescribedStress()
   F0( 1, 1 ) = qp0.managedStateVars->F0_YY;
   F0( 2, 2 ) = qp0.managedStateVars->F0_ZZ;
 
-  MarmotMaterialFiniteStrain::Deformation< 3 >          deformation{ F0 };
-  MarmotMaterialFiniteStrain::TimeIncrement             timeIncrement{ 0.0, 1.0 };
-  MarmotMaterialFiniteStrain::ConstitutiveResponse< 3 > response;
+  Marmot::Materials::MaterialFiniteStrain::Deformation< 3 >          deformation{ F0 };
+  Marmot::Materials::MaterialFiniteStrain::TimeIncrement             timeIncrement{ 0.0, 1.0 };
+  Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse< 3 > response;
   response.stateVars = qp0.managedStateVars->materialStateVars.data();
-  MarmotMaterialFiniteStrain::AlgorithmicModuli< 3 > tangents;
+  Marmot::Materials::MaterialFiniteStrain::AlgorithmicModuli< 3 > tangents;
 
   qp0.material->computeStress( response, tangents, deformation, timeIncrement );
 

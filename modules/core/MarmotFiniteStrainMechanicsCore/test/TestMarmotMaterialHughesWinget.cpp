@@ -158,9 +158,9 @@ namespace {
 
     auto tauAt = [&]( const Tensor33d& Fp ) {
       std::vector< double >                                 scratch = stateIn;
-      MarmotMaterialFiniteStrain::ConstitutiveResponse< 3 > r;
+      Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse< 3 > r;
       r.stateVars = scratch.data();
-      MarmotMaterialFiniteStrain::AlgorithmicModuli< 3 > t;
+      Marmot::Materials::MaterialFiniteStrain::AlgorithmicModuli< 3 > t;
       material.computeStress( r, t, { Fp }, { time, dT } );
       return r.tau;
     };
@@ -209,9 +209,9 @@ namespace {
                                             double                 time = 0.0,
                                             double                 dT   = 1.0 )
   {
-    MarmotMaterialFiniteStrain::ConstitutiveResponse< 3 > r;
+    Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse< 3 > r;
     r.stateVars = state.data();
-    MarmotMaterialFiniteStrain::AlgorithmicModuli< 3 > t;
+    Marmot::Materials::MaterialFiniteStrain::AlgorithmicModuli< 3 > t;
     w.computeStress( r, t, { F }, { time, dT } );
     return { r.tau, t.dTau_dF };
   }

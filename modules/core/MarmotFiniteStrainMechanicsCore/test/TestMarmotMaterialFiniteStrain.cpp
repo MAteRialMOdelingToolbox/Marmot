@@ -12,15 +12,15 @@ using namespace Marmot::Math::FastorTensors;
 namespace {
 
   // A minimal, linear-elastic (isotropic Kirchhoff = C:small-strain), test-only material with a
-  // single state variable. No shipped material derived from MarmotMaterialFiniteStrain both (a)
+  // single state variable. No shipped material derived from Marmot::Materials::MaterialFiniteStrain both (a)
   // has state variables and (b) leaves getMaximumWaveSpeed() at its base-class default, so this is
   // needed to exercise that default's non-null/non-empty state-variable-copying branch.
-  class LinearElasticFiniteStrainMaterialWithStateVar : public MarmotMaterialFiniteStrain {
+  class LinearElasticFiniteStrainMaterialWithStateVar : public Marmot::Materials::MaterialFiniteStrain {
   public:
     LinearElasticFiniteStrainMaterialWithStateVar( const double* matProperties_,
                                                    int           nMaterialProperties_,
                                                    int           materialNumber_ )
-      : MarmotMaterialFiniteStrain( matProperties_, nMaterialProperties_, materialNumber_ )
+      : Marmot::Materials::MaterialFiniteStrain( matProperties_, nMaterialProperties_, materialNumber_ )
     {
       stateLayout.add( "dummy", 1 );
       stateLayout.finalize();
@@ -84,7 +84,7 @@ void testGetMaximumWaveSpeedCopiesNonEmptyStateVars()
 
   std::vector< double > stateVars( mat.getNumberOfRequiredStateVars(), -1.0 );
 
-  MarmotMaterialFiniteStrain::ConstitutiveResponse< 3 > res;
+  Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse< 3 > res;
   res.stateVars = stateVars.data();
 
   const Tensor33d F = Marmot::Math::FastorTensors::Spatial3D::I;

@@ -4,7 +4,7 @@
 #include <Fastor/tensor/Tensor.h>            // Fastor tensor library
 
 using namespace Marmot::Testing;
-using namespace Marmot::ContinuumMechanics::StressMeasures;
+using namespace Marmot::ContinuumMechanics::FiniteStrain::StressMeasures;
 using namespace Marmot::Math::FastorTensors;
 
 void testKirchhoffStressFromPK2_identityTensor()
@@ -170,7 +170,7 @@ void testKirchhoffStressFromPK2FirstOrderDerived_diagonalTensor()
   // [ 0.0  0.0  1.1 ]
 
   // Call function to compute tau, and its first-order derivatives
-  auto [tau, dTau_dPK2, dTau_dF] = FirstOrderDerived::KirchhoffStressFromPK2( PK2, F );
+  auto [tau, dTau_dPK2, dTau_dF] = FirstOrder::KirchhoffStressFromPK2( PK2, F );
 
   // Test 1: Check tau result
   Tensor33d expectedTau( 0.0 );
@@ -182,7 +182,7 @@ void testKirchhoffStressFromPK2FirstOrderDerived_diagonalTensor()
   // [ 0.0    0.0    1.21 ]
 
   throwExceptionOnFailure( checkIfEqual( tau, expectedTau, 1e-12 ),
-                           "FirstOrderDerived tau with Diagonal Tensor mismatch in " +
+                           "FirstOrder tau with Diagonal Tensor mismatch in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
   // Test 2: Check dTau/dPK2
@@ -194,7 +194,7 @@ void testKirchhoffStressFromPK2FirstOrderDerived_diagonalTensor()
           expected_dTau_dPK2( i, j, p, q ) = F( i, p ) * F( j, q );
 
   throwExceptionOnFailure( checkIfEqual( dTau_dPK2, expected_dTau_dPK2, 1e-12 ),
-                           "FirstOrderDerived dTau_dPK2 with Diagonal Tensor mismatch in " +
+                           "FirstOrder dTau_dPK2 with Diagonal Tensor mismatch in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
   // Test 3: Check dTau/dF
@@ -209,7 +209,7 @@ void testKirchhoffStressFromPK2FirstOrderDerived_diagonalTensor()
         }
 
   throwExceptionOnFailure( checkIfEqual( dTau_dF, expected_dTau_dF, 1e-12 ),
-                           "FirstOrderDerived dTau_dF with Diagonal Tensor mismatch in " +
+                           "FirstOrder dTau_dF with Diagonal Tensor mismatch in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
@@ -250,7 +250,7 @@ void testKirchhoffStressFromPK2FirstOrderDerived_offDiagonalTensor()
   // [ 0.0  0.0  2.0 ]
 
   // Call analytical function
-  auto [tau, dTau_dPK2, dTau_dF] = FirstOrderDerived::KirchhoffStressFromPK2( PK2, F );
+  auto [tau, dTau_dPK2, dTau_dF] = FirstOrder::KirchhoffStressFromPK2( PK2, F );
 
   // Test 1: Validate tau
   auto computeTau = [&]( const Tensor33d& A, const Tensor33d& B ) {
@@ -266,7 +266,7 @@ void testKirchhoffStressFromPK2FirstOrderDerived_offDiagonalTensor()
   Tensor33d tau_ref = computeTau( F, PK2 );
 
   throwExceptionOnFailure( checkIfEqual( tau, tau_ref, 1e-12 ),
-                           "FirstOrderDerived tau with Off-Diagonal Tensor mismatch in " +
+                           "FirstOrder tau with Off-Diagonal Tensor mismatch in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
   // Test 2: Validate dTau/dPK2 analytically
@@ -278,7 +278,7 @@ void testKirchhoffStressFromPK2FirstOrderDerived_offDiagonalTensor()
           ref_dTau_dPK2( i, j, p, q ) = F( i, p ) * F( j, q );
 
   throwExceptionOnFailure( checkIfEqual( dTau_dPK2, ref_dTau_dPK2, 1e-12 ),
-                           "FirstOrderDerived dTau_dPK2 with Off-Diagonal Tensor mismatch in " +
+                           "FirstOrder dTau_dPK2 with Off-Diagonal Tensor mismatch in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
   // Test 3: Check dTau/dF analytically
@@ -301,7 +301,7 @@ void testKirchhoffStressFromPK2FirstOrderDerived_offDiagonalTensor()
         }
 
   throwExceptionOnFailure( checkIfEqual( dTau_dF, expected_dTau_dF, 1e-12 ),
-                           "FirstOrderDerived dTau_dF with Off-Diagonal Tensor mismatch in " +
+                           "FirstOrder dTau_dF with Off-Diagonal Tensor mismatch in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 

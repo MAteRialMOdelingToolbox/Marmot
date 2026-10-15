@@ -26,7 +26,7 @@
 #pragma once
 #include "Marmot/MarmotFastorTensorBasics.h"
 
-namespace Marmot::ContinuumMechanics {
+namespace Marmot::ContinuumMechanics::FiniteStrain {
 
   namespace EnergyDensityFunctions {
 
@@ -215,7 +215,7 @@ namespace Marmot::ContinuumMechanics {
       return psi;
     }
 
-    namespace FirstOrderDerived {
+    namespace FirstOrder {
 
       /** @brief Hyperelastic Energy Density Function Wb acc. Pence & Gou (2015), Eq. (2.12) and its first derivative
        * w.r.t. C
@@ -269,9 +269,9 @@ namespace Marmot::ContinuumMechanics {
 
         return { psi, dPsi_dC };
       }
-    } // namespace FirstOrderDerived
+    } // namespace FirstOrder
 
-    namespace SecondOrderDerived {
+    namespace SecondOrder {
 
       /** @brief Hyperelastic Energy Density Function Wb acc. Pence & Gou (2015), Eq. (2.12) and its first and second
        * derivative w.r.t. C
@@ -424,9 +424,9 @@ namespace Marmot::ContinuumMechanics {
         return { psi, dPsi_dU, d2Psi_dUdU };
       }
 
-    } // namespace SecondOrderDerived
+    } // namespace SecondOrder
 
-    namespace ThirdOrderDerived {
+    namespace ThirdOrder {
       /** @brief Standard compressible Neo-Hooke energy density and first/second/third derivatives w.r.t.
        * \f$\boldsymbol{C}\f$.
        *
@@ -439,7 +439,7 @@ namespace Marmot::ContinuumMechanics {
         const Marmot::Math::FastorTensors::Tensor33d& C,
         const double&                           K,
         const double&                           G );
-    } // namespace ThirdOrderDerived
+    } // namespace ThirdOrder
   }   // namespace EnergyDensityFunctions
 
 } // namespace Marmot::ContinuumMechanics

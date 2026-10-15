@@ -28,7 +28,7 @@
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include <Fastor/tensor/Tensor.h>
 
-namespace Marmot::ContinuumMechanics {
+namespace Marmot::ContinuumMechanics::FiniteStrain {
 
   namespace StressMeasures {
 
@@ -60,7 +60,7 @@ namespace Marmot::ContinuumMechanics {
       return tau;
     }
 
-    namespace FirstOrderDerived {
+    namespace FirstOrder {
 
       /** @brief Computes the Kirchhoff stress from the 2nd Piola-Kirchhoff stress and the deformation gradient and the
        * respective partial derivatives.
@@ -99,7 +99,7 @@ namespace Marmot::ContinuumMechanics {
 
         return { tau, dTau_dPK2, dTau_dF };
       }
-    } // namespace FirstOrderDerived
+    } // namespace FirstOrder
 
   }   // namespace StressMeasures
 

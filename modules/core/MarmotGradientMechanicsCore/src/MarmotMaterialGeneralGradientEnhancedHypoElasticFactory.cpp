@@ -1,10 +1,11 @@
 #include "Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h"
 #include "Marmot/MarmotJournal.h"
 
-using namespace MarmotLibrary;
+namespace Marmot::Registry {
+
 
 template <>
-MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< 1 >::MaterialFactoryMap& MarmotMaterialGeneralGradientEnhancedHypoElasticFactory<
+MaterialGradientEnhancedHypoElasticFactory< 1 >::MaterialFactoryMap& MaterialGradientEnhancedHypoElasticFactory<
   1 >::materialFactoryFunctionByName()
 {
   static MaterialFactoryMap map;
@@ -12,7 +13,7 @@ MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< 1 >::MaterialFactoryMap
 }
 
 template <>
-MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >* MarmotMaterialGeneralGradientEnhancedHypoElasticFactory<
+Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >* MaterialGradientEnhancedHypoElasticFactory<
   1 >::createMaterial( const std::string& materialName,
                        const double*      materialProperties,
                        int                nMaterialProperties,
@@ -33,7 +34,7 @@ MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >* MarmotMaterialGeneralGrad
 }
 
 template <>
-MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< 2 >::MaterialFactoryMap& MarmotMaterialGeneralGradientEnhancedHypoElasticFactory<
+MaterialGradientEnhancedHypoElasticFactory< 2 >::MaterialFactoryMap& MaterialGradientEnhancedHypoElasticFactory<
   2 >::materialFactoryFunctionByName()
 {
   static MaterialFactoryMap map;
@@ -41,7 +42,7 @@ MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< 2 >::MaterialFactoryMap
 }
 
 template <>
-MarmotMaterialGeneralGradientEnhancedHypoElastic< 2 >* MarmotMaterialGeneralGradientEnhancedHypoElasticFactory<
+Marmot::Materials::MaterialGradientEnhancedHypoElastic< 2 >* MaterialGradientEnhancedHypoElasticFactory<
   2 >::createMaterial( const std::string& materialName,
                        const double*      materialProperties,
                        int                nMaterialProperties,
@@ -62,7 +63,7 @@ MarmotMaterialGeneralGradientEnhancedHypoElastic< 2 >* MarmotMaterialGeneralGrad
 }
 
 template <>
-MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< 6 >::MaterialFactoryMap& MarmotMaterialGeneralGradientEnhancedHypoElasticFactory<
+MaterialGradientEnhancedHypoElasticFactory< 6 >::MaterialFactoryMap& MaterialGradientEnhancedHypoElasticFactory<
   6 >::materialFactoryFunctionByName()
 {
   static MaterialFactoryMap map;
@@ -70,7 +71,7 @@ MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< 6 >::MaterialFactoryMap
 }
 
 template <>
-MarmotMaterialGeneralGradientEnhancedHypoElastic< 6 >* MarmotMaterialGeneralGradientEnhancedHypoElasticFactory<
+Marmot::Materials::MaterialGradientEnhancedHypoElastic< 6 >* MaterialGradientEnhancedHypoElasticFactory<
   6 >::createMaterial( const std::string& materialName,
                        const double*      materialProperties,
                        int                nMaterialProperties,
@@ -89,3 +90,5 @@ MarmotMaterialGeneralGradientEnhancedHypoElastic< 6 >* MarmotMaterialGeneralGrad
 
   return it->second( materialProperties, nMaterialProperties, materialNumber );
 }
+
+} // namespace Marmot::Registry

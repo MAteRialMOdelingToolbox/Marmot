@@ -29,11 +29,13 @@
 #include <string>
 #include <tuple>
 
+namespace Marmot::Materials {
+
 /**
- * @class MarmotMaterialGradientEnhancedFiniteStrain
+ * @class MaterialGradientEnhancedFiniteStrain
  * @brief Abstract base class for gradient-enhanced (implicit-gradient) materials in the finite strain regime.
  *
- * The finite-strain counterpart of MarmotMaterialGeneralGradientEnhancedHypoElastic: the displacement
+ * The finite-strain counterpart of Marmot::Materials::MaterialGradientEnhancedHypoElastic: the displacement
  * field is coupled to a single scalar nonlocal field @f$ \bar{N} @f$ governed by the additional balance
  * equation
  * @f[
@@ -50,7 +52,7 @@
  * integrating against the reference volume requires.
  *
  * @note The interface carries a **single** scalar nonlocal field, unlike the small-strain
- * MarmotMaterialGeneralGradientEnhancedHypoElastic, which is templated on the number of nonlocal
+ * Marmot::Materials::MaterialGradientEnhancedHypoElastic, which is templated on the number of nonlocal
  * variables. It also has **no slot for @f$ \partial c/\partial\bar{N} @f$**: a material with
  * damage-dependent interactions (see MarmotDecreasingInteractions) can report the current @f$ c @f$, but
  * not its derivative, so its consistent tangent would be incomplete.
@@ -59,7 +61,7 @@
  * (GradientEnhancedFiniteStrainMaterialPoint / ...Particle / ...DisplacementElement), including the
  * six-argument ConstitutiveResponse constructor.
  */
-class MarmotMaterialGradientEnhancedFiniteStrain {
+class MaterialGradientEnhancedFiniteStrain {
 
 protected:
   const double* materialProperties;  ///< Pointer to the array of material property values.
@@ -69,12 +71,12 @@ public:
   const int materialNumber; ///< Unique identifier for this material instance.
 
   /**
-   * @brief Construct a MarmotMaterialGradientEnhancedFiniteStrain.
+   * @brief Construct a MaterialGradientEnhancedFiniteStrain.
    * @param[in] matProperties_       Pointer to the array of material property values.
    * @param[in] nMaterialProperties_ Number of material property values.
    * @param[in] materialNumber_      Unique identifier for this material instance.
    */
-  MarmotMaterialGradientEnhancedFiniteStrain( const double* matProperties_,
+  MaterialGradientEnhancedFiniteStrain( const double* matProperties_,
                                               int           nMaterialProperties_,
                                               int           materialNumber_ )
     : materialProperties( matProperties_ ),
@@ -90,7 +92,7 @@ public:
    * elements and material points), so destroying a derived object through a base pointer with a
    * non-virtual destructor would be undefined behaviour.
    */
-  virtual ~MarmotMaterialGradientEnhancedFiniteStrain() = default;
+  virtual ~MaterialGradientEnhancedFiniteStrain() = default;
 
   /// Layout of the state variables.
   Marmot::Utilities::StateLayoutDynamic stateLayout;
@@ -349,7 +351,7 @@ public:
    * @f]
    *
    * @note Zero by default, which is the quasi-static model. Unlike the small-strain
-   * MarmotMaterialGeneralGradientEnhancedHypoElastic::getNonlocalViscosity, which is pure virtual, this
+   * Marmot::Materials::MaterialGradientEnhancedHypoElastic::getNonlocalViscosity, which is pure virtual, this
    * default lets existing derived classes keep compiling without answering it. Appended at the very end
    * of the class, after every other virtual, together with getNonlocalMicroInertia() below, so that a
    * stale-library ABI mismatch is confined to callers of these two methods.
@@ -364,7 +366,9 @@ public:
    * @note The default is zero, the quasi-static model in which the nonlocal field is first order in
    * time and integrated by its viscosity alone -- the behaviour of every material that predates this
    * method. A derived class opts in to the damped hyperbolic balance by overriding this, mirroring
-   * MarmotMaterialGeneralGradientEnhancedHypoElastic::getNonlocalMicroInertia.
+   * Marmot::Materials::MaterialGradientEnhancedHypoElastic::getNonlocalMicroInertia.
    */
   virtual double getNonlocalMicroInertia( const double* stateVars ) const { return 0.0; }
 };
+
+} // namespace Marmot::Materials

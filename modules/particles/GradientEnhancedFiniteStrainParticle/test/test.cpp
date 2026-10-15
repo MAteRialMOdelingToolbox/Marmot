@@ -71,7 +71,7 @@ namespace {
 
   const std::string testMaterialName = "TESTLOCALFIELDDEPENDINGONTHENONLOCALFIELD";
 
-  const bool testMaterialRegistered = MarmotLibrary::MarmotMaterialGradientEnhancedFiniteStrainFactory::
+  const bool testMaterialRegistered = Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory::
     registerMaterial< LocalFieldDependingOnTheNonlocalField >( testMaterialName );
 
   // a grid of 5^nDim 2nd order B-spline kernels with spacing 1 around the particle

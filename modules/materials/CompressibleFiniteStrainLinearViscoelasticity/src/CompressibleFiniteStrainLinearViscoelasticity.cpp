@@ -49,12 +49,12 @@ namespace Marmot::Materials {
 
     switch ( hyperelasticBase ) {
     case NeoHooke:
-      return ContinuumMechanics::EnergyDensityFunctions::ThirdOrderDerived::standardNeoHooke( C,
+      return ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::ThirdOrder::standardNeoHooke( C,
                                                                                               elasticProperties[0],
                                                                                               elasticProperties[1] );
     case PenceGouNeoHooke:
       energyDensityFunction = [this]( const Marmot::Math::FastorTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
-        autodiff::dual3rd res = ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialB<
+        autodiff::dual3rd res = ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::PenceGouPotentialB<
           autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1] );
         return res;
       };
@@ -62,7 +62,7 @@ namespace Marmot::Materials {
     case Yeoh:
       energyDensityFunction = [this]( const Marmot::Math::FastorTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
         autodiff::dual3rd
-          res = ContinuumMechanics::EnergyDensityFunctions::YeohPotential< autodiff::dual3rd >( C_ad,
+          res = ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::YeohPotential< autodiff::dual3rd >( C_ad,
                                                                                                 elasticProperties[0],
                                                                                                 elasticProperties[1],
                                                                                                 elasticProperties[2],
@@ -72,7 +72,7 @@ namespace Marmot::Materials {
       break;
     case MooneyRivlin:
       energyDensityFunction = [this]( const Marmot::Math::FastorTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
-        autodiff::dual3rd res = ContinuumMechanics::EnergyDensityFunctions::MooneyRivlinPotential<
+        autodiff::dual3rd res = ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::MooneyRivlinPotential<
           autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1], elasticProperties[2] );
         return res;
       };
@@ -88,7 +88,7 @@ namespace Marmot::Materials {
     const double* materialProperties,
     int           nMaterialProperties,
     int           materialLabel )
-    : MarmotMaterialFiniteStrain( materialProperties, nMaterialProperties, materialLabel ),
+    : Marmot::Materials::MaterialFiniteStrain( materialProperties, nMaterialProperties, materialLabel ),
       hyperelasticBase( static_cast< HyperelasticBase >( materialProperties[0] ) ),
       onlyShearCreep( materialProperties[1] ),
       elasticProperties( &materialProperties[2], nElasticPropertiesMap.at( hyperelasticBase ) ),
@@ -135,7 +135,7 @@ namespace Marmot::Materials {
 
     using namespace ContinuumMechanics;
     // compute Cauchy-Green deformation
-    const auto [C, dC_dF] = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( F );
+    const auto [C, dC_dF] = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::rightCauchyGreen( F );
 
     // compute energy density, first, second and third partial derivatives wrt Cauchy Green deformation
     const auto [psi_, dPsi_dC, d2Psi_dCdC, d3Psi_dCdCdC] = computeEnergyDensityAndDerivatives( C );
@@ -181,7 +181,7 @@ namespace Marmot::Materials {
     const Tensor33d PK2 = evaluate( PK2vol + PK2dev );
 
     // compute Kirchhoff stress from PK2 stress
-    const auto [tau, dTau_dPK2, dTau_dF] = StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2( PK2, F );
+    const auto [tau, dTau_dPK2, dTau_dF] = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::FirstOrder::KirchhoffStressFromPK2( PK2, F );
     response.tau                         = tau;
     response.elasticEnergyDensity        = psi_; // TODO: replace by actual elastic energy density
 

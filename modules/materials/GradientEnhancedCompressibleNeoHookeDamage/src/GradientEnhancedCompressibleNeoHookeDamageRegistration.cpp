@@ -5,10 +5,9 @@ namespace Marmot::Materials {
 
   namespace Registration {
 
-    using namespace MarmotLibrary;
 
     const static bool
-      GradientEnhancedCompressibleNeoHookeDamageRegistered = MarmotMaterialGradientEnhancedFiniteStrainFactory::
+      GradientEnhancedCompressibleNeoHookeDamageRegistered = Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory::
         registerMaterial< GradientEnhancedCompressibleNeoHookeDamage >( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE" );
 
   } // namespace Registration
