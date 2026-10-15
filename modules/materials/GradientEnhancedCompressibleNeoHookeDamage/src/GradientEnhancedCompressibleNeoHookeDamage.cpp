@@ -82,14 +82,17 @@ namespace Marmot::Materials {
     const auto& F = deformation.F;
 
     // undamaged neo-Hookean response, as in CompressibleNeoHooke
-    const auto [C, dC_dF] = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::rightCauchyGreen(
-      F );
-    const auto [psi0, dPsi_dC, d2Psi_dCdC] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::
-      SecondOrder::PenceGouPotentialB( C, K, G );
+    const auto [C, dC_dF]   = Marmot::ContinuumMechanics::DeformationMeasures::FirstOrder::rightCauchyGreen( F );
+    const auto [psi0,
+                dPsi_dC,
+                d2Psi_dCdC] = Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrder::PenceGouPotentialB( C,
+                                                                                                                   K,
+                                                                                                                   G );
 
-    const Tensor33d PK2                     = 2. * dPsi_dC;
-    const auto [tau0, dTau_dPK2, dTau0_dFe] = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::FirstOrder::
-      KirchhoffStressFromPK2( PK2, F );
+    const Tensor33d PK2    = 2. * dPsi_dC;
+    const auto [tau0,
+                dTau_dPK2,
+                dTau0_dFe] = Marmot::ContinuumMechanics::StressMeasures::FirstOrder::KirchhoffStressFromPK2( PK2, F );
     const Tensor3333d dTau0_dF = 2.0 * einsum< ijKL, KLMN >( einsum< ijKL, IJKL >( dTau_dPK2, d2Psi_dCdC ), dC_dF ) +
                                  dTau0_dFe;
 

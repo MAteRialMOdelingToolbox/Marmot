@@ -9,7 +9,7 @@
 
 using namespace Marmot::Testing;
 using namespace Marmot::Math::Tensors::FastorTensors;
-using namespace Marmot::ContinuumMechanics::FiniteStrain::Viscoelasticity;
+using namespace Marmot::ContinuumMechanics::Viscoelasticity;
 
 // ---------------------------------------------------------------------------
 // createMaxwellProperties

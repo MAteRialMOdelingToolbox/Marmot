@@ -35,7 +35,7 @@ report "use FirstOrder/SecondOrder/ThirdOrder, not *OrderDerived namespaces" \
 
 # 4. Lowercase namespace names (PascalCase required).
 report "lowercase namespace name" \
-  "$(grep -nE "^\s*namespace +[a-z][a-zA-Z0-9_]* *\{" $ALL 2>/dev/null | grep -v "namespace *\{")"
+  "$(grep -nE "^\s*namespace +[a-z][a-zA-Z0-9_]* *\{" $ALL 2>/dev/null | grep -v "namespace *{")"
 
 # 5. using-directives / using-declarations at global scope in headers
 #    (column 0 => global scope; function/class scope is indented).

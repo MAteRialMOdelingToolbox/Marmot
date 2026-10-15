@@ -38,7 +38,7 @@
  * the plastic velocity gradient.
  */
 
-namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration {
+namespace Marmot::ContinuumMechanics::Plasticity::FlowIntegration {
 
   /** Computes the incremental plastic deformation gradient from the plastic velocity gradient
    *  using the exponential map.
@@ -133,4 +133,4 @@ namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration 
       const Math::Tensors::FastorTensors::Tensor33d& deltaGp );
   } // namespace FirstOrder
 
-} // namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration
+} // namespace Marmot::ContinuumMechanics::Plasticity::FlowIntegration

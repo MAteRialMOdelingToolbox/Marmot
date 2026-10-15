@@ -4,7 +4,7 @@
 #include <cstring>
 #include <vector>
 
-namespace Marmot::ContinuumMechanics::FiniteStrain::Viscoelasticity {
+namespace Marmot::ContinuumMechanics::Viscoelasticity {
 
   MaxwellProperties createMaxwellProperties( int nMaxwell, const double* gammaTauPairVector )
   {
@@ -159,4 +159,4 @@ namespace Marmot::ContinuumMechanics::FiniteStrain::Viscoelasticity {
     }
   }
 
-} // namespace Marmot::ContinuumMechanics::FiniteStrain::Viscoelasticity
+} // namespace Marmot::ContinuumMechanics::Viscoelasticity

@@ -28,7 +28,7 @@
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include <Fastor/tensor/Tensor.h>
 
-namespace Marmot::ContinuumMechanics::FiniteStrain::StressMeasures {
+namespace Marmot::ContinuumMechanics::StressMeasures {
 
   /**
    * @brief Computes the Kirchhoff stress from the 2nd Piola-Kirchhoff stress and the deformation gradient.
@@ -104,4 +104,4 @@ namespace Marmot::ContinuumMechanics::FiniteStrain::StressMeasures {
     }
   } // namespace FirstOrder
 
-} // namespace Marmot::ContinuumMechanics::FiniteStrain::StressMeasures
+} // namespace Marmot::ContinuumMechanics::StressMeasures

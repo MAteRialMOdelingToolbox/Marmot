@@ -46,7 +46,7 @@ All code lives in the global `Marmot` namespace. The second level is a **closed 
 |---|---|
 | `Marmot::Utilities` | Journal, MakeString, exceptions, state bookkeeping (`StateMapper`, `StateView`, `StateLayoutDynamic`, `StateVarVectorManager`) |
 | `Marmot::Math` | Pure numerics: `Constants`, `Tensors` (all tensor types and functions, with `::FastorTensors`, `::FastorIndices` for einsum index symbols, `::TensorExponential`), `Differentiation` (`::Automatic`, `::Numerical`), `Integration`, plus root-level linear-algebra typedefs (`Vector6d`, `Matrix6d`, …), general math functions, eigen systems and basis functions |
-| `Marmot::ContinuumMechanics` | Constitutive theory in descriptive topic sub-namespaces: `VoigtNotation`, `Elasticity`, `Kinematics`, `HaighWestergaard`, `CommonConstitutiveModels`, `Viscoelasticity`, `FiniteStrain`, `GradientDamage`, `PhaseField`, `LocalizationAnalysis`, `GeostaticStress`, `TimeIntegration`, `Algorithms` (substeppers/return mapping) |
+| `Marmot::ContinuumMechanics` | Constitutive theory in descriptive topic sub-namespaces: `VoigtNotation`, `Elasticity`, `Kinematics`, `HaighWestergaard`, `CommonConstitutiveModels`, `Viscoelasticity`, `DeformationMeasures`, `StressMeasures`, `EnergyDensityFunctions`, `Plasticity`, `GradientDamage`, `PhaseField`, `LocalizationAnalysis`, `GeostaticStress`, `TimeIntegration`, `Algorithms` (substeppers/return mapping) |
 | `Marmot::Materials` | Material base classes (`MaterialHypoElastic`, `MaterialFiniteStrain`, …), all concrete materials, material helpers (`KelvinChain`, `Wiechert`, `SolidificationTheory`), material-point solvers |
 | `Marmot::Discretizations` | Everything spatial: `::Elements` (FE bases, shape functions, quadrature, concrete elements), `::Meshfree` (RKPM, particles), `::MaterialPoints`, `::Cells`. Root holds `MaterialSection`, `ElementProperties` |
 | `Marmot::Registry` | All factories, flat — the external entry point (replaces the former `MarmotLibrary`) |
@@ -55,7 +55,7 @@ All code lives in the global `Marmot` namespace. The second level is a **closed 
 Rules:
 
 1. No classes/functions/variables in the global namespace or directly in `Marmot` (macros like `MARMOT_API` excepted).
-2. Deeper nesting is welcome when it makes names more descriptive (up to 6 levels, e.g. `ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrder`); never a namespace that adds no information.
+2. Deeper nesting is welcome when it makes names more descriptive (up to 6 levels, e.g. `ContinuumMechanics::Plasticity::FlowIntegration::FirstOrder`); never a namespace that adds no information.
 3. Derivative-order namespaces are spelled `FirstOrder` / `SecondOrder` / `ThirdOrder` only.
 4. No namespace for a single class, and no namespace named after a class.
 5. Class names never start with `Marmot` — the namespace says it. Header **filenames** keep the `Marmot` prefix (flat install dir).

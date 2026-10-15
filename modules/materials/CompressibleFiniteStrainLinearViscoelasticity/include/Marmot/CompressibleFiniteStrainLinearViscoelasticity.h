@@ -114,7 +114,7 @@ namespace Marmot::Materials {
     const Eigen::Map< const Eigen::VectorXd > elasticProperties;
 
     /// @brief Generalized Maxwell model parameters.
-    const ContinuumMechanics::FiniteStrain::Viscoelasticity::MaxwellProperties maxwellProperties;
+    const ContinuumMechanics::Viscoelasticity::MaxwellProperties maxwellProperties;
 
     /// @brief Initial compliance tensor used for viscoelastic stress update.
     Marmot::Math::Tensors::FastorTensors::Tensor3333d initialCompliance;

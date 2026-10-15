@@ -172,9 +172,11 @@ namespace Marmot::Materials {
     Tensor33t< T > secondPiolaKirchhoff( const Tensor33t< T >& Fe ) const
     {
       using namespace ContinuumMechanics;
-      const Tensor33t< T > Ce = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( Fe );
-      const auto [psi_, dPsi_dCe] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
-        PenceGouPotentialB( Ce, K, G );
+      const Tensor33t< T > Ce = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( Fe );
+      const auto [psi_,
+                  dPsi_dCe]   = Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( Ce,
+                                                                                                                  K,
+                                                                                                                  G );
       return Marmot::Math::Tensors::multiplyFastorTensorWithScalar( dPsi_dCe, T( 2.0 ) );
     }
 
@@ -187,7 +189,7 @@ namespace Marmot::Materials {
     template < typename T >
     Tensor33t< T > mandelStress( const Tensor33t< T >& Fe ) const
     {
-      return Tensor33t< T >( ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( Fe ) %
+      return Tensor33t< T >( ContinuumMechanics::DeformationMeasures::rightCauchyGreen( Fe ) %
                              secondPiolaKirchhoff( Fe ) );
     }
 
@@ -247,8 +249,8 @@ namespace Marmot::Materials {
 
       const Tensor33t< T > M   = mandelStress( Fe );
       const Tensor33t< T > dGp = Marmot::Math::Tensors::multiplyFastorTensorWithScalar( flowDirection( M ), dLambda );
-      const Tensor33t< T >
-        dFp = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::exponentialMapScalingAndSquaring( dGp );
+      const Tensor33t< T > dFp = ContinuumMechanics::Plasticity::FlowIntegration::exponentialMapScalingAndSquaring(
+        dGp );
       const Tensor33t< T > Fe_dFp = Fastor::einsum< iJ, JK >( Fe, dFp );
 
       Marmot::Math::VectorXt< T > R( 11 );

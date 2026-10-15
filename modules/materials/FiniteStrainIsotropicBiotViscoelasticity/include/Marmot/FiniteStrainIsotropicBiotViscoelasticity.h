@@ -86,7 +86,7 @@ namespace Marmot::Materials {
     const double G;
 
     /// @brief Generalized Maxwell model parameters.
-    const ContinuumMechanics::FiniteStrain::Viscoelasticity::MaxwellProperties maxwellProperties;
+    const ContinuumMechanics::Viscoelasticity::MaxwellProperties maxwellProperties;
 
     /// @brief Initial compliance tensor used for viscoelastic stress update.
     const Marmot::Math::Tensors::FastorTensors::Tensor3333t< autodiff::dual > initialCompliance;

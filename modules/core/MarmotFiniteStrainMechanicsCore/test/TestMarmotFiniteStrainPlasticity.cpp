@@ -26,7 +26,7 @@ Tensor33d make_dGp()
 
 auto testExponentialMap()
 {
-  using namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration;
+  using namespace Marmot::ContinuumMechanics::Plasticity::FlowIntegration;
   Tensor33d dGp = make_dGp();
   // compute exponential map
   Tensor33d exMap = exponentialMap( dGp );
@@ -53,7 +53,7 @@ auto testExponentialMap()
 
 auto testExplicitIntegration()
 {
-  using namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrder;
+  using namespace Marmot::ContinuumMechanics::Plasticity::FlowIntegration::FirstOrder;
   Tensor33d dGp = make_dGp();
   // make explicit integration
   std::pair< Tensor33d, Tensor3333d > res     = explicitIntegration( dGp );
@@ -78,7 +78,7 @@ auto testExplicitIntegration()
 
 auto testExponentialMapScalingAndSquaring()
 {
-  using namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration;
+  using namespace Marmot::ContinuumMechanics::Plasticity::FlowIntegration;
 
   // below the scaling threshold, the result is that of exponentialMap
   const Tensor33d dGpSmall = make_dGp();
@@ -114,7 +114,7 @@ auto testExponentialMapScalingAndSquaring()
 
 auto testExponentialMapAndDerivative()
 {
-  using namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrder;
+  using namespace Marmot::ContinuumMechanics::Plasticity::FlowIntegration::FirstOrder;
   Tensor33d dGp = make_dGp();
   // compute exponential map
   std::pair< Tensor33d, Tensor3333d > exMapTot = exponentialMap( dGp );

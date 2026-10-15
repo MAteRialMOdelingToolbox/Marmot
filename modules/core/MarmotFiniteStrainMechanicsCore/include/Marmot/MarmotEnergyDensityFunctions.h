@@ -26,7 +26,7 @@
 #pragma once
 #include "Marmot/MarmotFastorTensorBasics.h"
 
-namespace Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions {
+namespace Marmot::ContinuumMechanics::EnergyDensityFunctions {
 
   /** @brief Hyperelastic Energy Density Function Wa acc. Pence & Gou (2015), Eq. (2.11)
    *
@@ -475,4 +475,4 @@ namespace Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions {
                 Marmot::Math::Tensors::FastorTensors::Tensor333333d >
     standardNeoHooke( const Marmot::Math::Tensors::FastorTensors::Tensor33d& C, const double& K, const double& G );
   } // namespace ThirdOrder
-} // namespace Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions
+} // namespace Marmot::ContinuumMechanics::EnergyDensityFunctions

@@ -429,7 +429,7 @@ namespace Marmot::Materials {
         const double dLambda0 = fraction * dLambdaLinear;
         Tensor33d    dFp0;
         try {
-          dFp0 = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::exponentialMapScalingAndSquaring(
+          dFp0 = ContinuumMechanics::Plasticity::FlowIntegration::exponentialMapScalingAndSquaring(
             Tensor33d( dLambda0 * flowDirection( MTrial ) ) );
         }
         catch ( const Marmot::Math::Tensors::TensorExponential::ExponentialMapFailed& ) {
@@ -613,13 +613,15 @@ namespace Marmot::Materials {
 
     // effective Kirchhoff stress and its sensitivity to Fe, as in FiniteStrainJ2Plasticity
     using namespace ContinuumMechanics;
-    const auto [Ce, dCe_dFe] = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::
-      rightCauchyGreen( r.Fe );
-    const auto [psiEff, dPsi_dCe, d2Psi] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::
-      SecondOrder::PenceGouPotentialB( Ce, K, G );
-    const Tensor33d PK2                             = 2. * dPsi_dCe;
-    const auto [tauEff, dTau_dPK2, dTau_dFePartial] = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::
-      FirstOrder::KirchhoffStressFromPK2( PK2, r.Fe );
+    const auto [Ce, dCe_dFe] = Marmot::ContinuumMechanics::DeformationMeasures::FirstOrder::rightCauchyGreen( r.Fe );
+    const auto [psiEff,
+                dPsi_dCe,
+                d2Psi]       = Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrder::PenceGouPotentialB( Ce,
+                                                                                                              K,
+                                                                                                              G );
+    const Tensor33d PK2      = 2. * dPsi_dCe;
+    const auto [tauEff, dTau_dPK2, dTau_dFePartial] = Marmot::ContinuumMechanics::StressMeasures::FirstOrder::
+      KirchhoffStressFromPK2( PK2, r.Fe );
     const Tensor3333d dPK2_dFe    = einsum< ijKL, KLMN >( Tensor3333d( 2. * d2Psi ), dCe_dFe );
     const Tensor3333d dTauEff_dFe = einsum< ijKL, KLMN >( dTau_dPK2, dPK2_dFe ) + dTau_dFePartial;
 

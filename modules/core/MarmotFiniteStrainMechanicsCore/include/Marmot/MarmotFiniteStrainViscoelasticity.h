@@ -26,7 +26,7 @@
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotMath.h"
 
-namespace Marmot::ContinuumMechanics::FiniteStrain::Viscoelasticity {
+namespace Marmot::ContinuumMechanics::Viscoelasticity {
 
   /**
    * @brief Struct to hold properties of a generalized maxwell model
@@ -220,4 +220,4 @@ namespace Marmot::ContinuumMechanics::FiniteStrain::Viscoelasticity {
     }
   }
 
-} // namespace Marmot::ContinuumMechanics::FiniteStrain::Viscoelasticity
+} // namespace Marmot::ContinuumMechanics::Viscoelasticity

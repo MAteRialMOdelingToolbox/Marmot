@@ -343,15 +343,14 @@ namespace Marmot::Materials {
       using namespace Marmot::ContinuumMechanics;
       Math::Tensors::FastorTensors::Tensor33d   Ce;
       Math::Tensors::FastorTensors::Tensor3333d dCe_dFe;
-      std::tie( Ce, dCe_dFe ) = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::
-        rightCauchyGreen( Fe );
+      std::tie( Ce, dCe_dFe ) = Marmot::ContinuumMechanics::DeformationMeasures::FirstOrder::rightCauchyGreen( Fe );
 
       double                                    psi_;
       Math::Tensors::FastorTensors::Tensor33d   dPsi_dCe;
       Math::Tensors::FastorTensors::Tensor3333d d2Psi_dCedCe, dMandel_dCe;
 
-      std::tie( psi_, dPsi_dCe, d2Psi_dCedCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::
-        SecondOrder::PenceGouPotentialB( Ce, K, G );
+      std::tie( psi_, dPsi_dCe, d2Psi_dCedCe ) = Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrder::
+        PenceGouPotentialB( Ce, K, G );
       Math::Tensors::FastorTensors::Tensor33d       PK2    = 2.0 * dPsi_dCe;
       const Math::Tensors::FastorTensors::Tensor33d mandel = Ce % PK2;
       /* const Math::Tensors::FastorTensors::Tensor33d mandel = einsum< Ii, iJ >( Ce, PK2 ); */
@@ -378,13 +377,15 @@ namespace Marmot::Materials {
       using namespace Marmot::Math::Tensors::FastorIndices;
       using namespace Marmot::ContinuumMechanics;
       Math::Tensors::FastorTensors::Tensor33t< T >
-        Ce = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( Fe );
+        Ce = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( Fe );
 
       T                                            psi_;
       Math::Tensors::FastorTensors::Tensor33t< T > dPsi_dCe;
 
-      std::tie( psi_, dPsi_dCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
-        PenceGouPotentialB( Ce, K, G );
+      std::tie( psi_,
+                dPsi_dCe ) = Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( Ce,
+                                                                                                                 K,
+                                                                                                                 G );
       Math::Tensors::FastorTensors::Tensor33t< T >
         PK2 = Marmot::Math::Tensors::multiplyFastorTensorWithScalar( dPsi_dCe, T( 2.0 ) );
       const Math::Tensors::FastorTensors::Tensor33t< T > mandel = Ce % PK2;
@@ -495,8 +496,7 @@ namespace Marmot::Materials {
                                                                                                            dLambda );
       Math::Tensors::FastorTensors::Tensor33d   dFp;
       Math::Tensors::FastorTensors::Tensor3333d ddFp_ddGp;
-      std::tie( dFp, ddFp_ddGp ) = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrder::
-        exponentialMap( dGp );
+      std::tie( dFp, ddFp_ddGp ) = ContinuumMechanics::Plasticity::FlowIntegration::FirstOrder::exponentialMap( dGp );
 
       return { dFp, einsum< IJKL, KL >( ddFp_ddGp, df_dS ) };
     }
@@ -550,7 +550,7 @@ namespace Marmot::Materials {
       const Math::Tensors::FastorTensors::Tensor33t< T >
         dGp = Marmot::Math::Tensors::multiplyFastorTensorWithScalar( df_dMandel, dLambda );
       const Math::Tensors::FastorTensors::Tensor33t< T >
-        dFp = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::exponentialMap( dGp );
+        dFp = ContinuumMechanics::Plasticity::FlowIntegration::exponentialMap( dGp );
 
       Marmot::Math::VectorXt< T >
         aux = mV9t( Math::Tensors::FastorTensors::Tensor33t< T >( einsum< iJ, JK >( Fe, dFp ) ).data() ) -
@@ -620,8 +620,7 @@ namespace Marmot::Materials {
       Math::Tensors::FastorTensors::Tensor33d   dGp = dLambda * df_dMandel;
       Math::Tensors::FastorTensors::Tensor33d   dFp;
       Math::Tensors::FastorTensors::Tensor3333d ddFp_ddGp;
-      std::tie( dFp, ddFp_ddGp ) = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrder::
-        exponentialMap( dGp );
+      std::tie( dFp, ddFp_ddGp ) = ContinuumMechanics::Plasticity::FlowIntegration::FirstOrder::exponentialMap( dGp );
 
       Math::Tensors::FastorTensors::Tensor3333d ddGp_dFe = dLambda *
                                                            einsum< ijmn, mnkL >( d2f_dMandel_dMandel, dMandel_dFe );

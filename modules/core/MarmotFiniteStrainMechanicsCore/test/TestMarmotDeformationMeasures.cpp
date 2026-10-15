@@ -8,7 +8,7 @@ using namespace Fastor;
 using namespace Marmot;
 using namespace Marmot::Testing;
 using namespace Marmot::ContinuumMechanics;
-using namespace Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures;
+using namespace Marmot::ContinuumMechanics::DeformationMeasures;
 
 // Expected C = F^T * F
 Tensor33d C_expected( const Marmot::Math::Tensors::FastorTensors::Tensor33d& F_ )
@@ -47,7 +47,7 @@ void test_rightCauchyGreen()
           {0.,0.,1.} };
     // clang-format on
 
-    auto C_computed = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( F );
+    auto C_computed = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
 
     throwExceptionOnFailure( checkIfEqual( C_computed, C_expected( F ) ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
@@ -62,7 +62,7 @@ void test_rightCauchyGreen()
           {0.,0.,4.} };
     // clang-format on
 
-    auto C_computed = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( F );
+    auto C_computed = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
 
     throwExceptionOnFailure( checkIfEqual( C_computed, C_expected( F ) ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
@@ -77,7 +77,7 @@ void test_rightCauchyGreen()
           {0., 0., 1.} };
     // clang-format on
 
-    auto C_computed = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( F );
+    auto C_computed = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
 
     throwExceptionOnFailure( checkIfEqual( C_computed, C_expected( F ) ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );

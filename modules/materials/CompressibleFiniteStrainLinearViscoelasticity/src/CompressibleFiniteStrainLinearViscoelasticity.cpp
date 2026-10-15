@@ -49,32 +49,33 @@ namespace Marmot::Materials {
 
     switch ( hyperelasticBase ) {
     case NeoHooke:
-      return ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::ThirdOrder::
-        standardNeoHooke( C, elasticProperties[0], elasticProperties[1] );
+      return ContinuumMechanics::EnergyDensityFunctions::ThirdOrder::standardNeoHooke( C,
+                                                                                       elasticProperties[0],
+                                                                                       elasticProperties[1] );
     case PenceGouNeoHooke:
       energyDensityFunction =
         [this]( const Marmot::Math::Tensors::FastorTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
-          autodiff::dual3rd res = ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::PenceGouPotentialB<
+          autodiff::dual3rd res = ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialB<
             autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1] );
           return res;
         };
       break;
     case Yeoh:
-      energyDensityFunction =
-        [this]( const Marmot::Math::Tensors::FastorTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
-          autodiff::dual3rd res = ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::YeohPotential<
-            autodiff::dual3rd >( C_ad,
-                                 elasticProperties[0],
-                                 elasticProperties[1],
-                                 elasticProperties[2],
-                                 elasticProperties[3] );
-          return res;
-        };
+      energyDensityFunction = [this](
+                                const Marmot::Math::Tensors::FastorTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
+        autodiff::dual3rd
+          res = ContinuumMechanics::EnergyDensityFunctions::YeohPotential< autodiff::dual3rd >( C_ad,
+                                                                                                elasticProperties[0],
+                                                                                                elasticProperties[1],
+                                                                                                elasticProperties[2],
+                                                                                                elasticProperties[3] );
+        return res;
+      };
       break;
     case MooneyRivlin:
       energyDensityFunction =
         [this]( const Marmot::Math::Tensors::FastorTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
-          autodiff::dual3rd res = ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::MooneyRivlinPotential<
+          autodiff::dual3rd res = ContinuumMechanics::EnergyDensityFunctions::MooneyRivlinPotential<
             autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1], elasticProperties[2] );
           return res;
         };
@@ -95,7 +96,7 @@ namespace Marmot::Materials {
       onlyShearCreep( materialProperties[1] ),
       elasticProperties( &materialProperties[2], nElasticPropertiesMap.at( hyperelasticBase ) ),
       maxwellProperties(
-        ContinuumMechanics::FiniteStrain::Viscoelasticity::
+        ContinuumMechanics::Viscoelasticity::
           createMaxwellProperties( materialProperties[2 + nElasticPropertiesMap.at( hyperelasticBase )],
                                    &materialProperties[3 + nElasticPropertiesMap.at( hyperelasticBase )] ) )
   {
@@ -137,8 +138,7 @@ namespace Marmot::Materials {
 
     using namespace ContinuumMechanics;
     // compute Cauchy-Green deformation
-    const auto [C, dC_dF] = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::rightCauchyGreen(
-      F );
+    const auto [C, dC_dF] = Marmot::ContinuumMechanics::DeformationMeasures::FirstOrder::rightCauchyGreen( F );
 
     // compute energy density, first, second and third partial derivatives wrt Cauchy Green deformation
     const auto [psi_, dPsi_dC, d2Psi_dCdC, d3Psi_dCdCdC] = computeEnergyDensityAndDerivatives( C );
@@ -170,23 +170,23 @@ namespace Marmot::Materials {
     const Tensor333333d d2PK2dev_dEdE = d2PK2_dEdE - d2PK2vol_dEdE;
 
     // add viscoelastic contribution to (deviatoric if onlyShearCreep) PK2 stress
-    ContinuumMechanics::FiniteStrain::Viscoelasticity::evaluateGeneralizedMaxwellModel( PK2dev,
-                                                                                        dPK2dev_dE,
-                                                                                        d2PK2dev_dEdE,
-                                                                                        initialCompliance,
-                                                                                        dPK2dev,
-                                                                                        timeIncrement.dT,
-                                                                                        maxwellProperties,
-                                                                                        stateLayout
-                                                                                          .getPtr( response.stateVars,
-                                                                                                   "creepStateVars" ) );
+    ContinuumMechanics::Viscoelasticity::evaluateGeneralizedMaxwellModel( PK2dev,
+                                                                          dPK2dev_dE,
+                                                                          d2PK2dev_dEdE,
+                                                                          initialCompliance,
+                                                                          dPK2dev,
+                                                                          timeIncrement.dT,
+                                                                          maxwellProperties,
+                                                                          stateLayout.getPtr( response.stateVars,
+                                                                                              "creepStateVars" ) );
     // compute total PK2 stress
     const Tensor33d PK2 = evaluate( PK2vol + PK2dev );
 
     // compute Kirchhoff stress from PK2 stress
-    const auto [tau, dTau_dPK2, dTau_dF] = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::FirstOrder::
-      KirchhoffStressFromPK2( PK2, F );
-    response.tau                  = tau;
+    const auto [tau,
+                dTau_dPK2,
+                dTau_dF] = Marmot::ContinuumMechanics::StressMeasures::FirstOrder::KirchhoffStressFromPK2( PK2, F );
+    response.tau         = tau;
     response.elasticEnergyDensity = psi_; // TODO: replace by actual elastic energy density
 
     // compute tangent operator dtau / dF

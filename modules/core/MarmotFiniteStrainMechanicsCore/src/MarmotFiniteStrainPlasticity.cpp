@@ -1,7 +1,7 @@
 #include "Marmot/MarmotFiniteStrainPlasticity.h"
 #include "Marmot/MarmotTensorExponential.h"
 
-namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrder {
+namespace Marmot::ContinuumMechanics::Plasticity::FlowIntegration::FirstOrder {
 
   using namespace Fastor;
   using namespace Marmot::Math::Tensors::FastorTensors;
@@ -27,4 +27,4 @@ namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration:
     // clang-format on
   }
 
-} // namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrder
+} // namespace Marmot::ContinuumMechanics::Plasticity::FlowIntegration::FirstOrder
