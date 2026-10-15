@@ -6,7 +6,7 @@
 using namespace Eigen;
 using namespace autodiff;
 
-void MarmotMaterialHypoElasticAD::computeStress( state3D&                state,
+void Marmot::Materials::MaterialHypoElasticAD::computeStress( state3D&                state,
                                                  Marmot::Math::Matrix6d&       dStressDDStrain,
                                                  const Marmot::Math::Vector6d& dStrain,
                                                  const timeInfo&         timeInfo

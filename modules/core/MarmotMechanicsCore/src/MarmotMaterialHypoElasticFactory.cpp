@@ -1,9 +1,10 @@
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 #include "Marmot/MarmotJournal.h"
 
-using namespace MarmotLibrary;
+namespace Marmot::Registry {
 
-MarmotMaterialHypoElastic* MarmotMaterialHypoElasticFactory::createMaterial( const std::string& materialName,
+
+Marmot::Materials::MaterialHypoElastic* MaterialHypoElasticFactory::createMaterial( const std::string& materialName,
                                                                              const double*      materialProperties,
                                                                              int                nMaterialProperties,
                                                                              int                materialNumber )
@@ -21,8 +22,10 @@ MarmotMaterialHypoElastic* MarmotMaterialHypoElasticFactory::createMaterial( con
 
   return it->second( materialProperties, nMaterialProperties, materialNumber );
 }
-MarmotMaterialHypoElasticFactory::MaterialFactoryMap& MarmotMaterialHypoElasticFactory::materialFactoryFunctionByName()
+MaterialHypoElasticFactory::MaterialFactoryMap& MaterialHypoElasticFactory::materialFactoryFunctionByName()
 {
   static MaterialFactoryMap map;
   return map;
 }
+
+} // namespace Marmot::Registry

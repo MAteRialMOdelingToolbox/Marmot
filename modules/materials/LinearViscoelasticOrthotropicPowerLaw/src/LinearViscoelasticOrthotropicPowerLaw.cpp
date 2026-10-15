@@ -27,7 +27,7 @@ namespace Marmot::Materials {
   LinearViscoelasticOrthotropicPowerLaw::LinearViscoelasticOrthotropicPowerLaw( const double* materialProperties,
                                                                                 int           nMaterialProperties,
                                                                                 int           materialLabel )
-    : MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialLabel ),
+    : Marmot::Materials::MaterialHypoElastic( materialProperties, nMaterialProperties, materialLabel ),
       // clang-format off
       // elastic parameters
       stiffnessScaleFactor              ( materialProperties[0] ),

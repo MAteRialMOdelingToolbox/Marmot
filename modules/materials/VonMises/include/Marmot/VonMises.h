@@ -29,7 +29,7 @@
 namespace Marmot::Materials {
 
   /// @brief An implementation of classical J2 plasticity with isotropic hardening.
-  class VonMisesModel : public MarmotMaterialHypoElastic {
+  class VonMisesModel : public Marmot::Materials::MaterialHypoElastic {
 
   public:
     VonMisesModel( const double* materialProperties, const int nMaterialProperties, const int materialLabel );

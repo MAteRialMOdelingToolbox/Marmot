@@ -36,6 +36,8 @@
 #include <string>
 #include <vector>
 
+namespace Marmot::Materials {
+
 /**
  *
  * Abstract base class for hypoelastic interface materials.
@@ -43,14 +45,14 @@
  * This class remains an independent interface-material base class
  * because interface materials have their own stress-update signature.
  */
-class MarmotInterfaceMaterialHypoElastic {
+class InterfaceMaterialHypoElastic {
 
 protected:
   const double*         materialProperties;     ///< material properties [E, nu, h, properties of the base material...]
   const int             nMaterialProperties;    ///< number of material properties
   const double          h;                      ///< thickness of the interface, the third material property
   std::vector< double > baseMaterialProperties; ///< properties handed to the base material
-  std::unique_ptr< MarmotMaterialHypoElastic > baseMaterial; ///< hypoelastic material of the bulk
+  std::unique_ptr< MaterialHypoElastic > baseMaterial; ///< hypoelastic material of the bulk
 
 public:
   using Tensor3d    = Marmot::Math::FastorTensors::Tensor3d;    ///< first order tensor in 3D
@@ -76,13 +78,13 @@ public:
    *
    * @throws std::invalid_argument if fewer than three properties are given or the base material is not registered
    */
-  MarmotInterfaceMaterialHypoElastic( const std::string& materialName,
+  InterfaceMaterialHypoElastic( const std::string& materialName,
                                       const double*      matProperties_,
                                       int                nMaterialProperties_,
                                       int                materialNumber_ );
 
   /// Default destructor
-  virtual ~MarmotInterfaceMaterialHypoElastic() = default;
+  virtual ~InterfaceMaterialHypoElastic() = default;
 
   /// Layout of the state variables
   Marmot::Utilities::StateLayoutDynamic stateLayout;
@@ -171,3 +173,5 @@ public:
    */
   virtual double getDensity();
 };
+
+} // namespace Marmot::Materials

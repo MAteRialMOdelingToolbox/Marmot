@@ -5,8 +5,8 @@ using namespace Marmot::Testing;
 
 void testYieldSurfaceCombinationManager()
 {
-  Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager< 3 >                   manager;
-  Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager< 3 >::YieldSurfFlagArr activeSurfaces;
+  Marmot::ContinuumMechanics::Algorithms::YieldSurfaceCombinationManager< 3 >                   manager;
+  Marmot::ContinuumMechanics::Algorithms::YieldSurfaceCombinationManager< 3 >::YieldSurfFlagArr activeSurfaces;
 
   int                nCombinations = 0;
   std::ostringstream oss;

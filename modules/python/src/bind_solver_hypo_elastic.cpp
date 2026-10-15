@@ -30,7 +30,7 @@
 #include "Marmot/MarmotMaterialPointSolverHypoElastic.h"
 
 namespace nb = nanobind;
-using Solver = Marmot::Solvers::MarmotMaterialPointSolverHypoElastic;
+using Solver = Marmot::Materials::MaterialPointSolverHypoElastic;
 
 void bind_hypo_elastic_solver( nb::module_& m )
 {

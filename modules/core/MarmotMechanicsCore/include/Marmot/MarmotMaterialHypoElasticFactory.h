@@ -29,23 +29,23 @@
 #include <string>
 #include <unordered_map>
 
-namespace MarmotLibrary {
+namespace Marmot::Registry {
 
   /**
-   * @class MarmotMaterialHypoElasticFactory
+   * @class MaterialHypoElasticFactory
    * @brief Factory class for creating material instances.
    *
    * This class provides a mechanism to register materials by their code and name,
    * and to create material instances based on their properties.
    * It allows for dynamic material creation without hardcoding specific material types.
    */
-  class MARMOT_API MarmotMaterialHypoElasticFactory {
+  class MARMOT_API MaterialHypoElasticFactory {
   public:
     /// Function signature for material factory functions registered in the map.
     using materialFactoryFunction = std::function<
-      MarmotMaterialHypoElastic*( const double* materialProperties, int nMaterialProperties, int materialNumber ) >;
+      Marmot::Materials::MaterialHypoElastic*( const double* materialProperties, int nMaterialProperties, int materialNumber ) >;
 
-    MarmotMaterialHypoElasticFactory() = delete;
+    MaterialHypoElasticFactory() = delete;
 
     /**
      * @brief Create a material instance based on its name and properties.
@@ -55,7 +55,7 @@ namespace MarmotLibrary {
      * @param[in] materialNumber Unique identifier for the material instance.
      * @return Pointer to the created MarmotMaterial instance, or nullptr if creation failed.
      */
-    static MarmotMaterialHypoElastic* createMaterial( const std::string& materialName,
+    static Marmot::Materials::MaterialHypoElastic* createMaterial( const std::string& materialName,
                                                       const double*      materialProperties,
                                                       int                nMaterialProperties,
                                                       int                materialNumber );
@@ -73,7 +73,7 @@ namespace MarmotLibrary {
       assert( map.find( materialName ) == map.end() && "Material already registered!" );
 
       map[materialName] = []( const double* materialProperties, int nMaterialProperties, int materialNumber )
-        -> MarmotMaterialHypoElastic* { return new T( materialProperties, nMaterialProperties, materialNumber ); };
+        -> Marmot::Materials::MaterialHypoElastic* { return new T( materialProperties, nMaterialProperties, materialNumber ); };
       return true;
     }
 
@@ -81,4 +81,4 @@ namespace MarmotLibrary {
     using MaterialFactoryMap = std::unordered_map< std::string, materialFactoryFunction >;
     static MaterialFactoryMap& materialFactoryFunctionByName();
   };
-} // namespace MarmotLibrary
+} // namespace Marmot::Registry

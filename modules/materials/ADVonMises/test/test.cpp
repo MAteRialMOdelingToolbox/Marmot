@@ -3,20 +3,20 @@
 #include "Marmot/MarmotTypedefs.h"
 
 using namespace Marmot::Testing;
-using namespace Marmot::Solvers;
+using namespace Marmot::Materials;
 
 void testADVonMisesCoordinateInvariance()
 {
   // material properties
   std::vector< double > materialProperties = { 210000., 0.3, 200., 2100., 20., 20 };
-  auto                  solveropts         = MarmotMaterialPointSolverHypoElastic::SolverOptions();
+  auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   std::string           matName            = "ADVONMISES";
-  auto                  solver             = MarmotMaterialPointSolverHypoElastic( matName,
+  auto                  solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                       &materialProperties[0],
                                                       materialProperties.size(),
                                                       solveropts );
 
-  MarmotMaterialPointSolverHypoElastic::Step step;
+  Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
 
   step.isStrainComponentControlled = { true, true, true, true, true, true };
   step.isStressComponentControlled = { false, false, false, false, false, false };
@@ -35,17 +35,17 @@ void testADVonMises()
 {
   // material properties
   std::vector< double > materialProperties = { 210000., 0.3, 200., 2100., 20., 20 };
-  auto                  solveropts         = MarmotMaterialPointSolverHypoElastic::SolverOptions();
+  auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   std::string           matName            = "ADVONMISES";
 
   // create material point solver instance
-  auto solver = MarmotMaterialPointSolverHypoElastic( matName,
+  auto solver = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                       &materialProperties[0],
                                                       materialProperties.size(),
                                                       solveropts );
 
   // define a step
-  MarmotMaterialPointSolverHypoElastic::Step step;
+  Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
 
   // define step parameters
   step.isStrainComponentControlled = { true, true, true, true, true, true };

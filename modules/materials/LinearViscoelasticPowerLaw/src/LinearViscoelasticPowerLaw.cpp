@@ -22,7 +22,7 @@ namespace Marmot::Materials {
   LinearViscoelasticPowerLaw::LinearViscoelasticPowerLaw( const double* materialProperties,
                                                           int           nMaterialProperties,
                                                           int           materialLabel )
-    : MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialLabel ),
+    : Marmot::Materials::MaterialHypoElastic( materialProperties, nMaterialProperties, materialLabel ),
       // clang-format off
       // elastic parameters
       E                                 ( materialProperties[0] ),

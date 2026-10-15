@@ -27,15 +27,15 @@ namespace {
     Eigen::VectorXd Y             = Eigen::VectorXd::Zero( 81 );
   };
 
-  std::unique_ptr< MarmotMaterialHypoElastic > createBulkMaterial( const std::string& materialName,
+  std::unique_ptr< Marmot::Materials::MaterialHypoElastic > createBulkMaterial( const std::string& materialName,
                                                                    const double*      properties,
                                                                    int                nProperties )
   {
-    return std::unique_ptr< MarmotMaterialHypoElastic >(
-      MarmotLibrary::MarmotMaterialHypoElasticFactory::createMaterial( materialName, properties, nProperties, 1 ) );
+    return std::unique_ptr< Marmot::Materials::MaterialHypoElastic >(
+      Marmot::Registry::MaterialHypoElasticFactory::createMaterial( materialName, properties, nProperties, 1 ) );
   }
 
-  void computeInterfaceStress( MarmotInterfaceMaterialHypoElastic& interfaceMaterial,
+  void computeInterfaceStress( Marmot::Materials::InterfaceMaterialHypoElastic& interfaceMaterial,
                                InterfaceResponse&                  response,
                                double*                             stateVars,
                                const double*                       dU,
@@ -44,7 +44,7 @@ namespace {
                                double                              timeOld,
                                double                              dT )
   {
-    using Material = MarmotInterfaceMaterialHypoElastic;
+    using Material = Marmot::Materials::InterfaceMaterialHypoElastic;
 
     Material::State         state{ Material::Tensor3d( response.force.data() ),
                            Material::Tensor33d( response.surfaceStress.data() ),
@@ -77,7 +77,7 @@ namespace {
     constexpr double h         = 0.01;
     const double     normal[3] = { 0., 0., 1. };
 
-    auto interfaceMaterial = std::make_unique< MarmotInterfaceMaterialHypoElastic >( materialName,
+    auto interfaceMaterial = std::make_unique< Marmot::Materials::InterfaceMaterialHypoElastic >( materialName,
                                                                                      interfaceProperties,
                                                                                      nInterfaceProperties,
                                                                                      1 );
@@ -137,7 +137,7 @@ namespace {
       bulkStrainIncrement[5]               = increment.jumpY / h;
 
       Marmot::Math::Matrix6d                   bulkTangent = Marmot::Math::Matrix6d::Zero();
-      MarmotMaterialHypoElastic::state3D bulkState{ bulkStress, 0.0, 0.0, bulkStateVars.data() };
+      Marmot::Materials::MaterialHypoElastic::state3D bulkState{ bulkStress, 0.0, 0.0, bulkStateVars.data() };
       bulkMaterial->computeStress( bulkState,
                                    bulkTangent,
                                    bulkStrainIncrement,
@@ -207,7 +207,7 @@ namespace {
     const double bulkProperties[8]      = { 1e8, 0.3, 2e7, 0.25, 6., 1e-4, 1., 2400. };
     testGenericInterfaceAgainstBulkMaterial( "LINEARVISCOELASTICWIECHERT", interfaceProperties, 9, bulkProperties, 8 );
 
-    auto interfaceMaterial = std::make_unique< MarmotInterfaceMaterialHypoElastic >( "LINEARVISCOELASTICWIECHERT",
+    auto interfaceMaterial = std::make_unique< Marmot::Materials::InterfaceMaterialHypoElastic >( "LINEARVISCOELASTICWIECHERT",
                                                                                      interfaceProperties,
                                                                                      9,
                                                                                      1 );
@@ -221,7 +221,7 @@ namespace {
     const double tooFewProperties[2] = { 1e5, 0.3 };
     bool         rejectedProperties  = false;
     try {
-      MarmotInterfaceMaterialHypoElastic material( "LINEARELASTIC", tooFewProperties, 2, 1 );
+      Marmot::Materials::InterfaceMaterialHypoElastic material( "LINEARELASTIC", tooFewProperties, 2, 1 );
     }
     catch ( const std::invalid_argument& ) {
       rejectedProperties = true;
@@ -231,7 +231,7 @@ namespace {
     const double properties[3]   = { 1e5, 0.3, 0.01 };
     bool         rejectedUnknown = false;
     try {
-      MarmotInterfaceMaterialHypoElastic material( "NOT_A_REGISTERED_MATERIAL", properties, 3, 1 );
+      Marmot::Materials::InterfaceMaterialHypoElastic material( "NOT_A_REGISTERED_MATERIAL", properties, 3, 1 );
     }
     catch ( const std::invalid_argument& ) {
       rejectedUnknown = true;
@@ -242,7 +242,7 @@ namespace {
   void testStateViewExposesBaseMaterialStateVariables()
   {
     const double                       properties[8] = { 2e5, 0.2, 0.01, 0.5, 0.1, 10., 0.0001, 1. };
-    MarmotInterfaceMaterialHypoElastic material( "LINEARVISCOELASTICPOWERLAW", properties, 8, 1 );
+    Marmot::Materials::InterfaceMaterialHypoElastic material( "LINEARVISCOELASTICPOWERLAW", properties, 8, 1 );
 
     Eigen::VectorXd stateVars = Eigen::VectorXd::Zero( material.getNumberOfRequiredStateVars() );
     const Marmot::Utilities::StateView view      = material.getStateView( "baseMaterialStateVars", stateVars.data() );

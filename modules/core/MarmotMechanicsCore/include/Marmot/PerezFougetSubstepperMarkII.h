@@ -33,7 +33,7 @@
  * @brief Sub-stepper for implicit return-mapping algorithms (Pérez–Fouget algorithm, Mark II).
  */
 
-namespace Marmot::NumericalAlgorithms {
+namespace Marmot::ContinuumMechanics::Algorithms {
 
   /**
    * @brief Sub-stepper for linear-elastic/elastoplastic materials using an implicit return-mapping.
@@ -96,9 +96,9 @@ namespace Marmot::NumericalAlgorithms {
 
     TangentSizedMatrix consistentTangent;
   };
-} // namespace Marmot::NumericalAlgorithms
+} // namespace Marmot::ContinuumMechanics::Algorithms
 
-namespace Marmot::NumericalAlgorithms {
+namespace Marmot::ContinuumMechanics::Algorithms {
   template < int n >
   PerezFougetSubstepper< n >::PerezFougetSubstepper( double          initialStepSize,
                                                      double          minimumStepSize,
@@ -181,4 +181,4 @@ namespace Marmot::NumericalAlgorithms {
   {
     return consistentTangent.topLeftCorner( 6, 6 ) * Cel;
   }
-} // namespace Marmot::NumericalAlgorithms
+} // namespace Marmot::ContinuumMechanics::Algorithms

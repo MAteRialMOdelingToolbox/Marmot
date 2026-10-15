@@ -28,8 +28,7 @@
 #include <iostream>
 #pragma once
 
-namespace Marmot {
-  namespace Solvers {
+namespace Marmot::Materials {
     /**
      * @brief Solver for material point problems with hypo-elastic materials
      * @details This class implements a solver for material point problems
@@ -37,7 +36,7 @@ namespace Marmot {
      * controlled strain and stress components, adaptive time stepping,
      * and history recording.
      */
-    class MarmotMaterialPointSolverHypoElastic {
+    class MaterialPointSolverHypoElastic {
 
     public:
       /**
@@ -128,13 +127,13 @@ namespace Marmot {
       };
 
       /**
-       * @brief Constructor for the MarmotMaterialPointSolverHypoElastic class
+       * @brief Constructor for the MaterialPointSolverHypoElastic class
        * @param materialName Name of the hypo-elastic material model
        * @param materialProperties Array of material properties
        * @param nMaterialProperties Number of material properties
        * @param options Solver options controlling iteration limits and tolerances
        */
-      MarmotMaterialPointSolverHypoElastic( std::string&         materialName,
+      MaterialPointSolverHypoElastic( std::string&         materialName,
                                             double*              materialProperties,
                                             int                  nMaterialProperties,
                                             const SolverOptions& options );
@@ -258,7 +257,7 @@ namespace Marmot {
       void modifyTangent( Eigen::Matrix< double, 6, 6 >& tangent, const Increment& increment );
 
       /// @brief The hypo-elastic material model
-      std::unique_ptr< MarmotMaterialHypoElastic > material;
+      std::unique_ptr< MaterialHypoElastic > material;
 
       /// @brief Number of state variables in the material model
       int nStateVars;
@@ -293,5 +292,4 @@ namespace Marmot {
       /// @brief Solver options
       const SolverOptions options;
     };
-  } // namespace Solvers
-} // namespace Marmot
+} // namespace Marmot::Materials

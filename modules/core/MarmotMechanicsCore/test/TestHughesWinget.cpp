@@ -9,7 +9,7 @@
 
 using namespace Marmot;
 using namespace Marmot::Testing;
-using namespace Marmot::NumericalAlgorithms;
+using namespace Marmot::ContinuumMechanics::Algorithms;
 
 // ---------------------------------------------------------------------------------------------
 // No callers anywhere in the codebase currently use this class (HughesWingetWrapper in

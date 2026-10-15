@@ -12,7 +12,7 @@ using namespace Eigen;
 namespace Marmot::Materials {
 
   B4::B4( const double* materialProperties, int nMaterialProperties, int materialLabel )
-    : MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialLabel ),
+    : Marmot::Materials::MaterialHypoElastic( materialProperties, nMaterialProperties, materialLabel ),
       // clang-format off
       // elastic parameters
       nu                                ( materialProperties[0] ),

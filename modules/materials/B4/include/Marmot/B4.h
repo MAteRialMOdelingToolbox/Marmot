@@ -39,7 +39,7 @@ namespace Marmot::Materials {
    *
    * For further information see \ref b4.
    */
-  class B4 : public MarmotMaterialHypoElastic {
+  class B4 : public Marmot::Materials::MaterialHypoElastic {
 
     /// \brief Poisson's ratio
     const double& nu;
@@ -153,7 +153,7 @@ namespace Marmot::Materials {
      * It is a reference variable to #materialProperties[21]. */
 
   public:
-    using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
+    using Marmot::Materials::MaterialHypoElastic::MaterialHypoElastic;
 
     B4( const double* materialProperties, int nMaterialProperties, int materialLabel );
 

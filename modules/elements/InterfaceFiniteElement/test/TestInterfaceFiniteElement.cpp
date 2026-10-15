@@ -23,10 +23,10 @@ namespace {
    * The element holds ONE material for all quadrature points, so the length of the current point
    * has to be installed before each evaluation; this material makes that observable.
    */
-  class LengthRecordingInterfaceMaterial : public MarmotInterfaceMaterialHypoElastic {
+  class LengthRecordingInterfaceMaterial : public Marmot::Materials::InterfaceMaterialHypoElastic {
   public:
     LengthRecordingInterfaceMaterial()
-      : MarmotInterfaceMaterialHypoElastic( "LINEARELASTIC", materialProperties.data(), 3, 0 )
+      : Marmot::Materials::InterfaceMaterialHypoElastic( "LINEARELASTIC", materialProperties.data(), 3, 0 )
     {
     }
 
@@ -38,16 +38,16 @@ namespace {
                         const TimeIncrement& timeIncrement ) override
     {
       seenLengths.push_back( characteristicElementLength );
-      MarmotInterfaceMaterialHypoElastic::computeStress( state, tangents, deformation, timeIncrement );
+      Marmot::Materials::InterfaceMaterialHypoElastic::computeStress( state, tangents, deformation, timeIncrement );
     }
 
   private:
     inline static const std::array< double, 3 > materialProperties = { 4000.0, 0.3, 0.01 };
   };
 
-  class FailingInterfaceMaterial : public MarmotInterfaceMaterialHypoElastic {
+  class FailingInterfaceMaterial : public Marmot::Materials::InterfaceMaterialHypoElastic {
   public:
-    FailingInterfaceMaterial() : MarmotInterfaceMaterialHypoElastic( "LINEARELASTIC", materialProperties.data(), 3, 0 )
+    FailingInterfaceMaterial() : Marmot::Materials::InterfaceMaterialHypoElastic( "LINEARELASTIC", materialProperties.data(), 3, 0 )
     {
     }
 
@@ -292,7 +292,7 @@ namespace {
       Eigen::MatrixXd H   = Eigen::MatrixXd::Zero( nDim, nTensor );
       Eigen::MatrixXd Y   = Eigen::MatrixXd::Zero( nTensor, nTensor );
 
-      using Material = MarmotInterfaceMaterialHypoElastic;
+      using Material = Marmot::Materials::InterfaceMaterialHypoElastic;
 
       Material::State         state{ Material::Tensor3d( force.data() ),
                              Material::Tensor33d( surfaceStress.data() ),
@@ -430,7 +430,7 @@ void TestSurfaceGradientOperatorProjectsOnlyGradientDirection()
 
   // BSurfaceMatrix must build grad_s u = grad(u) . T: the GRADIENT DIRECTION is projected onto the
   // tangent plane, the DISPLACEMENT COMPONENT is not. That keeps the in-plane derivative of the normal
-  // displacement, which MarmotInterfaceMaterialHypoElastic needs for the thin-layer gradient
+  // displacement, which Marmot::Materials::InterfaceMaterialHypoElastic needs for the thin-layer gradient
   // grad(u) = (1/h) [u] (x) n + <grad_s u>. The same formula must hold for every nDim, so that a
   // plane-strain model and its 3D extrusion see the same surface strain.
   auto checkOperator = [&]( const auto& element, int nDim, int nInterfaceNodes, const std::string& label ) {
@@ -817,7 +817,7 @@ void TestTwoDimensionalInterfaceElementComputesWithEmbeddedMaterial()
 
     std::vector< double > materialStateVars( qp.managedStateVars->materialStateVars.size(), 0.0 );
 
-    using Material = MarmotInterfaceMaterialHypoElastic;
+    using Material = Marmot::Materials::InterfaceMaterialHypoElastic;
 
     Material::State         materialState{ Material::Tensor3d( force3d.data() ),
                                    Material::Tensor33d( surfaceStress3d.data() ),

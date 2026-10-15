@@ -36,7 +36,7 @@
  * constitutive updates.
  */
 
-namespace Marmot::NumericalAlgorithms {
+namespace Marmot::ContinuumMechanics::Algorithms {
   /**
    * @brief Hughes–Winget objective integration algorithm.
    *
@@ -112,4 +112,4 @@ namespace Marmot::NumericalAlgorithms {
     Eigen::Matrix3d  dR;
     Marmot::Math::Vector6d dEps;
   };
-} // namespace Marmot::NumericalAlgorithms
+} // namespace Marmot::ContinuumMechanics::Algorithms

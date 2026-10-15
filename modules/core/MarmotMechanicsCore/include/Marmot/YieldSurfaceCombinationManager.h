@@ -31,8 +31,7 @@
  * @brief Manager for multi-surface yield-surface combinations in multi-surface plasticity.
  */
 
-namespace Marmot {
-  namespace NumericalAlgorithms {
+namespace Marmot::ContinuumMechanics::Algorithms {
     /**
      * @brief Tracks and iterates over yield-surface activity combinations for multi-surface plasticity.
      *
@@ -63,11 +62,9 @@ namespace Marmot {
       /// reset all yieldsurfaces as unused
       void resetUsedYieldFlagCombinations();
     };
-  } // namespace NumericalAlgorithms
-} // namespace Marmot
+} // namespace Marmot::ContinuumMechanics::Algorithms
 
-namespace Marmot {
-  namespace NumericalAlgorithms {
+namespace Marmot::ContinuumMechanics::Algorithms {
     template < int n >
     YieldSurfaceCombinationManager< n >::YieldSurfaceCombinationManager() : idxUsedFlag( n )
     {
@@ -108,5 +105,4 @@ namespace Marmot {
         if ( ( yieldSurfaceCombinations.row( i ).head( n ) == activeSurfaces ).all() )
           yieldSurfaceCombinations.row( i )( idxUsedFlag ) = true;
     }
-  } // namespace NumericalAlgorithms
-} // namespace Marmot
+} // namespace Marmot::ContinuumMechanics::Algorithms

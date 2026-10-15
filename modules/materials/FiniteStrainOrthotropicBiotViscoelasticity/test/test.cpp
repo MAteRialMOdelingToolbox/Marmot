@@ -5,7 +5,7 @@
 #include <string>
 
 using namespace Marmot::Testing;
-using namespace Marmot::Solvers;
+using namespace Marmot::Materials;
 using namespace Marmot::Math::FastorTensors;
 using namespace Marmot::Math::Indices;
 
@@ -42,13 +42,13 @@ static std::vector< double > getIsotropicViscoelasticProperties()
 }
 
 // Helper to create a solver with the given material name and properties
-static MarmotMaterialPointSolverFiniteStrain makeSolver( const std::string&     matName,
+static Marmot::Materials::MaterialPointSolverFiniteStrain makeSolver( const std::string&     matName,
                                                          std::vector< double >& matProps,
                                                          const Tensor33d&       initialStress    = Tensor33d( 0.0 ),
                                                          const Eigen::VectorXd& initialStateVars = Eigen::VectorXd() )
 {
-  auto solveropts = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
-  auto solver     = MarmotMaterialPointSolverFiniteStrain( matName,
+  auto solveropts = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
+  auto solver     = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                        matProps.data(),
                                                        static_cast< int >( matProps.size() ),
                                                        solveropts );
@@ -63,7 +63,7 @@ void testUndeformedResponse()
 
   auto solver = makeSolver( matName, matProps );
 
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget        = Tensor33d( 0.0 );
   step.stressIncrementTarget       = Tensor33d( 0.0 );
   step.isGradUComponentControlled  = Tensor33t< bool >( true );
@@ -101,7 +101,7 @@ void testSmallStrainUniaxialResponse()
 
   const double eps = 0.001;
 
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget         = Tensor33d( 0.0 );
   step.gradUIncrementTarget( 0, 0 ) = eps;
   step.stressIncrementTarget        = Tensor33d( 0.0 );
@@ -139,7 +139,7 @@ void testFiniteStrainUniaxialResponse()
 
   auto solver = makeSolver( matName, matProps );
 
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget         = Tensor33d( 0.0 );
   step.gradUIncrementTarget( 0, 0 ) = 0.1; // F_11 = 1.1
   step.stressIncrementTarget        = Tensor33d( 0.0 );
@@ -180,7 +180,7 @@ void testStressTensorSymmetry()
   auto solver = makeSolver( matName, matProps );
 
   // Arbitrary non-symmetric displacement gradient
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget         = Tensor33d( 0.0 );
   step.gradUIncrementTarget( 0, 0 ) = 0.01;
   step.gradUIncrementTarget( 0, 1 ) = 0.06;
@@ -232,7 +232,7 @@ void testObjectivity()
 
   auto solver = makeSolver( matName, matProps );
 
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget        = F - Marmot::Math::FastorTensors::Spatial3D::I;
   step.stressIncrementTarget       = Tensor33d( 0.0 );
   step.isGradUComponentControlled  = Tensor33t< bool >( true );
@@ -263,7 +263,7 @@ void testObjectivity()
 
     auto solver_rot = makeSolver( matName, matProps );
 
-    MarmotMaterialPointSolverFiniteStrain::Step step_rot;
+    Marmot::Materials::MaterialPointSolverFiniteStrain::Step step_rot;
     step_rot.gradUIncrementTarget        = F_rotated - Marmot::Math::FastorTensors::Spatial3D::I;
     step_rot.stressIncrementTarget       = Tensor33d( 0.0 );
     step_rot.isGradUComponentControlled  = Tensor33t< bool >( true );
@@ -298,7 +298,7 @@ void testOrthotropicUniaxialResponse()
 
   auto solver = makeSolver( matName, matProps );
 
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget         = Tensor33d( 0.0 );
   step.gradUIncrementTarget( 0, 0 ) = 0.1; // F_11 = 1.1
   step.stressIncrementTarget        = Tensor33d( 0.0 );
@@ -336,7 +336,7 @@ void testOrthotropicSimpleShearResponse()
 
   auto solver = makeSolver( matName, matProps );
 
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget         = Tensor33d( 0.0 );
   step.gradUIncrementTarget( 0, 1 ) = 0.1; // F_12 = 0.1 (simple shear)
   step.stressIncrementTarget        = Tensor33d( 0.0 );
@@ -384,7 +384,7 @@ void testPureRotationResponse()
 
     auto solver = makeSolver( matName, matProps );
 
-    MarmotMaterialPointSolverFiniteStrain::Step step;
+    Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
     step.gradUIncrementTarget        = Q - Marmot::Math::FastorTensors::Spatial3D::I;
     step.stressIncrementTarget       = Tensor33d( 0.0 );
     step.isGradUComponentControlled  = Tensor33t< bool >( true );
@@ -417,7 +417,7 @@ void testViscoelasticRelaxation()
   auto solver = makeSolver( matName, matProps );
 
   // Step 1: Apply deformation instantaneously (very small time increment)
-  MarmotMaterialPointSolverFiniteStrain::Step stepLoad;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step stepLoad;
   stepLoad.gradUIncrementTarget         = Tensor33d( 0.0 );
   stepLoad.gradUIncrementTarget( 0, 0 ) = 0.1; // F_11 = 1.1
   stepLoad.stressIncrementTarget        = Tensor33d( 0.0 );
@@ -432,7 +432,7 @@ void testViscoelasticRelaxation()
 
   // Step 2: Hold deformation constant for a long time (>> tau=10, so almost fully relaxed)
   // After many relaxation times, stress ≈ (1 - gamma) * instantaneous
-  MarmotMaterialPointSolverFiniteStrain::Step stepHold;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step stepHold;
   stepHold.gradUIncrementTarget        = Tensor33d( 0.0 ); // no additional deformation
   stepHold.stressIncrementTarget       = Tensor33d( 0.0 );
   stepHold.isGradUComponentControlled  = Tensor33t< bool >( true );
@@ -479,7 +479,7 @@ void testSubsteppedVariantConsistency()
   gradUIncrement( 2, 2 ) = -0.01;
 
   auto createStep = [&]() {
-    MarmotMaterialPointSolverFiniteStrain::Step step;
+    Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
     step.gradUIncrementTarget        = gradUIncrement;
     step.stressIncrementTarget       = Tensor33d( 0.0 );
     step.isGradUComponentControlled  = Tensor33t< bool >( true );

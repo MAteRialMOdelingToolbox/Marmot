@@ -15,9 +15,9 @@ namespace {
   // always non-singular for a physically sound law), so this is the only practical way to
   // deterministically exercise computePlaneStress()'s and computeUniaxialStress()'s robustness
   // branches: the near-singular-tangent compliance cap, and the cutback/failure throw.
-  class NeverConvergingHypoElasticMaterial : public MarmotMaterialHypoElastic {
+  class NeverConvergingHypoElasticMaterial : public Marmot::Materials::MaterialHypoElastic {
   public:
-    NeverConvergingHypoElasticMaterial() : MarmotMaterialHypoElastic( nullptr, 0, 1 )
+    NeverConvergingHypoElasticMaterial() : Marmot::Materials::MaterialHypoElastic( nullptr, 0, 1 )
     {
       stateLayout.add( "dummy", 1 );
       stateLayout.finalize();
@@ -62,8 +62,8 @@ void testComputePlaneStressThrowsWhenItCannotConverge()
 
   Marmot::Math::Vector3d dStrain2D = Marmot::Math::Vector3d::Zero();
   dStrain2D( 0 )             = 1e-3;
-  MarmotMaterialHypoElastic::timeInfo timeInfo{ 0.0, 1.0 };
-  MarmotMaterialHypoElastic::state2D  state2D;
+  Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ 0.0, 1.0 };
+  Marmot::Materials::MaterialHypoElastic::state2D  state2D;
   state2D.stateVars = stateVars.data();
   Marmot::Math::Matrix3d tan2D;
 
@@ -88,8 +88,8 @@ void testComputeUniaxialStressThrowsWhenItCannotConverge()
   auto [mat, stateVars] = makeNeverConvergingMaterial();
 
   const double                        dStrain1D = 1e-3;
-  MarmotMaterialHypoElastic::timeInfo timeInfo{ 0.0, 1.0 };
-  MarmotMaterialHypoElastic::state1D  state1D;
+  Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ 0.0, 1.0 };
+  Marmot::Materials::MaterialHypoElastic::state1D  state1D;
   state1D.stateVars = stateVars.data();
   double tan1D;
 
@@ -114,7 +114,7 @@ void testGetMaximumWaveSpeedCopiesNonEmptyStateVars()
   auto [mat, stateVars] = makeNeverConvergingMaterial();
   stateVars[0]          = -1.0;
 
-  MarmotMaterialHypoElastic::state3D state;
+  Marmot::Materials::MaterialHypoElastic::state3D state;
   state.stateVars = stateVars.data();
 
   const double waveSpeed = mat.getMaximumWaveSpeed( state );

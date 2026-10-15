@@ -31,17 +31,16 @@
 #include <utility>
 #include <vector>
 
-namespace Marmot {
-  namespace Solvers {
+namespace Marmot::Materials {
     /**
-     * @class Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain
+     * @class Marmot::Materials::MaterialPointSolverFiniteStrain
      * @brief Solver for material point problems with finite strain materials
      * @details This class implements a solver for material point problems
      * using finite strain material models. It supports loading steps with
      * controlled displacement gradient and stress components, adaptive time stepping,
      * and history recording.
      */
-    class MarmotMaterialPointSolverFiniteStrain {
+    class MaterialPointSolverFiniteStrain {
 
     public:
       /**
@@ -175,13 +174,13 @@ namespace Marmot {
       };
 
       /**
-       * @brief Constructor for the MarmotMaterialPointSolverFiniteStrain class
+       * @brief Constructor for the MaterialPointSolverFiniteStrain class
        * @param materialName Name of the finite strain material model
        * @param materialProperties Array of material properties
        * @param nMaterialProperties Number of material properties
        * @param options Solver options controlling nonlinear iteration settings
        */
-      MarmotMaterialPointSolverFiniteStrain( const std::string&   materialName,
+      MaterialPointSolverFiniteStrain( const std::string&   materialName,
                                              const double*        materialProperties,
                                              const int            nMaterialProperties,
                                              const SolverOptions& options );
@@ -341,5 +340,4 @@ namespace Marmot {
       const SolverOptions options;
     };
 
-  } // namespace Solvers
-} // namespace Marmot
+} // namespace Marmot::Materials

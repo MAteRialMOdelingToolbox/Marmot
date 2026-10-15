@@ -236,7 +236,7 @@ namespace Marmot::Testing {
    * @param stiffnessTol Tolerance for the stiffness objectivity check (default: 1e-15).
    * @return `true` if the solver passes both checks, `false` otherwise.
    */
-  bool spinTurbokreisel( Marmot::Solvers::MarmotMaterialPointSolverHypoElastic& solver,
+  bool spinTurbokreisel( Marmot::Materials::MaterialPointSolverHypoElastic& solver,
                          double                                                 stressTol    = 1e-15,
                          double                                                 stiffnessTol = 1e-15 );
 } // namespace Marmot::Testing

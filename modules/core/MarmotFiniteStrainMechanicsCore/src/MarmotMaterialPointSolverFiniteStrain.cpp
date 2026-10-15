@@ -11,10 +11,9 @@ using namespace Marmot;
 using namespace Fastor;
 using namespace Marmot::Math::FastorTensors;
 
-namespace Marmot {
-  namespace Solvers {
+namespace Marmot::Materials {
 
-    MarmotMaterialPointSolverFiniteStrain::MarmotMaterialPointSolverFiniteStrain( const std::string& materialName,
+    MaterialPointSolverFiniteStrain::MaterialPointSolverFiniteStrain( const std::string& materialName,
                                                                                   const double*      materialProperties,
                                                                                   const int nMaterialProperties,
                                                                                   const SolverOptions& options )
@@ -40,13 +39,13 @@ namespace Marmot {
       stateVarsTemp     = stateVars;
     }
 
-    void MarmotMaterialPointSolverFiniteStrain::addStep( const Step& step )
+    void MaterialPointSolverFiniteStrain::addStep( const Step& step )
     {
       step.checkControl();
       steps.push_back( step );
     }
 
-    void MarmotMaterialPointSolverFiniteStrain::solve()
+    void MaterialPointSolverFiniteStrain::solve()
     {
       for ( const auto& step : steps ) {
         std::cout << "Solving step from " << step.timeStart << " to " << step.timeEnd << std::endl;
@@ -55,7 +54,7 @@ namespace Marmot {
       }
     }
 
-    void MarmotMaterialPointSolverFiniteStrain::setInitialState( const Marmot::Math::FastorTensors::Tensor33d& initialStress,
+    void MaterialPointSolverFiniteStrain::setInitialState( const Marmot::Math::FastorTensors::Tensor33d& initialStress,
                                                                  const Eigen::VectorXd& initialStateVars )
     {
       _initialStress    = initialStress;
@@ -64,7 +63,7 @@ namespace Marmot {
       stateVars         = _initialStateVars;
     }
 
-    void MarmotMaterialPointSolverFiniteStrain::resetToInitialState()
+    void MaterialPointSolverFiniteStrain::resetToInitialState()
     {
       stress    = _initialStress;
       gradU     = Tensor33d( 0.0 );
@@ -73,7 +72,7 @@ namespace Marmot {
       history.clear();
     }
 
-    void MarmotMaterialPointSolverFiniteStrain::solveStep( const Step& step )
+    void MaterialPointSolverFiniteStrain::solveStep( const Step& step )
     {
       double time     = step.timeStart;
       double dT       = 0.0;
@@ -133,7 +132,7 @@ namespace Marmot {
         throw Marmot::Utilities::SolverIncrementsExhausted( "Maximum number of increments reached, cannot proceed." );
     }
 
-    void MarmotMaterialPointSolverFiniteStrain::solveIncrement( const Increment& increment )
+    void MaterialPointSolverFiniteStrain::solveIncrement( const Increment& increment )
     {
       // set initial strain increment, set not controlled components to zero
       // use element-wise multiplication
@@ -255,7 +254,7 @@ namespace Marmot {
         HistoryEntry( increment.timeOld + increment.dT, stress, Spatial3D::I + gradU, dTau_dF, stateVars ) );
     }
 
-    Marmot::Math::FastorTensors::Tensor9d MarmotMaterialPointSolverFiniteStrain::computeResidual(
+    Marmot::Math::FastorTensors::Tensor9d MaterialPointSolverFiniteStrain::computeResidual(
       const Marmot::Math::FastorTensors::Tensor9d& stressIncrement,
       const Marmot::Math::FastorTensors::Tensor9d& target,
       const Increment&                       increment )
@@ -271,7 +270,7 @@ namespace Marmot {
       return residual;
     }
 
-    void MarmotMaterialPointSolverFiniteStrain::modifyTangent( Marmot::Math::FastorTensors::Tensor99d& tangent,
+    void MaterialPointSolverFiniteStrain::modifyTangent( Marmot::Math::FastorTensors::Tensor99d& tangent,
                                                                const Increment&                  increment )
     {
       // modify the tangent matrix based on control type
@@ -283,7 +282,7 @@ namespace Marmot {
       }
     }
 
-    void MarmotMaterialPointSolverFiniteStrain::printHistory()
+    void MaterialPointSolverFiniteStrain::printHistory()
     {
       std::cout << "Material Point History:" << std::endl;
       for ( const auto& entry : history ) {
@@ -291,7 +290,7 @@ namespace Marmot {
       }
     }
 
-    void MarmotMaterialPointSolverFiniteStrain::exportHistoryToCSV( const std::string& filename )
+    void MaterialPointSolverFiniteStrain::exportHistoryToCSV( const std::string& filename )
     {
       std::ofstream file( filename );
       if ( !file.is_open() )
@@ -333,5 +332,4 @@ namespace Marmot {
       file.close();
     }
 
-  } // namespace Solvers
-} // namespace Marmot
+} // namespace Marmot::Materials

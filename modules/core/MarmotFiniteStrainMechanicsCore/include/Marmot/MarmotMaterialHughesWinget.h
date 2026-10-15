@@ -69,7 +69,7 @@ namespace Marmot::Materials {
    * @class HughesWingetWrapper
    * @brief Decorator presenting a small-strain (hypoelastic) material as a finite-strain material.
    *
-   * @tparam BaseMaterialType A concrete class derived from MarmotMaterialHypoElastic.
+   * @tparam BaseMaterialType A concrete class derived from Marmot::Materials::MaterialHypoElastic.
    * @tparam tangentMode      How the algorithmic tangent is evaluated, see Marmot::Materials::HughesWingetTangent.
    *
    * The wrapped material is driven by the objective strain increment of the Hughes-Winget algorithm,
@@ -103,13 +103,13 @@ namespace Marmot::Materials {
   template < typename BaseMaterialType, HughesWingetTangent tangentMode = HughesWingetTangent::Analytic >
   class HughesWingetWrapper : public MarmotMaterialFiniteStrain {
 
-    static_assert( std::is_base_of_v< MarmotMaterialHypoElastic, BaseMaterialType >,
-                   "HughesWingetWrapper can only wrap materials derived from MarmotMaterialHypoElastic." );
+    static_assert( std::is_base_of_v< Marmot::Materials::MaterialHypoElastic, BaseMaterialType >,
+                   "HughesWingetWrapper can only wrap materials derived from Marmot::Materials::MaterialHypoElastic." );
 
   protected:
     /// The wrapped small-strain material. Held as the base interface: concrete materials are free to
     /// re-declare their overrides as protected, which would make them unreachable via BaseMaterialType.
-    std::unique_ptr< MarmotMaterialHypoElastic > baseMaterial;
+    std::unique_ptr< Marmot::Materials::MaterialHypoElastic > baseMaterial;
 
     /// Name of the state layout slot holding the deformation gradient of the last accepted increment.
     static constexpr const char* deformationGradientSlot = "HughesWinget_F_n";
@@ -277,7 +277,7 @@ namespace Marmot::Materials {
                                                const Marmot::Math::Vector6d&                    sigmaNp1Voigt,
                                                const std::vector< double >&               baseStateOld,
                                                const Marmot::Math::Vector6d&                    dStrain,
-                                               const MarmotMaterialHypoElastic::timeInfo& timeInfo ) const
+                                               const Marmot::Materials::MaterialHypoElastic::timeInfo& timeInfo ) const
     {
       const int nBase = baseMaterial->getNumberOfRequiredStateVars();
 
@@ -291,7 +291,7 @@ namespace Marmot::Materials {
         if ( nBase > 0 )
           std::memcpy( scratch.data(), baseStateOld.data(), nBase * sizeof( double ) );
 
-        MarmotMaterialHypoElastic::state3D perturbed;
+        Marmot::Materials::MaterialHypoElastic::state3D perturbed;
         perturbed.stress = sigmaRotVoigt;
         perturbed.stress( j ) += h;
         perturbed.stateVars = nBase > 0 ? scratch.data() : nullptr;
@@ -369,13 +369,13 @@ namespace Marmot::Materials {
       const Marmot::Math::Vector6d sigmaRotVoigt = stressToVoigt< double >( toEigen( sigmaRot ) );
       const Marmot::Math::Vector6d dEpsVoigt     = voigtFromStrainMatrix< 3 >( toEigen( dEps ) );
 
-      MarmotMaterialHypoElastic::state3D state;
+      Marmot::Materials::MaterialHypoElastic::state3D state;
       state.stress               = sigmaRotVoigt;
       state.elasticEnergyDensity = response.elasticEnergyDensity;
       state.dissipation          = response.dissipation;
       state.stateVars            = baseState;
 
-      const MarmotMaterialHypoElastic::timeInfo timeInfo{ timeIncrement.time, timeIncrement.dT };
+      const Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ timeIncrement.time, timeIncrement.dT };
 
       Marmot::Math::Matrix6d C = Marmot::Math::Matrix6d::Zero();
       baseMaterial->computeStress( state, C, dEpsVoigt, timeInfo );

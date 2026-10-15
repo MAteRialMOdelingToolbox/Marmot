@@ -35,9 +35,9 @@ namespace Marmot::Materials {
    * @brief Implementation of a isotropic J2-plasticity  material
    * for 3D stress states using automatic differentiation.
    */
-  class ADVonMises : public MarmotMaterialHypoElasticAD {
+  class ADVonMises : public Marmot::Materials::MaterialHypoElasticAD {
   public:
-    using MarmotMaterialHypoElasticAD::MarmotMaterialHypoElasticAD;
+    using Marmot::Materials::MaterialHypoElasticAD::MaterialHypoElasticAD;
 
     /// @brief Young’s modulus.
     const double& E;

@@ -8,7 +8,7 @@
 #include <string>
 
 using namespace Marmot::Testing;
-using namespace Marmot::Solvers;
+using namespace Marmot::Materials;
 using namespace Marmot::Math::FastorTensors;
 using namespace Marmot::Math::Indices;
 using namespace Marmot::ContinuumMechanics;
@@ -39,22 +39,22 @@ static std::vector< double > getElasticPenceGouNeoHookeProps()
 }
 
 // Helper to create a single-step deformation solver
-static MarmotMaterialPointSolverFiniteStrain makeSolver( const std::string& matName, std::vector< double >& matProps )
+static Marmot::Materials::MaterialPointSolverFiniteStrain makeSolver( const std::string& matName, std::vector< double >& matProps )
 {
-  auto solveropts = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
-  return MarmotMaterialPointSolverFiniteStrain( matName,
+  auto solveropts = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
+  return Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                 matProps.data(),
                                                 static_cast< int >( matProps.size() ),
                                                 solveropts );
 }
 
 // Apply a single displacement-controlled step
-static MarmotMaterialPointSolverFiniteStrain::Step makeStep( const Tensor33d& gradUIncrement,
+static Marmot::Materials::MaterialPointSolverFiniteStrain::Step makeStep( const Tensor33d& gradUIncrement,
                                                              double           timeStart,
                                                              double           timeEnd,
                                                              double           dT )
 {
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget        = gradUIncrement;
   step.stressIncrementTarget       = Tensor33d( 0.0 );
   step.isGradUComponentControlled  = Tensor33t< bool >( true );

@@ -7,12 +7,12 @@
 
 using namespace Eigen;
 
-void MarmotMaterialHypoElastic::setCharacteristicElementLength( double length )
+void Marmot::Materials::MaterialHypoElastic::setCharacteristicElementLength( double length )
 {
   characteristicElementLength = length;
 }
 
-void MarmotMaterialHypoElastic::computePlaneStress( state2D&                state2D_,
+void Marmot::Materials::MaterialHypoElastic::computePlaneStress( state2D&                state2D_,
                                                     Marmot::Math::Matrix3d&       dStress_dStrain2D_,
                                                     const Marmot::Math::Vector3d& dStrain2D_,
                                                     const timeInfo&         timeInfo ) const
@@ -76,7 +76,7 @@ void MarmotMaterialHypoElastic::computePlaneStress( state2D&                stat
   dStress_dStrain2D_ = ContinuumMechanics::PlaneStress::getPlaneStressTangent( dStress_dStrain3D );
 }
 
-void MarmotMaterialHypoElastic::computeUniaxialStress( state1D&        state1D_,
+void Marmot::Materials::MaterialHypoElastic::computeUniaxialStress( state1D&        state1D_,
                                                        double&         dStress_dStrain1D_,
                                                        const double    dStrain1D_,
                                                        const timeInfo& timeInfo ) const
@@ -131,7 +131,7 @@ void MarmotMaterialHypoElastic::computeUniaxialStress( state1D&        state1D_,
 
   dStress_dStrain1D_ = ContinuumMechanics::UniaxialStress::getUniaxialStressTangent( dStress_dStrain3D );
 }
-double MarmotMaterialHypoElastic::getMaximumWaveSpeed( const state3D& state ) const
+double Marmot::Materials::MaterialHypoElastic::getMaximumWaveSpeed( const state3D& state ) const
 {
   const int nStateVars = getNumberOfRequiredStateVars();
 

@@ -60,10 +60,10 @@ namespace {
    * The state variable makes it observable whether the wrapped material was driven at all, which the
    * rigid-rotation test relies on.
    */
-  class StubLinearElastic : public MarmotMaterialHypoElastic {
+  class StubLinearElastic : public Marmot::Materials::MaterialHypoElastic {
   public:
     StubLinearElastic( const double* props, int nProps, int matNumber )
-      : MarmotMaterialHypoElastic( props, nProps, matNumber )
+      : Marmot::Materials::MaterialHypoElastic( props, nProps, matNumber )
     {
       stateLayout.add( "accumulatedStrain", 1 );
       stateLayout.finalize();
@@ -92,10 +92,10 @@ namespace {
    * separates the Analytic tangent from the Exact one, in the same way a plastic return map does,
    * without pulling a real plasticity model into a core test.
    */
-  class StubStressDependent : public MarmotMaterialHypoElastic {
+  class StubStressDependent : public Marmot::Materials::MaterialHypoElastic {
   public:
     StubStressDependent( const double* props, int nProps, int matNumber )
-      : MarmotMaterialHypoElastic( props, nProps, matNumber )
+      : Marmot::Materials::MaterialHypoElastic( props, nProps, matNumber )
     {
       stateLayout.add( "accumulatedStrain", 1 );
       stateLayout.finalize();
@@ -305,7 +305,7 @@ void testSmallStrainAgreement()
 
   StubLinearElastic                  direct( elasticProps.data(), int( elasticProps.size() ), 1 );
   double                             directStateVar = 0.0;
-  MarmotMaterialHypoElastic::state3D directState;
+  Marmot::Materials::MaterialHypoElastic::state3D directState;
   directState.stateVars = &directStateVar;
 
   // 20 increments of a small symmetric strain.
@@ -491,7 +491,7 @@ void testVolumetricScaling()
 
   StubLinearElastic                  direct( elasticProps.data(), int( elasticProps.size() ), 1 );
   double                             sv = 0.0;
-  MarmotMaterialHypoElastic::state3D ds;
+  Marmot::Materials::MaterialHypoElastic::state3D ds;
   ds.stateVars       = &sv;
   Marmot::Math::Matrix6d C = Marmot::Math::Matrix6d::Zero();
   direct.computeStress( ds, C, dStrain, { 0.0, 1.0 } );

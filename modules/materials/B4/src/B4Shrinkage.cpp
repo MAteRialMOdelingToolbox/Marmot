@@ -1,7 +1,7 @@
 #include "Marmot/B4Shrinkage.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
-#include "Marmot/MarmotUtility.h"
+#include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
 #include <iostream>
 

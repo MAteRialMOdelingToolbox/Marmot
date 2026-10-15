@@ -11,7 +11,7 @@ namespace Marmot::Materials {
   using namespace ContinuumMechanics::Elasticity;
 
   ADLinearElastic::ADLinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber )
-    : MarmotMaterialHypoElasticAD::MarmotMaterialHypoElasticAD( materialProperties,
+    : Marmot::Materials::MaterialHypoElasticAD::MaterialHypoElasticAD( materialProperties,
                                                                 nMaterialProperties,
                                                                 materialNumber ),
       C( Isotropic::stiffnessTensor( materialProperties[0], materialProperties[1] ) )

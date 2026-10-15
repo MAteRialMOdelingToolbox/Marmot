@@ -106,7 +106,7 @@ namespace Marmot::MaterialPoints {
      * state @f$ \boldsymbol{F}_n @f$ ("deformation gradient"), the Kirchhoff stress ("stress"), followed by the
      * state of the material ("begin of material state").
      */
-    class MPStateVarManager : public MarmotStateVarVectorManager {
+    class MPStateVarManager : public Marmot::Utilities::StateVarVectorManager {
 
       /// the layout of the state vector (names and lengths)
       inline const static auto layout = makeLayout( {
@@ -143,7 +143,7 @@ namespace Marmot::MaterialPoints {
        * @param[in] nStateVars Total length of the state vector, including the material state.
        */
       MPStateVarManager( double* theStateVarVector, int nStateVars )
-        : MarmotStateVarVectorManager( theStateVarVector, layout ),
+        : Marmot::Utilities::StateVarVectorManager( theStateVarVector, layout ),
           u( &find( "displacement" ) ),
           v( &find( "velocity" ) ),
           a( &find( "acceleration" ) ),

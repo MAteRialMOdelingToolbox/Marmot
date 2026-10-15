@@ -30,9 +30,11 @@
 #include <unordered_map>
 #include <vector>
 
+namespace Marmot::Utilities {
+
 /// @brief A convenience auxiliary class for managing multiple statevars with arbitrary length in a single consecutive
 /// double array
-class MarmotStateVarVectorManager {
+class StateVarVectorManager {
 
 public:
   /// get a Marmot::Utilities::StateView for a statevar entry
@@ -90,6 +92,8 @@ protected:
   /// @brief Constructs the manager from an existing statevar array and a pre-built layout.
   /// @param theStateVars Pointer to the first element of the statevar array.
   /// @param theLayout_ Layout describing the offsets and lengths of each named entry.
-  MarmotStateVarVectorManager( double* theStateVars, const StateVarVectorLayout& theLayout_ )
+  StateVarVectorManager( double* theStateVars, const StateVarVectorLayout& theLayout_ )
     : theStateVars( theStateVars ), theLayout( theLayout_ ){};
 };
+
+} // namespace Marmot::Utilities

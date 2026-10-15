@@ -155,7 +155,7 @@ namespace Marmot::Elements {
        * and the material state vector. The layout is [stress(6), strain(6), begin of material state(...)]
        * in 3D Voigt notation.
        */
-      class QPStateVarManager : public MarmotStateVarVectorManager {
+      class QPStateVarManager : public Marmot::Utilities::StateVarVectorManager {
 
         /// \hideinitializer
         inline const static auto layout = makeLayout( {
@@ -178,7 +178,7 @@ namespace Marmot::Elements {
         static int getNumberOfRequiredStateVarsQuadraturePointOnly() { return layout.nRequiredStateVars; };
 
         QPStateVarManager( double* theStateVarVector, int nStateVars )
-          : MarmotStateVarVectorManager( theStateVarVector, layout ),
+          : Marmot::Utilities::StateVarVectorManager( theStateVarVector, layout ),
             stress( &find( "stress" ) ),
             strain( &find( "strain" ) ),
             totalStrainEnergy( find( "total strain energy" ) ),
@@ -190,7 +190,7 @@ namespace Marmot::Elements {
 
       std::unique_ptr< QPStateVarManager > managedStateVars;
 
-      std::unique_ptr< MarmotMaterialHypoElastic > material;
+      std::unique_ptr< Marmot::Materials::MaterialHypoElastic > material;
 
       int getNumberOfRequiredStateVarsQuadraturePointOnly()
       {
@@ -538,8 +538,8 @@ namespace Marmot::Elements {
   void DisplacementFiniteElement< nDim, nNodes >::assignProperty( const MarmotMaterialSection& section )
   {
     for ( auto& qp : qps ) {
-      qp.material = std::unique_ptr< MarmotMaterialHypoElastic >(
-        MarmotLibrary::MarmotMaterialHypoElasticFactory::createMaterial( section.materialName,
+      qp.material = std::unique_ptr< Marmot::Materials::MaterialHypoElastic >(
+        Marmot::Registry::MaterialHypoElasticFactory::createMaterial( section.materialName,
                                                                          section.materialProperties,
                                                                          section.nMaterialProperties,
                                                                          elLabel ) );
@@ -547,7 +547,7 @@ namespace Marmot::Elements {
       if ( !qp.material )
         throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__
-                                     << ": invalid material assigned; cannot cast to MarmotMaterialHypoElastic!" );
+                                     << ": invalid material assigned; cannot cast to Marmot::Materials::MaterialHypoElastic!" );
 
       /* Deliberately VOLUME based, and deliberately not the length
        * computeCriticalTimeStepForExplicitDynamics uses. The material's characteristic length is a
@@ -709,8 +709,8 @@ namespace Marmot::Elements {
 
       if constexpr ( nDim == 1 ) {
 
-        MarmotMaterialHypoElastic::state1D  state;
-        MarmotMaterialHypoElastic::timeInfo timeInfo;
+        Marmot::Materials::MaterialHypoElastic::state1D  state;
+        Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo;
 
         // set state info
         state.stress = reduce3DVoigt< ParentGeometryElement::voigtSize >( qp.managedStateVars->stress )( 0 );
@@ -734,8 +734,8 @@ namespace Marmot::Elements {
 
         if ( sectionType == SectionType::PlaneStress ) {
 
-          MarmotMaterialHypoElastic::state2D  state;
-          MarmotMaterialHypoElastic::timeInfo timeInfo;
+          Marmot::Materials::MaterialHypoElastic::state2D  state;
+          Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo;
 
           // set state info
           state.stress               = reduce3DVoigt< ParentGeometryElement::voigtSize >( qp.managedStateVars->stress );
@@ -759,8 +759,8 @@ namespace Marmot::Elements {
           Marmot::Math::Matrix6d C66;
 
           // Marmot::Math::Vector6d S6 = qp.managedStateVars->stress;
-          MarmotMaterialHypoElastic::state3D  state;
-          MarmotMaterialHypoElastic::timeInfo timeInfo;
+          Marmot::Materials::MaterialHypoElastic::state3D  state;
+          Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo;
 
           // set state info
           state.stress               = qp.managedStateVars->stress;
@@ -784,8 +784,8 @@ namespace Marmot::Elements {
       else if constexpr ( nDim == 3 ) {
         if ( sectionType == SectionType::Solid ) {
 
-          MarmotMaterialHypoElastic::state3D  state;
-          MarmotMaterialHypoElastic::timeInfo timeInfo;
+          Marmot::Materials::MaterialHypoElastic::state3D  state;
+          Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo;
 
           // set state info
           state.stress               = qp.managedStateVars->stress;
@@ -848,8 +848,8 @@ namespace Marmot::Elements {
         if ( sectionType == SectionType::PlaneStress ) {
 
           // TODO. implement explicit plane stress update
-          MarmotMaterialHypoElastic::state2D  state;
-          MarmotMaterialHypoElastic::timeInfo timeInfo;
+          Marmot::Materials::MaterialHypoElastic::state2D  state;
+          Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo;
 
           // set state info
           state.stress               = reduce3DVoigt< ParentGeometryElement::voigtSize >( qp.managedStateVars->stress );
@@ -873,8 +873,8 @@ namespace Marmot::Elements {
           Marmot::Math::Vector6d dE6 = planeVoigtToVoigt( dE );
 
           // Marmot::Math::Vector6d S6 = qp.managedStateVars->stress;
-          MarmotMaterialHypoElastic::state3D  state;
-          MarmotMaterialHypoElastic::timeInfo timeInfo;
+          Marmot::Materials::MaterialHypoElastic::state3D  state;
+          Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo;
 
           // set state info
           state.stress               = qp.managedStateVars->stress;
@@ -897,8 +897,8 @@ namespace Marmot::Elements {
       else if constexpr ( nDim == 3 ) {
         if ( sectionType == SectionType::Solid ) {
 
-          MarmotMaterialHypoElastic::state3D  state;
-          MarmotMaterialHypoElastic::timeInfo timeInfo;
+          Marmot::Materials::MaterialHypoElastic::state3D  state;
+          Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo;
 
           // set state info
           state.stress               = qp.managedStateVars->stress;
@@ -938,7 +938,7 @@ namespace Marmot::Elements {
          */
         const double volumetricStrainIncrement = dE.head( nNormalComponents ).sum();
 
-        const MarmotMaterialHypoElastic::state3D stateForWaveSpeed( qp.managedStateVars->stress,
+        const Marmot::Materials::MaterialHypoElastic::state3D stateForWaveSpeed( qp.managedStateVars->stress,
                                                                     elasticEnergyDensity,
                                                                     dissipation,
                                                                     qp.managedStateVars->materialStateVars.data() );
@@ -1188,7 +1188,7 @@ namespace Marmot::Elements {
        */
       const double characteristicElementLength = qp.characteristicElementLength;
 
-      MarmotMaterialHypoElastic::state3D state( qp.managedStateVars->stress,
+      Marmot::Materials::MaterialHypoElastic::state3D state( qp.managedStateVars->stress,
                                                 qp.managedStateVars->elasticStrainEnergy / qp.J0xW,
                                                 qp.managedStateVars->dissipation / qp.J0xW,
                                                 qp.managedStateVars->materialStateVars.data() );

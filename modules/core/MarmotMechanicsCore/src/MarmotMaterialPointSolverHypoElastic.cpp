@@ -3,19 +3,18 @@
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 #include <fstream>
 
-using namespace Marmot::Solvers;
+using namespace Marmot::Materials;
 
-MarmotMaterialPointSolverHypoElastic::MarmotMaterialPointSolverHypoElastic( std::string&         materialName,
+MaterialPointSolverHypoElastic::MaterialPointSolverHypoElastic( std::string&         materialName,
                                                                             double*              materialProperties,
                                                                             int                  nMaterialProperties,
                                                                             const SolverOptions& options )
   : options( options )
 {
-  using namespace MarmotLibrary;
 
   // create material instance
-  material = std::unique_ptr< MarmotMaterialHypoElastic >( dynamic_cast< MarmotMaterialHypoElastic* >(
-    MarmotMaterialHypoElasticFactory::createMaterial( materialName, materialProperties, nMaterialProperties, 1 ) ) );
+  material = std::unique_ptr< Marmot::Materials::MaterialHypoElastic >( dynamic_cast< Marmot::Materials::MaterialHypoElastic* >(
+    Marmot::Registry::MaterialHypoElasticFactory::createMaterial( materialName, materialProperties, nMaterialProperties, 1 ) ) );
 
   // get number of state variables
   nStateVars = material->getNumberOfRequiredStateVars();
@@ -25,13 +24,13 @@ MarmotMaterialPointSolverHypoElastic::MarmotMaterialPointSolverHypoElastic( std:
   stateVarsTemp     = Eigen::VectorXd::Zero( nStateVars );
 }
 
-void MarmotMaterialPointSolverHypoElastic::addStep( const Step& step )
+void MaterialPointSolverHypoElastic::addStep( const Step& step )
 {
   step.checkControl();
   steps.push_back( step );
 }
 
-void MarmotMaterialPointSolverHypoElastic::solve()
+void MaterialPointSolverHypoElastic::solve()
 {
   for ( const auto& step : steps ) {
     std::cout << "Solving step from " << step.timeStart << " to " << step.timeEnd << std::endl;
@@ -39,7 +38,7 @@ void MarmotMaterialPointSolverHypoElastic::solve()
   }
 }
 
-void MarmotMaterialPointSolverHypoElastic::setInitialState( const Marmot::Math::Vector6d& initialStress,
+void MaterialPointSolverHypoElastic::setInitialState( const Marmot::Math::Vector6d& initialStress,
                                                             const Eigen::VectorXd&  initialStateVars )
 {
   _initialStress    = initialStress;
@@ -48,7 +47,7 @@ void MarmotMaterialPointSolverHypoElastic::setInitialState( const Marmot::Math::
   stateVars         = _initialStateVars;
 }
 
-void MarmotMaterialPointSolverHypoElastic::resetToInitialState()
+void MaterialPointSolverHypoElastic::resetToInitialState()
 {
   stress = _initialStress;
   strain.setZero();
@@ -57,7 +56,7 @@ void MarmotMaterialPointSolverHypoElastic::resetToInitialState()
   history.clear();
 }
 
-void MarmotMaterialPointSolverHypoElastic::solveStep( const Step& step )
+void MaterialPointSolverHypoElastic::solveStep( const Step& step )
 {
   double time     = step.timeStart;
   double dT       = step.dTStart;
@@ -102,7 +101,7 @@ void MarmotMaterialPointSolverHypoElastic::solveStep( const Step& step )
     throw Marmot::Utilities::SolverIncrementsExhausted( "Maximum number of increments reached, cannot proceed." );
 }
 
-void MarmotMaterialPointSolverHypoElastic::solveIncrement( const Increment& increment )
+void MaterialPointSolverHypoElastic::solveIncrement( const Increment& increment )
 {
   // set initial strain increment, set not controlled components to zero
   // use a Eigen Vector multiplication
@@ -138,9 +137,9 @@ void MarmotMaterialPointSolverHypoElastic::solveIncrement( const Increment& incr
     stressTemp = stress;
 
     // set up state and time info for material
-    MarmotMaterialHypoElastic::state3D state( stressTemp, 0.0, 0.0, stateVarsTemp.data() );
+    Marmot::Materials::MaterialHypoElastic::state3D state( stressTemp, 0.0, 0.0, stateVarsTemp.data() );
 
-    MarmotMaterialHypoElastic::timeInfo timeInfo;
+    Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo;
     timeInfo.time = increment.timeOld + increment.dT;
     timeInfo.dT   = increment.dT;
 
@@ -189,7 +188,7 @@ void MarmotMaterialPointSolverHypoElastic::solveIncrement( const Increment& incr
   history.push_back( HistoryEntry{ increment.timeOld + increment.dT, stress, strain, dStressDStrain, stateVars } );
 }
 
-Marmot::Math::Vector6d MarmotMaterialPointSolverHypoElastic::computeResidual( const Marmot::Math::Vector6d& stressIncrement,
+Marmot::Math::Vector6d MaterialPointSolverHypoElastic::computeResidual( const Marmot::Math::Vector6d& stressIncrement,
                                                                         const Marmot::Math::Vector6d& target,
                                                                         const Increment&        increment )
 {
@@ -204,7 +203,7 @@ Marmot::Math::Vector6d MarmotMaterialPointSolverHypoElastic::computeResidual( co
   return residual;
 }
 
-void MarmotMaterialPointSolverHypoElastic::modifyTangent( Eigen::Matrix< double, 6, 6 >& tangent,
+void MaterialPointSolverHypoElastic::modifyTangent( Eigen::Matrix< double, 6, 6 >& tangent,
                                                           const Increment&               increment )
 {
   // modify the tangent matrix based on control type
@@ -216,7 +215,7 @@ void MarmotMaterialPointSolverHypoElastic::modifyTangent( Eigen::Matrix< double,
   }
 }
 
-void MarmotMaterialPointSolverHypoElastic::printHistory()
+void MaterialPointSolverHypoElastic::printHistory()
 {
   std::cout << "Material Point History:" << std::endl;
   for ( const auto& entry : history ) {
@@ -224,7 +223,7 @@ void MarmotMaterialPointSolverHypoElastic::printHistory()
   }
 }
 
-void MarmotMaterialPointSolverHypoElastic::exportHistoryToCSV( const std::string& filename )
+void MaterialPointSolverHypoElastic::exportHistoryToCSV( const std::string& filename )
 {
   std::ofstream file( filename );
   if ( !file.is_open() )

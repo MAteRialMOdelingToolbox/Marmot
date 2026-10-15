@@ -26,15 +26,17 @@
 #pragma once
 #include "Marmot/MarmotMaterialHypoElastic.h"
 
+namespace Marmot::Materials {
+
 /**
- * @brief Derived class of MarmotMaterialHypoElastic providing automatic differentiation support
+ * @brief Derived class of MaterialHypoElastic providing automatic differentiation support
  *        for computing the algorithmic tangent via dual numbers.
  */
-class MarmotMaterialHypoElasticAD : public MarmotMaterialHypoElastic {
+class MaterialHypoElasticAD : public MaterialHypoElastic {
 
 public:
-  /// @brief Inherits the base-class constructor; see MarmotMaterialHypoElastic::MarmotMaterialHypoElastic().
-  using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
+  /// @brief Inherits the base-class constructor; see MaterialHypoElastic::MaterialHypoElastic().
+  using MaterialHypoElastic::MaterialHypoElastic;
 
   /// @brief Structure holding the material state for 3D using dual numbers (for automatic differentiation).
   struct state3DAD {
@@ -81,3 +83,5 @@ public:
                               const Marmot::Math::Vector6d& dStrain,
                               const timeInfo&         timeInfo ) const override;
 };
+
+} // namespace Marmot::Materials

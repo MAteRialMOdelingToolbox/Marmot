@@ -32,7 +32,7 @@
  * @brief Adaptive sub-stepping with Richardson extrapolation for semi-explicit return-mapping.
  */
 
-namespace Marmot::NumericalAlgorithms {
+namespace Marmot::ContinuumMechanics::Algorithms {
 
   /**
    * @brief Adaptive sub-stepper for semi-explicit (forward-Euler-based) return-mapping algorithms.
@@ -138,9 +138,9 @@ namespace Marmot::NumericalAlgorithms {
     bool splitCurrentSubstep();
   };
 
-} // namespace Marmot::NumericalAlgorithms
+} // namespace Marmot::ContinuumMechanics::Algorithms
 
-namespace Marmot::NumericalAlgorithms {
+namespace Marmot::ContinuumMechanics::Algorithms {
 
   template < size_t n, size_t nState >
   AdaptiveSubstepperExplicit< n, nState >::AdaptiveSubstepperExplicit( double          initialStepSize,
@@ -467,4 +467,4 @@ namespace Marmot::NumericalAlgorithms {
   {
     return discardedDueToError;
   }
-} // namespace Marmot::NumericalAlgorithms
+} // namespace Marmot::ContinuumMechanics::Algorithms

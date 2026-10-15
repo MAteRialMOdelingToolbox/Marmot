@@ -14,7 +14,7 @@ namespace Marmot::Materials {
   LinearViscoElasticWiechert::LinearViscoElasticWiechert( const double* materialProperties,
                                                           int           nMaterialProperties,
                                                           int           materialNumber )
-    : MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialNumber ),
+    : Marmot::Materials::MaterialHypoElastic( materialProperties, nMaterialProperties, materialNumber ),
       E( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 0 ) ),
       nu( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 1 ) ),
       m( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 2 ) ),

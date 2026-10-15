@@ -3,7 +3,7 @@
 #include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotVoigt.h"
 
-namespace Marmot::NumericalAlgorithms {
+namespace Marmot::ContinuumMechanics::Algorithms {
   using namespace Eigen;
   HughesWinget::HughesWinget( const Marmot::Math::Matrix3d& FOld, const Marmot::Math::Matrix3d& FNew, Formulation formulation )
     : theFormulation( formulation )
@@ -91,4 +91,4 @@ namespace Marmot::NumericalAlgorithms {
 
     return dScalar_dl * FInv;
   }
-} // namespace Marmot::NumericalAlgorithms
+} // namespace Marmot::ContinuumMechanics::Algorithms

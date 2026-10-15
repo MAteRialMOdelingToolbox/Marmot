@@ -36,7 +36,7 @@
  * current elastic tangent must be supplied when extending the consistent tangent.
  */
 
-namespace Marmot::NumericalAlgorithms {
+namespace Marmot::ContinuumMechanics::Algorithms {
   /**
    * @brief Pérez–Fouget sub-stepper with time-dependent elastic stiffness.
    *
@@ -105,11 +105,11 @@ namespace Marmot::NumericalAlgorithms {
     TangentSizedMatrix elasticTangent;
     TangentSizedMatrix consistentTangent;
   };
-} // namespace Marmot::NumericalAlgorithms
+} // namespace Marmot::ContinuumMechanics::Algorithms
 
 #include "Marmot/MarmotJournal.h"
 
-namespace Marmot::NumericalAlgorithms {
+namespace Marmot::ContinuumMechanics::Algorithms {
   template < int s >
   PerezFougetSubstepperTime< s >::PerezFougetSubstepperTime( double initialStepSize,
                                                              double minimumStepSize,
@@ -193,4 +193,4 @@ namespace Marmot::NumericalAlgorithms {
   {
     return consistentTangent.topLeftCorner( 6, 6 );
   }
-} // namespace Marmot::NumericalAlgorithms
+} // namespace Marmot::ContinuumMechanics::Algorithms

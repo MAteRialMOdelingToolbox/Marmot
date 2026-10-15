@@ -29,7 +29,7 @@ namespace Marmot::Materials {
   }
 
   ADVonMises::ADVonMises( const double* materialProperties, int nMaterialProperties, int materialNumber )
-    : MarmotMaterialHypoElasticAD::MarmotMaterialHypoElasticAD( materialProperties,
+    : Marmot::Materials::MaterialHypoElasticAD::MaterialHypoElasticAD( materialProperties,
                                                                 nMaterialProperties,
                                                                 materialNumber ),
       E( materialProperties[0] ),

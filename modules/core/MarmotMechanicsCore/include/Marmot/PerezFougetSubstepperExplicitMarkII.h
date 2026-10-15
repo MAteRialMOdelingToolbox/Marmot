@@ -40,7 +40,7 @@
 // excluded from the generated API documentation; see PerezFougetSubstepperMarkII.h
 // for the documented interface.
 
-namespace Marmot::NumericalAlgorithms {
+namespace Marmot::ContinuumMechanics::Algorithms {
 
   /**
    * @brief Sub-stepper for linear-elastic/elastoplastic materials using a semi-explicit return-mapping.
@@ -95,9 +95,9 @@ namespace Marmot::NumericalAlgorithms {
 
     MatrixStateStrain consistentTangent;
   };
-} // namespace Marmot::NumericalAlgorithms
+} // namespace Marmot::ContinuumMechanics::Algorithms
 
-namespace Marmot::NumericalAlgorithms {
+namespace Marmot::ContinuumMechanics::Algorithms {
   template < int n >
   PerezFougetSubstepper< n >::PerezFougetSubstepper( double          initialStepSize,
                                                      double          minimumStepSize,
@@ -179,5 +179,5 @@ namespace Marmot::NumericalAlgorithms {
   {
     return consistentTangent.topLeftCorner( 6, 6 );
   }
-} // namespace Marmot::NumericalAlgorithms
+} // namespace Marmot::ContinuumMechanics::Algorithms
 /// \endcond

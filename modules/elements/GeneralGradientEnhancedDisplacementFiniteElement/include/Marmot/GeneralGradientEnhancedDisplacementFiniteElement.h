@@ -174,7 +174,7 @@ namespace Marmot::Elements {
        * and the material state vector. The layout is [stress(6), strain(6), begin of material state(...)]
        * in 3D Voigt notation.
        */
-      class QPStateVarManager : public MarmotStateVarVectorManager {
+      class QPStateVarManager : public Marmot::Utilities::StateVarVectorManager {
 
         /// \hideinitializer
         inline const static auto layout = makeLayout( {
@@ -197,7 +197,7 @@ namespace Marmot::Elements {
         static int getNumberOfRequiredStateVarsQuadraturePointOnly() { return layout.nRequiredStateVars; };
 
         QPStateVarManager( double* theStateVarVector, int nStateVars )
-          : MarmotStateVarVectorManager( theStateVarVector, layout ),
+          : Marmot::Utilities::StateVarVectorManager( theStateVarVector, layout ),
             stress( &find( "stress" ) ),
             strain( &find( "strain" ) ),
             totalStrainEnergy( find( "total strain energy" ) ),

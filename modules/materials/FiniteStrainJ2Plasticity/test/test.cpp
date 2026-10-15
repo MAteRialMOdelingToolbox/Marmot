@@ -490,17 +490,17 @@ void testRotation()
 
 void testWithMPSolver()
 {
-  using namespace Marmot::Solvers;
+  using namespace Marmot::Materials;
   auto        materialProperties = std::vector< double >{ 175000, 80800, 260, 580, 9, 70, 3 };
-  auto        solveropts         = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
+  auto        solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   std::string matName            = "FINITESTRAINJ2PLASTICITY";
-  auto        solver             = MarmotMaterialPointSolverFiniteStrain( matName,
+  auto        solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                        materialProperties.data(),
                                                        materialProperties.size(),
                                                        solveropts );
 
   // create a step with controlled shear strain increment
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget         = Tensor33d( 0.0 );
   step.gradUIncrementTarget( 0, 1 ) = 0.01;
   step.stressIncrementTarget        = Tensor33d( 0.0 );
@@ -544,17 +544,17 @@ void testWithMPSolver()
 
 void testWithMPSolverSubstepped()
 {
-  using namespace Marmot::Solvers;
+  using namespace Marmot::Materials;
   auto        materialProperties = std::vector< double >{ 2, 175000, 80800, 260, 580, 9, 70, 3 };
-  auto        solveropts         = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
+  auto        solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   std::string matName            = "FINITESTRAINJ2PLASTICITY_SUBSTEPPED";
-  auto        solver             = MarmotMaterialPointSolverFiniteStrain( matName,
+  auto        solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                        materialProperties.data(),
                                                        materialProperties.size(),
                                                        solveropts );
 
   // create a step with controlled shear strain increment
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget         = Tensor33d( 0.0 );
   step.gradUIncrementTarget( 0, 1 ) = 0.01;
   step.stressIncrementTarget        = Tensor33d( 0.0 );

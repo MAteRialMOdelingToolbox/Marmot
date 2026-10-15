@@ -3,9 +3,9 @@
 
 using namespace Marmot::Testing;
 
-class DummyMaterialStateVarManager : public MarmotStateVarVectorManager {
+class DummyMaterialStateVarManager : public Marmot::Utilities::StateVarVectorManager {
   /*
-   * DummyMaterialStateVarManager is a derived class of MarmotStateVarVectorManager
+   * DummyMaterialStateVarManager is a derived class of Marmot::Utilities::StateVarVectorManager
    * for testing purposes. It defines a static layout with two state variables:
    * "var1" and "var2", with lengths 3 and 2 respectively.
    */
@@ -14,7 +14,7 @@ public:
   inline const static auto layout = makeLayout( { { .name = "var1", .length = 3 }, { .name = "var2", .length = 2 } } );
 
   // Constructor initializes the parent class
-  DummyMaterialStateVarManager( double* stateVars ) : MarmotStateVarVectorManager( stateVars, layout ){};
+  DummyMaterialStateVarManager( double* stateVars ) : Marmot::Utilities::StateVarVectorManager( stateVars, layout ){};
 
   // Expose nRequiredStateVars for testing layout calculation
   static int getRequiredSize() { return layout.nRequiredStateVars; }

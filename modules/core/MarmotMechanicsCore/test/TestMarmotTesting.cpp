@@ -132,12 +132,12 @@ void testExecuteTestsAndCollectExceptionsAggregatesFailures()
 
 namespace {
 
-  Marmot::Solvers::MarmotMaterialPointSolverHypoElastic makeIsotropicSolver()
+  Marmot::Materials::MaterialPointSolverHypoElastic makeIsotropicSolver()
   {
     static std::vector< double > materialProperties = { 20000., 0.25 };
     static std::string           matName            = "LINEARELASTIC";
-    auto                         solveropts = Marmot::Solvers::MarmotMaterialPointSolverHypoElastic::SolverOptions();
-    return Marmot::Solvers::MarmotMaterialPointSolverHypoElastic( matName,
+    auto                         solveropts = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
+    return Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                                   materialProperties.data(),
                                                                   materialProperties.size(),
                                                                   solveropts );
@@ -157,7 +157,7 @@ void testSpinTurbokreiselReturnsFalseForAStressControlledStep()
 {
   auto solver = makeIsotropicSolver();
 
-  Marmot::Solvers::MarmotMaterialPointSolverHypoElastic::Step step;
+  Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, false };
   step.isStressComponentControlled = { false, false, false, false, false, true }; // not pure strain control
   step.strainIncrementTarget       = Marmot::Math::Vector6d::Zero();
@@ -180,7 +180,7 @@ void testSpinTurbokreiselThrowsForAZeroDurationStep()
   // history (undefined behavior).
   auto solver = makeIsotropicSolver();
 
-  Marmot::Solvers::MarmotMaterialPointSolverHypoElastic::Step step;
+  Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, true };
   step.isStressComponentControlled = { false, false, false, false, false, false };
   step.strainIncrementTarget       = Marmot::Math::Vector6d::Zero();
@@ -209,13 +209,13 @@ void testSpinTurbokreiselDetectsAnAnisotropicMaterial()
   // nu23, G12, and the two direction vectors defining the local coordinate system.
   static std::vector< double > materialProperties = { 20000, 10000, 0.25, 0.3, 4000, 1, 0, 0, 0, 0, 1 };
   static std::string           matName            = "LINEARELASTIC";
-  auto                         solveropts = Marmot::Solvers::MarmotMaterialPointSolverHypoElastic::SolverOptions();
-  auto                         solver     = Marmot::Solvers::MarmotMaterialPointSolverHypoElastic( matName,
+  auto                         solveropts = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
+  auto                         solver     = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                                        materialProperties.data(),
                                                                        materialProperties.size(),
                                                                        solveropts );
 
-  Marmot::Solvers::MarmotMaterialPointSolverHypoElastic::Step step;
+  Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, true };
   step.isStressComponentControlled = { false, false, false, false, false, false };
   step.strainIncrementTarget       = Marmot::Math::Vector6d::Zero();
@@ -240,13 +240,13 @@ void testSpinTurbokreiselDetectsATangentOnlyMismatch()
   // passed), rather than the stress-mismatch branch above.
   static std::vector< double > materialProperties = { 20000, 10000, 0.25, 0.3, 4000, 1, 0, 0, 0, 0, 1 };
   static std::string           matName            = "LINEARELASTIC";
-  auto                         solveropts = Marmot::Solvers::MarmotMaterialPointSolverHypoElastic::SolverOptions();
-  auto                         solver     = Marmot::Solvers::MarmotMaterialPointSolverHypoElastic( matName,
+  auto                         solveropts = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
+  auto                         solver     = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                                        materialProperties.data(),
                                                                        materialProperties.size(),
                                                                        solveropts );
 
-  Marmot::Solvers::MarmotMaterialPointSolverHypoElastic::Step step;
+  Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, true };
   step.isStressComponentControlled = { false, false, false, false, false, false };
   step.strainIncrementTarget       = Marmot::Math::Vector6d::Zero();

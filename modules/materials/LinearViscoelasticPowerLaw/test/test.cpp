@@ -3,7 +3,7 @@
 #include <Eigen/Dense>
 
 using namespace Marmot::Testing;
-using namespace Marmot::Solvers;
+using namespace Marmot::Materials;
 
 Eigen::Vector< double, 7 > getMaterialPropertiesLinearViscoelasticPowerLaw()
 {
@@ -27,15 +27,15 @@ void testLinearViscoelasticPowerLaw()
 {
 
   auto        materialProperties = getMaterialPropertiesLinearViscoelasticPowerLaw();
-  auto        solveropts         = MarmotMaterialPointSolverHypoElastic::SolverOptions();
+  auto        solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   std::string matName            = "LINEARVISCOELASTICPOWERLAW";
-  auto        solver             = MarmotMaterialPointSolverHypoElastic( matName,
+  auto        solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                       &materialProperties[0],
                                                       materialProperties.size(),
                                                       solveropts );
 
   // step 1: advance time to 28 days
-  MarmotMaterialPointSolverHypoElastic::Step step1;
+  Marmot::Materials::MaterialPointSolverHypoElastic::Step step1;
 
   step1.isStrainComponentControlled = { true, true, true, true, true, true };
   step1.isStressComponentControlled = { false, false, false, false, false, false };
@@ -47,7 +47,7 @@ void testLinearViscoelasticPowerLaw()
   solver.addStep( step1 );
 
   // step 1: apply strain
-  MarmotMaterialPointSolverHypoElastic::Step step2;
+  Marmot::Materials::MaterialPointSolverHypoElastic::Step step2;
   step2.isStrainComponentControlled = { true, true, true, true, true, true };
   step2.isStressComponentControlled = { false, false, false, false, false, false };
   step2.stressIncrementTarget       = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -59,7 +59,7 @@ void testLinearViscoelasticPowerLaw()
   solver.addStep( step2 );
 
   // step 2: hold strain constant
-  MarmotMaterialPointSolverHypoElastic::Step step3;
+  Marmot::Materials::MaterialPointSolverHypoElastic::Step step3;
   step3.isStrainComponentControlled = { true, true, true, true, true, true };
   step3.isStressComponentControlled = { false, false, false, false, false, false };
   step3.stressIncrementTarget       = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -89,14 +89,14 @@ void testLinearViscoelasticPowerLawCoordinateInvariance()
 {
 
   auto        materialProperties = getMaterialPropertiesLinearViscoelasticPowerLaw();
-  auto        solveropts         = MarmotMaterialPointSolverHypoElastic::SolverOptions();
+  auto        solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   std::string matName            = "LINEARVISCOELASTICPOWERLAW";
-  auto        solver             = MarmotMaterialPointSolverHypoElastic( matName,
+  auto        solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                       &materialProperties[0],
                                                       materialProperties.size(),
                                                       solveropts );
 
-  MarmotMaterialPointSolverHypoElastic::Step step;
+  Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
 
   step.isStrainComponentControlled = { true, true, true, true, true, true };
   step.isStressComponentControlled = { false, false, false, false, false, false };

@@ -108,7 +108,7 @@ namespace Marmot::MaterialPoints {
      *
      * All kinematic quantities are stored with 3 (vectors) or 9 (tensors) entries, also in plane strain.
      */
-    class MPStateVarManager : public MarmotStateVarVectorManager {
+    class MPStateVarManager : public Marmot::Utilities::StateVarVectorManager {
 
       /// names and lengths of the state variables; the material state starts at `begin of material state`
       inline const static auto layout = makeLayout( {
@@ -155,7 +155,7 @@ namespace Marmot::MaterialPoints {
        * @param[in]     nStateVars        Total size of the vector (material point + material).
        */
       MPStateVarManager( double* theStateVarVector, int nStateVars )
-        : MarmotStateVarVectorManager( theStateVarVector, layout ),
+        : Marmot::Utilities::StateVarVectorManager( theStateVarVector, layout ),
           u( &find( "displacement" ) ),
           v( &find( "velocity" ) ),
           a( &find( "acceleration" ) ),

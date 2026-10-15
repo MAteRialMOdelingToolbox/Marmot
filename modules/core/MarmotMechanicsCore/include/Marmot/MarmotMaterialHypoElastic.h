@@ -31,6 +31,8 @@
 #include <cmath>
 #include <vector>
 
+namespace Marmot::Materials {
+
 /**
  *
  * Derived abstract base class for elastic materials expressed purely in rate form.
@@ -54,7 +56,7 @@
  *
  * This formulation is compatible with an Abaqus interface.
  */
-class MarmotMaterialHypoElastic {
+class MaterialHypoElastic {
 
 protected:
   const double* materialProperties;  ///< Pointer to the array of material properties
@@ -68,7 +70,7 @@ public:
    * @param[in] nMaterialProperties_ Number of entries in @p matProperties_.
    * @param[in] materialNumber_      Integer identifying this material instance.
    */
-  MarmotMaterialHypoElastic( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
+  MaterialHypoElastic( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
     : materialProperties( matProperties_ ),
       nMaterialProperties( nMaterialProperties_ ),
       materialNumber( materialNumber_ )
@@ -76,7 +78,7 @@ public:
   }
 
   /// Default destructor
-  virtual ~MarmotMaterialHypoElastic() = default;
+  virtual ~MaterialHypoElastic() = default;
 
   /// Layout of the state variables
   Marmot::Utilities::StateLayoutDynamic stateLayout;
@@ -248,3 +250,5 @@ public:
    */
   virtual double getDensity( const double* stateVars ) const = 0;
 };
+
+} // namespace Marmot::Materials

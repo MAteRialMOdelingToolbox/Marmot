@@ -1256,7 +1256,6 @@ namespace Marmot {
 
 namespace Marmot {
   namespace ContinuumMechanics::VoigtNotation::Derivatives {
-    using namespace Marmot::Math::Constants;
 
     template < typename T >
     T dTheta_dJ2( const Eigen::Matrix< T, 6, 1 >& stress )
@@ -1276,10 +1275,10 @@ namespace Marmot {
       double threshold = 1e-10;
       if ( Math::makeReal( theta ) <= threshold )
         theta = T( threshold );
-      else if ( Math::makeReal( theta ) >= Pi / 3. - threshold )
-        theta = T( Pi / 3. - threshold );
+      else if ( Math::makeReal( theta ) >= Math::Constants::Pi / 3. - threshold )
+        theta = T( Math::Constants::Pi / 3. - threshold );
 
-      const T dThetadJ2 = 3 * sqrt3 / 4 * J3_ / ( pow( J2_, 2.5 ) * sin( 3. * theta ) );
+      const T dThetadJ2 = 3 * Math::Constants::sqrt3 / 4 * J3_ / ( pow( J2_, 2.5 ) * sin( 3. * theta ) );
       return dThetadJ2;
     }
 
@@ -1300,10 +1299,10 @@ namespace Marmot {
       double threshold = 1e-10;
       if ( Math::makeReal( theta ) <= threshold )
         theta = T( threshold );
-      else if ( Math::makeReal( theta ) >= Pi / 3. - threshold )
-        theta = T( Pi / 3. - threshold );
+      else if ( Math::makeReal( theta ) >= Math::Constants::Pi / 3. - threshold )
+        theta = T( Math::Constants::Pi / 3. - threshold );
 
-      const T dThetadJ3 = -sqrt3 / 2. * 1. / ( pow( J2_, 1.5 ) * sin( 3. * theta ) );
+      const T dThetadJ3 = -Math::Constants::sqrt3 / 2. * 1. / ( pow( J2_, 1.5 ) * sin( 3. * theta ) );
       return dThetadJ3;
     }
   } // namespace ContinuumMechanics::VoigtNotation::Derivatives

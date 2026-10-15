@@ -2,7 +2,7 @@
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
-#include "Marmot/MarmotUtility.h"
+#include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
 
 namespace Marmot::Materials {
@@ -12,7 +12,7 @@ namespace Marmot::Materials {
   using namespace ContinuumMechanics::Elasticity;
 
   LinearElastic::LinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber )
-    : MarmotMaterialHypoElastic::MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialNumber ),
+    : Marmot::Materials::MaterialHypoElastic::MaterialHypoElastic( materialProperties, nMaterialProperties, materialNumber ),
       // clang-format off
           anisotropicType( nMaterialProperties >= 15 ? Type::Orthotropic : (nMaterialProperties >= 11 ? Type::TransverseIsotropic : Type::Isotropic) ),
           E1(   materialProperties[0] ),

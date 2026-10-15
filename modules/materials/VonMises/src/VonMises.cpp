@@ -22,7 +22,7 @@ namespace Marmot::Materials {
   VonMisesModel::VonMisesModel( const double* materialProperties,
                                 const int     nMaterialProperties,
                                 const int     materialLabel )
-    : MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialLabel )
+    : Marmot::Materials::MaterialHypoElastic( materialProperties, nMaterialProperties, materialLabel )
   {
     stateLayout.add( "kappa", 1 );
     stateLayout.finalize();

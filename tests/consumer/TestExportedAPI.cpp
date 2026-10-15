@@ -90,8 +90,8 @@ namespace {
     const double                E = 210e3, nu = 0.3;
     const std::vector< double > properties{ E, nu };
 
-    std::unique_ptr< MarmotMaterialHypoElastic > material(
-      MarmotLibrary::MarmotMaterialHypoElasticFactory::createMaterial( "LINEARELASTIC",
+    std::unique_ptr< Marmot::Materials::MaterialHypoElastic > material(
+      Marmot::Registry::MaterialHypoElasticFactory::createMaterial( "LINEARELASTIC",
                                                                        properties.data(),
                                                                        static_cast< int >( properties.size() ),
                                                                        1 ) );
@@ -102,7 +102,7 @@ namespace {
     material->initializeYourself( stateVars.data(), nStateVars );
     material->setCharacteristicElementLength( 1.0 ); // the one exported member of the material interface
 
-    MarmotMaterialHypoElastic::state3D state;
+    Marmot::Materials::MaterialHypoElastic::state3D state;
     state.stateVars                  = stateVars.data();
     Marmot::Math::Matrix6d dStress_dStrain = Marmot::Math::Matrix6d::Zero();
     Marmot::Math::Vector6d dStrain         = Marmot::Math::Vector6d::Zero();

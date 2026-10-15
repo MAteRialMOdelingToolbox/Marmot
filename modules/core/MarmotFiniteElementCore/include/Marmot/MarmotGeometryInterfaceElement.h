@@ -416,7 +416,7 @@ public:
    * is left unprojected, so the operator produces the surface gradient of the FULL displacement vector,
    * `grad_s u = grad(u) . T`, and retains the in-plane derivative of the normal component.
    *
-   * That is the measure MarmotInterfaceMaterialHypoElastic expects, since it forms the thin-layer gradient as
+   * That is the measure Marmot::Materials::InterfaceMaterialHypoElastic expects, since it forms the thin-layer gradient as
    * `grad(u) = (1/h) [u] (x) n + <grad_s u>`, in which the normal displacement varying along the surface is a
    * genuine layer shear. Projecting the displacement component as well (`T(i,m) gradN(j,A) T(j,k)`) would delete
    * that term. The same formula is used for every `nDim`, so a plane-strain model and its 3D extrusion produce

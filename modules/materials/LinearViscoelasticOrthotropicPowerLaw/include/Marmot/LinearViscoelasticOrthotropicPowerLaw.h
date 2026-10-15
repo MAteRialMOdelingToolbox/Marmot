@@ -36,7 +36,7 @@ namespace Marmot::Materials {
    * following a Power Law compliance function and assuming constant Poisson's ratios
    * generalized for 3D stress states.
    */
-  class LinearViscoelasticOrthotropicPowerLaw : public MarmotMaterialHypoElastic {
+  class LinearViscoelasticOrthotropicPowerLaw : public Marmot::Materials::MaterialHypoElastic {
 
     /// @brief Factor to scale elastic stiffness
     const double& stiffnessScaleFactor;
@@ -100,7 +100,7 @@ namespace Marmot::Materials {
     };
 
   public:
-    using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
+    using Marmot::Materials::MaterialHypoElastic::MaterialHypoElastic;
 
     LinearViscoelasticOrthotropicPowerLaw( const double* materialProperties,
                                            int           nMaterialProperties,

@@ -617,7 +617,7 @@ namespace Marmot::Meshfree {
       auto a = mp->getAcceleration();
 
       Tensor< double, nDim, nDim > da_ddu( 0.0 );
-      Marmot::TimeIntegration::newmarkBetaIntegration< nDim >( du.data(),
+      Marmot::ContinuumMechanics::TimeIntegration::newmarkBetaIntegration< nDim >( du.data(),
                                                                v.data(),
                                                                a.data(),
                                                                dT,

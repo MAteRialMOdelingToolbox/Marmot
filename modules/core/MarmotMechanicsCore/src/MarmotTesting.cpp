@@ -101,7 +101,7 @@ namespace Marmot::Testing {
     }
   }
 
-  bool spinTurbokreisel( Marmot::Solvers::MarmotMaterialPointSolverHypoElastic& solver,
+  bool spinTurbokreisel( Marmot::Materials::MaterialPointSolverHypoElastic& solver,
                          const double                                           stressTol,
                          const double                                           stiffnessTol )
   {

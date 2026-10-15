@@ -35,9 +35,9 @@ namespace Marmot::Materials {
    * for 3D stress states using automatic differentiation.
    *
    */
-  class ADLinearElastic : public MarmotMaterialHypoElasticAD {
+  class ADLinearElastic : public Marmot::Materials::MaterialHypoElasticAD {
   public:
-    using MarmotMaterialHypoElasticAD::MarmotMaterialHypoElasticAD;
+    using Marmot::Materials::MaterialHypoElasticAD::MaterialHypoElasticAD;
 
     /// @brief Elasticity tensor for isotropic materials
     const autodiff::MatrixXdual C;

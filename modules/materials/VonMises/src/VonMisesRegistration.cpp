@@ -9,7 +9,7 @@ namespace Marmot::Materials {
 
     using namespace MarmotLibrary;
 
-    const static bool VonMisesIsRegistered = MarmotMaterialHypoElasticFactory::registerMaterial< VonMisesModel >(
+    const static bool VonMisesIsRegistered = Marmot::Registry::MaterialHypoElasticFactory::registerMaterial< VonMisesModel >(
       "VONMISES" );
 
     // Co-rotational Hughes-Winget wrapper, usable wherever a MarmotMaterialFiniteStrain is expected

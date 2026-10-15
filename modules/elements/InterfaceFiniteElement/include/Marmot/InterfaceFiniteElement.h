@@ -61,7 +61,7 @@ namespace Marmot::Elements {
    *
    * The element combines geometric interface operators from
    * `MarmotGeometryInterfaceElement<nDim, nNodes>` with an interface-material
-   * update (`MarmotInterfaceMaterialHypoElastic`) at each quadrature point.
+   * update (`Marmot::Materials::InterfaceMaterialHypoElastic`) at each quadrature point.
    * The current formulation uses linearized, small-deformation kinematics.
    * It stores quadrature-point state variables and assembles:
    * - element residual vector,
@@ -119,7 +119,7 @@ namespace Marmot::Elements {
     using HMatrixSized = Eigen::Matrix< double, nDim, nTensor, Eigen::RowMajor >;
     using YMatrixSized = Eigen::Matrix< double, nTensor, nTensor, Eigen::RowMajor >;
 
-    using Material = MarmotInterfaceMaterialHypoElastic;
+    using Material = Marmot::Materials::InterfaceMaterialHypoElastic;
 
     Eigen::Map< const Eigen::VectorXd > elementProperties;
 
@@ -177,7 +177,7 @@ namespace Marmot::Elements {
       /**
        * @brief Named state-variable manager for interface quadrature points.
        */
-      class QPStateVarManager : public MarmotStateVarVectorManager {
+      class QPStateVarManager : public Marmot::Utilities::StateVarVectorManager {
 
         /*
          * Persistent state layout for accumulated force, surface stress,
@@ -223,7 +223,7 @@ namespace Marmot::Elements {
          * @param[in] nStateVars number of state variables of the quadrature point, including the material state
          */
         QPStateVarManager( double* theStateVarVector, int nStateVars )
-          : MarmotStateVarVectorManager( theStateVarVector, layout ),
+          : Marmot::Utilities::StateVarVectorManager( theStateVarVector, layout ),
             force( &find( "force" ) ),
             surfaceStress( &find( "surface stress" ) ),
             displacement( &find( "displacement" ) ),
@@ -541,7 +541,7 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   void InterfaceFiniteElement< nDim, nNodes >::assignProperty( const MarmotMaterialSection& section )
   {
-    material = std::make_unique< MarmotInterfaceMaterialHypoElastic >( section.materialName,
+    material = std::make_unique< Marmot::Materials::InterfaceMaterialHypoElastic >( section.materialName,
                                                                        section.materialProperties,
                                                                        section.nMaterialProperties,
                                                                        elLabel );
@@ -552,7 +552,7 @@ namespace Marmot::Elements {
                                                                const double*      materialProperties,
                                                                int                nMaterialProperties )
   {
-    material = std::make_unique< MarmotInterfaceMaterialHypoElastic >( materialName,
+    material = std::make_unique< Marmot::Materials::InterfaceMaterialHypoElastic >( materialName,
                                                                        materialProperties,
                                                                        nMaterialProperties,
                                                                        elLabel );
@@ -675,7 +675,7 @@ namespace Marmot::Elements {
         using namespace Marmot;
 
         /*
-         * MarmotInterfaceMaterialHypoElastic is fixed to 3D Fastor tensor types, so a 2D element has
+         * Marmot::Materials::InterfaceMaterialHypoElastic is fixed to 3D Fastor tensor types, so a 2D element has
          * to embed its quadrature-point state into the 3D layout and pull the response back out.
          * Marmot::Math::expandTo3D / Marmot::Math::reduceTo2D do exactly that, and both place the 2D block at indices [0,2),
          * which is the layout the material's tensors expect.

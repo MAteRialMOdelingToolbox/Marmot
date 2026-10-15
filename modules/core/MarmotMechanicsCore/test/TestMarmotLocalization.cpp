@@ -33,14 +33,14 @@ void testMarmotLocalization()
   dStrain << 1e-6, -1e-6, 0., 0., 0., 0.;
 
   // set material state
-  MarmotMaterialHypoElastic::state3D state;
+  Marmot::Materials::MaterialHypoElastic::state3D state;
   state.stress               = stress;
   state.elasticEnergyDensity = 0.;
   state.dissipation          = 0.;
   state.stateVars            = &kappa;
 
   // set time info
-  MarmotMaterialHypoElastic::timeInfo timeInfo;
+  Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo;
   timeInfo.time = 1.0;
   timeInfo.dT   = dT;
   // evaluate material

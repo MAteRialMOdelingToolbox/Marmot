@@ -40,7 +40,7 @@ namespace Marmot::Materials {
    *
    * Material properties are ordered as [E, nu, m, n, nMaxwell, minTau, timeToDays, optional density].
    */
-  class LinearViscoElasticWiechert : public MarmotMaterialHypoElastic {
+  class LinearViscoElasticWiechert : public Marmot::Materials::MaterialHypoElastic {
 
     const double& E;
     const double& nu;

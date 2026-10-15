@@ -125,7 +125,7 @@ namespace Marmot::Elements {
 
       /// @class QPStateVarManager
       /// @brief Manager class for handling state variables at the quadrature point
-      class QPStateVarManager : public MarmotStateVarVectorManager {
+      class QPStateVarManager : public Marmot::Utilities::StateVarVectorManager {
 
         /// @brief Layout of the state variable vector at the quadrature point
         /// \hideinitializer
@@ -161,7 +161,7 @@ namespace Marmot::Elements {
          * @param nStateVars[in] Number of state variables at the quadrature point
          */
         QPStateVarManager( double* theStateVarVector, int nStateVars )
-          : MarmotStateVarVectorManager( theStateVarVector, layout ),
+          : Marmot::Utilities::StateVarVectorManager( theStateVarVector, layout ),
             stress( &find( "stress" ) ),
             totalStrainEnergy( find( "total strain energy" ) ),
             elasticEnergy( find( "elastic energy" ) ),
@@ -902,7 +902,7 @@ namespace Marmot::Elements {
 
           XiSized coordAtGauss = this->NB( this->N( qp.xi ) ) * this->coordinates;
 
-          const auto geostaticNormalStressComponents = Marmot::GeostaticStress::
+          const auto geostaticNormalStressComponents = Marmot::ContinuumMechanics::GeostaticStress::
             getGeostaticStressFromLinearDistribution( initialConditionDefinition, coordAtGauss[1] );
 
           const auto [F0_XX,

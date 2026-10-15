@@ -37,7 +37,7 @@ namespace Marmot::Materials {
    * generalized for 3D stress states.
    *
    */
-  class LinearViscoelasticPowerLaw : public MarmotMaterialHypoElastic {
+  class LinearViscoelasticPowerLaw : public Marmot::Materials::MaterialHypoElastic {
 
     /// @brief Young's modulus
     const double& E;
@@ -75,7 +75,7 @@ namespace Marmot::Materials {
      * It is a reference variable to #materialProperties[6]. */
 
   public:
-    using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
+    using Marmot::Materials::MaterialHypoElastic::MaterialHypoElastic;
 
     LinearViscoelasticPowerLaw( const double* materialProperties, int nMaterialProperties, int materialLabel );
 

@@ -10,7 +10,7 @@
 
 using namespace Marmot;
 using namespace Marmot::Testing;
-using namespace Marmot::Solvers;
+using namespace Marmot::Materials;
 using namespace Marmot::Math::FastorTensors;
 
 namespace {
@@ -126,13 +126,13 @@ void testResetToInitialStateUndoesAccumulatedDeformation()
   // displacement gradient (gradU), rather than by an (inapplicable) stress-persistence check.
   std::vector< double > materialProperties = { 3500., 1500. };
   std::string           matName            = "COMPRESSIBLENEOHOOKE";
-  auto                  solveropts         = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
-  auto                  solver             = MarmotMaterialPointSolverFiniteStrain( matName,
+  auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
+  auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                        materialProperties.data(),
                                                        materialProperties.size(),
                                                        solveropts );
 
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget         = Tensor33d( 0.0 );
   step.gradUIncrementTarget( 0, 0 ) = 1e-3;
   step.stressIncrementTarget        = Tensor33d( 0.0 );
@@ -169,8 +169,8 @@ void testSetInitialStateSeedsStateVariables()
   // itself change it.
   std::vector< double > materialProperties = { 175000., 80800., 260., 580., 9., 70., 3. };
   std::string           matName            = "FINITESTRAINJ2PLASTICITY";
-  auto                  solveropts         = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
-  auto                  solver             = MarmotMaterialPointSolverFiniteStrain( matName,
+  auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
+  auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                        materialProperties.data(),
                                                        materialProperties.size(),
                                                        solveropts );
@@ -187,7 +187,7 @@ void testSetInitialStateSeedsStateVariables()
 
   solver.setInitialState( Tensor33d( 0.0 ), initialStateVars );
 
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget         = Tensor33d( 0.0 );
   step.gradUIncrementTarget( 0, 0 ) = 1e-6; // tiny: stays elastic, so alphaP is not itself modified
   step.stressIncrementTarget        = Tensor33d( 0.0 );
@@ -210,13 +210,13 @@ void testSolveStepRetriesThenThrowsSolverTimestepExhausted()
 {
   std::vector< double > materialProperties = { 0.0 };
   std::string           matName            = "TESTALWAYSFAILINGFINITESTRAIN";
-  auto                  solveropts         = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
-  auto                  solver             = MarmotMaterialPointSolverFiniteStrain( matName,
+  auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
+  auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                        materialProperties.data(),
                                                        materialProperties.size(),
                                                        solveropts );
 
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget         = Tensor33d( 0.0 );
   step.gradUIncrementTarget( 0, 0 ) = 1e-3;
   step.stressIncrementTarget        = Tensor33d( 0.0 );
@@ -247,13 +247,13 @@ void testSolveStepThrowsSolverIncrementsExhausted()
 {
   std::vector< double > materialProperties = { 3500., 1500. };
   std::string           matName            = "COMPRESSIBLENEOHOOKE";
-  auto                  solveropts         = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
-  auto                  solver             = MarmotMaterialPointSolverFiniteStrain( matName,
+  auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
+  auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                        materialProperties.data(),
                                                        materialProperties.size(),
                                                        solveropts );
 
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget         = Tensor33d( 0.0 );
   step.gradUIncrementTarget( 0, 0 ) = 1e-3;
   step.stressIncrementTarget        = Tensor33d( 0.0 );
@@ -289,13 +289,13 @@ void testSolveStepCapsNewlyAssignedDTStartToAvoidOvershoot()
 {
   std::vector< double > materialProperties = { 3500., 1500. };
   std::string           matName            = "COMPRESSIBLENEOHOOKE";
-  auto                  solveropts         = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
-  auto                  solver             = MarmotMaterialPointSolverFiniteStrain( matName,
+  auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
+  auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                        materialProperties.data(),
                                                        materialProperties.size(),
                                                        solveropts );
 
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget         = Tensor33d( 0.0 );
   step.gradUIncrementTarget( 0, 0 ) = 1e-4;
   step.stressIncrementTarget        = Tensor33d( 0.0 );
@@ -322,13 +322,13 @@ void testSolveStepHalvesDTOnRetryBeforeExhaustingIt()
 {
   std::vector< double > materialProperties = { 0.0 };
   std::string           matName            = "TESTFAILSFORNONZERODTFINITESTRAIN";
-  auto                  solveropts         = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
-  auto                  solver             = MarmotMaterialPointSolverFiniteStrain( matName,
+  auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
+  auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                        materialProperties.data(),
                                                        materialProperties.size(),
                                                        solveropts );
 
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget        = Tensor33d( 0.0 );
   step.stressIncrementTarget       = Tensor33d( 0.0 );
   step.isGradUComponentControlled  = Tensor33t< bool >( true );
@@ -359,13 +359,13 @@ void testSolveIncrementThrowsOnNaN()
 {
   std::vector< double > materialProperties = { 0.0 };
   std::string           matName            = "TESTSINGULARTANGENTFINITESTRAIN";
-  auto                  solveropts         = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
-  auto                  solver             = MarmotMaterialPointSolverFiniteStrain( matName,
+  auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
+  auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                        materialProperties.data(),
                                                        materialProperties.size(),
                                                        solveropts );
 
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget          = Tensor33d( 0.0 );
   step.stressIncrementTarget         = Tensor33d( 0.0 );
   step.stressIncrementTarget( 0, 0 ) = 100.0; // the material always reports tau(0,0) == 5.0
@@ -398,14 +398,14 @@ void testSolveIncrementThrowsWhenIterationsExhausted()
 {
   std::vector< double > materialProperties = { 0.0 };
   std::string           matName            = "TESTNEVERCONVERGINGFINITESTRAINSOLVER";
-  auto                  solveropts         = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
+  auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   solveropts.maxIterations                 = 3; // keep the test fast
-  auto solver                              = MarmotMaterialPointSolverFiniteStrain( matName,
+  auto solver                              = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                        materialProperties.data(),
                                                        materialProperties.size(),
                                                        solveropts );
 
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget          = Tensor33d( 0.0 );
   step.stressIncrementTarget         = Tensor33d( 0.0 );
   step.stressIncrementTarget( 0, 0 ) = 100.0; // the material always reports tau(0,0) == 5.0
@@ -439,13 +439,13 @@ void testPrintHistoryDoesNotThrow()
 {
   std::vector< double > materialProperties = { 3500., 1500. };
   std::string           matName            = "COMPRESSIBLENEOHOOKE";
-  auto                  solveropts         = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
-  auto                  solver             = MarmotMaterialPointSolverFiniteStrain( matName,
+  auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
+  auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                        materialProperties.data(),
                                                        materialProperties.size(),
                                                        solveropts );
 
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget         = Tensor33d( 0.0 );
   step.gradUIncrementTarget( 0, 0 ) = 1e-3;
   step.stressIncrementTarget        = Tensor33d( 0.0 );
@@ -462,13 +462,13 @@ void testExportHistoryToCSVWritesExpectedContentWithNoStateVars()
 {
   std::vector< double > materialProperties = { 3500., 1500. };
   std::string           matName            = "COMPRESSIBLENEOHOOKE"; // no state variables
-  auto                  solveropts         = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
-  auto                  solver             = MarmotMaterialPointSolverFiniteStrain( matName,
+  auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
+  auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                        materialProperties.data(),
                                                        materialProperties.size(),
                                                        solveropts );
 
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget         = Tensor33d( 0.0 );
   step.gradUIncrementTarget( 0, 0 ) = 1e-3;
   step.stressIncrementTarget        = Tensor33d( 0.0 );
@@ -514,8 +514,8 @@ void testExportHistoryToCSVWritesStateVarColumnsForAMaterialWithStateVars()
 {
   std::vector< double > materialProperties = { 175000., 80800., 260., 580., 9., 70., 3. }; // purely elastic step
   std::string           matName            = "FINITESTRAINJ2PLASTICITY";
-  auto                  solveropts         = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
-  auto                  solver             = MarmotMaterialPointSolverFiniteStrain( matName,
+  auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
+  auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                        materialProperties.data(),
                                                        materialProperties.size(),
                                                        solveropts );
@@ -524,7 +524,7 @@ void testExportHistoryToCSVWritesStateVarColumnsForAMaterialWithStateVars()
                            "FiniteStrainJ2Plasticity must require at least one state variable in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget         = Tensor33d( 0.0 );
   step.gradUIncrementTarget( 0, 0 ) = 1e-6; // tiny: stays elastic
   step.stressIncrementTarget        = Tensor33d( 0.0 );
@@ -561,8 +561,8 @@ void testExportHistoryToCSVThrowsForInvalidPath()
 {
   std::vector< double > materialProperties = { 3500., 1500. };
   std::string           matName            = "COMPRESSIBLENEOHOOKE";
-  auto                  solveropts         = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
-  auto                  solver             = MarmotMaterialPointSolverFiniteStrain( matName,
+  auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
+  auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                        materialProperties.data(),
                                                        materialProperties.size(),
                                                        solveropts );
