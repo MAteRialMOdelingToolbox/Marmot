@@ -3,7 +3,7 @@
 #include <cmath>
 #include <tuple>
 
-using namespace Marmot::NumericalAlgorithms::Integration;
+using namespace Marmot::Math::Integration;
 using namespace Marmot::Testing; // Added for testing utilities
 
 void testIntegrateScalarFunction()

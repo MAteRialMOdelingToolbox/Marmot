@@ -39,7 +39,7 @@ namespace Marmot::Materials {
    *
    * For further information see \ref b4.
    */
-  class B4 : public MarmotMaterialHypoElastic {
+  class B4 : public Marmot::Materials::MaterialHypoElastic {
 
     /// \brief Poisson's ratio
     const double& nu;
@@ -153,29 +153,29 @@ namespace Marmot::Materials {
      * It is a reference variable to #materialProperties[21]. */
 
   public:
-    using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
+    using Marmot::Materials::MaterialHypoElastic::MaterialHypoElastic;
 
     B4( const double* materialProperties, int nMaterialProperties, int materialLabel );
 
     double getDensity( const double* stateVars ) const override;
 
-    void computeStress( state3D&                state,
-                        Marmot::Matrix6d&       dStressDDStrain,
-                        const Marmot::Vector6d& dStrain,
-                        const timeInfo&         timeInfo ) const override;
+    void computeStress( state3D&                      state,
+                        Marmot::Math::Matrix6d&       dStressDDStrain,
+                        const Marmot::Math::Vector6d& dStrain,
+                        const timeInfo&               timeInfo ) const override;
 
   private:
     /// \brief material parameters for Solidification Theory
-    SolidificationTheory::Parameters solidificationParameters;
+    ContinuumMechanics::Viscoelasticity::SolidificationTheory::Parameters solidificationParameters;
     /**
      * \brief properties of the Kelvin chain for approximating
      * the viscoelastic compliance of the %Solidification Theory */
-    SolidificationTheory::KelvinChainProperties solidificationKelvinProperties;
+    ContinuumMechanics::Viscoelasticity::SolidificationTheory::KelvinChainProperties solidificationKelvinProperties;
 
     /// \brief Young's modulus of the Kelvin units representing basic creep
-    KelvinChain::Properties basicCreepElasticModuli;
+    ContinuumMechanics::Viscoelasticity::KelvinChain::Properties basicCreepElasticModuli;
     /// \brief retardation times of the Kelvin units representing basic creep
-    KelvinChain::Properties basicCreepRetardationTimes;
+    ContinuumMechanics::Viscoelasticity::KelvinChain::Properties basicCreepRetardationTimes;
 
     /// \brief approximation order of the Post-Widder formula for drying creep
     static constexpr int dryingCreepComplianceApproximationOrder = 5;

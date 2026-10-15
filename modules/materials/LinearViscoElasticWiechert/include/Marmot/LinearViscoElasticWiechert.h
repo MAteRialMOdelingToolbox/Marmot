@@ -40,7 +40,7 @@ namespace Marmot::Materials {
    *
    * Material properties are ordered as [E, nu, m, n, nMaxwell, minTau, timeToDays, optional density].
    */
-  class LinearViscoElasticWiechert : public MarmotMaterialHypoElastic {
+  class LinearViscoElasticWiechert : public Marmot::Materials::MaterialHypoElastic {
 
     const double& E;
     const double& nu;
@@ -74,10 +74,10 @@ namespace Marmot::Materials {
      * @param[in] dStrain strain increment in Voigt notation
      * @param[in] timeInfo time and time increment
      */
-    void computeStress( state3D&                state,
-                        Marmot::Matrix6d&       dStressDDStrain,
-                        const Marmot::Vector6d& dStrain,
-                        const timeInfo&         timeInfo ) const override;
+    void computeStress( state3D&                      state,
+                        Marmot::Math::Matrix6d&       dStressDDStrain,
+                        const Marmot::Math::Vector6d& dStrain,
+                        const timeInfo&               timeInfo ) const override;
 
     /**
      * @brief Get the density of the material.
@@ -90,9 +90,9 @@ namespace Marmot::Materials {
     double getDensity( const double* stateVars ) const override;
 
   private:
-    Wiechert::Properties relaxationTimes;
-    Wiechert::Properties elasticModuli;
-    double               zerothWiechertStiffness;
+    ContinuumMechanics::Viscoelasticity::Wiechert::Properties relaxationTimes;
+    ContinuumMechanics::Viscoelasticity::Wiechert::Properties elasticModuli;
+    double                                                    zerothWiechertStiffness;
 
     /**
      * @brief Isotropic stiffness tensor for a unit Young's modulus, cached for the instance's lifetime.
@@ -100,7 +100,7 @@ namespace Marmot::Materials {
      * It depends only on nu, which is fixed at construction, so it is built once here rather than on
      * every computeStress call, as relaxationTimes and elasticModuli already are.
      */
-    Marmot::Matrix6d unitStiffness;
+    Marmot::Math::Matrix6d unitStiffness;
 
     static constexpr int powerLawApproximationOrder = 2;
   };

@@ -4,32 +4,32 @@
 #include "Marmot/MarmotTypedefs.h"
 
 using namespace Marmot::Testing;
-using namespace Marmot::Solvers;
+using namespace Marmot::Materials;
 
 auto initializeSolverADLinearElastic()
 {
   std::vector< double > materialProperties = { 210000., 0.3 };
-  auto                  solveropts         = MarmotMaterialPointSolverHypoElastic::SolverOptions();
+  auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   std::string           matName            = "ADLINEARELASTIC";
-  return std::unique_ptr< MarmotMaterialPointSolverHypoElastic >(
-    new MarmotMaterialPointSolverHypoElastic( matName,
-                                              &materialProperties[0],
-                                              materialProperties.size(),
-                                              solveropts ) );
+  return std::unique_ptr< Marmot::Materials::MaterialPointSolverHypoElastic >(
+    new Marmot::Materials::MaterialPointSolverHypoElastic( matName,
+                                                           &materialProperties[0],
+                                                           materialProperties.size(),
+                                                           solveropts ) );
 }
 
 void testADLinearElasticObjectivity()
 {
 
   std::vector< double > materialProperties = { 210000., 0.3 };
-  auto                  solveropts         = MarmotMaterialPointSolverHypoElastic::SolverOptions();
+  auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   std::string           matName            = "ADLINEARELASTIC";
-  auto                  solver             = MarmotMaterialPointSolverHypoElastic( matName,
-                                                      &materialProperties[0],
-                                                      materialProperties.size(),
-                                                      solveropts );
+  auto                  solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
+                                                                   &materialProperties[0],
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
-  MarmotMaterialPointSolverHypoElastic::Step step;
+  Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
 
   step.isStrainComponentControlled = { true, true, true, true, true, true };
   step.isStressComponentControlled = { false, false, false, false, false, false };
@@ -41,21 +41,21 @@ void testADLinearElasticObjectivity()
   solver.addStep( step );
   // check coordinate invariance
   throwExceptionOnFailure( spinTurbokreisel( solver, 1e-10, 1e-8 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "Turbokreisel failed!" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "Turbokreisel failed!" );
 }
 
 void testADLinearElastic()
 {
 
   std::vector< double > materialProperties = { 210000., 0.3 };
-  auto                  solveropts         = MarmotMaterialPointSolverHypoElastic::SolverOptions();
+  auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   std::string           matName            = "ADLINEARELASTIC";
-  auto                  solver             = MarmotMaterialPointSolverHypoElastic( matName,
-                                                      &materialProperties[0],
-                                                      materialProperties.size(),
-                                                      solveropts );
+  auto                  solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
+                                                                   &materialProperties[0],
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
-  MarmotMaterialPointSolverHypoElastic::Step step;
+  Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
 
   step.isStrainComponentControlled = { true, true, true, true, true, true };
   step.isStressComponentControlled = { false, false, false, false, false, false };
@@ -70,14 +70,15 @@ void testADLinearElastic()
   solver.solve();
 
   // reference solution
-  const Marmot::Vector6d stressTarget =
+  const Marmot::Math::Vector6d stressTarget =
     { 1627.90061538, 416.523692308, -864.896307692, 11.0128846154, 129.673384615, 462.666346154 };
 
   auto history = solver.getHistory();
 
   // compare solutions
   throwExceptionOnFailure( checkIfEqual< double >( history.back().stress, stressTarget, 1e-8 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "comparison with reference solution failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "comparison with reference solution failed" );
 }
 
 int main()

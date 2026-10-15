@@ -5,7 +5,7 @@ Theory
 ------
 This element couples the displacement field :math:`\boldsymbol{u}` (``nDim`` dofs per node) to a single scalar
 nonlocal field :math:`\bar N` (1 dof per node) at finite strains. It is the finite-element consumer of
-``MarmotMaterialGradientEnhancedFiniteStrain`` (see :doc:`gradientenhancedhugheswinget` and the material models that
+``Marmot::Materials::MaterialGradientEnhancedFiniteStrain`` (see :doc:`gradientenhancedhugheswinget` and the material models that
 implement that interface).
 
 The momentum balance is written with the Kirchhoff stress and the spatial gradients of the shape functions,
@@ -59,5 +59,5 @@ must be initialized (``MarmotMaterialInitialization``, in EdelweissFE ``>>initia
 Implementation
 --------------
 
-.. doxygenclass:: Marmot::Elements::GradientEnhancedFiniteStrainDisplacementElement
+.. doxygenclass:: Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement
    :allow-dot-graphs:

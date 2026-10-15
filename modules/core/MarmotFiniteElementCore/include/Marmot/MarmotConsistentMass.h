@@ -55,7 +55,7 @@
  * 4 for Tetra10), which are too low for a mass matrix as well. No tetrahedral element is currently
  * registered; one that is must be given a rule of sufficient order here first.
  */
-namespace Marmot::FiniteElement::ConsistentMass {
+namespace Marmot::Discretizations::Elements::ConsistentMass {
 
   /**
    * @brief The quadrature rule the consistent mass of an element of the given shape is integrated
@@ -91,4 +91,4 @@ namespace Marmot::FiniteElement::ConsistentMass {
     return nearest;
   }
 
-} // namespace Marmot::FiniteElement::ConsistentMass
+} // namespace Marmot::Discretizations::Elements::ConsistentMass

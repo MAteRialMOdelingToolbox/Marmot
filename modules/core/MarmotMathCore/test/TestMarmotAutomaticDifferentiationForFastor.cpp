@@ -6,9 +6,9 @@
 #include "Marmot/MarmotTesting.h"
 
 using namespace Fastor;
-using namespace Marmot::AutomaticDifferentiation;
+using namespace Marmot::Math::Differentiation::Automatic;
 using namespace Marmot::Testing;
-using namespace Marmot::FastorStandardTensors;
+using namespace Marmot::Math::Tensors::FastorTensors;
 using namespace Marmot::ContinuumMechanics;
 
 void testTensorToScalar()
@@ -17,7 +17,7 @@ void testTensorToScalar()
   // initialise F with identity tensor
   Tensor33d F;
   F.eye();
-  Tensor33d C = DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   // set material parameters
   const double K = 3500;
@@ -25,7 +25,7 @@ void testTensorToScalar()
 
   std::function< autodiff::dual( const Fastor::Tensor< autodiff::dual, 3, 3 >& ) > psi =
     [&]( const Fastor::Tensor< autodiff::dual, 3, 3 >& Ce_ ) {
-      return EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
+      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
     };
 
   // autodiff solution
@@ -33,35 +33,40 @@ void testTensorToScalar()
 
   // check results for dPsi_dC
   throwExceptionOnFailure( checkIfEqual< double >( dPsi_dC, Tensor33d( 0.0 ) ),
-                           MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC should be zero for the F = I" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "dPsi_dC should be zero for the F = I" );
 
   // extension in first direction
   F( 0, 0 ) += 1e-3;
-  C = DeformationMeasures::rightCauchyGreen( F );
+  C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   // analytical solution
-  auto [psi_, dPsi_dC_analytical] = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C, K, G );
+  auto [psi_, dPsi_dC_analytical] = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
+    PenceGouPotentialB( C, K, G );
 
   // autodiff solution
   dPsi_dC = df_dT( psi, C );
 
   // check results for dPsi_dC
   throwExceptionOnFailure( checkIfEqual< double >( dPsi_dC, dPsi_dC_analytical, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC for odometric extension failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "dPsi_dC for odometric extension failed" );
 
   // shear deformation
   F( 0, 1 ) += 1e-3;
-  C = DeformationMeasures::rightCauchyGreen( F );
+  C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   // analytical solution
-  std::tie( psi_, dPsi_dC_analytical ) = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C, K, G );
+  std::tie( psi_, dPsi_dC_analytical ) = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
+    PenceGouPotentialB( C, K, G );
 
   // autodiff solution
   dPsi_dC = df_dT( psi, C );
 
   // check results for dPsi_dC
   throwExceptionOnFailure( checkIfEqual< double >( dPsi_dC, dPsi_dC_analytical, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC for mixed deformation failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "dPsi_dC for mixed deformation failed" );
 }
 
 void testTensorToScalarSymmetric()
@@ -70,22 +75,22 @@ void testTensorToScalarSymmetric()
   F.eye();
   F( 0, 0 ) += 1e-3;
   F( 0, 1 ) += 2e-3;
-  Tensor33d C = DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   const double K = 3500;
   const double G = 1000;
 
   std::function< autodiff::dual( const Fastor::Tensor< autodiff::dual, 3, 3 >& ) > psi =
     [&]( const Fastor::Tensor< autodiff::dual, 3, 3 >& Ce_ ) {
-      return EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
+      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
     };
 
   Tensor33d dPsi_dC_full = df_dT( psi, C );
   Tensor33d dPsi_dC_sym  = df_dT( psi, C, true );
 
   throwExceptionOnFailure( checkIfEqual< double >( dPsi_dC_sym, dPsi_dC_full, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << "symmetric df_dT doesn't match the dense computation" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "symmetric df_dT doesn't match the dense computation" );
 }
 
 void testTensorToScalarWith2ndOrderDuals()
@@ -94,13 +99,14 @@ void testTensorToScalarWith2ndOrderDuals()
   // initialise F with identity tensor
   Tensor33d F;
   F.eye();
-  Tensor33t< autodiff::dual > F_dual = Marmot::makeDual( F );
+  Tensor33t< autodiff::dual > F_dual = Marmot::Math::Tensors::makeDual( F );
 
   // seed F_dual to check if shifting to higher order duals works
   seed< 1 >( F_dual( 0, 0 ), 1 );
 
   // compute right Cauchy-Green tensor
-  Tensor33t< autodiff::dual > C_dual = DeformationMeasures::rightCauchyGreen( F_dual );
+  Tensor33t< autodiff::dual > C_dual = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen(
+    F_dual );
 
   // set material parameters
   const double K = 3500;
@@ -108,45 +114,50 @@ void testTensorToScalarWith2ndOrderDuals()
 
   std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >& ) > psi =
     [&]( const Tensor33t< autodiff::dual2nd >& Ce_ ) {
-      return EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
+      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
     };
 
   // analytical solution
-  auto [psi_, dPsi_dC_analytical] = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C_dual, K, G );
+  auto [psi_, dPsi_dC_analytical] = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
+    PenceGouPotentialB( C_dual, K, G );
 
   // autodiff solution
   Tensor33t< autodiff::dual > dPsi_dC = df_dT< 1 >( psi, C_dual ).second;
 
   // check results for dPsi_dC
   throwExceptionOnFailure( checkIfEqual< autodiff::dual >( dPsi_dC, dPsi_dC_analytical, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "dPsi_dPsi for F = I failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "dPsi_dPsi for F = I failed" );
 
   // extension in first direction
   F_dual( 0, 0 ) += 1e-3;
-  C_dual = DeformationMeasures::rightCauchyGreen( F_dual );
+  C_dual = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F_dual );
 
   // analytical solution
-  std::tie( psi_, dPsi_dC_analytical ) = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C_dual, K, G );
+  std::tie( psi_, dPsi_dC_analytical ) = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
+    PenceGouPotentialB( C_dual, K, G );
 
   // autodiff solution
   dPsi_dC = df_dT< 1 >( psi, C_dual ).second;
 
   // check results for dPsi_dC
   throwExceptionOnFailure( checkIfEqual< autodiff::dual >( dPsi_dC, dPsi_dC_analytical, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC for odometric extension failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "dPsi_dC for odometric extension failed" );
 
   // shear deformation
   F_dual( 0, 1 ) += 1e-3;
-  C_dual = DeformationMeasures::rightCauchyGreen( F_dual );
+  C_dual = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F_dual );
 
   // analytical solution
-  std::tie( psi_, dPsi_dC_analytical ) = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C_dual, K, G );
+  std::tie( psi_, dPsi_dC_analytical ) = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
+    PenceGouPotentialB( C_dual, K, G );
 
   // autodiff solution
   dPsi_dC = df_dT< 1 >( psi, C_dual ).second;
 
   throwExceptionOnFailure( checkIfEqual< autodiff::dual >( dPsi_dC, dPsi_dC_analytical, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC for mixed deformation failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "dPsi_dC for mixed deformation failed" );
 }
 
 void testTensorToScalarWith2ndOrderDualsSymmetric()
@@ -155,25 +166,26 @@ void testTensorToScalarWith2ndOrderDualsSymmetric()
   F.eye();
   F( 0, 0 ) += 1e-3;
   F( 0, 1 ) += 2e-3;
-  Tensor33d                   C      = DeformationMeasures::rightCauchyGreen( F );
-  Tensor33t< autodiff::dual > C_dual = Marmot::makeDual( C );
+  Tensor33d                   C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
+  Tensor33t< autodiff::dual > C_dual = Marmot::Math::Tensors::makeDual( C );
 
   const double K = 3500;
   const double G = 1000;
 
   std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >& ) > psi =
     [&]( const Tensor33t< autodiff::dual2nd >& Ce_ ) {
-      return EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
+      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
     };
 
   auto [val_full, dPsi_dC_full] = df_dT< 1 >( psi, C_dual );
   auto [val_sym, dPsi_dC_sym]   = df_dT< 1 >( psi, C_dual, true );
 
   throwExceptionOnFailure( checkIfEqual( double( val_sym ), double( val_full ), 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "function value mismatch" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "function value mismatch" );
   throwExceptionOnFailure( checkIfEqual< autodiff::dual >( dPsi_dC_sym, dPsi_dC_full, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << "symmetric higher-order df_dT doesn't match the dense computation" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << "symmetric higher-order df_dT doesn't match the dense computation" );
 }
 
 void testTensorToTensor()
@@ -183,7 +195,8 @@ void testTensorToTensor()
 
   std::function< Tensor33t< autodiff::dual >( const Tensor33t< autodiff::dual >& ) > f =
     [&]( const Fastor::Tensor< autodiff::dual, 3, 3 >& F_ ) {
-      Tensor33t< autodiff::dual > C = DeformationMeasures::rightCauchyGreen( F_ );
+      Tensor33t< autodiff::dual > C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen(
+        F_ );
       return C;
     };
 
@@ -191,15 +204,16 @@ void testTensorToTensor()
   auto [C, dC_dF] = dF_dT( f, F );
 
   // analytical solution
-  auto [C_analytical, dC_dF_analytical] = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( F );
+  auto [C_analytical, dC_dF_analytical] = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder::
+    rightCauchyGreen( F );
 
   // check results for C
   throwExceptionOnFailure( checkIfEqual< double >( C, C_analytical, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "computation of C failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "computation of C failed" );
 
   // check results for dC_dF
   throwExceptionOnFailure( checkIfEqual< double >( dC_dF, dC_dF_analytical, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "computation of dC_dF failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "computation of dC_dF failed" );
 }
 
 void testTensorToTensorSymmetric()
@@ -208,23 +222,24 @@ void testTensorToTensorSymmetric()
   F.eye();
   F( 0, 0 ) += 1e-3;
   F( 0, 1 ) += 2e-3;
-  Tensor33d C = DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   // f(C) = C*C: transpose-equivariant (f(A^T) = f(A)^T for any A), same-dimension square output, so the
   // symmetry-exploiting path (which relies on that property) is applicable
   std::function< Tensor33t< autodiff::dual >( const Tensor33t< autodiff::dual >& ) > f =
     []( const Fastor::Tensor< autodiff::dual, 3, 3 >& C_ ) {
-      return Fastor::einsum< Marmot::FastorIndices::ij, Marmot::FastorIndices::jk >( C_, C_ );
+      return Fastor::einsum< Marmot::Math::Tensors::FastorIndices::ij, Marmot::Math::Tensors::FastorIndices::jk >( C_,
+                                                                                                                   C_ );
     };
 
   auto [Fval_full, dF_dC_full] = dF_dT( f, C );
   auto [Fval_sym, dF_dC_sym]   = dF_dT( f, C, true );
 
   throwExceptionOnFailure( checkIfEqual< double >( Fval_sym, Fval_full, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "function value mismatch" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "function value mismatch" );
   throwExceptionOnFailure( checkIfEqual< double >( dF_dC_sym, dF_dC_full, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << "symmetric dF_dT doesn't match the dense computation" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "symmetric dF_dT doesn't match the dense computation" );
 }
 
 void testTensorToScalarSecondOrder()
@@ -232,30 +247,30 @@ void testTensorToScalarSecondOrder()
 
   Tensor33d F;
   F.eye();
-  Tensor33d C = DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   const double K = 3500;
   const double G = 1000;
 
   std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >& ) > f =
     [&]( const Fastor::Tensor< autodiff::dual2nd, 3, 3 >& C_ ) {
-      return EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
+      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
     };
 
   auto [psi, dPsi_dC, d2Psi_dC2] = SecondOrder::d2f_dT2( f, C );
 
-  auto [psi_,
-        dPsi_dC_analytical,
-        d2Psi_dC2_analytical] = EnergyDensityFunctions::SecondOrderDerived::PenceGouPotentialB( C, K, G );
+  auto [psi_, dPsi_dC_analytical, d2Psi_dC2_analytical] = Marmot::ContinuumMechanics::Elasticity::
+    EnergyDensityFunctions::SecondOrder::PenceGouPotentialB( C, K, G );
 
   throwExceptionOnFailure( checkIfEqual( psi, psi_, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "computation of psi failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "computation of psi failed" );
 
   throwExceptionOnFailure( checkIfEqual< double >( dPsi_dC, dPsi_dC_analytical, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "computation of dPsi_dC failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "computation of dPsi_dC failed" );
 
   throwExceptionOnFailure( checkIfEqual< double >( d2Psi_dC2, d2Psi_dC2_analytical, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "computation of d2Psi_dC2 failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "computation of d2Psi_dC2 failed" );
 }
 
 void testTensorToScalarSecondOrderSymmetric()
@@ -264,26 +279,26 @@ void testTensorToScalarSecondOrderSymmetric()
   F.eye();
   F( 0, 0 ) += 1e-3;
   F( 1, 2 ) += 2e-3;
-  Tensor33d C = DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   const double K = 3500;
   const double G = 1000;
 
   std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >& ) > f =
     [&]( const Fastor::Tensor< autodiff::dual2nd, 3, 3 >& C_ ) {
-      return EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
+      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
     };
 
   auto [psi_full, dPsi_dC_full, d2Psi_dC2_full] = SecondOrder::d2f_dT2( f, C );
   auto [psi_sym, dPsi_dC_sym, d2Psi_dC2_sym]    = SecondOrder::d2f_dT2( f, C, true );
 
   throwExceptionOnFailure( checkIfEqual( psi_sym, psi_full, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "psi mismatch" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "psi mismatch" );
   throwExceptionOnFailure( checkIfEqual< double >( dPsi_dC_sym, dPsi_dC_full, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC mismatch" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC mismatch" );
   throwExceptionOnFailure( checkIfEqual< double >( d2Psi_dC2_sym, d2Psi_dC2_full, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << "symmetric d2f_dT2 doesn't match the dense computation" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "symmetric d2f_dT2 doesn't match the dense computation" );
 }
 
 void testTensorToScalarSecondOrderMixed()
@@ -293,14 +308,16 @@ void testTensorToScalarSecondOrderMixed()
   F.eye();
   F( 1, 2 ) += 1e-4;
 
-  Tensor33d C = DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   const double K = 3500;
   const double G = 1000;
 
   std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >&, const autodiff::dual2nd ) > f =
     [&]( const Fastor::Tensor< autodiff::dual2nd, 3, 3 >& C_, const autodiff::dual2nd omega_ ) {
-      const dual2nd psi = EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
+      const dual2nd psi = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( C_,
+                                                                                                              K,
+                                                                                                              G );
       const dual2nd res = ( -pow( omega_, 2. ) + 1. ) * psi;
       return res;
     };
@@ -311,12 +328,14 @@ void testTensorToScalarSecondOrderMixed()
   auto d2Psi_dCdOmega = SecondOrder::d2f_dTensor_dScalar( f, C, omega );
 
   // analytical solution
-  auto [psi, dPsi_dC_analytical] = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C, K, G );
+  auto [psi, dPsi_dC_analytical] = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
+    PenceGouPotentialB( C, K, G );
 
   Tensor33d d2Psi_dCdOmega_analytical = -2. * omega * dPsi_dC_analytical;
 
   throwExceptionOnFailure( checkIfEqual< double >( d2Psi_dCdOmega, d2Psi_dCdOmega_analytical, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "computation of d2Psi_dC_dOmega failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "computation of d2Psi_dC_dOmega failed" );
 }
 
 void testTensorToScalarSecondOrderMixedSymmetric()
@@ -325,14 +344,16 @@ void testTensorToScalarSecondOrderMixedSymmetric()
   F.eye();
   F( 1, 2 ) += 1e-4;
 
-  Tensor33d C = DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   const double K = 3500;
   const double G = 1000;
 
   std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >&, const autodiff::dual2nd ) > f =
     [&]( const Fastor::Tensor< autodiff::dual2nd, 3, 3 >& C_, const autodiff::dual2nd omega_ ) {
-      const dual2nd psi = EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
+      const dual2nd psi = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( C_,
+                                                                                                              K,
+                                                                                                              G );
       const dual2nd res = ( -pow( omega_, 2. ) + 1. ) * psi;
       return res;
     };
@@ -343,8 +364,9 @@ void testTensorToScalarSecondOrderMixedSymmetric()
   auto d2Psi_dCdOmega_sym  = SecondOrder::d2f_dTensor_dScalar( f, C, omega, true );
 
   throwExceptionOnFailure( checkIfEqual< double >( d2Psi_dCdOmega_sym, d2Psi_dCdOmega_full, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << "symmetric d2f_dTensor_dScalar doesn't match the dense computation" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << "symmetric d2f_dTensor_dScalar doesn't match the dense computation" );
 }
 
 void testTensorToScalarThirdOrder()
@@ -352,7 +374,7 @@ void testTensorToScalarThirdOrder()
 
   Tensor33d F;
   F.eye();
-  Tensor33d C = DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   // Use a simpler test function: f(C) = sum(C^2)
   std::function< autodiff::dual3rd( const Tensor33t< autodiff::dual3rd >& ) > f =
@@ -371,19 +393,21 @@ void testTensorToScalarThirdOrder()
   double expected_psi = 3.0;
 
   throwExceptionOnFailure( std::isfinite( psi ),
-                           MakeString() << __PRETTY_FUNCTION__ << "psi is not finite (NaN or Inf)" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "psi is not finite (NaN or Inf)" );
 
   throwExceptionOnFailure( checkIfEqual( psi, expected_psi, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "computation of psi failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "computation of psi failed" );
 
   // check that the third derivative tensor has the correct shape (3x3x3x3x3x3)
   throwExceptionOnFailure( d3Psi_dC3.dimension( 0 ) == 3 && d3Psi_dC3.dimension( 1 ) == 3 &&
                              d3Psi_dC3.dimension( 2 ) == 3 && d3Psi_dC3.dimension( 3 ) == 3 &&
                              d3Psi_dC3.dimension( 4 ) == 3 && d3Psi_dC3.dimension( 5 ) == 3,
-                           MakeString() << __PRETTY_FUNCTION__ << "d3Psi_dC3 has incorrect dimensions" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "d3Psi_dC3 has incorrect dimensions" );
 
   throwExceptionOnFailure( checkIfEqual( d3Psi_dC3, Tensor333333d( 0.0 ) ),
-                           MakeString() << __PRETTY_FUNCTION__ << "d3Psi_dC3 is not equal to zero tensor as expected" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "d3Psi_dC3 is not equal to zero tensor as expected" );
 }
 
 void testTensorToScalarThirdOrderSymmetric()
@@ -392,7 +416,7 @@ void testTensorToScalarThirdOrderSymmetric()
   F.eye();
   F( 0, 0 ) += 1e-3;
   F( 1, 2 ) += 2e-3;
-  Tensor33d C = DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   // det(C): a transpose-invariant scalar function with genuinely nonzero third derivatives, unlike the trivial
   // sum(C^2) used above, so the symmetry-exploiting mirroring is actually exercised
@@ -407,14 +431,14 @@ void testTensorToScalarThirdOrderSymmetric()
   auto [psi_sym, dPsi_dC_sym, d2Psi_dC2_sym, d3Psi_dC3_sym]     = ThirdOrder::d3f_dT3( f, C, true );
 
   throwExceptionOnFailure( checkIfEqual( psi_sym, psi_full, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "psi mismatch" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "psi mismatch" );
   throwExceptionOnFailure( checkIfEqual< double >( dPsi_dC_sym, dPsi_dC_full, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC mismatch" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "dPsi_dC mismatch" );
   throwExceptionOnFailure( checkIfEqual< double >( d2Psi_dC2_sym, d2Psi_dC2_full, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "d2Psi_dC2 mismatch" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "d2Psi_dC2 mismatch" );
   throwExceptionOnFailure( checkIfEqual< double >( d3Psi_dC3_sym, d3Psi_dC3_full, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << "symmetric d3f_dT3 doesn't match the dense computation" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "symmetric d3f_dT3 doesn't match the dense computation" );
 }
 
 void testNonSquareRank2Shapes()
@@ -437,7 +461,8 @@ void testNonSquareRank2Shapes()
   Fastor::Tensor< double, 4 > dF_dT_target = 2. * T;
 
   throwExceptionOnFailure( checkIfEqual< double >( dF_dT_result, dF_dT_target, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "df_dT with a rank-1 vector input failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "df_dT with a rank-1 vector input failed" );
 
   // dF_dT with a non-square-rank2 (rank-1 vector) output: g(C)_0 = C_00^2, g(C)_1 = C_11 + C_22
   std::function< Fastor::Tensor< autodiff::dual, 2 >( const Fastor::Tensor< autodiff::dual, 3, 3 >& ) > g =
@@ -460,10 +485,11 @@ void testNonSquareRank2Shapes()
   dG_dC_target( 1, 2, 2 ) = 1.;
 
   throwExceptionOnFailure( checkIfEqual< double >( Gval, Gval_target, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "dF_dT with a rank-1 vector output: value failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "dF_dT with a rank-1 vector output: value failed" );
   throwExceptionOnFailure( checkIfEqual< double >( dG_dC, dG_dC_target, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << "dF_dT with a rank-1 vector output: gradient failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "dF_dT with a rank-1 vector output: gradient failed" );
 }
 
 int main()

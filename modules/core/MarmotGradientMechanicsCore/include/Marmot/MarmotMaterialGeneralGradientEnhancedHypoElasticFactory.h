@@ -29,22 +29,22 @@
 #include <string>
 #include <unordered_map>
 
-namespace MarmotLibrary {
+namespace Marmot::Registry {
 
   /**
-   * @brief Factory class for creating MarmotMaterialGeneralGradientEnhancedHypoElastic instances.
+   * @brief Factory class for creating Marmot::Materials::MaterialGradientEnhancedHypoElastic instances.
    * This class uses the Factory Design Pattern to manage the creation of different
-   * MarmotMaterialGeneralGradientEnhancedHypoElastic materials based on unique material names.
+   * Marmot::Materials::MaterialGradientEnhancedHypoElastic materials based on unique material names.
    */
   template < int nNonlocalVariables >
-  class MarmotMaterialGeneralGradientEnhancedHypoElasticFactory {
+  class MaterialGradientEnhancedHypoElasticFactory {
   public:
     /// Type alias for the material factory function, which creates instances of
-    /// MarmotMaterialGeneralGradientEnhancedHypoElastic.
-    using materialFactoryFunction = std::function< MarmotMaterialGeneralGradientEnhancedHypoElastic<
+    /// Marmot::Materials::MaterialGradientEnhancedHypoElastic.
+    using materialFactoryFunction = std::function< Marmot::Materials::MaterialGradientEnhancedHypoElastic<
       nNonlocalVariables >*( const double* materialProperties, int nMaterialProperties, int materialNumber ) >;
 
-    MarmotMaterialGeneralGradientEnhancedHypoElasticFactory() = delete;
+    MaterialGradientEnhancedHypoElasticFactory() = delete;
 
     /**
      * @brief Create a material instance based on its unique name and properties.
@@ -54,7 +54,7 @@ namespace MarmotLibrary {
      * @param[in] materialNumber Unique identifier for the material instance.
      * @return Pointer to the created MarmotMaterial instance, or nullptr if creation failed.
      */
-    static MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >* createMaterial(
+    static Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >* createMaterial(
       const std::string& materialName,
       const double*      materialProperties,
       int                nMaterialProperties,
@@ -73,7 +73,7 @@ namespace MarmotLibrary {
       assert( map.find( materialName ) == map.end() && "Material already registered!" );
 
       map[materialName] = []( const double* materialProperties, int nMaterialProperties, int materialNumber )
-        -> MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >* {
+        -> Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >* {
         return new T( materialProperties, nMaterialProperties, materialNumber );
       };
       return true;
@@ -89,9 +89,9 @@ namespace MarmotLibrary {
    * (EdelweissFE's gradient-enhanced point-wise materials); defined in the source file.
    */
   template <>
-  MARMOT_API MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >* MarmotMaterialGeneralGradientEnhancedHypoElasticFactory<
+  MARMOT_API Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >* MaterialGradientEnhancedHypoElasticFactory<
     1 >::createMaterial( const std::string& materialName,
                          const double*      materialProperties,
                          int                nMaterialProperties,
                          int                materialNumber );
-} // namespace MarmotLibrary
+} // namespace Marmot::Registry

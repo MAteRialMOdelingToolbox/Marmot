@@ -5,7 +5,7 @@
 #include <vector>
 
 using namespace Marmot::Testing;
-using namespace Marmot::FiniteElement::BulkViscosity;
+using namespace Marmot::Discretizations::Elements::BulkViscosity;
 
 namespace {
   // A representative concrete-like set, in the N/mm/tonne/s system the examples use.

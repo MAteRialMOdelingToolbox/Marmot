@@ -7,8 +7,8 @@
 
 using namespace Marmot::Testing;
 using namespace Marmot::Materials;
-using namespace Marmot::FastorStandardTensors;
-using namespace Marmot::FastorIndices;
+using namespace Marmot::Math::Tensors::FastorTensors;
+using namespace Marmot::Math::Tensors::FastorIndices;
 
 void testSetup( const std::string& testName,
                 const Tensor33d&   inputF,
@@ -129,7 +129,7 @@ void testSetup( const std::string& testName,
 // Test I-1: Undeformed configuration
 void testUndeformedResponse()
 {
-  Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+  Tensor33d inputF = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
   Tensor33d stressTarget( 0.0 );
   testSetup( "I-1: Undeformed configuration", inputF, stressTarget );
 }
@@ -138,7 +138,7 @@ void testDeformationResponse()
 {
   // Test I-2a: Finite strain simple shear load case
   {
-    Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+    Tensor33d inputF = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
     inputF( 1, 0 ) += 0.2;
 
     Tensor33d stressTarget( 0.0 );
@@ -153,7 +153,7 @@ void testDeformationResponse()
 
   // Test I-2b: Small strain simple shear load case
   {
-    Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+    Tensor33d inputF = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
     inputF( 1, 0 ) += 1e-06;
 
     Tensor33d stressTarget( 0.0 );
@@ -168,7 +168,7 @@ void testDeformationResponse()
 
   // Test I-2c: Hydrostatic load case
   {
-    Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+    Tensor33d inputF = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
     inputF( 0, 0 ) += 0.02;
     inputF( 1, 1 ) += 0.02;
     inputF( 2, 2 ) += 0.02;
@@ -209,7 +209,7 @@ void testDeformationResponse()
 // Test I-3: Computation of the algorithmic tangent
 void testAlgorithmicTangent()
 {
-  Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+  Tensor33d inputF = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
   inputF( 0, 0 ) += 0.01;
   inputF( 1, 1 ) += 0.02;
   inputF( 2, 2 ) += 0.03;
@@ -290,17 +290,17 @@ void testRotation()
 
 void testWithMPSolver()
 {
-  using namespace Marmot::Solvers;
+  using namespace Marmot::Materials;
   auto        materialProperties = std::vector< double >{ 3500, 1500 };
-  auto        solveropts         = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
+  auto        solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   std::string matName            = "COMPRESSIBLENEOHOOKE";
-  auto        solver             = MarmotMaterialPointSolverFiniteStrain( matName,
-                                                       materialProperties.data(),
-                                                       materialProperties.size(),
-                                                       solveropts );
+  auto        solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
+                                                                    materialProperties.data(),
+                                                                    materialProperties.size(),
+                                                                    solveropts );
 
   // create a step with controlled shear strain increment
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget         = Tensor33d( 0.0 );
   step.gradUIncrementTarget( 0, 1 ) = 0.0001;
   step.stressIncrementTarget        = Tensor33d( 0.0 );
@@ -341,7 +341,7 @@ void testWithMPSolver()
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 // ─────────────────────────────────────────────────────────────────────────────
-// The following tests exercise MarmotMaterialFiniteStrain's default (base-class)
+// The following tests exercise Marmot::Materials::MaterialFiniteStrain's default (base-class)
 // implementations, none of which CompressibleNeoHooke overrides: computeStressExplicit,
 // computeStress(..., eigenDeformation), computePlaneStrain(Explicit) (with and without
 // eigenDeformation), computePlaneStress(Explicit), getStateView, getMaximumWaveSpeed,
@@ -361,7 +361,7 @@ void testComputeStressExplicitMatchesComputeStress()
   CompressibleNeoHooke matA = makeMaterial();
   CompressibleNeoHooke matB = makeMaterial();
 
-  Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+  Tensor33d inputF = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
   inputF( 0, 1 ) += 0.05;
 
   CompressibleNeoHooke::Deformation< 3 >          def     = { inputF };
@@ -383,7 +383,7 @@ void testComputeStressWithEigenDeformation()
 {
   CompressibleNeoHooke mat = makeMaterial();
 
-  Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+  Tensor33d inputF = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
   inputF( 0, 0 )   = 1.01;
   inputF( 1, 1 )   = 1.02;
   inputF( 2, 2 )   = 0.95;
@@ -407,8 +407,8 @@ void testComputeStressWithEigenDeformation()
   CompressibleNeoHooke::AlgorithmicModuli< 3 >    tan = { Tensor3333d( 0.0 ) };
   // CompressibleNeoHooke's own 4-arg computeStress() override hides the base class's 5-arg
   // (eigenDeformation) overload for a concretely-typed instance -- call through an explicit
-  // base-class reference, as production code does (always via a MarmotMaterialFiniteStrain*).
-  MarmotMaterialFiniteStrain& matBase = mat;
+  // base-class reference, as production code does (always via a Marmot::Materials::MaterialFiniteStrain*).
+  Marmot::Materials::MaterialFiniteStrain& matBase = mat;
   matBase.computeStress( res, tan, def, timeInc, { F0_XX, F0_YY, F0_ZZ } );
 
   throwExceptionOnFailure( checkIfEqual( res.tau, resRef.tau, 1e-10 ),
@@ -435,7 +435,7 @@ void testComputePlaneStrainMatchesComputeStress()
 {
   CompressibleNeoHooke mat = makeMaterial();
 
-  Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+  Tensor33d inputF = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
   inputF( 0, 0 )   = 1.02;
   inputF( 1, 1 )   = 0.99;
   inputF( 2, 2 )   = 1.0; // plane strain: no out-of-plane stretch
@@ -453,14 +453,15 @@ void testComputePlaneStrainMatchesComputeStress()
 
   throwExceptionOnFailure( checkIfEqual( resStress.tau, resStrain.tau, 1e-14 ) &&
                              checkIfEqual( tanStress.dTau_dF, tanStrain.dTau_dF, 1e-14 ),
-                           "computePlaneStrain() must match computeStress() for MarmotMaterialFiniteStrain's "
+                           "computePlaneStrain() must match computeStress() for "
+                           "Marmot::Materials::MaterialFiniteStrain's "
                            "default (pass-through) implementation in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
   // ... and the eigen-deformation overload must match computeStress(..., eigenDeformation) likewise.
   CompressibleNeoHooke::ConstitutiveResponse< 3 > resStressEigen( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
   CompressibleNeoHooke::AlgorithmicModuli< 3 >    tanStressEigen  = { Tensor3333d( 0.0 ) };
-  MarmotMaterialFiniteStrain&                     matBaseForEigen = mat;
+  Marmot::Materials::MaterialFiniteStrain&        matBaseForEigen = mat;
   matBaseForEigen.computeStress( resStressEigen, tanStressEigen, def, timeInc, { 1.01, 0.99, 1.02 } );
 
   CompressibleNeoHooke::ConstitutiveResponse< 3 > resStrainEigen( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
@@ -549,7 +550,7 @@ void testGetMaximumWaveSpeedMatchesAnalyticalTangentAtIdentity()
   std::array< double, 3 > propsWithDensity = { 3500, 1500, 2400 };
   CompressibleNeoHooke    mat( propsWithDensity.data(), 3, 1 );
 
-  Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+  Tensor33d inputF = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
 
   CompressibleNeoHooke::Deformation< 3 >          def     = { inputF };
   CompressibleNeoHooke::TimeIncrement             timeInc = { 0, 0.1 };

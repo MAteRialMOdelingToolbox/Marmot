@@ -27,18 +27,18 @@
 #include <stdexcept>
 #include <string>
 
-/** @struct StateView
- * @brief Structure to hold a pointer to the state location and its size.
- *
- * This structure is used to provide a view of the state variables in a finite element or material,
- * allowing access to the state data without copying it.
- */
-struct StateView {
-  double* stateLocation; ///< Pointer to the first element of the state variable block.
-  int     stateSize;     ///< Number of `double` values in the state variable block.
-};
+namespace Marmot::Utilities {
 
-namespace Marmot {
+  /** @struct StateView
+   * @brief Structure to hold a pointer to the state location and its size.
+   *
+   * This structure is used to provide a view of the state variables in a finite element or material,
+   * allowing access to the state data without copying it.
+   */
+  struct StateView {
+    double* stateLocation; ///< Pointer to the first element of the state variable block.
+    int     stateSize;     ///< Number of `double` values in the state variable block.
+  };
 
   /**
    * @brief Access a material property after checking that it has been provided.
@@ -59,4 +59,4 @@ namespace Marmot {
     return materialProperties[index];
   }
 
-} // namespace Marmot
+} // namespace Marmot::Utilities

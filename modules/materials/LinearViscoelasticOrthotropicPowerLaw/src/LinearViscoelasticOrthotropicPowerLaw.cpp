@@ -17,7 +17,7 @@ namespace Marmot::Materials {
   double LinearViscoelasticOrthotropicPowerLaw::getDensity( const double* stateVars ) const
   {
     if ( nMaterialProperties < 24 ) {
-      throw std::runtime_error( MakeString()
+      throw std::runtime_error( Marmot::Utilities::MakeString()
                                 << __PRETTY_FUNCTION__ << ": Density not provided in material properties array!" );
     }
     else {
@@ -27,7 +27,7 @@ namespace Marmot::Materials {
   LinearViscoelasticOrthotropicPowerLaw::LinearViscoelasticOrthotropicPowerLaw( const double* materialProperties,
                                                                                 int           nMaterialProperties,
                                                                                 int           materialLabel )
-    : MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialLabel ),
+    : Marmot::Materials::MaterialHypoElastic( materialProperties, nMaterialProperties, materialLabel ),
       // clang-format off
       // elastic parameters
       stiffnessScaleFactor              ( materialProperties[0] ),
@@ -56,7 +56,9 @@ namespace Marmot::Materials {
     stateLayout.add( "kelvinStateVars", 6 * nKelvin );
     stateLayout.finalize();
 
-    retardationTimes = KelvinChain::generateRetardationTimes( nKelvin, minTau, spacing );
+    retardationTimes = ContinuumMechanics::Viscoelasticity::KelvinChain::generateRetardationTimes( nKelvin,
+                                                                                                   minTau,
+                                                                                                   spacing );
 
     auto computeZerothKelvinChainCompliance = [&]( const int order, double tau ) {
       const int& k   = order;
@@ -71,28 +73,32 @@ namespace Marmot::Materials {
     case 2: {
       using namespace Marmot::ContinuumMechanics::Viscoelasticity;
       auto phi_2nd  = [&]( autodiff::Real< 2, double > tau ) { return ComplianceFunctions::powerLaw( tau, m, n ); };
-      elasticModuli = KelvinChain::computeElasticModuli< 2 >( phi_2nd, retardationTimes );
+      elasticModuli = ContinuumMechanics::Viscoelasticity::KelvinChain::computeElasticModuli< 2 >( phi_2nd,
+                                                                                                   retardationTimes );
       zerothKelvinChainCompliance = computeZerothKelvinChainCompliance( 2, minTau / sqrt( spacing ) );
       break;
     }
     case 3: {
       using namespace Marmot::ContinuumMechanics::Viscoelasticity;
       auto phi_3rd  = [&]( autodiff::Real< 3, double > tau ) { return ComplianceFunctions::powerLaw( tau, m, n ); };
-      elasticModuli = KelvinChain::computeElasticModuli< 3 >( phi_3rd, retardationTimes );
+      elasticModuli = ContinuumMechanics::Viscoelasticity::KelvinChain::computeElasticModuli< 3 >( phi_3rd,
+                                                                                                   retardationTimes );
       zerothKelvinChainCompliance = computeZerothKelvinChainCompliance( 3, minTau / sqrt( spacing ) );
       break;
     }
     case 4: {
       using namespace Marmot::ContinuumMechanics::Viscoelasticity;
       auto phi_4th  = [&]( autodiff::Real< 4, double > tau ) { return ComplianceFunctions::powerLaw( tau, m, n ); };
-      elasticModuli = KelvinChain::computeElasticModuli< 4 >( phi_4th, retardationTimes );
+      elasticModuli = ContinuumMechanics::Viscoelasticity::KelvinChain::computeElasticModuli< 4 >( phi_4th,
+                                                                                                   retardationTimes );
       zerothKelvinChainCompliance = computeZerothKelvinChainCompliance( 4, minTau / sqrt( spacing ) );
       break;
     }
     case 7: {
       using namespace Marmot::ContinuumMechanics::Viscoelasticity;
       auto phi_7th  = [&]( autodiff::Real< 7, double > tau ) { return ComplianceFunctions::powerLaw( tau, m, n ); };
-      elasticModuli = KelvinChain::computeElasticModuli< 7 >( phi_7th, retardationTimes );
+      elasticModuli = ContinuumMechanics::Viscoelasticity::KelvinChain::computeElasticModuli< 7 >( phi_7th,
+                                                                                                   retardationTimes );
       zerothKelvinChainCompliance = computeZerothKelvinChainCompliance( 7, minTau / sqrt( spacing ) );
       break;
     }
@@ -113,24 +119,24 @@ namespace Marmot::Materials {
     localCoordinateSystem = Marmot::Math::orthonormalCoordinateSystem( direction1, direction2 );
 
     // unit stiffness matrix in global coordinate system
-    CelUnitGlobal = ContinuumMechanics::VoigtNotation::Transformations::
+    CelUnitGlobal = ContinuumMechanics::Voigt::Transformations::
       transformStiffnessToGlobalSystem( CelUnit, localCoordinateSystem );
   }
 
-  void LinearViscoelasticOrthotropicPowerLaw::computeStress( state3D&        state,
-                                                             Matrix6d&       dStressDDStrain,
-                                                             const Vector6d& dStrain,
-                                                             const timeInfo& timeInfo ) const
+  void LinearViscoelasticOrthotropicPowerLaw::computeStress( state3D&                      state,
+                                                             Marmot::Math::Matrix6d&       dStressDDStrain,
+                                                             const Marmot::Math::Vector6d& dStrain,
+                                                             const timeInfo&               timeInfo ) const
 
   {
-    mVector6d             nomStress( state.stress.data() );
-    Map< const Vector6d > dE( dStrain.data() );
-    mMatrix6d             C( dStressDDStrain.data() );
+    Marmot::Math::mVector6d             nomStress( state.stress.data() );
+    Map< const Marmot::Math::Vector6d > dE( dStrain.data() );
+    Marmot::Math::mMatrix6d             C( dStressDDStrain.data() );
 
     const double& dT = timeInfo.dT;
 
-    using namespace Marmot::ContinuumMechanics::VoigtNotation;
-    Vector6d dELocal = Transformations::transformStrainToLocalSystem( dE, localCoordinateSystem );
+    using namespace Marmot::ContinuumMechanics::Voigt;
+    Marmot::Math::Vector6d dELocal = Transformations::transformStrainToLocalSystem( dE, localCoordinateSystem );
 
     if ( ( dE.array() == 0 ).all() && dT == 0 ) {
       C = E1 * CelUnitGlobal;
@@ -144,26 +150,26 @@ namespace Marmot::Materials {
 
     const double dTimeDays = dT * timeToDays;
 
-    Vector6d creepStrainIncrement = Vector6d::Zero();
-    double   creepCompliance      = 0;
+    Marmot::Math::Vector6d creepStrainIncrement = Marmot::Math::Vector6d::Zero();
+    double                 creepCompliance      = 0;
 
     // evaluate Kelvin-Chain
-    KelvinChain::evaluateKelvinChain( dTimeDays,
-                                      elasticModuli,
-                                      retardationTimes,
-                                      creepStateVars,
-                                      creepCompliance,
-                                      creepStrainIncrement,
-                                      1.0 );
+    ContinuumMechanics::Viscoelasticity::KelvinChain::evaluateKelvinChain( dTimeDays,
+                                                                           elasticModuli,
+                                                                           retardationTimes,
+                                                                           creepStateVars,
+                                                                           creepCompliance,
+                                                                           creepStrainIncrement,
+                                                                           1.0 );
 
     // compute total 1D effective compliance
     const double effectiveCompliance = 1. / E1 / stiffnessScaleFactor + zerothKelvinChainCompliance + creepCompliance;
 
     // compute local effective stiffness tensor
-    Matrix6d localEffectiveStiffness = 1. / effectiveCompliance * CelUnit;
+    Marmot::Math::Matrix6d localEffectiveStiffness = 1. / effectiveCompliance * CelUnit;
 
     // compute stress increment in local coordinate system
-    Vector6d deltaStressLocal = localEffectiveStiffness * ( dELocal - creepStrainIncrement );
+    Marmot::Math::Vector6d deltaStressLocal = localEffectiveStiffness * ( dELocal - creepStrainIncrement );
 
     // update stress in global coordinate system
     nomStress += Transformations::transformStressToGlobalSystem( deltaStressLocal, localCoordinateSystem );
@@ -172,11 +178,11 @@ namespace Marmot::Materials {
     C = 1. / effectiveCompliance * CelUnitGlobal;
 
     // update internal state variables
-    KelvinChain::updateStateVarMatrix( dTimeDays,
-                                       elasticModuli,
-                                       retardationTimes,
-                                       creepStateVars,
-                                       deltaStressLocal,
-                                       CelUnitInv );
+    ContinuumMechanics::Viscoelasticity::KelvinChain::updateStateVarMatrix( dTimeDays,
+                                                                            elasticModuli,
+                                                                            retardationTimes,
+                                                                            creepStateVars,
+                                                                            deltaStressLocal,
+                                                                            CelUnitInv );
   }
 } // namespace Marmot::Materials

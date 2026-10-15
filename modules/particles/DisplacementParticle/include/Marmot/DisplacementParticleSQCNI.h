@@ -33,10 +33,10 @@
 #include <Fastor/Fastor.h>
 #include <cmath>
 
-namespace Marmot::Meshfree {
+namespace Marmot::Discretizations::Meshfree {
 
   /**
-   * @class Marmot::Meshfree::DisplacementParticleSQCNI
+   * @class Marmot::Discretizations::Meshfree::DisplacementParticleSQCNI
    * @brief A displacement particle implementing the Stabilized Quasi-Conforming Nodal Integration (SQCNI) method.
    *
    * @details This class extends the basic DisplacementParticle to incorporate the SQCNI formulation,
@@ -100,10 +100,10 @@ namespace Marmot::Meshfree {
                                const std::string&                                           materialName,
                                const double*                                                materialProperties,
                                int                                                          sizeMaterialProperties,
-                               const MarmotMeshfreeApproximation&                           approximation,
+                               const Marmot::Discretizations::Meshfree::Approximation&      approximation,
                                const typename ParticleDomainType::SmoothingDomainUpdateType smoothingVolumeUpdateType );
 
-    // Override MarmotParticle interface methods to delegate to _particleDomain
+    // Override Marmot::Discretizations::Meshfree::Particle interface methods to delegate to _particleDomain
     /**
      * @brief Vertices of the particle geometry in the intermediate configuration.
      * @param[out] coordinates The vertex coordinates (nDim x nVertices, column major).
@@ -203,15 +203,17 @@ namespace Marmot::Meshfree {
      * @param[in] qp Evaluation point (not used).
      * @return The view on the state.
      */
-    virtual StateView getStateView( const std::string& stateName, int qp ) const override
+    virtual Marmot::Utilities::StateView getStateView( const std::string& stateName, int qp ) const override
     {
       if ( stateName == "vertex displacements" )
-        return StateView( const_cast< double* >( _particleDomain.getGeometryDeformedVertexDisplacements().data() ),
-                          nDim * nVertices );
+        return Marmot::Utilities::StateView( const_cast< double* >(
+                                               _particleDomain.getGeometryDeformedVertexDisplacements().data() ),
+                                             nDim * nVertices );
 
       if ( stateName == "smoothing vertex displacements" )
-        return StateView( const_cast< double* >( _particleDomain.getSmoothingDomainVertexDisplacements().data() ),
-                          nDim * nVertices );
+        return Marmot::Utilities::StateView( const_cast< double* >(
+                                               _particleDomain.getSmoothingDomainVertexDisplacements().data() ),
+                                             nDim * nVertices );
 
       return ParentPointParticle::getStateView( stateName, qp );
     }
@@ -254,7 +256,7 @@ namespace Marmot::Meshfree {
      * @param[in] kernelFunctions A vector of pointers to the meshfree kernel functions.
      */
     virtual void assignMeshfreeKernelFunctions(
-      const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) override
+      const std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* >& kernelFunctions ) override
     {
       this->_assignedKernelFunctions = kernelFunctions;
       this->_nNodes                  = this->_assignedKernelFunctions.size();
@@ -392,14 +394,14 @@ namespace Marmot::Meshfree {
 
   template < int nDim, int nVertices >
   DisplacementParticleSQCNI< nDim, nVertices >::DisplacementParticleSQCNI(
-    int                                elementID,
-    const double*                      vertexCoordinates,
-    int                                nVertexCoordinates,
-    double                             volume, // This volume must be 0, as it's computed from vertices
-    const std::string&                 materialName,
-    const double*                      materialProperties,
-    int                                sizeMaterialProperties,
-    const MarmotMeshfreeApproximation& approximation,
+    int                elementID,
+    const double*      vertexCoordinates,
+    int                nVertexCoordinates,
+    double             volume, // This volume must be 0, as it's computed from vertices
+    const std::string& materialName,
+    const double*      materialProperties,
+    int                sizeMaterialProperties,
+    const Marmot::Discretizations::Meshfree::Approximation&      approximation,
     const typename ParticleDomainType::SmoothingDomainUpdateType smoothingVolumeUpdateType )
     : DisplacementParticle< nDim >( elementID,
                                     ParticleDomainType::getCenterFromVertices(
@@ -417,10 +419,11 @@ namespace Marmot::Meshfree {
       _particleDomain( vertexCoordinates, nVertexCoordinates, smoothingVolumeUpdateType )
   {
     if ( volume != 0 ) {
-      throw std::invalid_argument(
-        MakeString() << __PRETTY_FUNCTION__
-                     << ": volume argument must be zero for DisplacementParticleSQCNI, as volume is computed from "
-                        "vertex coordinates." );
+      throw std::
+        invalid_argument( Marmot::Utilities::MakeString()
+                          << __PRETTY_FUNCTION__
+                          << ": volume argument must be zero for DisplacementParticleSQCNI, as volume is computed from "
+                             "vertex coordinates." );
     }
   }
 
@@ -449,7 +452,7 @@ namespace Marmot::Meshfree {
       Eigen::Map< Eigen::MatrixXd > K( dFExt_ddQ, _nNodes * nodeBlockSize, _nNodes * nodeBlockSize );
 
       using namespace Fastor;
-      using namespace FastorIndices;
+      using namespace Marmot::Math::Tensors::FastorIndices;
 
       Tensor< double, nDim, nDim > Eye;
       Eye.eye();
@@ -608,7 +611,8 @@ namespace Marmot::Meshfree {
       break;
     }
     default: {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
     }
     }
   }
@@ -635,7 +639,7 @@ namespace Marmot::Meshfree {
       Eigen::Map< Eigen::VectorXd > P( fExt, _nNodes * nodeBlockSize );
 
       using namespace Fastor;
-      using namespace FastorIndices;
+      using namespace Marmot::Math::Tensors::FastorIndices;
 
       Tensor< double, nDim, nDim > Eye;
       Eye.eye();
@@ -670,7 +674,8 @@ namespace Marmot::Meshfree {
       break;
     }
     default: {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
     }
     }
   }
@@ -705,4 +710,4 @@ namespace Marmot::Meshfree {
     return { N_dAY, Y };
   }
 
-} // namespace Marmot::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

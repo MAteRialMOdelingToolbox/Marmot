@@ -103,7 +103,7 @@ Properties
      - Optional mass density
 
 The material is registered as ``LINEARVISCOELASTICWIECHERT`` in the hypoelastic material factory.
-Because it is a ``MarmotMaterialHypoElastic``, it can also serve as the bulk material of the
+Because it is a ``Marmot::Materials::MaterialHypoElastic``, it can also serve as the bulk material of the
 :ref:`interface material <interfacematerialhypoelastic>`.
 The state variables are the ``6 * nMaxwell`` branch stresses.
 

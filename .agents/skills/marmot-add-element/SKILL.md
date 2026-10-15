@@ -7,7 +7,7 @@ description: >-
 
 # Implementing a Finite Element in Marmot
 
-Elements in Marmot are **templated on spatial dimension and node count** (`< int nDim, int nNodes >`), inheriting from `MarmotElement` and `MarmotGeometryElement< nDim, nNodes >`.
+Elements in Marmot are **templated on spatial dimension and node count** (`< int nDim, int nNodes >`), inheriting from `Marmot::Discretizations::Elements::Element` and `Marmot::Discretizations::Elements::GeometryElement< nDim, nNodes >`.
 
 ---
 
@@ -30,13 +30,13 @@ Elements in Marmot are **templated on spatial dimension and node count** (`< int
 #include <vector>
 #include <string>
 
-namespace Marmot::Elements {
+namespace Marmot::Discretizations::Elements {
 
   template < int nDim, int nNodes >
-  class MyElement : public MarmotElement, public MarmotGeometryElement< nDim, nNodes > {
+  class MyElement : public Marmot::Discretizations::Elements::Element, public Marmot::Discretizations::Elements::GeometryElement< nDim, nNodes > {
   public:
     enum SectionType { UniaxialStress, PlaneStress, PlaneStrain, Solid };
-    using ParentGeometry = MarmotGeometryElement< nDim, nNodes >;
+    using ParentGeometry = Marmot::Discretizations::Elements::GeometryElement< nDim, nNodes >;
     using typename ParentGeometry::BSized;
     using typename ParentGeometry::JacobianSized;
     using typename ParentGeometry::XiSized;
@@ -50,7 +50,7 @@ namespace Marmot::Elements {
       const double  weight;
       double        detJ{ 0.0 };
       BSized        B{ BSized::Zero() };
-      std::unique_ptr< MarmotMaterialHypoElastic > material;
+      std::unique_ptr< Marmot::Materials::MaterialHypoElastic > material;
       QuadraturePoint( XiSized xi_, double w_ ) : xi( xi_ ), weight( w_ ) {}
     };
 
@@ -84,28 +84,28 @@ namespace Marmot::Elements {
                            const double* time, double dT ) override;
   };
 
-} // namespace Marmot::Elements
+} // namespace Marmot::Discretizations::Elements
 ```
 
 ---
 
 ## 3. Best Practices & Factory Registration
 
-- **In-Place `stateVars`**: Slice contiguous buffers into quadrature points using `QPStateVarManager` / `MarmotStateVarVectorManager`.
-- **Zero Allocations**: Use `BSized`, `JacobianSized`, `RhsSized`, `KeSizedMatrix` from `MarmotGeometryElement` in quadrature loops.
+- **In-Place `stateVars`**: Slice contiguous buffers into quadrature points using `QPStateVarManager` / `Marmot::Utilities::StateVarVectorManager`.
+- **Zero Allocations**: Use `BSized`, `JacobianSized`, `RhsSized`, `KeSizedMatrix` from `Marmot::Discretizations::Elements::GeometryElement` in quadrature loops.
 - **Registration (`src/<MyElement>Registration.cpp`)**:
   ```cpp
   #include "Marmot/MyElement.h"
   #include "Marmot/MarmotElementFactory.h"
 
-  namespace Marmot::Elements::Registration {
-    using namespace MarmotLibrary;
+  namespace {
+    using namespace Marmot::Discretizations::Elements;
     template < class T >
-    MarmotElementFactory::elementFactoryFunction makeFactoryFunction() {
-      return []( int id ) -> MarmotElement* { return new T( id ); };
+    Marmot::Registry::ElementFactory::elementFactoryFunction makeFactoryFunction() {
+      return []( int id ) -> Element* { return new T( id ); };
     }
-    const static bool CPS4_reg = MarmotElementFactory::registerElement( "CPS4", makeFactoryFunction< MyElement< 2, 4 > >() );
-    const static bool C3D8_reg = MarmotElementFactory::registerElement( "C3D8", makeFactoryFunction< MyElement< 3, 8 > >() );
+    const static bool CPS4_reg = Marmot::Registry::ElementFactory::registerElement( "CPS4", makeFactoryFunction< MyElement< 2, 4 > >() );
+    const static bool C3D8_reg = Marmot::Registry::ElementFactory::registerElement( "C3D8", makeFactoryFunction< MyElement< 3, 8 > >() );
   }
   ```
 

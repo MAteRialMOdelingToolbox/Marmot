@@ -28,13 +28,13 @@
 #include "Marmot/MarmotCellGeometry.h"
 #include <iostream>
 
-namespace Marmot::Cells {
+namespace Marmot::Discretizations::Cells {
 
   /**
-   * @class Marmot::Cells::MarmotBSplineCellGeometry
+   * @class Marmot::Discretizations::Cells::BSplineCellGeometry
    * @brief B-spline cell geometry (one knot span), a geometry policy for the MPM cells.
    *
-   * @details Wraps Marmot::FiniteElement::MarmotBSplineGeometryElement for use as the @c GeometryCell of a cell
+   * @details Wraps Marmot::Discretizations::Elements::BSplineGeometryElement for use as the @c GeometryCell of a cell
    * (see GeometryCellPolicy). The cell is the knot span
    * @f$ [u_{p}, u_{p+1}] @f$ of each direction; the knot vectors are given in **physical coordinates**, so the
    * parametric coordinate of a point is the point itself: findReferenceCoordinate() is the identity and dNdX()
@@ -46,12 +46,12 @@ namespace Marmot::Cells {
    * @tparam order Polynomial degree @f$ p @f$ (1, 2 or 3 are registered).
    */
   template < int nDim, int order >
-  class MarmotBSplineCellGeometry : public Marmot::FiniteElement::MarmotBSplineGeometryElement< nDim, order >
+  class BSplineCellGeometry : public Marmot::Discretizations::Elements::BSplineGeometryElement< nDim, order >
 
   {
 
     /// The underlying B-spline geometry element.
-    using ParentBSplineGeometryElement = Marmot::FiniteElement::MarmotBSplineGeometryElement< nDim, order >;
+    using ParentBSplineGeometryElement = Marmot::Discretizations::Elements::BSplineGeometryElement< nDim, order >;
     using JacobianSized                = ParentBSplineGeometryElement::JacobianSized; ///< Jacobian matrix type.
 
     Eigen::Matrix< double, nDim, 1 > _boundingBoxMin; ///< Lower corner of the knot span, @f$ u_p @f$ per direction.
@@ -73,10 +73,10 @@ namespace Marmot::Cells {
      *                                physical coordinates.
      * @param[in] sizeKnotVectors     Size of @p knotVectors.
      */
-    MarmotBSplineCellGeometry( const double* nodeCoordinates,
-                               int           sizeNodeCoordinates,
-                               const double* knotVectors,
-                               int           sizeKnotVectors )
+    BSplineCellGeometry( const double* nodeCoordinates,
+                         int           sizeNodeCoordinates,
+                         const double* knotVectors,
+                         int           sizeKnotVectors )
       : ParentBSplineGeometryElement( nodeCoordinates, sizeNodeCoordinates, knotVectors, sizeKnotVectors )
     {
       auto nodeCoords = ParentBSplineGeometryElement::_mapCoordinates.reshaped( nDim, this->nNodes );
@@ -141,7 +141,7 @@ namespace Marmot::Cells {
   };
 
   template < int nDim, int order >
-  bool MarmotBSplineCellGeometry< nDim, order >::isCoordinateInCell( const double* coordinates ) const
+  bool BSplineCellGeometry< nDim, order >::isCoordinateInCell( const double* coordinates ) const
   {
 
     for ( auto i = 0; i < nDim; i++ )
@@ -152,14 +152,14 @@ namespace Marmot::Cells {
   }
 
   template < int nDim, int nNodes >
-  void MarmotBSplineCellGeometry< nDim, nNodes >::getBoundingBox( double* boundingBoxMin, double* boundingBoxMax ) const
+  void BSplineCellGeometry< nDim, nNodes >::getBoundingBox( double* boundingBoxMin, double* boundingBoxMax ) const
   {
     ( Eigen::Map< XiSized >( boundingBoxMin ) ) = _boundingBoxMin;
     ( Eigen::Map< XiSized >( boundingBoxMax ) ) = _boundingBoxMax;
   }
 
   template < int nDim, int order >
-  MarmotBSplineCellGeometry< nDim, order >::XiSized MarmotBSplineCellGeometry< nDim, order >::findReferenceCoordinate(
+  BSplineCellGeometry< nDim, order >::XiSized BSplineCellGeometry< nDim, order >::findReferenceCoordinate(
     const XiSized& coord ) const
   {
     // initial guess:
@@ -186,7 +186,7 @@ namespace Marmot::Cells {
      */
     /*   nCounter++; */
     /*   if ( nCounter >= 5 ) { */
-    /*     throw std::runtime_error( MakeString() */
+    /*     throw std::runtime_error( Marmot::Utilities::MakeString() */
     /*                               << __PRETTY_FUNCTION__ << ": failed to determine inverse map for coordinate " */
     /*                               << coord.transpose() ); */
     /*   } */
@@ -195,4 +195,4 @@ namespace Marmot::Cells {
     /* return xi; */
   }
 
-} // namespace Marmot::Cells
+} // namespace Marmot::Discretizations::Cells

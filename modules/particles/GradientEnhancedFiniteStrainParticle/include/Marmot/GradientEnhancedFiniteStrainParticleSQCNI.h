@@ -32,10 +32,10 @@
 #include <Fastor/Fastor.h>
 #include <cmath>
 
-namespace Marmot::Meshfree {
+namespace Marmot::Discretizations::Meshfree {
 
   /**
-   * @class Marmot::Meshfree::GradientEnhancedFiniteStrainParticleSQCNI
+   * @class Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticleSQCNI
    * @brief Stabilized quasi-conforming nodal integration (SQCNI / SNNI) particle for gradient-enhanced finite-strain
    *        materials without a micropolar continuum.
    *
@@ -83,9 +83,10 @@ namespace Marmot::Meshfree {
     };
 
   protected:
-    using LagrangeCellType = MarmotLagrangeCell< nDim, nVertices >; ///< geometry of the smoothing domain
+    using LagrangeCellType = Marmot::Discretizations::Meshfree::LagrangeCell< nDim, nVertices >; ///< geometry of the
+                                                                                                 ///< smoothing domain
 
-    const SmoothingDomainUpdateType _smoothingVolumeUpdateType;     ///< update type of the smoothing domain
+    const SmoothingDomainUpdateType _smoothingVolumeUpdateType; ///< update type of the smoothing domain
 
     const Eigen::Matrix< double, nDim, nVertices > _vertexCoordinates_Undeformed; ///< undeformed vertex coordinates
 
@@ -148,21 +149,21 @@ namespace Marmot::Meshfree {
      * @param[in] nodeCoordinates           Undeformed vertex coordinates, vertex by vertex.
      * @param[in] nNodeCoordiantes          Number of coordinates (unused).
      * @param[in] volume                    Volume (unused, computed from the vertices).
-     * @param[in] materialName              Name of a MarmotMaterialGradientEnhancedFiniteStrain material.
+     * @param[in] materialName              Name of a Marmot::Materials::MaterialGradientEnhancedFiniteStrain material.
      * @param[in] materialProperties        Material properties.
      * @param[in] sizeMaterialProperties    Number of material properties.
      * @param[in] approximation             Meshfree approximation used for the shape functions.
      * @param[in] smoothingVolumeUpdateType Update type of the smoothing domain.
      */
-    GradientEnhancedFiniteStrainParticleSQCNI( int                                elementID,
-                                               const double*                      nodeCoordinates,
-                                               int                                nNodeCoordiantes,
-                                               double                             volume,
-                                               const std::string&                 materialName,
-                                               const double*                      materialProperties,
-                                               int                                sizeMaterialProperties,
-                                               const MarmotMeshfreeApproximation& approximation,
-                                               const SmoothingDomainUpdateType    smoothingVolumeUpdateType );
+    GradientEnhancedFiniteStrainParticleSQCNI( int                elementID,
+                                               const double*      nodeCoordinates,
+                                               int                nNodeCoordiantes,
+                                               double             volume,
+                                               const std::string& materialName,
+                                               const double*      materialProperties,
+                                               int                sizeMaterialProperties,
+                                               const Marmot::Discretizations::Meshfree::Approximation& approximation,
+                                               const SmoothingDomainUpdateType smoothingVolumeUpdateType );
 
     /**
      * @brief Assign the kernel functions and compute the smoothed shape function gradients.
@@ -174,7 +175,7 @@ namespace Marmot::Meshfree {
      * @param[in] kernelFunctions Kernel functions of the nodes that support the particle.
      */
     virtual void assignMeshfreeKernelFunctions(
-      const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) override;
+      const std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* >& kernelFunctions ) override;
 
     /// \brief Get the smoothing volume of the particle
     /// \return The smoothing volume of the particle
@@ -261,7 +262,7 @@ namespace Marmot::Meshfree {
      * @param[in] qp        Evaluation point (unused).
      * @return View on the state variable.
      */
-    virtual StateView getStateView( const std::string& stateName, int qp ) const override
+    virtual Marmot::Utilities::StateView getStateView( const std::string& stateName, int qp ) const override
     {
       if ( stateName == "vertex displacements" ) {
         return { _vertexDisplacements_SmoothingDomain, nDim * nVertices };
@@ -405,15 +406,15 @@ namespace Marmot::Meshfree {
 
   template < int nDim, int nVertices >
   GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices >::GradientEnhancedFiniteStrainParticleSQCNI(
-    int                                                  elementID,
-    const double*                                        vertexCoordinates,
-    int                                                  nVertexCoordinates,
-    double                                               volume,
-    const std::string&                                   materialName,
-    const double*                                        materialProperties,
-    int                                                  sizeMaterialProperties,
-    const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation,
-    const SmoothingDomainUpdateType                      smoothingVolumeUpdateType )
+    int                                                     elementID,
+    const double*                                           vertexCoordinates,
+    int                                                     nVertexCoordinates,
+    double                                                  volume,
+    const std::string&                                      materialName,
+    const double*                                           materialProperties,
+    int                                                     sizeMaterialProperties,
+    const Marmot::Discretizations::Meshfree::Approximation& approximation,
+    const SmoothingDomainUpdateType                         smoothingVolumeUpdateType )
     : GradientEnhancedFiniteStrainParticle< nDim >( elementID,
                                                     getCenterFromVertices(
                                                       Eigen::Map< const Eigen::Matrix< double, nDim, nVertices > >(
@@ -459,7 +460,7 @@ namespace Marmot::Meshfree {
       Eigen::Map< Eigen::MatrixXd > K( dFExt_ddQ, _nNodes * nodeBlockSize, _nNodes * nodeBlockSize );
 
       using namespace Fastor;
-      using namespace FastorIndices;
+      using namespace Marmot::Math::Tensors::FastorIndices;
 
       Tensor< double, nDim, nDim > Eye;
       Eye.eye();
@@ -604,7 +605,8 @@ namespace Marmot::Meshfree {
       break;
     }
     default: {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
     }
     }
   }
@@ -739,7 +741,7 @@ namespace Marmot::Meshfree {
 
   template < int nDim, int nVertices >
   void GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices >::assignMeshfreeKernelFunctions(
-    const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions )
+    const std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* >& kernelFunctions )
   {
 
     ParentPointParticle::_assignedKernelFunctions = kernelFunctions;
@@ -778,4 +780,4 @@ namespace Marmot::Meshfree {
     ParentPointParticle::_dT_dY = ParentPointParticle::_dN_dY;
   }
 
-} // namespace Marmot::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

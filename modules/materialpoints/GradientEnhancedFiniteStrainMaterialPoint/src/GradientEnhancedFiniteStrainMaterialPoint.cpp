@@ -27,7 +27,7 @@
 #include "Marmot/MarmotUtils.h"
 #include <stdexcept>
 
-namespace Marmot::MaterialPoints {
+namespace Marmot::Discretizations::MaterialPoints {
 
   // =========================================================================================
   //  plane strain
@@ -37,8 +37,10 @@ namespace Marmot::MaterialPoints {
                                                                           const TensorDD& du_dY,
                                                                           double          dn )
   {
-    mapEigenToFastor( state->du ) += mapEigenToFastor( expandTo3D( du ) );
-    mapEigenToFastor( state->dx_dY ) += mapEigenToFastor( expandTo3D( du_dY ) );
+    Marmot::Math::Tensors::mapEigenToFastor( state->du ) += Marmot::Math::Tensors::mapEigenToFastor(
+      Marmot::Math::Tensors::expandTo3D( du ) );
+    Marmot::Math::Tensors::mapEigenToFastor( state->dx_dY ) += Marmot::Math::Tensors::mapEigenToFastor(
+      Marmot::Math::Tensors::expandTo3D( du_dY ) );
     state->nonLocalDamage += dn;
   };
 
@@ -47,9 +49,9 @@ namespace Marmot::MaterialPoints {
     const Material::TimeIncrement timeIncrement{ timeNew, dT };
 
     // total deformation gradient: the increment since the last accepted state, composed onto it
-    const FastorStandardTensors::Tensor33d dx_dX = state->dx_dY % state->dY_dX;
+    const Marmot::Math::Tensors::FastorTensors::Tensor33d dx_dX = state->dx_dY % state->dY_dX;
 
-    Material::ConstitutiveResponse< 3 > response3D{ FastorStandardTensors::Tensor33d( 0.0 ),
+    Material::ConstitutiveResponse< 3 > response3D{ Marmot::Math::Tensors::FastorTensors::Tensor33d( 0.0 ),
                                                     0.0,
                                                     0.0,
                                                     0.0,
@@ -68,7 +70,7 @@ namespace Marmot::MaterialPoints {
       material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
 
     // clang-format off
-    this->response = { .S              = reduceTo2D< U, U >( response3D.tau ),
+    this->response = { .S              = Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U, Marmot::Math::Tensors::U >( response3D.tau ),
                        .dL             = response3D.L - state->localDamage,
                        .nonLocalRadius = response3D.nonLocalRadius };
     // clang-format on
@@ -76,19 +78,27 @@ namespace Marmot::MaterialPoints {
     state->localDamage = response3D.L;
     state->stress      = response3D.tau;
 
-    using namespace FastorStandardTensors;
-    using namespace FastorIndices;
+    using namespace Marmot::Math::Tensors::FastorTensors;
+    using namespace Marmot::Math::Tensors::FastorIndices;
 
-    const auto& I = Marmot::FastorStandardTensors::Spatial3D::I;
+    const auto& I = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
 
     // chain rule from d/dF to d/d(DeltaF), since the unknown of the increment is DeltaF = dx_dY
     const Tensor3333d dF_dDeltaF_3D = einsum< ij, JI, to_iIjJ >( I, state->dY_dX );
-    const TensorDDDD  dF_dDeltaF    = reduceTo2D< U, U, U, U >( dF_dDeltaF_3D );
+    const TensorDDDD  dF_dDeltaF    = Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U,
+                                                                     Marmot::Math::Tensors::U,
+                                                                     Marmot::Math::Tensors::U,
+                                                                     Marmot::Math::Tensors::U >( dF_dDeltaF_3D );
 
     this->tangents = {
-      reduceTo2D< U, U, U, U >( algorithmicModuli3D.dTau_dF ),
-      reduceTo2D< U, U >( algorithmicModuli3D.dTau_dN ),
-      reduceTo2D< U, U >( algorithmicModuli3D.dL_dF ),
+      Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U,
+                                         Marmot::Math::Tensors::U,
+                                         Marmot::Math::Tensors::U,
+                                         Marmot::Math::Tensors::U >( algorithmicModuli3D.dTau_dF ),
+      Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U, Marmot::Math::Tensors::U >(
+        algorithmicModuli3D.dTau_dN ),
+      Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U, Marmot::Math::Tensors::U >(
+        algorithmicModuli3D.dL_dF ),
       algorithmicModuli3D.dL_dN,
     };
 
@@ -106,8 +116,8 @@ namespace Marmot::MaterialPoints {
                                                                           const TensorDD& du_dY,
                                                                           double          dn )
   {
-    mapEigenToFastor( state->du ) += mapEigenToFastor( du );
-    mapEigenToFastor( state->dx_dY ) += mapEigenToFastor( du_dY );
+    Marmot::Math::Tensors::mapEigenToFastor( state->du ) += Marmot::Math::Tensors::mapEigenToFastor( du );
+    Marmot::Math::Tensors::mapEigenToFastor( state->dx_dY ) += Marmot::Math::Tensors::mapEigenToFastor( du_dY );
     state->nonLocalDamage += dn;
   };
 
@@ -115,9 +125,9 @@ namespace Marmot::MaterialPoints {
   {
     const Material::TimeIncrement timeIncrement{ timeNew, dT };
 
-    const FastorStandardTensors::Tensor33d dx_dX = state->dx_dY % state->dY_dX;
+    const Marmot::Math::Tensors::FastorTensors::Tensor33d dx_dX = state->dx_dY % state->dY_dX;
 
-    Material::ConstitutiveResponse< 3 > response3D{ FastorStandardTensors::Tensor33d( 0.0 ),
+    Material::ConstitutiveResponse< 3 > response3D{ Marmot::Math::Tensors::FastorTensors::Tensor33d( 0.0 ),
                                                     0.0,
                                                     0.0,
                                                     0.0,
@@ -144,10 +154,10 @@ namespace Marmot::MaterialPoints {
     state->localDamage = response3D.L;
     state->stress      = response3D.tau;
 
-    using namespace FastorStandardTensors;
-    using namespace FastorIndices;
+    using namespace Marmot::Math::Tensors::FastorTensors;
+    using namespace Marmot::Math::Tensors::FastorIndices;
 
-    const auto& I = Marmot::FastorStandardTensors::Spatial3D::I;
+    const auto& I = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
 
     const Tensor3333d dF_dDeltaF = einsum< ij, JI, to_iIjJ >( I, state->dY_dX );
 
@@ -164,4 +174,4 @@ namespace Marmot::MaterialPoints {
     _density = material->getDensity( state->materialState.data() );
   }
 
-} // namespace Marmot::MaterialPoints
+} // namespace Marmot::Discretizations::MaterialPoints

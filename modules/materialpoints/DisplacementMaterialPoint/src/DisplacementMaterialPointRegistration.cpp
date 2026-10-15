@@ -25,30 +25,31 @@
 #include "Marmot/DisplacementMaterialPoint.h"
 #include "Marmot/MarmotMPMLibrary.h"
 
-namespace Marmot::MaterialPoints::Registration {
+namespace {
+  using namespace Marmot::Discretizations::MaterialPoints;
 
-  const static bool DisplacementPlaneStrainMaterialPoint_isRegistered = MarmotLibrary::MarmotMaterialPointFactory::
+  const static bool DisplacementPlaneStrainMaterialPoint_isRegistered = Marmot::Registry::MaterialPointFactory::
     registerMaterialPoint( "Displacement/PlaneStrain",
                            []( int           materialPointNumber,
                                const double* vertexCoordinates,
                                int           nVertexCoordinates,
-                               double        volume ) -> MarmotMaterialPoint* {
+                               double        volume ) -> Marmot::Discretizations::MaterialPoints::MaterialPoint* {
                              return new DisplacementMaterialPoint2D( materialPointNumber,
                                                                      vertexCoordinates,
                                                                      nVertexCoordinates,
                                                                      volume );
                            } );
 
-  const static bool Displacement3DMaterialPoint_isRegistered = MarmotLibrary::MarmotMaterialPointFactory::
+  const static bool Displacement3DMaterialPoint_isRegistered = Marmot::Registry::MaterialPointFactory::
     registerMaterialPoint( "Displacement/3D",
                            []( int           materialPointNumber,
                                const double* vertexCoordinates,
                                int           nVertexCoordinates,
-                               double        volume ) -> MarmotMaterialPoint* {
+                               double        volume ) -> Marmot::Discretizations::MaterialPoints::MaterialPoint* {
                              return new DisplacementMaterialPoint3D( materialPointNumber,
                                                                      vertexCoordinates,
                                                                      nVertexCoordinates,
                                                                      volume );
                            } );
 
-} // namespace Marmot::MaterialPoints::Registration
+} // namespace

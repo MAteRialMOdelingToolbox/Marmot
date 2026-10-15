@@ -1,11 +1,10 @@
 #include "Marmot/LinearViscoElasticWiechert.h"
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 
-namespace Marmot::Materials::Registration {
+namespace {
+  using namespace Marmot::Materials;
 
-  using namespace MarmotLibrary;
+  const static bool LinearViscoElasticWiechertIsRegistered = Marmot::Registry::MaterialHypoElasticFactory::
+    registerMaterial< LinearViscoElasticWiechert >( "LINEARVISCOELASTICWIECHERT" );
 
-  const static bool LinearViscoElasticWiechertIsRegistered = MarmotMaterialHypoElasticFactory::registerMaterial<
-    LinearViscoElasticWiechert >( "LINEARVISCOELASTICWIECHERT" );
-
-} // namespace Marmot::Materials::Registration
+} // namespace

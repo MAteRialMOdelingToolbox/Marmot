@@ -37,7 +37,7 @@ namespace Marmot::Materials {
    * generalized for 3D stress states.
    *
    */
-  class LinearViscoelasticPowerLaw : public MarmotMaterialHypoElastic {
+  class LinearViscoelasticPowerLaw : public Marmot::Materials::MaterialHypoElastic {
 
     /// @brief Young's modulus
     const double& E;
@@ -75,22 +75,22 @@ namespace Marmot::Materials {
      * It is a reference variable to #materialProperties[6]. */
 
   public:
-    using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
+    using Marmot::Materials::MaterialHypoElastic::MaterialHypoElastic;
 
     LinearViscoelasticPowerLaw( const double* materialProperties, int nMaterialProperties, int materialLabel );
 
-    void computeStress( state3D&                state,
-                        Marmot::Matrix6d&       dStressDDStrain,
-                        const Marmot::Vector6d& dStrain,
-                        const timeInfo&         timeInfo ) const override;
+    void computeStress( state3D&                      state,
+                        Marmot::Math::Matrix6d&       dStressDDStrain,
+                        const Marmot::Math::Vector6d& dStrain,
+                        const timeInfo&               timeInfo ) const override;
 
     double getDensity( const double* stateVars ) const override;
 
   private:
     /// @brief Young's modulus of the #nKelvin Kelvin units
-    KelvinChain::Properties elasticModuli;
+    ContinuumMechanics::Viscoelasticity::KelvinChain::Properties elasticModuli;
     /// @brief retardation times of the #nKelvin Kelvin units
-    KelvinChain::Properties retardationTimes;
+    ContinuumMechanics::Viscoelasticity::KelvinChain::Properties retardationTimes;
     /// @brief compliance of the zeroth Kelvin unit
     double zerothKelvinChainCompliance;
 

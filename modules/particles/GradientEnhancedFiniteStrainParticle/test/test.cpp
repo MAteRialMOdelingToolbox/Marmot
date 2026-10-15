@@ -41,7 +41,7 @@
 #include <vector>
 
 using namespace Marmot;
-using namespace Marmot::Meshfree;
+using namespace Marmot::Discretizations::Meshfree;
 using namespace Marmot::Testing;
 
 namespace {
@@ -71,15 +71,15 @@ namespace {
 
   const std::string testMaterialName = "TESTLOCALFIELDDEPENDINGONTHENONLOCALFIELD";
 
-  const bool testMaterialRegistered = MarmotLibrary::MarmotMaterialGradientEnhancedFiniteStrainFactory::
-    registerMaterial< LocalFieldDependingOnTheNonlocalField >( testMaterialName );
+  const bool testMaterialRegistered = Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory::registerMaterial<
+    LocalFieldDependingOnTheNonlocalField >( testMaterialName );
 
   // a grid of 5^nDim 2nd order B-spline kernels with spacing 1 around the particle
   template < int nDim >
   struct KernelGrid {
-    std::vector< std::array< double, 3 > >                                             centers;
-    std::vector< std::unique_ptr< MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed > > kernels;
-    std::vector< const MarmotMeshfreeKernelFunction* >                                 pointers;
+    std::vector< std::array< double, 3 > >                                                                  centers;
+    std::vector< std::unique_ptr< Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed > > kernels;
+    std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* >                                 pointers;
 
     KernelGrid()
     {
@@ -90,7 +90,9 @@ namespace {
             centers.push_back( { double( i ), double( j ), double( k ) } );
       for ( auto& c : centers ) {
         kernels.emplace_back(
-          std::make_unique< MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed >( c.data(), nDim, 1.6 ) );
+          std::make_unique< Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed >( c.data(),
+                                                                                                     nDim,
+                                                                                                     1.6 ) );
         pointers.push_back( kernels.back().get() );
       }
     }
@@ -100,26 +102,26 @@ namespace {
   struct Setup {
     static constexpr int nBlock = nDim + 1; // interleaved particle dof vector [u_1 N_1 u_2 N_2 ...]
 
-    KernelGrid< nDim >                           grid;
-    MarmotMeshfreeReproducingKernelApproximation approximation{ nDim, 1 };
-    std::unique_ptr< MarmotParticle >            particle;
-    std::vector< double >                        stateVars;
-    std::vector< int >                           assignedGridIndices;
+    KernelGrid< nDim >                                                grid;
+    Marmot::Discretizations::Meshfree::ReproducingKernelApproximation approximation{ nDim, 1 };
+    std::unique_ptr< Marmot::Discretizations::Meshfree::Particle >    particle;
+    std::vector< double >                                             stateVars;
+    std::vector< int >                                                assignedGridIndices;
 
     Setup( const std::string&           name,
            const std::vector< double >& vertices,
            double                       volume,
            const std::string&           materialName = "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE" )
     {
-      particle.reset( MarmotLibrary::MarmotParticleFactory::createParticle( name,
-                                                                            1,
-                                                                            vertices.data(),
-                                                                            vertices.size(),
-                                                                            volume,
-                                                                            materialName,
-                                                                            matProps.data(),
-                                                                            matProps.size(),
-                                                                            approximation ) );
+      particle.reset( Marmot::Registry::ParticleFactory::createParticle( name,
+                                                                         1,
+                                                                         vertices.data(),
+                                                                         vertices.size(),
+                                                                         volume,
+                                                                         materialName,
+                                                                         matProps.data(),
+                                                                         matProps.size(),
+                                                                         approximation ) );
       stateVars.assign( particle->getNumberOfRequiredStateVars(), 0.0 );
       particle->assignStateVars( stateVars.data(), stateVars.size() );
       particle->initializeYourself();
@@ -133,7 +135,7 @@ namespace {
       std::vector< double > eval( nEval * nDim );
       particle->getEvaluationCoordinates( eval.data() );
 
-      std::vector< const MarmotMeshfreeKernelFunction* > assigned;
+      std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* > assigned;
       assignedGridIndices.clear();
       for ( size_t g = 0; g < grid.pointers.size(); g++ )
         for ( int e = 0; e < nEval; e++ )
@@ -357,13 +359,17 @@ namespace {
     const auto be = blockErrors< nDim >( K, numK );
     if ( mode == Tangent::Exact ) {
       const double err = numK.error( K );
-      throwExceptionOnFailure( err < 1e-7, MakeString() << what << ": tangent inconsistent, relative error " << err );
+      throwExceptionOnFailure( err < 1e-7,
+                               Marmot::Utilities::MakeString()
+                                 << what << ": tangent inconsistent, relative error " << err );
     }
     else {
       throwExceptionOnFailure( be[2] < 5e-5 && be[3] < 1e-7,
-                               MakeString() << what << ": nonlocal rows inconsistent, " << be[2] << ", " << be[3] );
+                               Marmot::Utilities::MakeString()
+                                 << what << ": nonlocal rows inconsistent, " << be[2] << ", " << be[3] );
       throwExceptionOnFailure( be[0] < 5e-3,
-                               MakeString() << what << ": U-U block beyond the NSNI approximation, " << be[0] );
+                               Marmot::Utilities::MakeString()
+                                 << what << ": U-U block beyond the NSNI approximation, " << be[0] );
     }
   }
 
@@ -415,7 +421,8 @@ namespace {
       }
       const auto P = s.trial( dQ ).first;
       throwExceptionOnFailure( P.norm() < 1e-8,
-                               MakeString() << name << ": rigid rotation loads the particle, |P| = " << P.norm() );
+                               Marmot::Utilities::MakeString()
+                                 << name << ": rigid rotation loads the particle, |P| = " << P.norm() );
     }
 
     // dynamics: with Newmark integration, the inertia enters residual and tangent consistently
@@ -446,7 +453,8 @@ namespace {
         for ( int A = 0; A < s.nNodes(); A++ )
           sum += P[A * nB + i];
         throwExceptionOnFailure( std::abs( sum + b[i] * V0 ) < 1e-12 * ( 1. + V0 ),
-                                 MakeString() << name << ": body force " << sum << " != -b V0 = " << -b[i] * V0 );
+                                 Marmot::Utilities::MakeString()
+                                   << name << ": body force " << sum << " != -b V0 = " << -b[i] * V0 );
       }
       for ( int A = 0; A < s.nNodes(); A++ )
         throwExceptionOnFailure( P[A * nB + nDim] == 0.0, name + ": the body force loads the nonlocal field" );
@@ -500,7 +508,8 @@ namespace {
         throwExceptionOnFailure( P0.norm() > 0, name + ": " + loadName + " must load the particle" );
         const double err = std::min( numK.error( K0 ), numK.error( -K0 ) );
         throwExceptionOnFailure( err < 1e-6,
-                                 MakeString() << name << ": " << loadName << " load tangent inconsistent, " << err );
+                                 Marmot::Utilities::MakeString()
+                                   << name << ": " << loadName << " load tangent inconsistent, " << err );
         for ( int A = 0; A < s.nNodes(); A++ )
           throwExceptionOnFailure( P0[A * nB + nDim] == 0,
                                    name + ": " + loadName + " must not load the nonlocal field" );
@@ -562,9 +571,10 @@ namespace {
         ref += P.template segment< nDim >( A * nB ).squaredNorm();
       }
       throwExceptionOnFailure( std::sqrt( res ) < 1e-10 * std::sqrt( ref ),
-                               MakeString() << name << ( afterStep ? ", second step" : ", first step" )
-                                            << ": weak-form correction does not balance a homogeneous state, "
-                                            << std::sqrt( res / ref ) );
+                               Marmot::Utilities::MakeString()
+                                 << name << ( afterStep ? ", second step" : ", first step" )
+                                 << ": weak-form correction does not balance a homogeneous state, "
+                                 << std::sqrt( res / ref ) );
 
       // a component mask (load 1 = x only) keeps exactly those rows of the full correction, residual and tangent
       {
@@ -579,7 +589,7 @@ namespace {
           err += std::abs( Pm( r ) - kept * Pc( r ) ) + ( Km.row( r ) - kept * Kc.row( r ) ).cwiseAbs().sum();
         }
         throwExceptionOnFailure( err < 1e-12 * ( 1 + Pc.norm() + Kc.norm() ),
-                                 MakeString()
+                                 Marmot::Utilities::MakeString()
                                    << name << ": masked weak-form correction differs from the selected rows, " << err );
       }
     }
@@ -711,7 +721,7 @@ namespace {
       Eigen::VectorXd M = Eigen::VectorXd::Zero( s.nNodes() );
       s.particle->vci_compute_MMatrix( M.data() );
       throwExceptionOnFailure( std::abs( M.maxCoeff() - V ) < 1e-12,
-                               MakeString()
+                               Marmot::Utilities::MakeString()
                                  << name << ": M of order 0 is the volume, " << M.maxCoeff() << " vs " << V );
 
       const Eigen::VectorXd R0 = residual();
@@ -725,8 +735,8 @@ namespace {
       for ( int A = 0; A < s.nNodes(); A++ )
         if ( M[A] > 0 )
           throwExceptionOnFailure( R1.template segment< nDim >( A * nDim ).norm() < 1e-12,
-                                   MakeString() << name << ": VCI residual after the correction, "
-                                                << R1.template segment< nDim >( A * nDim ).norm() );
+                                   Marmot::Utilities::MakeString() << name << ": VCI residual after the correction, "
+                                                                   << R1.template segment< nDim >( A * nDim ).norm() );
     }
     else {
       // a point particle contributes T n dA at its center to the boundary integral
@@ -765,21 +775,21 @@ void testSQCNIxNSNIFirstIncrementIsDeterministic()
 
 void testUnknownParticleIsRejected()
 {
-  MarmotMeshfreeReproducingKernelApproximation approximation( 2, 1 );
-  const auto                                   v = vertices( "Quad" );
+  Marmot::Discretizations::Meshfree::ReproducingKernelApproximation approximation( 2, 1 );
+  const auto                                                        v = vertices( "Quad" );
   throwExceptionOnFailure( throws( [&]() {
-                             std::unique_ptr< MarmotParticle > p(
-                               MarmotLibrary::MarmotParticleFactory::createParticle( "GradientEnhancedFiniteStrain/"
-                                                                                     "NoSuchShape",
-                                                                                     1,
-                                                                                     v.data(),
-                                                                                     v.size(),
-                                                                                     0.36,
-                                                                                     "GRADIENTENHANCEDCOMPRESSIBLE"
-                                                                                     "NEOHOOKEDAMAGE",
-                                                                                     matProps.data(),
-                                                                                     matProps.size(),
-                                                                                     approximation ) );
+                             std::unique_ptr< Marmot::Discretizations::Meshfree::Particle > p(
+                               Marmot::Registry::ParticleFactory::createParticle( "GradientEnhancedFiniteStrain/"
+                                                                                  "NoSuchShape",
+                                                                                  1,
+                                                                                  v.data(),
+                                                                                  v.size(),
+                                                                                  0.36,
+                                                                                  "GRADIENTENHANCEDCOMPRESSIBLE"
+                                                                                  "NEOHOOKEDAMAGE",
+                                                                                  matProps.data(),
+                                                                                  matProps.size(),
+                                                                                  approximation ) );
                            } ),
                            "an unknown particle type must throw" );
 }

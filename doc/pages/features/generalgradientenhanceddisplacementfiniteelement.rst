@@ -147,5 +147,5 @@ by the material.
 Implementation
 --------------
 
-.. doxygenclass:: Marmot::Elements::GeneralGradientEnhancedDisplacementFiniteElement
+.. doxygenclass:: Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement
    :allow-dot-graphs:

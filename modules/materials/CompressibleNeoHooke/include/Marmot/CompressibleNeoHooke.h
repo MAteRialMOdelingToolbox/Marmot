@@ -43,9 +43,9 @@ namespace Marmot::Materials {
    * @ingroup materials_hyperelastic
    */
 
-  class CompressibleNeoHooke : public MarmotMaterialFiniteStrain {
+  class CompressibleNeoHooke : public Marmot::Materials::MaterialFiniteStrain {
   public:
-    using MarmotMaterialFiniteStrain::MarmotMaterialFiniteStrain;
+    using Marmot::Materials::MaterialFiniteStrain::MaterialFiniteStrain;
 
     /**
      * @brief Construct a CompressibleNeoHooke material.
@@ -84,8 +84,8 @@ namespace Marmot::Materials {
     double getDensity( const double* stateVars ) const override
     {
       if ( this->nMaterialProperties < 3 ) {
-        throw std::runtime_error(
-          std::string( MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 3." ) );
+        throw std::runtime_error( std::string(
+          Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 3." ) );
       }
       return this->materialProperties[2];
     }

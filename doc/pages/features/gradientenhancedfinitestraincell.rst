@@ -7,7 +7,7 @@ The gradient-enhanced finite-strain cell is the MPM background cell of the impli
 It carries the displacement field :math:`\boldsymbol u` (``nDim`` dofs per node) and a scalar nonlocal field
 :math:`\bar N` (1 dof per node) and assembles the contributions of the
 :doc:`gradientenhancedfinitestrainmaterialpoint` instances it currently hosts, which in turn drive a material of the
-interface ``MarmotMaterialGradientEnhancedFiniteStrain`` (e.g. :doc:`gradientenhancedcompressibleneohookedamage`,
+interface ``Marmot::Materials::MaterialGradientEnhancedFiniteStrain`` (e.g. :doc:`gradientenhancedcompressibleneohookedamage`,
 :doc:`gradientenhancedfinitestraindruckerprager`). It is the MPM counterpart of
 :doc:`gradientenhancedfinitestraindisplacementelement`; the cell geometries and the MPM workflow are described in
 :doc:`meshfreecells`.
@@ -92,7 +92,7 @@ The dofs are ordered field by field inside the cell (all displacements, then all
 Registered types
 ----------------
 
-The cells are registered in the ``MarmotCellFactory`` (Lagrangian, ``createCell``) and as B-spline cells
+The cells are registered in the ``Marmot::Registry::CellFactory`` (Lagrangian, ``createCell``) and as B-spline cells
 (``createBSplineCell``). The nodal fields are ``displacement`` and ``nonlocal damage``.
 
 .. list-table::
@@ -142,11 +142,11 @@ is rejected by ``assignMaterialPoints``.
 Implementation
 --------------
 
-.. doxygenclass:: Marmot::Cells::GradientEnhancedFiniteStrainCell
+.. doxygenclass:: Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::Cells::LagrangianGradientEnhancedFiniteStrainCell
+.. doxygenclass:: Marmot::Discretizations::Cells::LagrangianGradientEnhancedFiniteStrainCell
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::Cells::BSplineGradientEnhancedFiniteStrainCell
+.. doxygenclass:: Marmot::Discretizations::Cells::BSplineGradientEnhancedFiniteStrainCell
    :allow-dot-graphs:

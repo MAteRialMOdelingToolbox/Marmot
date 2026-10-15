@@ -42,9 +42,10 @@ void testDifferentiationsWithRegardsToVelocityGradient()
           int ij = transformVoigtIndices( i, j );
           // check if expected and calculated values are the same
           throwExceptionOnFailure( checkIfEqual( dwdlexpect, dOmega_dVelocityGradient( i, j, k, l ) ),
-                                   MakeString() << __PRETTY_FUNCTION__ << " Error in dOmega_dVelocityGradient." );
+                                   Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << " Error in dOmega_dVelocityGradient." );
           throwExceptionOnFailure( checkIfEqual( dddlexpect, dStretchingRate_dVelocityGradient( ij, k, l ) ),
-                                   MakeString()
+                                   Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__ << " Error in dStretchingRate_dVelocityGradient." );
         }
 }
@@ -52,16 +53,16 @@ void testDifferentiationsWithRegardsToVelocityGradient()
 void testDeformationGradientAnddEdFCalculation()
 {
   // Test for 0 deformation
-  Eigen::Matrix3d  F       = Eigen::Matrix3d::Identity(); // assign identity test value
-  Marmot::Vector6d calcE   = GreenLagrange( F );          // calculate the value for 0 strain by function
-  Marmot::Vector6d expectE = Marmot::Vector6d::Zero();    // assign the expected value for 0 strain
+  Eigen::Matrix3d        F       = Eigen::Matrix3d::Identity();    // assign identity test value
+  Marmot::Math::Vector6d calcE   = GreenLagrange( F );             // calculate the value for 0 strain by function
+  Marmot::Math::Vector6d expectE = Marmot::Math::Vector6d::Zero(); // assign the expected value for 0 strain
   // check if expected and calculated values are the same
   throwExceptionOnFailure( checkIfEqual< double >( calcE, expectE ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << " Error for Green-Lagrange strain with 0 deformation." );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " Error for Green-Lagrange strain with 0 deformation." );
   // calculate the value for the differentiation of strain wrt deformation gradient by function
-  Marmot::EigenTensors::Tensor633d dEdFcalc = dGreenLagrangedDeformationGradient( F );
-  double                           dEdFexpect;
+  Marmot::Math::Tensors::Tensor633d dEdFcalc = dGreenLagrangedDeformationGradient( F );
+  double                            dEdFexpect;
   // loop through all indices/dimensions
   for ( int i = 0; i < 3; i++ )
     for ( int j = 0; j < 3; j++ )
@@ -73,21 +74,22 @@ void testDeformationGradientAnddEdFCalculation()
           dEdFexpect = 0.5 * ( ( i == l ? 1 : 0 ) * F( k, j ) + ( j == l ? 1 : 0 ) * F( k, i ) ) * ( i == j ? 1 : 2 );
           // check if expected and calculated values are the same
           throwExceptionOnFailure( checkIfEqual( dEdFexpect, dEdFcalc( ij, k, l ) ),
-                                   MakeString() << __PRETTY_FUNCTION__ << " Error in dEdF for 0 deformation." );
+                                   Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << " Error in dEdF for 0 deformation." );
         }
 
   // Test for high deformation
   Eigen::Matrix3d Fh;
   Fh << 1.2, 0.1, 0.2, 0.4, 1.4, 0.3, 0.5, 0.6, 1.6;    // assign high test value
-  Marmot::Vector6d calcEh = GreenLagrange( Fh );        // calculate the value for high strain by function
-  Marmot::Vector6d expectEh;
+  Marmot::Math::Vector6d calcEh = GreenLagrange( Fh );  // calculate the value for high strain by function
+  Marmot::Math::Vector6d expectEh;
   expectEh << 0.425, 0.665, 0.845, 0.980, 1.160, 1.400; // assign the expected value for high strain
   // check if expected and calculated values are the same
   throwExceptionOnFailure( checkIfEqual< double >( calcEh, expectEh, 1e-15 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << " Error for Green-Lagrange strain with high deformation." );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " Error for Green-Lagrange strain with high deformation." );
   // calculate the value for the differentiation of strain wrt deformation gradient by function
-  Marmot::EigenTensors::Tensor633d dEdFcalch = dGreenLagrangedDeformationGradient( Fh );
+  Marmot::Math::Tensors::Tensor633d dEdFcalch = dGreenLagrangedDeformationGradient( Fh );
   // loop through all indices/dimensions
   for ( int i = 0; i < 3; i++ )
     for ( int j = 0; j < 3; j++ )
@@ -99,7 +101,8 @@ void testDeformationGradientAnddEdFCalculation()
           dEdFexpect = 0.5 * ( ( i == l ? 1 : 0 ) * Fh( k, j ) + ( j == l ? 1 : 0 ) * Fh( k, i ) ) * ( i == j ? 1 : 2 );
           // check if expected and calculated values are the same
           throwExceptionOnFailure( checkIfEqual( dEdFexpect, dEdFcalch( ij, k, l ) ),
-                                   MakeString() << __PRETTY_FUNCTION__ << " Error in dEdF with high deformation." );
+                                   Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << " Error in dEdF with high deformation." );
         }
 }
 
@@ -113,7 +116,7 @@ void testDimensionalTransformationTo3DOfTheDeformationGradient()
   expectF1D << 5, 0, 0, 0, 1, 0, 0, 0, 1;     // assign expected value of 3D deformation gradient
   // check if expected and calculated values are the same
   throwExceptionOnFailure( checkIfEqual< double >( calcF1D, expectF1D, 1e-15 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " Making 1D F 3D failed." );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " Making 1D F 3D failed." );
 
   // Test 3D making 2x2
   const Eigen::Matrix< double, 2, 2 >                     t2D{ { 5, 2 }, { 3, 4 } }; // assign 2x2 deformation gradient
@@ -123,7 +126,7 @@ void testDimensionalTransformationTo3DOfTheDeformationGradient()
   expectF2D << 5, 2, 0, 3, 4, 0, 0, 0, 1;     // assign expected value of 3D deformation gradient
   // check if expected and calculated values are the same
   throwExceptionOnFailure( checkIfEqual< double >( calcF2D, expectF2D, 1e-15 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " Making 2D F 3D failed." );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " Making 2D F 3D failed." );
 
   // Test 3D making 3x3
   const Eigen::Matrix< double, 3, 3 > t3D{ { 5, 2, 3 }, { 4, 10, 6 }, { 7, 8, 9 } }; // assign 3x3 deformation gradient
@@ -133,7 +136,7 @@ void testDimensionalTransformationTo3DOfTheDeformationGradient()
   expectF3D << 5, 2, 3, 4, 10, 6, 7, 8, 9;    // assign expected value of 3D deformation gradient
   // check if expected and calculated values are the same
   throwExceptionOnFailure( checkIfEqual< double >( calcF3D, expectF3D, 1e-15 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " Making 3D F 3D failed." );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " Making 3D F 3D failed." );
 }
 
 int main()

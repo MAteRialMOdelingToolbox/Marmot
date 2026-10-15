@@ -216,7 +216,7 @@ namespace Marmot::Testing {
     // i1 = 1, 2, ..., N
     for ( int i1 = 1; i1 <= N; i1++ ) {
       theta = acos( -( i1 - 1. ) / N );
-      phi   = ( i1 - 1. ) * Constants::GoldenAngle;
+      phi   = ( i1 - 1. ) * Marmot::Math::Constants::GoldenAngle;
 
       pts.row( i1 - 1 ) = Eigen::Vector2d( phi, theta );
     }
@@ -236,7 +236,7 @@ namespace Marmot::Testing {
    * @param stiffnessTol Tolerance for the stiffness objectivity check (default: 1e-15).
    * @return `true` if the solver passes both checks, `false` otherwise.
    */
-  bool spinTurbokreisel( Marmot::Solvers::MarmotMaterialPointSolverHypoElastic& solver,
-                         double                                                 stressTol    = 1e-15,
-                         double                                                 stiffnessTol = 1e-15 );
+  bool spinTurbokreisel( Marmot::Materials::MaterialPointSolverHypoElastic& solver,
+                         double                                             stressTol    = 1e-15,
+                         double                                             stiffnessTol = 1e-15 );
 } // namespace Marmot::Testing

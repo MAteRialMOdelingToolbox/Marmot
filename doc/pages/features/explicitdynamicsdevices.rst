@@ -167,8 +167,8 @@ Notes and limitations
 Supported elements
 ^^^^^^^^^^^^^^^^^^
 
-- :cpp:class:`Marmot::Elements::DisplacementFiniteElement`
-- :cpp:class:`Marmot::Elements::GeneralGradientEnhancedDisplacementFiniteElement`
+- :cpp:class:`Marmot::Discretizations::Elements::DisplacementFiniteElement`
+- :cpp:class:`Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement`
 
 Not yet supported by ``DisplacementFiniteStrainULElement``: a finite-strain formulation needs the
 volumetric rate taken as :math:`\mathrm{tr}(\mathbf{D}) = \dot{J}/J` and the characteristic length
@@ -259,7 +259,7 @@ Two things are easy to get wrong here, each costing a factor of two or more: the
 :math:`\Delta t \le h/c_k` **overestimates** the limit, because the discrete Laplacian's eigenvalue
 constant contributes :math:`2/\sqrt{C} \approx 0.4` to :math:`0.6`, not 1; and damping **lowers**
 the central-difference limit, never raises it. Both are accounted for in
-:cpp:func:`Marmot::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeCriticalTimeStepForExplicitDynamics`,
+:cpp:func:`Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeCriticalTimeStepForExplicitDynamics`,
 which bounds :math:`\lambda_\mathrm{max}` with a Gershgorin estimate over the assembled operator
 rather than a wave speed, and takes the minimum against the mechanical limit.
 
@@ -357,7 +357,7 @@ checks, and the run goes to NaN while still reporting that it finished. Making t
 order in time is what makes "keep the mechanical problem in charge" achievable.
 
 When it is not achievable, the element says so:
-:cpp:func:`Marmot::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeCriticalTimeStepForExplicitDynamics`
+:cpp:func:`Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeCriticalTimeStepForExplicitDynamics`
 warns once per element type when the increment it returns came from the non-local limit rather
 than the mechanical one, since the caller receives a single number and cannot otherwise tell which
 knob would help.
@@ -438,7 +438,7 @@ Notes and limitations
 ^^^^^^^^^^^^^^^^^^^^^^
 
 - **The lumping matches the mass.** Both are assembled by
-  :cpp:func:`Marmot::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeLumpedInertia`,
+  :cpp:func:`Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeLumpedInertia`,
   using the same weights on the non-local block as on the displacement one, because the stable
   increment is read off that distribution and the lightest node sets the highest frequency.
 - **The non-local interaction parameter is a material response.** Bounding the eigenvalue needs
@@ -450,11 +450,11 @@ Notes and limitations
 Implementation
 --------------
 
-.. doxygennamespace:: Marmot::FiniteElement::BulkViscosity
+.. doxygennamespace:: Marmot::Discretizations::Elements::BulkViscosity
    :members:
 
-.. doxygenfunction:: Marmot::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeLumpedInertia
+.. doxygenfunction:: Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeLumpedInertia
 
-.. doxygenfunction:: Marmot::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeLumpedDamping
+.. doxygenfunction:: Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeLumpedDamping
 
-.. doxygenfunction:: Marmot::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeCriticalTimeStepForExplicitDynamics
+.. doxygenfunction:: Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeCriticalTimeStepForExplicitDynamics

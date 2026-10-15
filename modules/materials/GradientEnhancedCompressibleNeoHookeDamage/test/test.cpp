@@ -10,8 +10,8 @@
 
 using namespace Marmot::Testing;
 using namespace Marmot::Materials;
-using namespace Marmot::FastorStandardTensors;
-using namespace Marmot::FastorIndices;
+using namespace Marmot::Math::Tensors::FastorTensors;
+using namespace Marmot::Math::Tensors::FastorIndices;
 
 using Mat = GradientEnhancedCompressibleNeoHookeDamage;
 
@@ -169,8 +169,8 @@ void testObjectivity()
 
 void testFactoryAndProperties()
 {
-  std::unique_ptr< MarmotMaterialGradientEnhancedFiniteStrain > mat(
-    MarmotLibrary::MarmotMaterialGradientEnhancedFiniteStrainFactory::
+  std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedFiniteStrain > mat(
+    Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory::
       createMaterial( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE", props.data(), props.size(), 7 ) );
   throwExceptionOnFailure( mat != nullptr, "factory did not create the material" + where );
   throwExceptionOnFailure( mat->getNumberOfRequiredStateVars() == 1, "expected one state variable (kappa)" + where );

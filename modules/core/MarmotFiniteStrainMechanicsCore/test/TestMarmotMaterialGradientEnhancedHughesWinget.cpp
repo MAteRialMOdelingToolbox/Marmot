@@ -38,15 +38,15 @@
 using namespace Marmot;
 using namespace Marmot::Materials;
 using namespace Marmot::Testing;
-using namespace Marmot::FastorStandardTensors;
+using namespace Marmot::Math::Tensors::FastorTensors;
 
 namespace {
 
   /// Isotropic elastic stiffness in Voigt notation.
-  Marmot::Matrix6d isotropicStiffness( double E, double nu )
+  Marmot::Math::Matrix6d isotropicStiffness( double E, double nu )
   {
-    Marmot::Matrix6d C   = Marmot::Matrix6d::Zero();
-    const double     fac = E / ( ( 1.0 + nu ) * ( 1.0 - 2.0 * nu ) );
+    Marmot::Math::Matrix6d C   = Marmot::Math::Matrix6d::Zero();
+    const double           fac = E / ( ( 1.0 + nu ) * ( 1.0 - 2.0 * nu ) );
     for ( int i = 0; i < 3; i++ )
       for ( int j = 0; j < 3; j++ )
         C( i, j ) = fac * ( i == j ? ( 1.0 - nu ) : nu );
@@ -76,10 +76,10 @@ namespace {
    * nonlocal field (the same isotropic degradation) makes @c dStressddK -- the wrapper's @c dTau_dN --
    * non-trivial without disturbing the exact incremental structure above.
    */
-  class IncrementalGradientStub : public MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 > {
+  class IncrementalGradientStub : public Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 > {
   public:
     IncrementalGradientStub( const double* props, int nProps, int matNumber )
-      : MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >( props, nProps, matNumber )
+      : Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >( props, nProps, matNumber )
     {
       stateLayout.add( "equivalentStrain", 1 );
       stateLayout.finalize();
@@ -93,8 +93,8 @@ namespace {
       const double R  = materialProperties[3];
       const double c2 = materialProperties[4];
 
-      const Marmot::Matrix6d C = isotropicStiffness( E, nu );
-      const Marmot::Vector6d a = ( Marmot::Vector6d() << 1.0, 0.8, 0.6, 0.4, 0.3, 0.2 ).finished();
+      const Marmot::Math::Matrix6d C = isotropicStiffness( E, nu );
+      const Marmot::Math::Vector6d a = ( Marmot::Math::Vector6d() << 1.0, 0.8, 0.6, 0.4, 0.3, 0.2 ).finished();
 
       const double phi         = inc.K( 0 );
       const double degradation = 1.0 - k * phi;
@@ -124,7 +124,7 @@ namespace {
   using WrapperNumerical = GradientEnhancedHughesWingetWrapper< IncrementalGradientStub,
                                                                 HughesWingetTangent::Numerical >;
 
-  using GEFiniteStrain  = MarmotMaterialGradientEnhancedFiniteStrain;
+  using GEFiniteStrain  = Marmot::Materials::MaterialGradientEnhancedFiniteStrain;
   using GEResponse      = GEFiniteStrain::ConstitutiveResponse< 3 >;
   using GETangents      = GEFiniteStrain::AlgorithmicModuli< 3 >;
   using GEDeformation   = GEFiniteStrain::Deformation< 3 >;
@@ -166,7 +166,7 @@ namespace {
   {
     const Eigen::Matrix3d Q = Eigen::AngleAxisd( angle, axis.normalized() ).toRotationMatrix();
     Tensor33d             t;
-    Marmot::mapEigenToFastor( t ) = Q;
+    Marmot::Math::Tensors::mapEigenToFastor( t ) = Q;
     return t;
   }
 
@@ -183,10 +183,10 @@ namespace {
    * Used exclusively by testNonlocalIncrementBookkeeping() to verify that the wrapper hands the
    * wrapped material @f$ dK = \bar N - \bar N^{(n)} @f$, not the total field.
    */
-  class RecordingIncrementMaterial : public MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 > {
+  class RecordingIncrementMaterial : public Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 > {
   public:
     RecordingIncrementMaterial( const double* props, int nProps, int matNumber )
-      : MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >( props, nProps, matNumber )
+      : Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >( props, nProps, matNumber )
     {
       stateLayout.add( "recordedIncrement", 1 );
       stateLayout.finalize();
@@ -199,7 +199,7 @@ namespace {
 
       // Trivial response: no stress, no coupling. Sufficient for the wrapper's kinematics, which
       // only needs a finite, well-defined nonlocal interaction to report a finite radius.
-      res.stress      = Marmot::Vector6d::Zero();
+      res.stress      = Marmot::Math::Vector6d::Zero();
       res.KLocal( 0 ) = 0.0;
       res.c( 0 )      = 1.0;
       (void)tan;
@@ -281,7 +281,7 @@ void testRigidRotationIsExact()
   const double N  = 0.2;
   const auto   s1 = step( w, state, F1, N );
 
-  const double    theta = 30.0 * Constants::Pi / 180.0;
+  const double    theta = 30.0 * Marmot::Math::Constants::Pi / 180.0;
   const Tensor33d R     = rotationTensor( Eigen::Vector3d( 0.3, -0.7, 0.65 ), theta );
   const Tensor33d F2    = mul( R, F1 );
 
@@ -310,7 +310,7 @@ void testSmallStrainAgreement()
 
   IncrementalGradientStub::response directRes;
   IncrementalGradientStub::tangents directTan;
-  directRes.stress      = Marmot::Vector6d::Zero();
+  directRes.stress      = Marmot::Math::Vector6d::Zero();
   directRes.KLocal( 0 ) = 0.0;
   directRes.c( 0 )      = 0.0;
   directRes.stateVars   = directState.data();
@@ -330,11 +330,11 @@ void testSmallStrainAgreement()
     Nrun += dN;
 
     Tensor33d F;
-    Marmot::mapEigenToFastor( F ) = Ftotal;
+    Marmot::Math::Tensors::mapEigenToFastor( F ) = Ftotal;
     step( w, state, F, Nrun );
 
     IncrementalGradientStub::increment inc;
-    inc.dStrain = ContinuumMechanics::VoigtNotation::voigtFromStrainMatrix< 3 >( H );
+    inc.dStrain = ContinuumMechanics::Voigt::voigtFromStrainMatrix< 3 >( H );
     inc.K( 0 )  = Nrun;
     inc.dK( 0 ) = dN;
     inc.time    = double( n );
@@ -344,14 +344,14 @@ void testSmallStrainAgreement()
   }
 
   Tensor33d Ffinal;
-  Marmot::mapEigenToFastor( Ffinal ) = Ftotal;
-  const auto s                       = step( w, state, Ffinal, Nrun );
+  Marmot::Math::Tensors::mapEigenToFastor( Ffinal ) = Ftotal;
+  const auto s                                      = step( w, state, Ffinal, Nrun );
 
   // Compare the Cauchy stress: tau = J sigma, and the J factor alone is larger than the tolerance below.
   const Tensor33d sigma = Tensor33d( s.tau / Ftotal.determinant() );
 
   Tensor33d expectedSigma;
-  Marmot::mapEigenToFastor( expectedSigma ) = ContinuumMechanics::VoigtNotation::stressMatrixFromVoigt< 3 >(
+  Marmot::Math::Tensors::mapEigenToFastor( expectedSigma ) = ContinuumMechanics::Voigt::stressMatrixFromVoigt< 3 >(
     directRes.stress );
 
   // The mid-step objective rate and the naive additive strain differ at O(total strain), the same
@@ -642,8 +642,9 @@ void testEnergyDensityRoundTripAtNonUnitJacobian()
     // i increments of `perIncrement` in the wrapped material's own density, reported per reference
     // volume. Without the inverse conversion this grows by a further factor of J each time.
     throwExceptionOnFailure( checkIfEqual( r.dissipation, i * perIncrement * J, 1e-10 ),
-                             MakeString() << __PRETTY_FUNCTION__ << ": after " << i << " increments the dissipation is "
-                                          << r.dissipation << ", expected " << i * perIncrement * J );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": after " << i << " increments the dissipation is "
+                               << r.dissipation << ", expected " << i * perIncrement * J );
   }
 }
 
@@ -678,7 +679,7 @@ void testEigenDeformationAndPlaneStrainOverloads()
   /* Through a base reference, which is how the element holds it. The wrapper overrides the
    * four-argument computeStress and thereby HIDES the five-argument eigen-deformation overload for
    * anyone calling on the derived type -- harmless in practice, since every consumer works through
-   * MarmotMaterialGradientEnhancedFiniteStrain*, but worth knowing.
+   * Marmot::Materials::MaterialGradientEnhancedFiniteStrain*, but worth knowing.
    */
   GEFiniteStrain& baseEig = wEig;
   baseEig.computeStress( rEig,
@@ -768,7 +769,7 @@ void testEigenDeformationAndPlaneStrainOverloads()
  */
 void testFactoryRoundTripAndUnknownName()
 {
-  using Factory = MarmotLibrary::MarmotMaterialGradientEnhancedFiniteStrainFactory;
+  using Factory = Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory;
 
   const std::string name = "TESTONLY/GRADIENT-ENHANCED-HUGHES-WINGET";
 
@@ -776,7 +777,7 @@ void testFactoryRoundTripAndUnknownName()
   throwExceptionOnFailure( registered,
                            "registerMaterial did not report success in " + std::string( __PRETTY_FUNCTION__ ) );
 
-  std::unique_ptr< MarmotMaterialGradientEnhancedFiniteStrain > created(
+  std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedFiniteStrain > created(
     Factory::createMaterial( name, stubProps.data(), int( stubProps.size() ), 1 ) );
 
   throwExceptionOnFailure( created != nullptr,

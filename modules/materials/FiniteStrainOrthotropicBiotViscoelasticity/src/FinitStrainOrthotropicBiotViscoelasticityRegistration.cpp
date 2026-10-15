@@ -2,19 +2,16 @@
 #include "Marmot/MarmotMaterialFiniteStrainFactory.h"
 #include "Marmot/MarmotMaterialFiniteStrainSubstepped.h"
 
-namespace Marmot::Materials {
+namespace {
+  using namespace Marmot::Materials;
 
-  namespace Registration {
+  const static bool FiniteStrainOrthotropicBiotViscoelasticityRegistered = Marmot::Registry::
+    MaterialFiniteStrainFactory::registerMaterial< FiniteStrainOrthotropicBiotViscoelasticity >(
+      "FINITESTRAINORTHOTROPICBIOTVISCOELASTICITY" );
 
-    using namespace MarmotLibrary;
+  const static bool FiniteStrainOrthotropicBiotViscoelasticitySubsteppedRegistered = Marmot::Registry::
+    MaterialFiniteStrainFactory::registerMaterial<
+      Marmot::Materials::MaterialFiniteStrainSubstepped< FiniteStrainOrthotropicBiotViscoelasticity > >(
+      "FINITESTRAINORTHOTROPICBIOTVISCOELASTICITY_SUBSTEPPED" );
 
-    const static bool FiniteStrainOrthotropicBiotViscoelasticityRegistered = MarmotMaterialFiniteStrainFactory::
-      registerMaterial< FiniteStrainOrthotropicBiotViscoelasticity >( "FINITESTRAINORTHOTROPICBIOTVISCOELASTICITY" );
-
-    const static bool
-      FiniteStrainOrthotropicBiotViscoelasticitySubsteppedRegistered = MarmotMaterialFiniteStrainFactory::
-        registerMaterial< MarmotMaterialFiniteStrainSubstepped< FiniteStrainOrthotropicBiotViscoelasticity > >(
-          "FINITESTRAINORTHOTROPICBIOTVISCOELASTICITY_SUBSTEPPED" );
-
-  } // namespace Registration
-} // namespace Marmot::Materials
+} // namespace

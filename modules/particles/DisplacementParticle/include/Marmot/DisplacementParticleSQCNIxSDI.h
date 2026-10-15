@@ -31,10 +31,10 @@
 #include <Fastor/Fastor.h>
 #include <stdexcept>
 
-namespace Marmot::Meshfree {
+namespace Marmot::Discretizations::Meshfree {
 
   /**
-   * @class Marmot::Meshfree::DisplacementParticleSQCNIxSDI
+   * @class Marmot::Discretizations::Meshfree::DisplacementParticleSQCNIxSDI
    * @brief Displacement particle with subdomain integration (SDI): smoothed (SQCNI/SNNI) gradients on each subdomain
    * of the particle.
    *
@@ -179,7 +179,9 @@ namespace Marmot::Meshfree {
         }
         break;
       }
-      default: throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid body load type" );
+      default:
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << ": invalid body load type" );
       }
     }
 
@@ -215,7 +217,7 @@ namespace Marmot::Meshfree {
       const std::string&                                                     materialName,
       const double*                                                          materialProperties,
       int                                                                    sizeMaterialProperties,
-      const MarmotMeshfreeApproximation&                                     approximation,
+      const Marmot::Discretizations::Meshfree::Approximation&                approximation,
       const GenericSDIParticle< nDim, nVertices >::SmoothingDomainUpdateType smoothingVolumeUpdateType );
 
     /**
@@ -320,7 +322,8 @@ namespace Marmot::Meshfree {
      * @param[in] subdomainIndex Index of the subdomain.
      * @return The view on the state.
      */
-    virtual StateView getStateViewOnSubdomains( const std::string& stateName, int subdomainIndex ) const
+    virtual Marmot::Utilities::StateView getStateViewOnSubdomains( const std::string& stateName,
+                                                                   int                subdomainIndex ) const
     {
       return _subdomainMaterialPoints[subdomainIndex]->getStateView( stateName );
     }
@@ -446,7 +449,8 @@ namespace Marmot::Meshfree {
      */
     virtual void setInitialCondition( const std::string& conditionName, const double* value ) override
     {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": invalid initial condition" );
     };
   };
 
@@ -459,7 +463,7 @@ namespace Marmot::Meshfree {
     const std::string&                                                     materialName,
     const double*                                                          materialProperties,
     int                                                                    sizeMaterialProperties,
-    const Marmot::Meshfree::MarmotMeshfreeApproximation&                   approximation,
+    const Marmot::Discretizations::Meshfree::Approximation&                approximation,
     const GenericSDIParticle< nDim, nVertices >::SmoothingDomainUpdateType smoothingVolumeUpdateType )
     : GenericSDIParticle< nDim, nVertices >( elementID,
                                              vertexCoordinates,
@@ -470,7 +474,7 @@ namespace Marmot::Meshfree {
       _newmark_beta( 0. ),
       _newmark_gamma( 0. )
   {
-    MarmotMaterialSection section( materialName, materialProperties, sizeMaterialProperties );
+    Marmot::Discretizations::MaterialSection section( materialName, materialProperties, sizeMaterialProperties );
 
     for ( size_t i = 0; i < this->_subDomains.size(); i++ ) {
 
@@ -518,7 +522,7 @@ namespace Marmot::Meshfree {
       Eigen::Map< Eigen::MatrixXd > K( dFExt_ddQ, this->_nNodes * nodeBlockSize, this->_nNodes * nodeBlockSize );
 
       using namespace Fastor;
-      using namespace FastorIndices;
+      using namespace Marmot::Math::Tensors::FastorIndices;
 
       Tensor< double, nDim, nDim > Eye;
       Eye.eye();
@@ -564,7 +568,8 @@ namespace Marmot::Meshfree {
       break;
     }
     default: {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
     }
     }
   }
@@ -576,7 +581,7 @@ namespace Marmot::Meshfree {
                                                                                             double        timeNew,
                                                                                             double        dT )
   {
-    using namespace Marmot::FastorIndices;
+    using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Fastor;
     using to_jk = Fastor::OIndex< j_, k_ >;
 
@@ -617,13 +622,13 @@ namespace Marmot::Meshfree {
       auto a = mp->getAcceleration();
 
       Tensor< double, nDim, nDim > da_ddu( 0.0 );
-      Marmot::TimeIntegration::newmarkBetaIntegration< nDim >( du.data(),
-                                                               v.data(),
-                                                               a.data(),
-                                                               dT,
-                                                               this->_newmark_beta,
-                                                               this->_newmark_gamma,
-                                                               da_ddu.data() );
+      Marmot::ContinuumMechanics::TimeIntegration::newmarkBetaIntegration< nDim >( du.data(),
+                                                                                   v.data(),
+                                                                                   a.data(),
+                                                                                   dT,
+                                                                                   this->_newmark_beta,
+                                                                                   this->_newmark_gamma,
+                                                                                   da_ddu.data() );
       mp->setVelocity( v );
       mp->setAcceleration( a );
 
@@ -686,4 +691,4 @@ namespace Marmot::Meshfree {
     }
   }
 
-} // namespace Marmot::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

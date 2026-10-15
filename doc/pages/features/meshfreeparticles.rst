@@ -13,13 +13,13 @@ particle's residual vector and stiffness matrix, may change from increment to in
 
 ``MarmotMeshfreeCore`` provides the physics-independent part of the particles:
 
-- :cpp:class:`Marmot::Meshfree::MarmotParticle`, the abstract interface called by the host framework;
-- :cpp:class:`Marmot::Meshfree::ParticleDomain`, the geometry of a cell-shaped particle (quadrilateral or hexahedron)
+- :cpp:class:`Marmot::Discretizations::Meshfree::Particle`, the abstract interface called by the host framework;
+- :cpp:class:`Marmot::Discretizations::Meshfree::ParticleDomain`, the geometry of a cell-shaped particle (quadrilateral or hexahedron)
   with its smoothing domain and its subdivision;
-- :cpp:class:`Marmot::Meshfree::GenericParticle`, the base of the point particles, including the variationally
+- :cpp:class:`Marmot::Discretizations::Meshfree::GenericParticle`, the base of the point particles, including the variationally
   consistent integration (VCI);
-- :cpp:class:`Marmot::Meshfree::GenericSDIParticle`, the base of the particles with subdomain integration (SDI);
-- :cpp:class:`MarmotLibrary::MarmotParticleFactory`, the registry by which particles are created by name.
+- :cpp:class:`Marmot::Discretizations::Meshfree::GenericSDIParticle`, the base of the particles with subdomain integration (SDI);
+- :cpp:class:`Marmot::Registry::ParticleFactory`, the registry by which particles are created by name.
 
 The concrete particles of a formulation live in the ``particles/`` module category, see :doc:`displacementparticle`
 and :doc:`gradientenhancedfinitestrainparticle`; the overall architecture is described in :doc:`meshfree`.
@@ -32,7 +32,7 @@ the end of every increment the particle is moved to the new configuration.
 The particle interface
 ----------------------
 
-The following methods of :cpp:class:`Marmot::Meshfree::MarmotParticle` are called by the host framework, in this
+The following methods of :cpp:class:`Marmot::Discretizations::Meshfree::Particle` are called by the host framework, in this
 order:
 
 .. list-table::
@@ -41,7 +41,7 @@ order:
 
    * - Method
      - Purpose
-   * - ``MarmotParticleFactory::createParticle``
+   * - ``Marmot::Registry::ParticleFactory::createParticle``
      - create the particle by name from its vertex coordinates (the center for point particles), its volume (point
        particles; zero for cell-shaped particles, whose volume follows from the vertices), the material and the
        meshfree approximation
@@ -97,8 +97,8 @@ subdomain ``qp``.
 The particle domain
 -------------------
 
-A cell-shaped particle is described by a :cpp:class:`Marmot::Meshfree::ParticleDomain`: a 4-node quadrilateral or an
-8-node hexahedron (a ``MarmotLagrangeCell``, see :doc:`meshfreecells`), with faces numbered from 1 in the Abaqus
+A cell-shaped particle is described by a :cpp:class:`Marmot::Discretizations::Meshfree::ParticleDomain`: a 4-node quadrilateral or an
+8-node hexahedron (a ``Marmot::Discretizations::Meshfree::LagrangeCell``, see :doc:`meshfreecells`), with faces numbered from 1 in the Abaqus
 convention. It is kept in three versions:
 
 - the **undeformed geometry**, with vertices :math:`\boldsymbol{X}_v` and centroid :math:`\boldsymbol{X}_c`, which
@@ -158,7 +158,7 @@ pattern). The abbreviations denote what the code does:
    * - Abbreviation
      - Meaning in Marmot
    * - (none), ``Point``
-     - **Direct nodal integration** of a point particle (e.g., :cpp:class:`Marmot::Meshfree::GenericParticle`): shape
+     - **Direct nodal integration** of a point particle (e.g., :cpp:class:`Marmot::Discretizations::Meshfree::GenericParticle`): shape
        functions and their gradients are evaluated at the particle center, which is the only integration point, with
        the particle volume as weight.
    * - SQCNI
@@ -184,7 +184,7 @@ pattern). The abbreviations denote what the code does:
        (``ParticleDomain::getGeometrySecondMoments``). Combined with SQCNI or SNNI smoothing, e.g.,
        ``SQCNIxNSNI``; see :doc:`displacementparticle`.
    * - SDI
-     - **Subdomain integration** (:cpp:class:`Marmot::Meshfree::GenericSDIParticle`): the particle domain is
+     - **Subdomain integration** (:cpp:class:`Marmot::Discretizations::Meshfree::GenericSDIParticle`): the particle domain is
        subdivided into :math:`2^{n_\text{dim}}` subdomains, each an integration point with its own material point
        and its own smoothed gradients; the weak form is the sum over the subdomains. Combined with SQCNI or SNNI
        smoothing, e.g., ``SQCNIxSDI``.
@@ -210,7 +210,7 @@ names of the displacement NSNI particles (``Displacement/SQCNIxNSNI/...`` etc.) 
 GenericParticle: point particles and VCI
 ----------------------------------------
 
-:cpp:class:`Marmot::Meshfree::GenericParticle` implements the physics-independent part of a point particle: a single
+:cpp:class:`Marmot::Discretizations::Meshfree::GenericParticle` implements the physics-independent part of a point particle: a single
 vertex and evaluation point at the center :math:`\boldsymbol{Y}_c` (shape ``point``), the evaluation of
 :math:`N_A` and :math:`\partial N_A/\partial Y_i` at the center in ``assignMeshfreeKernelFunctions`` (which also resets
 the test functions to :math:`T_A = N_A`), and the property ``VCI order``. Derived classes (e.g., the displacement
@@ -263,8 +263,8 @@ is meant to be applied once after ``assignMeshfreeKernelFunctions``.
 GenericSDIParticle: subdomain integration
 -----------------------------------------
 
-:cpp:class:`Marmot::Meshfree::GenericSDIParticle` is the physics-independent base of the subdomain-integration
-particles. It owns the main :cpp:class:`Marmot::Meshfree::ParticleDomain` and its :math:`2^{n_\text{dim}}`
+:cpp:class:`Marmot::Discretizations::Meshfree::GenericSDIParticle` is the physics-independent base of the subdomain-integration
+particles. It owns the main :cpp:class:`Marmot::Discretizations::Meshfree::ParticleDomain` and its :math:`2^{n_\text{dim}}`
 subdomains. For every subdomain :math:`s`, ``assignMeshfreeKernelFunctions`` evaluates :math:`N_A` at the subdomain
 center, the smoothed gradient over the subdomain's smoothing domain (formula above), the test functions and the VCI
 basis at the subdomain center. The derived class attaches a material point to every subdomain and integrates the weak
@@ -322,12 +322,12 @@ with GCC 14.2 at ``-O3``). The offsets are relative to the start of the particle
 a suitably aligned block for the absolute alignment to hold. ``getNumberOfRequiredStateVars`` includes the padding.
 
 ``GenericSDIParticle`` does not override the explicit-dynamics methods, so the SDI particles inherit their empty
-defaults from ``MarmotParticle``.
+defaults from ``Marmot::Discretizations::Meshfree::Particle``.
 
 The particle factory
 --------------------
 
-:cpp:class:`MarmotLibrary::MarmotParticleFactory` maps names to factory functions. Particle modules register their
+:cpp:class:`Marmot::Registry::ParticleFactory` maps names to factory functions. Particle modules register their
 types in ``*Registration.cpp`` files at static initialization (``registerParticle``); the host creates them with
 ``createParticle``, which throws ``std::invalid_argument`` for an unknown name. Names are converted to upper case at
 registration and at creation, so they are case-insensitive. The factory function receives the particle number, the
@@ -338,17 +338,17 @@ which must outlive the particle.
 Implementation
 --------------
 
-.. doxygenclass:: Marmot::Meshfree::MarmotParticle
+.. doxygenclass:: Marmot::Discretizations::Meshfree::Particle
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::Meshfree::ParticleDomain
+.. doxygenclass:: Marmot::Discretizations::Meshfree::ParticleDomain
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::Meshfree::GenericParticle
+.. doxygenclass:: Marmot::Discretizations::Meshfree::GenericParticle
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::Meshfree::GenericSDIParticle
+.. doxygenclass:: Marmot::Discretizations::Meshfree::GenericSDIParticle
    :allow-dot-graphs:
 
-.. doxygenclass:: MarmotLibrary::MarmotParticleFactory
+.. doxygenclass:: Marmot::Registry::ParticleFactory
    :allow-dot-graphs:

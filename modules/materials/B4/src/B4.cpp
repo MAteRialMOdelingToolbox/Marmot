@@ -12,7 +12,7 @@ using namespace Eigen;
 namespace Marmot::Materials {
 
   B4::B4( const double* materialProperties, int nMaterialProperties, int materialLabel )
-    : MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialLabel ),
+    : Marmot::Materials::MaterialHypoElastic( materialProperties, nMaterialProperties, materialLabel ),
       // clang-format off
       // elastic parameters
       nu                                ( materialProperties[0] ),
@@ -48,30 +48,32 @@ namespace Marmot::Materials {
     stateLayout.add( "basicCreepStateVars", nKelvinBasic * 6 );
     stateLayout.add( "dryingCreepStateVars", nKelvinDrying * 6 );
     stateLayout.finalize();
-    solidificationKelvinProperties.retardationTimes = KelvinChain::generateRetardationTimes( nKelvinBasic,
-                                                                                             minTauBasic,
-                                                                                             10. );
+    solidificationKelvinProperties
+      .retardationTimes = ContinuumMechanics::Viscoelasticity::KelvinChain::generateRetardationTimes( nKelvinBasic,
+                                                                                                      minTauBasic,
+                                                                                                      10. );
 
     auto phiBasic = [&]( autodiff::Real< basicCreepComplianceApproximationOrder, double > tau ) {
-      return SolidificationTheory::phi( tau, solidificationParameters );
+      return ContinuumMechanics::Viscoelasticity::SolidificationTheory::phi( tau, solidificationParameters );
     };
 
-    solidificationKelvinProperties.elasticModuli = KelvinChain::computeElasticModuli<
+    solidificationKelvinProperties
+      .elasticModuli = ContinuumMechanics::Viscoelasticity::KelvinChain::computeElasticModuli<
       basicCreepComplianceApproximationOrder >( phiBasic, solidificationKelvinProperties.retardationTimes );
 
-    solidificationKelvinProperties
-      .E0 = SolidificationTheory::computeZerothElasticModul( minTauBasic, n, basicCreepComplianceApproximationOrder );
+    solidificationKelvinProperties.E0 = ContinuumMechanics::Viscoelasticity::SolidificationTheory::
+      computeZerothElasticModul( minTauBasic, n, basicCreepComplianceApproximationOrder );
   }
 
-  void B4::computeStress( state3D&                state,
-                          Marmot::Matrix6d&       dStressDDStrain,
-                          const Marmot::Vector6d& dStrain,
-                          const timeInfo&         timeInfo ) const
+  void B4::computeStress( state3D&                      state,
+                          Marmot::Math::Matrix6d&       dStressDDStrain,
+                          const Marmot::Math::Vector6d& dStrain,
+                          const timeInfo&               timeInfo ) const
 
   {
-    mVector6d             nomStress( state.stress.data() );
-    Map< const Vector6d > dE( dStrain.data() );
-    mMatrix6d             C( dStressDDStrain.data() );
+    Marmot::Math::mVector6d             nomStress( state.stress.data() );
+    Map< const Marmot::Math::Vector6d > dE( dStrain.data() );
+    Marmot::Math::mMatrix6d             C( dStressDDStrain.data() );
 
     const double& dT   = timeInfo.dT;
     const double& time = timeInfo.time;
@@ -96,79 +98,81 @@ namespace Marmot::Materials {
     const double dTimeDays  = dT * timeToDays;
     const double tStartDays = ( time - dT - castTime ) * timeToDays;
 
-    Matrix6d CelUnitInv = ContinuumMechanics::Elasticity::Isotropic::complianceTensor( 1.0, nu );
+    Marmot::Math::Matrix6d CelUnitInv = ContinuumMechanics::Elasticity::Isotropic::complianceTensor( 1.0, nu );
 
     // compute basic creep strains and compliance
-    auto [basicCreepStrainIncrement, basicCreepUniaxialComplianceComponents] = SolidificationTheory::
-      computeCreepStrainIncrementAndComplianceComponents( tStartDays,
-                                                          dTimeDays,
-                                                          1.0,
-                                                          CelUnitInv,
-                                                          nomStress,
-                                                          solidificationParameters,
-                                                          solidificationKelvinProperties,
-                                                          basicCreepStateVars );
+    auto [basicCreepStrainIncrement, basicCreepUniaxialComplianceComponents] = ContinuumMechanics::Viscoelasticity::
+      SolidificationTheory::computeCreepStrainIncrementAndComplianceComponents( tStartDays,
+                                                                                dTimeDays,
+                                                                                1.0,
+                                                                                CelUnitInv,
+                                                                                nomStress,
+                                                                                solidificationParameters,
+                                                                                solidificationKelvinProperties,
+                                                                                basicCreepStateVars );
 
     // compute drying creep strains and compliancei
-    KelvinChain::Properties dryingCreepRetardationTimes = KelvinChain::generateRetardationTimes( nKelvinDrying,
-                                                                                                 minTauDrying,
-                                                                                                 sqrt( 10. ) );
-    double                  b                           = 8. * ( 1. - hEnv );
+    ContinuumMechanics::Viscoelasticity::KelvinChain::Properties dryingCreepRetardationTimes = ContinuumMechanics::
+      Viscoelasticity::KelvinChain::generateRetardationTimes( nKelvinDrying, minTauDrying, sqrt( 10. ) );
+    double b      = 8. * ( 1. - hEnv );
     double xiZero = std::min( -1e-16, ( dryingStart - tStartDays - dTimeDays / 2. ) / dryingShrinkageHalfTime );
 
     auto phiDrying = [&]( autodiff::Real< dryingCreepComplianceApproximationOrder, double > tau ) {
       return phi( tau, b, xiZero );
     };
 
-    KelvinChain::Properties dryingCreepElasticModuli = KelvinChain::computeElasticModuli<
-      dryingCreepComplianceApproximationOrder >( phiDrying, dryingCreepRetardationTimes );
+    ContinuumMechanics::Viscoelasticity::KelvinChain::Properties
+      dryingCreepElasticModuli = ContinuumMechanics::Viscoelasticity::KelvinChain::computeElasticModuli<
+        dryingCreepComplianceApproximationOrder >( phiDrying, dryingCreepRetardationTimes );
 
-    Vector6d dryingCreepStrainIncrement = Vector6d::Zero();
-    double   dryingCreepCompliance      = 0;
+    Marmot::Math::Vector6d dryingCreepStrainIncrement = Marmot::Math::Vector6d::Zero();
+    double                 dryingCreepCompliance      = 0;
 
-    KelvinChain::evaluateKelvinChain( dTimeDays / dryingShrinkageHalfTime,
-                                      dryingCreepElasticModuli,
-                                      dryingCreepRetardationTimes,
-                                      dryingCreepStateVars,
-                                      dryingCreepCompliance,
-                                      dryingCreepStrainIncrement,
-                                      1e-6 * q5 / exp( 4 ) );
+    ContinuumMechanics::Viscoelasticity::KelvinChain::evaluateKelvinChain( dTimeDays / dryingShrinkageHalfTime,
+                                                                           dryingCreepElasticModuli,
+                                                                           dryingCreepRetardationTimes,
+                                                                           dryingCreepStateVars,
+                                                                           dryingCreepCompliance,
+                                                                           dryingCreepStrainIncrement,
+                                                                           1e-6 * q5 / exp( 4 ) );
 
     double effectiveCompliance = basicCreepUniaxialComplianceComponents.elastic +
                                  basicCreepUniaxialComplianceComponents.viscoelastic +
                                  basicCreepUniaxialComplianceComponents.flow + dryingCreepCompliance;
 
     // compute shrinkage strain increment
-    Vector6d
-      shrinkageStrainIncrement = Shrinkage::B4::computeShrinkageStrainIncrement( tStartDays,
-                                                                                 dTimeDays,
-                                                                                 ultimateAutogenousShrinkageStrain,
-                                                                                 autogenousShrinkageHalfTime,
-                                                                                 alpha,
-                                                                                 rt,
-                                                                                 ultimateDryingShrinkageStrain,
-                                                                                 dryingShrinkageHalfTime,
-                                                                                 1. - hEnv * hEnv * hEnv,
-                                                                                 dryingStart );
+    Marmot::Math::Vector6d
+      shrinkageStrainIncrement = B4Shrinkage::computeShrinkageStrainIncrement( tStartDays,
+                                                                               dTimeDays,
+                                                                               ultimateAutogenousShrinkageStrain,
+                                                                               autogenousShrinkageHalfTime,
+                                                                               alpha,
+                                                                               rt,
+                                                                               ultimateDryingShrinkageStrain,
+                                                                               dryingShrinkageHalfTime,
+                                                                               1. - hEnv * hEnv * hEnv,
+                                                                               dryingStart );
 
-    C                    = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( 1. / effectiveCompliance, nu );
-    Vector6d deltaStress = C *
-                           ( dE - basicCreepStrainIncrement - dryingCreepStrainIncrement - shrinkageStrainIncrement );
-    nomStress = nomStress + deltaStress;
+    C = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( 1. / effectiveCompliance, nu );
+    Marmot::Math::Vector6d deltaStress = C * ( dE - basicCreepStrainIncrement - dryingCreepStrainIncrement -
+                                               shrinkageStrainIncrement );
+    nomStress                          = nomStress + deltaStress;
 
-    KelvinChain::updateStateVarMatrix( dTimeDays / dryingShrinkageHalfTime,
-                                       dryingCreepElasticModuli,
-                                       dryingCreepRetardationTimes,
-                                       dryingCreepStateVars,
-                                       deltaStress,
-                                       CelUnitInv );
+    ContinuumMechanics::Viscoelasticity::KelvinChain::updateStateVarMatrix( dTimeDays / dryingShrinkageHalfTime,
+                                                                            dryingCreepElasticModuli,
+                                                                            dryingCreepRetardationTimes,
+                                                                            dryingCreepStateVars,
+                                                                            deltaStress,
+                                                                            CelUnitInv );
 
-    KelvinChain::updateStateVarMatrix( dTimeDays,
-                                       solidificationKelvinProperties.elasticModuli,
-                                       solidificationKelvinProperties.retardationTimes,
-                                       basicCreepStateVars,
-                                       deltaStress,
-                                       CelUnitInv );
+    ContinuumMechanics::Viscoelasticity::KelvinChain::updateStateVarMatrix( dTimeDays,
+                                                                            solidificationKelvinProperties
+                                                                              .elasticModuli,
+                                                                            solidificationKelvinProperties
+                                                                              .retardationTimes,
+                                                                            basicCreepStateVars,
+                                                                            deltaStress,
+                                                                            CelUnitInv );
     return;
   }
 
@@ -176,7 +180,8 @@ namespace Marmot::Materials {
   {
     if ( nMaterialProperties >= 23 )
       return materialProperties[22];
-    throw std::runtime_error( std::string( MakeString() << __PRETTY_FUNCTION__ << ": Density not specified for B4." ) );
+    throw std::runtime_error(
+      std::string( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": Density not specified for B4." ) );
   }
 
 } // namespace Marmot::Materials

@@ -6,7 +6,7 @@ Interface material (hypoelastic bulk material)
 Theory
 ------
 
-``MarmotInterfaceMaterialHypoElastic`` turns **any registered hypoelastic bulk material** into the
+``Marmot::Materials::InterfaceMaterialHypoElastic`` turns **any registered hypoelastic bulk material** into the
 constitutive law of a thin interface layer of thickness :math:`h`. It is the material counterpart of the
 :ref:`Interface Finite Element <interfacefiniteelement>`: the element provides the displacement jump and the
 surface gradient, the material returns the conjugate interface quantities and their tangents.
@@ -75,7 +75,7 @@ stored in the state-variable block ``baseMaterialStateVars``.
 Implementation
 --------------
 
-.. doxygenclass:: MarmotInterfaceMaterialHypoElastic
+.. doxygenclass:: Marmot::Materials::InterfaceMaterialHypoElastic
    :allow-dot-graphs:
 
 .. doxygennamespace:: Marmot::Materials::InterfaceMaterialHelperFunctions

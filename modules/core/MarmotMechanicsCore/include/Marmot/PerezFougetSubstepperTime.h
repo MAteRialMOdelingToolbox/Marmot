@@ -36,7 +36,7 @@
  * current elastic tangent must be supplied when extending the consistent tangent.
  */
 
-namespace Marmot::NumericalAlgorithms {
+namespace Marmot::ContinuumMechanics::Algorithms {
   /**
    * @brief Pérez–Fouget sub-stepper with time-dependent elastic stiffness.
    *
@@ -79,20 +79,20 @@ namespace Marmot::NumericalAlgorithms {
      * @brief Accumulate the consistent tangent for an elastic sub-step.
      * @param CelT  Elastic stiffness matrix (6×6) at the current (end-of-sub-step) time.
      */
-    void extendConsistentTangent( const Matrix6d& CelT );
+    void extendConsistentTangent( const Marmot::Math::Matrix6d& CelT );
 
     /**
      * @brief Accumulate the consistent tangent for an elastoplastic sub-step.
      * @param CelT        Elastic stiffness matrix (6×6) at the current time.
      * @param matTangent  Inverse algorithmic tangent (`TangentSizedMatrix`); left-applied to the current accumulation.
      */
-    void extendConsistentTangent( const Matrix6d& CelT, const TangentSizedMatrix& matTangent );
+    void extendConsistentTangent( const Marmot::Math::Matrix6d& CelT, const TangentSizedMatrix& matTangent );
 
     /**
      * @brief Return the assembled consistent algorithmic stiffness after all sub-steps are finished.
      * @return  The 6×6 consistent tangent operator.
      */
-    Matrix6d consistentStiffness();
+    Marmot::Math::Matrix6d consistentStiffness();
 
   private:
     const double initialStepSize, minimumStepSize, scaleUpFactor, scaleDownFactor;
@@ -105,11 +105,11 @@ namespace Marmot::NumericalAlgorithms {
     TangentSizedMatrix elasticTangent;
     TangentSizedMatrix consistentTangent;
   };
-} // namespace Marmot::NumericalAlgorithms
+} // namespace Marmot::ContinuumMechanics::Algorithms
 
 #include "Marmot/MarmotJournal.h"
 
-namespace Marmot::NumericalAlgorithms {
+namespace Marmot::ContinuumMechanics::Algorithms {
   template < int s >
   PerezFougetSubstepperTime< s >::PerezFougetSubstepperTime( double initialStepSize,
                                                              double minimumStepSize,
@@ -167,13 +167,13 @@ namespace Marmot::NumericalAlgorithms {
     currentSubstepSize *= scaleDownFactor;
 
     if ( currentSubstepSize < minimumStepSize )
-      return MarmotJournal::warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
+      return Marmot::Utilities::Journal::warningToMSG( "UMAT: Substepper: Minimal stepzsize reached" );
     else
-      return MarmotJournal::notificationToMSG( "UMAT: Substepper: Decreasing stepsize" );
+      return Marmot::Utilities::Journal::notificationToMSG( "UMAT: Substepper: Decreasing stepsize" );
   }
 
   template < int s >
-  void PerezFougetSubstepperTime< s >::extendConsistentTangent( const Matrix6d& CelT )
+  void PerezFougetSubstepperTime< s >::extendConsistentTangent( const Marmot::Math::Matrix6d& CelT )
   {
 
     elasticTangent.topLeftCorner( 6, 6 ) = CelT;
@@ -181,16 +181,16 @@ namespace Marmot::NumericalAlgorithms {
   }
 
   template < int s >
-  void PerezFougetSubstepperTime< s >::extendConsistentTangent( const Matrix6d&           CelT,
-                                                                const TangentSizedMatrix& matTangent )
+  void PerezFougetSubstepperTime< s >::extendConsistentTangent( const Marmot::Math::Matrix6d& CelT,
+                                                                const TangentSizedMatrix&     matTangent )
   {
     extendConsistentTangent( CelT );
     consistentTangent.applyOnTheLeft( matTangent );
   }
 
   template < int s >
-  Matrix6d PerezFougetSubstepperTime< s >::consistentStiffness()
+  Marmot::Math::Matrix6d PerezFougetSubstepperTime< s >::consistentStiffness()
   {
     return consistentTangent.topLeftCorner( 6, 6 );
   }
-} // namespace Marmot::NumericalAlgorithms
+} // namespace Marmot::ContinuumMechanics::Algorithms

@@ -79,9 +79,9 @@ namespace {
     require( Kinematics::VelocityGradient::dStretchingRate_dVelocityGradient( 0, 0, 0 ) == 1.0,
              "dStretchingRate_dVelocityGradient( 0, 0, 0 ) must be 1" );
 
-    require( VoigtNotation::P( 3 ) == 2.0 && VoigtNotation::PInv( 3 ) == 0.5, "VoigtNotation::P / PInv" );
-    require( VoigtNotation::I( 0 ) == 1.0 && VoigtNotation::I( 3 ) == 0.0, "VoigtNotation::I" );
-    require( VoigtNotation::IDev.trace() == 5.0, "VoigtNotation::IDev must have trace 5 (= 6 - 1)" );
+    require( Voigt::P( 3 ) == 2.0 && Voigt::PInv( 3 ) == 0.5, "Voigt::P / PInv" );
+    require( Voigt::I( 0 ) == 1.0 && Voigt::I( 3 ) == 0.0, "Voigt::I" );
+    require( Voigt::IDev.trace() == 5.0, "Voigt::IDev must have trace 5 (= 6 - 1)" );
   }
 
   /** @brief Creates a material through the factory and checks its stress response against the elastic tangent. */
@@ -90,11 +90,11 @@ namespace {
     const double                E = 210e3, nu = 0.3;
     const std::vector< double > properties{ E, nu };
 
-    std::unique_ptr< MarmotMaterialHypoElastic > material(
-      MarmotLibrary::MarmotMaterialHypoElasticFactory::createMaterial( "LINEARELASTIC",
-                                                                       properties.data(),
-                                                                       static_cast< int >( properties.size() ),
-                                                                       1 ) );
+    std::unique_ptr< Marmot::Materials::MaterialHypoElastic > material(
+      Marmot::Registry::MaterialHypoElasticFactory::createMaterial( "LINEARELASTIC",
+                                                                    properties.data(),
+                                                                    static_cast< int >( properties.size() ),
+                                                                    1 ) );
     require( material != nullptr, "the factory must create LINEARELASTIC" );
 
     const int             nStateVars = material->getNumberOfRequiredStateVars();
@@ -102,11 +102,11 @@ namespace {
     material->initializeYourself( stateVars.data(), nStateVars );
     material->setCharacteristicElementLength( 1.0 ); // the one exported member of the material interface
 
-    MarmotMaterialHypoElastic::state3D state;
-    state.stateVars                  = stateVars.data();
-    Marmot::Matrix6d dStress_dStrain = Marmot::Matrix6d::Zero();
-    Marmot::Vector6d dStrain         = Marmot::Vector6d::Zero();
-    dStrain( 0 )                     = 1e-3;
+    Marmot::Materials::MaterialHypoElastic::state3D state;
+    state.stateVars                        = stateVars.data();
+    Marmot::Math::Matrix6d dStress_dStrain = Marmot::Math::Matrix6d::Zero();
+    Marmot::Math::Vector6d dStrain         = Marmot::Math::Vector6d::Zero();
+    dStrain( 0 )                           = 1e-3;
     material->computeStress( state, dStress_dStrain, dStrain, { 0.0, 1.0 } );
 
     const double lambda = E * nu / ( ( 1 + nu ) * ( 1 - 2 * nu ) );
@@ -123,7 +123,8 @@ namespace {
   /** @brief Creates an element through the factory, as EdelweissFE does, and checks the assembled kernels. */
   void testElementThroughFactory()
   {
-    std::unique_ptr< MarmotElement > element( MarmotLibrary::MarmotElementFactory::createElement( "CPS4", 1 ) );
+    std::unique_ptr< Marmot::Discretizations::Elements::Element > element(
+      Marmot::Registry::ElementFactory::createElement( "CPS4", 1 ) );
     require( element != nullptr, "the factory must create CPS4" );
     require( element->getNNodes() == 4 && element->getNSpatialDimensions() == 2, "CPS4 is a 4-node 2D element" );
 
@@ -132,10 +133,12 @@ namespace {
     const std::vector< double > materialProperties{ 210e3, 0.3 };
     element->assignNodeCoordinates( coordinates.data() );
     element->assignProperty(
-      ElementProperties( elementProperties.data(), static_cast< int >( elementProperties.size() ) ) );
-    element->assignProperty( MarmotMaterialSection( "LINEARELASTIC",
-                                                    materialProperties.data(),
-                                                    static_cast< int >( materialProperties.size() ) ) );
+      Marmot::Discretizations::ElementProperties( elementProperties.data(),
+                                                  static_cast< int >( elementProperties.size() ) ) );
+    element->assignProperty(
+      Marmot::Discretizations::MaterialSection( "LINEARELASTIC",
+                                                materialProperties.data(),
+                                                static_cast< int >( materialProperties.size() ) ) );
     std::vector< double > stateVars( element->getNumberOfRequiredStateVars(), 0.0 );
     element->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
     element->initializeYourself();
@@ -175,7 +178,7 @@ namespace {
  */
 int main()
 {
-  MarmotJournal::setMSGOutputDirection( std::cout );
+  Marmot::Utilities::Journal::setMSGOutputDirection( std::cout );
 
   const std::vector< std::pair< std::string, std::function< void() > > > tests{
     { "header-defined constants", testHeaderDefinedConstants },

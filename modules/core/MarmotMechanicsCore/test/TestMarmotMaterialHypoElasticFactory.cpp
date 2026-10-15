@@ -6,7 +6,6 @@
 #include <vector>
 
 using namespace Marmot::Testing;
-using namespace MarmotLibrary;
 
 // ---------------------------------------------------------------------------------------------
 // createMaterial(): the success path is exercised elsewhere (e.g. LinearElastic's own tests, via
@@ -19,7 +18,7 @@ void testCreateMaterialThrowsForUnregisteredName()
 {
   bool threw = false;
   try {
-    MarmotMaterialHypoElasticFactory::createMaterial( "DEFINITELY_NOT_REGISTERED", nullptr, 0, 1 );
+    Marmot::Registry::MaterialHypoElasticFactory::createMaterial( "DEFINITELY_NOT_REGISTERED", nullptr, 0, 1 );
   }
   catch ( const std::invalid_argument& ) {
     threw = true;
@@ -32,9 +31,9 @@ void testCreateMaterialThrowsForUnregisteredName()
 
 void testCreateMaterialSucceedsForRegisteredName()
 {
-  const double                                 properties[3] = { 20000., 0.25, 10. };
-  std::unique_ptr< MarmotMaterialHypoElastic > mat(
-    MarmotMaterialHypoElasticFactory::createMaterial( "LINEARELASTIC", properties, 3, 7 ) );
+  const double                                              properties[3] = { 20000., 0.25, 10. };
+  std::unique_ptr< Marmot::Materials::MaterialHypoElastic > mat(
+    Marmot::Registry::MaterialHypoElasticFactory::createMaterial( "LINEARELASTIC", properties, 3, 7 ) );
 
   throwExceptionOnFailure( mat != nullptr && mat->materialNumber == 7,
                            "createMaterial() did not return a correctly constructed instance in " +

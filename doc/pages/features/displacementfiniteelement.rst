@@ -77,5 +77,5 @@ by the material.
 Implementation
 --------------
 
-.. doxygenclass:: Marmot::Elements::DisplacementFiniteElement
+.. doxygenclass:: Marmot::Discretizations::Elements::DisplacementFiniteElement
    :allow-dot-graphs:

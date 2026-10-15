@@ -36,14 +36,14 @@
 #include <stdexcept>
 #include <vector>
 
-namespace Marmot::MaterialPoints {
+namespace Marmot::Discretizations::MaterialPoints {
 
   /**
-   * @class Marmot::MaterialPoints::DisplacementMaterialPoint
+   * @class Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint
    * @brief MPM material point of the finite-strain displacement formulation.
    *
-   * @details The material point carries the state of a MarmotMaterialFiniteStrain and the kinematics of a total
-   * deformation gradient that is updated multiplicatively, increment by increment. Three configurations are
+   * @details The material point carries the state of a Marmot::Materials::MaterialFiniteStrain and the kinematics of a
+   * total deformation gradient that is updated multiplicatively, increment by increment. Three configurations are
    * distinguished: the undeformed configuration @f$ \boldsymbol{X} @f$, the intermediate configuration
    * @f$ \boldsymbol{Y} @f$ (the last accepted state, i.e., the configuration at the beginning of the current
    * increment) and the current configuration @f$ \boldsymbol{x} @f$. The deformation gradient is
@@ -72,13 +72,13 @@ namespace Marmot::MaterialPoints {
    * @tparam nDim Spatial dimension (2: plane strain, 3: 3D).
    */
   template < int nDim >
-  class DisplacementMaterialPoint : public MarmotMaterialPoint {
+  class DisplacementMaterialPoint : public Marmot::Discretizations::MaterialPoints::MaterialPoint {
 
   protected:
     constexpr static int _nVertices = 1; ///< a material point has a single vertex, its center
 
     /// number of rotational dofs in nDim dimensions (not used by this class)
-    static constexpr int nRot = Marmot::ContinuumMechanics::CommonTensors::getNumberOfDofForRotation( nDim );
+    static constexpr int nRot = Marmot::Math::Tensors::getNumberOfDofForRotation( nDim );
 
     using TensorD    = Fastor::Tensor< double, nDim >;                   ///< vector of size nDim
     using TensorDD   = Fastor::Tensor< double, nDim, nDim >;             ///< second-order tensor of size nDim
@@ -91,12 +91,12 @@ namespace Marmot::MaterialPoints {
     double _vol0;    ///< volume in the undeformed configuration @f$ V_0 @f$
     double _density; ///< mass density in the undeformed configuration, as provided by the material
 
-    using Material = MarmotMaterialFiniteStrain; ///< material interface consumed by the material point
+    using Material = Marmot::Materials::MaterialFiniteStrain; ///< material interface consumed by the material point
 
-    std::unique_ptr< Material > material;        ///< the finite-strain material
+    std::unique_ptr< Material > material;                     ///< the finite-strain material
 
     /**
-     * @class Marmot::MaterialPoints::DisplacementMaterialPoint::MPStateVarManager
+     * @class Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::MPStateVarManager
      * @brief State of the material point in the state vector provided by the host.
      *
      * @details Layout (all quantities 3D, regardless of nDim): total displacement @f$ \boldsymbol{u} @f$
@@ -106,7 +106,7 @@ namespace Marmot::MaterialPoints {
      * state @f$ \boldsymbol{F}_n @f$ ("deformation gradient"), the Kirchhoff stress ("stress"), followed by the
      * state of the material ("begin of material state").
      */
-    class MPStateVarManager : public MarmotStateVarVectorManager {
+    class MPStateVarManager : public Marmot::Utilities::StateVarVectorManager {
 
       /// the layout of the state vector (names and lengths)
       inline const static auto layout = makeLayout( {
@@ -121,15 +121,16 @@ namespace Marmot::MaterialPoints {
       } );
 
     public:
-      FastorStandardTensors::TensorMap3d  u;     ///< total displacement of the last accepted state
-      FastorStandardTensors::TensorMap3d  v;     ///< velocity
-      FastorStandardTensors::TensorMap3d  a;     ///< acceleration
-      FastorStandardTensors::TensorMap3d  du;    ///< displacement increment @f$ \Delta\boldsymbol{u} @f$
-      FastorStandardTensors::TensorMap33d dx_dY; ///< incremental deformation gradient @f$ \Delta\boldsymbol{F} @f$
-      FastorStandardTensors::TensorMap33d
+      Marmot::Math::Tensors::FastorTensors::TensorMap3d u;  ///< total displacement of the last accepted state
+      Marmot::Math::Tensors::FastorTensors::TensorMap3d v;  ///< velocity
+      Marmot::Math::Tensors::FastorTensors::TensorMap3d a;  ///< acceleration
+      Marmot::Math::Tensors::FastorTensors::TensorMap3d du; ///< displacement increment @f$ \Delta\boldsymbol{u} @f$
+      Marmot::Math::Tensors::FastorTensors::TensorMap33d
+        dx_dY; ///< incremental deformation gradient @f$ \Delta\boldsymbol{F} @f$
+      Marmot::Math::Tensors::FastorTensors::TensorMap33d
         dY_dX; ///< deformation gradient of the last accepted state @f$ \boldsymbol{F}_n @f$
-      FastorStandardTensors::TensorMap33d stress;        ///< Kirchhoff stress (see computeYourself())
-      Eigen::Map< Eigen::VectorXd >       materialState; ///< state variables of the material
+      Marmot::Math::Tensors::FastorTensors::TensorMap33d stress;        ///< Kirchhoff stress (see computeYourself())
+      Eigen::Map< Eigen::VectorXd >                      materialState; ///< state variables of the material
 
       /**
        * @brief Number of state variables required by the material point itself, without the material state.
@@ -143,7 +144,7 @@ namespace Marmot::MaterialPoints {
        * @param[in] nStateVars Total length of the state vector, including the material state.
        */
       MPStateVarManager( double* theStateVarVector, int nStateVars )
-        : MarmotStateVarVectorManager( theStateVarVector, layout ),
+        : Marmot::Utilities::StateVarVectorManager( theStateVarVector, layout ),
           u( &find( "displacement" ) ),
           v( &find( "velocity" ) ),
           a( &find( "acceleration" ) ),
@@ -184,7 +185,7 @@ namespace Marmot::MaterialPoints {
      * @param[in] stateName Name of the state, e.g. "deformation gradient", "stress" or a material state.
      * @return The view on the state.
      */
-    StateView getStateView( const std::string& stateName ) const;
+    Marmot::Utilities::StateView getStateView( const std::string& stateName ) const;
 
     /**
      * @brief Shape of the material point.
@@ -193,11 +194,11 @@ namespace Marmot::MaterialPoints {
     std::string getMaterialPointShape() const { return "point"; };
 
     /**
-     * @brief Creates the material through the MarmotMaterialFiniteStrainFactory.
+     * @brief Creates the material through the Marmot::Registry::MaterialFiniteStrainFactory.
      * @param[in] property Section with the material name and properties.
      * @throws std::invalid_argument if no finite-strain material of that name exists.
      */
-    void assignMaterial( const MarmotMaterialSection& property );
+    void assignMaterial( const Marmot::Discretizations::MaterialSection& property );
 
     /**
      * @brief Initializes the state: @f$ \boldsymbol{F}_n = \boldsymbol{I} @f$, a zero increment, the material state
@@ -317,15 +318,15 @@ namespace Marmot::MaterialPoints {
     virtual void acceptStateAndPosition()
     {
 
-      const auto&                           u_n  = state->u;
-      const FastorStandardTensors::Tensor3d u_np = u_n + state->du;
+      const auto&                                          u_n  = state->u;
+      const Marmot::Math::Tensors::FastorTensors::Tensor3d u_np = u_n + state->du;
 
       // TODO: make auto&
-      const FastorStandardTensors::Tensor33d dx_dX_n  = state->dY_dX;
-      const FastorStandardTensors::Tensor33d dx_dX_np = state->dx_dY % dx_dX_n;
+      const Marmot::Math::Tensors::FastorTensors::Tensor33d dx_dX_n  = state->dY_dX;
+      const Marmot::Math::Tensors::FastorTensors::Tensor33d dx_dX_np = state->dx_dY % dx_dX_n;
 
-      mapEigenToFastor( state->u )     = mapEigenToFastor( u_np );
-      mapEigenToFastor( state->dY_dX ) = mapEigenToFastor( dx_dX_np );
+      Marmot::Math::Tensors::mapEigenToFastor( state->u )     = Marmot::Math::Tensors::mapEigenToFastor( u_np );
+      Marmot::Math::Tensors::mapEigenToFastor( state->dY_dX ) = Marmot::Math::Tensors::mapEigenToFastor( dx_dX_np );
     };
 
     /**
@@ -404,8 +405,8 @@ namespace Marmot::MaterialPoints {
      */
     virtual void setInitialCondition( const std::string& conditionName, const double* value ) override
     {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": initial condition '" << conditionName
-                                                << "' is not supported" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": initial condition '"
+                                                                   << conditionName << "' is not supported" );
     };
   };
 
@@ -416,7 +417,7 @@ namespace Marmot::MaterialPoints {
   }
 
   template < int nDim >
-  StateView DisplacementMaterialPoint< nDim >::getStateView( const std::string& stateName ) const
+  Marmot::Utilities::StateView DisplacementMaterialPoint< nDim >::getStateView( const std::string& stateName ) const
   {
 
     if ( state->contains( stateName ) )
@@ -426,16 +427,16 @@ namespace Marmot::MaterialPoints {
   }
 
   template < int nDim >
-  void DisplacementMaterialPoint< nDim >::assignMaterial( const MarmotMaterialSection& section )
+  void DisplacementMaterialPoint< nDim >::assignMaterial( const Marmot::Discretizations::MaterialSection& section )
   {
     material = std::unique_ptr< Material >(
-      MarmotLibrary::MarmotMaterialFiniteStrainFactory::createMaterial( section.materialName,
-                                                                        section.materialProperties,
-                                                                        section.nMaterialProperties,
-                                                                        _mpNumber ) );
+      Marmot::Registry::MaterialFiniteStrainFactory::createMaterial( section.materialName,
+                                                                     section.materialProperties,
+                                                                     section.nMaterialProperties,
+                                                                     _mpNumber ) );
 
     if ( !material )
-      throw std::invalid_argument( MakeString()
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
                                    << __PRETTY_FUNCTION__ << ": invalid finite strain material assigned!" );
   }
 
@@ -458,13 +459,13 @@ namespace Marmot::MaterialPoints {
   }
 
   /**
-   * @class Marmot::MaterialPoints::DisplacementMaterialPoint2D
+   * @class Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D
    * @brief Plane-strain displacement material point (registered as "Displacement/PlaneStrain").
    *
    * @details The in-plane increment is expanded to 3D (out-of-plane components of the identity), the material is
-   * evaluated by MarmotMaterialFiniteStrain::computePlaneStrain() with the 3D deformation gradient, and the in-plane
-   * parts of @f$ \boldsymbol{\tau} @f$ and @f$ \partial\boldsymbol{\tau}/\partial\Delta\boldsymbol{F} @f$ are
-   * kept. The full 3D Kirchhoff stress is also written to the state "stress".
+   * evaluated by Marmot::Materials::MaterialFiniteStrain::computePlaneStrain() with the 3D deformation gradient, and
+   * the in-plane parts of @f$ \boldsymbol{\tau} @f$ and @f$ \partial\boldsymbol{\tau}/\partial\Delta\boldsymbol{F} @f$
+   * are kept. The full 3D Kirchhoff stress is also written to the state "stress".
    */
   class DisplacementMaterialPoint2D : public DisplacementMaterialPoint< 2 > {
 
@@ -487,11 +488,11 @@ namespace Marmot::MaterialPoints {
   };
 
   /**
-   * @class Marmot::MaterialPoints::DisplacementMaterialPoint3D
+   * @class Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D
    * @brief 3D displacement material point (registered as "Displacement/3D").
    *
    * @details The material is evaluated with the 3D deformation gradient by
-   * MarmotMaterialFiniteStrain::computeStress(); the Kirchhoff stress is written to the state "stress".
+   * Marmot::Materials::MaterialFiniteStrain::computeStress(); the Kirchhoff stress is written to the state "stress".
    */
   class DisplacementMaterialPoint3D : public DisplacementMaterialPoint< 3 > {
 
@@ -513,4 +514,4 @@ namespace Marmot::MaterialPoints {
     void incrementDeformation( const TensorD& displacementIncrement, const TensorDD& displacementGradientIncrement );
   };
 
-} // namespace Marmot::MaterialPoints
+} // namespace Marmot::Discretizations::MaterialPoints

@@ -1,6 +1,6 @@
 */__pycache__
 *.bak
-build
+build*
 doc/doc_out
 *.o
 *.csv

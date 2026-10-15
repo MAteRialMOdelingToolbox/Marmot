@@ -26,7 +26,7 @@
 #pragma once
 #include <Eigen/Core>
 
-namespace Marmot::NumericalAlgorithms {
+namespace Marmot::Math {
 
   /**
    * @class NewtonConvergenceChecker
@@ -156,4 +156,4 @@ namespace Marmot::NumericalAlgorithms {
                       const Eigen::VectorXd& dX,
                       int                    numberOfIterations );
   };
-} // namespace Marmot::NumericalAlgorithms
+} // namespace Marmot::Math

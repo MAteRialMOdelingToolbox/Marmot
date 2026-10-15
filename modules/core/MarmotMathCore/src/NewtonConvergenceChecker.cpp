@@ -2,7 +2,7 @@
 
 using namespace Eigen;
 
-namespace Marmot::NumericalAlgorithms {
+namespace Marmot::Math {
 
   NewtonConvergenceChecker::NewtonConvergenceChecker( const VectorXd& residualScaleVector,
                                                       int             nMaxNewtonCycles,
@@ -70,4 +70,4 @@ namespace Marmot::NumericalAlgorithms {
     }
     return false;
   }
-} // namespace Marmot::NumericalAlgorithms
+} // namespace Marmot::Math

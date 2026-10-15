@@ -26,45 +26,43 @@
 #include "Marmot/MarmotMaterialPoint.h"
 #include "Marmot/MarmotParticleLibrary.h"
 
-namespace Marmot::Meshfree {
+namespace {
+  using namespace Marmot::Discretizations::Meshfree;
 
-  using namespace MarmotLibrary;
+  const static bool GradientEnhancedFiniteStrainParticle_PlaneStrain_isRegistered = Marmot::Registry::ParticleFactory::
+    registerParticle( "GradientEnhancedFiniteStrain/PlaneStrain/Point",
+                      []( int           cellID,
+                          const double* nodeCoordinates,
+                          int           sizeNodeCoordinates,
+                          double        volume,
+                          // Marmot::Discretizations::MaterialPoints::MaterialPoint&                                 mp,
+                          const std::string&                                      materialName,
+                          const double*                                           materialProperties,
+                          int                                                     sizeMaterialProperties,
+                          const Marmot::Discretizations::Meshfree::Approximation& approximation )
+                        -> Marmot::Discretizations::Meshfree::Particle* {
+                        return new GradientEnhancedFiniteStrainParticle< 2 >( cellID,
+                                                                              nodeCoordinates,
+                                                                              sizeNodeCoordinates,
+                                                                              volume,
+                                                                              // mp,
+                                                                              materialName,
+                                                                              materialProperties,
+                                                                              sizeMaterialProperties,
+                                                                              approximation );
+                      } );
 
-  const static bool
-    GradientEnhancedFiniteStrainParticle_PlaneStrain_isRegistered = MarmotLibrary::MarmotParticleFactory::
-      registerParticle( "GradientEnhancedFiniteStrain/PlaneStrain/Point",
-                        []( int           cellID,
-                            const double* nodeCoordinates,
-                            int           sizeNodeCoordinates,
-                            double        volume,
-                            // MarmotMaterialPoint&                                 mp,
-                            const std::string&                                   materialName,
-                            const double*                                        materialProperties,
-                            int                                                  sizeMaterialProperties,
-                            const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation )
-                          -> Marmot::Meshfree::MarmotParticle* {
-                          return new GradientEnhancedFiniteStrainParticle< 2 >( cellID,
-                                                                                nodeCoordinates,
-                                                                                sizeNodeCoordinates,
-                                                                                volume,
-                                                                                // mp,
-                                                                                materialName,
-                                                                                materialProperties,
-                                                                                sizeMaterialProperties,
-                                                                                approximation );
-                        } );
-
-  const static bool GradientEnhancedFiniteStrainParticle_3D_isRegistered = MarmotLibrary::MarmotParticleFactory::
+  const static bool GradientEnhancedFiniteStrainParticle_3D_isRegistered = Marmot::Registry::ParticleFactory::
     registerParticle( "GradientEnhancedFiniteStrain/3D/Point",
-                      []( int                                                  cellID,
-                          const double*                                        nodeCoordinates,
-                          int                                                  sizeNodeCoordinates,
-                          double                                               volume,
-                          const std::string&                                   materialName,
-                          const double*                                        materialProperties,
-                          int                                                  sizeMaterialProperties,
-                          const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation )
-                        -> Marmot::Meshfree::MarmotParticle* {
+                      []( int                                                     cellID,
+                          const double*                                           nodeCoordinates,
+                          int                                                     sizeNodeCoordinates,
+                          double                                                  volume,
+                          const std::string&                                      materialName,
+                          const double*                                           materialProperties,
+                          int                                                     sizeMaterialProperties,
+                          const Marmot::Discretizations::Meshfree::Approximation& approximation )
+                        -> Marmot::Discretizations::Meshfree::Particle* {
                         return new GradientEnhancedFiniteStrainParticle< 3 >( cellID,
                                                                               nodeCoordinates,
                                                                               sizeNodeCoordinates,
@@ -75,4 +73,4 @@ namespace Marmot::Meshfree {
                                                                               approximation );
                       } );
 
-} // namespace Marmot::Meshfree
+} // namespace

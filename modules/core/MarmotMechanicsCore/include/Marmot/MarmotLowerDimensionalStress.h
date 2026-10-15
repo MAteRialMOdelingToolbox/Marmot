@@ -41,7 +41,7 @@ namespace Marmot::ContinuumMechanics {
      * @param C 3D stiffness matrix (\f$6\times6\f$) in Voigt notation.
      * @return Uniaxial stress-strain tangent (\f$\frac{\partial\sigma}{\partial\varepsilon}\f$).
      */
-    double getUniaxialStressTangent( const Eigen::Ref< const Matrix6d >& C );
+    double getUniaxialStressTangent( const Eigen::Ref< const Marmot::Math::Matrix6d >& C );
   } // namespace UniaxialStress
 
   namespace PlaneStrain {
@@ -55,7 +55,7 @@ namespace Marmot::ContinuumMechanics {
      * @param C 3D stiffness matrix (\f$6\times6\f$) in Voigt notation.
      * @return Plane strain stiffness matrix (\f$3\times3\f$) in Voigt notation.
      */
-    Eigen::Matrix3d getPlaneStrainTangent( const Matrix6d& C );
+    Eigen::Matrix3d getPlaneStrainTangent( const Marmot::Math::Matrix6d& C );
 
     /**
      * @brief Extracts the plane strain derivative of the stress with respect to the deformation gradient.
@@ -68,8 +68,8 @@ namespace Marmot::ContinuumMechanics {
      * @return Reduced derivative of stress with respect to deformation gradient (\f$3\times2\times2\f$ tensor)
      *         in the plane strain setting.
      */
-    EigenTensors::Tensor322d reduce3D_dStress_dDeformationGradient(
-      const EigenTensors::Tensor633d& dStressdDeformationGradient3D );
+    Marmot::Math::Tensors::Tensor322d reduce3D_dStress_dDeformationGradient(
+      const Marmot::Math::Tensors::Tensor633d& dStressdDeformationGradient3D );
 
     /**
      * @brief Computes the derivative of the 3D strain tensor with respect to the plane strain tensor.
@@ -88,7 +88,7 @@ namespace Marmot::ContinuumMechanics {
      * @param C 3D stiffness matrix (\f$6\times6\f$) in Voigt notation.
      * @return Plane stress stiffness matrix (\f$3\times3\f$) in Voigt notation.
      */
-    Eigen::Matrix3d getPlaneStressTangent( const Matrix6d& C );
+    Eigen::Matrix3d getPlaneStressTangent( const Marmot::Math::Matrix6d& C );
 
     /**
      * @brief Computes the plane stress derivative of the stress with respect to the deformation gradient.
@@ -101,8 +101,8 @@ namespace Marmot::ContinuumMechanics {
      * @return Reduced derivative of stress w.r.t. deformation gradient (\f$3 \times 2 \times 2\f$ tensor)
      *         for plane stress.
      */
-    EigenTensors::Tensor322d compute_dStress_dDeformationGradient(
-      const EigenTensors::Tensor633d& dStressdDeformationGradient3D );
+    Marmot::Math::Tensors::Tensor322d compute_dStress_dDeformationGradient(
+      const Marmot::Math::Tensors::Tensor633d& dStressdDeformationGradient3D );
 
     /**
      * @brief Computes the out-of-plane strain correction component for plane stress conditions.
@@ -121,7 +121,7 @@ namespace Marmot::ContinuumMechanics {
      * @return A 6-component strain vector \f$ \boldsymbol{\varepsilon}^{\text{corr}} \f$ containing the computed
      * out-of-plane correction component \f$\varepsilon_{33}^{\text{corr}}\f$ (Voigt notation).
      */
-    Marmot::Vector6d planeStressCompensationStrain( const Marmot::Vector6d& elasticStrain, double nu );
+    Marmot::Math::Vector6d planeStressCompensationStrain( const Marmot::Math::Vector6d& elasticStrain, double nu );
 
     /**
      * @brief Computes the transformation matrix for the plane stress tangent.
@@ -132,7 +132,7 @@ namespace Marmot::ContinuumMechanics {
      * @param tangent 6x6 material tangent stiffness matrix (\f$\mathbf{C}\f$).
      * @return 6x6 transformation matrix (\f$\mathbf{T}\f$) for plane stress correction.
      */
-    Matrix6d planeStressTangentTransformationMatrix( const Matrix6d& tangent );
+    Marmot::Math::Matrix6d planeStressTangentTransformationMatrix( const Marmot::Math::Matrix6d& tangent );
 
     /**
      * @brief Computes the derivative of the 3D strain tensor with respect to the plane stress strain tensor.
@@ -140,7 +140,7 @@ namespace Marmot::ContinuumMechanics {
      * @param tangent 6x6 material tangent stiffness matrix (\f$\mathbf{C}\f$).
      * @return 6x3 matrix representing \f$\frac{\partial \varepsilon_{3D}}{\partial \varepsilon_{\sigma_{plane}}}\f$.
      */
-    Eigen::Matrix< double, 6, 3 > dStrainDStrainPlaneStress( const Matrix6d& tangent );
+    Eigen::Matrix< double, 6, 3 > dStrainDStrainPlaneStress( const Marmot::Math::Matrix6d& tangent );
 
     /**
      * @brief Computes the derivative of the plane stress tensor with respect to the 3D stress tensor.
