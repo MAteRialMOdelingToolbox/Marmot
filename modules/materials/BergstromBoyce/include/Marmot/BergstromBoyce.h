@@ -46,16 +46,19 @@ namespace Marmot::Materials {
    * @class Marmot::Materials::BergstromBoyce
    * @brief Classical Bergström-Boyce finite-strain viscoelastic-viscoplastic model.
    *
-   * Two networks act in parallel:
+   * Three networks (or two if network C is omitted) act in parallel:
    *  - Network A (equilibrium, hyperelastic): sees the total deformation directly.
    *  - Network B ("Maxwell-like", viscous): multiplicative split \f$\boldsymbol
-   *    F=\boldsymbol F^{\rm e}\boldsymbol F^{\rm v}\f$, with a chain-stretch /
+   *    F=\boldsymbol F^{\rm e}_B\boldsymbol F^{\rm v}_B\f$, with a chain-stretch /
    *    deviatoric-Mandel-stress power-law flow rule (no yield surface -- flow is
    *    always active).
+   *  - Network C ("Maxwell-like", viscous, optional): multiplicative split \f$\boldsymbol
+   *    F=\boldsymbol F^{\rm e}_C\boldsymbol F^{\rm v}_C\f$, with its own spring and
+   *    chain-stretch / deviatoric-Mandel-stress power-law flow rule.
    *
-   * Both networks share the same selectable hyperelastic base potential
+   * All networks share the same selectable hyperelastic base potential
    * (#HyperelasticBase), network A evaluated on the total \f$\boldsymbol C\f$ and
-   * network B's spring on the elastic \f$\boldsymbol C^{\rm e}\f$, each with its own
+   * networks B and C springs on their elastic \f$\boldsymbol C^{\rm e}\f$, each with its own
    * set of coefficients and bulk modulus.
    *
    * @par Hyperelastic base potentials (all four share the same isochoric-volumetric
@@ -88,14 +91,20 @@ namespace Marmot::Materials {
    * - @b #kappaB -- network B (spring) bulk modulus
    * - @b #A1, #A2, #A3 -- network A hyperelastic coefficients (meaning depends on #hyperelasticBase)
    * - @b #B1, #B2, #B3 -- network B hyperelastic coefficients (meaning depends on #hyperelasticBase)
-   * - @b #c1     -- flow-rate prefactor
-   * - @b #c2     -- chain-stretch exponent
-   * - @b #c3     -- deviatoric-Mandel-stress-magnitude exponent
+   * - @b #c1     -- network B flow-rate prefactor
+   * - @b #c2     -- network B chain-stretch exponent
+   * - @b #c3     -- network B deviatoric-Mandel-stress-magnitude exponent
    * - @b #implementationType -- algorithm selector (see below)
+   * - @b #kappaC (optional, 3-network) -- network C (spring) bulk modulus
+   * - @b #C1, #C2, #C3 (optional, 3-network) -- network C hyperelastic coefficients
+   * - @b #c4 (optional, 3-network) -- network C flow-rate prefactor
+   * - @b #c5 (optional, 3-network) -- network C chain-stretch exponent
+   * - @b #c6 (optional, 3-network) -- network C deviatoric-Mandel-stress-magnitude exponent
    * - @b #density (optional) -- density
    *
    * @par State variables
    * - @b Fv -- viscous deformation gradient of network B
+   * - @b FvC -- viscous deformation gradient of network C (if present)
    *
    * @par Implementation variants (implementationType)
    * - @b 0: CSDA -- Full return mapping; derivatives via complex-step differentiation
@@ -126,22 +135,47 @@ namespace Marmot::Materials {
     const double B2;
     /** Network B hyperelastic coefficient 3 (read from @c materialProperties[8]) */
     const double B3;
-    /** Flow-rate prefactor (read from @c materialProperties[9]) */
+    /** Network B flow-rate prefactor (read from @c materialProperties[9]) */
     const double c1;
-    /** Chain-stretch exponent (read from @c materialProperties[10]) */
+    /** Network B chain-stretch exponent (read from @c materialProperties[10]) */
     const double c2;
-    /** Deviatoric-Mandel-stress-magnitude exponent (read from @c materialProperties[11]) */
+    /** Network B deviatoric-Mandel-stress-magnitude exponent (read from @c materialProperties[11]) */
     const double c3;
 
     /** Algorithm variant selector (read from @c materialProperties[12]). */
     const int implementationType;
-    /** Density (read from @c materialProperties[13]) (if provided). */
+
+    /** Whether network C is present. */
+    const bool hasNetworkC;
+    /** Network C bulk modulus (read from @c materialProperties[13], if 3-network). */
+    const double kappaC;
+    /** Network C hyperelastic coefficient 1 (read from @c materialProperties[14], if 3-network). */
+    const double C1;
+    /** Network C hyperelastic coefficient 2 (read from @c materialProperties[15], if 3-network). */
+    const double C2;
+    /** Network C hyperelastic coefficient 3 (read from @c materialProperties[16], if 3-network). */
+    const double C3;
+    /** Network C flow-rate prefactor (read from @c materialProperties[17], if 3-network). */
+    const double c4;
+    /** Network C chain-stretch exponent (read from @c materialProperties[18], if 3-network). */
+    const double c5;
+    /** Network C deviatoric-Mandel-stress-magnitude exponent (read from @c materialProperties[19], if 3-network). */
+    const double c6;
+
+    /** Density (read from @c materialProperties[13] if 2-network, or @c materialProperties[20] if 3-network). */
     const double density;
+
+    /** Response quantities from a single viscous network branch. */
+    struct ViscousNetworkResponse {
+      Tensor33d   tau;
+      Tensor3333d dTau_dF;
+      double      psi;
+      double      dissipation;
+    };
 
     /**
      * @brief Construct the Bergström-Boyce model.
-     * @param materialProperties Array with parameters: #hyperelasticBase, #kappaA, #kappaB, #A1, #A2,
-     * #A3, #B1, #B2, #B3, #c1, #c2, #c3, #implementationType, #density (optional).
+     * @param materialProperties Array with parameters.
      * @param nMaterialProperties Length of @c materialProperties.
      * @param materialLabel Material label.
      */
@@ -167,14 +201,31 @@ namespace Marmot::Materials {
                             const TimeIncrement&       timeIncrement ) const;
 
     /**
+     * @brief Solves the return mapping and computes stress, tangent, energy, and dissipation for a viscous network
+     * branch.
+     */
+    ViscousNetworkResponse solveViscousNetwork( const Tensor33d& F,
+                                                Tensor33d&       Fv,
+                                                const double     dT,
+                                                const double     kappa,
+                                                const double     p1,
+                                                const double     p2,
+                                                const double     p3,
+                                                const double     c1_,
+                                                const double     c2_,
+                                                const double     c3_ ) const;
+
+    /**
      * @brief Get material density.
      * @return Density value.
      */
     double getDensity( const double* stateVars ) const override
     {
-      if ( this->nMaterialProperties < 14 ) {
-        throw std::runtime_error(
-          std::string( MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 14." ) );
+      const int minPropsWithDensity = hasNetworkC ? 21 : 14;
+      if ( this->nMaterialProperties < minPropsWithDensity ) {
+        throw std::runtime_error( std::string( MakeString()
+                                               << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < "
+                                               << minPropsWithDensity << "." ) );
       }
       return this->density;
     }
@@ -354,30 +405,38 @@ namespace Marmot::Materials {
     }
 
     /**
-     * @brief Deviatoric flow direction, flow rate and chain stretch for network B, at a given elastic
-     * deformation gradient (templated scalar type).
+     * @brief Deviatoric flow direction, flow rate and chain stretch for a viscous network (B or C),
+     * at a given elastic deformation gradient (templated scalar type).
      * @tparam T Scalar type (double, complex).
-     * @param Fe Elastic deformation gradient of network B.
+     * @param Fe Elastic deformation gradient of the viscous network.
+     * @param kappa Bulk modulus of the network spring.
+     * @param p1 Coefficient 1 of the network spring.
+     * @param p2 Coefficient 2 of the network spring.
+     * @param p3 Coefficient 3 of the network spring.
+     * @param c1_ Flow-rate prefactor.
+     * @param c2_ Chain-stretch exponent.
+     * @param c3_ Deviatoric-Mandel-stress-magnitude exponent.
      * @return \f$\{\,\boldsymbol N,\;\rho,\;\dot\gamma\,\}\f$.
-     * @details The deviatoric Mandel stress \f$\boldsymbol{\mathcal S}={\rm dev}(2\boldsymbol C^{\rm
-     * e}\partial\Psi_B/\partial\boldsymbol C^{\rm e})\f$ is computed from the general hyperelastic
-     * potential (#hyperelasticPotential); for the NeoHooke base this reduces to the closed form
-     * \f$\boldsymbol{\mathcal S}=\mu_B\,{\rm dev}(\boldsymbol C^{\rm e})\f$, but for Yeoh/Mooney-Rivlin
-     * no such shortcut exists since \f$\partial\Psi_B/\partial\boldsymbol C^{\rm e}\f$ is not purely
-     * linear in \f$\boldsymbol C^{\rm e}\f$.
      */
     template < typename T >
-    std::tuple< Tensor33t< T >, T, T > computeFlowQuantities( const Tensor33t< T >& Fe ) const
+    std::tuple< Tensor33t< T >, T, T > computeFlowQuantities( const Tensor33t< T >& Fe,
+                                                              const double          kappa,
+                                                              const double          p1,
+                                                              const double          p2,
+                                                              const double          p3,
+                                                              const double          c1_,
+                                                              const double          c2_,
+                                                              const double          c3_ ) const
     {
       const Tensor33t< T > Ce          = ContinuumMechanics::DeformationMeasures::rightCauchyGreen( Fe );
       const T              I1          = trace( Ce );
       const T              lambdaChain = sqrt( I1 / T( 3.0 ) );
 
-      T              psiB;
-      Tensor33t< T > dPsiB_dCe;
-      std::tie( psiB, dPsiB_dCe ) = hyperelasticPotential( Ce, hyperelasticBase, B1, B2, B3, kappaB );
+      T              psi;
+      Tensor33t< T > dPsi_dCe;
+      std::tie( psi, dPsi_dCe ) = hyperelasticPotential( Ce, hyperelasticBase, p1, p2, p3, kappa );
 
-      const Tensor33t< T > Mandel = 2. * einsum< IK, KJ, to_IJ >( Ce, dPsiB_dCe );
+      const Tensor33t< T > Mandel = 2. * einsum< IK, KJ, to_IJ >( Ce, dPsi_dCe );
       const Tensor33t< T > devS   = deviatoric( Mandel );
 
       // Regularize the RESULT of sqrt, not its argument: at the undeformed reference
@@ -425,9 +484,18 @@ namespace Marmot::Materials {
                                               ? stretchTerm
                                               : stretchTerm + T( stretchTermFloor - stretchTermReal );
 
-      const T gammaDot = T( c1 ) * pow( stretchTermClamped, c2 ) * pow( rho, c3 );
+      const T gammaDot = T( c1_ ) * pow( stretchTermClamped, c2_ ) * pow( rho, c3_ );
 
       return { N, rho, gammaDot };
+    }
+
+    /**
+     * @brief Deviatoric flow direction, flow rate and chain stretch for network B (default convenience overload).
+     */
+    template < typename T >
+    std::tuple< Tensor33t< T >, T, T > computeFlowQuantities( const Tensor33t< T >& Fe ) const
+    {
+      return computeFlowQuantities( Fe, kappaB, B1, B2, B3, c1, c2, c3 );
     }
 
   private:
@@ -437,16 +505,32 @@ namespace Marmot::Materials {
 
   public:
     /**
-     * @brief Residual vector for the return mapping of network B (templated scalar type).
+     * @brief Residual vector for the return mapping of a viscous network (templated scalar type).
      * @details Vector X has 10 unknowns: 9 for \f$\boldsymbol F^{\rm e}\f$ (flattened), 1 for \f$\Delta\gamma\f$.
      * @tparam T Scalar type (double, complex).
      * @param X          Current iterate.
      * @param FeTrial    Trial elastic deformation gradient.
      * @param dT         Time increment.
+     * @param kappa      Network spring bulk modulus.
+     * @param p1         Network spring coefficient 1.
+     * @param p2         Network spring coefficient 2.
+     * @param p3         Network spring coefficient 3.
+     * @param c1_        Flow-rate prefactor.
+     * @param c2_        Chain-stretch exponent.
+     * @param c3_        Deviatoric-Mandel-stress-magnitude exponent.
      * @return Residual vector.
      */
     template < typename T >
-    VectorXt< T > computeResidualVector( const VectorXt< T >& X, const Tensor33d& FeTrial, const double dT ) const
+    VectorXt< T > computeResidualVector( const VectorXt< T >& X,
+                                         const Tensor33d&     FeTrial,
+                                         const double         dT,
+                                         const double         kappa,
+                                         const double         p1,
+                                         const double         p2,
+                                         const double         p3,
+                                         const double         c1_,
+                                         const double         c2_,
+                                         const double         c3_ ) const
     {
       using mV9t = Eigen::Map< const Eigen::Matrix< T, 9, 1 > >;
       VectorXt< T > R( 10 );
@@ -456,7 +540,7 @@ namespace Marmot::Materials {
 
       Tensor33t< T > N;
       T              rho, gammaDot;
-      std::tie( N, rho, gammaDot ) = computeFlowQuantities( Fe );
+      std::tie( N, rho, gammaDot ) = computeFlowQuantities( Fe, kappa, p1, p2, p3, c1_, c2_, c3_ );
 
       const Tensor33t< T > dGp = multiplyFastorTensorWithScalar( N, dGamma );
       const Tensor33t< T > dFv = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::exponentialMap( dGp );
@@ -471,6 +555,15 @@ namespace Marmot::Materials {
       R( 9 ) = dGamma - gammaDot * T( dT );
 
       return R;
+    }
+
+    /**
+     * @brief Residual vector for the return mapping of network B (default convenience overload).
+     */
+    template < typename T >
+    VectorXt< T > computeResidualVector( const VectorXt< T >& X, const Tensor33d& FeTrial, const double dT ) const
+    {
+      return computeResidualVector( X, FeTrial, dT, kappaB, B1, B2, B3, c1, c2, c3 );
     }
   };
 

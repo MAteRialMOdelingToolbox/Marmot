@@ -49,16 +49,27 @@ static const std::vector< PropsVariant > VARIANTS = {
   { "ArrudaBoyce", { 3, 1000.0, 1000.0, 100.0, 2.0, 0.0, 50.0, 2.0, 0.0, 0.05, 1.0, 1.0, 0.0 } },
 };
 
+static const std::vector< PropsVariant > VARIANTS_3NET = {
+  { "NeoHooke_3Net",
+    { 0, 1000.0, 500.0, 100.0, 0.0, 0.0, 25.0, 0.0, 0.0, 0.05, 1.0, 1.0, 0.0, 500.0, 25.0, 0.0, 0.0, 0.02, 1.2, 0.8 } },
+  { "Yeoh_3Net",
+    { 1, 1000.0, 500.0, 50.0, 0.0, 0.0, 12.5, 0.0, 0.0, 0.05, 1.0, 1.0, 0.0, 500.0, 12.5, 0.0, 0.0, 0.02, 1.2, 0.8 } },
+  { "MooneyRivlin_3Net",
+    { 2, 1000.0, 500.0, 50.0, 0.0, 0.0, 12.5, 0.0, 0.0, 0.05, 1.0, 1.0, 0.0, 500.0, 12.5, 0.0, 0.0, 0.02, 1.2, 0.8 } },
+  { "ArrudaBoyce_3Net",
+    { 3, 1000.0, 500.0, 100.0, 2.0, 0.0, 25.0, 2.0, 0.0, 0.05, 1.0, 1.0, 0.0, 500.0, 25.0, 2.0, 0.0, 0.02, 1.2, 0.8 } },
+};
+
 BergstromBoyce makeMaterial( const std::vector< double >& props )
 {
   return BergstromBoyce( props.data(), props.size(), 1 );
 }
 
-std::array< double, 9 > initialState( const std::vector< double >& props )
+std::vector< double > initialState( const std::vector< double >& props )
 {
-  std::array< double, 9 > stateVars{};
-  BergstromBoyce          mat = makeMaterial( props );
-  mat.initializeYourself( stateVars.data(), 9 );
+  BergstromBoyce        mat = makeMaterial( props );
+  std::vector< double > stateVars( mat.getNumberOfRequiredStateVars(), 0.0 );
+  mat.initializeYourself( stateVars.data(), stateVars.size() );
   return stateVars;
 }
 
@@ -297,12 +308,15 @@ void testInstantaneousLimit( const PropsVariant& variant )
   F( 1, 1 ) -= 0.01;
   F( 2, 2 ) -= 0.01;
 
-  const auto& p            = variant.props;
-  Tensor33d   targetStress = combinedStress( F, int( p[0] ), p[3] + p[6], p[4], p[5], p[1] + p[2] );
+  const auto&  p            = variant.props;
+  const bool   hasC         = p.size() >= 20;
+  const double p1_total     = p[3] + p[6] + ( hasC ? p[14] : 0.0 );
+  const double kappa_total  = p[1] + p[2] + ( hasC ? p[13] : 0.0 );
+  Tensor33d    targetStress = combinedStress( F, int( p[0] ), p1_total, p[4], p[5], kappa_total );
 
   auto errorAtDt = [&]( const Tensor33d& F, const Tensor33d& target, double dt ) {
     BergstromBoyce                            mat = makeMaterial( variant.props );
-    std::array< double, 9 >                   sv  = initialState( variant.props );
+    std::vector< double >                     sv  = initialState( variant.props );
     BergstromBoyce::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, sv.data() );
     BergstromBoyce::AlgorithmicModuli< 3 >    tangent;
     BergstromBoyce::Deformation< 3 >          def{ F };
@@ -321,16 +335,20 @@ void testInstantaneousLimit( const PropsVariant& variant )
   throwExceptionOnFailure( e2 < e1, "I-1 [" + variant.name + "]: dt->0 limit error did not shrink with smaller dt" );
 }
 
-// Test 2: exact degeneracy c1 = 0 -> no flow at all, ever. Stress must equal the
-// combined neo-Hookean closed form at every increment of an arbitrary
-// ramp+hold history, and Fv must stay at the identity throughout.
+// Test 2: exact degeneracy c1 = 0 (and c4 = 0 if Network C present) -> no flow at all, ever.
+// Stress must equal the combined neo-Hookean closed form at every increment of an arbitrary
+// ramp+hold history, and Fv (and FvC) must stay at the identity throughout.
 void testZeroFlowDegeneracy( const PropsVariant& variant )
 {
   std::vector< double > props0 = variant.props;
   props0[9]                    = 0.0; // c1 = 0
-  BergstromBoyce          mat( props0.data(), props0.size(), 1 );
-  std::array< double, 9 > sv{};
-  mat.initializeYourself( sv.data(), 9 );
+  const bool hasC              = props0.size() >= 20;
+  if ( hasC ) {
+    props0[17] = 0.0; // c4 = 0
+  }
+  BergstromBoyce        mat( props0.data(), props0.size(), 1 );
+  std::vector< double > sv( mat.getNumberOfRequiredStateVars(), 0.0 );
+  mat.initializeYourself( sv.data(), sv.size() );
 
   std::vector< Tensor33d > Fhistory;
   for ( int i = 1; i <= 5; ++i ) {
@@ -343,6 +361,10 @@ void testZeroFlowDegeneracy( const PropsVariant& variant )
   for ( int i = 0; i < 3; ++i )
     Fhistory.push_back( Fhistory.back() );
 
+  const auto&  p           = variant.props;
+  const double p1_total    = p[3] + p[6] + ( hasC ? p[14] : 0.0 );
+  const double kappa_total = p[1] + p[2] + ( hasC ? p[13] : 0.0 );
+
   for ( const auto& F : Fhistory ) {
     BergstromBoyce::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, sv.data() );
     BergstromBoyce::AlgorithmicModuli< 3 >    tangent;
@@ -350,8 +372,7 @@ void testZeroFlowDegeneracy( const PropsVariant& variant )
     BergstromBoyce::TimeIncrement             timeInc{ 0.0, 10.0 };
     mat.computeStress( response, tangent, def, timeInc );
 
-    const auto& p      = variant.props;
-    Tensor33d   target = combinedStress( F, int( p[0] ), p[3] + p[6], p[4], p[5], p[1] + p[2] );
+    Tensor33d target = combinedStress( F, int( p[0] ), p1_total, p[4], p[5], kappa_total );
 
     throwExceptionOnFailure( checkIfEqual( response.tau, target, 1e-10 ),
                              "I-2 [" + variant.name +
@@ -361,6 +382,13 @@ void testZeroFlowDegeneracy( const PropsVariant& variant )
     memcpy( Fv.data(), sv.data(), 9 * sizeof( double ) );
     throwExceptionOnFailure( checkIfEqual( Fv, Tensor33d( Spatial3D::I ), 1e-10 ),
                              "I-2 [" + variant.name + "]: c1=0 degeneracy: Fv drifted away from identity" );
+
+    if ( hasC ) {
+      Tensor33d FvC( 0.0 );
+      memcpy( FvC.data(), sv.data() + 9, 9 * sizeof( double ) );
+      throwExceptionOnFailure( checkIfEqual( FvC, Tensor33d( Spatial3D::I ), 1e-10 ),
+                               "I-2 [" + variant.name + "]: c4=0 degeneracy: FvC drifted away from identity" );
+    }
   }
 }
 
@@ -368,9 +396,10 @@ void testZeroFlowDegeneracy( const PropsVariant& variant )
 // and during a long hold the deviatoric stress relaxes toward network A alone.
 void testIsochoricFlowAndRelaxationSplit( const PropsVariant& variant )
 {
-  BergstromBoyce          mat = makeMaterial( variant.props );
-  std::array< double, 9 > sv{};
-  mat.initializeYourself( sv.data(), 9 );
+  BergstromBoyce        mat  = makeMaterial( variant.props );
+  const bool            hasC = variant.props.size() >= 20;
+  std::vector< double > sv( mat.getNumberOfRequiredStateVars(), 0.0 );
+  mat.initializeYourself( sv.data(), sv.size() );
 
   auto step = [&]( const Tensor33d& F, double dt ) {
     BergstromBoyce::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, sv.data() );
@@ -388,6 +417,16 @@ void testIsochoricFlowAndRelaxationSplit( const PropsVariant& variant )
     throwExceptionOnFailure( std::abs( detFe - detF ) < 1e-10,
                              "I-3 [" + variant.name + "]: det(Fe) != det(F): " + std::to_string( detFe ) + " vs " +
                                std::to_string( detF ) );
+
+    if ( hasC ) {
+      Tensor33d FvC( 0.0 );
+      memcpy( FvC.data(), sv.data() + 9, 9 * sizeof( double ) );
+      Tensor33d FeC    = F % Fastor::inverse( FvC );
+      double    detFeC = Fastor::determinant( FeC );
+      throwExceptionOnFailure( std::abs( detFeC - detF ) < 1e-10,
+                               "I-3 [" + variant.name + "]: det(FeC) != det(F): " + std::to_string( detFeC ) + " vs " +
+                                 std::to_string( detF ) );
+    }
     return response.tau;
   };
 
@@ -428,7 +467,8 @@ void testIsochoricFlowAndRelaxationSplit( const PropsVariant& variant )
 // Test 4: objectivity under superposed rigid rotation of the current configuration.
 void testObjectivity( const PropsVariant& variant )
 {
-  BergstromBoyce mat = makeMaterial( variant.props );
+  BergstromBoyce mat  = makeMaterial( variant.props );
+  const bool     hasC = variant.props.size() >= 20;
 
   Tensor33d F_unrotated = Spatial3D::I;
   F_unrotated( 0, 0 )   = 1.05;
@@ -437,8 +477,8 @@ void testObjectivity( const PropsVariant& variant )
   F_unrotated( 1, 1 )   = 0.98;
   F_unrotated( 2, 2 )   = 0.99;
 
-  std::array< double, 9 > svUnrotated{};
-  mat.initializeYourself( svUnrotated.data(), 9 );
+  std::vector< double > svUnrotated( mat.getNumberOfRequiredStateVars(), 0.0 );
+  mat.initializeYourself( svUnrotated.data(), svUnrotated.size() );
   BergstromBoyce::ConstitutiveResponse< 3 > responseU( Tensor33d( 0.0 ), 0.0, 0.0, svUnrotated.data() );
   BergstromBoyce::AlgorithmicModuli< 3 >    tangentU;
   BergstromBoyce::Deformation< 3 >          defU{ F_unrotated };
@@ -447,8 +487,8 @@ void testObjectivity( const PropsVariant& variant )
   Tensor33d stressUnrotated = responseU.tau;
 
   for ( int phi_deg = 0; phi_deg <= 180; phi_deg += 30 ) {
-    std::array< double, 9 > sv{};
-    mat.initializeYourself( sv.data(), 9 );
+    std::vector< double > sv( mat.getNumberOfRequiredStateVars(), 0.0 );
+    mat.initializeYourself( sv.data(), sv.size() );
 
     double    phi = Marmot::Math::degToRad( phi_deg );
     Tensor33d Q( 0.0 );
@@ -476,6 +516,14 @@ void testObjectivity( const PropsVariant& variant )
     memcpy( FvRotated.data(), sv.data(), 9 * sizeof( double ) );
     throwExceptionOnFailure( checkIfEqual( FvUnrotated, FvRotated, 1e-9 ),
                              "I-4 [" + variant.name + "]: Fv is not invariant under superposed spatial rotation" );
+
+    if ( hasC ) {
+      Tensor33d FvCUnrotated( 0.0 ), FvCRotated( 0.0 );
+      memcpy( FvCUnrotated.data(), svUnrotated.data() + 9, 9 * sizeof( double ) );
+      memcpy( FvCRotated.data(), sv.data() + 9, 9 * sizeof( double ) );
+      throwExceptionOnFailure( checkIfEqual( FvCUnrotated, FvCRotated, 1e-9 ),
+                               "I-4 [" + variant.name + "]: FvC is not invariant under superposed spatial rotation" );
+    }
   }
 }
 
@@ -492,8 +540,8 @@ void testIsotropy( const PropsVariant& variant )
   F_unrotated( 1, 1 )   = 0.98;
   F_unrotated( 2, 2 )   = 0.99;
 
-  std::array< double, 9 > svUnrotated{};
-  mat.initializeYourself( svUnrotated.data(), 9 );
+  std::vector< double > svUnrotated( mat.getNumberOfRequiredStateVars(), 0.0 );
+  mat.initializeYourself( svUnrotated.data(), svUnrotated.size() );
   BergstromBoyce::ConstitutiveResponse< 3 > responseU( Tensor33d( 0.0 ), 0.0, 0.0, svUnrotated.data() );
   BergstromBoyce::AlgorithmicModuli< 3 >    tangentU;
   BergstromBoyce::Deformation< 3 >          defU{ F_unrotated };
@@ -512,8 +560,8 @@ void testIsotropy( const PropsVariant& variant )
 
     Tensor33d F_rotated = einsum< ik, kj, to_ij >( F_unrotated, R );
 
-    std::array< double, 9 > sv{};
-    mat.initializeYourself( sv.data(), 9 );
+    std::vector< double > sv( mat.getNumberOfRequiredStateVars(), 0.0 );
+    mat.initializeYourself( sv.data(), sv.size() );
     BergstromBoyce::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, sv.data() );
     BergstromBoyce::AlgorithmicModuli< 3 >    tangent;
     BergstromBoyce::Deformation< 3 >          def{ F_rotated };
@@ -612,13 +660,12 @@ void testTangentMatchesFiniteDifference( const PropsVariant& variant )
   F( 0, 1 ) = 0.03;
   F( 1, 2 ) = -0.02;
 
-  std::array< double, 9 > sv0{};
-  mat.initializeYourself( sv0.data(), 9 );
+  std::vector< double > sv0 = initialState( variant.props );
 
   const double dt = 2.0;
 
   auto evalTau = [&]( const Tensor33d& F_ ) {
-    std::array< double, 9 >                   sv = sv0;
+    std::vector< double >                     sv = sv0;
     BergstromBoyce::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, sv.data() );
     BergstromBoyce::AlgorithmicModuli< 3 >    tangent;
     BergstromBoyce::Deformation< 3 >          def{ F_ };
@@ -627,7 +674,7 @@ void testTangentMatchesFiniteDifference( const PropsVariant& variant )
     return response.tau;
   };
 
-  std::array< double, 9 >                   sv = sv0;
+  std::vector< double >                     sv = sv0;
   BergstromBoyce::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, sv.data() );
   BergstromBoyce::AlgorithmicModuli< 3 >    tangent;
   BergstromBoyce::Deformation< 3 >          def{ F };
@@ -659,6 +706,128 @@ void testTangentMatchesFiniteDifference( const PropsVariant& variant )
   }
 }
 
+void testNetworkCEquivalenceToNetworkB()
+{
+  // 3-network with Network B: muB=30, kappaB=400, c1=0.04, c2=1.1, c3=0.0
+  //                  Network C: muC=20, kappaC=600, c4=0.04, c5=1.1, c6=0.0
+  // (Both have identical flow rule parameters and c3=c6=0, so flow rates are identical)
+  std::vector< double > props3Net = { 0.0, 1000.0, 400.0, 100.0, 0.0,  0.0, 30.0, 0.0,  0.0, 0.04,
+                                      1.1, 0.0,    0.0,   600.0, 20.0, 0.0, 0.0,  0.04, 1.1, 0.0 };
+
+  // Equivalent 2-network with Network B: muB = 30 + 20 = 50, kappaB = 400 + 600 = 1000
+  std::vector< double > props2Net = { 0.0, 1000.0, 1000.0, 100.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.04, 1.1, 0.0, 0.0 };
+
+  BergstromBoyce mat3 = makeMaterial( props3Net );
+  BergstromBoyce mat2 = makeMaterial( props2Net );
+
+  std::vector< double > sv3( mat3.getNumberOfRequiredStateVars(), 0.0 );
+  std::vector< double > sv2( mat2.getNumberOfRequiredStateVars(), 0.0 );
+  mat3.initializeYourself( sv3.data(), sv3.size() );
+  mat2.initializeYourself( sv2.data(), sv2.size() );
+
+  // Apply a series of deformation steps with tension + shear + compaction
+  std::vector< Tensor33d > Fsteps;
+  for ( int i = 1; i <= 5; ++i ) {
+    Tensor33d F = Spatial3D::I;
+    F( 0, 0 ) += 0.03 * i;
+    F( 1, 1 ) -= 0.01 * i;
+    F( 0, 1 ) = 0.015 * i;
+    F( 1, 2 ) = -0.01 * i;
+    Fsteps.push_back( F );
+  }
+
+  for ( size_t step = 0; step < Fsteps.size(); ++step ) {
+    const auto&  F  = Fsteps[step];
+    const double dt = 1.5;
+
+    BergstromBoyce::ConstitutiveResponse< 3 > resp3( Tensor33d( 0.0 ), 0.0, 0.0, sv3.data() );
+    BergstromBoyce::AlgorithmicModuli< 3 >    tangent3;
+    BergstromBoyce::Deformation< 3 >          def{ F };
+    BergstromBoyce::TimeIncrement             timeInc{ 0.0, dt };
+    mat3.computeStress( resp3, tangent3, def, timeInc );
+
+    BergstromBoyce::ConstitutiveResponse< 3 > resp2( Tensor33d( 0.0 ), 0.0, 0.0, sv2.data() );
+    BergstromBoyce::AlgorithmicModuli< 3 >    tangent2;
+    mat2.computeStress( resp2, tangent2, def, timeInc );
+
+    // 1. Stress equivalence
+    throwExceptionOnFailure( checkIfEqual( resp3.tau, resp2.tau, 1e-10 ),
+                             "NetC-Equiv: Kirchhoff stress mismatch between 3-network split and equivalent 2-network" );
+
+    // 2. Elastic energy equivalence
+    throwExceptionOnFailure( std::abs( resp3.elasticEnergyDensity - resp2.elasticEnergyDensity ) < 1e-10,
+                             "NetC-Equiv: elastic energy density mismatch" );
+
+    // 3. Dissipation equivalence
+    throwExceptionOnFailure( std::abs( resp3.dissipation - resp2.dissipation ) < 1e-10,
+                             "NetC-Equiv: dissipation mismatch" );
+
+    // 4. Tangent equivalence
+    for ( int i = 0; i < 3; ++i ) {
+      for ( int j = 0; j < 3; ++j ) {
+        for ( int k = 0; k < 3; ++k ) {
+          for ( int l = 0; l < 3; ++l ) {
+            throwExceptionOnFailure( std::abs( tangent3.dTau_dF( i, j, k, l ) - tangent2.dTau_dF( i, j, k, l ) ) < 1e-9,
+                                     "NetC-Equiv: algorithmic tangent mismatch" );
+          }
+        }
+      }
+    }
+
+    // 5. Internal state equivalence: FvB and FvC in 3-network must match each other and Fv in 2-network
+    Tensor33d FvB( 0.0 ), FvC( 0.0 ), Fv2( 0.0 );
+    memcpy( FvB.data(), sv3.data(), 9 * sizeof( double ) );
+    memcpy( FvC.data(), sv3.data() + 9, 9 * sizeof( double ) );
+    memcpy( Fv2.data(), sv2.data(), 9 * sizeof( double ) );
+
+    throwExceptionOnFailure( checkIfEqual( FvB, FvC, 1e-10 ),
+                             "NetC-Equiv: FvB and FvC inside 3-network material do not match" );
+    throwExceptionOnFailure( checkIfEqual( FvB, Fv2, 1e-10 ),
+                             "NetC-Equiv: FvB in 3-network does not match Fv in 2-network" );
+  }
+}
+
+void testNetworkCDisabledWhenSmallNProps()
+{
+  std::vector< double > props2Net13 = { 0.0, 1000.0, 1000.0, 100.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.05, 1.0, 1.0, 0.0 };
+  std::vector< double > props2Net14 =
+    { 0.0, 1000.0, 1000.0, 100.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.05, 1.0, 1.0, 0.0, 1.25 };
+  std::vector< double > props3Net20 = { 0.0, 1000.0, 500.0, 100.0, 0.0,  0.0, 25.0, 0.0,  0.0, 0.05,
+                                        1.0, 1.0,    0.0,   500.0, 25.0, 0.0, 0.0,  0.02, 1.2, 0.8 };
+  std::vector< double > props3Net21 = { 0.0, 1000.0, 500.0, 100.0, 0.0, 0.0, 25.0, 0.0, 0.0, 0.05, 1.0,
+                                        1.0, 0.0,    500.0, 25.0,  0.0, 0.0, 0.02, 1.2, 0.8, 1.25 };
+
+  BergstromBoyce m13 = makeMaterial( props2Net13 );
+  BergstromBoyce m14 = makeMaterial( props2Net14 );
+  BergstromBoyce m20 = makeMaterial( props3Net20 );
+  BergstromBoyce m21 = makeMaterial( props3Net21 );
+
+  throwExceptionOnFailure( m13.getNumberOfRequiredStateVars() == 9, "m13 numberOfStateVariables != 9" );
+  throwExceptionOnFailure( m14.getNumberOfRequiredStateVars() == 9, "m14 numberOfStateVariables != 9" );
+  throwExceptionOnFailure( m20.getNumberOfRequiredStateVars() == 18, "m20 numberOfStateVariables != 18" );
+  throwExceptionOnFailure( m21.getNumberOfRequiredStateVars() == 18, "m21 numberOfStateVariables != 18" );
+
+  bool m13Threw = false;
+  try {
+    m13.getDensity( nullptr );
+  }
+  catch ( const std::exception& ) {
+    m13Threw = true;
+  }
+  throwExceptionOnFailure( m13Threw, "m13 without density did not throw" );
+  throwExceptionOnFailure( std::abs( m14.getDensity( nullptr ) - 1.25 ) < 1e-12, "m14 density != 1.25" );
+
+  bool m20Threw = false;
+  try {
+    m20.getDensity( nullptr );
+  }
+  catch ( const std::exception& ) {
+    m20Threw = true;
+  }
+  throwExceptionOnFailure( m20Threw, "m20 without density did not throw" );
+  throwExceptionOnFailure( std::abs( m21.getDensity( nullptr ) - 1.25 ) < 1e-12, "m21 density != 1.25" );
+}
+
 int main()
 {
   std::vector< std::function< void() > > tests = {
@@ -667,9 +836,21 @@ int main()
     testMooneyRivlinReducesToNeoHooke,
     testArrudaBoyceReducesToNeoHooke,
     testI2DerivativeIdentity,
+    testNetworkCEquivalenceToNetworkB,
+    testNetworkCDisabledWhenSmallNProps,
   };
 
   for ( const auto& variant : VARIANTS ) {
+    tests.push_back( [variant]() { testInstantaneousLimit( variant ); } );
+    tests.push_back( [variant]() { testZeroFlowDegeneracy( variant ); } );
+    tests.push_back( [variant]() { testIsochoricFlowAndRelaxationSplit( variant ); } );
+    tests.push_back( [variant]() { testObjectivity( variant ); } );
+    tests.push_back( [variant]() { testIsotropy( variant ); } );
+    tests.push_back( [variant]() { testUniaxialRelaxationWithMPSolver( variant ); } );
+    tests.push_back( [variant]() { testTangentMatchesFiniteDifference( variant ); } );
+  }
+
+  for ( const auto& variant : VARIANTS_3NET ) {
     tests.push_back( [variant]() { testInstantaneousLimit( variant ); } );
     tests.push_back( [variant]() { testZeroFlowDegeneracy( variant ); } );
     tests.push_back( [variant]() { testIsochoricFlowAndRelaxationSplit( variant ); } );
