@@ -28,14 +28,14 @@
 #include "Marmot/MarmotMeshfreeKernelFunction.h"
 #include <vector>
 
-namespace Marmot::Meshfree {
+namespace Marmot::Discretizations::Meshfree {
 
   /**
-   * @class Marmot::Meshfree::MarmotMeshfreeApproximation
+   * @class Marmot::Discretizations::Meshfree::Approximation
    * @brief Abstract interface of a meshfree approximation, which evaluates shape functions from a set of kernels.
    *
    * Given an evaluation point @f$ \boldsymbol{x} @f$ and a list of @f$ n @f$ candidate kernel functions
-   * @f$ \phi_A @f$, @f$ A = 0, \dots, n-1 @f$ (MarmotMeshfreeKernelFunction), an approximation computes the
+   * @f$ \phi_A @f$, @f$ A = 0, \dots, n-1 @f$ (KernelFunction), an approximation computes the
    * shape functions @f$ \Psi_A(\boldsymbol{x}) @f$ and/or their gradients. The output arrays are indexed by the
    * position of the kernel in the candidate list; candidates that do not cover @f$ \boldsymbol{x} @f$ get zero
    * entries.
@@ -43,14 +43,14 @@ namespace Marmot::Meshfree {
    * The gradient output is a column-major @f$ d \times n @f$ array, i.e., entry @f$ i + d\,A @f$ holds
    * @f$ \partial \Psi_A / \partial x_i @f$, where @f$ d @f$ is the spatial dimension.
    */
-  class MarmotMeshfreeApproximation {
+  class Approximation {
 
   public:
     /// @brief Default constructor.
-    MarmotMeshfreeApproximation() = default;
+    Approximation() = default;
 
     /// @brief Virtual destructor; approximations are used through base-class pointers.
-    virtual ~MarmotMeshfreeApproximation() = default;
+    virtual ~Approximation() = default;
 
     /**
      * @brief Compute the shape function values @f$ \Psi_A(\boldsymbol{x}) @f$.
@@ -59,7 +59,7 @@ namespace Marmot::Meshfree {
      * @param[out] shapeFunctionValues Shape function values (length @f$ n @f$).
      */
     virtual void computeShapeFunctions( const double*                                             coord,
-                                        const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions,
+                                        const std::vector< const KernelFunction* >& kernelFunctions,
                                         double* shapeFunctionValues ) const = 0;
 
     /**
@@ -70,7 +70,7 @@ namespace Marmot::Meshfree {
      */
     virtual void computeShapeFunctionGradients(
       const double*                                             coord,
-      const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions,
+      const std::vector< const KernelFunction* >& kernelFunctions,
       double*                                                   shapeFunctionValueGradients ) const = 0;
 
     /**
@@ -82,9 +82,9 @@ namespace Marmot::Meshfree {
      */
     virtual void computeShapeFunctionsAndGradients(
       const double*                                             coord,
-      const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions,
+      const std::vector< const KernelFunction* >& kernelFunctions,
       double*                                                   shapeFunctionValues,
       double*                                                   shapeFunctionValueGradients ) const = 0;
   };
 
-} // namespace Marmot::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

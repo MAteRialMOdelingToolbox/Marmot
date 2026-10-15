@@ -31,37 +31,37 @@
 #include <string>
 #include <unordered_map>
 
-namespace MarmotLibrary {
+namespace Marmot::Registry {
 
   /**
-   * @class MarmotLibrary::MarmotMaterialPointFactory
-   * @brief Registry of MarmotMaterialPoint types, created by name.
+   * @class Marmot::Registry::MaterialPointFactory
+   * @brief Registry of Marmot::Discretizations::MaterialPoints::MaterialPoint types, created by name.
    *
    * @details A material point module registers each of its types once, at static initialization time, with a
    * factory function (typically a captureless lambda) in its @c *Registration.cpp:
    * @code
-   * const static bool isRegistered = MarmotLibrary::MarmotMaterialPointFactory::registerMaterialPoint(
+   * const static bool isRegistered = Marmot::Registry::MaterialPointFactory::registerMaterialPoint(
    *   "Displacement/PlaneStrain",
-   *   []( int n, const double* coords, int sizeCoords, double volume ) -> MarmotMaterialPoint* {
+   *   []( int n, const double* coords, int sizeCoords, double volume ) -> Marmot::Discretizations::MaterialPoints::MaterialPoint* {
    *     return new DisplacementMaterialPoint2D( n, coords, sizeCoords, volume );
    *   } );
    * @endcode
    * Names are case-insensitive (stored in upper case). The class is not instantiable; all members are static.
    */
-  class MarmotMaterialPointFactory {
+  class MaterialPointFactory {
   public:
     /**
      * @brief Signature of a material point factory function.
      * @details Arguments: material point number, vertex coordinates (vertex by vertex), size of the vertex
      * coordinate array, and the volume of the material point.
      */
-    using materialPointFactoryFunction = MarmotMaterialPoint* (*)( int           materialPointNumber,
+    using materialPointFactoryFunction = Marmot::Discretizations::MaterialPoints::MaterialPoint* (*)( int           materialPointNumber,
                                                                    const double* vertexCoordinates,
                                                                    int           sizeVertexCoordinates,
                                                                    double        volume
                                                                    /* const Marmot::Discretizations::MaterialSection& material */
     );
-    MarmotMaterialPointFactory()       = delete;
+    MaterialPointFactory()       = delete;
 
     /**
      * @brief Creates a material point of a registered type.
@@ -73,7 +73,7 @@ namespace MarmotLibrary {
      * @return Newly allocated material point; the caller takes ownership.
      * @throws std::invalid_argument if no material point is registered under @p materialPointName.
      */
-    static MarmotMaterialPoint* createMaterialPoint( const std::string& materialPointName,
+    static Marmot::Discretizations::MaterialPoints::MaterialPoint* createMaterialPoint( const std::string& materialPointName,
                                                      int                materialNumber,
                                                      const double*      vertexCoordinates,
                                                      int                sizeVertexCoordinates,
@@ -103,21 +103,21 @@ namespace MarmotLibrary {
   };
 
   /**
-   * @class MarmotLibrary::MarmotCellFactory
-   * @brief Registry of MarmotCell types, created by name.
+   * @class Marmot::Registry::CellFactory
+   * @brief Registry of Marmot::Discretizations::Cells::Cell types, created by name.
    *
    * @details Keeps two separate registries: Lagrangian cells, created from their node coordinates
    * (registerCell() / createCell(), e.g. @c "Displacement/Quad4"), and B-spline cells, which additionally need
    * the knot vectors of the cell (registerBSplineCell() / createBSplineCell(), e.g. @c "Displacement/BSpline/2").
-   * Registration works as for MarmotMaterialPointFactory. Names are case-insensitive (stored in upper case).
+   * Registration works as for MaterialPointFactory. Names are case-insensitive (stored in upper case).
    */
-  class MarmotCellFactory {
+  class CellFactory {
   public:
     /**
      * @brief Signature of a (Lagrangian) cell factory function.
      * @details Arguments: cell number, node coordinates (node by node), size of the coordinate array.
      */
-    using cellFactoryFunction = MarmotCell* (*)( int           cellNumber,
+    using cellFactoryFunction = Marmot::Discretizations::Cells::Cell* (*)( int           cellNumber,
                                                  const double* vertexCoordinates,
                                                  int           sizeVertexCoordinates );
 
@@ -126,13 +126,13 @@ namespace MarmotLibrary {
      * @details Arguments: cell number, control point coordinates (point by point), size of the coordinate array,
      * knot vectors (direction by direction), size of the knot vector array.
      */
-    using bSplineCellFactoryFunction = MarmotCell* (*)( int           cellNumber,
+    using bSplineCellFactoryFunction = Marmot::Discretizations::Cells::Cell* (*)( int           cellNumber,
                                                         const double* vertexCoordinates,
                                                         int           sizeVertexCoordinates,
                                                         const double* knotVectors,
                                                         int           sizeKnotVectors );
 
-    MarmotCellFactory() = delete;
+    CellFactory() = delete;
 
     /**
      * @brief Creates a Lagrangian cell of a registered type.
@@ -144,7 +144,7 @@ namespace MarmotLibrary {
      * @return Newly allocated cell; the caller takes ownership.
      * @throws std::invalid_argument if no cell is registered under @p cellName.
      */
-    static MarmotCell* createCell( const std::string& cellName,
+    static Marmot::Discretizations::Cells::Cell* createCell( const std::string& cellName,
                                    int                cellNumber,
                                    const double*      nodeCoordinates,
                                    int                sizeNodeCoordinates );
@@ -162,7 +162,7 @@ namespace MarmotLibrary {
      * @return Newly allocated cell; the caller takes ownership.
      * @throws std::invalid_argument if no B-spline cell is registered under @p cellName.
      */
-    static MarmotCell* createBSplineCell( const std::string& cellName,
+    static Marmot::Discretizations::Cells::Cell* createBSplineCell( const std::string& cellName,
                                           int                cellNumber,
                                           const double*      nodeCoordinates,
                                           int                sizeNodeCoordinates,
@@ -194,27 +194,27 @@ namespace MarmotLibrary {
   };
 
   /**
-   * @class MarmotLibrary::MarmotCellElementFactory
-   * @brief Registry of MarmotCellElement types, created by name.
+   * @class Marmot::Registry::CellElementFactory
+   * @brief Registry of Marmot::Discretizations::Cells::CellElement types, created by name.
    *
-   * @details Registration works as for MarmotMaterialPointFactory; in addition to the node coordinates, a cell
+   * @details Registration works as for MaterialPointFactory; in addition to the node coordinates, a cell
    * element receives the quadrature rule that defines its requested material points. Names are case-insensitive
    * (stored in upper case). No cell element is registered in Marmot at present.
    */
-  class MarmotCellElementFactory {
+  class CellElementFactory {
   public:
     /**
      * @brief Signature of a cell element factory function.
      * @details Arguments: cell element number, node coordinates (node by node), size of the coordinate array,
      * name of the quadrature rule, quadrature order.
      */
-    using cellElementFactoryFunction = MarmotCellElement* (*)( int                cellElementNumber,
+    using cellElementFactoryFunction = Marmot::Discretizations::Cells::CellElement* (*)( int                cellElementNumber,
                                                                const double*      vertexCoordinates,
                                                                int                sizeVertexCoordinates,
                                                                const std::string& quadratureRule,
                                                                int                quadratureOrder );
 
-    MarmotCellElementFactory() = delete;
+    CellElementFactory() = delete;
 
     /**
      * @brief Creates a cell element of a registered type.
@@ -227,7 +227,7 @@ namespace MarmotLibrary {
      * @return Newly allocated cell element; the caller takes ownership.
      * @throws std::invalid_argument if no cell element is registered under @p cellElementName.
      */
-    static MarmotCellElement* createCellElement( const std::string& cellElementName,
+    static Marmot::Discretizations::Cells::CellElement* createCellElement( const std::string& cellElementName,
                                                  int                cellElementNumber,
                                                  const double*      nodeCoordinates,
                                                  int                sizeNodeCoordinates,
@@ -248,4 +248,4 @@ namespace MarmotLibrary {
     static std::unordered_map< std::string, cellElementFactoryFunction >& cellElementFactoryFunctionByName();
   };
 
-} // namespace MarmotLibrary
+} // namespace Marmot::Registry

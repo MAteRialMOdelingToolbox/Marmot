@@ -27,7 +27,7 @@
 #include "Marmot/MarmotUtils.h"
 #include <stdexcept>
 
-namespace Marmot::MaterialPoints {
+namespace Marmot::Discretizations::MaterialPoints {
 
   // =========================================================================================
   //  plane strain
@@ -164,4 +164,4 @@ namespace Marmot::MaterialPoints {
     _density = material->getDensity( state->materialState.data() );
   }
 
-} // namespace Marmot::MaterialPoints
+} // namespace Marmot::Discretizations::MaterialPoints

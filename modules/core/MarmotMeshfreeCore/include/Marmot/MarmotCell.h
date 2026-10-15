@@ -30,20 +30,22 @@
 #include <unordered_map>
 #include <vector>
 
+namespace Marmot::Discretizations::Cells {
+
 /**
- * @class MarmotCell
+ * @class Cell
  * @brief Abstract interface of a background cell of the material point method (MPM).
  *
  * @details A cell is a fixed background element with @f$ n_\mathrm{nodes} @f$ nodes that carries the
  * nodal fields (e.g. the displacement) and the interpolation @f$ N_A(\boldsymbol{X}) @f$. It does not own
  * any quadrature points: in every connectivity update, the host framework assigns to each cell the
- * material points (MarmotMaterialPoint) that currently lie inside it, and the cell integrates over those
+ * material points (Marmot::Discretizations::MaterialPoints::MaterialPoint) that currently lie inside it, and the cell integrates over those
  * material points, e.g. for the internal force
  * @f[
  *   \boldsymbol{f}^{\mathrm{int}}_A = \sum_{p \in \text{cell}} \boldsymbol{f}_{A}(\text{MP}_p)\,V_p ,
  * @f]
  * with the material point volume @f$ V_p @f$. The concrete kernel (which stress, which volume, which
- * configuration) is defined by the implementing cell, see e.g. Marmot::Cells::DisplacementCell.
+ * configuration) is defined by the implementing cell, see e.g. Marmot::Discretizations::Cells::DisplacementCell.
  *
  * **Dof layout.** The cell vectors (Q, fInt, fExt) have getNDofPerCell() entries, the matrices are
  * dense with getNDofPerCell() @f$ \times @f$ getNDofPerCell() entries. getNodeFields() lists for each node
@@ -53,23 +55,23 @@
  * node-major, component fastest).
  *
  * **Call sequence of the host framework** (e.g. EdelweissMeshfree), per time increment:
- *  1. MarmotMaterialPoint::prepareYourself() on all material points,
+ *  1. Marmot::Discretizations::MaterialPoints::MaterialPoint::prepareYourself() on all material points,
  *  2. isCoordinateInCell() / getBoundingBox() to find the cells hit by the material points, then
  *     assignMaterialPoints() on every active cell (connectivity update),
- *  3. in every Newton iteration: MarmotMaterialPoint::prepareYourself() (resets the accumulated
+ *  3. in every Newton iteration: Marmot::Discretizations::MaterialPoints::MaterialPoint::prepareYourself() (resets the accumulated
  *     increment), interpolateFieldsToMaterialPoints() on all active cells,
- *     MarmotMaterialPoint::computeYourself() on all material points, then
+ *     Marmot::Discretizations::MaterialPoints::MaterialPoint::computeYourself() on all material points, then
  *     computeMaterialPointKernels(), computeBodyLoad(), computeDistributedLoad() (and the inertia
  *     methods for dynamic analyses) on all active cells,
- *  4. after convergence, MarmotMaterialPoint::acceptStateAndPosition() on all material points.
+ *  4. after convergence, Marmot::Discretizations::MaterialPoints::MaterialPoint::acceptStateAndPosition() on all material points.
  *
- * Instances are created by name via MarmotLibrary::MarmotCellFactory.
+ * Instances are created by name via Marmot::Registry::CellFactory.
  */
-class MarmotCell {
+class Cell {
 
 public:
-  /// Virtual destructor; cells are owned through MarmotCell pointers.
-  virtual ~MarmotCell() = default;
+  /// Virtual destructor; cells are owned through Cell pointers.
+  virtual ~Cell() = default;
 
   /**
    * @brief Names of the fields carried by each node.
@@ -123,12 +125,12 @@ public:
    * @param[in] materialPoints Material points located in the cell (not owned by the cell).
    * @throws std::invalid_argument (in the Marmot cells) if a material point is of the wrong type.
    */
-  virtual void assignMaterialPoints( const std::vector< MarmotMaterialPoint* >& materialPoints ) = 0;
+  virtual void assignMaterialPoints( const std::vector< Marmot::Discretizations::MaterialPoints::MaterialPoint* >& materialPoints ) = 0;
 
   /**
    * @brief Integrates the internal force vector and its tangent over the assigned material points.
    * @details Uses the material point responses computed in the preceding
-   * MarmotMaterialPoint::computeYourself(). Results are added to the output arrays.
+   * Marmot::Discretizations::MaterialPoints::MaterialPoint::computeYourself(). Results are added to the output arrays.
    * @param[in]     Q        Cell dof vector (getNDofPerCell() values; the Marmot cells expect the
    *                         increment of the current step).
    * @param[in,out] fInt     Internal force vector (getNDofPerCell() values), accumulated.
@@ -226,9 +228,11 @@ public:
    * @brief Interpolates the nodal fields to the assigned material points (grid-to-particle map).
    * @details The Marmot cells interpolate the dof increment and its gradient w.r.t. the reference
    * position and add them to the kinematic state of each material point; this accumulated increment is
-   * reset in MarmotMaterialPoint::prepareYourself().
+   * reset in Marmot::Discretizations::MaterialPoints::MaterialPoint::prepareYourself().
    * @param[in] Q Cell dof vector (getNDofPerCell() values; the Marmot cells expect the increment of the
    *              current step).
    */
   virtual void interpolateFieldsToMaterialPoints( const double* Q ) const = 0;
 };
+
+} // namespace Marmot::Discretizations::Cells

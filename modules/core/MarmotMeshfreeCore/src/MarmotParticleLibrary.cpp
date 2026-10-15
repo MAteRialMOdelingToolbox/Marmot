@@ -30,7 +30,7 @@
 #include <string>
 #include <unordered_map>
 
-namespace MarmotLibrary {
+namespace Marmot::Registry {
 
   std::string makeStringUpperCase_( const std::string& str )
   {
@@ -41,14 +41,14 @@ namespace MarmotLibrary {
     return strUpperCase;
   }
 
-  std::unordered_map< std::string, MarmotParticleFactory::particleFactoryFunction >& MarmotParticleFactory::
+  std::unordered_map< std::string, ParticleFactory::particleFactoryFunction >& ParticleFactory::
     particleFactoryFunctionByName()
   {
     static std::unordered_map< std::string, particleFactoryFunction > map;
     return map;
   }
 
-  bool MarmotParticleFactory::registerParticle( const std::string&      particleName,
+  bool ParticleFactory::registerParticle( const std::string&      particleName,
                                                 particleFactoryFunction factoryFunction )
   {
 
@@ -61,17 +61,17 @@ namespace MarmotLibrary {
     return true;
   }
 
-  Marmot::Meshfree::MarmotParticle* MarmotParticleFactory::createParticle(
+  Marmot::Discretizations::Meshfree::Particle* ParticleFactory::createParticle(
     const std::string& particleName,
     int                particleNumber,
     const double*      vertexCoordinates,
     int                sizeVertexCoordinates,
     double             volume,
-    // MarmotMaterialPoint&                                 mp,
+    // Marmot::Discretizations::MaterialPoints::MaterialPoint&                                 mp,
     const std::string&                                   materialName,
     const double*                                        materialProperties,
     int                                                  sizeMaterialProperties,
-    const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation )
+    const Marmot::Discretizations::Meshfree::Approximation& approximation )
   {
     const auto particleNameUpperCase = makeStringUpperCase_( particleName );
 
@@ -90,4 +90,4 @@ namespace MarmotLibrary {
     }
   }
 
-} // namespace MarmotLibrary
+} // namespace Marmot::Registry

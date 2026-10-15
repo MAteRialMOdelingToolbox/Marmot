@@ -31,13 +31,13 @@
 #include <cmath>
 #include <vector>
 
-namespace Marmot::Meshfree {
+namespace Marmot::Discretizations::Meshfree {
 
   /**
-   * @class Marmot::Meshfree::MarmotMeshfreeReproducingKernelApproximationImplicit
+   * @class Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit
    * @brief Reproducing kernel approximation with implicit gradients.
    *
-   * The shape function values are those of MarmotMeshfreeReproducingKernelApproximation. The gradients are not
+   * The shape function values are those of ReproducingKernelApproximation. The gradients are not
    * obtained by differentiating @f$ \Psi_A @f$ but are constructed directly as corrected kernels (implicit, or
    * synchronized, gradients),
    * @f[
@@ -60,7 +60,7 @@ namespace Marmot::Meshfree {
    * @f$ \boldsymbol{M}_{,i} @f$: all @f$ 1 + d @f$ right-hand sides are solved with one QR decomposition of
    * @f$ \boldsymbol{M} @f$.
    */
-  class MarmotMeshfreeReproducingKernelApproximationImplicit : public MarmotMeshfreeReproducingKernelApproximation {
+  class ReproducingKernelApproximationImplicit : public ReproducingKernelApproximation {
 
   public:
     /**
@@ -68,10 +68,10 @@ namespace Marmot::Meshfree {
      * @param[in] dim               Spatial dimension @f$ d @f$.
      * @param[in] completenessOrder Desired completeness order @f$ n @f$.
      */
-    MarmotMeshfreeReproducingKernelApproximationImplicit( int dim, int completenessOrder );
+    ReproducingKernelApproximationImplicit( int dim, int completenessOrder );
 
     /// @brief Default destructor.
-    virtual ~MarmotMeshfreeReproducingKernelApproximationImplicit() = default;
+    virtual ~ReproducingKernelApproximationImplicit() = default;
 
     /**
      * @brief Not implemented; use computeShapeFunctionsAndGradients().
@@ -82,7 +82,7 @@ namespace Marmot::Meshfree {
      */
     virtual void computeShapeFunctionGradients(
       const double*                                             coord,
-      const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions,
+      const std::vector< const KernelFunction* >& kernelFunctions,
       double*                                                   shapeFunctionValueGradients ) const override;
 
     /**
@@ -98,9 +98,9 @@ namespace Marmot::Meshfree {
      */
     virtual void computeShapeFunctionsAndGradients(
       const double*                                             coord,
-      const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions,
+      const std::vector< const KernelFunction* >& kernelFunctions,
       double*                                                   shapeFunctionValues,
       double*                                                   shapeFunctionValueGradients_ColMajor ) const override;
   };
 
-} // namespace Marmot::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

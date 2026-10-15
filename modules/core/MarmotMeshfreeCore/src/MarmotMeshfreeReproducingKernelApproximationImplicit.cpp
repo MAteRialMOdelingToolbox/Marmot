@@ -29,32 +29,32 @@
 #include <Eigen/src/Core/Matrix.h>
 #include <cmath>
 
-namespace Marmot::Meshfree {
-  MarmotMeshfreeReproducingKernelApproximationImplicit::MarmotMeshfreeReproducingKernelApproximationImplicit(
+namespace Marmot::Discretizations::Meshfree {
+  ReproducingKernelApproximationImplicit::ReproducingKernelApproximationImplicit(
     int dim,
     int completenessOrder )
-    : MarmotMeshfreeReproducingKernelApproximation( dim, completenessOrder )
+    : ReproducingKernelApproximation( dim, completenessOrder )
   {
   }
 
-  void MarmotMeshfreeReproducingKernelApproximationImplicit::computeShapeFunctionGradients(
+  void ReproducingKernelApproximationImplicit::computeShapeFunctionGradients(
     const double*                                             coord,
-    const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions,
+    const std::vector< const KernelFunction* >& kernelFunctions,
     double*                                                   shapeFunctionValueGradients ) const
   {
     throw std::runtime_error( "Not implemented" );
   }
 
-  void MarmotMeshfreeReproducingKernelApproximationImplicit::computeShapeFunctionsAndGradients(
+  void ReproducingKernelApproximationImplicit::computeShapeFunctionsAndGradients(
     const double*                                             coord,
-    const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctionCandidates,
+    const std::vector< const KernelFunction* >& kernelFunctionCandidates,
     double*                                                   shapeFunctionValues_,
     double*                                                   shapeFunctionValueGradients_ ) const
   {
 
     const auto coveringKernelFunctionIndices = findCoveringKernelFunctionIndices( coord, kernelFunctionCandidates );
 
-    std::vector< const MarmotMeshfreeKernelFunction* > coveringKernelFunctions;
+    std::vector< const KernelFunction* > coveringKernelFunctions;
     for ( const auto& idx : coveringKernelFunctionIndices )
       coveringKernelFunctions.push_back( kernelFunctionCandidates[idx] );
 
@@ -120,4 +120,4 @@ namespace Marmot::Meshfree {
     }
   }
 
-}; // namespace Marmot::Meshfree
+}; // namespace Marmot::Discretizations::Meshfree

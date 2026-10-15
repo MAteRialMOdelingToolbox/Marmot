@@ -38,13 +38,13 @@
 /// DisplacementMaterialPoint3D
 template < int nDim >
 using MaterialPointType = std::conditional_t< nDim == 2,
-                                              Marmot::MaterialPoints::DisplacementMaterialPoint2D,
-                                              Marmot::MaterialPoints::DisplacementMaterialPoint3D >;
+                                              Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D,
+                                              Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D >;
 
-namespace Marmot::Meshfree {
+namespace Marmot::Discretizations::Meshfree {
 
   /**
-   * @class Marmot::Meshfree::DisplacementParticle
+   * @class Marmot::Discretizations::Meshfree::DisplacementParticle
    * @brief RKPM particle of the finite-strain displacement formulation, integrated at its center (direct nodal
    * integration); registered as "Displacement/PlaneStrain/Point".
    *
@@ -81,7 +81,7 @@ namespace Marmot::Meshfree {
    * @tparam nDim Spatial dimension (2: plane strain, 3: 3D).
    */
   template < int nDim >
-  class DisplacementParticle : public Marmot::Meshfree::GenericParticle< nDim > {
+  class DisplacementParticle : public Marmot::Discretizations::Meshfree::GenericParticle< nDim > {
 
     using TensorD  = Fastor::Tensor< double, nDim >;       ///< vector of size nDim
     using TensorDD = Fastor::Tensor< double, nDim, nDim >; ///< second-order tensor of size nDim
@@ -169,7 +169,7 @@ namespace Marmot::Meshfree {
     virtual void setProperties( const double* properties, int nProperties ) override
     {
       // Combine property names from base and derived
-      std::vector< std::string > allPropertyNames = Marmot::Meshfree::GenericParticle< nDim >::getPropertyNames();
+      std::vector< std::string > allPropertyNames = Marmot::Discretizations::Meshfree::GenericParticle< nDim >::getPropertyNames();
       allPropertyNames.insert( allPropertyNames.end(), _validProperties.begin(), _validProperties.end() );
 
       if ( nProperties != static_cast< int >( allPropertyNames.size() ) ) {
@@ -204,7 +204,7 @@ namespace Marmot::Meshfree {
       }
       else {
         // If not a DisplacementParticle specific property, try the base class
-        Marmot::Meshfree::GenericParticle< nDim >::setProperty( propertyName, property );
+        Marmot::Discretizations::Meshfree::GenericParticle< nDim >::setProperty( propertyName, property );
       }
     };
 
@@ -214,7 +214,7 @@ namespace Marmot::Meshfree {
      */
     virtual std::vector< std::string > getPropertyNames() const override
     {
-      std::vector< std::string > names = Marmot::Meshfree::GenericParticle< nDim >::getPropertyNames();
+      std::vector< std::string > names = Marmot::Discretizations::Meshfree::GenericParticle< nDim >::getPropertyNames();
       names.insert( names.end(), _validProperties.begin(), _validProperties.end() );
       return names;
     };
@@ -270,7 +270,7 @@ namespace Marmot::Meshfree {
                           const std::string&                 materialName,
                           const double*                      materialProperties,
                           int                                nMaterialProperties,
-                          const MarmotMeshfreeApproximation& approximation );
+                          const Marmot::Discretizations::Meshfree::Approximation& approximation );
 
     /**
      * @brief Initializes the material point.
@@ -453,8 +453,8 @@ namespace Marmot::Meshfree {
     const std::string&                                   materialName,
     const double*                                        materialProperties,
     int                                                  nMaterialProperties,
-    const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation )
-    : Marmot::Meshfree::GenericParticle< nDim >( elementID,
+    const Marmot::Discretizations::Meshfree::Approximation& approximation )
+    : Marmot::Discretizations::Meshfree::GenericParticle< nDim >( elementID,
                                                  centerCoordinates0,
                                                  sizeCenterCoordinates0,
                                                  volume,
@@ -653,4 +653,4 @@ namespace Marmot::Meshfree {
     }
   }
 
-} // namespace Marmot::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

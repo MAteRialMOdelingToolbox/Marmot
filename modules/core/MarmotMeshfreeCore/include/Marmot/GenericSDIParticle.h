@@ -36,10 +36,10 @@
 #include <tuple>  // Explicitly include tuple for std::tuple usage
 #include <vector> // Explicitly include vector for clarity
 
-namespace Marmot::Meshfree {
+namespace Marmot::Discretizations::Meshfree {
 
   /**
-   * @class Marmot::Meshfree::GenericSDIParticle
+   * @class Marmot::Discretizations::Meshfree::GenericSDIParticle
    * @brief A generic, physics-independent base class for particles with subdomain integration (SDI).
    *
    * The particle domain (a ParticleDomain, e.g., a quadrilateral or a hexahedron) is uniformly subdivided once into
@@ -86,7 +86,7 @@ namespace Marmot::Meshfree {
    * @tparam nVertices The number of vertices defining the particle's geometry (4 or 8).
    */
   template < int nDim, int nVertices >
-  class GenericSDIParticle : public MarmotParticle {
+  class GenericSDIParticle : public Particle {
 
   protected:
     // Type aliases for improved readability
@@ -97,7 +97,7 @@ namespace Marmot::Meshfree {
     using CoordinatesSized = Eigen::Matrix< double, nDim, 1 >; ///< Alias for Eigen vector storing coordinates.
     using JacobianSized = Eigen::Matrix< double, nDim, nDim >; ///< Alias for Eigen matrix storing Jacobian/deformation
                                                                ///< gradient.
-    using KernelFunctionVector = std::vector< const MarmotMeshfreeKernelFunction* >; ///< Alias for a vector of kernel
+    using KernelFunctionVector = std::vector< const KernelFunction* >; ///< Alias for a vector of kernel
                                                                                      ///< function pointers.
     using ParticleDomainType = ParticleDomain< nDim, nVertices >; ///< Alias for the particle domain type.
 
@@ -129,7 +129,7 @@ namespace Marmot::Meshfree {
     int _vciOrder;        ///< The order of the VCI (Variationally Consistent Integration) polynomial basis.
     int _nVCIConstraints; ///< The number of VCI constraints, derived from _vciOrder.
 
-    const MarmotMeshfreeApproximation& _meshfreeApproximation;  ///< Reference to the meshfree approximation object.
+    const Approximation& _meshfreeApproximation;  ///< Reference to the meshfree approximation object.
 
     ParticleDomainType                     _particleDomainMain; ///< Main domain (geometry, smoothing domain).
     std::vector< SubDomainShapeFunctions > _subDomainShapeFunctions; ///< Shape functions for each subdomain.
@@ -302,7 +302,7 @@ namespace Marmot::Meshfree {
                         const double*                      vertexCoordinates,
                         [[maybe_unused]] int               nVertexCoordinates,
                         [[maybe_unused]] double            volume,
-                        const MarmotMeshfreeApproximation& approximation,
+                        const Approximation& approximation,
                         const SmoothingDomainUpdateType    smoothingVolumeUpdateType );
 
     /**
@@ -718,7 +718,7 @@ namespace Marmot::Meshfree {
     const double*                                        vertexCoordinates,
     [[maybe_unused]] int                                 nVertexCoordinates, // Marked as unused
     [[maybe_unused]] double                              volume,             // Marked as unused
-    const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation,
+    const Marmot::Discretizations::Meshfree::Approximation& approximation,
     const SmoothingDomainUpdateType                      smoothingVolumeUpdateType )
     : _elementID( elementID ),
       _nNodes( 0 ),          // Initialized to 0, will be set in assignMeshfreeKernelFunctions
@@ -991,7 +991,7 @@ namespace Marmot::Meshfree {
       _du_center += du;
     }
 
-    // the state is restored to the accepted one before every call (see the state contract of MarmotParticle), so
+    // the state is restored to the accepted one before every call (see the state contract of Particle), so
     // this adds the increment of the step to the accepted center displacement once per iteration, not cumulatively
     Eigen::Map< CoordinatesSized > du_center_eigen( _du_center.data() ); // Use alias
     _centerDisplacement += du_center_eigen;
@@ -1004,4 +1004,4 @@ namespace Marmot::Meshfree {
     computePhysicsKernelsOnSubdomains( dQ, fInt, dFInt_ddQ, timeNew, dT );
   }
 
-} // namespace Marmot::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

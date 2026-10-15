@@ -43,10 +43,10 @@
  * The elements use Abaqus node and face numbering conventions where applicable.
  */
 
-namespace Marmot::Meshfree {
+namespace Marmot::Discretizations::Meshfree {
 
   /**
-   * @struct Marmot::Meshfree::GaussRule
+   * @struct Marmot::Discretizations::Meshfree::GaussRule
    * @brief Generic Gauss rule definition.
    * @tparam nDim The dimension of the space (e.g., 2 for 2D, 3 for 3D).
    *
@@ -57,7 +57,7 @@ namespace Marmot::Meshfree {
   struct GaussRule;
 
   /**
-   * @struct Marmot::Meshfree::GaussRule< 2 >
+   * @struct Marmot::Discretizations::Meshfree::GaussRule< 2 >
    * @brief Specialization of GaussRule for 2D (2x2 Gauss points).
    */
   template <>
@@ -83,7 +83,7 @@ namespace Marmot::Meshfree {
   };
 
   /**
-   * @struct Marmot::Meshfree::GaussRule< 3 >
+   * @struct Marmot::Discretizations::Meshfree::GaussRule< 3 >
    * @brief Specialization of GaussRule for 3D (2x2x2 Gauss points).
    */
   template <>
@@ -118,7 +118,7 @@ namespace Marmot::Meshfree {
   };
 
   /**
-   * @class Marmot::Meshfree::MarmotLagrangeCell
+   * @class Marmot::Discretizations::Meshfree::LagrangeCell
    * @brief Generic isoparametric Lagrange element.
    * @tparam nDim The dimension of the element (e.g., 2 for Quad4, 3 for Hex8).
    * @tparam nNodes The number of nodes in the element (e.g., 4 for Quad4, 8 for Hex8).
@@ -132,7 +132,7 @@ namespace Marmot::Meshfree {
    * which map an external array); it is used as the geometry of particle domains (see MarmotParticleDomain.h).
    */
   template < int nDim, int nNodes >
-  class MarmotLagrangeCell {
+  class LagrangeCell {
   public:
     using Scalar = double;                                ///< Type for scalar values.
     using Vec    = Eigen::Matrix< Scalar, nDim, 1 >;      ///< Type for vectors in nDim.
@@ -140,18 +140,18 @@ namespace Marmot::Meshfree {
     using RowN   = Eigen::Matrix< Scalar, 1, nNodes >;    ///< Type for shape function vector.
     using dNMat  = Eigen::Matrix< Scalar, nDim, nNodes >; ///< Type for shape function derivative matrix.
 
-    using Self = MarmotLagrangeCell< nDim, nNodes >;      ///< Alias for the current class type.
+    using Self = LagrangeCell< nDim, nNodes >;      ///< Alias for the current class type.
 
     /**
      * @brief Default constructor.
      */
-    MarmotLagrangeCell() = default;
+    LagrangeCell() = default;
 
     /**
      * @brief Constructor that initializes the element with node coordinates.
      * @param nodes An Eigen matrix where each column represents a node's coordinates.
      */
-    explicit MarmotLagrangeCell( const Mat& nodes ) : _nodes( nodes ) {}
+    explicit LagrangeCell( const Mat& nodes ) : _nodes( nodes ) {}
 
     /**
      * @brief Constructor that initializes the element with raw node data.
@@ -159,14 +159,14 @@ namespace Marmot::Meshfree {
      * @param nNodesData The total number of scalar values in nodesData (nDim * nNodes).
      * @throws std::invalid_argument if nNodesData does not match nDim * nNodes.
      */
-    explicit MarmotLagrangeCell( const Scalar* nodesData, int nNodesData )
+    explicit LagrangeCell( const Scalar* nodesData, int nNodesData )
     {
       if ( nNodesData != nDim * nNodes )
-        throw std::invalid_argument( "MarmotLagrangeCell: invalid nodes data size" );
+        throw std::invalid_argument( "LagrangeCell: invalid nodes data size" );
       _nodes = Eigen::Map< const Mat >( nodesData, nDim, nNodes );
 
       // std::cout << _nodes << std::endl;
-      // std::cout << "MarmotLagrangeCell created with " << nNodes << " nodes in " << nDim
+      // std::cout << "LagrangeCell created with " << nNodes << " nodes in " << nDim
       //           << "D." << std::endl;
     }
 
@@ -421,7 +421,7 @@ namespace Marmot::Meshfree {
     // ------------------------------------------------------------------------
     /**
      * @brief Subdivides the element uniformly into smaller elements.
-     * @return A vector of new MarmotLagrangeCell instances representing the subdivided elements.
+     * @return A vector of new LagrangeCell instances representing the subdivided elements.
      * @throws std::logic_error if not implemented for the specific element type.
      * @note This method must be specialized for each concrete element type.
      */
@@ -585,7 +585,7 @@ namespace Marmot::Meshfree {
    * @return A row vector of shape function values for Quad4.
    */
   template <>
-  inline MarmotLagrangeCell< 2, 4 >::RowN MarmotLagrangeCell< 2, 4 >::shapeFunctions( const Vec& s )
+  inline LagrangeCell< 2, 4 >::RowN LagrangeCell< 2, 4 >::shapeFunctions( const Vec& s )
   {
     Scalar xi = s[0], eta = s[1];
     RowN   N;
@@ -602,7 +602,7 @@ namespace Marmot::Meshfree {
    * @return A matrix of shape function derivatives for Quad4.
    */
   template <>
-  inline MarmotLagrangeCell< 2, 4 >::dNMat MarmotLagrangeCell< 2, 4 >::dShapeFunctions( const Vec& s )
+  inline LagrangeCell< 2, 4 >::dNMat LagrangeCell< 2, 4 >::dShapeFunctions( const Vec& s )
   {
     Scalar xi = s[0], eta = s[1];
     dNMat  dN;
@@ -629,7 +629,7 @@ namespace Marmot::Meshfree {
    * @throws std::out_of_range if faceId is not between 1 and 4.
    */
   template <>
-  inline MarmotLagrangeCell< 2, 4 >::Vec MarmotLagrangeCell< 2, 4 >::getFaceCenterCoordinates( int faceId ) const
+  inline LagrangeCell< 2, 4 >::Vec LagrangeCell< 2, 4 >::getFaceCenterCoordinates( int faceId ) const
   {
     static const int edges[4][2] = {
       { 0, 1 }, // S1 (Abaqus)
@@ -657,7 +657,7 @@ namespace Marmot::Meshfree {
    * @throws std::out_of_range if faceId is not between 1 and 4.
    */
   template <>
-  inline MarmotLagrangeCell< 2, 4 >::Vec MarmotLagrangeCell< 2, 4 >::boundarySurfaceVector( int faceId ) const
+  inline LagrangeCell< 2, 4 >::Vec LagrangeCell< 2, 4 >::boundarySurfaceVector( int faceId ) const
   {
     static const int edges[4][2] = {
       { 0, 1 }, // S1 (Abaqus)
@@ -681,7 +681,7 @@ namespace Marmot::Meshfree {
    * @return A vector of new Quad4 elements.
    */
   template <>
-  inline std::vector< MarmotLagrangeCell< 2, 4 > > MarmotLagrangeCell< 2, 4 >::uniformSubdivided() const
+  inline std::vector< LagrangeCell< 2, 4 > > LagrangeCell< 2, 4 >::uniformSubdivided() const
   {
 
     std::vector< Self > next;
@@ -720,7 +720,7 @@ namespace Marmot::Meshfree {
    * @throws std::out_of_range if parentFaceId is not between 1 and 4.
    */
   template <>
-  inline std::vector< int > MarmotLagrangeCell< 2, 4 >::getSubCellIndicesOnParentFace( int parentFaceId ) const
+  inline std::vector< int > LagrangeCell< 2, 4 >::getSubCellIndicesOnParentFace( int parentFaceId ) const
   {
 
     std::vector< int > indices;
@@ -752,7 +752,7 @@ namespace Marmot::Meshfree {
    * @return The string "quad4" (Ensight Gold notation).
    */
   template <>
-  inline std::string MarmotLagrangeCell< 2, 4 >::getCellShape() const
+  inline std::string LagrangeCell< 2, 4 >::getCellShape() const
   {
     return "quad4"; // Ensight Gold notation
   }
@@ -762,7 +762,7 @@ namespace Marmot::Meshfree {
    * @return The integer 4.
    */
   template <>
-  inline int MarmotLagrangeCell< 2, 4 >::getNumberOfFaces() const
+  inline int LagrangeCell< 2, 4 >::getNumberOfFaces() const
   {
     return 4;
   }
@@ -777,7 +777,7 @@ namespace Marmot::Meshfree {
    * @return A row vector of shape function values for Hex8.
    */
   template <>
-  inline MarmotLagrangeCell< 3, 8 >::RowN MarmotLagrangeCell< 3, 8 >::shapeFunctions( const Vec& s )
+  inline LagrangeCell< 3, 8 >::RowN LagrangeCell< 3, 8 >::shapeFunctions( const Vec& s )
   {
     Scalar xi = s[0], eta = s[1], z = s[2];
     Scalar c = 0.125;
@@ -800,7 +800,7 @@ namespace Marmot::Meshfree {
    * @return A matrix of shape function derivatives for Hex8.
    */
   template <>
-  inline MarmotLagrangeCell< 3, 8 >::dNMat MarmotLagrangeCell< 3, 8 >::dShapeFunctions( const Vec& s )
+  inline LagrangeCell< 3, 8 >::dNMat LagrangeCell< 3, 8 >::dShapeFunctions( const Vec& s )
   {
     Scalar xi = s[0], eta = s[1], z = s[2];
     Scalar c = 0.125;
@@ -846,7 +846,7 @@ namespace Marmot::Meshfree {
    * @throws std::out_of_range if faceId is not between 1 and 6.
    */
   template <>
-  inline MarmotLagrangeCell< 3, 8 >::Vec MarmotLagrangeCell< 3, 8 >::getFaceCenterCoordinates( int faceId ) const
+  inline LagrangeCell< 3, 8 >::Vec LagrangeCell< 3, 8 >::getFaceCenterCoordinates( int faceId ) const
   {
     // Abaqus C3D8 Standard Faces (0-based indices)
     static const int faces[6][4] = {
@@ -879,7 +879,7 @@ namespace Marmot::Meshfree {
    * @throws std::out_of_range if faceId is not between 1 and 6.
    */
   template <>
-  inline MarmotLagrangeCell< 3, 8 >::Vec MarmotLagrangeCell< 3, 8 >::boundarySurfaceVector( int faceId ) const
+  inline LagrangeCell< 3, 8 >::Vec LagrangeCell< 3, 8 >::boundarySurfaceVector( int faceId ) const
   {
     // Abaqus C3D8 Standard Faces (0-based indices)
     // Note: To get OUTWARD normals, we use the Right Hand Rule counter-clockwise
@@ -917,7 +917,7 @@ namespace Marmot::Meshfree {
    * @return A vector of new Hex8 elements.
    */
   template <>
-  inline std::vector< MarmotLagrangeCell< 3, 8 > > MarmotLagrangeCell< 3, 8 >::uniformSubdivided() const
+  inline std::vector< LagrangeCell< 3, 8 > > LagrangeCell< 3, 8 >::uniformSubdivided() const
   {
 
     std::vector< Self > next;
@@ -965,7 +965,7 @@ namespace Marmot::Meshfree {
    * @throws std::out_of_range if parentFaceId is not between 1 and 6.
    */
   template <>
-  inline std::vector< int > MarmotLagrangeCell< 3, 8 >::getSubCellIndicesOnParentFace( int parentFaceId ) const
+  inline std::vector< int > LagrangeCell< 3, 8 >::getSubCellIndicesOnParentFace( int parentFaceId ) const
   {
 
     std::vector< int > indices;
@@ -1017,7 +1017,7 @@ namespace Marmot::Meshfree {
    * @return The string "hexa8" (Ensight Gold notation).
    */
   template <>
-  inline std::string MarmotLagrangeCell< 3, 8 >::getCellShape() const
+  inline std::string LagrangeCell< 3, 8 >::getCellShape() const
   {
     return "hexa8"; // Ensight Gold notation
   }
@@ -1027,7 +1027,7 @@ namespace Marmot::Meshfree {
    * @return The integer 6.
    */
   template <>
-  inline int MarmotLagrangeCell< 3, 8 >::getNumberOfFaces() const
+  inline int LagrangeCell< 3, 8 >::getNumberOfFaces() const
   {
     return 6;
   }
@@ -1039,11 +1039,11 @@ namespace Marmot::Meshfree {
   /**
    * @brief Alias for a 2D, 4-node quadrilateral element.
    */
-  using Quad4 = MarmotLagrangeCell< 2, 4 >;
+  using Quad4 = LagrangeCell< 2, 4 >;
 
   /**
    * @brief Alias for a 3D, 8-node hexahedral element.
    */
-  using Hex8 = MarmotLagrangeCell< 3, 8 >;
+  using Hex8 = LagrangeCell< 3, 8 >;
 
-} // namespace Marmot::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

@@ -121,8 +121,8 @@ namespace {
   // one cell with 2^nDim material points, as the host (EdelweissMeshfree) drives it
   template < int nDim >
   struct Setup {
-    std::unique_ptr< MarmotCell >                         cell;
-    std::vector< std::unique_ptr< MarmotMaterialPoint > > mps;
+    std::unique_ptr< Marmot::Discretizations::Cells::Cell >                         cell;
+    std::vector< std::unique_ptr< Marmot::Discretizations::MaterialPoints::MaterialPoint > > mps;
     std::vector< std::vector< double > >                  stateVars;
     Marmot::Discretizations::MaterialSection                                 section{ "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
                                    matProps.data(),
@@ -133,9 +133,9 @@ namespace {
     Setup( const CellGeometry< nDim >& g )
     {
       if ( g.knots.empty() )
-        cell.reset( MarmotLibrary::MarmotCellFactory::createCell( g.name, 1, g.nodes.data(), g.nodes.size() ) );
+        cell.reset( Marmot::Registry::CellFactory::createCell( g.name, 1, g.nodes.data(), g.nodes.size() ) );
       else
-        cell.reset( MarmotLibrary::MarmotCellFactory::createBSplineCell( g.name,
+        cell.reset( Marmot::Registry::CellFactory::createBSplineCell( g.name,
                                                                          1,
                                                                          g.nodes.data(),
                                                                          g.nodes.size(),
@@ -150,7 +150,7 @@ namespace {
         for ( int d = 0; d < nDim; d++ )
           x[d] = g.lower[d] + ( ( k >> d ) & 1 ? 0.75 : 0.25 ) * ( g.upper[d] - g.lower[d] );
         mps.emplace_back(
-          MarmotLibrary::MarmotMaterialPointFactory::createMaterialPoint( nDim == 2
+          Marmot::Registry::MaterialPointFactory::createMaterialPoint( nDim == 2
                                                                             ? "GradientEnhancedFiniteStrain/PlaneStrain"
                                                                             : "GradientEnhancedFiniteStrain/3D",
                                                                           label++,
@@ -166,7 +166,7 @@ namespace {
         mp->initializeYourself();
       }
 
-      std::vector< MarmotMaterialPoint* > raw;
+      std::vector< Marmot::Discretizations::MaterialPoints::MaterialPoint* > raw;
       for ( auto& mp : mps )
         raw.push_back( mp.get() );
       cell->assignMaterialPoints( raw );
@@ -443,18 +443,18 @@ void testUnknownNamesAreRejected()
 {
   const double x[2] = { 0, 0 };
   throwExceptionOnFailure( throws( [&]() {
-                             std::unique_ptr< MarmotCell >(
-                               MarmotLibrary::MarmotCellFactory::createCell( "NoSuchCell", 1, x, 2 ) );
+                             std::unique_ptr< Marmot::Discretizations::Cells::Cell >(
+                               Marmot::Registry::CellFactory::createCell( "NoSuchCell", 1, x, 2 ) );
                            } ),
                            "unknown cell" );
   throwExceptionOnFailure( throws( [&]() {
-                             std::unique_ptr< MarmotCell >(
-                               MarmotLibrary::MarmotCellFactory::createBSplineCell( "NoSuchCell", 1, x, 2, x, 2 ) );
+                             std::unique_ptr< Marmot::Discretizations::Cells::Cell >(
+                               Marmot::Registry::CellFactory::createBSplineCell( "NoSuchCell", 1, x, 2, x, 2 ) );
                            } ),
                            "unknown B-spline cell" );
   throwExceptionOnFailure( throws( [&]() {
-                             std::unique_ptr< MarmotMaterialPoint >(
-                               MarmotLibrary::MarmotMaterialPointFactory::createMaterialPoint( "NoSuchPoint",
+                             std::unique_ptr< Marmot::Discretizations::MaterialPoints::MaterialPoint >(
+                               Marmot::Registry::MaterialPointFactory::createMaterialPoint( "NoSuchPoint",
                                                                                                1,
                                                                                                x,
                                                                                                2,

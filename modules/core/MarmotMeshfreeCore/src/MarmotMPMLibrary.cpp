@@ -33,7 +33,7 @@
 #include <tuple>
 #include <unordered_map>
 
-namespace MarmotLibrary {
+namespace Marmot::Registry {
 
   std::string makeStringUpperCase( const std::string& str )
   {
@@ -55,14 +55,14 @@ namespace MarmotLibrary {
    *                                     |_|
    * */
 
-  std::unordered_map< std::string, MarmotMaterialPointFactory::materialPointFactoryFunction >& MarmotMaterialPointFactory::
+  std::unordered_map< std::string, MaterialPointFactory::materialPointFactoryFunction >& MaterialPointFactory::
     materialPointFactoryFunctionByName()
   {
     static std::unordered_map< std::string, materialPointFactoryFunction > map;
     return map;
   }
 
-  bool MarmotMaterialPointFactory::registerMaterialPoint( const std::string&           materialPointName,
+  bool MaterialPointFactory::registerMaterialPoint( const std::string&           materialPointName,
                                                           materialPointFactoryFunction factoryFunction )
   {
 
@@ -76,7 +76,7 @@ namespace MarmotLibrary {
     return true;
   }
 
-  MarmotMaterialPoint* MarmotMaterialPointFactory::createMaterialPoint( const std::string& materialPointName,
+  Marmot::Discretizations::MaterialPoints::MaterialPoint* MaterialPointFactory::createMaterialPoint( const std::string& materialPointName,
                                                                         int                materialPointNumber,
                                                                         const double*      vertexCoordinates,
                                                                         int                sizeVertexCoordinates,
@@ -107,14 +107,14 @@ namespace MarmotLibrary {
    *
    */
 
-  std::unordered_map< std::string, MarmotCellFactory::cellFactoryFunction >& MarmotCellFactory::
+  std::unordered_map< std::string, CellFactory::cellFactoryFunction >& CellFactory::
     cellFactoryFunctionByName()
   {
     static std::unordered_map< std::string, cellFactoryFunction > map;
     return map;
   }
 
-  bool MarmotCellFactory::registerCell( const std::string& cellName, cellFactoryFunction factoryFunction )
+  bool CellFactory::registerCell( const std::string& cellName, cellFactoryFunction factoryFunction )
   {
 
     const auto cellNameUpperCase = makeStringUpperCase( cellName );
@@ -126,7 +126,7 @@ namespace MarmotLibrary {
     return true;
   }
 
-  MarmotCell* MarmotCellFactory::createCell( const std::string& cellName,
+  Marmot::Discretizations::Cells::Cell* CellFactory::createCell( const std::string& cellName,
                                              int                cellNumber,
                                              const double*      nodeCoordinates,
                                              int                sizeNodeCoordinates )
@@ -150,14 +150,14 @@ namespace MarmotLibrary {
    *                 |_|
    */
 
-  std::unordered_map< std::string, MarmotCellFactory::bSplineCellFactoryFunction >& MarmotCellFactory::
+  std::unordered_map< std::string, CellFactory::bSplineCellFactoryFunction >& CellFactory::
     bSplineCellFactoryFunctionByName()
   {
     static std::unordered_map< std::string, bSplineCellFactoryFunction > map;
     return map;
   }
 
-  bool MarmotCellFactory::registerBSplineCell( const std::string& cellName, bSplineCellFactoryFunction factoryFunction )
+  bool CellFactory::registerBSplineCell( const std::string& cellName, bSplineCellFactoryFunction factoryFunction )
   {
 
     const auto cellNameUpperCase = makeStringUpperCase( cellName );
@@ -169,7 +169,7 @@ namespace MarmotLibrary {
     return true;
   }
 
-  MarmotCell* MarmotCellFactory::createBSplineCell( const std::string& cellName,
+  Marmot::Discretizations::Cells::Cell* CellFactory::createBSplineCell( const std::string& cellName,
                                                     int                cellNumber,
                                                     const double*      nodeCoordinates,
                                                     int                sizeNodeCoordinates,
@@ -195,14 +195,14 @@ namespace MarmotLibrary {
    *   \____\___|_|_|_____|_|\___|_| |_| |_|\___|_| |_|\__|___/
    */
 
-  std::unordered_map< std::string, MarmotCellElementFactory::cellElementFactoryFunction >& MarmotCellElementFactory::
+  std::unordered_map< std::string, CellElementFactory::cellElementFactoryFunction >& CellElementFactory::
     cellElementFactoryFunctionByName()
   {
     static std::unordered_map< std::string, cellElementFactoryFunction > map;
     return map;
   }
 
-  bool MarmotCellElementFactory::registerCellElement( const std::string&         cellElementName,
+  bool CellElementFactory::registerCellElement( const std::string&         cellElementName,
                                                       cellElementFactoryFunction factoryFunction )
   {
 
@@ -216,7 +216,7 @@ namespace MarmotLibrary {
     return true;
   }
 
-  MarmotCellElement* MarmotCellElementFactory::createCellElement( const std::string& cellElementName,
+  Marmot::Discretizations::Cells::CellElement* CellElementFactory::createCellElement( const std::string& cellElementName,
                                                                   int                cellElementNumber,
                                                                   const double*      nodeCoordinates,
                                                                   int                sizeNodeCoordinates,
@@ -234,4 +234,4 @@ namespace MarmotLibrary {
     }
   }
 
-} // namespace MarmotLibrary
+} // namespace Marmot::Registry

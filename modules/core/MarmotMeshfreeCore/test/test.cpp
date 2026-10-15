@@ -41,7 +41,7 @@
 #include <vector>
 
 using namespace Marmot;
-using namespace Marmot::Meshfree;
+using namespace Marmot::Discretizations::Meshfree;
 using namespace Marmot::Testing;
 
 namespace {
@@ -103,7 +103,7 @@ namespace {
   struct KernelGrid {
     std::vector< Eigen::VectorXd >                     centers;
     std::vector< std::unique_ptr< Kernel > >           kernels;
-    std::vector< const MarmotMeshfreeKernelFunction* > pointers;
+    std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* > pointers;
 
     KernelGrid( int dim, int n, double supportRadius )
     {
@@ -206,8 +206,8 @@ void checkKernel( const std::string& name )
 
 void testKernelFunctions()
 {
-  checkKernel< MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed >( "BSpline2ndOrderBoxed" );
-  checkKernel< MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed >( "BSpline3rdOrderBoxed" );
+  checkKernel< Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed >( "BSpline2ndOrderBoxed" );
+  checkKernel< Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed >( "BSpline3rdOrderBoxed" );
 }
 
 // reproduction of the complete polynomial basis of the requested order by the values, and of its derivatives by
@@ -277,9 +277,9 @@ void checkApproximation( const std::string& name, int dim, int order, double sup
 
 void testReproducingKernelApproximation()
 {
-  using K2 = MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed;
-  using K3 = MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed;
-  using RK = MarmotMeshfreeReproducingKernelApproximation;
+  using K2 = Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed;
+  using K3 = Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed;
+  using RK = Marmot::Discretizations::Meshfree::ReproducingKernelApproximation;
   for ( int dim = 1; dim <= 3; dim++ )
     for ( int order = 1; order <= 2; order++ ) {
       const double r = order == 1 ? 1.6 : 2.4;
@@ -290,9 +290,9 @@ void testReproducingKernelApproximation()
 
 void testImplicitGradientReproducingKernelApproximation()
 {
-  using K2  = MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed;
-  using K3  = MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed;
-  using IRK = MarmotMeshfreeReproducingKernelApproximationImplicit;
+  using K2  = Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed;
+  using K3  = Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed;
+  using IRK = Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit;
   // implicit gradients reproduce the derivatives of the basis, but are not the derivatives of the values
   for ( int dim = 1; dim <= 3; dim++ )
     for ( int order = 1; order <= 2; order++ ) {
@@ -303,9 +303,9 @@ void testImplicitGradientReproducingKernelApproximation()
 }
 
 // the moment matrix helpers are protected: expose them for the test
-struct MomentMatrixAccess : MarmotMeshfreeReproducingKernelApproximation {
-  using MarmotMeshfreeReproducingKernelApproximation::computeMMatrix;
-  using MarmotMeshfreeReproducingKernelApproximation::computeMMatrixAndGradient;
+struct MomentMatrixAccess : Marmot::Discretizations::Meshfree::ReproducingKernelApproximation {
+  using Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeMMatrix;
+  using Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeMMatrixAndGradient;
 };
 
 void testMomentMatrixGradient()
@@ -313,7 +313,7 @@ void testMomentMatrixGradient()
   using RK = MomentMatrixAccess;
   for ( int dim = 1; dim <= 3; dim++ )
     for ( int order = 1; order <= 2; order++ ) {
-      KernelGrid< MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed > grid( dim, 6, 2.4 );
+      KernelGrid< Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed > grid( dim, 6, 2.4 );
       const Eigen::VectorXd                                          x = point( dim, 2.3 );
       const auto [M, dM] = RK::computeMMatrixAndGradient( x, grid.pointers, order );
       throwExceptionOnFailure( ( M - RK::computeMMatrix( x, grid.pointers, order ) ).norm() < 1e-14 * M.norm(),
@@ -336,8 +336,8 @@ void testMomentMatrixGradient()
 void testCompletenessOrderIsReducedForFewNodes()
 {
   // two kernels in 1D cannot carry a quadratic basis: the order drops to 1
-  KernelGrid< MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed > grid( 1, 2, 1.6 );
-  const MarmotMeshfreeReproducingKernelApproximation             approximation( 1, 2 );
+  KernelGrid< Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed > grid( 1, 2, 1.6 );
+  const Marmot::Discretizations::Meshfree::ReproducingKernelApproximation             approximation( 1, 2 );
   const double                                                   x = 0.4;
   double                                                         N[2], dN[2];
   approximation.computeShapeFunctionsAndGradients( &x, grid.pointers, N, dN );
@@ -350,18 +350,18 @@ void testCompletenessOrderIsReducedForFewNodes()
 // pass the node count check of a linear basis, and a point outside all supports has no kernel at all
 void testSingularMomentMatrixThrows()
 {
-  using K                                                    = MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed;
+  using K                                                    = Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed;
   std::vector< Eigen::VectorXd >                     centers = { Eigen::Vector2d( 0, 0 ),
                                                                  Eigen::Vector2d( 1, 0 ),
                                                                  Eigen::Vector2d( 2, 0 ) };
   std::vector< std::unique_ptr< K > >                kernels;
-  std::vector< const MarmotMeshfreeKernelFunction* > pointers;
+  std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* > pointers;
   for ( auto& c : centers ) {
     kernels.emplace_back( std::make_unique< K >( c.data(), 2, 1.6 ) );
     pointers.push_back( kernels.back().get() );
   }
-  const MarmotMeshfreeReproducingKernelApproximation         rk( 2, 1 );
-  const MarmotMeshfreeReproducingKernelApproximationImplicit irk( 2, 1 );
+  const Marmot::Discretizations::Meshfree::ReproducingKernelApproximation         rk( 2, 1 );
+  const Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit irk( 2, 1 );
 
   for ( const Eigen::Vector2d x : { Eigen::Vector2d( 1.1, 0.2 ), Eigen::Vector2d( 10, 10 ) } ) {
     double N[3], dN[6];
@@ -376,7 +376,7 @@ void testSingularMomentMatrixThrows()
 template < int nDim, int nNodes >
 void checkLagrangianCellInverseMap( const std::vector< double >& nodes, bool box )
 {
-  using Geometry = MarmotLagrangianCellGeometry< nDim, nNodes >;
+  using Geometry = Marmot::Discretizations::Cells::LagrangianCellGeometry< nDim, nNodes >;
   using Xi       = typename Geometry::XiSized;
   const Geometry geometry( nodes.data() );
   const auto     X = Eigen::Map< const Eigen::Matrix< double, nDim, nNodes > >( nodes.data() );
@@ -449,27 +449,26 @@ void testSubdomainsTileTheDeformedDomain()
 // for duplicates), names are case-insensitive, and an unknown name is reported by name
 void testFactories()
 {
-  using namespace MarmotLibrary;
 
   const std::string name = "Test/FactoryCell";
-  throwExceptionOnFailure( MarmotCellFactory::registerCell( name,
-                                                            []( int, const double*, int ) -> MarmotCell* {
+  throwExceptionOnFailure( Marmot::Registry::CellFactory::registerCell( name,
+                                                            []( int, const double*, int ) -> Marmot::Discretizations::Cells::Cell* {
                                                               return nullptr;
                                                             } ),
                            "Lagrangian cell registration" );
-  throwExceptionOnFailure( MarmotCellFactory::registerBSplineCell( name,
+  throwExceptionOnFailure( Marmot::Registry::CellFactory::registerBSplineCell( name,
                                                                    []( int, const double*, int, const double*, int )
-                                                                     -> MarmotCell* { return nullptr; } ),
+                                                                     -> Marmot::Discretizations::Cells::Cell* { return nullptr; } ),
                            "a B-spline cell may have the name of a Lagrangian cell" );
-  throwExceptionOnFailure( MarmotCellFactory::createCell( "TEST/FACTORYCELL", 1, nullptr, 0 ) == nullptr &&
-                             MarmotCellFactory::createBSplineCell( "test/factorycell", 1, nullptr, 0, nullptr, 0 ) ==
+  throwExceptionOnFailure( Marmot::Registry::CellFactory::createCell( "TEST/FACTORYCELL", 1, nullptr, 0 ) == nullptr &&
+                             Marmot::Registry::CellFactory::createBSplineCell( "test/factorycell", 1, nullptr, 0, nullptr, 0 ) ==
                                nullptr,
                            "cells are created by their case-insensitive name" );
 
   const std::string unknown  = "No/Such/CellElement";
   bool              reported = false;
   try {
-    MarmotCellElementFactory::createCellElement( unknown, 42, nullptr, 0, "gauss", 1 );
+    Marmot::Registry::CellElementFactory::createCellElement( unknown, 42, nullptr, 0, "gauss", 1 );
   }
   catch ( const std::invalid_argument& e ) {
     reported = std::string( e.what() ).find( unknown ) != std::string::npos;
@@ -478,7 +477,7 @@ void testFactories()
 
   bool threw = false;
   try {
-    MarmotMaterialPointFactory::createMaterialPoint( "No/Such/MaterialPoint", 1, nullptr, 0, 1.0 );
+    Marmot::Registry::MaterialPointFactory::createMaterialPoint( "No/Such/MaterialPoint", 1, nullptr, 0, 1.0 );
   }
   catch ( const std::invalid_argument& ) {
     threw = true;

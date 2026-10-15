@@ -36,10 +36,10 @@
 #include <stdexcept>
 #include <vector>
 
-namespace Marmot::MaterialPoints {
+namespace Marmot::Discretizations::MaterialPoints {
 
   /**
-   * @class Marmot::MaterialPoints::DisplacementMaterialPoint
+   * @class Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint
    * @brief MPM material point of the finite-strain displacement formulation.
    *
    * @details The material point carries the state of a Marmot::Materials::MaterialFiniteStrain and the kinematics of a total
@@ -72,7 +72,7 @@ namespace Marmot::MaterialPoints {
    * @tparam nDim Spatial dimension (2: plane strain, 3: 3D).
    */
   template < int nDim >
-  class DisplacementMaterialPoint : public MarmotMaterialPoint {
+  class DisplacementMaterialPoint : public Marmot::Discretizations::MaterialPoints::MaterialPoint {
 
   protected:
     constexpr static int _nVertices = 1; ///< a material point has a single vertex, its center
@@ -96,7 +96,7 @@ namespace Marmot::MaterialPoints {
     std::unique_ptr< Material > material;        ///< the finite-strain material
 
     /**
-     * @class Marmot::MaterialPoints::DisplacementMaterialPoint::MPStateVarManager
+     * @class Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::MPStateVarManager
      * @brief State of the material point in the state vector provided by the host.
      *
      * @details Layout (all quantities 3D, regardless of nDim): total displacement @f$ \boldsymbol{u} @f$
@@ -458,7 +458,7 @@ namespace Marmot::MaterialPoints {
   }
 
   /**
-   * @class Marmot::MaterialPoints::DisplacementMaterialPoint2D
+   * @class Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D
    * @brief Plane-strain displacement material point (registered as "Displacement/PlaneStrain").
    *
    * @details The in-plane increment is expanded to 3D (out-of-plane components of the identity), the material is
@@ -487,7 +487,7 @@ namespace Marmot::MaterialPoints {
   };
 
   /**
-   * @class Marmot::MaterialPoints::DisplacementMaterialPoint3D
+   * @class Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D
    * @brief 3D displacement material point (registered as "Displacement/3D").
    *
    * @details The material is evaluated with the 3D deformation gradient by
@@ -513,4 +513,4 @@ namespace Marmot::MaterialPoints {
     void incrementDeformation( const TensorD& displacementIncrement, const TensorDD& displacementGradientIncrement );
   };
 
-} // namespace Marmot::MaterialPoints
+} // namespace Marmot::Discretizations::MaterialPoints

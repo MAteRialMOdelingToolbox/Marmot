@@ -25,6 +25,8 @@
 #pragma once
 #include <cmath>
 
+namespace Marmot::Math {
+
 /**
  * @file MarmotBSpline.h
  * @brief B-spline basis functions of arbitrary degree and their derivatives (Cox--de Boor recursion).
@@ -127,3 +129,5 @@ double inline dB_dU< 0 >( double u, const double* knotVec, int i )
 {
   return 0;
 }
+
+} // namespace Marmot::Math

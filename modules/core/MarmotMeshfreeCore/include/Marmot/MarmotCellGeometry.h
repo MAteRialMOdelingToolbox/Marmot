@@ -30,19 +30,21 @@
 #include <concepts>
 #include <stdexcept>
 
+namespace Marmot::Discretizations::Cells {
+
 /**
- * @class MarmotCellGeometry
+ * @class CellGeometry
  * @brief Deprecated dynamic-polymorphism interface of a cell geometry; superseded by GeometryCellPolicy.
  *
  * @details Unused: the cells take their geometry as a template parameter constrained by the concept
- * GeometryCellPolicy (static polymorphism), with MarmotLagrangianCellGeometry and
- * Marmot::Cells::MarmotBSplineCellGeometry as implementations. The members describe the same contract.
+ * GeometryCellPolicy (static polymorphism), with Marmot::Discretizations::Cells::LagrangianCellGeometry and
+ * Marmot::Discretizations::Cells::BSplineCellGeometry as implementations. The members describe the same contract.
  *
  * @tparam nDim   Spatial dimension.
  * @tparam nNodes Number of cell nodes.
  */
 template < int nDim, int nNodes >
-class [[deprecated( "Currently unused" )]] MarmotCellGeometry {
+class [[deprecated( "Currently unused" )]] CellGeometry {
 
 public:
   typedef Eigen::Matrix< double, nDim, 1 >          XiSized;          ///< Parametric (or physical) point.
@@ -87,13 +89,13 @@ public:
 };
 
 /**
- * @brief Requirements on the geometry policy of a cell (e.g. Marmot::Cells::DisplacementCell).
+ * @brief Requirements on the geometry policy of a cell (e.g. Marmot::Discretizations::Cells::DisplacementCell).
  *
  * @details A geometry policy must provide the types @c XiSized (@f$ n_\mathrm{dim} @f$ vector), @c NSized
  * (@f$ 1\times n_\mathrm{nodes} @f$) and @c dNdXSized (@f$ n_\mathrm{dim}\times n_\mathrm{nodes} @f$) and the
- * methods @c findReferenceCoordinate, @c N, @c dNdX and @c detJ with the signatures of MarmotCellGeometry.
+ * methods @c findReferenceCoordinate, @c N, @c dNdX and @c detJ with the signatures of CellGeometry.
  * The cells additionally call @c isCoordinateInCell, @c getBoundingBox and @c getElementShape, which the
- * concept does not check. Implementations: MarmotLagrangianCellGeometry, Marmot::Cells::MarmotBSplineCellGeometry.
+ * concept does not check. Implementations: Marmot::Discretizations::Cells::LagrangianCellGeometry, Marmot::Discretizations::Cells::BSplineCellGeometry.
  *
  * @tparam GeometryCellImpl Candidate geometry class.
  * @tparam nDim             Spatial dimension.
@@ -134,3 +136,5 @@ concept GeometryCellPolicy = requires( GeometryCellImpl geom ) {
     geom.detJ( typename GeometryCellImpl::XiSized() )
   } -> std::same_as< double >;
 };
+
+} // namespace Marmot::Discretizations::Cells

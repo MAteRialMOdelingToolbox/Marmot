@@ -33,10 +33,10 @@
 #include <Fastor/Fastor.h>
 #include <cmath>
 
-namespace Marmot::Meshfree {
+namespace Marmot::Discretizations::Meshfree {
 
   /**
-   * @class Marmot::Meshfree::DisplacementParticleSQCNI
+   * @class Marmot::Discretizations::Meshfree::DisplacementParticleSQCNI
    * @brief A displacement particle implementing the Stabilized Quasi-Conforming Nodal Integration (SQCNI) method.
    *
    * @details This class extends the basic DisplacementParticle to incorporate the SQCNI formulation,
@@ -100,10 +100,10 @@ namespace Marmot::Meshfree {
                                const std::string&                                           materialName,
                                const double*                                                materialProperties,
                                int                                                          sizeMaterialProperties,
-                               const MarmotMeshfreeApproximation&                           approximation,
+                               const Marmot::Discretizations::Meshfree::Approximation&                           approximation,
                                const typename ParticleDomainType::SmoothingDomainUpdateType smoothingVolumeUpdateType );
 
-    // Override MarmotParticle interface methods to delegate to _particleDomain
+    // Override Marmot::Discretizations::Meshfree::Particle interface methods to delegate to _particleDomain
     /**
      * @brief Vertices of the particle geometry in the intermediate configuration.
      * @param[out] coordinates The vertex coordinates (nDim x nVertices, column major).
@@ -254,7 +254,7 @@ namespace Marmot::Meshfree {
      * @param[in] kernelFunctions A vector of pointers to the meshfree kernel functions.
      */
     virtual void assignMeshfreeKernelFunctions(
-      const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) override
+      const std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* >& kernelFunctions ) override
     {
       this->_assignedKernelFunctions = kernelFunctions;
       this->_nNodes                  = this->_assignedKernelFunctions.size();
@@ -399,7 +399,7 @@ namespace Marmot::Meshfree {
     const std::string&                 materialName,
     const double*                      materialProperties,
     int                                sizeMaterialProperties,
-    const MarmotMeshfreeApproximation& approximation,
+    const Marmot::Discretizations::Meshfree::Approximation& approximation,
     const typename ParticleDomainType::SmoothingDomainUpdateType smoothingVolumeUpdateType )
     : DisplacementParticle< nDim >( elementID,
                                     ParticleDomainType::getCenterFromVertices(
@@ -705,4 +705,4 @@ namespace Marmot::Meshfree {
     return { N_dAY, Y };
   }
 
-} // namespace Marmot::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

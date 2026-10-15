@@ -29,10 +29,10 @@
 #include "Marmot/NewmarkBetaIntegrator.h"
 #include <Fastor/Fastor.h>
 
-namespace Marmot::Meshfree {
+namespace Marmot::Discretizations::Meshfree {
 
   /**
-   * @class Marmot::Meshfree::GradientEnhancedFiniteStrainParticleSQCNIxNSNI
+   * @class Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticleSQCNIxNSNI
    * @brief SQCNI / SNNI particle with naturally stabilized nodal integration (NSNI) for gradient-enhanced
    *        finite-strain materials.
    *
@@ -124,7 +124,7 @@ namespace Marmot::Meshfree {
       const std::string&                             materialName,
       const double*                                  materialProperties,
       int                                            sizeMaterialProperties,
-      const MarmotMeshfreeApproximation&             approximation,
+      const Marmot::Discretizations::Meshfree::Approximation&             approximation,
       ParentSQCNIParticle::SmoothingDomainUpdateType smoothingVolumeUpdateType );
 
     /**
@@ -137,7 +137,7 @@ namespace Marmot::Meshfree {
      * @param[in] kernelFunctions Kernel functions of the nodes that support the particle.
      */
     void assignMeshfreeKernelFunctions(
-      const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) override
+      const std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* >& kernelFunctions ) override
     {
       ParentPointParticle::_assignedKernelFunctions = kernelFunctions;
 
@@ -247,7 +247,7 @@ namespace Marmot::Meshfree {
     const std::string&                                   materialName,
     const double*                                        materialProperties,
     int                                                  sizeMaterialProperties,
-    const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation,
+    const Marmot::Discretizations::Meshfree::Approximation& approximation,
     ParentSQCNIParticle::SmoothingDomainUpdateType       smoothingVolumeUpdateType )
     : GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices >( elementID,
                                                                     vertexCoordinates,
@@ -466,4 +466,4 @@ namespace Marmot::Meshfree {
     // clang-format on
   }
 
-} // namespace Marmot::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

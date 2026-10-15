@@ -34,17 +34,17 @@
 #include "Marmot/NewmarkBetaIntegrator.h"
 #include <vector>
 
-namespace Marmot::Meshfree {
+namespace Marmot::Discretizations::Meshfree {
 
   /**
-   * @class Marmot::Meshfree::GradientEnhancedFiniteStrainParticle
+   * @class Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticle
    * @brief Nodally integrated point particle for gradient-enhanced (implicit-gradient) finite-strain materials
    *        without a micropolar continuum.
    *
    * The particle couples the displacement field @f$ \boldsymbol{u} @f$ to a single scalar nonlocal field
    * @f$ \bar{N} @f$ (nodal fields `displacement` and `nonlocal damage`, node block
    * @f$ n_\mathrm{dim}+1 @f$, dofs ordered node by node as @f$ \{u_1,\dots,u_{n_\mathrm{dim}},\bar{N}\} @f$). It owns
-   * a single Marmot::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint, which drives a
+   * a single Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint, which drives a
    * Marmot::Materials::MaterialGradientEnhancedFiniteStrain, and is integrated with that single point (direct nodal integration).
    *
    * **Kinematics.** The dofs are the increments of the current step. The trial shape functions @f$ N_B @f$ and
@@ -93,7 +93,7 @@ namespace Marmot::Meshfree {
    * @f]
    * as in the MPM cell and the finite element.
    *
-   * **VCI.** The particle implements the variationally consistent integration hooks of MarmotParticle: the test
+   * **VCI.** The particle implements the variationally consistent integration hooks of Marmot::Discretizations::Meshfree::Particle: the test
    * function gradients are corrected by @f$ \partial T_A/\partial Y_i \mathrel{+}= \eta_{AiC}\,P_C(\boldsymbol{Y}) @f$
    * with a monomial basis @f$ P_C @f$ of order `VCI order` (Chen, Hillman, Rüter, 2013). The correction applies to
    * both weak forms.
@@ -105,7 +105,7 @@ namespace Marmot::Meshfree {
    * @tparam nDim Spatial dimension (2: plane strain, 3: 3D).
    */
   template < int nDim >
-  class GradientEnhancedFiniteStrainParticle : public Marmot::Meshfree::MarmotParticle {
+  class GradientEnhancedFiniteStrainParticle : public Marmot::Discretizations::Meshfree::Particle {
 
   protected:
     Eigen::Matrix< double, nDim, 1 > _centerCoordinatesUndeformed; ///< center @f$ \boldsymbol{X}_c @f$, undeformed
@@ -113,10 +113,10 @@ namespace Marmot::Meshfree {
                                                                    ///< configuration @f$ \boldsymbol{Y} @f$
     double _volReferenceIntermediate; ///< volume @f$ V_Y = V_0 \det\boldsymbol{F}_n @f$ (updated at each accept)
 
-    MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint< nDim >* __mp;     ///< the owned material point
-    MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint< nDim >& _mp;      ///< reference to the material point
-    const MarmotMeshfreeApproximation&                 _meshfreeApproximation;   ///< the meshfree approximation
-    std::vector< const MarmotMeshfreeKernelFunction* > _assignedKernelFunctions; ///< kernel functions of the nodes
+    Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint< nDim >* __mp;     ///< the owned material point
+    Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint< nDim >& _mp;      ///< reference to the material point
+    const Marmot::Discretizations::Meshfree::Approximation&                 _meshfreeApproximation;   ///< the meshfree approximation
+    std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* > _assignedKernelFunctions; ///< kernel functions of the nodes
 
     double _newmark_beta;  ///< Newmark-beta parameter @f$ \beta @f$ (property `newmark-beta beta`)
     double _newmark_gamma; ///< Newmark-beta parameter @f$ \gamma @f$ (property `newmark-beta gamma`)
@@ -270,7 +270,7 @@ namespace Marmot::Meshfree {
      * @param[in] kernelFunctions Kernel functions of the nodes that support the particle.
      */
     void assignMeshfreeKernelFunctions(
-      const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) override
+      const std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* >& kernelFunctions ) override
     {
       _assignedKernelFunctions = kernelFunctions;
 
@@ -376,7 +376,7 @@ namespace Marmot::Meshfree {
                                           const std::string&                 materialName,
                                           const double*                      materialProperties,
                                           int                                nMaterialProperties,
-                                          const MarmotMeshfreeApproximation& approximation );
+                                          const Marmot::Discretizations::Meshfree::Approximation& approximation );
 
     /**
      * @brief Initialize the material point (unit deformation gradient, material state, density).
@@ -674,19 +674,19 @@ namespace Marmot::Meshfree {
     const std::string&                                   materialName,
     const double*                                        materialProperties,
     int                                                  nMaterialProperties,
-    const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation )
+    const Marmot::Discretizations::Meshfree::Approximation& approximation )
     : _centerCoordinatesUndeformed( Eigen::Map< const Eigen::Matrix< double, nDim, 1 > >( centerCoordinates0 ) ),
       _centerReferenceIntermediate( _centerCoordinatesUndeformed ),
       _volReferenceIntermediate( volume ), // the reference is the undeformed configuration until the first accept
       __mp( []( int elementID_, const double* coordinates_, int nCoordinates_, double volume_ )
-              -> MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint< nDim >* {
+              -> Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint< nDim >* {
         if constexpr ( nDim == 2 )
-          return new MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint2D( elementID_,
+          return new Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint2D( elementID_,
                                                                                   coordinates_,
                                                                                   nCoordinates_,
                                                                                   volume_ );
         else
-          return new MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint3D( elementID_,
+          return new Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint3D( elementID_,
                                                                                   coordinates_,
                                                                                   nCoordinates_,
                                                                                   volume_ );
@@ -881,4 +881,4 @@ namespace Marmot::Meshfree {
     }
   }
 
-} // namespace Marmot::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

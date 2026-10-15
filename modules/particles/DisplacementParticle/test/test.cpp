@@ -39,7 +39,7 @@
 #include <vector>
 
 using namespace Marmot;
-using namespace Marmot::Meshfree;
+using namespace Marmot::Discretizations::Meshfree;
 using namespace Marmot::Testing;
 
 namespace {
@@ -51,8 +51,8 @@ namespace {
   template < int nDim >
   struct KernelGrid {
     std::vector< std::array< double, 3 > >                                             centers;
-    std::vector< std::unique_ptr< MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed > > kernels;
-    std::vector< const MarmotMeshfreeKernelFunction* >                                 pointers;
+    std::vector< std::unique_ptr< Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed > > kernels;
+    std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* >                                 pointers;
 
     KernelGrid()
     {
@@ -63,7 +63,7 @@ namespace {
             centers.push_back( { double( i ), double( j ), double( k ) } );
       for ( auto& c : centers ) {
         kernels.emplace_back(
-          std::make_unique< MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed >( c.data(), nDim, 1.6 ) );
+          std::make_unique< Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed >( c.data(), nDim, 1.6 ) );
         pointers.push_back( kernels.back().get() );
       }
     }
@@ -72,15 +72,15 @@ namespace {
   template < int nDim >
   struct Setup {
     KernelGrid< nDim >                           grid;
-    MarmotMeshfreeReproducingKernelApproximation approximation{ nDim, 1 };
-    std::unique_ptr< MarmotParticle >            particle;
+    Marmot::Discretizations::Meshfree::ReproducingKernelApproximation approximation{ nDim, 1 };
+    std::unique_ptr< Marmot::Discretizations::Meshfree::Particle >            particle;
     std::vector< double >                        stateVars;
     std::vector< int >                           assignedGridIndices;
     double                                       volume;
 
     Setup( const std::string& name, const std::vector< double >& vertices, double volume_ ) : volume( volume_ )
     {
-      particle.reset( MarmotLibrary::MarmotParticleFactory::createParticle( name,
+      particle.reset( Marmot::Registry::ParticleFactory::createParticle( name,
                                                                             1,
                                                                             vertices.data(),
                                                                             vertices.size(),
@@ -102,7 +102,7 @@ namespace {
       std::vector< double > eval( nEval * nDim );
       particle->getEvaluationCoordinates( eval.data() );
 
-      std::vector< const MarmotMeshfreeKernelFunction* > assigned;
+      std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* > assigned;
       assignedGridIndices.clear();
       for ( size_t g = 0; g < grid.pointers.size(); g++ )
         for ( int e = 0; e < nEval; e++ )

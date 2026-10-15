@@ -27,7 +27,7 @@
 #include <cstring>
 #include <ctime>
 
-namespace Marmot::MaterialPoints {
+namespace Marmot::Discretizations::MaterialPoints {
 
   void DisplacementMaterialPoint2D::incrementDeformation( const TensorD& du, const TensorDD& du_dY )
   {
@@ -124,4 +124,4 @@ namespace Marmot::MaterialPoints {
     _density = material->getDensity( state->materialState.data() );
   }
 
-} // namespace Marmot::MaterialPoints
+} // namespace Marmot::Discretizations::MaterialPoints

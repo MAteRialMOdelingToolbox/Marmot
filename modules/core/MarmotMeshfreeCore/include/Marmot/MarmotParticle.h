@@ -32,17 +32,17 @@
 #include <unordered_map>
 #include <vector>
 
-namespace Marmot::Meshfree {
+namespace Marmot::Discretizations::Meshfree {
 
   /**
-   * @class Marmot::Meshfree::MarmotParticle
+   * @class Marmot::Discretizations::Meshfree::Particle
    * @brief Abstract interface of a particle of the reproducing kernel particle method (RKPM).
    *
    * A particle is the integration entity of the meshfree layer: it represents a piece of the body (its domain,
    * commonly a point, a quadrilateral or a hexahedron) and it evaluates the weak form on that piece. Unlike a finite
    * element, a particle has no fixed nodes. It interacts with the degrees of freedom, which live on the nodes of the
-   * meshfree kernel functions (MarmotMeshfreeKernelFunction), via the shape functions of a meshfree approximation
-   * (MarmotMeshfreeApproximation). The host framework (e.g., EdelweissMeshfree) finds the kernel functions whose
+   * meshfree kernel functions (KernelFunction), via the shape functions of a meshfree approximation
+   * (Approximation). The host framework (e.g., EdelweissMeshfree) finds the kernel functions whose
    * support covers the particle and hands them over with assignMeshfreeKernelFunctions(); the particle then
    * evaluates the shape functions @f$ N_A @f$ and (possibly smoothed) gradients @f$ \partial N_A / \partial Y @f$
    * of these @f$ A = 1 \dots n_{\text{nodes}} @f$ nodes.
@@ -54,7 +54,7 @@ namespace Marmot::Meshfree {
    * particle to the new configuration at the end of a converged increment.
    *
    * A typical life cycle driven by the host framework is
-   * -# creation via MarmotLibrary::MarmotParticleFactory::createParticle(),
+   * -# creation via Marmot::Registry::ParticleFactory::createParticle(),
    * -# setProperties() (e.g., the order of the variationally consistent integration and time integration
    *    parameters),
    * -# assignStateVars() with a block of getNumberOfRequiredStateVars() doubles, initializeYourself(),
@@ -85,14 +85,14 @@ namespace Marmot::Meshfree {
    * done by the host framework.
    */
 
-  class MarmotParticle {
+  class Particle {
 
   public:
     /// @brief Default constructor.
-    MarmotParticle() = default;
+    Particle() = default;
 
     /// @brief Virtual destructor.
-    virtual ~MarmotParticle() = default;
+    virtual ~Particle() = default;
 
     /**
      * @brief Assign all the properties of the particle.
@@ -124,7 +124,7 @@ namespace Marmot::Meshfree {
      * @param[in] kernelFunctions Kernel functions whose support covers the particle.
      */
     virtual void assignMeshfreeKernelFunctions(
-      const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) = 0;
+      const std::vector< const KernelFunction* >& kernelFunctions ) = 0;
 
     /**
      * @brief Assign the memory block that holds the state variables of the particle.
@@ -407,4 +407,4 @@ namespace Marmot::Meshfree {
     virtual void setInitialCondition( const std::string& conditionName, const double* value ) = 0;
   };
 
-} // namespace Marmot::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

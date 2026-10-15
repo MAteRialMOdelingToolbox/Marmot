@@ -27,23 +27,25 @@
 #include "Marmot/MarmotUtils.h"
 #include <string>
 
+namespace Marmot::Discretizations::MaterialPoints {
+
 /**
- * @class MarmotMaterialPoint
+ * @class MaterialPoint
  * @brief Abstract interface of a material point of the material point method (MPM).
  *
  * @details A material point is a Lagrangian integration point that carries mass (volume and density),
  * position and the complete history (deformation, stress, material state variables) through the
- * simulation, while the background cells (MarmotCell) carry the nodal fields and are reset every
+ * simulation, while the background cells (Marmot::Discretizations::Cells::Cell) carry the nodal fields and are reset every
  * increment. A material point owns its constitutive model (assigned with assignMaterial()); its state
  * variables live in an externally owned array (assigned with assignStateVars()).
  *
  * **Life cycle** (as called by the host framework, e.g. EdelweissMeshfree):
- *  1. creation by name via MarmotLibrary::MarmotMaterialPointFactory, then assignMaterial(),
+ *  1. creation by name via Marmot::Registry::MaterialPointFactory, then assignMaterial(),
  *     getNumberOfRequiredStateVars() and assignStateVars(),
  *  2. initializeYourself() once, before the first increment,
  *  3. per iteration: prepareYourself(), then the cells interpolate the nodal increments to the material
- *     point (MarmotCell::interpolateFieldsToMaterialPoints()), then computeYourself(), which evaluates the
- *     constitutive response that the cells integrate in MarmotCell::computeMaterialPointKernels(),
+ *     point (Marmot::Discretizations::Cells::Cell::interpolateFieldsToMaterialPoints()), then computeYourself(), which evaluates the
+ *     constitutive response that the cells integrate in Marmot::Discretizations::Cells::Cell::computeMaterialPointKernels(),
  *  4. acceptStateAndPosition() after convergence of the increment, which commits the increment
  *     (e.g. updates position and deformation gradient).
  *
@@ -57,14 +59,14 @@
  *
  * The kinematic update from the cell (e.g. @c incrementDeformation) and the response/tangent quantities
  * read by the cell are not part of this interface: they are specific to each pair of concrete cell and
- * material point (see e.g. Marmot::MaterialPoints::DisplacementMaterialPoint), and the cell obtains them by
+ * material point (see e.g. Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint), and the cell obtains them by
  * a @c dynamic_cast.
  */
-class MarmotMaterialPoint {
+class MaterialPoint {
 
 public:
-  /// Virtual destructor; material points are owned through MarmotMaterialPoint pointers.
-  virtual ~MarmotMaterialPoint(){};
+  /// Virtual destructor; material points are owned through MaterialPoint pointers.
+  virtual ~MaterialPoint(){};
 
   /**
    * @brief Assigns the (externally owned) state variable array.
@@ -177,3 +179,5 @@ public:
    */
   virtual void setInitialCondition( const std::string& conditionName, const double* value ) = 0;
 };
+
+} // namespace Marmot::Discretizations::MaterialPoints

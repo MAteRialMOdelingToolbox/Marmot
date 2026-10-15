@@ -38,10 +38,10 @@
 #include <unordered_map>
 #include <vector>
 
-namespace Marmot::Cells {
+namespace Marmot::Discretizations::Cells {
 
   /**
-   * @class Marmot::Cells::DisplacementCell
+   * @class Marmot::Discretizations::Cells::DisplacementCell
    * @brief MPM background cell for finite-strain displacement material points.
    *
    * @details The cell carries the displacement field (nDim dofs per node) and consumes DisplacementMaterialPoint
@@ -71,7 +71,7 @@ namespace Marmot::Cells {
    *
    * @tparam nDim         Spatial dimension (2: plane strain, 3).
    * @tparam nNodes       Number of cell nodes.
-   * @tparam CellBase     Base class, MarmotCell.
+   * @tparam CellBase     Base class, Marmot::Discretizations::Cells::Cell.
    * @tparam GeometryCell Geometry policy, Lagrangian or B-spline.
    */
   template < int nDim, int nNodes, class CellBase, GeometryCellPolicy< nDim, nNodes > GeometryCell >
@@ -106,7 +106,7 @@ namespace Marmot::Cells {
     static constexpr int sizeLoadVector = bsU;                   ///< number of dofs of the cell
     static constexpr int idxU           = 0;                     ///< first index of the displacement block
 
-    using MaterialPoint = MaterialPoints::DisplacementMaterialPoint< nDim >; ///< the consumed material point type
+    using MaterialPoint = Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint< nDim >; ///< the consumed material point type
 
     using NSized    = typename GeometryCell::NSized;                         ///< shape function vector of the geometry
     using dNdXSized = typename GeometryCell::dNdXSized; ///< shape function gradient matrix of the geometry
@@ -118,7 +118,7 @@ namespace Marmot::Cells {
     const int _cellLabel;                                                          ///< label of the cell
 
     /**
-     * @struct Marmot::Cells::DisplacementCell::MaterialPointLocation
+     * @struct Marmot::Discretizations::Cells::DisplacementCell::MaterialPointLocation
      * @brief A material point hosted by the cell, with its shape functions cached at assignment.
      */
     struct MaterialPointLocation {
@@ -211,7 +211,7 @@ namespace Marmot::Cells {
      * @param[in] materialPoints The material points.
      * @throws std::invalid_argument if a material point is not a DisplacementMaterialPoint of dimension nDim.
      */
-    void assignMaterialPoints( const std::vector< MarmotMaterialPoint* >& materialPoints );
+    void assignMaterialPoints( const std::vector< Marmot::Discretizations::MaterialPoints::MaterialPoint* >& materialPoints );
 
     /**
      * @brief Assembles the internal force vector and its tangent of the hosted material points (see the class
@@ -299,7 +299,7 @@ namespace Marmot::Cells {
 
   template < int nDim, int nNodes, class CellBase, GeometryCellPolicy< nDim, nNodes > GeometryCell >
   void DisplacementCell< nDim, nNodes, CellBase, GeometryCell >::assignMaterialPoints(
-    const std::vector< MarmotMaterialPoint* >& materialPoints )
+    const std::vector< Marmot::Discretizations::MaterialPoints::MaterialPoint* >& materialPoints )
   {
     _materialPointLocations.clear();
 
@@ -551,17 +551,17 @@ namespace Marmot::Cells {
   }
 
   /**
-   * @class Marmot::Cells::LagrangianDisplacementCell
+   * @class Marmot::Discretizations::Cells::LagrangianDisplacementCell
    * @brief DisplacementCell with a Lagrangian geometry (registered as "Displacement/Quad4" and "Displacement/Hexa8").
    * @tparam nDim   Spatial dimension.
    * @tparam nNodes Number of nodes (4 in 2D, 8 in 3D).
    */
   template < int nDim, int nNodes >
   class LagrangianDisplacementCell
-    : public DisplacementCell< nDim, nNodes, MarmotCell, MarmotLagrangianCellGeometry< nDim, nNodes > > {
+    : public DisplacementCell< nDim, nNodes, Marmot::Discretizations::Cells::Cell, Marmot::Discretizations::Cells::LagrangianCellGeometry< nDim, nNodes > > {
 
-    using Geometry      = MarmotLagrangianCellGeometry< nDim, nNodes >;           ///< the geometry policy
-    using PhysicsParent = DisplacementCell< nDim, nNodes, MarmotCell, Geometry >; ///< the physics base class
+    using Geometry      = Marmot::Discretizations::Cells::LagrangianCellGeometry< nDim, nNodes >;           ///< the geometry policy
+    using PhysicsParent = DisplacementCell< nDim, nNodes, Marmot::Discretizations::Cells::Cell, Geometry >; ///< the physics base class
 
   public:
     /**
@@ -575,7 +575,7 @@ namespace Marmot::Cells {
   };
 
   /**
-   * @class Marmot::Cells::BSplineDisplacementCell
+   * @class Marmot::Discretizations::Cells::BSplineDisplacementCell
    * @brief DisplacementCell with a B-spline geometry (registered as "Displacement/BSpline/<order>" in 2D and
    * "Displacement/BSpline/3D/<order>" in 3D).
    * @tparam nDim   Spatial dimension.
@@ -584,10 +584,10 @@ namespace Marmot::Cells {
    */
   template < int nDim, int nNodes, int order >
   class BSplineDisplacementCell
-    : public DisplacementCell< nDim, nNodes, MarmotCell, MarmotBSplineCellGeometry< nDim, order > > {
+    : public DisplacementCell< nDim, nNodes, Marmot::Discretizations::Cells::Cell, Marmot::Discretizations::Cells::BSplineCellGeometry< nDim, order > > {
 
-    using Geometry      = MarmotBSplineCellGeometry< nDim, order >;               ///< the geometry policy
-    using PhysicsParent = DisplacementCell< nDim, nNodes, MarmotCell, Geometry >; ///< the physics base class
+    using Geometry      = Marmot::Discretizations::Cells::BSplineCellGeometry< nDim, order >;               ///< the geometry policy
+    using PhysicsParent = DisplacementCell< nDim, nNodes, Marmot::Discretizations::Cells::Cell, Geometry >; ///< the physics base class
 
   public:
     /**
@@ -606,4 +606,4 @@ namespace Marmot::Cells {
       : PhysicsParent( cellLabel, Geometry( nodeCoordinates, sizeNodeCoordinates, knotVectors, sizeKnotVectors ) ){};
   };
 
-} // namespace Marmot::Cells
+} // namespace Marmot::Discretizations::Cells

@@ -31,10 +31,10 @@
 #include <Fastor/Fastor.h>
 #include <stdexcept>
 
-namespace Marmot::Meshfree {
+namespace Marmot::Discretizations::Meshfree {
 
   /**
-   * @class Marmot::Meshfree::DisplacementParticleSQCNIxSDI
+   * @class Marmot::Discretizations::Meshfree::DisplacementParticleSQCNIxSDI
    * @brief Displacement particle with subdomain integration (SDI): smoothed (SQCNI/SNNI) gradients on each subdomain
    * of the particle.
    *
@@ -215,7 +215,7 @@ namespace Marmot::Meshfree {
       const std::string&                                                     materialName,
       const double*                                                          materialProperties,
       int                                                                    sizeMaterialProperties,
-      const MarmotMeshfreeApproximation&                                     approximation,
+      const Marmot::Discretizations::Meshfree::Approximation&                                     approximation,
       const GenericSDIParticle< nDim, nVertices >::SmoothingDomainUpdateType smoothingVolumeUpdateType );
 
     /**
@@ -459,7 +459,7 @@ namespace Marmot::Meshfree {
     const std::string&                                                     materialName,
     const double*                                                          materialProperties,
     int                                                                    sizeMaterialProperties,
-    const Marmot::Meshfree::MarmotMeshfreeApproximation&                   approximation,
+    const Marmot::Discretizations::Meshfree::Approximation&                   approximation,
     const GenericSDIParticle< nDim, nVertices >::SmoothingDomainUpdateType smoothingVolumeUpdateType )
     : GenericSDIParticle< nDim, nVertices >( elementID,
                                              vertexCoordinates,
@@ -686,4 +686,4 @@ namespace Marmot::Meshfree {
     }
   }
 
-} // namespace Marmot::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

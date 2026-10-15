@@ -41,10 +41,10 @@
 #include <memory>
 #include <vector>
 
-namespace Marmot::MaterialPoints {
+namespace Marmot::Discretizations::MaterialPoints {
 
   /**
-   * @class Marmot::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint
+   * @class Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint
    * @brief Material point for gradient-enhanced (implicit-gradient) finite-strain materials without a micropolar
    *        continuum.
    *
@@ -82,7 +82,7 @@ namespace Marmot::MaterialPoints {
    * @tparam nDim Spatial dimension (2: plane strain, 3: 3D).
    */
   template < int nDim >
-  class GradientEnhancedFiniteStrainMaterialPoint : public MarmotMaterialPoint {
+  class GradientEnhancedFiniteStrainMaterialPoint : public Marmot::Discretizations::MaterialPoints::MaterialPoint {
 
   protected:
     constexpr static int _nVertices = 1;                     ///< a material point is represented by a single vertex
@@ -103,7 +103,7 @@ namespace Marmot::MaterialPoints {
     std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedFiniteStrain > material; ///< the assigned material
 
     /**
-     * @class Marmot::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::MPStateVarManager
+     * @class Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::MPStateVarManager
      * @brief State variable layout of the material point, followed by the state of the material.
      *
      * All kinematic quantities are stored with 3 (vectors) or 9 (tensors) entries, also in plane strain.
@@ -135,7 +135,7 @@ namespace Marmot::MaterialPoints {
       Marmot::Math::FastorTensors::TensorMap33d dx_dY; ///< deformation gradient increment @f$ \Delta\boldsymbol{F} @f$
       Marmot::Math::FastorTensors::TensorMap33d dY_dX; ///< deformation gradient @f$ \boldsymbol{F}_n @f$, last accepted
       double& nonLocalDamage; ///< nonlocal field @f$ \bar{N} @f$ (total; incrementDeformation() adds the increment of
-                              ///< the step to the committed value, see the state contract of MarmotMaterialPoint)
+                              ///< the step to the committed value, see the state contract of Marmot::Discretizations::MaterialPoints::MaterialPoint)
       double& localDamage;    ///< local driving force @f$ L @f$ of the last material evaluation
       Marmot::Math::FastorTensors::TensorMap33d stress;        ///< Kirchhoff stress @f$ \boldsymbol{\tau} @f$ (3x3)
       double&                             F0_XX;         ///< eigen deformation (geostatic stress), XX component
@@ -520,7 +520,7 @@ namespace Marmot::MaterialPoints {
   }
 
   /**
-   * @class Marmot::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint2D
+   * @class Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint2D
    * @brief Plane-strain gradient-enhanced finite-strain material point (registered as
    *        `GradientEnhancedFiniteStrain/PlaneStrain`).
    *
@@ -552,7 +552,7 @@ namespace Marmot::MaterialPoints {
   };
 
   /**
-   * @class Marmot::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint3D
+   * @class Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint3D
    * @brief Three-dimensional gradient-enhanced finite-strain material point (registered as
    *        `GradientEnhancedFiniteStrain/3D`).
    */
@@ -579,4 +579,4 @@ namespace Marmot::MaterialPoints {
                                double          nonLocalDamage );
   };
 
-} // namespace Marmot::MaterialPoints
+} // namespace Marmot::Discretizations::MaterialPoints

@@ -29,10 +29,10 @@
 #include "Marmot/NewmarkBetaIntegrator.h"
 #include <Fastor/Fastor.h>
 
-namespace Marmot::Meshfree {
+namespace Marmot::Discretizations::Meshfree {
 
   /**
-   * @class Marmot::Meshfree::DisplacementParticleSQCNIxNSNI
+   * @class Marmot::Discretizations::Meshfree::DisplacementParticleSQCNIxNSNI
    * @brief Implements a Displacement Particle with Stabilized Quasi-Conforming Nodal Integration (SQCNI)
    *        and Naturally Stabilized Nodal Integration (NSNI) for enhanced stability and accuracy.
    *
@@ -126,7 +126,7 @@ namespace Marmot::Meshfree {
                                     const std::string&                             materialName,
                                     const double*                                  materialProperties,
                                     int                                            sizeMaterialProperties,
-                                    const MarmotMeshfreeApproximation&             approximation,
+                                    const Marmot::Discretizations::Meshfree::Approximation&             approximation,
                                     ParentSQCNIParticle::SmoothingDomainUpdateType smoothingVolumeUpdateType );
 
     /**
@@ -141,7 +141,7 @@ namespace Marmot::Meshfree {
      *                        associated with the surrounding nodes.
      */
     void assignMeshfreeKernelFunctions(
-      const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) override
+      const std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* >& kernelFunctions ) override
     {
       ParentPointParticle::_assignedKernelFunctions = kernelFunctions;
 
@@ -270,7 +270,7 @@ namespace Marmot::Meshfree {
     const std::string&                                   materialName,
     const double*                                        materialProperties,
     int                                                  sizeMaterialProperties,
-    const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation,
+    const Marmot::Discretizations::Meshfree::Approximation& approximation,
     ParentSQCNIParticle::SmoothingDomainUpdateType       smoothingVolumeUpdateType )
     : DisplacementParticleSQCNI< nDim, nVertices >( elementID,
                                                     vertexCoordinates,
@@ -588,4 +588,4 @@ namespace Marmot::Meshfree {
     }
   }
 
-} // namespace Marmot::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

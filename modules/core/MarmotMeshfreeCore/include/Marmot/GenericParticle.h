@@ -34,14 +34,14 @@
 #include <string>
 #include <vector>
 
-namespace Marmot::Meshfree {
+namespace Marmot::Discretizations::Meshfree {
 
   /**
-   * @class Marmot::Meshfree::GenericParticle
+   * @class Marmot::Discretizations::Meshfree::GenericParticle
    * @brief Common base of the point particles (one evaluation point at the particle center), independent of the
    * physics.
    *
-   * GenericParticle implements the parts of the MarmotParticle interface that do not depend on the physics:
+   * GenericParticle implements the parts of the Particle interface that do not depend on the physics:
    *  - the geometry of a point particle: a single vertex at the center @f$ \boldsymbol{Y}_c @f$ in the reference
    *    intermediate configuration (the last accepted configuration), shape "point";
    *  - the shape functions: assignMeshfreeKernelFunctions() evaluates the trial functions @f$ N_A @f$ and their
@@ -73,7 +73,7 @@ namespace Marmot::Meshfree {
    * @tparam nDim The number of dimensions (2 or 3).
    */
   template < int nDim >
-  class GenericParticle : public Marmot::Meshfree::MarmotParticle {
+  class GenericParticle : public Marmot::Discretizations::Meshfree::Particle {
 
   protected:
     /// Center coordinates in the undeformed configuration.
@@ -84,9 +84,9 @@ namespace Marmot::Meshfree {
     double _volReferenceIntermediate;
 
     /// The meshfree approximation (shape functions).
-    const MarmotMeshfreeApproximation& _meshfreeApproximation;
+    const Approximation& _meshfreeApproximation;
     /// The assigned kernel functions (nodes), in dof order.
-    std::vector< const MarmotMeshfreeKernelFunction* > _assignedKernelFunctions;
+    std::vector< const KernelFunction* > _assignedKernelFunctions;
 
     /// The number of currently assigned nodes (= meshfree kernel functions)
     int _nNodes;
@@ -147,7 +147,7 @@ namespace Marmot::Meshfree {
                      const double*                      centerCoordinates0,
                      int                                nCenterCoordinates0,
                      double                             volume,
-                     const MarmotMeshfreeApproximation& approximation );
+                     const Approximation& approximation );
 
     /**
      * @brief Set the properties of GenericParticle, in the order of its own property list ("VCI order").
@@ -206,7 +206,7 @@ namespace Marmot::Meshfree {
      * @param[in] kernelFunctions The kernel functions (nodes) covering the particle.
      */
     virtual void assignMeshfreeKernelFunctions(
-      const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) override
+      const std::vector< const KernelFunction* >& kernelFunctions ) override
     {
       _assignedKernelFunctions = kernelFunctions;
 
@@ -398,7 +398,7 @@ namespace Marmot::Meshfree {
                                             const double*                                        centerCoordinates0,
                                             int                                                  nCenterCoordinates0,
                                             double                                               volume,
-                                            const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation )
+                                            const Marmot::Discretizations::Meshfree::Approximation& approximation )
     : _centerCoordinatesUndeformed( Eigen::Map< const Eigen::Matrix< double, nDim, 1 > >( centerCoordinates0 ) ),
       _centerReferenceIntermediate( _centerCoordinatesUndeformed ),
       _volReferenceIntermediate( volume ), // Initial volume is undeformed volume
@@ -414,4 +414,4 @@ namespace Marmot::Meshfree {
     this->setVCIOrder( _vciOrder ); // Initialize VCI members
   }
 
-} // namespace Marmot::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

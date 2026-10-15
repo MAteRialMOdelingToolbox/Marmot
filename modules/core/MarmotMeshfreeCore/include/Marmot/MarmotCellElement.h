@@ -25,25 +25,27 @@
 #pragma once
 #include "Marmot/MarmotCell.h"
 
+namespace Marmot::Discretizations::Cells {
+
 /**
- * @class MarmotCellElement
- * @brief A MarmotCell that defines its own material points, like a finite element defines its quadrature points.
+ * @class CellElement
+ * @brief A Cell that defines its own material points, like a finite element defines its quadrature points.
  *
- * @details In contrast to a plain MarmotCell, which integrates over whatever material points currently lie
+ * @details In contrast to a plain Cell, which integrates over whatever material points currently lie
  * inside it, a cell element requests a fixed set of material points: the host framework queries
  * getNMaterialPoints(), getRequestedMaterialPointCoordinates() and getRequestedMaterialPointVolumes(), creates
  * one material point per request (e.g. at the points of the quadrature rule passed to
- * MarmotLibrary::MarmotCellElementFactory), and assigns them back with MarmotCell::assignMaterialPoints().
+ * Marmot::Registry::CellElementFactory), and assigns them back with Cell::assignMaterialPoints().
  * The cell element may additionally carry its own state variables.
  *
- * Instances are created by name via MarmotLibrary::MarmotCellElementFactory. No concrete cell element is
+ * Instances are created by name via Marmot::Registry::CellElementFactory. No concrete cell element is
  * contained in Marmot at present.
  */
-class MarmotCellElement : public MarmotCell {
+class CellElement : public Cell {
 
 public:
   /// Virtual destructor; cell elements are owned through base class pointers.
-  virtual ~MarmotCellElement() = default;
+  virtual ~CellElement() = default;
 
   /**
    * @brief Number of material points requested by the cell element.
@@ -76,3 +78,5 @@ public:
    */
   virtual void assignStateVars( double* stateVars, int nStateVars ) = 0;
 };
+
+} // namespace Marmot::Discretizations::Cells

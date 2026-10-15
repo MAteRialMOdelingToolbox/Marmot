@@ -31,8 +31,10 @@
 #include <cmath>
 #include <stdexcept>
 
+namespace Marmot::Discretizations::Cells {
+
 /**
- * @class MarmotLagrangianCellGeometry
+ * @class LagrangianCellGeometry
  * @brief Isoparametric Lagrangian cell geometry (Quad4, Hexa8), a geometry policy for the MPM cells.
  *
  * @details Uses the shape functions @f$ N_A(\boldsymbol{\xi}) @f$, @f$ \boldsymbol{\xi}\in[-1,1]^{n_\mathrm{dim}} @f$,
@@ -49,7 +51,7 @@
  * @tparam nNodes Number of nodes (4 in 2D, 8 in 3D).
  */
 template < int nDim, int nNodes >
-class MarmotLagrangianCellGeometry : public Marmot::Discretizations::Elements::GeometryElement< nDim, nNodes >
+class LagrangianCellGeometry : public Marmot::Discretizations::Elements::GeometryElement< nDim, nNodes >
 
 {
 
@@ -70,7 +72,7 @@ public:
    * @param[in] nodeCoordinates Nodal coordinates, nNodes @f$ \times @f$ nDim values, node by node (Abaqus node
    *                            order). The array is mapped, not copied, and must outlive the geometry.
    */
-  MarmotLagrangianCellGeometry( const double* nodeCoordinates )
+  LagrangianCellGeometry( const double* nodeCoordinates )
   {
     ParentLagrangianGeometryElement::assignNodeCoordinates( nodeCoordinates );
     auto nodeCoords = ParentLagrangianGeometryElement::coordinates.reshaped( nDim, nNodes );
@@ -162,7 +164,7 @@ public:
 };
 
 template < int nDim, int nNodes >
-bool MarmotLagrangianCellGeometry< nDim, nNodes >::isCoordinateInCell( const double* coordinates ) const
+bool LagrangianCellGeometry< nDim, nNodes >::isCoordinateInCell( const double* coordinates ) const
 {
 
   for ( auto i = 0; i < nDim; i++ )
@@ -187,7 +189,7 @@ bool MarmotLagrangianCellGeometry< nDim, nNodes >::isCoordinateInCell( const dou
 }
 
 template < int nDim, int nNodes >
-void MarmotLagrangianCellGeometry< nDim, nNodes >::getBoundingBox( double* boundingBoxMin,
+void LagrangianCellGeometry< nDim, nNodes >::getBoundingBox( double* boundingBoxMin,
                                                                    double* boundingBoxMax ) const
 {
   ( Eigen::Map< XiSized >( boundingBoxMin ) ) = _boundingBoxMin;
@@ -195,7 +197,7 @@ void MarmotLagrangianCellGeometry< nDim, nNodes >::getBoundingBox( double* bound
 }
 
 template < int nDim, int nNodes >
-MarmotLagrangianCellGeometry< nDim, nNodes >::XiSized MarmotLagrangianCellGeometry< nDim, nNodes >::
+LagrangianCellGeometry< nDim, nNodes >::XiSized LagrangianCellGeometry< nDim, nNodes >::
   findReferenceCoordinate( const XiSized& coord ) const
 {
   const auto    X = ParentLagrangianGeometryElement::coordinates.reshaped( nDim, nNodes );
@@ -218,3 +220,5 @@ MarmotLagrangianCellGeometry< nDim, nNodes >::XiSized MarmotLagrangianCellGeomet
 
   return xi;
 }
+
+} // namespace Marmot::Discretizations::Cells
