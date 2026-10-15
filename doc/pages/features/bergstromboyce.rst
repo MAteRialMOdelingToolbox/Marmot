@@ -136,12 +136,6 @@ Reference: J. S. Bergström, M. C. Boyce (1998). Constitutive modeling of the la
 time-dependent behavior of elastomers. *Journal of the Mechanics and Physics of Solids*
 46(5):931-954.
 
-.. note::
-
-   Only the complex-step-differentiated (CSDA) tangent variant (``implementationType = 0``) is
-   currently implemented. The fully analytic tangent (``implementationType = 1``) is reserved
-   for future work.
-
 Material parameters
 -------------------
 
@@ -179,14 +173,11 @@ The material parameters are provided as a flat vector with the following layout:
    * - 11
      - :math:`c_3`
      - Network B effective-stress exponent
-   * - 12
-     - ``implementationType``
-     - Tangent algorithm selector: ``0`` = CSDA (complex-step derivative approximation)
-   * - 13 *(2-net)* / 20 *(3-net)* *(optional)*
+   * - 12 *(2-net)* / 19 *(3-net)* *(optional)*
      - :math:`\rho`
      - Mass density
 
-.. rubric:: Optional Network C parameters (indices 13–19, activated when :math:`\ge 20` parameters provided)
+.. rubric:: Optional Network C parameters (indices 12–18, activated when :math:`\ge 19` parameters provided)
 
 .. list-table::
    :header-rows: 1
@@ -195,22 +186,22 @@ The material parameters are provided as a flat vector with the following layout:
    * - **Index**
      - **Parameter**
      - **Description**
-   * - 13
+   * - 12
      - :math:`\kappa_C`
      - Bulk modulus of Network C spring
-   * - 14, 15, 16
+   * - 13, 14, 15
      - :math:`C_1, C_2, C_3`
      - Network C hyperelastic coefficients (interpretation depends on base model)
-   * - 17
+   * - 16
      - :math:`c_4`
      - Network C flow-rate prefactor
-   * - 18
+   * - 17
      - :math:`c_5`
      - Network C chain-stretch exponent
-   * - 19
+   * - 18
      - :math:`c_6`
      - Network C effective-stress exponent
-   * - 20 *(optional)*
+   * - 19 *(optional)*
      - :math:`\rho`
      - Mass density
 

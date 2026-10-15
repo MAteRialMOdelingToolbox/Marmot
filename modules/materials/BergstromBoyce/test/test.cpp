@@ -20,8 +20,7 @@ using namespace Marmot::FastorIndices;
 // Rivlin coefficients are zero -- this lets every base-agnostic physics check
 // below be run identically across all three bases against one shared target.
 //
-// Properties: hyperelasticBase, kappaA, kappaB, A1, A2, A3, B1, B2, B3, c1, c2, c3,
-// implementationType
+// Properties: hyperelasticBase, kappaA, kappaB, A1, A2, A3, B1, B2, B3, c1, c2, c3
 struct PropsVariant {
   std::string           name;
   std::vector< double > props;
@@ -43,21 +42,21 @@ struct PropsVariant {
 // checked separately, at the scalar (isochoric-invariant) level, by
 // testArrudaBoyceReducesToNeoHooke below.
 static const std::vector< PropsVariant > VARIANTS = {
-  { "NeoHooke", { 0, 1000.0, 1000.0, 100.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.05, 1.0, 1.0, 0.0 } },
-  { "Yeoh", { 1, 1000.0, 1000.0, 50.0, 0.0, 0.0, 25.0, 0.0, 0.0, 0.05, 1.0, 1.0, 0.0 } },
-  { "MooneyRivlin", { 2, 1000.0, 1000.0, 50.0, 0.0, 0.0, 25.0, 0.0, 0.0, 0.05, 1.0, 1.0, 0.0 } },
-  { "ArrudaBoyce", { 3, 1000.0, 1000.0, 100.0, 2.0, 0.0, 50.0, 2.0, 0.0, 0.05, 1.0, 1.0, 0.0 } },
+  { "NeoHooke", { 0, 1000.0, 1000.0, 100.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.05, 1.0, 1.0 } },
+  { "Yeoh", { 1, 1000.0, 1000.0, 50.0, 0.0, 0.0, 25.0, 0.0, 0.0, 0.05, 1.0, 1.0 } },
+  { "MooneyRivlin", { 2, 1000.0, 1000.0, 50.0, 0.0, 0.0, 25.0, 0.0, 0.0, 0.05, 1.0, 1.0 } },
+  { "ArrudaBoyce", { 3, 1000.0, 1000.0, 100.0, 2.0, 0.0, 50.0, 2.0, 0.0, 0.05, 1.0, 1.0 } },
 };
 
 static const std::vector< PropsVariant > VARIANTS_3NET = {
   { "NeoHooke_3Net",
-    { 0, 1000.0, 500.0, 100.0, 0.0, 0.0, 25.0, 0.0, 0.0, 0.05, 1.0, 1.0, 0.0, 500.0, 25.0, 0.0, 0.0, 0.02, 1.2, 0.8 } },
+    { 0, 1000.0, 500.0, 100.0, 0.0, 0.0, 25.0, 0.0, 0.0, 0.05, 1.0, 1.0, 500.0, 25.0, 0.0, 0.0, 0.02, 1.2, 0.8 } },
   { "Yeoh_3Net",
-    { 1, 1000.0, 500.0, 50.0, 0.0, 0.0, 12.5, 0.0, 0.0, 0.05, 1.0, 1.0, 0.0, 500.0, 12.5, 0.0, 0.0, 0.02, 1.2, 0.8 } },
+    { 1, 1000.0, 500.0, 50.0, 0.0, 0.0, 12.5, 0.0, 0.0, 0.05, 1.0, 1.0, 500.0, 12.5, 0.0, 0.0, 0.02, 1.2, 0.8 } },
   { "MooneyRivlin_3Net",
-    { 2, 1000.0, 500.0, 50.0, 0.0, 0.0, 12.5, 0.0, 0.0, 0.05, 1.0, 1.0, 0.0, 500.0, 12.5, 0.0, 0.0, 0.02, 1.2, 0.8 } },
+    { 2, 1000.0, 500.0, 50.0, 0.0, 0.0, 12.5, 0.0, 0.0, 0.05, 1.0, 1.0, 500.0, 12.5, 0.0, 0.0, 0.02, 1.2, 0.8 } },
   { "ArrudaBoyce_3Net",
-    { 3, 1000.0, 500.0, 100.0, 2.0, 0.0, 25.0, 2.0, 0.0, 0.05, 1.0, 1.0, 0.0, 500.0, 25.0, 2.0, 0.0, 0.02, 1.2, 0.8 } },
+    { 3, 1000.0, 500.0, 100.0, 2.0, 0.0, 25.0, 2.0, 0.0, 0.05, 1.0, 1.0, 500.0, 25.0, 2.0, 0.0, 0.02, 1.2, 0.8 } },
 };
 
 BergstromBoyce makeMaterial( const std::vector< double >& props )
@@ -309,9 +308,9 @@ void testInstantaneousLimit( const PropsVariant& variant )
   F( 2, 2 ) -= 0.01;
 
   const auto&  p            = variant.props;
-  const bool   hasC         = p.size() >= 20;
-  const double p1_total     = p[3] + p[6] + ( hasC ? p[14] : 0.0 );
-  const double kappa_total  = p[1] + p[2] + ( hasC ? p[13] : 0.0 );
+  const bool   hasC         = p.size() >= 19;
+  const double p1_total     = p[3] + p[6] + ( hasC ? p[13] : 0.0 );
+  const double kappa_total  = p[1] + p[2] + ( hasC ? p[12] : 0.0 );
   Tensor33d    targetStress = combinedStress( F, int( p[0] ), p1_total, p[4], p[5], kappa_total );
 
   auto errorAtDt = [&]( const Tensor33d& F, const Tensor33d& target, double dt ) {
@@ -342,9 +341,9 @@ void testZeroFlowDegeneracy( const PropsVariant& variant )
 {
   std::vector< double > props0 = variant.props;
   props0[9]                    = 0.0; // c1 = 0
-  const bool hasC              = props0.size() >= 20;
+  const bool hasC              = props0.size() >= 19;
   if ( hasC ) {
-    props0[17] = 0.0; // c4 = 0
+    props0[16] = 0.0; // c4 = 0
   }
   BergstromBoyce        mat( props0.data(), props0.size(), 1 );
   std::vector< double > sv( mat.getNumberOfRequiredStateVars(), 0.0 );
@@ -362,8 +361,8 @@ void testZeroFlowDegeneracy( const PropsVariant& variant )
     Fhistory.push_back( Fhistory.back() );
 
   const auto&  p           = variant.props;
-  const double p1_total    = p[3] + p[6] + ( hasC ? p[14] : 0.0 );
-  const double kappa_total = p[1] + p[2] + ( hasC ? p[13] : 0.0 );
+  const double p1_total    = p[3] + p[6] + ( hasC ? p[13] : 0.0 );
+  const double kappa_total = p[1] + p[2] + ( hasC ? p[12] : 0.0 );
 
   for ( const auto& F : Fhistory ) {
     BergstromBoyce::ConstitutiveResponse< 3 > response( Tensor33d( 0.0 ), 0.0, 0.0, sv.data() );
@@ -397,7 +396,7 @@ void testZeroFlowDegeneracy( const PropsVariant& variant )
 void testIsochoricFlowAndRelaxationSplit( const PropsVariant& variant )
 {
   BergstromBoyce        mat  = makeMaterial( variant.props );
-  const bool            hasC = variant.props.size() >= 20;
+  const bool            hasC = variant.props.size() >= 19;
   std::vector< double > sv( mat.getNumberOfRequiredStateVars(), 0.0 );
   mat.initializeYourself( sv.data(), sv.size() );
 
@@ -468,7 +467,7 @@ void testIsochoricFlowAndRelaxationSplit( const PropsVariant& variant )
 void testObjectivity( const PropsVariant& variant )
 {
   BergstromBoyce mat  = makeMaterial( variant.props );
-  const bool     hasC = variant.props.size() >= 20;
+  const bool     hasC = variant.props.size() >= 19;
 
   Tensor33d F_unrotated = Spatial3D::I;
   F_unrotated( 0, 0 )   = 1.05;
@@ -711,11 +710,11 @@ void testNetworkCEquivalenceToNetworkB()
   // 3-network with Network B: muB=30, kappaB=400, c1=0.04, c2=1.1, c3=0.0
   //                  Network C: muC=20, kappaC=600, c4=0.04, c5=1.1, c6=0.0
   // (Both have identical flow rule parameters and c3=c6=0, so flow rates are identical)
-  std::vector< double > props3Net = { 0.0, 1000.0, 400.0, 100.0, 0.0,  0.0, 30.0, 0.0,  0.0, 0.04,
-                                      1.1, 0.0,    0.0,   600.0, 20.0, 0.0, 0.0,  0.04, 1.1, 0.0 };
+  std::vector< double > props3Net =
+    { 0.0, 1000.0, 400.0, 100.0, 0.0, 0.0, 30.0, 0.0, 0.0, 0.04, 1.1, 0.0, 600.0, 20.0, 0.0, 0.0, 0.04, 1.1, 0.0 };
 
   // Equivalent 2-network with Network B: muB = 30 + 20 = 50, kappaB = 400 + 600 = 1000
-  std::vector< double > props2Net = { 0.0, 1000.0, 1000.0, 100.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.04, 1.1, 0.0, 0.0 };
+  std::vector< double > props2Net = { 0.0, 1000.0, 1000.0, 100.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.04, 1.1, 0.0 };
 
   BergstromBoyce mat3 = makeMaterial( props3Net );
   BergstromBoyce mat2 = makeMaterial( props2Net );
@@ -789,43 +788,42 @@ void testNetworkCEquivalenceToNetworkB()
 
 void testNetworkCDisabledWhenSmallNProps()
 {
-  std::vector< double > props2Net13 = { 0.0, 1000.0, 1000.0, 100.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.05, 1.0, 1.0, 0.0 };
-  std::vector< double > props2Net14 =
-    { 0.0, 1000.0, 1000.0, 100.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.05, 1.0, 1.0, 0.0, 1.25 };
-  std::vector< double > props3Net20 = { 0.0, 1000.0, 500.0, 100.0, 0.0,  0.0, 25.0, 0.0,  0.0, 0.05,
-                                        1.0, 1.0,    0.0,   500.0, 25.0, 0.0, 0.0,  0.02, 1.2, 0.8 };
-  std::vector< double > props3Net21 = { 0.0, 1000.0, 500.0, 100.0, 0.0, 0.0, 25.0, 0.0, 0.0, 0.05, 1.0,
-                                        1.0, 0.0,    500.0, 25.0,  0.0, 0.0, 0.02, 1.2, 0.8, 1.25 };
+  std::vector< double > props2Net12 = { 0.0, 1000.0, 1000.0, 100.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.05, 1.0, 1.0 };
+  std::vector< double > props2Net13 = { 0.0, 1000.0, 1000.0, 100.0, 0.0, 0.0, 50.0, 0.0, 0.0, 0.05, 1.0, 1.0, 1.25 };
+  std::vector< double > props3Net19 =
+    { 0.0, 1000.0, 500.0, 100.0, 0.0, 0.0, 25.0, 0.0, 0.0, 0.05, 1.0, 1.0, 500.0, 25.0, 0.0, 0.0, 0.02, 1.2, 0.8 };
+  std::vector< double > props3Net20 = { 0.0, 1000.0, 500.0, 100.0, 0.0, 0.0, 25.0, 0.0, 0.0, 0.05,
+                                        1.0, 1.0,    500.0, 25.0,  0.0, 0.0, 0.02, 1.2, 0.8, 1.25 };
 
+  BergstromBoyce m12 = makeMaterial( props2Net12 );
   BergstromBoyce m13 = makeMaterial( props2Net13 );
-  BergstromBoyce m14 = makeMaterial( props2Net14 );
+  BergstromBoyce m19 = makeMaterial( props3Net19 );
   BergstromBoyce m20 = makeMaterial( props3Net20 );
-  BergstromBoyce m21 = makeMaterial( props3Net21 );
 
+  throwExceptionOnFailure( m12.getNumberOfRequiredStateVars() == 9, "m12 numberOfStateVariables != 9" );
   throwExceptionOnFailure( m13.getNumberOfRequiredStateVars() == 9, "m13 numberOfStateVariables != 9" );
-  throwExceptionOnFailure( m14.getNumberOfRequiredStateVars() == 9, "m14 numberOfStateVariables != 9" );
+  throwExceptionOnFailure( m19.getNumberOfRequiredStateVars() == 18, "m19 numberOfStateVariables != 18" );
   throwExceptionOnFailure( m20.getNumberOfRequiredStateVars() == 18, "m20 numberOfStateVariables != 18" );
-  throwExceptionOnFailure( m21.getNumberOfRequiredStateVars() == 18, "m21 numberOfStateVariables != 18" );
 
-  bool m13Threw = false;
+  bool m12Threw = false;
   try {
-    m13.getDensity( nullptr );
+    m12.getDensity( nullptr );
   }
   catch ( const std::exception& ) {
-    m13Threw = true;
+    m12Threw = true;
   }
-  throwExceptionOnFailure( m13Threw, "m13 without density did not throw" );
-  throwExceptionOnFailure( std::abs( m14.getDensity( nullptr ) - 1.25 ) < 1e-12, "m14 density != 1.25" );
+  throwExceptionOnFailure( m12Threw, "m12 without density did not throw" );
+  throwExceptionOnFailure( std::abs( m13.getDensity( nullptr ) - 1.25 ) < 1e-12, "m13 density != 1.25" );
 
-  bool m20Threw = false;
+  bool m19Threw = false;
   try {
-    m20.getDensity( nullptr );
+    m19.getDensity( nullptr );
   }
   catch ( const std::exception& ) {
-    m20Threw = true;
+    m19Threw = true;
   }
-  throwExceptionOnFailure( m20Threw, "m20 without density did not throw" );
-  throwExceptionOnFailure( std::abs( m21.getDensity( nullptr ) - 1.25 ) < 1e-12, "m21 density != 1.25" );
+  throwExceptionOnFailure( m19Threw, "m19 without density did not throw" );
+  throwExceptionOnFailure( std::abs( m20.getDensity( nullptr ) - 1.25 ) < 1e-12, "m20 density != 1.25" );
 }
 
 int main()

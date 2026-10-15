@@ -94,7 +94,6 @@ namespace Marmot::Materials {
    * - @b #c1     -- network B flow-rate prefactor
    * - @b #c2     -- network B chain-stretch exponent
    * - @b #c3     -- network B deviatoric-Mandel-stress-magnitude exponent
-   * - @b #implementationType -- algorithm selector (see below)
    * - @b #kappaC (optional, 3-network) -- network C (spring) bulk modulus
    * - @b #C1, #C2, #C3 (optional, 3-network) -- network C hyperelastic coefficients
    * - @b #c4 (optional, 3-network) -- network C flow-rate prefactor
@@ -105,9 +104,6 @@ namespace Marmot::Materials {
    * @par State variables
    * - @b Fv -- viscous deformation gradient of network B
    * - @b FvC -- viscous deformation gradient of network C (if present)
-   *
-   * @par Implementation variants (implementationType)
-   * - @b 0: Full return mapping; derivatives via complex-step differentiation (CSDA)
    */
   class BergstromBoyce : public MarmotMaterialFiniteStrain {
   public:
@@ -141,27 +137,24 @@ namespace Marmot::Materials {
     /** Network B deviatoric-Mandel-stress-magnitude exponent (read from @c materialProperties[11]) */
     const double c3;
 
-    /** Algorithm variant selector (read from @c materialProperties[12]). */
-    const int implementationType;
-
     /** Whether network C is present. */
     const bool hasNetworkC;
-    /** Network C bulk modulus (read from @c materialProperties[13], if 3-network). */
+    /** Network C bulk modulus (read from @c materialProperties[12], if 3-network). */
     const double kappaC;
-    /** Network C hyperelastic coefficient 1 (read from @c materialProperties[14], if 3-network). */
+    /** Network C hyperelastic coefficient 1 (read from @c materialProperties[13], if 3-network). */
     const double C1;
-    /** Network C hyperelastic coefficient 2 (read from @c materialProperties[15], if 3-network). */
+    /** Network C hyperelastic coefficient 2 (read from @c materialProperties[14], if 3-network). */
     const double C2;
-    /** Network C hyperelastic coefficient 3 (read from @c materialProperties[16], if 3-network). */
+    /** Network C hyperelastic coefficient 3 (read from @c materialProperties[15], if 3-network). */
     const double C3;
-    /** Network C flow-rate prefactor (read from @c materialProperties[17], if 3-network). */
+    /** Network C flow-rate prefactor (read from @c materialProperties[16], if 3-network). */
     const double c4;
-    /** Network C chain-stretch exponent (read from @c materialProperties[18], if 3-network). */
+    /** Network C chain-stretch exponent (read from @c materialProperties[17], if 3-network). */
     const double c5;
-    /** Network C deviatoric-Mandel-stress-magnitude exponent (read from @c materialProperties[19], if 3-network). */
+    /** Network C deviatoric-Mandel-stress-magnitude exponent (read from @c materialProperties[18], if 3-network). */
     const double c6;
 
-    /** Density (read from @c materialProperties[13] if 2-network, or @c materialProperties[20] if 3-network). */
+    /** Density (read from @c materialProperties[12] if 2-network, or @c materialProperties[19] if 3-network). */
     const double density;
 
     /** Response quantities from a single viscous network branch. */
@@ -206,7 +199,7 @@ namespace Marmot::Materials {
      */
     double getDensity( const double* stateVars ) const override
     {
-      const int minPropsWithDensity = hasNetworkC ? 21 : 14;
+      const int minPropsWithDensity = hasNetworkC ? 20 : 13;
       if ( this->nMaterialProperties < minPropsWithDensity ) {
         throw std::runtime_error( std::string( MakeString()
                                                << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < "

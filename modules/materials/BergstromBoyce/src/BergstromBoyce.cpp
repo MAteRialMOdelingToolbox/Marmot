@@ -29,17 +29,16 @@ namespace Marmot::Materials {
       c1( materialProperties[9] ),
       c2( materialProperties[10] ),
       c3( materialProperties[11] ),
-      implementationType( materialProperties[12] ),
-      hasNetworkC( nMaterialProperties >= 20 ),
-      kappaC( hasNetworkC ? materialProperties[13] : 0.0 ),
-      C1( hasNetworkC ? materialProperties[14] : 0.0 ),
-      C2( hasNetworkC ? materialProperties[15] : 0.0 ),
-      C3( hasNetworkC ? materialProperties[16] : 0.0 ),
-      c4( hasNetworkC ? materialProperties[17] : 0.0 ),
-      c5( hasNetworkC ? materialProperties[18] : 0.0 ),
-      c6( hasNetworkC ? materialProperties[19] : 0.0 ),
-      density( hasNetworkC ? ( nMaterialProperties > 20 ? materialProperties[20] : 0.0 )
-                           : ( nMaterialProperties > 13 ? materialProperties[13] : 0.0 ) )
+      hasNetworkC( nMaterialProperties >= 19 ),
+      kappaC( hasNetworkC ? materialProperties[12] : 0.0 ),
+      C1( hasNetworkC ? materialProperties[13] : 0.0 ),
+      C2( hasNetworkC ? materialProperties[14] : 0.0 ),
+      C3( hasNetworkC ? materialProperties[15] : 0.0 ),
+      c4( hasNetworkC ? materialProperties[16] : 0.0 ),
+      c5( hasNetworkC ? materialProperties[17] : 0.0 ),
+      c6( hasNetworkC ? materialProperties[18] : 0.0 ),
+      density( hasNetworkC ? ( nMaterialProperties > 19 ? materialProperties[19] : 0.0 )
+                           : ( nMaterialProperties > 12 ? materialProperties[12] : 0.0 ) )
   {
     stateLayout.add( "Fv", 9 );    // viscous deformation gradient of network B
     if ( hasNetworkC ) {
@@ -164,11 +163,6 @@ namespace Marmot::Materials {
                                       const Deformation< 3 >&    deformation,
                                       const TimeIncrement&       timeIncrement ) const
   {
-    if ( implementationType != 0 ) {
-      throw std::invalid_argument(
-        "implementation type not supported -- only CSDA (implementationType = 0) is available" );
-    }
-
     using namespace Marmot;
     using namespace Fastor;
     using namespace Eigen;
