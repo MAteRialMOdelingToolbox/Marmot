@@ -89,7 +89,7 @@ namespace Marmot::Materials {
     const ContinuumMechanics::FiniteStrain::Viscoelasticity::MaxwellProperties maxwellProperties;
 
     /// @brief Initial compliance tensor used for viscoelastic stress update.
-    const FastorStandardTensors::Tensor3333t< autodiff::dual > initialCompliance;
+    const Marmot::Math::FastorTensors::Tensor3333t< autodiff::dual > initialCompliance;
 
     /// @brief Define the layout of persistent state variables.
     void initializeStateLayout()

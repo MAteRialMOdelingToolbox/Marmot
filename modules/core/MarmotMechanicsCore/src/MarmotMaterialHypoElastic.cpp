@@ -13,8 +13,8 @@ void MarmotMaterialHypoElastic::setCharacteristicElementLength( double length )
 }
 
 void MarmotMaterialHypoElastic::computePlaneStress( state2D&                state2D_,
-                                                    Marmot::Matrix3d&       dStress_dStrain2D_,
-                                                    const Marmot::Vector3d& dStrain2D_,
+                                                    Marmot::Math::Matrix3d&       dStress_dStrain2D_,
+                                                    const Marmot::Math::Vector3d& dStrain2D_,
                                                     const timeInfo&         timeInfo ) const
 {
   using namespace Marmot;
@@ -25,10 +25,10 @@ void MarmotMaterialHypoElastic::computePlaneStress( state2D&                stat
   Map< Matrix< double, 3, 3 > >       dStress_dStrain2D( dStress_dStrain2D_.data() );
   Map< VectorXd >                     stateVars( state2D_.stateVars, this->getNumberOfRequiredStateVars() );
 
-  Matrix6d dStress_dStrain3D;
+  Marmot::Math::Matrix6d dStress_dStrain3D;
 
   VectorXd stateVarsOld  = stateVars;
-  Vector6d dStrain3DTemp = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::TwoD >( dStrain2D );
+  Marmot::Math::Vector6d dStrain3DTemp = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::TwoD >( dStrain2D );
 
   // assumption of isochoric deformation for initial guess
   dStrain3DTemp( 2 ) = ( -dStrain2D( 0 ) - dStrain2D( 1 ) );
@@ -88,10 +88,10 @@ void MarmotMaterialHypoElastic::computeUniaxialStress( state1D&        state1D_,
   Map< Matrix< double, 1, 1 > >       stress1D( &state1D_.stress );
   Map< VectorXd >                     stateVars( state1D_.stateVars, stateLayout.totalSize() );
 
-  Matrix6d dStress_dStrain3D;
+  Marmot::Math::Matrix6d dStress_dStrain3D;
 
   VectorXd stateVarsOld  = stateVars;
-  Vector6d dStrain3DTemp = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::OneD >( dStrain1D );
+  Marmot::Math::Vector6d dStrain3DTemp = Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::OneD >( dStrain1D );
 
   state3D state( Marmot::ContinuumMechanics::VoigtNotation::make3DVoigt< VoigtSize::OneD >( stress1D ),
                  state1D_.elasticEnergyDensity,
@@ -142,8 +142,8 @@ double MarmotMaterialHypoElastic::getMaximumWaveSpeed( const state3D& state ) co
 
   state3D stateCopy( state.stress, state.elasticEnergyDensity, state.dissipation, stateVarsCopy.data() );
 
-  Marmot::Matrix6d dStress_dStrain = Marmot::Matrix6d::Zero();
-  const auto       dStrain         = Marmot::Vector6d::Zero();
+  Marmot::Math::Matrix6d dStress_dStrain = Marmot::Math::Matrix6d::Zero();
+  const auto       dStrain         = Marmot::Math::Vector6d::Zero();
   const timeInfo   timeInfo{ 0.0, 1.0 };
 
   computeStress( stateCopy, dStress_dStrain, dStrain, timeInfo );

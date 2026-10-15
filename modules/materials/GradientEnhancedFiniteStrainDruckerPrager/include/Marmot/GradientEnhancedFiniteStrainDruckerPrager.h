@@ -103,9 +103,9 @@ namespace Marmot::Materials {
 
   public:
     template < typename T >
-    using Tensor33t    = FastorStandardTensors::Tensor33t< T >;
-    using Tensor33d    = FastorStandardTensors::Tensor33d;
-    using TensorMap33d = FastorStandardTensors::TensorMap33d;
+    using Tensor33t    = Marmot::Math::FastorTensors::Tensor33t< T >;
+    using Tensor33d    = Marmot::Math::FastorTensors::Tensor33d;
+    using TensorMap33d = Marmot::Math::FastorTensors::TensorMap33d;
 
     /**
      * @brief Construct the material and validate its properties.
@@ -173,7 +173,7 @@ namespace Marmot::Materials {
       using namespace ContinuumMechanics;
       const Tensor33t< T > Ce     = DeformationMeasures::rightCauchyGreen( Fe );
       const auto [psi_, dPsi_dCe] = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
-      return multiplyFastorTensorWithScalar( dPsi_dCe, T( 2.0 ) );
+      return Marmot::Math::multiplyFastorTensorWithScalar( dPsi_dCe, T( 2.0 ) );
     }
 
     /**
@@ -199,7 +199,7 @@ namespace Marmot::Materials {
     template < typename T >
     T yieldFunction( const Tensor33t< T >& M, const T alphaP ) const
     {
-      const Tensor33t< T > dev = deviatoric( M );
+      const Tensor33t< T > dev = Marmot::Math::deviatoric( M );
       const T              p   = trace( M ) / 3.;
       return sqrt( 0.5 * Fastor::inner( dev, dev ) ) + eta * p - xi * ( c0 + H * alphaP );
     }
@@ -213,9 +213,9 @@ namespace Marmot::Materials {
     template < typename T >
     Tensor33t< T > flowDirection( const Tensor33t< T >& M ) const
     {
-      const Tensor33t< T > dev  = deviatoric( M );
+      const Tensor33t< T > dev  = Marmot::Math::deviatoric( M );
       const T              sqJ2 = sqrt( 0.5 * Fastor::inner( dev, dev ) );
-      Tensor33t< T >       n    = multiplyFastorTensorWithScalar( dev, T( 0.5 ) / sqJ2 );
+      Tensor33t< T >       n    = Marmot::Math::multiplyFastorTensorWithScalar( dev, T( 0.5 ) / sqJ2 );
       for ( int i = 0; i < 3; i++ )
         n( i, i ) += etaBar / 3.;
       return n;
@@ -234,20 +234,20 @@ namespace Marmot::Materials {
      * @return The residual (11).
      */
     template < typename T >
-    VectorXt< T > coneResidual( const VectorXt< T >& X, const Tensor33d& FeTrial, const double alphaPOld ) const
+    Marmot::Math::VectorXt< T > coneResidual( const Marmot::Math::VectorXt< T >& X, const Tensor33d& FeTrial, const double alphaPOld ) const
     {
-      using namespace FastorIndices;
+      using namespace Marmot::Math::Indices;
       const Tensor33t< T > Fe( X.segment( 0, 9 ).eval().data() );
       const T              alphaP  = X( 9 );
       const T              dLambda = X( 10 );
 
       const Tensor33t< T > M   = mandelStress( Fe );
-      const Tensor33t< T > dGp = multiplyFastorTensorWithScalar( flowDirection( M ), dLambda );
+      const Tensor33t< T > dGp = Marmot::Math::multiplyFastorTensorWithScalar( flowDirection( M ), dLambda );
       const Tensor33t< T >
         dFp = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::exponentialMapScalingAndSquaring( dGp );
       const Tensor33t< T > Fe_dFp = Fastor::einsum< iJ, JK >( Fe, dFp );
 
-      VectorXt< T > R( 11 );
+      Marmot::Math::VectorXt< T > R( 11 );
       for ( int i = 0; i < 9; i++ )
         R( i ) = Fe_dFp.data()[i] - T( FeTrial.data()[i] );
       R( 9 )  = alphaP - alphaPOld - xi * dLambda;
@@ -266,7 +266,7 @@ namespace Marmot::Materials {
      * @return The residual (2).
      */
     template < typename T >
-    VectorXt< T > apexResidual( const VectorXt< T >& X, const double thetaTrial, const double alphaPOld ) const
+    Marmot::Math::VectorXt< T > apexResidual( const Marmot::Math::VectorXt< T >& X, const double thetaTrial, const double alphaPOld ) const
     {
       const T        theta  = X( 0 );
       const T        alphaP = X( 1 );
@@ -275,7 +275,7 @@ namespace Marmot::Materials {
         Fe( i, i ) = exp( theta / 3. );
       const T p = trace( mandelStress( Fe ) ) / 3.;
 
-      VectorXt< T > R( 2 );
+      Marmot::Math::VectorXt< T > R( 2 );
       R( 0 ) = ( eta * p - xi * ( c0 + H * alphaP ) ) / c0;
       R( 1 ) = alphaP - alphaPOld - xi / etaBar * ( thetaTrial - theta );
       return R;
@@ -313,7 +313,7 @@ namespace Marmot::Materials {
      * yield function (with the hardening law substituted) scaled by @f$ c_0 @f$.
      */
     template < typename T >
-    VectorXt< T > principalResidual( const VectorXt< T >&   X,
+    Marmot::Math::VectorXt< T > principalResidual( const Marmot::Math::VectorXt< T >&   X,
                                      const Eigen::Vector3d& epsTrial,
                                      const double           alphaPOld ) const
     {
@@ -345,7 +345,7 @@ namespace Marmot::Materials {
         devResidual[a] = e[a] - ( epsTrial( a ) - epsTrial.mean() ) +
                          dLambda * sign * ( M( a, a ) - p ) / ( 2. * sqJ2 );
 
-      VectorXt< T > R( 4 );
+      Marmot::Math::VectorXt< T > R( 4 );
       for ( int i = 0; i < 2; i++ ) {
         R( i ) = T( 0.0 );
         for ( int a = 0; a < 3; a++ )
@@ -382,7 +382,7 @@ namespace Marmot::Materials {
       double                             alphaP;          ///< hardening variable
       double                             dEpVol;          ///< volumetric plastic log strain increment
       double                             plasticWork;     ///< M : dEp
-      FastorStandardTensors::Tensor3333d dFe_dF;          ///< d Fe / d F
+      Marmot::Math::FastorTensors::Tensor3333d dFe_dF;          ///< d Fe / d F
       Tensor33d                          dDeltaAlphaD_dF; ///< d dalpha_local / d F
     };
 

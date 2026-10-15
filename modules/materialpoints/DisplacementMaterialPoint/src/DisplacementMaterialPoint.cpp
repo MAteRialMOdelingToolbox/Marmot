@@ -31,9 +31,9 @@ namespace Marmot::MaterialPoints {
 
   void DisplacementMaterialPoint2D::incrementDeformation( const TensorD& du, const TensorDD& du_dY )
   {
-    mapEigenToFastor( state->du ) += mapEigenToFastor( expandTo3D( du ) );
+    Marmot::Math::mapEigenToFastor( state->du ) += Marmot::Math::mapEigenToFastor( Marmot::Math::expandTo3D( du ) );
 
-    mapEigenToFastor( state->dx_dY ) += mapEigenToFastor( expandTo3D( du_dY ) );
+    Marmot::Math::mapEigenToFastor( state->dx_dY ) += Marmot::Math::mapEigenToFastor( Marmot::Math::expandTo3D( du_dY ) );
   };
 
   void DisplacementMaterialPoint2D::computeYourself( double timeNew, double dT )
@@ -42,7 +42,7 @@ namespace Marmot::MaterialPoints {
     const Material ::TimeIncrement timeIncrement{ timeNew, dT };
 
     // TODO: make auto&
-    const FastorStandardTensors::Tensor33d dx_dX = state->dx_dY % state->dY_dX;
+    const Marmot::Math::FastorTensors::Tensor33d dx_dX = state->dx_dY % state->dY_dX;
 
     using namespace Marmot;
 
@@ -55,21 +55,21 @@ namespace Marmot::MaterialPoints {
     material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
 
     // clang-format off
-    this->response = { .S = reduceTo2D< U, U >( response3D.tau ),
+    this->response = { .S = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >( response3D.tau ),
     };
 
     state->stress = response3D.tau;
 
-    using namespace FastorStandardTensors;
-    using namespace FastorIndices;
+    using namespace Marmot::Math::FastorTensors;
+    using namespace Marmot::Math::Indices;
 
-    const auto& I = Marmot::FastorStandardTensors::Spatial3D::I;
+    const auto& I = Marmot::Math::FastorTensors::Spatial3D::I;
 
     const Tensor3333d dF_dDeltaF_3D = einsum< ij, JI, to_iIjJ >(I, state->dY_dX);
-    const TensorDDDD dF_dDeltaF = reduceTo2D<U,U,U,U>(dF_dDeltaF_3D);
+    const TensorDDDD dF_dDeltaF = Marmot::Math::reduceTo2D<Marmot::Math::U,Marmot::Math::U,Marmot::Math::U,Marmot::Math::U>(dF_dDeltaF_3D);
 
     this->tangents = {
-        reduceTo2D< U, U, U, U >    ( algorithmicModuli3D.dTau_dF),
+        Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >    ( algorithmicModuli3D.dTau_dF),
     };
 
     tangents.dS_dDeltaF = einsum<ijmn, mnKL>(tangents.dS_dDeltaF, dF_dDeltaF);
@@ -80,8 +80,8 @@ namespace Marmot::MaterialPoints {
 
   void DisplacementMaterialPoint3D::incrementDeformation( const TensorD& du, const TensorDD& du_dY )
   {
-    mapEigenToFastor( state->du ) += mapEigenToFastor( ( du ) );
-    mapEigenToFastor( state->dx_dY ) += mapEigenToFastor( ( du_dY ) );
+    Marmot::Math::mapEigenToFastor( state->du ) += Marmot::Math::mapEigenToFastor( ( du ) );
+    Marmot::Math::mapEigenToFastor( state->dx_dY ) += Marmot::Math::mapEigenToFastor( ( du_dY ) );
   };
 
   void DisplacementMaterialPoint3D::computeYourself( double timeNew, double dT )
@@ -89,8 +89,8 @@ namespace Marmot::MaterialPoints {
 
     const Material ::TimeIncrement timeIncrement{ timeNew, dT };
 
-    /* const FastorStandardTensors::Tensor33d dx_dX_n  = state->dY_dX; */
-    const FastorStandardTensors::Tensor33d dx_dX = state->dx_dY % state->dY_dX;
+    /* const Marmot::Math::FastorTensors::Tensor33d dx_dX_n  = state->dY_dX; */
+    const Marmot::Math::FastorTensors::Tensor33d dx_dX = state->dx_dY % state->dY_dX;
 
     using namespace Marmot;
 
@@ -108,10 +108,10 @@ namespace Marmot::MaterialPoints {
 
     state->stress = response3D.tau;
 
-    using namespace FastorStandardTensors;
-    using namespace FastorIndices;
+    using namespace Marmot::Math::FastorTensors;
+    using namespace Marmot::Math::Indices;
 
-    const auto& I = Marmot::FastorStandardTensors::Spatial3D::I;
+    const auto& I = Marmot::Math::FastorTensors::Spatial3D::I;
 
     const Tensor3333d dF_dDeltaF_3D = einsum< ij, JI, to_iIjJ >(I, state->dY_dX);
     const TensorDDDD dF_dDeltaF = (dF_dDeltaF_3D);

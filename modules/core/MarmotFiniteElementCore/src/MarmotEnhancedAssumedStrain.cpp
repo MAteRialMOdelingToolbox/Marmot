@@ -17,7 +17,7 @@ namespace Marmot {
       // nDim == 2
       if ( J.cols() == 2 ) {
 
-        Matrix3d F;
+        Marmot::Math::Matrix3d F;
         // clang-format off
                 F <<    J(0,0)*J(0,0),    J(0,1)*J(0,1),        2*J(0,0)*J(0,1),
                         J(1,0)*J(1,0),    J(1,1)*J(1,1),        2*J(1,0)*J(1,1),
@@ -28,7 +28,7 @@ namespace Marmot {
       }
       else if ( J.cols() == 3 ) {
 
-        Matrix6d F;
+        Marmot::Math::Matrix6d F;
         // clang-format off
                 F.topLeftCorner(3,3) <<
                     J(0,0)*J(0,0),  J(0,1)*J(0,1),  J(0,2)*J(0,2),

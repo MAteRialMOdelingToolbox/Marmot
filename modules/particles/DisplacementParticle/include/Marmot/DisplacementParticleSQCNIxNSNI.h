@@ -294,7 +294,7 @@ namespace Marmot::Meshfree {
                                                                                  double        timeNew,
                                                                                  double        dT )
   {
-    using namespace Marmot::FastorIndices;
+    using namespace Marmot::Math::Indices;
     using namespace Fastor;
     using to_jk = Fastor::OIndex< j_, k_ >;
     using ijmM  = Index< i_, j_, m_, M_ >;
@@ -444,7 +444,7 @@ namespace Marmot::Meshfree {
   template < int nDim, int nVertices >
   void DisplacementParticleSQCNIxNSNI< nDim, nVertices >::computePhysicsKernelsExplicit( double* fInt )
   {
-    using namespace Marmot::FastorIndices;
+    using namespace Marmot::Math::Indices;
     using namespace Fastor;
     using ijmM = Index< i_, j_, m_, M_ >;
     using mMK  = Index< m_, M_, K_ >;
@@ -507,7 +507,7 @@ namespace Marmot::Meshfree {
                                                                                  double        timeNew,
                                                                                  double        dT )
   {
-    using namespace Marmot::FastorIndices;
+    using namespace Marmot::Math::Indices;
     using namespace Fastor;
 
     const auto& _nNodes = this->_nNodes;
@@ -557,7 +557,7 @@ namespace Marmot::Meshfree {
   template < int nDim, int nVertices >
   void DisplacementParticleSQCNIxNSNI< nDim, nVertices >::computeLumpedMomentum( double* mLumped ) const
   {
-    using namespace FastorIndices;
+    using namespace Marmot::Math::Indices;
     using namespace Fastor;
 
     const double density0 = this->_mp->getDensityUndeformed();

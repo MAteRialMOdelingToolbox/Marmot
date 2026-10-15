@@ -1,8 +1,8 @@
 #include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotTesting.h"
 
-using namespace Marmot::ContinuumMechanics::CommonTensors;
-using namespace Marmot::ContinuumMechanics::TensorUtility;
+using namespace Marmot::Math::Tensors;
+using namespace Marmot::Math::Tensors;
 using namespace Marmot::Testing;
 using namespace Eigen;
 

@@ -8,7 +8,7 @@
 #include <cstring>
 
 using namespace Marmot::Testing;
-using namespace Marmot::FastorStandardTensors;
+using namespace Marmot::Math::FastorTensors;
 using namespace Marmot::ContinuumMechanics::FiniteStrain::Viscoelasticity;
 
 // ---------------------------------------------------------------------------
@@ -597,7 +597,7 @@ void testIsotropicInverseConsistency()
   Tensor3333d  Cinv = makeIsotropicCompliance( K, G );
 
   using namespace Fastor;
-  using namespace Marmot::FastorIndices;
+  using namespace Marmot::Math::Indices;
 
   // Compute C:Cinv_ijkl = C_ijmn * Cinv_mnkl = C_ijmn * Cinv_klmn (Cinv is fully symmetric)
   Tensor3333d product = einsum< ijmn, klmn, to_ijkl >( C, Cinv );

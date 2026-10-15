@@ -38,7 +38,7 @@ public:
 
   /// @brief Structure holding the material state for 3D using dual numbers (for automatic differentiation).
   struct state3DAD {
-    Marmot::Vector6dual stress;               ///< Cauchy stress tensor in Voigt notation
+    Marmot::Math::Vector6dual stress;               ///< Cauchy stress tensor in Voigt notation
     double              elasticEnergyDensity; ///< Elastic strain energy density
     double              dissipation;          ///< Dissipation
     double*             stateVars;            ///< Pointer to array of state variables
@@ -47,7 +47,7 @@ public:
      * Initializes stress to zero, energy and dissipation to zero, and stateVars to nullptr.
      */
     state3DAD()
-      : stress( Marmot::Vector6dual::Zero() ), elasticEnergyDensity( 0.0 ), dissipation( 0.0 ), stateVars( nullptr ){};
+      : stress( Marmot::Math::Vector6dual::Zero() ), elasticEnergyDensity( 0.0 ), dissipation( 0.0 ), stateVars( nullptr ){};
     /**
      * @brief Constructor for initializing state3DAD
      *@param state A state3D object containing the initial values for stress, energy density, dissipation, and state
@@ -73,11 +73,11 @@ public:
    * @param[in]             timeInfo Old (pseudo-)time
    */
   virtual void computeStressAD( state3DAD&                 state,
-                                const Marmot::Vector6dual& dStrain,
+                                const Marmot::Math::Vector6dual& dStrain,
                                 const timeInfo&            timeInfo ) const = 0;
 
   virtual void computeStress( state3D&                state,
-                              Marmot::Matrix6d&       dStressDDStrain,
-                              const Marmot::Vector6d& dStrain,
+                              Marmot::Math::Matrix6d&       dStressDDStrain,
+                              const Marmot::Math::Vector6d& dStrain,
                               const timeInfo&         timeInfo ) const override;
 };

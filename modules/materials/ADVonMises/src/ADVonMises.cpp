@@ -45,20 +45,20 @@ namespace Marmot::Materials {
   }
 
   void ADVonMises::computeStressAD( state3DAD&                 state,
-                                    const Marmot::Vector6dual& dStrain,
+                                    const Marmot::Math::Vector6dual& dStrain,
                                     const timeInfo&            timeInfo ) const
   {
-    mVector6dual            S( state.stress.data() );
-    const mVector6dualConst dE( dStrain.data() );
+    Marmot::Math::mVector6dual            S( state.stress.data() );
+    const Marmot::Math::mVector6dualConst dE( dStrain.data() );
 
     // compute elastic stiffness
-    const Matrix6d Cel = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
+    const Marmot::Math::Matrix6d Cel = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
 
     // get current hardening variable
     double& kappa = stateLayout.getAs< double& >( state.stateVars, "kappa" );
 
     // compute elastic predictor
-    const Vector6dual trialStress = S + Cel * dE;
+    const Marmot::Math::Vector6dual trialStress = S + Cel * dE;
 
     using namespace ContinuumMechanics::VoigtNotation;
     const dual rhoTrial = sqrt( 2. * Invariants::J2( trialStress ) );
@@ -90,10 +90,10 @@ namespace Marmot::Materials {
       }
 
       // compute plastic corrector
-      dLambda = Constants::sqrt3_2 * dKappa;
+      dLambda = Marmot::Math::Constants::sqrt3_2 * dKappa;
 
       // compute return mapping direction
-      const Vector6dual n = ContinuumMechanics::VoigtNotation::IDev * trialStress / rhoTrial;
+      const Marmot::Math::Vector6dual n = ContinuumMechanics::VoigtNotation::IDev * trialStress / rhoTrial;
 
       // update stress and hardening variable
       S          = trialStress - 2. * G * dLambda * n;

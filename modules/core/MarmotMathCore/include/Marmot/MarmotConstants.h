@@ -27,8 +27,7 @@
 #include <cmath>
 #include <limits>
 
-namespace Marmot {
-  namespace Constants {
+namespace Marmot::Math::Constants {
     /** @brief Constant expression for \f$\pi\f$ */
     constexpr double Pi = 3.141592653589793238463;
     /** @brief Constant expression for 1e-16 */
@@ -80,5 +79,4 @@ namespace Marmot {
     constexpr double sqrt3 = 1.7320508075688772935274463415059;
     /** @brief Constant expression for \f$\sqrt{6}\f$ */
     constexpr double sqrt6 = 2.4494897427831780981972840747059;
-  } // namespace Constants
-} // namespace Marmot
+} // namespace Marmot::Math::Constants

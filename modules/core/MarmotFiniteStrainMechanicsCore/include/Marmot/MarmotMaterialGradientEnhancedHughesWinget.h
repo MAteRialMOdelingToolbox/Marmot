@@ -220,7 +220,7 @@ namespace Marmot::Materials {
      */
     void initializeYourself( double* stateVars, int nStateVars ) override
     {
-      using namespace Marmot::FastorStandardTensors;
+      using namespace Marmot::Math::FastorTensors;
 
       TensorMap33d Fn = this->stateLayout.getAs< TensorMap33d >( stateVars, deformationGradientSlot );
       std::memcpy( Fn.data(), Spatial3D::I.data(), 9 * sizeof( double ) );
@@ -273,17 +273,17 @@ namespace Marmot::Materials {
 
   protected:
     /// @brief Convert an Eigen 3x3 matrix into a Fastor tensor.
-    static Marmot::FastorStandardTensors::Tensor33d fromEigen( const Eigen::Matrix3d& m )
+    static Marmot::Math::FastorTensors::Tensor33d fromEigen( const Eigen::Matrix3d& m )
     {
-      Marmot::FastorStandardTensors::Tensor33d t;
-      Marmot::mapEigenToFastor( t ) = m;
+      Marmot::Math::FastorTensors::Tensor33d t;
+      Marmot::Math::mapEigenToFastor( t ) = m;
       return t;
     }
 
     /// @brief Convert a Fastor 3x3 tensor into an Eigen matrix.
-    static Eigen::Matrix3d toEigen( const Marmot::FastorStandardTensors::Tensor33d& t )
+    static Eigen::Matrix3d toEigen( const Marmot::Math::FastorTensors::Tensor33d& t )
     {
-      return Eigen::Matrix3d( Marmot::mapEigenToFastor( t ) );
+      return Eigen::Matrix3d( Marmot::Math::mapEigenToFastor( t ) );
     }
 
     /**
@@ -295,7 +295,7 @@ namespace Marmot::Materials {
      * @return The sensitivity in Voigt form, with its three shear **columns** halved so that the result
      *         may be contracted as a full fourth-order tensor without double counting.
      */
-    Marmot::Matrix6d computeStressSensitivity( const Marmot::Vector6d&        sigmaRotVoigt,
+    Marmot::Math::Matrix6d computeStressSensitivity( const Marmot::Math::Vector6d&        sigmaRotVoigt,
                                                const std::vector< double >&   baseStateOld,
                                                const BaseMaterial::increment& inc,
                                                double                         elasticEnergyDensity,
@@ -327,7 +327,7 @@ namespace Marmot::Materials {
         return perturbed.stress;
       };
 
-      Marmot::Matrix6d S = Marmot::NumericalAlgorithms::Differentiation::forwardDifference( evaluate, sigmaRotVoigt );
+      Marmot::Math::Matrix6d S = Marmot::Math::NumericalDifferentiation::forwardDifference( evaluate, sigmaRotVoigt );
 
       // Halve the shear columns: contracting S as a fourth-order tensor sums over both the (m,n) and
       // (n,m) entries of a symmetric stress, which would otherwise count each off-diagonal twice.
@@ -351,15 +351,15 @@ namespace Marmot::Materials {
                             bool                       computeTangent ) const
     {
       using namespace Fastor;
-      using namespace Marmot::FastorStandardTensors;
-      using namespace Marmot::FastorIndices;
+      using namespace Marmot::Math::FastorTensors;
+      using namespace Marmot::Math::Indices;
       using namespace Marmot::ContinuumMechanics::VoigtNotation;
 
       const Tensor33d& Ident = Spatial3D::I;
 
       TensorMap33d Fn_ref = this->stateLayout.getAs< TensorMap33d >( response.stateVars, deformationGradientSlot );
-      Eigen::Map< Marmot::Vector6d >
-              sigmaN_n  = this->stateLayout.getAs< Eigen::Map< Marmot::Vector6d > >( response.stateVars, stressSlot );
+      Eigen::Map< Marmot::Math::Vector6d >
+              sigmaN_n  = this->stateLayout.getAs< Eigen::Map< Marmot::Math::Vector6d > >( response.stateVars, stressSlot );
       double* nPtr      = this->stateLayout.getPtr( response.stateVars, nonlocalFieldSlot );
       double* baseState = this->stateLayout.getPtr( response.stateVars, baseMaterialSlot );
 
@@ -378,7 +378,7 @@ namespace Marmot::Materials {
       const Tensor33d dR   = Ainv % Tensor33d( Ident + 0.5 * dOm );
 
       // --- rotate the carried-over Cauchy stress forward ---
-      const Marmot::Vector6d sigmaNVoigt = sigmaN_n;
+      const Marmot::Math::Vector6d sigmaNVoigt = sigmaN_n;
       const Tensor33d        sigmaN      = fromEigen( stressMatrixFromVoigt< 3 >( sigmaNVoigt ) );
       const Tensor33d        sigmaRot    = dR % sigmaN % transpose( dR );
 
@@ -392,8 +392,8 @@ namespace Marmot::Materials {
         }
       }
 
-      const Marmot::Vector6d sigmaRotVoigt = stressToVoigt< double >( toEigen( sigmaRot ) );
-      const Marmot::Vector6d dEpsVoigt     = voigtFromStrainMatrix< 3 >( toEigen( dEps ) );
+      const Marmot::Math::Vector6d sigmaRotVoigt = stressToVoigt< double >( toEigen( sigmaRot ) );
+      const Marmot::Math::Vector6d dEpsVoigt     = voigtFromStrainMatrix< 3 >( toEigen( dEps ) );
 
       // The interface hands over the total nonlocal field; the wrapped material wants the increment too.
       const double nNew = deformation.N;
@@ -445,7 +445,7 @@ namespace Marmot::Materials {
       else
         baseMaterial->computeStressExplicit( res, inc );
 
-      const Marmot::Vector6d sigmaNp1Voigt = res.stress;
+      const Marmot::Math::Vector6d sigmaNp1Voigt = res.stress;
       const Tensor33d        sigmaNp1      = fromEigen( stressMatrixFromVoigt< 3 >( sigmaNp1Voigt ) );
 
       // --- push the Cauchy stress forward to the Kirchhoff stress ---
@@ -481,7 +481,7 @@ namespace Marmot::Materials {
 
         if constexpr ( tangentMode == HughesWingetTangent::Exact ) {
           // Replace the implicit d(sigma^(n+1))/d(sigmaRot) = I assumption by the true operator.
-          const Marmot::Matrix6d S = computeStressSensitivity( sigmaRotVoigt,
+          const Marmot::Math::Matrix6d S = computeStressSensitivity( sigmaRotVoigt,
                                                                baseStateOld,
                                                                inc,
                                                                seedEnergyDensity,
@@ -500,14 +500,14 @@ namespace Marmot::Materials {
 
         // The nonlocal field does not deform, so it reaches the Kirchhoff stress through sigma alone.
         const Tensor33d dSig_dN = fromEigen(
-          stressMatrixFromVoigt< 3 >( Marmot::Vector6d( tan.dStressddK.col( 0 ) ) ) );
+          stressMatrixFromVoigt< 3 >( Marmot::Math::Vector6d( tan.dStressddK.col( 0 ) ) ) );
         tangents.dTau_dN = J * dSig_dN;
 
         // dKLocal/d(dEps) is reported against the engineering-shear Voigt strain, so scattering it as a
         // stress -- shear entries placed unhalved on both off-diagonals -- is what makes the contraction
         // over all nine (i,j) reproduce the engineering shear exactly once.
         const Tensor33d dL_dEps = fromEigen(
-          stressMatrixFromVoigt< 3 >( Marmot::Vector6d( tan.dKLocalddStrain.row( 0 ).transpose() ) ) );
+          stressMatrixFromVoigt< 3 >( Marmot::Math::Vector6d( tan.dKLocalddStrain.row( 0 ).transpose() ) ) );
         tangents.dL_dF = einsum< ij, ijKL, Fastor::OIndex< K_, L_ > >( dL_dEps, dEps_dF );
         tangents.dL_dN = tan.dKLocalddK( 0, 0 );
       }
@@ -535,7 +535,7 @@ namespace Marmot::Materials {
                                   const Deformation< 3 >&          deformation,
                                   const TimeIncrement&             timeIncrement ) const
     {
-      using namespace Marmot::FastorStandardTensors;
+      using namespace Marmot::Math::FastorTensors;
 
       const int             nTotal = this->getNumberOfRequiredStateVars();
       std::vector< double > stateOld( nTotal );

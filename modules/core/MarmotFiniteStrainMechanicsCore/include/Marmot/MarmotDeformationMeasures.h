@@ -31,8 +31,8 @@ namespace Marmot::ContinuumMechanics {
 
   namespace DeformationMeasures {
 
-    using namespace FastorIndices;
-    using namespace FastorStandardTensors;
+    using namespace Marmot::Math::Indices;
+    using namespace Marmot::Math::FastorTensors;
 
     /** @brief Computes the right Cauchy-Green tensor \f$\boldsymbol{C}\f$.
      * @tparam T Scalar type (e.g., float, double, autodiff::dual)
@@ -157,7 +157,7 @@ namespace Marmot::ContinuumMechanics {
       {
 
         using namespace Fastor;
-        using namespace FastorIndices;
+        using namespace Marmot::Math::Indices;
 
         using TensorDd   = Tensor< double, nDim >;
         using TensorDDd  = Tensor< double, nDim, nDim >;
@@ -209,7 +209,7 @@ namespace Marmot::ContinuumMechanics {
       {
 
         using namespace Fastor;
-        using namespace FastorIndices;
+        using namespace Marmot::Math::Indices;
         using TensorDDd   = Tensor< double, nDim, nDim >;
         using TensorDDDDd = Tensor< double, nDim, nDim, nDim, nDim >;
 
@@ -243,7 +243,7 @@ namespace Marmot::ContinuumMechanics {
       {
 
         using namespace Fastor;
-        using namespace FastorIndices;
+        using namespace Marmot::Math::Indices;
         using TensorDDd   = Tensor< double, nDim, nDim >;
         using TensorDDDDd = Tensor< double, nDim, nDim, nDim, nDim >;
 

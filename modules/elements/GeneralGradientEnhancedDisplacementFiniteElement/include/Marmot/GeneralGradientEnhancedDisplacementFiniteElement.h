@@ -187,8 +187,8 @@ namespace Marmot::Elements {
         } );
 
       public:
-        mVector6d                     stress;
-        mVector6d                     strain;
+        Marmot::Math::mVector6d                     stress;
+        Marmot::Math::mVector6d                     strain;
         double&                       totalStrainEnergy;
         double&                       elasticStrainEnergy;
         double&                       dissipation;
@@ -879,7 +879,7 @@ namespace Marmot::Elements {
       tangents  tan;
       increment inc;
       if constexpr ( nDim == 2 ) {
-        Vector6d dE6             = ContinuumMechanics::VoigtNotation::planeVoigtToVoigt( dE );
+        Marmot::Math::Vector6d dE6             = ContinuumMechanics::VoigtNotation::planeVoigtToVoigt( dE );
         res.stress               = qp.managedStateVars->stress;
         res.elasticEnergyDensity = qp.managedStateVars->elasticStrainEnergy / qp.J0xW;
         res.dissipation          = qp.managedStateVars->dissipation / qp.J0xW;
@@ -1067,7 +1067,7 @@ namespace Marmot::Elements {
       response  res;
       increment inc;
       if constexpr ( nDim == 2 ) {
-        Vector6d dE6             = ContinuumMechanics::VoigtNotation::planeVoigtToVoigt( dE );
+        Marmot::Math::Vector6d dE6             = ContinuumMechanics::VoigtNotation::planeVoigtToVoigt( dE );
         res.stress               = qp.managedStateVars->stress;
         res.elasticEnergyDensity = qp.managedStateVars->elasticStrainEnergy / qp.J0xW;
         res.dissipation          = qp.managedStateVars->dissipation / qp.J0xW;
@@ -1112,7 +1112,7 @@ namespace Marmot::Elements {
           inc                      = { dE, K, dK, time, dT };
           qp.material->computeStressExplicit( res, inc );
 
-          Vector6d integratedStress = res.stress;
+          Marmot::Math::Vector6d integratedStress = res.stress;
           if ( bulkViscosityCoefficients.areActive() )
             integratedStress.head( nNormalComponents ).array() += bulkViscousStressAt( qp, res, K );
 
@@ -1451,7 +1451,7 @@ namespace Marmot::Elements {
       nonlocalResponse.elasticEnergyDensity = qp.managedStateVars->elasticStrainEnergy / qp.J0xW;
       nonlocalResponse.dissipation          = qp.managedStateVars->dissipation / qp.J0xW;
 
-      const increment noIncrement = { Marmot::Vector6d::Zero(),
+      const increment noIncrement = { Marmot::Math::Vector6d::Zero(),
                                       K,
                                       Eigen::Vector< double, nNonlocalVariables >::Zero(),
                                       0.0,

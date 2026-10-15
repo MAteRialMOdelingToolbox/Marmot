@@ -65,27 +65,27 @@ namespace Marmot {
     /** @brief Predefined 6D vector with scaling factor (2x) for shear components in Voigt notation.
      * @details The vector contains scaling factors: {1, 1, 1, 2, 2, 2}.
      */
-    inline const Marmot::Vector6d P = ( Marmot::Vector6d() << 1, 1, 1, 2, 2, 2 ).finished();
+    inline const Marmot::Math::Vector6d P = ( Marmot::Math::Vector6d() << 1, 1, 1, 2, 2, 2 ).finished();
 
     /** @brief Predefined 6D vector with inverse scaling factor (0.5x) for shear components in Voigt notation.
      * @details The vector contains inverse scaling factors: {1, 1, 1, 0.5, 0.5, 0.5}.
      */
-    inline const Marmot::Vector6d PInv = ( Marmot::Vector6d() << 1, 1, 1, .5, .5, .5 ).finished();
+    inline const Marmot::Math::Vector6d PInv = ( Marmot::Math::Vector6d() << 1, 1, 1, .5, .5, .5 ).finished();
 
     /** @brief Predefined 6D Vector representing the identity tensor in Voigt notation.
      * @details The vector contains ones in all components: {1, 1, 1, 0, 0, 0}.
      */
-    inline const Marmot::Vector6d I = ( Marmot::Vector6d() << 1, 1, 1, 0, 0, 0 ).finished();
+    inline const Marmot::Math::Vector6d I = ( Marmot::Math::Vector6d() << 1, 1, 1, 0, 0, 0 ).finished();
 
     /** @brief Predefined 6D Vector representing the hydrostatic projection tensor in Voigt notation.
      * @details The vector contains: {1/3, 1/3, 1/3, 0, 0, 0}.
      */
-    inline const Marmot::Vector6d IHyd = ( Marmot::Vector6d() << 1. / 3, 1. / 3, 1. / 3, 0, 0, 0 ).finished();
+    inline const Marmot::Math::Vector6d IHyd = ( Marmot::Math::Vector6d() << 1. / 3, 1. / 3, 1. / 3, 0, 0, 0 ).finished();
 
     /** @brief Deviatoric projection tensor in Voigt notation.
      * @details \f$ 6 \times 6 \f$ matrix.
      */
-    inline const Matrix6d IDev = ( Matrix6d() <<
+    inline const Marmot::Math::Matrix6d IDev = ( Marmot::Math::Matrix6d() <<
                                      // clang-format off
         2./3,    -1./3,   -1./3,    0,  0,  0,
         -1./3,   2./3,    -1./3,    0,  0,  0,
@@ -114,8 +114,8 @@ namespace Marmot {
      * \f]
      * @note This function extracts only the in-plane components of a 3D stress vector.
      */
-    Eigen::Vector3d voigtToPlaneVoigt( const Marmot::Vector6d& voigt );
-    Vector4d        voigtToAxisymmetricVoigt( const Vector6d& voigt );
+    Eigen::Vector3d voigtToPlaneVoigt( const Marmot::Math::Vector6d& voigt );
+    Marmot::Math::Vector4d        voigtToAxisymmetricVoigt( const Marmot::Math::Vector6d& voigt );
 
     /**
      * @brief Converts a plane stress vector in Voigt notation back to a 3D Voigt vector.
@@ -133,8 +133,8 @@ namespace Marmot {
      * \f]
      * @note The out-of-plane components are set to zero, suitable for plane stress conditions.
      */
-    Marmot::Vector6d planeVoigtToVoigt( const Eigen::Vector3d& voigtPlane );
-    Vector6d         axisymmetricVoigtToVoigt( const Vector4d& voigtAxisymmetric );
+    Marmot::Math::Vector6d planeVoigtToVoigt( const Eigen::Vector3d& voigtPlane );
+    Marmot::Math::Vector6d         axisymmetricVoigtToVoigt( const Marmot::Math::Vector4d& voigtAxisymmetric );
 
     /**
      * @brief Reduces a 3D Voigt vector to a lower-dimensional vector defined by `voigtSize`.
@@ -148,7 +148,7 @@ namespace Marmot {
      * @throws std::invalid_argument if `voigtSize` is not 1, 3, or 6.
      */
     template < enum VoigtSize voigtSize >
-    Eigen::Matrix< double, voigtSize, 1 > reduce3DVoigt( const Marmot::Vector6d& Voigt3D )
+    Eigen::Matrix< double, voigtSize, 1 > reduce3DVoigt( const Marmot::Math::Vector6d& Voigt3D )
     {
       if constexpr ( voigtSize == OneD )
         return ( Eigen::Matrix< double, 1, 1 >() << Voigt3D( 0 ) ).finished();
@@ -177,10 +177,10 @@ namespace Marmot {
      * @throws std::invalid_argument if `voigtSize` is not 1, 3, or 6.
      */
     template < enum VoigtSize voigtSize >
-    Marmot::Vector6d make3DVoigt( const Eigen::Matrix< double, voigtSize, 1 >& Voigt )
+    Marmot::Math::Vector6d make3DVoigt( const Eigen::Matrix< double, voigtSize, 1 >& Voigt )
     {
       if constexpr ( voigtSize == OneD )
-        return ( Marmot::Vector6d() << Voigt( 0 ), 0, 0, 0, 0, 0 ).finished();
+        return ( Marmot::Math::Vector6d() << Voigt( 0 ), 0, 0, 0, 0, 0 ).finished();
       else if constexpr ( voigtSize == TwoD )
         return planeVoigtToVoigt( Voigt );
       else if constexpr ( voigtSize == ThreeD )
@@ -191,7 +191,7 @@ namespace Marmot {
         throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid dimension specified" );
     }
 
-    // function prototypes for  Marmot::Vector6d handling
+    // function prototypes for  Marmot::Math::Vector6d handling
 
     /**
      * @brief Converts a 6-component Voigt strain vector to a 3x3 strain tensor.
@@ -282,7 +282,7 @@ namespace Marmot {
      * @note Shear components in the Voigt vector (\f$\gamma_{ij}\f$ ) are engineering strains,
      * which are twice the tensor shear components.
      */
-    Marmot::Vector6d strainToVoigt( const Eigen::Matrix3d& strainTensor );
+    Marmot::Math::Vector6d strainToVoigt( const Eigen::Matrix3d& strainTensor );
 
     /**
      * @brief Converts a 3x3 stress tensor to a 6-component Voigt stress vector.
@@ -322,7 +322,7 @@ namespace Marmot {
 
     /**
      * @brief Converts a fourth-order stiffness tensor to its Voigt notation representation (\f$ 6 \times 6 \f$ matrix).
-     * @tparam FourthOrderTensorType Fourth-order tensor type (e.g. EigenTensors::Tensor3333d or
+     * @tparam FourthOrderTensorType Fourth-order tensor type (e.g. Marmot::Math::Tensors::Tensor3333d or
      *         Fastor::Tensor<double, 3, 3, 3, 3>) supporting `operator()(i,j,k,l)` element access.
      * @param C The fourth-order stiffness tensor.
      * @return An Eigen::Matrix<double, 6, 6> representing the stiffness tensor in Voigt notation.
@@ -365,8 +365,8 @@ namespace Marmot {
      * (\f$ 3 \times 3 \times 3 \times 3 \f$ tensor).
      * @tparam FourthOrderTensorType Desired result type; cannot be deduced from @p voigtStiffness alone
      *         (the same input matrix type can be converted to either an Eigen or a Fastor result), so it
-     *         defaults to FastorStandardTensors::Tensor3333d, the type most call sites want. Specify it
-     *         explicitly (e.g. `voigtToStiffness< EigenTensors::Tensor3333d >( m )`) to obtain an
+     *         defaults to Marmot::Math::FastorTensors::Tensor3333d, the type most call sites want. Specify it
+     *         explicitly (e.g. `voigtToStiffness< Marmot::Math::Tensors::Tensor3333d >( m )`) to obtain an
      *         Eigen::TensorFixedSize result instead.
      * @tparam VoigtMatrixType Matrix type of @p voigtStiffness (e.g. Eigen::Matrix<double, 6, 6> or
      *         Fastor::Tensor<double, 6, 6>), deduced from the argument.
@@ -374,10 +374,10 @@ namespace Marmot {
      * @return A fourth-order tensor of type @p FourthOrderTensorType representing the stiffness tensor.
      *         The dimensions of the tensor are \f$ 3 \times 3 \times 3 \times 3 \f$.
      */
-    template < typename FourthOrderTensorType = FastorStandardTensors::Tensor3333d, typename VoigtMatrixType >
+    template < typename FourthOrderTensorType = Marmot::Math::FastorTensors::Tensor3333d, typename VoigtMatrixType >
     FourthOrderTensorType voigtToStiffness( const VoigtMatrixType& voigtStiffness )
     {
-      using namespace TensorUtility::IndexNotation;
+      using namespace Marmot::Math::Tensors::IndexNotation;
 
       FourthOrderTensorType stiffness;
 
@@ -483,7 +483,7 @@ namespace Marmot {
        * @param strain 6-component strain vector in Voigt notation.
        * @return A 3D vector containing the principal strains (unsorted).
        */
-      Eigen::Vector3d principalStrains( const Marmot::Vector6d& strain );
+      Eigen::Vector3d principalStrains( const Marmot::Math::Vector6d& strain );
 
       /**
        * @brief Computes the principal stresses by solving the eigenvalue problem.
@@ -498,7 +498,7 @@ namespace Marmot {
        * @param stress 6-component stress vector in Voigt notation.
        * @return A 3D vector containing the principal stresses (unsorted).
        */
-      Eigen::Vector3d principalStresses( const Marmot::Vector6d& stress );
+      Eigen::Vector3d principalStresses( const Marmot::Math::Vector6d& stress );
       // principal strains calculated from haigh westergaard strains ( sorted --> e1 > e2 > e3 )
 
       /**
@@ -532,7 +532,7 @@ namespace Marmot {
        * @note The computation of \f$ \xi \f$, \f$ \rho \f$, and \f$ \theta \f$
        *       is performed in `haighWestergaardFromStrain()`.
        */
-      Eigen::Vector3d sortedPrincipalStrains( const Marmot::Vector6d& strain );
+      Eigen::Vector3d sortedPrincipalStrains( const Marmot::Math::Vector6d& strain );
       // principal stressDirections calculated by solving eigenvalue problem ( !NOT sorted! )
 
       /**
@@ -548,7 +548,7 @@ namespace Marmot {
        * @param stress 6-component stress vector in Voigt notation.
        * @return A 3x3 matrix whose columns are the principal stress directions (unsorted).
        */
-      Eigen::Matrix3d principalStressesDirections( const Marmot::Vector6d& stress );
+      Eigen::Matrix3d principalStressesDirections( const Marmot::Math::Vector6d& stress );
 
       /**
        * @brief Computes the equivalent von Mises stress.
@@ -562,7 +562,7 @@ namespace Marmot {
        * @param stress 6-component stress vector in Voigt notation.
        * @return The von Mises equivalent stress.
        */
-      double vonMisesEquivalentStress( const Marmot::Vector6d& stress );
+      double vonMisesEquivalentStress( const Marmot::Math::Vector6d& stress );
 
       /**
        * @brief Computes the equivalent von Mises strain.
@@ -574,7 +574,7 @@ namespace Marmot {
        * @param strain 6-component strain vector in Voigt notation.
        * @return The von Mises equivalent strain.
        */
-      double vonMisesEquivalentStrain( const Marmot::Vector6d& strain );
+      double vonMisesEquivalentStrain( const Marmot::Math::Vector6d& strain );
 
       /**
        * @brief Computes the Euclidean norm of the strain tensor.
@@ -603,7 +603,7 @@ namespace Marmot {
        * @param stress 6-component stress vector in Voigt notation.
        * @return The Euclidean norm of the stress tensor.
        */
-      double normStress( const Marmot::Vector6d& stress );
+      double normStress( const Marmot::Math::Vector6d& stress );
       // Trace of compressive strains
 
       /**
@@ -619,7 +619,7 @@ namespace Marmot {
        * @param strain 6-component strain vector in Voigt notation.
        * @return The volumetric compressive strain.
        */
-      double StrainVolumetricNegative( const Marmot::Vector6d& strain );
+      double StrainVolumetricNegative( const Marmot::Math::Vector6d& strain );
 
       /**
        * @brief Computes the first invariant \f$ I_1 \f$ of the stress tensor.
@@ -659,7 +659,7 @@ namespace Marmot {
        *     \end{bmatrix}^T \f$
        * @return Value of the first strain invariant \f$ I^{(\varepsilon)}_1 \f$.
        */
-      double I1Strain( const Marmot::Vector6d& strain ); //
+      double I1Strain( const Marmot::Math::Vector6d& strain ); //
 
       /**
        * @brief Computes the second invariant \f$ I_2 \f$ of the stress tensor.
@@ -709,7 +709,7 @@ namespace Marmot {
        *       \gamma_{12}, \gamma_{13}, \gamma_{23} ]^T \f$
        * @return Value of the second invariant \f$ I^{(\varepsilon)}_2 \f$.
        */
-      double I2Strain( const Marmot::Vector6d& strain );
+      double I2Strain( const Marmot::Math::Vector6d& strain );
 
       /**
        * @brief Computes the third invariant \f$ I_3 \f$ of the stress tensor.
@@ -749,7 +749,7 @@ namespace Marmot {
        * @param strain 6-component strain vector in Voigt notation.
        * @return Value of the third strain invariant \f$ I^{(\varepsilon)}_3 \f$.
        */
-      double I3Strain( const Marmot::Vector6d& strain );
+      double I3Strain( const Marmot::Math::Vector6d& strain );
 
       /**
        * @brief Computes the second invariant \f$ J_2 \f$ of the deviatoric stress tensor.
@@ -783,7 +783,7 @@ namespace Marmot {
        * @param strain 6-component strain vector in Voigt notation.
        * @return Value of the second deviatoric strain invariant \f$ J^{(\varepsilon)}_2 \f$.
        */
-      double J2Strain( const Marmot::Vector6d& strain );
+      double J2Strain( const Marmot::Math::Vector6d& strain );
 
       /**
        * @brief Computes the third invariant \f$ J_3 \f$ of the deviatoric stress tensor.
@@ -818,7 +818,7 @@ namespace Marmot {
        * @param strain 6-component strain vector in Voigt notation.
        * @return Value of the third deviatoric strain invariant \f$ J^{(\varepsilon)}_3 \f$.
        */
-      double J3Strain( const Marmot::Vector6d& strain );
+      double J3Strain( const Marmot::Math::Vector6d& strain );
 
       /**
        * @brief Computes principal values and their derivatives for a symmetric 3×3 matrix in Voigt notation.
@@ -850,7 +850,7 @@ namespace Marmot {
        * @return 6-component vector representing \f$ \tfrac{\partial \sigma_m}{\partial \boldsymbol{\sigma}} \f$
        *         in Voigt notation.
        */
-      Vector6d dStressMean_dStress();
+      Marmot::Math::Vector6d dStressMean_dStress();
 
       /**
        * @brief Computes the derivative of the Haigh–Westergaard deviatoric radius \f$ \rho \f$
@@ -970,7 +970,7 @@ namespace Marmot {
        * @param strain Strain vector in Voigt notation (\f$ \boldsymbol{\varepsilon} \f$).
        * @return Value of the derivative \f$ \frac{\partial \theta^{(\varepsilon)}}{\partial J^{(\varepsilon)}_2} \f$.
        */
-      double dThetaStrain_dJ2Strain( const Marmot::Vector6d& strain );
+      double dThetaStrain_dJ2Strain( const Marmot::Math::Vector6d& strain );
 
       /**
        * @brief Computes the derivative \f$ \frac{\partial \theta^{(\varepsilon)}}{\partial J^{(\varepsilon)}_3}\f$ of
@@ -980,7 +980,7 @@ namespace Marmot {
        * @param strain Strain vector in Voigt notation (\f$ \boldsymbol{\varepsilon} \f$).
        * @return Value of the derivative \f$ \frac{\partial \theta^{(\varepsilon)}}{\partial J^{(\varepsilon)}_3} \f$.
        */
-      double dThetaStrain_dJ3Strain( const Marmot::Vector6d& strain );
+      double dThetaStrain_dJ3Strain( const Marmot::Math::Vector6d& strain );
 
       /**
        * @brief Computes the derivative \f$ \frac{\partial J^{(\varepsilon)}_2}{\partial \boldsymbol{\varepsilon}} \f$
@@ -991,7 +991,7 @@ namespace Marmot {
        * @return Vector of partial derivatives \f$ \frac{\partial J^{(\varepsilon)}_2}{\partial
        * \boldsymbol{\varepsilon}} \f$ in Voigt notation.
        */
-      Marmot::Vector6d dJ2Strain_dStrain( const Marmot::Vector6d& strain );
+      Marmot::Math::Vector6d dJ2Strain_dStrain( const Marmot::Math::Vector6d& strain );
 
       /**
        * @brief Computes the derivative \f$ \frac{\partial J^{(\varepsilon)}_3}{\partial \boldsymbol{\varepsilon}} \f$
@@ -1002,7 +1002,7 @@ namespace Marmot {
        * @return Vector of partial derivatives \f$ \frac{\partial J^{(\varepsilon)}_3}{\partial
        * \boldsymbol{\varepsilon}} \f$ in Voigt notation.
        */
-      Marmot::Vector6d dJ3Strain_dStrain( const Marmot::Vector6d& strain );
+      Marmot::Math::Vector6d dJ3Strain_dStrain( const Marmot::Math::Vector6d& strain );
 
       /**
        * @brief Computes the derivative \f$ \frac{\partial \theta^{(\varepsilon)}}{\partial \boldsymbol{\varepsilon}}
@@ -1013,7 +1013,7 @@ namespace Marmot {
        * @return Vector of partial derivatives \f$ \frac{\partial \theta^{(\varepsilon)}}{\partial
        * \boldsymbol{\varepsilon}} \f$ in Voigt notation.
        */
-      Marmot::Vector6d dThetaStrain_dStrain( const Marmot::Vector6d& strain );
+      Marmot::Math::Vector6d dThetaStrain_dStrain( const Marmot::Math::Vector6d& strain );
 
       // derivatives of principalStess with respect to stress
 
@@ -1026,7 +1026,7 @@ namespace Marmot {
        * @return Matrix of partial derivatives \f$ \frac{\partial \sigma_I}{\partial \boldsymbol{\sigma}} \f$,
        * where each row corresponds to the gradient of one principal stress with respect to \f$ \boldsymbol{\sigma} \f$.
        */
-      Marmot::Matrix36 dStressPrincipals_dStress( const Marmot::Vector6d& stress );
+      Marmot::Math::Matrix36 dStressPrincipals_dStress( const Marmot::Math::Vector6d& stress );
 
       // derivatives of plastic strains with respect to strains
 
@@ -1041,7 +1041,7 @@ namespace Marmot {
        * each entry is the partial derivative of the corresponding volumetric-compressive component with respect to the
        * principal strains \f$ \varepsilon_1, \varepsilon_2, \varepsilon_3 \f$.
        */
-      Eigen::Vector3d dStrainVolumetricNegative_dStrainPrincipal( const Marmot::Vector6d& strain );
+      Eigen::Vector3d dStrainVolumetricNegative_dStrainPrincipal( const Marmot::Math::Vector6d& strain );
 
       /**
        * @brief Computes the derivative \f$ \frac{\partial \boldsymbol{\varepsilon}^{p}}{\partial
@@ -1060,7 +1060,7 @@ namespace Marmot {
        * @return 6×6 matrix \f$ \partial \boldsymbol{\varepsilon}^{p} / \partial \boldsymbol{\varepsilon} \f$ in Voigt
        * form.
        */
-      Matrix6d dEp_dE( const Matrix6d& CelInv, const Matrix6d& Cep );
+      Marmot::Math::Matrix6d dEp_dE( const Marmot::Math::Matrix6d& CelInv, const Marmot::Math::Matrix6d& Cep );
 
       /**
        * @brief Computes the derivative \f$ \frac{\partial \Delta \varepsilon^{p,vol}}{\partial
@@ -1072,7 +1072,7 @@ namespace Marmot {
        * @return Row vector (1×6) containing \f$ \partial \Delta \varepsilon^{p,vol} / \partial \boldsymbol{\varepsilon}
        * \f$ in Voigt notation.
        */
-      RowVector6d dDeltaEpv_dE( const Matrix6d& CelInv, const Matrix6d& Cep );
+      Marmot::Math::RowVector6d dDeltaEpv_dE( const Marmot::Math::Matrix6d& CelInv, const Marmot::Math::Matrix6d& Cep );
 
       /**
        * @brief Computes the derivative \f$ \frac{\partial \varepsilon_I}{\partial \boldsymbol{\varepsilon}} \f$ of the
@@ -1083,7 +1083,7 @@ namespace Marmot {
        * @return A 3×6 matrix where each row contains the partial derivatives of one principal strain
        * \f$ \varepsilon_1, \varepsilon_2, \varepsilon_3 \f$ with respect to the 6 Voigt strain components.
        */
-      Marmot::Matrix36 dSortedStrainPrincipal_dStrain( const Marmot::Vector6d& dEp );
+      Marmot::Math::Matrix36 dSortedStrainPrincipal_dStrain( const Marmot::Math::Vector6d& dEp );
 
       /**
        * @brief Computes the derivative \f$ \frac{\partial \Delta \varepsilon^{p,vol}_{\ominus}}
@@ -1099,7 +1099,7 @@ namespace Marmot {
        * \f$ \partial \Delta \varepsilon^{p,vol}_{\ominus} / \partial \boldsymbol{\varepsilon} \f$
        * in Voigt notation.
        */
-      RowVector6d dDeltaEpvneg_dE( const Marmot::Vector6d& dEp, const Matrix6d& CelInv, const Matrix6d& Cep );
+      Marmot::Math::RowVector6d dDeltaEpvneg_dE( const Marmot::Math::Vector6d& dEp, const Marmot::Math::Matrix6d& CelInv, const Marmot::Math::Matrix6d& Cep );
 
     } // namespace Derivatives
 
@@ -1126,7 +1126,7 @@ namespace Marmot {
        * the original to the target Cartesian basis.
        * @return 6×6 transformation matrix \f$T_{\varepsilon}\f$ that transforms strain vectors in Voigt notation.
        */
-      Matrix6d transformationMatrixStrainVoigt( const Matrix3d& transformedCoordinateSystem );
+      Marmot::Math::Matrix6d transformationMatrixStrainVoigt( const Marmot::Math::Matrix3d& transformedCoordinateSystem );
 
       /**
        * @brief Computes the transformation matrix \f$ T_{\sigma} \f$ to rotate a stress vector in Voigt notation
@@ -1143,7 +1143,7 @@ namespace Marmot {
        * the original to the target Cartesian basis.
        * @return 6×6 transformation matrix \f$T_{\sigma}\f$ that transforms stress vectors in Voigt notation.
        */
-      Matrix6d transformationMatrixStressVoigt( const Matrix3d& transformedCoordinateSystem );
+      Marmot::Math::Matrix6d transformationMatrixStressVoigt( const Marmot::Math::Matrix3d& transformedCoordinateSystem );
 
       /**
        * @brief Calculates the projection matrix for mapping Voigt stress to a traction vector.
@@ -1161,7 +1161,7 @@ namespace Marmot {
        * of the plane.
        * @return The \f$3 \times 6\f$ projection matrix \f$\mathbf{P}^{(\mathbf{n})}\f$.
        */
-      Matrix36d projectVoigtStressToPlane( const Vector3d& normalVector );
+      Marmot::Math::Matrix36d projectVoigtStressToPlane( const Marmot::Math::Vector3d& normalVector );
 
       /**
        * @brief Calculates the projection matrix for mapping a Voigt strain vector to the strain on a plane.
@@ -1171,7 +1171,7 @@ namespace Marmot {
        * of the plane.
        * @return The \f$3 \times 6\f$ projection matrix \f$\mathbf{P}^{(\mathbf{n})}\f$.
        */
-      Matrix36d projectVoigtStrainToPlane( const Vector3d& normalVector );
+      Marmot::Math::Matrix36d projectVoigtStrainToPlane( const Marmot::Math::Vector3d& normalVector );
 
       /**
        * @brief Rotates a stress tensor in Voigt notation.
@@ -1185,7 +1185,7 @@ namespace Marmot {
        * @param stress A Voigt-notated stress vector \f$ \boldsymbol{\sigma} \in \mathbb{R}^6 \f$.
        * @return The rotated Voigt-notated stress vector \f$ \boldsymbol{\sigma}^{\prime} \in \mathbb{R}^6 \f$.
        */
-      Marmot::Vector6d rotateVoigtStress( const Eigen::Matrix3d& Q, const Marmot::Vector6d& stress );
+      Marmot::Math::Vector6d rotateVoigtStress( const Eigen::Matrix3d& Q, const Marmot::Math::Vector6d& stress );
 
       /**
        * @brief Transforms a stress tensor in Voigt notation from the global to a local coordinate system.
@@ -1196,8 +1196,8 @@ namespace Marmot {
        * @details The transformation convention used is: \f$ \boldsymbol{\sigma}_{\text{local}} = Q^T \,
        * \boldsymbol{\sigma}_{\text{global}} \, Q \f$, where \f$ Q \f$ is the transformation matrix.
        */
-      Marmot::Vector6d transformStressToLocalSystem( const Marmot::Vector6d& stress,
-                                                     const Matrix3d&         transformedCoordinateSystem );
+      Marmot::Math::Vector6d transformStressToLocalSystem( const Marmot::Math::Vector6d& stress,
+                                                     const Marmot::Math::Matrix3d&         transformedCoordinateSystem );
 
       /**
        * @brief Transforms a strain tensor in Voigt notation from the global to a local coordinate system.
@@ -1208,8 +1208,8 @@ namespace Marmot {
        * @details The transformation convention used is: \f$ \boldsymbol{\varepsilon}_{\text{local}} = Q^T \,
        * \boldsymbol{\varepsilon}_{\text{global}} \, Q \f$, where \f$ Q \f$ is the transformation matrix.
        */
-      Marmot::Vector6d transformStrainToLocalSystem( const Marmot::Vector6d& stress,
-                                                     const Matrix3d&         transformedCoordinateSystem );
+      Marmot::Math::Vector6d transformStrainToLocalSystem( const Marmot::Math::Vector6d& stress,
+                                                     const Marmot::Math::Matrix3d&         transformedCoordinateSystem );
 
       /**
        * @brief Transforms a stress tensor in Voigt notation from a local to the global coordinate system.
@@ -1220,8 +1220,8 @@ namespace Marmot {
        * @details The transformation convention used is: \f$ \boldsymbol{\sigma}_{\text{global}} = Q \,
        * \boldsymbol{\sigma}_{\text{local}} \, Q^T \f$, where \f$ Q \f$ is the transformation matrix.
        */
-      Marmot::Vector6d transformStressToGlobalSystem( const Marmot::Vector6d& stress,
-                                                      const Matrix3d&         transformedCoordinateSystem );
+      Marmot::Math::Vector6d transformStressToGlobalSystem( const Marmot::Math::Vector6d& stress,
+                                                      const Marmot::Math::Matrix3d&         transformedCoordinateSystem );
 
       /**
        * @brief Transforms a strain tensor in Voigt notation from a local to the global coordinate system.
@@ -1232,8 +1232,8 @@ namespace Marmot {
        * @details The transformation convention used is: \f$ \boldsymbol{\varepsilon}_{\text{global}} = Q \,
        * \boldsymbol{\varepsilon}_{\text{local}} \, Q^T \f$, where \f$ Q \f$ is the transformation matrix.
        */
-      Marmot::Vector6d transformStrainToGlobalSystem( const Marmot::Vector6d& stress,
-                                                      const Matrix3d&         transformedCoordinateSystem );
+      Marmot::Math::Vector6d transformStrainToGlobalSystem( const Marmot::Math::Vector6d& stress,
+                                                      const Marmot::Math::Matrix3d&         transformedCoordinateSystem );
 
       /**
        * @brief Transforms a stiffness tensor in Voigt notation from a local to the global coordinate system.
@@ -1244,8 +1244,8 @@ namespace Marmot {
        * @details The transformation convention used is: \f$ \mathbf{C}_{\text{global}} = T \, \mathbf{C}_{\text{local}}
        * \, T^T \f$, where \f$ T \f$ is the transformation matrix derived from \f$ Q \f$.
        */
-      Marmot::Matrix6d transformStiffnessToGlobalSystem( const Marmot::Matrix6d& stiffness,
-                                                         const Matrix3d&         transformedCoordinateSystem );
+      Marmot::Math::Matrix6d transformStiffnessToGlobalSystem( const Marmot::Math::Matrix6d& stiffness,
+                                                         const Marmot::Math::Matrix3d&         transformedCoordinateSystem );
 
     } // namespace Transformations
 
@@ -1256,7 +1256,7 @@ namespace Marmot {
 
 namespace Marmot {
   namespace ContinuumMechanics::VoigtNotation::Derivatives {
-    using namespace Constants;
+    using namespace Marmot::Math::Constants;
 
     template < typename T >
     T dTheta_dJ2( const Eigen::Matrix< T, 6, 1 >& stress )

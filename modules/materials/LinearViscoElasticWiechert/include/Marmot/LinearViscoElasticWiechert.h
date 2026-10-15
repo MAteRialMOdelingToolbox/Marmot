@@ -75,8 +75,8 @@ namespace Marmot::Materials {
      * @param[in] timeInfo time and time increment
      */
     void computeStress( state3D&                state,
-                        Marmot::Matrix6d&       dStressDDStrain,
-                        const Marmot::Vector6d& dStrain,
+                        Marmot::Math::Matrix6d&       dStressDDStrain,
+                        const Marmot::Math::Vector6d& dStrain,
                         const timeInfo&         timeInfo ) const override;
 
     /**
@@ -100,7 +100,7 @@ namespace Marmot::Materials {
      * It depends only on nu, which is fixed at construction, so it is built once here rather than on
      * every computeStress call, as relaxationTimes and elasticModuli already are.
      */
-    Marmot::Matrix6d unitStiffness;
+    Marmot::Math::Matrix6d unitStiffness;
 
     static constexpr int powerLawApproximationOrder = 2;
   };

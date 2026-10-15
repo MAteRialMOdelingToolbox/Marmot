@@ -83,7 +83,7 @@ public:
 
   /// Structure to hold the material state at a material point in 3D
   struct state3D {
-    Marmot::Vector6d stress;               ///< Cauchy stress tensor in Voigt notation
+    Marmot::Math::Vector6d stress;               ///< Cauchy stress tensor in Voigt notation
     double           elasticEnergyDensity; ///< Elastic strain energy density
     double           dissipation;          ///< Dissipation
     double*          stateVars;            ///< Pointer to array of state variables
@@ -92,7 +92,7 @@ public:
      * Initializes stress to zero, energy and dissipation to zero, and stateVars to nullptr.
      */
     state3D()
-      : stress( Marmot::Vector6d::Zero() ), elasticEnergyDensity( 0.0 ), dissipation( 0.0 ), stateVars( nullptr )
+      : stress( Marmot::Math::Vector6d::Zero() ), elasticEnergyDensity( 0.0 ), dissipation( 0.0 ), stateVars( nullptr )
     {
     }
     /**
@@ -102,7 +102,7 @@ public:
      * @param dissipation_ Dissipation
      * @param stateVars_ Pointer to array of state variables
      */
-    state3D( Marmot::Vector6d stress_, double elasticEnergyDensity_, double dissipation_, double* stateVars_ )
+    state3D( Marmot::Math::Vector6d stress_, double elasticEnergyDensity_, double dissipation_, double* stateVars_ )
       : stress( stress_ ),
         elasticEnergyDensity( elasticEnergyDensity_ ),
         dissipation( dissipation_ ),
@@ -114,13 +114,13 @@ public:
   // Structure to hold the material state at a material point for 2D plane stress
   /// @brief Structure holding the material state at a material point for 2D plane stress.
   struct state2D {
-    Marmot::Vector3d stress;               ///< 2D Cauchy stress tensor in Voigt notation
+    Marmot::Math::Vector3d stress;               ///< 2D Cauchy stress tensor in Voigt notation
     double           elasticEnergyDensity; ///< Elastic strain energy density
     double           dissipation;          ///< Dissipation
     double*          stateVars;            ///< Pointer to array of state variables
 
     state2D()
-      : stress( Marmot::Vector3d::Zero() ), elasticEnergyDensity( 0.0 ), dissipation( 0.0 ), stateVars( nullptr )
+      : stress( Marmot::Math::Vector3d::Zero() ), elasticEnergyDensity( 0.0 ), dissipation( 0.0 ), stateVars( nullptr )
     {
     }
   };
@@ -165,8 +165,8 @@ public:
    * @param[in]	timeInfo Structure carrying the current (pseudo-)time and the (pseudo-)time increment
    */
   virtual void computeStress( state3D&                state,
-                              Marmot::Matrix6d&       dStress_dStrain,
-                              const Marmot::Vector6d& dStrain,
+                              Marmot::Math::Matrix6d&       dStress_dStrain,
+                              const Marmot::Math::Vector6d& dStrain,
                               const timeInfo&         timeInfo ) const = 0;
 
   /**
@@ -179,9 +179,9 @@ public:
    * @note The default implementation calls @ref computeStress and ignores the algorithmic tangent.
    * @note Derived classes may override this method for efficiency reasons.
    */
-  virtual void computeStressExplicit( state3D& state, const Marmot::Vector6d& dStrain, const timeInfo& timeInfo ) const
+  virtual void computeStressExplicit( state3D& state, const Marmot::Math::Vector6d& dStrain, const timeInfo& timeInfo ) const
   {
-    Marmot::Matrix6d dStress_dStrain = Marmot::Matrix6d::Zero();
+    Marmot::Math::Matrix6d dStress_dStrain = Marmot::Math::Matrix6d::Zero();
     computeStress( state, dStress_dStrain, dStrain, timeInfo );
   }
 
@@ -189,8 +189,8 @@ public:
    * Plane stress implementation of @ref computeStress.
    */
   virtual void computePlaneStress( state2D&                stress2D,
-                                   Marmot::Matrix3d&       dStress_dStrain2D,
-                                   const Marmot::Vector3d& dStrain2D,
+                                   Marmot::Math::Matrix3d&       dStress_dStrain2D,
+                                   const Marmot::Math::Vector3d& dStrain2D,
                                    const timeInfo&         timeInfo ) const;
 
   /**

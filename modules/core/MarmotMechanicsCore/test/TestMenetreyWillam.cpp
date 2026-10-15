@@ -112,8 +112,8 @@ void testdPolarRadius_dTheta()
 {
   const double e                        = 0.6;
   const double thetaExtensionMeridian   = 0.;
-  const double thetaCompressionMeridian = Constants::Pi / 3;
-  const double thetaShearMeridian       = Constants::Pi / 6;
+  const double thetaCompressionMeridian = Marmot::Math::Constants::Pi / 3;
+  const double thetaShearMeridian       = Marmot::Math::Constants::Pi / 6;
 
   const auto [r_Ext, drdThetaExt] = MenetreyWillam::dPolarRadius_dTheta( thetaExtensionMeridian, e );
   const double r_ExtTarget        = 1. / e;
@@ -160,8 +160,8 @@ void testd2PolarRadius_dTheta2()
 {
   const double e                        = 0.6;
   const double thetaExtensionMeridian   = 0.;
-  const double thetaCompressionMeridian = Constants::Pi / 3;
-  const double thetaShearMeridian       = Constants::Pi / 6;
+  const double thetaCompressionMeridian = Marmot::Math::Constants::Pi / 3;
+  const double thetaShearMeridian       = Marmot::Math::Constants::Pi / 6;
 
   const auto [r_Ext, drdThetaExt, d2rdTheta2Ext] = MenetreyWillam::d2PolarRadius_dTheta2( thetaExtensionMeridian, e );
   const double r_ExtTarget                       = 1. / e;

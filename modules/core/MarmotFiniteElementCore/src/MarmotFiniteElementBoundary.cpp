@@ -111,8 +111,8 @@ namespace Marmot {
         }
         else {
           // cross product
-          typedef Eigen::Ref< const Vector3d > vector3_cr;
-          Vector3d n    = vector3_cr( qp.dx_dXi.col( 0 ) ).cross( vector3_cr( qp.dx_dXi.col( 1 ) ) );
+          typedef Eigen::Ref< const Marmot::Math::Vector3d > vector3_cr;
+          Marmot::Math::Vector3d n    = vector3_cr( qp.dx_dXi.col( 0 ) ).cross( vector3_cr( qp.dx_dXi.col( 1 ) ) );
           qp.areaVector = n;
         }
 
@@ -173,7 +173,7 @@ namespace Marmot {
       for ( const auto& qp : quadraturePoints ) {
         // Pk += qp.weight * qp.areaVector.transpose() * NB( qp.N, nDim );
         Eigen::VectorXd coordAtGauss = NB( qp.N, nDim ) * coordinates;
-        Pk += qp.weight * 2. * coordAtGauss( 0 ) * Constants::Pi * qp.areaVector.transpose() * NB( qp.N, nDim );
+        Pk += qp.weight * 2. * coordAtGauss( 0 ) * Marmot::Math::Constants::Pi * qp.areaVector.transpose() * NB( qp.N, nDim );
       }
 
       return Pk;
@@ -199,7 +199,7 @@ namespace Marmot {
 
       else if ( nDim == 3 ) {
         // Belytschko et al. 2014, pp.364
-        Matrix3d HXi0, HXi1;
+        Marmot::Math::Matrix3d HXi0, HXi1;
         for ( const auto& qp : quadraturePoints ) {
           const MatrixXd& J = qp.dx_dXi;
 

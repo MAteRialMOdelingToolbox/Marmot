@@ -57,11 +57,11 @@ namespace Marmot {
      * Liu et al. 2021, A continuum and computational framework for viscoelastodynamics: I. Finite deformation linear
      * models, Comput. Meth. Appl. Mech. Engrg. 385, 114059
      */
-    void evaluateGeneralizedMaxwellModel( FastorStandardTensors::Tensor33d&           stress,
-                                          FastorStandardTensors::Tensor3333d&         tangent,
-                                          const FastorStandardTensors::Tensor333333d& dTangent_dDeformation,
-                                          const FastorStandardTensors::Tensor3333d&   initialCompliance,
-                                          const FastorStandardTensors::Tensor33d&     dStress,
+    void evaluateGeneralizedMaxwellModel( Marmot::Math::FastorTensors::Tensor33d&           stress,
+                                          Marmot::Math::FastorTensors::Tensor3333d&         tangent,
+                                          const Marmot::Math::FastorTensors::Tensor333333d& dTangent_dDeformation,
+                                          const Marmot::Math::FastorTensors::Tensor3333d&   initialCompliance,
+                                          const Marmot::Math::FastorTensors::Tensor33d&     dStress,
                                           const double                                dT,
                                           const MaxwellProperties&                    maxwellProperties,
                                           double*                                     stateVars );
@@ -80,9 +80,9 @@ namespace Marmot {
      * @details This update correspond to the approach by Simo (1987)
      * and is used in the implementation of the generalized maxwell model in the finite element code
      */
-    void evaluateGeneralizedMaxwellModel( FastorStandardTensors::Tensor33d&       stress,
-                                          FastorStandardTensors::Tensor3333d&     tangent,
-                                          const FastorStandardTensors::Tensor33d& dStress,
+    void evaluateGeneralizedMaxwellModel( Marmot::Math::FastorTensors::Tensor33d&       stress,
+                                          Marmot::Math::FastorTensors::Tensor3333d&     tangent,
+                                          const Marmot::Math::FastorTensors::Tensor33d& dStress,
                                           const double                            dT,
                                           const MaxwellProperties&                maxwellProperties,
                                           double*                                 stateVars );
@@ -100,8 +100,8 @@ namespace Marmot {
      * and is used in the implementation of the generalized maxwell model in the finite element code
      */
     template < typename T = double >
-    void evaluateGeneralizedMaxwellModel( FastorStandardTensors::Tensor33t< T >&       stress,
-                                          const FastorStandardTensors::Tensor33t< T >& dStress,
+    void evaluateGeneralizedMaxwellModel( Marmot::Math::FastorTensors::Tensor33t< T >&       stress,
+                                          const Marmot::Math::FastorTensors::Tensor33t< T >& dStress,
                                           const double                                 dT,
                                           const MaxwellProperties&                     maxwellProperties,
                                           double*                                      stateVars )
@@ -111,11 +111,11 @@ namespace Marmot {
         return;
 
       using namespace Fastor;
-      using namespace Marmot::FastorStandardTensors;
-      using namespace Marmot::FastorIndices;
+      using namespace Marmot::Math::FastorTensors;
+      using namespace Marmot::Math::Indices;
 
       // scale equilibrium stress contribution
-      stress = multiplyFastorTensorWithScalar( stress, T( 1.0 - maxwellProperties.sumGamma ) );
+      stress = Marmot::Math::multiplyFastorTensorWithScalar( stress, T( 1.0 - maxwellProperties.sumGamma ) );
 
       for ( int i = 0; i < maxwellProperties.nMaxwell; ++i ) {
         // get old  maxewell element stress from state variables
@@ -138,13 +138,13 @@ namespace Marmot {
         }
 
         // compute new stress in maxwell element
-        const Tensor33t< T > Q_np = makeOtherScalarType< T >( evaluate( alpha * Q_n ) ) +
-                                    multiplyFastorTensorWithScalar( dStress, T( beta ) );
+        const Tensor33t< T > Q_np = Marmot::Math::makeOtherScalarType< T >( evaluate( alpha * Q_n ) ) +
+                                    Marmot::Math::multiplyFastorTensorWithScalar( dStress, T( beta ) );
 
         // add contribution to stress
         stress += Q_np;
 
-        const Tensor33d Q_np_real = makeReal( Q_np );
+        const Tensor33d Q_np_real = Marmot::Math::makeReal( Q_np );
 
         // update state variables
         memcpy( stateVars + i * 9, Q_np_real.data(), 9 * sizeof( double ) );
@@ -168,10 +168,10 @@ namespace Marmot {
      */
 
     template < typename T = double >
-    void evaluateGeneralizedMaxwellModel( FastorStandardTensors::Tensor33t< T >&         stress,
-                                          const FastorStandardTensors::Tensor3333t< T >& tangent,
-                                          const FastorStandardTensors::Tensor3333t< T >& initialCompliance,
-                                          const FastorStandardTensors::Tensor33t< T >&   dStress,
+    void evaluateGeneralizedMaxwellModel( Marmot::Math::FastorTensors::Tensor33t< T >&         stress,
+                                          const Marmot::Math::FastorTensors::Tensor3333t< T >& tangent,
+                                          const Marmot::Math::FastorTensors::Tensor3333t< T >& initialCompliance,
+                                          const Marmot::Math::FastorTensors::Tensor33t< T >&   dStress,
                                           const double                                   dT,
                                           const MaxwellProperties&                       maxwellProperties,
                                           double*                                        stateVars )
@@ -181,8 +181,8 @@ namespace Marmot {
         return;
 
       using namespace Fastor;
-      using namespace Marmot::FastorStandardTensors;
-      using namespace Marmot::FastorIndices;
+      using namespace Marmot::Math::FastorTensors;
+      using namespace Marmot::Math::Indices;
 
       // scale equilibrium stress contribution
       stress = stress * ( 1.0 - maxwellProperties.sumGamma );
@@ -208,14 +208,14 @@ namespace Marmot {
         }
 
         // compute new stress in maxwell element
-        const Tensor33t< T > Q_np = alpha * makeOtherScalarType< T >( Q_n ) + beta * dStress;
+        const Tensor33t< T > Q_np = alpha * Marmot::Math::makeOtherScalarType< T >( Q_n ) + beta * dStress;
 
         // add contribution to stress
         const Tensor33t< T > H_np = einsum< ijkl, kl >( initialCompliance, Q_np );
         stress += einsum< ij, ijkl >( H_np, tangent );
 
         // update state variables
-        Tensor33d Q_np_real = makeReal( Q_np );
+        Tensor33d Q_np_real = Marmot::Math::makeReal( Q_np );
         memcpy( stateVars + i * 9, Q_np_real.data(), 9 * sizeof( double ) );
       }
     }

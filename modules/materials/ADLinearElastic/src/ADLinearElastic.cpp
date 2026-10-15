@@ -28,11 +28,11 @@ namespace Marmot::Materials {
   }
 
   void ADLinearElastic::computeStressAD( state3DAD&                 state,
-                                         const Marmot::Vector6dual& dStrain,
+                                         const Marmot::Math::Vector6dual& dStrain,
                                          const timeInfo&            timeInfo ) const
   {
 
-    const Vector6dual dStress = C * dStrain;
+    const Marmot::Math::Vector6dual dStress = C * dStrain;
     state.stress += dStress;
     state.elasticEnergyDensity += 0.5 * Math::makeReal( dStrain.dot( dStress ) );
     state.dissipation = 0.0;

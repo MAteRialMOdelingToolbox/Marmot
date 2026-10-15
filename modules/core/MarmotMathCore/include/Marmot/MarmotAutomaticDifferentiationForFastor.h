@@ -32,9 +32,7 @@
 #include <autodiff/forward/dual/dual.hpp>
 #include <functional>
 
-namespace Marmot {
-
-  namespace AutomaticDifferentiation {
+namespace Marmot::Math::AutomaticDifferentiation {
 
     using namespace autodiff;
 
@@ -91,9 +89,9 @@ namespace Marmot {
       double* df_dT_data   = df_dT.data();
       dual*   T_right_data = T_right.data();
 
-      if constexpr ( Marmot::IsSquareRank2Tensor< Rest... >::value ) {
+      if constexpr ( Marmot::Math::IsSquareRank2Tensor< Rest... >::value ) {
         if ( isSymmetric ) {
-          constexpr size_t dim = Marmot::IsSquareRank2Tensor< Rest... >::dim;
+          constexpr size_t dim = Marmot::Math::IsSquareRank2Tensor< Rest... >::dim;
 
           for ( size_t row = 0; row < dim; ++row ) {
             for ( size_t col = row; col < dim; ++col ) {
@@ -164,9 +162,9 @@ namespace Marmot {
       higherOrderScalartype* T_right_data = T_right.data();
       scalartype*            df_dT_data   = df_dT_.data();
 
-      if constexpr ( Marmot::IsSquareRank2Tensor< Rest... >::value ) {
+      if constexpr ( Marmot::Math::IsSquareRank2Tensor< Rest... >::value ) {
         if ( isSymmetric ) {
-          constexpr size_t dim = Marmot::IsSquareRank2Tensor< Rest... >::dim;
+          constexpr size_t dim = Marmot::Math::IsSquareRank2Tensor< Rest... >::dim;
 
           for ( size_t row = 0; row < dim; ++row ) {
             for ( size_t col = row; col < dim; ++col ) {
@@ -231,10 +229,10 @@ namespace Marmot {
       dual*   T_right_data      = T_right.data();
       dual*   F_at_T_right_data = F_at_T_right.data();
 
-      if constexpr ( Marmot::IsSquareRank2Tensor< RestT... >::value && Marmot::IsSquareRank2Tensor< RestF... >::value &&
-                     Marmot::IsSquareRank2Tensor< RestT... >::dim == Marmot::IsSquareRank2Tensor< RestF... >::dim ) {
+      if constexpr ( Marmot::Math::IsSquareRank2Tensor< RestT... >::value && Marmot::Math::IsSquareRank2Tensor< RestF... >::value &&
+                     Marmot::Math::IsSquareRank2Tensor< RestT... >::dim == Marmot::Math::IsSquareRank2Tensor< RestF... >::dim ) {
         if ( isSymmetric ) {
-          constexpr size_t dim = Marmot::IsSquareRank2Tensor< RestT... >::dim;
+          constexpr size_t dim = Marmot::Math::IsSquareRank2Tensor< RestT... >::dim;
 
           for ( size_t row = 0; row < dim; ++row ) {
             for ( size_t col = row; col < dim; ++col ) {
@@ -494,6 +492,4 @@ namespace Marmot {
 
     } // namespace ThirdOrder
 
-  }   // namespace AutomaticDifferentiation
-
-} // namespace Marmot
+} // namespace Marmot::Math::AutomaticDifferentiation

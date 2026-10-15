@@ -78,7 +78,7 @@ namespace Marmot::MaterialPoints {
     constexpr static int _nVertices = 1; ///< a material point has a single vertex, its center
 
     /// number of rotational dofs in nDim dimensions (not used by this class)
-    static constexpr int nRot = Marmot::ContinuumMechanics::CommonTensors::getNumberOfDofForRotation( nDim );
+    static constexpr int nRot = Marmot::Math::Tensors::getNumberOfDofForRotation( nDim );
 
     using TensorD    = Fastor::Tensor< double, nDim >;                   ///< vector of size nDim
     using TensorDD   = Fastor::Tensor< double, nDim, nDim >;             ///< second-order tensor of size nDim
@@ -121,14 +121,14 @@ namespace Marmot::MaterialPoints {
       } );
 
     public:
-      FastorStandardTensors::TensorMap3d  u;     ///< total displacement of the last accepted state
-      FastorStandardTensors::TensorMap3d  v;     ///< velocity
-      FastorStandardTensors::TensorMap3d  a;     ///< acceleration
-      FastorStandardTensors::TensorMap3d  du;    ///< displacement increment @f$ \Delta\boldsymbol{u} @f$
-      FastorStandardTensors::TensorMap33d dx_dY; ///< incremental deformation gradient @f$ \Delta\boldsymbol{F} @f$
-      FastorStandardTensors::TensorMap33d
+      Marmot::Math::FastorTensors::TensorMap3d  u;     ///< total displacement of the last accepted state
+      Marmot::Math::FastorTensors::TensorMap3d  v;     ///< velocity
+      Marmot::Math::FastorTensors::TensorMap3d  a;     ///< acceleration
+      Marmot::Math::FastorTensors::TensorMap3d  du;    ///< displacement increment @f$ \Delta\boldsymbol{u} @f$
+      Marmot::Math::FastorTensors::TensorMap33d dx_dY; ///< incremental deformation gradient @f$ \Delta\boldsymbol{F} @f$
+      Marmot::Math::FastorTensors::TensorMap33d
         dY_dX; ///< deformation gradient of the last accepted state @f$ \boldsymbol{F}_n @f$
-      FastorStandardTensors::TensorMap33d stress;        ///< Kirchhoff stress (see computeYourself())
+      Marmot::Math::FastorTensors::TensorMap33d stress;        ///< Kirchhoff stress (see computeYourself())
       Eigen::Map< Eigen::VectorXd >       materialState; ///< state variables of the material
 
       /**
@@ -318,14 +318,14 @@ namespace Marmot::MaterialPoints {
     {
 
       const auto&                           u_n  = state->u;
-      const FastorStandardTensors::Tensor3d u_np = u_n + state->du;
+      const Marmot::Math::FastorTensors::Tensor3d u_np = u_n + state->du;
 
       // TODO: make auto&
-      const FastorStandardTensors::Tensor33d dx_dX_n  = state->dY_dX;
-      const FastorStandardTensors::Tensor33d dx_dX_np = state->dx_dY % dx_dX_n;
+      const Marmot::Math::FastorTensors::Tensor33d dx_dX_n  = state->dY_dX;
+      const Marmot::Math::FastorTensors::Tensor33d dx_dX_np = state->dx_dY % dx_dX_n;
 
-      mapEigenToFastor( state->u )     = mapEigenToFastor( u_np );
-      mapEigenToFastor( state->dY_dX ) = mapEigenToFastor( dx_dX_np );
+      Marmot::Math::mapEigenToFastor( state->u )     = Marmot::Math::mapEigenToFastor( u_np );
+      Marmot::Math::mapEigenToFastor( state->dY_dX ) = Marmot::Math::mapEigenToFastor( dx_dX_np );
     };
 
     /**

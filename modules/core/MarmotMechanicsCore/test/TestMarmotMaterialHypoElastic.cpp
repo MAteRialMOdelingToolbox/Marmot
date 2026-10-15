@@ -24,15 +24,15 @@ namespace {
     }
 
     void computeStress( state3D&          state,
-                        Marmot::Matrix6d& dStress_dStrain,
-                        const Marmot::Vector6d&,
+                        Marmot::Math::Matrix6d& dStress_dStrain,
+                        const Marmot::Math::Vector6d&,
                         const timeInfo& ) const override
     {
       // Sentinel write so callers relying on state-var copy semantics (e.g.
       // getMaximumWaveSpeed()) can actually detect whether they were handed a copy or an alias.
       state.stateVars[0] = 42.0;
 
-      state.stress      = Marmot::Vector6d::Zero();
+      state.stress      = Marmot::Math::Vector6d::Zero();
       state.stress( 1 ) = 5.0; // never zero, and independent of dStrain
       state.stress( 2 ) = 5.0;
 
@@ -60,12 +60,12 @@ void testComputePlaneStressThrowsWhenItCannotConverge()
 {
   auto [mat, stateVars] = makeNeverConvergingMaterial();
 
-  Marmot::Vector3d dStrain2D = Marmot::Vector3d::Zero();
+  Marmot::Math::Vector3d dStrain2D = Marmot::Math::Vector3d::Zero();
   dStrain2D( 0 )             = 1e-3;
   MarmotMaterialHypoElastic::timeInfo timeInfo{ 0.0, 1.0 };
   MarmotMaterialHypoElastic::state2D  state2D;
   state2D.stateVars = stateVars.data();
-  Marmot::Matrix3d tan2D;
+  Marmot::Math::Matrix3d tan2D;
 
   bool threw = false;
   try {

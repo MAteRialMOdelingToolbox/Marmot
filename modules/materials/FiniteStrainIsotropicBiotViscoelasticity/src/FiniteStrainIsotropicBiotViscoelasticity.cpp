@@ -17,8 +17,8 @@ namespace Marmot::Materials {
 
   using namespace Marmot;
   using namespace Fastor;
-  using namespace FastorIndices;
-  using namespace FastorStandardTensors;
+  using namespace Marmot::Math::Indices;
+  using namespace Marmot::Math::FastorTensors;
 
   double FiniteStrainIsotropicBiotViscoelasticity::getDensity( const double* stateVars ) const
   {
@@ -37,7 +37,7 @@ namespace Marmot::Materials {
         ContinuumMechanics::FiniteStrain::Viscoelasticity::createMaxwellProperties( materialProperties[2],
                                                                                     &materialProperties[3] ) ),
 
-      initialCompliance( makeDual( invertMinorSymmetricFourthOrderTensor( std::get< 2 >(
+      initialCompliance( Marmot::Math::makeDual( Marmot::Math::invertMinorSymmetricFourthOrderTensor( std::get< 2 >(
         ContinuumMechanics::EnergyDensityFunctions::SecondOrderDerived::BiotNeoHooke( evaluate( Spatial3D::I ),
                                                                                       K,
                                                                                       G ) ) ) ) )
@@ -76,8 +76,8 @@ namespace Marmot::Materials {
     Tensor33d S_biot_old( stateLayout.getPtr( response.stateVars, "S0_old" ) );
 
     // compute the increment in Biot stress
-    const Tensor33t< scalar > dS_biot = S_biot - makeDual( S_biot_old );
-    memcpy( stateLayout.getPtr( response.stateVars, "S0_old" ), makeReal( S_biot ).data(), 9 * sizeof( double ) );
+    const Tensor33t< scalar > dS_biot = S_biot - Marmot::Math::makeDual( S_biot_old );
+    memcpy( stateLayout.getPtr( response.stateVars, "S0_old" ), Marmot::Math::makeReal( S_biot ).data(), 9 * sizeof( double ) );
 
     // add viscoelastic contribution to Biot stress using the generalized Maxwell model
     ContinuumMechanics::FiniteStrain::Viscoelasticity::evaluateGeneralizedMaxwellModel<

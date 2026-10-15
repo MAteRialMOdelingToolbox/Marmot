@@ -36,7 +36,7 @@ void testMaterialResponse()
   // read history
   auto history = solver.getHistory();
   // get computed stress
-  Marmot::Vector6d stress = history.back().stress;
+  Marmot::Math::Vector6d stress = history.back().stress;
 
   // Define the expected stress values for the applied strain increment
   Eigen::Matrix< double, 6, 1 > stressTarget;
@@ -75,7 +75,7 @@ void testShearMaterialResponse()
   // read history
   auto history = solver.getHistory();
   // get computed stress
-  Marmot::Vector6d stress = history.back().stress;
+  Marmot::Math::Vector6d stress = history.back().stress;
 
   // Define the expected stress values for the applied strain increment
   Eigen::Matrix< double, 6, 1 > stressTargetShear;
@@ -118,7 +118,7 @@ void testTransverseIsotropicMaterialResponse()
   // read history
   auto history = solver.getHistory();
   // get computed stress
-  Marmot::Vector6d stress = history.back().stress;
+  Marmot::Math::Vector6d stress = history.back().stress;
 
   // Define the expected stress values for the applied strain increment
   Eigen::Matrix< double, 6, 1 > stressTarget_transverseIsotropic;
@@ -162,7 +162,7 @@ void testTransverseIsotropicShearMaterialResponse()
   // read history
   auto history = solver.getHistory();
   // get computed stress
-  Marmot::Vector6d stress = history.back().stress;
+  Marmot::Math::Vector6d stress = history.back().stress;
 
   // Define the expected stress values for the applied shear strain increment
   Eigen::Matrix< double, 6, 1 > stressTargetShear_transverseIsotropic;
@@ -211,7 +211,7 @@ void testOrthotropicMaterialResponse()
   // read history
   auto history = solver.getHistory();
   // get computed stress
-  Marmot::Vector6d stress = history.back().stress;
+  Marmot::Math::Vector6d stress = history.back().stress;
   // Define the expected stress values for the applied strain increment
   Eigen::Matrix< double, 6, 1 > stressTarget_orthotropic;
   stressTarget_orthotropic << 24.62633451957296, 5.800711743772242, 9.074733096085410, 0., 0., 0.;
@@ -259,7 +259,7 @@ void testOrthotropicShearMaterialResponse()
   // read history
   auto history = solver.getHistory();
   // get computed stress
-  Marmot::Vector6d stress = history.back().stress;
+  Marmot::Math::Vector6d stress = history.back().stress;
   // Define the expected stress values for the applied strain increment
   Eigen::Matrix< double, 6, 1 > stressTargetShear_orthotropic;
   stressTargetShear_orthotropic << 0., 0., 0., 4., 6., 5.;
@@ -307,7 +307,7 @@ void testOrthotropicMaterialResponseRotation()
   // read history
   auto history = solver.getHistory();
   // get computed stress
-  Marmot::Vector6d stress = history.back().stress;
+  Marmot::Math::Vector6d stress = history.back().stress;
 
   // Define the expected st ress values for the applied strain increment
   Eigen::Matrix< double, 6, 1 > stressTarget_orthotropic;
@@ -406,14 +406,14 @@ void testComputeStressExplicitMatchesComputeStress()
   auto matA = makeIsotropicMaterial();
   auto matB = makeIsotropicMaterial();
 
-  Vector6d dStrain = Vector6d::Zero();
+  Marmot::Math::Vector6d dStrain = Marmot::Math::Vector6d::Zero();
   dStrain( 0 )     = 1e-3;
   dStrain( 3 )     = 2e-4;
 
   MarmotMaterialHypoElastic::timeInfo timeInfo{ 0., 1. };
 
   MarmotMaterialHypoElastic::state3D stateA;
-  Matrix6d                           tanA;
+  Marmot::Math::Matrix6d                           tanA;
   // LinearElastic re-declares computeStress() under `protected`, so call it through the base
   // class (as production code always does, via a MarmotMaterialHypoElastic*).
   MarmotMaterialHypoElastic& matABase = matA;
@@ -434,12 +434,12 @@ void testComputePlaneStressMatchesClassicalPlaneStressLaw()
 
   const double E = isotropicProps_[0], nu = isotropicProps_[1];
 
-  Vector3d dStrain2D;
+  Marmot::Math::Vector3d dStrain2D;
   dStrain2D << 1e-3, 0.5e-3, 2e-4; // eps_xx, eps_yy, gamma_xy
 
   MarmotMaterialHypoElastic::timeInfo timeInfo{ 0., 1. };
   MarmotMaterialHypoElastic::state2D  state2D;
-  Matrix3d                            tan2D;
+  Marmot::Math::Matrix3d                            tan2D;
 
   mat.computePlaneStress( state2D, tan2D, dStrain2D, timeInfo );
 
@@ -449,7 +449,7 @@ void testComputePlaneStressMatchesClassicalPlaneStressLaw()
   //   sigma_xy = G * gamma_xy
   const double planeStressModulus = E / ( 1. - nu * nu );
   const double G                  = E / ( 2. * ( 1. + nu ) );
-  Vector3d     expected;
+  Marmot::Math::Vector3d     expected;
   expected << planeStressModulus * ( dStrain2D( 0 ) + nu * dStrain2D( 1 ) ),
     planeStressModulus * ( dStrain2D( 1 ) + nu * dStrain2D( 0 ) ), G * dStrain2D( 2 );
 

@@ -430,7 +430,7 @@ void checkStressStateOfTheMaterialPoints( const CellGeometry< nDim >& g )
   Setup< nDim > s( g );
   s.kernels( increment( s.nDof, 1e-2 ) );
 
-  using FastorStandardTensors::Tensor33d;
+  using Marmot::Math::FastorTensors::Tensor33d;
   Marmot::Materials::CompressibleNeoHooke reference( matProps.data(), matProps.size(), 1 );
   for ( auto& mp : s.mps ) {
     const Tensor33d dF( mp->getStateView( "delta deformation gradient" ).stateLocation );

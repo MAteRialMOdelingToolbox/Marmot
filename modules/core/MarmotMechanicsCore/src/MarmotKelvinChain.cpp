@@ -17,7 +17,7 @@ namespace Marmot::Materials {
                               Properties     retardationTimes,
                               StateVarMatrix stateVars,
                               double&        uniaxialCompliance,
-                              Vector6d&      dStrain,
+                              Marmot::Math::Vector6d&      dStrain,
                               const double   factor )
     {
 
@@ -36,8 +36,8 @@ namespace Marmot::Materials {
                                Properties            elasticModuli,
                                Properties            retardationTimes,
                                Ref< StateVarMatrix > stateVars,
-                               const Vector6d&       dStress,
-                               const Matrix6d&       unitComplianceMatrix )
+                               const Marmot::Math::Vector6d&       dStress,
+                               const Marmot::Math::Matrix6d&       unitComplianceMatrix )
     {
 
       if ( dT <= 1e-14 )

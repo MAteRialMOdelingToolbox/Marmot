@@ -6,9 +6,9 @@ namespace Marmot {
   namespace ContinuumMechanics {
     namespace Elasticity::Isotropic {
 
-      Matrix6d stiffnessTensor( const double E, const double nu )
+      Marmot::Math::Matrix6d stiffnessTensor( const double E, const double nu )
       {
-        Matrix6d C;
+        Marmot::Math::Matrix6d C;
         // clang-format off
             	C <<  (1-nu),     nu,     nu,          0,          0,          0,
             	          nu, (1-nu),     nu,          0,          0,          0,
@@ -21,16 +21,16 @@ namespace Marmot {
         return C;
       }
 
-      Matrix6d stiffnessTensorKG( const double K, const double G )
+      Marmot::Math::Matrix6d stiffnessTensorKG( const double K, const double G )
       {
         const double E_  = E( K, G );
         const double nu_ = nu( K, G );
         return stiffnessTensor( E_, nu_ );
       }
 
-      Matrix6d complianceTensor( const double E, const double nu )
+      Marmot::Math::Matrix6d complianceTensor( const double E, const double nu )
       {
-        Matrix6d     CInv;
+        Marmot::Math::Matrix6d     CInv;
         const double G = E / ( 2 * ( 1 + nu ) );
         // clang-format off
             	  CInv <<   1./E,  -nu/E, -nu/E,     0,    0,    0,
@@ -46,13 +46,13 @@ namespace Marmot {
 
     namespace Elasticity::TransverseIsotropic {
 
-      Matrix6d complianceTensor( const double E1,
+      Marmot::Math::Matrix6d complianceTensor( const double E1,
                                  const double E2,
                                  const double nu12,
                                  const double nu23,
                                  const double G12 )
       {
-        Matrix6d     CInv;
+        Marmot::Math::Matrix6d     CInv;
         const double G23 = E2 / ( 2 * ( 1 + nu23 ) );
         // clang-format off
             	  CInv <<   1./E1, -nu12/E1, -nu12/E1,      0,      0,      0,
@@ -65,14 +65,14 @@ namespace Marmot {
         return CInv;
       }
 
-      Matrix6d stiffnessTensor( const double E1,
+      Marmot::Math::Matrix6d stiffnessTensor( const double E1,
                                 const double E2,
                                 const double nu12,
                                 const double nu23,
                                 const double G12 )
       {
 
-        Matrix3d CInvTopLeft;
+        Marmot::Math::Matrix3d CInvTopLeft;
 
         // clang-format off
         CInvTopLeft <<   1./E1, -nu12/E1, -nu12/E1,
@@ -80,7 +80,7 @@ namespace Marmot {
                       -nu12/E1, -nu23/E2,    1./E2;
         // clang-format on
 
-        Matrix6d     C          = Matrix6d::Zero();
+        Marmot::Math::Matrix6d     C          = Marmot::Math::Matrix6d::Zero();
         const double G23        = E2 / ( 2 * ( 1 + nu23 ) );
         C.block< 3, 3 >( 0, 0 ) = CInvTopLeft.inverse();
         C( 3, 3 )               = G12;
@@ -94,7 +94,7 @@ namespace Marmot {
 
     namespace Elasticity::Orthotropic {
 
-      Matrix6d complianceTensor( const double E1,
+      Marmot::Math::Matrix6d complianceTensor( const double E1,
                                  const double E2,
                                  const double E3,
                                  const double nu12,
@@ -104,7 +104,7 @@ namespace Marmot {
                                  const double G23,
                                  const double G31 )
       {
-        Matrix6d CInv;
+        Marmot::Math::Matrix6d CInv;
         // clang-format off
            	    CInv <<   1./E1, -nu12/E1, -nu13/E1,      0,      0,      0,
            	           -nu12/E1,    1./E2, -nu23/E2,      0,      0,      0,
@@ -116,7 +116,7 @@ namespace Marmot {
         return CInv;
       }
 
-      Matrix6d stiffnessTensor( const double E1,
+      Marmot::Math::Matrix6d stiffnessTensor( const double E1,
                                 const double E2,
                                 const double E3,
                                 const double nu12,
@@ -127,7 +127,7 @@ namespace Marmot {
                                 const double G31 )
       {
 
-        Matrix3d CInvTopLeft;
+        Marmot::Math::Matrix3d CInvTopLeft;
 
         // clang-format off
         CInvTopLeft <<    1./E1, -nu12/E1, -nu13/E1,
@@ -135,7 +135,7 @@ namespace Marmot {
            	           -nu13/E1, -nu23/E2,    1./E3;
         // clang-format on
 
-        Matrix6d C              = Matrix6d::Zero();
+        Marmot::Math::Matrix6d C              = Marmot::Math::Matrix6d::Zero();
         C.block< 3, 3 >( 0, 0 ) = CInvTopLeft.inverse();
         C( 3, 3 )               = G12;
         C( 4, 4 )               = G31;

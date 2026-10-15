@@ -6,9 +6,9 @@ namespace Marmot::ContinuumMechanics {
 
     namespace ThirdOrderDerived {
       using namespace Fastor;
-      using namespace Marmot::FastorStandardTensors;
-      std::tuple< double, FastorStandardTensors::Tensor33d, FastorStandardTensors::Tensor3333d, FastorStandardTensors::Tensor333333d > standardNeoHooke(
-        const FastorStandardTensors::Tensor33d& C,
+      using namespace Marmot::Math::FastorTensors;
+      std::tuple< double, Marmot::Math::FastorTensors::Tensor33d, Marmot::Math::FastorTensors::Tensor3333d, Marmot::Math::FastorTensors::Tensor333333d > standardNeoHooke(
+        const Marmot::Math::FastorTensors::Tensor33d& C,
         const double&                           K,
         const double&                           G )
       {
@@ -41,7 +41,7 @@ namespace Marmot::ContinuumMechanics {
         const Tensor33d dPsi_dC = G / 2 * ( dTrC_dC - dLnDetC_dC ) + lambda / 4 * ( dDetC_dC - dLnDetC_dC );
 
         // second derivative quantities
-        using namespace FastorIndices;
+        using namespace Marmot::Math::Indices;
         using lj                        = Index< l_, j_ >;
         using li                        = Index< l_, i_ >;
         const Tensor3333d  dInvCt_dC    = -0.5 * ( einsum< ik, lj, to_ijkl >( invCt, invCt ) +
@@ -91,10 +91,10 @@ namespace Marmot::ContinuumMechanics {
         auto lnDetC_func = [=]( const Tensor33t< autodiff::dual3rd >& C_var ) { return log( determinant( C_var ) ); };
 
         Tensor333333d d3DetC_dC3 = std::get< 3 >(
-          Marmot::AutomaticDifferentiation::ThirdOrder::d3f_dT3< 3 >( detC_func, C, true ) );
+          Marmot::Math::AutomaticDifferentiation::ThirdOrder::d3f_dT3< 3 >( detC_func, C, true ) );
 
         Tensor333333d d3LnDetC_dC3 = std::get< 3 >(
-          Marmot::AutomaticDifferentiation::ThirdOrder::d3f_dT3< 3 >( lnDetC_func, C, true ) );
+          Marmot::Math::AutomaticDifferentiation::ThirdOrder::d3f_dT3< 3 >( lnDetC_func, C, true ) );
 
         // compare with analytical
         // std::cout << "Max abs diff d3DetC_dC3: " <<  d3DetC_dC3 - d3DetC_dC3_analytical << std::endl;

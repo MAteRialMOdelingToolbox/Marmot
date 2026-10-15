@@ -4,9 +4,9 @@
 #include "Marmot/MarmotTesting.h"
 
 using namespace Marmot::Testing;
-using namespace Marmot::FastorStandardTensors;
+using namespace Marmot::Math::FastorTensors;
 using namespace Marmot::Math;
-using namespace Marmot::AutomaticDifferentiation;
+using namespace Marmot::Math::AutomaticDifferentiation;
 
 // Helper: check that V^T * V ≈ I, i.e. the eigenvector columns are orthonormal
 static void checkOrthonormality( const Tensor33d& V, const std::string& caller, double tol = 1e-10 )

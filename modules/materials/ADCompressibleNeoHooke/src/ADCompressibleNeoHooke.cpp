@@ -14,8 +14,8 @@ namespace Marmot::Materials {
 
   using namespace Marmot;
   using namespace Fastor;
-  using namespace FastorIndices;
-  using namespace FastorStandardTensors;
+  using namespace Marmot::Math::Indices;
+  using namespace Marmot::Math::FastorTensors;
 
   ADCompressibleNeoHooke::ADCompressibleNeoHooke( const double* materialProperties,
                                                   int           nMaterialProperties,
@@ -42,7 +42,7 @@ namespace Marmot::Materials {
     const auto [psi_, dPsi_dC] = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C, K, G );
 
     // compute Kirchhoff stress
-    Tensor33t< autodiff::dual > PK2 = multiplyFastorTensorWithScalar( dPsi_dC, autodiff::dual( 2.0 ) );
+    Tensor33t< autodiff::dual > PK2 = Marmot::Math::multiplyFastorTensorWithScalar( dPsi_dC, autodiff::dual( 2.0 ) );
 
     const auto tau                = StressMeasures::KirchhoffStressFromPK2( PK2, F_ );
     response.tau                  = tau;

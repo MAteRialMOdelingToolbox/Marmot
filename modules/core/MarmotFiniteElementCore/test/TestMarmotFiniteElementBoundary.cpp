@@ -309,7 +309,7 @@ void testComputeSurfaceNormalVectorialLoadVectorForAxisymmetricElementsScalesByT
       continue; // r varies along this face; the simple scaling relation does not hold here
 
     checkedAtLeastOneFace = true;
-    const double factor   = 2.0 * Constants::Pi * r0;
+    const double factor   = 2.0 * Marmot::Math::Constants::Pi * r0;
     throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( axisymmetric ), Eigen::MatrixXd( factor * plain ), 1e-8 ),
                              "computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements() does not equal "
                              "2*pi*r times the plain surface-normal load for a constant-r face." );

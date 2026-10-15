@@ -32,8 +32,8 @@ namespace Marmot::ContinuumMechanics {
 
   namespace StressMeasures {
 
-    using namespace FastorIndices;
-    using namespace FastorStandardTensors;
+    using namespace Marmot::Math::Indices;
+    using namespace Marmot::Math::FastorTensors;
 
     /**
      * @brief Computes the Kirchhoff stress from the 2nd Piola-Kirchhoff stress and the deformation gradient.

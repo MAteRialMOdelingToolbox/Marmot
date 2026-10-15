@@ -53,14 +53,14 @@ namespace Marmot::Materials {
   }
 
   void LinearViscoelasticPowerLaw::computeStress( state3D&        state,
-                                                  Matrix6d&       dStressDDStrain,
-                                                  const Vector6d& dStrain,
+                                                  Marmot::Math::Matrix6d&       dStressDDStrain,
+                                                  const Marmot::Math::Vector6d& dStrain,
                                                   const timeInfo& timeInfo ) const
 
   {
-    mVector6d             nomStress( state.stress.data() );
-    Map< const Vector6d > dE( dStrain.data() );
-    mMatrix6d             C( dStressDDStrain.data() );
+    Marmot::Math::mVector6d             nomStress( state.stress.data() );
+    Map< const Marmot::Math::Vector6d > dE( dStrain.data() );
+    Marmot::Math::mMatrix6d             C( dStressDDStrain.data() );
 
     const double& dT = timeInfo.dT;
 
@@ -73,9 +73,9 @@ namespace Marmot::Materials {
 
     const double dTimeDays = dT * timeToDays;
 
-    Matrix6d CelUnitInv = ContinuumMechanics::Elasticity::Isotropic::complianceTensor( 1.0, nu );
+    Marmot::Math::Matrix6d CelUnitInv = ContinuumMechanics::Elasticity::Isotropic::complianceTensor( 1.0, nu );
 
-    Vector6d creepStrainIncrement = Vector6d::Zero();
+    Marmot::Math::Vector6d creepStrainIncrement = Marmot::Math::Vector6d::Zero();
     double   creepCompliance      = 0;
 
     KelvinChain::evaluateKelvinChain( dTimeDays,
@@ -90,7 +90,7 @@ namespace Marmot::Materials {
     double effectiveCompliance = 1. / E + zerothKelvinChainCompliance + creepCompliance;
 
     C                    = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( 1. / effectiveCompliance, nu );
-    Vector6d deltaStress = C * ( dE - creepStrainIncrement );
+    Marmot::Math::Vector6d deltaStress = C * ( dE - creepStrainIncrement );
     nomStress            = nomStress + deltaStress;
 
     KelvinChain::updateStateVarMatrix( dTimeDays,

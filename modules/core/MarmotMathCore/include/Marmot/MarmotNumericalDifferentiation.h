@@ -28,8 +28,7 @@
 #include "Marmot/MarmotTypedefs.h"
 #include <functional>
 
-namespace Marmot {
-  namespace NumericalAlgorithms::Differentiation {
+namespace Marmot::Math::NumericalDifferentiation {
 
     /** @typedef scalar_to_scalar_function_type
      *  @brief Type definition for a function that maps a double to another double.
@@ -102,12 +101,12 @@ namespace Marmot {
       /// A variable representing \f$ 1 + 1i \f$
       const static std::complex< double > complexUnit = { 1, 1 };
       /// A variable representing \f$ \frac{\sqrt{2}}{2} (1+1i) \f$
-      const static std::complex< double > i_ = Marmot::Constants::sqrt2 / 2. * complexUnit;
+      const static std::complex< double > i_ = Marmot::Math::Constants::sqrt2 / 2. * complexUnit;
 
       /** @typedef scalar_to_scalar_function_type
        *  @brief Type definition for a function that maps a complex double to another complex double.
        */
-      using scalar_to_scalar_function_type = std::function< complexDouble( const complexDouble x ) >;
+      using scalar_to_scalar_function_type = std::function< Marmot::Math::complexDouble( const Marmot::Math::complexDouble x ) >;
 
       /** @typedef vector_to_vector_function_type
        *  @brief Type definition for a function that maps an Eigen complex vector to another Eigen complex vector.
@@ -191,5 +190,4 @@ namespace Marmot {
                                                      const Eigen::VectorXd&                X );
 
     } // namespace Complex
-  }   // namespace NumericalAlgorithms::Differentiation
-} // namespace Marmot
+} // namespace Marmot::Math::NumericalDifferentiation

@@ -3,7 +3,7 @@
 #include "Marmot/MarmotTesting.h"
 
 using namespace Marmot::Testing;
-using namespace Marmot::FastorStandardTensors;
+using namespace Marmot::Math::FastorTensors;
 
 std::tuple< Tensor33d, Tensor33d, double, double, double, double > computationParameters()
 {

@@ -49,10 +49,10 @@ namespace Marmot::Materials {
 
     // access state variables
     double& H      = stateLayout.getAs< double& >( res.stateVars, "maxCrackDrivingForce" );
-    auto    strain = stateLayout.getAs< Map< Vector6d > >( res.stateVars, "strain" );
+    auto    strain = stateLayout.getAs< Map< Marmot::Math::Vector6d > >( res.stateVars, "strain" );
 
     // accumulate total strain
-    const Vector6d eps = strain + inc.dStrain;
+    const Marmot::Math::Vector6d eps = strain + inc.dStrain;
 
     // phase-field value at the current Gauss point (nonlocal variable K)
     const double& phi = inc.K( 0 );

@@ -41,17 +41,17 @@ namespace Marmot::Materials {
     else {
       // set coordinate system for transversly isotropic and orthotropic materials
       const int i          = nMaterialProperties % 2 == 0 ? nMaterialProperties - 7 : nMaterialProperties - 6;
-      Vector3d  direction1 = { materialProperties[i], materialProperties[i + 1], materialProperties[i + 2] };
-      Vector3d  direction2 = { materialProperties[i + 3], materialProperties[i + 4], materialProperties[i + 5] };
+      Marmot::Math::Vector3d  direction1 = { materialProperties[i], materialProperties[i + 1], materialProperties[i + 2] };
+      Marmot::Math::Vector3d  direction2 = { materialProperties[i + 3], materialProperties[i + 4], materialProperties[i + 5] };
 
-      Matrix3d localCoordinateSystem = Marmot::Math::orthonormalCoordinateSystem( direction1, direction2 );
+      Marmot::Math::Matrix3d localCoordinateSystem = Marmot::Math::orthonormalCoordinateSystem( direction1, direction2 );
       using namespace ContinuumMechanics::VoigtNotation::Transformations;
-      Matrix6d transformStrainToLocalSystem  = transformationMatrixStrainVoigt( localCoordinateSystem );
-      Matrix6d transformStressToGlobalSystem = transformationMatrixStressVoigt( localCoordinateSystem )
+      Marmot::Math::Matrix6d transformStrainToLocalSystem  = transformationMatrixStrainVoigt( localCoordinateSystem );
+      Marmot::Math::Matrix6d transformStressToGlobalSystem = transformationMatrixStressVoigt( localCoordinateSystem )
                                                  .colPivHouseholderQr()
-                                                 .solve( Matrix6d::Identity() );
+                                                 .solve( Marmot::Math::Matrix6d::Identity() );
 
-      Matrix6d localStiffnessTensor;
+      Marmot::Math::Matrix6d localStiffnessTensor;
 
       switch ( anisotropicType ) {
       case Type::Isotropic: globalStiffnessTensor = Isotropic::stiffnessTensor( E1, nu12 ); break;
@@ -68,8 +68,8 @@ namespace Marmot::Materials {
   }
 
   void LinearElastic::computeStress( state3D&        state,
-                                     Matrix6d&       dStressDDStrain,
-                                     const Vector6d& dStrain,
+                                     Marmot::Math::Matrix6d&       dStressDDStrain,
+                                     const Marmot::Math::Vector6d& dStrain,
                                      const timeInfo& timeInfo ) const
   {
 

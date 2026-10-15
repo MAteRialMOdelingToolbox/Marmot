@@ -104,8 +104,8 @@ namespace {
 
     MarmotMaterialHypoElastic::state3D state;
     state.stateVars                  = stateVars.data();
-    Marmot::Matrix6d dStress_dStrain = Marmot::Matrix6d::Zero();
-    Marmot::Vector6d dStrain         = Marmot::Vector6d::Zero();
+    Marmot::Math::Matrix6d dStress_dStrain = Marmot::Math::Matrix6d::Zero();
+    Marmot::Math::Vector6d dStrain         = Marmot::Math::Vector6d::Zero();
     dStrain( 0 )                     = 1e-3;
     material->computeStress( state, dStress_dStrain, dStrain, { 0.0, 1.0 } );
 

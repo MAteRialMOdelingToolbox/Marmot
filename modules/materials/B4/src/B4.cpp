@@ -64,14 +64,14 @@ namespace Marmot::Materials {
   }
 
   void B4::computeStress( state3D&                state,
-                          Marmot::Matrix6d&       dStressDDStrain,
-                          const Marmot::Vector6d& dStrain,
+                          Marmot::Math::Matrix6d&       dStressDDStrain,
+                          const Marmot::Math::Vector6d& dStrain,
                           const timeInfo&         timeInfo ) const
 
   {
-    mVector6d             nomStress( state.stress.data() );
-    Map< const Vector6d > dE( dStrain.data() );
-    mMatrix6d             C( dStressDDStrain.data() );
+    Marmot::Math::mVector6d             nomStress( state.stress.data() );
+    Map< const Marmot::Math::Vector6d > dE( dStrain.data() );
+    Marmot::Math::mMatrix6d             C( dStressDDStrain.data() );
 
     const double& dT   = timeInfo.dT;
     const double& time = timeInfo.time;
@@ -96,7 +96,7 @@ namespace Marmot::Materials {
     const double dTimeDays  = dT * timeToDays;
     const double tStartDays = ( time - dT - castTime ) * timeToDays;
 
-    Matrix6d CelUnitInv = ContinuumMechanics::Elasticity::Isotropic::complianceTensor( 1.0, nu );
+    Marmot::Math::Matrix6d CelUnitInv = ContinuumMechanics::Elasticity::Isotropic::complianceTensor( 1.0, nu );
 
     // compute basic creep strains and compliance
     auto [basicCreepStrainIncrement, basicCreepUniaxialComplianceComponents] = SolidificationTheory::
@@ -123,7 +123,7 @@ namespace Marmot::Materials {
     KelvinChain::Properties dryingCreepElasticModuli = KelvinChain::computeElasticModuli<
       dryingCreepComplianceApproximationOrder >( phiDrying, dryingCreepRetardationTimes );
 
-    Vector6d dryingCreepStrainIncrement = Vector6d::Zero();
+    Marmot::Math::Vector6d dryingCreepStrainIncrement = Marmot::Math::Vector6d::Zero();
     double   dryingCreepCompliance      = 0;
 
     KelvinChain::evaluateKelvinChain( dTimeDays / dryingShrinkageHalfTime,
@@ -139,7 +139,7 @@ namespace Marmot::Materials {
                                  basicCreepUniaxialComplianceComponents.flow + dryingCreepCompliance;
 
     // compute shrinkage strain increment
-    Vector6d
+    Marmot::Math::Vector6d
       shrinkageStrainIncrement = Shrinkage::B4::computeShrinkageStrainIncrement( tStartDays,
                                                                                  dTimeDays,
                                                                                  ultimateAutogenousShrinkageStrain,
@@ -152,7 +152,7 @@ namespace Marmot::Materials {
                                                                                  dryingStart );
 
     C                    = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( 1. / effectiveCompliance, nu );
-    Vector6d deltaStress = C *
+    Marmot::Math::Vector6d deltaStress = C *
                            ( dE - basicCreepStrainIncrement - dryingCreepStrainIncrement - shrinkageStrainIncrement );
     nomStress = nomStress + deltaStress;
 

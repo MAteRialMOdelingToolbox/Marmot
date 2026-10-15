@@ -30,7 +30,7 @@ void testHaighWestergaardDouble()
   hwoutput    = haighWestergaard( stress );
   hwref.xi    = -10. / 3. * sqrt( 3. );
   hwref.rho   = 10. * sqrt( 2. / 3. );
-  hwref.theta = Marmot::Constants::Pi / 3.;
+  hwref.theta = Marmot::Math::Constants::Pi / 3.;
   throwExceptionOnFailure( checkIfEqual( hwoutput.xi, hwref.xi, 1e-13 ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 2 failed: error in xi" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.rho, hwref.rho, 1e-13 ),
@@ -43,7 +43,7 @@ void testHaighWestergaardDouble()
   hwoutput    = haighWestergaard( stress );
   hwref.xi    = 0.;
   hwref.rho   = sqrt( 2. ) * 10.;
-  hwref.theta = Marmot::Constants::Pi / 6.;
+  hwref.theta = Marmot::Math::Constants::Pi / 6.;
   throwExceptionOnFailure( checkIfEqual( hwoutput.xi, hwref.xi, 1e-13 ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 3 failed: error in xi" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.rho, hwref.rho, 1e-13 ),
@@ -103,7 +103,7 @@ void testHaighWestergaardDual()
   hwoutput    = haighWestergaard( stress );
   hwref.xi    = -10. / 3. * sqrt( 3. );
   hwref.rho   = 10. * sqrt( 2. / 3. );
-  hwref.theta = Marmot::Constants::Pi / 3.;
+  hwref.theta = Marmot::Math::Constants::Pi / 3.;
   throwExceptionOnFailure( checkIfEqual( hwoutput.xi, hwref.xi, 1e-13 ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 2 failed: error in xi" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.rho, hwref.rho, 1e-13 ),
@@ -116,7 +116,7 @@ void testHaighWestergaardDual()
   hwoutput    = haighWestergaard( stress );
   hwref.xi    = 0.;
   hwref.rho   = sqrt( 2. ) * 10.;
-  hwref.theta = Marmot::Constants::Pi / 6.;
+  hwref.theta = Marmot::Math::Constants::Pi / 6.;
   throwExceptionOnFailure( checkIfEqual( hwoutput.xi, hwref.xi, 1e-13 ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 3 failed: error in xi" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.rho, hwref.rho, 1e-13 ),

@@ -57,13 +57,13 @@ namespace Marmot::Materials {
   }
 
   void LinearViscoElasticWiechert::computeStress( state3D&                state,
-                                                  Marmot::Matrix6d&       dStressDDStrain,
-                                                  const Marmot::Vector6d& dStrain,
+                                                  Marmot::Math::Matrix6d&       dStressDDStrain,
+                                                  const Marmot::Math::Vector6d& dStrain,
                                                   const timeInfo&         timeInfo ) const
   {
-    mVector6d                    nominalStress( state.stress.data() );
-    mMatrix6d                    tangent( dStressDDStrain.data() );
-    Eigen::Map< const Vector6d > strainIncrement( dStrain.data() );
+    Marmot::Math::mVector6d                    nominalStress( state.stress.data() );
+    Marmot::Math::mMatrix6d                    tangent( dStressDDStrain.data() );
+    Eigen::Map< const Marmot::Math::Vector6d > strainIncrement( dStrain.data() );
 
     if ( ( strainIncrement.array() == 0.0 ).all() && timeInfo.dT == 0.0 ) {
       tangent = E * unitStiffness;
@@ -73,7 +73,7 @@ namespace Marmot::Materials {
     Eigen::Map< Wiechert::StateVarMatrix > maxwellStateVars( state.stateVars, 6, nMaxwell );
     const double                           dTimeDays = timeInfo.dT * timeToDays;
 
-    Vector6d maxwellStressIncrement = Vector6d::Zero();
+    Marmot::Math::Vector6d maxwellStressIncrement = Marmot::Math::Vector6d::Zero();
     double   maxwellStiffness       = 0.0;
 
     Wiechert::evaluateWiechert( dTimeDays,
@@ -90,7 +90,7 @@ namespace Marmot::Materials {
     // E / ((1+nu)(1-2nu)). Scaling the cached unit tensor is therefore the same quantity, and removes
     // the last 6x6 assembly from the per-iteration path.
     tangent                        = effectiveStiffness * unitStiffness;
-    const Vector6d stressIncrement = tangent * strainIncrement - maxwellStressIncrement;
+    const Marmot::Math::Vector6d stressIncrement = tangent * strainIncrement - maxwellStressIncrement;
     nominalStress += stressIncrement;
 
     Wiechert::updateStateVarMatrix( dTimeDays,

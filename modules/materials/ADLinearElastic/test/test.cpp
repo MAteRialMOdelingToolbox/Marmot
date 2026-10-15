@@ -70,7 +70,7 @@ void testADLinearElastic()
   solver.solve();
 
   // reference solution
-  const Marmot::Vector6d stressTarget =
+  const Marmot::Math::Vector6d stressTarget =
     { 1627.90061538, 416.523692308, -864.896307692, 11.0128846154, 129.673384615, 462.666346154 };
 
   auto history = solver.getHistory();

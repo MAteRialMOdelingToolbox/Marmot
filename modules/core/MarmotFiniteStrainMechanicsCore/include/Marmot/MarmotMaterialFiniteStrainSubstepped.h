@@ -128,9 +128,9 @@ namespace Marmot::Materials {
 
       baseMaterial->initializeYourself( stateLayout.getPtr( stateVars, "materialstate" ), baseVarsCount );
 
-      FastorStandardTensors::TensorMap33d
-        Fn = this->stateLayout.getAs< FastorStandardTensors::TensorMap33d >( stateVars, "Substepping_F_n" );
-      memcpy( Fn.data(), FastorStandardTensors::Spatial3D::I.data(), 9 * sizeof( double ) );
+      Marmot::Math::FastorTensors::TensorMap33d
+        Fn = this->stateLayout.getAs< Marmot::Math::FastorTensors::TensorMap33d >( stateVars, "Substepping_F_n" );
+      memcpy( Fn.data(), Marmot::Math::FastorTensors::Spatial3D::I.data(), 9 * sizeof( double ) );
     }
 
     /**
@@ -152,7 +152,7 @@ namespace Marmot::Materials {
                                                  const TimeIncrement&       timeIncrement ) const
     {
       using namespace Eigen;
-      using namespace Marmot::NumericalAlgorithms::Differentiation;
+      using namespace Marmot::Math::NumericalDifferentiation;
 
       int nState = baseMaterial->getNumberOfRequiredStateVars();
 
@@ -219,7 +219,7 @@ namespace Marmot::Materials {
 
       // possibiblity to take fd tangent directly
       tangents.dTau_dF = reshape< 3, 3, 3, 3 >(
-        Fastor::transpose( FastorStandardTensors::Tensor99d( dStress_dF_flat.data() ) ) );
+        Fastor::transpose( Marmot::Math::FastorTensors::Tensor99d( dStress_dF_flat.data() ) ) );
 
       // Extract dState/dF_new
       sensitivities.dState_dF = dStressAndState_dF.block( 9, 0, nState, 9 );
@@ -252,7 +252,7 @@ namespace Marmot::Materials {
                         const TimeIncrement&       timeIncrement ) const override
     {
       using namespace Eigen;
-      using namespace FastorStandardTensors;
+      using namespace Marmot::Math::FastorTensors;
 
       TensorMap33d    Fn_ref = this->stateLayout.getAs< TensorMap33d >( response.stateVars, "Substepping_F_n" );
       const Tensor33d Fn     = Fn_ref;

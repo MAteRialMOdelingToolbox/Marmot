@@ -29,70 +29,69 @@
 #include "Marmot/MarmotTypedefs.h"
 #include <utility>
 
-namespace Marmot {
-  namespace ContinuumMechanics::CommonTensors {
+namespace Marmot::Math::Tensors {
     /**
      * @brief Initializes the fourth-order tensor \f$I_{ijkl} = \delta_{ij}\delta_{kl}\f$.
      */
-    inline EigenTensors::Tensor3333d Initialize_I2xI2();
+    inline Tensor3333d Initialize_I2xI2();
 
     /**
      * @brief Fourth-order tensor \f$I_{ijkl} = \delta_{ij}\delta_{kl}\f$.
      */
-    inline const EigenTensors::Tensor3333d I2xI2 = Initialize_I2xI2();
+    inline const Tensor3333d I2xI2 = Initialize_I2xI2();
 
     /**
      * @brief Initializes the symmetric fourth-order identity tensor \f$
      * I_{ijkl}^{sym}=\frac{1}{2}(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}) \f$.
      */
-    inline EigenTensors::Tensor3333d Initialize_Isym();
+    inline Tensor3333d Initialize_Isym();
 
     /**
      * @brief Symmetric fourth-order identity tensor
      * \f$ I_{ijkl}^{sym}=\frac{1}{2}(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}) \f$.
      */
-    inline const EigenTensors::Tensor3333d Isym = Initialize_Isym();
+    inline const Tensor3333d Isym = Initialize_Isym();
 
     /**
      * @brief Initializes the skew-symmetric fourth-order identity tensor
      * \f$ I_{ijkl}^{skew}=\frac{1}{2}(\delta_{ik}\delta_{jl}-\delta_{il}\delta_{jk}) \f$.
      */
-    inline EigenTensors::Tensor3333d Initialize_Iskew();
+    inline Tensor3333d Initialize_Iskew();
 
     /** @brief Skew-symmetric part of the fourth-order identity tensor \f$
      * I_{ijkl}^{skew}=\frac{1}{2}(\delta_{ik}\delta_{jl}-\delta_{il}\delta_{jk}) \f$.
      */
-    inline const EigenTensors::Tensor3333d Iskew = Initialize_Iskew();
+    inline const Tensor3333d Iskew = Initialize_Iskew();
 
     /**
      * @brief Initializes the fourth-order identity tensor \f$ I_{ijkl} = \delta_{ik}\delta_{jl} \f$.
      */
-    inline EigenTensors::Tensor3333d Initialize_IFourthOrder();
+    inline Tensor3333d Initialize_IFourthOrder();
 
     /**
      * @brief Fourth-order identity tensor \f$ I_{ijkl} = \delta_{ik}\delta_{jl} \f$.
      */
-    inline const EigenTensors::Tensor3333d IFourthOrder = Initialize_IFourthOrder();
+    inline const Tensor3333d IFourthOrder = Initialize_IFourthOrder();
 
     /**
      * @brief Initializes the transposed fourth-order identity tensor \f$ I_{ijkl}^{T} = \delta_{il}\delta_{jk} \f$.
      */
-    inline EigenTensors::Tensor3333d Initialize_IFourthOrderTranspose();
+    inline Tensor3333d Initialize_IFourthOrderTranspose();
 
     /// @brief Transposed fourth-order identity tensor \f$ I_{ijkl}^{T} = \delta_{il}\delta_{jk} \f$.
-    inline const EigenTensors::Tensor3333d IFourthOrderTranspose = Initialize_IFourthOrderTranspose();
+    inline const Tensor3333d IFourthOrderTranspose = Initialize_IFourthOrderTranspose();
 
     /**
      * @brief Initializes the derivative tensor of deviatoric stress w.r.t. stress  \f$ \frac{\partial
      * s_{ij}}{\partial\sigma_{kl}} = \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\delta_{kl} \f$.
      */
-    inline EigenTensors::Tensor3333d Initialize_dDeviatoricStress_dStress();
+    inline Tensor3333d Initialize_dDeviatoricStress_dStress();
 
     /** @brief Derivative of the deviatoric stress with respect to stress \f$ \frac{\partial
      * s_{ij}}{\partial\sigma_{kl}} =
      * \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\delta_{kl} \f$.
      */
-    inline const EigenTensors::Tensor3333d dDeviatoricStress_dStress = Initialize_dDeviatoricStress_dStress();
+    inline const Tensor3333d dDeviatoricStress_dStress = Initialize_dDeviatoricStress_dStress();
 
     /**
      * @brief Initializes the 3D Levi-Civita permutation tensor \f$E_{ijk}\f$.
@@ -106,13 +105,13 @@ namespace Marmot {
      *   \end{cases}
      * \f]
      */
-    inline EigenTensors::Tensor333d Initialize_LeviCivita3D();
+    inline Tensor333d Initialize_LeviCivita3D();
 
     /**
      * @brief 3D Levi-Civita permutation tensor \f$E_{ijk}\f$.
      * @copydetails Initialize_LeviCivita3D
      */
-    inline const EigenTensors::Tensor333d LeviCivita3D = Initialize_LeviCivita3D();
+    inline const Tensor333d LeviCivita3D = Initialize_LeviCivita3D();
 
     /**
      * @brief 2D Levi-Civita permutation tensor \f$E_{ij}\f$.
@@ -127,24 +126,24 @@ namespace Marmot {
      * \f]
      * Commonly used to represent 2D cross products and rotations in tensor notation.
      */
-    inline EigenTensors::Tensor122d Initialize_LeviCivita2D();
+    inline Tensor122d Initialize_LeviCivita2D();
 
     /**
      * @brief 2D Levi-Civita permutation tensor \f$\varepsilon_{ij}\f$.
      * @copydetails Initialize_LeviCivita2D
      */
-    inline const EigenTensors::Tensor122d LeviCivita2D = Initialize_LeviCivita2D();
+    inline const Tensor122d LeviCivita2D = Initialize_LeviCivita2D();
 
     /**
      * @brief Initializes the second-order identity tensor.
      * @details \f$ I_{ij} = \delta_{ij} \f$.
      */
-    inline EigenTensors::Tensor33d Initialize_I2();
+    inline Tensor33d Initialize_I2();
 
     /** @brief Second-order identity tensor.
      * @copydetails Initialize_I2
      */
-    inline const EigenTensors::Tensor33d I2 = Initialize_I2();
+    inline const Tensor33d I2 = Initialize_I2();
 
     /**
      * @brief Returns the number of rotational DOFs for the given dimension.
@@ -226,9 +225,7 @@ namespace Marmot {
         return LeviCivita3D;
     }
 
-  } // namespace ContinuumMechanics::CommonTensors
 
-  namespace ContinuumMechanics::TensorUtility {
     /** @brief Kronecker delta function \f$ \delta_{ab} \f$.
      * @return 1 if a == b, otherwise 0.
      */
@@ -437,108 +434,106 @@ namespace Marmot {
 
     // namespace ContinuumMechanics::VoigtNotation
 
-  } // namespace ContinuumMechanics::TensorUtility
 
-  // Definitions of the initializers of the CommonTensors above. They are inline, in the header: the tensors are
+  // Definitions of the initializers of the Marmot::Math::Tensors above. They are inline, in the header: the tensors are
   // inline variables, which every translation unit including this header instantiates, so their initializers must be
-  // available there, too; the library does not export them (see MarmotPortability.h). They follow TensorUtility::d.
-  namespace ContinuumMechanics::CommonTensors {
+  // available there, too; the library does not export them (see MarmotPortability.h). They follow Marmot::Math::Tensors::d.
 
-    EigenTensors::Tensor3333d Initialize_IFourthOrder()
+    Tensor3333d Initialize_IFourthOrder()
     {
-      EigenTensors::Tensor3333d I;
+      Tensor3333d I;
 
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ )
           for ( int k = 0; k < 3; k++ )
             for ( int l = 0; l < 3; l++ ) {
-              I( i, j, k, l ) = TensorUtility::d( i, k ) * TensorUtility::d( j, l );
+              I( i, j, k, l ) = Marmot::Math::Tensors::d( i, k ) * Marmot::Math::Tensors::d( j, l );
             }
       return I;
     }
 
-    EigenTensors::Tensor3333d Initialize_IFourthOrderTranspose()
+    Tensor3333d Initialize_IFourthOrderTranspose()
     {
-      EigenTensors::Tensor3333d IT;
+      Tensor3333d IT;
 
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ )
           for ( int k = 0; k < 3; k++ )
             for ( int l = 0; l < 3; l++ ) {
-              IT( i, j, k, l ) = TensorUtility::d( i, l ) * TensorUtility::d( j, k );
+              IT( i, j, k, l ) = Marmot::Math::Tensors::d( i, l ) * Marmot::Math::Tensors::d( j, k );
             }
       return IT;
     }
 
-    EigenTensors::Tensor3333d Initialize_I2xI2()
+    Tensor3333d Initialize_I2xI2()
     {
-      EigenTensors::Tensor3333d I2xI2;
+      Tensor3333d I2xI2;
 
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ )
           for ( int k = 0; k < 3; k++ )
             for ( int l = 0; l < 3; l++ ) {
-              I2xI2( i, j, k, l ) = TensorUtility::d( i, j ) * TensorUtility::d( k, l );
+              I2xI2( i, j, k, l ) = Marmot::Math::Tensors::d( i, j ) * Marmot::Math::Tensors::d( k, l );
             }
       return I2xI2;
     }
 
-    EigenTensors::Tensor33d Initialize_I2()
+    Tensor33d Initialize_I2()
     {
-      EigenTensors::Tensor33d I2;
+      Tensor33d I2;
 
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ )
-          I2( i, j ) = TensorUtility::d( i, j );
+          I2( i, j ) = Marmot::Math::Tensors::d( i, j );
 
       return I2;
     }
 
-    EigenTensors::Tensor3333d Initialize_Isym()
+    Tensor3333d Initialize_Isym()
     {
-      EigenTensors::Tensor3333d Isym;
+      Tensor3333d Isym;
 
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ )
           for ( int k = 0; k < 3; k++ )
             for ( int l = 0; l < 3; l++ ) {
-              Isym( i, j, k, l ) = 0.5 * ( TensorUtility::d( i, k ) * TensorUtility::d( j, l ) +
-                                           TensorUtility::d( i, l ) * TensorUtility::d( j, k ) );
+              Isym( i, j, k, l ) = 0.5 * ( Marmot::Math::Tensors::d( i, k ) * Marmot::Math::Tensors::d( j, l ) +
+                                           Marmot::Math::Tensors::d( i, l ) * Marmot::Math::Tensors::d( j, k ) );
             }
       return Isym;
     }
 
-    EigenTensors::Tensor3333d Initialize_Iskew()
+    Tensor3333d Initialize_Iskew()
     {
-      EigenTensors::Tensor3333d Iskew;
+      Tensor3333d Iskew;
 
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ )
           for ( int k = 0; k < 3; k++ )
             for ( int l = 0; l < 3; l++ ) {
-              Iskew( i, j, k, l ) = 0.5 * ( TensorUtility::d( i, k ) * TensorUtility::d( j, l ) -
-                                            TensorUtility::d( i, l ) * TensorUtility::d( j, k ) );
+              Iskew( i, j, k, l ) = 0.5 * ( Marmot::Math::Tensors::d( i, k ) * Marmot::Math::Tensors::d( j, l ) -
+                                            Marmot::Math::Tensors::d( i, l ) * Marmot::Math::Tensors::d( j, k ) );
             }
       return Iskew;
     }
 
-    EigenTensors::Tensor3333d Initialize_dDeviatoricStress_dStress()
+    Tensor3333d Initialize_dDeviatoricStress_dStress()
     {
-      EigenTensors::Tensor3333d dsdsigma;
+      Tensor3333d dsdsigma;
       dsdsigma.setZero();
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 3; j++ )
           for ( int k = 0; k < 3; k++ )
             for ( int l = 0; l < 3; l++ ) {
-              dsdsigma( i, j, k, l ) = TensorUtility::d( i, k ) * TensorUtility::d( j, l ) -
-                                       1. / 3 * TensorUtility::d( i, j ) * TensorUtility::d( k, l );
+              dsdsigma( i, j, k, l ) = Marmot::Math::Tensors::d( i, k ) * Marmot::Math::Tensors::d( j, l ) -
+                                       1. / 3 * Marmot::Math::Tensors::d( i, j ) * Marmot::Math::Tensors::d( k, l );
             }
       return dsdsigma;
     }
 
-    EigenTensors::Tensor333d Initialize_LeviCivita3D()
+    Tensor333d Initialize_LeviCivita3D()
     {
-      EigenTensors::Tensor333d e;
+      Tensor333d e;
       e.setConstant( 0.0 );
 
       e( 0, 1, 2 ) = 1.0;
@@ -552,9 +547,9 @@ namespace Marmot {
       return e;
     }
 
-    EigenTensors::Tensor122d Initialize_LeviCivita2D()
+    Tensor122d Initialize_LeviCivita2D()
     {
-      EigenTensors::Tensor122d e;
+      Tensor122d e;
       e.setConstant( 0.0 );
 
       e( 0, 0, 1 ) = 1.0;
@@ -563,6 +558,5 @@ namespace Marmot {
       return e;
     }
 
-  } // namespace ContinuumMechanics::CommonTensors
 
-} // namespace Marmot
+} // namespace Marmot::Math::Tensors

@@ -47,8 +47,8 @@ namespace Marmot {
        * time information and time step control parameters.
        */
       struct Step {
-        Marmot::Vector6d strainIncrementTarget; ///< Target strain increment for the step
-        Marmot::Vector6d stressIncrementTarget; ///< Target stress increment for the step
+        Marmot::Math::Vector6d strainIncrementTarget; ///< Target strain increment for the step
+        Marmot::Math::Vector6d stressIncrementTarget; ///< Target stress increment for the step
         Eigen::Vector< bool, 6 >
           isStrainComponentControlled;          ///< Flags to indicate which strain components are controlled
         Eigen::Vector< bool, 6 >
@@ -81,8 +81,8 @@ namespace Marmot {
        * control flags, time information, and iteration limits.
        */
       struct Increment {
-        Marmot::Vector6d strainIncrement;   ///< Strain increment for the increment
-        Marmot::Vector6d stressIncrement;   ///< Stress increment for the increment
+        Marmot::Math::Vector6d strainIncrement;   ///< Strain increment for the increment
+        Marmot::Math::Vector6d stressIncrement;   ///< Stress increment for the increment
         Eigen::Vector< bool, 6 >
           isStrainComponentControlled;      ///< Flags to indicate which strain components are controlled
         Eigen::Vector< bool, 6 >
@@ -97,9 +97,9 @@ namespace Marmot {
        */
       struct HistoryEntry {
         double           time;           ///< Time at the history entry
-        Marmot::Vector6d stress;         ///< Stress at the history entry
-        Marmot::Vector6d strain;         ///< Strain at the history entry
-        Marmot::Matrix6d dStressdStrain; ///< Material tangent at the history entry
+        Marmot::Math::Vector6d stress;         ///< Stress at the history entry
+        Marmot::Math::Vector6d strain;         ///< Strain at the history entry
+        Marmot::Math::Matrix6d dStressdStrain; ///< Material tangent at the history entry
         Eigen::VectorXd  stateVars;      ///< State variables at the history entry
 
         /**
@@ -161,7 +161,7 @@ namespace Marmot {
        * @param initialStress The initial stress in Voigt notation
        * @param initialStateVars The initial state variables
        */
-      void setInitialState( const Marmot::Vector6d& initialStress, const Eigen::VectorXd& initialStateVars );
+      void setInitialState( const Marmot::Math::Vector6d& initialStress, const Eigen::VectorXd& initialStateVars );
 
       /**
        * @brief Get the number of state variables in the material model
@@ -240,8 +240,8 @@ namespace Marmot {
        * and the target increment, taking into account which components
        * are controlled by strain or stress.
        */
-      Marmot::Vector6d computeResidual( const Marmot::Vector6d& stressIncrement,
-                                        const Marmot::Vector6d& target,
+      Marmot::Math::Vector6d computeResidual( const Marmot::Math::Vector6d& stressIncrement,
+                                        const Marmot::Math::Vector6d& target,
                                         const Increment&        increment );
 
       /**
@@ -273,16 +273,16 @@ namespace Marmot {
       Eigen::VectorXd stateVarsTemp;
 
       /// @brief The stress in Voigt notation
-      Marmot::Vector6d stress = Marmot::Vector6d::Zero();
+      Marmot::Math::Vector6d stress = Marmot::Math::Vector6d::Zero();
 
       /// @brief The initial stress in Voigt notation
-      Marmot::Vector6d _initialStress = Marmot::Vector6d::Zero();
+      Marmot::Math::Vector6d _initialStress = Marmot::Math::Vector6d::Zero();
 
       /// @brief The strain in Voigt notation
-      Marmot::Vector6d strain = Marmot::Vector6d::Zero();
+      Marmot::Math::Vector6d strain = Marmot::Math::Vector6d::Zero();
 
       /// @brief The material tangent matrix in Voigt notation
-      Marmot::Matrix6d dStressDStrain = Marmot::Matrix6d::Zero();
+      Marmot::Math::Matrix6d dStressDStrain = Marmot::Math::Matrix6d::Zero();
 
       /// @brief List of loading steps
       std::vector< Step > steps;

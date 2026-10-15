@@ -90,10 +90,10 @@ namespace Marmot::Materials {
     const double& timeToDays;
 
     /// @brief direction x1 w.r.t the global coordinate system
-    const Vector3d direction1;
+    const Marmot::Math::Vector3d direction1;
 
     /// @brief direction x2 w.r.t the global coordinate system
-    const Vector3d direction2;
+    const Marmot::Math::Vector3d direction2;
 
     const std::map< std::string, std::pair< int, int > > stateVarInfo = {
       { "kelvinStateVars", std::make_pair( 0, 6 * nKelvin ) },
@@ -107,8 +107,8 @@ namespace Marmot::Materials {
                                            int           materialLabel );
 
     void computeStress( state3D&                state,
-                        Marmot::Matrix6d&       dStressDDStrain,
-                        const Marmot::Vector6d& dStrain,
+                        Marmot::Math::Matrix6d&       dStressDDStrain,
+                        const Marmot::Math::Vector6d& dStrain,
                         const timeInfo&         timeInfo ) const override;
 
     double getDensity( const double* stateVars ) const override;
@@ -124,24 +124,24 @@ namespace Marmot::Materials {
     double zerothKelvinChainCompliance;
 
     /// @brief Inverse of the initial elastic stiffness
-    Matrix6d CInv;
+    Marmot::Math::Matrix6d CInv;
 
     /// @brief Initial elastic stiffness
-    Matrix6d Cel;
+    Marmot::Math::Matrix6d Cel;
 
     /**
      * @brief Normalized initial elastic stiffness
      * @details It is normalized by the Young's modulus in x1 direction E1
      */
-    Matrix6d CelUnit;
+    Marmot::Math::Matrix6d CelUnit;
 
     /// @brief Inverse of the normalized initial elastic stiffness
-    Matrix6d CelUnitInv;
+    Marmot::Math::Matrix6d CelUnitInv;
 
     /// @brief Initial elastic stiffness in the global coordinate system
-    Matrix6d CelUnitGlobal;
+    Marmot::Math::Matrix6d CelUnitGlobal;
 
     /// @brief Local coordinate system of the material
-    Matrix3d localCoordinateSystem;
+    Marmot::Math::Matrix3d localCoordinateSystem;
   };
 } // namespace Marmot::Materials

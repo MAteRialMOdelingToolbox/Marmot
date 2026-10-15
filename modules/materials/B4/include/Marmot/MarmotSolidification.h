@@ -58,7 +58,7 @@ namespace Marmot::Materials {
 
     /// \brief results of the %Solidification Theory for a certain time step
     struct Result {
-      Marmot::Vector6d             creepStrainIncrement;
+      Marmot::Math::Vector6d             creepStrainIncrement;
       UniaxialComplianceComponents complianceComponents;
     };
 
@@ -66,8 +66,8 @@ namespace Marmot::Materials {
       double                                                 tStartDays,
       double                                                 dTimeDays,
       double                                                 amplificationFactor,
-      const Marmot::Matrix6d&                                flowUnitCompliance,
-      const Marmot::Vector6d&                                stressOld,
+      const Marmot::Math::Matrix6d&                                flowUnitCompliance,
+      const Marmot::Math::Vector6d&                                stressOld,
       const Parameters&                                      parameters,
       const KelvinChainProperties&                           kelvinChainProperties,
       const Eigen::Ref< const KelvinChain::StateVarMatrix >& kelvinStateVars );

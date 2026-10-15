@@ -20,7 +20,7 @@ namespace {
   public:
     using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
 
-    void computeStress( state3D&, Marmot::Matrix6d&, const Marmot::Vector6d&, const timeInfo& ) const override
+    void computeStress( state3D&, Marmot::Math::Matrix6d&, const Marmot::Math::Vector6d&, const timeInfo& ) const override
     {
       throw Marmot::Utilities::StressUpdateFailed( "test-only material always fails" );
     }
@@ -37,11 +37,11 @@ namespace {
     using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
 
     void computeStress( state3D&          state,
-                        Marmot::Matrix6d& dStress_dStrain,
-                        const Marmot::Vector6d&,
+                        Marmot::Math::Matrix6d& dStress_dStrain,
+                        const Marmot::Math::Vector6d&,
                         const timeInfo& ) const override
     {
-      state.stress      = Marmot::Vector6d::Zero();
+      state.stress      = Marmot::Math::Vector6d::Zero();
       state.stress( 0 ) = 5.0; // never equal to any nonzero target, and independent of dStrain
       dStress_dStrain.setZero();
     }
@@ -69,7 +69,7 @@ void testSetInitialStateAndResetToInitialState()
                                                       materialProperties.size(),
                                                       solveropts );
 
-  Marmot::Vector6d initialStress = Marmot::Vector6d::Zero();
+  Marmot::Math::Vector6d initialStress = Marmot::Math::Vector6d::Zero();
   initialStress( 0 )             = 42.0;
   Eigen::VectorXd initialStateVars( solver.getNumberOfStateVariables() );
   initialStateVars.setZero();
@@ -79,8 +79,8 @@ void testSetInitialStateAndResetToInitialState()
   MarmotMaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, true };
   step.isStressComponentControlled = { false, false, false, false, false, false };
-  step.stressIncrementTarget       = Marmot::Vector6d::Zero();
-  step.strainIncrementTarget       = Marmot::Vector6d::Zero(); // zero strain increment: stress must stay at 42
+  step.stressIncrementTarget       = Marmot::Math::Vector6d::Zero();
+  step.strainIncrementTarget       = Marmot::Math::Vector6d::Zero(); // zero strain increment: stress must stay at 42
 
   solver.addStep( step );
   solver.solve();
@@ -125,9 +125,9 @@ void testSolveStepRetriesThenThrowsSolverTimestepExhausted()
   MarmotMaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, true };
   step.isStressComponentControlled = { false, false, false, false, false, false };
-  step.strainIncrementTarget       = Marmot::Vector6d::Zero();
+  step.strainIncrementTarget       = Marmot::Math::Vector6d::Zero();
   step.strainIncrementTarget( 0 )  = 1e-3;
-  step.stressIncrementTarget       = Marmot::Vector6d::Zero();
+  step.stressIncrementTarget       = Marmot::Math::Vector6d::Zero();
   step.dTStart                     = 0.1;
   step.dTMin                       = 0.05;
 
@@ -162,9 +162,9 @@ void testSolveStepThrowsSolverIncrementsExhausted()
   MarmotMaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, true };
   step.isStressComponentControlled = { false, false, false, false, false, false };
-  step.strainIncrementTarget       = Marmot::Vector6d::Zero();
+  step.strainIncrementTarget       = Marmot::Math::Vector6d::Zero();
   step.strainIncrementTarget( 0 )  = 1e-3;
-  step.stressIncrementTarget       = Marmot::Vector6d::Zero();
+  step.stressIncrementTarget       = Marmot::Math::Vector6d::Zero();
   step.timeStart                   = 0.0;
   step.timeEnd                     = 1.0;
   step.dTStart                     = 0.1; // 10 increments needed to reach timeEnd
@@ -204,8 +204,8 @@ void testSolveIncrementMixedControlNeedsNewtonCorrection()
   MarmotMaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { false, true, true, true, true, true };
   step.isStressComponentControlled = { true, false, false, false, false, false };
-  step.strainIncrementTarget       = Marmot::Vector6d::Zero();
-  step.stressIncrementTarget       = Marmot::Vector6d::Zero();
+  step.strainIncrementTarget       = Marmot::Math::Vector6d::Zero();
+  step.stressIncrementTarget       = Marmot::Math::Vector6d::Zero();
   step.stressIncrementTarget( 0 )  = 240.0;
 
   solver.addStep( step );
@@ -222,8 +222,8 @@ void testSolveIncrementMixedControlNeedsNewtonCorrection()
   // strain, rather than re-deriving the expected stress analytically.
   Marmot::Materials::LinearElastic    mat( materialProperties.data(), materialProperties.size(), 1 );
   MarmotMaterialHypoElastic&          matBase = mat;
-  MarmotMaterialHypoElastic::state3D  state( Marmot::Vector6d::Zero(), 0.0, 0.0, nullptr );
-  Marmot::Matrix6d                    tangent;
+  MarmotMaterialHypoElastic::state3D  state( Marmot::Math::Vector6d::Zero(), 0.0, 0.0, nullptr );
+  Marmot::Math::Matrix6d                    tangent;
   MarmotMaterialHypoElastic::timeInfo timeInfo{ 0.0, 1.0 };
   matBase.computeStress( state, tangent, last.strain, timeInfo );
 
@@ -251,8 +251,8 @@ void testSolveIncrementThrowsSolverConvergenceFailed()
   MarmotMaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { false, true, true, true, true, true };
   step.isStressComponentControlled = { true, false, false, false, false, false };
-  step.strainIncrementTarget       = Marmot::Vector6d::Zero();
-  step.stressIncrementTarget       = Marmot::Vector6d::Zero();
+  step.strainIncrementTarget       = Marmot::Math::Vector6d::Zero();
+  step.stressIncrementTarget       = Marmot::Math::Vector6d::Zero();
   step.stressIncrementTarget( 0 )  = 100.0; // the material always reports stress(0) == 5.0
 
   solver.addStep( step );
@@ -286,9 +286,9 @@ void testPrintHistoryDoesNotThrow()
   MarmotMaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, true };
   step.isStressComponentControlled = { false, false, false, false, false, false };
-  step.strainIncrementTarget       = Marmot::Vector6d::Zero();
+  step.strainIncrementTarget       = Marmot::Math::Vector6d::Zero();
   step.strainIncrementTarget( 0 )  = 1e-3;
-  step.stressIncrementTarget       = Marmot::Vector6d::Zero();
+  step.stressIncrementTarget       = Marmot::Math::Vector6d::Zero();
 
   solver.addStep( step );
   solver.solve();
@@ -309,9 +309,9 @@ void testExportHistoryToCSVWritesExpectedContent()
   MarmotMaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, true };
   step.isStressComponentControlled = { false, false, false, false, false, false };
-  step.strainIncrementTarget       = Marmot::Vector6d::Zero();
+  step.strainIncrementTarget       = Marmot::Math::Vector6d::Zero();
   step.strainIncrementTarget( 0 )  = 1e-3;
-  step.stressIncrementTarget       = Marmot::Vector6d::Zero();
+  step.stressIncrementTarget       = Marmot::Math::Vector6d::Zero();
   step.dTStart                     = 0.5; // 2 increments
 
   solver.addStep( step );
@@ -388,9 +388,9 @@ void testExportHistoryToCSVWritesStateVarColumnsForAMaterialWithStateVars()
   MarmotMaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, true };
   step.isStressComponentControlled = { false, false, false, false, false, false };
-  step.strainIncrementTarget       = Marmot::Vector6d::Zero();
+  step.strainIncrementTarget       = Marmot::Math::Vector6d::Zero();
   step.strainIncrementTarget( 0 )  = 1e-4; // small: stays elastic, well below the yield stress
-  step.stressIncrementTarget       = Marmot::Vector6d::Zero();
+  step.stressIncrementTarget       = Marmot::Math::Vector6d::Zero();
 
   solver.addStep( step );
   solver.solve();

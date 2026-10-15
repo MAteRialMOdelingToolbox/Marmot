@@ -27,8 +27,8 @@
 #include "Marmot/MarmotInterfaceMaterialHelperFunctions.h"
 #include "Marmot/MarmotElasticity.h"
 
-using namespace Marmot::FastorStandardTensors;
-using namespace Marmot::FastorIndices;
+using namespace Marmot::Math::FastorTensors;
+using namespace Marmot::Math::Indices;
 namespace Marmot::Materials {
   namespace InterfaceMaterialHelperFunctions {
 
@@ -77,7 +77,7 @@ namespace Marmot::Materials {
       const double&   nu_0 )
     {
       using namespace Marmot::ContinuumMechanics::Elasticity::Isotropic;
-      Matrix6d C_nu_voigt_full = stiffnessTensor( 1.0, nu_0 );
+      Marmot::Math::Matrix6d C_nu_voigt_full = stiffnessTensor( 1.0, nu_0 );
 
       Tensor33d N = Fastor::einsum< i, j, to_ij >( normal, normal );
 
@@ -91,7 +91,7 @@ namespace Marmot::Materials {
 
     std::tuple< Tensor3333d, Tensor33d, Tensor333d, Tensor3333d > calculateInterfaceMaterialParameters(
       const Tensor3d& normal,
-      const Matrix6d& C_ep_voigt )
+      const Marmot::Math::Matrix6d& C_ep_voigt )
     {
       Tensor33d N = Fastor::einsum< i, j, to_ij >( normal, normal );
 

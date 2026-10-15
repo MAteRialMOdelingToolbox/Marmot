@@ -54,7 +54,7 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
        * (\f$t \to \infty\f$), outside the viscoelastic relaxation terms.
        */
 
-      Matrix6d ultimateStiffnessMatrix;
+      Marmot::Math::Matrix6d ultimateStiffnessMatrix;
       /**
        * @brief Stiffness matrices of each Prony series term.
        *
@@ -126,10 +126,10 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
      */
 
     void evaluatePronySeries( const Properties&               props,
-                              Vector6d&                       stress,
-                              Matrix6d&                       stiffness,
+                              Marmot::Math::Vector6d&                       stress,
+                              Marmot::Math::Matrix6d&                       stiffness,
                               Eigen::Ref< mapStateVarMatrix > stateVars,
-                              const Vector6d&                 dStrain,
+                              const Marmot::Math::Vector6d&                 dStrain,
                               const double                    dT,
                               const bool                      updateStateVars = false );
 
@@ -155,7 +155,7 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
 
     void updateStateVars( const Properties&               props,
                           Eigen::Ref< mapStateVarMatrix > stateVars,
-                          const Vector6d&                 dStrain,
+                          const Marmot::Math::Vector6d&                 dStrain,
                           const double                    dT );
 
   } // namespace PronySeries

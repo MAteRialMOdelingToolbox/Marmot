@@ -21,9 +21,9 @@ void testMarmotLocalization()
   }
   double kappa = 0;
 
-  Marmot::Vector6d stress;
-  Marmot::Matrix6d dStress_dStrain;
-  Marmot::Vector6d dStrain;
+  Marmot::Math::Vector6d stress;
+  Marmot::Math::Matrix6d dStress_dStrain;
+  Marmot::Math::Vector6d dStrain;
   const double     dT = 1;
 
   // initialize stress on shear meridian close to yield surface
@@ -47,7 +47,7 @@ void testMarmotLocalization()
   material.computeStress( state, dStress_dStrain, dStrain, timeInfo );
 
   // normal vector
-  Marmot::Vector3d n;
+  Marmot::Math::Vector3d n;
   n << 1, -1, 0;
   n /= n.norm();
 
@@ -70,13 +70,13 @@ void testLocalizationChecker()
   using namespace Marmot::ContinuumMechanics::LocalizationAnalysis;
 
   // A well-conditioned (positive-definite, non-singular) acoustic tensor: no localization.
-  Marmot::Matrix3d wellConditioned = Marmot::Matrix3d::Identity() * 1000.;
+  Marmot::Math::Matrix3d wellConditioned = Marmot::Math::Matrix3d::Identity() * 1000.;
   throwExceptionOnFailure( localizationChecker( wellConditioned ) == false,
                            "localizationChecker() must return false for a well-conditioned acoustic tensor in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
   // A singular (zero-determinant) acoustic tensor: localization detected.
-  Marmot::Matrix3d singular = Marmot::Matrix3d::Zero();
+  Marmot::Math::Matrix3d singular = Marmot::Math::Matrix3d::Zero();
   singular( 0, 0 )          = 1000.;
   singular( 1, 1 )          = 1000.;
   // row/col 2 left as zero -> determinant exactly 0

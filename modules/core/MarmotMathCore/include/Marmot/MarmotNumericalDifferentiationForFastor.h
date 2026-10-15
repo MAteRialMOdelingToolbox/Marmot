@@ -31,8 +31,7 @@
 #include <Fastor/tensor/Tensor.h>
 #include <functional>
 
-namespace Marmot {
-  namespace NumericalAlgorithms::Differentiation {
+namespace Marmot::Math::NumericalDifferentiation {
 
     namespace ScalarToTensor {
 
@@ -50,7 +49,7 @@ namespace Marmot {
         const double                                                              x )
       {
 
-        double volatile h                       = std::max( 1.0, std::abs( x ) ) * Marmot::Constants::SquareRootEps;
+        double volatile h                       = std::max( 1.0, std::abs( x ) ) * Marmot::Math::Constants::SquareRootEps;
         Fastor::Tensor< double, Rest... > dF    = F( x + h ) - F( x );
         Fastor::Tensor< double, Rest... > dF_dx = multiplyFastorTensorWithScalar( dF, 1. / h );
         return dF_dx;
@@ -70,7 +69,7 @@ namespace Marmot {
         const double                                                              x )
       {
 
-        double volatile h                       = std::max( 1.0, std::abs( x ) ) * Marmot::Constants::CubicRootEps;
+        double volatile h                       = std::max( 1.0, std::abs( x ) ) * Marmot::Math::Constants::CubicRootEps;
         Fastor::Tensor< double, Rest... > dF    = F( x + h ) - F( x - h );
         Fastor::Tensor< double, Rest... > dF_dx = multiplyFastorTensorWithScalar( dF, 1. / ( 2. * h ) );
         return dF_dx;
@@ -102,7 +101,7 @@ namespace Marmot {
       /*     const int dF_dT_mem_idx   = dF_dT.get_mem_index( i ); */
       /*     const int T_right_mem_idx = T_right.get_mem_index( i ); */
       /*     double volatile h         = std::max( 1.0, std::abs( double( T_right_data[T_right_mem_idx] ) ) ) * */
-      /*                         Marmot::Constants::SquareRootEps; */
+      /*                         Marmot::Math::Constants::SquareRootEps; */
       /*     T_right_data[T_right_mem_idx] += h; */
       /*     dF_dT_data[dF_dT_mem_idx] = ( F( T_right ) - F_ ) / ( 1. * h ); */
       /*     T_right_data[T_right_mem_idx] -= h; */
@@ -132,7 +131,7 @@ namespace Marmot {
 
         for ( size_t i = 0; i < dim; i++ ) {
           for ( size_t j = isSymmetric ? i : 0; j < dim; j++ ) {
-            double volatile h = std::max( 1.0, std::abs( T( i, j ) ) ) * Marmot::Constants::SquareRootEps;
+            double volatile h = std::max( 1.0, std::abs( T( i, j ) ) ) * Marmot::Math::Constants::SquareRootEps;
 
             T_right( i, j ) += h;
             dF_dT( i, j ) = ( f( T_right ) - f_ ) / ( 1. * h );
@@ -171,7 +170,7 @@ namespace Marmot {
 
         for ( size_t i = 0; i < dim; i++ ) {
           for ( size_t j = isSymmetric ? i : 0; j < dim; j++ ) {
-            double volatile h = std::max( 1.0, std::abs( T( i, j ) ) ) * Marmot::Constants::CubicRootEps;
+            double volatile h = std::max( 1.0, std::abs( T( i, j ) ) ) * Marmot::Math::Constants::CubicRootEps;
 
             T_right = T;
             T_left  = T;
@@ -226,10 +225,10 @@ namespace Marmot {
         double* F_at_T_data       = F_at_T.data();
         double* F_at_T_right_data = F_at_T_right.data();
 
-        if constexpr ( IsSquareRank2Tensor< RestT... >::value && IsSquareRank2Tensor< RestF... >::value &&
-                       IsSquareRank2Tensor< RestT... >::dim == IsSquareRank2Tensor< RestF... >::dim ) {
+        if constexpr ( Marmot::Math::IsSquareRank2Tensor< RestT... >::value && Marmot::Math::IsSquareRank2Tensor< RestF... >::value &&
+                       Marmot::Math::IsSquareRank2Tensor< RestT... >::dim == Marmot::Math::IsSquareRank2Tensor< RestF... >::dim ) {
           if ( isSymmetric ) {
-            constexpr size_t dim = IsSquareRank2Tensor< RestT... >::dim;
+            constexpr size_t dim = Marmot::Math::IsSquareRank2Tensor< RestT... >::dim;
 
             for ( size_t row = 0; row < dim; ++row ) {
               for ( size_t col = row; col < dim; ++col ) {
@@ -237,7 +236,7 @@ namespace Marmot {
                 const Fastor::FASTOR_INDEX lin_ji          = col * dim + row;
                 const int                  T_right_mem_idx = T_right.get_mem_index( lin_ij );
                 double volatile h = std::max( 1.0, std::abs( double( T.data()[T_right_mem_idx] ) ) ) *
-                                    Marmot::Constants::SquareRootEps;
+                                    Marmot::Math::Constants::SquareRootEps;
                 T_right = T;
                 T_right_data[T_right_mem_idx] += h;
                 F_at_T_right = F( T_right );
@@ -264,7 +263,7 @@ namespace Marmot {
         for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i ) {
           const int T_right_mem_idx = T_right.get_mem_index( i );
           double volatile h         = std::max( 1.0, std::abs( double( T.data()[T_right_mem_idx] ) ) ) *
-                              Marmot::Constants::SquareRootEps;
+                              Marmot::Math::Constants::SquareRootEps;
           T_right = T;
           T_right_data[T_right_mem_idx] += h;
           F_at_T_right = F( T_right );
@@ -316,10 +315,10 @@ namespace Marmot {
         double* F_at_T_right_data = F_at_T_right.data();
         double* F_at_T_left_data  = F_at_T_left.data();
 
-        if constexpr ( IsSquareRank2Tensor< Rest2... >::value && IsSquareRank2Tensor< Rest1... >::value &&
-                       IsSquareRank2Tensor< Rest2... >::dim == IsSquareRank2Tensor< Rest1... >::dim ) {
+        if constexpr ( Marmot::Math::IsSquareRank2Tensor< Rest2... >::value && Marmot::Math::IsSquareRank2Tensor< Rest1... >::value &&
+                       Marmot::Math::IsSquareRank2Tensor< Rest2... >::dim == Marmot::Math::IsSquareRank2Tensor< Rest1... >::dim ) {
           if ( isSymmetric ) {
-            constexpr size_t dim = IsSquareRank2Tensor< Rest2... >::dim;
+            constexpr size_t dim = Marmot::Math::IsSquareRank2Tensor< Rest2... >::dim;
 
             for ( size_t row = 0; row < dim; ++row ) {
               for ( size_t col = row; col < dim; ++col ) {
@@ -328,7 +327,7 @@ namespace Marmot {
                 const int                  T_right_mem_idx = T_right.get_mem_index( lin_ij );
                 const int                  T_left_mem_idx  = T_left.get_mem_index( lin_ij );
                 double volatile h = std::max( 1.0, std::abs( double( T.data()[T_right_mem_idx] ) ) ) *
-                                    Marmot::Constants::CubicRootEps;
+                                    Marmot::Math::Constants::CubicRootEps;
                 T_left = T;
                 T_left_data[T_left_mem_idx] -= h;
                 F_at_T_left = F( T_left );
@@ -360,7 +359,7 @@ namespace Marmot {
           const int T_right_mem_idx = T_right.get_mem_index( i );
           const int T_left_mem_idx  = T_left.get_mem_index( i );
           double volatile h         = std::max( 1.0, std::abs( double( T.data()[T_right_mem_idx] ) ) ) *
-                              Marmot::Constants::CubicRootEps;
+                              Marmot::Math::Constants::CubicRootEps;
           T_left = T;
           T_left_data[T_left_mem_idx] -= h;
           F_at_T_left = F( T_left );
@@ -382,9 +381,8 @@ namespace Marmot {
 
     namespace Complex {
 
-      using complexDouble                                  = std::complex< double >;
       static const double        imaginaryPerturbationSize = 1e-20;
-      static const complexDouble imaginaryPerturbation     = imaginaryPerturbationSize * imaginaryUnit;
+      static const Marmot::Math::complexDouble imaginaryPerturbation     = imaginaryPerturbationSize * imaginaryUnit;
 
       /**
        * @brief Type alias for a function that maps a tensor to a scalar using complex numbers.
@@ -443,14 +441,14 @@ namespace Marmot {
          */
         template < size_t... Rest >
         std::tuple< Fastor::Tensor< double, Rest... >, Fastor::Tensor< double, Rest... > > forwardDifference(
-          const std::function< Fastor::Tensor< complexDouble, Rest... >( const complexDouble ) >& F,
+          const std::function< Fastor::Tensor< Marmot::Math::complexDouble, Rest... >( const Marmot::Math::complexDouble ) >& F,
           const double                                                                            x )
         {
-          const complexDouble                      xRight = x + imaginaryPerturbation;
-          Fastor::Tensor< complexDouble, Rest... > F_     = F( xRight );
+          const Marmot::Math::complexDouble                      xRight = x + imaginaryPerturbation;
+          Fastor::Tensor< Marmot::Math::complexDouble, Rest... > F_     = F( xRight );
           Fastor::Tensor< double, Rest... >        dF_dx( 0.0 );
           Fastor::Tensor< double, Rest... >        FReal( 0.0 );
-          complexDouble*                           F_data     = F_.data();
+          Marmot::Math::complexDouble*                           F_data     = F_.data();
           double*                                  dF_dx_data = dF_dx.data();
           double*                                  FReal_data = FReal.data();
 
@@ -470,8 +468,8 @@ namespace Marmot {
          * @tparam Rest The dimensions of the input Tensor
          */
         template < size_t... Rest >
-        using tensor_to_scalar_function_type = std::function< complexDouble(
-          const Fastor::Tensor< complexDouble, Rest... >& T ) >;
+        using tensor_to_scalar_function_type = std::function< Marmot::Math::complexDouble(
+          const Fastor::Tensor< Marmot::Math::complexDouble, Rest... >& T ) >;
 
         /**
          * @brief Approximates the derivative of a function mapping a tensor to a scalar
@@ -491,7 +489,7 @@ namespace Marmot {
                                                               const Fastor::Tensor< double, dim, dim >&         T,
                                                               bool isSymmetric = false )
         {
-          Fastor::Tensor< complexDouble, dim, dim > T_right = fastorTensorFromDoubleTensor< complexDouble >( T );
+          Fastor::Tensor< Marmot::Math::complexDouble, dim, dim > T_right = fastorTensorFromDoubleTensor< Marmot::Math::complexDouble >( T );
           Fastor::Tensor< double, dim, dim >        dF_dT( 0.0 );
 
           for ( size_t i = 0; i < dim; i++ ) {
@@ -508,10 +506,10 @@ namespace Marmot {
 
           return dF_dT;
           /* Fastor::Tensor< double, Rest... >       dF_dT; */
-          /* Fastor::Tensor< complexDouble, Rest... >       T_right = fastorTensorFromDoubleTensor<complexDouble>(T); */
+          /* Fastor::Tensor< Marmot::Math::complexDouble, Rest... >       T_right = fastorTensorFromDoubleTensor<Marmot::Math::complexDouble>(T); */
 
           /* double* dF_dT_data   = dF_dT.data(); */
-          /* complexDouble* T_right_data = T_right.data(); */
+          /* Marmot::Math::complexDouble* T_right_data = T_right.data(); */
 
           /* for ( Fastor::FASTOR_INDEX i = 0; i < T.size(); ++i ) { */
           /*   const int dF_dT_mem_idx   = dF_dT.get_mem_index( i ); */
@@ -547,24 +545,24 @@ namespace Marmot {
         template < size_t... RestF, size_t... RestT >
         Fastor::Tensor< double, RestF..., RestT... > forwardDifference(
           std::function<
-            Fastor::Tensor< complexDouble, RestF... >( const Fastor::Tensor< complexDouble, RestT... >& ) >& F,
+            Fastor::Tensor< Marmot::Math::complexDouble, RestF... >( const Fastor::Tensor< Marmot::Math::complexDouble, RestT... >& ) >& F,
           const Fastor::Tensor< double, RestT... >&                                                          T,
           bool isSymmetric = false )
         {
 
           Fastor::Tensor< double, RestF..., RestT... > dF_dT( 0.0 );
-          Fastor::Tensor< complexDouble, RestT... >    T_right = fastorTensorFromDoubleTensor< complexDouble >( T );
+          Fastor::Tensor< Marmot::Math::complexDouble, RestT... >    T_right = fastorTensorFromDoubleTensor< Marmot::Math::complexDouble >( T );
 
-          Fastor::Tensor< complexDouble, RestF... > F_at_T_right( 0.0 );
+          Fastor::Tensor< Marmot::Math::complexDouble, RestF... > F_at_T_right( 0.0 );
 
           double*        dF_dT_data        = dF_dT.data();
-          complexDouble* T_right_data      = T_right.data();
-          complexDouble* F_at_T_right_data = F_at_T_right.data();
+          Marmot::Math::complexDouble* T_right_data      = T_right.data();
+          Marmot::Math::complexDouble* F_at_T_right_data = F_at_T_right.data();
 
-          if constexpr ( IsSquareRank2Tensor< RestT... >::value && IsSquareRank2Tensor< RestF... >::value &&
-                         IsSquareRank2Tensor< RestT... >::dim == IsSquareRank2Tensor< RestF... >::dim ) {
+          if constexpr ( Marmot::Math::IsSquareRank2Tensor< RestT... >::value && Marmot::Math::IsSquareRank2Tensor< RestF... >::value &&
+                         Marmot::Math::IsSquareRank2Tensor< RestT... >::dim == Marmot::Math::IsSquareRank2Tensor< RestF... >::dim ) {
             if ( isSymmetric ) {
-              constexpr size_t dim = IsSquareRank2Tensor< RestT... >::dim;
+              constexpr size_t dim = Marmot::Math::IsSquareRank2Tensor< RestT... >::dim;
 
               for ( size_t row = 0; row < dim; ++row ) {
                 for ( size_t col = row; col < dim; ++col ) {
@@ -612,5 +610,4 @@ namespace Marmot {
         }
       } // namespace TensorToTensor
     }   // namespace Complex
-  }     // namespace NumericalAlgorithms::Differentiation
-} // namespace Marmot
+} // namespace Marmot::Math::NumericalDifferentiation

@@ -16,18 +16,18 @@ using namespace Marmot::ContinuumMechanics::PlaneStress;
 using namespace Marmot::ContinuumMechanics::UniaxialStress;
 using namespace Marmot::Testing;
 
-Marmot::Matrix6d create_C_Matrix()
+Marmot::Math::Matrix6d create_C_Matrix()
 {
   // Definition of C (isotropic material)
   double           E  = 1000;
   double           nu = 0.25;
-  Marmot::Matrix6d C  = stiffnessTensor( E, nu );
+  Marmot::Math::Matrix6d C  = stiffnessTensor( E, nu );
   return C;
 }
 
 void test_getUniaxialStressTangent()
 {
-  Marmot::Matrix6d C = create_C_Matrix();
+  Marmot::Math::Matrix6d C = create_C_Matrix();
 
   // Compute the result using the getUniaxialStressTangent function
   double computedResult = getUniaxialStressTangent( C );
@@ -42,7 +42,7 @@ void test_getUniaxialStressTangent()
 void test_reduce3D_dStress_dDeformationGradient()
 {
   // Create Tensor
-  Marmot::EigenTensors::Tensor633d inputTensor;
+  Marmot::Math::Tensors::Tensor633d inputTensor;
   // Set all values to zero initially
   inputTensor.setZero();
   // Populate the tensor with some non-zero values to represent derivatives
@@ -78,10 +78,10 @@ void test_reduce3D_dStress_dDeformationGradient()
   */
 
   // Compute the result using the reduce3D_dStress_dDeformationGradient function
-  Marmot::EigenTensors::Tensor322d computedResult = reduce3D_dStress_dDeformationGradient( inputTensor );
+  Marmot::Math::Tensors::Tensor322d computedResult = reduce3D_dStress_dDeformationGradient( inputTensor );
 
   // Expected results
-  Marmot::EigenTensors::Tensor322d expectedResult;
+  Marmot::Math::Tensors::Tensor322d expectedResult;
   expectedResult( 0, 0, 0 ) = 1.0;  // σ_xx
   expectedResult( 0, 1, 0 ) = 2.0;  // σ_xx
   expectedResult( 0, 0, 1 ) = 3.0;  // σ_xx
@@ -108,13 +108,13 @@ void test_reduce3D_dStress_dDeformationGradient()
 
 void test_getPlaneStrainTangent()
 {
-  Marmot::Matrix6d C = create_C_Matrix();
+  Marmot::Math::Matrix6d C = create_C_Matrix();
 
   // Compute the result using the getPlaneStrainTangent function
-  Matrix3d computedResult = getPlaneStrainTangent( C );
+  Marmot::Math::Matrix3d computedResult = getPlaneStrainTangent( C );
 
   // Expected results
-  Matrix3d expectedResult;
+  Marmot::Math::Matrix3d expectedResult;
   // clang-format off
   expectedResult <<
         1200, 400,  0,
@@ -149,7 +149,7 @@ void test_dStrainDStrainPlaneStrain()
 void test_compute_dStress_dDeformationGradient()
 {
   // Create Tensor
-  Marmot::EigenTensors::Tensor633d inputTensor;
+  Marmot::Math::Tensors::Tensor633d inputTensor;
   // Set all values to 1 initially
   inputTensor.setConstant( 1.0 );
   // Set some different values
@@ -185,12 +185,12 @@ void test_compute_dStress_dDeformationGradient()
   */
 
   // Compute the result using the compute_dStress_dDeformationGradient function
-  Marmot::EigenTensors::Tensor322d computedResult = compute_dStress_dDeformationGradient( inputTensor );
+  Marmot::Math::Tensors::Tensor322d computedResult = compute_dStress_dDeformationGradient( inputTensor );
 
   // Expected results
-  using namespace Marmot::ContinuumMechanics::TensorUtility::IndexNotation;
+  using namespace Marmot::Math::Tensors::IndexNotation;
 
-  Marmot::EigenTensors::Tensor322d expectedResult;
+  Marmot::Math::Tensors::Tensor322d expectedResult;
   // clang-format off
   for ( int m = 0; m < 2; m ++ )
     for ( int n = 0; n < 2; n ++ )
@@ -232,10 +232,10 @@ void test_dStressPlaneStressDStress()
 
 void test_getPlaneStressTangent()
 {
-  Marmot::Matrix6d C = create_C_Matrix();
+  Marmot::Math::Matrix6d C = create_C_Matrix();
 
   // Compute the result using the getPlaneStressTangent function
-  Matrix3d computedResult = getPlaneStressTangent( C );
+  Marmot::Math::Matrix3d computedResult = getPlaneStressTangent( C );
 
   // Expected results
   Matrix< double, 3, 6 > dStressPlaneStressDStress;
@@ -257,7 +257,7 @@ void test_getPlaneStressTangent()
     0,        0,        0;
   // clang-format on
 
-  Matrix3d expectedResult = dStressPlaneStressDStress * C * dStrainDStrainPlaneStress;
+  Marmot::Math::Matrix3d expectedResult = dStressPlaneStressDStress * C * dStrainDStrainPlaneStress;
 
   throwExceptionOnFailure( checkIfEqual< double >( computedResult, expectedResult ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
@@ -265,15 +265,15 @@ void test_getPlaneStressTangent()
 
 void test_planeStressCompensationStrain()
 {
-  Marmot::Vector6d strain;
+  Marmot::Math::Vector6d strain;
   strain << 0.04, 0.06, 0.0, 0.08, 0.0, 0.0;
   double nu = 0.2;
 
   // Compute the result using the planeStressCompensationStrain function
-  Marmot::Vector6d computedResult = planeStressCompensationStrain( strain, nu );
+  Marmot::Math::Vector6d computedResult = planeStressCompensationStrain( strain, nu );
 
   // Expected results
-  Marmot::Vector6d expectedResult;
+  Marmot::Math::Vector6d expectedResult;
   expectedResult << 0, 0, -0.025, 0, 0, 0;
 
   throwExceptionOnFailure( checkIfEqual< double >( computedResult, expectedResult ),
@@ -282,13 +282,13 @@ void test_planeStressCompensationStrain()
 
 void test_planeStressTangentTransformationMatrix()
 {
-  Marmot::Matrix6d tangent = create_C_Matrix();
+  Marmot::Math::Matrix6d tangent = create_C_Matrix();
 
   // Compute the result using the planeStressTangentTransformationMatrix function
-  Marmot::Matrix6d computedResult = planeStressTangentTransformationMatrix( tangent );
+  Marmot::Math::Matrix6d computedResult = planeStressTangentTransformationMatrix( tangent );
 
   // Expected results
-  Marmot::Matrix6d expectedResult;
+  Marmot::Math::Matrix6d expectedResult;
   // clang-format off
   expectedResult <<
     1,        0,        0,  0,  0,  0,
@@ -305,7 +305,7 @@ void test_planeStressTangentTransformationMatrix()
 
 void test_dStrainDStrainPlaneStress()
 {
-  Marmot::Matrix6d tangent = create_C_Matrix();
+  Marmot::Math::Matrix6d tangent = create_C_Matrix();
 
   // Compute the result using the dStrainDStrainPlaneStress function
   Matrix< double, 6, 3 > computedResult = dStrainDStrainPlaneStress( tangent );

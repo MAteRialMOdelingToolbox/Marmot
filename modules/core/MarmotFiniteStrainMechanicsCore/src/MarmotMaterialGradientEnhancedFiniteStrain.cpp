@@ -96,15 +96,15 @@ std::tuple< double, double, double > MarmotMaterialGradientEnhancedFiniteStrain:
 
   Eigen::Map< Eigen::VectorXd > theStateVars( stateVars, stateLayout.totalSize() );
 
-  auto evaluateStress = [&]( const Vector3d& F0 ) {
+  auto evaluateStress = [&]( const Marmot::Math::Vector3d& F0 ) {
     deformation.F( 0, 0 ) = F0( 0 );
     deformation.F( 1, 1 ) = F0( 1 );
     deformation.F( 2, 2 ) = F0( 2 );
 
     computeStress( response, tangents, deformation, timeIncrement );
 
-    Vector3d tau = { response.tau( 0, 0 ), response.tau( 1, 1 ), response.tau( 2, 2 ) };
-    Matrix3d dTau_dF;
+    Marmot::Math::Vector3d tau = { response.tau( 0, 0 ), response.tau( 1, 1 ), response.tau( 2, 2 ) };
+    Marmot::Math::Matrix3d dTau_dF;
     dTau_dF << tangents.dTau_dF( 0, 0, 0, 0 ), tangents.dTau_dF( 0, 0, 1, 1 ), tangents.dTau_dF( 0, 0, 2, 2 ),
       tangents.dTau_dF( 1, 1, 0, 0 ), tangents.dTau_dF( 1, 1, 1, 1 ), tangents.dTau_dF( 1, 1, 2, 2 ),
       tangents.dTau_dF( 2, 2, 0, 0 ), tangents.dTau_dF( 2, 2, 1, 1 ), tangents.dTau_dF( 2, 2, 2, 2 );

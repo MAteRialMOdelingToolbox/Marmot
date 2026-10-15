@@ -10,8 +10,8 @@
 
 using namespace Marmot::Testing;
 using namespace Marmot::Materials;
-using namespace Marmot::FastorStandardTensors;
-using namespace Marmot::FastorIndices;
+using namespace Marmot::Math::FastorTensors;
+using namespace Marmot::Math::Indices;
 
 using Mat = GradientEnhancedCompressibleNeoHookeDamage;
 

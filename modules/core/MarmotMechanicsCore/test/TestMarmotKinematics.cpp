@@ -53,14 +53,14 @@ void testDeformationGradientAnddEdFCalculation()
 {
   // Test for 0 deformation
   Eigen::Matrix3d  F       = Eigen::Matrix3d::Identity(); // assign identity test value
-  Marmot::Vector6d calcE   = GreenLagrange( F );          // calculate the value for 0 strain by function
-  Marmot::Vector6d expectE = Marmot::Vector6d::Zero();    // assign the expected value for 0 strain
+  Marmot::Math::Vector6d calcE   = GreenLagrange( F );          // calculate the value for 0 strain by function
+  Marmot::Math::Vector6d expectE = Marmot::Math::Vector6d::Zero();    // assign the expected value for 0 strain
   // check if expected and calculated values are the same
   throwExceptionOnFailure( checkIfEqual< double >( calcE, expectE ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " Error for Green-Lagrange strain with 0 deformation." );
   // calculate the value for the differentiation of strain wrt deformation gradient by function
-  Marmot::EigenTensors::Tensor633d dEdFcalc = dGreenLagrangedDeformationGradient( F );
+  Marmot::Math::Tensors::Tensor633d dEdFcalc = dGreenLagrangedDeformationGradient( F );
   double                           dEdFexpect;
   // loop through all indices/dimensions
   for ( int i = 0; i < 3; i++ )
@@ -79,15 +79,15 @@ void testDeformationGradientAnddEdFCalculation()
   // Test for high deformation
   Eigen::Matrix3d Fh;
   Fh << 1.2, 0.1, 0.2, 0.4, 1.4, 0.3, 0.5, 0.6, 1.6;    // assign high test value
-  Marmot::Vector6d calcEh = GreenLagrange( Fh );        // calculate the value for high strain by function
-  Marmot::Vector6d expectEh;
+  Marmot::Math::Vector6d calcEh = GreenLagrange( Fh );        // calculate the value for high strain by function
+  Marmot::Math::Vector6d expectEh;
   expectEh << 0.425, 0.665, 0.845, 0.980, 1.160, 1.400; // assign the expected value for high strain
   // check if expected and calculated values are the same
   throwExceptionOnFailure( checkIfEqual< double >( calcEh, expectEh, 1e-15 ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
                                         << " Error for Green-Lagrange strain with high deformation." );
   // calculate the value for the differentiation of strain wrt deformation gradient by function
-  Marmot::EigenTensors::Tensor633d dEdFcalch = dGreenLagrangedDeformationGradient( Fh );
+  Marmot::Math::Tensors::Tensor633d dEdFcalch = dGreenLagrangedDeformationGradient( Fh );
   // loop through all indices/dimensions
   for ( int i = 0; i < 3; i++ )
     for ( int j = 0; j < 3; j++ )

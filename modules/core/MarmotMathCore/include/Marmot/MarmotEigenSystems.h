@@ -30,14 +30,13 @@
 #include <cmath>
 #include <utility>
 
-namespace Marmot {
-  namespace Math {
+namespace Marmot::Math {
 
     template < typename T = double >
-    std::pair< FastorStandardTensors::Tensor3t< T >, FastorStandardTensors::Tensor33t< T > > computeEigenSystemJacobi(
-      const FastorStandardTensors::Tensor33t< T >& A_in )
+    std::pair< Marmot::Math::FastorTensors::Tensor3t< T >, Marmot::Math::FastorTensors::Tensor33t< T > > computeEigenSystemJacobi(
+      const Marmot::Math::FastorTensors::Tensor33t< T >& A_in )
     {
-      using namespace FastorStandardTensors;
+      using namespace Marmot::Math::FastorTensors;
 
       Tensor33t< T > A = A_in; // Copy to manipulate internally
       Tensor33t< T > V;
@@ -146,10 +145,10 @@ namespace Marmot {
     }
 
     template < typename T = double >
-    std::pair< FastorStandardTensors::Tensor3t< T >, FastorStandardTensors::Tensor33t< T > > computeEigenSystemWithCardano(
-      const FastorStandardTensors::Tensor33t< T >& A )
+    std::pair< Marmot::Math::FastorTensors::Tensor3t< T >, Marmot::Math::FastorTensors::Tensor33t< T > > computeEigenSystemWithCardano(
+      const Marmot::Math::FastorTensors::Tensor33t< T >& A )
     {
-      using namespace FastorStandardTensors;
+      using namespace Marmot::Math::FastorTensors;
 
       const T trA = trace( A );
 
@@ -193,7 +192,7 @@ namespace Marmot {
         for ( int k = 0; k < 3; ++k ) {
           // T(2.0) and T(3.0) ensure we don't accidentally cast down to double
           eigenvalues( k ) = T( 2.0 ) * r *
-                               cos( ( theta - T( 2.0 ) * T( Marmot::Constants::Pi ) * T( k ) ) / T( 3.0 ) ) -
+                               cos( ( theta - T( 2.0 ) * T( Marmot::Math::Constants::Pi ) * T( k ) ) / T( 3.0 ) ) -
                              p1 / T( 3.0 );
         }
       }
@@ -342,5 +341,4 @@ namespace Marmot {
       return std::make_pair( eigenvalues, eigenvectors );
     }
 
-  } // namespace Math
-} // namespace Marmot
+} // namespace Marmot::Math

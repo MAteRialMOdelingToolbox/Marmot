@@ -27,9 +27,7 @@
 #include "Marmot/MarmotMath.h"
 #include <iostream>
 
-namespace Marmot {
-  namespace ContinuumMechanics::TensorUtility {
-    namespace TensorExponential {
+namespace Marmot::Math::TensorExponential {
       struct ExponentialMapFailed : std::exception {};
 
       /**
@@ -106,7 +104,7 @@ namespace Marmot {
                                     ///< tensor
       };
 
-      namespace FirstOrderDerived {
+      namespace FirstOrder {
         /** @brief Computes the exponential of a square second rank tensor and its first-order derivative.
          * @details See the documentation of `computeTensorExponential` without derivative
          *          for additional details.
@@ -167,7 +165,5 @@ namespace Marmot {
 
           return theResult;
         }
-      } // namespace FirstOrderDerived
-    }   // namespace TensorExponential
-  }     // namespace ContinuumMechanics::TensorUtility
-} // namespace Marmot
+      } // namespace FirstOrder
+} // namespace Marmot::Math::TensorExponential

@@ -35,12 +35,12 @@ namespace Marmot::Materials {
     VonMisesModel( const double* materialProperties, const int nMaterialProperties, const int materialLabel );
 
     void computeStress( state3D&                state,
-                        Marmot::Matrix6d&       dStressDDStrain,
-                        const Marmot::Vector6d& dStrain,
+                        Marmot::Math::Matrix6d&       dStressDDStrain,
+                        const Marmot::Math::Vector6d& dStrain,
                         const timeInfo&         timeInfo ) const override;
 
     void computeStressExplicit( state3D&                state,
-                                const Marmot::Vector6d& dStrain,
+                                const Marmot::Math::Vector6d& dStrain,
                                 const timeInfo&         timeInfo ) const override;
 
     double getDensity( const double* stateVars ) const override;

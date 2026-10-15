@@ -6,8 +6,8 @@
 
 using namespace Marmot::Testing;
 using namespace Marmot::Solvers;
-using namespace Marmot::FastorStandardTensors;
-using namespace Marmot::FastorIndices;
+using namespace Marmot::Math::FastorTensors;
+using namespace Marmot::Math::Indices;
 
 // Material properties for an isotropic material (all directions equal)
 // Layout: [E1, E2, E3, nu12, nu13, nu23, G12, G13, G23, nMaxwell]
@@ -233,7 +233,7 @@ void testObjectivity()
   auto solver = makeSolver( matName, matProps );
 
   MarmotMaterialPointSolverFiniteStrain::Step step;
-  step.gradUIncrementTarget        = F - Marmot::FastorStandardTensors::Spatial3D::I;
+  step.gradUIncrementTarget        = F - Marmot::Math::FastorTensors::Spatial3D::I;
   step.stressIncrementTarget       = Tensor33d( 0.0 );
   step.isGradUComponentControlled  = Tensor33t< bool >( true );
   step.isStressComponentControlled = Tensor33t< bool >( false );
@@ -264,7 +264,7 @@ void testObjectivity()
     auto solver_rot = makeSolver( matName, matProps );
 
     MarmotMaterialPointSolverFiniteStrain::Step step_rot;
-    step_rot.gradUIncrementTarget        = F_rotated - Marmot::FastorStandardTensors::Spatial3D::I;
+    step_rot.gradUIncrementTarget        = F_rotated - Marmot::Math::FastorTensors::Spatial3D::I;
     step_rot.stressIncrementTarget       = Tensor33d( 0.0 );
     step_rot.isGradUComponentControlled  = Tensor33t< bool >( true );
     step_rot.isStressComponentControlled = Tensor33t< bool >( false );
@@ -385,7 +385,7 @@ void testPureRotationResponse()
     auto solver = makeSolver( matName, matProps );
 
     MarmotMaterialPointSolverFiniteStrain::Step step;
-    step.gradUIncrementTarget        = Q - Marmot::FastorStandardTensors::Spatial3D::I;
+    step.gradUIncrementTarget        = Q - Marmot::Math::FastorTensors::Spatial3D::I;
     step.stressIncrementTarget       = Tensor33d( 0.0 );
     step.isGradUComponentControlled  = Tensor33t< bool >( true );
     step.isStressComponentControlled = Tensor33t< bool >( false );

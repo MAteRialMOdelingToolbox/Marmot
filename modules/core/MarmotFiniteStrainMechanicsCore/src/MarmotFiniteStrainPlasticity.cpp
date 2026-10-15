@@ -8,8 +8,8 @@ namespace Marmot {
       namespace FirstOrderDerived {
 
         using namespace Fastor;
-        using namespace FastorStandardTensors;
-        using namespace FastorIndices;
+        using namespace Marmot::Math::FastorTensors;
+        using namespace Marmot::Math::Indices;
 
         std::pair< Tensor33d, Tensor3333d > explicitIntegration( const Tensor33d& dGp )
         {
@@ -21,7 +21,7 @@ namespace Marmot {
 
         std::pair< Tensor33d, Tensor3333d > exponentialMap( const Tensor33d& dGp )
         {
-          const auto [dFpT, dFpT_dGp] = TensorUtility::TensorExponential::FirstOrderDerived::
+          const auto [dFpT, dFpT_dGp] = Marmot::Math::TensorExponential::FirstOrder::
             computeTensorExponential( dGp, 15, 1e-14 );
           // clang-format off
             return { permute< Index< 1, 0 > >      ( dFpT     ),

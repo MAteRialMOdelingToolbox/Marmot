@@ -197,7 +197,7 @@ namespace Marmot::Materials {
      */
     void initializeYourself( double* stateVars, int nStateVars ) override
     {
-      using namespace Marmot::FastorStandardTensors;
+      using namespace Marmot::Math::FastorTensors;
 
       TensorMap33d Fn = this->stateLayout.getAs< TensorMap33d >( stateVars, deformationGradientSlot );
       std::memcpy( Fn.data(), Spatial3D::I.data(), 9 * sizeof( double ) );
@@ -247,17 +247,17 @@ namespace Marmot::Materials {
 
   protected:
     /// @brief Convert an Eigen 3x3 matrix into a Fastor tensor.
-    static Marmot::FastorStandardTensors::Tensor33d fromEigen( const Eigen::Matrix3d& m )
+    static Marmot::Math::FastorTensors::Tensor33d fromEigen( const Eigen::Matrix3d& m )
     {
-      Marmot::FastorStandardTensors::Tensor33d t;
-      Marmot::mapEigenToFastor( t ) = m;
+      Marmot::Math::FastorTensors::Tensor33d t;
+      Marmot::Math::mapEigenToFastor( t ) = m;
       return t;
     }
 
     /// @brief Convert a Fastor 3x3 tensor into an Eigen matrix.
-    static Eigen::Matrix3d toEigen( const Marmot::FastorStandardTensors::Tensor33d& t )
+    static Eigen::Matrix3d toEigen( const Marmot::Math::FastorTensors::Tensor33d& t )
     {
-      return Eigen::Matrix3d( Marmot::mapEigenToFastor( t ) );
+      return Eigen::Matrix3d( Marmot::Math::mapEigenToFastor( t ) );
     }
 
     /**
@@ -273,10 +273,10 @@ namespace Marmot::Materials {
      *         result may be contracted as a full fourth-order tensor without double counting the
      *         off-diagonal stress components.
      */
-    Marmot::Matrix6d computeStressSensitivity( const Marmot::Vector6d&                    sigmaRotVoigt,
-                                               const Marmot::Vector6d&                    sigmaNp1Voigt,
+    Marmot::Math::Matrix6d computeStressSensitivity( const Marmot::Math::Vector6d&                    sigmaRotVoigt,
+                                               const Marmot::Math::Vector6d&                    sigmaNp1Voigt,
                                                const std::vector< double >&               baseStateOld,
-                                               const Marmot::Vector6d&                    dStrain,
+                                               const Marmot::Math::Vector6d&                    dStrain,
                                                const MarmotMaterialHypoElastic::timeInfo& timeInfo ) const
     {
       const int nBase = baseMaterial->getNumberOfRequiredStateVars();
@@ -284,7 +284,7 @@ namespace Marmot::Materials {
       const double scale = std::max( 1.0, sigmaRotVoigt.cwiseAbs().maxCoeff() );
       const double h     = std::sqrt( std::numeric_limits< double >::epsilon() ) * scale;
 
-      Marmot::Matrix6d S = Marmot::Matrix6d::Zero();
+      Marmot::Math::Matrix6d S = Marmot::Math::Matrix6d::Zero();
 
       std::vector< double > scratch( nBase );
       for ( int j = 0; j < 6; ++j ) {
@@ -296,7 +296,7 @@ namespace Marmot::Materials {
         perturbed.stress( j ) += h;
         perturbed.stateVars = nBase > 0 ? scratch.data() : nullptr;
 
-        Marmot::Matrix6d dummyTangent = Marmot::Matrix6d::Zero();
+        Marmot::Math::Matrix6d dummyTangent = Marmot::Math::Matrix6d::Zero();
         baseMaterial->computeStress( perturbed, dummyTangent, dStrain, timeInfo );
 
         S.col( j ) = ( perturbed.stress - sigmaNp1Voigt ) / h;
@@ -324,8 +324,8 @@ namespace Marmot::Materials {
                             bool                       computeTangent ) const
     {
       using namespace Fastor;
-      using namespace Marmot::FastorStandardTensors;
-      using namespace Marmot::FastorIndices;
+      using namespace Marmot::Math::FastorTensors;
+      using namespace Marmot::Math::Indices;
       using namespace Marmot::ContinuumMechanics::VoigtNotation;
 
       const Tensor33d& Ident = Spatial3D::I;
@@ -351,8 +351,8 @@ namespace Marmot::Materials {
       const Tensor33d dR   = Ainv % Tensor33d( Ident + 0.5 * dOm );
 
       // --- rotate the carried-over Cauchy stress forward ---
-      Eigen::Map< const Marmot::Vector6d > sigmaNVoigtMap( sigmaNPtr );
-      const Marmot::Vector6d               sigmaNVoigt = sigmaNVoigtMap;
+      Eigen::Map< const Marmot::Math::Vector6d > sigmaNVoigtMap( sigmaNPtr );
+      const Marmot::Math::Vector6d               sigmaNVoigt = sigmaNVoigtMap;
       const Tensor33d                      sigmaN      = fromEigen( stressMatrixFromVoigt< 3 >( sigmaNVoigt ) );
       const Tensor33d                      sigmaRot    = dR % sigmaN % transpose( dR );
 
@@ -366,8 +366,8 @@ namespace Marmot::Materials {
         }
       }
 
-      const Marmot::Vector6d sigmaRotVoigt = stressToVoigt< double >( toEigen( sigmaRot ) );
-      const Marmot::Vector6d dEpsVoigt     = voigtFromStrainMatrix< 3 >( toEigen( dEps ) );
+      const Marmot::Math::Vector6d sigmaRotVoigt = stressToVoigt< double >( toEigen( sigmaRot ) );
+      const Marmot::Math::Vector6d dEpsVoigt     = voigtFromStrainMatrix< 3 >( toEigen( dEps ) );
 
       MarmotMaterialHypoElastic::state3D state;
       state.stress               = sigmaRotVoigt;
@@ -377,10 +377,10 @@ namespace Marmot::Materials {
 
       const MarmotMaterialHypoElastic::timeInfo timeInfo{ timeIncrement.time, timeIncrement.dT };
 
-      Marmot::Matrix6d C = Marmot::Matrix6d::Zero();
+      Marmot::Math::Matrix6d C = Marmot::Math::Matrix6d::Zero();
       baseMaterial->computeStress( state, C, dEpsVoigt, timeInfo );
 
-      const Marmot::Vector6d sigmaNp1Voigt = state.stress;
+      const Marmot::Math::Vector6d sigmaNp1Voigt = state.stress;
       const Tensor33d        sigmaNp1      = fromEigen( stressMatrixFromVoigt< 3 >( sigmaNp1Voigt ) );
 
       // --- push the Cauchy stress forward to the Kirchhoff stress ---
@@ -413,7 +413,7 @@ namespace Marmot::Materials {
 
         if constexpr ( tangentMode == HughesWingetTangent::Exact ) {
           // Replace the implicit d(sigma^(n+1))/d(sigmaRot) = I assumption by the true operator.
-          const Marmot::Matrix6d S = computeStressSensitivity( sigmaRotVoigt,
+          const Marmot::Math::Matrix6d S = computeStressSensitivity( sigmaRotVoigt,
                                                                sigmaNp1Voigt,
                                                                baseStateOld,
                                                                dEpsVoigt,
@@ -432,7 +432,7 @@ namespace Marmot::Materials {
       }
 
       // --- commit ---
-      Eigen::Map< Marmot::Vector6d > sigmaNOut( sigmaNPtr );
+      Eigen::Map< Marmot::Math::Vector6d > sigmaNOut( sigmaNPtr );
       sigmaNOut = sigmaNp1Voigt;
       Fn_ref    = Fn1;
     }
@@ -453,7 +453,7 @@ namespace Marmot::Materials {
                                   const Deformation< 3 >&          deformation,
                                   const TimeIncrement&             timeIncrement ) const
     {
-      using namespace Marmot::FastorStandardTensors;
+      using namespace Marmot::Math::FastorTensors;
 
       const int             nTotal = this->getNumberOfRequiredStateVars();
       std::vector< double > stateOld( nTotal );

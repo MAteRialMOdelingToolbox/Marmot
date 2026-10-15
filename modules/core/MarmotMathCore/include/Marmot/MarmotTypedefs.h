@@ -35,13 +35,13 @@
  *
  * This header collects all fixed-size and map-based Eigen types that are shared
  * across the Marmot library, so that downstream code can rely on a single,
- * consistent set of names (e.g. @c Marmot::Vector6d, @c Marmot::Matrix6d).
+ * consistent set of names (e.g. @c Vector6d, @c Matrix6d).
  */
 
 /** @brief Macro to compute the Voigt notation index from the dimension */
 #define VOIGTFROMDIM( x ) ( ( ( x * x ) + x ) >> 1 )
 
-namespace Marmot {
+namespace Marmot::Math {
   typedef Eigen::Matrix< double, 6, 6 > Matrix6d;              ///< 6×6 double matrix (Voigt tangent)
   typedef Eigen::Matrix< double, 6, 9 > Matrix69d;             ///< 6×9 double matrix
   typedef Eigen::Matrix< double, 9, 9 > Matrix99d;             ///< 9×9 double matrix
@@ -59,7 +59,7 @@ namespace Marmot {
   typedef Eigen::Matrix< double, 1, 6 >        RowVector6d;    ///< 6-component double row vector
   typedef Eigen::Map< Vector6d >               mVector6d;      ///< Non-owning map over a Vector6d
   typedef Eigen::Map< Eigen::VectorXd >        mVectorXd;      ///< Non-owning map over a dynamic double vector
-  typedef Eigen::Map< const Marmot::Vector6d > mConstVector6d; ///< Non-owning const map over a Vector6d
+  typedef Eigen::Map< const Vector6d > mConstVector6d; ///< Non-owning const map over a Vector6d
 
   typedef Eigen::Matrix< double, 3, 6 > Matrix36d;             ///< 3×6 double matrix
   typedef Eigen::Matrix< double, 3, 6 > Matrix36;              ///< 3×6 double matrix (alias for Matrix36d)
@@ -84,7 +84,7 @@ namespace Marmot {
   template < typename T >
   using VectorXt = Eigen::Matrix< T, -1, 1 >; ///< Dynamic column vector with scalar type @p T
 
-  namespace EigenTensors {
+  namespace Tensors {
 
     typedef Eigen::TensorFixedSize< double, Eigen::Sizes< 6, 3, 3 > > Tensor633d; ///< Fixed-size 6×3×3 double tensor
     typedef Eigen::TensorFixedSize< double, Eigen::Sizes< 3, 2, 2 > > Tensor322d; ///< Fixed-size 3×2×2 double tensor
@@ -102,6 +102,6 @@ namespace Marmot {
                                                                    Tensor2112d; ///< Fixed-size 2×1×1×2 double tensor
     typedef Eigen::TensorFixedSize< double, Eigen::Sizes< 3, 3 > > Tensor33d;   ///< Fixed-size 3×3 double tensor
 
-  }                                                                             // namespace EigenTensors
+  } // namespace Tensors
 
-} // namespace Marmot
+} // namespace Marmot::Math

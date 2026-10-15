@@ -55,8 +55,8 @@ namespace Marmot {
       /**
        * Apply viscosity on voigt sized rank two tensor depending on the extremal solutions for t=0 (trialState) and
        * t=\f$\infty\f$, and timestep dt */
-      Marmot::Vector6d applyViscosityOnStress( const Marmot::Vector6d& trialStress,
-                                               const Marmot::Vector6d& stressInf,
+      Marmot::Math::Vector6d applyViscosityOnStress( const Marmot::Math::Vector6d& trialStress,
+                                               const Marmot::Math::Vector6d& stressInf,
                                                double                  dT );
       /**
        * Apply viscosity on the inverse (algorithmic) material tangent depending on the extremal solutions for t=0
@@ -81,8 +81,8 @@ namespace Marmot {
     }
 
     template < int s >
-    Marmot::Vector6d DuvautLionsViscosity< s >::applyViscosityOnStress( const Marmot::Vector6d& trialStress,
-                                                                        const Marmot::Vector6d& stressInf,
+    Marmot::Math::Vector6d DuvautLionsViscosity< s >::applyViscosityOnStress( const Marmot::Math::Vector6d& trialStress,
+                                                                        const Marmot::Math::Vector6d& stressInf,
                                                                         double                  dT )
     {
       return ( trialStress + ( dT / viscosity ) * stressInf ) / ( dT / viscosity + 1 );

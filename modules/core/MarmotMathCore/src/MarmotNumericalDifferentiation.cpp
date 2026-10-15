@@ -4,19 +4,18 @@
 
 using namespace Eigen;
 
-namespace Marmot {
-  namespace NumericalAlgorithms::Differentiation {
+namespace Marmot::Math::NumericalDifferentiation {
 
     double forwardDifference( const scalar_to_scalar_function_type& f, const double x )
     {
-      double volatile h = std::max( 1.0, std::abs( x ) ) * Marmot::Constants::SquareRootEps;
+      double volatile h = std::max( 1.0, std::abs( x ) ) * Marmot::Math::Constants::SquareRootEps;
       const double out  = ( f( x + h ) - f( x ) ) / h;
       return out;
     }
 
     double centralDifference( const scalar_to_scalar_function_type& f, const double x )
     {
-      double volatile h = std::max( 1.0, std::abs( x ) ) * Marmot::Constants::CubicRootEps;
+      double volatile h = std::max( 1.0, std::abs( x ) ) * Marmot::Math::Constants::CubicRootEps;
       const double out  = ( f( x + h ) - f( x - h ) ) / ( 2. * h );
       return out;
     }
@@ -32,7 +31,7 @@ namespace Marmot {
       VectorXd rightX( xSize );
 
       for ( auto i = 0; i < xSize; i++ ) {
-        double volatile h = std::max( 1.0, std::abs( X( i ) ) ) * Marmot::Constants::SquareRootEps;
+        double volatile h = std::max( 1.0, std::abs( X( i ) ) ) * Marmot::Math::Constants::SquareRootEps;
         // clang-format off
         rightX = X;
         rightX( i ) += h;
@@ -56,7 +55,7 @@ namespace Marmot {
       VectorXd rightX( xSize );
 
       for ( auto i = 0; i < xSize; i++ ) {
-        double volatile h = std::max( 1.0, std::abs( X( i ) ) ) * Marmot::Constants::CubicRootEps;
+        double volatile h = std::max( 1.0, std::abs( X( i ) ) ) * Marmot::Math::Constants::CubicRootEps;
 
         leftX  = X;
         rightX = X;
@@ -90,7 +89,7 @@ namespace Marmot {
        */
       double forwardDifference( const scalar_to_scalar_function_type& f, const double x )
       {
-        complexDouble x_  = complexDouble( x ) + 1e-20 * imaginaryUnit;
+        Marmot::Math::complexDouble x_  = Marmot::Math::complexDouble( x ) + 1e-20 * imaginaryUnit;
         const double  out = f( x_ ).imag() / 1e-20;
         return out;
       }
@@ -128,10 +127,10 @@ namespace Marmot {
         VectorXcd  rightX( xSize );
         VectorXcd  leftX( xSize );
 
-        complexDouble i_ = Marmot::Constants::sqrt2 / 2. * complexUnit;
+        Marmot::Math::complexDouble i_ = Marmot::Math::Constants::sqrt2 / 2. * complexUnit;
 
         for ( auto i = 0; i < xSize; i++ ) {
-          double h = std::max( 1.0, std::abs( X( i ) ) ) * Marmot::Constants::SquareRootEps;
+          double h = std::max( 1.0, std::abs( X( i ) ) ) * Marmot::Math::Constants::SquareRootEps;
 
           e.setZero();
           e( i ) = 1.;
@@ -145,7 +144,7 @@ namespace Marmot {
           // clang-format off
           J.col( i ) =      ( F( rightX ) - F( leftX )  ).imag()
                        / //--------------------------------------
-                              ( Marmot::Constants::sqrt2 * h );
+                              ( Marmot::Math::Constants::sqrt2 * h );
 
           // clang-format on
         }
@@ -167,7 +166,7 @@ namespace Marmot {
         VectorXcd  x4_( xSize );
 
         for ( auto i = 0; i < xSize; i++ ) {
-          double h = std::max( 1.0, std::abs( X( i ) ) ) * Marmot::Constants::SquareRootEps;
+          double h = std::max( 1.0, std::abs( X( i ) ) ) * Marmot::Math::Constants::SquareRootEps;
           e.setZero();
           e( i ) = 1.;
 
@@ -179,7 +178,7 @@ namespace Marmot {
           // clang-format off
           J.col( i ) = ( 8.* ( F( x1_ ) - F( x2_ ) )
                            - ( F( x3_ ) - F( x4_ ) ) ).imag()
-                           / ( Marmot::Constants::sqrt2 * 3. * h );
+                           / ( Marmot::Math::Constants::sqrt2 * 3. * h );
 
           // clang-format on
         }
@@ -188,5 +187,4 @@ namespace Marmot {
       }
     } // namespace Complex
 
-  }   // namespace NumericalAlgorithms::Differentiation
-} // namespace Marmot
+} // namespace Marmot::Math::NumericalDifferentiation

@@ -26,8 +26,7 @@
 #pragma once
 #include <functional>
 
-namespace Marmot {
-  namespace NumericalAlgorithms::Integration {
+namespace Marmot::Math::Integration {
 
     /** @brief Type alias for a function that takes a double and returns a double.*/
     using scalar_to_scalar_function_type = std::function< double( const double x ) >;
@@ -68,5 +67,4 @@ namespace Marmot {
                                     const std::tuple< double, double > integrationLimits,
                                     const int                          n,
                                     const integrationRule              intRule );
-  } // namespace NumericalAlgorithms::Integration
-} // namespace Marmot
+} // namespace Marmot::Math::Integration

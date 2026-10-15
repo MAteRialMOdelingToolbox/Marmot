@@ -10,7 +10,7 @@ using namespace std;
 
 namespace Marmot::Materials {
   namespace Shrinkage::B4 {
-    Vector6d computeShrinkageStrainIncrement( const double tStartDays,
+    Marmot::Math::Vector6d computeShrinkageStrainIncrement( const double tStartDays,
                                               const double dTDays,
                                               const double ultimateAutogenousShrinkageStrain,
                                               const double autogenousShrinkageHalfTime,
@@ -24,7 +24,7 @@ namespace Marmot::Materials {
 
       const double tEndDays = tStartDays + dTDays;
       if ( tEndDays == 0 )
-        return Vector6d::Zero();
+        return Marmot::Math::Vector6d::Zero();
 
       // autogenous shrinkage
       double deltaAutogenous = 0;

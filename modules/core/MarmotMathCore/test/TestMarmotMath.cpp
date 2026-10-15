@@ -132,7 +132,7 @@ void test_makeReal()
   // Testcase 1: Input is a complex number
   {
     std::complex< double > complexInput( 3.0, 4.0 );
-    double                 computed = makeReal( complexInput );
+    double                 computed = Marmot::Math::makeReal( complexInput );
     double                 expected = 3.0; // real part of the complex number
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 1" );
@@ -141,7 +141,7 @@ void test_makeReal()
   // Testcase 2: Input is an autodiff::real
   {
     autodiff::real realInput = 5.5;
-    double         computed  = makeReal( realInput );
+    double         computed  = Marmot::Math::makeReal( realInput );
     double         expected  = 5.5;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
@@ -150,7 +150,7 @@ void test_makeReal()
   // Testcase 3: Input is an autodiff::dual
   {
     autodiff::dual dualInput = 7.7;
-    double         computed  = makeReal( dualInput );
+    double         computed  = Marmot::Math::makeReal( dualInput );
     double         expected  = 7.7;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3" );
@@ -159,7 +159,7 @@ void test_makeReal()
   // Testcase 4: Input is a plain double
   {
     double doubleInput = 9.9;
-    double computed    = makeReal( doubleInput );
+    double computed    = Marmot::Math::makeReal( doubleInput );
     double expected    = 9.9;
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 4" );
@@ -170,7 +170,7 @@ void test_makeReal()
     Eigen::Matrix< autodiff::dual, 2, 2 > matrixInput;
     matrixInput << autodiff::dual( 1.1 ), autodiff::dual( 2.2 ), autodiff::dual( 3.3 ), autodiff::dual( 4.4 );
 
-    Eigen::Matrix< double, 2, 2 > computed = makeReal( matrixInput );
+    Eigen::Matrix< double, 2, 2 > computed = Marmot::Math::makeReal( matrixInput );
 
     Eigen::Matrix< double, 2, 2 > expected;
     // clang-format off
@@ -187,7 +187,7 @@ void test_makeReal()
     Eigen::Vector< autodiff::real, Eigen::Dynamic > vectorInput( 3 );
     vectorInput << autodiff::real( 1.5 ), autodiff::real( 2.5 ), autodiff::real( 3.5 );
 
-    Eigen::VectorXd computed = makeReal( vectorInput );
+    Eigen::VectorXd computed = Marmot::Math::makeReal( vectorInput );
 
     Eigen::VectorXd expected( 3 );
     expected << 1.5, 2.5, 3.5;
@@ -205,7 +205,7 @@ void test_makeReal()
                    7.7, 8.8, 9.9;
     // clang-format on
 
-    Eigen::Matrix< double, 3, 3 > computed = makeReal( matrixInput );
+    Eigen::Matrix< double, 3, 3 > computed = Marmot::Math::makeReal( matrixInput );
 
     Eigen::Matrix< double, 3, 3 > expected;
     // clang-format off
@@ -293,10 +293,10 @@ void test_orthonormalCoordinateSystem()
 {
   {
     // Test 1: Single vector input
-    Marmot::Vector3d normalVector( 2.0, 0.0, 1.0 );
-    Marmot::Matrix3d computed = orthonormalCoordinateSystem( normalVector );
+    Marmot::Math::Vector3d normalVector( 2.0, 0.0, 1.0 );
+    Marmot::Math::Matrix3d computed = orthonormalCoordinateSystem( normalVector );
 
-    Marmot::Matrix3d expected;
+    Marmot::Math::Matrix3d expected;
     // clang-format off
     expected << 2.0/sqrt(5.0), 0.0, -1.0/sqrt(5.0), // First column: normal vector
                 0.0,           1.0, 0.0,            // Second column: orthogonal vector
@@ -309,12 +309,12 @@ void test_orthonormalCoordinateSystem()
 
   {
     // Test 2: Two orthogonal vector inputs
-    Marmot::Vector3d n1( 1.0, 0.0, 0.0 );
-    Marmot::Vector3d n2( 0.0, 1.0, 0.0 );
+    Marmot::Math::Vector3d n1( 1.0, 0.0, 0.0 );
+    Marmot::Math::Vector3d n2( 0.0, 1.0, 0.0 );
 
-    Marmot::Matrix3d computed = orthonormalCoordinateSystem( n1, n2 );
+    Marmot::Math::Matrix3d computed = orthonormalCoordinateSystem( n1, n2 );
 
-    Marmot::Matrix3d expected;
+    Marmot::Math::Matrix3d expected;
     // clang-format off
     expected << 1.0, 0.0, 0.0,   // First column: n1
                 0.0, 1.0, 0.0,   // Second column: n2
@@ -329,12 +329,12 @@ void test_orthonormalCoordinateSystem()
     // Test 3: normal vector along the z-axis, i.e. its x and y components are exactly
     // zero -- exercises the dedicated branch that special-cases this to avoid degenerating
     // the arbitrary-perpendicular-vector construction.
-    Marmot::Vector3d normalVector( 0.0, 0.0, 1.0 );
-    Marmot::Matrix3d computed = orthonormalCoordinateSystem( normalVector );
+    Marmot::Math::Vector3d normalVector( 0.0, 0.0, 1.0 );
+    Marmot::Math::Matrix3d computed = orthonormalCoordinateSystem( normalVector );
 
     // columns: normal vector (0,0,1); hard-coded orthogonal vector (0,1,0);
     // cross product of the two, (0,0,1) x (0,1,0) = (-1,0,0)
-    Marmot::Matrix3d expected;
+    Marmot::Math::Matrix3d expected;
     // clang-format off
     expected <<  0.0, 0.0, -1.0,
                  0.0, 1.0,  0.0,
@@ -347,8 +347,8 @@ void test_orthonormalCoordinateSystem()
 
   {
     // Test 4: non-orthogonal n1, n2 must throw
-    Marmot::Vector3d n1( 1.0, 0.0, 0.0 );
-    Marmot::Vector3d n2( 1.0, 1.0, 0.0 );
+    Marmot::Math::Vector3d n1( 1.0, 0.0, 0.0 );
+    Marmot::Math::Vector3d n2( 1.0, 1.0, 0.0 );
 
     bool threw = false;
     try {
@@ -367,17 +367,17 @@ void test_orthonormalCoordinateSystem()
 void test_directionCosines()
 {
   // Rotation around z-axis
-  Marmot::Matrix3d transformedCoordinateSystem;
+  Marmot::Math::Matrix3d transformedCoordinateSystem;
   // clang-format off
   transformedCoordinateSystem <<  1/sqrt(2), -1/sqrt(2), 0, // First vector
                                   1/sqrt(2),  1/sqrt(2), 0, // Śecond vector
                                   0,          0,         1; // Third vector
   // clang-format on
 
-  Marmot::Matrix3d computed = directionCosines( transformedCoordinateSystem );
+  Marmot::Math::Matrix3d computed = directionCosines( transformedCoordinateSystem );
 
   // Expected matrix (rows here correspond to input columns above)
-  Marmot::Matrix3d expected;
+  Marmot::Math::Matrix3d expected;
   // clang-format off
   expected <<  1/sqrt(2), 1/sqrt(2), 0,
               -1/sqrt(2), 1/sqrt(2), 0,
@@ -428,7 +428,7 @@ void test_isNaN()
 
 void test_radToDeg()
 {
-  double alpha    = Marmot::Constants::Pi / 4; // 45 degrees in radians
+  double alpha    = Marmot::Math::Constants::Pi / 4; // 45 degrees in radians
   double computed = radToDeg( alpha );
   double expected = 45.0;
 
@@ -439,7 +439,7 @@ void test_degToRad()
 {
   double alpha    = 90.0;                      // 90 degrees
   double computed = degToRad( alpha );
-  double expected = Marmot::Constants::Pi / 2; // radians
+  double expected = Marmot::Math::Constants::Pi / 2; // radians
 
   throwExceptionOnFailure( checkIfEqual( computed, expected ), Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }

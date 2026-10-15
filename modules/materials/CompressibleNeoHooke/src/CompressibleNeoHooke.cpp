@@ -13,8 +13,8 @@ namespace Marmot::Materials {
 
   using namespace Marmot;
   using namespace Fastor;
-  using namespace FastorIndices;
-  using namespace FastorStandardTensors;
+  using namespace Marmot::Math::Indices;
+  using namespace Marmot::Math::FastorTensors;
 
   CompressibleNeoHooke::CompressibleNeoHooke( const double* materialProperties,
                                               int           nMaterialProperties,

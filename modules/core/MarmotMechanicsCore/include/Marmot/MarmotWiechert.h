@@ -128,8 +128,8 @@ namespace Marmot::Materials {
                                const Properties&            elasticModuli,
                                const Properties&            relaxationTimes,
                                Eigen::Ref< StateVarMatrix > stateVars,
-                               const Marmot::Vector6d&      dStrain,
-                               const Marmot::Matrix6d&      unitD_ijkl );
+                               const Marmot::Math::Vector6d&      dStrain,
+                               const Marmot::Math::Matrix6d&      unitD_ijkl );
 
     /**
      * @brief Accumulate the contribution of the Maxwell units to the stiffness and to the stress relaxation.
@@ -151,7 +151,7 @@ namespace Marmot::Materials {
                            const Properties&            relaxationTimes,
                            Eigen::Ref< StateVarMatrix > stateVars,
                            double&                      uniaxialStiffness,
-                           Marmot::Vector6d&            dStress,
+                           Marmot::Math::Vector6d&            dStress,
                            const double                 factor );
 
   } // namespace Wiechert

@@ -94,7 +94,7 @@ public:
 
   /// @brief Struct to hold the increment information.
   struct increment {
-    Marmot::Vector6d                            dStrain; ///< Increment of the strain tensor in Voigt notation
+    Marmot::Math::Vector6d                            dStrain; ///< Increment of the strain tensor in Voigt notation
     Eigen::Vector< double, nNonlocalVariables > K;       ///< Nonlocal variables at the current increment
     Eigen::Vector< double, nNonlocalVariables > dK;      ///< Increment of the nonlocal variables
     double                                      time;    ///< Current time
@@ -103,7 +103,7 @@ public:
 
   /// @brief Struct to hold the material response information.
   struct response {
-    Marmot::Vector6d                            stress;    ///< Stress tensor in Voigt notation
+    Marmot::Math::Vector6d                            stress;    ///< Stress tensor in Voigt notation
     Eigen::Vector< double, nNonlocalVariables > KLocal;    ///< Local driving variables at the current increment
     Eigen::Vector< double, nNonlocalVariables > c;         ///< Nonlocal interaction parameters at the current increment
     double*                                     stateVars; ///< Pointer to the array of state variables
@@ -114,7 +114,7 @@ public:
   /// @brief Struct to hold the algorithmic tangent matrices for the material model.
   struct tangents {
     /// @brief Algorithmic tangent matrix relating the increment of stress to the increment of strain.
-    Marmot::Matrix6d dStressddStrain = Marmot::Matrix6d::Zero();
+    Marmot::Math::Matrix6d dStressddStrain = Marmot::Math::Matrix6d::Zero();
     /// @brief Algorithmic tangent matrix relating the increment of stress to the increment of nonlocal variables.
     Eigen::Matrix< double, 6, nNonlocalVariables > dStressddK = Eigen::Matrix< double, 6, nNonlocalVariables >::Zero();
     /// @brief Algorithmic tangent matrix relating the increment of local driving variables to the increment of strain.
@@ -327,7 +327,7 @@ public:
 
     tangents  tan;
     increment inc;
-    inc.dStrain = Marmot::Vector6d::Zero();
+    inc.dStrain = Marmot::Math::Vector6d::Zero();
     inc.K       = K;
     inc.dK      = Eigen::Vector< double, nNonlocalVariables >::Zero();
     inc.time    = 0.0;

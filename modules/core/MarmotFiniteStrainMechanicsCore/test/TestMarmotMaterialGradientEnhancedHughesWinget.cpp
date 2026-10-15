@@ -38,14 +38,14 @@
 using namespace Marmot;
 using namespace Marmot::Materials;
 using namespace Marmot::Testing;
-using namespace Marmot::FastorStandardTensors;
+using namespace Marmot::Math::FastorTensors;
 
 namespace {
 
   /// Isotropic elastic stiffness in Voigt notation.
-  Marmot::Matrix6d isotropicStiffness( double E, double nu )
+  Marmot::Math::Matrix6d isotropicStiffness( double E, double nu )
   {
-    Marmot::Matrix6d C   = Marmot::Matrix6d::Zero();
+    Marmot::Math::Matrix6d C   = Marmot::Math::Matrix6d::Zero();
     const double     fac = E / ( ( 1.0 + nu ) * ( 1.0 - 2.0 * nu ) );
     for ( int i = 0; i < 3; i++ )
       for ( int j = 0; j < 3; j++ )
@@ -93,8 +93,8 @@ namespace {
       const double R  = materialProperties[3];
       const double c2 = materialProperties[4];
 
-      const Marmot::Matrix6d C = isotropicStiffness( E, nu );
-      const Marmot::Vector6d a = ( Marmot::Vector6d() << 1.0, 0.8, 0.6, 0.4, 0.3, 0.2 ).finished();
+      const Marmot::Math::Matrix6d C = isotropicStiffness( E, nu );
+      const Marmot::Math::Vector6d a = ( Marmot::Math::Vector6d() << 1.0, 0.8, 0.6, 0.4, 0.3, 0.2 ).finished();
 
       const double phi         = inc.K( 0 );
       const double degradation = 1.0 - k * phi;
@@ -166,7 +166,7 @@ namespace {
   {
     const Eigen::Matrix3d Q = Eigen::AngleAxisd( angle, axis.normalized() ).toRotationMatrix();
     Tensor33d             t;
-    Marmot::mapEigenToFastor( t ) = Q;
+    Marmot::Math::mapEigenToFastor( t ) = Q;
     return t;
   }
 
@@ -199,7 +199,7 @@ namespace {
 
       // Trivial response: no stress, no coupling. Sufficient for the wrapper's kinematics, which
       // only needs a finite, well-defined nonlocal interaction to report a finite radius.
-      res.stress      = Marmot::Vector6d::Zero();
+      res.stress      = Marmot::Math::Vector6d::Zero();
       res.KLocal( 0 ) = 0.0;
       res.c( 0 )      = 1.0;
       (void)tan;
@@ -281,7 +281,7 @@ void testRigidRotationIsExact()
   const double N  = 0.2;
   const auto   s1 = step( w, state, F1, N );
 
-  const double    theta = 30.0 * Constants::Pi / 180.0;
+  const double    theta = 30.0 * Marmot::Math::Constants::Pi / 180.0;
   const Tensor33d R     = rotationTensor( Eigen::Vector3d( 0.3, -0.7, 0.65 ), theta );
   const Tensor33d F2    = mul( R, F1 );
 
@@ -310,7 +310,7 @@ void testSmallStrainAgreement()
 
   IncrementalGradientStub::response directRes;
   IncrementalGradientStub::tangents directTan;
-  directRes.stress      = Marmot::Vector6d::Zero();
+  directRes.stress      = Marmot::Math::Vector6d::Zero();
   directRes.KLocal( 0 ) = 0.0;
   directRes.c( 0 )      = 0.0;
   directRes.stateVars   = directState.data();
@@ -330,7 +330,7 @@ void testSmallStrainAgreement()
     Nrun += dN;
 
     Tensor33d F;
-    Marmot::mapEigenToFastor( F ) = Ftotal;
+    Marmot::Math::mapEigenToFastor( F ) = Ftotal;
     step( w, state, F, Nrun );
 
     IncrementalGradientStub::increment inc;
@@ -344,14 +344,14 @@ void testSmallStrainAgreement()
   }
 
   Tensor33d Ffinal;
-  Marmot::mapEigenToFastor( Ffinal ) = Ftotal;
+  Marmot::Math::mapEigenToFastor( Ffinal ) = Ftotal;
   const auto s                       = step( w, state, Ffinal, Nrun );
 
   // Compare the Cauchy stress: tau = J sigma, and the J factor alone is larger than the tolerance below.
   const Tensor33d sigma = Tensor33d( s.tau / Ftotal.determinant() );
 
   Tensor33d expectedSigma;
-  Marmot::mapEigenToFastor( expectedSigma ) = ContinuumMechanics::VoigtNotation::stressMatrixFromVoigt< 3 >(
+  Marmot::Math::mapEigenToFastor( expectedSigma ) = ContinuumMechanics::VoigtNotation::stressMatrixFromVoigt< 3 >(
     directRes.stress );
 
   // The mid-step objective rate and the naive additive strain differ at O(total strain), the same

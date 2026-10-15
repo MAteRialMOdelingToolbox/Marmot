@@ -61,7 +61,7 @@ namespace Marmot::NumericalAlgorithms {
                            double          scaleUpFactor,
                            double          scaleDownFactor,
                            int             nPassesToIncrease,
-                           const Matrix6d& Cel );
+                           const Marmot::Math::Matrix6d& Cel );
 
     /// check if subincrementation process has finished
     bool isFinished();
@@ -79,7 +79,7 @@ namespace Marmot::NumericalAlgorithms {
     void finishSubstep( const TangentSizedMatrix& dXdY, const TangentSizedMatrix& dYdXOld );
 
     /// get the consistent algorithmic tangent
-    Matrix6d consistentStiffness();
+    Marmot::Math::Matrix6d consistentStiffness();
 
   private:
     const double initialStepSize, minimumStepSize, scaleUpFactor, scaleDownFactor;
@@ -89,7 +89,7 @@ namespace Marmot::NumericalAlgorithms {
     double currentSubstepSize;
     int    passedSubsteps;
 
-    const Matrix6d&    Cel;
+    const Marmot::Math::Matrix6d&    Cel;
     MatrixStateStrain  I76;
     TangentSizedMatrix I77;
 
@@ -104,7 +104,7 @@ namespace Marmot::NumericalAlgorithms {
                                                      double          scaleUpFactor,
                                                      double          scaleDownFactor,
                                                      int             nPassesToIncrease,
-                                                     const Matrix6d& Cel )
+                                                     const Marmot::Math::Matrix6d& Cel )
     :
 
       initialStepSize( initialStepSize ),
@@ -119,7 +119,7 @@ namespace Marmot::NumericalAlgorithms {
   {
     consistentTangent = MatrixStateStrain::Zero();
     I76.setZero();
-    I76.topLeftCorner( 6, 6 ) = Matrix6d::Identity();
+    I76.topLeftCorner( 6, 6 ) = Marmot::Math::Matrix6d::Identity();
     I77                       = TangentSizedMatrix::Identity();
   }
 
@@ -175,7 +175,7 @@ namespace Marmot::NumericalAlgorithms {
   }
 
   template < int n >
-  Matrix6d PerezFougetSubstepper< n >::consistentStiffness()
+  Marmot::Math::Matrix6d PerezFougetSubstepper< n >::consistentStiffness()
   {
     return consistentTangent.topLeftCorner( 6, 6 );
   }

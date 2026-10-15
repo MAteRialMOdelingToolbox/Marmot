@@ -31,7 +31,7 @@ namespace Marmot::ContinuumMechanics {
   namespace EnergyDensityFunctions {
 
     using namespace Fastor;
-    using namespace FastorStandardTensors;
+    using namespace Marmot::Math::FastorTensors;
 
     /** @brief Hyperelastic Energy Density Function Wa acc. Pence & Gou (2015), Eq. (2.11)
      *
@@ -249,7 +249,7 @@ namespace Marmot::ContinuumMechanics {
       template < typename T >
       std::tuple< T, Tensor33t< T > > PenceGouPotentialB( const Tensor33t< T >& C, const double K, const double G )
       {
-        using namespace FastorIndices;
+        using namespace Marmot::Math::Indices;
 
         const T J  = sqrt( determinant( C ) );
         const T I1 = trace( C );
@@ -261,11 +261,11 @@ namespace Marmot::ContinuumMechanics {
         const T dPsi_dI1 = G / 2. * pow( J, -2. / 3. );
 
         const Tensor33t< T > CInv   = inverse( C );
-        const Tensor33t< T > dJ_dC  = multiplyFastorTensorWithScalar( transpose( CInv ), T( J / 2. ) );
-        const Tensor33t< T > dI1_dC = fastorTensorFromDoubleTensor< T >( Spatial3D::I );
+        const Tensor33t< T > dJ_dC  = Marmot::Math::multiplyFastorTensorWithScalar( transpose( CInv ), T( J / 2. ) );
+        const Tensor33t< T > dI1_dC = Marmot::Math::fastorTensorFromDoubleTensor< T >( Spatial3D::I );
 
-        Tensor33t< T > dPsi_dC = multiplyFastorTensorWithScalar( dJ_dC, dPsi_dJ ) +
-                                 multiplyFastorTensorWithScalar( dI1_dC, dPsi_dI1 );
+        Tensor33t< T > dPsi_dC = Marmot::Math::multiplyFastorTensorWithScalar( dJ_dC, dPsi_dJ ) +
+                                 Marmot::Math::multiplyFastorTensorWithScalar( dI1_dC, dPsi_dI1 );
 
         return { psi, dPsi_dC };
       }
@@ -305,7 +305,7 @@ namespace Marmot::ContinuumMechanics {
                                                                             const double          K,
                                                                             const double          G )
       {
-        using namespace FastorIndices;
+        using namespace Marmot::Math::Indices;
 
         const T J  = sqrt( determinant( C ) );
         const T I1 = trace( C );
@@ -345,8 +345,8 @@ namespace Marmot::ContinuumMechanics {
        * @return Tuple of energy density, first derivative and second derivative w.r.t. \f$\boldsymbol{C}\f$.
        */
       template < typename T >
-      std::tuple< T, FastorStandardTensors::Tensor33t< T >, FastorStandardTensors::Tensor3333t< T > > standardNeoHooke(
-        const FastorStandardTensors::Tensor33t< T >& C,
+      std::tuple< T, Marmot::Math::FastorTensors::Tensor33t< T >, Marmot::Math::FastorTensors::Tensor3333t< T > > standardNeoHooke(
+        const Marmot::Math::FastorTensors::Tensor33t< T >& C,
         const double&                                K,
         const double&                                G )
       {
@@ -369,21 +369,21 @@ namespace Marmot::ContinuumMechanics {
         const T psi = G / 2 * ( trC - 3.0 - lnDetC ) + lambda / 4 * ( detC - 1.0 - lnDetC );
 
         // first derivative quantities
-        const Tensor33t< T >& dTrC_dC    = makeOtherScalarType< T >( Spatial3D::I );
+        const Tensor33t< T >& dTrC_dC    = Marmot::Math::makeOtherScalarType< T >( Spatial3D::I );
         const Tensor33t< T >  invCt      = transpose( inverse( C ) );
-        const Tensor33t< T >  dDetC_dC   = multiplyFastorTensorWithScalar( invCt, detC );
+        const Tensor33t< T >  dDetC_dC   = Marmot::Math::multiplyFastorTensorWithScalar( invCt, detC );
         const Tensor33t< T >& dLnDetC_dC = invCt;
 
         // first derivative with respect to C
         const Tensor33t< T > dPsi_dC = G / 2 * ( dTrC_dC - dLnDetC_dC ) + lambda / 4 * ( dDetC_dC - dLnDetC_dC );
 
         // second derivative quantities
-        using namespace FastorIndices;
+        using namespace Marmot::Math::Indices;
         using lj                          = Index< l_, j_ >;
         using li                          = Index< l_, i_ >;
         const Tensor3333t< T > dInvCt_dC  = -0.5 * ( einsum< ik, lj, to_ijkl >( invCt, invCt ) +
                                                     einsum< jk, li, to_ijkl >( invCt, invCt ) );
-        const Tensor3333t< T > d2DetC_dC2 = multiplyFastorTensorWithScalar( dInvCt_dC, detC ) +
+        const Tensor3333t< T > d2DetC_dC2 = Marmot::Math::multiplyFastorTensorWithScalar( dInvCt_dC, detC ) +
                                             einsum< ij, kl, to_ijkl >( invCt, dDetC_dC );
         const Tensor3333t< T >& d2LnDetC_dC2 = dInvCt_dC;
 
@@ -404,13 +404,13 @@ namespace Marmot::ContinuumMechanics {
        * @return Tuple of energy density, first derivative and second derivative w.r.t. \f$\boldsymbol{U}\f$.
        */
       template < typename T >
-      std::tuple< T, FastorStandardTensors::Tensor33t< T >, FastorStandardTensors::Tensor3333t< T > > BiotNeoHooke(
-        const FastorStandardTensors::Tensor33t< T >& U,
+      std::tuple< T, Marmot::Math::FastorTensors::Tensor33t< T >, Marmot::Math::FastorTensors::Tensor3333t< T > > BiotNeoHooke(
+        const Marmot::Math::FastorTensors::Tensor33t< T >& U,
         const double&                                K,
         const double&                                G )
       {
-        using namespace FastorIndices;
-        Tensor3333t< T > I4       = makeOtherScalarType< T >( Spatial3D::I4 );
+        using namespace Marmot::Math::Indices;
+        Tensor3333t< T > I4       = Marmot::Math::makeOtherScalarType< T >( Spatial3D::I4 );
         Tensor33t< T >   C        = U % U;
         Tensor3333t< T > dC_dU    = 2 * einsum< iL, ijkl >( U, I4 );
         Tensor3333t< T > d2C_dUdU = 2 * I4;
@@ -435,8 +435,8 @@ namespace Marmot::ContinuumMechanics {
        * @param G Shear modulus.
        * @return Tuple of energy density, first derivative, second derivative and third derivative.
        */
-      std::tuple< double, FastorStandardTensors::Tensor33d, FastorStandardTensors::Tensor3333d, FastorStandardTensors::Tensor333333d > standardNeoHooke(
-        const FastorStandardTensors::Tensor33d& C,
+      std::tuple< double, Marmot::Math::FastorTensors::Tensor33d, Marmot::Math::FastorTensors::Tensor3333d, Marmot::Math::FastorTensors::Tensor333333d > standardNeoHooke(
+        const Marmot::Math::FastorTensors::Tensor33d& C,
         const double&                           K,
         const double&                           G );
     } // namespace ThirdOrderDerived

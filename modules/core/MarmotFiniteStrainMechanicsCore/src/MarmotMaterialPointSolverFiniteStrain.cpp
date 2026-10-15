@@ -9,7 +9,7 @@
 
 using namespace Marmot;
 using namespace Fastor;
-using namespace FastorStandardTensors;
+using namespace Marmot::Math::FastorTensors;
 
 namespace Marmot {
   namespace Solvers {
@@ -55,7 +55,7 @@ namespace Marmot {
       }
     }
 
-    void MarmotMaterialPointSolverFiniteStrain::setInitialState( const FastorStandardTensors::Tensor33d& initialStress,
+    void MarmotMaterialPointSolverFiniteStrain::setInitialState( const Marmot::Math::FastorTensors::Tensor33d& initialStress,
                                                                  const Eigen::VectorXd& initialStateVars )
     {
       _initialStress    = initialStress;
@@ -255,9 +255,9 @@ namespace Marmot {
         HistoryEntry( increment.timeOld + increment.dT, stress, Spatial3D::I + gradU, dTau_dF, stateVars ) );
     }
 
-    FastorStandardTensors::Tensor9d MarmotMaterialPointSolverFiniteStrain::computeResidual(
-      const FastorStandardTensors::Tensor9d& stressIncrement,
-      const FastorStandardTensors::Tensor9d& target,
+    Marmot::Math::FastorTensors::Tensor9d MarmotMaterialPointSolverFiniteStrain::computeResidual(
+      const Marmot::Math::FastorTensors::Tensor9d& stressIncrement,
+      const Marmot::Math::FastorTensors::Tensor9d& target,
       const Increment&                       increment )
     {
       Tensor9d residual = stressIncrement;
@@ -271,7 +271,7 @@ namespace Marmot {
       return residual;
     }
 
-    void MarmotMaterialPointSolverFiniteStrain::modifyTangent( FastorStandardTensors::Tensor99d& tangent,
+    void MarmotMaterialPointSolverFiniteStrain::modifyTangent( Marmot::Math::FastorTensors::Tensor99d& tangent,
                                                                const Increment&                  increment )
     {
       // modify the tangent matrix based on control type

@@ -34,10 +34,10 @@ namespace Marmot::Materials {
 
   namespace InterfaceMaterialHelperFunctions {
 
-    using Marmot::FastorStandardTensors::Tensor3333d;
-    using Marmot::FastorStandardTensors::Tensor333d;
-    using Marmot::FastorStandardTensors::Tensor33d;
-    using Marmot::FastorStandardTensors::Tensor3d;
+    using Marmot::Math::FastorTensors::Tensor3333d;
+    using Marmot::Math::FastorTensors::Tensor333d;
+    using Marmot::Math::FastorTensors::Tensor33d;
+    using Marmot::Math::FastorTensors::Tensor3d;
 
     /**
      * @brief Computes the geometry-system coupling tensors for an interface.
@@ -119,6 +119,6 @@ namespace Marmot::Materials {
      */
     std::tuple< Tensor3333d, Tensor33d, Tensor333d, Tensor3333d > calculateInterfaceMaterialParameters(
       const Tensor3d&         normal,
-      const Marmot::Matrix6d& C_ep_voigt );
+      const Marmot::Math::Matrix6d& C_ep_voigt );
   } // namespace InterfaceMaterialHelperFunctions
 } // namespace Marmot::Materials

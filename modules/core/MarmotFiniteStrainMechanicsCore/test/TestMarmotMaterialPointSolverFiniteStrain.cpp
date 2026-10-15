@@ -11,7 +11,7 @@
 using namespace Marmot;
 using namespace Marmot::Testing;
 using namespace Marmot::Solvers;
-using namespace Marmot::FastorStandardTensors;
+using namespace Marmot::Math::FastorTensors;
 
 namespace {
 

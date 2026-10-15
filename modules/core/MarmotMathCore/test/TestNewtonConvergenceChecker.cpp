@@ -17,7 +17,7 @@ int main()
   Eigen::VectorXd residualScaleVector( 1 );
   residualScaleVector << 1.;
 
-  Marmot::NumericalAlgorithms::NewtonConvergenceChecker checker( residualScaleVector,
+  Marmot::Math::NewtonConvergenceChecker checker( residualScaleVector,
                                                                  nMaxNewtonCycles,
                                                                  nMaxNewtonCyclesAlt,
                                                                  newtonTol,

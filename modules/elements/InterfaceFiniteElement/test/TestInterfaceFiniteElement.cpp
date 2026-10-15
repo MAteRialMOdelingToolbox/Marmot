@@ -307,12 +307,12 @@ namespace {
       Material::TimeIncrement timeIncrement{ time[0], dT };
       element.material->computeStress( state, tangents, deformation, timeIncrement );
 
-      force         = mapEigenToFastor( state.force );
+      force         = Marmot::Math::mapEigenToFastor( state.force );
       surfaceStress = Eigen::Map< const Eigen::VectorXd >( state.surfaceStress.data(), surfaceStress.size() );
-      Qij           = mapEigenToFastor( tangents.Q_ij );
-      Z             = mapEigenToFastor( tangents.Z_ijkl );
-      H             = mapEigenToFastor( tangents.H_ijk );
-      Y             = mapEigenToFastor( tangents.Y_ijkl );
+      Qij           = Marmot::Math::mapEigenToFastor( tangents.Q_ij );
+      Z             = Marmot::Math::mapEigenToFastor( tangents.Z_ijkl );
+      H             = Marmot::Math::mapEigenToFastor( tangents.H_ijk );
+      Y             = Marmot::Math::mapEigenToFastor( tangents.Y_ijkl );
 
       const double J0xW = integrationWeight( qp );
 
@@ -832,12 +832,12 @@ void TestTwoDimensionalInterfaceElementComputesWithEmbeddedMaterial()
     Material::TimeIncrement materialTimeIncrement{ time, dT };
     element->material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
 
-    force3d         = mapEigenToFastor( materialState.force );
+    force3d         = Marmot::Math::mapEigenToFastor( materialState.force );
     surfaceStress3d = Eigen::Map< const Eigen::Matrix< double, 9, 1 > >( materialState.surfaceStress.data() );
-    Q3d             = mapEigenToFastor( materialTangents.Q_ij );
-    Z3d             = mapEigenToFastor( materialTangents.Z_ijkl );
-    H3d             = mapEigenToFastor( materialTangents.H_ijk );
-    Y3d             = mapEigenToFastor( materialTangents.Y_ijkl );
+    Q3d             = Marmot::Math::mapEigenToFastor( materialTangents.Q_ij );
+    Z3d             = Marmot::Math::mapEigenToFastor( materialTangents.Z_ijkl );
+    H3d             = Marmot::Math::mapEigenToFastor( materialTangents.H_ijk );
+    Y3d             = Marmot::Math::mapEigenToFastor( materialTangents.Y_ijkl );
 
     Eigen::Matrix< double, nDim, 1 >                           force2d;
     Eigen::Matrix< double, nTensor, 1 >                        surfaceStress2d;

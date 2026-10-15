@@ -14,10 +14,10 @@ void testStiffnessTensor_Isotropic()
   double nu = 0.25; // Poisson's ratio
 
   // Compute the computed stiffness matrix using the function
-  Marmot::Matrix6d computedC = stiffnessTensor( E, nu );
+  Marmot::Math::Matrix6d computedC = stiffnessTensor( E, nu );
 
   // The expected stiffness matrix (expectedC)
-  Marmot::Matrix6d expectedC;
+  Marmot::Math::Matrix6d expectedC;
   // clang-format off
   expectedC <<
     1200,   400,    400,    0,      0,      0,
@@ -41,11 +41,11 @@ void testStiffnessTensorKG_Isotropic()
   // E = 1000 and nu = 0.25, the same as before, if these value are used for K and G
 
   // Compute the stiffness matrix using stiffnessTensorKG
-  Marmot::Matrix6d computedC_KG = stiffnessTensorKG( K, G );
+  Marmot::Math::Matrix6d computedC_KG = stiffnessTensorKG( K, G );
 
   // Now compute the expected stiffness matrix manually
   // The same as before
-  Marmot::Matrix6d expectedC_KG;
+  Marmot::Math::Matrix6d expectedC_KG;
   // clang-format off
   expectedC_KG <<
     1200,   400,    400,    0,      0,      0,
@@ -68,10 +68,10 @@ void testComplianceTensor_Isotropic()
   double nu = 0.25; // Poisson's ratio
 
   // Compute the compliance matrix (inverse of the stiffness matrix)
-  Marmot::Matrix6d computedCInv = complianceTensor( E, nu );
+  Marmot::Math::Matrix6d computedCInv = complianceTensor( E, nu );
 
   // The expected compliance matrix (calcualted manually)
-  Marmot::Matrix6d expectedCInv;
+  Marmot::Math::Matrix6d expectedCInv;
   // clang-format off
   expectedCInv <<
     0.001,      -0.00025,   -0.00025,   0,          0,          0,
@@ -97,11 +97,11 @@ void testComplianceTensor_TransverseIsotropic()
   double G12  = 400;  // Shear modulus in the 12-plane (Pa)
 
   // Compute the compliance matrix (inverse of the stiffness matrix) using the function
-  Marmot::Matrix6d computedCInv = complianceTensor( E1, E2, nu12, nu23, G12 );
+  Marmot::Math::Matrix6d computedCInv = complianceTensor( E1, E2, nu12, nu23, G12 );
 
   // The expected compliance matrix (calculated manually)
   // double G23 = 200;
-  Marmot::Matrix6d expectedCInv;
+  Marmot::Math::Matrix6d expectedCInv;
   // clang-format off
   expectedCInv <<
     0.001,      -0.0005,    -0.0005,    0,          0,          0,
@@ -127,10 +127,10 @@ void testStiffnessTensor_TransverseIsotropic()
   double G12  = 400;  // Shear modulus in the 12-plane (Pa)
 
   // Compute the stiffness matrix using the function
-  Marmot::Matrix6d computedC = stiffnessTensor( E1, E2, nu12, nu23, G12 );
+  Marmot::Math::Matrix6d computedC = stiffnessTensor( E1, E2, nu12, nu23, G12 );
 
   // The expected stiffness matrix (calculated manually)
-  Marmot::Matrix6d expectedC;
+  Marmot::Math::Matrix6d expectedC;
   // clang-format off
   expectedC <<
     1500,       500,        500,        0,      0,      0,
@@ -160,10 +160,10 @@ void testComplianceTensor_Orthotropic()
   double G31  = 200;  // Shear modulus in the 31-plane (Pa)
 
   // Compute the compliance matrix (inverse of the stiffness matrix) using the function
-  Marmot::Matrix6d computedCInv = complianceTensor( E1, E2, E3, nu12, nu23, nu13, G12, G23, G31 );
+  Marmot::Math::Matrix6d computedCInv = complianceTensor( E1, E2, E3, nu12, nu23, nu13, G12, G23, G31 );
 
   // The expected compliance matrix (calculated manually)
-  Marmot::Matrix6d expectedCInv;
+  Marmot::Math::Matrix6d expectedCInv;
   // clang-format off
   expectedCInv <<
     0.001,      -0.0005,    -0.0001,    0,          0,          0,
@@ -193,10 +193,10 @@ void testStiffnessTensor_Orthotropic()
   double G31  = 200;  // Shear modulus in the 31-plane (Pa)
 
   // Compute the stiffness matrix using the function
-  Marmot::Matrix6d computedC = stiffnessTensor( E1, E2, E3, nu12, nu23, nu13, G12, G23, G31 );
+  Marmot::Math::Matrix6d computedC = stiffnessTensor( E1, E2, E3, nu12, nu23, nu13, G12, G23, G31 );
 
   // The expected stiffness matrix (calculated manually)
-  Marmot::Matrix6d expectedC;
+  Marmot::Math::Matrix6d expectedC;
   // clang-format off
   expectedC <<
     1156.5836298932384,         302.491103202847,           53.380782918149464,         0,      0,      0,

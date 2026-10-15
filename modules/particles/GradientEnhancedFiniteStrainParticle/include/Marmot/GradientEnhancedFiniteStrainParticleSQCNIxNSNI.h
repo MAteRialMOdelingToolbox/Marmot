@@ -280,7 +280,7 @@ namespace Marmot::Meshfree {
                                                                                                  double  timeNew,
                                                                                                  double  dT )
   {
-    using namespace Marmot::FastorIndices;
+    using namespace Marmot::Math::Indices;
     using namespace Fastor;
     using ink   = Fastor::Index< i_, n_, k_ >;
     using to_jk = Fastor::OIndex< j_, k_ >;

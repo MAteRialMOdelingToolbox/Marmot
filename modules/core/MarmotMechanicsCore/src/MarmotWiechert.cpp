@@ -14,7 +14,7 @@ namespace Marmot::Materials {
                            const Properties&            relaxationTimes,
                            Eigen::Ref< StateVarMatrix > stateVars,
                            double&                      uniaxialStiffness,
-                           Marmot::Vector6d&            dStress,
+                           Marmot::Math::Vector6d&            dStress,
                            const double                 factor )
     {
       for ( int i = 0; i < relaxationTimes.size(); i++ ) {
@@ -33,8 +33,8 @@ namespace Marmot::Materials {
                                const Properties&            elasticModuli,
                                const Properties&            relaxationTimes,
                                Eigen::Ref< StateVarMatrix > stateVars,
-                               const Marmot::Vector6d&      dStrain,
-                               const Marmot::Matrix6d&      unitD_ijkl )
+                               const Marmot::Math::Vector6d&      dStrain,
+                               const Marmot::Math::Matrix6d&      unitD_ijkl )
     {
       if ( dT <= 1e-14 )
         return;

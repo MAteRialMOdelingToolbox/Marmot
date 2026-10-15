@@ -77,7 +77,7 @@ namespace Marmot {
      *
      * @param strain Strain tensor \f$\eps\f$ given in \ref voignotation "Voigt notation".
      */
-    HaighWestergaardCoordinates< double > haighWestergaardFromStrain( const Marmot::Vector6d& strain );
+    HaighWestergaardCoordinates< double > haighWestergaardFromStrain( const Marmot::Math::Vector6d& strain );
 
   } // namespace ContinuumMechanics::HaighWestergaard
 } // namespace Marmot
@@ -89,7 +89,7 @@ namespace Marmot {
     template < typename T >
     HaighWestergaardCoordinates< T > haighWestergaard( const Eigen::Matrix< T, 6, 1 >& stress )
     {
-      using namespace Constants;
+      using namespace Marmot::Math::Constants;
       using namespace Marmot::ContinuumMechanics::VoigtNotation::Invariants;
       HaighWestergaardCoordinates< T > hw;
       const auto                       J2_ = J2( stress );
@@ -112,7 +112,7 @@ namespace Marmot {
         else if ( Marmot::Math::makeReal( x ) >= 1 )
           hw.theta = 0.;
         else if ( x != x )
-          hw.theta = 1. / 3 * Marmot::Constants::Pi;
+          hw.theta = 1. / 3 * Marmot::Math::Constants::Pi;
         else
           hw.theta = 1. / 3 * acos( x );
       }

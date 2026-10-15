@@ -142,11 +142,11 @@ namespace Marmot::Elements {
         } );
 
       public:
-        Eigen::Map< Marmot::Vector9d > stress;            /**< Stress tensor at the quadrature point */
+        Eigen::Map< Marmot::Math::Vector9d > stress;            /**< Stress tensor at the quadrature point */
         double&                        totalStrainEnergy; /**< Integrated total strain energy at the quadrature point */
         double&                        elasticEnergy;     /**< Integrated elastic energy at the quadrature point */
         double&                        dissipation;       /**< Integrated dissipation at the quadrature point */
-        Eigen::Map< Marmot::Vector9d > F;                 /**< Deformation gradient at the quadrature point */
+        Eigen::Map< Marmot::Math::Vector9d > F;                 /**< Deformation gradient at the quadrature point */
         double& F0_XX; /**< Deformation gradient component XX for prescribing an initial deformation state*/
         double& F0_YY; /**< Deformation gradient component YY for prescribing an initial deformation state*/
         double& F0_ZZ; /**< Deformation gradient component ZZ for prescribing an initial deformation state*/
@@ -612,7 +612,7 @@ namespace Marmot::Elements {
 
     for ( auto& qp : qps ) {
 
-      using namespace Marmot::FastorIndices;
+      using namespace Marmot::Math::Indices;
 
       const auto& dNdX_ = qp.dNdX;
 
@@ -638,7 +638,7 @@ namespace Marmot::Elements {
           using namespace Marmot;
 
           Material::ConstitutiveResponse< 3 >
-            response3D( FastorStandardTensors::Tensor33d( qp.managedStateVars->stress.data(), ColumnMajor ),
+            response3D( Marmot::Math::FastorTensors::Tensor33d( qp.managedStateVars->stress.data(), ColumnMajor ),
                         response.elasticEnergyDensity,
                         response.dissipation,
                         response.stateVars );
@@ -646,7 +646,7 @@ namespace Marmot::Elements {
           Material::AlgorithmicModuli< 3 > algorithmicModuli3D;
 
           Material::Deformation< 3 > deformation3D{
-            expandTo3D( deformation.F ),
+            Marmot::Math::expandTo3D( deformation.F ),
           };
 
           deformation3D.F( 2, 2 ) = 1.0;
@@ -662,17 +662,17 @@ namespace Marmot::Elements {
           else
             qp.material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
 
-          response.tau                  = reduceTo2D< U, U >( response3D.tau );
+          response.tau                  = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >( response3D.tau );
           response.elasticEnergyDensity = response3D.elasticEnergyDensity;
           response.dissipation          = response3D.dissipation;
           response.stateVars            = qp.managedStateVars->materialStateVars.data();
 
           tangents = {
-            reduceTo2D< U, U, U, U >( algorithmicModuli3D.dTau_dF ),
+            Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >( algorithmicModuli3D.dTau_dF ),
           };
 
-          qp.managedStateVars->stress = Marmot::mapEigenToFastor( response3D.tau ).reshaped();
-          qp.managedStateVars->F      = Marmot::mapEigenToFastor( deformation3D.F ).reshaped();
+          qp.managedStateVars->stress = Marmot::Math::mapEigenToFastor( response3D.tau ).reshaped();
+          qp.managedStateVars->F      = Marmot::Math::mapEigenToFastor( deformation3D.F ).reshaped();
         }
         else {
           throw std::runtime_error( "Plane stress update is not implemented yet for finite strain materials." );
@@ -683,8 +683,8 @@ namespace Marmot::Elements {
         qp.material->computeStress( response, tangents, deformation, timeIncrement );
 
         // implicit conversion to col major
-        qp.managedStateVars->stress = Marmot::mapEigenToFastor( response.tau ).reshaped();
-        qp.managedStateVars->F      = Marmot::mapEigenToFastor( deformation.F ).reshaped();
+        qp.managedStateVars->stress = Marmot::Math::mapEigenToFastor( response.tau ).reshaped();
+        qp.managedStateVars->F      = Marmot::Math::mapEigenToFastor( deformation.F ).reshaped();
       }
       qp.managedStateVars->elasticEnergy     = response.elasticEnergyDensity * qp.J0xW;
       qp.managedStateVars->dissipation       = response.dissipation * qp.J0xW;
@@ -743,7 +743,7 @@ namespace Marmot::Elements {
 
     for ( auto& qp : qps ) {
 
-      using namespace Marmot::FastorIndices;
+      using namespace Marmot::Math::Indices;
 
       const auto& dNdX_ = qp.dNdX;
 
@@ -767,13 +767,13 @@ namespace Marmot::Elements {
           using namespace Marmot;
 
           Material::ConstitutiveResponse< 3 >
-            response3D( FastorStandardTensors::Tensor33d( qp.managedStateVars->stress.data(), Fastor::ColumnMajor ),
+            response3D( Marmot::Math::FastorTensors::Tensor33d( qp.managedStateVars->stress.data(), Fastor::ColumnMajor ),
                         response.elasticEnergyDensity,
                         response.dissipation,
                         qp.managedStateVars->materialStateVars.data() );
 
           Material::Deformation< 3 > deformation3D{
-            expandTo3D( deformation.F ),
+            Marmot::Math::expandTo3D( deformation.F ),
           };
 
           deformation3D.F( 2, 2 ) = 1.0;
@@ -788,19 +788,19 @@ namespace Marmot::Elements {
           else
             qp.material->computePlaneStrainExplicit( response3D, deformation3D, timeIncrement );
 
-          response.tau                  = reduceTo2D< U, U >( response3D.tau );
+          response.tau                  = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >( response3D.tau );
           response.elasticEnergyDensity = response3D.elasticEnergyDensity;
           response.dissipation          = response3D.dissipation;
           response.stateVars            = qp.managedStateVars->materialStateVars.data();
 
-          qp.managedStateVars->stress = Marmot::mapEigenToFastor( response3D.tau ).reshaped();
+          qp.managedStateVars->stress = Marmot::Math::mapEigenToFastor( response3D.tau ).reshaped();
         }
       }
       else {
         qp.material->computeStressExplicit( response, deformation, timeIncrement );
 
         // implicit conversion to col major
-        qp.managedStateVars->stress = Marmot::mapEigenToFastor( response.tau ).reshaped();
+        qp.managedStateVars->stress = Marmot::Math::mapEigenToFastor( response.tau ).reshaped();
       }
       qp.managedStateVars->elasticEnergy     = response.elasticEnergyDensity * qp.J0xW;
       qp.managedStateVars->dissipation       = response.dissipation * qp.J0xW;
@@ -1064,7 +1064,7 @@ namespace Marmot::Elements {
       const double        characteristicElementLength = 2.0 *
                                                  Eigen::JacobiSVD< JacobianSized >( J_ ).singularValues().minCoeff();
 
-      using namespace Marmot::FastorIndices;
+      using namespace Marmot::Math::Indices;
       const auto                         dNdX = Tensor< double, nDim, nNodes >( qp.dNdX.data(), ColumnMajor );
       const Tensor< double, nDim, nDim > F_np = evaluate( einsum< Ai, jA >( qU_np, dNdX ) + I );
       Tensor< double, 3, 3 >             F_np_3D;
@@ -1072,7 +1072,7 @@ namespace Marmot::Elements {
         F_np_3D = F_np;
       }
       if constexpr ( nDim == 2 ) {
-        F_np_3D         = expandTo3D( F_np );
+        F_np_3D         = Marmot::Math::expandTo3D( F_np );
         F_np_3D( 2, 2 ) = 1.0;
       }
 
@@ -1173,7 +1173,7 @@ namespace Marmot::Elements {
 
     for ( auto& qp : Parent::qps ) {
 
-      using namespace Marmot::FastorIndices;
+      using namespace Marmot::Math::Indices;
 
       auto        N_    = this->N( qp.xi );
       const auto& dNdX_ = qp.dNdX;
@@ -1199,32 +1199,32 @@ namespace Marmot::Elements {
 
       using namespace Marmot;
       Material::ConstitutiveResponse< 3 >
-        response3D{ FastorStandardTensors::Tensor33d( qp.managedStateVars->stress.data(), Fastor::ColumnMajor ),
+        response3D{ Marmot::Math::FastorTensors::Tensor33d( qp.managedStateVars->stress.data(), Fastor::ColumnMajor ),
                     qp.managedStateVars->elasticEnergy / qp.J0xW,
                     qp.managedStateVars->dissipation / qp.J0xW,
                     qp.managedStateVars->materialStateVars.data() };
 
       Material::AlgorithmicModuli< 3 > algorithmicModuli3D;
 
-      Material::Deformation< 3 > deformation3D{ expandTo3D( deformation.F ) };
+      Material::Deformation< 3 > deformation3D{ Marmot::Math::expandTo3D( deformation.F ) };
 
       deformation3D.F( 2, 2 ) = 1 + u_np[0] / r;
 
       qp.material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
-      response.tau                  = reduceTo2D< U, U >( response3D.tau );
+      response.tau                  = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >( response3D.tau );
       response.elasticEnergyDensity = response3D.elasticEnergyDensity;
       response.dissipation          = response3D.dissipation;
       response.stateVars            = qp.managedStateVars->materialStateVars.data();
 
       tangents = {
-        reduceTo2D< U, U, U, U >( algorithmicModuli3D.dTau_dF ),
+        Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >( algorithmicModuli3D.dTau_dF ),
       };
 
-      qp.managedStateVars->stress = Marmot::mapEigenToFastor( response3D.tau ).reshaped();
+      qp.managedStateVars->stress = Marmot::Math::mapEigenToFastor( response3D.tau ).reshaped();
 
       const auto dNdx = evaluate( einsum< ji, jA >( inv( F_np ), dNdX ) );
 
-      const double J0xWxRx2Pi                = qp.J0xW * 2 * Constants::Pi * r;
+      const double J0xWxRx2Pi                = qp.J0xW * 2 * Marmot::Math::Constants::Pi * r;
       qp.managedStateVars->elasticEnergy     = response3D.elasticEnergyDensity * J0xWxRx2Pi;
       qp.managedStateVars->dissipation       = response3D.dissipation * J0xWxRx2Pi;
       qp.managedStateVars->totalStrainEnergy = ( response3D.elasticEnergyDensity + response3D.dissipation ) *
@@ -1321,7 +1321,7 @@ namespace Marmot::Elements {
 
     for ( auto& qp : Parent::qps ) {
 
-      using namespace Marmot::FastorIndices;
+      using namespace Marmot::Math::Indices;
 
       auto        N_    = this->N( qp.xi );
       const auto& dNdX_ = qp.dNdX;
@@ -1346,26 +1346,26 @@ namespace Marmot::Elements {
 
       using namespace Marmot;
       Material::ConstitutiveResponse< 3 >
-        response3D( FastorStandardTensors::Tensor33d( qp.managedStateVars->stress.data(), Fastor::ColumnMajor ),
+        response3D( Marmot::Math::FastorTensors::Tensor33d( qp.managedStateVars->stress.data(), Fastor::ColumnMajor ),
                     qp.managedStateVars->elasticEnergy / qp.J0xW,
                     qp.managedStateVars->dissipation / qp.J0xW,
                     qp.managedStateVars->materialStateVars.data() );
 
-      Material::Deformation< 3 > deformation3D{ expandTo3D( deformation.F ) };
+      Material::Deformation< 3 > deformation3D{ Marmot::Math::expandTo3D( deformation.F ) };
 
       deformation3D.F( 2, 2 ) = 1 + u_np[0] / r;
 
       qp.material->computePlaneStrainExplicit( response3D, deformation3D, timeIncrement );
-      response.tau                  = reduceTo2D< U, U >( response3D.tau );
+      response.tau                  = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >( response3D.tau );
       response.elasticEnergyDensity = response3D.elasticEnergyDensity;
       response.dissipation          = response3D.dissipation;
       response.stateVars            = qp.managedStateVars->materialStateVars.data();
 
-      qp.managedStateVars->stress = Marmot::mapEigenToFastor( response3D.tau ).reshaped();
+      qp.managedStateVars->stress = Marmot::Math::mapEigenToFastor( response3D.tau ).reshaped();
 
       const auto dNdx = evaluate( einsum< ji, jA >( inv( F_np ), dNdX ) );
 
-      const double J0xWxRx2Pi                = qp.J0xW * 2 * Constants::Pi * r;
+      const double J0xWxRx2Pi                = qp.J0xW * 2 * Marmot::Math::Constants::Pi * r;
       qp.managedStateVars->elasticEnergy     = response3D.elasticEnergyDensity * J0xWxRx2Pi;
       qp.managedStateVars->dissipation       = response3D.dissipation * J0xWxRx2Pi;
       qp.managedStateVars->totalStrainEnergy = ( response3D.elasticEnergyDensity + response3D.dissipation ) *

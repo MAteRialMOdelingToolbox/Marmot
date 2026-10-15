@@ -32,7 +32,7 @@ void evaluateKCandUpdateStateVarsTestFunction()
 
   // initialize compliance and strain
   double   uniaxialCompliance = 0;
-  Vector6d dStrain            = { 0., 0., 0., 0., 0., 0. };
+  Marmot::Math::Vector6d dStrain            = { 0., 0., 0., 0., 0., 0. };
 
   // test retardation times
   Properties retardationTimes = generateRetardationTimes( n, min, spacing );
@@ -41,7 +41,7 @@ void evaluateKCandUpdateStateVarsTestFunction()
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " error in generation of retardation times" );
 
   double   corrCompliance = 0.16976016796969498;
-  Vector6d corrDStrain    = { 0.033004975878657986,
+  Marmot::Math::Vector6d corrDStrain    = { 0.033004975878657986,
                               0.06600995175731597,
                               0.09901492763597397,
                               0.13201990351463194,
@@ -56,9 +56,9 @@ void evaluateKCandUpdateStateVarsTestFunction()
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " error in dStrain of kelvin chain" );
 
   // test state var update
-  Vector6d       dStress              = { 0.1, 0.2, 0.3, 0.06, 0.04, 0.02 }; // arbitrary stress increment
+  Marmot::Math::Vector6d       dStress              = { 0.1, 0.2, 0.3, 0.06, 0.04, 0.02 }; // arbitrary stress increment
   double         nu                   = 0.2;
-  Matrix6d       unitComplianceMatrix = ContinuumMechanics::Elasticity::Isotropic::complianceTensor( 1.0, nu );
+  Marmot::Math::Matrix6d       unitComplianceMatrix = ContinuumMechanics::Elasticity::Isotropic::complianceTensor( 1.0, nu );
   StateVarMatrix corrStateVars( 6, n );
   corrStateVars << 0.0036787944117144234, 0.0818730753077982, 0.03264241117657116, 0.16737153555403675,
     0.061606027941427874, 0.2528699958002753, 0.04505696447062846, 0.3318427631573212, 0.03862182994108596,
@@ -201,8 +201,8 @@ void updateStateVarMatrixIsANoOpForZeroTimeIncrementTestFunction()
   stateVars << 0.01, 0.1, 0.02, 0.2, 0.03, 0.3, 0.04, 0.4, 0.05, 0.5, 0.06, 0.6;
   const StateVarMatrix stateVarsBefore = stateVars;
 
-  Vector6d dStress              = { 0.1, 0.2, 0.3, 0.06, 0.04, 0.02 };
-  Matrix6d unitComplianceMatrix = ContinuumMechanics::Elasticity::Isotropic::complianceTensor( 1.0, 0.2 );
+  Marmot::Math::Vector6d dStress              = { 0.1, 0.2, 0.3, 0.06, 0.04, 0.02 };
+  Marmot::Math::Matrix6d unitComplianceMatrix = ContinuumMechanics::Elasticity::Isotropic::complianceTensor( 1.0, 0.2 );
 
   updateStateVarMatrix( 0.0, elasticModuli, retardationTimes, stateVars, dStress, unitComplianceMatrix );
 

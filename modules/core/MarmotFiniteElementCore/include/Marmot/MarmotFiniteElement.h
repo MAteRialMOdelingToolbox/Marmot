@@ -479,7 +479,7 @@ namespace Marmot {
         dNdXiSized dNdXi( const Eigen::Vector3d& xi );
 
         /// @brief Return the local node indices for boundary face @p faceID.
-        Marmot::Vector8i getBoundaryElementIndices( int faceID );
+        Marmot::Math::Vector8i getBoundaryElementIndices( int faceID );
       } // namespace Hexa20
     }   // namespace Spatial3D
 

@@ -8,10 +8,10 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
     using namespace Marmot;
 
     void evaluatePronySeries( const Properties&               props,
-                              Vector6d&                       stress,
-                              Matrix6d&                       stiffness,
+                              Marmot::Math::Vector6d&                       stress,
+                              Marmot::Math::Matrix6d&                       stiffness,
                               Eigen::Ref< mapStateVarMatrix > stateVars,
-                              const Vector6d&                 dStrain,
+                              const Marmot::Math::Vector6d&                 dStrain,
                               const double                    dT,
                               const bool                      updateStateVars )
     {
@@ -26,9 +26,9 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
           const auto& C         = props.pronyStiffnesses.block< 6, 6 >( 0, k * 6 );
           const auto& currState = stateVars.block< 6, 6 >( 0, k * 6 );
 
-          const Matrix6d eta = tau.cwiseProduct( C );
+          const Marmot::Math::Matrix6d eta = tau.cwiseProduct( C );
 
-          const Matrix6d exp_dt_tau = tau.unaryExpr( [dT]( const double& x ) {
+          const Marmot::Math::Matrix6d exp_dt_tau = tau.unaryExpr( [dT]( const double& x ) {
             if ( x != 0.0 )
               return std::exp( -dT / x );
             else
@@ -40,13 +40,13 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
           stiffness += ( eta - eta.cwiseProduct( exp_dt_tau ) ) / dT;
 
           // due to history
-          stress -= Matrix6d( currState - exp_dt_tau.cwiseProduct( currState ) ).colwise().sum();
+          stress -= Marmot::Math::Matrix6d( currState - exp_dt_tau.cwiseProduct( currState ) ).colwise().sum();
 
           // update state variables only if it is requested
           if ( updateStateVars )
             stateVars.block< 6, 6 >( 0, 6 * k ) = exp_dt_tau.cwiseProduct( currState ) +
-                                                  Matrix6d( eta.array().rowwise() * dStrain.transpose().array() / dT ) -
-                                                  Matrix6d( eta.array().rowwise() * dStrain.transpose().array() / dT )
+                                                  Marmot::Math::Matrix6d( eta.array().rowwise() * dStrain.transpose().array() / dT ) -
+                                                  Marmot::Math::Matrix6d( eta.array().rowwise() * dStrain.transpose().array() / dT )
                                                     .cwiseProduct( exp_dt_tau );
         }
       }
@@ -54,7 +54,7 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
 
     void updateStateVars( const Properties&               props,
                           Eigen::Ref< mapStateVarMatrix > stateVars,
-                          const Vector6d&                 dStrain,
+                          const Marmot::Math::Vector6d&                 dStrain,
                           const double                    dT )
     {
       for ( size_t k = 0; k < props.nPronyTerms; k++ ) {
@@ -62,9 +62,9 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
         const auto& C         = props.pronyStiffnesses.block< 6, 6 >( 0, k * 6 );
         const auto& currState = stateVars.block< 6, 6 >( 0, k * 6 );
 
-        const Matrix6d eta = tau.cwiseProduct( C );
+        const Marmot::Math::Matrix6d eta = tau.cwiseProduct( C );
 
-        const Matrix6d exp_dt_tau = tau.unaryExpr( [dT]( const double& x ) {
+        const Marmot::Math::Matrix6d exp_dt_tau = tau.unaryExpr( [dT]( const double& x ) {
           if ( x != 0.0 )
             return std::exp( -dT / x );
           else
@@ -72,8 +72,8 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
         } );
 
         stateVars.block< 6, 6 >( 0, 6 * k ) = exp_dt_tau.cwiseProduct( currState ) +
-                                              Matrix6d( eta.array().rowwise() * dStrain.transpose().array() / dT ) -
-                                              Matrix6d( eta.array().rowwise() * dStrain.transpose().array() / dT )
+                                              Marmot::Math::Matrix6d( eta.array().rowwise() * dStrain.transpose().array() / dT ) -
+                                              Marmot::Math::Matrix6d( eta.array().rowwise() * dStrain.transpose().array() / dT )
                                                 .cwiseProduct( exp_dt_tau );
       }
     }

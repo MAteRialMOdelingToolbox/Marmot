@@ -118,19 +118,19 @@ namespace Marmot::Materials {
   }
 
   void LinearViscoelasticOrthotropicPowerLaw::computeStress( state3D&        state,
-                                                             Matrix6d&       dStressDDStrain,
-                                                             const Vector6d& dStrain,
+                                                             Marmot::Math::Matrix6d&       dStressDDStrain,
+                                                             const Marmot::Math::Vector6d& dStrain,
                                                              const timeInfo& timeInfo ) const
 
   {
-    mVector6d             nomStress( state.stress.data() );
-    Map< const Vector6d > dE( dStrain.data() );
-    mMatrix6d             C( dStressDDStrain.data() );
+    Marmot::Math::mVector6d             nomStress( state.stress.data() );
+    Map< const Marmot::Math::Vector6d > dE( dStrain.data() );
+    Marmot::Math::mMatrix6d             C( dStressDDStrain.data() );
 
     const double& dT = timeInfo.dT;
 
     using namespace Marmot::ContinuumMechanics::VoigtNotation;
-    Vector6d dELocal = Transformations::transformStrainToLocalSystem( dE, localCoordinateSystem );
+    Marmot::Math::Vector6d dELocal = Transformations::transformStrainToLocalSystem( dE, localCoordinateSystem );
 
     if ( ( dE.array() == 0 ).all() && dT == 0 ) {
       C = E1 * CelUnitGlobal;
@@ -144,7 +144,7 @@ namespace Marmot::Materials {
 
     const double dTimeDays = dT * timeToDays;
 
-    Vector6d creepStrainIncrement = Vector6d::Zero();
+    Marmot::Math::Vector6d creepStrainIncrement = Marmot::Math::Vector6d::Zero();
     double   creepCompliance      = 0;
 
     // evaluate Kelvin-Chain
@@ -160,10 +160,10 @@ namespace Marmot::Materials {
     const double effectiveCompliance = 1. / E1 / stiffnessScaleFactor + zerothKelvinChainCompliance + creepCompliance;
 
     // compute local effective stiffness tensor
-    Matrix6d localEffectiveStiffness = 1. / effectiveCompliance * CelUnit;
+    Marmot::Math::Matrix6d localEffectiveStiffness = 1. / effectiveCompliance * CelUnit;
 
     // compute stress increment in local coordinate system
-    Vector6d deltaStressLocal = localEffectiveStiffness * ( dELocal - creepStrainIncrement );
+    Marmot::Math::Vector6d deltaStressLocal = localEffectiveStiffness * ( dELocal - creepStrainIncrement );
 
     // update stress in global coordinate system
     nomStress += Transformations::transformStressToGlobalSystem( deltaStressLocal, localCoordinateSystem );

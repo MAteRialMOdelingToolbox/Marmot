@@ -62,7 +62,7 @@ void testADVonMises()
   // read history
   auto history = solver.getHistory();
   // reference solution
-  const Marmot::Vector6d stressTarget =
+  const Marmot::Math::Vector6d stressTarget =
     { 511.262747695, 395.408929527, 272.856322779, 1.0532516407, 12.4017194288, 44.2485420671 };
 
   // compare solutions

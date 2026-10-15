@@ -110,7 +110,7 @@ namespace Marmot::Materials {
      * @return val the value of the zeroth compliance term.
      *
      * @note The integral is evaluated numerically using Simpson’s rule via
-     * `NumericalAlgorithms::Integration::integrateScalarFunction`. The integration range
+     * `Marmot::Math::Integration::integrateScalarFunction`. The integration range
      * \f$[\tau_{\min}/\sqrt{\text{spacing}},\,1\times10^{-14}]\f$ is chosen to avoid the logarithmic singularity
      * at \f$\tau=0\f$. As Simpson's rule is sensitive to changes in the sign of the summands, integration should be
      * handled with care. A Gauss quadrature approach involving Chebyshev polynomials could be implemented in the
@@ -121,7 +121,7 @@ namespace Marmot::Materials {
                                         double tauMin,
                                         double spacing = 10. )
     {
-      NumericalAlgorithms::Integration::scalar_to_scalar_function_type f = [&]( double tau ) {
+      Marmot::Math::Integration::scalar_to_scalar_function_type f = [&]( double tau ) {
         double val_ = -pow( -k, k ) * pow( tau, k - 1 ) / static_cast< double >( Marmot::Math::factorial( k - 1 ) );
         autodiff::Real< k, double > tau_( tau * k );
         val_ *= autodiff::derivatives( phi, autodiff::along( 1. ), autodiff::at( tau_ ) )[k];
@@ -129,10 +129,10 @@ namespace Marmot::Materials {
       };
 
       double
-        val = NumericalAlgorithms::Integration::integrateScalarFunction( f,
+        val = Marmot::Math::Integration::integrateScalarFunction( f,
                                                                          { 1e-14, tauMin / sqrt( spacing ) },
                                                                          100,
-                                                                         NumericalAlgorithms::Integration::simpson );
+                                                                         Marmot::Math::Integration::simpson );
       return val;
     }
     /**
@@ -206,8 +206,8 @@ namespace Marmot::Materials {
                                Properties                   elasticModuli,
                                Properties                   retardationTimes,
                                Eigen::Ref< StateVarMatrix > stateVars,
-                               const Marmot::Vector6d&      dStress,
-                               const Marmot::Matrix6d&      unitComplianceMatrix );
+                               const Marmot::Math::Vector6d&      dStress,
+                               const Marmot::Math::Matrix6d&      unitComplianceMatrix );
     /**
      * @brief Evaluates the viscoelastic response of the Kelvin chain over a time increment.
      *
@@ -230,7 +230,7 @@ namespace Marmot::Materials {
                               Properties        retardationTimes,
                               StateVarMatrix    stateVars,
                               double&           uniaxialCompliance,
-                              Marmot::Vector6d& dStrain,
+                              Marmot::Math::Vector6d& dStrain,
                               const double      factor );
     /**
      * @brief Computes the time-dependent relaxation factors \f$\lambda\f$ and \f$\beta\f$ for a given Kelvin unit.

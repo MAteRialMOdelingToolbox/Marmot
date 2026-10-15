@@ -73,13 +73,13 @@ namespace {
     const Properties elasticModuli   = Properties::Constant( 3, 100.0 );
 
     StateVarMatrix   stateVars = StateVarMatrix::Ones( 6, 3 );
-    Marmot::Vector6d dStrain;
+    Marmot::Math::Vector6d dStrain;
     dStrain << 1e-3, 0., 0., 0., 0., 0.;
 
-    updateStateVarMatrix( 0.0, elasticModuli, relaxationTimes, stateVars, dStrain, Marmot::Matrix6d::Identity() );
+    updateStateVarMatrix( 0.0, elasticModuli, relaxationTimes, stateVars, dStrain, Marmot::Math::Matrix6d::Identity() );
     throwExceptionOnFailure( stateVars.isOnes(), "State variables must not evolve when no time elapses." );
 
-    updateStateVarMatrix( 1.0, elasticModuli, relaxationTimes, stateVars, dStrain, Marmot::Matrix6d::Identity() );
+    updateStateVarMatrix( 1.0, elasticModuli, relaxationTimes, stateVars, dStrain, Marmot::Math::Matrix6d::Identity() );
     throwExceptionOnFailure( !stateVars.isOnes(), "State variables must evolve over a finite time increment." );
   }
 

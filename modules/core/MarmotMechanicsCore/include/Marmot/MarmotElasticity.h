@@ -125,7 +125,7 @@ namespace Marmot {
        * @param nu Poisson's ratio \f$\nu\f$.
        * @return Compliance tensor \f$\mathbb{C}^{-1}\f$ as a 6x6 matrix.
        */
-      Matrix6d complianceTensor( const double E, const double nu );
+      Marmot::Math::Matrix6d complianceTensor( const double E, const double nu );
 
       /**
        * @brief Computes the isotropic stiffness tensor \f$\mathbb{C}\f$ from
@@ -146,7 +146,7 @@ namespace Marmot {
        * @param nu Poisson's ratio \f$\nu\f$.
        * @return Stiffness tensor \f$\mathbb{C}\f$ as a 6x6 matrix.
        */
-      Matrix6d stiffnessTensor( const double E, const double nu );
+      Marmot::Math::Matrix6d stiffnessTensor( const double E, const double nu );
 
       /**
        * @brief Computes the isotropic stiffness tensor \f$\mathbb{C}\f$ from
@@ -156,7 +156,7 @@ namespace Marmot {
        * @param G Shear modulus \f$G\f$.
        * @return Stiffness tensor \f$\mathbb{C}\f$ as a 6x6 matrix.
        */
-      Matrix6d stiffnessTensorKG( const double K, const double G );
+      Marmot::Math::Matrix6d stiffnessTensorKG( const double K, const double G );
 
     } // namespace Elasticity::Isotropic
 
@@ -209,7 +209,7 @@ namespace Marmot {
        * @param G12 shear modulus \f$G_{12}\f$.
        * @return Compliance tensor \f$\mathbb{C}^{-1}\f$ as a 6x6 matrix.
        */
-      Matrix6d complianceTensor( const double E1,
+      Marmot::Math::Matrix6d complianceTensor( const double E1,
                                  const double E2,
                                  const double nu12,
                                  const double nu23,
@@ -225,7 +225,7 @@ namespace Marmot {
        * @param G12 shear modulus \f$G_{12}\f$.
        * @return Stiffness tensor \f$\mathbb{C}\f$ as a 6x6 matrix.
        */
-      Matrix6d stiffnessTensor( const double E1,
+      Marmot::Math::Matrix6d stiffnessTensor( const double E1,
                                 const double E2,
                                 const double nu12,
                                 const double nu23,
@@ -275,7 +275,7 @@ namespace Marmot {
        * @param G31 Shear modulus \f$G_{31}\f$ effective between \f$ x_1 \f$ and \f$ x_3 \f$ - direction.
        * @return Compliance tensor \f$\mathbb{C}^{-1}\f$ as a 6x6 matrix.
        */
-      Matrix6d complianceTensor( const double E1,
+      Marmot::Math::Matrix6d complianceTensor( const double E1,
                                  const double E2,
                                  const double E3,
                                  const double nu12,
@@ -300,7 +300,7 @@ namespace Marmot {
        * @param G31 Shear modulus \f$G_{31}\f$ effective between \f$ x_1 \f$ and \f$ x_3 \f$ - direction.
        * @return Stiffness tensor \f$\mathbb{C}\f$ as a 6x6 matrix.
        */
-      Matrix6d stiffnessTensor( const double E1,
+      Marmot::Math::Matrix6d stiffnessTensor( const double E1,
                                 const double E2,
                                 const double E3,
                                 const double nu12,

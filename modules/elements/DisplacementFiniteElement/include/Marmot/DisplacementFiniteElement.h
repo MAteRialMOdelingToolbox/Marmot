@@ -168,8 +168,8 @@ namespace Marmot::Elements {
         } );
 
       public:
-        mVector6d                     stress;
-        mVector6d                     strain;
+        Marmot::Math::mVector6d                     stress;
+        Marmot::Math::mVector6d                     strain;
         double&                       totalStrainEnergy;
         double&                       elasticStrainEnergy;
         double&                       dissipation;
@@ -755,10 +755,10 @@ namespace Marmot::Elements {
 
         else if ( sectionType == SectionType::PlaneStrain ) {
 
-          Vector6d dE6 = planeVoigtToVoigt( dE );
-          Matrix6d C66;
+          Marmot::Math::Vector6d dE6 = planeVoigtToVoigt( dE );
+          Marmot::Math::Matrix6d C66;
 
-          // Vector6d S6 = qp.managedStateVars->stress;
+          // Marmot::Math::Vector6d S6 = qp.managedStateVars->stress;
           MarmotMaterialHypoElastic::state3D  state;
           MarmotMaterialHypoElastic::timeInfo timeInfo;
 
@@ -860,7 +860,7 @@ namespace Marmot::Elements {
           // set time info
           timeInfo.time = time;
           timeInfo.dT   = dT;
-          Matrix3d C    = Matrix3d::Zero();
+          Marmot::Math::Matrix3d C    = Marmot::Math::Matrix3d::Zero();
           qp.material->computePlaneStress( state, C, dE, timeInfo );
           qp.managedStateVars->stress = make3DVoigt< ParentGeometryElement::voigtSize >( state.stress );
           S                           = state.stress;
@@ -870,9 +870,9 @@ namespace Marmot::Elements {
 
         else if ( sectionType == SectionType::PlaneStrain ) {
 
-          Vector6d dE6 = planeVoigtToVoigt( dE );
+          Marmot::Math::Vector6d dE6 = planeVoigtToVoigt( dE );
 
-          // Vector6d S6 = qp.managedStateVars->stress;
+          // Marmot::Math::Vector6d S6 = qp.managedStateVars->stress;
           MarmotMaterialHypoElastic::state3D  state;
           MarmotMaterialHypoElastic::timeInfo timeInfo;
 

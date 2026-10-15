@@ -160,8 +160,8 @@ void testSpinTurbokreiselReturnsFalseForAStressControlledStep()
   Marmot::Solvers::MarmotMaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, false };
   step.isStressComponentControlled = { false, false, false, false, false, true }; // not pure strain control
-  step.strainIncrementTarget       = Marmot::Vector6d::Zero();
-  step.stressIncrementTarget       = Marmot::Vector6d::Zero();
+  step.strainIncrementTarget       = Marmot::Math::Vector6d::Zero();
+  step.stressIncrementTarget       = Marmot::Math::Vector6d::Zero();
 
   solver.addStep( step );
 
@@ -183,8 +183,8 @@ void testSpinTurbokreiselThrowsForAZeroDurationStep()
   Marmot::Solvers::MarmotMaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, true };
   step.isStressComponentControlled = { false, false, false, false, false, false };
-  step.strainIncrementTarget       = Marmot::Vector6d::Zero();
-  step.stressIncrementTarget       = Marmot::Vector6d::Zero();
+  step.strainIncrementTarget       = Marmot::Math::Vector6d::Zero();
+  step.stressIncrementTarget       = Marmot::Math::Vector6d::Zero();
   step.timeStart                   = 0.0;
   step.timeEnd                     = 0.0; // zero-duration step -> solveStep() runs zero increments
 
@@ -218,9 +218,9 @@ void testSpinTurbokreiselDetectsAnAnisotropicMaterial()
   Marmot::Solvers::MarmotMaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, true };
   step.isStressComponentControlled = { false, false, false, false, false, false };
-  step.strainIncrementTarget       = Marmot::Vector6d::Zero();
+  step.strainIncrementTarget       = Marmot::Math::Vector6d::Zero();
   step.strainIncrementTarget( 0 )  = 1e-3;
-  step.stressIncrementTarget       = Marmot::Vector6d::Zero();
+  step.stressIncrementTarget       = Marmot::Math::Vector6d::Zero();
 
   solver.addStep( step );
 
@@ -249,9 +249,9 @@ void testSpinTurbokreiselDetectsATangentOnlyMismatch()
   Marmot::Solvers::MarmotMaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, true };
   step.isStressComponentControlled = { false, false, false, false, false, false };
-  step.strainIncrementTarget       = Marmot::Vector6d::Zero();
+  step.strainIncrementTarget       = Marmot::Math::Vector6d::Zero();
   step.strainIncrementTarget( 0 )  = 1e-3;
-  step.stressIncrementTarget       = Marmot::Vector6d::Zero();
+  step.stressIncrementTarget       = Marmot::Math::Vector6d::Zero();
 
   solver.addStep( step );
 

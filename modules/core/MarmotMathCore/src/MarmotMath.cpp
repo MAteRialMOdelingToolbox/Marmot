@@ -1,7 +1,6 @@
 #include "Marmot/MarmotMath.h"
 
-namespace Marmot {
-  namespace Math {
+namespace Marmot::Math {
     // return linear interpolation of polynom y at given coordinates (x0, y0) and (x1, y1) at
     // point x
     double linearInterpolation( double x, double x0, double x1, double y0, double y1 )
@@ -27,7 +26,7 @@ namespace Marmot {
       return n * factorial( n - 1 );
     }
 
-    double makeReal( const complexDouble& value )
+    double makeReal( const Marmot::Math::complexDouble& value )
     {
       return value.real();
     }
@@ -54,10 +53,10 @@ namespace Marmot {
       return floor( log10( std::abs( x ) ) );
     }
 
-    Matrix3d orthonormalCoordinateSystem( Vector3d& normalVector )
+    Marmot::Math::Matrix3d orthonormalCoordinateSystem( Marmot::Math::Vector3d& normalVector )
     {
       normalVector.normalize();
-      Matrix3d coordinateSystem = Eigen::MatrixXd::Zero( 3, 3 );
+      Marmot::Math::Matrix3d coordinateSystem = Eigen::MatrixXd::Zero( 3, 3 );
       coordinateSystem.col( 0 ) = normalVector;
 
       if ( coordinateSystem( 0, 0 ) == 0 && coordinateSystem( 1, 0 ) == 0 ) {
@@ -75,7 +74,7 @@ namespace Marmot {
       return coordinateSystem;
     }
 
-    Matrix3d orthonormalCoordinateSystem( const Vector3d& n1, const Vector3d& n2 )
+    Marmot::Math::Matrix3d orthonormalCoordinateSystem( const Marmot::Math::Vector3d& n1, const Marmot::Math::Vector3d& n2 )
     {
 
       // check if n1 and n2 are orthogonal
@@ -83,7 +82,7 @@ namespace Marmot {
       if ( std::abs( n1.dot( n2 ) ) > 1e-15 )
         throw std::invalid_argument( "n1 and n2 not orthogonal" );
 
-      Matrix3d coordinateSystem = Eigen::MatrixXd::Zero( 3, 3 );
+      Marmot::Math::Matrix3d coordinateSystem = Eigen::MatrixXd::Zero( 3, 3 );
       coordinateSystem.col( 0 ) = n1;
       coordinateSystem.col( 1 ) = n2;
 
@@ -97,22 +96,21 @@ namespace Marmot {
       return coordinateSystem;
     }
 
-    Matrix3d directionCosines( const Matrix3d& transformedCoordinateSystem )
+    Marmot::Math::Matrix3d directionCosines( const Marmot::Math::Matrix3d& transformedCoordinateSystem )
     {
       return transformedCoordinateSystem.transpose();
     }
 
-    Matrix3d transformToLocalSystem( const Matrix3d& T, const Matrix3d& transformedCoordinateSystem )
+    Marmot::Math::Matrix3d transformToLocalSystem( const Marmot::Math::Matrix3d& T, const Marmot::Math::Matrix3d& transformedCoordinateSystem )
     {
-      const Matrix3d N = transformedCoordinateSystem;
+      const Marmot::Math::Matrix3d N = transformedCoordinateSystem;
       return N * T * N.transpose();
     }
 
-    Matrix3d transformToGlobalSystem( const Matrix3d& T, const Matrix3d& transformedCoordinateSystem )
+    Marmot::Math::Matrix3d transformToGlobalSystem( const Marmot::Math::Matrix3d& T, const Marmot::Math::Matrix3d& transformedCoordinateSystem )
     {
-      const Matrix3d N = transformedCoordinateSystem;
+      const Marmot::Math::Matrix3d N = transformedCoordinateSystem;
       return N.transpose() * T * N;
     }
 
-  } // namespace Math
-} // namespace Marmot
+} // namespace Marmot::Math

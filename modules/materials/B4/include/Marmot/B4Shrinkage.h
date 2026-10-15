@@ -55,7 +55,7 @@ namespace Marmot::Materials {
        * @param dryingStart                    Age at the start of drying \f$t_0\f$ (days).
        * @return Voigt-notation shrinkage strain increment vector.
        */
-      Marmot::Vector6d computeShrinkageStrainIncrement( const double tStartDays,
+      Marmot::Math::Vector6d computeShrinkageStrainIncrement( const double tStartDays,
                                                         const double dTDays,
                                                         const double ultimateAutogenousShrinkageStrain,
                                                         const double autogenousShrinkageHalfTime,

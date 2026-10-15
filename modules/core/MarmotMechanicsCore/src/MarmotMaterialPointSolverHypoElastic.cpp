@@ -39,7 +39,7 @@ void MarmotMaterialPointSolverHypoElastic::solve()
   }
 }
 
-void MarmotMaterialPointSolverHypoElastic::setInitialState( const Marmot::Vector6d& initialStress,
+void MarmotMaterialPointSolverHypoElastic::setInitialState( const Marmot::Math::Vector6d& initialStress,
                                                             const Eigen::VectorXd&  initialStateVars )
 {
   _initialStress    = initialStress;
@@ -107,19 +107,19 @@ void MarmotMaterialPointSolverHypoElastic::solveIncrement( const Increment& incr
   // set initial strain increment, set not controlled components to zero
   // use a Eigen Vector multiplication
 
-  Marmot::Vector6d dStrain = increment.strainIncrement.array() *
+  Marmot::Math::Vector6d dStrain = increment.strainIncrement.array() *
                              increment.isStrainComponentControlled.array().cast< double >();
 
   // create the mixed-control target
-  Marmot::Vector6d target = increment.stressIncrement;
+  Marmot::Math::Vector6d target = increment.stressIncrement;
   // replace strain controlled components
   // TODO: use Eigen vector operations
   for ( int i = 0; i < 6; i++ )
     if ( increment.isStrainComponentControlled[i] )
       target[i] = increment.strainIncrement[i];
 
-  Marmot::Vector6d stressTemp = stress;
-  Marmot::Matrix6d tangent, dStressDStrain;
+  Marmot::Math::Vector6d stressTemp = stress;
+  Marmot::Math::Matrix6d tangent, dStressDStrain;
   tangent.setZero();
   dStressDStrain.setZero();
 
@@ -151,7 +151,7 @@ void MarmotMaterialPointSolverHypoElastic::solveIncrement( const Increment& incr
     stressTemp = state.stress;
 
     // initialize residual with stress increment
-    Marmot::Vector6d residual = computeResidual( stressTemp - stress, target, increment );
+    Marmot::Math::Vector6d residual = computeResidual( stressTemp - stress, target, increment );
 
     // set tangent
     tangent = dStressDStrain;
@@ -169,7 +169,7 @@ void MarmotMaterialPointSolverHypoElastic::solveIncrement( const Increment& incr
       break;
 
     // solve for correction
-    Marmot::Vector6d correction = tangent.fullPivLu().solve( residual );
+    Marmot::Math::Vector6d correction = tangent.fullPivLu().solve( residual );
     corNorm                     = correction.norm();
 
     // update strain increment
@@ -189,11 +189,11 @@ void MarmotMaterialPointSolverHypoElastic::solveIncrement( const Increment& incr
   history.push_back( HistoryEntry{ increment.timeOld + increment.dT, stress, strain, dStressDStrain, stateVars } );
 }
 
-Marmot::Vector6d MarmotMaterialPointSolverHypoElastic::computeResidual( const Marmot::Vector6d& stressIncrement,
-                                                                        const Marmot::Vector6d& target,
+Marmot::Math::Vector6d MarmotMaterialPointSolverHypoElastic::computeResidual( const Marmot::Math::Vector6d& stressIncrement,
+                                                                        const Marmot::Math::Vector6d& target,
                                                                         const Increment&        increment )
 {
-  Marmot::Vector6d residual = stressIncrement;
+  Marmot::Math::Vector6d residual = stressIncrement;
   // replace strain controlled components
   for ( int i = 0; i < 6; i++ )
     if ( increment.isStrainComponentControlled[i] )

@@ -29,8 +29,8 @@ namespace Marmot::Materials {
   }
 
   void VonMisesModel::computeStress( state3D&        state,
-                                     Matrix6d&       dStress_dStrain,
-                                     const Vector6d& dStrain,
+                                     Marmot::Math::Matrix6d&       dStress_dStrain,
+                                     const Marmot::Math::Vector6d& dStrain,
                                      const timeInfo& timeInfo ) const
 
   {
@@ -44,9 +44,9 @@ namespace Marmot::Materials {
     const double& delta            = this->materialProperties[5];
 
     // map to stress, strain and tangent
-    mVector6d  S( state.stress.data() );
-    mMatrix6d  dS_dE( dStress_dStrain.data() );
-    const auto dE = Map< const Vector6d >( dStrain.data() );
+    Marmot::Math::mVector6d  S( state.stress.data() );
+    Marmot::Math::mMatrix6d  dS_dE( dStress_dStrain.data() );
+    const auto dE = Map< const Marmot::Math::Vector6d >( dStrain.data() );
 
     // compute elastic stiffness
     const auto Cel = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
@@ -69,10 +69,10 @@ namespace Marmot::Materials {
     auto dfy_ddKappa = [&]( double kappa_ ) { return HLin + deltaYieldStress * delta * std::exp( -delta * kappa_ ); };
 
     // yield function
-    auto f = [&]( double rho_, double kappa_ ) { return rho_ - Constants::sqrt2_3 * fy( kappa_ ); };
+    auto f = [&]( double rho_, double kappa_ ) { return rho_ - Marmot::Math::Constants::sqrt2_3 * fy( kappa_ ); };
 
     // compute elastic predictor
-    const Vector6d trialStress = S + Cel * dE;
+    const Marmot::Math::Vector6d trialStress = S + Cel * dE;
 
     using namespace ContinuumMechanics::VoigtNotation;
     const double rhoTrial = std::sqrt( 2. * Invariants::J2( trialStress ) );
@@ -82,7 +82,7 @@ namespace Marmot::Materials {
       const double G = E / ( 2. * ( 1. + nu ) );
 
       auto g = [&]( double deltaKappa ) {
-        return rhoTrial - Constants::sqrt6 * G * deltaKappa - Constants::sqrt2_3 * fy( kappa + deltaKappa );
+        return rhoTrial - Marmot::Math::Constants::sqrt6 * G * deltaKappa - Marmot::Math::Constants::sqrt2_3 * fy( kappa + deltaKappa );
       };
 
       // variables for return mapping
@@ -92,7 +92,7 @@ namespace Marmot::Materials {
       double dg_ddKappa = 0;
 
       // compute return mapping direction
-      Vector6d n = ContinuumMechanics::VoigtNotation::IDev * trialStress / rhoTrial;
+      Marmot::Math::Vector6d n = ContinuumMechanics::VoigtNotation::IDev * trialStress / rhoTrial;
 
       while ( std::abs( g( dKappa ) ) > VonMisesConstants::innerNewtonTol ) {
 
@@ -100,21 +100,21 @@ namespace Marmot::Materials {
           throw Marmot::Utilities::StressUpdateFailed( "return mapping failed to converge in VonMisesModel::computeStress" );
         }
         // compute derivative of g wrt kappa
-        dg_ddKappa = -Constants::sqrt6 * G - Constants::sqrt2_3 * dfy_ddKappa( kappa + dKappa );
+        dg_ddKappa = -Marmot::Math::Constants::sqrt6 * G - Marmot::Math::Constants::sqrt2_3 * dfy_ddKappa( kappa + dKappa );
 
         // update dKappa and iteration counter
         dKappa -= g( dKappa ) / dg_ddKappa;
         counter += 1;
       }
 
-      dLambda = Constants::sqrt3_2 * dKappa;
+      dLambda = Marmot::Math::Constants::sqrt3_2 * dKappa;
 
       // update material state
       S     = trialStress - 2. * G * dLambda * n;
       kappa = kappa + dKappa;
 
       // compute consistent tangent in Voigt Notation
-      Matrix6d IDevHalfShear = ContinuumMechanics::VoigtNotation::IDev;
+      Marmot::Math::Matrix6d IDevHalfShear = ContinuumMechanics::VoigtNotation::IDev;
       IDevHalfShear.block< 6, 3 >( 0, 3 ) *= 0.5;
 
       dS_dE = Cel -
@@ -132,7 +132,7 @@ namespace Marmot::Materials {
     }
   }
 
-  void VonMisesModel::computeStressExplicit( state3D& state, const Vector6d& dStrain, const timeInfo& timeInfo ) const
+  void VonMisesModel::computeStressExplicit( state3D& state, const Marmot::Math::Vector6d& dStrain, const timeInfo& timeInfo ) const
 
   {
     // elasticity parameters
@@ -145,7 +145,7 @@ namespace Marmot::Materials {
     const double& delta            = this->materialProperties[5];
 
     // map to stress, strain and tangent
-    mVector6d  S( state.stress.data() );
+    Marmot::Math::mVector6d  S( state.stress.data() );
     const auto dE = dStrain;
 
     // compute elastic stiffness
@@ -168,10 +168,10 @@ namespace Marmot::Materials {
     auto dfy_ddKappa = [&]( double kappa_ ) { return HLin + deltaYieldStress * delta * std::exp( -delta * kappa_ ); };
 
     // yield function
-    auto f = [&]( double rho_, double kappa_ ) { return rho_ - Constants::sqrt2_3 * fy( kappa_ ); };
+    auto f = [&]( double rho_, double kappa_ ) { return rho_ - Marmot::Math::Constants::sqrt2_3 * fy( kappa_ ); };
 
     // compute elastic predictor
-    const Vector6d trialStress = S + Cel * dE;
+    const Marmot::Math::Vector6d trialStress = S + Cel * dE;
 
     using namespace ContinuumMechanics::VoigtNotation;
     const double rhoTrial = std::sqrt( 2. * Invariants::J2( trialStress ) );
@@ -181,7 +181,7 @@ namespace Marmot::Materials {
       const double G = E / ( 2. * ( 1. + nu ) );
 
       auto g = [&]( double deltaKappa ) {
-        return rhoTrial - Constants::sqrt6 * G * deltaKappa - Constants::sqrt2_3 * fy( kappa + deltaKappa );
+        return rhoTrial - Marmot::Math::Constants::sqrt6 * G * deltaKappa - Marmot::Math::Constants::sqrt2_3 * fy( kappa + deltaKappa );
       };
 
       // variables for return mapping
@@ -191,7 +191,7 @@ namespace Marmot::Materials {
       double dg_ddKappa = 0;
 
       // compute return mapping direction
-      Vector6d n = ContinuumMechanics::VoigtNotation::IDev * trialStress / rhoTrial;
+      Marmot::Math::Vector6d n = ContinuumMechanics::VoigtNotation::IDev * trialStress / rhoTrial;
 
       double g_val = g( dKappa );
 
@@ -201,7 +201,7 @@ namespace Marmot::Materials {
       while ( counter < 5 ) {
 
         // compute derivative of g wrt kappa
-        dg_ddKappa = -Constants::sqrt6 * G - Constants::sqrt2_3 * dfy_ddKappa( kappa + dKappa );
+        dg_ddKappa = -Marmot::Math::Constants::sqrt6 * G - Marmot::Math::Constants::sqrt2_3 * dfy_ddKappa( kappa + dKappa );
 
         // update dKappa and iteration counter
         dKappa -= g_val / dg_ddKappa;
@@ -213,7 +213,7 @@ namespace Marmot::Materials {
         throw Marmot::Utilities::StressUpdateFailed( "return mapping failed to converge in VonMisesModel::computeStressExplicit" );
       }
 
-      dLambda = Constants::sqrt3_2 * dKappa;
+      dLambda = Marmot::Math::Constants::sqrt3_2 * dKappa;
 
       // update material state
       S     = trialStress - 2. * G * dLambda * n;

@@ -216,7 +216,7 @@ namespace Marmot::Testing {
     // i1 = 1, 2, ..., N
     for ( int i1 = 1; i1 <= N; i1++ ) {
       theta = acos( -( i1 - 1. ) / N );
-      phi   = ( i1 - 1. ) * Constants::GoldenAngle;
+      phi   = ( i1 - 1. ) * Marmot::Math::Constants::GoldenAngle;
 
       pts.row( i1 - 1 ) = Eigen::Vector2d( phi, theta );
     }

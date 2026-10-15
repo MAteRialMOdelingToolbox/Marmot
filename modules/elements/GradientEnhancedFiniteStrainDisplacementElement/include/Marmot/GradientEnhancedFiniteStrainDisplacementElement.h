@@ -138,7 +138,7 @@ namespace Marmot::Elements {
         } );
 
       public:
-        Eigen::Map< Marmot::Vector9d > stress; ///< Kirchhoff stress (3D, also in plane strain)
+        Eigen::Map< Marmot::Math::Vector9d > stress; ///< Kirchhoff stress (3D, also in plane strain)
         double& elasticEnergyDensity;          ///< elastic energy per undeformed volume, as returned by the material
         double& dissipationDensity;            ///< dissipation per undeformed volume, accumulated by the material
         double& F0_XX;                         ///< eigen deformation, XX component
@@ -518,7 +518,7 @@ namespace Marmot::Elements {
     typename Material::AlgorithmicModuli< nDim >&    tangents )
   {
     using namespace Fastor;
-    using namespace Marmot::FastorIndices;
+    using namespace Marmot::Math::Indices;
 
     const typename Material::Deformation< nDim > deformation = { F, nonlocalField };
 
@@ -528,7 +528,7 @@ namespace Marmot::Elements {
       // plane strain (the constructor admits no other 2D section): the 3D response with F_33 = 1
 
       typename Material::ConstitutiveResponse< 3 >
-        response3D( FastorStandardTensors::Tensor33d( qp.managedStateVars->stress.data(), Fastor::ColumnMajor ),
+        response3D( Marmot::Math::FastorTensors::Tensor33d( qp.managedStateVars->stress.data(), Fastor::ColumnMajor ),
                     0.0,
                     0.0,
                     qp.managedStateVars->elasticEnergyDensity,
@@ -537,7 +537,7 @@ namespace Marmot::Elements {
 
       typename Material::AlgorithmicModuli< 3 > algorithmicModuli3D;
 
-      typename Material::Deformation< 3 > deformation3D{ expandTo3D( deformation.F ), deformation.N };
+      typename Material::Deformation< 3 > deformation3D{ Marmot::Math::expandTo3D( deformation.F ), deformation.N };
       deformation3D.F( 2, 2 ) = 1.0;
 
       if ( hasEigenDeformation )
@@ -551,18 +551,18 @@ namespace Marmot::Elements {
       else
         qp.material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
 
-      response.tau                  = reduceTo2D< U, U >( response3D.tau );
+      response.tau                  = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >( response3D.tau );
       response.L                    = response3D.L;
       response.nonLocalRadius       = response3D.nonLocalRadius;
       response.elasticEnergyDensity = response3D.elasticEnergyDensity;
       response.dissipation          = response3D.dissipation;
 
-      tangents.dTau_dF = reduceTo2D< U, U, U, U >( algorithmicModuli3D.dTau_dF );
-      tangents.dTau_dN = reduceTo2D< U, U >( algorithmicModuli3D.dTau_dN );
-      tangents.dL_dF   = reduceTo2D< U, U >( algorithmicModuli3D.dL_dF );
+      tangents.dTau_dF = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >( algorithmicModuli3D.dTau_dF );
+      tangents.dTau_dN = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >( algorithmicModuli3D.dTau_dN );
+      tangents.dL_dF   = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >( algorithmicModuli3D.dL_dF );
       tangents.dL_dN   = algorithmicModuli3D.dL_dN;
 
-      qp.managedStateVars->stress = Marmot::mapEigenToFastor( response3D.tau ).reshaped();
+      qp.managedStateVars->stress = Marmot::Math::mapEigenToFastor( response3D.tau ).reshaped();
     }
     else {
       response = typename Material::ConstitutiveResponse< nDim >( Tensor< double, nDim, nDim >( qp.managedStateVars
@@ -585,7 +585,7 @@ namespace Marmot::Elements {
                                       qp.managedStateVars->F0_ZZ } );
       else
         qp.material->computeStress( response, tangents, deformation, timeIncrement );
-      qp.managedStateVars->stress = Marmot::mapEigenToFastor( response.tau ).reshaped();
+      qp.managedStateVars->stress = Marmot::Math::mapEigenToFastor( response.tau ).reshaped();
     }
 
     // the materials accumulate the dissipation onto the incoming value: keep both with the state
@@ -622,7 +622,7 @@ namespace Marmot::Elements {
 
     for ( auto& qp : qps ) {
 
-      using namespace Marmot::FastorIndices;
+      using namespace Marmot::Math::Indices;
 
       const auto N    = Tensor< double, nNodes >( qp.N.data() );
       const auto dNdX = Tensor< double, nDim, nNodes >( qp.dNdX.data(), ColumnMajor );
@@ -693,7 +693,7 @@ namespace Marmot::Elements {
 
     for ( auto& qp : qps ) {
 
-      using namespace Marmot::FastorIndices;
+      using namespace Marmot::Math::Indices;
 
       const auto N    = Tensor< double, nNodes >( qp.N.data() );
       const auto dNdX = Tensor< double, nDim, nNodes >( qp.dNdX.data(), ColumnMajor );

@@ -31,8 +31,7 @@
 #include <autodiff/forward/real/real.hpp>
 #include <complex>
 
-namespace Marmot {
-  namespace Math {
+namespace Marmot::Math {
 
     /** @brief Checks if a scalar is NaN
      *  @param x scalar to be checked
@@ -94,7 +93,7 @@ namespace Marmot {
      */
     constexpr double radToDeg( const double alpha )
     {
-      return alpha * 180 / Marmot::Constants::Pi;
+      return alpha * 180 / Marmot::Math::Constants::Pi;
     }
 
     /** @brief Convert angle from degree to radiant
@@ -105,7 +104,7 @@ namespace Marmot {
      */
     constexpr double degToRad( const double alpha )
     {
-      return alpha / 180 * Marmot::Constants::Pi;
+      return alpha / 180 * Marmot::Math::Constants::Pi;
     }
 
     /** @brief Macaulay function applied to a scalar
@@ -325,7 +324,7 @@ namespace Marmot {
       Eigen::VectorXd rightX( ySize );
 
       for ( size_t i = 0; i < ySize; i++ ) {
-        double volatile h = std::max( 1.0, std::abs( yN( i ) ) ) * Constants::cubicRootEps();
+        double volatile h = std::max( 1.0, std::abs( yN( i ) ) ) * Marmot::Math::Constants::cubicRootEps();
         leftX             = yN;
         leftX( i ) -= h;
         rightX = yN;
@@ -443,7 +442,7 @@ namespace Marmot {
      * The direction cosines are computed as the dot products between the basis vectors of the transformed coordinate
      * system and the global coordinate system.
      */
-    Matrix3d directionCosines( const Matrix3d& transformedCoordinateSystem );
+    Marmot::Math::Matrix3d directionCosines( const Marmot::Math::Matrix3d& transformedCoordinateSystem );
 
     /**
      * @brief Constructs a orthonormal coordinate system with a given normal vector as \f$x_1\f$-axis.
@@ -459,7 +458,7 @@ namespace Marmot {
      * normal vector.
      * @todo: Maybe remove this function completely to avoid mistakes?
      */
-    Matrix3d orthonormalCoordinateSystem( Vector3d& normalVector );
+    Marmot::Math::Matrix3d orthonormalCoordinateSystem( Marmot::Math::Vector3d& normalVector );
 
     /**
      * @brief Constructs an orthonormal coordinate system with two given normal vectors.
@@ -474,7 +473,7 @@ namespace Marmot {
      * - The second colum corresponds to the normalized second input normal vector (\f$x_2\f$-axis).
      * - The third column is the normalized cross product of the first two columns (\f$x_3\f$-axis).
      */
-    Matrix3d orthonormalCoordinateSystem( const Vector3d& n1, const Vector3d& n2 );
+    Marmot::Math::Matrix3d orthonormalCoordinateSystem( const Marmot::Math::Vector3d& n1, const Marmot::Math::Vector3d& n2 );
 
     /**
      * @brief Transforms a second-order tensor from the global coordinate system to a local coordinate system.
@@ -486,7 +485,7 @@ namespace Marmot {
      * The transformation is performed as: \f$ T_{local} = Q^T \, T_{global} \, Q \f$, where \f$ Q \f$ is the
      * transformation matrix.
      */
-    Matrix3d transformToLocalSystem( const Matrix3d& T, const Matrix3d& transformedCoordinateSystem );
+    Marmot::Math::Matrix3d transformToLocalSystem( const Marmot::Math::Matrix3d& T, const Marmot::Math::Matrix3d& transformedCoordinateSystem );
 
     /**
      * @brief Transforms a second-order tensor from a local coordinate system to the global coordinate system.
@@ -498,7 +497,6 @@ namespace Marmot {
      * The transformation is performed as: \f$ T_{global} = Q \, T_{local} \, Q^T \f$, where \f$ Q \f$ is the
      * transformation matrix.
      */
-    Matrix3d transformToGlobalSystem( const Matrix3d& T, const Matrix3d& transformedCoordinateSystem );
+    Marmot::Math::Matrix3d transformToGlobalSystem( const Marmot::Math::Matrix3d& T, const Marmot::Math::Matrix3d& transformedCoordinateSystem );
 
-  } // namespace Math
-} // namespace Marmot
+} // namespace Marmot::Math

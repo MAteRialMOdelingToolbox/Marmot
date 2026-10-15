@@ -4,7 +4,7 @@
 #include "Marmot/MarmotTesting.h"
 
 using namespace Marmot::Testing;
-using namespace Marmot::NumericalAlgorithms::Differentiation;
+using namespace Marmot::Math::NumericalDifferentiation;
 using namespace Marmot::PhaseField::EnergyDegradationFunctions;
 
 void testQuadratic()

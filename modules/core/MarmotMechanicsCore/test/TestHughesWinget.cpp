@@ -21,7 +21,7 @@ using namespace Marmot::NumericalAlgorithms;
 
 void testPureStretchHasNoRotation()
 {
-  // FOld = I, FNew = a small symmetric (diagonal) stretch: no rotation should be detected.
+  // FOld = I, FNew = a small Marmot::Math::symmetric (diagonal) stretch: no rotation should be detected.
   Eigen::Matrix3d FOld = Eigen::Matrix3d::Identity();
   Eigen::Matrix3d FNew = Eigen::Matrix3d::Identity();
   FNew( 0, 0 )         = 1.002;
@@ -40,16 +40,16 @@ void testPureStretchHasNoRotation()
   const Eigen::Matrix3d  FMidStep     = 0.5 * ( FNew + FOld );
   const Eigen::Matrix3d  lMat         = ( FNew - FOld ) * FMidStep.inverse();
   const Eigen::Matrix3d  dEpsMat      = 0.5 * ( lMat + lMat.transpose() );
-  const Marmot::Vector6d dEpsExpected = ContinuumMechanics::VoigtNotation::voigtFromStrainMatrix< 3 >( dEpsMat );
+  const Marmot::Math::Vector6d dEpsExpected = ContinuumMechanics::VoigtNotation::voigtFromStrainMatrix< 3 >( dEpsMat );
 
-  Marmot::Vector6d dEps = hw.getStrainIncrement();
+  Marmot::Math::Vector6d dEps = hw.getStrainIncrement();
   throwExceptionOnFailure( checkIfEqual< double >( dEps, dEpsExpected, 1e-12 ),
                            "Pure-stretch strain increment does not match the documented l = "
                            "(FNew-FOld)*FMidStep^-1 formula in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
   // With no rotation, rotateTensor() must be the identity map.
-  Marmot::Vector6d someStress = Marmot::Vector6d::Zero();
+  Marmot::Math::Vector6d someStress = Marmot::Math::Vector6d::Zero();
   someStress << 10., 20., 30., 4., 5., 6.;
   throwExceptionOnFailure( checkIfEqual< double >( hw.rotateTensor( someStress ), someStress, 1e-10 ),
                            "rotateTensor() must be the identity map when there is no rotation increment in " +
@@ -70,7 +70,7 @@ void testPureRotationPreservesIsotropicStress()
 
   HughesWinget hw( FOld, FNew, HughesWinget::AbaqusLike );
 
-  throwExceptionOnFailure( checkIfEqual< double >( hw.getStrainIncrement(), Marmot::Vector6d::Zero().eval(), 1e-10 ),
+  throwExceptionOnFailure( checkIfEqual< double >( hw.getStrainIncrement(), Marmot::Math::Vector6d::Zero().eval(), 1e-10 ),
                            "A pure rotation must give a zero strain increment in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
@@ -80,7 +80,7 @@ void testPureRotationPreservesIsotropicStress()
                            "The incremental rotation does not approximate the applied small rotation in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
-  Marmot::Vector6d isotropicStress = Marmot::Vector6d::Zero();
+  Marmot::Math::Vector6d isotropicStress = Marmot::Math::Vector6d::Zero();
   isotropicStress( 0 ) = isotropicStress( 1 ) = isotropicStress( 2 ) = -100.0; // hydrostatic pressure
   throwExceptionOnFailure( checkIfEqual< double >( hw.rotateTensor( isotropicStress ), isotropicStress, 1e-8 ),
                            "An isotropic stress state must be invariant under rotateTensor() in " +
@@ -100,17 +100,17 @@ void testRotateTensorMatchesDirectSimilarityTransform()
 
   HughesWinget hw( FOld, FNew, HughesWinget::AbaqusLike );
 
-  Marmot::Vector6d stress = Marmot::Vector6d::Zero();
+  Marmot::Math::Vector6d stress = Marmot::Math::Vector6d::Zero();
   stress << 50., -20., 10., 5., -3., 2.;
 
-  const Marmot::Vector6d rotated = hw.rotateTensor( stress );
+  const Marmot::Math::Vector6d rotated = hw.rotateTensor( stress );
 
   // Recompute the same similarity transform independently via the plain 3x3 matrices, rather than
   // by re-deriving rotateTensor()'s own Voigt-conversion internals.
   const Eigen::Matrix3d  dR                 = hw.getRotationIncrement();
   const Eigen::Matrix3d  stressMat          = ContinuumMechanics::VoigtNotation::voigtToStress< double >( stress );
   const Eigen::Matrix3d  rotatedMatExpected = dR * stressMat * dR.transpose();
-  const Marmot::Vector6d rotatedExpected    = ContinuumMechanics::VoigtNotation::stressToVoigt< double >(
+  const Marmot::Math::Vector6d rotatedExpected    = ContinuumMechanics::VoigtNotation::stressToVoigt< double >(
     rotatedMatExpected );
 
   throwExceptionOnFailure( checkIfEqual< double >( rotated, rotatedExpected, 1e-10 ),
@@ -142,7 +142,7 @@ void testComputeDScalarDFMatchesProjectorContraction()
   Eigen::Matrix3d I = Eigen::Matrix3d::Identity();
   HughesWinget    hw( I, I, HughesWinget::AbaqusLike );
 
-  Marmot::Vector6d dScalarDEps = Marmot::Vector6d::Zero();
+  Marmot::Math::Vector6d dScalarDEps = Marmot::Math::Vector6d::Zero();
   dScalarDEps << 1., 2., 3., 4., 5., 6.;
 
   const Eigen::Matrix3d result = hw.compute_dScalar_dF( I, dScalarDEps );
@@ -166,14 +166,14 @@ void testComputeDSDFJaumannTermMatchesProjectorContraction()
   Eigen::Matrix3d I = Eigen::Matrix3d::Identity();
   HughesWinget    hw( I, I, HughesWinget::AbaqusLike );
 
-  Marmot::Vector6d zeroStress = Marmot::Vector6d::Zero();
+  Marmot::Math::Vector6d zeroStress = Marmot::Math::Vector6d::Zero();
 
-  Marmot::Matrix6d dChauchydEps = Marmot::Matrix6d::Zero();
+  Marmot::Math::Matrix6d dChauchydEps = Marmot::Math::Matrix6d::Zero();
   for ( int i = 0; i < 6; i++ )
     for ( int j = 0; j < 6; j++ )
       dChauchydEps( i, j ) = 1.0 + i + 2.0 * j;
 
-  const EigenTensors::Tensor633d result = hw.compute_dS_dF( zeroStress, I, dChauchydEps );
+  const Marmot::Math::Tensors::Tensor633d result = hw.compute_dS_dF( zeroStress, I, dChauchydEps );
 
   using namespace Marmot::ContinuumMechanics::Kinematics::VelocityGradient;
   bool matches = true;
@@ -198,16 +198,16 @@ void testComputeDSDFRotationalTermMatchesProjectorContraction()
   Eigen::Matrix3d I = Eigen::Matrix3d::Identity();
   HughesWinget    hw( I, I, HughesWinget::AbaqusLike );
 
-  Marmot::Vector6d stress = Marmot::Vector6d::Zero();
+  Marmot::Math::Vector6d stress = Marmot::Math::Vector6d::Zero();
   stress << 10., 20., 30., 4., 5., 6.;
   const Eigen::Matrix3d stressMat = ContinuumMechanics::VoigtNotation::voigtToStress< double >( stress );
 
-  Marmot::Matrix6d zeroTangent = Marmot::Matrix6d::Zero();
+  Marmot::Math::Matrix6d zeroTangent = Marmot::Math::Matrix6d::Zero();
 
-  const EigenTensors::Tensor633d result = hw.compute_dS_dF( stress, I, zeroTangent );
+  const Marmot::Math::Tensors::Tensor633d result = hw.compute_dS_dF( stress, I, zeroTangent );
 
   using namespace Marmot::ContinuumMechanics::Kinematics::VelocityGradient;
-  using namespace Marmot::ContinuumMechanics::TensorUtility;
+  using namespace Marmot::Math::Tensors;
   bool matches = true;
   for ( int ij = 0; ij < 6 && matches; ij++ ) {
     auto [i, j] = IndexNotation::fromVoigt< 3 >( ij );

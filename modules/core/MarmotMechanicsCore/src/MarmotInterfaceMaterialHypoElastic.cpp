@@ -14,8 +14,8 @@
 #include <string>
 
 using namespace Marmot;
-using namespace Marmot::FastorIndices;
-using namespace Marmot::FastorStandardTensors;
+using namespace Marmot::Math::Indices;
+using namespace Marmot::Math::FastorTensors;
 
 MarmotInterfaceMaterialHypoElastic::MarmotInterfaceMaterialHypoElastic( const std::string& materialName,
                                                                         const double*      matProperties_,
@@ -83,14 +83,14 @@ void MarmotInterfaceMaterialHypoElastic::computeStress( State&               sta
                                          averageSurfaceGradient;
   const Tensor33d strainIncrement = 0.5 * ( displacementGradient + Fastor::transpose( displacementGradient ) );
 
-  const Vector6d strainIncrementVoigt = ContinuumMechanics::VoigtNotation::strainToVoigt(
-    mapEigenToFastor( strainIncrement ) );
+  const Marmot::Math::Vector6d strainIncrementVoigt = ContinuumMechanics::VoigtNotation::strainToVoigt(
+    Marmot::Math::mapEigenToFastor( strainIncrement ) );
 
-  const auto            scaledStressCurrent = mapEigenToFastor( state.surfaceStress );
+  const auto            scaledStressCurrent = Marmot::Math::mapEigenToFastor( state.surfaceStress );
   const Eigen::Matrix3d scaledStressSym     = 0.5 * ( scaledStressCurrent + scaledStressCurrent.transpose() );
-  const Vector6d        stressVoigt = ( 1. / h ) * ContinuumMechanics::VoigtNotation::stressToVoigt( scaledStressSym );
+  const Marmot::Math::Vector6d        stressVoigt = ( 1. / h ) * ContinuumMechanics::VoigtNotation::stressToVoigt( scaledStressSym );
 
-  Matrix6d tangent               = Matrix6d::Zero();
+  Marmot::Math::Matrix6d tangent               = Marmot::Math::Matrix6d::Zero();
   double*  baseMaterialStateVars = stateLayout.getPtr( state.stateVars, "baseMaterialStateVars" );
   MarmotMaterialHypoElastic::state3D        baseState{ stressVoigt, 0.0, 0.0, baseMaterialStateVars };
   const MarmotMaterialHypoElastic::timeInfo timeInfo{ timeIncrement.timeOld + timeIncrement.dT, timeIncrement.dT };
@@ -103,7 +103,7 @@ void MarmotInterfaceMaterialHypoElastic::computeStress( State&               sta
   H_ijk             = H;
   Y_ijkl            = h * Y;
 
-  mapEigenToFastor( surfaceStress ) = h * ContinuumMechanics::VoigtNotation::voigtToStress( baseState.stress );
+  Marmot::Math::mapEigenToFastor( surfaceStress ) = h * ContinuumMechanics::VoigtNotation::voigtToStress( baseState.stress );
   force                             = ( 1. / h ) * Fastor::einsum< ij, j, to_i >( surfaceStress, normal );
 }
 

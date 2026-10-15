@@ -75,9 +75,9 @@ void testLinearViscoelasticPowerLaw()
   // read history
   auto history = solver.getHistory();
   // get computed stress
-  Marmot::Vector6d stress = history.back().stress;
+  Marmot::Math::Vector6d stress = history.back().stress;
 
-  Marmot::Vector6d stressTarget;
+  Marmot::Math::Vector6d stressTarget;
   stressTarget << 2.41296e-05, 2.41296e-05, 9.65182e-06, 0., 0., 0.;
 
   // Compare the computed stress to the expected stress and throw an exception if they differ

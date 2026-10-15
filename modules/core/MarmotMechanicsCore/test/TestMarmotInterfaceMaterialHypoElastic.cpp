@@ -60,8 +60,8 @@ namespace {
 
     interfaceMaterial.computeStress( state, tangents, deformation, timeIncrement );
 
-    response.force         = Marmot::mapEigenToFastor( state.force );
-    response.surfaceStress = Marmot::mapEigenToFastor( state.surfaceStress );
+    response.force         = Marmot::Math::mapEigenToFastor( state.force );
+    response.surfaceStress = Marmot::Math::mapEigenToFastor( state.surfaceStress );
     response.Q             = Eigen::Map< const Eigen::VectorXd >( tangents.Q_ij.data(), 9 );
     response.Z             = Eigen::Map< const Eigen::VectorXd >( tangents.Z_ijkl.data(), 81 );
     response.H             = Eigen::Map< const Eigen::VectorXd >( tangents.H_ijk.data(), 27 );
@@ -89,7 +89,7 @@ namespace {
     bulkMaterial->initializeYourself( bulkStateVars.data(), bulkStateVars.size() );
 
     InterfaceResponse interfaceResponse;
-    Marmot::Vector6d  bulkStress = Marmot::Vector6d::Zero();
+    Marmot::Math::Vector6d  bulkStress = Marmot::Math::Vector6d::Zero();
 
     struct Increment {
       double dT;
@@ -132,11 +132,11 @@ namespace {
                               timeOld,
                               increment.dT );
 
-      Marmot::Vector6d bulkStrainIncrement = Marmot::Vector6d::Zero();
+      Marmot::Math::Vector6d bulkStrainIncrement = Marmot::Math::Vector6d::Zero();
       bulkStrainIncrement[3]               = 2. * increment.surfaceShear;
       bulkStrainIncrement[5]               = increment.jumpY / h;
 
-      Marmot::Matrix6d                   bulkTangent = Marmot::Matrix6d::Zero();
+      Marmot::Math::Matrix6d                   bulkTangent = Marmot::Math::Matrix6d::Zero();
       MarmotMaterialHypoElastic::state3D bulkState{ bulkStress, 0.0, 0.0, bulkStateVars.data() };
       bulkMaterial->computeStress( bulkState,
                                    bulkTangent,
@@ -154,7 +154,7 @@ namespace {
       throwExceptionOnFailure( checkIfEqual< double >( interfaceStateVars, bulkStateVars, 1e-10 ),
                                materialName + ": interface state variables do not match bulk state variables." );
 
-      const Marmot::FastorStandardTensors::Tensor3d normalTensor( normal );
+      const Marmot::Math::FastorTensors::Tensor3d normalTensor( normal );
       auto [expectedZ, expectedQ, expectedH, expectedY] = Marmot::Materials::InterfaceMaterialHelperFunctions::
         calculateInterfaceMaterialParameters( normalTensor, bulkTangent );
 
@@ -255,7 +255,7 @@ namespace {
   void testUnitModulusOverloadMatchesStiffnessOverload()
   {
     // The (normal, nu) overload is the (normal, C) overload for the unit-modulus isotropic stiffness
-    using Marmot::FastorStandardTensors::Tensor3d;
+    using Marmot::Math::FastorTensors::Tensor3d;
     using Marmot::Materials::InterfaceMaterialHelperFunctions::calculateInterfaceMaterialParameters;
 
     const double normals[3][3] = { { 0., 0., 1. },
@@ -270,7 +270,7 @@ namespace {
     for ( const auto& normalArray : normals ) {
       for ( const double nu : poisson ) {
         const Tensor3d         normal( normalArray );
-        const Marmot::Matrix6d stiffness = Marmot::ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( 1.0,
+        const Marmot::Math::Matrix6d stiffness = Marmot::ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( 1.0,
                                                                                                                nu );
 
         const auto [Z1, Q1, H1, Y1] = calculateInterfaceMaterialParameters( normal, nu );

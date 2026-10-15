@@ -30,14 +30,14 @@ namespace Marmot::Materials {
       double                                                 tStartDays,
       double                                                 dTimeDays,
       double                                                 amplificationFactor,
-      const Marmot::Matrix6d&                                flowUnitCompliance,
-      const Marmot::Vector6d&                                stressOld,
+      const Marmot::Math::Matrix6d&                                flowUnitCompliance,
+      const Marmot::Math::Vector6d&                                stressOld,
       const Parameters&                                      parameters,
       const KelvinChainProperties&                           kelvinChainProperties,
       const Eigen::Ref< const KelvinChain::StateVarMatrix >& kelvinStateVars )
     {
 
-      Vector6d                     dECreep = Vector6d::Zero();
+      Marmot::Math::Vector6d                     dECreep = Marmot::Math::Vector6d::Zero();
       UniaxialComplianceComponents complianceComponents;
 
       const double v = solidifiedVolume( tStartDays + dTimeDays / 2., parameters );

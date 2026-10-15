@@ -5,7 +5,7 @@
 #include "Marmot/MarmotConstants.h"
 
 using namespace Marmot::Testing;
-using namespace Marmot::NumericalAlgorithms::Differentiation;
+using namespace Marmot::Math::NumericalDifferentiation;
 
 // test numeric differentiation for scalar functions
 void testNumericDifferentiationForScalars()
@@ -44,7 +44,7 @@ void testNumericalDifferntiationForVectorValuedFunctions()
   auto J_central = centralDifference( vector_func, X );
   auto df_dx_    = 2. * 3. * X.array().pow( 2.0 ).matrix() + 10. * ( -X.array().sin().matrix() );
 
-  Matrix3d target = Matrix3d::Zero();
+  Marmot::Math::Matrix3d target = Marmot::Math::Matrix3d::Zero();
   target( 0, 0 )  = df_dx_( 0 );
   target( 1, 1 )  = df_dx_( 1 );
   target( 2, 2 )  = df_dx_( 2 );

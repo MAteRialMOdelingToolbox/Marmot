@@ -1,8 +1,7 @@
 #include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotFastorTensorBasics.h"
 
-namespace Marmot {
-  namespace ContinuumMechanics::TensorUtility {
+namespace Marmot::Math::Tensors {
     Eigen::Matrix3d dyadicProduct( const Eigen::Vector3d& vector1, const Eigen::Vector3d& vector2 )
     {
       Eigen::Matrix3d dyade;
@@ -14,5 +13,4 @@ namespace Marmot {
       return dyade;
     }
 
-  } // namespace ContinuumMechanics::TensorUtility
-} // namespace Marmot
+} // namespace Marmot::Math::Tensors

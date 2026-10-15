@@ -3,8 +3,7 @@
 #include <stdexcept>
 #include <vector>
 
-namespace Marmot {
-  namespace NumericalAlgorithms::Integration {
+namespace Marmot::Math::Integration {
 
     double integrateScalarFunction( scalar_to_scalar_function_type     f,
                                     const std::tuple< double, double > integrationLimits,
@@ -40,5 +39,4 @@ namespace Marmot {
       }
       return val;
     }
-  } // namespace NumericalAlgorithms::Integration
-} // namespace Marmot
+} // namespace Marmot::Math::Integration

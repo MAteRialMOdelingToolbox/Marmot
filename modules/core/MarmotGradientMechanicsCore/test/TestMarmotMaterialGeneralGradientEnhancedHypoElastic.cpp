@@ -39,7 +39,7 @@ namespace {
 
     void computeStress( response& res, tangents& tan, const increment& inc ) const override
     {
-      res.stress      = Marmot::Vector6d::Zero();
+      res.stress      = Marmot::Math::Vector6d::Zero();
       res.stress( 2 ) = 5.0; // never zero, and independent of inc.dStrain
       res.KLocal( 0 ) = 0.0;
       res.c( 0 )      = 1.0;
@@ -285,7 +285,7 @@ void testComputePlaneStressThrowsWhenItCannotConverge()
   auto [mat, stateVars] = makeNeverConvergingMaterial();
 
   Mat1::increment inc;
-  inc.dStrain      = Marmot::Vector6d::Zero();
+  inc.dStrain      = Marmot::Math::Vector6d::Zero();
   inc.dStrain( 0 ) = 1e-3;
   inc.K( 0 )       = 0.0;
   inc.dK( 0 )      = 0.0;
@@ -294,7 +294,7 @@ void testComputePlaneStressThrowsWhenItCannotConverge()
 
   Mat1::response res{};
   Mat1::tangents tan;
-  res.stress    = Marmot::Vector6d::Zero();
+  res.stress    = Marmot::Math::Vector6d::Zero();
   res.KLocal    = Eigen::Vector< double, 1 >::Zero();
   res.c         = Eigen::Vector< double, 1 >::Zero();
   res.stateVars = stateVars.data();
@@ -320,7 +320,7 @@ void testGetMaximumWaveSpeedReturnsZeroForZeroDensity()
   auto [mat, stateVars] = makeNeverConvergingMaterial();
 
   Mat1::response res{};
-  res.stress    = Marmot::Vector6d::Zero();
+  res.stress    = Marmot::Math::Vector6d::Zero();
   res.KLocal    = Eigen::Vector< double, 1 >::Zero();
   res.c         = Eigen::Vector< double, 1 >::Zero();
   res.stateVars = stateVars.data();
@@ -344,7 +344,7 @@ void testGetMaximumWaveSpeedToleratesNullStateVars()
   mat.stateLayout.finalize();
 
   Mat1::response res{};
-  res.stress    = Marmot::Vector6d::Zero();
+  res.stress    = Marmot::Math::Vector6d::Zero();
   res.KLocal    = Eigen::Vector< double, 1 >::Zero();
   res.c         = Eigen::Vector< double, 1 >::Zero();
   res.stateVars = nullptr;

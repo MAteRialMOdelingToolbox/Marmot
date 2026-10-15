@@ -48,7 +48,7 @@ namespace Marmot::Materials {
 
   protected:
     void computeStressAD( state3DAD&                 state,
-                          const Marmot::Vector6dual& dStrain,
+                          const Marmot::Math::Vector6dual& dStrain,
                           const timeInfo&            timeInfo ) const override;
   };
 } // namespace Marmot::Materials

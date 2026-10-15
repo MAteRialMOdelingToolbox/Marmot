@@ -8,7 +8,7 @@ namespace Marmot {
     namespace Spatial3D {
       namespace Tetra4 {
 
-        NSized N( const Vector3d& xi )
+        NSized N( const Marmot::Math::Vector3d& xi )
         {
           /*
            *            xi(1)
@@ -39,7 +39,7 @@ namespace Marmot {
 
           return N_;
         }
-        dNdXiSized dNdXi( const Vector3d& xi )
+        dNdXiSized dNdXi( const Marmot::Math::Vector3d& xi )
         {
           dNdXiSized dNdXi_;
 
@@ -72,7 +72,7 @@ namespace Marmot {
       } // namespace Tetra4
       namespace Tetra10 {
 
-        NSized N( const Vector3d& xi )
+        NSized N( const Marmot::Math::Vector3d& xi )
         {
           /*
            *            xi(1)
@@ -109,7 +109,7 @@ namespace Marmot {
 
           return N_;
         }
-        dNdXiSized dNdXi( const Vector3d& xi )
+        dNdXiSized dNdXi( const Marmot::Math::Vector3d& xi )
         {
           dNdXiSized dNdXi_;
 
@@ -182,7 +182,7 @@ namespace Marmot {
 
       namespace Hexa8 {
 
-        NSized N( const Vector3d& xi )
+        NSized N( const Marmot::Math::Vector3d& xi )
         {
           /*
            *        (8)________(7)
@@ -217,7 +217,7 @@ namespace Marmot {
           N_ *= 1. / 8;
           return N_;
         }
-        dNdXiSized dNdXi( const Vector3d& xi )
+        dNdXiSized dNdXi( const Marmot::Math::Vector3d& xi )
         {
           dNdXiSized dNdXi_;
 
@@ -292,7 +292,7 @@ namespace Marmot {
       } // end of namespace Hexa8
 
       namespace Hexa20 {
-        NSized N( const Vector3d& xi )
+        NSized N( const Marmot::Math::Vector3d& xi )
         {
           /*
            *           (8)_____(15)_____(7)
@@ -343,7 +343,7 @@ namespace Marmot {
           // clang-format on
           return N_;
         }
-        dNdXiSized dNdXi( const Vector3d& xi )
+        dNdXiSized dNdXi( const Marmot::Math::Vector3d& xi )
         {
           dNdXiSized dNdXi_;
 
@@ -414,26 +414,26 @@ namespace Marmot {
           return dNdXi_;
         }
 
-        Vector8i getBoundaryElementIndices( int faceID )
+        Marmot::Math::Vector8i getBoundaryElementIndices( int faceID )
         {
           switch ( faceID ) {
           case 1: {
-            return ( Vector8i() << 3, 2, 1, 0, 10, 9, 8, 11 ).finished();
+            return ( Marmot::Math::Vector8i() << 3, 2, 1, 0, 10, 9, 8, 11 ).finished();
           }
           case 2: {
-            return ( Vector8i() << 4, 5, 6, 7, 12, 13, 14, 15 ).finished();
+            return ( Marmot::Math::Vector8i() << 4, 5, 6, 7, 12, 13, 14, 15 ).finished();
           }
           case 3: {
-            return ( Vector8i() << 0, 1, 5, 4, 8, 17, 12, 16 ).finished();
+            return ( Marmot::Math::Vector8i() << 0, 1, 5, 4, 8, 17, 12, 16 ).finished();
           }
           case 4: {
-            return ( Vector8i() << 6, 5, 1, 2, 13, 17, 9, 18 ).finished();
+            return ( Marmot::Math::Vector8i() << 6, 5, 1, 2, 13, 17, 9, 18 ).finished();
           }
           case 5: {
-            return ( Vector8i() << 7, 6, 2, 3, 14, 18, 10, 19 ).finished();
+            return ( Marmot::Math::Vector8i() << 7, 6, 2, 3, 14, 18, 10, 19 ).finished();
           }
           case 6: {
-            return ( Vector8i() << 4, 7, 3, 0, 15, 19, 11, 16 ).finished();
+            return ( Marmot::Math::Vector8i() << 4, 7, 3, 0, 15, 19, 11, 16 ).finished();
           }
           default: {
             throw std::invalid_argument( "Hexa8: invalid face ID specifed" );

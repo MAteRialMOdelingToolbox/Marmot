@@ -117,7 +117,7 @@ namespace Marmot::Materials {
     const ContinuumMechanics::FiniteStrain::Viscoelasticity::MaxwellProperties maxwellProperties;
 
     /// @brief Initial compliance tensor used for viscoelastic stress update.
-    FastorStandardTensors::Tensor3333d initialCompliance;
+    Marmot::Math::FastorTensors::Tensor3333d initialCompliance;
 
     /// @brief Define the layout of persistent state variables.
     void initializeStateLayout()
@@ -133,10 +133,10 @@ namespace Marmot::Materials {
      * @return Tuple containing energy density and first, second and third derivatives.
      */
     std::tuple< double,
-                FastorStandardTensors::Tensor33d,
-                FastorStandardTensors::Tensor3333d,
-                FastorStandardTensors::Tensor333333d >
-    computeEnergyDensityAndDerivatives( const FastorStandardTensors::Tensor33d& C ) const;
+                Marmot::Math::FastorTensors::Tensor33d,
+                Marmot::Math::FastorTensors::Tensor3333d,
+                Marmot::Math::FastorTensors::Tensor333333d >
+    computeEnergyDensityAndDerivatives( const Marmot::Math::FastorTensors::Tensor33d& C ) const;
   };
 
 } // namespace Marmot::Materials

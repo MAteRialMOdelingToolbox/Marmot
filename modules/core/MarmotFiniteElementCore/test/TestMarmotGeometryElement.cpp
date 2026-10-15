@@ -5,7 +5,7 @@
 
 using namespace Marmot;
 using namespace Marmot::Testing;
-namespace NumDiff = Marmot::NumericalAlgorithms::Differentiation;
+namespace NumDiff = Marmot::Math::NumericalDifferentiation;
 
 // ---------------------------------------------------------------------------------------------
 // Tetra4 / Tetra10: neither is used by any element tested elsewhere in this codebase, so their

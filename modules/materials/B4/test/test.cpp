@@ -93,13 +93,13 @@ void testB4()
   solver.solve();
 
   // expected stress
-  Marmot::Vector6d stressTarget;
+  Marmot::Math::Vector6d stressTarget;
   stressTarget << 0.377092, 0.377092, 0.150837, 0., 0., 0.;
 
   // read history
   auto history = solver.getHistory();
   // get computed stress
-  Marmot::Vector6d stress = history.back().stress;
+  Marmot::Math::Vector6d stress = history.back().stress;
 
   // Compare the computed stress to the expected stress and throw an exception if they differ
   Marmot::Testing::throwExceptionOnFailure( Marmot::Testing::checkIfEqual< double >( stress, stressTarget, 1e-6 ),

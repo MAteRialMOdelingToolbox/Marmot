@@ -7,8 +7,8 @@
 
 using namespace Marmot::Testing;
 using namespace Marmot::Materials;
-using namespace Marmot::FastorStandardTensors;
-using namespace Marmot::FastorIndices;
+using namespace Marmot::Math::FastorTensors;
+using namespace Marmot::Math::Indices;
 
 void testSetup( const std::string& testName,
                 const Tensor33d&   inputF,
@@ -129,7 +129,7 @@ void testSetup( const std::string& testName,
 // Test I-1: Undeformed configuration
 void testUndeformedResponse()
 {
-  Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+  Tensor33d inputF = Marmot::Math::FastorTensors::Spatial3D::I;
   Tensor33d stressTarget( 0.0 );
   testSetup( "I-1: Undeformed configuration", inputF, stressTarget );
 }
@@ -138,7 +138,7 @@ void testDeformationResponse()
 {
   // Test I-2a: Finite strain simple shear load case
   {
-    Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+    Tensor33d inputF = Marmot::Math::FastorTensors::Spatial3D::I;
     inputF( 1, 0 ) += 0.2;
 
     Tensor33d stressTarget( 0.0 );
@@ -153,7 +153,7 @@ void testDeformationResponse()
 
   // Test I-2b: Small strain simple shear load case
   {
-    Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+    Tensor33d inputF = Marmot::Math::FastorTensors::Spatial3D::I;
     inputF( 1, 0 ) += 1e-06;
 
     Tensor33d stressTarget( 0.0 );
@@ -168,7 +168,7 @@ void testDeformationResponse()
 
   // Test I-2c: Hydrostatic load case
   {
-    Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+    Tensor33d inputF = Marmot::Math::FastorTensors::Spatial3D::I;
     inputF( 0, 0 ) += 0.02;
     inputF( 1, 1 ) += 0.02;
     inputF( 2, 2 ) += 0.02;
@@ -209,7 +209,7 @@ void testDeformationResponse()
 // Test I-3: Computation of the algorithmic tangent
 void testAlgorithmicTangent()
 {
-  Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+  Tensor33d inputF = Marmot::Math::FastorTensors::Spatial3D::I;
   inputF( 0, 0 ) += 0.01;
   inputF( 1, 1 ) += 0.02;
   inputF( 2, 2 ) += 0.03;
@@ -361,7 +361,7 @@ void testComputeStressExplicitMatchesComputeStress()
   CompressibleNeoHooke matA = makeMaterial();
   CompressibleNeoHooke matB = makeMaterial();
 
-  Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+  Tensor33d inputF = Marmot::Math::FastorTensors::Spatial3D::I;
   inputF( 0, 1 ) += 0.05;
 
   CompressibleNeoHooke::Deformation< 3 >          def     = { inputF };
@@ -383,7 +383,7 @@ void testComputeStressWithEigenDeformation()
 {
   CompressibleNeoHooke mat = makeMaterial();
 
-  Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+  Tensor33d inputF = Marmot::Math::FastorTensors::Spatial3D::I;
   inputF( 0, 0 )   = 1.01;
   inputF( 1, 1 )   = 1.02;
   inputF( 2, 2 )   = 0.95;
@@ -435,7 +435,7 @@ void testComputePlaneStrainMatchesComputeStress()
 {
   CompressibleNeoHooke mat = makeMaterial();
 
-  Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+  Tensor33d inputF = Marmot::Math::FastorTensors::Spatial3D::I;
   inputF( 0, 0 )   = 1.02;
   inputF( 1, 1 )   = 0.99;
   inputF( 2, 2 )   = 1.0; // plane strain: no out-of-plane stretch
@@ -549,7 +549,7 @@ void testGetMaximumWaveSpeedMatchesAnalyticalTangentAtIdentity()
   std::array< double, 3 > propsWithDensity = { 3500, 1500, 2400 };
   CompressibleNeoHooke    mat( propsWithDensity.data(), 3, 1 );
 
-  Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+  Tensor33d inputF = Marmot::Math::FastorTensors::Spatial3D::I;
 
   CompressibleNeoHooke::Deformation< 3 >          def     = { inputF };
   CompressibleNeoHooke::TimeIncrement             timeInc = { 0, 0.1 };

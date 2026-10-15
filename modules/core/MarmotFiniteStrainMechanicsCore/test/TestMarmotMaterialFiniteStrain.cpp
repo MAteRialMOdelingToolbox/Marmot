@@ -7,7 +7,7 @@
 
 using namespace Marmot;
 using namespace Marmot::Testing;
-using namespace Marmot::FastorStandardTensors;
+using namespace Marmot::Math::FastorTensors;
 
 namespace {
 
@@ -87,7 +87,7 @@ void testGetMaximumWaveSpeedCopiesNonEmptyStateVars()
   MarmotMaterialFiniteStrain::ConstitutiveResponse< 3 > res;
   res.stateVars = stateVars.data();
 
-  const Tensor33d F = Marmot::FastorStandardTensors::Spatial3D::I;
+  const Tensor33d F = Marmot::Math::FastorTensors::Spatial3D::I;
 
   const double waveSpeed = mat.getMaximumWaveSpeed( stateVars.data(), F );
 

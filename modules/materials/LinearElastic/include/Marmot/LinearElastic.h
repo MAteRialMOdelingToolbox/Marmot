@@ -156,11 +156,11 @@ namespace Marmot::Materials {
      * It is calculated by the functions implemented in *MarmotElasticity.h*.
      */
 
-    Matrix6d globalStiffnessTensor;
+    Marmot::Math::Matrix6d globalStiffnessTensor;
 
     void computeStress( state3D&                state,
-                        Marmot::Matrix6d&       dStressDDStrain,
-                        const Marmot::Vector6d& dStrain,
+                        Marmot::Math::Matrix6d&       dStressDDStrain,
+                        const Marmot::Math::Vector6d& dStrain,
                         const timeInfo&         timeInfo ) const override;
   };
 } // namespace Marmot::Materials
