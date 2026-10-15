@@ -19,8 +19,8 @@ using namespace Marmot::Testing;
 Marmot::Math::Matrix6d create_C_Matrix()
 {
   // Definition of C (isotropic material)
-  double           E  = 1000;
-  double           nu = 0.25;
+  double                 E  = 1000;
+  double                 nu = 0.25;
   Marmot::Math::Matrix6d C  = stiffnessTensor( E, nu );
   return C;
 }

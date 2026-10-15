@@ -144,7 +144,8 @@ namespace Marmot::Discretizations::Cells {
     static constexpr int idxU = 0;                    ///< first index of the displacement block
     static constexpr int idxN = idxU + bsU;           ///< first index of the nonlocal block
 
-    using MaterialPoint = Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint< nDim >; ///< consumed point type
+    using MaterialPoint = Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint<
+      nDim >;                                                         ///< consumed point type
 
     using NSized    = typename GeometryCell::NSized;                  ///< shape function vector of the geometry
     using dNdXSized = typename GeometryCell::dNdXSized;               ///< shape function gradients of the geometry
@@ -251,7 +252,8 @@ namespace Marmot::Discretizations::Cells {
      * @param[in] materialPoints The material points.
      * @throws std::invalid_argument if a point is not a GradientEnhancedFiniteStrainMaterialPoint of this dimension.
      */
-    void assignMaterialPoints( const std::vector< Marmot::Discretizations::MaterialPoints::MaterialPoint* >& materialPoints );
+    void assignMaterialPoints(
+      const std::vector< Marmot::Discretizations::MaterialPoints::MaterialPoint* >& materialPoints );
 
     /**
      * @brief Assemble the internal force vector and its tangent from the material points.
@@ -403,7 +405,8 @@ namespace Marmot::Discretizations::Cells {
     static std::vector< int > permutationPattern;
 
     if ( permutationPattern.empty() )
-      permutationPattern = Marmot::Discretizations::Elements::makeBlockedLayoutPermutationPattern( getNodeFields(), _fields );
+      permutationPattern = Marmot::Discretizations::Elements::makeBlockedLayoutPermutationPattern( getNodeFields(),
+                                                                                                   _fields );
 
     return permutationPattern;
   }
@@ -561,7 +564,8 @@ namespace Marmot::Discretizations::Cells {
       break;
     }
     default: {
-      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid BodyLoadType specified" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": invalid BodyLoadType specified" );
     }
     }
   }
@@ -630,7 +634,8 @@ namespace Marmot::Discretizations::Cells {
       break;
     }
     default: {
-      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoadType specified" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": invalid DistributedLoadType specified" );
     }
     }
   }
@@ -654,14 +659,18 @@ namespace Marmot::Discretizations::Cells {
    */
   template < int nDim, int nNodes >
   class LagrangianGradientEnhancedFiniteStrainCell
-    : public GradientEnhancedFiniteStrainCell< nDim,
-                                               nNodes,
-                                               Marmot::Discretizations::Cells::Cell,
-                                               Marmot::Discretizations::Cells::LagrangianCellGeometry< nDim, nNodes > > {
+    : public GradientEnhancedFiniteStrainCell<
+        nDim,
+        nNodes,
+        Marmot::Discretizations::Cells::Cell,
+        Marmot::Discretizations::Cells::LagrangianCellGeometry< nDim, nNodes > > {
 
-    using Geometry      = Marmot::Discretizations::Cells::LagrangianCellGeometry< nDim, nNodes >;                           ///< cell geometry
-    using PhysicsParent = GradientEnhancedFiniteStrainCell< nDim, nNodes, Marmot::Discretizations::Cells::Cell, Geometry >; ///< physics base
-                                                                                                  ///< class
+    using Geometry      = Marmot::Discretizations::Cells::LagrangianCellGeometry< nDim, nNodes >; ///< cell geometry
+    using PhysicsParent = GradientEnhancedFiniteStrainCell< nDim,
+                                                            nNodes,
+                                                            Marmot::Discretizations::Cells::Cell,
+                                                            Geometry >; ///< physics base
+                                                                        ///< class
 
   public:
     /**
@@ -683,11 +692,17 @@ namespace Marmot::Discretizations::Cells {
    */
   template < int nDim, int nNodes, int order >
   class BSplineGradientEnhancedFiniteStrainCell
-    : public GradientEnhancedFiniteStrainCell< nDim, nNodes, Marmot::Discretizations::Cells::Cell, Marmot::Discretizations::Cells::BSplineCellGeometry< nDim, order > > {
+    : public GradientEnhancedFiniteStrainCell< nDim,
+                                               nNodes,
+                                               Marmot::Discretizations::Cells::Cell,
+                                               Marmot::Discretizations::Cells::BSplineCellGeometry< nDim, order > > {
 
-    using Geometry      = Marmot::Discretizations::Cells::BSplineCellGeometry< nDim, order >;                               ///< cell geometry
-    using PhysicsParent = GradientEnhancedFiniteStrainCell< nDim, nNodes, Marmot::Discretizations::Cells::Cell, Geometry >; ///< physics base
-                                                                                                  ///< class
+    using Geometry      = Marmot::Discretizations::Cells::BSplineCellGeometry< nDim, order >; ///< cell geometry
+    using PhysicsParent = GradientEnhancedFiniteStrainCell< nDim,
+                                                            nNodes,
+                                                            Marmot::Discretizations::Cells::Cell,
+                                                            Geometry >; ///< physics base
+                                                                        ///< class
 
   public:
     /**

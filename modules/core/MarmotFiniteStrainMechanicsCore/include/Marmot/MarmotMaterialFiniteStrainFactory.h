@@ -43,7 +43,9 @@ namespace Marmot::Registry {
   public:
     /// Factory function type: creates a Marmot::Materials::MaterialFiniteStrain from properties and a material number.
     using materialFactoryFunction = std::function<
-      Marmot::Materials::MaterialFiniteStrain*( const double* materialProperties, int nMaterialProperties, int materialNumber ) >;
+      Marmot::Materials::MaterialFiniteStrain*( const double* materialProperties,
+                                                int           nMaterialProperties,
+                                                int           materialNumber ) >;
 
     MaterialFiniteStrainFactory() = delete;
 
@@ -56,9 +58,9 @@ namespace Marmot::Registry {
      * @return Pointer to the created Marmot::Materials::MaterialFiniteStrain instance.
      */
     static Marmot::Materials::MaterialFiniteStrain* createMaterial( const std::string& materialName,
-                                                       const double*      materialProperties,
-                                                       int                nMaterialProperties,
-                                                       int                materialNumber );
+                                                                    const double*      materialProperties,
+                                                                    int                nMaterialProperties,
+                                                                    int                materialNumber );
 
     /**
      * @brief Register a material type with its name.
@@ -74,8 +76,11 @@ namespace Marmot::Registry {
 
       assert( map.find( materialName ) == map.end() && "Material already registered!" );
 
-      map[materialName] = []( const double* materialProperties, int nMaterialProperties, int materialNumber )
-        -> Marmot::Materials::MaterialFiniteStrain* { return new T( materialProperties, nMaterialProperties, materialNumber ); };
+      map[materialName] = []( const double* materialProperties,
+                              int           nMaterialProperties,
+                              int           materialNumber ) -> Marmot::Materials::MaterialFiniteStrain* {
+        return new T( materialProperties, nMaterialProperties, materialNumber );
+      };
       return true;
     }
 

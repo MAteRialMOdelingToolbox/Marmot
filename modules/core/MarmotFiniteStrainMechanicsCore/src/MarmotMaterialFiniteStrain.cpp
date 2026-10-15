@@ -29,11 +29,12 @@ void applyEigenDeformationToTangent_( Fastor::Tensor< double, 3, 3, 3, 3 >& dT2_
     }
   }
 }
-void Marmot::Materials::MaterialFiniteStrain::computeStress( ConstitutiveResponse< 3 >&                  response,
-                                                AlgorithmicModuli< 3 >&                     tangents,
-                                                const Deformation< 3 >&                     deformation,
-                                                const TimeIncrement&                        timeIncrement,
-                                                const std::tuple< double, double, double >& eigenDeformation ) const
+void Marmot::Materials::MaterialFiniteStrain::computeStress(
+  ConstitutiveResponse< 3 >&                  response,
+  AlgorithmicModuli< 3 >&                     tangents,
+  const Deformation< 3 >&                     deformation,
+  const TimeIncrement&                        timeIncrement,
+  const std::tuple< double, double, double >& eigenDeformation ) const
 {
   // TODO: Think about if we simply modify the input increment.
 
@@ -49,9 +50,9 @@ void Marmot::Materials::MaterialFiniteStrain::computeStress( ConstitutiveRespons
 }
 
 void Marmot::Materials::MaterialFiniteStrain::computePlaneStrain( ConstitutiveResponse< 3 >& response,
-                                                     AlgorithmicModuli< 3 >&    algorithmicModuli,
-                                                     const Deformation< 3 >&    deformation,
-                                                     const TimeIncrement&       timeIncrement ) const
+                                                                  AlgorithmicModuli< 3 >&    algorithmicModuli,
+                                                                  const Deformation< 3 >&    deformation,
+                                                                  const TimeIncrement&       timeIncrement ) const
 {
   return computeStress( response, algorithmicModuli, deformation, timeIncrement );
 }
@@ -67,9 +68,9 @@ void Marmot::Materials::MaterialFiniteStrain::computePlaneStrain(
 }
 
 void Marmot::Materials::MaterialFiniteStrain::computePlaneStress( ConstitutiveResponse< 2 >& response,
-                                                     AlgorithmicModuli< 2 >&    algorithmicModuli,
-                                                     const Deformation< 2 >&    deformation,
-                                                     const TimeIncrement&       timeIncrement ) const
+                                                                  AlgorithmicModuli< 2 >&    algorithmicModuli,
+                                                                  const Deformation< 2 >&    deformation,
+                                                                  const TimeIncrement&       timeIncrement ) const
 {
   throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "Not yet implemented." );
 }

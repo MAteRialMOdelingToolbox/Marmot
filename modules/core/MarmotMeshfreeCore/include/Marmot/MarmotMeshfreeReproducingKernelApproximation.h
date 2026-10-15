@@ -111,10 +111,9 @@ namespace Marmot::Discretizations::Meshfree {
      * @return @f$ \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_A) @f$, of size
      *         @f$ \binom{d + n}{d} @f$.
      */
-    static Eigen::VectorXd computeHVector(
-      const Eigen::VectorXd&                                    globalCoord,
-      const std::vector< const KernelFunction* >& coveringShapeFunctions,
-      int                                                       completenessOrder );
+    static Eigen::VectorXd computeHVector( const Eigen::VectorXd&                      globalCoord,
+                                           const std::vector< const KernelFunction* >& coveringShapeFunctions,
+                                           int                                         completenessOrder );
 
     /**
      * @brief Compute the gradient @f$ \partial \boldsymbol{H} / \partial x_i @f$ of the monomial basis vector.
@@ -130,10 +129,9 @@ namespace Marmot::Discretizations::Meshfree {
      * @return Matrix of size @f$ \binom{d + n}{d} \times d @f$; column @f$ i @f$ holds
      *         @f$ \partial \boldsymbol{H} / \partial x_i @f$.
      */
-    static Eigen::MatrixXd computeHVectorGradient(
-      const Eigen::VectorXd&                                    globalCoord,
-      const std::vector< const KernelFunction* >& coveringShapeFunctions,
-      int                                                       completenessOrder );
+    static Eigen::MatrixXd computeHVectorGradient( const Eigen::VectorXd&                      globalCoord,
+                                                   const std::vector< const KernelFunction* >& coveringShapeFunctions,
+                                                   int                                         completenessOrder );
 
     /**
      * @brief Compute the moment matrix
@@ -145,10 +143,9 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] completenessOrder      Completeness order @f$ n @f$.
      * @return The symmetric moment matrix, of size @f$ \binom{d + n}{d} \times \binom{d + n}{d} @f$.
      */
-    static Eigen::MatrixXd computeMMatrix(
-      const Eigen::VectorXd&                                    globalCoord,
-      const std::vector< const KernelFunction* >& coveringShapeFunctions,
-      int                                                       completenessOrder );
+    static Eigen::MatrixXd computeMMatrix( const Eigen::VectorXd&                      globalCoord,
+                                           const std::vector< const KernelFunction* >& coveringShapeFunctions,
+                                           int                                         completenessOrder );
 
     /**
      * @brief Compute the moment matrix @f$ \boldsymbol{M} @f$ and its gradients @f$ \boldsymbol{M}_{,i} @f$.
@@ -163,9 +160,9 @@ namespace Marmot::Discretizations::Meshfree {
      * @return Pair of @f$ \boldsymbol{M} @f$ and the @f$ d @f$ matrices @f$ \boldsymbol{M}_{,i} @f$.
      */
     static std::pair< Eigen::MatrixXd, std::vector< Eigen::MatrixXd > > computeMMatrixAndGradient(
-      const Eigen::VectorXd&                                    globalCoord,
+      const Eigen::VectorXd&                      globalCoord,
       const std::vector< const KernelFunction* >& coveringShapeFunctions,
-      int                                                       completenessOrder );
+      int                                         completenessOrder );
 
     /**
      * @brief Get @f$ \boldsymbol{H}_0 = \boldsymbol{H}(\boldsymbol{0}) = [1, 0, \dots, 0]^T @f$.
@@ -249,7 +246,7 @@ namespace Marmot::Discretizations::Meshfree {
      * @return Indices (into @p kernelFunctions) of the kernels with @f$ |\phi_A(\boldsymbol{x})| > 10^{-14} @f$.
      */
     const std::vector< int > findCoveringKernelFunctionIndices(
-      const double*                                             coord,
+      const double*                               coord,
       const std::vector< const KernelFunction* >& kernelFunctions ) const;
 
   public:
@@ -271,7 +268,7 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[out] shapeFunctionValues Shape function values (length @f$ n_\mathrm{c} @f$); zero for candidates that
      *                                 do not cover @f$ \boldsymbol{x} @f$.
      */
-    virtual void computeShapeFunctions( const double*                                             coord,
+    virtual void computeShapeFunctions( const double*                               coord,
                                         const std::vector< const KernelFunction* >& kernelFunctions,
                                         double* shapeFunctionValues ) const override;
 
@@ -282,10 +279,9 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[out] shapeFunctionValueGradients Not written.
      * @throws std::runtime_error always.
      */
-    virtual void computeShapeFunctionGradients(
-      const double*                                             coord,
-      const std::vector< const KernelFunction* >& kernelFunctions,
-      double*                                                   shapeFunctionValueGradients ) const override;
+    virtual void computeShapeFunctionGradients( const double*                               coord,
+                                                const std::vector< const KernelFunction* >& kernelFunctions,
+                                                double* shapeFunctionValueGradients ) const override;
 
     /**
      * @brief Compute the RK shape function values and their explicit (exact) gradients @f$ \Psi_{A,i} @f$.
@@ -297,11 +293,10 @@ namespace Marmot::Discretizations::Meshfree {
      *                                 (entry @f$ i + d A @f$ is @f$ \Psi_{A,i} @f$); zero for non-covering candidates.
      * @throws std::runtime_error if the basis is empty (negative completeness order).
      */
-    virtual void computeShapeFunctionsAndGradients(
-      const double*                                             coord,
-      const std::vector< const KernelFunction* >& kernelFunctions,
-      double*                                                   shapeFunctionValues,
-      double*                                                   shapeFunctionValueGradients_ColMajor ) const override;
+    virtual void computeShapeFunctionsAndGradients( const double*                               coord,
+                                                    const std::vector< const KernelFunction* >& kernelFunctions,
+                                                    double*                                     shapeFunctionValues,
+                                                    double* shapeFunctionValueGradients_ColMajor ) const override;
   };
 
 } // namespace Marmot::Discretizations::Meshfree

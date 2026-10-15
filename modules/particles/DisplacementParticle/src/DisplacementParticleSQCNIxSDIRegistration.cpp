@@ -29,16 +29,15 @@
 namespace {
   using namespace Marmot::Discretizations::Meshfree;
 
-
   const static bool DisplacementParticleSQCNIxSDI_PlaneStrain_Quad_isRegistered = Marmot::Registry::ParticleFactory::
     registerParticle( "DisplacementSQCNIxSDI/PlaneStrain/Quad",
-                      []( int                                                  cellID,
-                          const double*                                        nodeCoordinates,
-                          int                                                  sizeNodeCoordinates,
-                          double                                               volume,
-                          const std::string&                                   materialName,
-                          const double*                                        materialProperties,
-                          int                                                  sizeMaterialProperties,
+                      []( int                                                     cellID,
+                          const double*                                           nodeCoordinates,
+                          int                                                     sizeNodeCoordinates,
+                          double                                                  volume,
+                          const std::string&                                      materialName,
+                          const double*                                           materialProperties,
+                          int                                                     sizeMaterialProperties,
                           const Marmot::Discretizations::Meshfree::Approximation& approximation )
                         -> Marmot::Discretizations::Meshfree::Particle* {
                         return new DisplacementParticleSQCNIxSDI<
@@ -56,13 +55,13 @@ namespace {
 
   const static bool DisplacementParticleSQCNIxSDI_3D_Hexa_isRegistered = Marmot::Registry::ParticleFactory::
     registerParticle( "DisplacementSQCNIxSDI/3D/Hexa",
-                      []( int                                                  cellID,
-                          const double*                                        nodeCoordinates,
-                          int                                                  sizeNodeCoordinates,
-                          double                                               volume,
-                          const std::string&                                   materialName,
-                          const double*                                        materialProperties,
-                          int                                                  sizeMaterialProperties,
+                      []( int                                                     cellID,
+                          const double*                                           nodeCoordinates,
+                          int                                                     sizeNodeCoordinates,
+                          double                                                  volume,
+                          const std::string&                                      materialName,
+                          const double*                                           materialProperties,
+                          int                                                     sizeMaterialProperties,
                           const Marmot::Discretizations::Meshfree::Approximation& approximation )
                         -> Marmot::Discretizations::Meshfree::Particle* {
                         return new DisplacementParticleSQCNIxSDI<
@@ -80,13 +79,13 @@ namespace {
 
   const static bool DisplacementParticleRS_SNNIxSDI_3D_Hexa_isRegistered = Marmot::Registry::ParticleFactory::
     registerParticle( "DisplacementRS-SNNIxSDI/3D/Hexa",
-                      []( int                                                  cellID,
-                          const double*                                        nodeCoordinates,
-                          int                                                  sizeNodeCoordinates,
-                          double                                               volume,
-                          const std::string&                                   materialName,
-                          const double*                                        materialProperties,
-                          int                                                  sizeMaterialProperties,
+                      []( int                                                     cellID,
+                          const double*                                           nodeCoordinates,
+                          int                                                     sizeNodeCoordinates,
+                          double                                                  volume,
+                          const std::string&                                      materialName,
+                          const double*                                           materialProperties,
+                          int                                                     sizeMaterialProperties,
                           const Marmot::Discretizations::Meshfree::Approximation& approximation )
                         -> Marmot::Discretizations::Meshfree::Particle* {
                         return new DisplacementParticleSQCNIxSDI< 3, 8 >( cellID,
@@ -104,13 +103,13 @@ namespace {
 
   const static bool DisplacementParticleR_SNNIxSDI_3D_Hexa_isRegistered = Marmot::Registry::ParticleFactory::
     registerParticle( "DisplacementR-SNNIxSDI/3D/Hexa",
-                      []( int                                                  cellID,
-                          const double*                                        nodeCoordinates,
-                          int                                                  sizeNodeCoordinates,
-                          double                                               volume,
-                          const std::string&                                   materialName,
-                          const double*                                        materialProperties,
-                          int                                                  sizeMaterialProperties,
+                      []( int                                                     cellID,
+                          const double*                                           nodeCoordinates,
+                          int                                                     sizeNodeCoordinates,
+                          double                                                  volume,
+                          const std::string&                                      materialName,
+                          const double*                                           materialProperties,
+                          int                                                     sizeMaterialProperties,
                           const Marmot::Discretizations::Meshfree::Approximation& approximation )
                         -> Marmot::Discretizations::Meshfree::Particle* {
                         return new DisplacementParticleSQCNIxSDI< 3, 8 >( cellID,
@@ -127,13 +126,13 @@ namespace {
 
   const static bool DisplacementParticleSNNIxSDI_3D_Hexa_isRegistered = Marmot::Registry::ParticleFactory::
     registerParticle( "DisplacementSNNIxSDI/3D/Hexa",
-                      []( int                                                  cellID,
-                          const double*                                        nodeCoordinates,
-                          int                                                  sizeNodeCoordinates,
-                          double                                               volume,
-                          const std::string&                                   materialName,
-                          const double*                                        materialProperties,
-                          int                                                  sizeMaterialProperties,
+                      []( int                                                     cellID,
+                          const double*                                           nodeCoordinates,
+                          int                                                     sizeNodeCoordinates,
+                          double                                                  volume,
+                          const std::string&                                      materialName,
+                          const double*                                           materialProperties,
+                          int                                                     sizeMaterialProperties,
                           const Marmot::Discretizations::Meshfree::Approximation& approximation )
                         -> Marmot::Discretizations::Meshfree::Particle* {
                         return new DisplacementParticleSQCNIxSDI< 3, 8 >( cellID,

@@ -1,38 +1,28 @@
 #include "Marmot/MarmotFiniteStrainPlasticity.h"
 #include "Marmot/MarmotTensorExponential.h"
 
-namespace Marmot {
-  namespace ContinuumMechanics::FiniteStrain::Plasticity {
-    namespace FlowIntegration {
+namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrder {
 
-      namespace FirstOrder {
+  using namespace Fastor;
+  using namespace Marmot::Math::FastorTensors;
+  using namespace Marmot::Math::Indices;
 
-        using namespace Fastor;
-        using namespace Marmot::Math::FastorTensors;
-        using namespace Marmot::Math::Indices;
+  std::pair< Tensor33d, Tensor3333d > explicitIntegration( const Tensor33d& dGp )
+  {
+    const auto&              I       = Spatial3D::I;
+    const Tensor33d          dFp     = permute< Index< 1, 0 > >( I + dGp );
+    const static Tensor3333d dFp_dGp = einsum< in, Im, to_iImn >( I, I ); // TODO: Simply Transposition operator..
+    return { dFp, dFp_dGp };
+  }
 
-        std::pair< Tensor33d, Tensor3333d > explicitIntegration( const Tensor33d& dGp )
-        {
-          const auto&              I       = Spatial3D::I;
-          const Tensor33d          dFp     = permute< Index< 1, 0 > >( I + dGp );
-          const static Tensor3333d dFp_dGp = einsum< in, Im, to_iImn >( I, I ); // TODO: Simply Transposition operator..
-          return { dFp, dFp_dGp };
-        }
-
-        std::pair< Tensor33d, Tensor3333d > exponentialMap( const Tensor33d& dGp )
-        {
-          const auto [dFpT, dFpT_dGp] = Marmot::Math::TensorExponential::FirstOrder::
-            computeTensorExponential( dGp, 15, 1e-14 );
-          // clang-format off
+  std::pair< Tensor33d, Tensor3333d > exponentialMap( const Tensor33d& dGp )
+  {
+    const auto [dFpT,
+                dFpT_dGp] = Marmot::Math::TensorExponential::FirstOrder::computeTensorExponential( dGp, 15, 1e-14 );
+    // clang-format off
             return { permute< Index< 1, 0 > >      ( dFpT     ),
                      permute< Index< 1, 0, 2, 3 > >( dFpT_dGp ) };
-          // clang-format on
-        }
+    // clang-format on
+  }
 
-      } // namespace FirstOrder
-
-    }   // namespace FlowIntegration
-
-  }     // namespace ContinuumMechanics::FiniteStrain::Plasticity
-
-} // namespace Marmot
+} // namespace Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrder

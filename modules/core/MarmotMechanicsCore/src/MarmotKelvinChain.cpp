@@ -12,13 +12,13 @@ namespace Marmot::Materials {
       return ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::generateLogarithmicTimes( n, min, spacing );
     }
 
-    void evaluateKelvinChain( double         dT,
-                              Properties     elasticModuli,
-                              Properties     retardationTimes,
-                              StateVarMatrix stateVars,
-                              double&        uniaxialCompliance,
-                              Marmot::Math::Vector6d&      dStrain,
-                              const double   factor )
+    void evaluateKelvinChain( double                  dT,
+                              Properties              elasticModuli,
+                              Properties              retardationTimes,
+                              StateVarMatrix          stateVars,
+                              double&                 uniaxialCompliance,
+                              Marmot::Math::Vector6d& dStrain,
+                              const double            factor )
     {
 
       for ( int i = 0; i < retardationTimes.size(); i++ ) {
@@ -32,12 +32,12 @@ namespace Marmot::Materials {
       }
     }
 
-    void updateStateVarMatrix( double                dT,
-                               Properties            elasticModuli,
-                               Properties            retardationTimes,
-                               Ref< StateVarMatrix > stateVars,
-                               const Marmot::Math::Vector6d&       dStress,
-                               const Marmot::Math::Matrix6d&       unitComplianceMatrix )
+    void updateStateVarMatrix( double                        dT,
+                               Properties                    elasticModuli,
+                               Properties                    retardationTimes,
+                               Ref< StateVarMatrix >         stateVars,
+                               const Marmot::Math::Vector6d& dStress,
+                               const Marmot::Math::Matrix6d& unitComplianceMatrix )
     {
 
       if ( dT <= 1e-14 )

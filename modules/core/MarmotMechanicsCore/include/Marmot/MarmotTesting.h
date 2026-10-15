@@ -237,6 +237,6 @@ namespace Marmot::Testing {
    * @return `true` if the solver passes both checks, `false` otherwise.
    */
   bool spinTurbokreisel( Marmot::Materials::MaterialPointSolverHypoElastic& solver,
-                         double                                                 stressTol    = 1e-15,
-                         double                                                 stiffnessTol = 1e-15 );
+                         double                                             stressTol    = 1e-15,
+                         double                                             stiffnessTol = 1e-15 );
 } // namespace Marmot::Testing

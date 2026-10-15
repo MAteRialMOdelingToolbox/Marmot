@@ -2,10 +2,10 @@
 
 namespace Marmot::Registry {
 
-ElementFactory::ElementFactoryMap& ElementFactory::elementFactoryFunctionByName()
-{
-  static ElementFactoryMap map;
-  return map;
-}
+  ElementFactory::ElementFactoryMap& ElementFactory::elementFactoryFunctionByName()
+  {
+    static ElementFactoryMap map;
+    return map;
+  }
 
 } // namespace Marmot::Registry

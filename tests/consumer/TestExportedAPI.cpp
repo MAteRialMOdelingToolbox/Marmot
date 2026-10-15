@@ -92,9 +92,9 @@ namespace {
 
     std::unique_ptr< Marmot::Materials::MaterialHypoElastic > material(
       Marmot::Registry::MaterialHypoElasticFactory::createMaterial( "LINEARELASTIC",
-                                                                       properties.data(),
-                                                                       static_cast< int >( properties.size() ),
-                                                                       1 ) );
+                                                                    properties.data(),
+                                                                    static_cast< int >( properties.size() ),
+                                                                    1 ) );
     require( material != nullptr, "the factory must create LINEARELASTIC" );
 
     const int             nStateVars = material->getNumberOfRequiredStateVars();
@@ -103,10 +103,10 @@ namespace {
     material->setCharacteristicElementLength( 1.0 ); // the one exported member of the material interface
 
     Marmot::Materials::MaterialHypoElastic::state3D state;
-    state.stateVars                  = stateVars.data();
+    state.stateVars                        = stateVars.data();
     Marmot::Math::Matrix6d dStress_dStrain = Marmot::Math::Matrix6d::Zero();
     Marmot::Math::Vector6d dStrain         = Marmot::Math::Vector6d::Zero();
-    dStrain( 0 )                     = 1e-3;
+    dStrain( 0 )                           = 1e-3;
     material->computeStress( state, dStress_dStrain, dStrain, { 0.0, 1.0 } );
 
     const double lambda = E * nu / ( ( 1 + nu ) * ( 1 - 2 * nu ) );
@@ -123,7 +123,8 @@ namespace {
   /** @brief Creates an element through the factory, as EdelweissFE does, and checks the assembled kernels. */
   void testElementThroughFactory()
   {
-    std::unique_ptr< Marmot::Discretizations::Elements::Element > element( Marmot::Registry::ElementFactory::createElement( "CPS4", 1 ) );
+    std::unique_ptr< Marmot::Discretizations::Elements::Element > element(
+      Marmot::Registry::ElementFactory::createElement( "CPS4", 1 ) );
     require( element != nullptr, "the factory must create CPS4" );
     require( element->getNNodes() == 4 && element->getNSpatialDimensions() == 2, "CPS4 is a 4-node 2D element" );
 
@@ -132,10 +133,12 @@ namespace {
     const std::vector< double > materialProperties{ 210e3, 0.3 };
     element->assignNodeCoordinates( coordinates.data() );
     element->assignProperty(
-      Marmot::Discretizations::ElementProperties( elementProperties.data(), static_cast< int >( elementProperties.size() ) ) );
-    element->assignProperty( Marmot::Discretizations::MaterialSection( "LINEARELASTIC",
-                                                    materialProperties.data(),
-                                                    static_cast< int >( materialProperties.size() ) ) );
+      Marmot::Discretizations::ElementProperties( elementProperties.data(),
+                                                  static_cast< int >( elementProperties.size() ) ) );
+    element->assignProperty(
+      Marmot::Discretizations::MaterialSection( "LINEARELASTIC",
+                                                materialProperties.data(),
+                                                static_cast< int >( materialProperties.size() ) ) );
     std::vector< double > stateVars( element->getNumberOfRequiredStateVars(), 0.0 );
     element->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
     element->initializeYourself();

@@ -45,10 +45,10 @@ namespace Marmot::Discretizations::Cells {
    * @brief MPM background cell for finite-strain displacement material points.
    *
    * @details The cell carries the displacement field (nDim dofs per node) and consumes DisplacementMaterialPoint
-   * instances, which drive a Marmot::Materials::MaterialFiniteStrain. As usual in MPM, the grid dofs @f$ \Delta q_{Bk} @f$ are the
-   * INCREMENTS of the current step, and the material points carry the accumulated state. The cell nodes define the
-   * intermediate configuration @f$ \boldsymbol{Y} @f$ (the configuration at the beginning of the increment); the
-   * shape functions @f$ N_A @f$ and their gradients @f$ \partial N_A/\partial Y_J @f$ are evaluated once per
+   * instances, which drive a Marmot::Materials::MaterialFiniteStrain. As usual in MPM, the grid dofs @f$ \Delta q_{Bk}
+   * @f$ are the INCREMENTS of the current step, and the material points carry the accumulated state. The cell nodes
+   * define the intermediate configuration @f$ \boldsymbol{Y} @f$ (the configuration at the beginning of the increment);
+   * the shape functions @f$ N_A @f$ and their gradients @f$ \partial N_A/\partial Y_J @f$ are evaluated once per
    * material point in assignMaterialPoints(). Each material point receives
    * @f[
    *   \Delta\boldsymbol{u} = N_B\,\Delta\boldsymbol{q}_B, \qquad
@@ -106,9 +106,10 @@ namespace Marmot::Discretizations::Cells {
     static constexpr int sizeLoadVector = bsU;                   ///< number of dofs of the cell
     static constexpr int idxU           = 0;                     ///< first index of the displacement block
 
-    using MaterialPoint = Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint< nDim >; ///< the consumed material point type
+    using MaterialPoint = Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint<
+      nDim >;                                           ///< the consumed material point type
 
-    using NSized    = typename GeometryCell::NSized;                         ///< shape function vector of the geometry
+    using NSized    = typename GeometryCell::NSized;    ///< shape function vector of the geometry
     using dNdXSized = typename GeometryCell::dNdXSized; ///< shape function gradient matrix of the geometry
     using XiSized   = typename GeometryCell::XiSized;   ///< parametric coordinates
 
@@ -211,7 +212,8 @@ namespace Marmot::Discretizations::Cells {
      * @param[in] materialPoints The material points.
      * @throws std::invalid_argument if a material point is not a DisplacementMaterialPoint of dimension nDim.
      */
-    void assignMaterialPoints( const std::vector< Marmot::Discretizations::MaterialPoints::MaterialPoint* >& materialPoints );
+    void assignMaterialPoints(
+      const std::vector< Marmot::Discretizations::MaterialPoints::MaterialPoint* >& materialPoints );
 
     /**
      * @brief Assembles the internal force vector and its tangent of the hosted material points (see the class
@@ -347,7 +349,8 @@ namespace Marmot::Discretizations::Cells {
     static std::vector< int > permutationPattern;
 
     if ( permutationPattern.empty() )
-      permutationPattern = Marmot::Discretizations::Elements::makeBlockedLayoutPermutationPattern( getNodeFields(), _fields );
+      permutationPattern = Marmot::Discretizations::Elements::makeBlockedLayoutPermutationPattern( getNodeFields(),
+                                                                                                   _fields );
 
     return permutationPattern;
   }
@@ -466,7 +469,8 @@ namespace Marmot::Discretizations::Cells {
       break;
     }
     default: {
-      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid BodyLoadType specified" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": invalid BodyLoadType specified" );
     }
     }
   }
@@ -534,7 +538,8 @@ namespace Marmot::Discretizations::Cells {
       break;
     }
     default: {
-      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoadType specified" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": invalid DistributedLoadType specified" );
     }
     }
   }
@@ -558,10 +563,16 @@ namespace Marmot::Discretizations::Cells {
    */
   template < int nDim, int nNodes >
   class LagrangianDisplacementCell
-    : public DisplacementCell< nDim, nNodes, Marmot::Discretizations::Cells::Cell, Marmot::Discretizations::Cells::LagrangianCellGeometry< nDim, nNodes > > {
+    : public DisplacementCell< nDim,
+                               nNodes,
+                               Marmot::Discretizations::Cells::Cell,
+                               Marmot::Discretizations::Cells::LagrangianCellGeometry< nDim, nNodes > > {
 
-    using Geometry      = Marmot::Discretizations::Cells::LagrangianCellGeometry< nDim, nNodes >;           ///< the geometry policy
-    using PhysicsParent = DisplacementCell< nDim, nNodes, Marmot::Discretizations::Cells::Cell, Geometry >; ///< the physics base class
+    using Geometry = Marmot::Discretizations::Cells::LagrangianCellGeometry< nDim, nNodes >; ///< the geometry policy
+    using PhysicsParent = DisplacementCell< nDim,
+                                            nNodes,
+                                            Marmot::Discretizations::Cells::Cell,
+                                            Geometry >; ///< the physics base class
 
   public:
     /**
@@ -584,10 +595,16 @@ namespace Marmot::Discretizations::Cells {
    */
   template < int nDim, int nNodes, int order >
   class BSplineDisplacementCell
-    : public DisplacementCell< nDim, nNodes, Marmot::Discretizations::Cells::Cell, Marmot::Discretizations::Cells::BSplineCellGeometry< nDim, order > > {
+    : public DisplacementCell< nDim,
+                               nNodes,
+                               Marmot::Discretizations::Cells::Cell,
+                               Marmot::Discretizations::Cells::BSplineCellGeometry< nDim, order > > {
 
-    using Geometry      = Marmot::Discretizations::Cells::BSplineCellGeometry< nDim, order >;               ///< the geometry policy
-    using PhysicsParent = DisplacementCell< nDim, nNodes, Marmot::Discretizations::Cells::Cell, Geometry >; ///< the physics base class
+    using Geometry      = Marmot::Discretizations::Cells::BSplineCellGeometry< nDim, order >; ///< the geometry policy
+    using PhysicsParent = DisplacementCell< nDim,
+                                            nNodes,
+                                            Marmot::Discretizations::Cells::Cell,
+                                            Geometry >; ///< the physics base class
 
   public:
     /**

@@ -42,8 +42,8 @@ namespace Marmot::Discretizations::MaterialPoints {
    * @class Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint
    * @brief MPM material point of the finite-strain displacement formulation.
    *
-   * @details The material point carries the state of a Marmot::Materials::MaterialFiniteStrain and the kinematics of a total
-   * deformation gradient that is updated multiplicatively, increment by increment. Three configurations are
+   * @details The material point carries the state of a Marmot::Materials::MaterialFiniteStrain and the kinematics of a
+   * total deformation gradient that is updated multiplicatively, increment by increment. Three configurations are
    * distinguished: the undeformed configuration @f$ \boldsymbol{X} @f$, the intermediate configuration
    * @f$ \boldsymbol{Y} @f$ (the last accepted state, i.e., the configuration at the beginning of the current
    * increment) and the current configuration @f$ \boldsymbol{x} @f$. The deformation gradient is
@@ -93,7 +93,7 @@ namespace Marmot::Discretizations::MaterialPoints {
 
     using Material = Marmot::Materials::MaterialFiniteStrain; ///< material interface consumed by the material point
 
-    std::unique_ptr< Material > material;        ///< the finite-strain material
+    std::unique_ptr< Material > material;                     ///< the finite-strain material
 
     /**
      * @class Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::MPStateVarManager
@@ -121,15 +121,16 @@ namespace Marmot::Discretizations::MaterialPoints {
       } );
 
     public:
-      Marmot::Math::FastorTensors::TensorMap3d  u;     ///< total displacement of the last accepted state
-      Marmot::Math::FastorTensors::TensorMap3d  v;     ///< velocity
-      Marmot::Math::FastorTensors::TensorMap3d  a;     ///< acceleration
-      Marmot::Math::FastorTensors::TensorMap3d  du;    ///< displacement increment @f$ \Delta\boldsymbol{u} @f$
-      Marmot::Math::FastorTensors::TensorMap33d dx_dY; ///< incremental deformation gradient @f$ \Delta\boldsymbol{F} @f$
+      Marmot::Math::FastorTensors::TensorMap3d u;  ///< total displacement of the last accepted state
+      Marmot::Math::FastorTensors::TensorMap3d v;  ///< velocity
+      Marmot::Math::FastorTensors::TensorMap3d a;  ///< acceleration
+      Marmot::Math::FastorTensors::TensorMap3d du; ///< displacement increment @f$ \Delta\boldsymbol{u} @f$
+      Marmot::Math::FastorTensors::TensorMap33d
+        dx_dY;                                     ///< incremental deformation gradient @f$ \Delta\boldsymbol{F} @f$
       Marmot::Math::FastorTensors::TensorMap33d
         dY_dX; ///< deformation gradient of the last accepted state @f$ \boldsymbol{F}_n @f$
       Marmot::Math::FastorTensors::TensorMap33d stress;        ///< Kirchhoff stress (see computeYourself())
-      Eigen::Map< Eigen::VectorXd >       materialState; ///< state variables of the material
+      Eigen::Map< Eigen::VectorXd >             materialState; ///< state variables of the material
 
       /**
        * @brief Number of state variables required by the material point itself, without the material state.
@@ -317,7 +318,7 @@ namespace Marmot::Discretizations::MaterialPoints {
     virtual void acceptStateAndPosition()
     {
 
-      const auto&                           u_n  = state->u;
+      const auto&                                 u_n  = state->u;
       const Marmot::Math::FastorTensors::Tensor3d u_np = u_n + state->du;
 
       // TODO: make auto&
@@ -404,8 +405,8 @@ namespace Marmot::Discretizations::MaterialPoints {
      */
     virtual void setInitialCondition( const std::string& conditionName, const double* value ) override
     {
-      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": initial condition '" << conditionName
-                                                << "' is not supported" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": initial condition '"
+                                                                   << conditionName << "' is not supported" );
     };
   };
 
@@ -430,9 +431,9 @@ namespace Marmot::Discretizations::MaterialPoints {
   {
     material = std::unique_ptr< Material >(
       Marmot::Registry::MaterialFiniteStrainFactory::createMaterial( section.materialName,
-                                                                        section.materialProperties,
-                                                                        section.nMaterialProperties,
-                                                                        _mpNumber ) );
+                                                                     section.materialProperties,
+                                                                     section.nMaterialProperties,
+                                                                     _mpNumber ) );
 
     if ( !material )
       throw std::invalid_argument( Marmot::Utilities::MakeString()
@@ -462,9 +463,9 @@ namespace Marmot::Discretizations::MaterialPoints {
    * @brief Plane-strain displacement material point (registered as "Displacement/PlaneStrain").
    *
    * @details The in-plane increment is expanded to 3D (out-of-plane components of the identity), the material is
-   * evaluated by Marmot::Materials::MaterialFiniteStrain::computePlaneStrain() with the 3D deformation gradient, and the in-plane
-   * parts of @f$ \boldsymbol{\tau} @f$ and @f$ \partial\boldsymbol{\tau}/\partial\Delta\boldsymbol{F} @f$ are
-   * kept. The full 3D Kirchhoff stress is also written to the state "stress".
+   * evaluated by Marmot::Materials::MaterialFiniteStrain::computePlaneStrain() with the 3D deformation gradient, and
+   * the in-plane parts of @f$ \boldsymbol{\tau} @f$ and @f$ \partial\boldsymbol{\tau}/\partial\Delta\boldsymbol{F} @f$
+   * are kept. The full 3D Kirchhoff stress is also written to the state "stress".
    */
   class DisplacementMaterialPoint2D : public DisplacementMaterialPoint< 2 > {
 

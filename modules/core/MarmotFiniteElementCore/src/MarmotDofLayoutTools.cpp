@@ -3,57 +3,57 @@
 
 namespace Marmot::Discretizations::Elements {
 
-    using namespace std;
+  using namespace std;
 
-    const vector< vector< string > > makeNodeFieldLayout( const map< string, pair< int, int > >& fieldSizes )
+  const vector< vector< string > > makeNodeFieldLayout( const map< string, pair< int, int > >& fieldSizes )
 
-    {
-      vector< vector< string > > nodeFields;
+  {
+    vector< vector< string > > nodeFields;
 
-      int maxNumberOfNodes = 0;
+    int maxNumberOfNodes = 0;
+    for ( const auto& [field, fieldSize] : fieldSizes ) {
+      const auto& [nFieldComponents, nNodesForField] = fieldSize;
+      maxNumberOfNodes                               = max( maxNumberOfNodes, nNodesForField );
+    }
+
+    for ( int idxNode = 0; idxNode < maxNumberOfNodes; idxNode++ ) {
+      nodeFields.push_back( vector< string >() );
+
       for ( const auto& [field, fieldSize] : fieldSizes ) {
         const auto& [nFieldComponents, nNodesForField] = fieldSize;
-        maxNumberOfNodes                               = max( maxNumberOfNodes, nNodesForField );
+        if ( idxNode < nNodesForField )
+          nodeFields[idxNode].push_back( field );
       }
-
-      for ( int idxNode = 0; idxNode < maxNumberOfNodes; idxNode++ ) {
-        nodeFields.push_back( vector< string >() );
-
-        for ( const auto& [field, fieldSize] : fieldSizes ) {
-          const auto& [nFieldComponents, nNodesForField] = fieldSize;
-          if ( idxNode < nNodesForField )
-            nodeFields[idxNode].push_back( field );
-        }
-      }
-
-      return nodeFields;
     }
 
-    vector< int > makeBlockedLayoutPermutationPattern( const vector< vector< string > >&      nodeFields,
-                                                       const map< string, pair< int, int > >& fieldSizes )
-    {
+    return nodeFields;
+  }
 
-      vector< int > permutationPattern;
+  vector< int > makeBlockedLayoutPermutationPattern( const vector< vector< string > >&      nodeFields,
+                                                     const map< string, pair< int, int > >& fieldSizes )
+  {
 
-      for ( const auto& [blockedField, fieldSize] : fieldSizes ) {
+    vector< int > permutationPattern;
 
-        int currentIdx = 0;
-        for ( size_t i = 0; i < nodeFields.size(); i++ ) {
-          for ( size_t j = 0; j < nodeFields[i].size(); j++ ) {
+    for ( const auto& [blockedField, fieldSize] : fieldSizes ) {
 
-            const auto& currentNodeField                         = nodeFields[i][j];
-            const auto [nCurrentFieldComponents, nNodesForField] = fieldSizes.at( currentNodeField );
+      int currentIdx = 0;
+      for ( size_t i = 0; i < nodeFields.size(); i++ ) {
+        for ( size_t j = 0; j < nodeFields[i].size(); j++ ) {
 
-            if ( blockedField == currentNodeField )
-              for ( int component = 0; component < nCurrentFieldComponents; component++ )
-                permutationPattern.push_back( currentIdx + component );
+          const auto& currentNodeField                         = nodeFields[i][j];
+          const auto [nCurrentFieldComponents, nNodesForField] = fieldSizes.at( currentNodeField );
 
-            currentIdx += nCurrentFieldComponents;
-          }
+          if ( blockedField == currentNodeField )
+            for ( int component = 0; component < nCurrentFieldComponents; component++ )
+              permutationPattern.push_back( currentIdx + component );
+
+          currentIdx += nCurrentFieldComponents;
         }
       }
-
-      return permutationPattern;
     }
 
-  } // namespace Marmot::Discretizations::Elements
+    return permutationPattern;
+  }
+
+} // namespace Marmot::Discretizations::Elements

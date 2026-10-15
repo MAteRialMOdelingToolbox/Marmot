@@ -154,17 +154,20 @@ namespace {
       const double c = mat.getMaximumWaveSpeed( res, K );
 
       throwExceptionOnFailure( checkIfEqual( c, expectedWaveSpeed( omega ), 1e-10 ),
-                               Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": the wave speed at a non-local field of "
-                                            << omega << " is " << c << ", expected " << expectedWaveSpeed( omega ) );
+                               Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__ << ": the wave speed at a non-local field of " << omega
+                                 << " is " << c << ", expected " << expectedWaveSpeed( omega ) );
 
       throwExceptionOnFailure( c < c0,
-                               Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": a damaged point reports the virgin wave "
-                                            << "speed, so the bulk viscosity's degradation factor would be 1.0" );
+                               Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__ << ": a damaged point reports the virgin wave "
+                                 << "speed, so the bulk viscosity's degradation factor would be 1.0" );
 
       // (c/c_0)^2 is exactly (1 - omega) for this material, which is what the degradation
       // exponent n = 2 reproduces.
       throwExceptionOnFailure( checkIfEqual( ( c / c0 ) * ( c / c0 ), 1.0 - omega, 1e-10 ),
-                               Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": (c/c_0)^2 is not 1 - omega" );
+                               Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__ << ": (c/c_0)^2 is not 1 - omega" );
     }
   }
 
@@ -255,21 +258,27 @@ namespace {
 
     // The recommended value is the largest admissible one, so the bound has to accept it exactly.
     throwExceptionOnFailure( accepts( admissible ),
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": eta^2/4 = " << admissible
-                                          << " was rejected, which is the value the documentation recommends" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": eta^2/4 = " << admissible
+                               << " was rejected, which is the value the documentation recommends" );
     throwExceptionOnFailure( accepts( 0.5 * admissible ),
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": an admissible micro-inertia was rejected" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": an admissible micro-inertia was rejected" );
     throwExceptionOnFailure( accepts( 0.0 ),
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": a zero micro-inertia was rejected" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": a zero micro-inertia was rejected" );
 
     throwExceptionOnFailure( !accepts( 2.0 * admissible ),
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                          << ": a micro-inertia of twice eta^2/4 was accepted; the reaction mode "
-                                             "rings there" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__
+                               << ": a micro-inertia of twice eta^2/4 was accepted; the reaction mode "
+                                  "rings there" );
     throwExceptionOnFailure( !accepts( -admissible ),
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": a negative micro-inertia was accepted" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": a negative micro-inertia was accepted" );
     throwExceptionOnFailure( !accepts( std::numeric_limits< double >::quiet_NaN() ),
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": a non-finite micro-inertia was accepted" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": a non-finite micro-inertia was accepted" );
   }
 
 } // namespace
@@ -307,7 +316,8 @@ void testComputePlaneStressThrowsWhenItCannotConverge()
     threw = true;
   }
   throwExceptionOnFailure( threw,
-                           "computePlaneStress() must throw Marmot::Utilities::StressUpdateFailed when it cannot converge in " +
+                           "computePlaneStress() must throw Marmot::Utilities::StressUpdateFailed when it cannot "
+                           "converge in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 

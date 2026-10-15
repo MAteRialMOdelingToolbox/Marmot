@@ -52,7 +52,8 @@ namespace Marmot::Discretizations::Elements {
    * @tparam nNodes Number of nodes of the element
    */
   template < int nDim, int nNodes >
-  class DisplacementFiniteStrainULElement : public Marmot::Discretizations::Elements::Element, public Marmot::Discretizations::Elements::GeometryElement< nDim, nNodes > {
+  class DisplacementFiniteStrainULElement : public Marmot::Discretizations::Elements::Element,
+                                            public Marmot::Discretizations::Elements::GeometryElement< nDim, nNodes > {
 
   public:
     /**
@@ -142,11 +143,11 @@ namespace Marmot::Discretizations::Elements {
         } );
 
       public:
-        Eigen::Map< Marmot::Math::Vector9d > stress;            /**< Stress tensor at the quadrature point */
-        double&                        totalStrainEnergy; /**< Integrated total strain energy at the quadrature point */
-        double&                        elasticEnergy;     /**< Integrated elastic energy at the quadrature point */
-        double&                        dissipation;       /**< Integrated dissipation at the quadrature point */
-        Eigen::Map< Marmot::Math::Vector9d > F;                 /**< Deformation gradient at the quadrature point */
+        Eigen::Map< Marmot::Math::Vector9d > stress; /**< Stress tensor at the quadrature point */
+        double& totalStrainEnergy;                   /**< Integrated total strain energy at the quadrature point */
+        double& elasticEnergy;                       /**< Integrated elastic energy at the quadrature point */
+        double& dissipation;                         /**< Integrated dissipation at the quadrature point */
+        Eigen::Map< Marmot::Math::Vector9d > F;      /**< Deformation gradient at the quadrature point */
         double& F0_XX; /**< Deformation gradient component XX for prescribing an initial deformation state*/
         double& F0_YY; /**< Deformation gradient component YY for prescribing an initial deformation state*/
         double& F0_ZZ; /**< Deformation gradient component ZZ for prescribing an initial deformation state*/
@@ -223,9 +224,9 @@ namespace Marmot::Discretizations::Elements {
      * @param integrationType[in] Integration type of the element
      * @param sectionType[in] Section type of the element
      */
-    DisplacementFiniteStrainULElement( int                                                 elementID,
+    DisplacementFiniteStrainULElement( int                                                             elementID,
                                        Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-                                       SectionType                                         sectionType );
+                                       SectionType                                                     sectionType );
 
     /// @brief Get the total number of required state variables of the element
     int getNumberOfRequiredStateVars();
@@ -304,13 +305,13 @@ namespace Marmot::Discretizations::Elements {
      * @param dT[in] Length of the current time step
      */
     void computeDistributedLoad( Marmot::Discretizations::Elements::Element::DistributedLoadTypes loadType,
-                                 double*                             P,
-                                 double*                             K,
-                                 const int                           elementFace,
-                                 const double*                       load,
-                                 const double*                       QTotal,
-                                 double                              time,
-                                 double                              dT );
+                                 double*                                                          P,
+                                 double*                                                          K,
+                                 const int                                                        elementFace,
+                                 const double*                                                    load,
+                                 const double*                                                    QTotal,
+                                 double                                                           time,
+                                 double                                                           dT );
 
     /** @brief Compute the contributions of body forces to the element residual vector and stiffness matrix
      *
@@ -453,8 +454,9 @@ namespace Marmot::Discretizations::Elements {
   };
 
   template < int nDim, int nNodes >
-  Marmot::Utilities::StateView DisplacementFiniteStrainULElement< nDim, nNodes >::getStateView( const std::string& stateName,
-                                                                             int                qpNumber )
+  Marmot::Utilities::StateView DisplacementFiniteStrainULElement< nDim, nNodes >::getStateView(
+    const std::string& stateName,
+    int                qpNumber )
   {
     const auto& qp = qps[qpNumber];
     if ( qp.managedStateVars->contains( stateName ) ) {
@@ -467,16 +469,17 @@ namespace Marmot::Discretizations::Elements {
 
   template < int nDim, int nNodes >
   DisplacementFiniteStrainULElement< nDim, nNodes >::DisplacementFiniteStrainULElement(
-    int                                                 elementID,
+    int                                                             elementID,
     Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-    SectionType                                         sectionType )
+    SectionType                                                     sectionType )
     : ParentGeometryElement(),
       elementProperties( Eigen::Map< const Eigen::VectorXd >( nullptr, 0 ) ),
       elLabel( elementID ),
       sectionType( sectionType ),
       hasEigenDeformation( false )
   {
-    for ( const auto& qpInfo : Marmot::Discretizations::Elements::Quadrature::getGaussPointInfo( this->shape, integrationType ) ) {
+    for ( const auto& qpInfo :
+          Marmot::Discretizations::Elements::Quadrature::getGaussPointInfo( this->shape, integrationType ) ) {
       QuadraturePoint qp( qpInfo.xi, qpInfo.weight );
       qps.push_back( std::move( qp ) );
     }
@@ -540,15 +543,16 @@ namespace Marmot::Discretizations::Elements {
   }
 
   template < int nDim, int nNodes >
-  void DisplacementFiniteStrainULElement< nDim, nNodes >::assignProperty( const Marmot::Discretizations::MaterialSection& section )
+  void DisplacementFiniteStrainULElement< nDim, nNodes >::assignProperty(
+    const Marmot::Discretizations::MaterialSection& section )
   {
 
     for ( auto& qp : qps ) {
       qp.material = std::unique_ptr< Material >(
         Marmot::Registry::MaterialFiniteStrainFactory::createMaterial( section.materialName,
-                                                                          section.materialProperties,
-                                                                          section.nMaterialProperties,
-                                                                          elLabel ) );
+                                                                       section.materialProperties,
+                                                                       section.nMaterialProperties,
+                                                                       elLabel ) );
     }
   }
 
@@ -662,13 +666,14 @@ namespace Marmot::Discretizations::Elements {
           else
             qp.material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
 
-          response.tau                  = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >( response3D.tau );
+          response.tau = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >( response3D.tau );
           response.elasticEnergyDensity = response3D.elasticEnergyDensity;
           response.dissipation          = response3D.dissipation;
           response.stateVars            = qp.managedStateVars->materialStateVars.data();
 
           tangents = {
-            Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >( algorithmicModuli3D.dTau_dF ),
+            Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >(
+              algorithmicModuli3D.dTau_dF ),
           };
 
           qp.managedStateVars->stress = Marmot::Math::mapEigenToFastor( response3D.tau ).reshaped();
@@ -766,11 +771,12 @@ namespace Marmot::Discretizations::Elements {
 
           using namespace Marmot;
 
-          Material::ConstitutiveResponse< 3 >
-            response3D( Marmot::Math::FastorTensors::Tensor33d( qp.managedStateVars->stress.data(), Fastor::ColumnMajor ),
-                        response.elasticEnergyDensity,
-                        response.dissipation,
-                        qp.managedStateVars->materialStateVars.data() );
+          Material::ConstitutiveResponse< 3 > response3D( Marmot::Math::FastorTensors::Tensor33d( qp.managedStateVars
+                                                                                                    ->stress.data(),
+                                                                                                  Fastor::ColumnMajor ),
+                                                          response.elasticEnergyDensity,
+                                                          response.dissipation,
+                                                          qp.managedStateVars->materialStateVars.data() );
 
           Material::Deformation< 3 > deformation3D{
             Marmot::Math::expandTo3D( deformation.F ),
@@ -788,7 +794,7 @@ namespace Marmot::Discretizations::Elements {
           else
             qp.material->computePlaneStrainExplicit( response3D, deformation3D, timeIncrement );
 
-          response.tau                  = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >( response3D.tau );
+          response.tau = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >( response3D.tau );
           response.elasticEnergyDensity = response3D.elasticEnergyDensity;
           response.dissipation          = response3D.dissipation;
           response.stateVars            = qp.managedStateVars->materialStateVars.data();
@@ -820,13 +826,13 @@ namespace Marmot::Discretizations::Elements {
   template < int nDim, int nNodes >
   void DisplacementFiniteStrainULElement< nDim, nNodes >::computeDistributedLoad(
     Marmot::Discretizations::Elements::Element::DistributedLoadTypes loadType,
-    double*                             rightHandSide,
-    double*                             stiffnessMatrix,
-    const int                           elementFace,
-    const double*                       load,
-    const double*                       QTotal_,
-    double                              time,
-    double                              dT )
+    double*                                                          rightHandSide,
+    double*                                                          stiffnessMatrix,
+    const int                                                        elementFace,
+    const double*                                                    load,
+    const double*                                                    QTotal_,
+    double                                                           time,
+    double                                                           dT )
   {
 
     Eigen::Map< USizedVector > r_U( rightHandSide );
@@ -840,7 +846,7 @@ namespace Marmot::Discretizations::Elements {
       Eigen::Map< Eigen::Matrix< double, sizeLoadVector, sizeLoadVector > > K( stiffnessMatrix );
       Eigen::Ref< Eigen::Matrix< double, bsU, bsU > >                       kUU( K.topLeftCorner( bsU, bsU ) );
 
-      const USizedVector             coordinates_np = this->coordinates + qU;
+      const USizedVector                                 coordinates_np = this->coordinates + qU;
       Marmot::Discretizations::Elements::BoundaryElement boundaryEl( this->shape, elementFace, nDim, coordinates_np );
 
       Eigen::VectorXd Pb = -p * boundaryEl.computeSurfaceNormalVectorialLoadVector();
@@ -858,7 +864,10 @@ namespace Marmot::Discretizations::Elements {
     }
     case Marmot::Discretizations::Elements::Element::SurfaceTraction: {
 
-      Marmot::Discretizations::Elements::BoundaryElement boundaryEl( this->shape, elementFace, nDim, this->coordinates );
+      Marmot::Discretizations::Elements::BoundaryElement boundaryEl( this->shape,
+                                                                     elementFace,
+                                                                     nDim,
+                                                                     this->coordinates );
 
       const XiSized tractionVector( load );
 
@@ -922,7 +931,9 @@ namespace Marmot::Discretizations::Elements {
         }
         break;
       }
-      default: throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
+      default:
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << ": invalid initial condition" );
       }
     }
   }
@@ -952,7 +963,7 @@ namespace Marmot::Discretizations::Elements {
 
     for ( const auto& point : Marmot::Discretizations::Elements::ConsistentMass::integrationRule( this->shape ) ) {
       const XiSized xi = point.xi;
-      const auto&   qp = qps[Marmot::Discretizations::Elements::ConsistentMass::nearestQuadraturePoint( point.xi, qps )];
+      const auto& qp = qps[Marmot::Discretizations::Elements::ConsistentMass::nearestQuadraturePoint( point.xi, qps )];
       // thickness (2D) or cross section (1D) exactly as initializeYourself() applied it; 1 in 3D
       const double sectionFactor = qp.J0xW / ( qp.weight * qp.detJ );
       const double rho           = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
@@ -986,7 +997,8 @@ namespace Marmot::Discretizations::Elements {
       rowSumsHighOrder += Eigen::VectorXd( this->N( qp.xi ) ) * qp.J0xW;
       rowSumsLinear += Eigen::VectorXd( linGeometryEl.N( qp.xi ) ) * qp.J0xW;
     }
-    const double weight = Marmot::Discretizations::Elements::MassLumping::manifoldBlendWeight( rowSumsHighOrder, rowSumsLinear );
+    const double weight = Marmot::Discretizations::Elements::MassLumping::manifoldBlendWeight( rowSumsHighOrder,
+                                                                                               rowSumsLinear );
 
     for ( const auto& qp : qps ) {
       const auto N_    = this->N( qp.xi );
@@ -1041,9 +1053,13 @@ namespace Marmot::Discretizations::Elements {
       rowSumsHighOrder += Eigen::VectorXd( this->N( qp.xi ) ) * qp.J0xW;
       rowSumsLinear += Eigen::VectorXd( linGeometryEl.N( qp.xi ) ) * qp.J0xW;
     }
-    const double weight = Marmot::Discretizations::Elements::MassLumping::manifoldBlendWeight( rowSumsHighOrder, rowSumsLinear );
-    const double lumpedMassTimeStepFactor = Marmot::Discretizations::Elements::MassLumping::timeStepFactorFromMassDistribution(
-      Marmot::Discretizations::Elements::MassLumping::manifoldMassFractions( rowSumsHighOrder, rowSumsLinear, weight ) );
+    const double weight = Marmot::Discretizations::Elements::MassLumping::manifoldBlendWeight( rowSumsHighOrder,
+                                                                                               rowSumsLinear );
+    const double
+      lumpedMassTimeStepFactor = Marmot::Discretizations::Elements::MassLumping::timeStepFactorFromMassDistribution(
+        Marmot::Discretizations::Elements::MassLumping::manifoldMassFractions( rowSumsHighOrder,
+                                                                               rowSumsLinear,
+                                                                               weight ) );
 
     criticalTimeStep = std::numeric_limits< double >::max();
     for ( const auto& qp : qps ) {
@@ -1217,7 +1233,8 @@ namespace Marmot::Discretizations::Elements {
       response.stateVars            = qp.managedStateVars->materialStateVars.data();
 
       tangents = {
-        Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >( algorithmicModuli3D.dTau_dF ),
+        Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >(
+          algorithmicModuli3D.dTau_dF ),
       };
 
       qp.managedStateVars->stress = Marmot::Math::mapEigenToFastor( response3D.tau ).reshaped();

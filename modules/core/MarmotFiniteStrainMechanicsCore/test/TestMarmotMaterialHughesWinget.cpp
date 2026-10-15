@@ -44,7 +44,7 @@ namespace {
   Marmot::Math::Matrix6d isotropicStiffness( double E, double nu )
   {
     Marmot::Math::Matrix6d C   = Marmot::Math::Matrix6d::Zero();
-    const double     fac = E / ( ( 1.0 + nu ) * ( 1.0 - 2.0 * nu ) );
+    const double           fac = E / ( ( 1.0 + nu ) * ( 1.0 - 2.0 * nu ) );
     for ( int i = 0; i < 3; i++ )
       for ( int j = 0; j < 3; j++ )
         C( i, j ) = fac * ( i == j ? ( 1.0 - nu ) : nu );
@@ -69,7 +69,7 @@ namespace {
       stateLayout.finalize();
     }
 
-    void computeStress( state3D&                state,
+    void computeStress( state3D&                      state,
                         Marmot::Math::Matrix6d&       dStress_dStrain,
                         const Marmot::Math::Vector6d& dStrain,
                         const timeInfo& ) const override
@@ -101,13 +101,13 @@ namespace {
       stateLayout.finalize();
     }
 
-    void computeStress( state3D&                state,
+    void computeStress( state3D&                      state,
                         Marmot::Math::Matrix6d&       dStress_dStrain,
                         const Marmot::Math::Vector6d& dStrain,
                         const timeInfo& ) const override
     {
       const Marmot::Math::Matrix6d C = isotropicStiffness( materialProperties[0], materialProperties[1] );
-      const double           k = materialProperties[2];
+      const double                 k = materialProperties[2];
 
       state.stress    = state.stress / ( 1.0 + k * state.stress.norm() ) + C * dStrain;
       dStress_dStrain = C;
@@ -157,7 +157,7 @@ namespace {
     Tensor3333d dTau_dF( 0.0 );
 
     auto tauAt = [&]( const Tensor33d& Fp ) {
-      std::vector< double >                                 scratch = stateIn;
+      std::vector< double >                                              scratch = stateIn;
       Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse< 3 > r;
       r.stateVars = scratch.data();
       Marmot::Materials::MaterialFiniteStrain::AlgorithmicModuli< 3 > t;
@@ -303,8 +303,8 @@ void testSmallStrainAgreement()
   Wrapper w( elasticProps.data(), int( elasticProps.size() ), 1 );
   auto    state = freshState( w );
 
-  StubLinearElastic                  direct( elasticProps.data(), int( elasticProps.size() ), 1 );
-  double                             directStateVar = 0.0;
+  StubLinearElastic                               direct( elasticProps.data(), int( elasticProps.size() ), 1 );
+  double                                          directStateVar = 0.0;
   Marmot::Materials::MaterialHypoElastic::state3D directState;
   directState.stateVars = &directStateVar;
 
@@ -330,7 +330,7 @@ void testSmallStrainAgreement()
 
   Tensor33d Ffinal;
   Marmot::Math::mapEigenToFastor( Ffinal ) = Ftotal;
-  const auto [tau, dTau_dF]          = step( w, state, Ffinal );
+  const auto [tau, dTau_dF]                = step( w, state, Ffinal );
 
   const Eigen::Matrix3d sigmaDirect = ContinuumMechanics::VoigtNotation::stressMatrixFromVoigt< 3 >(
     directState.stress );
@@ -485,20 +485,21 @@ void testVolumetricScaling()
 
   const auto [tau, t] = step( w, state, Tensor33d( lambda * Spatial3D::I ) );
 
-  const double     dEpsIi  = 2.0 * ( lambda - 1.0 ) / ( lambda + 1.0 );
+  const double           dEpsIi  = 2.0 * ( lambda - 1.0 ) / ( lambda + 1.0 );
   Marmot::Math::Vector6d dStrain = Marmot::Math::Vector6d::Zero();
   dStrain.head( 3 ).setConstant( dEpsIi );
 
-  StubLinearElastic                  direct( elasticProps.data(), int( elasticProps.size() ), 1 );
-  double                             sv = 0.0;
+  StubLinearElastic                               direct( elasticProps.data(), int( elasticProps.size() ), 1 );
+  double                                          sv = 0.0;
   Marmot::Materials::MaterialHypoElastic::state3D ds;
-  ds.stateVars       = &sv;
+  ds.stateVars             = &sv;
   Marmot::Math::Matrix6d C = Marmot::Math::Matrix6d::Zero();
   direct.computeStress( ds, C, dStrain, { 0.0, 1.0 } );
 
   const double J = lambda * lambda * lambda;
   Tensor33d    expected;
-  Marmot::Math::mapEigenToFastor( expected ) = J * ContinuumMechanics::VoigtNotation::stressMatrixFromVoigt< 3 >( ds.stress );
+  Marmot::Math::mapEigenToFastor( expected ) = J * ContinuumMechanics::VoigtNotation::stressMatrixFromVoigt< 3 >(
+                                                     ds.stress );
 
   throwExceptionOnFailure( checkIfEqual( tau, expected, 1e-10 ),
                            "volumetric response does not match J * sigma in " + std::string( __PRETTY_FUNCTION__ ) );

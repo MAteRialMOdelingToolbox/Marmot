@@ -53,16 +53,17 @@ namespace Marmot::Registry {
      */
     using particleFactoryFunction =
       Marmot::Discretizations::Meshfree::Particle* (*)( int           particleNumber,
-                                             const double* vertexCoordinates,
-                                             int           sizeVertexCoordinates,
-                                             double        volume,
-                                             // Marmot::Discretizations::MaterialPoints::MaterialPoint&                                 mp,
-                                             //
-                                             const std::string& materialName,
-                                             const double*      materialProperties,
-                                             int                nMaterialProperties,
+                                                        const double* vertexCoordinates,
+                                                        int           sizeVertexCoordinates,
+                                                        double        volume,
+                                                        // Marmot::Discretizations::MaterialPoints::MaterialPoint& mp,
+                                                        //
+                                                        const std::string& materialName,
+                                                        const double*      materialProperties,
+                                                        int                nMaterialProperties,
 
-                                             const Marmot::Discretizations::Meshfree::Approximation& approximation );
+                                                        const Marmot::Discretizations::Meshfree::Approximation&
+                                                          approximation );
     /// @brief The factory is a static class and cannot be instantiated.
     ParticleFactory() = delete;
 

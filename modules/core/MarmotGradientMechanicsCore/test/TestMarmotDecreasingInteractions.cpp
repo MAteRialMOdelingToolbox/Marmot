@@ -30,9 +30,11 @@ void testPohTemplate()
   for ( const double omega : { 0.1, 0.3, 0.5, 0.7, 0.9 } ) {
     const double val = poh( omega, 1.0, 0.1 );
     throwExceptionOnFailure( val >= 0.1 - 1e-14,
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": poh below R at omega=" << omega );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": poh below R at omega=" << omega );
     throwExceptionOnFailure( val <= 1.0 + 1e-14,
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": poh above 1 at omega=" << omega );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": poh above 1 at omega=" << omega );
   }
 }
 
@@ -45,7 +47,8 @@ void testFirstOrderDerivedPoh()
     throwExceptionOnFailure( checkIfEqual( g, 1.0 ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": value at omega=0 must be 1" );
     throwExceptionOnFailure( checkIfEqual( dg, 0.0 ),
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": derivative at omega=0 must be 0" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": derivative at omega=0 must be 0" );
   }
 
   // For omega > 0: value must match template function
@@ -59,9 +62,11 @@ void testFirstOrderDerivedPoh()
     const double expected_g  = poh( omega, eta, R );
     const double expected_dg = -( 1.0 - R ) * eta * std::exp( -eta * omega ) / ( 1.0 - std::exp( -eta ) );
     throwExceptionOnFailure( checkIfEqual( g, expected_g ),
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": value mismatch at omega=0.5" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": value mismatch at omega=0.5" );
     throwExceptionOnFailure( checkIfEqual( dg, expected_dg ),
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": derivative mismatch at omega=0.5" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": derivative mismatch at omega=0.5" );
   }
 
   // Numerical derivative verification using central differences
@@ -72,7 +77,8 @@ void testFirstOrderDerivedPoh()
     auto [g, dg]            = FirstOrder::poh( omega, eta, R );
     const double dg_numdiff = centralDifference( [eta, R]( const double w ) { return poh( w, eta, R ); }, omega );
     throwExceptionOnFailure( checkIfEqual( dg, dg_numdiff, 1e-6 ),
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": derivative numdiff check failed at omega=0.5" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": derivative numdiff check failed at omega=0.5" );
   }
 }
 
@@ -94,11 +100,14 @@ void testSecondOrderDerivedPoh()
     const double expected_d2g = ( 1.0 - R ) * eta * eta * std::exp( -eta * omega ) / ( 1.0 - std::exp( -eta ) );
 
     throwExceptionOnFailure( checkIfEqual( g, expected_g ),
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": value mismatch at omega=0.5" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": value mismatch at omega=0.5" );
     throwExceptionOnFailure( checkIfEqual( dg, expected_dg ),
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": first derivative mismatch at omega=0.5" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": first derivative mismatch at omega=0.5" );
     throwExceptionOnFailure( checkIfEqual( d2g, expected_d2g ),
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": second derivative mismatch at omega=0.5" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": second derivative mismatch at omega=0.5" );
   }
 
   // At omega=0.5, eta=2, R=0.2
@@ -113,7 +122,8 @@ void testSecondOrderDerivedPoh()
     const double expected_d2g = ( 1.0 - R ) * eta * eta * std::exp( -eta * omega ) / ( 1.0 - std::exp( -eta ) );
 
     throwExceptionOnFailure( checkIfEqual( g, expected_g ),
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": value mismatch at omega=0.5, eta=2, R=0.2" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": value mismatch at omega=0.5, eta=2, R=0.2" );
     throwExceptionOnFailure( checkIfEqual( dg, expected_dg ),
                              Marmot::Utilities::MakeString()
                                << __PRETTY_FUNCTION__ << ": first derivative mismatch at omega=0.5, eta=2, R=0.2" );
@@ -129,11 +139,12 @@ void testSecondOrderDerivedPoh()
     const double R     = 0.0;
     auto [g, dg, d2g]  = SecondOrder::poh( omega, eta, R );
     const double
-      d2g_numdiff = centralDifference( [eta, R]( const double
-                                                   w ) { return std::get< 1 >( FirstOrder::poh( w, eta, R ) ); },
+      d2g_numdiff = centralDifference( [eta,
+                                        R]( const double w ) { return std::get< 1 >( FirstOrder::poh( w, eta, R ) ); },
                                        omega );
     throwExceptionOnFailure( checkIfEqual( d2g, d2g_numdiff, 1e-6 ),
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": second derivative numdiff check failed" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": second derivative numdiff check failed" );
   }
 }
 

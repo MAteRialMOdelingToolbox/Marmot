@@ -80,10 +80,9 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[out] shapeFunctionValueGradients Not written.
      * @throws std::runtime_error always.
      */
-    virtual void computeShapeFunctionGradients(
-      const double*                                             coord,
-      const std::vector< const KernelFunction* >& kernelFunctions,
-      double*                                                   shapeFunctionValueGradients ) const override;
+    virtual void computeShapeFunctionGradients( const double*                               coord,
+                                                const std::vector< const KernelFunction* >& kernelFunctions,
+                                                double* shapeFunctionValueGradients ) const override;
 
     /**
      * @brief Compute the RK shape function values @f$ \Psi_A @f$ and the implicit gradients @f$ \Psi^{(i)}_A @f$.
@@ -96,11 +95,10 @@ namespace Marmot::Discretizations::Meshfree {
      *                                 @f$ \Psi^{(i)}_A @f$); zero for non-covering candidates.
      * @throws std::runtime_error if the basis is empty (negative completeness order).
      */
-    virtual void computeShapeFunctionsAndGradients(
-      const double*                                             coord,
-      const std::vector< const KernelFunction* >& kernelFunctions,
-      double*                                                   shapeFunctionValues,
-      double*                                                   shapeFunctionValueGradients_ColMajor ) const override;
+    virtual void computeShapeFunctionsAndGradients( const double*                               coord,
+                                                    const std::vector< const KernelFunction* >& kernelFunctions,
+                                                    double*                                     shapeFunctionValues,
+                                                    double* shapeFunctionValueGradients_ColMajor ) const override;
   };
 
 } // namespace Marmot::Discretizations::Meshfree

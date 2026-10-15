@@ -123,19 +123,18 @@ namespace Marmot::Materials {
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
-      std::tie( Ce, dCe_dFe ) = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::rightCauchyGreen( Fe );
+      std::tie( Ce, dCe_dFe ) = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::
+        rightCauchyGreen( Fe );
 
       // compute energy density, first and second partial derivatives wrt Cauchy
       // Green deformation
-      std::tie( psi_, dPsi_dCe, d2Psi_dCedCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::SecondOrder::PenceGouPotentialB( Ce,
-                                                                                                                 K,
-                                                                                                                 G );
+      std::tie( psi_, dPsi_dCe, d2Psi_dCedCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::
+        SecondOrder::PenceGouPotentialB( Ce, K, G );
       // compute Kirchhoff stress
       Tensor33d   PK2 = 2. * dPsi_dCe;
       Tensor3333d dTau_dPK2, dTau_dFe_partial;
-      std::tie( response.tau,
-                dTau_dPK2,
-                dTau_dFe_partial )  = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::FirstOrder::KirchhoffStressFromPK2( PK2, Fe );
+      std::tie( response.tau, dTau_dPK2, dTau_dFe_partial ) = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::
+        FirstOrder::KirchhoffStressFromPK2( PK2, Fe );
       response.elasticEnergyDensity = psi_;
       auto [betaP_new, _]           = computeBetaP( alphaP );
       response.dissipation += 0.5 * ( betaP_new - betaP ) * ( alphaP - alphaPOld );
@@ -151,7 +150,8 @@ namespace Marmot::Materials {
                                                .transpose();
       MatrixXd dXdDeformation = dR_dX.colPivHouseholderQr().solve( dYdDeformation );
 
-      Tensor3333d dFe_dF = Tensor3333d( Marmot::Math::Matrix9d( dXdDeformation.block< 9, 9 >( 0, 0 ).transpose() ).data() );
+      Tensor3333d dFe_dF = Tensor3333d(
+        Marmot::Math::Matrix9d( dXdDeformation.block< 9, 9 >( 0, 0 ).transpose() ).data() );
 
       Tensor3333d dPK2_dFe = einsum< ijKL, KLMN >( 2. * d2Psi_dCedCe, dCe_dFe );
       Tensor3333d dPK2_dF  = einsum< ijKL, KLMN >( dPK2_dFe, dFe_dF );
@@ -163,19 +163,18 @@ namespace Marmot::Materials {
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
-      std::tie( Ce, dCe_dFe ) = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::rightCauchyGreen( Fe );
+      std::tie( Ce, dCe_dFe ) = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::
+        rightCauchyGreen( Fe );
 
       // compute energy density, first and second partial derivatives wrt Cauchy
       // Green deformation
-      std::tie( psi_, dPsi_dCe, d2Psi_dCedCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::SecondOrder::PenceGouPotentialB( Ce,
-                                                                                                                 K,
-                                                                                                                 G );
+      std::tie( psi_, dPsi_dCe, d2Psi_dCedCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::
+        SecondOrder::PenceGouPotentialB( Ce, K, G );
       // compute Kirchhoff stress
       Tensor33d   PK2 = 2. * dPsi_dCe;
       Tensor3333d dTau_dPK2, dTau_dFe_partial;
-      std::tie( response.tau,
-                dTau_dPK2,
-                dTau_dFe_partial )  = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::FirstOrder::KirchhoffStressFromPK2( PK2, Fe );
+      std::tie( response.tau, dTau_dPK2, dTau_dFe_partial ) = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::
+        FirstOrder::KirchhoffStressFromPK2( PK2, Fe );
       response.elasticEnergyDensity = psi_;
       response.dissipation += 0.0;
 
@@ -272,24 +271,26 @@ namespace Marmot::Materials {
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
-      std::tie( Ce, dCe_dFe ) = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::rightCauchyGreen( Fe );
+      std::tie( Ce, dCe_dFe ) = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::
+        rightCauchyGreen( Fe );
 
       // compute energy density, first and second partial derivatives wrt Cauchy
       // Green deformation
       using func_type    = std::function< Tensor33d( const Tensor33d& ) >;
       func_type computeS = [&]( const Tensor33d& Ce_ ) {
-        const auto [_psi, _dPsi_dCe] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( Ce_, K, G );
+        const auto [_psi, _dPsi_dCe] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
+          PenceGouPotentialB( Ce_, K, G );
         return _dPsi_dCe;
       };
 
       d2Psi_dCedCe = Marmot::Math::NumericalDifferentiation::TensorToTensor::forwardDifference( computeS, Ce, true );
-      std::tie( psi_, dPsi_dCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( Ce, K, G );
+      std::tie( psi_, dPsi_dCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
+        PenceGouPotentialB( Ce, K, G );
       // compute Kirchhoff stress
       Tensor33d   PK2 = 2. * dPsi_dCe;
       Tensor3333d dTau_dPK2, dTau_dFe_partial;
-      std::tie( response.tau,
-                dTau_dPK2,
-                dTau_dFe_partial )  = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::FirstOrder::KirchhoffStressFromPK2( PK2, Fe );
+      std::tie( response.tau, dTau_dPK2, dTau_dFe_partial ) = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::
+        FirstOrder::KirchhoffStressFromPK2( PK2, Fe );
       response.elasticEnergyDensity = psi_;
       auto [betaP_new, _]           = computeBetaP( alphaP );
       response.dissipation += 0.5 * ( betaP_new - betaP ) * ( alphaP - alphaPOld );
@@ -305,7 +306,8 @@ namespace Marmot::Materials {
                                                .transpose();
       MatrixXd dXdDeformation = dR_dX.colPivHouseholderQr().solve( dYdDeformation );
 
-      Tensor3333d dFe_dF = Tensor3333d( Marmot::Math::Matrix9d( dXdDeformation.block< 9, 9 >( 0, 0 ).transpose() ).data() );
+      Tensor3333d dFe_dF = Tensor3333d(
+        Marmot::Math::Matrix9d( dXdDeformation.block< 9, 9 >( 0, 0 ).transpose() ).data() );
 
       Tensor3333d dPK2_dFe = einsum< ijKL, KLMN >( 2. * d2Psi_dCedCe, dCe_dFe );
       Tensor3333d dPK2_dF  = einsum< ijKL, KLMN >( dPK2_dFe, dFe_dF );
@@ -319,25 +321,27 @@ namespace Marmot::Materials {
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
-      std::tie( Ce, dCe_dFe ) = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::rightCauchyGreen( Fe );
+      std::tie( Ce, dCe_dFe ) = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::
+        rightCauchyGreen( Fe );
 
       // compute energy density, first and second partial derivatives wrt Cauchy
       // Green deformation
       using func_type    = std::function< Tensor33d( const Tensor33d& ) >;
       func_type computeS = [&]( const Tensor33d& Ce_ ) {
-        const auto [_psi, _dPsi_dCe] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( Ce_, K, G );
+        const auto [_psi, _dPsi_dCe] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
+          PenceGouPotentialB( Ce_, K, G );
         return _dPsi_dCe;
       };
 
       d2Psi_dCedCe = Marmot::Math::NumericalDifferentiation::TensorToTensor::forwardDifference( computeS, Ce, true );
 
-      std::tie( psi_, dPsi_dCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( Ce, K, G );
+      std::tie( psi_, dPsi_dCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
+        PenceGouPotentialB( Ce, K, G );
       // compute Kirchhoff stress
       Tensor33d   PK2 = 2. * dPsi_dCe;
       Tensor3333d dTau_dPK2, dTau_dFe_partial;
-      std::tie( response.tau,
-                dTau_dPK2,
-                dTau_dFe_partial )  = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::FirstOrder::KirchhoffStressFromPK2( PK2, Fe );
+      std::tie( response.tau, dTau_dPK2, dTau_dFe_partial ) = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::
+        FirstOrder::KirchhoffStressFromPK2( PK2, Fe );
       response.elasticEnergyDensity = psi_;
 
       // compute tangent operator
@@ -434,24 +438,26 @@ namespace Marmot::Materials {
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
-      std::tie( Ce, dCe_dFe ) = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::rightCauchyGreen( Fe );
+      std::tie( Ce, dCe_dFe ) = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::
+        rightCauchyGreen( Fe );
 
       // compute energy density, first and second partial derivatives wrt Cauchy
       // Green deformation
       using func_type    = std::function< Tensor33d( const Tensor33d& ) >;
       func_type computeS = [&]( const Tensor33d& Ce_ ) {
-        const auto [_psi, _dPsi_dCe] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( Ce_, K, G );
+        const auto [_psi, _dPsi_dCe] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
+          PenceGouPotentialB( Ce_, K, G );
         return _dPsi_dCe;
       };
 
       d2Psi_dCedCe = Marmot::Math::NumericalDifferentiation::TensorToTensor::centralDifference( computeS, Ce, true );
-      std::tie( psi_, dPsi_dCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( Ce, K, G );
+      std::tie( psi_, dPsi_dCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
+        PenceGouPotentialB( Ce, K, G );
       // compute Kirchhoff stress
       Tensor33d   PK2 = 2. * dPsi_dCe;
       Tensor3333d dTau_dPK2, dTau_dFe_partial;
-      std::tie( response.tau,
-                dTau_dPK2,
-                dTau_dFe_partial )  = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::FirstOrder::KirchhoffStressFromPK2( PK2, Fe );
+      std::tie( response.tau, dTau_dPK2, dTau_dFe_partial ) = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::
+        FirstOrder::KirchhoffStressFromPK2( PK2, Fe );
       response.elasticEnergyDensity = psi_;
       auto [betaP_new, _]           = computeBetaP( alphaP );
       response.dissipation += 0.5 * ( betaP_new - betaP ) * ( alphaP - alphaPOld );
@@ -467,7 +473,8 @@ namespace Marmot::Materials {
                                                .transpose();
       MatrixXd dXdDeformation = dR_dX.colPivHouseholderQr().solve( dYdDeformation );
 
-      Tensor3333d dFe_dF = Tensor3333d( Marmot::Math::Matrix9d( dXdDeformation.block< 9, 9 >( 0, 0 ).transpose() ).data() );
+      Tensor3333d dFe_dF = Tensor3333d(
+        Marmot::Math::Matrix9d( dXdDeformation.block< 9, 9 >( 0, 0 ).transpose() ).data() );
 
       Tensor3333d dPK2_dFe = einsum< ijKL, KLMN >( 2. * d2Psi_dCedCe, dCe_dFe );
       Tensor3333d dPK2_dF  = einsum< ijKL, KLMN >( dPK2_dFe, dFe_dF );
@@ -481,25 +488,27 @@ namespace Marmot::Materials {
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
-      std::tie( Ce, dCe_dFe ) = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::rightCauchyGreen( Fe );
+      std::tie( Ce, dCe_dFe ) = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::
+        rightCauchyGreen( Fe );
 
       // compute energy density, first and second partial derivatives wrt Cauchy
       // Green deformation
       using func_type    = std::function< Tensor33d( const Tensor33d& ) >;
       func_type computeS = [&]( const Tensor33d& Ce_ ) {
-        const auto [_psi, _dPsi_dCe] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( Ce_, K, G );
+        const auto [_psi, _dPsi_dCe] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
+          PenceGouPotentialB( Ce_, K, G );
         return _dPsi_dCe;
       };
 
       d2Psi_dCedCe = Marmot::Math::NumericalDifferentiation::TensorToTensor::centralDifference( computeS, Ce, true );
 
-      std::tie( psi_, dPsi_dCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( Ce, K, G );
+      std::tie( psi_, dPsi_dCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
+        PenceGouPotentialB( Ce, K, G );
       // compute Kirchhoff stress
       Tensor33d   PK2 = 2. * dPsi_dCe;
       Tensor3333d dTau_dPK2, dTau_dFe_partial;
-      std::tie( response.tau,
-                dTau_dPK2,
-                dTau_dFe_partial )  = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::FirstOrder::KirchhoffStressFromPK2( PK2, Fe );
+      std::tie( response.tau, dTau_dPK2, dTau_dFe_partial ) = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::
+        FirstOrder::KirchhoffStressFromPK2( PK2, Fe );
       response.elasticEnergyDensity = psi_;
       auto [betaP_new, _]           = computeBetaP( alphaP );
       response.dissipation += 0.5 * ( betaP_new - betaP ) * ( alphaP - alphaPOld );
@@ -598,26 +607,29 @@ namespace Marmot::Materials {
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
-      std::tie( Ce, dCe_dFe ) = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::rightCauchyGreen( Fe );
+      std::tie( Ce, dCe_dFe ) = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::
+        rightCauchyGreen( Fe );
 
       // compute energy density, first and second partial derivatives wrt Cauchy
       // Green deformation
-      using func_type    = std::function< Tensor33t< Marmot::Math::complexDouble >( const Tensor33t< Marmot::Math::complexDouble >& ) >;
+      using func_type    = std::function< Tensor33t< Marmot::Math::complexDouble >(
+        const Tensor33t< Marmot::Math::complexDouble >& ) >;
       func_type computeS = [&]( const Tensor33t< Marmot::Math::complexDouble >& Ce_ ) {
-        const auto [_psi, _dPsi_dCe] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( Ce_, K, G );
+        const auto [_psi, _dPsi_dCe] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
+          PenceGouPotentialB( Ce_, K, G );
         return _dPsi_dCe;
       };
 
       d2Psi_dCedCe = Marmot::Math::NumericalDifferentiation::Complex::TensorToTensor::forwardDifference( computeS,
-                                                                                                       Ce,
-                                                                                                       true );
-      std::tie( psi_, dPsi_dCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( Ce, K, G );
+                                                                                                         Ce,
+                                                                                                         true );
+      std::tie( psi_, dPsi_dCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
+        PenceGouPotentialB( Ce, K, G );
       // compute Kirchhoff stress
       Tensor33d   PK2 = 2. * dPsi_dCe;
       Tensor3333d dTau_dPK2, dTau_dFe_partial;
-      std::tie( response.tau,
-                dTau_dPK2,
-                dTau_dFe_partial )  = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::FirstOrder::KirchhoffStressFromPK2( PK2, Fe );
+      std::tie( response.tau, dTau_dPK2, dTau_dFe_partial ) = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::
+        FirstOrder::KirchhoffStressFromPK2( PK2, Fe );
       response.elasticEnergyDensity = psi_;
       auto [betaP_new, _]           = computeBetaP( alphaP );
       response.dissipation += 0.5 * ( betaP_new - betaP ) * ( alphaP - alphaPOld );
@@ -633,7 +645,8 @@ namespace Marmot::Materials {
                                                .transpose();
       MatrixXd dXdDeformation = dR_dX.colPivHouseholderQr().solve( dYdDeformation );
 
-      Tensor3333d dFe_dF = Tensor3333d( Marmot::Math::Matrix9d( dXdDeformation.block< 9, 9 >( 0, 0 ).transpose() ).data() );
+      Tensor3333d dFe_dF = Tensor3333d(
+        Marmot::Math::Matrix9d( dXdDeformation.block< 9, 9 >( 0, 0 ).transpose() ).data() );
 
       Tensor3333d dPK2_dFe = einsum< ijKL, KLMN >( 2. * d2Psi_dCedCe, dCe_dFe );
       Tensor3333d dPK2_dF  = einsum< ijKL, KLMN >( dPK2_dFe, dFe_dF );
@@ -647,27 +660,30 @@ namespace Marmot::Materials {
       double      psi_;
       Tensor33d   Ce, dPsi_dCe;
       Tensor3333d dCe_dFe, d2Psi_dCedCe;
-      std::tie( Ce, dCe_dFe ) = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::rightCauchyGreen( Fe );
+      std::tie( Ce, dCe_dFe ) = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::
+        rightCauchyGreen( Fe );
 
       // compute energy density, first and second partial derivatives wrt Cauchy
       // Green deformation
-      using func_type    = std::function< Tensor33t< Marmot::Math::complexDouble >( const Tensor33t< Marmot::Math::complexDouble >& ) >;
+      using func_type    = std::function< Tensor33t< Marmot::Math::complexDouble >(
+        const Tensor33t< Marmot::Math::complexDouble >& ) >;
       func_type computeS = [&]( const Tensor33t< Marmot::Math::complexDouble >& Ce_ ) {
-        const auto [_psi, _dPsi_dCe] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( Ce_, K, G );
+        const auto [_psi, _dPsi_dCe] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
+          PenceGouPotentialB( Ce_, K, G );
         return _dPsi_dCe;
       };
 
       d2Psi_dCedCe = Marmot::Math::NumericalDifferentiation::Complex::TensorToTensor::forwardDifference( computeS,
-                                                                                                       Ce,
-                                                                                                       true );
+                                                                                                         Ce,
+                                                                                                         true );
 
-      std::tie( psi_, dPsi_dCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( Ce, K, G );
+      std::tie( psi_, dPsi_dCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
+        PenceGouPotentialB( Ce, K, G );
       // compute Kirchhoff stress
       Tensor33d   PK2 = 2. * dPsi_dCe;
       Tensor3333d dTau_dPK2, dTau_dFe_partial;
-      std::tie( response.tau,
-                dTau_dPK2,
-                dTau_dFe_partial )  = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::FirstOrder::KirchhoffStressFromPK2( PK2, Fe );
+      std::tie( response.tau, dTau_dPK2, dTau_dFe_partial ) = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::
+        FirstOrder::KirchhoffStressFromPK2( PK2, Fe );
       response.elasticEnergyDensity = psi_;
 
       // compute tangent operator

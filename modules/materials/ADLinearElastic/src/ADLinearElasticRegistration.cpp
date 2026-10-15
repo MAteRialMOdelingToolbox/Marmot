@@ -4,9 +4,8 @@
 namespace {
   using namespace Marmot::Materials;
 
+  const static bool
+    ADLinearElasticIsRegistered = Marmot::Registry::MaterialHypoElasticFactory::registerMaterial< ADLinearElastic >(
+      "ADLINEARELASTIC" );
 
-    const static bool
-      ADLinearElasticIsRegistered = Marmot::Registry::MaterialHypoElasticFactory::registerMaterial< ADLinearElastic >(
-        "ADLINEARELASTIC" );
-
-  } // namespace
+} // namespace

@@ -28,16 +28,19 @@
 namespace {
   using namespace Marmot::Discretizations::Cells;
 
-
   const static bool CPE4CELL_isRegistered = Marmot::Registry::CellFactory::
     registerCell( "Displacement/Quad4",
-                  []( int cellID, const double* nodeCoordinates, int sizeNodeCoordinates ) -> Marmot::Discretizations::Cells::Cell* {
+                  []( int           cellID,
+                      const double* nodeCoordinates,
+                      int           sizeNodeCoordinates ) -> Marmot::Discretizations::Cells::Cell* {
                     return new LagrangianDisplacementCell< 2, 4 >( cellID, nodeCoordinates, sizeNodeCoordinates );
                   } );
 
   const static bool C3D8CELL_isRegistered = Marmot::Registry::CellFactory::
     registerCell( "Displacement/Hexa8",
-                  []( int cellID, const double* nodeCoordinates, int sizeNodeCoordinates ) -> Marmot::Discretizations::Cells::Cell* {
+                  []( int           cellID,
+                      const double* nodeCoordinates,
+                      int           sizeNodeCoordinates ) -> Marmot::Discretizations::Cells::Cell* {
                     return new LagrangianDisplacementCell< 3, 8 >( cellID, nodeCoordinates, sizeNodeCoordinates );
                   } );
 

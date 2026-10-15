@@ -179,7 +179,9 @@ namespace Marmot::Discretizations::Meshfree {
         }
         break;
       }
-      default: throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid body load type" );
+      default:
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << ": invalid body load type" );
       }
     }
 
@@ -215,7 +217,7 @@ namespace Marmot::Discretizations::Meshfree {
       const std::string&                                                     materialName,
       const double*                                                          materialProperties,
       int                                                                    sizeMaterialProperties,
-      const Marmot::Discretizations::Meshfree::Approximation&                                     approximation,
+      const Marmot::Discretizations::Meshfree::Approximation&                approximation,
       const GenericSDIParticle< nDim, nVertices >::SmoothingDomainUpdateType smoothingVolumeUpdateType );
 
     /**
@@ -320,7 +322,8 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] subdomainIndex Index of the subdomain.
      * @return The view on the state.
      */
-    virtual Marmot::Utilities::StateView getStateViewOnSubdomains( const std::string& stateName, int subdomainIndex ) const
+    virtual Marmot::Utilities::StateView getStateViewOnSubdomains( const std::string& stateName,
+                                                                   int                subdomainIndex ) const
     {
       return _subdomainMaterialPoints[subdomainIndex]->getStateView( stateName );
     }
@@ -446,7 +449,8 @@ namespace Marmot::Discretizations::Meshfree {
      */
     virtual void setInitialCondition( const std::string& conditionName, const double* value ) override
     {
-      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": invalid initial condition" );
     };
   };
 
@@ -459,7 +463,7 @@ namespace Marmot::Discretizations::Meshfree {
     const std::string&                                                     materialName,
     const double*                                                          materialProperties,
     int                                                                    sizeMaterialProperties,
-    const Marmot::Discretizations::Meshfree::Approximation&                   approximation,
+    const Marmot::Discretizations::Meshfree::Approximation&                approximation,
     const GenericSDIParticle< nDim, nVertices >::SmoothingDomainUpdateType smoothingVolumeUpdateType )
     : GenericSDIParticle< nDim, nVertices >( elementID,
                                              vertexCoordinates,
@@ -564,7 +568,8 @@ namespace Marmot::Discretizations::Meshfree {
       break;
     }
     default: {
-      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
     }
     }
   }
@@ -618,12 +623,12 @@ namespace Marmot::Discretizations::Meshfree {
 
       Tensor< double, nDim, nDim > da_ddu( 0.0 );
       Marmot::ContinuumMechanics::TimeIntegration::newmarkBetaIntegration< nDim >( du.data(),
-                                                               v.data(),
-                                                               a.data(),
-                                                               dT,
-                                                               this->_newmark_beta,
-                                                               this->_newmark_gamma,
-                                                               da_ddu.data() );
+                                                                                   v.data(),
+                                                                                   a.data(),
+                                                                                   dT,
+                                                                                   this->_newmark_beta,
+                                                                                   this->_newmark_gamma,
+                                                                                   da_ddu.data() );
       mp->setVelocity( v );
       mp->setAcceleration( a );
 

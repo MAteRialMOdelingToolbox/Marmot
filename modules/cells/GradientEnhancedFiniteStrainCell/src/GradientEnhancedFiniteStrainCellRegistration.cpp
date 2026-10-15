@@ -28,10 +28,11 @@
 namespace {
   using namespace Marmot::Discretizations::Cells;
 
-
   const static bool CPE4CELL_isRegistered = Marmot::Registry::CellFactory::
     registerCell( "GradientEnhancedFiniteStrain/Quad4",
-                  []( int cellID, const double* nodeCoordinates, int sizeNodeCoordinates ) -> Marmot::Discretizations::Cells::Cell* {
+                  []( int           cellID,
+                      const double* nodeCoordinates,
+                      int           sizeNodeCoordinates ) -> Marmot::Discretizations::Cells::Cell* {
                     return new LagrangianGradientEnhancedFiniteStrainCell< 2, 4 >( cellID,
                                                                                    nodeCoordinates,
                                                                                    sizeNodeCoordinates );
@@ -39,7 +40,9 @@ namespace {
 
   const static bool C3D8CELL_isRegistered = Marmot::Registry::CellFactory::
     registerCell( "GradientEnhancedFiniteStrain/Hexa8",
-                  []( int cellID, const double* nodeCoordinates, int sizeNodeCoordinates ) -> Marmot::Discretizations::Cells::Cell* {
+                  []( int           cellID,
+                      const double* nodeCoordinates,
+                      int           sizeNodeCoordinates ) -> Marmot::Discretizations::Cells::Cell* {
                     return new LagrangianGradientEnhancedFiniteStrainCell< 3, 8 >( cellID,
                                                                                    nodeCoordinates,
                                                                                    sizeNodeCoordinates );

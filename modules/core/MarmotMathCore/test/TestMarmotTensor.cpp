@@ -18,7 +18,8 @@ auto testInitialize_IFourthOrder()
           ikjl = ( i == k ? 1 : 0 ) * ( j == l ? 1 : 0 );
           // check if they are the same
           throwExceptionOnFailure( checkIfEqual( ikjl, IFourthOrder( i, j, k, l ) ),
-                                   Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " Error in initializing IFourthOrder." );
+                                   Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << " Error in initializing IFourthOrder." );
         }
 }
 
@@ -51,7 +52,8 @@ auto testInitialize_I2xI2()
           ijkl = ( i == j ? 1 : 0 ) * ( k == l ? 1 : 0 );
           // check if they are the same
           throwExceptionOnFailure( checkIfEqual( ijkl, I2xI2( i, j, k, l ) ),
-                                   Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " Error in initializing I2xI2." );
+                                   Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << " Error in initializing I2xI2." );
         }
 }
 
@@ -67,7 +69,8 @@ auto testInitialize_Isym()
           ijklSym = 0.5 * ( ( i == k ? 1 : 0 ) * ( j == l ? 1 : 0 ) + ( i == l ? 1 : 0 ) * ( j == k ? 1 : 0 ) );
           // check if they are the same
           throwExceptionOnFailure( checkIfEqual( ijklSym, Isym( i, j, k, l ) ),
-                                   Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " Error in initializing Isym." );
+                                   Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << " Error in initializing Isym." );
         }
 }
 
@@ -83,7 +86,8 @@ auto testInitialize_Iskew()
           ijklSkew = 0.5 * ( ( i == k ? 1 : 0 ) * ( j == l ? 1 : 0 ) - ( i == l ? 1 : 0 ) * ( j == k ? 1 : 0 ) );
           // check if they are the same
           throwExceptionOnFailure( checkIfEqual( ijklSkew, Iskew( i, j, k, l ) ),
-                                   Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " Error in initializing Iskew." );
+                                   Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << " Error in initializing Iskew." );
         }
 }
 
@@ -117,7 +121,8 @@ auto testInitialize_LeviCivita3D()
                 : 0.0 );
         // check if they are the same
         throwExceptionOnFailure( checkIfEqual( e, LeviCivita3D( i, j, k ) ),
-                                 Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " Error in initializing LeviCivita3D." );
+                                 Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << " Error in initializing LeviCivita3D." );
       }
 }
 
@@ -131,7 +136,8 @@ auto testInitialize_LeviCivita2D()
       e = ( ( j != k ) ? ( ( j > k ) ? -1.0 : 1.0 ) : 0.0 );
       // check if they are the same
       throwExceptionOnFailure( checkIfEqual( e, LeviCivita2D( 0, j, k ) ),
-                               Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " Error in initializing LeviCivita2D." );
+                               Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__ << " Error in initializing LeviCivita2D." );
     }
 }
 

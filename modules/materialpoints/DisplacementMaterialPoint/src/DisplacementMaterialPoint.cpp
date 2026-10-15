@@ -33,7 +33,8 @@ namespace Marmot::Discretizations::MaterialPoints {
   {
     Marmot::Math::mapEigenToFastor( state->du ) += Marmot::Math::mapEigenToFastor( Marmot::Math::expandTo3D( du ) );
 
-    Marmot::Math::mapEigenToFastor( state->dx_dY ) += Marmot::Math::mapEigenToFastor( Marmot::Math::expandTo3D( du_dY ) );
+    Marmot::Math::mapEigenToFastor( state->dx_dY ) += Marmot::Math::mapEigenToFastor(
+      Marmot::Math::expandTo3D( du_dY ) );
   };
 
   void DisplacementMaterialPoint2D::computeYourself( double timeNew, double dT )

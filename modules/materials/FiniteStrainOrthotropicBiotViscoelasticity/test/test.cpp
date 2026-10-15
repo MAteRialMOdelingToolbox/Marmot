@@ -42,16 +42,17 @@ static std::vector< double > getIsotropicViscoelasticProperties()
 }
 
 // Helper to create a solver with the given material name and properties
-static Marmot::Materials::MaterialPointSolverFiniteStrain makeSolver( const std::string&     matName,
-                                                         std::vector< double >& matProps,
-                                                         const Tensor33d&       initialStress    = Tensor33d( 0.0 ),
-                                                         const Eigen::VectorXd& initialStateVars = Eigen::VectorXd() )
+static Marmot::Materials::MaterialPointSolverFiniteStrain makeSolver(
+  const std::string&     matName,
+  std::vector< double >& matProps,
+  const Tensor33d&       initialStress    = Tensor33d( 0.0 ),
+  const Eigen::VectorXd& initialStateVars = Eigen::VectorXd() )
 {
   auto solveropts = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   auto solver     = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
-                                                       matProps.data(),
-                                                       static_cast< int >( matProps.size() ),
-                                                       solveropts );
+                                                                    matProps.data(),
+                                                                    static_cast< int >( matProps.size() ),
+                                                                    solveropts );
   return solver;
 }
 

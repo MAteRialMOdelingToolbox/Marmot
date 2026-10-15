@@ -46,7 +46,8 @@ auto testExponentialMap()
   for ( int i = 0; i < 3; i++ )
     for ( int j = 0; j < 3; j++ ) {
       throwExceptionOnFailure( checkIfEqual( exMap( i, j ), exMapexpect( i, j ), 1e-15 ),
-                               Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " exponential mapping failed." );
+                               Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__ << " exponential mapping failed." );
     }
 }
 
@@ -63,12 +64,14 @@ auto testExplicitIntegration()
     for ( int j = 0; j < 3; j++ ) {
       double dFpexpect = ( i == j ? 1 : 0 ) + dGp( j, i );
       throwExceptionOnFailure( checkIfEqual( dFp( i, j ), dFpexpect, 1e-15 ),
-                               Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " explicit integration dFp failed." );
+                               Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__ << " explicit integration dFp failed." );
       for ( int k = 0; k < 3; k++ )
         for ( int l = 0; l < 3; l++ ) {
           double dFp_dGpexpect = ( i == j ? 1 : 0 ) * ( k == l ? 1 : 0 );
           throwExceptionOnFailure( checkIfEqual( dFp_dGp( i, k, l, j ), dFp_dGpexpect, 1e-15 ),
-                                   Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " explicit integration dFp_dGp failed." );
+                                   Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << " explicit integration dFp_dGp failed." );
         }
     }
 }
@@ -105,7 +108,8 @@ auto testExponentialMapScalingAndSquaring()
   for ( int i = 0; i < 3; i++ )
     for ( int j = 0; j < 3; j++ )
       throwExceptionOnFailure( checkIfEqual( large( i, j ), expected( i, j ), 1e-13 ),
-                               Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " exponential map of a large increment failed." );
+                               Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__ << " exponential map of a large increment failed." );
 }
 
 auto testExponentialMapAndDerivative()
@@ -158,7 +162,8 @@ auto testExponentialMapAndDerivative()
   for ( int i = 0; i < 3; i++ )
     for ( int j = 0; j < 3; j++ ) {
       throwExceptionOnFailure( checkIfEqual( exMap( i, j ), exMapexpect( i, j ), 1e-15 ),
-                               Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " exponential mapping failed." );
+                               Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__ << " exponential mapping failed." );
       for ( int k = 0; k < 3; k++ )
         for ( int l = 0; l < 3; l++ ) {
           // check derivative

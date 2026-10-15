@@ -16,7 +16,8 @@ using namespace Eigen;
  * @return the two shape functions of the line
  */
 template <>
-Marmot::Discretizations::Elements::GeometryInterfaceElement< 2, 4 >::NSized Marmot::Discretizations::Elements::GeometryInterfaceElement< 2, 4 >::N( const XiSized& xi ) const
+Marmot::Discretizations::Elements::GeometryInterfaceElement< 2, 4 >::NSized Marmot::Discretizations::Elements::
+  GeometryInterfaceElement< 2, 4 >::N( const XiSized& xi ) const
 {
   return Marmot::Discretizations::Elements::Spatial1D::Bar2::N( xi( 0 ) );
 }
@@ -31,7 +32,8 @@ Marmot::Discretizations::Elements::GeometryInterfaceElement< 2, 4 >::NSized Marm
  * @return the four shape functions of the quadrilateral
  */
 template <>
-Marmot::Discretizations::Elements::GeometryInterfaceElement< 3, 8 >::NSized Marmot::Discretizations::Elements::GeometryInterfaceElement< 3, 8 >::N( const XiSized& xi ) const
+Marmot::Discretizations::Elements::GeometryInterfaceElement< 3, 8 >::NSized Marmot::Discretizations::Elements::
+  GeometryInterfaceElement< 3, 8 >::N( const XiSized& xi ) const
 {
   return Marmot::Discretizations::Elements::Spatial2D::Quad4::N( xi );
 }
@@ -49,8 +51,8 @@ Marmot::Discretizations::Elements::GeometryInterfaceElement< 3, 8 >::NSized Marm
  * @return the derivatives of the two shape functions with respect to the line coordinate
  */
 template <>
-Marmot::Discretizations::Elements::GeometryInterfaceElement< 2, 4 >::dNdXiSized Marmot::Discretizations::Elements::GeometryInterfaceElement< 2, 4 >::dNdXi(
-  const XiSized& xi ) const
+Marmot::Discretizations::Elements::GeometryInterfaceElement< 2, 4 >::dNdXiSized Marmot::Discretizations::Elements::
+  GeometryInterfaceElement< 2, 4 >::dNdXi( const XiSized& xi ) const
 {
   return Marmot::Discretizations::Elements::Spatial1D::Bar2::dNdXi( xi( 0 ) );
 }
@@ -64,8 +66,8 @@ Marmot::Discretizations::Elements::GeometryInterfaceElement< 2, 4 >::dNdXiSized 
  * @return the derivatives of the four shape functions with respect to the surface coordinates
  */
 template <>
-Marmot::Discretizations::Elements::GeometryInterfaceElement< 3, 8 >::dNdXiSized Marmot::Discretizations::Elements::GeometryInterfaceElement< 3, 8 >::dNdXi(
-  const XiSized& xi ) const
+Marmot::Discretizations::Elements::GeometryInterfaceElement< 3, 8 >::dNdXiSized Marmot::Discretizations::Elements::
+  GeometryInterfaceElement< 3, 8 >::dNdXi( const XiSized& xi ) const
 {
   return Marmot::Discretizations::Elements::Spatial2D::Quad4::dNdXi( xi );
 }

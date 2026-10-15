@@ -8,10 +8,12 @@ namespace {
 
   template < class T,
              Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-             typename T::SectionType                             sectionType >
+             typename T::SectionType                                         sectionType >
   Marmot::Registry::ElementFactory::elementFactoryFunction makeFactoryFunction()
   {
-    return []( int elementID ) -> Marmot::Discretizations::Elements::Element* { return new T( elementID, integrationType, sectionType ); };
+    return []( int elementID ) -> Marmot::Discretizations::Elements::Element* {
+      return new T( elementID, integrationType, sectionType );
+    };
   }
 
   using namespace Marmot::Discretizations::Elements::Quadrature;
@@ -68,11 +70,18 @@ namespace {
   {
     auto uelT2D2 = std::unique_ptr< Marmot::Discretizations::Elements::Element >(
       new DisplacementFiniteElement< 1, 2 >( elementID,
-                                             Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                                             Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::
+                                               FullIntegration,
                                              DisplacementFiniteElement< 1, 2 >::SectionType::UniaxialStress ) );
     constexpr static int indicesToBeWrapped[] = { 0, 1 };
     constexpr static int nIndicesToBeWrapped  = 2;
-    return new Marmot::Discretizations::Elements::ElementSpatialWrapper( 2, 1, 2, 2, indicesToBeWrapped, nIndicesToBeWrapped, std::move( uelT2D2 ) );
+    return new Marmot::Discretizations::Elements::ElementSpatialWrapper( 2,
+                                                                         1,
+                                                                         2,
+                                                                         2,
+                                                                         indicesToBeWrapped,
+                                                                         nIndicesToBeWrapped,
+                                                                         std::move( uelT2D2 ) );
   }
   const static bool T2D2_isRegistered = Marmot::Registry::ElementFactory::registerElement( "T2D2", generateT2D2 );
 } // namespace

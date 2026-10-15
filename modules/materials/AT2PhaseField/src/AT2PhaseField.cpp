@@ -9,7 +9,9 @@ namespace Marmot::Materials {
   using namespace Marmot;
 
   AT2PhaseField::AT2PhaseField( const double* materialProperties, int nMaterialProperties, int materialNumber )
-    : Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >( materialProperties, nMaterialProperties, materialNumber ),
+    : Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >( materialProperties,
+                                                                   nMaterialProperties,
+                                                                   materialNumber ),
       C( ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( materialProperties[0], materialProperties[1] ) )
   {
     initializeStateLayout();
@@ -58,7 +60,8 @@ namespace Marmot::Materials {
     const double& phi = inc.K( 0 );
 
     // quadratic degradation function: g(phi) = (1-phi)^2
-    const auto [g, dg_dphi, d2g_dphi2] = Marmot::ContinuumMechanics::PhaseField::EnergyDegradationFunctions::SecondOrder::quadratic( phi );
+    const auto [g, dg_dphi, d2g_dphi2] = Marmot::ContinuumMechanics::PhaseField::EnergyDegradationFunctions::
+      SecondOrder::quadratic( phi );
 
     // positive elastic strain energy density (no tension-compression split)
     const double psiPlus = 0.5 * eps.dot( C * eps );

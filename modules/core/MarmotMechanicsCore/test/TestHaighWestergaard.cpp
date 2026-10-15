@@ -72,7 +72,8 @@ void testHaighWestergaardDouble()
   throwExceptionOnFailure( checkIfEqual( hwoutput.rho, hwref.rho ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 4  failed: error in rho" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.theta, hwref.theta ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 4  failed: error in theta" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " test 4  failed: error in theta" );
 }
 
 void testHaighWestergaardDual()
@@ -96,7 +97,8 @@ void testHaighWestergaardDual()
   throwExceptionOnFailure( checkIfEqual( hwoutput.rho, hwref.rho ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 1  failed: error in rho" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.theta, hwref.theta ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 1  failed: error in theta" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " test 1  failed: error in theta" );
 
   // second test: compression meridian
   stress << dual( -10. ), dual( 0. ), dual( 0. ), dual( 0. ), dual( 0. ), dual( 0. );
@@ -147,7 +149,8 @@ void testHaighWestergaardDual()
   throwExceptionOnFailure( checkIfEqual( hwoutput.rho, hwref.rho ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 4  failed: error in rho" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.theta, hwref.theta ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 4  failed: error in theta" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " test 4  failed: error in theta" );
 }
 
 void testHaighWestergaardComplexDouble()

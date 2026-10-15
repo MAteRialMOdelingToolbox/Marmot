@@ -23,7 +23,7 @@ namespace {
       stateLayout.finalize();
     }
 
-    void computeStress( state3D&          state,
+    void computeStress( state3D&                state,
                         Marmot::Math::Matrix6d& dStress_dStrain,
                         const Marmot::Math::Vector6d&,
                         const timeInfo& ) const override
@@ -61,7 +61,7 @@ void testComputePlaneStressThrowsWhenItCannotConverge()
   auto [mat, stateVars] = makeNeverConvergingMaterial();
 
   Marmot::Math::Vector3d dStrain2D = Marmot::Math::Vector3d::Zero();
-  dStrain2D( 0 )             = 1e-3;
+  dStrain2D( 0 )                   = 1e-3;
   Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ 0.0, 1.0 };
   Marmot::Materials::MaterialHypoElastic::state2D  state2D;
   state2D.stateVars = stateVars.data();
@@ -75,7 +75,8 @@ void testComputePlaneStressThrowsWhenItCannotConverge()
     threw = true;
   }
   throwExceptionOnFailure( threw,
-                           "computePlaneStress() must throw Marmot::Utilities::StressUpdateFailed when it cannot converge in " +
+                           "computePlaneStress() must throw Marmot::Utilities::StressUpdateFailed when it cannot "
+                           "converge in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
@@ -87,7 +88,7 @@ void testComputeUniaxialStressThrowsWhenItCannotConverge()
 {
   auto [mat, stateVars] = makeNeverConvergingMaterial();
 
-  const double                        dStrain1D = 1e-3;
+  const double                                     dStrain1D = 1e-3;
   Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ 0.0, 1.0 };
   Marmot::Materials::MaterialHypoElastic::state1D  state1D;
   state1D.stateVars = stateVars.data();
@@ -101,7 +102,8 @@ void testComputeUniaxialStressThrowsWhenItCannotConverge()
     threw = true;
   }
   throwExceptionOnFailure( threw,
-                           "computeUniaxialStress() must throw Marmot::Utilities::StressUpdateFailed when it cannot converge in " +
+                           "computeUniaxialStress() must throw Marmot::Utilities::StressUpdateFailed when it cannot "
+                           "converge in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 

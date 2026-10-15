@@ -28,7 +28,6 @@
 #include "Marmot/MarmotMaterialHypoElasticAD.h"
 #include <Eigen/src/Core/Map.h>
 
-
 namespace Marmot::Materials {
   /**
    * @brief Implementation of a isotropic J2-plasticity  material
@@ -65,9 +64,9 @@ namespace Marmot::Materials {
     double getDensity( const double* stateVars ) const override;
 
   protected:
-    void computeStressAD( state3DAD&                 state,
+    void computeStressAD( state3DAD&                       state,
                           const Marmot::Math::Vector6dual& dStrain,
-                          const timeInfo&            timeInfo ) const override;
+                          const timeInfo&                  timeInfo ) const override;
 
     /**
      * @brief Hardening function.
@@ -104,7 +103,8 @@ namespace Marmot::Materials {
     T g( const T rhoTrial, const double kappa, const T deltaKappa ) const
     {
       const T kappa_ = kappa + deltaKappa;
-      return rhoTrial - Marmot::Math::Constants::sqrt6 * G * deltaKappa - Marmot::Math::Constants::sqrt2_3 * fy( kappa_ );
+      return rhoTrial - Marmot::Math::Constants::sqrt6 * G * deltaKappa -
+             Marmot::Math::Constants::sqrt2_3 * fy( kappa_ );
     }
   };
 } // namespace Marmot::Materials

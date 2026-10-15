@@ -182,8 +182,7 @@ void testKirchhoffStressFromPK2FirstOrderDerived_diagonalTensor()
   // [ 0.0    0.0    1.21 ]
 
   throwExceptionOnFailure( checkIfEqual( tau, expectedTau, 1e-12 ),
-                           "FirstOrder tau with Diagonal Tensor mismatch in " +
-                             std::string( __PRETTY_FUNCTION__ ) );
+                           "FirstOrder tau with Diagonal Tensor mismatch in " + std::string( __PRETTY_FUNCTION__ ) );
 
   // Test 2: Check dTau/dPK2
   Tensor3333d expected_dTau_dPK2( 0.0 );

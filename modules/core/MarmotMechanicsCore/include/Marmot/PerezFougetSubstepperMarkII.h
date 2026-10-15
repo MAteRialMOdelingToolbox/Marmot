@@ -59,11 +59,11 @@ namespace Marmot::ContinuumMechanics::Algorithms {
      * @param nPassesToIncrease Number of successful sub-steps before the step size may be increased.
      * @param Cel               Linear-elastic stiffness matrix (6×6).
      */
-    PerezFougetSubstepper( double          initialStepSize,
-                           double          minimumStepSize,
-                           double          scaleUpFactor,
-                           double          scaleDownFactor,
-                           int             nPassesToIncrease,
+    PerezFougetSubstepper( double                        initialStepSize,
+                           double                        minimumStepSize,
+                           double                        scaleUpFactor,
+                           double                        scaleDownFactor,
+                           int                           nPassesToIncrease,
                            const Marmot::Math::Matrix6d& Cel );
 
     /// check if the subincrement process has finished
@@ -100,11 +100,11 @@ namespace Marmot::ContinuumMechanics::Algorithms {
 
 namespace Marmot::ContinuumMechanics::Algorithms {
   template < int n >
-  PerezFougetSubstepper< n >::PerezFougetSubstepper( double          initialStepSize,
-                                                     double          minimumStepSize,
-                                                     double          scaleUpFactor,
-                                                     double          scaleDownFactor,
-                                                     int             nPassesToIncrease,
+  PerezFougetSubstepper< n >::PerezFougetSubstepper( double                        initialStepSize,
+                                                     double                        minimumStepSize,
+                                                     double                        scaleUpFactor,
+                                                     double                        scaleDownFactor,
+                                                     int                           nPassesToIncrease,
                                                      const Marmot::Math::Matrix6d& Cel )
     :
 

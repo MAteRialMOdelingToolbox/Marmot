@@ -12,8 +12,8 @@ namespace Marmot::Materials {
   double VonMisesModel::getDensity( const double* stateVars ) const
   {
     if ( this->nMaterialProperties < 7 ) {
-      throw std::runtime_error(
-        std::string( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 7." ) );
+      throw std::runtime_error( std::string(
+        Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 7." ) );
     }
     return this->materialProperties[6];
   }
@@ -27,10 +27,10 @@ namespace Marmot::Materials {
     stateLayout.finalize();
   }
 
-  void VonMisesModel::computeStress( state3D&        state,
+  void VonMisesModel::computeStress( state3D&                      state,
                                      Marmot::Math::Matrix6d&       dStress_dStrain,
                                      const Marmot::Math::Vector6d& dStrain,
-                                     const timeInfo& timeInfo ) const
+                                     const timeInfo&               timeInfo ) const
 
   {
     // elasticity parameters
@@ -43,9 +43,9 @@ namespace Marmot::Materials {
     const double& delta            = this->materialProperties[5];
 
     // map to stress, strain and tangent
-    Marmot::Math::mVector6d  S( state.stress.data() );
-    Marmot::Math::mMatrix6d  dS_dE( dStress_dStrain.data() );
-    const auto dE = Map< const Marmot::Math::Vector6d >( dStrain.data() );
+    Marmot::Math::mVector6d S( state.stress.data() );
+    Marmot::Math::mMatrix6d dS_dE( dStress_dStrain.data() );
+    const auto              dE = Map< const Marmot::Math::Vector6d >( dStrain.data() );
 
     // compute elastic stiffness
     const auto Cel = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
@@ -81,7 +81,8 @@ namespace Marmot::Materials {
       const double G = E / ( 2. * ( 1. + nu ) );
 
       auto g = [&]( double deltaKappa ) {
-        return rhoTrial - Marmot::Math::Constants::sqrt6 * G * deltaKappa - Marmot::Math::Constants::sqrt2_3 * fy( kappa + deltaKappa );
+        return rhoTrial - Marmot::Math::Constants::sqrt6 * G * deltaKappa -
+               Marmot::Math::Constants::sqrt2_3 * fy( kappa + deltaKappa );
       };
 
       // variables for return mapping
@@ -96,10 +97,12 @@ namespace Marmot::Materials {
       while ( std::abs( g( dKappa ) ) > Constants::innerNewtonTol ) {
 
         if ( counter == Constants::nMaxInnerNewtonCycles ) {
-          throw Marmot::Utilities::StressUpdateFailed( "return mapping failed to converge in VonMisesModel::computeStress" );
+          throw Marmot::Utilities::StressUpdateFailed(
+            "return mapping failed to converge in VonMisesModel::computeStress" );
         }
         // compute derivative of g wrt kappa
-        dg_ddKappa = -Marmot::Math::Constants::sqrt6 * G - Marmot::Math::Constants::sqrt2_3 * dfy_ddKappa( kappa + dKappa );
+        dg_ddKappa = -Marmot::Math::Constants::sqrt6 * G -
+                     Marmot::Math::Constants::sqrt2_3 * dfy_ddKappa( kappa + dKappa );
 
         // update dKappa and iteration counter
         dKappa -= g( dKappa ) / dg_ddKappa;
@@ -131,7 +134,9 @@ namespace Marmot::Materials {
     }
   }
 
-  void VonMisesModel::computeStressExplicit( state3D& state, const Marmot::Math::Vector6d& dStrain, const timeInfo& timeInfo ) const
+  void VonMisesModel::computeStressExplicit( state3D&                      state,
+                                             const Marmot::Math::Vector6d& dStrain,
+                                             const timeInfo&               timeInfo ) const
 
   {
     // elasticity parameters
@@ -144,8 +149,8 @@ namespace Marmot::Materials {
     const double& delta            = this->materialProperties[5];
 
     // map to stress, strain and tangent
-    Marmot::Math::mVector6d  S( state.stress.data() );
-    const auto dE = dStrain;
+    Marmot::Math::mVector6d S( state.stress.data() );
+    const auto              dE = dStrain;
 
     // compute elastic stiffness
     const auto Cel = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
@@ -180,7 +185,8 @@ namespace Marmot::Materials {
       const double G = E / ( 2. * ( 1. + nu ) );
 
       auto g = [&]( double deltaKappa ) {
-        return rhoTrial - Marmot::Math::Constants::sqrt6 * G * deltaKappa - Marmot::Math::Constants::sqrt2_3 * fy( kappa + deltaKappa );
+        return rhoTrial - Marmot::Math::Constants::sqrt6 * G * deltaKappa -
+               Marmot::Math::Constants::sqrt2_3 * fy( kappa + deltaKappa );
       };
 
       // variables for return mapping
@@ -200,7 +206,8 @@ namespace Marmot::Materials {
       while ( counter < 5 ) {
 
         // compute derivative of g wrt kappa
-        dg_ddKappa = -Marmot::Math::Constants::sqrt6 * G - Marmot::Math::Constants::sqrt2_3 * dfy_ddKappa( kappa + dKappa );
+        dg_ddKappa = -Marmot::Math::Constants::sqrt6 * G -
+                     Marmot::Math::Constants::sqrt2_3 * dfy_ddKappa( kappa + dKappa );
 
         // update dKappa and iteration counter
         dKappa -= g_val / dg_ddKappa;
@@ -209,7 +216,8 @@ namespace Marmot::Materials {
       }
 
       if ( std::abs( g_val ) > Constants::innerNewtonTol ) {
-        throw Marmot::Utilities::StressUpdateFailed( "return mapping failed to converge in VonMisesModel::computeStressExplicit" );
+        throw Marmot::Utilities::StressUpdateFailed(
+          "return mapping failed to converge in VonMisesModel::computeStressExplicit" );
       }
 
       dLambda = Marmot::Math::Constants::sqrt3_2 * dKappa;

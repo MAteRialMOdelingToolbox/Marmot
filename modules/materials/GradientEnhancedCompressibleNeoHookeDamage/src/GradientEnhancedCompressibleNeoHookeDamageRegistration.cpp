@@ -4,9 +4,8 @@
 namespace {
   using namespace Marmot::Materials;
 
+  const static bool GradientEnhancedCompressibleNeoHookeDamageRegistered = Marmot::Registry::
+    MaterialGradientEnhancedFiniteStrainFactory::registerMaterial< GradientEnhancedCompressibleNeoHookeDamage >(
+      "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE" );
 
-    const static bool
-      GradientEnhancedCompressibleNeoHookeDamageRegistered = Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory::
-        registerMaterial< GradientEnhancedCompressibleNeoHookeDamage >( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE" );
-
-  } // namespace
+} // namespace

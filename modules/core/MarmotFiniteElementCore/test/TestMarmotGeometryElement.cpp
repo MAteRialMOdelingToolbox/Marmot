@@ -95,8 +95,8 @@ void testTetra10DNdXiMatchesNumericalDifferentiationOfN()
 // BGreen(dNdX, F): at F = Identity, the Green-Lagrange strain operator reduces algebraically to
 // the standard linear B-operator (every cross term multiplies a zero off-diagonal entry of F, and
 // every retained term multiplies F's unit diagonal) -- an exact identity, not an approximation,
-// and one that exercises Marmot::Discretizations::Elements::GeometryElement's BGreen() specialization (which has no callers
-// anywhere in the codebase) for every shape.
+// and one that exercises Marmot::Discretizations::Elements::GeometryElement's BGreen() specialization (which has no
+// callers anywhere in the codebase) for every shape.
 // ---------------------------------------------------------------------------------------------
 
 template < int nDim, int nNodes >
@@ -186,7 +186,7 @@ void testBAxisymmetricMatchesHandDerivedValuesQuad4()
   const Eigen::Vector2d x_gauss( 2.0, 0.0 ); // r = 2
 
   Marmot::Discretizations::Elements::GeometryElement< 2, 4 > geo;
-  const auto                    B = geo.B_axisymmetric( dNdX, N, x_gauss );
+  const auto                                                 B = geo.B_axisymmetric( dNdX, N, x_gauss );
 
   throwExceptionOnFailure( B.rows() == 4 && B.cols() == 8, "B_axisymmetric() returned the wrong size." );
 

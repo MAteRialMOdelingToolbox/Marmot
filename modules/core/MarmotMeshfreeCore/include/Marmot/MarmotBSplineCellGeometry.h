@@ -74,9 +74,9 @@ namespace Marmot::Discretizations::Cells {
      * @param[in] sizeKnotVectors     Size of @p knotVectors.
      */
     BSplineCellGeometry( const double* nodeCoordinates,
-                               int           sizeNodeCoordinates,
-                               const double* knotVectors,
-                               int           sizeKnotVectors )
+                         int           sizeNodeCoordinates,
+                         const double* knotVectors,
+                         int           sizeKnotVectors )
       : ParentBSplineGeometryElement( nodeCoordinates, sizeNodeCoordinates, knotVectors, sizeKnotVectors )
     {
       auto nodeCoords = ParentBSplineGeometryElement::_mapCoordinates.reshaped( nDim, this->nNodes );

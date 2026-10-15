@@ -181,8 +181,8 @@ namespace Marmot::ContinuumMechanics::Algorithms {
   }
 
   template < int s >
-  void PerezFougetSubstepperTime< s >::extendConsistentTangent( const Marmot::Math::Matrix6d&           CelT,
-                                                                const TangentSizedMatrix& matTangent )
+  void PerezFougetSubstepperTime< s >::extendConsistentTangent( const Marmot::Math::Matrix6d& CelT,
+                                                                const TangentSizedMatrix&     matTangent )
   {
     extendConsistentTangent( CelT );
     consistentTangent.applyOnTheLeft( matTangent );

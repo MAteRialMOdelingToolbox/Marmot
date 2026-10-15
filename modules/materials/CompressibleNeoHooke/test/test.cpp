@@ -295,9 +295,9 @@ void testWithMPSolver()
   auto        solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   std::string matName            = "COMPRESSIBLENEOHOOKE";
   auto        solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
-                                                       materialProperties.data(),
-                                                       materialProperties.size(),
-                                                       solveropts );
+                                                                    materialProperties.data(),
+                                                                    materialProperties.size(),
+                                                                    solveropts );
 
   // create a step with controlled shear strain increment
   Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
@@ -453,14 +453,15 @@ void testComputePlaneStrainMatchesComputeStress()
 
   throwExceptionOnFailure( checkIfEqual( resStress.tau, resStrain.tau, 1e-14 ) &&
                              checkIfEqual( tanStress.dTau_dF, tanStrain.dTau_dF, 1e-14 ),
-                           "computePlaneStrain() must match computeStress() for Marmot::Materials::MaterialFiniteStrain's "
+                           "computePlaneStrain() must match computeStress() for "
+                           "Marmot::Materials::MaterialFiniteStrain's "
                            "default (pass-through) implementation in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 
   // ... and the eigen-deformation overload must match computeStress(..., eigenDeformation) likewise.
   CompressibleNeoHooke::ConstitutiveResponse< 3 > resStressEigen( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );
   CompressibleNeoHooke::AlgorithmicModuli< 3 >    tanStressEigen  = { Tensor3333d( 0.0 ) };
-  Marmot::Materials::MaterialFiniteStrain&                     matBaseForEigen = mat;
+  Marmot::Materials::MaterialFiniteStrain&        matBaseForEigen = mat;
   matBaseForEigen.computeStress( resStressEigen, tanStressEigen, def, timeInc, { 1.01, 0.99, 1.02 } );
 
   CompressibleNeoHooke::ConstitutiveResponse< 3 > resStrainEigen( Tensor33d( 0.0 ), 0.0, 0.0, nullptr );

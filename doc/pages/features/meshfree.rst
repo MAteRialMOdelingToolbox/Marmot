@@ -10,8 +10,8 @@ Marmot provides the constitutive and discretization kernels for two meshfree met
   their shape functions follow from a *reproducing kernel approximation* built on *kernel functions* attached to the
   nodes.
 
-Both methods reuse Marmot's material interfaces (e.g. ``MarmotMaterialFiniteStrain`` and
-``MarmotMaterialGradientEnhancedFiniteStrain``), so that every registered material of such an interface can be used in
+Both methods reuse Marmot's material interfaces (e.g. ``Marmot::Materials::MaterialFiniteStrain`` and
+``Marmot::Materials::MaterialGradientEnhancedFiniteStrain``), so that every registered material of such an interface can be used in
 them.
 
 Architecture
@@ -26,7 +26,7 @@ The meshfree layer consists of a core module and of formulation modules in the d
      - Content
      - Documentation
    * - ``core/MarmotMeshfreeCore``
-     - interfaces (``MarmotCell``, ``MarmotMaterialPoint``, ``MarmotParticle``, ``MarmotCellElement``), cell geometries,
+     - interfaces (``Marmot::Discretizations::Cells::Cell``, ``Marmot::Discretizations::MaterialPoints::MaterialPoint``, ``Marmot::Discretizations::Meshfree::Particle``, ``Marmot::Discretizations::Cells::CellElement``), cell geometries,
        the reproducing kernel approximation, kernel functions, generic particle implementations and the factories
      - :doc:`meshfreeapproximation`, :doc:`meshfreecells`, :doc:`meshfreeparticles`
    * - ``materialpoints/``
@@ -41,10 +41,10 @@ The meshfree layer consists of a core module and of formulation modules in the d
 
 Two formulations are available, each for MPM (material point and cell) and RKPM (particle):
 
-- **Displacement**: finite-strain displacement formulation, for materials of the ``MarmotMaterialFiniteStrain``
+- **Displacement**: finite-strain displacement formulation, for materials of the ``Marmot::Materials::MaterialFiniteStrain``
   interface;
 - **GradientEnhancedFiniteStrain**: finite-strain displacement formulation coupled to a scalar nonlocal field
-  (implicit-gradient regularization), for materials of the ``MarmotMaterialGradientEnhancedFiniteStrain`` interface,
+  (implicit-gradient regularization), for materials of the ``Marmot::Materials::MaterialGradientEnhancedFiniteStrain`` interface,
   e.g. :doc:`gradientenhancedcompressibleneohookedamage` and :doc:`gradientenhancedfinitestraindruckerprager`. It is
   the meshfree counterpart of :doc:`gradientenhancedfinitestraindisplacementelement`.
 
@@ -52,8 +52,8 @@ Registration and naming
 -----------------------
 
 As materials and elements, all meshfree types register themselves by name with a factory of
-``MarmotMeshfreeCore`` (``MarmotMaterialPointFactory``, ``MarmotCellFactory``, ``MarmotCellElementFactory``,
-``MarmotParticleFactory``); the host creates them by that name. The names follow the pattern
+``MarmotMeshfreeCore`` (``Marmot::Registry::MaterialPointFactory``, ``Marmot::Registry::CellFactory``, ``Marmot::Registry::CellElementFactory``,
+``Marmot::Registry::ParticleFactory``); the host creates them by that name. The names follow the pattern
 
 .. list-table::
    :header-rows: 1

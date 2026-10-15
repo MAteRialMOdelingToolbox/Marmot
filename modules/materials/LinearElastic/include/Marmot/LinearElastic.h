@@ -158,9 +158,9 @@ namespace Marmot::Materials {
 
     Marmot::Math::Matrix6d globalStiffnessTensor;
 
-    void computeStress( state3D&                state,
+    void computeStress( state3D&                      state,
                         Marmot::Math::Matrix6d&       dStressDDStrain,
                         const Marmot::Math::Vector6d& dStrain,
-                        const timeInfo&         timeInfo ) const override;
+                        const timeInfo&               timeInfo ) const override;
   };
 } // namespace Marmot::Materials

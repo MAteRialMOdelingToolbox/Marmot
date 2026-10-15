@@ -20,10 +20,12 @@ void testCreateMaxwellPropertiesEmpty()
 {
   MaxwellProperties props = createMaxwellProperties( 0, nullptr );
 
-  throwExceptionOnFailure( props.nMaxwell == 0, Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": nMaxwell should be 0" );
+  throwExceptionOnFailure( props.nMaxwell == 0,
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": nMaxwell should be 0" );
   throwExceptionOnFailure( props.gamma.empty(),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": gamma vector should be empty" );
-  throwExceptionOnFailure( props.tau.empty(), Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": tau vector should be empty" );
+  throwExceptionOnFailure( props.tau.empty(),
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": tau vector should be empty" );
   throwExceptionOnFailure( checkIfEqual( props.sumGamma, 0.0 ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": sumGamma should be 0" );
 }
@@ -34,7 +36,8 @@ void testCreateMaxwellPropertiesSingle()
   const double      pairs[2] = { 0.3, 10.0 }; // { gamma1, tau1 }
   MaxwellProperties props    = createMaxwellProperties( 1, pairs );
 
-  throwExceptionOnFailure( props.nMaxwell == 1, Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": nMaxwell should be 1" );
+  throwExceptionOnFailure( props.nMaxwell == 1,
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": nMaxwell should be 1" );
   throwExceptionOnFailure( checkIfEqual( props.gamma[0], 0.3 ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": gamma[0] should be 0.3" );
   throwExceptionOnFailure( checkIfEqual( props.tau[0], 10.0 ),
@@ -49,7 +52,8 @@ void testCreateMaxwellPropertiesTwo()
   const double      pairs[4] = { 0.3, 10.0, 0.2, 5.0 }; // { gamma1, tau1, gamma2, tau2 }
   MaxwellProperties props    = createMaxwellProperties( 2, pairs );
 
-  throwExceptionOnFailure( props.nMaxwell == 2, Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": nMaxwell should be 2" );
+  throwExceptionOnFailure( props.nMaxwell == 2,
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": nMaxwell should be 2" );
   throwExceptionOnFailure( checkIfEqual( props.gamma[0], 0.3 ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": gamma[0] should be 0.3" );
   throwExceptionOnFailure( checkIfEqual( props.tau[0], 10.0 ),
@@ -72,7 +76,8 @@ void testCreateMaxwellPropertiesThrowsForNegativeCount()
   catch ( const std::invalid_argument& ) {
     threw = true;
   }
-  throwExceptionOnFailure( threw, Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": negative nMaxwell must throw" );
+  throwExceptionOnFailure( threw,
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": negative nMaxwell must throw" );
 }
 
 // createMaxwellProperties must reject a null pairVector when nMaxwell > 0
@@ -86,8 +91,8 @@ void testCreateMaxwellPropertiesThrowsForNullPairVectorWithPositiveCount()
     threw = true;
   }
   throwExceptionOnFailure( threw,
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                        << ": null gammaTauPairVector with nMaxwell > 0 must throw" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": null gammaTauPairVector with nMaxwell > 0 must throw" );
 }
 
 // createMaxwellProperties must reject a negative relaxation time
@@ -101,7 +106,8 @@ void testCreateMaxwellPropertiesThrowsForNegativeTau()
   catch ( const std::invalid_argument& ) {
     threw = true;
   }
-  throwExceptionOnFailure( threw, Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": negative tau must throw" );
+  throwExceptionOnFailure( threw,
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": negative tau must throw" );
 }
 
 // ---------------------------------------------------------------------------
@@ -144,7 +150,8 @@ void testTemplateOverloadNoOp()
   evaluateGeneralizedMaxwellModel( stress, dStress, 1.0, props, nullptr );
 
   throwExceptionOnFailure( checkIfEqual( stress, stressOriginal ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": nMaxwell=0 should leave stress unchanged" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": nMaxwell=0 should leave stress unchanged" );
 }
 
 // Single Maxwell element, Q_n=0: verify stress update and state var storage
@@ -179,7 +186,8 @@ void testTemplateOverloadSingleElementFromZero()
     for ( int j = 0; j < 3; ++j ) {
       const double expectedQnp = beta * ( i == j ? 1.0 : 0.0 );
       throwExceptionOnFailure( checkIfEqual( stateVars[3 * i + j], expectedQnp, 1e-12 ),
-                               Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": Q_np[" << i << "," << j << "] failed" );
+                               Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__ << ": Q_np[" << i << "," << j << "] failed" );
     }
 }
 
@@ -213,11 +221,13 @@ void testTemplateOverloadSingleElementFromNonZeroState()
 
   for ( int i = 0; i < 3; ++i ) {
     throwExceptionOnFailure( checkIfEqual( stress( i, i ), stressOutDiag, 1e-12 ),
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": stress diagonal[" << i << "] failed" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": stress diagonal[" << i << "] failed" );
   }
   // Off-diagonal should be zero
   throwExceptionOnFailure( checkIfEqual( stress( 0, 1 ), 0.0, 1e-12 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": stress off-diagonal should be zero" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": stress off-diagonal should be zero" );
 }
 
 // Test that Taylor approximation branch (small dT/tau) gives consistent results
@@ -245,7 +255,8 @@ void testTemplateOverloadTaylorApproximation()
   const double expectedFactor = ( 1.0 - 0.3 ) + beta_ref;
 
   throwExceptionOnFailure( checkIfEqual( stressTaylor( 0, 0 ), expectedFactor, 1e-10 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": Taylor branch stress(0,0) failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": Taylor branch stress(0,0) failed" );
 }
 
 // Two Maxwell elements: stress is sum of both contributions
@@ -270,11 +281,14 @@ void testTemplateOverloadTwoElements()
   const double expectedFactor = ( 1.0 - 0.5 ) + beta1 + beta2;
 
   throwExceptionOnFailure( checkIfEqual( stress( 0, 0 ), expectedFactor, 1e-12 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": stress(0,0) with two Maxwell elements failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": stress(0,0) with two Maxwell elements failed" );
   throwExceptionOnFailure( checkIfEqual( stress( 1, 1 ), expectedFactor, 1e-12 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": stress(1,1) with two Maxwell elements failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": stress(1,1) with two Maxwell elements failed" );
   throwExceptionOnFailure( checkIfEqual( stress( 2, 2 ), expectedFactor, 1e-12 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": stress(2,2) with two Maxwell elements failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": stress(2,2) with two Maxwell elements failed" );
 }
 
 // Relaxation: stress decreases to (1-sumGamma)*sigma after many steps with no new load increment
@@ -314,9 +328,11 @@ void testTemplateOverloadRelaxation()
   // After sufficient relaxation, Q ≈ 0, so stress ≈ (1-gamma)*I = 0.7*I
   const double longTermFactor = 1.0 - 0.3;
   throwExceptionOnFailure( checkIfEqual( stressRelaxed( 0, 0 ), longTermFactor, 1e-6 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": long-term stress(0,0) after relaxation failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": long-term stress(0,0) after relaxation failed" );
   throwExceptionOnFailure( checkIfEqual( stressRelaxed( 1, 1 ), longTermFactor, 1e-6 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": long-term stress(1,1) after relaxation failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": long-term stress(1,1) after relaxation failed" );
 }
 
 // ---------------------------------------------------------------------------
@@ -341,9 +357,11 @@ void testSimoOverloadNoOp()
   evaluateGeneralizedMaxwellModel( stress, tangent, dStress, 1.0, props, nullptr );
 
   throwExceptionOnFailure( checkIfEqual( stress, stressOrig ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": nMaxwell=0 should leave stress unchanged" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": nMaxwell=0 should leave stress unchanged" );
   throwExceptionOnFailure( checkIfEqual( tangent, tangentOrig ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": nMaxwell=0 should leave tangent unchanged" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": nMaxwell=0 should leave tangent unchanged" );
 }
 
 // Single Maxwell element, Q_n=0: verify stress and tangent update
@@ -370,7 +388,8 @@ void testSimoOverloadSingleElementFromZero()
   throwExceptionOnFailure( checkIfEqual( stress( 0, 0 ), stressFactor, 1e-12 ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": stress(0,0) failed" );
   throwExceptionOnFailure( checkIfEqual( stress( 0, 1 ), 0.0, 1e-12 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": off-diagonal stress should be zero" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": off-diagonal stress should be zero" );
 
   // Expected tangent: (1-gamma+beta) * tangent_in = (0.7+beta) * 2.0 for all entries
   const double tangentFactor = ( 1.0 - 0.3 + beta ) * 2.0;
@@ -379,8 +398,8 @@ void testSimoOverloadSingleElementFromZero()
       for ( int k = 0; k < 3; ++k )
         for ( int l = 0; l < 3; ++l )
           throwExceptionOnFailure( checkIfEqual( tangent( i, j, k, l ), tangentFactor, 1e-12 ),
-                                   Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": tangent(" << i << "," << j << "," << k
-                                                << "," << l << ") failed" );
+                                   Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": tangent(" << i << ","
+                                                                   << j << "," << k << "," << l << ") failed" );
 }
 
 // Single Maxwell element, Q_n≠0: verify recursion in both stress and tangent
@@ -442,12 +461,14 @@ void testSimoOverloadTwoElements()
   // Expected stress: (1-sumGamma) + beta1 + beta2 = (0.5 + beta1 + beta2) on diagonal
   const double stressFactor = 0.5 + beta1 + beta2;
   throwExceptionOnFailure( checkIfEqual( stress( 0, 0 ), stressFactor, 1e-12 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": stress(0,0) with two elements failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": stress(0,0) with two elements failed" );
 
   // Expected tangent: (1-sumGamma + beta1 + beta2) * tangent_in
   const double tangentFactor = stressFactor; // same factor here since tangent_in=1
   throwExceptionOnFailure( checkIfEqual( tangent( 0, 0, 0, 0 ), tangentFactor, 1e-12 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": tangent(0,0,0,0) with two elements failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": tangent(0,0,0,0) with two elements failed" );
 }
 
 // Element with a near-zero relaxation time must be skipped entirely (continue branch)
@@ -476,17 +497,19 @@ void testSimoOverloadSkipsNearZeroTau()
   // the skipped element's state vars must never be written, i.e. must still equal the sentinel
   for ( int i = 0; i < 9; ++i )
     throwExceptionOnFailure( checkIfEqual( stateVars[i], sentinel ),
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": skipped element's state var[" << i
-                                          << "] must remain untouched" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": skipped element's state var["
+                                                             << i << "] must remain untouched" );
 
   const double sumGamma       = 0.3 + 0.2;
   const double expectedStress = ( 1.0 - sumGamma ) + beta2;
   throwExceptionOnFailure( checkIfEqual( stress( 0, 0 ), expectedStress, 1e-12 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": stress(0,0) with a skipped element failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": stress(0,0) with a skipped element failed" );
 
   const double expectedTangent = ( 1.0 - sumGamma + beta2 ); // tangent_in = 1.0 everywhere
   throwExceptionOnFailure( checkIfEqual( tangent( 0, 0, 0, 0 ), expectedTangent, 1e-12 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": tangent(0,0,0,0) with a skipped element failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": tangent(0,0,0,0) with a skipped element failed" );
 }
 
 // dT/tau below 1e-6 must use the Taylor-expansion branch for alpha/beta
@@ -516,7 +539,8 @@ void testSimoOverloadTaylorApproximation()
   // expected stress now depends on both Taylor-approximated coefficients, alpha_ref and beta_ref
   const double expectedFactor = ( 1.0 - 0.3 ) + alpha_ref * Q_n0 + beta_ref;
   throwExceptionOnFailure( checkIfEqual( stress( 0, 0 ), expectedFactor, 1e-10 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": Taylor branch stress(0,0) failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": Taylor branch stress(0,0) failed" );
 }
 
 // Verify that the Simo overload and template overload give the same stress result
@@ -550,8 +574,8 @@ void testSimoAndTemplateOverloadConsistency()
   evaluateGeneralizedMaxwellModel( stress_tmpl, dStress, dT, props, stateVarsTmpl.data() );
 
   throwExceptionOnFailure( checkIfEqual( stress_simo, stress_tmpl, 1e-12 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                        << ": Simo and template overloads should give same stress" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": Simo and template overloads should give same stress" );
 
   // State variables should also be identical
   for ( int i = 0; i < 9; ++i )
@@ -660,11 +684,13 @@ void testLiuOverloadMatchesSimo()
 
   // Stress should be identical
   throwExceptionOnFailure( checkIfEqual( stressLiu, stressSimo, 1e-8 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": Liu stress should match Simo stress" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": Liu stress should match Simo stress" );
 
   // Tangent should also be identical (since C:Cinv:beta*C = beta*C when dTangentdDef=0)
   throwExceptionOnFailure( checkIfEqual( tangentLiu, tangentSimo, 1e-8 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": Liu tangent should match Simo tangent" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": Liu tangent should match Simo tangent" );
 
   // State variables should be identical
   for ( int i = 0; i < 9; ++i )
@@ -713,12 +739,14 @@ void testLiuOverloadNonZeroDTangentDDeformation()
   // Verify stress
   const double stressExpected = ( 1.0 - 0.3 );
   throwExceptionOnFailure( checkIfEqual( stress( 0, 0 ), stressExpected, 1e-12 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": stress(0,0) with dStress=0 should be (1-gamma)" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": stress(0,0) with dStress=0 should be (1-gamma)" );
 
   // Verify tangent is (1-gamma+beta)*C
   const double factor = ( 1.0 - 0.3 + beta );
   throwExceptionOnFailure( checkIfEqual( tangent( 0, 0, 0, 0 ), factor * C( 0, 0, 0, 0 ), 1e-8 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": tangent(0,0,0,0) with dStress=0 failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": tangent(0,0,0,0) with dStress=0 failed" );
 }
 
 // nMaxwell=0: no change to stress or tangent
@@ -749,9 +777,11 @@ void testLiuOverloadNoOp()
                                    nullptr );
 
   throwExceptionOnFailure( checkIfEqual( stress, stressOrig ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": nMaxwell=0 should leave stress unchanged" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": nMaxwell=0 should leave stress unchanged" );
   throwExceptionOnFailure( checkIfEqual( tangent, tangentOrig ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": nMaxwell=0 should leave tangent unchanged" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": nMaxwell=0 should leave tangent unchanged" );
 }
 
 // Element with a near-zero relaxation time must be skipped entirely (continue branch)
@@ -785,8 +815,8 @@ void testLiuOverloadSkipsNearZeroTau()
   // the skipped element's state vars must never be written, i.e. must still equal the sentinel
   for ( int i = 0; i < 9; ++i )
     throwExceptionOnFailure( checkIfEqual( stateVars[i], sentinel ),
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": skipped element's state var[" << i
-                                          << "] must remain untouched" );
+                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": skipped element's state var["
+                                                             << i << "] must remain untouched" );
 
   // Q_n2 = 0 -> Q_np2 = beta2 * dStress = beta2 * I; since C:Cinv = ISymm (identity on symmetric
   // tensors, see testIsotropicInverseConsistency), H_np2 : C = Q_np2, so stress gets exactly
@@ -794,7 +824,8 @@ void testLiuOverloadSkipsNearZeroTau()
   const double sumGamma       = 0.3 + 0.2;
   const double expectedStress = ( 1.0 - sumGamma ) + beta2;
   throwExceptionOnFailure( checkIfEqual( stress( 0, 0 ), expectedStress, 1e-8 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": stress(0,0) with a skipped element failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": stress(0,0) with a skipped element failed" );
 }
 
 // dT/tau below 1e-6 must use the Taylor-expansion branch for alpha/beta
@@ -836,7 +867,8 @@ void testLiuOverloadTaylorApproximation()
   // expected stress now depends on both Taylor-approximated coefficients, alpha_ref and beta_ref
   const double expectedFactor = ( 1.0 - 0.3 ) + alpha_ref * Q_n0 + beta_ref;
   throwExceptionOnFailure( checkIfEqual( stress( 0, 0 ), expectedFactor, 1e-8 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": Taylor branch stress(0,0) failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": Taylor branch stress(0,0) failed" );
 }
 
 // ---------------------------------------------------------------------------

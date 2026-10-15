@@ -119,15 +119,15 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] smoothingVolumeUpdateType Type of update strategy for the smoothing domain volume.
      * @throws std::invalid_argument if the provided volume is not zero.
      */
-    DisplacementParticleSQCNIxNSNI( int                                            elementID,
-                                    const double*                                  nodeCoordinates,
-                                    int                                            nNodeCoordiantes,
-                                    double                                         volume,
-                                    const std::string&                             materialName,
-                                    const double*                                  materialProperties,
-                                    int                                            sizeMaterialProperties,
-                                    const Marmot::Discretizations::Meshfree::Approximation&             approximation,
-                                    ParentSQCNIParticle::SmoothingDomainUpdateType smoothingVolumeUpdateType );
+    DisplacementParticleSQCNIxNSNI( int                                                     elementID,
+                                    const double*                                           nodeCoordinates,
+                                    int                                                     nNodeCoordiantes,
+                                    double                                                  volume,
+                                    const std::string&                                      materialName,
+                                    const double*                                           materialProperties,
+                                    int                                                     sizeMaterialProperties,
+                                    const Marmot::Discretizations::Meshfree::Approximation& approximation,
+                                    ParentSQCNIParticle::SmoothingDomainUpdateType          smoothingVolumeUpdateType );
 
     /**
      * @brief Assigns and computes meshfree kernel functions and their derivatives.
@@ -263,15 +263,15 @@ namespace Marmot::Discretizations::Meshfree {
 
   template < int nDim, int nVertices >
   DisplacementParticleSQCNIxNSNI< nDim, nVertices >::DisplacementParticleSQCNIxNSNI(
-    int                                                  elementID,
-    const double*                                        vertexCoordinates,
-    int                                                  nVertexCoordinates,
-    double                                               volume,
-    const std::string&                                   materialName,
-    const double*                                        materialProperties,
-    int                                                  sizeMaterialProperties,
+    int                                                     elementID,
+    const double*                                           vertexCoordinates,
+    int                                                     nVertexCoordinates,
+    double                                                  volume,
+    const std::string&                                      materialName,
+    const double*                                           materialProperties,
+    int                                                     sizeMaterialProperties,
     const Marmot::Discretizations::Meshfree::Approximation& approximation,
-    ParentSQCNIParticle::SmoothingDomainUpdateType       smoothingVolumeUpdateType )
+    ParentSQCNIParticle::SmoothingDomainUpdateType          smoothingVolumeUpdateType )
     : DisplacementParticleSQCNI< nDim, nVertices >( elementID,
                                                     vertexCoordinates,
                                                     nVertexCoordinates,
@@ -347,12 +347,12 @@ namespace Marmot::Discretizations::Meshfree {
 
     Tensor< double, nDim, nDim > da_ddu( 0.0 );
     Marmot::ContinuumMechanics::TimeIntegration::newmarkBetaIntegration< nDim >( du.data(),
-                                                             v.data(),
-                                                             a.data(),
-                                                             dT,
-                                                             this->_newmark_beta,
-                                                             this->_newmark_gamma,
-                                                             da_ddu.data() );
+                                                                                 v.data(),
+                                                                                 a.data(),
+                                                                                 dT,
+                                                                                 this->_newmark_beta,
+                                                                                 this->_newmark_gamma,
+                                                                                 da_ddu.data() );
     _mp->setVelocity( v );
     _mp->setAcceleration( a );
 

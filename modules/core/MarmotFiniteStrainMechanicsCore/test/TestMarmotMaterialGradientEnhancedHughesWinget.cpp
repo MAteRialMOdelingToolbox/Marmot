@@ -46,7 +46,7 @@ namespace {
   Marmot::Math::Matrix6d isotropicStiffness( double E, double nu )
   {
     Marmot::Math::Matrix6d C   = Marmot::Math::Matrix6d::Zero();
-    const double     fac = E / ( ( 1.0 + nu ) * ( 1.0 - 2.0 * nu ) );
+    const double           fac = E / ( ( 1.0 + nu ) * ( 1.0 - 2.0 * nu ) );
     for ( int i = 0; i < 3; i++ )
       for ( int j = 0; j < 3; j++ )
         C( i, j ) = fac * ( i == j ? ( 1.0 - nu ) : nu );
@@ -345,7 +345,7 @@ void testSmallStrainAgreement()
 
   Tensor33d Ffinal;
   Marmot::Math::mapEigenToFastor( Ffinal ) = Ftotal;
-  const auto s                       = step( w, state, Ffinal, Nrun );
+  const auto s                             = step( w, state, Ffinal, Nrun );
 
   // Compare the Cauchy stress: tau = J sigma, and the J factor alone is larger than the tolerance below.
   const Tensor33d sigma = Tensor33d( s.tau / Ftotal.determinant() );
@@ -642,8 +642,9 @@ void testEnergyDensityRoundTripAtNonUnitJacobian()
     // i increments of `perIncrement` in the wrapped material's own density, reported per reference
     // volume. Without the inverse conversion this grows by a further factor of J each time.
     throwExceptionOnFailure( checkIfEqual( r.dissipation, i * perIncrement * J, 1e-10 ),
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": after " << i << " increments the dissipation is "
-                                          << r.dissipation << ", expected " << i * perIncrement * J );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": after " << i << " increments the dissipation is "
+                               << r.dissipation << ", expected " << i * perIncrement * J );
   }
 }
 

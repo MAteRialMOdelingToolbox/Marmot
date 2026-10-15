@@ -31,151 +31,151 @@
 
 namespace Marmot::Discretizations::Elements {
 
-/**
- * @class ElementSpatialWrapper
- * @brief Wrapper that embeds a lower-dimensional child element (e.g.\ a truss) into a
- *        higher-dimensional ambient space (2-D or 3-D).
- *
- * The projection transformation is constructed automatically from the supplied
- * nodal coordinates.  The child element is created via a user-provided factory
- * functor so that the wrapper remains independent of the concrete child type.
- */
-class ElementSpatialWrapper : public Element {
-
-public:
-  const int nDim;                                ///< Number of spatial dimensions of the ambient space.
-  const int nDimChild;                           ///< Number of spatial dimensions of the child element.
-  const int nNodes;                              ///< Number of nodes shared by parent and child element.
-  const int nRhsChild;                           ///< Size of the child element's right-hand-side vector.
-  const Eigen::Map< const Eigen::VectorXi >
-            rhsIndicesToBeProjected;             ///< Indices in the child RHS vector that need projection.
-  const int projectedSize;                       ///< Number of projected DOFs (child-element dimension).
-  const int unprojectedSize;                     ///< Number of unprojected DOFs (ambient-space dimension).
-
-  std::unique_ptr< Element > childElement; ///< Owned child element instance.
-  Eigen::MatrixXd                  T;            ///< Coordinate transformation matrix from child to parent space.
-  Eigen::MatrixXd                  P;            ///< Projection matrix mapping parent DOFs to child DOFs.
-  Eigen::MatrixXd                  projectedCoordinates; ///< Nodal coordinates expressed in the child (local) frame.
-  Eigen::VectorXd referenceCoordinates; ///< Ambient-space coordinates of node 0, needed to recover the translation
-                                        ///< (T alone only encodes the rotation) when mapping a child-space point
-                                        ///< back into ambient space.
-
   /**
-   * @brief Construct the spatial wrapper.
-   * @param[in] nDim                      Number of spatial dimensions of the ambient space.
-   * @param[in] nChildDim                 Number of spatial dimensions of the child element.
-   * @param[in] nNodes                    Number of nodes.
-   * @param[in] sizeRhsChild              Size of the child element's right-hand-side vector.
-   * @param[in] rhsIndicesToBeWrapped_    Array of child-RHS indices to be projected.
-   * @param[in] nRhsIndicesToBeWrapped    Length of @p rhsIndicesToBeWrapped_.
-   * @param[in] childElement              Owning pointer to the child element instance.
+   * @class ElementSpatialWrapper
+   * @brief Wrapper that embeds a lower-dimensional child element (e.g.\ a truss) into a
+   *        higher-dimensional ambient space (2-D or 3-D).
+   *
+   * The projection transformation is constructed automatically from the supplied
+   * nodal coordinates.  The child element is created via a user-provided factory
+   * functor so that the wrapper remains independent of the concrete child type.
    */
-  ElementSpatialWrapper( int                              nDim,
-                               int                              nChildDim,
-                               int                              nNodes,
-                               int                              sizeRhsChild,
-                               const int                        rhsIndicesToBeWrapped_[],
-                               int                              nRhsIndicesToBeWrapped,
-                               std::unique_ptr< Element > childElement );
+  class ElementSpatialWrapper : public Element {
 
-  /// @copydoc Element::getNumberOfRequiredStateVars
-  int getNumberOfRequiredStateVars();
+  public:
+    const int nDim;                                  ///< Number of spatial dimensions of the ambient space.
+    const int nDimChild;                             ///< Number of spatial dimensions of the child element.
+    const int nNodes;                                ///< Number of nodes shared by parent and child element.
+    const int nRhsChild;                             ///< Size of the child element's right-hand-side vector.
+    const Eigen::Map< const Eigen::VectorXi >
+              rhsIndicesToBeProjected;               ///< Indices in the child RHS vector that need projection.
+    const int projectedSize;                         ///< Number of projected DOFs (child-element dimension).
+    const int unprojectedSize;                       ///< Number of unprojected DOFs (ambient-space dimension).
 
-  /// @copydoc Element::getNodeFields
-  std::vector< std::vector< std::string > > getNodeFields();
+    std::unique_ptr< Element > childElement;         ///< Owned child element instance.
+    Eigen::MatrixXd            T;                    ///< Coordinate transformation matrix from child to parent space.
+    Eigen::MatrixXd            P;                    ///< Projection matrix mapping parent DOFs to child DOFs.
+    Eigen::MatrixXd            projectedCoordinates; ///< Nodal coordinates expressed in the child (local) frame.
+    Eigen::VectorXd referenceCoordinates; ///< Ambient-space coordinates of node 0, needed to recover the translation
+                                          ///< (T alone only encodes the rotation) when mapping a child-space point
+                                          ///< back into ambient space.
 
-  /// @copydoc Element::getDofIndicesPermutationPattern
-  std::vector< int > getDofIndicesPermutationPattern();
+    /**
+     * @brief Construct the spatial wrapper.
+     * @param[in] nDim                      Number of spatial dimensions of the ambient space.
+     * @param[in] nChildDim                 Number of spatial dimensions of the child element.
+     * @param[in] nNodes                    Number of nodes.
+     * @param[in] sizeRhsChild              Size of the child element's right-hand-side vector.
+     * @param[in] rhsIndicesToBeWrapped_    Array of child-RHS indices to be projected.
+     * @param[in] nRhsIndicesToBeWrapped    Length of @p rhsIndicesToBeWrapped_.
+     * @param[in] childElement              Owning pointer to the child element instance.
+     */
+    ElementSpatialWrapper( int                        nDim,
+                           int                        nChildDim,
+                           int                        nNodes,
+                           int                        sizeRhsChild,
+                           const int                  rhsIndicesToBeWrapped_[],
+                           int                        nRhsIndicesToBeWrapped,
+                           std::unique_ptr< Element > childElement );
 
-  /// @copydoc Element::getNNodes
-  int getNNodes();
+    /// @copydoc Element::getNumberOfRequiredStateVars
+    int getNumberOfRequiredStateVars();
 
-  /// @copydoc Element::getNSpatialDimensions
-  int getNSpatialDimensions();
+    /// @copydoc Element::getNodeFields
+    std::vector< std::vector< std::string > > getNodeFields();
 
-  /// @copydoc Element::getNDofPerElement
-  int getNDofPerElement();
+    /// @copydoc Element::getDofIndicesPermutationPattern
+    std::vector< int > getDofIndicesPermutationPattern();
 
-  /// @copydoc Element::getElementShape
-  std::string getElementShape();
+    /// @copydoc Element::getNNodes
+    int getNNodes();
 
-  /// @copydoc Element::assignStateVars
-  void assignStateVars( double* stateVars, int nStateVars );
+    /// @copydoc Element::getNSpatialDimensions
+    int getNSpatialDimensions();
 
-  /// @copydoc Element::assignProperty(const Marmot::Discretizations::ElementProperties&)
-  void assignProperty( const Marmot::Discretizations::ElementProperties& property );
+    /// @copydoc Element::getNDofPerElement
+    int getNDofPerElement();
 
-  /// @copydoc Element::assignProperty(const Marmot::Discretizations::MaterialSection&)
-  void assignProperty( const Marmot::Discretizations::MaterialSection& property );
+    /// @copydoc Element::getElementShape
+    std::string getElementShape();
 
-  /// @copydoc Element::assignProperty(const std::string&, const double*, int)
-  void assignProperty( const std::string& propertyName, const double* properties, int nProperties ) override;
+    /// @copydoc Element::assignStateVars
+    void assignStateVars( double* stateVars, int nStateVars );
 
-  /// @copydoc Element::getPropertyNames
-  std::vector< std::string > getPropertyNames() const override;
+    /// @copydoc Element::assignProperty(const Marmot::Discretizations::ElementProperties&)
+    void assignProperty( const Marmot::Discretizations::ElementProperties& property );
 
-  /// @copydoc Element::assignNodeCoordinates
-  void assignNodeCoordinates( const double* coordinates );
+    /// @copydoc Element::assignProperty(const Marmot::Discretizations::MaterialSection&)
+    void assignProperty( const Marmot::Discretizations::MaterialSection& property );
 
-  /// @copydoc Element::initializeYourself
-  void initializeYourself();
+    /// @copydoc Element::assignProperty(const std::string&, const double*, int)
+    void assignProperty( const std::string& propertyName, const double* properties, int nProperties ) override;
 
-  /**
-   * @brief Perform element computations with coordinate transformation.
-   * @param[in]  QTotal  Total dof vector in the ambient (parent) space.
-   * @param[in]  dQ      Incremental dof vector in the ambient space.
-   * @param[out] Pe      Internal force vector in the ambient space.
-   * @param[out] Ke      Stiffness matrix in the ambient space.
-   * @param[in]  time    Current time.
-   * @param[in]  dT      Time step size.
-   */
-  void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT );
+    /// @copydoc Element::getPropertyNames
+    std::vector< std::string > getPropertyNames() const override;
 
-  /// @copydoc Element::setInitialConditions
-  void setInitialConditions( StateTypes state, const double* values );
+    /// @copydoc Element::assignNodeCoordinates
+    void assignNodeCoordinates( const double* coordinates );
 
-  /**
-   * @brief Compute contribution from distributed surface loads with coordinate transformation.
-   * @param[in]  loadType    Type of distributed load.
-   * @param[out] P           External load vector in the ambient space.
-   * @param[out] K           Load stiffness matrix in the ambient space.
-   * @param[in]  elementFace Index of element face.
-   * @param[in]  load        Applied load values.
-   * @param[in]  QTotal      Total dof vector.
-   * @param[in]  time        Current time.
-   * @param[in]  dT          Time step size.
-   */
-  void computeDistributedLoad( DistributedLoadTypes loadType,
-                               double*              P,
-                               double*              K,
-                               int                  elementFace,
-                               const double*        load,
-                               const double*        QTotal,
-                               double               time,
-                               double               dT );
+    /// @copydoc Element::initializeYourself
+    void initializeYourself();
 
-  /**
-   * @brief Compute body force contribution with coordinate transformation.
-   * @param[out] P      External load vector in the ambient space.
-   * @param[out] K      Load stiffness matrix in the ambient space.
-   * @param[in]  load   Applied body force values.
-   * @param[in]  QTotal Total dof vector.
-   * @param[in]  time   Current time.
-   * @param[in]  dT     Time step size.
-   */
-  void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, double time, double dT );
+    /**
+     * @brief Perform element computations with coordinate transformation.
+     * @param[in]  QTotal  Total dof vector in the ambient (parent) space.
+     * @param[in]  dQ      Incremental dof vector in the ambient space.
+     * @param[out] Pe      Internal force vector in the ambient space.
+     * @param[out] Ke      Stiffness matrix in the ambient space.
+     * @param[in]  time    Current time.
+     * @param[in]  dT      Time step size.
+     */
+    void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT );
 
-  /// @copydoc Element::getStateView
-  Marmot::Utilities::StateView getStateView( const std::string& stateName, int quadraturePoint );
+    /// @copydoc Element::setInitialConditions
+    void setInitialConditions( StateTypes state, const double* values );
 
-  /// @copydoc Element::getCoordinatesAtCenter
-  std::vector< double > getCoordinatesAtCenter();
+    /**
+     * @brief Compute contribution from distributed surface loads with coordinate transformation.
+     * @param[in]  loadType    Type of distributed load.
+     * @param[out] P           External load vector in the ambient space.
+     * @param[out] K           Load stiffness matrix in the ambient space.
+     * @param[in]  elementFace Index of element face.
+     * @param[in]  load        Applied load values.
+     * @param[in]  QTotal      Total dof vector.
+     * @param[in]  time        Current time.
+     * @param[in]  dT          Time step size.
+     */
+    void computeDistributedLoad( DistributedLoadTypes loadType,
+                                 double*              P,
+                                 double*              K,
+                                 int                  elementFace,
+                                 const double*        load,
+                                 const double*        QTotal,
+                                 double               time,
+                                 double               dT );
 
-  /// @copydoc Element::getCoordinatesAtQuadraturePoints
-  std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints();
+    /**
+     * @brief Compute body force contribution with coordinate transformation.
+     * @param[out] P      External load vector in the ambient space.
+     * @param[out] K      Load stiffness matrix in the ambient space.
+     * @param[in]  load   Applied body force values.
+     * @param[in]  QTotal Total dof vector.
+     * @param[in]  time   Current time.
+     * @param[in]  dT     Time step size.
+     */
+    void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, double time, double dT );
 
-  /// @copydoc Element::getNumberOfQuadraturePoints
-  int getNumberOfQuadraturePoints();
-};
+    /// @copydoc Element::getStateView
+    Marmot::Utilities::StateView getStateView( const std::string& stateName, int quadraturePoint );
+
+    /// @copydoc Element::getCoordinatesAtCenter
+    std::vector< double > getCoordinatesAtCenter();
+
+    /// @copydoc Element::getCoordinatesAtQuadraturePoints
+    std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints();
+
+    /// @copydoc Element::getNumberOfQuadraturePoints
+    int getNumberOfQuadraturePoints();
+  };
 
 } // namespace Marmot::Discretizations::Elements

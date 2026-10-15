@@ -49,9 +49,8 @@ namespace Marmot::Materials {
 
     switch ( hyperelasticBase ) {
     case NeoHooke:
-      return ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::ThirdOrder::standardNeoHooke( C,
-                                                                                              elasticProperties[0],
-                                                                                              elasticProperties[1] );
+      return ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::ThirdOrder::
+        standardNeoHooke( C, elasticProperties[0], elasticProperties[1] );
     case PenceGouNeoHooke:
       energyDensityFunction = [this]( const Marmot::Math::FastorTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
         autodiff::dual3rd res = ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::PenceGouPotentialB<
@@ -61,12 +60,12 @@ namespace Marmot::Materials {
       break;
     case Yeoh:
       energyDensityFunction = [this]( const Marmot::Math::FastorTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
-        autodiff::dual3rd
-          res = ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::YeohPotential< autodiff::dual3rd >( C_ad,
-                                                                                                elasticProperties[0],
-                                                                                                elasticProperties[1],
-                                                                                                elasticProperties[2],
-                                                                                                elasticProperties[3] );
+        autodiff::dual3rd res = ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::YeohPotential<
+          autodiff::dual3rd >( C_ad,
+                               elasticProperties[0],
+                               elasticProperties[1],
+                               elasticProperties[2],
+                               elasticProperties[3] );
         return res;
       };
       break;
@@ -135,7 +134,8 @@ namespace Marmot::Materials {
 
     using namespace ContinuumMechanics;
     // compute Cauchy-Green deformation
-    const auto [C, dC_dF] = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::rightCauchyGreen( F );
+    const auto [C, dC_dF] = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::rightCauchyGreen(
+      F );
 
     // compute energy density, first, second and third partial derivatives wrt Cauchy Green deformation
     const auto [psi_, dPsi_dC, d2Psi_dCdC, d3Psi_dCdCdC] = computeEnergyDensityAndDerivatives( C );
@@ -181,9 +181,10 @@ namespace Marmot::Materials {
     const Tensor33d PK2 = evaluate( PK2vol + PK2dev );
 
     // compute Kirchhoff stress from PK2 stress
-    const auto [tau, dTau_dPK2, dTau_dF] = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::FirstOrder::KirchhoffStressFromPK2( PK2, F );
-    response.tau                         = tau;
-    response.elasticEnergyDensity        = psi_; // TODO: replace by actual elastic energy density
+    const auto [tau, dTau_dPK2, dTau_dF] = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::FirstOrder::
+      KirchhoffStressFromPK2( PK2, F );
+    response.tau                  = tau;
+    response.elasticEnergyDensity = psi_; // TODO: replace by actual elastic energy density
 
     // compute tangent operator dtau / dF
     tangents.dTau_dF = einsum< ijKL, KLMN >( einsum< ijKL, KLMN >( dTau_dPK2, evaluate( dPK2vol_dE + dPK2dev_dE ) ),

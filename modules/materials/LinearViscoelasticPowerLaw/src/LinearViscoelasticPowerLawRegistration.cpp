@@ -4,8 +4,7 @@
 namespace {
   using namespace Marmot::Materials;
 
-
-  const static bool LinearViscoelasticPowerLawisRegistered = Marmot::Registry::MaterialHypoElasticFactory::registerMaterial<
-    LinearViscoelasticPowerLaw >( "LINEARVISCOELASTICPOWERLAW" );
+  const static bool LinearViscoelasticPowerLawisRegistered = Marmot::Registry::MaterialHypoElasticFactory::
+    registerMaterial< LinearViscoelasticPowerLaw >( "LINEARVISCOELASTICPOWERLAW" );
 
 } // namespace

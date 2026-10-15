@@ -20,7 +20,10 @@ namespace {
   public:
     using Marmot::Materials::MaterialHypoElastic::MaterialHypoElastic;
 
-    void computeStress( state3D&, Marmot::Math::Matrix6d&, const Marmot::Math::Vector6d&, const timeInfo& ) const override
+    void computeStress( state3D&,
+                        Marmot::Math::Matrix6d&,
+                        const Marmot::Math::Vector6d&,
+                        const timeInfo& ) const override
     {
       throw Marmot::Utilities::StressUpdateFailed( "test-only material always fails" );
     }
@@ -36,7 +39,7 @@ namespace {
   public:
     using Marmot::Materials::MaterialHypoElastic::MaterialHypoElastic;
 
-    void computeStress( state3D&          state,
+    void computeStress( state3D&                state,
                         Marmot::Math::Matrix6d& dStress_dStrain,
                         const Marmot::Math::Vector6d&,
                         const timeInfo& ) const override
@@ -65,12 +68,12 @@ void testSetInitialStateAndResetToInitialState()
   std::string           matName            = "LINEARELASTIC";
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
-                                                      materialProperties.data(),
-                                                      materialProperties.size(),
-                                                      solveropts );
+                                                                   materialProperties.data(),
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
   Marmot::Math::Vector6d initialStress = Marmot::Math::Vector6d::Zero();
-  initialStress( 0 )             = 42.0;
+  initialStress( 0 )                   = 42.0;
   Eigen::VectorXd initialStateVars( solver.getNumberOfStateVariables() );
   initialStateVars.setZero();
 
@@ -118,9 +121,9 @@ void testSolveStepRetriesThenThrowsSolverTimestepExhausted()
   std::string           matName            = "TESTALWAYSFAILINGHYPOELASTIC";
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
-                                                      materialProperties.data(),
-                                                      materialProperties.size(),
-                                                      solveropts );
+                                                                   materialProperties.data(),
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, true };
@@ -141,7 +144,8 @@ void testSolveStepRetriesThenThrowsSolverTimestepExhausted()
     threw = true;
   }
   throwExceptionOnFailure( threw,
-                           "solveStep() must throw Marmot::Utilities::SolverTimestepExhausted once the time step cannot be halved "
+                           "solveStep() must throw Marmot::Utilities::SolverTimestepExhausted once the time step "
+                           "cannot be halved "
                            "below dTMin in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
@@ -155,9 +159,9 @@ void testSolveStepThrowsSolverIncrementsExhausted()
   std::string           matName            = "LINEARELASTIC";
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
-                                                      materialProperties.data(),
-                                                      materialProperties.size(),
-                                                      solveropts );
+                                                                   materialProperties.data(),
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, true };
@@ -180,7 +184,8 @@ void testSolveStepThrowsSolverIncrementsExhausted()
     threw = true;
   }
   throwExceptionOnFailure( threw,
-                           "solveStep() must throw Marmot::Utilities::SolverIncrementsExhausted when maxIncrements is reached "
+                           "solveStep() must throw Marmot::Utilities::SolverIncrementsExhausted when maxIncrements is "
+                           "reached "
                            "before timeEnd in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
@@ -197,9 +202,9 @@ void testSolveIncrementMixedControlNeedsNewtonCorrection()
   std::string           matName            = "LINEARELASTIC";
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
-                                                      materialProperties.data(),
-                                                      materialProperties.size(),
-                                                      solveropts );
+                                                                   materialProperties.data(),
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { false, true, true, true, true, true };
@@ -220,10 +225,10 @@ void testSolveIncrementMixedControlNeedsNewtonCorrection()
 
   // Cross-check against a freshly constructed material evaluated directly at the converged
   // strain, rather than re-deriving the expected stress analytically.
-  Marmot::Materials::LinearElastic    mat( materialProperties.data(), materialProperties.size(), 1 );
+  Marmot::Materials::LinearElastic                 mat( materialProperties.data(), materialProperties.size(), 1 );
   Marmot::Materials::MaterialHypoElastic&          matBase = mat;
   Marmot::Materials::MaterialHypoElastic::state3D  state( Marmot::Math::Vector6d::Zero(), 0.0, 0.0, nullptr );
-  Marmot::Math::Matrix6d                    tangent;
+  Marmot::Math::Matrix6d                           tangent;
   Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ 0.0, 1.0 };
   matBase.computeStress( state, tangent, last.strain, timeInfo );
 
@@ -244,9 +249,9 @@ void testSolveIncrementThrowsSolverConvergenceFailed()
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   solveropts.maxIterations                 = 3; // keep the test fast
   auto solver                              = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
-                                                      materialProperties.data(),
-                                                      materialProperties.size(),
-                                                      solveropts );
+                                                                   materialProperties.data(),
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { false, true, true, true, true, true };
@@ -265,7 +270,8 @@ void testSolveIncrementThrowsSolverConvergenceFailed()
     threw = true;
   }
   throwExceptionOnFailure( threw,
-                           "solveIncrement() must throw Marmot::Utilities::SolverConvergenceFailed when the residual can never be "
+                           "solveIncrement() must throw Marmot::Utilities::SolverConvergenceFailed when the residual "
+                           "can never be "
                            "driven to zero in " +
                              std::string( __PRETTY_FUNCTION__ ) );
 }
@@ -279,9 +285,9 @@ void testPrintHistoryDoesNotThrow()
   std::string           matName            = "LINEARELASTIC";
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
-                                                      materialProperties.data(),
-                                                      materialProperties.size(),
-                                                      solveropts );
+                                                                   materialProperties.data(),
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, true };
@@ -302,9 +308,9 @@ void testExportHistoryToCSVWritesExpectedContent()
   std::string           matName            = "LINEARELASTIC";
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
-                                                      materialProperties.data(),
-                                                      materialProperties.size(),
-                                                      solveropts );
+                                                                   materialProperties.data(),
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, true };
@@ -355,9 +361,9 @@ void testExportHistoryToCSVThrowsForInvalidPath()
   std::string           matName            = "LINEARELASTIC";
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
-                                                      materialProperties.data(),
-                                                      materialProperties.size(),
-                                                      solveropts );
+                                                                   materialProperties.data(),
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
   bool threw = false;
   try {
@@ -381,9 +387,9 @@ void testExportHistoryToCSVWritesStateVarColumnsForAMaterialWithStateVars()
   std::string           matName            = "VONMISES";
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
-                                                      materialProperties.data(),
-                                                      materialProperties.size(),
-                                                      solveropts );
+                                                                   materialProperties.data(),
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, true };

@@ -24,7 +24,7 @@ namespace Marmot::ContinuumMechanics {
     Marmot::Math::Tensors::Tensor322d reduce3D_dStress_dDeformationGradient(
       const Marmot::Math::Tensors::Tensor633d& dStressdDeformationGradient3D )
     {
-      static constexpr int     planeVoigtIndices[] = { 0, 1, 3 };
+      static constexpr int              planeVoigtIndices[] = { 0, 1, 3 };
       Marmot::Math::Tensors::Tensor322d tangent2D;
       for ( int i = 0; i < 3; i++ )
         for ( int j = 0; j < 2; j++ )
@@ -36,11 +36,11 @@ namespace Marmot::ContinuumMechanics {
 
     Marmot::Math::Matrix3d getPlaneStrainTangent( const Marmot::Math::Matrix6d& C )
     {
-      Marmot::Math::Matrix3d CPlaneStrain              = Marmot::Math::Matrix3d::Zero();
-      CPlaneStrain.topLeftCorner( 2, 2 ) = C.topLeftCorner( 2, 2 );
-      CPlaneStrain( 2, 2 )               = C( 3, 3 );
-      CPlaneStrain.block< 1, 2 >( 2, 0 ) = C.block< 1, 2 >( 3, 0 );
-      CPlaneStrain.block< 2, 1 >( 0, 2 ) = C.block< 2, 1 >( 0, 3 );
+      Marmot::Math::Matrix3d CPlaneStrain = Marmot::Math::Matrix3d::Zero();
+      CPlaneStrain.topLeftCorner( 2, 2 )  = C.topLeftCorner( 2, 2 );
+      CPlaneStrain( 2, 2 )                = C( 3, 3 );
+      CPlaneStrain.block< 1, 2 >( 2, 0 )  = C.block< 1, 2 >( 3, 0 );
+      CPlaneStrain.block< 2, 1 >( 0, 2 )  = C.block< 2, 1 >( 0, 3 );
 
       return CPlaneStrain;
     }
@@ -58,7 +58,8 @@ namespace Marmot::ContinuumMechanics {
 
   namespace PlaneStress {
 
-    Marmot::Math::Tensors::Tensor322d compute_dStress_dDeformationGradient( const Marmot::Math::Tensors::Tensor633d& dS_dF_3D )
+    Marmot::Math::Tensors::Tensor322d compute_dStress_dDeformationGradient(
+      const Marmot::Math::Tensors::Tensor633d& dS_dF_3D )
     {
       /*  dS^PS    dS^PS    dS    dF^Comp
        *  ----- == ----- * ---- * -------
@@ -111,7 +112,7 @@ namespace Marmot::ContinuumMechanics {
     Marmot::Math::Vector6d planeStressCompensationStrain( const Marmot::Math::Vector6d& strain, double nu )
     {
       const Marmot::Math::Vector6d& e                = strain;
-      const double    strainCorrComp33 = -nu / ( 1 - nu ) * ( e( 0 ) + e( 1 ) ) - e( 2 );
+      const double                  strainCorrComp33 = -nu / ( 1 - nu ) * ( e( 0 ) + e( 1 ) ) - e( 2 );
       Marmot::Math::Vector6d        result;
       result << 0, 0, strainCorrComp33, 0, 0, 0;
       return result;
@@ -123,9 +124,9 @@ namespace Marmot::ContinuumMechanics {
        * planeStressIncrement = C : T * strainIncrement
        * for isotropic material behavior only!
        * */
-      Marmot::Math::Matrix6d     T   = Marmot::Math::Matrix6d::Identity();
-      const double t31 = -tangent( 2, 0 ) / tangent( 2, 2 );
-      const double t32 = -tangent( 2, 1 ) / tangent( 2, 2 );
+      Marmot::Math::Matrix6d T   = Marmot::Math::Matrix6d::Identity();
+      const double           t31 = -tangent( 2, 0 ) / tangent( 2, 2 );
+      const double           t32 = -tangent( 2, 1 ) / tangent( 2, 2 );
       T.row( 2 ).head( 3 ) << t31, t32, 0.0;
       return T;
     }

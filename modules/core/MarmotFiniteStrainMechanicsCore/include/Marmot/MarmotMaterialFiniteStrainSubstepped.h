@@ -35,7 +35,6 @@
 
 namespace Marmot::Materials {
 
-
   /**
    * @class MaterialFiniteStrainSubstepped
    * @brief A decorator that applies time substepping with analytical tangent accumulation.
@@ -260,9 +259,10 @@ namespace Marmot::Materials {
       using namespace Fastor;
       using namespace Eigen;
 
-      Math::FastorTensors::TensorMap33d    Fn_ref = this->stateLayout.getAs< Math::FastorTensors::TensorMap33d >( response.stateVars, "Substepping_F_n" );
-      const Math::FastorTensors::Tensor33d Fn     = Fn_ref;
-      const Math::FastorTensors::Tensor33d Fn1    = deformation.F;
+      Math::FastorTensors::TensorMap33d
+        Fn_ref = this->stateLayout.getAs< Math::FastorTensors::TensorMap33d >( response.stateVars, "Substepping_F_n" );
+      const Math::FastorTensors::Tensor33d Fn  = Fn_ref;
+      const Math::FastorTensors::Tensor33d Fn1 = deformation.F;
 
       int nBaseState = baseMaterial->getNumberOfRequiredStateVars();
 

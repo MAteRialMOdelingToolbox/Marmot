@@ -48,8 +48,7 @@ namespace Marmot::Registry {
     return map;
   }
 
-  bool ParticleFactory::registerParticle( const std::string&      particleName,
-                                                particleFactoryFunction factoryFunction )
+  bool ParticleFactory::registerParticle( const std::string& particleName, particleFactoryFunction factoryFunction )
   {
 
     const auto particleNameUpperCase = makeStringUpperCase_( particleName );
@@ -68,9 +67,9 @@ namespace Marmot::Registry {
     int                sizeVertexCoordinates,
     double             volume,
     // Marmot::Discretizations::MaterialPoints::MaterialPoint&                                 mp,
-    const std::string&                                   materialName,
-    const double*                                        materialProperties,
-    int                                                  sizeMaterialProperties,
+    const std::string&                                      materialName,
+    const double*                                           materialProperties,
+    int                                                     sizeMaterialProperties,
     const Marmot::Discretizations::Meshfree::Approximation& approximation )
   {
     const auto particleNameUpperCase = makeStringUpperCase_( particleName );
@@ -86,7 +85,8 @@ namespace Marmot::Registry {
                                                                           approximation );
     }
     catch ( const std::out_of_range& e ) {
-      throw std::invalid_argument( Marmot::Utilities::MakeString() << "Invalid particle " << particleName << " requested!" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << "Invalid particle " << particleName << " requested!" );
     }
   }
 

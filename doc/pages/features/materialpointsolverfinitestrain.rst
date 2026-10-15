@@ -142,5 +142,5 @@ When built with ``-DMARMOT_BUILD_PYTHON_BINDINGS=ON``, the solver can be driven 
    for entry in solver.getHistory():
        print(f"Time: {entry.time:.2f}, Kirchhoff Stress 11: {entry.stress[0, 0]:.4e}")
 
-.. doxygenclass:: Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain
+.. doxygenclass:: Marmot::Materials::MarmotMaterialPointSolverFiniteStrain
    :allow-dot-graphs:

@@ -15,10 +15,12 @@ namespace {
    */
   template < class T,
              Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-             typename T::SectionType                             sectionType >
+             typename T::SectionType                                         sectionType >
   Marmot::Registry::ElementFactory::elementFactoryFunction makeFactoryFunction()
   {
-    return []( int elementID ) -> Marmot::Discretizations::Elements::Element* { return new T( elementID, integrationType, sectionType ); };
+    return []( int elementID ) -> Marmot::Discretizations::Elements::Element* {
+      return new T( elementID, integrationType, sectionType );
+    };
   }
 
   using namespace Marmot::Discretizations::Elements::Quadrature;

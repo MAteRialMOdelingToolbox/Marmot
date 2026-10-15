@@ -29,8 +29,8 @@ namespace Marmot::Materials {
 
   ADVonMises::ADVonMises( const double* materialProperties, int nMaterialProperties, int materialNumber )
     : Marmot::Materials::MaterialHypoElasticAD::MaterialHypoElasticAD( materialProperties,
-                                                                nMaterialProperties,
-                                                                materialNumber ),
+                                                                       nMaterialProperties,
+                                                                       materialNumber ),
       E( materialProperties[0] ),
       nu( materialProperties[1] ),
       yieldStress( materialProperties[2] ),
@@ -43,9 +43,9 @@ namespace Marmot::Materials {
     stateLayout.finalize();
   }
 
-  void ADVonMises::computeStressAD( state3DAD&                 state,
+  void ADVonMises::computeStressAD( state3DAD&                       state,
                                     const Marmot::Math::Vector6dual& dStrain,
-                                    const timeInfo&            timeInfo ) const
+                                    const timeInfo&                  timeInfo ) const
   {
     Marmot::Math::mVector6dual            S( state.stress.data() );
     const Marmot::Math::mVector6dualConst dE( dStrain.data() );
@@ -73,9 +73,9 @@ namespace Marmot::Materials {
       while ( abs( g( (double)rhoTrial, kappa, (double)dKappa ) ) > Constants::innerNewtonTol ) {
 
         if ( counter == Constants::nMaxInnerNewtonCycles ) {
-          throw Marmot::Utilities::StressUpdateFailed( Marmot::Utilities::MakeString()
-                                    << __PRETTY_FUNCTION__
-                                    << ": Return mapping did not converge within maximum number of iterations!" );
+          throw Marmot::Utilities::StressUpdateFailed(
+            Marmot::Utilities::MakeString()
+            << __PRETTY_FUNCTION__ << ": Return mapping did not converge within maximum number of iterations!" );
         }
 
         // compute derivative of g wrt kappa at constant rhoTrial

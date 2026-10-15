@@ -14,9 +14,9 @@ void testVonMisesCoordinateInvariance()
 
   // create material point solver instance
   auto solver = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
-                                                      &materialProperties[0],
-                                                      materialProperties.size(),
-                                                      solveropts );
+                                                                   &materialProperties[0],
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
   // define a step
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
@@ -43,9 +43,9 @@ void testVonMises()
 
   // create material point solver instance
   auto solver = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
-                                                      &materialProperties[0],
-                                                      materialProperties.size(),
-                                                      solveropts );
+                                                                   &materialProperties[0],
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
   // define a step
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;

@@ -4,69 +4,67 @@
 #include <cmath>
 #include <iostream>
 
-namespace Marmot {
-  namespace ContinuumMechanics::LocalizationAnalysis {
+namespace Marmot::ContinuumMechanics::LocalizationAnalysis {
 
-    Marmot::Math::Matrix3d computeAcousticTensor( const Marmot::Math::Matrix6d& materialTangent,
-                                            const Marmot::Math::Vector3d& normalVector )
-    {
-      Marmot::Math::Matrix3d acousticTensor;
-      int              indexRow, indexCol;
+  Marmot::Math::Matrix3d computeAcousticTensor( const Marmot::Math::Matrix6d& materialTangent,
+                                                const Marmot::Math::Vector3d& normalVector )
+  {
+    Marmot::Math::Matrix3d acousticTensor;
+    int                    indexRow, indexCol;
 
-      acousticTensor.setZero();
+    acousticTensor.setZero();
 
-      for ( int i = 0; i < 3; i++ ) {
-        for ( int j = 0; j < 3; j++ ) {
-          indexRow = Marmot::Math::Tensors::IndexNotation::toVoigt< 3 >( i, j );
-          for ( int k = 0; k < 3; k++ ) {
-            for ( int l = 0; l < 3; l++ ) {
-              indexCol = Marmot::Math::Tensors::IndexNotation::toVoigt< 3 >( k, l );
+    for ( int i = 0; i < 3; i++ ) {
+      for ( int j = 0; j < 3; j++ ) {
+        indexRow = Marmot::Math::Tensors::IndexNotation::toVoigt< 3 >( i, j );
+        for ( int k = 0; k < 3; k++ ) {
+          for ( int l = 0; l < 3; l++ ) {
+            indexCol = Marmot::Math::Tensors::IndexNotation::toVoigt< 3 >( k, l );
 
-              acousticTensor( j, k ) += normalVector( i ) * materialTangent( indexRow, indexCol ) * normalVector( l );
-            }
+            acousticTensor( j, k ) += normalVector( i ) * materialTangent( indexRow, indexCol ) * normalVector( l );
           }
         }
       }
-
-      return acousticTensor;
     }
 
-    bool localizationChecker( const Marmot::Math::Matrix3d& acousticTensor )
-    {
-      double Tol = 1e-12;
-      return acousticTensor.determinant() <= Tol ? true : false;
-    }
+    return acousticTensor;
+  }
 
-    Marmot::Math::Vector3d computeNormalVector( double alpha, double beta )
-    {
-      double           alphaRad = Marmot::Math::degToRad( alpha );
-      double           betaRad  = Marmot::Math::degToRad( beta );
-      Marmot::Math::Vector3d nVec;
+  bool localizationChecker( const Marmot::Math::Matrix3d& acousticTensor )
+  {
+    double Tol = 1e-12;
+    return acousticTensor.determinant() <= Tol ? true : false;
+  }
 
-      nVec << cos( betaRad ) * cos( alphaRad ), cos( betaRad ) * sin( alphaRad ), sin( betaRad );
-      return nVec;
-    }
+  Marmot::Math::Vector3d computeNormalVector( double alpha, double beta )
+  {
+    double                 alphaRad = Marmot::Math::degToRad( alpha );
+    double                 betaRad  = Marmot::Math::degToRad( beta );
+    Marmot::Math::Vector3d nVec;
 
-    double minimumDeterminantAcousticTensor( const Marmot::Math::Matrix6d& materialTangent )
-    {
-      Marmot::Math::Matrix3d acousticTensor;
-      Marmot::Math::Vector3d nVec;
-      double           detQ;
-      double           detQNew;
+    nVec << cos( betaRad ) * cos( alphaRad ), cos( betaRad ) * sin( alphaRad ), sin( betaRad );
+    return nVec;
+  }
 
-      detQ = 1e300;
-      for ( double alpha = 0.; alpha <= 360.; alpha += 10. ) {
-        for ( double beta = 0.; beta <= 90.; beta += 10. ) {
-          nVec           = computeNormalVector( alpha, beta );
-          acousticTensor = computeAcousticTensor( materialTangent, nVec );
-          detQNew        = acousticTensor.determinant();
+  double minimumDeterminantAcousticTensor( const Marmot::Math::Matrix6d& materialTangent )
+  {
+    Marmot::Math::Matrix3d acousticTensor;
+    Marmot::Math::Vector3d nVec;
+    double                 detQ;
+    double                 detQNew;
 
-          if ( detQNew <= detQ )
-            detQ = detQNew;
-        }
+    detQ = 1e300;
+    for ( double alpha = 0.; alpha <= 360.; alpha += 10. ) {
+      for ( double beta = 0.; beta <= 90.; beta += 10. ) {
+        nVec           = computeNormalVector( alpha, beta );
+        acousticTensor = computeAcousticTensor( materialTangent, nVec );
+        detQNew        = acousticTensor.determinant();
+
+        if ( detQNew <= detQ )
+          detQ = detQNew;
       }
-
-      return detQ;
     }
-  } // namespace ContinuumMechanics::LocalizationAnalysis
-} // namespace Marmot
+
+    return detQ;
+  }
+} // namespace Marmot::ContinuumMechanics::LocalizationAnalysis

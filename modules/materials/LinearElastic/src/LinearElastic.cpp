@@ -2,7 +2,6 @@
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
-#include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
 
 namespace Marmot::Materials {
@@ -12,7 +11,9 @@ namespace Marmot::Materials {
   using namespace ContinuumMechanics::Elasticity;
 
   LinearElastic::LinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber )
-    : Marmot::Materials::MaterialHypoElastic::MaterialHypoElastic( materialProperties, nMaterialProperties, materialNumber ),
+    : Marmot::Materials::MaterialHypoElastic::MaterialHypoElastic( materialProperties,
+                                                                   nMaterialProperties,
+                                                                   materialNumber ),
       // clang-format off
           anisotropicType( nMaterialProperties >= 15 ? Type::Orthotropic : (nMaterialProperties >= 11 ? Type::TransverseIsotropic : Type::Isotropic) ),
           E1(   materialProperties[0] ),
@@ -40,16 +41,21 @@ namespace Marmot::Materials {
     }
     else {
       // set coordinate system for transversly isotropic and orthotropic materials
-      const int i          = nMaterialProperties % 2 == 0 ? nMaterialProperties - 7 : nMaterialProperties - 6;
-      Marmot::Math::Vector3d  direction1 = { materialProperties[i], materialProperties[i + 1], materialProperties[i + 2] };
-      Marmot::Math::Vector3d  direction2 = { materialProperties[i + 3], materialProperties[i + 4], materialProperties[i + 5] };
+      const int              i = nMaterialProperties % 2 == 0 ? nMaterialProperties - 7 : nMaterialProperties - 6;
+      Marmot::Math::Vector3d direction1 = { materialProperties[i],
+                                            materialProperties[i + 1],
+                                            materialProperties[i + 2] };
+      Marmot::Math::Vector3d direction2 = { materialProperties[i + 3],
+                                            materialProperties[i + 4],
+                                            materialProperties[i + 5] };
 
-      Marmot::Math::Matrix3d localCoordinateSystem = Marmot::Math::orthonormalCoordinateSystem( direction1, direction2 );
+      Marmot::Math::Matrix3d localCoordinateSystem = Marmot::Math::orthonormalCoordinateSystem( direction1,
+                                                                                                direction2 );
       using namespace ContinuumMechanics::VoigtNotation::Transformations;
       Marmot::Math::Matrix6d transformStrainToLocalSystem  = transformationMatrixStrainVoigt( localCoordinateSystem );
       Marmot::Math::Matrix6d transformStressToGlobalSystem = transformationMatrixStressVoigt( localCoordinateSystem )
-                                                 .colPivHouseholderQr()
-                                                 .solve( Marmot::Math::Matrix6d::Identity() );
+                                                               .colPivHouseholderQr()
+                                                               .solve( Marmot::Math::Matrix6d::Identity() );
 
       Marmot::Math::Matrix6d localStiffnessTensor;
 
@@ -67,10 +73,10 @@ namespace Marmot::Materials {
     }
   }
 
-  void LinearElastic::computeStress( state3D&        state,
+  void LinearElastic::computeStress( state3D&                      state,
                                      Marmot::Math::Matrix6d&       dStressDDStrain,
                                      const Marmot::Math::Vector6d& dStrain,
-                                     const timeInfo& timeInfo ) const
+                                     const timeInfo&               timeInfo ) const
   {
 
     // map stress, strain increment and stiffness tensor
@@ -90,8 +96,8 @@ namespace Marmot::Materials {
     if ( nMaterialProperties >= base_props + 1 )
       return materialProperties[base_props];
     else {
-      throw std::runtime_error(
-        std::string( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": Density not specified for this material." ) );
+      throw std::runtime_error( std::string( Marmot::Utilities::MakeString()
+                                             << __PRETTY_FUNCTION__ << ": Density not specified for this material." ) );
     }
   }
 

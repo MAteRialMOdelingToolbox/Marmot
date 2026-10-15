@@ -58,9 +58,9 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in]  kernelFunctions     The @f$ n @f$ candidate kernel functions.
      * @param[out] shapeFunctionValues Shape function values (length @f$ n @f$).
      */
-    virtual void computeShapeFunctions( const double*                                             coord,
+    virtual void computeShapeFunctions( const double*                               coord,
                                         const std::vector< const KernelFunction* >& kernelFunctions,
-                                        double* shapeFunctionValues ) const = 0;
+                                        double*                                     shapeFunctionValues ) const = 0;
 
     /**
      * @brief Compute the shape function gradients @f$ \partial \Psi_A / \partial x_i @f$.
@@ -68,10 +68,9 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in]  kernelFunctions             The @f$ n @f$ candidate kernel functions.
      * @param[out] shapeFunctionValueGradients Shape function gradients, column-major @f$ d \times n @f$.
      */
-    virtual void computeShapeFunctionGradients(
-      const double*                                             coord,
-      const std::vector< const KernelFunction* >& kernelFunctions,
-      double*                                                   shapeFunctionValueGradients ) const = 0;
+    virtual void computeShapeFunctionGradients( const double*                               coord,
+                                                const std::vector< const KernelFunction* >& kernelFunctions,
+                                                double* shapeFunctionValueGradients ) const = 0;
 
     /**
      * @brief Compute the shape function values and gradients in one pass.
@@ -80,11 +79,10 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[out] shapeFunctionValues         Shape function values (length @f$ n @f$).
      * @param[out] shapeFunctionValueGradients Shape function gradients, column-major @f$ d \times n @f$.
      */
-    virtual void computeShapeFunctionsAndGradients(
-      const double*                                             coord,
-      const std::vector< const KernelFunction* >& kernelFunctions,
-      double*                                                   shapeFunctionValues,
-      double*                                                   shapeFunctionValueGradients ) const = 0;
+    virtual void computeShapeFunctionsAndGradients( const double*                               coord,
+                                                    const std::vector< const KernelFunction* >& kernelFunctions,
+                                                    double*                                     shapeFunctionValues,
+                                                    double* shapeFunctionValueGradients ) const = 0;
   };
 
 } // namespace Marmot::Discretizations::Meshfree

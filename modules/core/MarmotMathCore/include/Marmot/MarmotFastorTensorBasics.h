@@ -110,27 +110,18 @@ namespace Marmot::Math {
       inline const Tensor33d I = Tensor33d( ( Eigen::Matrix3d() << Eigen::Matrix3d::Identity() ).finished().data(),
                                             Fastor::ColumnMajor );
 
-      inline const Tensor333d
-        LeviCivita = Tensor333d( Tensors::Initialize_LeviCivita3D().data(),
-                                 Fastor::ColumnMajor );
+      inline const Tensor333d LeviCivita = Tensor333d( Tensors::Initialize_LeviCivita3D().data(), Fastor::ColumnMajor );
 
-      inline const Tensor3333d IHyd = Tensor3333d( Tensors::Initialize_I2xI2().data(),
-                                                   Fastor::ColumnMajor );
+      inline const Tensor3333d IHyd = Tensor3333d( Tensors::Initialize_I2xI2().data(), Fastor::ColumnMajor );
 
-      inline const Tensor3333d ISymm = Tensor3333d( Tensors::Initialize_Isym().data(),
-                                                    Fastor::ColumnMajor );
+      inline const Tensor3333d ISymm = Tensor3333d( Tensors::Initialize_Isym().data(), Fastor::ColumnMajor );
 
-      inline const Tensor3333d ISkew = Tensor3333d( Tensors::Initialize_Iskew()
-                                                      .data(),
-                                                    Fastor::ColumnMajor );
+      inline const Tensor3333d ISkew = Tensor3333d( Tensors::Initialize_Iskew().data(), Fastor::ColumnMajor );
 
-      inline const Tensor3333d I4 = Tensor3333d( Tensors::Initialize_IFourthOrder()
-                                                   .data(),
-                                                 Fastor::ColumnMajor );
+      inline const Tensor3333d I4 = Tensor3333d( Tensors::Initialize_IFourthOrder().data(), Fastor::ColumnMajor );
 
-      inline const Tensor3333d
-        ITranspose = Tensor3333d( Tensors::Initialize_IFourthOrderTranspose().data(),
-                                  Fastor::ColumnMajor );
+      inline const Tensor3333d ITranspose = Tensor3333d( Tensors::Initialize_IFourthOrderTranspose().data(),
+                                                         Fastor::ColumnMajor );
 
       inline const Tensor3333d Deviatoric = I4 - 1. / 3 * IHyd;
 
@@ -140,7 +131,7 @@ namespace Marmot::Math {
 
     } // namespace Spatial3D
 
-  } // namespace FastorTensors
+  }   // namespace FastorTensors
 
   namespace Indices {
     enum IndexTag { i_, j_, k_, l_, m_, n_, o_, p_, A_, B_, I_, J_, K_, L_, M_, N_, P_ };
@@ -634,8 +625,7 @@ namespace Marmot::Math {
    * This is the case for example when T is autodiff::dual.
    */
   template < typename T >
-  T einsum_ij_ij_hardcoded( const FastorTensors::Tensor33t< T >& A,
-                            const FastorTensors::Tensor33t< T >& B )
+  T einsum_ij_ij_hardcoded( const FastorTensors::Tensor33t< T >& A, const FastorTensors::Tensor33t< T >& B )
   {
     T result( 0.0 );
 
@@ -807,9 +797,8 @@ namespace Marmot::Math {
   template < typename T >
   FastorTensors::Tensor33t< T > deviatoric( const FastorTensors::Tensor33t< T >& t )
   {
-    Eigen::Matrix< T, 3, 3 >                    dummy = Eigen::Matrix< T, 3, 3 >::Identity();
-    const FastorTensors::Tensor33t< T > I     = FastorTensors::Tensor33t< T >( dummy.data(),
-                                                                                           Fastor::ColumnMajor );
+    Eigen::Matrix< T, 3, 3 >            dummy = Eigen::Matrix< T, 3, 3 >::Identity();
+    const FastorTensors::Tensor33t< T > I     = FastorTensors::Tensor33t< T >( dummy.data(), Fastor::ColumnMajor );
     const FastorTensors::Tensor33t< T > dev   = t - 1. / 3 * multiplyFastorTensorWithScalar( I, trace( t ) );
     return dev;
   }
@@ -824,6 +813,5 @@ namespace Marmot::Math {
    * such that \f$ C^{-1}_{ijmn} C_{mnkl} = \delta_{ik}\delta_{jl} \f$ using Mandel notation and Fastor's inverse
    * function for second order tensors.
    */
-  FastorTensors::Tensor3333d invertMinorSymmetricFourthOrderTensor(
-    const FastorTensors::Tensor3333d& C );
+  FastorTensors::Tensor3333d invertMinorSymmetricFourthOrderTensor( const FastorTensors::Tensor3333d& C );
 } // namespace Marmot::Math

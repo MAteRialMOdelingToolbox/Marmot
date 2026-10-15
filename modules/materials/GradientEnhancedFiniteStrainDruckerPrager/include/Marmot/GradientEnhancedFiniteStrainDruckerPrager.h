@@ -131,7 +131,8 @@ namespace Marmot::Materials {
      * @f$ \partial L/\partial\bar{N} @f$.
      * @param[in] deformation Deformation gradient and nonlocal field at the end of the increment.
      * @param[in] timeIncrement Time and time increment (not used, the model is rate independent).
-     * @throws Marmot::Utilities::StressUpdateFailed if the elastic volume ratio is not positive or no admissible return exists.
+     * @throws Marmot::Utilities::StressUpdateFailed if the elastic volume ratio is not positive or no admissible return
+     * exists.
      */
     void computeStress( ConstitutiveResponse< 3 >& response,
                         AlgorithmicModuli< 3 >&    tangents,
@@ -171,8 +172,9 @@ namespace Marmot::Materials {
     Tensor33t< T > secondPiolaKirchhoff( const Tensor33t< T >& Fe ) const
     {
       using namespace ContinuumMechanics;
-      const Tensor33t< T > Ce     = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( Fe );
-      const auto [psi_, dPsi_dCe] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( Ce, K, G );
+      const Tensor33t< T > Ce = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( Fe );
+      const auto [psi_, dPsi_dCe] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
+        PenceGouPotentialB( Ce, K, G );
       return Marmot::Math::multiplyFastorTensorWithScalar( dPsi_dCe, T( 2.0 ) );
     }
 
@@ -234,7 +236,9 @@ namespace Marmot::Materials {
      * @return The residual (11).
      */
     template < typename T >
-    Marmot::Math::VectorXt< T > coneResidual( const Marmot::Math::VectorXt< T >& X, const Tensor33d& FeTrial, const double alphaPOld ) const
+    Marmot::Math::VectorXt< T > coneResidual( const Marmot::Math::VectorXt< T >& X,
+                                              const Tensor33d&                   FeTrial,
+                                              const double                       alphaPOld ) const
     {
       using namespace Marmot::Math::Indices;
       const Tensor33t< T > Fe( X.segment( 0, 9 ).eval().data() );
@@ -266,7 +270,9 @@ namespace Marmot::Materials {
      * @return The residual (2).
      */
     template < typename T >
-    Marmot::Math::VectorXt< T > apexResidual( const Marmot::Math::VectorXt< T >& X, const double thetaTrial, const double alphaPOld ) const
+    Marmot::Math::VectorXt< T > apexResidual( const Marmot::Math::VectorXt< T >& X,
+                                              const double                       thetaTrial,
+                                              const double                       alphaPOld ) const
     {
       const T        theta  = X( 0 );
       const T        alphaP = X( 1 );
@@ -313,9 +319,9 @@ namespace Marmot::Materials {
      * yield function (with the hardening law substituted) scaled by @f$ c_0 @f$.
      */
     template < typename T >
-    Marmot::Math::VectorXt< T > principalResidual( const Marmot::Math::VectorXt< T >&   X,
-                                     const Eigen::Vector3d& epsTrial,
-                                     const double           alphaPOld ) const
+    Marmot::Math::VectorXt< T > principalResidual( const Marmot::Math::VectorXt< T >& X,
+                                                   const Eigen::Vector3d&             epsTrial,
+                                                   const double                       alphaPOld ) const
     {
       // the radius enters through rho d only, and the flow direction through dev M / sqrt(J2), both ~ rho: a radius
       // of exactly zero is shifted to a value far below every tolerance
@@ -376,14 +382,14 @@ namespace Marmot::Materials {
      * @brief The converged return mapping: the new elastic state, and the sensitivities needed for the tangents.
      */
     struct ReturnMapping {
-      bool                               plastic = false; ///< the state has returned to the cone or the apex
-      Tensor33d                          Fe;              ///< elastic deformation gradient
-      Tensor33d                          FpNew;           ///< plastic deformation gradient
-      double                             alphaP;          ///< hardening variable
-      double                             dEpVol;          ///< volumetric plastic log strain increment
-      double                             plasticWork;     ///< M : dEp
+      bool                                     plastic = false; ///< the state has returned to the cone or the apex
+      Tensor33d                                Fe;              ///< elastic deformation gradient
+      Tensor33d                                FpNew;           ///< plastic deformation gradient
+      double                                   alphaP;          ///< hardening variable
+      double                                   dEpVol;          ///< volumetric plastic log strain increment
+      double                                   plasticWork;     ///< M : dEp
       Marmot::Math::FastorTensors::Tensor3333d dFe_dF;          ///< d Fe / d F
-      Tensor33d                          dDeltaAlphaD_dF; ///< d dalpha_local / d F
+      Tensor33d                                dDeltaAlphaD_dF; ///< d dalpha_local / d F
     };
 
     /**
@@ -392,7 +398,8 @@ namespace Marmot::Materials {
      * @param[in] FpOld Plastic deformation gradient at the beginning of the increment, a view of the state.
      * @param[in] alphaPOld Hardening variable at the beginning of the increment.
      * @return The converged return mapping.
-     * @throws Marmot::Utilities::StressUpdateFailed if the elastic volume ratio is not positive or no admissible return exists.
+     * @throws Marmot::Utilities::StressUpdateFailed if the elastic volume ratio is not positive or no admissible return
+     * exists.
      */
     ReturnMapping returnMapping( const Tensor33d& F, const TensorMap33d& FpOld, double alphaPOld ) const;
 

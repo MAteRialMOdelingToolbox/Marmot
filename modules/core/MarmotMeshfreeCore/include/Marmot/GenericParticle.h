@@ -143,10 +143,10 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] approximation The meshfree approximation; it must outlive the particle.
      * @throws std::invalid_argument if @p nCenterCoordinates0 != nDim.
      */
-    GenericParticle( int                                elementID,
-                     const double*                      centerCoordinates0,
-                     int                                nCenterCoordinates0,
-                     double                             volume,
+    GenericParticle( int                  elementID,
+                     const double*        centerCoordinates0,
+                     int                  nCenterCoordinates0,
+                     double               volume,
                      const Approximation& approximation );
 
     /**
@@ -205,8 +205,7 @@ namespace Marmot::Discretizations::Meshfree {
      * resets any previous VCI correction.
      * @param[in] kernelFunctions The kernel functions (nodes) covering the particle.
      */
-    virtual void assignMeshfreeKernelFunctions(
-      const std::vector< const KernelFunction* >& kernelFunctions ) override
+    virtual void assignMeshfreeKernelFunctions( const std::vector< const KernelFunction* >& kernelFunctions ) override
     {
       _assignedKernelFunctions = kernelFunctions;
 
@@ -389,15 +388,15 @@ namespace Marmot::Discretizations::Meshfree {
     virtual Marmot::Utilities::StateView getStateView( const std::string& stateName, int qp ) const override
     {
       throw std::runtime_error( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": State " << stateName
-                                             << " not supported by GenericParticle." );
+                                                                << " not supported by GenericParticle." );
     }
   };
 
   template < int nDim >
-  GenericParticle< nDim >::GenericParticle( int                                                  elementID,
-                                            const double*                                        centerCoordinates0,
-                                            int                                                  nCenterCoordinates0,
-                                            double                                               volume,
+  GenericParticle< nDim >::GenericParticle( int                                                     elementID,
+                                            const double*                                           centerCoordinates0,
+                                            int                                                     nCenterCoordinates0,
+                                            double                                                  volume,
                                             const Marmot::Discretizations::Meshfree::Approximation& approximation )
     : _centerCoordinatesUndeformed( Eigen::Map< const Eigen::Matrix< double, nDim, 1 > >( centerCoordinates0 ) ),
       _centerReferenceIntermediate( _centerCoordinatesUndeformed ),
@@ -408,8 +407,9 @@ namespace Marmot::Discretizations::Meshfree {
       _nVCIConstraints( 0 )
   {
     if ( nCenterCoordinates0 != nDim ) {
-      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": size of center coordinates must be "
-                                                << nDim << ", but got " << nCenterCoordinates0 );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": size of center coordinates must be " << nDim
+                                   << ", but got " << nCenterCoordinates0 );
     }
     this->setVCIOrder( _vciOrder ); // Initialize VCI members
   }

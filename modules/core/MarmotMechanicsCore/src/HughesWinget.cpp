@@ -5,18 +5,21 @@
 
 namespace Marmot::ContinuumMechanics::Algorithms {
   using namespace Eigen;
-  HughesWinget::HughesWinget( const Marmot::Math::Matrix3d& FOld, const Marmot::Math::Matrix3d& FNew, Formulation formulation )
+  HughesWinget::HughesWinget( const Marmot::Math::Matrix3d& FOld,
+                              const Marmot::Math::Matrix3d& FNew,
+                              Formulation                   formulation )
     : theFormulation( formulation )
   {
 
     Marmot::Math::Matrix3d FMidStep = 0.5 * ( FNew + FOld );
 
-    l = ( FNew - FOld ) * FMidStep.inverse();     // actually l * dT
+    l = ( FNew - FOld ) * FMidStep.inverse();                   // actually l * dT
 
     Marmot::Math::Matrix3d dEps_ = 0.5 * ( l + l.transpose() ); // actually d * dT
-    dOmega         = 0.5 * ( l - l.transpose() ); // actually omega * dT
-    dEps           = Marmot::ContinuumMechanics::VoigtNotation::voigtFromStrainMatrix( dEps_ );
-    dR             = ( Marmot::Math::Matrix3d::Identity() - 0.5 * dOmega ).inverse() * ( Marmot::Math::Matrix3d::Identity() + 0.5 * dOmega );
+    dOmega                       = 0.5 * ( l - l.transpose() ); // actually omega * dT
+    dEps                         = Marmot::ContinuumMechanics::VoigtNotation::voigtFromStrainMatrix( dEps_ );
+    dR                           = ( Marmot::Math::Matrix3d::Identity() - 0.5 * dOmega ).inverse() *
+         ( Marmot::Math::Matrix3d::Identity() + 0.5 * dOmega );
   }
 
   Marmot::Math::Vector6d HughesWinget::getStrainIncrement()
@@ -37,8 +40,8 @@ namespace Marmot::ContinuumMechanics::Algorithms {
   }
 
   Marmot::Math::Tensors::Tensor633d HughesWinget::compute_dS_dF( const Marmot::Math::Vector6d& stress,
-                                                                const Marmot::Math::Matrix3d&         FInv,
-                                                                const Marmot::Math::Matrix6d& dChauchydEps )
+                                                                 const Marmot::Math::Matrix3d& FInv,
+                                                                 const Marmot::Math::Matrix6d& dChauchydEps )
   {
     using namespace Marmot;
     using namespace Marmot::Math::Tensors;
@@ -48,7 +51,7 @@ namespace Marmot::ContinuumMechanics::Algorithms {
     Marmot::Math::Tensors::Tensor633d dS_dF;
     Marmot::Math::Tensors::Tensor633d dStressRotational_dl;
     Marmot::Math::Tensors::Tensor633d dStressJaumann_dl;
-    auto                     stressNew = ContinuumMechanics::VoigtNotation::stressMatrixFromVoigt< 3 >( stress );
+    auto stressNew = ContinuumMechanics::VoigtNotation::stressMatrixFromVoigt< 3 >( stress );
 
     dStressRotational_dl.setZero();
     for ( int ij = 0; ij < 6; ij++ ) {
@@ -79,7 +82,8 @@ namespace Marmot::ContinuumMechanics::Algorithms {
     return dS_dF;
   }
 
-  Eigen::Matrix3d HughesWinget::compute_dScalar_dF( const Eigen::Matrix3d& FInv, const Marmot::Math::Vector6d& dScalarDEps )
+  Eigen::Matrix3d HughesWinget::compute_dScalar_dF( const Eigen::Matrix3d&        FInv,
+                                                    const Marmot::Math::Vector6d& dScalarDEps )
   {
 
     using namespace Marmot::ContinuumMechanics::Kinematics::VelocityGradient;

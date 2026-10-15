@@ -47,9 +47,9 @@ void testCreateMaterialN1ThrowsForUnregisteredName()
   bool threw = false;
   try {
     Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory< 1 >::createMaterial( "DEFINITELY_NOT_REGISTERED",
-                                                                                  nullptr,
-                                                                                  0,
-                                                                                  1 );
+                                                                                       nullptr,
+                                                                                       0,
+                                                                                       1 );
   }
   catch ( const std::invalid_argument& ) {
     threw = true;
@@ -71,9 +71,9 @@ void testRegisterAndCreateMaterialN2()
 
   std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedHypoElastic< 2 > > mat(
     Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory< 2 >::createMaterial( "TESTDUMMYMATERIALN2",
-                                                                                  nullptr,
-                                                                                  0,
-                                                                                  7 ) );
+                                                                                       nullptr,
+                                                                                       0,
+                                                                                       7 ) );
 
   throwExceptionOnFailure( mat != nullptr && mat->materialNumber == 7,
                            "createMaterial<2>() did not return a correctly constructed instance in " +
@@ -85,9 +85,9 @@ void testCreateMaterialN2ThrowsForUnregisteredName()
   bool threw = false;
   try {
     Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory< 2 >::createMaterial( "SOME_OTHER_UNKNOWN_NAME",
-                                                                                  nullptr,
-                                                                                  0,
-                                                                                  1 );
+                                                                                       nullptr,
+                                                                                       0,
+                                                                                       1 );
   }
   catch ( const std::invalid_argument& ) {
     threw = true;
@@ -109,9 +109,9 @@ void testRegisterAndCreateMaterialN6()
 
   std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedHypoElastic< 6 > > mat(
     Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory< 6 >::createMaterial( "TESTDUMMYMATERIALN6",
-                                                                                  nullptr,
-                                                                                  0,
-                                                                                  3 ) );
+                                                                                       nullptr,
+                                                                                       0,
+                                                                                       3 ) );
 
   throwExceptionOnFailure( mat != nullptr && mat->materialNumber == 3,
                            "createMaterial<6>() did not return a correctly constructed instance in " +
@@ -123,9 +123,9 @@ void testCreateMaterialN6ThrowsForUnregisteredName()
   bool threw = false;
   try {
     Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory< 6 >::createMaterial( "SOME_OTHER_UNKNOWN_NAME",
-                                                                                  nullptr,
-                                                                                  0,
-                                                                                  1 );
+                                                                                       nullptr,
+                                                                                       0,
+                                                                                       1 );
   }
   catch ( const std::invalid_argument& ) {
     threw = true;

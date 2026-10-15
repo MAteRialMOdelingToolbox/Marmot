@@ -4,9 +4,7 @@
 namespace {
   using namespace Marmot::Materials;
 
+  const static bool CompressibleNeoHookeRegistered = Marmot::Registry::MaterialFiniteStrainFactory::registerMaterial<
+    CompressibleNeoHooke >( "COMPRESSIBLENEOHOOKE" );
 
-    const static bool
-      CompressibleNeoHookeRegistered = Marmot::Registry::MaterialFiniteStrainFactory::registerMaterial< CompressibleNeoHooke >(
-        "COMPRESSIBLENEOHOOKE" );
-
-  } // namespace
+} // namespace

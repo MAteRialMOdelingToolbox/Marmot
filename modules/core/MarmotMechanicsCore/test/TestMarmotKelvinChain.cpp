@@ -31,35 +31,37 @@ void evaluateKCandUpdateStateVarsTestFunction()
   stateVars << 0.01, 0.1, 0.02, 0.2, 0.03, 0.3, 0.04, 0.4, 0.05, 0.5, 0.06, 0.6;
 
   // initialize compliance and strain
-  double   uniaxialCompliance = 0;
+  double                 uniaxialCompliance = 0;
   Marmot::Math::Vector6d dStrain            = { 0., 0., 0., 0., 0., 0. };
 
   // test retardation times
   Properties retardationTimes = generateRetardationTimes( n, min, spacing );
   for ( int i = 0; i < n; i++ )
     throwExceptionOnFailure( checkIfEqual( retardationTimes( i ), min * std::pow( spacing, i ) ),
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " error in generation of retardation times" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << " error in generation of retardation times" );
 
-  double   corrCompliance = 0.16976016796969498;
+  double                 corrCompliance = 0.16976016796969498;
   Marmot::Math::Vector6d corrDStrain    = { 0.033004975878657986,
-                              0.06600995175731597,
-                              0.09901492763597397,
-                              0.13201990351463194,
-                              0.1650248793932899,
-                              0.1980298552719479 };
+                                            0.06600995175731597,
+                                            0.09901492763597397,
+                                            0.13201990351463194,
+                                            0.1650248793932899,
+                                            0.1980298552719479 };
 
   // test evaluation of kelvin chain
   evaluateKelvinChain( dT, elasticModuli, retardationTimes, stateVars, uniaxialCompliance, dStrain, factor );
   throwExceptionOnFailure( checkIfEqual( uniaxialCompliance, corrCompliance ),
                            "error in uniaxial compliance of kelvin chain" );
   throwExceptionOnFailure( checkIfEqual< double >( dStrain, corrDStrain ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " error in dStrain of kelvin chain" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " error in dStrain of kelvin chain" );
 
   // test state var update
-  Marmot::Math::Vector6d       dStress              = { 0.1, 0.2, 0.3, 0.06, 0.04, 0.02 }; // arbitrary stress increment
-  double         nu                   = 0.2;
-  Marmot::Math::Matrix6d       unitComplianceMatrix = ContinuumMechanics::Elasticity::Isotropic::complianceTensor( 1.0, nu );
-  StateVarMatrix corrStateVars( 6, n );
+  Marmot::Math::Vector6d dStress              = { 0.1, 0.2, 0.3, 0.06, 0.04, 0.02 }; // arbitrary stress increment
+  double                 nu                   = 0.2;
+  Marmot::Math::Matrix6d unitComplianceMatrix = ContinuumMechanics::Elasticity::Isotropic::complianceTensor( 1.0, nu );
+  StateVarMatrix         corrStateVars( 6, n );
   corrStateVars << 0.0036787944117144234, 0.0818730753077982, 0.03264241117657116, 0.16737153555403675,
     0.061606027941427874, 0.2528699958002753, 0.04505696447062846, 0.3318427631573212, 0.03862182994108596,
     0.4122656844897432, 0.03218669541154347, 0.49268860582216517;
@@ -79,9 +81,11 @@ void computeLambdaAndBetaTestFunction()
   computeLambdaAndBeta( dT, tau, lambda, beta );
 
   throwExceptionOnFailure( checkIfEqual( beta, 0 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " error in beta with dT_tau >= 30.0" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " error in beta with dT_tau >= 30.0" );
   throwExceptionOnFailure( checkIfEqual( lambda, tau / dT ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " error in lambda with dT_tau >= 30.0" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " error in lambda with dT_tau >= 30.0" );
 
   // case dT_tau < 1e-6
   tau = 1 / ( 1e-7 / dT );
@@ -90,9 +94,11 @@ void computeLambdaAndBetaTestFunction()
   double corrLam = 1 - 0.5 * dT / tau + 1. / 6 * dT / tau * dT / tau;
 
   throwExceptionOnFailure( checkIfEqual( beta, 1 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " error in beta with dT_tau < 1e-6" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " error in beta with dT_tau < 1e-6" );
   throwExceptionOnFailure( checkIfEqual( lambda, corrLam ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " error in lambda with dT_tau < 1e-6" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " error in lambda with dT_tau < 1e-6" );
 
   // case else
   tau = 1 / ( 10 / dT );
@@ -102,9 +108,11 @@ void computeLambdaAndBetaTestFunction()
   corrLam         = ( 1 - beta ) * ( tau / dT );
 
   throwExceptionOnFailure( checkIfEqual( beta, corrBeta ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " error in beta with 1e-6 <= dT_tau < 30.0" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " error in beta with 1e-6 <= dT_tau < 30.0" );
   throwExceptionOnFailure( checkIfEqual( lambda, corrLam ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " error in lambda with 1e-6 <= dT_tau < 30.0" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " error in lambda with 1e-6 <= dT_tau < 30.0" );
 }
 
 void computeElasticModuliTestFunction()
@@ -132,8 +140,9 @@ void computeElasticModuliTestFunction()
     0.513903417920470;
 
   throwExceptionOnFailure( checkIfEqual< double >( elasticModuliGauss, corrModuliGauss ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                        << " error in computation of elastic moduli using Gauss integration" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << " error in computation of elastic moduli using Gauss integration" );
 
   // using midpoint rule
   Properties elasticModuli = computeElasticModuli< maxDerivativeOrder >( phi, retardationTimes );
@@ -143,8 +152,8 @@ void computeElasticModuliTestFunction()
     0.513902710445964;
 
   throwExceptionOnFailure( checkIfEqual< double >( elasticModuli, corrModuli ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                        << " error in computation of elastic moduli using midpoint rule" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " error in computation of elastic moduli using midpoint rule" );
 }
 
 void evaluatePostWidderFormulaTestFunction()
@@ -207,8 +216,8 @@ void updateStateVarMatrixIsANoOpForZeroTimeIncrementTestFunction()
   updateStateVarMatrix( 0.0, elasticModuli, retardationTimes, stateVars, dStress, unitComplianceMatrix );
 
   throwExceptionOnFailure( checkIfEqual< double >( stateVars, stateVarsBefore ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                        << " updateStateVarMatrix() must be a no-op for dT <= 1e-14" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " updateStateVarMatrix() must be a no-op for dT <= 1e-14" );
 }
 
 int main()

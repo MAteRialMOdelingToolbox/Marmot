@@ -2,7 +2,7 @@ Gradient-enhanced finite-strain Drucker-Prager
 ==============================================
 
 A finite-strain Drucker-Prager damage-plasticity model with implicit-gradient (nonlocal) damage, implementing
-``MarmotMaterialGradientEnhancedFiniteStrain``. It can be used with every consumer of that interface, e.g. the
+``Marmot::Materials::MaterialGradientEnhancedFiniteStrain``. It can be used with every consumer of that interface, e.g. the
 gradient-enhanced finite-strain displacement element and the gradient-enhanced meshfree material point and particle.
 It is registered as ``GRADIENTENHANCEDFINITESTRAINDRUCKERPRAGER``.
 

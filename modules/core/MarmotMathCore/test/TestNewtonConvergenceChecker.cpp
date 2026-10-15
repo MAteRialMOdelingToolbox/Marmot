@@ -18,12 +18,12 @@ int main()
   residualScaleVector << 1.;
 
   Marmot::Math::NewtonConvergenceChecker checker( residualScaleVector,
-                                                                 nMaxNewtonCycles,
-                                                                 nMaxNewtonCyclesAlt,
-                                                                 newtonTol,
-                                                                 newtonRTol,
-                                                                 newtonTolAlt,
-                                                                 newtonRTolAlt );
+                                                  nMaxNewtonCycles,
+                                                  nMaxNewtonCyclesAlt,
+                                                  newtonTol,
+                                                  newtonRTol,
+                                                  newtonTolAlt,
+                                                  newtonRTolAlt );
 
   // the "last newton increment"
   Eigen::VectorXd increment( 1 );

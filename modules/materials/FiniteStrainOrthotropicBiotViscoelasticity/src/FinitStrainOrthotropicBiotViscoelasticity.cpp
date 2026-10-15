@@ -87,7 +87,9 @@ namespace Marmot::Materials {
     const Tensor33t< scalar > dS_biot = S_biot - Marmot::Math::makeDual( S_biot_old );
 
     // store current Biot stress in state variables
-    memcpy( stateLayout.getPtr( response.stateVars, "S0_old" ), Marmot::Math::makeReal( S_biot ).data(), 9 * sizeof( double ) );
+    memcpy( stateLayout.getPtr( response.stateVars, "S0_old" ),
+            Marmot::Math::makeReal( S_biot ).data(),
+            9 * sizeof( double ) );
 
     // add viscoelastic contribution to Biot stress
     ContinuumMechanics::FiniteStrain::Viscoelasticity::evaluateGeneralizedMaxwellModel<
@@ -109,9 +111,11 @@ namespace Marmot::Materials {
     Tensor33t< scalar > PK2 = Q % PK2_rotated % transpose( Q );
 
     // transform to Kirchhoff stress
-    const Tensor33t< scalar > tau = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::KirchhoffStressFromPK2( PK2, F );
-    response.tau                  = tau;
-    response.elasticEnergyDensity = 0.5 *
-                                    einsum< ij, ij >( Marmot::Math::makeReal( S_biot ), Marmot::Math::makeReal( evaluate( U - I ) ) ).toscalar();
+    const Tensor33t< scalar >
+      tau        = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::KirchhoffStressFromPK2( PK2, F );
+    response.tau = tau;
+    response.elasticEnergyDensity = 0.5 * einsum< ij, ij >( Marmot::Math::makeReal( S_biot ),
+                                                            Marmot::Math::makeReal( evaluate( U - I ) ) )
+                                            .toscalar();
   }
 } // namespace Marmot::Materials

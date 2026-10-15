@@ -75,14 +75,14 @@ namespace Marmot::Discretizations::Elements {
     using CoordinateVector      = Eigen::Matrix< double, nDim * nNodes, 1 >; ///< Flat control point coordinates.
     using JacobianSized         = Eigen::Matrix< double, nDim, nDim >;       ///< Jacobian matrix.
 
-    using dNdXSized = Eigen::Matrix< double, nDim, nNodes >;    ///< Shape function derivatives (nDim x nNodes).
-    using XiSized   = Eigen::Matrix< double, nDim, 1 >;         ///< Parametric point.
+    using dNdXSized = Eigen::Matrix< double, nDim, nNodes >;       ///< Shape function derivatives (nDim x nNodes).
+    using XiSized   = Eigen::Matrix< double, nDim, 1 >;            ///< Parametric point.
 
-    const Eigen::Map< const CoordinateVector > _mapCoordinates; ///< Map to the externally owned control point
-                                                                ///< coordinates (point by point).
-    const Marmot::Discretizations::Elements::ElementShapes _shape;          ///< Shape deduced from nDim and nNodes.
+    const Eigen::Map< const CoordinateVector > _mapCoordinates;    ///< Map to the externally owned control point
+                                                                   ///< coordinates (point by point).
+    const Marmot::Discretizations::Elements::ElementShapes _shape; ///< Shape deduced from nDim and nNodes.
 
-    KnotVectors _knotVectors;                                   ///< Knot vectors as passed to the constructor.
+    KnotVectors _knotVectors;                                      ///< Knot vectors as passed to the constructor.
     KnotVectors _knotVectorsNormalized; ///< Knot vectors used for evaluation; currently a copy of #_knotVectors.
 
     /**
@@ -95,9 +95,9 @@ namespace Marmot::Discretizations::Elements {
      * @throws std::invalid_argument if no element shape exists for (nDim, nNodes).
      */
     BSplineGeometryElement( const double* nodeCoordinates_,
-                                  int           sizeNodeCoordinates,
-                                  const double* knotVectors_,
-                                  int           sizeKnotVectors )
+                            int           sizeNodeCoordinates,
+                            const double* knotVectors_,
+                            int           sizeKnotVectors )
       : _mapCoordinates( Eigen::Map< const CoordinateVector >( nodeCoordinates_ ) ),
         _shape( Marmot::Discretizations::Elements::getElementShapeByMetric( nDim, nNodes ) )
     {
@@ -153,16 +153,18 @@ namespace Marmot::Discretizations::Elements {
       else if constexpr ( nDim == 2 )
         for ( int q = 0; q < nN; q++ )
           for ( int p = 0; p < nN; p++ )
-            N_( p + q * ( nN ) ) = Marmot::Math::B< order >( xi( 0 ), this->_knotVectorsNormalized.col( 0 ).data(), p ) *
-                                   Marmot::Math::B< order >( xi( 1 ), this->_knotVectorsNormalized.col( 1 ).data(), q );
+            N_( p +
+                q * ( nN ) ) = Marmot::Math::B< order >( xi( 0 ), this->_knotVectorsNormalized.col( 0 ).data(), p ) *
+                               Marmot::Math::B< order >( xi( 1 ), this->_knotVectorsNormalized.col( 1 ).data(), q );
 
       else if constexpr ( nDim == 3 )
         for ( int r = 0; r < nN; r++ )
           for ( int q = 0; q < nN; q++ )
             for ( int p = 0; p < nN; p++ )
-              N_( p + q * nN + r * nN * nN ) = Marmot::Math::B< order >( xi( 0 ), this->_knotVectorsNormalized.col( 0 ).data(), p ) *
-                                               Marmot::Math::B< order >( xi( 1 ), this->_knotVectorsNormalized.col( 1 ).data(), q ) *
-                                               Marmot::Math::B< order >( xi( 2 ), this->_knotVectorsNormalized.col( 2 ).data(), r );
+              N_( p + q * nN +
+                  r * nN * nN ) = Marmot::Math::B< order >( xi( 0 ), this->_knotVectorsNormalized.col( 0 ).data(), p ) *
+                                  Marmot::Math::B< order >( xi( 1 ), this->_knotVectorsNormalized.col( 1 ).data(), q ) *
+                                  Marmot::Math::B< order >( xi( 2 ), this->_knotVectorsNormalized.col( 2 ).data(), r );
 
       return N_;
     }
@@ -184,10 +186,18 @@ namespace Marmot::Discretizations::Elements {
       else if constexpr ( nDim == 2 )
         for ( int q = 0; q < nN; q++ )
           for ( int p = 0; p < nN; p++ ) {
-            dN_dXi_( 0, p + q * nN ) = Marmot::Math::dB_dU< order >( xi( 0 ), this->_knotVectorsNormalized.col( 0 ).data(), p ) *
-                                       Marmot::Math::B< order >( xi( 1 ), this->_knotVectorsNormalized.col( 1 ).data(), q );
-            dN_dXi_( 1, p + q * nN ) = Marmot::Math::B< order >( xi( 0 ), this->_knotVectorsNormalized.col( 0 ).data(), p ) *
-                                       Marmot::Math::dB_dU< order >( xi( 1 ), this->_knotVectorsNormalized.col( 1 ).data(), q );
+            dN_dXi_( 0, p + q * nN ) = Marmot::Math::dB_dU< order >( xi( 0 ),
+                                                                     this->_knotVectorsNormalized.col( 0 ).data(),
+                                                                     p ) *
+                                       Marmot::Math::B< order >( xi( 1 ),
+                                                                 this->_knotVectorsNormalized.col( 1 ).data(),
+                                                                 q );
+            dN_dXi_( 1, p + q * nN ) = Marmot::Math::B< order >( xi( 0 ),
+                                                                 this->_knotVectorsNormalized.col( 0 ).data(),
+                                                                 p ) *
+                                       Marmot::Math::dB_dU< order >( xi( 1 ),
+                                                                     this->_knotVectorsNormalized.col( 1 ).data(),
+                                                                     q );
           }
 
       else if constexpr ( nDim == 3 )
@@ -196,19 +206,28 @@ namespace Marmot::Discretizations::Elements {
             for ( int p = 0; p < nN; p++ ) {
               dN_dXi_( 0,
                        p + q * nN +
-                         r * nN * nN ) = Marmot::Math::dB_dU< order >( xi( 0 ), this->_knotVectorsNormalized.col( 0 ).data(), p ) *
-                                         Marmot::Math::B< order >( xi( 1 ), this->_knotVectorsNormalized.col( 1 ).data(), q ) *
-                                         Marmot::Math::B< order >( xi( 2 ), this->_knotVectorsNormalized.col( 2 ).data(), r );
+                         r * nN *
+                           nN ) = Marmot::Math::dB_dU< order >( xi( 0 ),
+                                                                this->_knotVectorsNormalized.col( 0 ).data(),
+                                                                p ) *
+                                  Marmot::Math::B< order >( xi( 1 ), this->_knotVectorsNormalized.col( 1 ).data(), q ) *
+                                  Marmot::Math::B< order >( xi( 2 ), this->_knotVectorsNormalized.col( 2 ).data(), r );
               dN_dXi_( 1,
                        p + q * nN +
-                         r * nN * nN ) = Marmot::Math::B< order >( xi( 0 ), this->_knotVectorsNormalized.col( 0 ).data(), p ) *
-                                         Marmot::Math::dB_dU< order >( xi( 1 ), this->_knotVectorsNormalized.col( 1 ).data(), q ) *
-                                         Marmot::Math::B< order >( xi( 2 ), this->_knotVectorsNormalized.col( 2 ).data(), r );
+                         r * nN *
+                           nN ) = Marmot::Math::B< order >( xi( 0 ), this->_knotVectorsNormalized.col( 0 ).data(), p ) *
+                                  Marmot::Math::dB_dU< order >( xi( 1 ),
+                                                                this->_knotVectorsNormalized.col( 1 ).data(),
+                                                                q ) *
+                                  Marmot::Math::B< order >( xi( 2 ), this->_knotVectorsNormalized.col( 2 ).data(), r );
               dN_dXi_( 2,
                        p + q * nN +
-                         r * nN * nN ) = Marmot::Math::B< order >( xi( 0 ), this->_knotVectorsNormalized.col( 0 ).data(), p ) *
-                                         Marmot::Math::B< order >( xi( 1 ), this->_knotVectorsNormalized.col( 1 ).data(), q ) *
-                                         Marmot::Math::dB_dU< order >( xi( 2 ), this->_knotVectorsNormalized.col( 2 ).data(), r );
+                         r * nN *
+                           nN ) = Marmot::Math::B< order >( xi( 0 ), this->_knotVectorsNormalized.col( 0 ).data(), p ) *
+                                  Marmot::Math::B< order >( xi( 1 ), this->_knotVectorsNormalized.col( 1 ).data(), q ) *
+                                  Marmot::Math::dB_dU< order >( xi( 2 ),
+                                                                this->_knotVectorsNormalized.col( 2 ).data(),
+                                                                r );
             }
 
       return dN_dXi_;

@@ -38,9 +38,10 @@ namespace Marmot::Registry {
    */
   class MARMOT_API ElementFactory {
   public:
-    /// @brief Factory function pointer type: takes an element number and returns a new Marmot::Discretizations::Elements::Element.
+    /// @brief Factory function pointer type: takes an element number and returns a new
+    /// Marmot::Discretizations::Elements::Element.
     using elementFactoryFunction = Marmot::Discretizations::Elements::Element* (*)( int elementNumber );
-    ElementFactory()       = delete;
+    ElementFactory()             = delete;
 
     /**
      * @brief Create an element instance based on its name and number.
@@ -49,7 +50,8 @@ namespace Marmot::Registry {
      * @return Pointer to the created Marmot::Discretizations::Elements::Element instance.
      * @throws std::invalid_argument if @p elementName is not registered.
      */
-    static Marmot::Discretizations::Elements::Element* createElement( const std::string& elementName, int elementNumber )
+    static Marmot::Discretizations::Elements::Element* createElement( const std::string& elementName,
+                                                                      int                elementNumber )
     {
       auto& map = elementFactoryFunctionByName();
       auto  it  = map.find( elementName );

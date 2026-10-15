@@ -89,8 +89,8 @@ namespace Marmot::ContinuumMechanics::Algorithms {
      * @return              The 6×3×3 tangent tensor \f$\frac{d\boldsymbol{S}}{d\mathbf{F}}\f$.
      */
     Marmot::Math::Tensors::Tensor633d compute_dS_dF( const Marmot::Math::Vector6d& stress,
-                                                    const Eigen::Matrix3d&  FInv,
-                                                    const Marmot::Math::Matrix6d& dChauchyDEps );
+                                                     const Eigen::Matrix3d&        FInv,
+                                                     const Marmot::Math::Matrix6d& dChauchyDEps );
 
     /**
      * @brief Compute the consistent tangent \f$\frac{d\phi}{d\mathbf{F}}\f$ for a scalar quantity.
@@ -106,10 +106,10 @@ namespace Marmot::ContinuumMechanics::Algorithms {
     Eigen::Matrix3d compute_dScalar_dF( const Eigen::Matrix3d& FInv, const Marmot::Math::Vector6d& dScalarDEps );
 
   private:
-    Formulation      theFormulation;
-    Eigen::Matrix3d  l;
-    Eigen::Matrix3d  dOmega;
-    Eigen::Matrix3d  dR;
+    Formulation            theFormulation;
+    Eigen::Matrix3d        l;
+    Eigen::Matrix3d        dOmega;
+    Eigen::Matrix3d        dR;
     Marmot::Math::Vector6d dEps;
   };
 } // namespace Marmot::ContinuumMechanics::Algorithms

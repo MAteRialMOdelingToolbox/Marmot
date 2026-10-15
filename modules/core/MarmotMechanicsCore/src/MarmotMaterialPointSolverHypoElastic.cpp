@@ -6,15 +6,19 @@
 using namespace Marmot::Materials;
 
 MaterialPointSolverHypoElastic::MaterialPointSolverHypoElastic( std::string&         materialName,
-                                                                            double*              materialProperties,
-                                                                            int                  nMaterialProperties,
-                                                                            const SolverOptions& options )
+                                                                double*              materialProperties,
+                                                                int                  nMaterialProperties,
+                                                                const SolverOptions& options )
   : options( options )
 {
 
   // create material instance
-  material = std::unique_ptr< Marmot::Materials::MaterialHypoElastic >( dynamic_cast< Marmot::Materials::MaterialHypoElastic* >(
-    Marmot::Registry::MaterialHypoElasticFactory::createMaterial( materialName, materialProperties, nMaterialProperties, 1 ) ) );
+  material = std::unique_ptr< Marmot::Materials::MaterialHypoElastic >(
+    dynamic_cast< Marmot::Materials::MaterialHypoElastic* >(
+      Marmot::Registry::MaterialHypoElasticFactory::createMaterial( materialName,
+                                                                    materialProperties,
+                                                                    nMaterialProperties,
+                                                                    1 ) ) );
 
   // get number of state variables
   nStateVars = material->getNumberOfRequiredStateVars();
@@ -39,7 +43,7 @@ void MaterialPointSolverHypoElastic::solve()
 }
 
 void MaterialPointSolverHypoElastic::setInitialState( const Marmot::Math::Vector6d& initialStress,
-                                                            const Eigen::VectorXd&  initialStateVars )
+                                                      const Eigen::VectorXd&        initialStateVars )
 {
   _initialStress    = initialStress;
   _initialStateVars = initialStateVars;
@@ -107,7 +111,7 @@ void MaterialPointSolverHypoElastic::solveIncrement( const Increment& increment 
   // use a Eigen Vector multiplication
 
   Marmot::Math::Vector6d dStrain = increment.strainIncrement.array() *
-                             increment.isStrainComponentControlled.array().cast< double >();
+                                   increment.isStrainComponentControlled.array().cast< double >();
 
   // create the mixed-control target
   Marmot::Math::Vector6d target = increment.stressIncrement;
@@ -169,7 +173,7 @@ void MaterialPointSolverHypoElastic::solveIncrement( const Increment& increment 
 
     // solve for correction
     Marmot::Math::Vector6d correction = tangent.fullPivLu().solve( residual );
-    corNorm                     = correction.norm();
+    corNorm                           = correction.norm();
 
     // update strain increment
     dStrain -= correction;
@@ -190,7 +194,7 @@ void MaterialPointSolverHypoElastic::solveIncrement( const Increment& increment 
 
 Marmot::Math::Vector6d MaterialPointSolverHypoElastic::computeResidual( const Marmot::Math::Vector6d& stressIncrement,
                                                                         const Marmot::Math::Vector6d& target,
-                                                                        const Increment&        increment )
+                                                                        const Increment&              increment )
 {
   Marmot::Math::Vector6d residual = stressIncrement;
   // replace strain controlled components
@@ -203,8 +207,7 @@ Marmot::Math::Vector6d MaterialPointSolverHypoElastic::computeResidual( const Ma
   return residual;
 }
 
-void MaterialPointSolverHypoElastic::modifyTangent( Eigen::Matrix< double, 6, 6 >& tangent,
-                                                          const Increment&               increment )
+void MaterialPointSolverHypoElastic::modifyTangent( Eigen::Matrix< double, 6, 6 >& tangent, const Increment& increment )
 {
   // modify the tangent matrix based on control type
   for ( int i = 0; i < 6; i++ ) {

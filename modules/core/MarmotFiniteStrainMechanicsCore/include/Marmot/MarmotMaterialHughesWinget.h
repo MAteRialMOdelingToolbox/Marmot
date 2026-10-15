@@ -273,11 +273,12 @@ namespace Marmot::Materials {
      *         result may be contracted as a full fourth-order tensor without double counting the
      *         off-diagonal stress components.
      */
-    Marmot::Math::Matrix6d computeStressSensitivity( const Marmot::Math::Vector6d&                    sigmaRotVoigt,
-                                               const Marmot::Math::Vector6d&                    sigmaNp1Voigt,
-                                               const std::vector< double >&               baseStateOld,
-                                               const Marmot::Math::Vector6d&                    dStrain,
-                                               const Marmot::Materials::MaterialHypoElastic::timeInfo& timeInfo ) const
+    Marmot::Math::Matrix6d computeStressSensitivity(
+      const Marmot::Math::Vector6d&                           sigmaRotVoigt,
+      const Marmot::Math::Vector6d&                           sigmaNp1Voigt,
+      const std::vector< double >&                            baseStateOld,
+      const Marmot::Math::Vector6d&                           dStrain,
+      const Marmot::Materials::MaterialHypoElastic::timeInfo& timeInfo ) const
     {
       const int nBase = baseMaterial->getNumberOfRequiredStateVars();
 
@@ -353,8 +354,8 @@ namespace Marmot::Materials {
       // --- rotate the carried-over Cauchy stress forward ---
       Eigen::Map< const Marmot::Math::Vector6d > sigmaNVoigtMap( sigmaNPtr );
       const Marmot::Math::Vector6d               sigmaNVoigt = sigmaNVoigtMap;
-      const Tensor33d                      sigmaN      = fromEigen( stressMatrixFromVoigt< 3 >( sigmaNVoigt ) );
-      const Tensor33d                      sigmaRot    = dR % sigmaN % transpose( dR );
+      const Tensor33d                            sigmaN      = fromEigen( stressMatrixFromVoigt< 3 >( sigmaNVoigt ) );
+      const Tensor33d                            sigmaRot    = dR % sigmaN % transpose( dR );
 
       // --- evaluate the wrapped small-strain material ---
       const int             nBase = baseMaterial->getNumberOfRequiredStateVars();
@@ -381,7 +382,7 @@ namespace Marmot::Materials {
       baseMaterial->computeStress( state, C, dEpsVoigt, timeInfo );
 
       const Marmot::Math::Vector6d sigmaNp1Voigt = state.stress;
-      const Tensor33d        sigmaNp1      = fromEigen( stressMatrixFromVoigt< 3 >( sigmaNp1Voigt ) );
+      const Tensor33d              sigmaNp1      = fromEigen( stressMatrixFromVoigt< 3 >( sigmaNp1Voigt ) );
 
       // --- push the Cauchy stress forward to the Kirchhoff stress ---
       const double    J    = determinant( Fn1 );
@@ -414,11 +415,11 @@ namespace Marmot::Materials {
         if constexpr ( tangentMode == HughesWingetTangent::Exact ) {
           // Replace the implicit d(sigma^(n+1))/d(sigmaRot) = I assumption by the true operator.
           const Marmot::Math::Matrix6d S = computeStressSensitivity( sigmaRotVoigt,
-                                                               sigmaNp1Voigt,
-                                                               baseStateOld,
-                                                               dEpsVoigt,
-                                                               timeInfo );
-          dSigRot_dF               = einsum< ijmn, mnKL, to_ijKL >( voigtToStiffness( S ), dSigRot_dF );
+                                                                     sigmaNp1Voigt,
+                                                                     baseStateOld,
+                                                                     dEpsVoigt,
+                                                                     timeInfo );
+          dSigRot_dF                     = einsum< ijmn, mnKL, to_ijKL >( voigtToStiffness( S ), dSigRot_dF );
         }
 
         // voigtToStiffness scatters without a factor 1/2, which is exactly what a *tensorial*

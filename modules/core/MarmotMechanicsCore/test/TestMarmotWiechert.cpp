@@ -72,7 +72,7 @@ namespace {
     const Properties relaxationTimes = generateRelaxationTimes( 3, 0.01, std::sqrt( 10. ) );
     const Properties elasticModuli   = Properties::Constant( 3, 100.0 );
 
-    StateVarMatrix   stateVars = StateVarMatrix::Ones( 6, 3 );
+    StateVarMatrix         stateVars = StateVarMatrix::Ones( 6, 3 );
     Marmot::Math::Vector6d dStrain;
     dStrain << 1e-3, 0., 0., 0., 0., 0.;
 

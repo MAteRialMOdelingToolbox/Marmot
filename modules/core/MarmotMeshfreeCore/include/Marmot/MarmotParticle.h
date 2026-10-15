@@ -123,8 +123,7 @@ namespace Marmot::Discretizations::Meshfree {
      * defines the node order of the residual vector and the stiffness matrix.
      * @param[in] kernelFunctions Kernel functions whose support covers the particle.
      */
-    virtual void assignMeshfreeKernelFunctions(
-      const std::vector< const KernelFunction* >& kernelFunctions ) = 0;
+    virtual void assignMeshfreeKernelFunctions( const std::vector< const KernelFunction* >& kernelFunctions ) = 0;
 
     /**
      * @brief Assign the memory block that holds the state variables of the particle.

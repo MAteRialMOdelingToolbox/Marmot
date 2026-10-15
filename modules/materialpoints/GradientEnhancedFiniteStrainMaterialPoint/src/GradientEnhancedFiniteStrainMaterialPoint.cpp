@@ -38,7 +38,8 @@ namespace Marmot::Discretizations::MaterialPoints {
                                                                           double          dn )
   {
     Marmot::Math::mapEigenToFastor( state->du ) += Marmot::Math::mapEigenToFastor( Marmot::Math::expandTo3D( du ) );
-    Marmot::Math::mapEigenToFastor( state->dx_dY ) += Marmot::Math::mapEigenToFastor( Marmot::Math::expandTo3D( du_dY ) );
+    Marmot::Math::mapEigenToFastor( state->dx_dY ) += Marmot::Math::mapEigenToFastor(
+      Marmot::Math::expandTo3D( du_dY ) );
     state->nonLocalDamage += dn;
   };
 
@@ -83,10 +84,13 @@ namespace Marmot::Discretizations::MaterialPoints {
 
     // chain rule from d/dF to d/d(DeltaF), since the unknown of the increment is DeltaF = dx_dY
     const Tensor3333d dF_dDeltaF_3D = einsum< ij, JI, to_iIjJ >( I, state->dY_dX );
-    const TensorDDDD  dF_dDeltaF    = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >( dF_dDeltaF_3D );
+    const TensorDDDD
+      dF_dDeltaF = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >(
+        dF_dDeltaF_3D );
 
     this->tangents = {
-      Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >( algorithmicModuli3D.dTau_dF ),
+      Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >(
+        algorithmicModuli3D.dTau_dF ),
       Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >( algorithmicModuli3D.dTau_dN ),
       Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >( algorithmicModuli3D.dL_dF ),
       algorithmicModuli3D.dL_dN,

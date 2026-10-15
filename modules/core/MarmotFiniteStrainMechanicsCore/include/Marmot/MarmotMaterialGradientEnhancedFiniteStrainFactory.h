@@ -45,8 +45,8 @@ namespace Marmot::Registry {
     /// material number.
     using materialFactoryFunction = std::function<
       Marmot::Materials::MaterialGradientEnhancedFiniteStrain*( const double* materialProperties,
-                                                   int           nMaterialProperties,
-                                                   int           materialNumber ) >;
+                                                                int           nMaterialProperties,
+                                                                int           materialNumber ) >;
 
     MaterialGradientEnhancedFiniteStrainFactory() = delete;
 
@@ -59,9 +59,9 @@ namespace Marmot::Registry {
      * @return Pointer to the created Marmot::Materials::MaterialGradientEnhancedFiniteStrain instance.
      */
     static Marmot::Materials::MaterialGradientEnhancedFiniteStrain* createMaterial( const std::string& materialName,
-                                                                       const double*      materialProperties,
-                                                                       int                nMaterialProperties,
-                                                                       int                materialNumber );
+                                                                                    const double* materialProperties,
+                                                                                    int           nMaterialProperties,
+                                                                                    int           materialNumber );
 
     /**
      * @brief Register a material type with its name.
@@ -79,7 +79,7 @@ namespace Marmot::Registry {
 
       map[materialName] = []( const double* materialProperties,
                               int           nMaterialProperties,
-                              int           materialNumber ) -> Marmot::Materials::MaterialGradientEnhancedFiniteStrain* {
+                              int materialNumber ) -> Marmot::Materials::MaterialGradientEnhancedFiniteStrain* {
         return new T( materialProperties, nMaterialProperties, materialNumber );
       };
       return true;

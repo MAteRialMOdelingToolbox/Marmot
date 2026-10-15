@@ -29,7 +29,6 @@
 namespace {
   using namespace Marmot::Discretizations::Meshfree;
 
-
   const static bool DisplacementParticle_PlaneStrain_isRegistered = Marmot::Registry::ParticleFactory::
     registerParticle( "Displacement/PlaneStrain/Point",
                       []( int           cellID,
@@ -37,9 +36,9 @@ namespace {
                           int           sizeNodeCoordinates,
                           double        volume,
                           // Marmot::Discretizations::MaterialPoints::MaterialPoint&                                 mp,
-                          const std::string&                                   materialName,
-                          const double*                                        materialProperties,
-                          int                                                  sizeMaterialProperties,
+                          const std::string&                                      materialName,
+                          const double*                                           materialProperties,
+                          int                                                     sizeMaterialProperties,
                           const Marmot::Discretizations::Meshfree::Approximation& approximation )
                         -> Marmot::Discretizations::Meshfree::Particle* {
                         return new DisplacementParticle< 2 >( cellID,

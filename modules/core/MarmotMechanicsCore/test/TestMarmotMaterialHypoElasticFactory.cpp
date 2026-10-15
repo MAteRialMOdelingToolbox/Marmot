@@ -31,7 +31,7 @@ void testCreateMaterialThrowsForUnregisteredName()
 
 void testCreateMaterialSucceedsForRegisteredName()
 {
-  const double                                 properties[3] = { 20000., 0.25, 10. };
+  const double                                              properties[3] = { 20000., 0.25, 10. };
   std::unique_ptr< Marmot::Materials::MaterialHypoElastic > mat(
     Marmot::Registry::MaterialHypoElasticFactory::createMaterial( "LINEARELASTIC", properties, 3, 7 ) );
 

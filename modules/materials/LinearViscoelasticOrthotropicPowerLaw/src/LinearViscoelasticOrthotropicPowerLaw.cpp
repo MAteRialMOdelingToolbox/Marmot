@@ -117,10 +117,10 @@ namespace Marmot::Materials {
       transformStiffnessToGlobalSystem( CelUnit, localCoordinateSystem );
   }
 
-  void LinearViscoelasticOrthotropicPowerLaw::computeStress( state3D&        state,
+  void LinearViscoelasticOrthotropicPowerLaw::computeStress( state3D&                      state,
                                                              Marmot::Math::Matrix6d&       dStressDDStrain,
                                                              const Marmot::Math::Vector6d& dStrain,
-                                                             const timeInfo& timeInfo ) const
+                                                             const timeInfo&               timeInfo ) const
 
   {
     Marmot::Math::mVector6d             nomStress( state.stress.data() );
@@ -145,7 +145,7 @@ namespace Marmot::Materials {
     const double dTimeDays = dT * timeToDays;
 
     Marmot::Math::Vector6d creepStrainIncrement = Marmot::Math::Vector6d::Zero();
-    double   creepCompliance      = 0;
+    double                 creepCompliance      = 0;
 
     // evaluate Kelvin-Chain
     KelvinChain::evaluateKelvinChain( dTimeDays,

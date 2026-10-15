@@ -4,7 +4,7 @@ Guidance for AI Agents working on Marmot (MAteRialMOdellingToolbox).
 
 ## What this is
 
-Marmot is a high-performance C++20 shared library (`libMarmot`) providing finite elements and constitutive material models for quasi-brittle and engineering materials. Consumed by external FE frameworks ([EdelweissFE](https://github.com/MAteRialMOdelingToolbox/EdelweissFE), Abaqus, MOOSE, OpenSees) via lightweight interfaces (`MarmotMaterial*`, `MarmotElement`).
+Marmot is a high-performance C++20 shared library (`libMarmot`) providing finite elements and constitutive material models for quasi-brittle and engineering materials. Consumed by external FE frameworks ([EdelweissFE](https://github.com/MAteRialMOdelingToolbox/EdelweissFE), Abaqus, MOOSE, OpenSees) via lightweight interfaces (`Marmot::Materials::Material*` base classes, `Marmot::Discretizations::Elements::Element`, created through the `Marmot::Registry` factories).
 
 Optional Python bindings (`modules/python`, built with [nanobind](https://github.com/wjakob/nanobind)) expose material point solvers (`marmot.solvers.HypoElasticSolver`, `marmot.solvers.FiniteStrainSolver`) for quick material testing and prototyping — see `doc/pages/python_bindings.md`.
 
@@ -38,6 +38,34 @@ genhtml coverage.filtered.info --output-directory coverage_html      # open cove
 ```
 CI runs the same instrumentation on every push/PR (`.github/workflows/coverage.yml`) and uploads results to Codecov.
 
+## Namespace Convention
+
+All code lives in the global `Marmot` namespace. The second level is a **closed set** — new second-level namespaces require maintainer approval:
+
+| Namespace | Contents |
+|---|---|
+| `Marmot::Utilities` | Journal, MakeString, exceptions, state bookkeeping (`StateMapper`, `StateView`, `StateLayoutDynamic`, `StateVarVectorManager`) |
+| `Marmot::Math` | Pure numerics: `Constants`, `Tensors` (Eigen), `FastorTensors`, `Indices` (einsum index symbols), `AutomaticDifferentiation`, `NumericalDifferentiation`, `Integration`, `TensorExponential`, eigen systems, basis functions |
+| `Marmot::ContinuumMechanics` | Constitutive theory in descriptive topic sub-namespaces: `VoigtNotation`, `Elasticity`, `Kinematics`, `HaighWestergaard`, `CommonConstitutiveModels`, `Viscoelasticity`, `FiniteStrain`, `GradientDamage`, `PhaseField`, `LocalizationAnalysis`, `GeostaticStress`, `TimeIntegration`, `Algorithms` (substeppers/return mapping) |
+| `Marmot::Materials` | Material base classes (`MaterialHypoElastic`, `MaterialFiniteStrain`, …), all concrete materials, material helpers (`KelvinChain`, `Wiechert`, `SolidificationTheory`), material-point solvers |
+| `Marmot::Discretizations` | Everything spatial: `::Elements` (FE bases, shape functions, quadrature, concrete elements), `::Meshfree` (RKPM, particles), `::MaterialPoints`, `::Cells`. Root holds `MaterialSection`, `ElementProperties` |
+| `Marmot::Registry` | All factories, flat — the external entry point (replaces the former `MarmotLibrary`) |
+| `Marmot::Testing` | Test helpers only; production code never uses it |
+
+Rules:
+
+1. No classes/functions/variables in the global namespace or directly in `Marmot` (macros like `MARMOT_API` excepted).
+2. Deeper nesting is welcome when it makes names more descriptive (up to 6 levels, e.g. `ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrder`); never a namespace that adds no information.
+3. Derivative-order namespaces are spelled `FirstOrder` / `SecondOrder` / `ThirdOrder` only.
+4. No namespace for a single class, and no namespace named after a class.
+5. Class names never start with `Marmot` — the namespace says it. Header **filenames** keep the `Marmot` prefix (flat install dir).
+6. Base classes at the root of their audience namespace; concrete implementations beside their base; factories in `Registry`.
+7. Registration statics go in **unnamed namespaces** in `src/<Name>Registration.cpp`.
+8. C++17 nested namespace syntax only (`namespace Marmot::ContinuumMechanics::Elasticity {`); namespaces are PascalCase.
+9. No `using namespace` and no using-declarations at global or namespace scope in headers — function bodies and class scope only. (Sanctioned exception: `Marmot::Math::AutomaticDifferentiation` imports `autodiff` inside its own leaf namespace.) `Marmot::Math::Indices` exists precisely for function-local `using namespace` in einsum-heavy code.
+
+`scripts/checkNamespaceConventions.sh` greps for violations; CI treats findings as errors.
+
 ## General Coding Rules & Best Practices
 
 - **Minimal Diffs**: Keep changes focused and strictly scoped; avoid reformatting unrelated files.
@@ -66,8 +94,8 @@ CI runs the same instrumentation on every push/PR (`.github/workflows/coverage.y
 
 Every `modules/<category>/<Name>/` with a `module.cmake` is auto-discovered (filters: `CORE_MODULES`, `MATERIAL_MODULES`, ... default `all`). Categories:
 1. `core` — shared utilities (`MarmotMathCore`, `MarmotMechanicsCore`, `MarmotFiniteElementCore`, `MarmotUtilitiesCore`)
-2. `materials` — constitutive models (`MarmotMaterialHypoElastic`, `MarmotMaterialFiniteStrain`, `MarmotMaterialGeneralGradientEnhancedHypoElastic`)
-3. `elements` — formulations (`MarmotElement`, `MarmotGeometryElement<nDim, nNodes>`)
+2. `materials` — constitutive models (bases `Marmot::Materials::{MaterialHypoElastic, MaterialFiniteStrain, MaterialGradientEnhancedHypoElastic}`)
+3. `elements` — formulations (`Marmot::Discretizations::Elements::{Element, GeometryElement<nDim, nNodes>}`)
 4. `particles` | 5. `materialpoints` | 6. `cells` | 7. `cellelements`
 
 `modules/python` is *not* a category in this scan — it is a single, standalone nanobind extension (`modules/python/CMakeLists.txt`) added via `add_subdirectory` only when `MARMOT_BUILD_PYTHON_BINDINGS=ON`, wrapping the material point solvers on top of `libMarmot`. New materials/elements are registered through the C++ factories above; they do not need bindings added by hand.
@@ -100,21 +128,21 @@ Materials and elements register statically in `src/<ModuleName>Registration.cpp`
 // Material
 #include "Marmot/MyMaterial.h"
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
-namespace Marmot::Materials::Registration {
-  using namespace MarmotLibrary;
-  const static bool registered = MarmotMaterialHypoElasticFactory::registerMaterial< MyMaterial >( "MYMATERIAL" );
+namespace {
+  using namespace Marmot::Materials;
+  const static bool registered = Marmot::Registry::MaterialHypoElasticFactory::registerMaterial< MyMaterial >( "MYMATERIAL" );
 }
 
 // Templated Element
 #include "Marmot/MyElement.h"
 #include "Marmot/MarmotElementFactory.h"
-namespace Marmot::Elements::Registration {
-  using namespace MarmotLibrary;
+namespace {
+  using namespace Marmot::Discretizations::Elements;
   template < class T >
-  MarmotElementFactory::elementFactoryFunction makeFactoryFunction() {
-    return []( int id ) -> MarmotElement* { return new T( id ); };
+  Marmot::Registry::ElementFactory::elementFactoryFunction makeFactoryFunction() {
+    return []( int id ) -> Element* { return new T( id ); };
   }
-  const static bool CPS4_reg = MarmotElementFactory::registerElement( "CPS4", makeFactoryFunction< MyElement< 2, 4 > >() );
-  const static bool C3D8_reg = MarmotElementFactory::registerElement( "C3D8", makeFactoryFunction< MyElement< 3, 8 > >() );
+  const static bool CPS4_reg = Marmot::Registry::ElementFactory::registerElement( "CPS4", makeFactoryFunction< MyElement< 2, 4 > >() );
+  const static bool C3D8_reg = Marmot::Registry::ElementFactory::registerElement( "C3D8", makeFactoryFunction< MyElement< 3, 8 > >() );
 }
 ```

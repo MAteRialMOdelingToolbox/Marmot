@@ -31,7 +31,7 @@ namespace {
     material.initializeYourself( stateVars.data(), stateVars.size() );
 
     Marmot::Materials::MaterialHypoElastic::state3D state{ Marmot::Math::Vector6d::Zero(), 0.0, 0.0, stateVars.data() };
-    Marmot::Math::Matrix6d                   tangent = Marmot::Math::Matrix6d::Zero();
+    Marmot::Math::Matrix6d                          tangent = Marmot::Math::Matrix6d::Zero();
 
     Marmot::Math::Vector6d dStrain = Marmot::Math::Vector6d::Zero();
     material.computeStress( state, tangent, dStrain, { 0.0, 28.0 } );
@@ -115,7 +115,7 @@ namespace {
     material.initializeYourself( stateVars.data(), stateVars.size() );
 
     Marmot::Materials::MaterialHypoElastic::state3D state{ Marmot::Math::Vector6d::Zero(), 0.0, 0.0, stateVars.data() };
-    Marmot::Math::Matrix6d                   tangent = Marmot::Math::Matrix6d::Zero();
+    Marmot::Math::Matrix6d                          tangent = Marmot::Math::Matrix6d::Zero();
 
     // neither strain nor time advance: the tangent is the instantaneous isotropic stiffness
     material.computeStress( state, tangent, Marmot::Math::Vector6d::Zero(), { 0.0, 0.0 } );

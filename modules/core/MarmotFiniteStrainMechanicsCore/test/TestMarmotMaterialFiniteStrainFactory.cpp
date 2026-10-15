@@ -31,7 +31,7 @@ void testCreateMaterialThrowsForUnregisteredName()
 
 void testCreateMaterialSucceedsForRegisteredName()
 {
-  const double                                  properties[2] = { 3500., 1500. };
+  const double                                               properties[2] = { 3500., 1500. };
   std::unique_ptr< Marmot::Materials::MaterialFiniteStrain > mat(
     Marmot::Registry::MaterialFiniteStrainFactory::createMaterial( "COMPRESSIBLENEOHOOKE", properties, 2, 7 ) );
 

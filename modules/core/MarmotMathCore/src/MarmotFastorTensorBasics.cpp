@@ -1,7 +1,6 @@
 #include "Marmot/MarmotFastorTensorBasics.h"
 namespace Marmot::Math {
-  FastorTensors::Tensor3333d invertMinorSymmetricFourthOrderTensor(
-    const FastorTensors::Tensor3333d& C )
+  FastorTensors::Tensor3333d invertMinorSymmetricFourthOrderTensor( const FastorTensors::Tensor3333d& C )
   {
     const double& sqrt2 = Constants::sqrt2;
 

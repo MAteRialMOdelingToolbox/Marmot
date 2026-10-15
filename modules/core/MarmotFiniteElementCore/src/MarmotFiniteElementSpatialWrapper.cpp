@@ -4,13 +4,14 @@
 #include <iostream>
 
 using namespace Eigen;
-Marmot::Discretizations::Elements::ElementSpatialWrapper::ElementSpatialWrapper( int                              nDim,
-                                                          int                              nDimChild,
-                                                          int                              nNodes,
-                                                          int                              nRhsChild,
-                                                          const int                        rhsIndicesToBeWrapped[],
-                                                          int                              nRhsIndicesToBeWrapped,
-                                                          std::unique_ptr< Marmot::Discretizations::Elements::Element > childElement )
+Marmot::Discretizations::Elements::ElementSpatialWrapper::ElementSpatialWrapper(
+  int                                                           nDim,
+  int                                                           nDimChild,
+  int                                                           nNodes,
+  int                                                           nRhsChild,
+  const int                                                     rhsIndicesToBeWrapped[],
+  int                                                           nRhsIndicesToBeWrapped,
+  std::unique_ptr< Marmot::Discretizations::Elements::Element > childElement )
 
   : nDim( nDim ),
     nDimChild( nDimChild ),
@@ -53,19 +54,21 @@ std::string Marmot::Discretizations::Elements::ElementSpatialWrapper::getElement
   return childElement->getElementShape();
 }
 
-void Marmot::Discretizations::Elements::ElementSpatialWrapper::assignProperty( const Marmot::Discretizations::MaterialSection& property )
+void Marmot::Discretizations::Elements::ElementSpatialWrapper::assignProperty(
+  const Marmot::Discretizations::MaterialSection& property )
 {
   childElement->assignProperty( property );
 }
 
-void Marmot::Discretizations::Elements::ElementSpatialWrapper::assignProperty( const Marmot::Discretizations::ElementProperties& property )
+void Marmot::Discretizations::Elements::ElementSpatialWrapper::assignProperty(
+  const Marmot::Discretizations::ElementProperties& property )
 {
   childElement->assignProperty( property );
 }
 
 void Marmot::Discretizations::Elements::ElementSpatialWrapper::assignProperty( const std::string& propertyName,
-                                                  const double*      properties,
-                                                  int                nProperties )
+                                                                               const double*      properties,
+                                                                               int                nProperties )
 {
   childElement->assignProperty( propertyName, properties, nProperties );
 }
@@ -162,11 +165,11 @@ void Marmot::Discretizations::Elements::ElementSpatialWrapper::assignNodeCoordin
 }
 
 void Marmot::Discretizations::Elements::ElementSpatialWrapper::computeKernels( const double* Q,
-                                                  const double* dQ,
-                                                  double*       Pe_,
-                                                  double*       Ke_,
-                                                  double        time,
-                                                  double        dT )
+                                                                               const double* dQ,
+                                                                               double*       Pe_,
+                                                                               double*       Ke_,
+                                                                               double        time,
+                                                                               double        dT )
 {
   Map< const VectorXd > Q_Unprojected( Q, unprojectedSize );
   Map< const VectorXd > dQ_Unprojected( dQ, unprojectedSize );
@@ -187,19 +190,20 @@ void Marmot::Discretizations::Elements::ElementSpatialWrapper::computeKernels( c
   Pe_Unprojected += P.transpose() * Pe_Projected;
 }
 
-void Marmot::Discretizations::Elements::ElementSpatialWrapper::setInitialConditions( StateTypes state, const double* values )
+void Marmot::Discretizations::Elements::ElementSpatialWrapper::setInitialConditions( StateTypes    state,
+                                                                                     const double* values )
 {
   childElement->setInitialConditions( state, values );
 }
 
 void Marmot::Discretizations::Elements::ElementSpatialWrapper::computeDistributedLoad( DistributedLoadTypes loadType,
-                                                          double*              P_,
-                                                          double*              K,
-                                                          int                  elementFace,
-                                                          const double*        load,
-                                                          const double*        QTotal,
-                                                          double               time,
-                                                          double               dT )
+                                                                                       double*              P_,
+                                                                                       double*              K,
+                                                                                       int                  elementFace,
+                                                                                       const double*        load,
+                                                                                       const double*        QTotal,
+                                                                                       double               time,
+                                                                                       double               dT )
 {
   VectorXd P_Projected = VectorXd::Zero( projectedSize );
   MatrixXd Ke_Projected( projectedSize, projectedSize );
@@ -215,11 +219,11 @@ void Marmot::Discretizations::Elements::ElementSpatialWrapper::computeDistribute
 }
 
 void Marmot::Discretizations::Elements::ElementSpatialWrapper::computeBodyForce( double*       P_,
-                                                    double*       K,
-                                                    const double* load,
-                                                    const double* QTotal,
-                                                    double        time,
-                                                    double        dT )
+                                                                                 double*       K,
+                                                                                 const double* load,
+                                                                                 const double* QTotal,
+                                                                                 double        time,
+                                                                                 double        dT )
 {
   VectorXd P_Projected = VectorXd::Zero( projectedSize );
   MatrixXd Ke_Projected( projectedSize, projectedSize );
@@ -233,7 +237,9 @@ void Marmot::Discretizations::Elements::ElementSpatialWrapper::computeBodyForce(
   Ke_Unprojected = P.transpose() * Ke_Projected * P;
 }
 
-Marmot::Utilities::StateView Marmot::Discretizations::Elements::ElementSpatialWrapper::getStateView( const std::string& stateName, int quadraturePoint )
+Marmot::Utilities::StateView Marmot::Discretizations::Elements::ElementSpatialWrapper::getStateView(
+  const std::string& stateName,
+  int                quadraturePoint )
 {
   if ( stateName == "Marmot::Discretizations::Elements::ElementSpatialWrapper.T" ) {
     return { T.data(), static_cast< int >( T.size() ) };
@@ -265,7 +271,8 @@ std::vector< double > Marmot::Discretizations::Elements::ElementSpatialWrapper::
   return coords;
 }
 
-std::vector< std::vector< double > > Marmot::Discretizations::Elements::ElementSpatialWrapper::getCoordinatesAtQuadraturePoints()
+std::vector< std::vector< double > > Marmot::Discretizations::Elements::ElementSpatialWrapper::
+  getCoordinatesAtQuadraturePoints()
 {
   auto listedChildCoords = childElement->getCoordinatesAtQuadraturePoints();
 

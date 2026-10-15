@@ -19,7 +19,8 @@ namespace Marmot::Materials {
       nu( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 1 ) ),
       m( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 2 ) ),
       n( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 3 ) ),
-      nMaxwell( static_cast< size_t >( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 4 ) ) ),
+      nMaxwell( static_cast< size_t >(
+        Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 4 ) ) ),
       minTau( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 5 ) ),
       timeToDays( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 6 ) ),
       zerothWiechertStiffness( 0.0 )
@@ -56,10 +57,10 @@ namespace Marmot::Materials {
     zerothWiechertStiffness              = spectrumCoefficient / n * std::pow( slowestResolvedBoundary, -n );
   }
 
-  void LinearViscoElasticWiechert::computeStress( state3D&                state,
+  void LinearViscoElasticWiechert::computeStress( state3D&                      state,
                                                   Marmot::Math::Matrix6d&       dStressDDStrain,
                                                   const Marmot::Math::Vector6d& dStrain,
-                                                  const timeInfo&         timeInfo ) const
+                                                  const timeInfo&               timeInfo ) const
   {
     Marmot::Math::mVector6d                    nominalStress( state.stress.data() );
     Marmot::Math::mMatrix6d                    tangent( dStressDDStrain.data() );
@@ -74,7 +75,7 @@ namespace Marmot::Materials {
     const double                           dTimeDays = timeInfo.dT * timeToDays;
 
     Marmot::Math::Vector6d maxwellStressIncrement = Marmot::Math::Vector6d::Zero();
-    double   maxwellStiffness       = 0.0;
+    double                 maxwellStiffness       = 0.0;
 
     Wiechert::evaluateWiechert( dTimeDays,
                                 elasticModuli,
@@ -89,7 +90,7 @@ namespace Marmot::Materials {
     // stiffnessTensor is exactly linear in the modulus: it builds C from nu alone and scales it by
     // E / ((1+nu)(1-2nu)). Scaling the cached unit tensor is therefore the same quantity, and removes
     // the last 6x6 assembly from the per-iteration path.
-    tangent                        = effectiveStiffness * unitStiffness;
+    tangent                                      = effectiveStiffness * unitStiffness;
     const Marmot::Math::Vector6d stressIncrement = tangent * strainIncrement - maxwellStressIncrement;
     nominalStress += stressIncrement;
 

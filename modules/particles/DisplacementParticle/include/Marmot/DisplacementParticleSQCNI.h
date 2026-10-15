@@ -100,7 +100,7 @@ namespace Marmot::Discretizations::Meshfree {
                                const std::string&                                           materialName,
                                const double*                                                materialProperties,
                                int                                                          sizeMaterialProperties,
-                               const Marmot::Discretizations::Meshfree::Approximation&                           approximation,
+                               const Marmot::Discretizations::Meshfree::Approximation&      approximation,
                                const typename ParticleDomainType::SmoothingDomainUpdateType smoothingVolumeUpdateType );
 
     // Override Marmot::Discretizations::Meshfree::Particle interface methods to delegate to _particleDomain
@@ -206,12 +206,14 @@ namespace Marmot::Discretizations::Meshfree {
     virtual Marmot::Utilities::StateView getStateView( const std::string& stateName, int qp ) const override
     {
       if ( stateName == "vertex displacements" )
-        return Marmot::Utilities::StateView( const_cast< double* >( _particleDomain.getGeometryDeformedVertexDisplacements().data() ),
-                          nDim * nVertices );
+        return Marmot::Utilities::StateView( const_cast< double* >(
+                                               _particleDomain.getGeometryDeformedVertexDisplacements().data() ),
+                                             nDim * nVertices );
 
       if ( stateName == "smoothing vertex displacements" )
-        return Marmot::Utilities::StateView( const_cast< double* >( _particleDomain.getSmoothingDomainVertexDisplacements().data() ),
-                          nDim * nVertices );
+        return Marmot::Utilities::StateView( const_cast< double* >(
+                                               _particleDomain.getSmoothingDomainVertexDisplacements().data() ),
+                                             nDim * nVertices );
 
       return ParentPointParticle::getStateView( stateName, qp );
     }
@@ -392,14 +394,14 @@ namespace Marmot::Discretizations::Meshfree {
 
   template < int nDim, int nVertices >
   DisplacementParticleSQCNI< nDim, nVertices >::DisplacementParticleSQCNI(
-    int                                elementID,
-    const double*                      vertexCoordinates,
-    int                                nVertexCoordinates,
-    double                             volume, // This volume must be 0, as it's computed from vertices
-    const std::string&                 materialName,
-    const double*                      materialProperties,
-    int                                sizeMaterialProperties,
-    const Marmot::Discretizations::Meshfree::Approximation& approximation,
+    int                elementID,
+    const double*      vertexCoordinates,
+    int                nVertexCoordinates,
+    double             volume, // This volume must be 0, as it's computed from vertices
+    const std::string& materialName,
+    const double*      materialProperties,
+    int                sizeMaterialProperties,
+    const Marmot::Discretizations::Meshfree::Approximation&      approximation,
     const typename ParticleDomainType::SmoothingDomainUpdateType smoothingVolumeUpdateType )
     : DisplacementParticle< nDim >( elementID,
                                     ParticleDomainType::getCenterFromVertices(
@@ -417,10 +419,11 @@ namespace Marmot::Discretizations::Meshfree {
       _particleDomain( vertexCoordinates, nVertexCoordinates, smoothingVolumeUpdateType )
   {
     if ( volume != 0 ) {
-      throw std::invalid_argument(
-        Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                     << ": volume argument must be zero for DisplacementParticleSQCNI, as volume is computed from "
-                        "vertex coordinates." );
+      throw std::
+        invalid_argument( Marmot::Utilities::MakeString()
+                          << __PRETTY_FUNCTION__
+                          << ": volume argument must be zero for DisplacementParticleSQCNI, as volume is computed from "
+                             "vertex coordinates." );
     }
   }
 
@@ -608,7 +611,8 @@ namespace Marmot::Discretizations::Meshfree {
       break;
     }
     default: {
-      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
     }
     }
   }
@@ -670,7 +674,8 @@ namespace Marmot::Discretizations::Meshfree {
       break;
     }
     default: {
-      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
     }
     }
   }

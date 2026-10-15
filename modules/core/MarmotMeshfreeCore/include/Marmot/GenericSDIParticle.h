@@ -98,8 +98,8 @@ namespace Marmot::Discretizations::Meshfree {
     using JacobianSized = Eigen::Matrix< double, nDim, nDim >; ///< Alias for Eigen matrix storing Jacobian/deformation
                                                                ///< gradient.
     using KernelFunctionVector = std::vector< const KernelFunction* >; ///< Alias for a vector of kernel
-                                                                                     ///< function pointers.
-    using ParticleDomainType = ParticleDomain< nDim, nVertices >; ///< Alias for the particle domain type.
+                                                                       ///< function pointers.
+    using ParticleDomainType = ParticleDomain< nDim, nVertices >;      ///< Alias for the particle domain type.
 
     /**
      * @struct SubDomainShapeFunctions
@@ -129,7 +129,7 @@ namespace Marmot::Discretizations::Meshfree {
     int _vciOrder;        ///< The order of the VCI (Variationally Consistent Integration) polynomial basis.
     int _nVCIConstraints; ///< The number of VCI constraints, derived from _vciOrder.
 
-    const Approximation& _meshfreeApproximation;  ///< Reference to the meshfree approximation object.
+    const Approximation& _meshfreeApproximation;                ///< Reference to the meshfree approximation object.
 
     ParticleDomainType                     _particleDomainMain; ///< Main domain (geometry, smoothing domain).
     std::vector< SubDomainShapeFunctions > _subDomainShapeFunctions; ///< Shape functions for each subdomain.
@@ -298,12 +298,12 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] approximation Reference to the meshfree approximation object; it must outlive the particle.
      * @param[in] smoothingVolumeUpdateType The type of smoothing domain update to use.
      */
-    GenericSDIParticle( int                                elementID,
-                        const double*                      vertexCoordinates,
-                        [[maybe_unused]] int               nVertexCoordinates,
-                        [[maybe_unused]] double            volume,
-                        const Approximation& approximation,
-                        const SmoothingDomainUpdateType    smoothingVolumeUpdateType );
+    GenericSDIParticle( int                             elementID,
+                        const double*                   vertexCoordinates,
+                        [[maybe_unused]] int            nVertexCoordinates,
+                        [[maybe_unused]] double         volume,
+                        const Approximation&            approximation,
+                        const SmoothingDomainUpdateType smoothingVolumeUpdateType );
 
     /**
      * @brief Assigns the meshfree kernel functions and evaluates, for every subdomain, N at its center, the
@@ -411,12 +411,14 @@ namespace Marmot::Discretizations::Meshfree {
     virtual Marmot::Utilities::StateView getStateView( const std::string& stateName, int qp ) const override final
     {
       if ( stateName == "vertex displacements" )
-        return Marmot::Utilities::StateView( const_cast< double* >( _particleDomainMain.getGeometryDeformedVertexDisplacements().data() ),
-                          nDim * nVertices );
+        return Marmot::Utilities::StateView( const_cast< double* >(
+                                               _particleDomainMain.getGeometryDeformedVertexDisplacements().data() ),
+                                             nDim * nVertices );
 
       if ( stateName == "smoothing vertex displacements" )
-        return Marmot::Utilities::StateView( const_cast< double* >( _particleDomainMain.getSmoothingDomainVertexDisplacements().data() ),
-                          nDim * nVertices );
+        return Marmot::Utilities::StateView( const_cast< double* >(
+                                               _particleDomainMain.getSmoothingDomainVertexDisplacements().data() ),
+                                             nDim * nVertices );
 
       return getStateViewOnSubdomains( stateName, qp );
     }
@@ -427,7 +429,8 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] subdomainIndex The index of the subdomain.
      * @return A Marmot::Utilities::StateView object providing access to the state variable data.
      */
-    virtual Marmot::Utilities::StateView getStateViewOnSubdomains( const std::string& stateName, int subdomainIndex ) const = 0;
+    virtual Marmot::Utilities::StateView getStateViewOnSubdomains( const std::string& stateName,
+                                                                   int                subdomainIndex ) const = 0;
 
     /**
      * @brief Computes the physics kernels (internal forces and their derivatives) for the particle.
@@ -714,12 +717,12 @@ namespace Marmot::Discretizations::Meshfree {
    */
   template < int nDim, int nVertices >
   GenericSDIParticle< nDim, nVertices >::GenericSDIParticle(
-    int                                                  elementID,
-    const double*                                        vertexCoordinates,
-    [[maybe_unused]] int                                 nVertexCoordinates, // Marked as unused
-    [[maybe_unused]] double                              volume,             // Marked as unused
+    int                                                     elementID,
+    const double*                                           vertexCoordinates,
+    [[maybe_unused]] int                                    nVertexCoordinates, // Marked as unused
+    [[maybe_unused]] double                                 volume,             // Marked as unused
     const Marmot::Discretizations::Meshfree::Approximation& approximation,
-    const SmoothingDomainUpdateType                      smoothingVolumeUpdateType )
+    const SmoothingDomainUpdateType                         smoothingVolumeUpdateType )
     : _elementID( elementID ),
       _nNodes( 0 ),          // Initialized to 0, will be set in assignMeshfreeKernelFunctions
       _vciOrder( 0 ),        // Initialized here, then set by setVCIOrder

@@ -138,9 +138,9 @@ namespace {
     static std::string           matName            = "LINEARELASTIC";
     auto                         solveropts = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
     return Marmot::Materials::MaterialPointSolverHypoElastic( matName,
-                                                                  materialProperties.data(),
-                                                                  materialProperties.size(),
-                                                                  solveropts );
+                                                              materialProperties.data(),
+                                                              materialProperties.size(),
+                                                              solveropts );
   }
 
 } // namespace
@@ -209,11 +209,11 @@ void testSpinTurbokreiselDetectsAnAnisotropicMaterial()
   // nu23, G12, and the two direction vectors defining the local coordinate system.
   static std::vector< double > materialProperties = { 20000, 10000, 0.25, 0.3, 4000, 1, 0, 0, 0, 0, 1 };
   static std::string           matName            = "LINEARELASTIC";
-  auto                         solveropts = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
-  auto                         solver     = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
-                                                                       materialProperties.data(),
-                                                                       materialProperties.size(),
-                                                                       solveropts );
+  auto                         solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
+  auto                         solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
+                                                                   materialProperties.data(),
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, true };
@@ -240,11 +240,11 @@ void testSpinTurbokreiselDetectsATangentOnlyMismatch()
   // passed), rather than the stress-mismatch branch above.
   static std::vector< double > materialProperties = { 20000, 10000, 0.25, 0.3, 4000, 1, 0, 0, 0, 0, 1 };
   static std::string           matName            = "LINEARELASTIC";
-  auto                         solveropts = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
-  auto                         solver     = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
-                                                                       materialProperties.data(),
-                                                                       materialProperties.size(),
-                                                                       solveropts );
+  auto                         solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
+  auto                         solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
+                                                                   materialProperties.data(),
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, true };

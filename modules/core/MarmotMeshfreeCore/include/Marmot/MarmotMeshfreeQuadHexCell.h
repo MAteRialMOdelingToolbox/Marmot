@@ -140,7 +140,7 @@ namespace Marmot::Discretizations::Meshfree {
     using RowN   = Eigen::Matrix< Scalar, 1, nNodes >;    ///< Type for shape function vector.
     using dNMat  = Eigen::Matrix< Scalar, nDim, nNodes >; ///< Type for shape function derivative matrix.
 
-    using Self = LagrangeCell< nDim, nNodes >;      ///< Alias for the current class type.
+    using Self = LagrangeCell< nDim, nNodes >;            ///< Alias for the current class type.
 
     /**
      * @brief Default constructor.

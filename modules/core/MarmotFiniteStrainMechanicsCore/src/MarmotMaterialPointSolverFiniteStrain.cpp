@@ -13,322 +13,324 @@ using namespace Marmot::Math::FastorTensors;
 
 namespace Marmot::Materials {
 
-    MaterialPointSolverFiniteStrain::MaterialPointSolverFiniteStrain( const std::string& materialName,
-                                                                                  const double*      materialProperties,
-                                                                                  const int nMaterialProperties,
-                                                                                  const SolverOptions& options )
-      : options( options )
-    {
+  MaterialPointSolverFiniteStrain::MaterialPointSolverFiniteStrain( const std::string&   materialName,
+                                                                    const double*        materialProperties,
+                                                                    const int            nMaterialProperties,
+                                                                    const SolverOptions& options )
+    : options( options )
+  {
 
-      // create material instance
-      material = std::unique_ptr< Marmot::Materials::MaterialFiniteStrain >( dynamic_cast< Marmot::Materials::MaterialFiniteStrain* >(
+    // create material instance
+    material = std::unique_ptr< Marmot::Materials::MaterialFiniteStrain >(
+      dynamic_cast< Marmot::Materials::MaterialFiniteStrain* >(
         Marmot::Registry::MaterialFiniteStrainFactory::createMaterial( materialName,
-                                                           materialProperties,
-                                                           nMaterialProperties,
-                                                           1 ) ) );
+                                                                       materialProperties,
+                                                                       nMaterialProperties,
+                                                                       1 ) ) );
 
-      // get number of state variables
-      nStateVars = material->getNumberOfRequiredStateVars();
-      // initialize state variables
-      stateVars = Eigen::VectorXd::Zero( nStateVars );
-      // initialize material
-      material->initializeYourself( stateVars.data(), nStateVars );
-      // store initial state
-      _initialStateVars = stateVars;
-      stateVarsTemp     = stateVars;
+    // get number of state variables
+    nStateVars = material->getNumberOfRequiredStateVars();
+    // initialize state variables
+    stateVars = Eigen::VectorXd::Zero( nStateVars );
+    // initialize material
+    material->initializeYourself( stateVars.data(), nStateVars );
+    // store initial state
+    _initialStateVars = stateVars;
+    stateVarsTemp     = stateVars;
+  }
+
+  void MaterialPointSolverFiniteStrain::addStep( const Step& step )
+  {
+    step.checkControl();
+    steps.push_back( step );
+  }
+
+  void MaterialPointSolverFiniteStrain::solve()
+  {
+    for ( const auto& step : steps ) {
+      std::cout << "Solving step from " << step.timeStart << " to " << step.timeEnd << std::endl;
+      solveStep( step );
+      std::cout << "+" + std::string( 78, '-' ) + "+" << std::endl;
     }
+  }
 
-    void MaterialPointSolverFiniteStrain::addStep( const Step& step )
-    {
-      step.checkControl();
-      steps.push_back( step );
-    }
+  void MaterialPointSolverFiniteStrain::setInitialState( const Marmot::Math::FastorTensors::Tensor33d& initialStress,
+                                                         const Eigen::VectorXd& initialStateVars )
+  {
+    _initialStress    = initialStress;
+    _initialStateVars = initialStateVars;
+    stress            = _initialStress;
+    stateVars         = _initialStateVars;
+  }
 
-    void MaterialPointSolverFiniteStrain::solve()
-    {
-      for ( const auto& step : steps ) {
-        std::cout << "Solving step from " << step.timeStart << " to " << step.timeEnd << std::endl;
-        solveStep( step );
-        std::cout << "+" + std::string( 78, '-' ) + "+" << std::endl;
-      }
-    }
+  void MaterialPointSolverFiniteStrain::resetToInitialState()
+  {
+    stress    = _initialStress;
+    gradU     = Tensor33d( 0.0 );
+    stateVars = _initialStateVars;
+    stateVarsTemp.setZero();
+    history.clear();
+  }
 
-    void MaterialPointSolverFiniteStrain::setInitialState( const Marmot::Math::FastorTensors::Tensor33d& initialStress,
-                                                                 const Eigen::VectorXd& initialStateVars )
-    {
-      _initialStress    = initialStress;
-      _initialStateVars = initialStateVars;
-      stress            = _initialStress;
-      stateVars         = _initialStateVars;
-    }
+  void MaterialPointSolverFiniteStrain::solveStep( const Step& step )
+  {
+    double time     = step.timeStart;
+    double dT       = 0.0;
+    double stepTime = step.timeEnd - step.timeStart;
 
-    void MaterialPointSolverFiniteStrain::resetToInitialState()
-    {
-      stress    = _initialStress;
-      gradU     = Tensor33d( 0.0 );
-      stateVars = _initialStateVars;
-      stateVarsTemp.setZero();
-      history.clear();
-    }
+    int  counter         = 0;
+    bool dTStartAssigned = false;
 
-    void MaterialPointSolverFiniteStrain::solveStep( const Step& step )
-    {
-      double time     = step.timeStart;
-      double dT       = 0.0;
-      double stepTime = step.timeEnd - step.timeStart;
+    while ( time < step.timeEnd && counter <= step.maxIncrements ) {
 
-      int  counter         = 0;
-      bool dTStartAssigned = false;
-
-      while ( time < step.timeEnd && counter <= step.maxIncrements ) {
-
-        // adjust time step if overshooting
+      // adjust time step if overshooting
+      if ( time + dT > step.timeEnd )
+        dT = step.timeEnd - time;
+      // use the initial time step for the first real increment, then adjust based on
+      // convergence -- assigned only once (not on every retry of that increment): counter
+      // stays at 1 across repeated failed retries of the same increment (it only advances
+      // on success), so gating this solely on `counter == 1` used to re-assign dT = dTStart
+      // on every such retry too, silently discarding the catch block's cutback below and
+      // preventing dT from ever reaching dTMin.
+      if ( counter == 1 && !dTStartAssigned ) {
+        dT              = step.dTStart;
+        dTStartAssigned = true;
+        // ensure the very first assigned dT does not overshoot the step end
         if ( time + dT > step.timeEnd )
           dT = step.timeEnd - time;
-        // use the initial time step for the first real increment, then adjust based on
-        // convergence -- assigned only once (not on every retry of that increment): counter
-        // stays at 1 across repeated failed retries of the same increment (it only advances
-        // on success), so gating this solely on `counter == 1` used to re-assign dT = dTStart
-        // on every such retry too, silently discarding the catch block's cutback below and
-        // preventing dT from ever reaching dTMin.
-        if ( counter == 1 && !dTStartAssigned ) {
-          dT              = step.dTStart;
-          dTStartAssigned = true;
-          // ensure the very first assigned dT does not overshoot the step end
-          if ( time + dT > step.timeEnd )
-            dT = step.timeEnd - time;
-        }
-
-        // setup increment
-        Increment increment;
-        increment.timeOld                     = time;
-        increment.dT                          = dT;
-        increment.gradUIncrement              = dT / stepTime * reshape< 9 >( step.gradUIncrementTarget );
-        increment.stressIncrement             = dT / stepTime * reshape< 9 >( step.stressIncrementTarget );
-        increment.isGradUComponentControlled  = reshape< 9 >( step.isGradUComponentControlled );
-        increment.isStressComponentControlled = reshape< 9 >( step.isStressComponentControlled );
-
-        // solve increment
-        try {
-          std::cout << "+" + std::string( 78, '-' ) + "+" << std::endl;
-          std::cout << std::scientific << "  Solving increment " << counter + 1 << ", time: " << time << " to "
-                    << time + dT << ", dT: " << dT << std::endl;
-          solveIncrement( increment );
-          history.back().print();
-          time += dT;
-          stateVars = stateVarsTemp;
-          counter++;
-        }
-        catch ( const Marmot::Utilities::StressUpdateFailed& e ) {
-          // if failed, reduce time step and retry
-          if ( dT <= step.dTMin )
-            throw Marmot::Utilities::SolverTimestepExhausted( "Minimum time step reached, cannot proceed." );
-          dT = std::max( dT / 2.0, step.dTMin );
-        }
       }
 
-      if ( std::abs( time - step.timeEnd ) > 1e-12 )
-        throw Marmot::Utilities::SolverIncrementsExhausted( "Maximum number of increments reached, cannot proceed." );
+      // setup increment
+      Increment increment;
+      increment.timeOld                     = time;
+      increment.dT                          = dT;
+      increment.gradUIncrement              = dT / stepTime * reshape< 9 >( step.gradUIncrementTarget );
+      increment.stressIncrement             = dT / stepTime * reshape< 9 >( step.stressIncrementTarget );
+      increment.isGradUComponentControlled  = reshape< 9 >( step.isGradUComponentControlled );
+      increment.isStressComponentControlled = reshape< 9 >( step.isStressComponentControlled );
+
+      // solve increment
+      try {
+        std::cout << "+" + std::string( 78, '-' ) + "+" << std::endl;
+        std::cout << std::scientific << "  Solving increment " << counter + 1 << ", time: " << time << " to "
+                  << time + dT << ", dT: " << dT << std::endl;
+        solveIncrement( increment );
+        history.back().print();
+        time += dT;
+        stateVars = stateVarsTemp;
+        counter++;
+      }
+      catch ( const Marmot::Utilities::StressUpdateFailed& e ) {
+        // if failed, reduce time step and retry
+        if ( dT <= step.dTMin )
+          throw Marmot::Utilities::SolverTimestepExhausted( "Minimum time step reached, cannot proceed." );
+        dT = std::max( dT / 2.0, step.dTMin );
+      }
     }
 
-    void MaterialPointSolverFiniteStrain::solveIncrement( const Increment& increment )
-    {
-      // set initial strain increment, set not controlled components to zero
-      // use element-wise multiplication
-      Tensor9d dGradU = increment.gradUIncrement * increment.isGradUComponentControlled.cast< double >();
+    if ( std::abs( time - step.timeEnd ) > 1e-12 )
+      throw Marmot::Utilities::SolverIncrementsExhausted( "Maximum number of increments reached, cannot proceed." );
+  }
 
-      // create the mixed-control target
-      Tensor9d target = reshape< 9 >( increment.stressIncrement );
-      for ( int i = 0; i < 9; i++ )
-        if ( increment.isGradUComponentControlled[i] )
-          target[i] = increment.gradUIncrement[i];
+  void MaterialPointSolverFiniteStrain::solveIncrement( const Increment& increment )
+  {
+    // set initial strain increment, set not controlled components to zero
+    // use element-wise multiplication
+    Tensor9d dGradU = increment.gradUIncrement * increment.isGradUComponentControlled.cast< double >();
 
-      int    counter = 0;
-      double resNorm = 1e12;
-      double corNorm = 0.0;
+    // create the mixed-control target
+    Tensor9d target = reshape< 9 >( increment.stressIncrement );
+    for ( int i = 0; i < 9; i++ )
+      if ( increment.isGradUComponentControlled[i] )
+        target[i] = increment.gradUIncrement[i];
 
-      // temporary variables for material state
-      Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse< 3 > state;
-      Marmot::Materials::MaterialFiniteStrain::Deformation< 3 >          deformation;
-      Marmot::Materials::MaterialFiniteStrain::AlgorithmicModuli< 3 >    algorithmicModuli;
-      Marmot::Materials::MaterialFiniteStrain::TimeIncrement timeInfo = { increment.timeOld + increment.dT, increment.dT };
+    int    counter = 0;
+    double resNorm = 1e12;
+    double corNorm = 0.0;
 
-      // store identical rows
-      std::vector< std::pair< size_t, size_t > > identicalRows;
+    // temporary variables for material state
+    Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse< 3 > state;
+    Marmot::Materials::MaterialFiniteStrain::Deformation< 3 >          deformation;
+    Marmot::Materials::MaterialFiniteStrain::AlgorithmicModuli< 3 >    algorithmicModuli;
+    Marmot::Materials::MaterialFiniteStrain::TimeIncrement             timeInfo = { increment.timeOld + increment.dT,
+                                                                                    increment.dT };
 
-      // Newton-Raphson iteration
-      while ( counter < options.maxIterations ) {
-        std::cout << "    Iteration " << counter;
+    // store identical rows
+    std::vector< std::pair< size_t, size_t > > identicalRows;
 
-        // assign state variables to material
-        stateVarsTemp = stateVars;
+    // Newton-Raphson iteration
+    while ( counter < options.maxIterations ) {
+      std::cout << "    Iteration " << counter;
 
-        // set state to previously converged state
-        state.tau                  = stress;
-        state.elasticEnergyDensity = 0.0;
-        state.stateVars            = stateVarsTemp.data();
+      // assign state variables to material
+      stateVarsTemp = stateVars;
 
-        // set deformation gradient
-        deformation.F = Spatial3D::I + gradU + reshape< 3, 3 >( dGradU );
+      // set state to previously converged state
+      state.tau                  = stress;
+      state.elasticEnergyDensity = 0.0;
+      state.stateVars            = stateVarsTemp.data();
 
-        // compute stress and tangent
-        material->computeStress( state, algorithmicModuli, deformation, timeInfo );
+      // set deformation gradient
+      deformation.F = Spatial3D::I + gradU + reshape< 3, 3 >( dGradU );
 
-        // initialize residual with stress increment
-        Tensor9d residual = computeResidual( state.tau - stress, target, increment );
+      // compute stress and tangent
+      material->computeStress( state, algorithmicModuli, deformation, timeInfo );
 
-        // set tangent
-        Tensor99d fullTangent = reshape< 9, 9 >( algorithmicModuli.dTau_dF );
+      // initialize residual with stress increment
+      Tensor9d residual = computeResidual( state.tau - stress, target, increment );
 
-        // modify tangent for mixed control
-        modifyTangent( fullTangent, increment );
+      // set tangent
+      Tensor99d fullTangent = reshape< 9, 9 >( algorithmicModuli.dTau_dF );
 
-        // find identical rows which will be removed for inversion
-        // only do this in the first iteration
-        if ( counter == 0 ) {
-          Tensor9d rand;
-          rand.random();
+      // modify tangent for mixed control
+      modifyTangent( fullTangent, increment );
 
-          Tensor9d identicalRowCheck = fullTangent % rand;
-          for ( size_t i = 0; i < 9; ++i ) {
-            Tensor9d diff = abs( identicalRowCheck - identicalRowCheck[i] );
-            for ( size_t j = i + 1; j < 9; ++j ) {
-              if ( diff( j ) < 1e-10 ) {
-                identicalRows.push_back( std::make_pair( i, j ) );
-              }
+      // find identical rows which will be removed for inversion
+      // only do this in the first iteration
+      if ( counter == 0 ) {
+        Tensor9d rand;
+        rand.random();
+
+        Tensor9d identicalRowCheck = fullTangent % rand;
+        for ( size_t i = 0; i < 9; ++i ) {
+          Tensor9d diff = abs( identicalRowCheck - identicalRowCheck[i] );
+          for ( size_t j = i + 1; j < 9; ++j ) {
+            if ( diff( j ) < 1e-10 ) {
+              identicalRows.push_back( std::make_pair( i, j ) );
             }
           }
         }
-
-        // set the rows of the tangent matrix to zero for the identical rows and diagonal to 1
-        // this ensures that the inversion will work correctly
-        for ( const auto& rowPair : identicalRows ) {
-          fullTangent( rowPair.second, all )            = 0.0;
-          fullTangent( rowPair.second, rowPair.second ) = 1.0;
-          residual( rowPair.second )                    = 0.0;
-        }
-
-        // compute residual norm
-        resNorm = norm( residual );
-
-        std::cout << std::scientific << ", ||ddGradU||: " << corNorm << ", ||R||: " << resNorm << std::endl;
-
-        // if nan encountered
-        if ( std::isnan( resNorm ) || std::isnan( corNorm ) )
-          throw Marmot::Utilities::SolverConvergenceFailed( "NaN encountered in Newton-Raphson iteration." );
-
-        // convergence check
-        if ( corNorm < options.correctionTolerance && resNorm < options.residualTolerance )
-          break;
-
-        // if not converged,
-        if ( counter == options.maxIterations - 1 )
-          throw Marmot::Utilities::SolverConvergenceFailed( "Maximum number of iterations reached, no convergence." );
-
-        // solve for correction
-        Tensor9d correction = Fastor::solve( fullTangent, residual );
-
-        // set the correction for the identical rows to the correction of the first row
-        for ( const auto& rowPair : identicalRows ) {
-          correction( rowPair.second ) = correction( rowPair.first );
-        }
-
-        // compute correction norm
-        corNorm = norm( correction );
-
-        // update displacement gradient increment
-        dGradU -= correction;
-        counter++;
       }
 
-      std::cout << "    Converged after " << counter << " iterations." << std::endl;
+      // set the rows of the tangent matrix to zero for the identical rows and diagonal to 1
+      // this ensures that the inversion will work correctly
+      for ( const auto& rowPair : identicalRows ) {
+        fullTangent( rowPair.second, all )            = 0.0;
+        fullTangent( rowPair.second, rowPair.second ) = 1.0;
+        residual( rowPair.second )                    = 0.0;
+      }
 
-      stress = state.tau;
-      gradU += dGradU;
-      dTau_dF = algorithmicModuli.dTau_dF;
+      // compute residual norm
+      resNorm = norm( residual );
 
-      // copy back updated state variables
-      stateVars = stateVarsTemp;
-      history.push_back(
-        HistoryEntry( increment.timeOld + increment.dT, stress, Spatial3D::I + gradU, dTau_dF, stateVars ) );
+      std::cout << std::scientific << ", ||ddGradU||: " << corNorm << ", ||R||: " << resNorm << std::endl;
+
+      // if nan encountered
+      if ( std::isnan( resNorm ) || std::isnan( corNorm ) )
+        throw Marmot::Utilities::SolverConvergenceFailed( "NaN encountered in Newton-Raphson iteration." );
+
+      // convergence check
+      if ( corNorm < options.correctionTolerance && resNorm < options.residualTolerance )
+        break;
+
+      // if not converged,
+      if ( counter == options.maxIterations - 1 )
+        throw Marmot::Utilities::SolverConvergenceFailed( "Maximum number of iterations reached, no convergence." );
+
+      // solve for correction
+      Tensor9d correction = Fastor::solve( fullTangent, residual );
+
+      // set the correction for the identical rows to the correction of the first row
+      for ( const auto& rowPair : identicalRows ) {
+        correction( rowPair.second ) = correction( rowPair.first );
+      }
+
+      // compute correction norm
+      corNorm = norm( correction );
+
+      // update displacement gradient increment
+      dGradU -= correction;
+      counter++;
     }
 
-    Marmot::Math::FastorTensors::Tensor9d MaterialPointSolverFiniteStrain::computeResidual(
-      const Marmot::Math::FastorTensors::Tensor9d& stressIncrement,
-      const Marmot::Math::FastorTensors::Tensor9d& target,
-      const Increment&                       increment )
-    {
-      Tensor9d residual = stressIncrement;
-      // replace displacement gradient controlled components
-      for ( int i = 0; i < 9; i++ )
-        if ( increment.isGradUComponentControlled[i] )
-          residual[i] = increment.gradUIncrement[i];
+    std::cout << "    Converged after " << counter << " iterations." << std::endl;
 
-      residual -= target;
+    stress = state.tau;
+    gradU += dGradU;
+    dTau_dF = algorithmicModuli.dTau_dF;
 
-      return residual;
-    }
+    // copy back updated state variables
+    stateVars = stateVarsTemp;
+    history.push_back(
+      HistoryEntry( increment.timeOld + increment.dT, stress, Spatial3D::I + gradU, dTau_dF, stateVars ) );
+  }
 
-    void MaterialPointSolverFiniteStrain::modifyTangent( Marmot::Math::FastorTensors::Tensor99d& tangent,
-                                                               const Increment&                  increment )
-    {
-      // modify the tangent matrix based on control type
-      for ( int i = 0; i < 9; i++ ) {
-        if ( increment.isGradUComponentControlled[i] ) {
-          tangent( i, all ) = 0.0;
-          tangent( i, i )   = 1.0;
-        }
+  Marmot::Math::FastorTensors::Tensor9d MaterialPointSolverFiniteStrain::computeResidual(
+    const Marmot::Math::FastorTensors::Tensor9d& stressIncrement,
+    const Marmot::Math::FastorTensors::Tensor9d& target,
+    const Increment&                             increment )
+  {
+    Tensor9d residual = stressIncrement;
+    // replace displacement gradient controlled components
+    for ( int i = 0; i < 9; i++ )
+      if ( increment.isGradUComponentControlled[i] )
+        residual[i] = increment.gradUIncrement[i];
+
+    residual -= target;
+
+    return residual;
+  }
+
+  void MaterialPointSolverFiniteStrain::modifyTangent( Marmot::Math::FastorTensors::Tensor99d& tangent,
+                                                       const Increment&                        increment )
+  {
+    // modify the tangent matrix based on control type
+    for ( int i = 0; i < 9; i++ ) {
+      if ( increment.isGradUComponentControlled[i] ) {
+        tangent( i, all ) = 0.0;
+        tangent( i, i )   = 1.0;
       }
     }
+  }
 
-    void MaterialPointSolverFiniteStrain::printHistory()
-    {
-      std::cout << "Material Point History:" << std::endl;
-      for ( const auto& entry : history ) {
-        entry.print();
-      }
+  void MaterialPointSolverFiniteStrain::printHistory()
+  {
+    std::cout << "Material Point History:" << std::endl;
+    for ( const auto& entry : history ) {
+      entry.print();
     }
+  }
 
-    void MaterialPointSolverFiniteStrain::exportHistoryToCSV( const std::string& filename )
-    {
-      std::ofstream file( filename );
-      if ( !file.is_open() )
-        throw std::runtime_error( "Could not open file for writing: " + filename );
+  void MaterialPointSolverFiniteStrain::exportHistoryToCSV( const std::string& filename )
+  {
+    std::ofstream file( filename );
+    if ( !file.is_open() )
+      throw std::runtime_error( "Could not open file for writing: " + filename );
 
-      // write header with fixed-width formatting
-      const int w           = 15;
-      const int ordering[9] = { 11, 12, 13, 21, 22, 23, 31, 32, 33 };
-      file << std::scientific << "#" << std::setw( w - 1 ) << "Time,";
+    // write header with fixed-width formatting
+    const int w           = 15;
+    const int ordering[9] = { 11, 12, 13, 21, 22, 23, 31, 32, 33 };
+    file << std::scientific << "#" << std::setw( w - 1 ) << "Time,";
 
-      // get ordering from array and write stress and strain components
+    // get ordering from array and write stress and strain components
+    for ( int i = 0; i < 9; i++ )
+      file << std::setw( w ) << "tau" + std::to_string( ordering[i] ) + ",";
+
+    for ( int i = 0; i < 9; i++ )
+      file << std::setw( w ) << "F" + std::to_string( ordering[i] ) + ",";
+
+    for ( int i = 0; i < nStateVars; i++ )
+      file << std::setw( w - ( i < nStateVars - 1 ? 1 : 2 ) ) << "SV" << i + 1 << ( i < nStateVars - 1 ? "," : "\n" );
+    if ( nStateVars == 0 )
+      file << "\n";
+
+    // write data with fixed-width formatting
+    for ( const auto& entry : history ) {
+      file << std::scientific << std::setw( w - 1 ) << entry.time << ",";
+
       for ( int i = 0; i < 9; i++ )
-        file << std::setw( w ) << "tau" + std::to_string( ordering[i] ) + ",";
+        file << std::setw( w - 1 ) << flatten( entry.stress )[i] << ( i < 8 ? "," : "," );
 
       for ( int i = 0; i < 9; i++ )
-        file << std::setw( w ) << "F" + std::to_string( ordering[i] ) + ",";
+        file << std::setw( w - 1 ) << flatten( entry.F )[i] << ( i < 8 ? "," : ( nStateVars > 0 ? "," : "\n" ) );
 
       for ( int i = 0; i < nStateVars; i++ )
-        file << std::setw( w - ( i < nStateVars - 1 ? 1 : 2 ) ) << "SV" << i + 1 << ( i < nStateVars - 1 ? "," : "\n" );
+        file << std::setw( w - 1 ) << entry.stateVars[i] << ( i < nStateVars - 1 ? "," : "\n" );
       if ( nStateVars == 0 )
         file << "\n";
-
-      // write data with fixed-width formatting
-      for ( const auto& entry : history ) {
-        file << std::scientific << std::setw( w - 1 ) << entry.time << ",";
-
-        for ( int i = 0; i < 9; i++ )
-          file << std::setw( w - 1 ) << flatten( entry.stress )[i] << ( i < 8 ? "," : "," );
-
-        for ( int i = 0; i < 9; i++ )
-          file << std::setw( w - 1 ) << flatten( entry.F )[i] << ( i < 8 ? "," : ( nStateVars > 0 ? "," : "\n" ) );
-
-        for ( int i = 0; i < nStateVars; i++ )
-          file << std::setw( w - 1 ) << entry.stateVars[i] << ( i < nStateVars - 1 ? "," : "\n" );
-        if ( nStateVars == 0 )
-          file << "\n";
-      }
-
-      file.close();
     }
+
+    file.close();
+  }
 
 } // namespace Marmot::Materials

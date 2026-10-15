@@ -134,7 +134,9 @@ namespace Marmot::Materials {
      * @param[in] materialNumber_      Unique identifier for this material instance.
      */
     GradientEnhancedHughesWingetWrapper( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
-      : Marmot::Materials::MaterialGradientEnhancedFiniteStrain( matProperties_, nMaterialProperties_, materialNumber_ ),
+      : Marmot::Materials::MaterialGradientEnhancedFiniteStrain( matProperties_,
+                                                                 nMaterialProperties_,
+                                                                 materialNumber_ ),
         baseMaterial( std::make_unique< BaseMaterialType >( matProperties_, nMaterialProperties_, materialNumber_ ) )
     {
       initializeStateLayout();
@@ -295,11 +297,11 @@ namespace Marmot::Materials {
      * @return The sensitivity in Voigt form, with its three shear **columns** halved so that the result
      *         may be contracted as a full fourth-order tensor without double counting.
      */
-    Marmot::Math::Matrix6d computeStressSensitivity( const Marmot::Math::Vector6d&        sigmaRotVoigt,
-                                               const std::vector< double >&   baseStateOld,
-                                               const BaseMaterial::increment& inc,
-                                               double                         elasticEnergyDensity,
-                                               double                         dissipation ) const
+    Marmot::Math::Matrix6d computeStressSensitivity( const Marmot::Math::Vector6d&  sigmaRotVoigt,
+                                                     const std::vector< double >&   baseStateOld,
+                                                     const BaseMaterial::increment& inc,
+                                                     double                         elasticEnergyDensity,
+                                                     double                         dissipation ) const
     {
       const int             nBase = baseMaterial->getNumberOfRequiredStateVars();
       std::vector< double > scratch( nBase );
@@ -359,8 +361,8 @@ namespace Marmot::Materials {
 
       TensorMap33d Fn_ref = this->stateLayout.getAs< TensorMap33d >( response.stateVars, deformationGradientSlot );
       Eigen::Map< Marmot::Math::Vector6d >
-              sigmaN_n  = this->stateLayout.getAs< Eigen::Map< Marmot::Math::Vector6d > >( response.stateVars, stressSlot );
-      double* nPtr      = this->stateLayout.getPtr( response.stateVars, nonlocalFieldSlot );
+        sigmaN_n   = this->stateLayout.getAs< Eigen::Map< Marmot::Math::Vector6d > >( response.stateVars, stressSlot );
+      double* nPtr = this->stateLayout.getPtr( response.stateVars, nonlocalFieldSlot );
       double* baseState = this->stateLayout.getPtr( response.stateVars, baseMaterialSlot );
 
       // A zeroed state vector means pristine, so an all-zero F_n is the identity here -- without this,
@@ -379,8 +381,8 @@ namespace Marmot::Materials {
 
       // --- rotate the carried-over Cauchy stress forward ---
       const Marmot::Math::Vector6d sigmaNVoigt = sigmaN_n;
-      const Tensor33d        sigmaN      = fromEigen( stressMatrixFromVoigt< 3 >( sigmaNVoigt ) );
-      const Tensor33d        sigmaRot    = dR % sigmaN % transpose( dR );
+      const Tensor33d              sigmaN      = fromEigen( stressMatrixFromVoigt< 3 >( sigmaNVoigt ) );
+      const Tensor33d              sigmaRot    = dR % sigmaN % transpose( dR );
 
       // --- assemble the increment for the wrapped material ---
       const int             nBase = baseMaterial->getNumberOfRequiredStateVars();
@@ -446,7 +448,7 @@ namespace Marmot::Materials {
         baseMaterial->computeStressExplicit( res, inc );
 
       const Marmot::Math::Vector6d sigmaNp1Voigt = res.stress;
-      const Tensor33d        sigmaNp1      = fromEigen( stressMatrixFromVoigt< 3 >( sigmaNp1Voigt ) );
+      const Tensor33d              sigmaNp1      = fromEigen( stressMatrixFromVoigt< 3 >( sigmaNp1Voigt ) );
 
       // --- push the Cauchy stress forward to the Kirchhoff stress ---
       const double    J    = determinant( Fn1 );
@@ -482,11 +484,11 @@ namespace Marmot::Materials {
         if constexpr ( tangentMode == HughesWingetTangent::Exact ) {
           // Replace the implicit d(sigma^(n+1))/d(sigmaRot) = I assumption by the true operator.
           const Marmot::Math::Matrix6d S = computeStressSensitivity( sigmaRotVoigt,
-                                                               baseStateOld,
-                                                               inc,
-                                                               seedEnergyDensity,
-                                                               seedDissipation );
-          dSigRot_dF               = einsum< ijmn, mnKL, to_ijKL >( voigtToStiffness( S ), dSigRot_dF );
+                                                                     baseStateOld,
+                                                                     inc,
+                                                                     seedEnergyDensity,
+                                                                     seedDissipation );
+          dSigRot_dF                     = einsum< ijmn, mnKL, to_ijKL >( voigtToStiffness( S ), dSigRot_dF );
         }
 
         // voigtToStiffness scatters without a factor 1/2, which is exactly what a *tensorial*

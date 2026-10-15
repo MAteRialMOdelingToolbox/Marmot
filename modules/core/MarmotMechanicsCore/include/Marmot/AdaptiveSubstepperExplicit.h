@@ -66,12 +66,12 @@ namespace Marmot::ContinuumMechanics::Algorithms {
      * @param nPassesToIncrease          Number of successful sub-steps before the step size is allowed to grow.
      * @param Cel                        Linear-elastic stiffness matrix (6×6).
      */
-    AdaptiveSubstepperExplicit( double          initialStepSize,
-                                double          minimumStepSize,
-                                double          maxScaleUpFactor,
-                                double          scaleDownFactor,
-                                double          integrationErrorTolerance,
-                                int             nPassesToIncrease,
+    AdaptiveSubstepperExplicit( double                        initialStepSize,
+                                double                        minimumStepSize,
+                                double                        maxScaleUpFactor,
+                                double                        scaleDownFactor,
+                                double                        integrationErrorTolerance,
+                                int                           nPassesToIncrease,
                                 const Marmot::Math::Matrix6d& Cel );
     /// Set the current converged state
     void setConvergedProgress( const Marmot::Math::Vector6d& stressOld, const IntegrationStateVector& stateVarsOld );
@@ -84,7 +84,7 @@ namespace Marmot::ContinuumMechanics::Algorithms {
     /// get the number of discarded subincrements
     int getNumberDiscardedSubstepsDueToError();
     /// finish a subincrement with plasticity
-    bool finishSubstep( const Marmot::Math::Vector6d&       resultStress,
+    bool finishSubstep( const Marmot::Math::Vector6d& resultStress,
                         const TangentSizedMatrix&     dXdY,
                         const TangentSizedMatrix&     dYdXOld,
                         const IntegrationStateVector& stateVars );
@@ -100,7 +100,9 @@ namespace Marmot::ContinuumMechanics::Algorithms {
     /// get the algorithmic tangent for the current state
     Marmot::Math::Matrix6d getCurrentTangentOperator();
     /// Write the current results
-    void getResults( Marmot::Math::Vector6d& stress, Marmot::Math::Matrix6d& consistentTangent, IntegrationStateVector& stateVars );
+    void getResults( Marmot::Math::Vector6d& stress,
+                     Marmot::Math::Matrix6d& consistentTangent,
+                     IntegrationStateVector& stateVars );
 
   private:
     const double initialStepSize, minimumStepSize, maxScaleUpFactor, scaleDownFactor, integrationErrorTolerance;
@@ -108,11 +110,11 @@ namespace Marmot::ContinuumMechanics::Algorithms {
     const bool   ignoreErrorToleranceOnMinimumStepSize;
 
     const Marmot::Math::Matrix6d& Cel;
-    double          currentProgress;
-    double          currentSubstepSize;
-    int             passedSubsteps;
-    int             substepIndex;
-    int             discardedDueToError;
+    double                        currentProgress;
+    double                        currentSubstepSize;
+    int                           passedSubsteps;
+    int                           substepIndex;
+    int                           discardedDueToError;
 
     /// internal storages for the progress of the total increment
     Marmot::Math::Vector6d stressProgress;
@@ -143,12 +145,12 @@ namespace Marmot::ContinuumMechanics::Algorithms {
 namespace Marmot::ContinuumMechanics::Algorithms {
 
   template < size_t n, size_t nState >
-  AdaptiveSubstepperExplicit< n, nState >::AdaptiveSubstepperExplicit( double          initialStepSize,
-                                                                       double          minimumStepSize,
-                                                                       double          maxScaleUpFactor,
-                                                                       double          scaleDownFactor,
-                                                                       double          integrationErrorTolerance,
-                                                                       int             nPassesToIncrease,
+  AdaptiveSubstepperExplicit< n, nState >::AdaptiveSubstepperExplicit( double initialStepSize,
+                                                                       double minimumStepSize,
+                                                                       double maxScaleUpFactor,
+                                                                       double scaleDownFactor,
+                                                                       double integrationErrorTolerance,
+                                                                       int    nPassesToIncrease,
                                                                        const Marmot::Math::Matrix6d& Cel )
     : initialStepSize( initialStepSize ),
       minimumStepSize( minimumStepSize ),
@@ -202,7 +204,7 @@ namespace Marmot::ContinuumMechanics::Algorithms {
   }
 
   template < size_t n, size_t nState >
-  void AdaptiveSubstepperExplicit< n, nState >::setConvergedProgress( const Marmot::Math::Vector6d&       stressOld,
+  void AdaptiveSubstepperExplicit< n, nState >::setConvergedProgress( const Marmot::Math::Vector6d& stressOld,
                                                                       const IntegrationStateVector& stateVarsOld )
   {
     stressProgress = stressOld;
@@ -239,7 +241,7 @@ namespace Marmot::ContinuumMechanics::Algorithms {
     return 0;
   }
   template < size_t n, size_t nState >
-  void AdaptiveSubstepperExplicit< n, nState >::getConvergedProgress( Marmot::Math::Vector6d&       stress,
+  void AdaptiveSubstepperExplicit< n, nState >::getConvergedProgress( Marmot::Math::Vector6d& stress,
                                                                       IntegrationStateVector& stateVars )
   {
     switch ( currentState ) {
@@ -273,12 +275,12 @@ namespace Marmot::ContinuumMechanics::Algorithms {
     // these cases should actually never happen, as the full step has already converged!
     case FirstHalfStep:
       Marmot::Utilities::Journal::warningToMSG( "UMAT: warning, 1th half sub step has not converged after already "
-                                   "converged full step" );
+                                                "converged full step" );
       return acceptSubstepWithFullStepOnly();
 
     case SecondHalfStep:
       Marmot::Utilities::Journal::warningToMSG( "UMAT: warning, 2th half sub step has not converged after already "
-                                   "converged full step" );
+                                                "converged full step" );
       return acceptSubstepWithFullStepOnly();
     }
 
@@ -305,7 +307,7 @@ namespace Marmot::ContinuumMechanics::Algorithms {
   }
 
   template < size_t n, size_t nState >
-  bool AdaptiveSubstepperExplicit< n, nState >::finishSubstep( const Marmot::Math::Vector6d&       resultStress,
+  bool AdaptiveSubstepperExplicit< n, nState >::finishSubstep( const Marmot::Math::Vector6d& resultStress,
                                                                const TangentSizedMatrix&     dXdY,
                                                                const TangentSizedMatrix&     dYdXOld,
                                                                const IntegrationStateVector& stateVars )
@@ -417,8 +419,8 @@ namespace Marmot::ContinuumMechanics::Algorithms {
   }
 
   template < size_t n, size_t nState >
-  void AdaptiveSubstepperExplicit< n, nState >::getResults( Marmot::Math::Vector6d&       stress,
-                                                            Marmot::Math::Matrix6d&               consistentTangentOperator,
+  void AdaptiveSubstepperExplicit< n, nState >::getResults( Marmot::Math::Vector6d& stress,
+                                                            Marmot::Math::Matrix6d& consistentTangentOperator,
                                                             IntegrationStateVector& stateVars )
   {
     stress                    = stressProgress;

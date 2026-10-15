@@ -51,12 +51,13 @@ void testAutodiffDerivative()
 
   // check if equal
   throwExceptionOnFailure( checkIfEqual< double >( autodiffValPL, corrValPL ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                        << " error in using autodiff on power law compliance function" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " error in using autodiff on power law compliance function" );
 
   throwExceptionOnFailure( checkIfEqual< double >( autodiffValLPL, corrValLPL ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                        << " error in using autodiff on log power law compliance function" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << " error in using autodiff on log power law compliance function" );
 }
 
 int main()

@@ -38,7 +38,6 @@
 
 namespace Marmot::Materials {
 
-
   /**
    * @class Marmot::Materials::FiniteStrainJ2Plasticity
    * @brief Finite-strain hyperelastic-plastic J2 model with isotropic hardening.
@@ -184,8 +183,8 @@ namespace Marmot::Materials {
       using namespace Eigen;
       using namespace Marmot::Math::Indices;
       if ( this->nMaterialProperties < 8 ) {
-        throw std::runtime_error(
-          std::string( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 8." ) );
+        throw std::runtime_error( std::string(
+          Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 8." ) );
       }
       return this->density;
     }
@@ -199,7 +198,9 @@ namespace Marmot::Materials {
      *  @return \f$\{\,f,\;\partial f/\partial \boldsymbol F^{\mathrm e},\;\partial f/\partial \beta_{\mathrm p}\,\}\f$.
      */
 
-    std::tuple< double, Math::FastorTensors::Tensor33d, double > yieldFunction( const Math::FastorTensors::Tensor33d& Fe, const double betaP ) const
+    std::tuple< double, Math::FastorTensors::Tensor33d, double > yieldFunction(
+      const Math::FastorTensors::Tensor33d& Fe,
+      const double                          betaP ) const
     {
       using namespace Fastor;
       using namespace Eigen;
@@ -209,11 +210,11 @@ namespace Marmot::Materials {
       Math::FastorTensors::Tensor3333d dMandel_dFe;
       std::tie( mandelStress, dMandel_dFe ) = computeMandelStress( Fe );
 
-      double      f;
+      double                           f;
       Math::FastorTensors::Tensor33d   df_dMandel;
       Math::FastorTensors::Tensor3333d d2f_dMandel_dMandel;
       Math::FastorTensors::Tensor33d   df_dFe;
-      double      df_dBetaP;
+      double                           df_dBetaP;
 
       std::tie( f, df_dMandel, d2f_dMandel_dMandel, df_dBetaP ) = yieldFunctionFromStress( mandelStress, betaP );
 
@@ -236,7 +237,7 @@ namespace Marmot::Materials {
       using namespace Eigen;
       using namespace Marmot::Math::Indices;
       const Math::FastorTensors::Tensor33t< T > dev = Marmot::Math::deviatoric( mandelStress );
-      T                    rho = sqrt( Fastor::inner( dev, dev ) );
+      T                                         rho = sqrt( Fastor::inner( dev, dev ) );
       if ( double( rho ) == 0.0 )
         rho += 1e-15;
       const T f = 1. / fy * ( rho - Marmot::Math::Constants::sqrt2_3 * betaP );
@@ -249,25 +250,28 @@ namespace Marmot::Materials {
      *  @return \f$\{\,f,\;\partial f/\partial \boldsymbol M,\;\partial^2 f/\partial \boldsymbol M\partial \boldsymbol
      * M,\;\partial f/\partial \beta_{\mathrm p}\,\}\f$.
      */
-    std::tuple< double, Math::FastorTensors::Tensor33d, Math::FastorTensors::Tensor3333d, double > yieldFunctionFromStress( const Math::FastorTensors::Tensor33d& mandelStress,
-                                                                                  const double     betaP ) const
+    std::tuple< double, Math::FastorTensors::Tensor33d, Math::FastorTensors::Tensor3333d, double > yieldFunctionFromStress(
+      const Math::FastorTensors::Tensor33d& mandelStress,
+      const double                          betaP ) const
     {
       using namespace Fastor;
       using namespace Eigen;
       using namespace Marmot::Math::Indices;
-      Math::FastorTensors::Tensor33d    dev = Marmot::Math::deviatoric( mandelStress );
-      const double rho = std::max( sqrt( Fastor::inner( dev, dev ) ), 1e-15 );
-      const double f   = 1. / fy * ( rho - Marmot::Math::Constants::sqrt2_3 * betaP );
+      Math::FastorTensors::Tensor33d dev = Marmot::Math::deviatoric( mandelStress );
+      const double                   rho = std::max( sqrt( Fastor::inner( dev, dev ) ), 1e-15 );
+      const double                   f   = 1. / fy * ( rho - Marmot::Math::Constants::sqrt2_3 * betaP );
 
       Math::FastorTensors::Tensor33d dRho_dMandel = 1. / rho * dev;
 
-      Math::FastorTensors::Tensor3333d d2Rho_dMandel_dMandel = -1.0 / std::pow( rho, 3 ) * outer( dev, dev ) +
-                                          1. / rho *
-                                            ( einsum< ik, jl, to_ijkl >( Math::FastorTensors::Spatial3D::I, Math::FastorTensors::Spatial3D::I ) -
-                                              1. / 3 *
-                                                einsum< ij, IK, IL, to_ijKL >( Math::FastorTensors::Spatial3D::I,
-                                                                               Math::FastorTensors::Spatial3D::I,
-                                                                               Math::FastorTensors::Spatial3D::I ) );
+      Math::FastorTensors::Tensor3333d
+        d2Rho_dMandel_dMandel = -1.0 / std::pow( rho, 3 ) * outer( dev, dev ) +
+                                1. / rho *
+                                  ( einsum< ik, jl, to_ijkl >( Math::FastorTensors::Spatial3D::I,
+                                                               Math::FastorTensors::Spatial3D::I ) -
+                                    1. / 3 *
+                                      einsum< ij, IK, IL, to_ijKL >( Math::FastorTensors::Spatial3D::I,
+                                                                     Math::FastorTensors::Spatial3D::I,
+                                                                     Math::FastorTensors::Spatial3D::I ) );
 
       Math::FastorTensors::Tensor3333d d2f_dMandel_dMandel = 1. / fy * d2Rho_dMandel_dMandel;
       Math::FastorTensors::Tensor33d   df_dMandel          = 1. / fy * dRho_dMandel;
@@ -283,21 +287,25 @@ namespace Marmot::Materials {
      */
 
     template < typename T >
-    std::tuple< T, Math::FastorTensors::Tensor33t< T >, T > yieldFunctionFromStressFirstOrderDerived( const Math::FastorTensors::Tensor33t< T >& mandelStress,
-                                                                                 const T               betaP ) const
+    std::tuple< T, Math::FastorTensors::Tensor33t< T >, T > yieldFunctionFromStressFirstOrderDerived(
+      const Math::FastorTensors::Tensor33t< T >& mandelStress,
+      const T                                    betaP ) const
     {
       using namespace Fastor;
       using namespace Eigen;
       using namespace Marmot::Math::Indices;
       Math::FastorTensors::Tensor33t< T > dev = Marmot::Math::deviatoric( mandelStress );
-      T              rho = sqrt( Fastor::inner( dev, dev ) );
+      T                                   rho = sqrt( Fastor::inner( dev, dev ) );
       if ( Math::makeReal( rho ) == 0.0 )
         rho += 1e-15;
       const T f = 1. / fy * ( rho - Marmot::Math::Constants::sqrt2_3 * betaP );
 
-      const Math::FastorTensors::Tensor33t< T > dRho_dMandel = Marmot::Math::multiplyFastorTensorWithScalar( dev, 1. / rho );
+      const Math::FastorTensors::Tensor33t< T > dRho_dMandel = Marmot::Math::multiplyFastorTensorWithScalar( dev,
+                                                                                                             1. / rho );
 
-      const Math::FastorTensors::Tensor33t< T > df_dMandel = Marmot::Math::multiplyFastorTensorWithScalar( dRho_dMandel, T( 1. / fy ) );
+      const Math::FastorTensors::Tensor33t< T > df_dMandel = Marmot::Math::multiplyFastorTensorWithScalar( dRho_dMandel,
+                                                                                                           T( 1. /
+                                                                                                              fy ) );
 
       return { f, df_dMandel, T( -Marmot::Math::Constants::sqrt2_3 / fy ) };
     }
@@ -313,7 +321,7 @@ namespace Marmot::Materials {
       using namespace Fastor;
       using namespace Eigen;
       using namespace Marmot::Math::Indices;
-      double    f, df_dBetaP;
+      double                         f, df_dBetaP;
       Math::FastorTensors::Tensor33d df_dFe;
       std::tie( f, df_dFe, df_dBetaP ) = yieldFunction( Fe, betaP );
       if ( f > 0.0 )
@@ -327,7 +335,8 @@ namespace Marmot::Materials {
      *  @return \f$\{\,\boldsymbol M,\;\partial \boldsymbol M/\partial \boldsymbol F^{\mathrm e}\,\}\f$.
      */
 
-    std::tuple< Math::FastorTensors::Tensor33d, Math::FastorTensors::Tensor3333d > computeMandelStress( const Math::FastorTensors::Tensor33d& Fe ) const
+    std::tuple< Math::FastorTensors::Tensor33d, Math::FastorTensors::Tensor3333d > computeMandelStress(
+      const Math::FastorTensors::Tensor33d& Fe ) const
     {
       using namespace Fastor;
       using namespace Eigen;
@@ -335,20 +344,22 @@ namespace Marmot::Materials {
       using namespace Marmot::ContinuumMechanics;
       Math::FastorTensors::Tensor33d   Ce;
       Math::FastorTensors::Tensor3333d dCe_dFe;
-      std::tie( Ce, dCe_dFe ) = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::rightCauchyGreen( Fe );
+      std::tie( Ce, dCe_dFe ) = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::
+        rightCauchyGreen( Fe );
 
-      double      psi_;
+      double                           psi_;
       Math::FastorTensors::Tensor33d   dPsi_dCe;
       Math::FastorTensors::Tensor3333d d2Psi_dCedCe, dMandel_dCe;
 
-      std::tie( psi_, dPsi_dCe, d2Psi_dCedCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::SecondOrder::PenceGouPotentialB( Ce,
-                                                                                                                 K,
-                                                                                                                 G );
-      Math::FastorTensors::Tensor33d       PK2                      = 2.0 * dPsi_dCe;
-      const Math::FastorTensors::Tensor33d mandel                   = Ce % PK2;
+      std::tie( psi_, dPsi_dCe, d2Psi_dCedCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::
+        SecondOrder::PenceGouPotentialB( Ce, K, G );
+      Math::FastorTensors::Tensor33d       PK2    = 2.0 * dPsi_dCe;
+      const Math::FastorTensors::Tensor33d mandel = Ce % PK2;
       /* const Math::FastorTensors::Tensor33d mandel = einsum< Ii, iJ >( Ce, PK2 ); */
       dMandel_dCe = einsum< Ii, iJKL, to_IJKL >( Ce, 2. * d2Psi_dCedCe ) +
-                    einsum< IK, iL, iJ, to_IJKL >( Math::FastorTensors::Spatial3D::I, Math::FastorTensors::Spatial3D::I, PK2 );
+                    einsum< IK, iL, iJ, to_IJKL >( Math::FastorTensors::Spatial3D::I,
+                                                   Math::FastorTensors::Spatial3D::I,
+                                                   PK2 );
       Math::FastorTensors::Tensor3333d dMandel_dFe = einsum< IJKL, KLMN >( dMandel_dCe, dCe_dFe );
       return { mandel, dMandel_dFe };
     }
@@ -366,13 +377,15 @@ namespace Marmot::Materials {
       using namespace Eigen;
       using namespace Marmot::Math::Indices;
       using namespace Marmot::ContinuumMechanics;
-      Math::FastorTensors::Tensor33t< T > Ce = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( Fe );
+      Math::FastorTensors::Tensor33t< T >
+        Ce = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( Fe );
 
-      T              psi_;
+      T                                   psi_;
       Math::FastorTensors::Tensor33t< T > dPsi_dCe;
 
-      std::tie( psi_, dPsi_dCe )  = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( Ce, K, G );
-      Math::FastorTensors::Tensor33t< T >       PK2    = Marmot::Math::multiplyFastorTensorWithScalar( dPsi_dCe, T( 2.0 ) );
+      std::tie( psi_, dPsi_dCe ) = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
+        PenceGouPotentialB( Ce, K, G );
+      Math::FastorTensors::Tensor33t< T > PK2 = Marmot::Math::multiplyFastorTensorWithScalar( dPsi_dCe, T( 2.0 ) );
       const Math::FastorTensors::Tensor33t< T > mandel = Ce % PK2;
       return mandel;
     }
@@ -411,8 +424,8 @@ namespace Marmot::Materials {
 
     std::tuple< double, double > g( const Math::FastorTensors::Tensor33d& Fe_trial,
                                     const Math::FastorTensors::Tensor33d& df_dS,
-                                    double           dLambda,
-                                    double           betaP ) const
+                                    double                                dLambda,
+                                    double                                betaP ) const
     {
       using namespace Fastor;
       using namespace Eigen;
@@ -420,11 +433,12 @@ namespace Marmot::Materials {
       Math::FastorTensors::Tensor33d dFp, ddFp_ddLambda;
       std::tie( dFp, ddFp_ddLambda ) = computePlasticIncrement( df_dS, dLambda );
 
-      double    f, df_dBetaP;
+      double                         f, df_dBetaP;
       Math::FastorTensors::Tensor33d df_dFe;
 
       Math::FastorTensors::Tensor33d   dFpInv   = Fastor::inverse( dFp );
-      Math::FastorTensors::Tensor3333d dFe_ddFp = einsum< iI, iJKL >( Fe_trial, einsum< LI, JK, to_IJKL >( -dFpInv, dFpInv ) );
+      Math::FastorTensors::Tensor3333d dFe_ddFp = einsum< iI, iJKL >( Fe_trial,
+                                                                      einsum< LI, JK, to_IJKL >( -dFpInv, dFpInv ) );
 
       std::tie( f, df_dFe, df_dBetaP ) = yieldFunction( Math::FastorTensors::Tensor33d( Fe_trial % dFpInv ), betaP );
 
@@ -440,7 +454,8 @@ namespace Marmot::Materials {
      *  @return \f$\partial f/\partial \boldsymbol S\f$.
      */
     template < typename T >
-    Math::FastorTensors::Tensor33t< T > computeReturnMappingDirection( Math::FastorTensors::Tensor33t< T > Fe, T betaP ) const
+    Math::FastorTensors::Tensor33t< T > computeReturnMappingDirection( Math::FastorTensors::Tensor33t< T > Fe,
+                                                                       T                                   betaP ) const
     {
       using namespace Fastor;
       using namespace Eigen;
@@ -449,7 +464,7 @@ namespace Marmot::Materials {
       Math::FastorTensors::Tensor33d   mandelStressTrial;
       Math::FastorTensors::Tensor3333d dMandel_dFe;
       std::tie( mandelStressTrial, dMandel_dFe ) = computeMandelStress( Fe );
-      double    f, df_dBetaP;
+      double                         f, df_dBetaP;
       Math::FastorTensors::Tensor33d df_dS;
       std::tie( f, df_dS, df_dBetaP ) = yieldFunctionFromStress( mandelStressTrial, betaP );
 
@@ -464,7 +479,9 @@ namespace Marmot::Materials {
      * S:\partial f/\partial\boldsymbol S\,\}\f$.
      */
     template < typename T >
-    std::tuple< Math::FastorTensors::Tensor33d, Math::FastorTensors::Tensor33d > computePlasticIncrement( Math::FastorTensors::Tensor33t< T > df_dS, T dLambda ) const
+    std::tuple< Math::FastorTensors::Tensor33d, Math::FastorTensors::Tensor33d > computePlasticIncrement(
+      Math::FastorTensors::Tensor33t< T > df_dS,
+      T                                   dLambda ) const
     {
       using namespace Fastor;
       using namespace Eigen;
@@ -494,9 +511,9 @@ namespace Marmot::Materials {
      */
 
     template < typename T >
-    Marmot::Math::VectorXt< T > computeResidualVector( const Marmot::Math::VectorXt< T >& X,
-                                         const Math::FastorTensors::Tensor33d&     FeTrial,
-                                         const double         alphaPTrial ) const
+    Marmot::Math::VectorXt< T > computeResidualVector( const Marmot::Math::VectorXt< T >&    X,
+                                                       const Math::FastorTensors::Tensor33d& FeTrial,
+                                                       const double                          alphaPTrial ) const
     {
       using namespace Fastor;
       using namespace Eigen;
@@ -504,7 +521,7 @@ namespace Marmot::Materials {
 
       const int idxA = 9;
       const int idxF = 10;
-      using mV9t = Eigen::Map< Eigen::Matrix< T, 9, 1 > >;
+      using mV9t     = Eigen::Map< Eigen::Matrix< T, 9, 1 > >;
       Marmot::Math::VectorXt< T > R( 11 );
       // initialize residual
       /* R.segment< 9 >( 0 ) = -mV9t( Marmot::Math::fastorTensorFromDoubleTensor< T >( FeTrial
@@ -521,15 +538,18 @@ namespace Marmot::Materials {
       // compute mandel stress
       Math::FastorTensors::Tensor33t< T > mandelStress = computeMandelStressOnly( Fe );
 
-      T              f, df_dBetaP;
+      T                                   f, df_dBetaP;
       Math::FastorTensors::Tensor33t< T > df_dMandel;
       std::tie( f, df_dMandel, df_dBetaP ) = yieldFunctionFromStressFirstOrderDerived( mandelStress, betaP );
 
-      const Math::FastorTensors::Tensor33t< T > dGp = Marmot::Math::multiplyFastorTensorWithScalar( df_dMandel, dLambda );
-      const Math::FastorTensors::Tensor33t< T > dFp = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::exponentialMap( dGp );
+      const Math::FastorTensors::Tensor33t< T > dGp = Marmot::Math::multiplyFastorTensorWithScalar( df_dMandel,
+                                                                                                    dLambda );
+      const Math::FastorTensors::Tensor33t< T >
+        dFp = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::exponentialMap( dGp );
 
-      Marmot::Math::VectorXt< T > aux = mV9t( Math::FastorTensors::Tensor33t< T >( einsum< iJ, JK >( Fe, dFp ) ).data() ) -
-                          mV9t( Marmot::Math::fastorTensorFromDoubleTensor< T >( FeTrial ).data() );
+      Marmot::Math::VectorXt< T > aux = mV9t(
+                                          Math::FastorTensors::Tensor33t< T >( einsum< iJ, JK >( Fe, dFp ) ).data() ) -
+                                        mV9t( Marmot::Math::fastorTensorFromDoubleTensor< T >( FeTrial ).data() );
       R( 0 )    = aux( 0 );
       R( 1 )    = aux( 1 );
       R( 2 )    = aux( 2 );
@@ -554,9 +574,10 @@ namespace Marmot::Materials {
      *  @return \f$\{\,\boldsymbol R,\;\partial\boldsymbol R/\partial\boldsymbol X\,\}\f$.
      */
 
-    std::tuple< Eigen::VectorXd, Eigen::MatrixXd > computeResidualVectorAndTangent( const Eigen::VectorXd& X,
-                                                                                    const Math::FastorTensors::Tensor33d&       FeTrial,
-                                                                                    const double alphaPTrial ) const
+    std::tuple< Eigen::VectorXd, Eigen::MatrixXd > computeResidualVectorAndTangent(
+      const Eigen::VectorXd&                X,
+      const Math::FastorTensors::Tensor33d& FeTrial,
+      const double                          alphaPTrial ) const
     {
       using namespace Fastor;
       using namespace Eigen;
@@ -564,8 +585,8 @@ namespace Marmot::Materials {
 
       const int idxA = 9;
       const int idxF = 10;
-      using mV9d = Eigen::Map< Eigen::Matrix< double, 9, 1 > >;
-      using mM9d = Eigen::Map< Eigen::Matrix< double, 9, 9 > >;
+      using mV9d     = Eigen::Map< Eigen::Matrix< double, 9, 1 > >;
+      using mM9d     = Eigen::Map< Eigen::Matrix< double, 9, 9 > >;
       VectorXd R( 11 );
       MatrixXd dR_dX( 11, 11 );
       dR_dX.setZero();
@@ -587,7 +608,7 @@ namespace Marmot::Materials {
       Math::FastorTensors::Tensor3333d dMandel_dFe, d2f_dMandel_dMandel;
       std::tie( mandelStress, dMandel_dFe ) = computeMandelStress( Fe );
 
-      double    f, df_dBetaP;
+      double                         f, df_dBetaP;
       Math::FastorTensors::Tensor33d df_dMandel;
       std::tie( f, df_dMandel, d2f_dMandel_dMandel, df_dBetaP ) = yieldFunctionFromStress( mandelStress, betaP );
 
@@ -597,7 +618,7 @@ namespace Marmot::Materials {
       std::tie( dFp, ddFp_ddGp ) = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrder::
         exponentialMap( dGp );
 
-      Math::FastorTensors::Tensor3333d ddGp_dFe      = dLambda * einsum< ijmn, mnkL >( d2f_dMandel_dMandel, dMandel_dFe );
+      Math::FastorTensors::Tensor3333d ddGp_dFe = dLambda * einsum< ijmn, mnkL >( d2f_dMandel_dMandel, dMandel_dFe );
       Math::FastorTensors::Tensor33d   ddFp_ddLambda = einsum< IJKL, KL >( ddFp_ddGp, df_dMandel );
 
       Math::FastorTensors::Tensor3333d ddFp_dFe = einsum< iImn, mnkL >( ddFp_ddGp, ddGp_dFe );
@@ -606,7 +627,10 @@ namespace Marmot::Materials {
       /*                            einsum< iI, ik, JL, to_IJkL >( dFp,
        * Math::FastorTensors::Spatial3D::I, Math::FastorTensors::Spatial3D::I ); */
       Math::FastorTensors::Tensor3333d dFeTrial_dFe = einsum< iI, IJKL >( Fe, ddFp_dFe ) +
-                                 einsum< IK, JL, to_IJKL >( Math::FastorTensors::Spatial3D::I, transpose( Math::FastorTensors::Spatial3D::I % dFp ) );
+                                                      einsum< IK, JL, to_IJKL >( Math::FastorTensors::Spatial3D::I,
+                                                                                 transpose(
+                                                                                   Math::FastorTensors::Spatial3D::I %
+                                                                                   dFp ) );
 
       /* std::cout << "ddFeTrial_dFe: " << dFeTrial_dFe << std::endl; */
 
@@ -617,9 +641,9 @@ namespace Marmot::Materials {
 
       /* Math::FastorTensors::Tensor33d df_dFe                 = einsum< IJ, IJKL >( df_dMandel,
        * dMandel_dFe ); */
-      Math::FastorTensors::Tensor33d df_dFe                 = einsum< IJ, IJKL >( df_dMandel, dMandel_dFe );
-      std::tie( f, df_dFe, df_dBetaP ) = yieldFunction( Fe, betaP );
-      df_dFe                           = einsum< IJ, IJKL >( df_dMandel, dMandel_dFe );
+      Math::FastorTensors::Tensor33d df_dFe = einsum< IJ, IJKL >( df_dMandel, dMandel_dFe );
+      std::tie( f, df_dFe, df_dBetaP )      = yieldFunction( Fe, betaP );
+      df_dFe                                = einsum< IJ, IJKL >( df_dMandel, dMandel_dFe );
 
       /* R.segment< 9 >( 0 ) += mV9d( Math::FastorTensors::Tensor33d( einsum< iI, iJ >( dFp, Fe )
        * ).data() ); */

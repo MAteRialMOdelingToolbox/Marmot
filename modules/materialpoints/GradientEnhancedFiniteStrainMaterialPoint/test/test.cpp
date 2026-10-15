@@ -44,7 +44,7 @@ namespace {
   template < int nDim >
   struct Setup {
     std::unique_ptr< Marmot::Discretizations::MaterialPoints::MaterialPoint > mp;
-    std::vector< double >                  stateVars;
+    std::vector< double >                                                     stateVars;
 
     Setup()
     {
@@ -52,8 +52,9 @@ namespace {
                                          : "GradientEnhancedFiniteStrain/3D";
       const double      x[3] = { 0.1, 0.2, 0.3 };
       mp.reset( Marmot::Registry::MaterialPointFactory::createMaterialPoint( name, 1, x, nDim, 0.5 ) );
-      mp->assignMaterial(
-        Marmot::Discretizations::MaterialSection( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE", matProps.data(), matProps.size() ) );
+      mp->assignMaterial( Marmot::Discretizations::MaterialSection( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
+                                                                    matProps.data(),
+                                                                    matProps.size() ) );
       stateVars.assign( mp->getNumberOfRequiredStateVars(), 0.0 );
       mp->assignStateVars( stateVars.data(), stateVars.size() );
       mp->initializeYourself();

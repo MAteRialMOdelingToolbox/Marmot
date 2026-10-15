@@ -6,21 +6,21 @@
 using namespace Eigen;
 using namespace autodiff;
 
-void Marmot::Materials::MaterialHypoElasticAD::computeStress( state3D&                state,
-                                                 Marmot::Math::Matrix6d&       dStressDDStrain,
-                                                 const Marmot::Math::Vector6d& dStrain,
-                                                 const timeInfo&         timeInfo
+void Marmot::Materials::MaterialHypoElasticAD::computeStress( state3D&                      state,
+                                                              Marmot::Math::Matrix6d&       dStressDDStrain,
+                                                              const Marmot::Math::Vector6d& dStrain,
+                                                              const timeInfo&               timeInfo
 
 ) const
 {
 
   using namespace Marmot;
-  Marmot::Math::mVector6d       S( state.stress.data() );
-  const Marmot::Math::Vector6d  dEps = Map< const Marmot::Math::Vector6d >( dStrain.data() );
-  Map< VectorXd > stateVars( state.stateVars, this->getNumberOfRequiredStateVars() );
+  Marmot::Math::mVector6d      S( state.stress.data() );
+  const Marmot::Math::Vector6d dEps = Map< const Marmot::Math::Vector6d >( dStrain.data() );
+  Map< VectorXd >              stateVars( state.stateVars, this->getNumberOfRequiredStateVars() );
 
   // remember old state
-  const VectorXd stateVarsOld = stateVars;
+  const VectorXd               stateVarsOld = stateVars;
   const Marmot::Math::Vector6d SOld         = S;
 
   Marmot::Math::mMatrix6d C( dStressDDStrain.data() );

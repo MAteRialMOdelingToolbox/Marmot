@@ -90,5 +90,5 @@ surface strains, followed by the state variables of the interface material (padd
 Implementation
 --------------
 
-.. doxygenclass:: Marmot::Elements::InterfaceFiniteElement
+.. doxygenclass:: Marmot::Discretizations::Elements::InterfaceFiniteElement
    :allow-dot-graphs:

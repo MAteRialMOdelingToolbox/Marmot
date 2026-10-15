@@ -102,8 +102,8 @@ namespace Marmot::Testing {
   }
 
   bool spinTurbokreisel( Marmot::Materials::MaterialPointSolverHypoElastic& solver,
-                         const double                                           stressTol,
-                         const double                                           stiffnessTol )
+                         const double                                       stressTol,
+                         const double                                       stiffnessTol )
   {
     using namespace Eigen;
     using namespace ContinuumMechanics::VoigtNotation;
@@ -130,9 +130,10 @@ namespace Marmot::Testing {
     // solveStep()'s internal loop run zero times, recording no history entry for it.
     // Guard against history.back() on an empty history in that (or any other) case.
     if ( history.empty() )
-      throw std::runtime_error( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                             << ": solver.solve() produced no history entries (check for "
-                                                "zero-duration steps, i.e. timeStart == timeEnd)" );
+      throw std::runtime_error( Marmot::Utilities::MakeString()
+                                << __PRETTY_FUNCTION__
+                                << ": solver.solve() produced no history entries (check for "
+                                   "zero-duration steps, i.e. timeStart == timeEnd)" );
     const Marmot::Math::Vector6d refStress( history.back().stress );
     const Marmot::Math::Matrix6d refStiffness( history.back().dStressdStrain );
 

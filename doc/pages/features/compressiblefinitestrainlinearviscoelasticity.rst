@@ -23,7 +23,7 @@ The material parameters are provided as a flat vector with the following layout:
        ``2`` = MooneyRivlin, ``3`` = PenceGouNeoHooke (variant B)
    * - 1
      - onlyShearCreep
-     - Flag: ``1`` restricts viscoelastic creep to the deviatoric (shear) part only,
+     - Flag: ``1`` restricts viscoelastic creep to the Marmot::Math::deviatoric (shear) part only,
        ``0`` applies creep to the full stress
    * - 2 … 2+n\ :sub:`e`\ −1
      - elastic properties

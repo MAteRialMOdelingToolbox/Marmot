@@ -16,23 +16,23 @@ void testStrainToVoigt()
 {
   Eigen::Matrix< double, 3, 3 > strain;
   strain << 1, 4, 5, 4, 2, 6, 5, 6, 3;
-  Marmot::Math::Vector6d   strainVoigtGold = { 1, 2, 3, 4 * 2, 5 * 2, 6 * 2 };
-  const auto strainVoigt     = Marmot::ContinuumMechanics::VoigtNotation::strainToVoigt( strain );
+  Marmot::Math::Vector6d strainVoigtGold = { 1, 2, 3, 4 * 2, 5 * 2, 6 * 2 };
+  const auto             strainVoigt     = Marmot::ContinuumMechanics::VoigtNotation::strainToVoigt( strain );
   throwExceptionOnFailure( checkIfEqual< double >( strainVoigt, strainVoigtGold ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void testVoigtToPlaneVoigt()
 {
-  Marmot::Math::Vector6d   strainVoigt = { 1, 2, 3, 4, 5, 6 };
-  const auto planeVoigt  = Marmot::ContinuumMechanics::VoigtNotation::voigtToPlaneVoigt( strainVoigt );
+  Marmot::Math::Vector6d strainVoigt = { 1, 2, 3, 4, 5, 6 };
+  const auto             planeVoigt  = Marmot::ContinuumMechanics::VoigtNotation::voigtToPlaneVoigt( strainVoigt );
   throwExceptionOnFailure( checkIfEqual< double >( planeVoigt, Marmot::Math::Vector3d( 1, 2, 4 ) ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void testPrincipalStrains()
 {
-  Marmot::Math::Vector6d   strainVoigt      = { 1, 1, 1, 0, 0, 0 };
+  Marmot::Math::Vector6d strainVoigt = { 1, 1, 1, 0, 0, 0 };
   const auto principalStrains = Marmot::ContinuumMechanics::VoigtNotation::Invariants::principalStrains( strainVoigt );
   throwExceptionOnFailure( checkIfEqual< double >( principalStrains, Marmot::Math::Vector3d( 1, 1, 1 ) ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
@@ -40,8 +40,8 @@ void testPrincipalStrains()
 
 void testPrincipalStresses()
 {
-  Marmot::Math::Vector6d   stressVoigt       = { 1, 1, 1, 0, 0, 0 };
-  const auto principalStresses = Marmot::ContinuumMechanics::VoigtNotation::Invariants::principalStresses(
+  Marmot::Math::Vector6d stressVoigt       = { 1, 1, 1, 0, 0, 0 };
+  const auto             principalStresses = Marmot::ContinuumMechanics::VoigtNotation::Invariants::principalStresses(
     stressVoigt );
   throwExceptionOnFailure( checkIfEqual< double >( principalStresses, Marmot::Math::Vector3d( 1, 1, 1 ) ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
@@ -49,8 +49,8 @@ void testPrincipalStresses()
 
 void testSortedPrincipalStrains()
 {
-  Marmot::Math::Vector6d   strainVoigt      = { 1, 3, 2, 0, 0, 0 };
-  const auto principalStrains = Marmot::ContinuumMechanics::VoigtNotation::Invariants::sortedPrincipalStrains(
+  Marmot::Math::Vector6d strainVoigt = { 1, 3, 2, 0, 0, 0 };
+  const auto principalStrains        = Marmot::ContinuumMechanics::VoigtNotation::Invariants::sortedPrincipalStrains(
     strainVoigt );
   throwExceptionOnFailure( checkIfEqual< double >( principalStrains, Marmot::Math::Vector3d( 3, 2, 1 ) ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
@@ -110,28 +110,30 @@ void testVonMisesEquivalentStrain()
 void testI1()
 {
   const Marmot::Math::Vector6d stress = { 1, 2, 3, 0, 0, 0 };
-  const auto     I1     = Marmot::ContinuumMechanics::VoigtNotation::Invariants::I1( stress );
+  const auto                   I1     = Marmot::ContinuumMechanics::VoigtNotation::Invariants::I1( stress );
   throwExceptionOnFailure( checkIfEqual( I1, 6 ), Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void testI2()
 {
   const Marmot::Math::Vector6d stress = { 1, 2, 3, 4, 5, 6 };
-  const auto     I2     = Marmot::ContinuumMechanics::VoigtNotation::Invariants::I2( stress );
-  throwExceptionOnFailure( checkIfEqual( I2, -66 ), Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
+  const auto                   I2     = Marmot::ContinuumMechanics::VoigtNotation::Invariants::I2( stress );
+  throwExceptionOnFailure( checkIfEqual( I2, -66 ),
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void testI2Strain()
 {
   const Marmot::Math::Vector6d strain = { 1, 2, 3, 4, 5, 6 };
-  const auto     I2     = Marmot::ContinuumMechanics::VoigtNotation::Invariants::I2Strain( strain );
-  throwExceptionOnFailure( checkIfEqual( I2, -8.25 ), Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
+  const auto                   I2     = Marmot::ContinuumMechanics::VoigtNotation::Invariants::I2Strain( strain );
+  throwExceptionOnFailure( checkIfEqual( I2, -8.25 ),
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void testI3()
 {
   const Marmot::Math::Vector6d stress = { 1, 2, 3, 4, 5, 6 };
-  const auto     I3     = Marmot::ContinuumMechanics::VoigtNotation::Invariants::I3( stress );
+  const auto                   I3     = Marmot::ContinuumMechanics::VoigtNotation::Invariants::I3( stress );
   throwExceptionOnFailure( checkIfEqual( I3, ContinuumMechanics::VoigtNotation::voigtToStress( stress ).determinant() ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
@@ -139,7 +141,7 @@ void testI3()
 void testI3Strain()
 {
   const Marmot::Math::Vector6d strain = { 1, 2, 3, 4, 5, 6 };
-  const auto     I3     = Marmot::ContinuumMechanics::VoigtNotation::Invariants::I3Strain( strain );
+  const auto                   I3     = Marmot::ContinuumMechanics::VoigtNotation::Invariants::I3Strain( strain );
   throwExceptionOnFailure( checkIfEqual( I3, ContinuumMechanics::VoigtNotation::voigtToStrain( strain ).determinant() ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
@@ -147,7 +149,7 @@ void testI3Strain()
 void testJ2()
 {
   const Marmot::Math::Vector6d stress = { 1, 2, 3, 4, 5, 6 };
-  const auto     J2     = Marmot::ContinuumMechanics::VoigtNotation::Invariants::J2( stress );
+  const auto                   J2     = Marmot::ContinuumMechanics::VoigtNotation::Invariants::J2( stress );
   throwExceptionOnFailure( checkIfEqual( J2,
                                          1.0 / 3.0 *
                                            ( Marmot::ContinuumMechanics::VoigtNotation::Invariants::I1( stress ) *
@@ -160,7 +162,7 @@ void testJ2()
 void testJ3()
 {
   const Marmot::Math::Vector6d stress = { 1, 2, 3, 4, 5, 6 };
-  const auto     J3     = Marmot::ContinuumMechanics::VoigtNotation::Invariants::J3( stress );
+  const auto                   J3     = Marmot::ContinuumMechanics::VoigtNotation::Invariants::J3( stress );
   throwExceptionOnFailure( checkIfEqual( J3,
                                          2.0 / 27.0 *
                                              Marmot::ContinuumMechanics::VoigtNotation::Invariants::I1( stress ) *
@@ -177,7 +179,7 @@ void testJ3Strain()
 {
 
   const Marmot::Math::Vector6d strain = { 1, 2, 3, 4, 5, 6 };
-  const auto     J3     = Marmot::ContinuumMechanics::VoigtNotation::Invariants::J3Strain( strain );
+  const auto                   J3     = Marmot::ContinuumMechanics::VoigtNotation::Invariants::J3Strain( strain );
   throwExceptionOnFailure( checkIfEqual( J3,
                                          2.0 / 27.0 *
                                              Marmot::ContinuumMechanics::VoigtNotation::Invariants::I1( strain ) *
@@ -472,11 +474,14 @@ void testVoigtToStiffnessMatchesAnalyticIsotropicTensor()
 
   using namespace Marmot::Math::Indices;
   Marmot::Math::FastorTensors::Tensor3333d expectedStiffnessTensor = lambda * Fastor::outer( delta, delta ) +
-                                                               mu *
-                                                                 ( Fastor::einsum< ik, jl, to_ijkl >( delta, delta ) +
-                                                                   Fastor::einsum< il, jk, to_ijkl >( delta, delta ) );
+                                                                     mu *
+                                                                       ( Fastor::einsum< ik, jl, to_ijkl >( delta,
+                                                                                                            delta ) +
+                                                                         Fastor::einsum< il, jk, to_ijkl >( delta,
+                                                                                                            delta ) );
 
-  const Marmot::Math::Matrix6d voigtStiffness = Marmot::ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
+  const Marmot::Math::Matrix6d
+    voigtStiffness = Marmot::ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
 
   // voigtToStiffness defaults to a Fastor result, so this also exercises the Eigen-in/Fastor-out
   // (cross-library) conversion path.
@@ -526,7 +531,8 @@ void testVoigtToAxisymmetricVoigt()
 {
   using namespace Marmot::ContinuumMechanics::VoigtNotation;
   Marmot::Math::Vector6d voigt = { 1, 2, 3, 4, 5, 6 };
-  throwExceptionOnFailure( checkIfEqual< double >( voigtToAxisymmetricVoigt( voigt ), Marmot::Math::Vector4d( 1, 2, 3, 4 ) ),
+  throwExceptionOnFailure( checkIfEqual< double >( voigtToAxisymmetricVoigt( voigt ),
+                                                   Marmot::Math::Vector4d( 1, 2, 3, 4 ) ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
@@ -601,23 +607,24 @@ void testTransformationMatrixStressVoigtMatchesRotateVoigtStress()
   // transformationMatrixStressVoigt(X) internally uses directionCosines(X) = X^T as the
   // rows-are-new-basis-vectors matrix, i.e. it is equivalent to rotateVoigtStress(X^T, ...).
   using namespace Marmot::ContinuumMechanics::VoigtNotation;
-  const Eigen::Matrix3d N      = makeTestRotation();
-  const Marmot::Math::Vector6d        stress = { 10, -20, 30, 4, -5, 6 };
+  const Eigen::Matrix3d        N      = makeTestRotation();
+  const Marmot::Math::Vector6d stress = { 10, -20, 30, 4, -5, 6 };
 
   const Marmot::Math::Matrix6d T           = Transformations::transformationMatrixStressVoigt( N );
   const Marmot::Math::Vector6d viaMatrix   = T * stress;
   const Marmot::Math::Vector6d viaRotation = Transformations::rotateVoigtStress( N.transpose(), stress );
 
   throwExceptionOnFailure( checkIfEqual< double >( viaMatrix, viaRotation, 1e-8 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                        << " transformationMatrixStressVoigt() does not match rotateVoigtStress()" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << " transformationMatrixStressVoigt() does not match rotateVoigtStress()" );
 }
 
 void testTransformationMatrixStrainVoigtMatchesDirectStrainRotation()
 {
   using namespace Marmot::ContinuumMechanics::VoigtNotation;
-  const Eigen::Matrix3d N      = makeTestRotation();
-  const Marmot::Math::Vector6d        strain = { 0.001, -0.002, 0.003, 0.0004, -0.0005, 0.0006 };
+  const Eigen::Matrix3d        N      = makeTestRotation();
+  const Marmot::Math::Vector6d strain = { 0.001, -0.002, 0.003, 0.0004, -0.0005, 0.0006 };
 
   const Marmot::Math::Matrix6d T         = Transformations::transformationMatrixStrainVoigt( N );
   const Marmot::Math::Vector6d viaMatrix = T * strain;
@@ -629,8 +636,9 @@ void testTransformationMatrixStrainVoigtMatchesDirectStrainRotation()
   const Marmot::Math::Vector6d viaDirect  = strainToVoigt( rotatedMat );
 
   throwExceptionOnFailure( checkIfEqual< double >( viaMatrix, viaDirect, 1e-8 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                        << " transformationMatrixStrainVoigt() does not match N^T*strain*N" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << " transformationMatrixStrainVoigt() does not match N^T*strain*N" );
 }
 
 void testProjectVoigtStressToPlaneMatchesCauchyTraction()
@@ -646,8 +654,8 @@ void testProjectVoigtStressToPlaneMatchesCauchyTraction()
   const Marmot::Math::Vector3d tractionViaProjection = Transformations::projectVoigtStressToPlane( n ) * stress;
 
   throwExceptionOnFailure( checkIfEqual< double >( tractionViaProjection, tractionDirect, 1e-10 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                        << " projectVoigtStressToPlane() does not reproduce t = sigma*n" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " projectVoigtStressToPlane() does not reproduce t = sigma*n" );
 }
 
 void testProjectVoigtStrainToPlaneMatchesDirectProduct()
@@ -671,47 +679,49 @@ void testProjectVoigtStrainToPlaneMatchesDirectProduct()
 void testRotateVoigtStressRoundTrip()
 {
   using namespace Marmot::ContinuumMechanics::VoigtNotation;
-  const Eigen::Matrix3d N      = makeTestRotation();
-  const Marmot::Math::Vector6d        stress = { 10, -20, 30, 4, -5, 6 };
+  const Eigen::Matrix3d        N      = makeTestRotation();
+  const Marmot::Math::Vector6d stress = { 10, -20, 30, 4, -5, 6 };
 
   const Marmot::Math::Vector6d rotated     = Transformations::rotateVoigtStress( N, stress );
   const Marmot::Math::Vector6d rotatedBack = Transformations::rotateVoigtStress( N.transpose(), rotated );
 
   throwExceptionOnFailure( checkIfEqual< double >( rotatedBack, stress, 1e-8 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                        << " rotating by N then N^-1 did not recover the original stress" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " rotating by N then N^-1 did not recover the original stress" );
 }
 
 void testTransformStressStrainLocalGlobalRoundTrip()
 {
   using namespace Marmot::ContinuumMechanics::VoigtNotation;
-  const Eigen::Matrix3d N      = makeTestRotation();
-  const Marmot::Math::Vector6d        stress = { 10, -20, 30, 4, -5, 6 };
-  const Marmot::Math::Vector6d        strain = { 0.001, -0.002, 0.003, 0.0004, -0.0005, 0.0006 };
+  const Eigen::Matrix3d        N      = makeTestRotation();
+  const Marmot::Math::Vector6d stress = { 10, -20, 30, 4, -5, 6 };
+  const Marmot::Math::Vector6d strain = { 0.001, -0.002, 0.003, 0.0004, -0.0005, 0.0006 };
 
   const Marmot::Math::Vector6d stressLocal     = Transformations::transformStressToLocalSystem( stress, N );
   const Marmot::Math::Vector6d stressRoundTrip = Transformations::transformStressToGlobalSystem( stressLocal, N );
   throwExceptionOnFailure( checkIfEqual< double >( stressRoundTrip, stress, 1e-8 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " stress local/global round-trip failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " stress local/global round-trip failed" );
 
   const Marmot::Math::Vector6d strainLocal     = Transformations::transformStrainToLocalSystem( strain, N );
   const Marmot::Math::Vector6d strainRoundTrip = Transformations::transformStrainToGlobalSystem( strainLocal, N );
   throwExceptionOnFailure( checkIfEqual< double >( strainRoundTrip, strain, 1e-8 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " strain local/global round-trip failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " strain local/global round-trip failed" );
 }
 
 void testTransformStiffnessToGlobalSystemPreservesIsotropicStiffness()
 {
   // An isotropic stiffness tensor must be invariant under any rotation.
   using namespace Marmot::ContinuumMechanics::VoigtNotation;
-  const Marmot::Math::Matrix6d        C = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( 20000., 0.25 );
-  const Eigen::Matrix3d N = makeTestRotation();
+  const Marmot::Math::Matrix6d C = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( 20000., 0.25 );
+  const Eigen::Matrix3d        N = makeTestRotation();
 
   const Marmot::Math::Matrix6d rotated = Transformations::transformStiffnessToGlobalSystem( C, N );
 
   throwExceptionOnFailure( checkIfEqual< double >( rotated, C, 1e-6 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                        << " an isotropic stiffness must be invariant under rotation" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " an isotropic stiffness must be invariant under rotation" );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -733,10 +743,11 @@ void testPrincipalValuesAndDerivativesGeneralCase()
   // path (order-independent, since e's own ordering is a formula artifact, not sorted).
   Marmot::Math::Vector3d eSorted = e;
   std::sort( eSorted.data(), eSorted.data() + 3 );
-  Marmot::Math::Vector3d trueSorted = Invariants::principalStresses( stress ); // SelfAdjointEigenSolver eigenvalues, ascending
+  Marmot::Math::Vector3d trueSorted = Invariants::principalStresses(
+    stress ); // SelfAdjointEigenSolver eigenvalues, ascending
   throwExceptionOnFailure( checkIfEqual< double >( eSorted, trueSorted, 1e-8 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                        << " principal values do not match Eigen::SelfAdjointEigenSolver" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " principal values do not match Eigen::SelfAdjointEigenSolver" );
 
   // Derivatives: central-difference the function's own value output w.r.t. each Voigt component.
   const double h = 1e-6;
@@ -752,7 +763,7 @@ void testPrincipalValuesAndDerivativesGeneralCase()
 
     throwExceptionOnFailure( checkIfEqual< double >( dE_dS.col( j ), dE_dSj_num, 1e-4 ),
                              Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " column " << j
-                                          << " does not match the numerical derivative" );
+                                                             << " does not match the numerical derivative" );
   }
 }
 
@@ -765,8 +776,8 @@ void testPrincipalValuesAndDerivativesDiagonalStress()
   const auto [e, dE_dS] = Invariants::principalValuesAndDerivatives( stress );
 
   throwExceptionOnFailure( checkIfEqual< double >( e, Marmot::Math::Vector3d( 1., 2., 3. ), 1e-14 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                        << " must return the diagonal entries directly, in order" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " must return the diagonal entries directly, in order" );
 
   Eigen::Matrix< double, 3, 6 > dE_dS_expected;
   // clang-format off
@@ -775,7 +786,8 @@ void testPrincipalValuesAndDerivativesDiagonalStress()
                      0, 0, 1, 0, 0, 0;
   // clang-format on
   throwExceptionOnFailure( checkIfEqual< double >( dE_dS, dE_dS_expected, 1e-14 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed for the diagonal-input derivative" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " failed for the diagonal-input derivative" );
 }
 
 void testPrincipalValuesAndDerivativesTriaxialRGreaterEqualOne()
@@ -793,7 +805,8 @@ void testPrincipalValuesAndDerivativesTriaxialRGreaterEqualOne()
   Marmot::Math::Vector3d eSorted = e;
   std::sort( eSorted.data(), eSorted.data() + 3 );
   throwExceptionOnFailure( checkIfEqual< double >( eSorted, Marmot::Math::Vector3d( 1., 1., 3. ), 1e-8 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " principal values are wrong at the r>=1 boundary" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " principal values are wrong at the r>=1 boundary" );
 }
 
 void testPrincipalValuesAndDerivativesTriaxialNearRMinusOne()
@@ -814,8 +827,8 @@ void testPrincipalValuesAndDerivativesTriaxialNearRMinusOne()
   Marmot::Math::Vector3d eSorted = e;
   std::sort( eSorted.data(), eSorted.data() + 3 );
   throwExceptionOnFailure( checkIfEqual< double >( eSorted, Marmot::Math::Vector3d( 1., 3., 3. ), 1e-8 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                        << " principal values are wrong near the r<=-1 boundary" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " principal values are wrong near the r<=-1 boundary" );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -832,14 +845,18 @@ void testDThetaDStressIsFiniteAtLodeAngleBoundary()
   const Marmot::Math::Vector6d stressThetaZero = { 2., 1., 2., 0., 1., 0. };
 
   throwExceptionOnFailure( ContinuumMechanics::HaighWestergaard::haighWestergaard( stressThetaZero ).theta == 0.0,
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test stress does not have theta == 0" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " test stress does not have theta == 0" );
 
   throwExceptionOnFailure( std::isfinite( Derivatives::dTheta_dJ2( stressThetaZero ) ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " dTheta_dJ2 not finite for theta == 0" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " dTheta_dJ2 not finite for theta == 0" );
   throwExceptionOnFailure( std::isfinite( Derivatives::dTheta_dJ3( stressThetaZero ) ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " dTheta_dJ3 not finite for theta == 0" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " dTheta_dJ3 not finite for theta == 0" );
   throwExceptionOnFailure( Derivatives::dTheta_dStress( stressThetaZero ).allFinite(),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " dTheta_dStress not finite for theta == 0" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " dTheta_dStress not finite for theta == 0" );
 }
 
 void testDThetaStrainDStrainIsFiniteAtLodeAngleBoundary()
@@ -850,14 +867,18 @@ void testDThetaStrainDStrainIsFiniteAtLodeAngleBoundary()
 
   throwExceptionOnFailure( ContinuumMechanics::HaighWestergaard::haighWestergaardFromStrain( strainThetaZero ).theta ==
                              0.0,
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test strain does not have theta == 0" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " test strain does not have theta == 0" );
 
   throwExceptionOnFailure( std::isfinite( Derivatives::dThetaStrain_dJ2Strain( strainThetaZero ) ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " dThetaStrain_dJ2Strain not finite for theta == 0" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " dThetaStrain_dJ2Strain not finite for theta == 0" );
   throwExceptionOnFailure( std::isfinite( Derivatives::dThetaStrain_dJ3Strain( strainThetaZero ) ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " dThetaStrain_dJ3Strain not finite for theta == 0" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " dThetaStrain_dJ3Strain not finite for theta == 0" );
   throwExceptionOnFailure( Derivatives::dThetaStrain_dStrain( strainThetaZero ).allFinite(),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " dThetaStrain_dStrain not finite for theta == 0" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " dThetaStrain_dStrain not finite for theta == 0" );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -894,8 +915,8 @@ void testDStressPrincipalsDStressMatchesIndependentCentralDifference()
 
   // Independently re-derive the same central-difference Jacobian with a different (fixed) step
   // size, rather than trusting the function's own choice of step.
-  const double h = 1e-5;
-  Marmot::Math::Matrix36     J_independent;
+  const double           h = 1e-5;
+  Marmot::Math::Matrix36 J_independent;
   for ( int i = 0; i < 6; i++ ) {
     Marmot::Math::Vector6d left = stress, right = stress;
     left( i ) -= h;
@@ -930,53 +951,56 @@ void testDEpDEAndDDeltaEpvDE()
 {
   using namespace Marmot::ContinuumMechanics::VoigtNotation;
   // CelInv * Cep == Identity: purely elastic increment, no plastic strain accrues.
-  throwExceptionOnFailure( checkIfEqual< double >( Derivatives::dEp_dE( Marmot::Math::Matrix6d::Identity(), Marmot::Math::Matrix6d::Identity() ),
+  throwExceptionOnFailure( checkIfEqual< double >( Derivatives::dEp_dE( Marmot::Math::Matrix6d::Identity(),
+                                                                        Marmot::Math::Matrix6d::Identity() ),
                                                    Marmot::Math::Matrix6d::Zero() ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " dEp_dE failed for CelInv*Cep == Identity" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " dEp_dE failed for CelInv*Cep == Identity" );
 
   // CelInv * Cep == Zero: fully plastic increment (Cep == 0), so dEp/dE == Identity.
-  throwExceptionOnFailure( checkIfEqual< double >( Derivatives::dEp_dE( Marmot::Math::Matrix6d::Identity(), Marmot::Math::Matrix6d::Zero() ),
+  throwExceptionOnFailure( checkIfEqual< double >( Derivatives::dEp_dE( Marmot::Math::Matrix6d::Identity(),
+                                                                        Marmot::Math::Matrix6d::Zero() ),
                                                    Marmot::Math::Matrix6d::Identity() ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " dEp_dE failed for Cep == 0" );
 
   // dDeltaEpv_dE must equal I^T * dEp_dE by definition.
   const Marmot::Math::Matrix6d CelInv = ( Marmot::Math::Matrix6d() << 1,
-                            0.1,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0.1,
-                            1,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            1,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            1,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            1,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            0,
-                            1 )
-                            .finished();
+                                          0.1,
+                                          0,
+                                          0,
+                                          0,
+                                          0,
+                                          0.1,
+                                          1,
+                                          0,
+                                          0,
+                                          0,
+                                          0,
+                                          0,
+                                          0,
+                                          1,
+                                          0,
+                                          0,
+                                          0,
+                                          0,
+                                          0,
+                                          0,
+                                          1,
+                                          0,
+                                          0,
+                                          0,
+                                          0,
+                                          0,
+                                          0,
+                                          1,
+                                          0,
+                                          0,
+                                          0,
+                                          0,
+                                          0,
+                                          0,
+                                          1 )
+                                          .finished();
   const Marmot::Math::Matrix6d Cep = 0.5 * Marmot::Math::Matrix6d::Identity();
   throwExceptionOnFailure( checkIfEqual< double >( Derivatives::dDeltaEpv_dE( CelInv, Cep ),
                                                    ( I.transpose() * Derivatives::dEp_dE( CelInv, Cep ) ).eval(),
@@ -992,15 +1016,17 @@ void testDSortedStrainPrincipalDStrainHydrostaticBranch()
   const Marmot::Math::Vector6d strain = { 0.01, 0.01, 0.01, 0, 0, 0 };
 
   throwExceptionOnFailure( ContinuumMechanics::HaighWestergaard::haighWestergaardFromStrain( strain ).rho == 0.0,
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test strain is not exactly hydrostatic" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " test strain is not exactly hydrostatic" );
 
   const Marmot::Math::Matrix36 dEpPrincdEp = Derivatives::dSortedStrainPrincipal_dStrain( strain );
 
   // dEpPrinc_dEprho contributes sqrt(2/3)*cos(...) (bounded) times the 1e16 sentinel row, so every
   // entry of the result must be very large in magnitude.
   throwExceptionOnFailure( dEpPrincdEp.cwiseAbs().minCoeff() > 1e10,
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                        << " expected very large entries at the hydrostatic sentinel branch" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << " expected very large entries at the hydrostatic sentinel branch" );
 }
 
 void testDDeltaEpvnegDEIsConsistentWithItsComponents()
@@ -1012,9 +1038,10 @@ void testDDeltaEpvnegDEIsConsistentWithItsComponents()
 
   const Marmot::Math::RowVector6d result = Derivatives::dDeltaEpvneg_dE( strain, CelInv, Cep );
 
-  const Marmot::Math::RowVector6d expected = Derivatives::dStrainVolumetricNegative_dStrainPrincipal( strain ).transpose() *
-                               Derivatives::dSortedStrainPrincipal_dStrain( strain ) *
-                               Derivatives::dEp_dE( CelInv, Cep );
+  const Marmot::Math::RowVector6d expected = Derivatives::dStrainVolumetricNegative_dStrainPrincipal( strain )
+                                               .transpose() *
+                                             Derivatives::dSortedStrainPrincipal_dStrain( strain ) *
+                                             Derivatives::dEp_dE( CelInv, Cep );
 
   throwExceptionOnFailure( checkIfEqual< double >( result, expected, 1e-12 ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );

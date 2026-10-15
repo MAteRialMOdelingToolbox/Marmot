@@ -22,7 +22,7 @@ Document public classes and functions using `@brief`, `@param[in/out]`, `@return
  * @param[in] dStrain Linearized strain increment \f$\Delta\boldsymbol{\varepsilon}\f$.
  * @param[in] timeInfo Current time and time increment.
  */
-void computeStress( state3D& state, Matrix6d& dStress_dStrain, const Vector6d& dStrain, const timeInfo& timeInfo ) const;
+void computeStress( state3D& state, Marmot::Math::Matrix6d& dStress_dStrain, const Marmot::Math::Vector6d& dStrain, const timeInfo& timeInfo ) const;
 ```
 
 ---

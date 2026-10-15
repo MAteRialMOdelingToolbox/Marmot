@@ -59,7 +59,7 @@ void testGetElementShapeByMetricThrowsForInvalidCombinations()
 void testDynamicNBMatchesTemplatedNBForQuad4()
 {
   Marmot::Discretizations::Elements::GeometryElement< 2, 4 > geo;
-  const auto                    N = geo.N( Eigen::Vector2d( 0.2, 0.3 ) ); // NSized = Matrix<double,1,4>
+  const auto N = geo.N( Eigen::Vector2d( 0.2, 0.3 ) ); // NSized = Matrix<double,1,4>
 
   const auto templatedResult = Marmot::Discretizations::Elements::NB< 2, 4 >( N );
   const auto dynamicResult   = Marmot::Discretizations::Elements::NB( Eigen::VectorXd( N.transpose() ), 2 );

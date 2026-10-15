@@ -24,7 +24,7 @@ void testMarmotLocalization()
   Marmot::Math::Vector6d stress;
   Marmot::Math::Matrix6d dStress_dStrain;
   Marmot::Math::Vector6d dStrain;
-  const double     dT = 1;
+  const double           dT = 1;
 
   // initialize stress on shear meridian close to yield surface
   stress << 115.4, -115.4, 0., 0., 0., 0.;
@@ -77,8 +77,8 @@ void testLocalizationChecker()
 
   // A singular (zero-determinant) acoustic tensor: localization detected.
   Marmot::Math::Matrix3d singular = Marmot::Math::Matrix3d::Zero();
-  singular( 0, 0 )          = 1000.;
-  singular( 1, 1 )          = 1000.;
+  singular( 0, 0 )                = 1000.;
+  singular( 1, 1 )                = 1000.;
   // row/col 2 left as zero -> determinant exactly 0
   throwExceptionOnFailure( localizationChecker( singular ) == true,
                            "localizationChecker() must return true for a singular acoustic tensor in " +

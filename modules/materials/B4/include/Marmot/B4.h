@@ -159,10 +159,10 @@ namespace Marmot::Materials {
 
     double getDensity( const double* stateVars ) const override;
 
-    void computeStress( state3D&                state,
+    void computeStress( state3D&                      state,
                         Marmot::Math::Matrix6d&       dStressDDStrain,
                         const Marmot::Math::Vector6d& dStrain,
-                        const timeInfo&         timeInfo ) const override;
+                        const timeInfo&               timeInfo ) const override;
 
   private:
     /// \brief material parameters for Solidification Theory

@@ -39,20 +39,21 @@ static std::vector< double > getElasticPenceGouNeoHookeProps()
 }
 
 // Helper to create a single-step deformation solver
-static Marmot::Materials::MaterialPointSolverFiniteStrain makeSolver( const std::string& matName, std::vector< double >& matProps )
+static Marmot::Materials::MaterialPointSolverFiniteStrain makeSolver( const std::string&     matName,
+                                                                      std::vector< double >& matProps )
 {
   auto solveropts = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   return Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
-                                                matProps.data(),
-                                                static_cast< int >( matProps.size() ),
-                                                solveropts );
+                                                             matProps.data(),
+                                                             static_cast< int >( matProps.size() ),
+                                                             solveropts );
 }
 
 // Apply a single displacement-controlled step
 static Marmot::Materials::MaterialPointSolverFiniteStrain::Step makeStep( const Tensor33d& gradUIncrement,
-                                                             double           timeStart,
-                                                             double           timeEnd,
-                                                             double           dT )
+                                                                          double           timeStart,
+                                                                          double           timeEnd,
+                                                                          double           dT )
 {
   Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget        = gradUIncrement;
@@ -297,7 +298,8 @@ void testUndeformedResponsePenceGouNeoHooke()
 }
 
 // Test I-9: Triaxial stretch for PenceGouNeoHooke matches an independently computed reference (PK2 = 2*dPsi/dC via
-// Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB, converted to Kirchhoff stress)
+// Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB, converted to
+// Kirchhoff stress)
 void testTriaxialResponsePenceGouNeoHookeMatchesAnalytical()
 {
   const std::string matName  = "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY";
@@ -318,7 +320,8 @@ void testTriaxialResponsePenceGouNeoHookeMatchesAnalytical()
   Tensor33d    F = gradU + Spatial3D::I;
   Tensor33d    C = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::rightCauchyGreen( F );
 
-  auto [psi, dPsi_dC]    = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( C, K, G );
+  auto [psi, dPsi_dC] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::FirstOrder::
+    PenceGouPotentialB( C, K, G );
   Tensor33d PK2          = 2. * dPsi_dC;
   Tensor33d stressTarget = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::KirchhoffStressFromPK2( PK2, F );
 

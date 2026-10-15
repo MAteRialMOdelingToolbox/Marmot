@@ -31,21 +31,21 @@ namespace {
   };
 
   std::unique_ptr< Marmot::Materials::MaterialHypoElastic > createBulkMaterial( const std::string& materialName,
-                                                                   const double*      properties,
-                                                                   int                nProperties )
+                                                                                const double*      properties,
+                                                                                int                nProperties )
   {
     return std::unique_ptr< Marmot::Materials::MaterialHypoElastic >(
       Marmot::Registry::MaterialHypoElasticFactory::createMaterial( materialName, properties, nProperties, 1 ) );
   }
 
   void computeInterfaceStress( Marmot::Materials::InterfaceMaterialHypoElastic& interfaceMaterial,
-                               InterfaceResponse&                  response,
-                               double*                             stateVars,
-                               const double*                       dU,
-                               const double*                       dSurfaceStrain,
-                               const double*                       normal,
-                               double                              timeOld,
-                               double                              dT )
+                               InterfaceResponse&                               response,
+                               double*                                          stateVars,
+                               const double*                                    dU,
+                               const double*                                    dSurfaceStrain,
+                               const double*                                    normal,
+                               double                                           timeOld,
+                               double                                           dT )
   {
     using Material = Marmot::Materials::InterfaceMaterialHypoElastic;
 
@@ -81,9 +81,9 @@ namespace {
     const double     normal[3] = { 0., 0., 1. };
 
     auto interfaceMaterial = std::make_unique< Marmot::Materials::InterfaceMaterialHypoElastic >( materialName,
-                                                                                     interfaceProperties,
-                                                                                     nInterfaceProperties,
-                                                                                     1 );
+                                                                                                  interfaceProperties,
+                                                                                                  nInterfaceProperties,
+                                                                                                  1 );
     auto bulkMaterial      = createBulkMaterial( materialName, bulkProperties, nBulkProperties );
 
     Eigen::VectorXd interfaceStateVars( interfaceMaterial->getNumberOfRequiredStateVars() );
@@ -91,8 +91,8 @@ namespace {
     interfaceMaterial->initializeYourself( interfaceStateVars.data(), interfaceStateVars.size() );
     bulkMaterial->initializeYourself( bulkStateVars.data(), bulkStateVars.size() );
 
-    InterfaceResponse interfaceResponse;
-    Marmot::Math::Vector6d  bulkStress = Marmot::Math::Vector6d::Zero();
+    InterfaceResponse      interfaceResponse;
+    Marmot::Math::Vector6d bulkStress = Marmot::Math::Vector6d::Zero();
 
     struct Increment {
       double dT;
@@ -136,10 +136,10 @@ namespace {
                               increment.dT );
 
       Marmot::Math::Vector6d bulkStrainIncrement = Marmot::Math::Vector6d::Zero();
-      bulkStrainIncrement[3]               = 2. * increment.surfaceShear;
-      bulkStrainIncrement[5]               = increment.jumpY / h;
+      bulkStrainIncrement[3]                     = 2. * increment.surfaceShear;
+      bulkStrainIncrement[5]                     = increment.jumpY / h;
 
-      Marmot::Math::Matrix6d                   bulkTangent = Marmot::Math::Matrix6d::Zero();
+      Marmot::Math::Matrix6d                          bulkTangent = Marmot::Math::Matrix6d::Zero();
       Marmot::Materials::MaterialHypoElastic::state3D bulkState{ bulkStress, 0.0, 0.0, bulkStateVars.data() };
       bulkMaterial->computeStress( bulkState,
                                    bulkTangent,
@@ -210,10 +210,8 @@ namespace {
     const double bulkProperties[8]      = { 1e8, 0.3, 2e7, 0.25, 6., 1e-4, 1., 2400. };
     testGenericInterfaceAgainstBulkMaterial( "LINEARVISCOELASTICWIECHERT", interfaceProperties, 9, bulkProperties, 8 );
 
-    auto interfaceMaterial = std::make_unique< Marmot::Materials::InterfaceMaterialHypoElastic >( "LINEARVISCOELASTICWIECHERT",
-                                                                                     interfaceProperties,
-                                                                                     9,
-                                                                                     1 );
+    auto interfaceMaterial = std::make_unique<
+      Marmot::Materials::InterfaceMaterialHypoElastic >( "LINEARVISCOELASTICWIECHERT", interfaceProperties, 9, 1 );
     throwExceptionOnFailure( checkIfEqual( interfaceMaterial->getDensity(), interfaceProperties[8] ),
                              "Generic Wiechert interface density delegation failed." );
   }
@@ -244,10 +242,10 @@ namespace {
 
   void testStateViewExposesBaseMaterialStateVariables()
   {
-    const double                       properties[8] = { 2e5, 0.2, 0.01, 0.5, 0.1, 10., 0.0001, 1. };
+    const double                                    properties[8] = { 2e5, 0.2, 0.01, 0.5, 0.1, 10., 0.0001, 1. };
     Marmot::Materials::InterfaceMaterialHypoElastic material( "LINEARVISCOELASTICPOWERLAW", properties, 8, 1 );
 
-    Eigen::VectorXd stateVars = Eigen::VectorXd::Zero( material.getNumberOfRequiredStateVars() );
+    Eigen::VectorXd                    stateVars = Eigen::VectorXd::Zero( material.getNumberOfRequiredStateVars() );
     const Marmot::Utilities::StateView view      = material.getStateView( "baseMaterialStateVars", stateVars.data() );
 
     throwExceptionOnFailure( view.stateLocation == stateVars.data() && view.stateSize == stateVars.size() &&
@@ -258,8 +256,8 @@ namespace {
   void testUnitModulusOverloadMatchesStiffnessOverload()
   {
     // The (normal, nu) overload is the (normal, C) overload for the unit-modulus isotropic stiffness
-    using Marmot::Math::FastorTensors::Tensor3d;
     using Marmot::Materials::InterfaceMaterialHelperFunctions::calculateInterfaceMaterialParameters;
+    using Marmot::Math::FastorTensors::Tensor3d;
 
     const double normals[3][3] = { { 0., 0., 1. },
                                    { 1., 0., 0. },
@@ -272,9 +270,9 @@ namespace {
 
     for ( const auto& normalArray : normals ) {
       for ( const double nu : poisson ) {
-        const Tensor3d         normal( normalArray );
-        const Marmot::Math::Matrix6d stiffness = Marmot::ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( 1.0,
-                                                                                                               nu );
+        const Tensor3d normal( normalArray );
+        const Marmot::Math::Matrix6d
+          stiffness = Marmot::ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( 1.0, nu );
 
         const auto [Z1, Q1, H1, Y1] = calculateInterfaceMaterialParameters( normal, nu );
         const auto [Z2, Q2, H2, Y2] = calculateInterfaceMaterialParameters( normal, stiffness );

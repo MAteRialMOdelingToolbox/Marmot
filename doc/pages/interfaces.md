@@ -27,23 +27,23 @@ A singularity container recipe is [available](https://github.com/matthiasneuner/
 
 ## Create your custom interface
 
-To create your custom interface to Marmot, you can leverage the `MarmotLibrary::MarmotMaterialHypoElasticFactory` and `MarmotLibrary::MarmotElementFactory` factories to create
+To create your custom interface to Marmot, you can leverage the `Marmot::Registry::MaterialHypoElasticFactory` and `Marmot::Registry::ElementFactory` factories to create
 instances of registered material models and finite elements.
 Marmot provides two main base classes for materials:
 
-- `MarmotMaterialHypoElastic` — for small-strain materials formulated in rate form (hypoelastic constitutive relations).
-- `MarmotMaterialFiniteStrain` — for large-strain materials formulated in terms of the deformation gradient.
+- `Marmot::Materials::MaterialHypoElastic` — for small-strain materials formulated in rate form (hypoelastic constitutive relations).
+- `Marmot::Materials::MaterialFiniteStrain` — for large-strain materials formulated in terms of the deformation gradient.
 
-Finite elements are derived from the general parent class `MarmotElement`.
+Finite elements are derived from the general parent class `Marmot::Discretizations::Elements::Element`.
 
 For instance, the following procedure may be employed to create an instance of a `Marmot::Materials::LinearElastic` material model,
-which belongs to the class of `MarmotMaterialHypoElastic` materials, and compute the current stress state:
+which belongs to the class of `Marmot::Materials::MaterialHypoElastic` materials, and compute the current stress state:
 ```cpp
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 
 // Create the instance by material name
-auto material = std::unique_ptr<MarmotMaterialHypoElastic>(
-        MarmotLibrary::MarmotMaterialHypoElasticFactory::createMaterial(
+auto material = std::unique_ptr<Marmot::Materials::MaterialHypoElastic>(
+        Marmot::Registry::MaterialHypoElasticFactory::createMaterial(
             "LINEARELASTIC", materialProperties, nMaterialProperties, anArbitraryIdentificationCode ));
 
 // assign a characteristic length parameter (specific to hypoelastic materials)
@@ -53,21 +53,21 @@ material->setCharacteristicElementLength( theCharacteristicElementLength );
 const int             nStateVars = material->getNumberOfRequiredStateVars();
 std::vector< double > stateVars( nStateVars, 0.0 );
 
-MarmotMaterialHypoElastic::state3D state = MarmotMaterialHypoElastic::state3D()
+Marmot::Materials::MaterialHypoElastic::state3D state = Marmot::Materials::MaterialHypoElastic::state3D()
 state.stateVars           = stateVars.data();
 
 // compute stresses
-Marmot::Matrix6d                          dStress_dStrain;
-const Marmot::Vector6d                    dStrain  = Marmot::Vector6d::Zero(); // strain increment
+Marmot::Math::Matrix6d                          dStress_dStrain;
+const Marmot::Math::Vector6d                    dStrain  = Marmot::Math::Vector6d::Zero(); // strain increment
 const double                              time     = 0.0;                      // current time
 const double                              dTime    = 0.01;                     // time increment
-const MarmotMaterialHypoElastic::timeInfo timeInfo = { time, dTime };
+const Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo = { time, dTime };
 material->computeStress( state, dStress_dStrain, dStrain, timeInfo );
 ```
 
 ## Registering a material or finite element
 
-Materials are registered using the `MarmotMaterialHypoElasticFactory::registerMaterial` interface.
+Materials are registered using the `Marmot::Registry::MaterialHypoElasticFactory::registerMaterial` interface.
 The function takes a unique name (a string chosen by the user) and the concrete material type as a template parameter.
 
 For instance, the `LinearElastic` material is registered as
@@ -75,11 +75,11 @@ For instance, the `LinearElastic` material is registered as
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 
 const static bool LinearElasticIsRegistered =
-    MarmotLibrary::MarmotMaterialHypoElasticFactory::registerMaterial< Marmot::Materials::LinearElastic >(
+    Marmot::Registry::MaterialHypoElasticFactory::registerMaterial< Marmot::Materials::LinearElastic >(
         "LINEARELASTIC" );
 ```
 
-Finite elements are registered using the `MarmotElementFactory::registerElement` interface.
+Finite elements are registered using the `Marmot::Registry::ElementFactory::registerElement` interface.
 The function takes a unique name (a string chosen by the user) and a factory function.
 
 For instance, the 4-node plane strain displacement finite element "CPE4" is registered as
@@ -87,14 +87,14 @@ For instance, the 4-node plane strain displacement finite element "CPE4" is regi
 #include "Marmot/MarmotElementFactory.h"
 
 template < class T,
-           Marmot::FiniteElement::Quadrature::IntegrationTypes integrationType,
+           Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
            typename T::SectionType                             sectionType >
-MarmotLibrary::MarmotElementFactory::elementFactoryFunction makeFactoryFunction()
+Marmot::Registry::ElementFactory::elementFactoryFunction makeFactoryFunction()
 {
-    return []( int elementID ) -> MarmotElement* { return new T( elementID, integrationType, sectionType ); };
+    return []( int elementID ) -> Marmot::Discretizations::Elements::Element* { return new T( elementID, integrationType, sectionType ); };
 }
 
-const static bool CPE4_isRegistered = MarmotLibrary::MarmotElementFactory::
+const static bool CPE4_isRegistered = Marmot::Registry::ElementFactory::
     registerElement( "CPE4",
                      makeFactoryFunction< DisplacementFiniteElement< 2, 4 >,
                                           FullIntegration,
@@ -110,21 +110,21 @@ Creating a specific element instance and computing the kernel is straightforward
 int elementNumber = 1;
 
 // create the instance by element name
-auto theElement = std::unique_ptr<MarmotElement>(
-        MarmotLibrary::MarmotElementFactory::createElement( "CPE4", elementNumber ) );
+auto theElement = std::unique_ptr<Marmot::Discretizations::Elements::Element>(
+        Marmot::Registry::ElementFactory::createElement( "CPE4", elementNumber ) );
 
 // assign nodal coordinates
 theElement->assignNodeCoordinates( coordinates );
 
 // assign properties (e.g., thickness)
-theElement->assignProperty( ElementProperties( propertiesElement, nPropertiesElement ) );
+theElement->assignProperty( Marmot::Discretizations::ElementProperties( propertiesElement, nPropertiesElement ) );
 
 // assign a material section by material name
-// MarmotElement takes care to create the required instances of MarmotMaterial
-theElement->assignProperty( MarmotMaterialSection( "LINEARELASTIC", propertiesMaterial, nPropertiesMaterial ) );
+// Marmot::Discretizations::Elements::Element takes care to create the required instances of MarmotMaterial
+theElement->assignProperty( Marmot::Discretizations::MaterialSection( "LINEARELASTIC", propertiesMaterial, nPropertiesMaterial ) );
 
 // assign state vars to the element
-// MarmotElement automatically assigns the state vars also to MarmotMaterial instances
+// Marmot::Discretizations::Elements::Element automatically assigns the state vars also to MarmotMaterial instances
 theElement->assignStateVars( stateVars, nStateVars );
 
 // initialization

@@ -161,7 +161,9 @@ namespace Marmot::Materials {
     const double* materialProperties,
     int           nMaterialProperties,
     int           materialNumber )
-    : Marmot::Materials::MaterialGradientEnhancedFiniteStrain( materialProperties, nMaterialProperties, materialNumber ),
+    : Marmot::Materials::MaterialGradientEnhancedFiniteStrain( materialProperties,
+                                                               nMaterialProperties,
+                                                               materialNumber ),
       K( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 0 ) ),
       G( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 1 ) ),
       c0( Marmot::Utilities::checkedMaterialProperty( materialProperties, nMaterialProperties, 2 ) ),
@@ -177,25 +179,30 @@ namespace Marmot::Materials {
       etaBar( outerConeParameters( dilatancyAngle ).first )
   {
     if ( K <= 0.0 || G <= 0.0 )
-      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": bulk and shear modulus must be positive" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": bulk and shear modulus must be positive" );
     if ( maxDamage < 0.0 || maxDamage >= 1.0 )
-      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": expected 0 <= maximum damage < 1" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": expected 0 <= maximum damage < 1" );
     if ( c0 <= 0.0 || softeningModulus <= 0.0 )
       throw std::invalid_argument( Marmot::Utilities::MakeString()
                                    << __PRETTY_FUNCTION__ << ": cohesion and softening modulus must be positive" );
     if ( dilatancyAngle > frictionAngle || frictionAngle < 0.0 || dilatancyAngle < 0.0 || frictionAngle >= 90.0 )
-      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                                << ": expected 0 <= dilatancy angle <= friction angle < 90 deg" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__
+                                   << ": expected 0 <= dilatancy angle <= friction angle < 90 deg" );
     // a softening cohesion would let the cone shrink to its apex; the softening is the damage's
     if ( H < 0.0 )
       throw std::invalid_argument( Marmot::Utilities::MakeString()
                                    << __PRETTY_FUNCTION__ << ": the hardening modulus must not be negative" );
     if ( nonLocalRadius <= 0.0 )
-      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": the nonlocal radius must be positive" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": the nonlocal radius must be positive" );
     // m > 1 is the over-nonlocal formulation
     if ( weightingParameter < 0.0 )
-      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                                << ": the nonlocal weighting parameter must not be negative" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__
+                                   << ": the nonlocal weighting parameter must not be negative" );
 
     stateLayout.add( "Fp", 9 );     // plastic deformation gradient
     stateLayout.add( "alphaP", 1 ); // plastic hardening variable
@@ -216,7 +223,8 @@ namespace Marmot::Materials {
   double GradientEnhancedFiniteStrainDruckerPrager::getDensity( const double* stateVars ) const
   {
     if ( nMaterialProperties <= nRequiredProperties )
-      throw std::runtime_error( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": density not provided (property 10)" );
+      throw std::runtime_error( Marmot::Utilities::MakeString()
+                                << __PRETTY_FUNCTION__ << ": density not provided (property 10)" );
     return materialProperties[nRequiredProperties];
   }
 
@@ -239,7 +247,8 @@ namespace Marmot::Materials {
 
     const double JeTrial = Fastor::determinant( FeTrial );
     if ( !( JeTrial > 0.0 ) || !std::isfinite( JeTrial ) )
-      throw Marmot::Utilities::StressUpdateFailed( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": non-positive elastic volume ratio" );
+      throw Marmot::Utilities::StressUpdateFailed( Marmot::Utilities::MakeString()
+                                                   << __PRETTY_FUNCTION__ << ": non-positive elastic volume ratio" );
 
     if ( yieldFunction( mandelStress( FeTrial ), alphaPOld ) <= 0.0 ) {
       ReturnMapping elastic;
@@ -291,8 +300,9 @@ namespace Marmot::Materials {
       return coneNearVertex;
 
     // e.g. a tension beyond the apex without dilatancy, or an iterate of the global scheme far off
-    throw Marmot::Utilities::StressUpdateFailed( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": no admissible return, neither to the cone "
-                                           << "nor to the apex" );
+    throw Marmot::Utilities::StressUpdateFailed(
+      Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": no admissible return, neither to the cone "
+                                      << "nor to the apex" );
   }
 
   bool GradientEnhancedFiniteStrainDruckerPrager::principalReturn( const Tensor33d& FeTrial,
@@ -304,7 +314,7 @@ namespace Marmot::Materials {
     using namespace Eigen;
 
     // principal directions and elastic log strains of the trial state, in the reference frame of Ce
-    const Tensor33d                          CeTrial = Fastor::transpose( FeTrial ) % FeTrial;
+    const Tensor33d                                        CeTrial = Fastor::transpose( FeTrial ) % FeTrial;
     const SelfAdjointEigenSolver< Marmot::Math::Matrix3d > eig(
       Eigen::Map< const Eigen::Matrix< double, 3, 3, Eigen::RowMajor > >( CeTrial.data() ) );
     if ( eig.info() != Success || !( eig.eigenvalues().minCoeff() > 0.0 ) )
@@ -322,9 +332,10 @@ namespace Marmot::Materials {
     Tensor33d FeTrialPrincipal( 0.0 );
     for ( int a = 0; a < 3; a++ )
       FeTrialPrincipal( a, a ) = std::exp( epsTrial( a ) );
-    const Tensor33d MTrial     = mandelStress( FeTrialPrincipal );
-    const double    qTrial     = std::sqrt( 0.5 * Fastor::inner( Marmot::Math::deviatoric( MTrial ), Marmot::Math::deviatoric( MTrial ) ) );
-    const double    dLambdaLin = std::max( 0.0,
+    const Tensor33d MTrial = mandelStress( FeTrialPrincipal );
+    const double    qTrial = std::sqrt(
+      0.5 * Fastor::inner( Marmot::Math::deviatoric( MTrial ), Marmot::Math::deviatoric( MTrial ) ) );
+    const double dLambdaLin = std::max( 0.0,
                                         yieldFunction( MTrial, alphaPOld ) / ( G + K * eta * etaBar + xi * xi * H ) );
 
     VectorXd X( 4 );
@@ -346,8 +357,9 @@ namespace Marmot::Materials {
     rho     = X( 0 );
     dLambda = X( 3 );
 
-    const Marmot::Math::Vector3d eps = rho * ( std::cos( X( 1 ) ) * b1 + std::sin( X( 1 ) ) * b2 ) + X( 2 ) / 3. * Marmot::Math::Vector3d::Ones();
-    Marmot::Math::Vector3d       stretchRatio;
+    const Marmot::Math::Vector3d eps = rho * ( std::cos( X( 1 ) ) * b1 + std::sin( X( 1 ) ) * b2 ) +
+                                       X( 2 ) / 3. * Marmot::Math::Vector3d::Ones();
+    Marmot::Math::Vector3d stretchRatio;
     for ( int a = 0; a < 3; a++ )
       stretchRatio( a ) = std::exp( eps( a ) - epsTrial( a ) );
     Tensor33d dFeRatio;
@@ -600,13 +612,15 @@ namespace Marmot::Materials {
 
     // effective Kirchhoff stress and its sensitivity to Fe, as in FiniteStrainJ2Plasticity
     using namespace ContinuumMechanics;
-    const auto [Ce, dCe_dFe]             = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::rightCauchyGreen( r.Fe );
-    const auto [psiEff, dPsi_dCe, d2Psi] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::SecondOrder::PenceGouPotentialB( Ce, K, G );
-    const Tensor33d PK2                  = 2. * dPsi_dCe;
-    const auto [tauEff, dTau_dPK2, dTau_dFePartial] = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::FirstOrder::KirchhoffStressFromPK2( PK2,
-                                                                                                                 r.Fe );
-    const Tensor3333d dPK2_dFe                      = einsum< ijKL, KLMN >( Tensor3333d( 2. * d2Psi ), dCe_dFe );
-    const Tensor3333d dTauEff_dFe                   = einsum< ijKL, KLMN >( dTau_dPK2, dPK2_dFe ) + dTau_dFePartial;
+    const auto [Ce, dCe_dFe] = Marmot::ContinuumMechanics::FiniteStrain::DeformationMeasures::FirstOrder::
+      rightCauchyGreen( r.Fe );
+    const auto [psiEff, dPsi_dCe, d2Psi] = Marmot::ContinuumMechanics::FiniteStrain::EnergyDensityFunctions::
+      SecondOrder::PenceGouPotentialB( Ce, K, G );
+    const Tensor33d PK2                             = 2. * dPsi_dCe;
+    const auto [tauEff, dTau_dPK2, dTau_dFePartial] = Marmot::ContinuumMechanics::FiniteStrain::StressMeasures::
+      FirstOrder::KirchhoffStressFromPK2( PK2, r.Fe );
+    const Tensor3333d dPK2_dFe    = einsum< ijKL, KLMN >( Tensor3333d( 2. * d2Psi ), dCe_dFe );
+    const Tensor3333d dTauEff_dFe = einsum< ijKL, KLMN >( dTau_dPK2, dPK2_dFe ) + dTau_dFePartial;
 
     response.tau                  = ( 1.0 - omega ) * tauEff;
     response.L                    = alphaD;

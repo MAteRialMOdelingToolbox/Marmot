@@ -69,7 +69,8 @@ namespace Marmot::Discretizations::Elements {
    * - zero inertia terms (current formulation).
    */
   template < int nDim, int nNodes >
-  class InterfaceFiniteElement : public Marmot::Discretizations::Elements::Element, public Marmot::Discretizations::Elements::GeometryInterfaceElement< nDim, nNodes > {
+  class InterfaceFiniteElement : public Marmot::Discretizations::Elements::Element,
+                                 public Marmot::Discretizations::Elements::GeometryInterfaceElement< nDim, nNodes > {
 
   public:
     /**
@@ -314,9 +315,9 @@ namespace Marmot::Discretizations::Elements {
      * @param[in] integrationType Quadrature rule type.
      * @param[in] sectionType Interface section type.
      */
-    InterfaceFiniteElement( int                                         elementID,
+    InterfaceFiniteElement( int                                                             elementID,
                             Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-                            SectionType                                 sectionType = SectionType::Interface );
+                            SectionType sectionType = SectionType::Interface );
 
     /**
      * @brief Return number of required state variables per element.
@@ -384,13 +385,13 @@ namespace Marmot::Discretizations::Elements {
      * @brief Distributed-load routine (currently not implemented).
      */
     void computeDistributedLoad( Marmot::Discretizations::Elements::Element::DistributedLoadTypes loadType,
-                                 double*                             P,
-                                 double*                             K,
-                                 const int                           elementFace,
-                                 const double*                       load,
-                                 const double*                       QTotal,
-                                 double                              time,
-                                 double                              dT );
+                                 double*                                                          P,
+                                 double*                                                          K,
+                                 const int                                                        elementFace,
+                                 const double*                                                    load,
+                                 const double*                                                    QTotal,
+                                 double                                                           time,
+                                 double                                                           dT );
 
     /**
      * @brief Body-force routine (currently not implemented).
@@ -465,15 +466,16 @@ namespace Marmot::Discretizations::Elements {
 
   template < int nDim, int nNodes >
   InterfaceFiniteElement< nDim, nNodes >::InterfaceFiniteElement(
-    int                                         elementID,
+    int                                                             elementID,
     Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-    SectionType                                 sectionType )
+    SectionType                                                     sectionType )
     : ParentGeometryElement(),
       elementProperties( Eigen::Map< const Eigen::VectorXd >( nullptr, 0 ) ),
       elLabel( elementID ),
       sectionType( sectionType )
   {
-    const auto qpInfos = Marmot::Discretizations::Elements::Quadrature::getGaussPointInfo( this->shape, integrationType );
+    const auto qpInfos = Marmot::Discretizations::Elements::Quadrature::getGaussPointInfo( this->shape,
+                                                                                           integrationType );
 
     for ( const auto& qpInfo : qpInfos ) {
       QuadraturePoint qp( qpInfo.xi, qpInfo.weight );
@@ -532,7 +534,8 @@ namespace Marmot::Discretizations::Elements {
   }
 
   template < int nDim, int nNodes >
-  void InterfaceFiniteElement< nDim, nNodes >::assignProperty( const Marmot::Discretizations::ElementProperties& elementPropertiesInfo )
+  void InterfaceFiniteElement< nDim, nNodes >::assignProperty(
+    const Marmot::Discretizations::ElementProperties& elementPropertiesInfo )
   {
     new ( &elementProperties ) Eigen::Map< const Eigen::VectorXd >( elementPropertiesInfo.elementProperties,
                                                                     elementPropertiesInfo.nElementProperties );
@@ -542,9 +545,9 @@ namespace Marmot::Discretizations::Elements {
   void InterfaceFiniteElement< nDim, nNodes >::assignProperty( const Marmot::Discretizations::MaterialSection& section )
   {
     material = std::make_unique< Marmot::Materials::InterfaceMaterialHypoElastic >( section.materialName,
-                                                                       section.materialProperties,
-                                                                       section.nMaterialProperties,
-                                                                       elLabel );
+                                                                                    section.materialProperties,
+                                                                                    section.nMaterialProperties,
+                                                                                    elLabel );
   }
 
   template < int nDim, int nNodes >
@@ -553,9 +556,9 @@ namespace Marmot::Discretizations::Elements {
                                                                int                nMaterialProperties )
   {
     material = std::make_unique< Marmot::Materials::InterfaceMaterialHypoElastic >( materialName,
-                                                                       materialProperties,
-                                                                       nMaterialProperties,
-                                                                       elLabel );
+                                                                                    materialProperties,
+                                                                                    nMaterialProperties,
+                                                                                    elLabel );
   }
 
   template < int nDim, int nNodes >
@@ -677,11 +680,12 @@ namespace Marmot::Discretizations::Elements {
         /*
          * Marmot::Materials::InterfaceMaterialHypoElastic is fixed to 3D Fastor tensor types, so a 2D element has
          * to embed its quadrature-point state into the 3D layout and pull the response back out.
-         * Marmot::Math::expandTo3D / Marmot::Math::reduceTo2D do exactly that, and both place the 2D block at indices [0,2),
-         * which is the layout the material's tensors expect.
+         * Marmot::Math::expandTo3D / Marmot::Math::reduceTo2D do exactly that, and both place the 2D block at indices
+         * [0,2), which is the layout the material's tensors expect.
          */
-        Fastor::Tensor< double, 3 >    force3d         = Marmot::Math::expandTo3D( Fastor::Tensor< double, 2 >( force.data() ) );
-        Fastor::Tensor< double, 3 >    normal3d        = Marmot::Math::expandTo3D( Fastor::Tensor< double, 2 >( qp.normal.data() ) );
+        Fastor::Tensor< double, 3 > force3d  = Marmot::Math::expandTo3D( Fastor::Tensor< double, 2 >( force.data() ) );
+        Fastor::Tensor< double, 3 > normal3d = Marmot::Math::expandTo3D(
+          Fastor::Tensor< double, 2 >( qp.normal.data() ) );
         Fastor::Tensor< double, 3, 3 > surfaceStress3d = Marmot::Math::expandTo3D(
           Fastor::Tensor< double, 2, 2 >( surface_stress.data() ) );
 
@@ -712,12 +716,19 @@ namespace Marmot::Discretizations::Elements {
 
         material->computeStress( materialState, materialTangents, materialDeformation, materialTimeIncrement );
 
-        const Fastor::Tensor< double, 2 >          force2d         = Marmot::Math::reduceTo2D< Marmot::Math::U >( materialState.force );
-        const Fastor::Tensor< double, 2, 2 >       surfaceStress2d = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >( materialState.surfaceStress );
-        const Fastor::Tensor< double, 2, 2 >       Q2d             = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >( materialTangents.Q_ij );
-        const Fastor::Tensor< double, 2, 2, 2 >    H2d             = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >( materialTangents.H_ijk );
-        const Fastor::Tensor< double, 2, 2, 2, 2 > Z2d = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >( materialTangents.Z_ijkl );
-        const Fastor::Tensor< double, 2, 2, 2, 2 > Y2d = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >( materialTangents.Y_ijkl );
+        const Fastor::Tensor< double, 2 > force2d = Marmot::Math::reduceTo2D< Marmot::Math::U >( materialState.force );
+        const Fastor::Tensor< double, 2, 2 >
+          surfaceStress2d = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >( materialState.surfaceStress );
+        const Fastor::Tensor< double, 2, 2 > Q2d = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >(
+          materialTangents.Q_ij );
+        const Fastor::Tensor< double, 2, 2, 2 >
+          H2d = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >( materialTangents.H_ijk );
+        const Fastor::Tensor< double, 2, 2, 2, 2 >
+          Z2d = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >(
+            materialTangents.Z_ijkl );
+        const Fastor::Tensor< double, 2, 2, 2, 2 >
+          Y2d = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >(
+            materialTangents.Y_ijkl );
 
         force          = Marmot::Math::mapEigenToFastor( force2d );
         surface_stress = Eigen::Map< const SurfaceStressSized >( surfaceStress2d.data() );
@@ -764,17 +775,19 @@ namespace Marmot::Discretizations::Elements {
   }
 
   template < int nDim, int nNodes >
-  void InterfaceFiniteElement< nDim, nNodes >::computeDistributedLoad( Marmot::Discretizations::Elements::Element::DistributedLoadTypes loadType,
-                                                                       double*                             P,
-                                                                       double*                             K,
-                                                                       const int                           elementFace,
-                                                                       const double*                       load,
-                                                                       const double*                       QTotal,
-                                                                       double                              time,
-                                                                       double                              dT )
+  void InterfaceFiniteElement< nDim, nNodes >::computeDistributedLoad(
+    Marmot::Discretizations::Elements::Element::DistributedLoadTypes loadType,
+    double*                                                          P,
+    double*                                                          K,
+    const int                                                        elementFace,
+    const double*                                                    load,
+    const double*                                                    QTotal,
+    double                                                           time,
+    double                                                           dT )
   {
-    throw std::invalid_argument(
-      Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": distributed loads are not implemented for InterfaceFiniteElement." );
+    throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__
+                                 << ": distributed loads are not implemented for InterfaceFiniteElement." );
   }
 
   template < int nDim, int nNodes >
@@ -785,8 +798,9 @@ namespace Marmot::Discretizations::Elements {
                                                                  double        time,
                                                                  double        dT )
   {
-    throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                              << ": body forces are not implemented for InterfaceFiniteElement." );
+    throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__
+                                 << ": body forces are not implemented for InterfaceFiniteElement." );
   }
 
   template < int nDim, int nNodes >

@@ -63,10 +63,10 @@ namespace Marmot::Materials {
       .E0 = SolidificationTheory::computeZerothElasticModul( minTauBasic, n, basicCreepComplianceApproximationOrder );
   }
 
-  void B4::computeStress( state3D&                state,
+  void B4::computeStress( state3D&                      state,
                           Marmot::Math::Matrix6d&       dStressDDStrain,
                           const Marmot::Math::Vector6d& dStrain,
-                          const timeInfo&         timeInfo ) const
+                          const timeInfo&               timeInfo ) const
 
   {
     Marmot::Math::mVector6d             nomStress( state.stress.data() );
@@ -124,7 +124,7 @@ namespace Marmot::Materials {
       dryingCreepComplianceApproximationOrder >( phiDrying, dryingCreepRetardationTimes );
 
     Marmot::Math::Vector6d dryingCreepStrainIncrement = Marmot::Math::Vector6d::Zero();
-    double   dryingCreepCompliance      = 0;
+    double                 dryingCreepCompliance      = 0;
 
     KelvinChain::evaluateKelvinChain( dTimeDays / dryingShrinkageHalfTime,
                                       dryingCreepElasticModuli,
@@ -141,20 +141,20 @@ namespace Marmot::Materials {
     // compute shrinkage strain increment
     Marmot::Math::Vector6d
       shrinkageStrainIncrement = B4Shrinkage::computeShrinkageStrainIncrement( tStartDays,
-                                                                                 dTimeDays,
-                                                                                 ultimateAutogenousShrinkageStrain,
-                                                                                 autogenousShrinkageHalfTime,
-                                                                                 alpha,
-                                                                                 rt,
-                                                                                 ultimateDryingShrinkageStrain,
-                                                                                 dryingShrinkageHalfTime,
-                                                                                 1. - hEnv * hEnv * hEnv,
-                                                                                 dryingStart );
+                                                                               dTimeDays,
+                                                                               ultimateAutogenousShrinkageStrain,
+                                                                               autogenousShrinkageHalfTime,
+                                                                               alpha,
+                                                                               rt,
+                                                                               ultimateDryingShrinkageStrain,
+                                                                               dryingShrinkageHalfTime,
+                                                                               1. - hEnv * hEnv * hEnv,
+                                                                               dryingStart );
 
-    C                    = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( 1. / effectiveCompliance, nu );
-    Marmot::Math::Vector6d deltaStress = C *
-                           ( dE - basicCreepStrainIncrement - dryingCreepStrainIncrement - shrinkageStrainIncrement );
-    nomStress = nomStress + deltaStress;
+    C = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( 1. / effectiveCompliance, nu );
+    Marmot::Math::Vector6d deltaStress = C * ( dE - basicCreepStrainIncrement - dryingCreepStrainIncrement -
+                                               shrinkageStrainIncrement );
+    nomStress                          = nomStress + deltaStress;
 
     KelvinChain::updateStateVarMatrix( dTimeDays / dryingShrinkageHalfTime,
                                        dryingCreepElasticModuli,
@@ -176,7 +176,8 @@ namespace Marmot::Materials {
   {
     if ( nMaterialProperties >= 23 )
       return materialProperties[22];
-    throw std::runtime_error( std::string( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": Density not specified for B4." ) );
+    throw std::runtime_error(
+      std::string( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": Density not specified for B4." ) );
   }
 
 } // namespace Marmot::Materials

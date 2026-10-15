@@ -50,7 +50,7 @@ namespace {
   // a grid of 5^nDim 2nd order B-spline kernels with spacing 1 around the particle
   template < int nDim >
   struct KernelGrid {
-    std::vector< std::array< double, 3 > >                                             centers;
+    std::vector< std::array< double, 3 > >                                                                  centers;
     std::vector< std::unique_ptr< Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed > > kernels;
     std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* >                                 pointers;
 
@@ -63,7 +63,9 @@ namespace {
             centers.push_back( { double( i ), double( j ), double( k ) } );
       for ( auto& c : centers ) {
         kernels.emplace_back(
-          std::make_unique< Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed >( c.data(), nDim, 1.6 ) );
+          std::make_unique< Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed >( c.data(),
+                                                                                                     nDim,
+                                                                                                     1.6 ) );
         pointers.push_back( kernels.back().get() );
       }
     }
@@ -71,24 +73,24 @@ namespace {
 
   template < int nDim >
   struct Setup {
-    KernelGrid< nDim >                           grid;
+    KernelGrid< nDim >                                                grid;
     Marmot::Discretizations::Meshfree::ReproducingKernelApproximation approximation{ nDim, 1 };
-    std::unique_ptr< Marmot::Discretizations::Meshfree::Particle >            particle;
-    std::vector< double >                        stateVars;
-    std::vector< int >                           assignedGridIndices;
-    double                                       volume;
+    std::unique_ptr< Marmot::Discretizations::Meshfree::Particle >    particle;
+    std::vector< double >                                             stateVars;
+    std::vector< int >                                                assignedGridIndices;
+    double                                                            volume;
 
     Setup( const std::string& name, const std::vector< double >& vertices, double volume_ ) : volume( volume_ )
     {
       particle.reset( Marmot::Registry::ParticleFactory::createParticle( name,
-                                                                            1,
-                                                                            vertices.data(),
-                                                                            vertices.size(),
-                                                                            volume,
-                                                                            "COMPRESSIBLENEOHOOKE",
-                                                                            matProps.data(),
-                                                                            matProps.size(),
-                                                                            approximation ) );
+                                                                         1,
+                                                                         vertices.data(),
+                                                                         vertices.size(),
+                                                                         volume,
+                                                                         "COMPRESSIBLENEOHOOKE",
+                                                                         matProps.data(),
+                                                                         matProps.size(),
+                                                                         approximation ) );
       stateVars.assign( particle->getNumberOfRequiredStateVars(), 0.0 );
       particle->assignStateVars( stateVars.data(), stateVars.size() );
       particle->initializeYourself();
@@ -292,8 +294,9 @@ namespace {
       const auto   numK        = numericalTangent( [&]( const Eigen::VectorXd& q ) { return s.trial( q ).first; }, dQ );
       const double err         = numK.error( K );
       throwExceptionOnFailure( err < tangentTolerance,
-                               Marmot::Utilities::MakeString() << name << ( afterStep ? ", second" : ", first" )
-                                            << " step: tangent inconsistent, relative error " << err );
+                               Marmot::Utilities::MakeString()
+                                 << name << ( afterStep ? ", second" : ", first" )
+                                 << " step: tangent inconsistent, relative error " << err );
 
       // translation invariance: the residuals of every direction sum to zero
       for ( int i = 0; i < nDim; i++ ) {
@@ -317,7 +320,8 @@ namespace {
       }
       const auto P = s.trial( dQ ).first;
       throwExceptionOnFailure( P.norm() < 1e-8,
-                               Marmot::Utilities::MakeString() << name << ": rigid rotation loads the particle, |P| = " << P.norm() );
+                               Marmot::Utilities::MakeString()
+                                 << name << ": rigid rotation loads the particle, |P| = " << P.norm() );
     }
 
     // body force per unit undeformed volume: by the partition of unity of the test functions, the nodal loads sum
@@ -336,7 +340,8 @@ namespace {
         for ( int A = 0; A < s.nDof() / nDim; A++ )
           sum += P[A * nDim + i];
         throwExceptionOnFailure( std::abs( sum + b[i] * V0 ) < 1e-12 * ( 1. + V0 ),
-                                 Marmot::Utilities::MakeString() << name << ": body force " << sum << " != -b V0 = " << -b[i] * V0 );
+                                 Marmot::Utilities::MakeString()
+                                   << name << ": body force " << sum << " != -b V0 = " << -b[i] * V0 );
       }
       throwExceptionOnFailure( K.norm() == 0.0, name + ": a dead body load has no tangent" );
     }
@@ -374,7 +379,8 @@ namespace {
       }
       if ( implemented )
         throwExceptionOnFailure( std::abs( m.sum() - nDim * matProps[2] * V ) < 1e-12 * ( 1. + V ),
-                                 Marmot::Utilities::MakeString() << name << ": lumped mass " << m.sum() << " != nDim rho V" );
+                                 Marmot::Utilities::MakeString()
+                                   << name << ": lumped mass " << m.sum() << " != nDim rho V" );
     }
 
     // pressure load tangent on the first face of particles that have faces
@@ -406,7 +412,9 @@ namespace {
       s.stateVars = backup;
       throwExceptionOnFailure( P0.norm() > 0, name + ": pressure must load the particle" );
       const double err = std::min( numK.error( K0 ), numK.error( -K0 ) );
-      throwExceptionOnFailure( err < 1e-6, Marmot::Utilities::MakeString() << name << ": pressure load tangent inconsistent, " << err );
+      throwExceptionOnFailure( err < 1e-6,
+                               Marmot::Utilities::MakeString()
+                                 << name << ": pressure load tangent inconsistent, " << err );
     }
   }
 
@@ -450,8 +458,9 @@ namespace {
       // the number of VCI constraints is the size of the complete basis in nDim dimensions
       s.setProperties( { { "VCI order", 1.0 } } );
       throwExceptionOnFailure( s.particle->vci_getNumberOfConstraints() == nDim + 1,
-                               Marmot::Utilities::MakeString() << name << ": " << s.particle->vci_getNumberOfConstraints()
-                                            << " linear VCI constraints in " << nDim << "D" );
+                               Marmot::Utilities::MakeString()
+                                 << name << ": " << s.particle->vci_getNumberOfConstraints()
+                                 << " linear VCI constraints in " << nDim << "D" );
 
       throwExceptionOnFailure( s.particle->getFields() == std::vector< std::string >{ "displacement" },
                                name + ": fields" );
@@ -472,7 +481,7 @@ namespace {
         const auto offset = s.particle->getStateView( "displacement", subdomain ).stateLocation - s.stateVars.data();
         throwExceptionOnFailure( offset % 8 == 0,
                                  Marmot::Utilities::MakeString() << name << ": the state of subdomain " << subdomain
-                                              << " starts at the unaligned offset " << offset );
+                                                                 << " starts at the unaligned offset " << offset );
       }
     }
 
@@ -574,7 +583,7 @@ namespace {
         if ( M[A] > 0 )
           throwExceptionOnFailure( R1.template segment< nDim >( A * nDim ).norm() < 1e-12,
                                    Marmot::Utilities::MakeString() << name << ": VCI residual after the correction, "
-                                                << R1.template segment< nDim >( A * nDim ).norm() );
+                                                                   << R1.template segment< nDim >( A * nDim ).norm() );
     }
     else {
       // a point particle contributes T n dA at its center to the boundary integral
@@ -626,8 +635,9 @@ namespace {
       s.particle->updatePhysicsExplicit( dQ.data(), 1.0, 1.0 );
       s.particle->computePhysicsKernelsExplicit( PExplicit.data() );
       throwExceptionOnFailure( ( P - PExplicit ).norm() < 1e-10 * P.norm(),
-                               Marmot::Utilities::MakeString() << name << ": explicit internal force differs from the implicit one, "
-                                            << ( P - PExplicit ).norm() / P.norm() );
+                               Marmot::Utilities::MakeString()
+                                 << name << ": explicit internal force differs from the implicit one, "
+                                 << ( P - PExplicit ).norm() / P.norm() );
     }
 
     // the weak-form correction on all faces balances the internal force of a homogeneous deformation (divergence
@@ -662,9 +672,10 @@ namespace {
         for ( int f = 1; f <= numberOfFaces( shape ); f++ )
           s.particle->computeDistributedLoad( cwf, f, nullptr, Pc.data(), Kc.data(), 1.0, 1.0 );
         throwExceptionOnFailure( ( P + Pc ).norm() < 1e-10 * P.norm(),
-                                 Marmot::Utilities::MakeString() << name << ( afterStep ? ", second step" : ", first step" )
-                                              << ": weak-form correction does not balance a homogeneous state, "
-                                              << ( P + Pc ).norm() / P.norm() );
+                                 Marmot::Utilities::MakeString()
+                                   << name << ( afterStep ? ", second step" : ", first step" )
+                                   << ": weak-form correction does not balance a homogeneous state, "
+                                   << ( P + Pc ).norm() / P.norm() );
 
         // a component mask (load 1 = x only) keeps exactly those rows of the full correction, residual and tangent
         {

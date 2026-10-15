@@ -83,9 +83,10 @@ namespace Marmot::Discretizations::Meshfree {
     };
 
   protected:
-    using LagrangeCellType = Marmot::Discretizations::Meshfree::LagrangeCell< nDim, nVertices >; ///< geometry of the smoothing domain
+    using LagrangeCellType = Marmot::Discretizations::Meshfree::LagrangeCell< nDim, nVertices >; ///< geometry of the
+                                                                                                 ///< smoothing domain
 
-    const SmoothingDomainUpdateType _smoothingVolumeUpdateType;     ///< update type of the smoothing domain
+    const SmoothingDomainUpdateType _smoothingVolumeUpdateType; ///< update type of the smoothing domain
 
     const Eigen::Matrix< double, nDim, nVertices > _vertexCoordinates_Undeformed; ///< undeformed vertex coordinates
 
@@ -154,15 +155,15 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] approximation             Meshfree approximation used for the shape functions.
      * @param[in] smoothingVolumeUpdateType Update type of the smoothing domain.
      */
-    GradientEnhancedFiniteStrainParticleSQCNI( int                                elementID,
-                                               const double*                      nodeCoordinates,
-                                               int                                nNodeCoordiantes,
-                                               double                             volume,
-                                               const std::string&                 materialName,
-                                               const double*                      materialProperties,
-                                               int                                sizeMaterialProperties,
+    GradientEnhancedFiniteStrainParticleSQCNI( int                elementID,
+                                               const double*      nodeCoordinates,
+                                               int                nNodeCoordiantes,
+                                               double             volume,
+                                               const std::string& materialName,
+                                               const double*      materialProperties,
+                                               int                sizeMaterialProperties,
                                                const Marmot::Discretizations::Meshfree::Approximation& approximation,
-                                               const SmoothingDomainUpdateType    smoothingVolumeUpdateType );
+                                               const SmoothingDomainUpdateType smoothingVolumeUpdateType );
 
     /**
      * @brief Assign the kernel functions and compute the smoothed shape function gradients.
@@ -405,15 +406,15 @@ namespace Marmot::Discretizations::Meshfree {
 
   template < int nDim, int nVertices >
   GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices >::GradientEnhancedFiniteStrainParticleSQCNI(
-    int                                                  elementID,
-    const double*                                        vertexCoordinates,
-    int                                                  nVertexCoordinates,
-    double                                               volume,
-    const std::string&                                   materialName,
-    const double*                                        materialProperties,
-    int                                                  sizeMaterialProperties,
+    int                                                     elementID,
+    const double*                                           vertexCoordinates,
+    int                                                     nVertexCoordinates,
+    double                                                  volume,
+    const std::string&                                      materialName,
+    const double*                                           materialProperties,
+    int                                                     sizeMaterialProperties,
     const Marmot::Discretizations::Meshfree::Approximation& approximation,
-    const SmoothingDomainUpdateType                      smoothingVolumeUpdateType )
+    const SmoothingDomainUpdateType                         smoothingVolumeUpdateType )
     : GradientEnhancedFiniteStrainParticle< nDim >( elementID,
                                                     getCenterFromVertices(
                                                       Eigen::Map< const Eigen::Matrix< double, nDim, nVertices > >(
@@ -604,7 +605,8 @@ namespace Marmot::Discretizations::Meshfree {
       break;
     }
     default: {
-      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": invalid DistributedLoad type specified" );
     }
     }
   }

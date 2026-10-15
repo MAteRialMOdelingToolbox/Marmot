@@ -4,8 +4,7 @@
 namespace {
   using namespace Marmot::Materials;
 
+  const static bool FiniteStrainIsotropicBiotViscoelasticityRegistered = Marmot::Registry::MaterialFiniteStrainFactory::
+    registerMaterial< FiniteStrainIsotropicBiotViscoelasticity >( "FINITESTRAINISOTROPICBIOTVISCOELASTICITY" );
 
-    const static bool FiniteStrainIsotropicBiotViscoelasticityRegistered = Marmot::Registry::MaterialFiniteStrainFactory::
-      registerMaterial< FiniteStrainIsotropicBiotViscoelasticity >( "FINITESTRAINISOTROPICBIOTVISCOELASTICITY" );
-
-  } // namespace
+} // namespace

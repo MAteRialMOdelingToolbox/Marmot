@@ -121,14 +121,14 @@ namespace {
   // one cell with 2^nDim material points, as the host (EdelweissMeshfree) drives it
   template < int nDim >
   struct Setup {
-    std::unique_ptr< Marmot::Discretizations::Cells::Cell >                         cell;
+    std::unique_ptr< Marmot::Discretizations::Cells::Cell >                                  cell;
     std::vector< std::unique_ptr< Marmot::Discretizations::MaterialPoints::MaterialPoint > > mps;
-    std::vector< std::vector< double > >                  stateVars;
-    Marmot::Discretizations::MaterialSection                                 section{ "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
-                                   matProps.data(),
-                                   (int)matProps.size() };
-    int                                                   nDof;
-    double                                                mpVolume;
+    std::vector< std::vector< double > >                                                     stateVars;
+    Marmot::Discretizations::MaterialSection section{ "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
+                                                      matProps.data(),
+                                                      (int)matProps.size() };
+    int                                      nDof;
+    double                                   mpVolume;
 
     Setup( const CellGeometry< nDim >& g )
     {
@@ -136,11 +136,11 @@ namespace {
         cell.reset( Marmot::Registry::CellFactory::createCell( g.name, 1, g.nodes.data(), g.nodes.size() ) );
       else
         cell.reset( Marmot::Registry::CellFactory::createBSplineCell( g.name,
-                                                                         1,
-                                                                         g.nodes.data(),
-                                                                         g.nodes.size(),
-                                                                         g.knots.data(),
-                                                                         g.knots.size() ) );
+                                                                      1,
+                                                                      g.nodes.data(),
+                                                                      g.nodes.size(),
+                                                                      g.knots.data(),
+                                                                      g.knots.size() ) );
       nDof     = cell->getNDofPerCell();
       mpVolume = ( g.upper - g.lower ).prod() / std::pow( 2, nDim );
 
@@ -151,12 +151,12 @@ namespace {
           x[d] = g.lower[d] + ( ( k >> d ) & 1 ? 0.75 : 0.25 ) * ( g.upper[d] - g.lower[d] );
         mps.emplace_back(
           Marmot::Registry::MaterialPointFactory::createMaterialPoint( nDim == 2
-                                                                            ? "GradientEnhancedFiniteStrain/PlaneStrain"
-                                                                            : "GradientEnhancedFiniteStrain/3D",
-                                                                          label++,
-                                                                          x.data(),
-                                                                          nDim,
-                                                                          mpVolume ) );
+                                                                         ? "GradientEnhancedFiniteStrain/PlaneStrain"
+                                                                         : "GradientEnhancedFiniteStrain/3D",
+                                                                       label++,
+                                                                       x.data(),
+                                                                       nDim,
+                                                                       mpVolume ) );
       }
 
       for ( auto& mp : mps ) {
@@ -355,13 +355,15 @@ namespace {
       const auto   numK = numericalTangent( [&]( const Eigen::VectorXd& q ) { return s.trial( q ).first; }, dQ, nU );
       const double err  = numK.error( K );
       throwExceptionOnFailure( err < 1e-7,
-                               Marmot::Utilities::MakeString() << g.name << ( afterStep ? ", second" : ", first" )
-                                            << " step: tangent inconsistent, relative error " << err );
+                               Marmot::Utilities::MakeString()
+                                 << g.name << ( afterStep ? ", second" : ", first" )
+                                 << " step: tangent inconsistent, relative error " << err );
       if ( afterStep ) {
         const double errUN = numK.error(
           K, [nU]( int a ) { return a < nU; }, true );
         throwExceptionOnFailure( errUN < 1e-6,
-                                 Marmot::Utilities::MakeString() << g.name << ": dr_U/dN inconsistent, relative error " << errUN );
+                                 Marmot::Utilities::MakeString()
+                                   << g.name << ": dr_U/dN inconsistent, relative error " << errUN );
       }
     }
 
@@ -455,10 +457,10 @@ void testUnknownNamesAreRejected()
   throwExceptionOnFailure( throws( [&]() {
                              std::unique_ptr< Marmot::Discretizations::MaterialPoints::MaterialPoint >(
                                Marmot::Registry::MaterialPointFactory::createMaterialPoint( "NoSuchPoint",
-                                                                                               1,
-                                                                                               x,
-                                                                                               2,
-                                                                                               1.0 ) );
+                                                                                            1,
+                                                                                            x,
+                                                                                            2,
+                                                                                            1.0 ) );
                            } ),
                            "unknown material point" );
 }

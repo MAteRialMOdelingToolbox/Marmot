@@ -144,7 +144,8 @@ void testConsistencyAndFlowRule()
 
     const double f = yieldFunction( res.tau, alphaP, c0, phi, H );
     throwExceptionOnFailure( std::abs( f ) < 1e-8 * c0,
-                             Marmot::Utilities::MakeString() << "the returned state is not on the yield surface, f = " << f << where );
+                             Marmot::Utilities::MakeString()
+                               << "the returned state is not on the yield surface, f = " << f << where );
 
     // exponential map: ln det Fp is the volumetric plastic log strain = etaBar dLambda = (etaBar / xi) alphaP
     const Tensor33d Fp( mat.getStateView( "Fp", const_cast< double* >( res.state.data() ) ).stateLocation );
@@ -153,7 +154,8 @@ void testConsistencyAndFlowRule()
     const double    xi        = Mat::outerConeParameters( phi ).second;
     const double    predicted = etaBar / xi * alphaP;
     throwExceptionOnFailure( std::abs( lnJp - predicted ) < 1e-10,
-                             Marmot::Utilities::MakeString() << "flow rule: ln det Fp = " << lnJp << ", expected " << predicted << where );
+                             Marmot::Utilities::MakeString()
+                               << "flow rule: ln det Fp = " << lnJp << ", expected " << predicted << where );
 
     // the local damage variable is the dilatant plastic strain: without dilatancy, L and dL/dF vanish together
     double normdL_dF = 0.0;
@@ -239,13 +241,14 @@ void checkTangents( const Mat&                   mat,
         for ( int j = 0; j < 3; j++ ) {
           const double num = ( rp.tau( i, j ) - rm.tau( i, j ) ) / ( 2 * h );
           throwExceptionOnFailure( std::abs( res.t.dTau_dF( i, j, k, l ) - num ) < tol( num, scaleTau ),
-                                   Marmot::Utilities::MakeString() << branch << ": dTau_dF(" << i << j << k << l
-                                                << ") = " << res.t.dTau_dF( i, j, k, l ) << " vs " << num << where );
+                                   Marmot::Utilities::MakeString()
+                                     << branch << ": dTau_dF(" << i << j << k << l
+                                     << ") = " << res.t.dTau_dF( i, j, k, l ) << " vs " << num << where );
         }
       const double numL = ( rp.L - rm.L ) / ( 2 * h );
       throwExceptionOnFailure( std::abs( res.t.dL_dF( k, l ) - numL ) < tol( numL, scaleL ),
-                               Marmot::Utilities::MakeString() << branch << ": dL_dF(" << k << l << ") = " << res.t.dL_dF( k, l ) << " vs "
-                                            << numL << where );
+                               Marmot::Utilities::MakeString() << branch << ": dL_dF(" << k << l << ") = "
+                                                               << res.t.dL_dF( k, l ) << " vs " << numL << where );
     }
 
   const double hN = 1e-7;
@@ -305,7 +308,8 @@ void testNearTheVertex()
   const Eigen::Matrix3d tau = toEigen( res.tau );
   const double          dev = ( tau - tau.trace() / 3.0 * Eigen::Matrix3d::Identity() ).norm();
   throwExceptionOnFailure( dev > 1e-2,
-                           Marmot::Utilities::MakeString() << "the state must stay on the cone, |dev tau| = " << dev << where );
+                           Marmot::Utilities::MakeString()
+                             << "the state must stay on the cone, |dev tau| = " << dev << where );
   throwExceptionOnFailure( std::abs( yieldFunction( res.tau, stateValue( mat, res.state, "alphaP" ), 5., 30., 0.0 ) ) <
                              1e-8,
                            "on the cone" + where );
@@ -334,8 +338,9 @@ void testLargeIncrement()
   throwExceptionOnFailure( std::abs( res.tau( 0, 0 ) + 66.70672101670 ) < 1e-8 &&
                              std::abs( res.tau( 1, 1 ) + 400.5796457121 ) < 1e-8 &&
                              std::abs( alphaP - 0.9634808934576 ) < 1e-11,
-                           Marmot::Utilities::MakeString() << "large increment: tau_xx " << res.tau( 0, 0 ) << ", tau_yy "
-                                        << res.tau( 1, 1 ) << ", alphaP " << alphaP << where );
+                           Marmot::Utilities::MakeString()
+                             << "large increment: tau_xx " << res.tau( 0, 0 ) << ", tau_yy " << res.tau( 1, 1 )
+                             << ", alphaP " << alphaP << where );
   throwExceptionOnFailure( std::abs( yieldFunction( res.tau, alphaP, 5., 30., 0.0 ) ) < 1e-8,
                            "a large increment must still return to the cone" + where );
 }
@@ -402,7 +407,7 @@ void testCumulativeDissipation()
 
 void testFactoryAndValidation()
 {
-  const auto                                                    props = properties( 5., 30., 10. );
+  const auto                                                                 props = properties( 5., 30., 10. );
   std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedFiniteStrain > mat(
     Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory::
       createMaterial( "GRADIENTENHANCEDFINITESTRAINDRUCKERPRAGER", props.data(), props.size(), 1 ) );
@@ -478,7 +483,8 @@ void testFailurePaths()
     catch ( const Marmot::Utilities::StressUpdateFailed& ) {
       threw = true;
     }
-    throwExceptionOnFailure( threw, "a return map without solution must raise Marmot::Utilities::StressUpdateFailed" + where );
+    throwExceptionOnFailure( threw,
+                             "a return map without solution must raise Marmot::Utilities::StressUpdateFailed" + where );
   }
 
   // near-apex tension with a small deviatoric part: the cone return would reverse the deviator, so the state must
@@ -584,7 +590,8 @@ void testConeWithAVanishingDeviator()
   const double    alphaP = stateValue( mat, res.state, "alphaP" );
   const Tensor33d dev    = Marmot::Math::deviatoric( res.tau );
   const double    q      = std::sqrt( 0.5 * inner( dev, dev ) );
-  throwExceptionOnFailure( q > 0.0 && q < 1e-3, Marmot::Utilities::MakeString() << "a cone solution near the vertex, q = " << q << where );
+  throwExceptionOnFailure( q > 0.0 && q < 1e-3,
+                           Marmot::Utilities::MakeString() << "a cone solution near the vertex, q = " << q << where );
   throwExceptionOnFailure( std::abs( yieldFunction( res.tau, alphaP, issue111Properties[2], 30., 0.0 ) ) < 1e-8,
                            "on the cone" + where );
   // the state is ~1e-7 (in strain) away from the vertex: the difference step must stay below that, and the central
@@ -636,7 +643,8 @@ void testApexReturnIsObjective()
 
 void testOnlyStressUpdateFailedEscapes()
 {
-  // large increments from plastic states: a failure must be a Marmot::Utilities::StressUpdateFailed (which makes the host cut back)
+  // large increments from plastic states: a failure must be a Marmot::Utilities::StressUpdateFailed (which makes the
+  // host cut back)
   Mat mat( issue111Properties.data(), issue111Properties.size(), 1 );
 
   // a 30 % increment from a plastic state, for which ExponentialMapFailed (a plain std::exception) escaped
@@ -669,7 +677,8 @@ void testOnlyStressUpdateFailedEscapes()
     catch ( const Marmot::Utilities::StressUpdateFailed& ) {
     }
     catch ( const std::exception& e ) {
-      throw std::runtime_error( Marmot::Utilities::MakeString() << "an exception other than Marmot::Utilities::StressUpdateFailed escaped" << where );
+      throw std::runtime_error( Marmot::Utilities::MakeString()
+                                << "an exception other than Marmot::Utilities::StressUpdateFailed escaped" << where );
     }
   }
 
@@ -688,7 +697,9 @@ void testOnlyStressUpdateFailedEscapes()
         catch ( const Marmot::Utilities::StressUpdateFailed& ) {
         }
         catch ( const std::exception& e ) {
-          throw std::runtime_error( Marmot::Utilities::MakeString() << "an exception other than Marmot::Utilities::StressUpdateFailed escaped" << where );
+          throw std::runtime_error( Marmot::Utilities::MakeString()
+                                    << "an exception other than Marmot::Utilities::StressUpdateFailed escaped"
+                                    << where );
         }
       }
   }

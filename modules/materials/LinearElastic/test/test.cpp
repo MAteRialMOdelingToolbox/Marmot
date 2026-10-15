@@ -18,9 +18,9 @@ void testMaterialResponse()
   auto        solveropts = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   std::string matName    = "LINEARELASTIC";
   auto        solver     = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
-                                                      &materialProperties[0],
-                                                      materialProperties.size(),
-                                                      solveropts );
+                                                                   &materialProperties[0],
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
   // define step: apply normal strain increment
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
@@ -57,9 +57,9 @@ void testShearMaterialResponse()
   auto        solveropts = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   std::string matName    = "LINEARELASTIC";
   auto        solver     = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
-                                                      &materialProperties[0],
-                                                      materialProperties.size(),
-                                                      solveropts );
+                                                                   &materialProperties[0],
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
   // define step: apply normal strain increment
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
@@ -100,9 +100,9 @@ void testTransverseIsotropicMaterialResponse()
   auto        solveropts = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   std::string matName    = "LINEARELASTIC";
   auto        solver     = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
-                                                      &materialProperties[0],
-                                                      materialProperties.size(),
-                                                      solveropts );
+                                                                   &materialProperties[0],
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
   // define step: apply normal strain increment
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
@@ -144,9 +144,9 @@ void testTransverseIsotropicShearMaterialResponse()
   auto        solveropts = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   std::string matName    = "LINEARELASTIC";
   auto        solver     = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
-                                                      &materialProperties[0],
-                                                      materialProperties.size(),
-                                                      solveropts );
+                                                                   &materialProperties[0],
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
   // define step: apply normal strain increment
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
@@ -193,9 +193,9 @@ void testOrthotropicMaterialResponse()
   auto        solveropts = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   std::string matName    = "LINEARELASTIC";
   auto        solver     = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
-                                                      &materialProperties[0],
-                                                      materialProperties.size(),
-                                                      solveropts );
+                                                                   &materialProperties[0],
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
   // define step: apply normal strain increment
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
@@ -241,9 +241,9 @@ void testOrthotropicShearMaterialResponse()
   auto        solveropts = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   std::string matName    = "LINEARELASTIC";
   auto        solver     = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
-                                                      &materialProperties[0],
-                                                      materialProperties.size(),
-                                                      solveropts );
+                                                                   &materialProperties[0],
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
   // define step: apply normal strain increment
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
@@ -289,9 +289,9 @@ void testOrthotropicMaterialResponseRotation()
   auto        solveropts = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   std::string matName    = "LINEARELASTIC";
   auto        solver     = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
-                                                      &materialProperties[0],
-                                                      materialProperties.size(),
-                                                      solveropts );
+                                                                   &materialProperties[0],
+                                                                   materialProperties.size(),
+                                                                   solveropts );
 
   // define step: apply normal strain increment
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
@@ -407,13 +407,13 @@ void testComputeStressExplicitMatchesComputeStress()
   auto matB = makeIsotropicMaterial();
 
   Marmot::Math::Vector6d dStrain = Marmot::Math::Vector6d::Zero();
-  dStrain( 0 )     = 1e-3;
-  dStrain( 3 )     = 2e-4;
+  dStrain( 0 )                   = 1e-3;
+  dStrain( 3 )                   = 2e-4;
 
   Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ 0., 1. };
 
   Marmot::Materials::MaterialHypoElastic::state3D stateA;
-  Marmot::Math::Matrix6d                           tanA;
+  Marmot::Math::Matrix6d                          tanA;
   // LinearElastic re-declares computeStress() under `protected`, so call it through the base
   // class (as production code always does, via a Marmot::Materials::MaterialHypoElastic*).
   Marmot::Materials::MaterialHypoElastic& matABase = matA;
@@ -439,7 +439,7 @@ void testComputePlaneStressMatchesClassicalPlaneStressLaw()
 
   Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ 0., 1. };
   Marmot::Materials::MaterialHypoElastic::state2D  state2D;
-  Marmot::Math::Matrix3d                            tan2D;
+  Marmot::Math::Matrix3d                           tan2D;
 
   mat.computePlaneStress( state2D, tan2D, dStrain2D, timeInfo );
 
@@ -447,9 +447,9 @@ void testComputePlaneStressMatchesClassicalPlaneStressLaw()
   //   sigma_xx = E/(1-nu^2) * (eps_xx + nu*eps_yy)
   //   sigma_yy = E/(1-nu^2) * (eps_yy + nu*eps_xx)
   //   sigma_xy = G * gamma_xy
-  const double planeStressModulus = E / ( 1. - nu * nu );
-  const double G                  = E / ( 2. * ( 1. + nu ) );
-  Marmot::Math::Vector3d     expected;
+  const double           planeStressModulus = E / ( 1. - nu * nu );
+  const double           G                  = E / ( 2. * ( 1. + nu ) );
+  Marmot::Math::Vector3d expected;
   expected << planeStressModulus * ( dStrain2D( 0 ) + nu * dStrain2D( 1 ) ),
     planeStressModulus * ( dStrain2D( 1 ) + nu * dStrain2D( 0 ) ), G * dStrain2D( 2 );
 
@@ -468,7 +468,7 @@ void testComputeUniaxialStressMatchesE()
 
   Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ 0., 1. };
   Marmot::Materials::MaterialHypoElastic::state1D  state1D;
-  double                              tan1D;
+  double                                           tan1D;
 
   mat.computeUniaxialStress( state1D, tan1D, dStrain1D, timeInfo );
 
@@ -492,7 +492,7 @@ void testGetMaximumWaveSpeedMatchesPWaveModulus()
   const double expected = std::sqrt( ( lambda + 2. * mu ) / rho );
 
   Marmot::Materials::MaterialHypoElastic::state3D state;
-  const double                       waveSpeed = mat.getMaximumWaveSpeed( state );
+  const double                                    waveSpeed = mat.getMaximumWaveSpeed( state );
 
   throwExceptionOnFailure( checkIfEqual( waveSpeed, expected, 1e-5 ),
                            "getMaximumWaveSpeed() does not match sqrt((lambda+2*mu)/rho) in " +

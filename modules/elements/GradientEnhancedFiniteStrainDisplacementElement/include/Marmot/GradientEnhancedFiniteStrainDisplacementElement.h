@@ -67,8 +67,9 @@ namespace Marmot::Discretizations::Elements {
    * @tparam nNodes Number of nodes.
    */
   template < int nDim, int nNodes >
-  class GradientEnhancedFiniteStrainDisplacementElement : public Marmot::Discretizations::Elements::Element,
-                                                          public Marmot::Discretizations::Elements::GeometryElement< nDim, nNodes > {
+  class GradientEnhancedFiniteStrainDisplacementElement
+    : public Marmot::Discretizations::Elements::Element,
+      public Marmot::Discretizations::Elements::GeometryElement< nDim, nNodes > {
 
   public:
     /// @brief Section type of the element.
@@ -139,11 +140,11 @@ namespace Marmot::Discretizations::Elements {
 
       public:
         Eigen::Map< Marmot::Math::Vector9d > stress; ///< Kirchhoff stress (3D, also in plane strain)
-        double& elasticEnergyDensity;          ///< elastic energy per undeformed volume, as returned by the material
-        double& dissipationDensity;            ///< dissipation per undeformed volume, accumulated by the material
-        double& F0_XX;                         ///< eigen deformation, XX component
-        double& F0_YY;                         ///< eigen deformation, YY component
-        double& F0_ZZ;                         ///< eigen deformation, ZZ component
+        double& elasticEnergyDensity; ///< elastic energy per undeformed volume, as returned by the material
+        double& dissipationDensity;   ///< dissipation per undeformed volume, accumulated by the material
+        double& F0_XX;                ///< eigen deformation, XX component
+        double& F0_YY;                ///< eigen deformation, YY component
+        double& F0_ZZ;                ///< eigen deformation, ZZ component
         Eigen::Map< Eigen::VectorXd > materialStateVars; ///< state variables of the material
 
         /// @brief Number of state variables of the quadrature point without those of the material.
@@ -211,9 +212,9 @@ namespace Marmot::Discretizations::Elements {
      * @throws std::invalid_argument for a section type that does not match nDim, e.g. plane stress.
      */
     GradientEnhancedFiniteStrainDisplacementElement(
-      int                                                 elementID,
+      int                                                             elementID,
       Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-      SectionType                                         sectionType );
+      SectionType                                                     sectionType );
 
     /// @brief Number of state variables of the element (of all quadrature points).
     int getNumberOfRequiredStateVars();
@@ -287,13 +288,13 @@ namespace Marmot::Discretizations::Elements {
      * @throws std::invalid_argument for another load type.
      */
     void computeDistributedLoad( Marmot::Discretizations::Elements::Element::DistributedLoadTypes loadType,
-                                 double*                             P,
-                                 double*                             K,
-                                 const int                           elementFace,
-                                 const double*                       load,
-                                 const double*                       QTotal,
-                                 double                              time,
-                                 double                              dT );
+                                 double*                                                          P,
+                                 double*                                                          K,
+                                 const int                                                        elementFace,
+                                 const double*                                                    load,
+                                 const double*                                                    QTotal,
+                                 double                                                           time,
+                                 double                                                           dT );
 
     /**
      * @brief Compute a body force per reference volume.
@@ -366,8 +367,9 @@ namespace Marmot::Discretizations::Elements {
   };
 
   template < int nDim, int nNodes >
-  Marmot::Utilities::StateView GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::getStateView( const std::string& stateName,
-                                                                                           int                qpNumber )
+  Marmot::Utilities::StateView GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::getStateView(
+    const std::string& stateName,
+    int                qpNumber )
   {
     const auto& qp = qps[qpNumber];
     if ( qp.managedStateVars->contains( stateName ) ) {
@@ -380,9 +382,9 @@ namespace Marmot::Discretizations::Elements {
 
   template < int nDim, int nNodes >
   GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::GradientEnhancedFiniteStrainDisplacementElement(
-    int                                                 elementID,
+    int                                                             elementID,
     Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
-    SectionType                                         sectionType )
+    SectionType                                                     sectionType )
     : ParentGeometryElement(),
       elementProperties( Eigen::Map< const Eigen::VectorXd >( nullptr, 0 ) ),
       elLabel( elementID ),
@@ -391,10 +393,12 @@ namespace Marmot::Discretizations::Elements {
   {
     if ( ( nDim == 2 && sectionType != SectionType::PlaneStrain ) ||
          ( nDim == 3 && sectionType != SectionType::Solid ) )
-      throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__
-                                                << ": only plane strain (2D) and solid (3D) sections are supported" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__
+                                   << ": only plane strain (2D) and solid (3D) sections are supported" );
 
-    for ( const auto& qpInfo : Marmot::Discretizations::Elements::Quadrature::getGaussPointInfo( this->shape, integrationType ) ) {
+    for ( const auto& qpInfo :
+          Marmot::Discretizations::Elements::Quadrature::getGaussPointInfo( this->shape, integrationType ) ) {
       QuadraturePoint qp( qpInfo.xi, qpInfo.weight, this->N( qpInfo.xi ) );
       qps.push_back( std::move( qp ) );
     }
@@ -466,9 +470,9 @@ namespace Marmot::Discretizations::Elements {
     for ( auto& qp : qps ) {
       qp.material = std::unique_ptr< Material >(
         Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory::createMaterial( section.materialName,
-                                                                                          section.materialProperties,
-                                                                                          section.nMaterialProperties,
-                                                                                          elLabel ) );
+                                                                                       section.materialProperties,
+                                                                                       section.nMaterialProperties,
+                                                                                       elLabel ) );
     }
   }
 
@@ -557,7 +561,8 @@ namespace Marmot::Discretizations::Elements {
       response.elasticEnergyDensity = response3D.elasticEnergyDensity;
       response.dissipation          = response3D.dissipation;
 
-      tangents.dTau_dF = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >( algorithmicModuli3D.dTau_dF );
+      tangents.dTau_dF = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U, Marmot::Math::U, Marmot::Math::U >(
+        algorithmicModuli3D.dTau_dF );
       tangents.dTau_dN = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >( algorithmicModuli3D.dTau_dN );
       tangents.dL_dF   = Marmot::Math::reduceTo2D< Marmot::Math::U, Marmot::Math::U >( algorithmicModuli3D.dL_dF );
       tangents.dL_dN   = algorithmicModuli3D.dL_dN;
@@ -719,13 +724,13 @@ namespace Marmot::Discretizations::Elements {
   template < int nDim, int nNodes >
   void GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::computeDistributedLoad(
     Marmot::Discretizations::Elements::Element::DistributedLoadTypes loadType,
-    double*                             rightHandSide,
-    double*                             stiffnessMatrix,
-    const int                           elementFace,
-    const double*                       load,
-    const double*                       QTotal_,
-    double                              time,
-    double                              dT )
+    double*                                                          rightHandSide,
+    double*                                                          stiffnessMatrix,
+    const int                                                        elementFace,
+    const double*                                                    load,
+    const double*                                                    QTotal_,
+    double                                                           time,
+    double                                                           dT )
   {
     Eigen::Map< USizedVector > r_U( rightHandSide );
 
@@ -737,7 +742,7 @@ namespace Marmot::Discretizations::Elements {
       const Eigen::Ref< const USizedVector >                                qU( QTotal.head( bsU ) );
       Eigen::Map< Eigen::Matrix< double, sizeLoadVector, sizeLoadVector > > K( stiffnessMatrix );
 
-      const USizedVector             coordinates_np = this->coordinates + qU;
+      const USizedVector                                 coordinates_np = this->coordinates + qU;
       Marmot::Discretizations::Elements::BoundaryElement boundaryEl( this->shape, elementFace, nDim, coordinates_np );
 
       Eigen::VectorXd Pb = -p * boundaryEl.computeSurfaceNormalVectorialLoadVector();
@@ -755,7 +760,10 @@ namespace Marmot::Discretizations::Elements {
     }
     case Marmot::Discretizations::Elements::Element::SurfaceTraction: {
 
-      Marmot::Discretizations::Elements::BoundaryElement boundaryEl( this->shape, elementFace, nDim, this->coordinates );
+      Marmot::Discretizations::Elements::BoundaryElement boundaryEl( this->shape,
+                                                                     elementFace,
+                                                                     nDim,
+                                                                     this->coordinates );
 
       const XiSized tractionVector( load );
 
@@ -819,7 +827,9 @@ namespace Marmot::Discretizations::Elements {
         }
         break;
       }
-      default: throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
+      default:
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << ": invalid initial condition" );
       }
     }
   }

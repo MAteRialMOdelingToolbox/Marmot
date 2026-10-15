@@ -12,8 +12,8 @@ namespace Marmot::Materials {
 
   ADLinearElastic::ADLinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber )
     : Marmot::Materials::MaterialHypoElasticAD::MaterialHypoElasticAD( materialProperties,
-                                                                nMaterialProperties,
-                                                                materialNumber ),
+                                                                       nMaterialProperties,
+                                                                       materialNumber ),
       C( Isotropic::stiffnessTensor( materialProperties[0], materialProperties[1] ) )
   {
     stateLayout.finalize();
@@ -23,13 +23,13 @@ namespace Marmot::Materials {
   {
     if ( nMaterialProperties >= 3 )
       return materialProperties[2];
-    throw std::runtime_error(
-      std::string( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": Density not specified for ADLinearElastic." ) );
+    throw std::runtime_error( std::string( Marmot::Utilities::MakeString()
+                                           << __PRETTY_FUNCTION__ << ": Density not specified for ADLinearElastic." ) );
   }
 
-  void ADLinearElastic::computeStressAD( state3DAD&                 state,
+  void ADLinearElastic::computeStressAD( state3DAD&                       state,
                                          const Marmot::Math::Vector6dual& dStrain,
-                                         const timeInfo&            timeInfo ) const
+                                         const timeInfo&                  timeInfo ) const
   {
 
     const Marmot::Math::Vector6dual dStress = C * dStrain;

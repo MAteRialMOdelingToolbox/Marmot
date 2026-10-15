@@ -43,7 +43,9 @@ namespace Marmot::Registry {
   public:
     /// Function signature for material factory functions registered in the map.
     using materialFactoryFunction = std::function<
-      Marmot::Materials::MaterialHypoElastic*( const double* materialProperties, int nMaterialProperties, int materialNumber ) >;
+      Marmot::Materials::MaterialHypoElastic*( const double* materialProperties,
+                                               int           nMaterialProperties,
+                                               int           materialNumber ) >;
 
     MaterialHypoElasticFactory() = delete;
 
@@ -56,9 +58,9 @@ namespace Marmot::Registry {
      * @return Pointer to the created MarmotMaterial instance, or nullptr if creation failed.
      */
     static Marmot::Materials::MaterialHypoElastic* createMaterial( const std::string& materialName,
-                                                      const double*      materialProperties,
-                                                      int                nMaterialProperties,
-                                                      int                materialNumber );
+                                                                   const double*      materialProperties,
+                                                                   int                nMaterialProperties,
+                                                                   int                materialNumber );
 
     /**
      * @brief Register a material with its name and an auto-generated factory function.
@@ -72,8 +74,11 @@ namespace Marmot::Registry {
 
       assert( map.find( materialName ) == map.end() && "Material already registered!" );
 
-      map[materialName] = []( const double* materialProperties, int nMaterialProperties, int materialNumber )
-        -> Marmot::Materials::MaterialHypoElastic* { return new T( materialProperties, nMaterialProperties, materialNumber ); };
+      map[materialName] = []( const double* materialProperties,
+                              int           nMaterialProperties,
+                              int           materialNumber ) -> Marmot::Materials::MaterialHypoElastic* {
+        return new T( materialProperties, nMaterialProperties, materialNumber );
+      };
       return true;
     }
 

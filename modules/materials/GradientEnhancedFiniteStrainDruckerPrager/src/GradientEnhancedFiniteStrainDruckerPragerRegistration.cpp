@@ -4,9 +4,8 @@
 namespace {
   using namespace Marmot::Materials;
 
+  const static bool GradientEnhancedFiniteStrainDruckerPragerRegistered = Marmot::Registry::
+    MaterialGradientEnhancedFiniteStrainFactory::registerMaterial< GradientEnhancedFiniteStrainDruckerPrager >(
+      "GRADIENTENHANCEDFINITESTRAINDRUCKERPRAGER" );
 
-    const static bool
-      GradientEnhancedFiniteStrainDruckerPragerRegistered = Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory::
-        registerMaterial< GradientEnhancedFiniteStrainDruckerPrager >( "GRADIENTENHANCEDFINITESTRAINDRUCKERPRAGER" );
-
-  } // namespace
+} // namespace

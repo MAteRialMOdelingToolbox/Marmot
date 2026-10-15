@@ -43,7 +43,7 @@ void testUndamagedElasticResponse()
 
   // Apply a uniaxial strain increment, no phase-field
   Marmot::Math::Vector6d dEps      = Marmot::Math::Vector6d::Zero();
-  dEps( 0 )          = 1e-3;
+  dEps( 0 )                        = 1e-3;
   const Marmot::Math::Vector6d eps = dEps; // starting from zero strain
 
   Res1 res;
@@ -92,7 +92,7 @@ void testDegradedStress()
   const Marmot::Math::Matrix6d C = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
 
   Marmot::Math::Vector6d dEps = Marmot::Math::Vector6d::Zero();
-  dEps( 0 )     = 1e-3;
+  dEps( 0 )                   = 1e-3;
 
   const double phi = 0.5;
   const double g   = ( 1. - phi ) * ( 1. - phi ); // = 0.25
@@ -137,7 +137,7 @@ void testIrreversibility()
 
   // Step 1: large strain
   Marmot::Math::Vector6d dEps1 = Marmot::Math::Vector6d::Zero();
-  dEps1( 0 )     = 2e-3;
+  dEps1( 0 )                   = 2e-3;
 
   {
     Res1 res;
@@ -160,7 +160,7 @@ void testIrreversibility()
 
   // Step 2: smaller strain increment that brings total strain back down
   Marmot::Math::Vector6d dEps2 = Marmot::Math::Vector6d::Zero();
-  dEps2( 0 )     = -1e-3; // unloading: total strain becomes 1e-3
+  dEps2( 0 )                   = -1e-3; // unloading: total strain becomes 1e-3
 
   {
     Res1 res;
@@ -205,11 +205,13 @@ void testTangentConsistency()
 
   // Base increment
   Marmot::Math::Vector6d dEps = Marmot::Math::Vector6d::Zero();
-  dEps( 0 )     = 1e-3;
-  dEps( 3 )     = 5e-4;
+  dEps( 0 )                   = 1e-3;
+  dEps( 3 )                   = 5e-4;
 
   // Compute base response and analytical tangent
-  auto evalAt = [&]( const Marmot::Math::Vector6d& dE, double K_val, std::vector< double >& sv ) -> std::pair< Marmot::Math::Vector6d, double > {
+  auto evalAt = [&]( const Marmot::Math::Vector6d& dE,
+                     double                        K_val,
+                     std::vector< double >&        sv ) -> std::pair< Marmot::Math::Vector6d, double > {
     Res1 res;
     Tan1 tan;
     Inc1 inc;
@@ -260,10 +262,10 @@ void testTangentConsistency()
   }
 
   // ── dStressddK (col 0) ──
-  stateVars               = stateVarsOld; // reset state variables before perturbation
-  auto [sp, kp]           = evalAt( dEps, phi + h, stateVars );
-  stateVars               = stateVarsOld; // reset again before second perturbation
-  auto [sm, km]           = evalAt( dEps, phi - h, stateVars );
+  stateVars                             = stateVarsOld; // reset state variables before perturbation
+  auto [sp, kp]                         = evalAt( dEps, phi + h, stateVars );
+  stateVars                             = stateVarsOld; // reset again before second perturbation
+  auto [sm, km]                         = evalAt( dEps, phi - h, stateVars );
   const Marmot::Math::Vector6d dSdK_num = ( sp - sm ) / ( 2. * h );
   const Marmot::Math::Vector6d dSdK_ana = tanBase.dStressddK.col( 0 );
   throwExceptionOnFailure( checkIfEqual< double >( dSdK_ana, dSdK_num, 1e-5 ),
@@ -310,8 +312,8 @@ void testComputeStressExplicitMatchesComputeStress()
   auto [matB, stateVarsB] = makeMaterial( properties );
 
   Marmot::Math::Vector6d dEps = Marmot::Math::Vector6d::Zero();
-  dEps( 0 )     = 1e-3;
-  dEps( 3 )     = 2e-4;
+  dEps( 0 )                   = 1e-3;
+  dEps( 3 )                   = 2e-4;
 
   Inc1 inc;
   inc.dStrain = dEps;
@@ -359,7 +361,7 @@ void testComputePlaneStressConvergesToZeroOutOfPlaneStress()
   auto [mat, stateVars]                  = makeMaterial( properties );
 
   Marmot::Math::Vector6d dEps = Marmot::Math::Vector6d::Zero();
-  dEps( 0 )     = 1e-3; // eps_xx only; eps_yy stays fixed at 0, eps_zz (index 2) is solved for
+  dEps( 0 )                   = 1e-3; // eps_xx only; eps_yy stays fixed at 0, eps_zz (index 2) is solved for
 
   Inc1 inc;
   inc.dStrain = dEps;
@@ -385,8 +387,8 @@ void testComputePlaneStressConvergesToZeroOutOfPlaneStress()
   // held fixed at 0): sigma_xx = (C_xx,xx - C_xx,zz^2/C_zz,zz) * eps_xx. This is *not* the familiar
   // E*eps_xx plane-stress modulus, since that additionally assumes eps_yy is free rather than fixed.
   const Marmot::Math::Matrix6d C                = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
-  const double   condensedModulus = C( 0, 0 ) - C( 0, 2 ) * C( 2, 0 ) / C( 2, 2 );
-  const double   sigmaXXExpected  = condensedModulus * dEps( 0 );
+  const double                 condensedModulus = C( 0, 0 ) - C( 0, 2 ) * C( 2, 0 ) / C( 2, 2 );
+  const double                 sigmaXXExpected  = condensedModulus * dEps( 0 );
   throwExceptionOnFailure( checkIfEqual( res.stress( 0 ), sigmaXXExpected, 1e-6 ),
                            "computePlaneStress() sigma_xx does not match the statically condensed stiffness in " +
                              std::string( __PRETTY_FUNCTION__ ) );
@@ -401,7 +403,7 @@ void testComputePlaneStressExplicitMatchesComputePlaneStress()
   auto [matB, stateVarsB] = makeMaterial( properties );
 
   Marmot::Math::Vector6d dEps = Marmot::Math::Vector6d::Zero();
-  dEps( 0 )     = 1e-3;
+  dEps( 0 )                   = 1e-3;
 
   Inc1 inc;
   inc.dStrain = dEps;

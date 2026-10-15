@@ -18,8 +18,9 @@ static void checkOrthonormality( const Tensor33d& V, const std::string& caller, 
         vtv_kl += V( i, k ) * V( i, l );
       const double expected = ( k == l ) ? 1.0 : 0.0;
       throwExceptionOnFailure( checkIfEqual( vtv_kl, expected, tol ),
-                               Marmot::Utilities::MakeString() << caller << " eigenvectors not orthonormal at (" << k << "," << l
-                                            << "): got " << vtv_kl << " expected " << expected );
+                               Marmot::Utilities::MakeString()
+                                 << caller << " eigenvectors not orthonormal at (" << k << "," << l << "): got "
+                                 << vtv_kl << " expected " << expected );
     }
   }
 }
@@ -167,9 +168,11 @@ void testJacobi_sorted_descending()
   auto [eigenvalues, V] = computeEigenSystemJacobi( A );
 
   throwExceptionOnFailure( eigenvalues( 0 ) >= eigenvalues( 1 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " eigenvalues not sorted descending (λ₀ >= λ₁)" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " eigenvalues not sorted descending (λ₀ >= λ₁)" );
   throwExceptionOnFailure( eigenvalues( 1 ) >= eigenvalues( 2 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " eigenvalues not sorted descending (λ₁ >= λ₂)" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " eigenvalues not sorted descending (λ₁ >= λ₂)" );
 }
 
 void testJacobi_automatic_differentiation()
@@ -189,7 +192,8 @@ void testJacobi_automatic_differentiation()
   Tensor33d expected0( 0.0 );
   expected0( 0, 0 ) = 1.0;
   throwExceptionOnFailure( checkIfEqual< double >( dlambda0_dA, expected0, 1e-10 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " gradient of λ₀ w.r.t. A failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " gradient of λ₀ w.r.t. A failed" );
 
   std::function< dual( const Tensor33t< dual >& ) > f1 = []( const Tensor33t< dual >& A_d ) {
     return computeEigenSystemJacobi< dual >( A_d ).first( 1 );
@@ -199,7 +203,8 @@ void testJacobi_automatic_differentiation()
   Tensor33d expected1( 0.0 );
   expected1( 1, 1 ) = 1.0;
   throwExceptionOnFailure( checkIfEqual< double >( dlambda1_dA, expected1, 1e-10 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " gradient of λ₁ w.r.t. A failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " gradient of λ₁ w.r.t. A failed" );
 
   std::function< dual( const Tensor33t< dual >& ) > f2 = []( const Tensor33t< dual >& A_d ) {
     return computeEigenSystemJacobi< dual >( A_d ).first( 2 );
@@ -209,7 +214,8 @@ void testJacobi_automatic_differentiation()
   Tensor33d expected2( 0.0 );
   expected2( 2, 2 ) = 1.0;
   throwExceptionOnFailure( checkIfEqual< double >( dlambda2_dA, expected2, 1e-10 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " gradient of λ₂ w.r.t. A failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " gradient of λ₂ w.r.t. A failed" );
 }
 
 // ============================================================
@@ -313,7 +319,8 @@ void testCardano_all_repeated()
 
   for ( int k = 0; k < 3; k++ )
     throwExceptionOnFailure( checkIfEqual( eigenvalues( k ), 4.0, 1e-10 ),
-                             Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " eigenvalue " << k << " wrong" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << " eigenvalue " << k << " wrong" );
 
   checkOrthonormality( V, __PRETTY_FUNCTION__ );
   checkReconstruction( A, eigenvalues, V, __PRETTY_FUNCTION__ );
@@ -395,9 +402,11 @@ void testCardano_sorted_descending()
   auto [eigenvalues, V] = computeEigenSystemWithCardano( A );
 
   throwExceptionOnFailure( eigenvalues( 0 ) >= eigenvalues( 1 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " eigenvalues not sorted descending (λ₀ >= λ₁)" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " eigenvalues not sorted descending (λ₀ >= λ₁)" );
   throwExceptionOnFailure( eigenvalues( 1 ) >= eigenvalues( 2 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " eigenvalues not sorted descending (λ₁ >= λ₂)" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " eigenvalues not sorted descending (λ₁ >= λ₂)" );
 }
 
 void testCardano_automatic_differentiation()
@@ -417,7 +426,8 @@ void testCardano_automatic_differentiation()
   Tensor33d expected0( 0.0 );
   expected0( 0, 0 ) = 1.0;
   throwExceptionOnFailure( checkIfEqual< double >( dlambda0_dA, expected0, 1e-10 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " gradient of λ₀ w.r.t. A failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " gradient of λ₀ w.r.t. A failed" );
 
   std::function< dual( const Tensor33t< dual >& ) > f2 = []( const Tensor33t< dual >& A_d ) {
     return computeEigenSystemWithCardano< dual >( A_d ).first( 2 );
@@ -427,7 +437,8 @@ void testCardano_automatic_differentiation()
   Tensor33d expected2( 0.0 );
   expected2( 2, 2 ) = 1.0;
   throwExceptionOnFailure( checkIfEqual< double >( dlambda2_dA, expected2, 1e-10 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " gradient of λ₂ w.r.t. A failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " gradient of λ₂ w.r.t. A failed" );
 
   std::function< dual( const Tensor33t< dual >& ) > f1 = []( const Tensor33t< dual >& A_d ) {
     return computeEigenSystemWithCardano< dual >( A_d ).first( 1 );
@@ -437,7 +448,8 @@ void testCardano_automatic_differentiation()
   Tensor33d expected1( 0.0 );
   expected1( 1, 1 ) = 1.0;
   throwExceptionOnFailure( checkIfEqual< double >( dlambda1_dA, expected1, 1e-10 ),
-                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " gradient of λ₁ w.r.t. A failed" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " gradient of λ₁ w.r.t. A failed" );
 }
 
 int main()

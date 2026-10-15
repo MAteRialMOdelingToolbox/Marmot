@@ -30,10 +30,9 @@
 
 namespace Marmot::Discretizations::Meshfree {
 
-  KernelFunctionBSpline2ndOrderBoxed::KernelFunctionBSpline2ndOrderBoxed(
-    double* centerCoord,
-    int     dim,
-    double  supportRadius )
+  KernelFunctionBSpline2ndOrderBoxed::KernelFunctionBSpline2ndOrderBoxed( double* centerCoord,
+                                                                          int     dim,
+                                                                          double  supportRadius )
     : _centerCoord( centerCoord ), _supportRadius( supportRadius ), _dim( dim )
   {
   }
@@ -50,8 +49,7 @@ namespace Marmot::Discretizations::Meshfree {
     return res;
   }
 
-  void KernelFunctionBSpline2ndOrderBoxed::computeKernelFunctionGradient( const double* coord,
-                                                                                        double*       grad ) const
+  void KernelFunctionBSpline2ndOrderBoxed::computeKernelFunctionGradient( const double* coord, double* grad ) const
   {
     for ( int i = 0; i < _dim; i++ ) {
       grad[i] = 0;
@@ -79,8 +77,7 @@ namespace Marmot::Discretizations::Meshfree {
     return 0;
   }
 
-  double KernelFunctionBSpline2ndOrderBoxed::computeBSpline2ndOrderGradient(
-    double coord_minus_center ) const
+  double KernelFunctionBSpline2ndOrderBoxed::computeBSpline2ndOrderGradient( double coord_minus_center ) const
   {
     const double z         = std::abs( coord_minus_center ) / _supportRadius;
     const double dz_dcoord = coord_minus_center > 0 ? 1.0 / _supportRadius : -1.0 / _supportRadius;

@@ -30,26 +30,24 @@
 #include <cmath>
 
 namespace Marmot::Discretizations::Meshfree {
-  ReproducingKernelApproximationImplicit::ReproducingKernelApproximationImplicit(
-    int dim,
-    int completenessOrder )
+  ReproducingKernelApproximationImplicit::ReproducingKernelApproximationImplicit( int dim, int completenessOrder )
     : ReproducingKernelApproximation( dim, completenessOrder )
   {
   }
 
   void ReproducingKernelApproximationImplicit::computeShapeFunctionGradients(
-    const double*                                             coord,
+    const double*                               coord,
     const std::vector< const KernelFunction* >& kernelFunctions,
-    double*                                                   shapeFunctionValueGradients ) const
+    double*                                     shapeFunctionValueGradients ) const
   {
     throw std::runtime_error( "Not implemented" );
   }
 
   void ReproducingKernelApproximationImplicit::computeShapeFunctionsAndGradients(
-    const double*                                             coord,
+    const double*                               coord,
     const std::vector< const KernelFunction* >& kernelFunctionCandidates,
-    double*                                                   shapeFunctionValues_,
-    double*                                                   shapeFunctionValueGradients_ ) const
+    double*                                     shapeFunctionValues_,
+    double*                                     shapeFunctionValueGradients_ ) const
   {
 
     const auto coveringKernelFunctionIndices = findCoveringKernelFunctionIndices( coord, kernelFunctionCandidates );

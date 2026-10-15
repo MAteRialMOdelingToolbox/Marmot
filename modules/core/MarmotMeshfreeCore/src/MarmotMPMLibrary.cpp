@@ -63,7 +63,7 @@ namespace Marmot::Registry {
   }
 
   bool MaterialPointFactory::registerMaterialPoint( const std::string&           materialPointName,
-                                                          materialPointFactoryFunction factoryFunction )
+                                                    materialPointFactoryFunction factoryFunction )
   {
 
     const auto materialPointNameUpperCase = makeStringUpperCase( materialPointName );
@@ -76,12 +76,13 @@ namespace Marmot::Registry {
     return true;
   }
 
-  Marmot::Discretizations::MaterialPoints::MaterialPoint* MaterialPointFactory::createMaterialPoint( const std::string& materialPointName,
-                                                                        int                materialPointNumber,
-                                                                        const double*      vertexCoordinates,
-                                                                        int                sizeVertexCoordinates,
-                                                                        double             volume
-                                                                        /* const Marmot::Discretizations::MaterialSection& material */
+  Marmot::Discretizations::MaterialPoints::MaterialPoint* MaterialPointFactory::createMaterialPoint(
+    const std::string& materialPointName,
+    int                materialPointNumber,
+    const double*      vertexCoordinates,
+    int                sizeVertexCoordinates,
+    double             volume
+    /* const Marmot::Discretizations::MaterialSection& material */
   )
   {
     const auto materialPointNameUpperCase = makeStringUpperCase( materialPointName );
@@ -93,7 +94,8 @@ namespace Marmot::Registry {
       );
     }
     catch ( const std::out_of_range& e ) {
-      throw std::invalid_argument( Marmot::Utilities::MakeString() << "Invalid materialPoint " << materialPointName << " requested!" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << "Invalid materialPoint " << materialPointName << " requested!" );
     }
   }
 
@@ -107,8 +109,7 @@ namespace Marmot::Registry {
    *
    */
 
-  std::unordered_map< std::string, CellFactory::cellFactoryFunction >& CellFactory::
-    cellFactoryFunctionByName()
+  std::unordered_map< std::string, CellFactory::cellFactoryFunction >& CellFactory::cellFactoryFunctionByName()
   {
     static std::unordered_map< std::string, cellFactoryFunction > map;
     return map;
@@ -127,9 +128,9 @@ namespace Marmot::Registry {
   }
 
   Marmot::Discretizations::Cells::Cell* CellFactory::createCell( const std::string& cellName,
-                                             int                cellNumber,
-                                             const double*      nodeCoordinates,
-                                             int                sizeNodeCoordinates )
+                                                                 int                cellNumber,
+                                                                 const double*      nodeCoordinates,
+                                                                 int                sizeNodeCoordinates )
   {
     const auto cellNameUpperCase = makeStringUpperCase( cellName );
 
@@ -170,11 +171,11 @@ namespace Marmot::Registry {
   }
 
   Marmot::Discretizations::Cells::Cell* CellFactory::createBSplineCell( const std::string& cellName,
-                                                    int                cellNumber,
-                                                    const double*      nodeCoordinates,
-                                                    int                sizeNodeCoordinates,
-                                                    const double*      knotVectors,
-                                                    int                sizeKnotVectors )
+                                                                        int                cellNumber,
+                                                                        const double*      nodeCoordinates,
+                                                                        int                sizeNodeCoordinates,
+                                                                        const double*      knotVectors,
+                                                                        int                sizeKnotVectors )
   {
     const auto cellNameUpperCase = makeStringUpperCase( cellName );
 
@@ -203,7 +204,7 @@ namespace Marmot::Registry {
   }
 
   bool CellElementFactory::registerCellElement( const std::string&         cellElementName,
-                                                      cellElementFactoryFunction factoryFunction )
+                                                cellElementFactoryFunction factoryFunction )
   {
 
     const auto cellElementNameUpperCase = makeStringUpperCase( cellElementName );
@@ -216,12 +217,13 @@ namespace Marmot::Registry {
     return true;
   }
 
-  Marmot::Discretizations::Cells::CellElement* CellElementFactory::createCellElement( const std::string& cellElementName,
-                                                                  int                cellElementNumber,
-                                                                  const double*      nodeCoordinates,
-                                                                  int                sizeNodeCoordinates,
-                                                                  const std::string& quadratureRule,
-                                                                  int                quadratureOrder )
+  Marmot::Discretizations::Cells::CellElement* CellElementFactory::createCellElement(
+    const std::string& cellElementName,
+    int                cellElementNumber,
+    const double*      nodeCoordinates,
+    int                sizeNodeCoordinates,
+    const std::string& quadratureRule,
+    int                quadratureOrder )
   {
     const auto cellNameUpperCase = makeStringUpperCase( cellElementName );
 
@@ -230,7 +232,8 @@ namespace Marmot::Registry {
         cellNameUpperCase )( cellElementNumber, nodeCoordinates, sizeNodeCoordinates, quadratureRule, quadratureOrder );
     }
     catch ( const std::out_of_range& e ) {
-      throw std::invalid_argument( Marmot::Utilities::MakeString() << "Invalid cellElement " << cellElementName << " requested!" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << "Invalid cellElement " << cellElementName << " requested!" );
     }
   }
 

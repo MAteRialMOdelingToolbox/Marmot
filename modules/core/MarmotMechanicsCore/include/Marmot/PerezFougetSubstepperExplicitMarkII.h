@@ -56,11 +56,11 @@ namespace Marmot::ContinuumMechanics::Algorithms {
   public:
     typedef Eigen::Matrix< double, nSizeMatTangent, nSizeMatTangent > TangentSizedMatrix;
     typedef Eigen::Matrix< double, nSizeMatTangent, 6 >               MatrixStateStrain;
-    PerezFougetSubstepper( double          initialStepSize,
-                           double          minimumStepSize,
-                           double          scaleUpFactor,
-                           double          scaleDownFactor,
-                           int             nPassesToIncrease,
+    PerezFougetSubstepper( double                        initialStepSize,
+                           double                        minimumStepSize,
+                           double                        scaleUpFactor,
+                           double                        scaleDownFactor,
+                           int                           nPassesToIncrease,
                            const Marmot::Math::Matrix6d& Cel );
 
     /// check if subincrementation process has finished
@@ -89,9 +89,9 @@ namespace Marmot::ContinuumMechanics::Algorithms {
     double currentSubstepSize;
     int    passedSubsteps;
 
-    const Marmot::Math::Matrix6d&    Cel;
-    MatrixStateStrain  I76;
-    TangentSizedMatrix I77;
+    const Marmot::Math::Matrix6d& Cel;
+    MatrixStateStrain             I76;
+    TangentSizedMatrix            I77;
 
     MatrixStateStrain consistentTangent;
   };
@@ -99,11 +99,11 @@ namespace Marmot::ContinuumMechanics::Algorithms {
 
 namespace Marmot::ContinuumMechanics::Algorithms {
   template < int n >
-  PerezFougetSubstepper< n >::PerezFougetSubstepper( double          initialStepSize,
-                                                     double          minimumStepSize,
-                                                     double          scaleUpFactor,
-                                                     double          scaleDownFactor,
-                                                     int             nPassesToIncrease,
+  PerezFougetSubstepper< n >::PerezFougetSubstepper( double                        initialStepSize,
+                                                     double                        minimumStepSize,
+                                                     double                        scaleUpFactor,
+                                                     double                        scaleDownFactor,
+                                                     int                           nPassesToIncrease,
                                                      const Marmot::Math::Matrix6d& Cel )
     :
 

@@ -21,8 +21,10 @@ void test_NewmarkBetaIntegrator()
 
   Marmot::ContinuumMechanics::TimeIntegration::newmarkBetaIntegration< 1 >( &du, &v, &a, dT, beta, gamma, &da_du );
 
-  throwExceptionOnFailure( checkIfEqual( a, 2, 1e-10 ), Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed: " << a );
-  throwExceptionOnFailure( checkIfEqual( v, 1, 1e-10 ), Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed: " << v );
+  throwExceptionOnFailure( checkIfEqual( a, 2, 1e-10 ),
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed: " << a );
+  throwExceptionOnFailure( checkIfEqual( v, 1, 1e-10 ),
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed: " << v );
 }
 
 int main()
