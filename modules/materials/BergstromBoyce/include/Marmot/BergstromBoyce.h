@@ -107,8 +107,7 @@ namespace Marmot::Materials {
    * - @b FvC -- viscous deformation gradient of network C (if present)
    *
    * @par Implementation variants (implementationType)
-   * - @b 0: CSDA -- Full return mapping; derivatives via complex-step differentiation
-   * - @b 1: Full return mapping; all derivatives computed analytically (not yet implemented)
+   * - @b 0: Full return mapping; derivatives via complex-step differentiation (CSDA)
    */
   class BergstromBoyce : public MarmotMaterialFiniteStrain {
   public:
@@ -185,20 +184,6 @@ namespace Marmot::Materials {
                         AlgorithmicModuli< 3 >&    tangents,
                         const Deformation< 3 >&    deformation,
                         const TimeIncrement&       timeIncrement ) const override;
-
-    /** @brief Full return mapping; all derivatives computed analytically.
-     *  @note Not yet implemented -- use CSDA (implementationType = 0).
-     */
-    void computeStressWithFullReturnMapping( ConstitutiveResponse< 3 >& response,
-                                             AlgorithmicModuli< 3 >&    tangents,
-                                             const Deformation< 3 >&    deformation,
-                                             const TimeIncrement&       timeIncrement ) const;
-
-    /** @brief Full return mapping; derivatives via complex-step differentiation approximation (CSDA). */
-    void computeStressCSDA( ConstitutiveResponse< 3 >& response,
-                            AlgorithmicModuli< 3 >&    tangents,
-                            const Deformation< 3 >&    deformation,
-                            const TimeIncrement&       timeIncrement ) const;
 
     /**
      * @brief Solves the return mapping and computes stress, tangent, energy, and dissipation for a viscous network

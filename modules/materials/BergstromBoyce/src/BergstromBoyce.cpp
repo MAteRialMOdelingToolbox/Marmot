@@ -48,26 +48,6 @@ namespace Marmot::Materials {
     stateLayout.finalize();
   }
 
-  void BergstromBoyce::computeStress( ConstitutiveResponse< 3 >& response,
-                                      AlgorithmicModuli< 3 >&    tangents,
-                                      const Deformation< 3 >&    deformation,
-                                      const TimeIncrement&       timeIncrement ) const
-  {
-    switch ( implementationType ) {
-    case 0: computeStressCSDA( response, tangents, deformation, timeIncrement ); break;
-    case 1: computeStressWithFullReturnMapping( response, tangents, deformation, timeIncrement ); break;
-    default: throw std::invalid_argument( "implementation type not supported" );
-    };
-  }
-
-  void BergstromBoyce::computeStressWithFullReturnMapping( ConstitutiveResponse< 3 >& response,
-                                                           AlgorithmicModuli< 3 >&    tangents,
-                                                           const Deformation< 3 >&    deformation,
-                                                           const TimeIncrement&       timeIncrement ) const
-  {
-    throw std::invalid_argument( "not implemented yet -- use CSDA (implementationType = 0)" );
-  }
-
   BergstromBoyce::ViscousNetworkResponse BergstromBoyce::solveViscousNetwork( const Tensor33d& F,
                                                                               Tensor33d&       Fv,
                                                                               const double     dT,
@@ -179,11 +159,16 @@ namespace Marmot::Materials {
     return { tau, dTau_dF, psi, dissipation };
   }
 
-  void BergstromBoyce::computeStressCSDA( ConstitutiveResponse< 3 >& response,
-                                          AlgorithmicModuli< 3 >&    tangents,
-                                          const Deformation< 3 >&    deformation,
-                                          const TimeIncrement&       timeIncrement ) const
+  void BergstromBoyce::computeStress( ConstitutiveResponse< 3 >& response,
+                                      AlgorithmicModuli< 3 >&    tangents,
+                                      const Deformation< 3 >&    deformation,
+                                      const TimeIncrement&       timeIncrement ) const
   {
+    if ( implementationType != 0 ) {
+      throw std::invalid_argument(
+        "implementation type not supported -- only CSDA (implementationType = 0) is available" );
+    }
+
     using namespace Marmot;
     using namespace Fastor;
     using namespace Eigen;
