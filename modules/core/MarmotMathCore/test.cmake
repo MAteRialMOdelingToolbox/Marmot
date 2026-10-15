@@ -31,5 +31,8 @@ add_marmot_test("TestMarmotTensorExponential" "${CURR_TEST_SOURCE_DIR}/TestMarmo
 # Tests for MarmotEigenSystems
 add_marmot_test("TestMarmotEigenSystems" "${CURR_TEST_SOURCE_DIR}/TestMarmotEigenSystems.cpp")
 
+# Tests for MarmotIsotropicTensorFunctions
+add_marmot_test("TestMarmotIsotropicTensorFunctions" "${CURR_TEST_SOURCE_DIR}/TestMarmotIsotropicTensorFunctions.cpp")
+
 # Tests for MarmotFastorTensorBasics
 add_marmot_test("TestMarmotFastorTensorBasics" "${CURR_TEST_SOURCE_DIR}/TestMarmotFastorTensorBasics.cpp")
