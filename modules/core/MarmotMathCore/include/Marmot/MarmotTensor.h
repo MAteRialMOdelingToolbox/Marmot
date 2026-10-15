@@ -398,8 +398,8 @@ namespace Marmot::Math::Tensors {
         return ( i == j ) ? ( i == 0 ? 0 : 1 ) : 2;
 
       else if ( nDim == 3 ) {
-        constexpr int tensor2VoigtNotationIndicesMapping[3][3] = { { 0, 3, 4 }, { 3, 1, 5 }, { 4, 5, 2 } };
-        return tensor2VoigtNotationIndicesMapping[i][j];
+        constexpr int tensor2VoigtIndicesMapping[3][3] = { { 0, 3, 4 }, { 3, 1, 5 }, { 4, 5, 2 } };
+        return tensor2VoigtIndicesMapping[i][j];
       }
 
       throw std::invalid_argument( Marmot::Utilities::MakeString()
@@ -431,7 +431,7 @@ namespace Marmot::Math::Tensors {
 
   } // namespace IndexNotation
 
-  // namespace ContinuumMechanics::VoigtNotation
+  // namespace ContinuumMechanics::Voigt
 
   // Definitions of the initializers of the Marmot::Math::Tensors above. They are inline, in the header: the tensors are
   // inline variables, which every translation unit including this header instantiates, so their initializers must be

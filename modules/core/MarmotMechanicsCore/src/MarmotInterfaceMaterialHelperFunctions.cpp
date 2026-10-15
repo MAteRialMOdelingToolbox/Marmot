@@ -80,7 +80,7 @@ namespace Marmot::Materials::InterfaceMaterialHelperFunctions {
 
     Tensor33d N = Fastor::einsum< i, j, to_ij >( normal, normal );
 
-    const auto  C_nu_eigen = Marmot::ContinuumMechanics::VoigtNotation::voigtToStiffness( C_nu_voigt_full );
+    const auto  C_nu_eigen = Marmot::ContinuumMechanics::Voigt::voigtToStiffness( C_nu_voigt_full );
     Tensor3333d C_nu_aibj( C_nu_eigen.data(), Fastor::ColumnMajor );
 
     auto [Z, H_inv, H_inv_nF, nY_H_inv_Fn] = calculateMaterialMatrices( normal, N, C_nu_aibj );
@@ -94,7 +94,7 @@ namespace Marmot::Materials::InterfaceMaterialHelperFunctions {
   {
     Tensor33d N = Fastor::einsum< i, j, to_ij >( normal, normal );
 
-    const auto  C_ep_eigen = Marmot::ContinuumMechanics::VoigtNotation::voigtToStiffness( C_ep_voigt );
+    const auto  C_ep_eigen = Marmot::ContinuumMechanics::Voigt::voigtToStiffness( C_ep_voigt );
     Tensor3333d C_ep_aibj( C_ep_eigen.data(), Fastor::ColumnMajor );
 
     Tensor33d Q     = Fastor::einsum< ijkl, jl, to_ik >( C_ep_aibj, N );

@@ -129,7 +129,7 @@ Coordinate transformations
 
 Because stress and strain use different shear scalings, they also require different transformation
 matrices under a change of basis. Both are built from a local coordinate system in
-``Marmot::ContinuumMechanics::VoigtNotation::Transformations``:
+``Marmot::ContinuumMechanics::Voigt::Transformations``:
 
 - ``transformationMatrixStressVoigt`` — for stress-like Voigt vectors
 - ``transformationMatrixStrainVoigt`` — for strain-like Voigt vectors; identical to the stress

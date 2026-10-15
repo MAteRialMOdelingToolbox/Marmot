@@ -106,7 +106,7 @@ namespace Marmot::Testing {
                          const double                                       stiffnessTol )
   {
     using namespace Eigen;
-    using namespace ContinuumMechanics::VoigtNotation;
+    using namespace ContinuumMechanics::Voigt;
 
     // modify steps to account for rotation
     const auto steps = solver.getSteps();

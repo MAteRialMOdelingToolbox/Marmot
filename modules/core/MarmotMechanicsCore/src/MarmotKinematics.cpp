@@ -10,8 +10,8 @@ namespace Marmot::ContinuumMechanics::Kinematics {
     Marmot::Math::Vector6d GreenLagrange( const Eigen::Matrix3d& F )
     {
       Eigen::Matrix3d H = F - Eigen::Matrix3d::Identity();
-      return Marmot::ContinuumMechanics::VoigtNotation::voigtFromStrainMatrix< 3 >(
-        0.5 * ( H + H.transpose() + H.transpose() * H ) );
+      return Marmot::ContinuumMechanics::Voigt::voigtFromStrainMatrix< 3 >( 0.5 *
+                                                                            ( H + H.transpose() + H.transpose() * H ) );
     }
 
     Marmot::Math::Tensors::Tensor633d dGreenLagrangedDeformationGradient( const Eigen::Matrix3d& F )

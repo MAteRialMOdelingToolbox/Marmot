@@ -5,7 +5,7 @@
 
 namespace Marmot::ContinuumMechanics::CommonConstitutiveModels {
   using namespace Marmot::Math::Constants;
-  using namespace ContinuumMechanics::HaighWestergaard;
+  using namespace ContinuumMechanics::Invariants::HaighWestergaard;
 
   MenetreyWillam::MenetreyWillam( const double ft, const MenetreyWillamType& type, const double fc )
   {

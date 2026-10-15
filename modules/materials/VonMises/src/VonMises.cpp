@@ -73,8 +73,8 @@ namespace Marmot::Materials {
     // compute elastic predictor
     const Marmot::Math::Vector6d trialStress = S + Cel * dE;
 
-    using namespace ContinuumMechanics::VoigtNotation;
-    const double rhoTrial = std::sqrt( 2. * Invariants::J2( trialStress ) );
+    using namespace ContinuumMechanics::Voigt;
+    const double rhoTrial = std::sqrt( 2. * ContinuumMechanics::Invariants::J2( trialStress ) );
 
     if ( f( rhoTrial, kappa ) >= 0.0 ) {
       // plastic step
@@ -92,7 +92,7 @@ namespace Marmot::Materials {
       double dg_ddKappa = 0;
 
       // compute return mapping direction
-      Marmot::Math::Vector6d n = ContinuumMechanics::VoigtNotation::IDev * trialStress / rhoTrial;
+      Marmot::Math::Vector6d n = ContinuumMechanics::Voigt::IDev * trialStress / rhoTrial;
 
       while ( std::abs( g( dKappa ) ) > Constants::innerNewtonTol ) {
 
@@ -116,7 +116,7 @@ namespace Marmot::Materials {
       kappa = kappa + dKappa;
 
       // compute consistent tangent in Voigt Notation
-      Marmot::Math::Matrix6d IDevHalfShear = ContinuumMechanics::VoigtNotation::IDev;
+      Marmot::Math::Matrix6d IDevHalfShear = ContinuumMechanics::Voigt::IDev;
       IDevHalfShear.block< 6, 3 >( 0, 3 ) *= 0.5;
 
       dS_dE = Cel -
@@ -177,8 +177,8 @@ namespace Marmot::Materials {
     // compute elastic predictor
     const Marmot::Math::Vector6d trialStress = S + Cel * dE;
 
-    using namespace ContinuumMechanics::VoigtNotation;
-    const double rhoTrial = std::sqrt( 2. * Invariants::J2( trialStress ) );
+    using namespace ContinuumMechanics::Voigt;
+    const double rhoTrial = std::sqrt( 2. * ContinuumMechanics::Invariants::J2( trialStress ) );
 
     if ( f( rhoTrial, kappa ) >= 0.0 ) {
       // plastic step
@@ -196,7 +196,7 @@ namespace Marmot::Materials {
       double dg_ddKappa = 0;
 
       // compute return mapping direction
-      Marmot::Math::Vector6d n = ContinuumMechanics::VoigtNotation::IDev * trialStress / rhoTrial;
+      Marmot::Math::Vector6d n = ContinuumMechanics::Voigt::IDev * trialStress / rhoTrial;
 
       double g_val = g( dKappa );
 

@@ -692,7 +692,7 @@ namespace Marmot::Discretizations::Elements {
                                                                   double        dT )
   {
     using namespace Marmot;
-    using namespace ContinuumMechanics::VoigtNotation;
+    using namespace ContinuumMechanics::Voigt;
 
     Eigen::Map< const RhsSized > QTotal( QTotal_ );
     Eigen::Map< const RhsSized > dQ( dQ_ );
@@ -825,7 +825,7 @@ namespace Marmot::Discretizations::Elements {
                                                                           double        dT )
   {
     using namespace Marmot;
-    using namespace ContinuumMechanics::VoigtNotation;
+    using namespace ContinuumMechanics::Voigt;
 
     Eigen::Map< const RhsSized > QTotal( QTotal_ );
     Eigen::Map< const RhsSized > dQ( dQ_ );

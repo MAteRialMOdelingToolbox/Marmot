@@ -47,7 +47,9 @@ All notable changes to Marmot are documented in this file. The format follows
   | `Marmot::TimeIntegration`, `Marmot::GeostaticStress`, `Marmot::GradientDamage`, `Marmot::PhaseField` | under `Marmot::ContinuumMechanics` |
   | `Marmot::Solvers::MarmotMaterialPointSolver{HypoElastic, FiniteStrain}` | `Marmot::Materials::MaterialPointSolver{HypoElastic, FiniteStrain}` |
   | `ContinuumMechanics::FiniteStrain::{Plasticity, Viscoelasticity}` | `ContinuumMechanics::{Plasticity, Viscoelasticity}` — the `FiniteStrain` namespace is dissolved; `DeformationMeasures`, `StressMeasures` and `EnergyDensityFunctions` stay directly under `ContinuumMechanics` |
-  | derivative namespaces `*OrderDerived` / `VoigtNotation::Derivatives` spellings | unified `FirstOrder` / `SecondOrder` / `ThirdOrder` (`Derivatives` kept for Voigt notation) |
+  | `ContinuumMechanics::VoigtNotation` (conversions, `Transformations`) | `ContinuumMechanics::Voigt` |
+  | `ContinuumMechanics::VoigtNotation::{Invariants, Derivatives}`, `ContinuumMechanics::HaighWestergaard` | `ContinuumMechanics::Invariants`, `::Invariants::Derivatives`, `::Invariants::HaighWestergaard` |
+  | derivative namespaces `*OrderDerived` spellings | unified `FirstOrder` / `SecondOrder` / `ThirdOrder` |
   | `Marmot::Materials::Shrinkage::B4` | `Marmot::Materials::B4Shrinkage` |
   | plain-`Marmot` typedefs (`Vector6d`, `Matrix6d`, `mVector6d`, …), general math functions and B-spline/monomial bases | `Marmot::Math::*` (root) |
 

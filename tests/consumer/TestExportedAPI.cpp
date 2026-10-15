@@ -79,9 +79,9 @@ namespace {
     require( Kinematics::VelocityGradient::dStretchingRate_dVelocityGradient( 0, 0, 0 ) == 1.0,
              "dStretchingRate_dVelocityGradient( 0, 0, 0 ) must be 1" );
 
-    require( VoigtNotation::P( 3 ) == 2.0 && VoigtNotation::PInv( 3 ) == 0.5, "VoigtNotation::P / PInv" );
-    require( VoigtNotation::I( 0 ) == 1.0 && VoigtNotation::I( 3 ) == 0.0, "VoigtNotation::I" );
-    require( VoigtNotation::IDev.trace() == 5.0, "VoigtNotation::IDev must have trace 5 (= 6 - 1)" );
+    require( Voigt::P( 3 ) == 2.0 && Voigt::PInv( 3 ) == 0.5, "Voigt::P / PInv" );
+    require( Voigt::I( 0 ) == 1.0 && Voigt::I( 3 ) == 0.0, "Voigt::I" );
+    require( Voigt::IDev.trace() == 5.0, "Voigt::IDev must have trace 5 (= 6 - 1)" );
   }
 
   /** @brief Creates a material through the factory and checks its stress response against the elastic tangent. */

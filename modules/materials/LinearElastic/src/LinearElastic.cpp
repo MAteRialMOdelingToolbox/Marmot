@@ -51,7 +51,7 @@ namespace Marmot::Materials {
 
       Marmot::Math::Matrix3d localCoordinateSystem = Marmot::Math::orthonormalCoordinateSystem( direction1,
                                                                                                 direction2 );
-      using namespace ContinuumMechanics::VoigtNotation::Transformations;
+      using namespace ContinuumMechanics::Voigt::Transformations;
       Marmot::Math::Matrix6d transformStrainToLocalSystem  = transformationMatrixStrainVoigt( localCoordinateSystem );
       Marmot::Math::Matrix6d transformStressToGlobalSystem = transformationMatrixStressVoigt( localCoordinateSystem )
                                                                .colPivHouseholderQr()

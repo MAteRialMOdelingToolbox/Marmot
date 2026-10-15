@@ -40,7 +40,7 @@ void testPureStretchHasNoRotation()
   const Eigen::Matrix3d        FMidStep     = 0.5 * ( FNew + FOld );
   const Eigen::Matrix3d        lMat         = ( FNew - FOld ) * FMidStep.inverse();
   const Eigen::Matrix3d        dEpsMat      = 0.5 * ( lMat + lMat.transpose() );
-  const Marmot::Math::Vector6d dEpsExpected = ContinuumMechanics::VoigtNotation::voigtFromStrainMatrix< 3 >( dEpsMat );
+  const Marmot::Math::Vector6d dEpsExpected = ContinuumMechanics::Voigt::voigtFromStrainMatrix< 3 >( dEpsMat );
 
   Marmot::Math::Vector6d dEps = hw.getStrainIncrement();
   throwExceptionOnFailure( checkIfEqual< double >( dEps, dEpsExpected, 1e-12 ),
@@ -109,10 +109,10 @@ void testRotateTensorMatchesDirectSimilarityTransform()
 
   // Recompute the same similarity transform independently via the plain 3x3 matrices, rather than
   // by re-deriving rotateTensor()'s own Voigt-conversion internals.
-  const Eigen::Matrix3d        dR        = hw.getRotationIncrement();
-  const Eigen::Matrix3d        stressMat = ContinuumMechanics::VoigtNotation::voigtToStress< double >( stress );
+  const Eigen::Matrix3d        dR                 = hw.getRotationIncrement();
+  const Eigen::Matrix3d        stressMat          = ContinuumMechanics::Voigt::voigtToStress< double >( stress );
   const Eigen::Matrix3d        rotatedMatExpected = dR * stressMat * dR.transpose();
-  const Marmot::Math::Vector6d rotatedExpected    = ContinuumMechanics::VoigtNotation::stressToVoigt< double >(
+  const Marmot::Math::Vector6d rotatedExpected    = ContinuumMechanics::Voigt::stressToVoigt< double >(
     rotatedMatExpected );
 
   throwExceptionOnFailure( checkIfEqual< double >( rotated, rotatedExpected, 1e-10 ),
@@ -202,7 +202,7 @@ void testComputeDSDFRotationalTermMatchesProjectorContraction()
 
   Marmot::Math::Vector6d stress = Marmot::Math::Vector6d::Zero();
   stress << 10., 20., 30., 4., 5., 6.;
-  const Eigen::Matrix3d stressMat = ContinuumMechanics::VoigtNotation::voigtToStress< double >( stress );
+  const Eigen::Matrix3d stressMat = ContinuumMechanics::Voigt::voigtToStress< double >( stress );
 
   Marmot::Math::Matrix6d zeroTangent = Marmot::Math::Matrix6d::Zero();
 

@@ -147,7 +147,7 @@ namespace {
                                    { timeOld + increment.dT, increment.dT } );
       bulkStress = bulkState.stress;
 
-      const Eigen::Matrix3d expectedStress = Marmot::ContinuumMechanics::VoigtNotation::voigtToStress( bulkStress );
+      const Eigen::Matrix3d expectedStress = Marmot::ContinuumMechanics::Voigt::voigtToStress( bulkStress );
       const Eigen::Vector3d expectedForce  = expectedStress * Eigen::Vector3d::UnitZ();
 
       throwExceptionOnFailure( checkIfEqual< double >( interfaceResponse.force, expectedForce, 1e-10 ),

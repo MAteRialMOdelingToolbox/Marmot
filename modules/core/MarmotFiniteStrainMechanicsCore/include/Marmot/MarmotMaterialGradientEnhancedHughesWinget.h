@@ -355,7 +355,7 @@ namespace Marmot::Materials {
       using namespace Fastor;
       using namespace Marmot::Math::Tensors::FastorTensors;
       using namespace Marmot::Math::Tensors::FastorIndices;
-      using namespace Marmot::ContinuumMechanics::VoigtNotation;
+      using namespace Marmot::ContinuumMechanics::Voigt;
 
       const Tensor33d& Ident = Spatial3D::I;
 

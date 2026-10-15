@@ -52,8 +52,8 @@ namespace Marmot::Discretizations::Elements {
     /*Typedefs*/
     /* static constexpr VoigtSize voigtSize = ( ( ( nDim * nDim ) + nDim ) / 2 ); */
     /// @brief Voigt notation size for @p nDim spatial dimensions.
-    static constexpr Marmot::ContinuumMechanics::VoigtNotation::VoigtSize
-      voigtSize = Marmot::ContinuumMechanics::VoigtNotation::voigtSizeFromDimension( nDim );
+    static constexpr Marmot::ContinuumMechanics::Voigt::VoigtSize
+      voigtSize = Marmot::ContinuumMechanics::Voigt::voigtSizeFromDimension( nDim );
 
     typedef Eigen::Matrix< double, nDim, 1 >             XiSized;          ///< Natural-coordinate vector.
     typedef Eigen::Matrix< double, nDim * nNodes, 1 >    CoordinateVector; ///< Flat nodal-coordinate vector.

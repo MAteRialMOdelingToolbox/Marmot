@@ -113,7 +113,7 @@ namespace Marmot::Materials {
     localCoordinateSystem = Marmot::Math::orthonormalCoordinateSystem( direction1, direction2 );
 
     // unit stiffness matrix in global coordinate system
-    CelUnitGlobal = ContinuumMechanics::VoigtNotation::Transformations::
+    CelUnitGlobal = ContinuumMechanics::Voigt::Transformations::
       transformStiffnessToGlobalSystem( CelUnit, localCoordinateSystem );
   }
 
@@ -129,7 +129,7 @@ namespace Marmot::Materials {
 
     const double& dT = timeInfo.dT;
 
-    using namespace Marmot::ContinuumMechanics::VoigtNotation;
+    using namespace Marmot::ContinuumMechanics::Voigt;
     Marmot::Math::Vector6d dELocal = Transformations::transformStrainToLocalSystem( dE, localCoordinateSystem );
 
     if ( ( dE.array() == 0 ).all() && dT == 0 ) {

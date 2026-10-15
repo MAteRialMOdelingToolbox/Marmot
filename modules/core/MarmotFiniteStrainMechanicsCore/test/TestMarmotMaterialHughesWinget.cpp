@@ -322,19 +322,15 @@ void testSmallStrainAgreement()
     step( w, state, F );
 
     Marmot::Math::Matrix6d C = Marmot::Math::Matrix6d::Zero();
-    direct.computeStress( directState,
-                          C,
-                          ContinuumMechanics::VoigtNotation::voigtFromStrainMatrix< 3 >( H ),
-                          { 0.0, 1.0 } );
+    direct.computeStress( directState, C, ContinuumMechanics::Voigt::voigtFromStrainMatrix< 3 >( H ), { 0.0, 1.0 } );
   }
 
   Tensor33d Ffinal;
   Marmot::Math::Tensors::mapEigenToFastor( Ffinal ) = Ftotal;
   const auto [tau, dTau_dF]                         = step( w, state, Ffinal );
 
-  const Eigen::Matrix3d sigmaDirect = ContinuumMechanics::VoigtNotation::stressMatrixFromVoigt< 3 >(
-    directState.stress );
-  Tensor33d expected;
+  const Eigen::Matrix3d sigmaDirect = ContinuumMechanics::Voigt::stressMatrixFromVoigt< 3 >( directState.stress );
+  Tensor33d             expected;
   Marmot::Math::Tensors::mapEigenToFastor( expected ) = sigmaDirect;
 
   // Compare the Cauchy stress: tau = J sigma, and the J factor alone is larger than the tolerance below.
@@ -498,8 +494,8 @@ void testVolumetricScaling()
 
   const double J = lambda * lambda * lambda;
   Tensor33d    expected;
-  Marmot::Math::Tensors::mapEigenToFastor(
-    expected ) = J * ContinuumMechanics::VoigtNotation::stressMatrixFromVoigt< 3 >( ds.stress );
+  Marmot::Math::Tensors::mapEigenToFastor( expected ) = J * ContinuumMechanics::Voigt::stressMatrixFromVoigt< 3 >(
+                                                              ds.stress );
 
   throwExceptionOnFailure( checkIfEqual( tau, expected, 1e-10 ),
                            "volumetric response does not match J * sigma in " + std::string( __PRETTY_FUNCTION__ ) );

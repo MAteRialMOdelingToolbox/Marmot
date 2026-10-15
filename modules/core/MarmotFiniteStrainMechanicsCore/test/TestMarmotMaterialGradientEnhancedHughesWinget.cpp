@@ -334,7 +334,7 @@ void testSmallStrainAgreement()
     step( w, state, F, Nrun );
 
     IncrementalGradientStub::increment inc;
-    inc.dStrain = ContinuumMechanics::VoigtNotation::voigtFromStrainMatrix< 3 >( H );
+    inc.dStrain = ContinuumMechanics::Voigt::voigtFromStrainMatrix< 3 >( H );
     inc.K( 0 )  = Nrun;
     inc.dK( 0 ) = dN;
     inc.time    = double( n );
@@ -351,8 +351,8 @@ void testSmallStrainAgreement()
   const Tensor33d sigma = Tensor33d( s.tau / Ftotal.determinant() );
 
   Tensor33d expectedSigma;
-  Marmot::Math::Tensors::mapEigenToFastor(
-    expectedSigma ) = ContinuumMechanics::VoigtNotation::stressMatrixFromVoigt< 3 >( directRes.stress );
+  Marmot::Math::Tensors::mapEigenToFastor( expectedSigma ) = ContinuumMechanics::Voigt::stressMatrixFromVoigt< 3 >(
+    directRes.stress );
 
   // The mid-step objective rate and the naive additive strain differ at O(total strain), the same
   // O(1e-5) deviation documented in the small-strain HughesWingetWrapper test.

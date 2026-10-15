@@ -270,8 +270,8 @@ namespace Marmot::ContinuumMechanics::CommonConstitutiveModels {
      * \note The yield function can be also used as plastic potential function if needed.
      */
     template < typename T >
-    T yieldFunction( const ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates< T >& hw,
-                     const double                                                                  varEps = 0.0 ) const
+    T yieldFunction( const ContinuumMechanics::Invariants::HaighWestergaard::HaighWestergaardCoordinates< T >& hw,
+                     const double varEps = 0.0 ) const
     {
       const T r_ = polarRadius( hw.theta, param.e );
       if ( varEps == 0 )
@@ -293,8 +293,8 @@ namespace Marmot::ContinuumMechanics::CommonConstitutiveModels {
      */
     template < typename T >
     std::tuple< T, T, T > dYieldFunction_dHaighWestergaard(
-      const ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates< T >& hw,
-      const double                                                                  varEps = 0.0 ) const
+      const ContinuumMechanics::Invariants::HaighWestergaard::HaighWestergaardCoordinates< T >& hw,
+      const double                                                                              varEps = 0.0 ) const
     {
       const auto [r_, dRdTheta_] = dPolarRadius_dTheta( hw.theta, param.e );
 
