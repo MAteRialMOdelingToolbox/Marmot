@@ -27,7 +27,7 @@
 #include "Marmot/HaighWestergaard.h"
 #include <utility>
 
-namespace Marmot::ContinuumMechanics::CommonConstitutiveModels {
+namespace Marmot::ContinuumMechanics::Plasticity {
 
   /**
    * \brief Generalized failure criterion proposed by Menétrey and Willam
@@ -367,4 +367,4 @@ namespace Marmot::ContinuumMechanics::CommonConstitutiveModels {
     }
   };
 
-} // namespace Marmot::ContinuumMechanics::CommonConstitutiveModels
+} // namespace Marmot::ContinuumMechanics::Plasticity

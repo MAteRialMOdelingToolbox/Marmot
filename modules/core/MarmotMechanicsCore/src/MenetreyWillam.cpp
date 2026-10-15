@@ -3,7 +3,7 @@
 #include <cmath>
 #include <sstream>
 
-namespace Marmot::ContinuumMechanics::CommonConstitutiveModels {
+namespace Marmot::ContinuumMechanics::Plasticity {
   using namespace Marmot::Math::Constants;
   using namespace ContinuumMechanics::Invariants::HaighWestergaard;
 
@@ -47,4 +47,4 @@ namespace Marmot::ContinuumMechanics::CommonConstitutiveModels {
     }
   }
 
-} // namespace Marmot::ContinuumMechanics::CommonConstitutiveModels
+} // namespace Marmot::ContinuumMechanics::Plasticity

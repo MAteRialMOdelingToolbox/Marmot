@@ -26,7 +26,7 @@
 #pragma once
 #include "Marmot/MarmotTypedefs.h"
 
-namespace Marmot::ContinuumMechanics::CommonConstitutiveModels {
+namespace Marmot::ContinuumMechanics::Viscoplasticity {
   /**
    * \brief Implementation of Duvaut-Lions viscosity for a material with `nMatTangentSize` internal degrees of
    * freedom
@@ -63,9 +63,9 @@ namespace Marmot::ContinuumMechanics::CommonConstitutiveModels {
      * @todo: Check if application to inverse can be replaced by application to non-inverse in general*/
     TangentSizedMatrix applyViscosityOnMatTangent( const TangentSizedMatrix& matTangentInv, double dT );
   };
-} // namespace Marmot::ContinuumMechanics::CommonConstitutiveModels
+} // namespace Marmot::ContinuumMechanics::Viscoplasticity
 
-namespace Marmot::ContinuumMechanics::CommonConstitutiveModels {
+namespace Marmot::ContinuumMechanics::Viscoplasticity {
   template < int s >
   DuvautLionsViscosity< s >::DuvautLionsViscosity( double viscosity ) : viscosity( viscosity )
   {
@@ -92,4 +92,4 @@ namespace Marmot::ContinuumMechanics::CommonConstitutiveModels {
   {
     return ( 1 / ( 1 + dT / viscosity ) ) * ( TangentSizedMatrix::Identity() + dT / viscosity * matTangentInv );
   }
-} // namespace Marmot::ContinuumMechanics::CommonConstitutiveModels
+} // namespace Marmot::ContinuumMechanics::Viscoplasticity
