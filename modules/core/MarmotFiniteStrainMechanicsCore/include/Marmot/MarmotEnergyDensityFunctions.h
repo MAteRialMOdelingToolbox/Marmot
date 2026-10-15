@@ -298,6 +298,9 @@ namespace Marmot::ContinuumMechanics {
        * the locking stretch) by shifting the real part of the argument \f$w\f$ up to a
        * small positive floor rather than overwriting it, so that any complex-step or
        * dual-number perturbation carried in \f$\bar I_1\f$ survives the regularization.
+       * The floor is scaled relative to \f$w_0 = 1 - 1/\lambda_L^2\f$ so that the
+       * reference state (\f$\bar I_1 = 3, w = w_0\f$) remains strictly unregularized
+       * and exactly zero-energy even for locking stretches arbitrarily close to 1.
        *
        * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff::dual3rd.
        * @param Ibar1 Isochoric first invariant, \f$\bar I_1 = I_1 J^{-2/3}\f$.
@@ -310,12 +313,12 @@ namespace Marmot::ContinuumMechanics {
       std::pair< T, T > arrudaBoyce8ChainEnergyAndDerivative( const T& Ibar1, const double mu, const double lambdaL )
       {
         const double lambdaL2 = lambdaL * lambdaL;
-        const T      w        = 1. - Ibar1 / ( 3. * lambdaL2 );
         const double w0       = 1. - 1. / lambdaL2;
+        const T      w        = w0 - ( Ibar1 - 3. ) / ( 3. * lambdaL2 );
 
-        constexpr double wFloor   = 1e-2;
-        const double     wReal    = Math::makeReal( w );
-        const T          wClamped = wReal > wFloor ? w : w + T( wFloor - wReal );
+        const double wFloor   = ( w0 > 0. ) ? std::min( 1e-2, 1e-2 * w0 ) : 1e-2;
+        const double wReal    = Math::makeReal( w );
+        const T      wClamped = wReal > wFloor ? w : w + T( wFloor - wReal );
 
         const T psi_iso     = mu / 6. * ( Ibar1 - 3. ) - mu * lambdaL2 * log( wClamped / w0 );
         const T dPsi_dIbar1 = mu / 6. + mu / 3. / wClamped;

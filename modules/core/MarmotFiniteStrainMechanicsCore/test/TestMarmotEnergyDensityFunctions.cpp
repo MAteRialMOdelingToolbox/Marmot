@@ -209,6 +209,35 @@ auto testArrudaBoycePlainMatchesFirstOrderDerived()
                                            "of the plain overload." );
 }
 
+// Cross-check that Arruda-Boyce returns exactly zero energy and zero derivative at
+// C=I even when the locking stretch lambdaL is arbitrarily close to 1.0 (where
+// w0 = 1 - 1/lambdaL^2 is very small and an unscaled floor would clamp the reference state).
+auto testArrudaBoyceZeroEnergyAtReferenceForNearOneLockingStretch()
+{
+  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+  const Tensor33d C  = Marmot::fastorTensorFromDoubleTensor< double >( Spatial3D::I );
+  const double    mu = 500.0;
+
+  for ( double lambdaL : { 1.00001, 1.0001, 1.001, 1.005, 1.01, 2.5 } ) {
+    const double psiPlain = ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
+    double       psiFOD;
+    Tensor33d    dPsiFOD_dC;
+    std::tie( psiFOD, dPsiFOD_dC ) = FirstOrderDerived::ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
+
+    throwExceptionOnFailure( std::abs( psiPlain ) < 1e-12,
+                             MakeString() << __PRETTY_FUNCTION__
+                                          << " plain Arruda-Boyce energy non-zero at C=I for lambdaL=" << lambdaL );
+    throwExceptionOnFailure( std::abs( psiFOD ) < 1e-12,
+                             MakeString()
+                               << __PRETTY_FUNCTION__
+                               << " FirstOrderDerived Arruda-Boyce energy non-zero at C=I for lambdaL=" << lambdaL );
+    throwExceptionOnFailure( checkIfEqual( dPsiFOD_dC, Tensor33d( 0.0 ), 1e-10 ),
+                             MakeString()
+                               << __PRETTY_FUNCTION__
+                               << " FirstOrderDerived Arruda-Boyce gradient non-zero at C=I for lambdaL=" << lambdaL );
+  }
+}
+
 // Generic plain-vs-FirstOrderDerived cross-check, same methodology as
 // testArrudaBoycePlainMatchesFirstOrderDerived: the FirstOrderDerived gradient
 // is checked against a complex-step derivative of the plain overload itself,
@@ -472,6 +501,7 @@ int main()
                                testFirstOrderDerivedB,
                                testSecondOrderDerivedB,
                                testArrudaBoycePlainMatchesFirstOrderDerived,
+                               testArrudaBoyceZeroEnergyAtReferenceForNearOneLockingStretch,
                                testNeoHookePlainMatchesFirstOrderDerived,
                                testYeohPlainMatchesFirstOrderDerived,
                                testMooneyRivlinPlainMatchesFirstOrderDerived,

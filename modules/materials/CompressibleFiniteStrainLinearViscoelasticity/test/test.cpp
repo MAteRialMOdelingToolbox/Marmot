@@ -55,6 +55,13 @@ static std::vector< double > getElasticArrudaBoyceProps()
   return { 4.0, 0.0, 1500.0, 3.0, 3500.0, 0.0 };
 }
 
+// Layout: [hyperelasticBase=4 (ArrudaBoyce), onlyShearCreep, mu, lambdaL, kappa, nMaxwell, gamma1, tau1]
+static std::vector< double > getViscoelasticArrudaBoyceShearCreepProps()
+{
+  // ArrudaBoyce, onlyShearCreep on, mu=1500, lambdaL=3.0, kappa=3500, nMaxwell=1, gamma=0.3, tau=10
+  return { 4.0, 1.0, 1500.0, 3.0, 3500.0, 1.0, 0.3, 10.0 };
+}
+
 static std::vector< double > getElasticPenceGouNeoHookeProps()
 {
   // PenceGouNeoHooke, full creep flag off, K=3500, G=1500, nMaxwell=0
@@ -409,6 +416,65 @@ void testTriaxialResponsePenceGouNeoHookeMatchesAnalytical()
                              std::string( __PRETTY_FUNCTION__ ) );
 }
 
+// Test I-12: Arruda-Boyce viscoelastic shear creep with onlyShearCreep=1 exercises the
+// closed-form infinitesimal shear modulus branch G0 = mu/3 + 2*mu/(3*(1-1/lambdaL^2)) in
+// initialCompliance = 0.5/G0 * I4.
+// For a small simple-shear step (gamma12 << 1):
+// 1) The instantaneous response matches the purely elastic Arruda-Boyce response and the
+//    small-shear analytic shear stress G0 * gamma12, which directly validates that
+//    initialCompliance : initialTangent = I4 (an erroneous G0=mu would produce a ~2.5% discrepancy).
+// 2) The fully relaxed hold (t = 1000 >> tau) relaxes to (1 - gamma) * G0 * gamma12.
+void testArrudaBoyceViscoelasticShearCreep()
+{
+  const std::string matName  = "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY";
+  auto              matProps = getViscoelasticArrudaBoyceShearCreepProps();
+  const double      mu       = matProps[2];
+  const double      lambdaL  = matProps[3];
+  const double      gamma    = matProps[6];
+  const double      tau      = matProps[7];
+  auto              solver   = makeSolver( matName, matProps );
+
+  const double w0 = 1.0 - 1.0 / ( lambdaL * lambdaL );
+  const double G0 = mu / 3.0 + 2.0 * mu / ( 3.0 * w0 );
+
+  const double gamma12 = 1e-4;
+  Tensor33d    gradU( 0.0 );
+  gradU( 0, 1 ) = gamma12;
+
+  // Step 1: Instantaneous loading step (dt << tau)
+  solver.addStep( makeStep( gradU, 0.0, 1e-6, 1e-6 ) );
+
+  // Step 2: Fully relaxed hold (t = 100 * tau >> tau)
+  solver.addStep( makeStep( Tensor33d( 0.0 ), 1e-6, 100.0 * tau, 10.0 * tau ) );
+
+  solver.solve();
+
+  const auto& history = solver.getHistory();
+  Tensor33d   tauInstant( 0.0 );
+  for ( const auto& h : history ) {
+    if ( std::abs( h.time - 1e-6 ) < 1e-12 ) {
+      tauInstant = h.stress;
+      break;
+    }
+  }
+  const Tensor33d tauRelaxed = history.back().stress;
+
+  const double targetInstant = G0 * gamma12;
+  const double targetRelaxed = ( 1.0 - gamma ) * G0 * gamma12;
+
+  // 1. Instantaneous shear stress must match analytic G0 * gamma12
+  // (guards against initialCompliance using mu instead of G0, which would produce ~2.5% discrepancy)
+  throwExceptionOnFailure( std::abs( tauInstant( 0, 1 ) - targetInstant ) < 1e-6,
+                           "I-12: ArrudaBoyce shear-creep instantaneous shear stress does not match analytic G0 target "
+                           "in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+
+  // 2. Relaxed shear stress must match (1 - gamma) * G0 * gamma12
+  throwExceptionOnFailure( std::abs( tauRelaxed( 0, 1 ) - targetRelaxed ) < 1e-6,
+                           "I-12: ArrudaBoyce shear-creep relaxed shear stress does not match target in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{
@@ -423,6 +489,7 @@ int main()
     testArrudaBoyceMatchesSharedPotential,                 // I-9: ArrudaBoyce matches shared potential
     testUndeformedResponsePenceGouNeoHooke,                // I-10: F=I gives zero stress (PenceGouNeoHooke)
     testTriaxialResponsePenceGouNeoHookeMatchesAnalytical, // I-11: PenceGouNeoHooke matches analytical reference
+    testArrudaBoyceViscoelasticShearCreep,                 // I-12: ArrudaBoyce viscoelastic shear creep
   };
 
   executeTestsAndCollectExceptions( tests );
