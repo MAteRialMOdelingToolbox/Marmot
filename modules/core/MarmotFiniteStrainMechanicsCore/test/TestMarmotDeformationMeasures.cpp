@@ -2,6 +2,9 @@
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotTesting.h"
 
+using namespace Marmot::Math::FastorTensors;
+using namespace Fastor;
+
 using namespace Marmot;
 using namespace Marmot::Testing;
 using namespace Marmot::ContinuumMechanics;

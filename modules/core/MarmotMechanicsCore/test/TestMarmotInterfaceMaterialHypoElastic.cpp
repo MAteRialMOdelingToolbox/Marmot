@@ -13,6 +13,9 @@
 #include <string>
 #include <vector>
 
+using namespace Marmot::Math::FastorTensors;
+using namespace Fastor;
+
 using namespace Marmot::Testing;
 
 namespace {

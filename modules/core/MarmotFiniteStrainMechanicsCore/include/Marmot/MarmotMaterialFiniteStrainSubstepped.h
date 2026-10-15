@@ -35,7 +35,6 @@
 
 namespace Marmot::Materials {
 
-  using namespace Fastor;
 
   /**
    * @class MaterialFiniteStrainSubstepped
@@ -83,6 +82,8 @@ namespace Marmot::Materials {
     MaterialFiniteStrainSubstepped( const double* matProperties_, int nMaterialProperties_, int materialNumber_ )
       : Marmot::Materials::MaterialFiniteStrain( matProperties_, nMaterialProperties_, materialNumber_ )
     {
+      using namespace Fastor;
+      using namespace Eigen;
       // 1. Parse Substepping parameters
       if ( nMaterialProperties_ < 1 ) {
         throw std::invalid_argument( "MaterialFiniteStrainSubstepped requires at least 1 property (nSubsteps)" );
@@ -111,6 +112,8 @@ namespace Marmot::Materials {
      */
     void initializeStateLayout()
     {
+      using namespace Fastor;
+      using namespace Eigen;
 
       // Add our state variable: Deformation Gradient at start of GLOBAL step (F_n)
       this->stateLayout.add( "Substepping_F_n", 9 );
@@ -123,6 +126,8 @@ namespace Marmot::Materials {
 
     void initializeYourself( double* stateVars, int nStateVars ) override
     {
+      using namespace Fastor;
+      using namespace Eigen;
       // 1. Initialize Base Material part
       int baseVarsCount = baseMaterial->getNumberOfRequiredStateVars();
 
@@ -151,6 +156,7 @@ namespace Marmot::Materials {
                                                  const Deformation< 3 >&    deformation,
                                                  const TimeIncrement&       timeIncrement ) const
     {
+      using namespace Fastor;
       using namespace Eigen;
       using namespace Marmot::Math::NumericalDifferentiation;
 
@@ -251,12 +257,12 @@ namespace Marmot::Materials {
                         const Deformation< 3 >&    deformation,
                         const TimeIncrement&       timeIncrement ) const override
     {
+      using namespace Fastor;
       using namespace Eigen;
-      using namespace Marmot::Math::FastorTensors;
 
-      TensorMap33d    Fn_ref = this->stateLayout.getAs< TensorMap33d >( response.stateVars, "Substepping_F_n" );
-      const Tensor33d Fn     = Fn_ref;
-      const Tensor33d Fn1    = deformation.F;
+      Math::FastorTensors::TensorMap33d    Fn_ref = this->stateLayout.getAs< Math::FastorTensors::TensorMap33d >( response.stateVars, "Substepping_F_n" );
+      const Math::FastorTensors::Tensor33d Fn     = Fn_ref;
+      const Math::FastorTensors::Tensor33d Fn1    = deformation.F;
 
       int nBaseState = baseMaterial->getNumberOfRequiredStateVars();
 
@@ -271,9 +277,9 @@ namespace Marmot::Materials {
                                              response.dissipation,
                                              this->stateLayout.getPtr( response.stateVars, "materialstate" ) );
 
-      AlgorithmicModuli< 3 > subTangents      = { Tensor3333d( 0.0 ) };
+      AlgorithmicModuli< 3 > subTangents      = { Math::FastorTensors::Tensor3333d( 0.0 ) };
       StateSensitivities     subSensitivities = { MatrixXd(), MatrixXd(), MatrixXd() };
-      Deformation< 3 >       subDef           = { Tensor33d( 0.0 ) };
+      Deformation< 3 >       subDef           = { Math::FastorTensors::Tensor33d( 0.0 ) };
 
       for ( int i = 1; i <= nSubsteps; ++i ) {
         double xi = static_cast< double >( i ) / static_cast< double >( nSubsteps );

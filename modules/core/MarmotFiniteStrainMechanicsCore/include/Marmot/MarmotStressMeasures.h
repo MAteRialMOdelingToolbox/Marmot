@@ -32,8 +32,6 @@ namespace Marmot::ContinuumMechanics::FiniteStrain {
 
   namespace StressMeasures {
 
-    using namespace Marmot::Math::Indices;
-    using namespace Marmot::Math::FastorTensors;
 
     /**
      * @brief Computes the Kirchhoff stress from the 2nd Piola-Kirchhoff stress and the deformation gradient.
@@ -53,9 +51,11 @@ namespace Marmot::ContinuumMechanics::FiniteStrain {
      * @return Kirchhoff stress
      */
     template < typename T >
-    Tensor33t< T > KirchhoffStressFromPK2( const Tensor33t< T >& PK2, const Tensor33t< T >& F )
+    Math::FastorTensors::Tensor33t< T > KirchhoffStressFromPK2( const Math::FastorTensors::Tensor33t< T >& PK2, const Math::FastorTensors::Tensor33t< T >& F )
     {
-      const Tensor33t< T > tau = einsum< iI, IJ, jJ, to_ij >( F, PK2, F );
+      using namespace Fastor;
+      using namespace Marmot::Math::Indices;
+      const Math::FastorTensors::Tensor33t< T > tau = einsum< iI, IJ, jJ, to_ij >( F, PK2, F );
 
       return tau;
     }
@@ -84,17 +84,19 @@ namespace Marmot::ContinuumMechanics::FiniteStrain {
        * \f$\boldsymbol{F}\f$
        */
       template < typename T >
-      std::tuple< Tensor33t< T >, Tensor3333t< T >, Tensor3333t< T > > KirchhoffStressFromPK2(
-        const Tensor33t< T >& PK2,
-        const Tensor33t< T >& F )
+      std::tuple< Math::FastorTensors::Tensor33t< T >, Math::FastorTensors::Tensor3333t< T >, Math::FastorTensors::Tensor3333t< T > > KirchhoffStressFromPK2(
+        const Math::FastorTensors::Tensor33t< T >& PK2,
+        const Math::FastorTensors::Tensor33t< T >& F )
       {
-        const auto&          I   = Spatial3D::I;
-        const Tensor33t< T > tau = einsum< iI, IJ, jJ, to_ij >( F, PK2, F );
+        using namespace Fastor;
+        using namespace Marmot::Math::Indices;
+        const auto&          I   = Math::FastorTensors::Spatial3D::I;
+        const Math::FastorTensors::Tensor33t< T > tau = einsum< iI, IJ, jJ, to_ij >( F, PK2, F );
 
-        const Tensor3333t< T > dTau_dPK2 = einsum< iI, jJ, to_ijIJ >( F, F );
+        const Math::FastorTensors::Tensor3333t< T > dTau_dPK2 = einsum< iI, jJ, to_ijIJ >( F, F );
 
-        const Tensor33t< T >   S_F     = einsum< KJ, jJ >( PK2, F );
-        const Tensor3333t< T > dTau_dF = einsum< ik, jK, to_ijkK >( I, transpose( S_F ) ) +
+        const Math::FastorTensors::Tensor33t< T >   S_F     = einsum< KJ, jJ >( PK2, F );
+        const Math::FastorTensors::Tensor3333t< T > dTau_dF = einsum< ik, jK, to_ijkK >( I, transpose( S_F ) ) +
                                          einsum< Ki, jk, to_ijkK >( S_F, I );
 
         return { tau, dTau_dPK2, dTau_dF };

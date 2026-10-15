@@ -29,9 +29,7 @@
 namespace Marmot::ContinuumMechanics::Viscoelasticity {
 
   namespace PronySeries {
-    using namespace Marmot;
-    using namespace Eigen;
-
+        
     /**
      * @brief Material properties for a generalized Maxwell (Prony series) model.
      *
@@ -63,7 +61,7 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
        * of one Maxwell branch.
        */
 
-      Matrix< double, 6, -1 > pronyStiffnesses;
+      Eigen::Matrix< double, 6, -1 > pronyStiffnesses;
       /**
        * @brief Relaxation times of each Prony series term.
        *
@@ -72,11 +70,11 @@ namespace Marmot::ContinuumMechanics::Viscoelasticity {
        * associated with one Maxwell branch.
        */
 
-      Matrix< double, 6, -1 > pronyRelaxationTimes;
+      Eigen::Matrix< double, 6, -1 > pronyRelaxationTimes;
     };
     /**
      * @typedef StateVarMatrix
-     * @brief Matrix of viscoelastic state variables.
+     * @brief Eigen::Matrix of viscoelastic state variables.
      *
      * Dynamic-size matrix of shape \f$[6 \times n]\f$, where each
      * \f$6\times 1\f$ block corresponds to the internal state variables

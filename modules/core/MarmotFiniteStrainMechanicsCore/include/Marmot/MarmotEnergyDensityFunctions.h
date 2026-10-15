@@ -30,8 +30,6 @@ namespace Marmot::ContinuumMechanics::FiniteStrain {
 
   namespace EnergyDensityFunctions {
 
-    using namespace Fastor;
-    using namespace Marmot::Math::FastorTensors;
 
     /** @brief Hyperelastic Energy Density Function Wa acc. Pence & Gou (2015), Eq. (2.11)
      *
@@ -51,8 +49,10 @@ namespace Marmot::ContinuumMechanics::FiniteStrain {
      * @return Energy density
      */
     template < typename T >
-    T PenceGouPotentialA( const Tensor33t< T >& C, const double K, const double G )
+    T PenceGouPotentialA( const Math::FastorTensors::Tensor33t< T >& C, const double K, const double G )
     {
+      using namespace Fastor;
+      using namespace Marmot::Math::Indices;
 
       const T J  = sqrt( determinant( C ) );
       const T I1 = trace( C );
@@ -80,8 +80,10 @@ namespace Marmot::ContinuumMechanics::FiniteStrain {
      * @return Energy density
      */
     template < typename T >
-    T PenceGouPotentialB( const Tensor33t< T >& C, const double K, const double G )
+    T PenceGouPotentialB( const Math::FastorTensors::Tensor33t< T >& C, const double K, const double G )
     {
+      using namespace Fastor;
+      using namespace Marmot::Math::Indices;
 
       const T detC = determinant( C );
       const T I1   = trace( C );
@@ -109,8 +111,10 @@ namespace Marmot::ContinuumMechanics::FiniteStrain {
      * @return Energy density
      */
     template < typename T >
-    T PenceGouPotentialC( const Tensor33t< T >& C, const double K, const double G )
+    T PenceGouPotentialC( const Math::FastorTensors::Tensor33t< T >& C, const double K, const double G )
     {
+      using namespace Fastor;
+      using namespace Marmot::Math::Indices;
 
       const T J  = sqrt( determinant( C ) );
       const T I1 = trace( C );
@@ -141,8 +145,10 @@ namespace Marmot::ContinuumMechanics::FiniteStrain {
      * @return Energy density
      */
     template < typename T >
-    T MooneyRivlinPotential( const Tensor33t< T >& C, const double C1, const double C2, const double D1 )
+    T MooneyRivlinPotential( const Math::FastorTensors::Tensor33t< T >& C, const double C1, const double C2, const double D1 )
     {
+      using namespace Fastor;
+      using namespace Marmot::Math::Indices;
 
       const T J   = sqrt( determinant( C ) );
       const T I1  = trace( C );
@@ -172,8 +178,10 @@ namespace Marmot::ContinuumMechanics::FiniteStrain {
      * @return Energy density.
      */
     template < typename T >
-    T YeohPotential( const Tensor33t< T >& C, const double C1, const double C2, const double C3, const double D1 )
+    T YeohPotential( const Math::FastorTensors::Tensor33t< T >& C, const double C1, const double C2, const double C3, const double D1 )
     {
+      using namespace Fastor;
+      using namespace Marmot::Math::Indices;
 
       const T J         = sqrt( determinant( C ) );
       const T I1        = trace( C );
@@ -192,8 +200,10 @@ namespace Marmot::ContinuumMechanics::FiniteStrain {
      * @return Energy density.
      */
     template < typename T >
-    T standardNeoHooke( const Tensor33t< T >& C, const double K, const double G )
+    T standardNeoHooke( const Math::FastorTensors::Tensor33t< T >& C, const double K, const double G )
     {
+      using namespace Fastor;
+      using namespace Marmot::Math::Indices;
       const double lambda = K - 2.0 / 3.0 * G;
 
       /*
@@ -247,8 +257,9 @@ namespace Marmot::ContinuumMechanics::FiniteStrain {
        * @return A tuple containing energy density and its first derivative w.r.t. C
        */
       template < typename T >
-      std::tuple< T, Tensor33t< T > > PenceGouPotentialB( const Tensor33t< T >& C, const double K, const double G )
+      std::tuple< T, Math::FastorTensors::Tensor33t< T > > PenceGouPotentialB( const Math::FastorTensors::Tensor33t< T >& C, const double K, const double G )
       {
+        using namespace Fastor;
         using namespace Marmot::Math::Indices;
 
         const T J  = sqrt( determinant( C ) );
@@ -260,11 +271,11 @@ namespace Marmot::ContinuumMechanics::FiniteStrain {
         const T dPsi_dJ  = K / 4. * ( J - 1. / J ) * ( 1. + 1. / ( J * J ) ) - G / 3. * I1 * pow( J, -5. / 3. );
         const T dPsi_dI1 = G / 2. * pow( J, -2. / 3. );
 
-        const Tensor33t< T > CInv   = inverse( C );
-        const Tensor33t< T > dJ_dC  = Marmot::Math::multiplyFastorTensorWithScalar( transpose( CInv ), T( J / 2. ) );
-        const Tensor33t< T > dI1_dC = Marmot::Math::fastorTensorFromDoubleTensor< T >( Spatial3D::I );
+        const Math::FastorTensors::Tensor33t< T > CInv   = inverse( C );
+        const Math::FastorTensors::Tensor33t< T > dJ_dC  = Marmot::Math::multiplyFastorTensorWithScalar( transpose( CInv ), T( J / 2. ) );
+        const Math::FastorTensors::Tensor33t< T > dI1_dC = Marmot::Math::fastorTensorFromDoubleTensor< T >( Math::FastorTensors::Spatial3D::I );
 
-        Tensor33t< T > dPsi_dC = Marmot::Math::multiplyFastorTensorWithScalar( dJ_dC, dPsi_dJ ) +
+        Math::FastorTensors::Tensor33t< T > dPsi_dC = Marmot::Math::multiplyFastorTensorWithScalar( dJ_dC, dPsi_dJ ) +
                                  Marmot::Math::multiplyFastorTensorWithScalar( dI1_dC, dPsi_dI1 );
 
         return { psi, dPsi_dC };
@@ -301,10 +312,11 @@ namespace Marmot::ContinuumMechanics::FiniteStrain {
        *
        */
       template < typename T >
-      std::tuple< T, Tensor33t< T >, Tensor3333t< T > > PenceGouPotentialB( const Tensor33t< T >& C,
+      std::tuple< T, Math::FastorTensors::Tensor33t< T >, Math::FastorTensors::Tensor3333t< T > > PenceGouPotentialB( const Math::FastorTensors::Tensor33t< T >& C,
                                                                             const double          K,
                                                                             const double          G )
       {
+        using namespace Fastor;
         using namespace Marmot::Math::Indices;
 
         const T J  = sqrt( determinant( C ) );
@@ -316,19 +328,19 @@ namespace Marmot::ContinuumMechanics::FiniteStrain {
         const T dPsi_dJ  = K / 4. * ( J - 1. / J ) * ( 1 + 1. / ( J * J ) ) - G / 3. * I1 * pow( J, -5. / 3. );
         const T dPsi_dI1 = G / 2. * pow( J, -2. / 3. );
 
-        const Tensor33t< T > CInv   = inverse( C );
-        const Tensor33t< T > dJ_dC  = 0.5 * J * transpose( CInv );
-        const Tensor33t< T > dI1_dC = Spatial3D::I;
+        const Math::FastorTensors::Tensor33t< T > CInv   = inverse( C );
+        const Math::FastorTensors::Tensor33t< T > dJ_dC  = 0.5 * J * transpose( CInv );
+        const Math::FastorTensors::Tensor33t< T > dI1_dC = Math::FastorTensors::Spatial3D::I;
 
-        Tensor33t< T > dPsi_dC = dPsi_dJ * dJ_dC + dPsi_dI1 * dI1_dC;
+        Math::FastorTensors::Tensor33t< T > dPsi_dC = dPsi_dJ * dJ_dC + dPsi_dI1 * dI1_dC;
 
         // second derivative w.r.t. C
         const T          d2Psi_dJdJ  = K / 4. * ( 1. + 3. / ( J * J * J * J ) ) + 5. / 9. * G * I1 * pow( J, -8. / 3. );
         const T          d2Psi_dJdI1 = -G / 3. * pow( J, -5. / 3. );
-        Tensor3333t< T > d2J_dCdC    = J / 4. * einsum< JI, LK, to_IJKL >( CInv, CInv ) -
+        Math::FastorTensors::Tensor3333t< T > d2J_dCdC    = J / 4. * einsum< JI, LK, to_IJKL >( CInv, CInv ) -
                                     J / 2. * einsum< JK, LI, to_IJKL >( CInv, CInv );
 
-        Tensor3333t< T > d2Psi_dCdC = d2Psi_dJdJ * einsum< IJ, KL >( dJ_dC, dJ_dC ) + dPsi_dJ * d2J_dCdC +
+        Math::FastorTensors::Tensor3333t< T > d2Psi_dCdC = d2Psi_dJdJ * einsum< IJ, KL >( dJ_dC, dJ_dC ) + dPsi_dJ * d2J_dCdC +
                                       d2Psi_dJdI1 *
                                         ( einsum< IJ, KL >( dJ_dC, dI1_dC ) + einsum< IJ, KL >( dI1_dC, dJ_dC ) );
 
@@ -350,6 +362,8 @@ namespace Marmot::ContinuumMechanics::FiniteStrain {
         const double&                                K,
         const double&                                G )
       {
+        using namespace Fastor;
+        using namespace Marmot::Math::Indices;
         const double lambda = K - 2.0 / 3.0 * G;
 
         /*
@@ -369,26 +383,25 @@ namespace Marmot::ContinuumMechanics::FiniteStrain {
         const T psi = G / 2 * ( trC - 3.0 - lnDetC ) + lambda / 4 * ( detC - 1.0 - lnDetC );
 
         // first derivative quantities
-        const Tensor33t< T >& dTrC_dC    = Marmot::Math::makeOtherScalarType< T >( Spatial3D::I );
-        const Tensor33t< T >  invCt      = transpose( inverse( C ) );
-        const Tensor33t< T >  dDetC_dC   = Marmot::Math::multiplyFastorTensorWithScalar( invCt, detC );
-        const Tensor33t< T >& dLnDetC_dC = invCt;
+        const Math::FastorTensors::Tensor33t< T >& dTrC_dC    = Marmot::Math::makeOtherScalarType< T >( Math::FastorTensors::Spatial3D::I );
+        const Math::FastorTensors::Tensor33t< T >  invCt      = transpose( inverse( C ) );
+        const Math::FastorTensors::Tensor33t< T >  dDetC_dC   = Marmot::Math::multiplyFastorTensorWithScalar( invCt, detC );
+        const Math::FastorTensors::Tensor33t< T >& dLnDetC_dC = invCt;
 
         // first derivative with respect to C
-        const Tensor33t< T > dPsi_dC = G / 2 * ( dTrC_dC - dLnDetC_dC ) + lambda / 4 * ( dDetC_dC - dLnDetC_dC );
+        const Math::FastorTensors::Tensor33t< T > dPsi_dC = G / 2 * ( dTrC_dC - dLnDetC_dC ) + lambda / 4 * ( dDetC_dC - dLnDetC_dC );
 
         // second derivative quantities
-        using namespace Marmot::Math::Indices;
         using lj                          = Index< l_, j_ >;
         using li                          = Index< l_, i_ >;
-        const Tensor3333t< T > dInvCt_dC  = -0.5 * ( einsum< ik, lj, to_ijkl >( invCt, invCt ) +
+        const Math::FastorTensors::Tensor3333t< T > dInvCt_dC  = -0.5 * ( einsum< ik, lj, to_ijkl >( invCt, invCt ) +
                                                     einsum< jk, li, to_ijkl >( invCt, invCt ) );
-        const Tensor3333t< T > d2DetC_dC2 = Marmot::Math::multiplyFastorTensorWithScalar( dInvCt_dC, detC ) +
+        const Math::FastorTensors::Tensor3333t< T > d2DetC_dC2 = Marmot::Math::multiplyFastorTensorWithScalar( dInvCt_dC, detC ) +
                                             einsum< ij, kl, to_ijkl >( invCt, dDetC_dC );
-        const Tensor3333t< T >& d2LnDetC_dC2 = dInvCt_dC;
+        const Math::FastorTensors::Tensor3333t< T >& d2LnDetC_dC2 = dInvCt_dC;
 
         // second derivative with respect to C
-        const Tensor3333t< T > d2Psi_dC2 = lambda / 4.0 * d2DetC_dC2 - ( G / 2.0 + lambda / 4.0 ) * d2LnDetC_dC2;
+        const Math::FastorTensors::Tensor3333t< T > d2Psi_dC2 = lambda / 4.0 * d2DetC_dC2 - ( G / 2.0 + lambda / 4.0 ) * d2LnDetC_dC2;
         return { psi, dPsi_dC, d2Psi_dC2 };
       }
 
@@ -409,16 +422,17 @@ namespace Marmot::ContinuumMechanics::FiniteStrain {
         const double&                                K,
         const double&                                G )
       {
+        using namespace Fastor;
         using namespace Marmot::Math::Indices;
-        Tensor3333t< T > I4       = Marmot::Math::makeOtherScalarType< T >( Spatial3D::I4 );
-        Tensor33t< T >   C        = U % U;
-        Tensor3333t< T > dC_dU    = 2 * einsum< iL, ijkl >( U, I4 );
-        Tensor3333t< T > d2C_dUdU = 2 * I4;
+        Math::FastorTensors::Tensor3333t< T > I4       = Marmot::Math::makeOtherScalarType< T >( Math::FastorTensors::Spatial3D::I4 );
+        Math::FastorTensors::Tensor33t< T >   C        = U % U;
+        Math::FastorTensors::Tensor3333t< T > dC_dU    = 2 * einsum< iL, ijkl >( U, I4 );
+        Math::FastorTensors::Tensor3333t< T > d2C_dUdU = 2 * I4;
 
         auto [psi, dPsi_dC, d2Psi_dCdC] = standardNeoHooke< T >( C, K, G );
 
-        Tensor33t< T >   dPsi_dU    = einsum< kl, klmn >( dPsi_dC, dC_dU );
-        Tensor3333t< T > d2Psi_dUdU = einsum< ijkl, klmn >( einsum< ijkl, ijmn >( dC_dU, d2Psi_dCdC ), dC_dU ) +
+        Math::FastorTensors::Tensor33t< T >   dPsi_dU    = einsum< kl, klmn >( dPsi_dC, dC_dU );
+        Math::FastorTensors::Tensor3333t< T > d2Psi_dUdU = einsum< ijkl, klmn >( einsum< ijkl, ijmn >( dC_dU, d2Psi_dCdC ), dC_dU ) +
                                       einsum< jL, ijkl >( dPsi_dC, d2C_dUdU );
 
         return { psi, dPsi_dU, d2Psi_dUdU };
