@@ -121,29 +121,9 @@ namespace Marmot::ContinuumMechanics {
       return res;
     }
 
-    /**
-     * @brief Mooney-Rivlin Hyperelastic Energy Density Function
-     * The energy density function \f$W_{MR}\f$ is given as
-     * \f[
-     *   W_{MR} = C_1 (\bar{I}_1 - 3) + C_2 (\bar{I}_2 - 3) + \frac{1}{D_1} (J - 1)^2
-     * \f]
-     * where \f$ \bar{I}_1 = I_1 J^{-\frac{2}{3}} \f$ and \f$ \bar{I}_2 = I_2 J^{-\frac{4}{3}} \f$ are the first
-     * and second invariant of the isochoric right Cauchy-Green tensor, respectively, \f$ I_1 =
-     * \text{tr}(\boldsymbol{C}) \f$ and \f$ I_2 = 0.5 (I_1^2 - \text{tr}(\boldsymbol{C}^2)) \f$ are the first and
-     * second invariant of the right Cauchy-Green tensor \f$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} \f$, \f$ J
-     * = \sqrt{\det(\boldsymbol{C})} = \det(\boldsymbol{F}) \f$ is the determinant of the deformation gradient, and \f$
-     * C_1, C_2, D_1 \f$ are material parameters.
-     *
-     * @tparam T Scalar type, e.g. double, float, etc.
-     * @param C Right Cauchy-Green tensor
-     * @param C1 Mooney-Rivlin material parameter C1
-     * @param C2 Mooney-Rivlin material parameter C2
-     * @param D1 Mooney-Rivlin material parameter D1
-     * @return Energy density
-     */
-    /** @brief Compressible Mooney-Rivlin hyperelastic energy density function
-     * (isochoric part only -- no volumetric term; see #VolumetricPenaltyPotential
-     * for the shared volumetric term every potential in this file now uses).
+    /** @brief Isochoric Mooney-Rivlin hyperelastic energy density function
+     * (no volumetric term; see #VolumetricPenaltyPotential for the shared
+     * volumetric term every potential in this file now uses).
      *
      *  The isochoric energy density is
      *  \f[
@@ -174,9 +154,9 @@ namespace Marmot::ContinuumMechanics {
       return res;
     }
 
-    /** @brief Yeoh hyperelastic energy density function (isochoric part only --
-     * no volumetric term; see #VolumetricPenaltyPotential for the shared
-     * volumetric term every potential in this file now uses).
+    /** @brief Isochoric Yeoh hyperelastic energy density function (no volumetric
+     * term; see #VolumetricPenaltyPotential for the shared volumetric term every
+     * potential in this file now uses).
      *
      *  The isochoric energy density is
      *  \f[
@@ -203,8 +183,8 @@ namespace Marmot::ContinuumMechanics {
       return res;
     }
 
-    /** @brief Compressible neo-Hookean hyperelastic energy density function
-     * (isochoric part only -- no volumetric term; see #VolumetricPenaltyPotential
+    /** @brief Isochoric neo-Hookean hyperelastic energy density function
+     * (no volumetric term; see #VolumetricPenaltyPotential
      * for the shared volumetric term every potential in this file now uses),
      * acc. Pence & Gou (2015).
      *
@@ -328,7 +308,7 @@ namespace Marmot::ContinuumMechanics {
     } // namespace detail
     /** @endcond */
 
-    /** @brief Arruda-Boyce 8-chain hyperelastic energy density function (isochoric
+    /** @brief Isochoric Arruda-Boyce 8-chain hyperelastic energy density function (isochoric
      * part only -- no volumetric term; each consuming material adds its own
      * volumetric penalty, since the classical 8-chain derivation is purely isochoric
      * and different materials in this codebase use different volumetric conventions),
@@ -389,7 +369,7 @@ namespace Marmot::ContinuumMechanics {
         return { psi, dPsi_dC };
       }
 
-      /** @brief Compressible neo-Hookean potential (see the plain
+      /** @brief Isochoric neo-Hookean potential (see the plain
        * #NeoHookePotential, isochoric part only) and its first derivative w.r.t. C,
        * \f[
        *   \frac{\partial W_{\rm iso}}{\partial \boldsymbol C} = \frac{\mu}{2}\frac{\partial \bar I_1}{\partial
@@ -418,7 +398,7 @@ namespace Marmot::ContinuumMechanics {
         return { psi, dPsi_dC };
       }
 
-      /** @brief Yeoh potential (see the plain #YeohPotential, isochoric part
+      /** @brief Isochoric Yeoh potential (see the plain #YeohPotential, isochoric part
        * only) and its first derivative w.r.t. C.
        *
        * @tparam T Scalar type, e.g. double, std::complex<double>.
@@ -449,7 +429,7 @@ namespace Marmot::ContinuumMechanics {
         return { psi, dPsi_dC };
       }
 
-      /** @brief Mooney-Rivlin potential (see the plain #MooneyRivlinPotential,
+      /** @brief Isochoric Mooney-Rivlin potential (see the plain #MooneyRivlinPotential,
        * isochoric part only) and its first derivative w.r.t. C.
        *
        * @tparam T Scalar type, e.g. double, std::complex<double>.
@@ -542,7 +522,7 @@ namespace Marmot::ContinuumMechanics {
         return { psi, dPsi_dC };
       }
 
-      /** @brief Arruda-Boyce 8-chain hyperelastic energy density function (isochoric
+      /** @brief Isochoric Arruda-Boyce 8-chain hyperelastic energy density function (isochoric
        * part only) and its first derivative w.r.t. C -- see the plain
        * #ArrudaBoyce8ChainPotential for the formula and its reduction/stress-free
        * properties. This overload additionally returns
