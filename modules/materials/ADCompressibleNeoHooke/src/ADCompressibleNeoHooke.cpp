@@ -36,13 +36,11 @@ namespace Marmot::Materials {
 
     using namespace ContinuumMechanics;
     // compute Cauchy-Green deformation
-    const auto C = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F_ );
+    const auto C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F_ );
 
     // compute energy density and first derivative w.r.t Cauchy Green deformation
-    const auto [psi_,
-                dPsi_dC] = Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( C,
-                                                                                                               K,
-                                                                                                               G );
+    const auto [psi_, dPsi_dC] = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
+      PenceGouPotentialB( C, K, G );
 
     // compute Kirchhoff stress
     Tensor33t< autodiff::dual > PK2 = Marmot::Math::Tensors::multiplyFastorTensorWithScalar( dPsi_dC,

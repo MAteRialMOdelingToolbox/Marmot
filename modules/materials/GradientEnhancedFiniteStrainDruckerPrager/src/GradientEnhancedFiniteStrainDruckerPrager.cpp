@@ -613,13 +613,11 @@ namespace Marmot::Materials {
 
     // effective Kirchhoff stress and its sensitivity to Fe, as in FiniteStrainJ2Plasticity
     using namespace ContinuumMechanics;
-    const auto [Ce, dCe_dFe] = Marmot::ContinuumMechanics::DeformationMeasures::FirstOrder::rightCauchyGreen( r.Fe );
-    const auto [psiEff,
-                dPsi_dCe,
-                d2Psi]       = Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrder::PenceGouPotentialB( Ce,
-                                                                                                              K,
-                                                                                                              G );
-    const Tensor33d PK2      = 2. * dPsi_dCe;
+    const auto [Ce, dCe_dFe] = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder::
+      rightCauchyGreen( r.Fe );
+    const auto [psiEff, dPsi_dCe, d2Psi] = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::SecondOrder::
+      PenceGouPotentialB( Ce, K, G );
+    const Tensor33d PK2                             = 2. * dPsi_dCe;
     const auto [tauEff, dTau_dPK2, dTau_dFePartial] = Marmot::ContinuumMechanics::StressMeasures::FirstOrder::
       KirchhoffStressFromPK2( PK2, r.Fe );
     const Tensor3333d dPK2_dFe    = einsum< ijKL, KLMN >( Tensor3333d( 2. * d2Psi ), dCe_dFe );

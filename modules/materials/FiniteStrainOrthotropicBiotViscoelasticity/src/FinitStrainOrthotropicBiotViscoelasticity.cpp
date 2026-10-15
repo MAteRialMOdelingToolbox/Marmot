@@ -62,7 +62,7 @@ namespace Marmot::Materials {
 
     using namespace ContinuumMechanics;
     // compute Cauchy-Green deformation
-    const Tensor33t< scalar > C = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
+    const Tensor33t< scalar > C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
     // compute principal stretches and directions
     auto [lam, Q] = Math::computeEigenSystemJacobi( C );

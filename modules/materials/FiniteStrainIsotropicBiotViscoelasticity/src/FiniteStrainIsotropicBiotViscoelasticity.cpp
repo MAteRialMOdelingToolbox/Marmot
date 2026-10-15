@@ -36,10 +36,11 @@ namespace Marmot::Materials {
       maxwellProperties(
         ContinuumMechanics::Viscoelasticity::createMaxwellProperties( materialProperties[2], &materialProperties[3] ) ),
 
-      initialCompliance( Marmot::Math::Tensors::makeDual( Marmot::Math::Tensors::invertMinorSymmetricFourthOrderTensor(
-        std::get< 2 >( ContinuumMechanics::EnergyDensityFunctions::SecondOrder::BiotNeoHooke( evaluate( Spatial3D::I ),
-                                                                                              K,
-                                                                                              G ) ) ) ) )
+      initialCompliance(
+        Marmot::Math::Tensors::makeDual( Marmot::Math::Tensors::invertMinorSymmetricFourthOrderTensor( std::get< 2 >(
+          ContinuumMechanics::Elasticity::EnergyDensityFunctions::SecondOrder::BiotNeoHooke( evaluate( Spatial3D::I ),
+                                                                                             K,
+                                                                                             G ) ) ) ) )
 
   {
     initializeStateLayout();
@@ -56,7 +57,7 @@ namespace Marmot::Materials {
     using namespace ContinuumMechanics;
 
     // compute Cauchy-Green deformation
-    const Tensor33t< scalar > C = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
+    const Tensor33t< scalar > C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
     // compute eigenvalues and eigenvectors of C
     auto [lam, Q] = Math::computeEigenSystemJacobi( C );
@@ -69,9 +70,11 @@ namespace Marmot::Materials {
     const Tensor33t< scalar > U = Q % principalStretch % transpose( Q );
 
     // compute Biot stress and its derivative with respect to the right stretch tensor
-    auto [psi, S_biot, dS_biot_dU] = Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrder::BiotNeoHooke( U,
-                                                                                                                    K,
-                                                                                                                    G );
+    auto [psi,
+          S_biot,
+          dS_biot_dU] = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::SecondOrder::BiotNeoHooke( U,
+                                                                                                                   K,
+                                                                                                                   G );
 
     // retrieve Biot stress from the previous increment
     Tensor33d S_biot_old( stateLayout.getPtr( response.stateVars, "S0_old" ) );

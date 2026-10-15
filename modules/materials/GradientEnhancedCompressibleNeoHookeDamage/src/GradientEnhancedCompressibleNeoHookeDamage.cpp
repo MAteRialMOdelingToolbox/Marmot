@@ -82,12 +82,10 @@ namespace Marmot::Materials {
     const auto& F = deformation.F;
 
     // undamaged neo-Hookean response, as in CompressibleNeoHooke
-    const auto [C, dC_dF]   = Marmot::ContinuumMechanics::DeformationMeasures::FirstOrder::rightCauchyGreen( F );
-    const auto [psi0,
-                dPsi_dC,
-                d2Psi_dCdC] = Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrder::PenceGouPotentialB( C,
-                                                                                                                   K,
-                                                                                                                   G );
+    const auto [C,
+                dC_dF] = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder::rightCauchyGreen( F );
+    const auto [psi0, dPsi_dC, d2Psi_dCdC] = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::
+      SecondOrder::PenceGouPotentialB( C, K, G );
 
     const Tensor33d PK2    = 2. * dPsi_dC;
     const auto [tau0,

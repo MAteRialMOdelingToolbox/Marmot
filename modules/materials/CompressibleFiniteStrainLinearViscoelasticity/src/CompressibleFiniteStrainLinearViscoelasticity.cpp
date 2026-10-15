@@ -49,33 +49,32 @@ namespace Marmot::Materials {
 
     switch ( hyperelasticBase ) {
     case NeoHooke:
-      return ContinuumMechanics::EnergyDensityFunctions::ThirdOrder::standardNeoHooke( C,
-                                                                                       elasticProperties[0],
-                                                                                       elasticProperties[1] );
+      return ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder::
+        standardNeoHooke( C, elasticProperties[0], elasticProperties[1] );
     case PenceGouNeoHooke:
       energyDensityFunction =
         [this]( const Marmot::Math::Tensors::FastorTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
-          autodiff::dual3rd res = ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialB<
+          autodiff::dual3rd res = ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB<
             autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1] );
           return res;
         };
       break;
     case Yeoh:
-      energyDensityFunction = [this](
-                                const Marmot::Math::Tensors::FastorTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
-        autodiff::dual3rd
-          res = ContinuumMechanics::EnergyDensityFunctions::YeohPotential< autodiff::dual3rd >( C_ad,
-                                                                                                elasticProperties[0],
-                                                                                                elasticProperties[1],
-                                                                                                elasticProperties[2],
-                                                                                                elasticProperties[3] );
-        return res;
-      };
+      energyDensityFunction =
+        [this]( const Marmot::Math::Tensors::FastorTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
+          autodiff::dual3rd res = ContinuumMechanics::Elasticity::EnergyDensityFunctions::YeohPotential<
+            autodiff::dual3rd >( C_ad,
+                                 elasticProperties[0],
+                                 elasticProperties[1],
+                                 elasticProperties[2],
+                                 elasticProperties[3] );
+          return res;
+        };
       break;
     case MooneyRivlin:
       energyDensityFunction =
         [this]( const Marmot::Math::Tensors::FastorTensors::Tensor33t< autodiff::dual3rd >& C_ad ) {
-          autodiff::dual3rd res = ContinuumMechanics::EnergyDensityFunctions::MooneyRivlinPotential<
+          autodiff::dual3rd res = ContinuumMechanics::Elasticity::EnergyDensityFunctions::MooneyRivlinPotential<
             autodiff::dual3rd >( C_ad, elasticProperties[0], elasticProperties[1], elasticProperties[2] );
           return res;
         };
@@ -138,7 +137,8 @@ namespace Marmot::Materials {
 
     using namespace ContinuumMechanics;
     // compute Cauchy-Green deformation
-    const auto [C, dC_dF] = Marmot::ContinuumMechanics::DeformationMeasures::FirstOrder::rightCauchyGreen( F );
+    const auto [C,
+                dC_dF] = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder::rightCauchyGreen( F );
 
     // compute energy density, first, second and third partial derivatives wrt Cauchy Green deformation
     const auto [psi_, dPsi_dC, d2Psi_dCdC, d3Psi_dCdCdC] = computeEnergyDensityAndDerivatives( C );

@@ -44,9 +44,10 @@ All notable changes to Marmot are documented in this file. The format follows
   | `Marmot::AutomaticDifferentiation`, `Marmot::NumericalAlgorithms::Differentiation` | `Marmot::Math::Differentiation::{Automatic, Numerical}` |
   | `Marmot::NumericalAlgorithms::Integration` | `Marmot::Math::Integration` |
   | `Marmot::NumericalAlgorithms` (substeppers, `HughesWinget`, `YieldSurfaceCombinationManager`) | `Marmot::ContinuumMechanics::Algorithms` |
-  | `Marmot::TimeIntegration`, `Marmot::GeostaticStress`, `Marmot::GradientDamage`, `Marmot::PhaseField` | under `Marmot::ContinuumMechanics` |
+  | `Marmot::TimeIntegration`, `Marmot::GeostaticStress` | under `Marmot::ContinuumMechanics` |
+  | `Marmot::GradientDamage`, `Marmot::PhaseField` | `Marmot::ContinuumMechanics::Degradation::{GradientDamage, PhaseField}` |
   | `Marmot::Solvers::MarmotMaterialPointSolver{HypoElastic, FiniteStrain}` | `Marmot::Materials::MaterialPointSolver{HypoElastic, FiniteStrain}` |
-  | `ContinuumMechanics::FiniteStrain::{Plasticity, Viscoelasticity}` | `ContinuumMechanics::{Plasticity, Viscoelasticity}` — the `FiniteStrain` namespace is dissolved; `DeformationMeasures`, `StressMeasures` and `EnergyDensityFunctions` stay directly under `ContinuumMechanics` |
+  | `ContinuumMechanics::FiniteStrain::*` (namespace dissolved) | `ContinuumMechanics::Kinematics::DeformationMeasures`, `::Elasticity::EnergyDensityFunctions`, `::StressMeasures`, `::Plasticity`, `::Viscoelasticity` (merged with the small-strain one) |
   | `ContinuumMechanics::VoigtNotation` (conversions, `Transformations`) | `ContinuumMechanics::Voigt` |
   | `ContinuumMechanics::VoigtNotation::{Invariants, Derivatives}`, `ContinuumMechanics::HaighWestergaard` | `ContinuumMechanics::Invariants`, `::Invariants::Derivatives`, `::Invariants::HaighWestergaard` |
   | derivative namespaces `*OrderDerived` spellings | unified `FirstOrder` / `SecondOrder` / `ThirdOrder` |

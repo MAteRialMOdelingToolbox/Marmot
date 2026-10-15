@@ -27,7 +27,7 @@
 #include <cmath>
 #include <tuple>
 
-namespace Marmot::ContinuumMechanics::GradientDamage::DecreasingInteractions {
+namespace Marmot::ContinuumMechanics::Degradation::GradientDamage::DecreasingInteractions {
 
   /**
    * @brief Damage dependent nonlocal interaction function acc. Poh & Sun (2017)
@@ -79,4 +79,4 @@ namespace Marmot::ContinuumMechanics::GradientDamage::DecreasingInteractions {
     std::tuple< double, double, double > poh( double omega, double eta, double R );
 
   } // namespace SecondOrder
-} // namespace Marmot::ContinuumMechanics::GradientDamage::DecreasingInteractions
+} // namespace Marmot::ContinuumMechanics::Degradation::GradientDamage::DecreasingInteractions

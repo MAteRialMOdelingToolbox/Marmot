@@ -5,7 +5,7 @@
 
 using namespace Marmot::Testing;
 using namespace Marmot::Math::Differentiation::Numerical;
-using namespace Marmot::ContinuumMechanics::PhaseField::EnergyDegradationFunctions;
+using namespace Marmot::ContinuumMechanics::Degradation::PhaseField::EnergyDegradationFunctions;
 
 void testQuadratic()
 {

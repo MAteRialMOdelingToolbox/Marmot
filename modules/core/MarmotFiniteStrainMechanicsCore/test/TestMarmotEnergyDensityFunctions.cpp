@@ -40,7 +40,7 @@ std::tuple< Tensor33d, Tensor33d, double, double, double, double > computationPa
 
 auto testPenceGouPotentialA()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
   // get computation parameters
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
@@ -56,7 +56,7 @@ auto testPenceGouPotentialA()
 
 auto testPenceGouPotentialB()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
   // get computation parameters
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
@@ -72,7 +72,7 @@ auto testPenceGouPotentialB()
 
 auto testPenceGouPotentialC()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
   // get computation parameters
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
@@ -88,7 +88,7 @@ auto testPenceGouPotentialC()
 
 auto testFirstOrderDerivedB()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrder;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder;
   // get computation parameters
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
@@ -123,7 +123,7 @@ auto testFirstOrderDerivedB()
 
 auto testSecondOrderDerivedB()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrder;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::SecondOrder;
   // get computation parameters
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
@@ -172,7 +172,7 @@ auto testSecondOrderDerivedB()
 
 auto testStandardNeoHookeEnergyMatchesClosedForm()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrder;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder;
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
   const double                                                       K      = get< 2 >( params );
@@ -192,7 +192,7 @@ auto testStandardNeoHookeEnergyMatchesClosedForm()
 
 auto testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrder;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder;
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
   const double                                                       K      = get< 2 >( params );
@@ -239,7 +239,7 @@ std::vector< Tensor33d > symmetricUnitDirections()
 
 auto testStandardNeoHookeSecondDerivativeMatchesNumericalDifferentiation()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrder;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder;
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
   const double                                                       K      = get< 2 >( params );
@@ -275,7 +275,7 @@ auto testStandardNeoHookeSecondDerivativeMatchesNumericalDifferentiation()
 
 auto testStandardNeoHookeThirdDerivativeMatchesNumericalDifferentiation()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrder;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder;
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
   const double                                                       K      = get< 2 >( params );

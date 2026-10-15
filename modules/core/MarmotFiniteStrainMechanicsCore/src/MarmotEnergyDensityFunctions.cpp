@@ -1,6 +1,6 @@
 #include "Marmot/MarmotEnergyDensityFunctions.h"
 #include "Marmot/MarmotAutomaticDifferentiationForFastor.h"
-namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrder {
+namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder {
   using namespace Fastor;
   using namespace Marmot::Math::Tensors::FastorTensors;
   std::tuple< double,
@@ -102,4 +102,4 @@ namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrder {
 
     return { psi, dPsi_dC, d2Psi_dC2, d3Psi_dC3 };
   }
-} // namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrder
+} // namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder

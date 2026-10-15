@@ -172,11 +172,9 @@ namespace Marmot::Materials {
     Tensor33t< T > secondPiolaKirchhoff( const Tensor33t< T >& Fe ) const
     {
       using namespace ContinuumMechanics;
-      const Tensor33t< T > Ce = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( Fe );
-      const auto [psi_,
-                  dPsi_dCe]   = Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( Ce,
-                                                                                                                  K,
-                                                                                                                  G );
+      const Tensor33t< T > Ce     = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( Fe );
+      const auto [psi_, dPsi_dCe] = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
+        PenceGouPotentialB( Ce, K, G );
       return Marmot::Math::Tensors::multiplyFastorTensorWithScalar( dPsi_dCe, T( 2.0 ) );
     }
 
@@ -189,7 +187,7 @@ namespace Marmot::Materials {
     template < typename T >
     Tensor33t< T > mandelStress( const Tensor33t< T >& Fe ) const
     {
-      return Tensor33t< T >( ContinuumMechanics::DeformationMeasures::rightCauchyGreen( Fe ) %
+      return Tensor33t< T >( ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( Fe ) %
                              secondPiolaKirchhoff( Fe ) );
     }
 

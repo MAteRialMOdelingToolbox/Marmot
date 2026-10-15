@@ -6,7 +6,7 @@
 
 using namespace Marmot::Testing;
 using namespace Marmot::Math::Differentiation::Numerical;
-using namespace Marmot::ContinuumMechanics::GradientDamage::DecreasingInteractions;
+using namespace Marmot::ContinuumMechanics::Degradation::GradientDamage::DecreasingInteractions;
 
 void testPohTemplate()
 {

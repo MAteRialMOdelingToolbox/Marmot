@@ -27,7 +27,7 @@
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include <Fastor/tensor_algebra/permute.h>
 
-namespace Marmot::ContinuumMechanics::DeformationMeasures {
+namespace Marmot::ContinuumMechanics::Kinematics::DeformationMeasures {
 
   /** @brief Computes the right Cauchy-Green tensor \f$\boldsymbol{C}\f$.
    * @tparam T Scalar type (e.g., float, double, autodiff::dual)
@@ -103,7 +103,7 @@ namespace Marmot::ContinuumMechanics::DeformationMeasures {
       using namespace Fastor;
       using namespace Marmot::Math::Tensors::FastorIndices;
       const Math::Tensors::FastorTensors::Tensor33t< T >
-        C = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
+        C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
       const Math::Tensors::FastorTensors::Tensor3333t< T >
         dC_dF = einsum< IK, kJ, to_IJkK >( Math::Tensors::FastorTensors::Spatial3D::I, F ) +
@@ -137,8 +137,8 @@ namespace Marmot::ContinuumMechanics::DeformationMeasures {
     {
       using namespace Fastor;
       using namespace Marmot::Math::Tensors::FastorIndices;
-      Math::Tensors::FastorTensors::Tensor33t< T > b = Marmot::ContinuumMechanics::DeformationMeasures::leftCauchyGreen(
-        F );
+      Math::Tensors::FastorTensors::Tensor33t< T >
+        b = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::leftCauchyGreen( F );
 
       const Math::Tensors::FastorTensors::Tensor3333t< T >
         db_dF = einsum< ik, jK, to_ijkK >( Math::Tensors::FastorTensors::Spatial3D::I, F ) +
@@ -265,4 +265,4 @@ namespace Marmot::ContinuumMechanics::DeformationMeasures {
 
   } // namespace FirstOrder
 
-} // namespace Marmot::ContinuumMechanics::DeformationMeasures
+} // namespace Marmot::ContinuumMechanics::Kinematics::DeformationMeasures

@@ -17,7 +17,7 @@ void testTensorToScalar()
   // initialise F with identity tensor
   Tensor33d F;
   F.eye();
-  Tensor33d C = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   // set material parameters
   const double K = 3500;
@@ -25,7 +25,7 @@ void testTensorToScalar()
 
   std::function< autodiff::dual( const Fastor::Tensor< autodiff::dual, 3, 3 >& ) > psi =
     [&]( const Fastor::Tensor< autodiff::dual, 3, 3 >& Ce_ ) {
-      return Marmot::ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
+      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
     };
 
   // autodiff solution
@@ -38,13 +38,11 @@ void testTensorToScalar()
 
   // extension in first direction
   F( 0, 0 ) += 1e-3;
-  C = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
+  C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   // analytical solution
-  auto [psi_,
-        dPsi_dC_analytical] = Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( C,
-                                                                                                                  K,
-                                                                                                                  G );
+  auto [psi_, dPsi_dC_analytical] = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
+    PenceGouPotentialB( C, K, G );
 
   // autodiff solution
   dPsi_dC = df_dT( psi, C );
@@ -56,10 +54,10 @@ void testTensorToScalar()
 
   // shear deformation
   F( 0, 1 ) += 1e-3;
-  C = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
+  C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   // analytical solution
-  std::tie( psi_, dPsi_dC_analytical ) = Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrder::
+  std::tie( psi_, dPsi_dC_analytical ) = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
     PenceGouPotentialB( C, K, G );
 
   // autodiff solution
@@ -77,14 +75,14 @@ void testTensorToScalarSymmetric()
   F.eye();
   F( 0, 0 ) += 1e-3;
   F( 0, 1 ) += 2e-3;
-  Tensor33d C = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   const double K = 3500;
   const double G = 1000;
 
   std::function< autodiff::dual( const Fastor::Tensor< autodiff::dual, 3, 3 >& ) > psi =
     [&]( const Fastor::Tensor< autodiff::dual, 3, 3 >& Ce_ ) {
-      return Marmot::ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
+      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
     };
 
   Tensor33d dPsi_dC_full = df_dT( psi, C );
@@ -107,7 +105,8 @@ void testTensorToScalarWith2ndOrderDuals()
   seed< 1 >( F_dual( 0, 0 ), 1 );
 
   // compute right Cauchy-Green tensor
-  Tensor33t< autodiff::dual > C_dual = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F_dual );
+  Tensor33t< autodiff::dual > C_dual = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen(
+    F_dual );
 
   // set material parameters
   const double K = 3500;
@@ -115,11 +114,11 @@ void testTensorToScalarWith2ndOrderDuals()
 
   std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >& ) > psi =
     [&]( const Tensor33t< autodiff::dual2nd >& Ce_ ) {
-      return Marmot::ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
+      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
     };
 
   // analytical solution
-  auto [psi_, dPsi_dC_analytical] = Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrder::
+  auto [psi_, dPsi_dC_analytical] = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
     PenceGouPotentialB( C_dual, K, G );
 
   // autodiff solution
@@ -131,10 +130,10 @@ void testTensorToScalarWith2ndOrderDuals()
 
   // extension in first direction
   F_dual( 0, 0 ) += 1e-3;
-  C_dual = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F_dual );
+  C_dual = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F_dual );
 
   // analytical solution
-  std::tie( psi_, dPsi_dC_analytical ) = Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrder::
+  std::tie( psi_, dPsi_dC_analytical ) = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
     PenceGouPotentialB( C_dual, K, G );
 
   // autodiff solution
@@ -147,10 +146,10 @@ void testTensorToScalarWith2ndOrderDuals()
 
   // shear deformation
   F_dual( 0, 1 ) += 1e-3;
-  C_dual = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F_dual );
+  C_dual = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F_dual );
 
   // analytical solution
-  std::tie( psi_, dPsi_dC_analytical ) = Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrder::
+  std::tie( psi_, dPsi_dC_analytical ) = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
     PenceGouPotentialB( C_dual, K, G );
 
   // autodiff solution
@@ -167,7 +166,7 @@ void testTensorToScalarWith2ndOrderDualsSymmetric()
   F.eye();
   F( 0, 0 ) += 1e-3;
   F( 0, 1 ) += 2e-3;
-  Tensor33d                   C      = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d                   C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
   Tensor33t< autodiff::dual > C_dual = Marmot::Math::Tensors::makeDual( C );
 
   const double K = 3500;
@@ -175,7 +174,7 @@ void testTensorToScalarWith2ndOrderDualsSymmetric()
 
   std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >& ) > psi =
     [&]( const Tensor33t< autodiff::dual2nd >& Ce_ ) {
-      return Marmot::ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
+      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( Ce_, K, G );
     };
 
   auto [val_full, dPsi_dC_full] = df_dT< 1 >( psi, C_dual );
@@ -196,7 +195,8 @@ void testTensorToTensor()
 
   std::function< Tensor33t< autodiff::dual >( const Tensor33t< autodiff::dual >& ) > f =
     [&]( const Fastor::Tensor< autodiff::dual, 3, 3 >& F_ ) {
-      Tensor33t< autodiff::dual > C = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F_ );
+      Tensor33t< autodiff::dual > C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen(
+        F_ );
       return C;
     };
 
@@ -204,8 +204,8 @@ void testTensorToTensor()
   auto [C, dC_dF] = dF_dT( f, F );
 
   // analytical solution
-  auto [C_analytical,
-        dC_dF_analytical] = Marmot::ContinuumMechanics::DeformationMeasures::FirstOrder::rightCauchyGreen( F );
+  auto [C_analytical, dC_dF_analytical] = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder::
+    rightCauchyGreen( F );
 
   // check results for C
   throwExceptionOnFailure( checkIfEqual< double >( C, C_analytical, 1e-12 ),
@@ -222,7 +222,7 @@ void testTensorToTensorSymmetric()
   F.eye();
   F( 0, 0 ) += 1e-3;
   F( 0, 1 ) += 2e-3;
-  Tensor33d C = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   // f(C) = C*C: transpose-equivariant (f(A^T) = f(A)^T for any A), same-dimension square output, so the
   // symmetry-exploiting path (which relies on that property) is applicable
@@ -247,20 +247,20 @@ void testTensorToScalarSecondOrder()
 
   Tensor33d F;
   F.eye();
-  Tensor33d C = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   const double K = 3500;
   const double G = 1000;
 
   std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >& ) > f =
     [&]( const Fastor::Tensor< autodiff::dual2nd, 3, 3 >& C_ ) {
-      return Marmot::ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
+      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
     };
 
   auto [psi, dPsi_dC, d2Psi_dC2] = SecondOrder::d2f_dT2( f, C );
 
-  auto [psi_, dPsi_dC_analytical, d2Psi_dC2_analytical] = Marmot::ContinuumMechanics::EnergyDensityFunctions::
-    SecondOrder::PenceGouPotentialB( C, K, G );
+  auto [psi_, dPsi_dC_analytical, d2Psi_dC2_analytical] = Marmot::ContinuumMechanics::Elasticity::
+    EnergyDensityFunctions::SecondOrder::PenceGouPotentialB( C, K, G );
 
   throwExceptionOnFailure( checkIfEqual( psi, psi_, 1e-12 ),
                            Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "computation of psi failed" );
@@ -279,14 +279,14 @@ void testTensorToScalarSecondOrderSymmetric()
   F.eye();
   F( 0, 0 ) += 1e-3;
   F( 1, 2 ) += 2e-3;
-  Tensor33d C = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   const double K = 3500;
   const double G = 1000;
 
   std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >& ) > f =
     [&]( const Fastor::Tensor< autodiff::dual2nd, 3, 3 >& C_ ) {
-      return Marmot::ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
+      return Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
     };
 
   auto [psi_full, dPsi_dC_full, d2Psi_dC2_full] = SecondOrder::d2f_dT2( f, C );
@@ -308,14 +308,16 @@ void testTensorToScalarSecondOrderMixed()
   F.eye();
   F( 1, 2 ) += 1e-4;
 
-  Tensor33d C = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   const double K = 3500;
   const double G = 1000;
 
   std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >&, const autodiff::dual2nd ) > f =
     [&]( const Fastor::Tensor< autodiff::dual2nd, 3, 3 >& C_, const autodiff::dual2nd omega_ ) {
-      const dual2nd psi = Marmot::ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
+      const dual2nd psi = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( C_,
+                                                                                                              K,
+                                                                                                              G );
       const dual2nd res = ( -pow( omega_, 2. ) + 1. ) * psi;
       return res;
     };
@@ -326,10 +328,8 @@ void testTensorToScalarSecondOrderMixed()
   auto d2Psi_dCdOmega = SecondOrder::d2f_dTensor_dScalar( f, C, omega );
 
   // analytical solution
-  auto [psi,
-        dPsi_dC_analytical] = Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( C,
-                                                                                                                  K,
-                                                                                                                  G );
+  auto [psi, dPsi_dC_analytical] = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
+    PenceGouPotentialB( C, K, G );
 
   Tensor33d d2Psi_dCdOmega_analytical = -2. * omega * dPsi_dC_analytical;
 
@@ -344,14 +344,16 @@ void testTensorToScalarSecondOrderMixedSymmetric()
   F.eye();
   F( 1, 2 ) += 1e-4;
 
-  Tensor33d C = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   const double K = 3500;
   const double G = 1000;
 
   std::function< autodiff::dual2nd( const Tensor33t< autodiff::dual2nd >&, const autodiff::dual2nd ) > f =
     [&]( const Fastor::Tensor< autodiff::dual2nd, 3, 3 >& C_, const autodiff::dual2nd omega_ ) {
-      const dual2nd psi = Marmot::ContinuumMechanics::EnergyDensityFunctions::PenceGouPotentialB( C_, K, G );
+      const dual2nd psi = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::PenceGouPotentialB( C_,
+                                                                                                              K,
+                                                                                                              G );
       const dual2nd res = ( -pow( omega_, 2. ) + 1. ) * psi;
       return res;
     };
@@ -372,7 +374,7 @@ void testTensorToScalarThirdOrder()
 
   Tensor33d F;
   F.eye();
-  Tensor33d C = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   // Use a simpler test function: f(C) = sum(C^2)
   std::function< autodiff::dual3rd( const Tensor33t< autodiff::dual3rd >& ) > f =
@@ -414,7 +416,7 @@ void testTensorToScalarThirdOrderSymmetric()
   F.eye();
   F( 0, 0 ) += 1e-3;
   F( 1, 2 ) += 2e-3;
-  Tensor33d C = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   // det(C): a transpose-invariant scalar function with genuinely nonzero third derivatives, unlike the trivial
   // sum(C^2) used above, so the symmetry-exploiting mirroring is actually exercised

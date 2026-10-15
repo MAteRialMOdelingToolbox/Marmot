@@ -2,7 +2,7 @@
 #include <autodiff/forward/dual.hpp>
 #include <cmath>
 
-namespace Marmot::ContinuumMechanics::PhaseField::EnergyDegradationFunctions {
+namespace Marmot::ContinuumMechanics::Degradation::PhaseField::EnergyDegradationFunctions {
 
   namespace SecondOrder {
 
@@ -42,13 +42,14 @@ namespace Marmot::ContinuumMechanics::PhaseField::EnergyDegradationFunctions {
       autodiff::seed< 1 >( pf_dual, 1 );
       autodiff::seed< 2 >( pf_dual, 1 );
 
-      const dual2nd result = Marmot::ContinuumMechanics::PhaseField::EnergyDegradationFunctions::generic( pf_dual,
-                                                                                                          p,
-                                                                                                          a1,
-                                                                                                          a2,
-                                                                                                          a3 );
+      const dual2nd
+        result = Marmot::ContinuumMechanics::Degradation::PhaseField::EnergyDegradationFunctions::generic( pf_dual,
+                                                                                                           p,
+                                                                                                           a1,
+                                                                                                           a2,
+                                                                                                           a3 );
 
       return { result.val.val, derivative< 1 >( result ), derivative< 2 >( result ) };
     }
   }; // namespace SecondOrder
-} // namespace Marmot::ContinuumMechanics::PhaseField::EnergyDegradationFunctions
+} // namespace Marmot::ContinuumMechanics::Degradation::PhaseField::EnergyDegradationFunctions
