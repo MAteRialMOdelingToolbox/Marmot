@@ -1,10 +1,11 @@
 #include "Marmot/LinearViscoelasticPowerLaw.h"
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 
-namespace Marmot::Materials::Registration {
+namespace {
+  using namespace Marmot::Materials;
 
 
   const static bool LinearViscoelasticPowerLawisRegistered = Marmot::Registry::MaterialHypoElasticFactory::registerMaterial<
     LinearViscoelasticPowerLaw >( "LINEARVISCOELASTICPOWERLAW" );
 
-} // namespace Marmot::Materials::Registration
+} // namespace

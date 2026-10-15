@@ -25,7 +25,8 @@
 #include "Marmot/GradientEnhancedFiniteStrainMaterialPoint.h"
 #include "Marmot/MarmotMPMLibrary.h"
 
-namespace Marmot::Discretizations::MaterialPoints::Registration {
+namespace {
+  using namespace Marmot::Discretizations::MaterialPoints;
 
   const static bool
     GradientEnhancedFiniteStrainMaterialPoint2D_isRegistered = Marmot::Registry::MaterialPointFactory::
@@ -49,4 +50,4 @@ namespace Marmot::Discretizations::MaterialPoints::Registration {
                                                                                        volume );
                              } );
 
-} // namespace Marmot::Discretizations::MaterialPoints::Registration
+} // namespace

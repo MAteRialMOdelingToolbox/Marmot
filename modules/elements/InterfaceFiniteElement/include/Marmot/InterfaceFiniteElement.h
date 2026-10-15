@@ -29,7 +29,7 @@
  * @file InterfaceFiniteElement.h
  * @brief Interface finite element formulation for displacement-jump based interface mechanics.
  *
- * This file defines the templated class `Marmot::Elements::InterfaceFiniteElement`
+ * This file defines the templated class `Marmot::Discretizations::Elements::InterfaceFiniteElement`
  * and its full in-header implementation. The element evaluates interface traction-like
  * quantities from displacement jumps and average surface kinematics and assembles
  * residual/tangent contributions at quadrature points.
@@ -51,7 +51,7 @@
 #include <stdexcept>
 #include <vector>
 
-namespace Marmot::Elements {
+namespace Marmot::Discretizations::Elements {
 
   /**
    * @class InterfaceFiniteElement
@@ -848,4 +848,4 @@ namespace Marmot::Elements {
 
   ///@}
 
-} // namespace Marmot::Elements
+} // namespace Marmot::Discretizations::Elements

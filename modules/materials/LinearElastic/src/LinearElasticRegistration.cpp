@@ -3,9 +3,8 @@
 #include "Marmot/MarmotMaterialHughesWinget.h"
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 
-namespace Marmot::Materials {
-
-  namespace Registration {
+namespace {
+  using namespace Marmot::Materials;
 
 
     const static bool LinearElasticIsRegistered = Marmot::Registry::MaterialHypoElasticFactory::registerMaterial< LinearElastic >(
@@ -16,5 +15,4 @@ namespace Marmot::Materials {
     const static bool LinearElasticHughesWingetIsRegistered = Marmot::Registry::MaterialFiniteStrainFactory::registerMaterial<
       HughesWingetWrapper< LinearElastic > >( "LINEARELASTIC/HUGHES-WINGET" );
 
-  } // namespace Registration
-} // namespace Marmot::Materials
+  } // namespace

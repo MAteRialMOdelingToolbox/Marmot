@@ -44,7 +44,7 @@
 #include <memory>
 #include <vector>
 
-namespace Marmot::Elements {
+namespace Marmot::Discretizations::Elements {
   /** @brief Implementation of a displacement-based finite element
    * for geometrically nonlinear analysis.
    *
@@ -1386,4 +1386,4 @@ namespace Marmot::Elements {
     }
   }
 
-} // namespace Marmot::Elements
+} // namespace Marmot::Discretizations::Elements

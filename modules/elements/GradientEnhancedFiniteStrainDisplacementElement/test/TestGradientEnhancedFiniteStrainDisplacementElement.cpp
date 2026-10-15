@@ -12,7 +12,7 @@
 #include <vector>
 
 using namespace Marmot;
-using namespace Marmot::Elements;
+using namespace Marmot::Discretizations::Elements;
 using namespace Marmot::Testing;
 
 namespace {

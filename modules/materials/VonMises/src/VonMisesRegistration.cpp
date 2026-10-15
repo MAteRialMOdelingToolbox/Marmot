@@ -3,9 +3,8 @@
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 #include "Marmot/VonMises.h"
 
-namespace Marmot::Materials {
-
-  namespace Registration {
+namespace {
+  using namespace Marmot::Materials;
 
 
     const static bool VonMisesIsRegistered = Marmot::Registry::MaterialHypoElasticFactory::registerMaterial< VonMisesModel >(
@@ -21,6 +20,4 @@ namespace Marmot::Materials {
     const static bool VonMisesHughesWingetExactIsRegistered = Marmot::Registry::MaterialFiniteStrainFactory::registerMaterial<
       HughesWingetWrapper< VonMisesModel, HughesWingetTangent::Exact > >( "VONMISES/HUGHES-WINGET/EXACT-TANGENT" );
 
-  } // namespace Registration
-
-} // namespace Marmot::Materials
+  } // namespace

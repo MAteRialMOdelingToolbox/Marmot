@@ -26,7 +26,8 @@
 #include "Marmot/MarmotMaterialPoint.h"
 #include "Marmot/MarmotParticleLibrary.h"
 
-namespace Marmot::Discretizations::Meshfree {
+namespace {
+  using namespace Marmot::Discretizations::Meshfree;
 
 
   const static bool DisplacementParticleSQCNIxSDI_PlaneStrain_Quad_isRegistered = Marmot::Registry::ParticleFactory::
@@ -147,4 +148,4 @@ namespace Marmot::Discretizations::Meshfree {
                                                                             SmoothingDomainUpdateType::None );
                       } );
 
-} // namespace Marmot::Discretizations::Meshfree
+} // namespace

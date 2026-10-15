@@ -26,9 +26,8 @@
 #include "Marmot/AT2PhaseField.h"
 #include "Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h"
 
-namespace Marmot::Materials {
-
-  namespace Registration {
+namespace {
+  using namespace Marmot::Materials;
 
 
     const static bool AT2PhaseFieldIsRegistered = Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory<
@@ -40,6 +39,4 @@ namespace Marmot::Materials {
     // Wrapped, its Kirchhoff stress does not rotate at all under a rigid rotation. See the note in
     // MarmotMaterialGradientEnhancedHughesWinget.h.
 
-  } // namespace Registration
-
-} // namespace Marmot::Materials
+  } // namespace

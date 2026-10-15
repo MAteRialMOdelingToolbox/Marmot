@@ -29,11 +29,10 @@ namespace Marmot::Materials {
   /**
    * @brief Shrinkage strain computation helpers for the B4 model.
    */
-  namespace Shrinkage {
-    /**
+      /**
      * @brief B4-specific shrinkage strain increment computation.
      */
-    namespace B4 {
+    namespace B4Shrinkage {
 
       /**
        * @brief Computes the total shrinkage strain increment over one time step.
@@ -65,6 +64,5 @@ namespace Marmot::Materials {
                                                         const double dryingShrinkageHalfTime,
                                                         const double kHum,
                                                         const double dryingStart );
-    } // namespace B4
-  }   // namespace Shrinkage
+    } // namespace B4Shrinkage
 } // namespace Marmot::Materials

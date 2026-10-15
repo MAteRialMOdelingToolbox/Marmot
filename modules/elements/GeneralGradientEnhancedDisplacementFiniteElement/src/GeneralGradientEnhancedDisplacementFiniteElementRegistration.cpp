@@ -2,7 +2,8 @@
 #include "Marmot/MarmotElementFactory.h"
 #include "Marmot/MarmotFiniteElement.h"
 
-namespace Marmot::Elements::Registration {
+namespace {
+  using namespace Marmot::Discretizations::Elements;
 
   template < class T,
              Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
@@ -160,4 +161,4 @@ namespace Marmot::Elements::Registration {
                        FullIntegration,
                        GeneralGradientEnhancedDisplacementFiniteElement< 3, 20, 6, 8 >::SectionType::Solid >() );
 
-} // namespace Marmot::Elements::Registration
+} // namespace

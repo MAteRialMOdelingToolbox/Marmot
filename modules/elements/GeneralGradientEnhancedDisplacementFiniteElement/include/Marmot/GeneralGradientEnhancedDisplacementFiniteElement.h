@@ -45,13 +45,11 @@
 #include <memory>
 #include <vector>
 
-using namespace Marmot;
-using namespace Eigen;
 
-namespace Marmot::Elements {
+namespace Marmot::Discretizations::Elements {
 
   /**
-   * @class Marmot::Elements::GeneralGradientEnhancedDisplacementFiniteElement
+   * @class Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement
    * @tparam nDim Number of spatial dimensions (1, 2, or 3).
    * @tparam nNodes Number of element nodes for the displacement field.
    * @tparam nNonlocalVariables Number of nonlocal variables.
@@ -98,12 +96,12 @@ namespace Marmot::Elements {
     using dNdXiSized            = typename ParentGeometryElement::dNdXiSized;
     using BSized                = typename ParentGeometryElement::BSized;
     using XiSized               = typename ParentGeometryElement::XiSized;
-    using RhsSized              = Matrix< double, sizeLoadVector, 1 >;
-    using KeSizedMatrix         = Matrix< double, sizeLoadVector, sizeLoadVector >;
-    using USizedVector          = Matrix< double, sizeDoFU, 1 >;
-    using KSizedVector          = Matrix< double, sizeDoFK, 1 >;
-    using CSized                = Matrix< double, ParentGeometryElement::voigtSize, ParentGeometryElement::voigtSize >;
-    using Voigt                 = Matrix< double, ParentGeometryElement::voigtSize, 1 >;
+    using RhsSized              = Eigen::Matrix< double, sizeLoadVector, 1 >;
+    using KeSizedMatrix         = Eigen::Matrix< double, sizeLoadVector, sizeLoadVector >;
+    using USizedVector          = Eigen::Matrix< double, sizeDoFU, 1 >;
+    using KSizedVector          = Eigen::Matrix< double, sizeDoFK, 1 >;
+    using CSized                = Eigen::Matrix< double, ParentGeometryElement::voigtSize, ParentGeometryElement::voigtSize >;
+    using Voigt                 = Eigen::Matrix< double, ParentGeometryElement::voigtSize, 1 >;
 
     using ParentGeometryElementK = Marmot::Discretizations::Elements::GeometryElement< nDim, nNonLocalNodes >;
     using JacobianSizedK         = typename ParentGeometryElementK::JacobianSized;
@@ -112,7 +110,7 @@ namespace Marmot::Elements {
     using BSizedK                = typename ParentGeometryElementK::BSized;
 
     /** Element-level properties (e.g., thickness for 2D, area for 1D). */
-    Map< const VectorXd > elementProperties;
+    Eigen::Map< const Eigen::VectorXd > elementProperties;
     /** Element label (ID) used for logging and material creation. */
     const int elLabel;
 
@@ -277,7 +275,7 @@ namespace Marmot::Elements {
     /** @brief Geometric shape of the element (as reported by the local geometry element). */
     std::string getElementShape() { return localGeometryElement.getElementShape(); }
 
-    /** @brief Map the provided element state vector to all quadrature points. */
+    /** @brief Eigen::Map the provided element state vector to all quadrature points. */
     void assignStateVars( double* stateVars, int nStateVars );
 
     /** @brief Assign element properties (e.g., thickness in 2D, area in 1D). */
@@ -609,7 +607,7 @@ namespace Marmot::Elements {
     assignProperty( const Marmot::Discretizations::ElementProperties& elementPropertiesInfo )
   {
     new ( &elementProperties )
-      Map< const VectorXd >( elementPropertiesInfo.elementProperties, elementPropertiesInfo.nElementProperties );
+      Eigen::Map< const Eigen::VectorXd >( elementPropertiesInfo.elementProperties, elementPropertiesInfo.nElementProperties );
   }
 
   template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
@@ -825,28 +823,28 @@ namespace Marmot::Elements {
     computeKernels( const double* QTotal_, const double* dQ_, double* Pe_, double* Ke_, double time, double dT )
   {
 
-    Map< const RhsSized > QTotal( QTotal_ );
-    Map< const RhsSized > dQ( dQ_ );
-    Map< KeSizedMatrix >  Ke( Ke_ );
-    Map< RhsSized >       Pe( Pe_ );
+    Eigen::Map< const RhsSized > QTotal( QTotal_ );
+    Eigen::Map< const RhsSized > dQ( dQ_ );
+    Eigen::Map< KeSizedMatrix >  Ke( Ke_ );
+    Eigen::Map< RhsSized >       Pe( Pe_ );
 
     // incremental nodal displacements Q and nodal internal parameters qK
-    const Ref< const USizedVector > dQU( dQ.head( sizeDoFU ) );
-    const Ref< const KSizedVector > dQK( dQ.tail( sizeDoFK ) );
-    const Ref< const USizedVector > qU( QTotal.head( sizeDoFU ) );
-    const Ref< const KSizedVector > qK( QTotal.tail( sizeDoFK ) );
+    const Eigen::Ref< const USizedVector > dQU( dQ.head( sizeDoFU ) );
+    const Eigen::Ref< const KSizedVector > dQK( dQ.tail( sizeDoFK ) );
+    const Eigen::Ref< const USizedVector > qU( QTotal.head( sizeDoFU ) );
+    const Eigen::Ref< const KSizedVector > qK( QTotal.tail( sizeDoFK ) );
 
     // substiffness matrices
     // [k_qq    k_qQK
     //  k_QKQ   k_QKQK ]
-    Ref< Matrix< double, sizeDoFU, sizeDoFU > > kUU( Ke.topLeftCorner( sizeDoFU, sizeDoFU ) );
-    Ref< Matrix< double, sizeDoFU, sizeDoFK > > kUK( Ke.topRightCorner( sizeDoFU, sizeDoFK ) );
-    Ref< Matrix< double, sizeDoFK, sizeDoFU > > kKU( Ke.bottomLeftCorner( sizeDoFK, sizeDoFU ) );
-    Ref< Matrix< double, sizeDoFK, sizeDoFK > > kKK( Ke.bottomRightCorner( sizeDoFK, sizeDoFK ) );
+    Eigen::Ref< Eigen::Matrix< double, sizeDoFU, sizeDoFU > > kUU( Ke.topLeftCorner( sizeDoFU, sizeDoFU ) );
+    Eigen::Ref< Eigen::Matrix< double, sizeDoFU, sizeDoFK > > kUK( Ke.topRightCorner( sizeDoFU, sizeDoFK ) );
+    Eigen::Ref< Eigen::Matrix< double, sizeDoFK, sizeDoFU > > kKU( Ke.bottomLeftCorner( sizeDoFK, sizeDoFU ) );
+    Eigen::Ref< Eigen::Matrix< double, sizeDoFK, sizeDoFK > > kKK( Ke.bottomRightCorner( sizeDoFK, sizeDoFK ) );
 
     // Righthandside
-    Ref< USizedVector > fU( Pe.head( sizeDoFU ) );
-    Ref< KSizedVector > fK( Pe.tail( sizeDoFK ) );
+    Eigen::Ref< USizedVector > fU( Pe.head( sizeDoFU ) );
+    Eigen::Ref< KSizedVector > fK( Pe.tail( sizeDoFK ) );
 
     using namespace Marmot;
     using namespace ContinuumMechanics::VoigtNotation;
@@ -866,8 +864,8 @@ namespace Marmot::Elements {
       Voigt dE = B * dQU;
 
       // delta of _K at Gausspoint
-      Vector< double, nNonlocalVariables > K;
-      Vector< double, nNonlocalVariables > dK;
+      Eigen::Vector< double, nNonlocalVariables > K;
+      Eigen::Vector< double, nNonlocalVariables > dK;
 
       for ( size_t n = 0; n < nNonlocalVariables; n++ ) {
         Eigen::Index idx = static_cast< Eigen::Index >( n ) * static_cast< Eigen::Index >( nNonLocalNodes );
@@ -977,19 +975,19 @@ namespace Marmot::Elements {
     computeKernelsExplicit( const double* QTotal_, const double* dQ_, double* Pe_, double time, double dT )
   {
 
-    Map< const RhsSized > QTotal( QTotal_ );
-    Map< const RhsSized > dQ( dQ_ );
-    Map< RhsSized >       Pe( Pe_ );
+    Eigen::Map< const RhsSized > QTotal( QTotal_ );
+    Eigen::Map< const RhsSized > dQ( dQ_ );
+    Eigen::Map< RhsSized >       Pe( Pe_ );
 
     // incremental nodal displacements Q and nodal internal parameters qK
-    const Ref< const USizedVector > dQU( dQ.head( sizeDoFU ) );
-    const Ref< const KSizedVector > dQK( dQ.tail( sizeDoFK ) );
-    const Ref< const USizedVector > qU( QTotal.head( sizeDoFU ) );
-    const Ref< const KSizedVector > qK( QTotal.tail( sizeDoFK ) );
+    const Eigen::Ref< const USizedVector > dQU( dQ.head( sizeDoFU ) );
+    const Eigen::Ref< const KSizedVector > dQK( dQ.tail( sizeDoFK ) );
+    const Eigen::Ref< const USizedVector > qU( QTotal.head( sizeDoFU ) );
+    const Eigen::Ref< const KSizedVector > qK( QTotal.tail( sizeDoFK ) );
 
     // Righthandside
-    Ref< USizedVector > fU( Pe.head( sizeDoFU ) );
-    Ref< KSizedVector > fK( Pe.tail( sizeDoFK ) );
+    Eigen::Ref< USizedVector > fU( Pe.head( sizeDoFU ) );
+    Eigen::Ref< KSizedVector > fK( Pe.tail( sizeDoFK ) );
 
     using namespace Marmot;
     using namespace ContinuumMechanics::VoigtNotation;
@@ -1017,7 +1015,7 @@ namespace Marmot::Elements {
 
       const auto bulkViscousStressAt = [&]( QuadraturePoint&                            quadraturePoint,
                                             const response&                             currentResponse,
-                                            const Vector< double, nNonlocalVariables >& currentK ) {
+                                            const Eigen::Vector< double, nNonlocalVariables >& currentK ) {
         /* The reference is the speed at a ZERO non-local field -- what the default argument asks
          * for -- not "the speed the first time this was called". The two queries then differ in
          * the field alone, so their ratio measures damage and nothing else, on a restart and after
@@ -1055,8 +1053,8 @@ namespace Marmot::Elements {
       };
 
       // delta of _K at Gausspoint
-      Vector< double, nNonlocalVariables > K;
-      Vector< double, nNonlocalVariables > dK;
+      Eigen::Vector< double, nNonlocalVariables > K;
+      Eigen::Vector< double, nNonlocalVariables > dK;
 
       for ( size_t n = 0; n < nNonlocalVariables; n++ ) {
         Eigen::Index idx = static_cast< Eigen::Index >( n ) * static_cast< Eigen::Index >( nNonLocalNodes );
@@ -1142,7 +1140,7 @@ namespace Marmot::Elements {
   void GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
     computeConsistentInertia( double* M )
   {
-    Map< KeSizedMatrix > Me( M );
+    Eigen::Map< KeSizedMatrix > Me( M );
     Me.setZero();
 
     /* The non-local block carries what the LUMPED path assembles there: the micro-inertia. It
@@ -1179,7 +1177,7 @@ namespace Marmot::Elements {
   void GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
     computeLumpedInertia( double* M )
   {
-    Map< RhsSized > LMM( M );
+    Eigen::Map< RhsSized > LMM( M );
     LMM.setZero();
 
     /* Row sums of the consistent mass matrix, from this element's own shape functions and from the
@@ -1215,13 +1213,13 @@ namespace Marmot::Elements {
       const auto N_    = localGeometryElement.N( qp.xi );
       const auto N_lin = linGeometryEl.N( qp.xi );
 
-      VectorXd N_weighted = weight * ( N_ );
+      Eigen::VectorXd N_weighted = weight * ( N_ );
       N_weighted.head( nNodesLinear ) += ( 1.0 - weight ) * N_lin;
 
       // when nNodes == nNonlocalNodes
-      VectorXd N_weighted_nonlocal;
+      Eigen::VectorXd N_weighted_nonlocal;
       if ( nNodes != nNonLocalNodes ) {
-        N_weighted_nonlocal = VectorXd::Zero( nNonLocalNodes );
+        N_weighted_nonlocal = Eigen::VectorXd::Zero( nNonLocalNodes );
         N_weighted_nonlocal = N_lin;
       }
       else {
@@ -1229,7 +1227,7 @@ namespace Marmot::Elements {
       }
 
       const double rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
-      VectorXd     m_  = N_weighted * qp.J0xW * rho;
+      Eigen::VectorXd     m_  = N_weighted * qp.J0xW * rho;
       for ( int i = 0; i < nNodes; i++ ) {
         for ( int d = 0; d < nDim; d++ )
           LMM( i * nDim + d ) += m_( i );
@@ -1239,7 +1237,7 @@ namespace Marmot::Elements {
         qp.managedStateVars->materialStateVars.data() );
       for ( int n = 0; n < nNonlocalVariables; n++ ) {
         Eigen::Index idx = n * nNonLocalNodes;
-        VectorXd     mK  = N_weighted_nonlocal * qp.J0xW * m_k[n];
+        Eigen::VectorXd     mK  = N_weighted_nonlocal * qp.J0xW * m_k[n];
         for ( int i = 0; i < nNonLocalNodes; i++ )
           LMM( sizeDoFU + idx + i ) += mK( i );
       }
@@ -1250,7 +1248,7 @@ namespace Marmot::Elements {
   void GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
     computeLumpedDamping( double* C )
   {
-    Map< RhsSized > LMM( C );
+    Eigen::Map< RhsSized > LMM( C );
     LMM.setZero();
 
     // The displacement block carries no damping through this path -- only the non-local block,
@@ -1288,10 +1286,10 @@ namespace Marmot::Elements {
       const auto N_    = localGeometryElement.N( qp.xi );
       const auto N_lin = linGeometryEl.N( qp.xi );
 
-      VectorXd N_weighted = weight * ( N_ );
+      Eigen::VectorXd N_weighted = weight * ( N_ );
       N_weighted.head( nNodesLinear ) += ( 1.0 - weight ) * N_lin;
 
-      VectorXd N_weighted_nonlocal;
+      Eigen::VectorXd N_weighted_nonlocal;
       if ( nNodes != nNonLocalNodes )
         N_weighted_nonlocal = N_lin;
       else
@@ -1301,7 +1299,7 @@ namespace Marmot::Elements {
         qp.managedStateVars->materialStateVars.data() );
       for ( int n = 0; n < nNonlocalVariables; n++ ) {
         Eigen::Index idx = n * nNonLocalNodes;
-        VectorXd     cK  = N_weighted_nonlocal * qp.J0xW * eta[n];
+        Eigen::VectorXd     cK  = N_weighted_nonlocal * qp.J0xW * eta[n];
         for ( int i = 0; i < nNonLocalNodes; i++ )
           LMM( sizeDoFU + idx + i ) += cK( i );
       }
@@ -1424,8 +1422,8 @@ namespace Marmot::Elements {
     computeLumpedInertia( lumpedInertia.data() );
     computeLumpedDamping( lumpedDamping.data() );
 
-    Map< const RhsSized >           Q( QTotal );
-    const Ref< const KSizedVector > qK( Q.tail( sizeDoFK ) );
+    Eigen::Map< const RhsSized >           Q( QTotal );
+    const Eigen::Ref< const KSizedVector > qK( Q.tail( sizeDoFK ) );
 
     /* The interaction parameters c are a material RESPONSE, not a stored property, so a stress
      * evaluation is the only way to read them. Done on a SCRATCH copy of the state variables with
@@ -1558,8 +1556,8 @@ namespace Marmot::Elements {
                             double                              dT )
   {
 
-    Map< RhsSized >     P_( P );
-    Ref< USizedVector > fU( P_.head( sizeDoFU ) );
+    Eigen::Map< RhsSized >     P_( P );
+    Eigen::Ref< USizedVector > fU( P_.head( sizeDoFU ) );
 
     switch ( loadType ) {
 
@@ -1571,7 +1569,7 @@ namespace Marmot::Elements {
                                                  nDim,
                                                  localGeometryElement.coordinates );
 
-      VectorXd Pk = -p * boundaryEl.computeSurfaceNormalVectorialLoadVector();
+      Eigen::VectorXd Pk = -p * boundaryEl.computeSurfaceNormalVectorialLoadVector();
 
       if ( nDim == 2 )
         Pk *= elementProperties[0]; // thickness
@@ -1635,9 +1633,9 @@ namespace Marmot::Elements {
                       double        time,
                       double        dT )
   {
-    Map< RhsSized >                              P( P_ );
-    Ref< USizedVector >                          Pe( P.head( sizeDoFU ) );
-    const Map< const Matrix< double, nDim, 1 > > f( load );
+    Eigen::Map< RhsSized >                              P( P_ );
+    Eigen::Ref< USizedVector >                          Pe( P.head( sizeDoFU ) );
+    const Eigen::Map< const Eigen::Matrix< double, nDim, 1 > > f( load );
 
     for ( const auto& qp : qps )
       Pe += localGeometryElement.NB( localGeometryElement.N( qp.xi ) ).transpose() * f * qp.J0xW;
@@ -1683,4 +1681,4 @@ namespace Marmot::Elements {
   {
     return qps.size();
   }
-} // namespace Marmot::Elements
+} // namespace Marmot::Discretizations::Elements

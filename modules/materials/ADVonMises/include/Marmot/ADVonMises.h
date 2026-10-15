@@ -28,7 +28,6 @@
 #include "Marmot/MarmotMaterialHypoElasticAD.h"
 #include <Eigen/src/Core/Map.h>
 
-using namespace Marmot;
 
 namespace Marmot::Materials {
   /**
@@ -36,6 +35,13 @@ namespace Marmot::Materials {
    * for 3D stress states using automatic differentiation.
    */
   class ADVonMises : public Marmot::Materials::MaterialHypoElasticAD {
+  public:
+    /// @brief Numerical constants for the ADVonMises return-mapping algorithm.
+    struct Constants {
+      static constexpr double innerNewtonTol        = 1e-10; ///< Convergence tolerance for the inner Newton iteration.
+      static constexpr int    nMaxInnerNewtonCycles = 15;    ///< Maximum number of inner Newton iterations.
+    };
+
   public:
     using Marmot::Materials::MaterialHypoElasticAD::MaterialHypoElasticAD;
 

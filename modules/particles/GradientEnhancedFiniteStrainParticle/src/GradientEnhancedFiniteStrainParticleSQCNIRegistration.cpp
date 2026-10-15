@@ -26,7 +26,8 @@
 #include "Marmot/MarmotMaterialPoint.h"
 #include "Marmot/MarmotParticleLibrary.h"
 
-namespace Marmot::Discretizations::Meshfree {
+namespace {
+  using namespace Marmot::Discretizations::Meshfree;
 
 
   const static bool GradientEnhancedFiniteStrainParticleSQCNI_PlaneStrain_Quad_isRegistered = Marmot::Registry::ParticleFactory::registerParticle( "GradientEnhancedFiniteStrainSQCNI/PlaneStrain/Quad",
@@ -223,4 +224,4 @@ namespace Marmot::Discretizations::Meshfree {
                                                         SmoothingDomainUpdateType::RotationAndPrincipalStretch );
                                              } );
 
-} // namespace Marmot::Discretizations::Meshfree
+} // namespace

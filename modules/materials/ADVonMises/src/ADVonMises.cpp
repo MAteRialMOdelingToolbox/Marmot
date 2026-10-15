@@ -1,5 +1,4 @@
 #include "Marmot/ADVonMises.h"
-#include "Marmot/ADVonMisesConstants.h"
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotExceptions.h"
@@ -71,9 +70,9 @@ namespace Marmot::Materials {
       dual   dLambda( 0.0 );
       double dg_ddKappa( 0.0 );
 
-      while ( abs( g( (double)rhoTrial, kappa, (double)dKappa ) ) > ADVonMisesConstants::innerNewtonTol ) {
+      while ( abs( g( (double)rhoTrial, kappa, (double)dKappa ) ) > Constants::innerNewtonTol ) {
 
-        if ( counter == ADVonMisesConstants::nMaxInnerNewtonCycles ) {
+        if ( counter == Constants::nMaxInnerNewtonCycles ) {
           throw Marmot::Utilities::StressUpdateFailed( Marmot::Utilities::MakeString()
                                     << __PRETTY_FUNCTION__
                                     << ": Return mapping did not converge within maximum number of iterations!" );

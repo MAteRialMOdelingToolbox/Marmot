@@ -3,7 +3,8 @@
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotFiniteElementSpatialWrapper.h"
 
-namespace Marmot::Elements::Registration {
+namespace {
+  using namespace Marmot::Discretizations::Elements;
 
   template < class T,
              Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
@@ -74,4 +75,4 @@ namespace Marmot::Elements::Registration {
     return new Marmot::Discretizations::Elements::ElementSpatialWrapper( 2, 1, 2, 2, indicesToBeWrapped, nIndicesToBeWrapped, std::move( uelT2D2 ) );
   }
   const static bool T2D2_isRegistered = Marmot::Registry::ElementFactory::registerElement( "T2D2", generateT2D2 );
-} // namespace Marmot::Elements::Registration
+} // namespace

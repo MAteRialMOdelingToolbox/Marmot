@@ -25,7 +25,8 @@
 #include "Marmot/DisplacementParticleSQCNIxNSNI.h"
 #include "Marmot/MarmotParticleLibrary.h"
 
-namespace Marmot::Discretizations::Meshfree {
+namespace {
+  using namespace Marmot::Discretizations::Meshfree;
 
 
   namespace {
@@ -94,4 +95,4 @@ namespace Marmot::Discretizations::Meshfree {
 
   } // namespace
 
-} // namespace Marmot::Discretizations::Meshfree
+} // namespace

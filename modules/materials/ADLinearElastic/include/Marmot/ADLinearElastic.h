@@ -27,7 +27,6 @@
 #include "Marmot/MarmotMaterialHypoElasticAD.h"
 #include "Marmot/MarmotTypedefs.h"
 
-using namespace Marmot;
 
 namespace Marmot::Materials {
   /**

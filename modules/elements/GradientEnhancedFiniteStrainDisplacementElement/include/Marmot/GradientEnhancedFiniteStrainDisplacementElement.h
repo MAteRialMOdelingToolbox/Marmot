@@ -40,10 +40,10 @@
 #include <memory>
 #include <vector>
 
-namespace Marmot::Elements {
+namespace Marmot::Discretizations::Elements {
 
   /**
-   * @class Marmot::Elements::GradientEnhancedFiniteStrainDisplacementElement
+   * @class Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement
    * @brief Gradient-enhanced (implicit-gradient, nonlocal) finite-strain displacement element.
    *
    * The displacement field @f$ \boldsymbol{u} @f$ (nDim dofs per node) is coupled to a scalar nonlocal field
@@ -874,4 +874,4 @@ namespace Marmot::Elements {
     return qps.size();
   }
 
-} // namespace Marmot::Elements
+} // namespace Marmot::Discretizations::Elements

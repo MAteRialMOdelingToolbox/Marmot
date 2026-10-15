@@ -2,7 +2,8 @@
 #include "Marmot/MarmotElementFactory.h"
 #include "Marmot/MarmotFiniteElement.h"
 
-namespace Marmot::Elements::Registration {
+namespace {
+  using namespace Marmot::Discretizations::Elements;
 
   /**
    * @brief Create the factory function of an element type.
@@ -34,4 +35,4 @@ namespace Marmot::Elements::Registration {
                                           FullIntegration,
                                           InterfaceFiniteElement< 3, 8 >::SectionType::Interface >() );
 
-} // namespace Marmot::Elements::Registration
+} // namespace

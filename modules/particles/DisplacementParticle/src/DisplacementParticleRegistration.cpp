@@ -26,7 +26,8 @@
 #include "Marmot/MarmotMaterialPoint.h"
 #include "Marmot/MarmotParticleLibrary.h"
 
-namespace Marmot::Discretizations::Meshfree {
+namespace {
+  using namespace Marmot::Discretizations::Meshfree;
 
 
   const static bool DisplacementParticle_PlaneStrain_isRegistered = Marmot::Registry::ParticleFactory::
@@ -52,4 +53,4 @@ namespace Marmot::Discretizations::Meshfree {
                                                               approximation );
                       } );
 
-} // namespace Marmot::Discretizations::Meshfree
+} // namespace

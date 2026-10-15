@@ -25,7 +25,8 @@
 #include "Marmot/DisplacementCell.h"
 #include "Marmot/MarmotMPMLibrary.h"
 
-namespace Marmot::Discretizations::Cells::Registration {
+namespace {
+  using namespace Marmot::Discretizations::Cells;
 
 
   const static bool CPE4CELL_isRegistered = Marmot::Registry::CellFactory::
@@ -124,4 +125,4 @@ namespace Marmot::Discretizations::Cells::Registration {
                                                                                   sizeKnotVectors );
                          } );
 
-} // namespace Marmot::Discretizations::Cells::Registration
+} // namespace

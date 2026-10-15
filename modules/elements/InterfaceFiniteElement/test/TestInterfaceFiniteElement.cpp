@@ -14,7 +14,7 @@
 
 using namespace Marmot;
 using namespace Marmot::Testing;
-using namespace Marmot::Elements;
+using namespace Marmot::Discretizations::Elements;
 
 namespace {
 

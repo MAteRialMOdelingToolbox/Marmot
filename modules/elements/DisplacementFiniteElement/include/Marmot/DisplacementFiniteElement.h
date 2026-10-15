@@ -45,13 +45,11 @@
 #include <memory>
 #include <vector>
 
-using namespace Marmot;
-using namespace Eigen;
 
-namespace Marmot::Elements {
+namespace Marmot::Discretizations::Elements {
 
   /**
-   * @class Marmot::Elements::DisplacementFiniteElement
+   * @class Marmot::Discretizations::Elements::DisplacementFiniteElement
    * @tparam nDim Number of spatial dimensions (1, 2, or 3).
    * @tparam nNodes Number of element nodes.
    * @brief Displacement-based finite element template.
@@ -87,13 +85,13 @@ namespace Marmot::Elements {
     using dNdXiSized            = typename ParentGeometryElement::dNdXiSized;
     using BSized                = typename ParentGeometryElement::BSized;
     using XiSized               = typename ParentGeometryElement::XiSized;
-    using RhsSized              = Matrix< double, sizeLoadVector, 1 >;
-    using KeSizedMatrix         = Matrix< double, sizeLoadVector, sizeLoadVector >;
-    using CSized                = Matrix< double, ParentGeometryElement::voigtSize, ParentGeometryElement::voigtSize >;
-    using Voigt                 = Matrix< double, ParentGeometryElement::voigtSize, 1 >;
+    using RhsSized              = Eigen::Matrix< double, sizeLoadVector, 1 >;
+    using KeSizedMatrix         = Eigen::Matrix< double, sizeLoadVector, sizeLoadVector >;
+    using CSized                = Eigen::Matrix< double, ParentGeometryElement::voigtSize, ParentGeometryElement::voigtSize >;
+    using Voigt                 = Eigen::Matrix< double, ParentGeometryElement::voigtSize, 1 >;
 
     /** Element-level properties (e.g., thickness for 2D, area for 1D). */
-    Map< const VectorXd > elementProperties;
+    Eigen::Map< const Eigen::VectorXd > elementProperties;
     /** Element label (ID) used for logging and material creation. */
     const int elLabel;
     /** Section assumption applied by this element instance. */
@@ -245,7 +243,7 @@ namespace Marmot::Elements {
     /** @brief Geometric shape of the element (as reported by the parent geometry element). */
     std::string getElementShape() { return ParentGeometryElement::getElementShape(); }
 
-    /** @brief Map the provided element state vector to all quadrature points. */
+    /** @brief Eigen::Map the provided element state vector to all quadrature points. */
     void assignStateVars( double* stateVars, int nStateVars );
 
     /** @brief Assign element properties (e.g., thickness in 2D, area in 1D). */
@@ -469,7 +467,7 @@ namespace Marmot::Elements {
     Marmot::Discretizations::Elements::Quadrature::IntegrationTypes integrationType,
     SectionType                                 sectionType )
     : ParentGeometryElement(),
-      elementProperties( Map< const VectorXd >( nullptr, 0 ) ),
+      elementProperties( Eigen::Map< const Eigen::VectorXd >( nullptr, 0 ) ),
       elLabel( elementID ),
       sectionType( sectionType )
   {
@@ -691,10 +689,10 @@ namespace Marmot::Elements {
     using namespace Marmot;
     using namespace ContinuumMechanics::VoigtNotation;
 
-    Map< const RhsSized > QTotal( QTotal_ );
-    Map< const RhsSized > dQ( dQ_ );
-    Map< KeSizedMatrix >  Ke( Ke_ );
-    Map< RhsSized >       Pe( Pe_ );
+    Eigen::Map< const RhsSized > QTotal( QTotal_ );
+    Eigen::Map< const RhsSized > dQ( dQ_ );
+    Eigen::Map< KeSizedMatrix >  Ke( Ke_ );
+    Eigen::Map< RhsSized >       Pe( Pe_ );
 
     Voigt  S  = Voigt::Zero();
     Voigt  dE = Voigt::Zero();
@@ -824,9 +822,9 @@ namespace Marmot::Elements {
     using namespace Marmot;
     using namespace ContinuumMechanics::VoigtNotation;
 
-    Map< const RhsSized > QTotal( QTotal_ );
-    Map< const RhsSized > dQ( dQ_ );
-    Map< RhsSized >       Pe( Pe_ );
+    Eigen::Map< const RhsSized > QTotal( QTotal_ );
+    Eigen::Map< const RhsSized > dQ( dQ_ );
+    Eigen::Map< RhsSized >       Pe( Pe_ );
 
     Voigt S  = Voigt::Zero();
     Voigt dE = Voigt::Zero();
@@ -1022,7 +1020,7 @@ namespace Marmot::Elements {
                                                                           double        time,
                                                                           double        dT )
   {
-    Map< RhsSized > fU( P );
+    Eigen::Map< RhsSized > fU( P );
 
     switch ( loadType ) {
 
@@ -1031,7 +1029,7 @@ namespace Marmot::Elements {
 
       Marmot::Discretizations::Elements::BoundaryElement boundaryEl( this->shape, elementFace, nDim, this->coordinates );
 
-      VectorXd Pk = -p * boundaryEl.computeSurfaceNormalVectorialLoadVector();
+      Eigen::VectorXd Pk = -p * boundaryEl.computeSurfaceNormalVectorialLoadVector();
 
       if ( nDim == 2 )
         Pk *= elementProperties[0]; // thickness
@@ -1067,8 +1065,8 @@ namespace Marmot::Elements {
                                                                     double        time,
                                                                     double        dT )
   {
-    Map< RhsSized >                              Pe( P_ );
-    const Map< const Matrix< double, nDim, 1 > > f( load );
+    Eigen::Map< RhsSized >                              Pe( P_ );
+    const Eigen::Map< const Eigen::Matrix< double, nDim, 1 > > f( load );
 
     for ( const auto& qp : qps )
       Pe += this->NB( this->N( qp.xi ) ).transpose() * f * qp.J0xW;
@@ -1077,7 +1075,7 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   void DisplacementFiniteElement< nDim, nNodes >::computeConsistentInertia( double* M )
   {
-    Map< KeSizedMatrix > Me( M );
+    Eigen::Map< KeSizedMatrix > Me( M );
     Me.setZero();
 
     for ( const auto& point : Marmot::Discretizations::Elements::ConsistentMass::integrationRule( this->shape ) ) {
@@ -1094,7 +1092,7 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   void DisplacementFiniteElement< nDim, nNodes >::computeLumpedInertia( double* M )
   {
-    Map< RhsSized > LMM( M );
+    Eigen::Map< RhsSized > LMM( M );
     LMM.setZero();
 
     /* Row sums of the consistent mass matrix, from this element's own shape functions and from the
@@ -1119,11 +1117,11 @@ namespace Marmot::Elements {
       const auto N_    = this->N( qp.xi );
       const auto N_lin = linGeometryEl.N( qp.xi );
 
-      VectorXd N_weighted = weight * ( N_ );
+      Eigen::VectorXd N_weighted = weight * ( N_ );
       N_weighted.head( nNodesLinear ) += ( 1.0 - weight ) * N_lin;
 
       const double rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
-      VectorXd     m_  = N_weighted * qp.J0xW * rho;
+      Eigen::VectorXd     m_  = N_weighted * qp.J0xW * rho;
       for ( int i = 0; i < nNodes; i++ ) {
         for ( int d = 0; d < nDim; d++ )
           LMM( i * nDim + d ) += m_( i );
@@ -1243,4 +1241,4 @@ namespace Marmot::Elements {
   {
     return qps.size();
   }
-} // namespace Marmot::Elements
+} // namespace Marmot::Discretizations::Elements

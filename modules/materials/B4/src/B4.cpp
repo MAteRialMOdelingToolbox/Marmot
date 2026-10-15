@@ -140,7 +140,7 @@ namespace Marmot::Materials {
 
     // compute shrinkage strain increment
     Marmot::Math::Vector6d
-      shrinkageStrainIncrement = Shrinkage::B4::computeShrinkageStrainIncrement( tStartDays,
+      shrinkageStrainIncrement = B4Shrinkage::computeShrinkageStrainIncrement( tStartDays,
                                                                                  dTimeDays,
                                                                                  ultimateAutogenousShrinkageStrain,
                                                                                  autogenousShrinkageHalfTime,
