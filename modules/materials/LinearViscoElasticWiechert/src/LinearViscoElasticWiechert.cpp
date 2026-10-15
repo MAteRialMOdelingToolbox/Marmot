@@ -41,16 +41,18 @@ namespace Marmot::Materials {
     unitStiffness = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( 1.0, nu );
 
     const double spacing = std::sqrt( 10. );
-    relaxationTimes      = Wiechert::generateRelaxationTimes( static_cast< int >( nMaxwell ), minTau, spacing );
+    relaxationTimes      = ContinuumMechanics::Viscoelasticity::Wiechert::generateRelaxationTimes( static_cast< int >(
+                                                                                                nMaxwell ),
+                                                                                              minTau,
+                                                                                              spacing );
 
     using namespace Marmot::ContinuumMechanics::Viscoelasticity;
     auto relaxationFunction = [&]( autodiff::Real< powerLawApproximationOrder, double > time ) {
       return RelaxationFunctions::powerLaw( time, m, n );
     };
 
-    elasticModuli = Wiechert::computeElasticModuli< powerLawApproximationOrder >( relaxationFunction,
-                                                                                  relaxationTimes,
-                                                                                  spacing );
+    elasticModuli = ContinuumMechanics::Viscoelasticity::Wiechert::computeElasticModuli<
+      powerLawApproximationOrder >( relaxationFunction, relaxationTimes, spacing );
 
     const double spectrumCoefficient     = m * n * ( n + 1. ) * std::pow( 2., -n );
     const double slowestResolvedBoundary = relaxationTimes( relaxationTimes.size() - 1 ) * std::sqrt( spacing );
@@ -71,19 +73,21 @@ namespace Marmot::Materials {
       return;
     }
 
-    Eigen::Map< Wiechert::StateVarMatrix > maxwellStateVars( state.stateVars, 6, nMaxwell );
-    const double                           dTimeDays = timeInfo.dT * timeToDays;
+    Eigen::Map< ContinuumMechanics::Viscoelasticity::Wiechert::StateVarMatrix > maxwellStateVars( state.stateVars,
+                                                                                                  6,
+                                                                                                  nMaxwell );
+    const double                                                                dTimeDays = timeInfo.dT * timeToDays;
 
     Marmot::Math::Vector6d maxwellStressIncrement = Marmot::Math::Vector6d::Zero();
     double                 maxwellStiffness       = 0.0;
 
-    Wiechert::evaluateWiechert( dTimeDays,
-                                elasticModuli,
-                                relaxationTimes,
-                                maxwellStateVars,
-                                maxwellStiffness,
-                                maxwellStressIncrement,
-                                1.0 );
+    ContinuumMechanics::Viscoelasticity::Wiechert::evaluateWiechert( dTimeDays,
+                                                                     elasticModuli,
+                                                                     relaxationTimes,
+                                                                     maxwellStateVars,
+                                                                     maxwellStiffness,
+                                                                     maxwellStressIncrement,
+                                                                     1.0 );
 
     const double effectiveStiffness = E + zerothWiechertStiffness + maxwellStiffness;
 
@@ -94,12 +98,12 @@ namespace Marmot::Materials {
     const Marmot::Math::Vector6d stressIncrement = tangent * strainIncrement - maxwellStressIncrement;
     nominalStress += stressIncrement;
 
-    Wiechert::updateStateVarMatrix( dTimeDays,
-                                    elasticModuli,
-                                    relaxationTimes,
-                                    maxwellStateVars,
-                                    strainIncrement,
-                                    unitStiffness );
+    ContinuumMechanics::Viscoelasticity::Wiechert::updateStateVarMatrix( dTimeDays,
+                                                                         elasticModuli,
+                                                                         relaxationTimes,
+                                                                         maxwellStateVars,
+                                                                         strainIncrement,
+                                                                         unitStiffness );
   }
 
   double LinearViscoElasticWiechert::getDensity( const double* ) const

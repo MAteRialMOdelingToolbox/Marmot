@@ -1,6 +1,6 @@
 #include "Marmot/MarmotSolidification.h"
 
-namespace Marmot::Materials::SolidificationTheory {
+namespace Marmot::ContinuumMechanics::Viscoelasticity::SolidificationTheory {
 
   double solidifiedVolume( double timeInDays, Parameters params )
   {
@@ -62,4 +62,4 @@ namespace Marmot::Materials::SolidificationTheory {
     return { dECreep, complianceComponents };
   }
 
-} // namespace Marmot::Materials::SolidificationTheory
+} // namespace Marmot::ContinuumMechanics::Viscoelasticity::SolidificationTheory

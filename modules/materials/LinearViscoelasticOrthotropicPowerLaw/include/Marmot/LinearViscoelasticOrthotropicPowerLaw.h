@@ -115,10 +115,10 @@ namespace Marmot::Materials {
 
   private:
     /// @brief Elastic moduli of the Kelvin chain units
-    KelvinChain::Properties elasticModuli;
+    ContinuumMechanics::Viscoelasticity::KelvinChain::Properties elasticModuli;
 
     /// @brief Retardation times of the Kelvin chain units
-    KelvinChain::Properties retardationTimes;
+    ContinuumMechanics::Viscoelasticity::KelvinChain::Properties retardationTimes;
 
     /// @brief Zeroth Kelvin chain compliance
     double zerothKelvinChainCompliance;

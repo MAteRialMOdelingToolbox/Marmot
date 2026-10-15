@@ -166,16 +166,16 @@ namespace Marmot::Materials {
 
   private:
     /// \brief material parameters for Solidification Theory
-    SolidificationTheory::Parameters solidificationParameters;
+    ContinuumMechanics::Viscoelasticity::SolidificationTheory::Parameters solidificationParameters;
     /**
      * \brief properties of the Kelvin chain for approximating
      * the viscoelastic compliance of the %Solidification Theory */
-    SolidificationTheory::KelvinChainProperties solidificationKelvinProperties;
+    ContinuumMechanics::Viscoelasticity::SolidificationTheory::KelvinChainProperties solidificationKelvinProperties;
 
     /// \brief Young's modulus of the Kelvin units representing basic creep
-    KelvinChain::Properties basicCreepElasticModuli;
+    ContinuumMechanics::Viscoelasticity::KelvinChain::Properties basicCreepElasticModuli;
     /// \brief retardation times of the Kelvin units representing basic creep
-    KelvinChain::Properties basicCreepRetardationTimes;
+    ContinuumMechanics::Viscoelasticity::KelvinChain::Properties basicCreepRetardationTimes;
 
     /// \brief approximation order of the Post-Widder formula for drying creep
     static constexpr int dryingCreepComplianceApproximationOrder = 5;

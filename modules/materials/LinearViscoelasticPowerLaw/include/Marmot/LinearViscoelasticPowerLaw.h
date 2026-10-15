@@ -88,9 +88,9 @@ namespace Marmot::Materials {
 
   private:
     /// @brief Young's modulus of the #nKelvin Kelvin units
-    KelvinChain::Properties elasticModuli;
+    ContinuumMechanics::Viscoelasticity::KelvinChain::Properties elasticModuli;
     /// @brief retardation times of the #nKelvin Kelvin units
-    KelvinChain::Properties retardationTimes;
+    ContinuumMechanics::Viscoelasticity::KelvinChain::Properties retardationTimes;
     /// @brief compliance of the zeroth Kelvin unit
     double zerothKelvinChainCompliance;
 

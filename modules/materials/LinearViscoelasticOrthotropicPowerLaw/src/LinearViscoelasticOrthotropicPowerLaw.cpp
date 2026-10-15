@@ -56,7 +56,9 @@ namespace Marmot::Materials {
     stateLayout.add( "kelvinStateVars", 6 * nKelvin );
     stateLayout.finalize();
 
-    retardationTimes = KelvinChain::generateRetardationTimes( nKelvin, minTau, spacing );
+    retardationTimes = ContinuumMechanics::Viscoelasticity::KelvinChain::generateRetardationTimes( nKelvin,
+                                                                                                   minTau,
+                                                                                                   spacing );
 
     auto computeZerothKelvinChainCompliance = [&]( const int order, double tau ) {
       const int& k   = order;
@@ -71,28 +73,32 @@ namespace Marmot::Materials {
     case 2: {
       using namespace Marmot::ContinuumMechanics::Viscoelasticity;
       auto phi_2nd  = [&]( autodiff::Real< 2, double > tau ) { return ComplianceFunctions::powerLaw( tau, m, n ); };
-      elasticModuli = KelvinChain::computeElasticModuli< 2 >( phi_2nd, retardationTimes );
+      elasticModuli = ContinuumMechanics::Viscoelasticity::KelvinChain::computeElasticModuli< 2 >( phi_2nd,
+                                                                                                   retardationTimes );
       zerothKelvinChainCompliance = computeZerothKelvinChainCompliance( 2, minTau / sqrt( spacing ) );
       break;
     }
     case 3: {
       using namespace Marmot::ContinuumMechanics::Viscoelasticity;
       auto phi_3rd  = [&]( autodiff::Real< 3, double > tau ) { return ComplianceFunctions::powerLaw( tau, m, n ); };
-      elasticModuli = KelvinChain::computeElasticModuli< 3 >( phi_3rd, retardationTimes );
+      elasticModuli = ContinuumMechanics::Viscoelasticity::KelvinChain::computeElasticModuli< 3 >( phi_3rd,
+                                                                                                   retardationTimes );
       zerothKelvinChainCompliance = computeZerothKelvinChainCompliance( 3, minTau / sqrt( spacing ) );
       break;
     }
     case 4: {
       using namespace Marmot::ContinuumMechanics::Viscoelasticity;
       auto phi_4th  = [&]( autodiff::Real< 4, double > tau ) { return ComplianceFunctions::powerLaw( tau, m, n ); };
-      elasticModuli = KelvinChain::computeElasticModuli< 4 >( phi_4th, retardationTimes );
+      elasticModuli = ContinuumMechanics::Viscoelasticity::KelvinChain::computeElasticModuli< 4 >( phi_4th,
+                                                                                                   retardationTimes );
       zerothKelvinChainCompliance = computeZerothKelvinChainCompliance( 4, minTau / sqrt( spacing ) );
       break;
     }
     case 7: {
       using namespace Marmot::ContinuumMechanics::Viscoelasticity;
       auto phi_7th  = [&]( autodiff::Real< 7, double > tau ) { return ComplianceFunctions::powerLaw( tau, m, n ); };
-      elasticModuli = KelvinChain::computeElasticModuli< 7 >( phi_7th, retardationTimes );
+      elasticModuli = ContinuumMechanics::Viscoelasticity::KelvinChain::computeElasticModuli< 7 >( phi_7th,
+                                                                                                   retardationTimes );
       zerothKelvinChainCompliance = computeZerothKelvinChainCompliance( 7, minTau / sqrt( spacing ) );
       break;
     }
@@ -148,13 +154,13 @@ namespace Marmot::Materials {
     double                 creepCompliance      = 0;
 
     // evaluate Kelvin-Chain
-    KelvinChain::evaluateKelvinChain( dTimeDays,
-                                      elasticModuli,
-                                      retardationTimes,
-                                      creepStateVars,
-                                      creepCompliance,
-                                      creepStrainIncrement,
-                                      1.0 );
+    ContinuumMechanics::Viscoelasticity::KelvinChain::evaluateKelvinChain( dTimeDays,
+                                                                           elasticModuli,
+                                                                           retardationTimes,
+                                                                           creepStateVars,
+                                                                           creepCompliance,
+                                                                           creepStrainIncrement,
+                                                                           1.0 );
 
     // compute total 1D effective compliance
     const double effectiveCompliance = 1. / E1 / stiffnessScaleFactor + zerothKelvinChainCompliance + creepCompliance;
@@ -172,11 +178,11 @@ namespace Marmot::Materials {
     C = 1. / effectiveCompliance * CelUnitGlobal;
 
     // update internal state variables
-    KelvinChain::updateStateVarMatrix( dTimeDays,
-                                       elasticModuli,
-                                       retardationTimes,
-                                       creepStateVars,
-                                       deltaStressLocal,
-                                       CelUnitInv );
+    ContinuumMechanics::Viscoelasticity::KelvinChain::updateStateVarMatrix( dTimeDays,
+                                                                            elasticModuli,
+                                                                            retardationTimes,
+                                                                            creepStateVars,
+                                                                            deltaStressLocal,
+                                                                            CelUnitInv );
   }
 } // namespace Marmot::Materials

@@ -90,9 +90,9 @@ namespace Marmot::Materials {
     double getDensity( const double* stateVars ) const override;
 
   private:
-    Wiechert::Properties relaxationTimes;
-    Wiechert::Properties elasticModuli;
-    double               zerothWiechertStiffness;
+    ContinuumMechanics::Viscoelasticity::Wiechert::Properties relaxationTimes;
+    ContinuumMechanics::Viscoelasticity::Wiechert::Properties elasticModuli;
+    double                                                    zerothWiechertStiffness;
 
     /**
      * @brief Isotropic stiffness tensor for a unit Young's modulus, cached for the instance's lifetime.

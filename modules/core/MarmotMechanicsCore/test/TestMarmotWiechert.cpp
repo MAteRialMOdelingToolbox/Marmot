@@ -5,7 +5,7 @@
 #include <cmath>
 
 using namespace Marmot::Testing;
-using namespace Marmot::Materials::Wiechert;
+using namespace Marmot::ContinuumMechanics::Viscoelasticity::Wiechert;
 using namespace Marmot::ContinuumMechanics::Viscoelasticity;
 
 namespace {

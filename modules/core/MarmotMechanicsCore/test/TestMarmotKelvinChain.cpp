@@ -5,7 +5,7 @@
 #include "autodiff/forward/real.hpp"
 
 using namespace Marmot::Testing;
-using namespace Marmot::Materials::KelvinChain;
+using namespace Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain;
 using namespace Marmot::ContinuumMechanics::Viscoelasticity;
 using namespace Marmot;
 

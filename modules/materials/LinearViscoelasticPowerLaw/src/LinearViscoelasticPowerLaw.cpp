@@ -39,14 +39,17 @@ namespace Marmot::Materials {
     stateLayout.finalize();
 
     // assume sqrt( 10 ) spacing between retardation times
-    retardationTimes = KelvinChain::generateRetardationTimes( nKelvin, minTau, sqrt( 10. ) );
+    retardationTimes = ContinuumMechanics::Viscoelasticity::KelvinChain::generateRetardationTimes( nKelvin,
+                                                                                                   minTau,
+                                                                                                   sqrt( 10. ) );
 
     using namespace Marmot::ContinuumMechanics::Viscoelasticity;
     auto phi_ = [&]( autodiff::Real< powerLawApproximationOrder, double > tau ) {
       return ComplianceFunctions::powerLaw( tau, m, n );
     };
 
-    elasticModuli = KelvinChain::computeElasticModuli< powerLawApproximationOrder >( phi_, retardationTimes );
+    elasticModuli = ContinuumMechanics::Viscoelasticity::KelvinChain::computeElasticModuli<
+      powerLawApproximationOrder >( phi_, retardationTimes );
 
     // for 2nd order approximations
     zerothKelvinChainCompliance = m * ( 1. - n ) * pow( 2., n ) * pow( minTau / sqrt( sqrt( 10. ) ), n );
@@ -69,7 +72,9 @@ namespace Marmot::Materials {
       return;
     }
 
-    Eigen::Map< KelvinChain::StateVarMatrix > creepStateVars( state.stateVars, 6, nKelvin );
+    Eigen::Map< ContinuumMechanics::Viscoelasticity::KelvinChain::StateVarMatrix > creepStateVars( state.stateVars,
+                                                                                                   6,
+                                                                                                   nKelvin );
 
     const double dTimeDays = dT * timeToDays;
 
@@ -78,13 +83,13 @@ namespace Marmot::Materials {
     Marmot::Math::Vector6d creepStrainIncrement = Marmot::Math::Vector6d::Zero();
     double                 creepCompliance      = 0;
 
-    KelvinChain::evaluateKelvinChain( dTimeDays,
-                                      elasticModuli,
-                                      retardationTimes,
-                                      creepStateVars,
-                                      creepCompliance,
-                                      creepStrainIncrement,
-                                      1.0 );
+    ContinuumMechanics::Viscoelasticity::KelvinChain::evaluateKelvinChain( dTimeDays,
+                                                                           elasticModuli,
+                                                                           retardationTimes,
+                                                                           creepStateVars,
+                                                                           creepCompliance,
+                                                                           creepStrainIncrement,
+                                                                           1.0 );
 
     using namespace Marmot::ContinuumMechanics::Viscoelasticity;
     double effectiveCompliance = 1. / E + zerothKelvinChainCompliance + creepCompliance;
@@ -93,12 +98,12 @@ namespace Marmot::Materials {
     Marmot::Math::Vector6d deltaStress = C * ( dE - creepStrainIncrement );
     nomStress                          = nomStress + deltaStress;
 
-    KelvinChain::updateStateVarMatrix( dTimeDays,
-                                       elasticModuli,
-                                       retardationTimes,
-                                       creepStateVars,
-                                       deltaStress,
-                                       CelUnitInv );
+    ContinuumMechanics::Viscoelasticity::KelvinChain::updateStateVarMatrix( dTimeDays,
+                                                                            elasticModuli,
+                                                                            retardationTimes,
+                                                                            creepStateVars,
+                                                                            deltaStress,
+                                                                            CelUnitInv );
 
     return;
   }

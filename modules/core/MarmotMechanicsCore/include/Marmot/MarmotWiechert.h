@@ -31,7 +31,7 @@
 #include <cmath>
 #include <functional>
 
-namespace Marmot::Materials::Wiechert {
+namespace Marmot::ContinuumMechanics::Viscoelasticity::Wiechert {
 
   using Properties        = Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::Properties;
   using mapProperties     = Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::mapProperties;
@@ -151,4 +151,4 @@ namespace Marmot::Materials::Wiechert {
                          Marmot::Math::Vector6d&      dStress,
                          const double                 factor );
 
-} // namespace Marmot::Materials::Wiechert
+} // namespace Marmot::ContinuumMechanics::Viscoelasticity::Wiechert

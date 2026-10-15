@@ -1,60 +1,57 @@
 #include "Marmot/MarmotKelvinChain.h"
 
-namespace Marmot::Materials {
+namespace Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain {
 
   using namespace Marmot;
   using namespace Eigen;
 
-  namespace KelvinChain {
+  Properties generateRetardationTimes( int n, double min, double spacing )
+  {
+    return ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::generateLogarithmicTimes( n, min, spacing );
+  }
 
-    Properties generateRetardationTimes( int n, double min, double spacing )
-    {
-      return ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::generateLogarithmicTimes( n, min, spacing );
+  void evaluateKelvinChain( double                  dT,
+                            Properties              elasticModuli,
+                            Properties              retardationTimes,
+                            StateVarMatrix          stateVars,
+                            double&                 uniaxialCompliance,
+                            Marmot::Math::Vector6d& dStrain,
+                            const double            factor )
+  {
+
+    for ( int i = 0; i < retardationTimes.size(); i++ ) {
+      const double& tau = retardationTimes( i );
+      const double& D   = elasticModuli( i );
+
+      double lambda, beta;
+      computeLambdaAndBeta( dT, tau, lambda, beta );
+      uniaxialCompliance += ( 1. - lambda ) / D * factor;
+      dStrain += ( 1. - beta ) * stateVars.col( i ) * factor;
     }
+  }
 
-    void evaluateKelvinChain( double                  dT,
-                              Properties              elasticModuli,
-                              Properties              retardationTimes,
-                              StateVarMatrix          stateVars,
-                              double&                 uniaxialCompliance,
-                              Marmot::Math::Vector6d& dStrain,
-                              const double            factor )
-    {
+  void updateStateVarMatrix( double                        dT,
+                             Properties                    elasticModuli,
+                             Properties                    retardationTimes,
+                             Ref< StateVarMatrix >         stateVars,
+                             const Marmot::Math::Vector6d& dStress,
+                             const Marmot::Math::Matrix6d& unitComplianceMatrix )
+  {
 
-      for ( int i = 0; i < retardationTimes.size(); i++ ) {
-        const double& tau = retardationTimes( i );
-        const double& D   = elasticModuli( i );
-
-        double lambda, beta;
-        computeLambdaAndBeta( dT, tau, lambda, beta );
-        uniaxialCompliance += ( 1. - lambda ) / D * factor;
-        dStrain += ( 1. - beta ) * stateVars.col( i ) * factor;
-      }
+    if ( dT <= 1e-14 )
+      return;
+    for ( int i = 0; i < retardationTimes.size(); i++ ) {
+      const double& tau = retardationTimes( i );
+      const double& D   = elasticModuli( i );
+      double        lambda, beta;
+      computeLambdaAndBeta( dT, tau, lambda, beta );
+      stateVars.col( i ) = ( lambda / D ) * unitComplianceMatrix * dStress + beta * stateVars.col( i );
     }
+  }
 
-    void updateStateVarMatrix( double                        dT,
-                               Properties                    elasticModuli,
-                               Properties                    retardationTimes,
-                               Ref< StateVarMatrix >         stateVars,
-                               const Marmot::Math::Vector6d& dStress,
-                               const Marmot::Math::Matrix6d& unitComplianceMatrix )
-    {
+  void computeLambdaAndBeta( double dT, double tau, double& lambda, double& beta )
+  {
+    ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::computeLambdaAndBeta( dT, tau, lambda, beta );
+  }
 
-      if ( dT <= 1e-14 )
-        return;
-      for ( int i = 0; i < retardationTimes.size(); i++ ) {
-        const double& tau = retardationTimes( i );
-        const double& D   = elasticModuli( i );
-        double        lambda, beta;
-        computeLambdaAndBeta( dT, tau, lambda, beta );
-        stateVars.col( i ) = ( lambda / D ) * unitComplianceMatrix * dStress + beta * stateVars.col( i );
-      }
-    }
-
-    void computeLambdaAndBeta( double dT, double tau, double& lambda, double& beta )
-    {
-      ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::computeLambdaAndBeta( dT, tau, lambda, beta );
-    }
-
-  } // namespace KelvinChain
-} // namespace Marmot::Materials
+} // namespace Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain

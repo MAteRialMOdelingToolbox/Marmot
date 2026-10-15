@@ -1,6 +1,6 @@
 #include "Marmot/MarmotWiechert.h"
 
-namespace Marmot::Materials::Wiechert {
+namespace Marmot::ContinuumMechanics::Viscoelasticity::Wiechert {
 
   Properties generateRelaxationTimes( int n, double min, double spacing )
   {
@@ -47,4 +47,4 @@ namespace Marmot::Materials::Wiechert {
     }
   }
 
-} // namespace Marmot::Materials::Wiechert
+} // namespace Marmot::ContinuumMechanics::Viscoelasticity::Wiechert

@@ -30,7 +30,7 @@
 
 #include <functional>
 
-namespace Marmot::Materials::KelvinChain {
+namespace Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain {
   /** This namespace contains the functions that derive the equivalent
    * Kelvin chain for a given compliance function
    * @typedef Properties
@@ -240,4 +240,4 @@ namespace Marmot::Materials::KelvinChain {
 
   void computeLambdaAndBeta( double dT, double tau, double& lambda, double& beta );
 
-} // namespace Marmot::Materials::KelvinChain
+} // namespace Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain
