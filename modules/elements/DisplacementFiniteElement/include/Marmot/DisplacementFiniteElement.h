@@ -947,9 +947,10 @@ namespace Marmot::Elements {
           qp.referenceWaveSpeed = qp.material->getMaximumWaveSpeed( stateForWaveSpeed );
 
         /* The optional degradation needs the material's CURRENT tangent, and asking for that costs
-         * a full constitutive evaluation. With the exponent at its default of zero the material is
-         * never asked, so a deck that does not request the degradation integrates exactly the
-         * stress it integrated before.
+         * a full constitutive evaluation per quadrature point per increment unless the material
+         * overrides getMaximumWaveSpeed() with a closed form. With the exponent at its default of
+         * zero the material is never asked, so a deck that does not request the degradation
+         * integrates exactly the stress it integrated before.
          */
         const double
           degradation = bulkViscosityCoefficients.isDegraded()
