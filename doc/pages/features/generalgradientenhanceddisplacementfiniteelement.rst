@@ -143,6 +143,31 @@ Each quadrature point stores stress, strain and a material state vector; the ele
 accumulates the history incrementally and may suggest a reduced time step if required
 by the material.
 
+Evaluation at the quadrature points
+-----------------------------------
+
+The element stores the shape functions :math:`\mathbf{N}` and their gradients :math:`\partial_{\mathbf{x}} \mathbf{N}` per
+quadrature point, but not the strain-displacement matrix :math:`\mathbf{B}`, which is mostly zeros. The implicit kernel forms
+:math:`\mathbf{B}` on the fly, because the tangent needs it. The explicit kernel does not need it in 3D: it computes the strain
+increment as the symmetric part of the displacement gradient and the internal force from the stress directly,
+
+.. math::
+
+   \Delta \eps = \operatorname{sym} \left( \Delta \mathbf{U}\, \partial_{\mathbf{x}} \mathbf{N}^\mathsf{T} \right), \qquad
+   \mathbf{F}_u \mathrel{+}= \left( \sig\, J_0\, w_{qp} \right) \partial_{\mathbf{x}} \mathbf{N}\, ,
+
+with the nodal quantities arranged as :math:`n_\mathrm{dim} \times n_\mathrm{nodes}` matrices :math:`\Delta \mathbf{U}` and
+:math:`\mathbf{F}_u`. This is the same as :math:`\mathbf{B}\, \Delta \mathbf{\qu}` and :math:`\mathbf{B}^\mathsf{T} \sig\, J_0\, w_{qp}`,
+with a sixth of the data and half the operations. In 1D and 2D, the explicit kernel forms :math:`\mathbf{B}` as well.
+
+In the residual of the nonlocal field, the gradient :math:`\partial_{\mathbf{x}} \knl = \partial_{\mathbf{x}} \Nk\, \mathbf{\qk}` is
+formed first, so that the gradient term costs :math:`O(n_\mathrm{nodes})` per point instead of forming the
+:math:`n_\mathrm{nodes} \times n_\mathrm{nodes}` matrix :math:`\partial_{\mathbf{x}} \Nk^\mathsf{T} \partial_{\mathbf{x}} \Nk`
+(which the tangent :math:`\mathbf{K}_{\knl\knl}` still needs). For equal-order elements (as many nonlocal as displacement
+nodes), the nonlocal field shares :math:`\mathbf{N}` and :math:`\partial_{\mathbf{x}} \mathbf{N}` with the displacement field and
+they are stored only once.
+
+These are reorderings of the same floating-point operations; results change at most in the last digits.
 
 Implementation
 --------------
