@@ -63,3 +63,6 @@ add_marmot_test("TestMarmotTesting" "${CURR_TEST_SOURCE_DIR}/TestMarmotTesting.c
 
 # Tests for MarmotInterfaceMaterialHypoElastic
 add_marmot_test("TestMarmotInterfaceMaterialHypoElastic" "${CURR_TEST_SOURCE_DIR}/TestMarmotInterfaceMaterialHypoElastic.cpp")
+
+# Tests for MarmotMicroplane
+add_marmot_test("TestMarmotMicroplane" "${CURR_TEST_SOURCE_DIR}/TestMarmotMicroplane.cpp")

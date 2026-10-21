@@ -19,6 +19,12 @@ All notable changes to Marmot are documented in this file. The format follows
 - `CWFCORRECTION`: `load[0]` selects the corrected traction components as a bit mask (1 = x, 2 = y, 4 = z;
   0 or no load = all), for faces where only the normal displacement is prescribed.
 - Tests for all registered meshfree particles, cells and material points, and for the meshfree core.
+- `Marmot::Microplane` in `MarmotMechanicsCore`: the microplane quadrature schemes (N21 symmetric/asymmetric, N28,
+  N37, N61) and the volumetric-deviatoric (`VDSplit`) and normal-tangential (`NTSplit`) projection tensors with
+  their homogenization helpers, shared by all microplane models.
+- `materials/MicroplaneM7` (`MICROPLANEM7`), the microplane model M7 for concrete (Caner and Bažant, 2013), and
+  `materials/GM7` (`GM7`), its gradient-enhanced nonlocal extension. The former standalone module repositories are
+  superseded.
 
 ### Changed
 - **Breaking:** a rank-deficient moment matrix of the reproducing kernel approximations now throws
