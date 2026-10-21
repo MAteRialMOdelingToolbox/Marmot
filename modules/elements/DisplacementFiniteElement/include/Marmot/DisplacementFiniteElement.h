@@ -151,6 +151,11 @@ namespace Marmot::Discretizations::Elements {
        */
       std::optional< double > referenceWaveSpeed;
 
+      /// Energy density tangents wrt the strain of the last computeKernels() call; NaN unless provided by the
+      /// material (solid and plane strain sections only)
+      Voigt dElasticEnergyDensity_dStrain = Voigt::Constant( std::numeric_limits< double >::quiet_NaN() );
+      Voigt dDissipation_dStrain          = Voigt::Constant( std::numeric_limits< double >::quiet_NaN() );
+
       /**
        * @brief Manager for per-quadrature-point state variables.
        * @details Provides named accessors to stress \f$\sig\f$, strain \f$\eps\f$
@@ -424,6 +429,8 @@ namespace Marmot::Discretizations::Elements {
      * @param internalEnergy Output parameter for the computed internal energy.
      */
     void computeInternalEnergy( double& internalEnergy ) override;
+
+    void computeEnergyGradients( double* dElasticEnergy_dQ, double* dDissipation_dQ );
 
     /**
      * @brief Access a named state view at a quadrature point.
@@ -762,10 +769,13 @@ namespace Marmot::Discretizations::Elements {
           qp.material->computeStress( state, C66, dE6, timeInfo );
           qp.managedStateVars->stress = state.stress;
 
-          S                    = reduce3DVoigt< ParentGeometryElement::voigtSize >( state.stress );
-          C                    = ContinuumMechanics::PlaneStrain::getPlaneStrainTangent( C66 );
-          elasticEnergyDensity = state.elasticEnergyDensity;
-          dissipation          = state.dissipation;
+          S                                = reduce3DVoigt< ParentGeometryElement::voigtSize >( state.stress );
+          C                                = ContinuumMechanics::PlaneStrain::getPlaneStrainTangent( C66 );
+          elasticEnergyDensity             = state.elasticEnergyDensity;
+          dissipation                      = state.dissipation;
+          qp.dElasticEnergyDensity_dStrain = reduce3DVoigt< ParentGeometryElement::voigtSize >(
+            state.dElasticEnergyDensity_dStrain );
+          qp.dDissipation_dStrain = reduce3DVoigt< ParentGeometryElement::voigtSize >( state.dDissipation_dStrain );
         }
       }
 
@@ -785,10 +795,12 @@ namespace Marmot::Discretizations::Elements {
           timeInfo.time = time;
           timeInfo.dT   = dT;
           qp.material->computeStress( state, C, dE, timeInfo );
-          qp.managedStateVars->stress = state.stress;
-          S                           = state.stress;
-          elasticEnergyDensity        = state.elasticEnergyDensity;
-          dissipation                 = state.dissipation;
+          qp.managedStateVars->stress      = state.stress;
+          S                                = state.stress;
+          elasticEnergyDensity             = state.elasticEnergyDensity;
+          dissipation                      = state.dissipation;
+          qp.dElasticEnergyDensity_dStrain = state.dElasticEnergyDensity_dStrain;
+          qp.dDissipation_dStrain          = state.dDissipation_dStrain;
         }
       }
 
@@ -1194,6 +1206,25 @@ namespace Marmot::Discretizations::Elements {
     internalEnergy = 0.0;
     for ( const auto& qp : qps ) {
       internalEnergy += qp.managedStateVars->totalStrainEnergy;
+    }
+  }
+
+  template < int nDim, int nNodes >
+  void DisplacementFiniteElement< nDim, nNodes >::computeEnergyGradients( double* dElasticEnergy_dQ_,
+                                                                          double* dDissipation_dQ_ )
+  {
+    Eigen::Map< RhsSized > dElasticEnergy_dQ( dElasticEnergy_dQ_ );
+    Eigen::Map< RhsSized > dDissipation_dQ( dDissipation_dQ_ );
+
+    dElasticEnergy_dQ.setZero();
+    dDissipation_dQ.setZero();
+    for ( const auto& qp : qps ) {
+      if ( qp.dElasticEnergyDensity_dStrain.hasNaN() || qp.dDissipation_dStrain.hasNaN() )
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__
+                                     << ": energy tangents not provided by the material or section" );
+      dElasticEnergy_dQ += qp.B.transpose() * qp.dElasticEnergyDensity_dStrain * qp.J0xW;
+      dDissipation_dQ += qp.B.transpose() * qp.dDissipation_dStrain * qp.J0xW;
     }
   }
 

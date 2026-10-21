@@ -2021,6 +2021,127 @@ void testComputeInternalEnergyMatchesSumOverQuadraturePoints()
                            "computeInternalEnergy() does not match the sum over quadrature points." );
 }
 
+// energy gradients against central differences of the summed quadrature point energies, from a plastic state
+template < int nDim, int nNodes >
+void checkEnergyGradients( typename DisplacementFiniteElement< nDim, nNodes >::SectionType secType,
+                           const std::vector< double >&                                    nodeCoordsVec )
+{
+  const auto intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  auto       element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+  // von Mises with exponential softening
+  const std::vector< double >                matProps = { 210000., 0.3, 200., 0., -150., 500. };
+  Marmot::Discretizations::MaterialSection   materialSection( "VONMISES", matProps.data(), matProps.size() );
+  const std::vector< double >                elPropsVec = { 1.0 };
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), elPropsVec.size() );
+  element->assignProperty( elProps );
+  element->assignProperty( materialSection );
+
+  const int             nStateVars = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVars, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVars );
+  element->initializeYourself();
+
+  const int       nDof = element->getNDofPerElement();
+  Eigen::VectorXd P( nDof ), dQ1( nDof ), dQ2( nDof );
+  Eigen::MatrixXd K( nDof, nDof );
+  for ( int i = 0; i < nDof; i++ ) {
+    dQ1[i] = 4e-3 * std::sin( 1.5 * ( i + 1 ) );
+    dQ2[i] = 5e-4 * std::cos( 0.7 * ( i + 1 ) );
+  }
+
+  // first increment into plasticity, then evaluate the second one always from that state
+  P.setZero();
+  K.setZero();
+  element->computeKernels( dQ1.data(), dQ1.data(), P.data(), K.data(), 0.0, 1.0 );
+  const std::vector< double > stateVarsOld = stateVars;
+
+  auto energies = [&]( const Eigen::VectorXd& dQ ) -> std::pair< double, double > {
+    std::copy( stateVarsOld.begin(), stateVarsOld.end(), stateVars.begin() );
+    const Eigen::VectorXd Q = dQ1 + dQ;
+    P.setZero();
+    K.setZero();
+    element->computeKernels( Q.data(), dQ.data(), P.data(), K.data(), 0.0, 1.0 );
+    double psi = 0.0, dissipation = 0.0;
+    for ( const auto& qp : element->qps ) {
+      psi += qp.managedStateVars->elasticStrainEnergy;
+      dissipation += qp.managedStateVars->dissipation;
+    }
+    return { psi, dissipation };
+  };
+
+  const auto      reference = energies( dQ2 );
+  Eigen::VectorXd dPsi_dQ( nDof ), dD_dQ( nDof );
+  element->computeEnergyGradients( dPsi_dQ.data(), dD_dQ.data() );
+  throwExceptionOnFailure( reference.second > 0.0, "no dissipation in the energy gradient test" );
+
+  Eigen::VectorXd dPsiNumerical( nDof ), dDNumerical( nDof );
+  const double    h = 1e-9;
+  for ( int j = 0; j < nDof; j++ ) {
+    Eigen::VectorXd perturbation = Eigen::VectorXd::Zero( nDof );
+    perturbation[j]              = h;
+    const auto plus              = energies( dQ2 + perturbation );
+    const auto minus             = energies( dQ2 - perturbation );
+    dPsiNumerical[j]             = ( plus.first - minus.first ) / ( 2. * h );
+    dDNumerical[j]               = ( plus.second - minus.second ) / ( 2. * h );
+  }
+
+  const double scale = std::max( dPsi_dQ.cwiseAbs().maxCoeff(), dD_dQ.cwiseAbs().maxCoeff() );
+  throwExceptionOnFailure( ( dPsi_dQ - dPsiNumerical ).cwiseAbs().maxCoeff() < 1e-5 * scale,
+                           "computeEnergyGradients(): elastic energy gradient does not match central differences." );
+  throwExceptionOnFailure( ( dD_dQ - dDNumerical ).cwiseAbs().maxCoeff() < 1e-5 * scale,
+                           "computeEnergyGradients(): dissipation gradient does not match central differences." );
+}
+
+void testComputeEnergyGradients()
+{
+  checkEnergyGradients< 3, 8 >( DisplacementFiniteElement< 3, 8 >::SectionType::Solid,
+                                { 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1 } );
+  checkEnergyGradients< 2, 4 >( DisplacementFiniteElement< 2, 4 >::SectionType::PlaneStrain,
+                                { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 } );
+}
+
+void testComputeEnergyGradientsThrowsWithoutMaterialTangents()
+{
+  constexpr int nDim    = 2;
+  constexpr int nNodes  = 4;
+  const auto    intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    secType = DisplacementFiniteElement< nDim, nNodes >::SectionType::PlaneStrain;
+
+  const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
+
+  auto element = std::make_unique< DisplacementFiniteElement< nDim, nNodes > >( 1, intType, secType );
+  element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+  const std::vector< double >                matProps = { 10000.0, 0.2, 1.0 };
+  Marmot::Discretizations::MaterialSection   materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+  const std::vector< double >                elPropsVec = { 1.0 };
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), elPropsVec.size() );
+  element->assignProperty( elProps );
+  element->assignProperty( materialSection );
+
+  const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
+  std::vector< double > stateVars( nStateVarsTotal, 0.0 );
+  element->assignStateVars( stateVars.data(), nStateVarsTotal );
+  element->initializeYourself();
+
+  const int       nDof = element->getNDofPerElement();
+  Eigen::VectorXd Q    = Eigen::VectorXd::Constant( nDof, 1e-3 );
+  Eigen::VectorXd P( nDof ), dPsi_dQ( nDof ), dD_dQ( nDof );
+  Eigen::MatrixXd K( nDof, nDof );
+  element->computeKernels( Q.data(), Q.data(), P.data(), K.data(), 0.0, 1.0 );
+
+  bool threw = false;
+  try {
+    element->computeEnergyGradients( dPsi_dQ.data(), dD_dQ.data() );
+  }
+  catch ( const std::invalid_argument& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw, "computeEnergyGradients() must throw without energy tangents of the material." );
+}
+
 void testGetStateViewVariants()
 {
   constexpr int nDim    = 2;
@@ -2502,6 +2623,8 @@ int main()
     testComputeBodyForceConservesTotalForcePerDirection,
     testComputeDistributedLoadThrowsForUnhandledLoadType,
     testComputeInternalEnergyMatchesSumOverQuadraturePoints,
+    testComputeEnergyGradients,
+    testComputeEnergyGradientsThrowsWithoutMaterialTangents,
     testGetStateViewVariants,
     testGetCoordinatesAtQuadraturePoints,
     testGetNodeFieldsAndDofIndicesPermutationPattern,
