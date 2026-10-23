@@ -400,6 +400,35 @@ void testCompleteDamageThrows()
   throwExceptionOnFailure( threw, "complete damage did not throw" );
 }
 
+/// Strain increments of a diverged iterate (about 1e288, from a dissipation-controlled run at the onset of
+/// dissipation) overflow the energies (inf, and 0 * inf = NaN in their tangents): the material must request a cutback
+/// instead of returning non-finite results; a regular increment remains valid.
+void testDivergedIterateRequestsCutback()
+{
+  const auto     props = propertiesWith( 1. );
+  const Material material( props.data(), props.size(), 1 );
+
+  const Vector6d           dStrainDiverged = ( Vector6d() << -2.1304181664190551e+287,
+                                               -1.0379772584363431e+287,
+                                               1.1922728518060270e+045,
+                                               -2.9804698180504283e+287,
+                                               -3.2636090085991650e+287,
+                                               -2.4320172494955940e+287 )
+                                               .finished();
+  const MaterialPointState stateOld;
+  bool                     cutback = false;
+  try {
+    update( material, stateOld, dStrainDiverged, 0. );
+  }
+  catch ( const StressUpdateFailed& ) {
+    cutback = true;
+  }
+  throwExceptionOnFailure( cutback, "diverged iterate did not request a cutback" );
+
+  const auto r = update( material, stateOld, Vector6d::Constant( 1e-5 ), 0. );
+  throwExceptionOnFailure( r.state.stress.allFinite(), "regular increment gave non-finite results" );
+}
+
 int main()
 {
   std::vector< std::function< void( void ) > > tests = { testLocalLimit,
@@ -408,7 +437,8 @@ int main()
                                                          testZeroStrainIncrement,
                                                          testPropertiesAndFactory,
                                                          testElementStiffness,
-                                                         testCompleteDamageThrows };
+                                                         testCompleteDamageThrows,
+                                                         testDivergedIterateRequestsCutback };
 
   executeTestsAndCollectExceptions( tests );
   return 0;

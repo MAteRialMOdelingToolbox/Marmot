@@ -88,6 +88,9 @@ namespace Marmot::Materials {
     std::vector< double > getNonlocalViscosity( const double* stateVars ) const override;
 
   private:
+    /// the stress update of computeStress, without the check of its results
+    void updateStress( response& res, tangents& tan, const increment& inc ) const;
+
     /// properties of the perfectly plastic RankineSofteningPlasticity for the effective stress
     const std::array< double, 6 >    effectiveProperties;
     const RankineSofteningPlasticity effectiveMaterial;

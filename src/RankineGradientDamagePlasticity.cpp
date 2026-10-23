@@ -61,6 +61,19 @@ namespace Marmot::Materials {
 
   void RankineGradientDamagePlasticity::computeStress( response& res, tangents& tan, const increment& inc ) const
   {
+    updateStress( res, tan, inc );
+
+    // a diverging iterate may overflow the results (e.g., the energies to inf or 0 * inf = NaN): request a cutback
+    // instead of passing non-finite values to the solver
+    if ( !( res.stress.allFinite() && res.KLocal.allFinite() && std::isfinite( res.elasticEnergyDensity ) &&
+            std::isfinite( res.dissipation ) && tan.dStressddStrain.allFinite() && tan.dStressddK.allFinite() &&
+            tan.dKLocalddStrain.allFinite() ) )
+      throw StressUpdateFailed( MakeString()
+                                << __PRETTY_FUNCTION__ << ": non-finite results, e.g., from a diverging iterate" );
+  }
+
+  void RankineGradientDamagePlasticity::updateStress( response& res, tangents& tan, const increment& inc ) const
+  {
     const double& E              = materialProperties[0];
     const double& nu             = materialProperties[1];
     const double& epsilonF       = materialProperties[3];
