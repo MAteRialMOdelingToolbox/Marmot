@@ -121,6 +121,10 @@ namespace Marmot::Materials {
     const double integrity          = std::exp( -kappaDWeightedMax / epsilonF );
     const double dOmega_dKappaDWeig = loading ? integrity / epsilonF : 0.;
     omega                           = 1. - integrity;
+    // complete damage only from a diverging iterate (e.g., at a snap-through): request a cutback
+    if ( !( integrity > 0. ) )
+      throw StressUpdateFailed( MakeString()
+                                << __PRETTY_FUNCTION__ << ": complete damage, kappaDWeighted = " << kappaDWeighted );
 
     const Vector6d dOmega_dE = dOmega_dKappaDWeig * ( 1. - m ) * dKappaD_dE;
     const double   dOmega_dK = dOmega_dKappaDWeig * m;

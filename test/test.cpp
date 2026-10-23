@@ -1,6 +1,7 @@
 #include "Marmot/GeneralGradientEnhancedDisplacementFiniteElement.h"
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotElementProperty.h"
+#include "Marmot/MarmotExceptions.h"
 #include "Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
 #include "Marmot/MarmotTesting.h"
@@ -384,6 +385,21 @@ void testElementStiffness()
   }
 }
 
+/// Complete damage (only reached by a diverging iterate) requests a cutback instead of returning zero stress.
+void testCompleteDamageThrows()
+{
+  const auto     props = propertiesWith( 1. );
+  const Material material( props.data(), props.size(), 1 );
+  bool           threw = false;
+  try {
+    update( material, MaterialPointState(), increments[0], 1e6 );
+  }
+  catch ( const StressUpdateFailed& ) {
+    threw = true;
+  }
+  throwExceptionOnFailure( threw, "complete damage did not throw" );
+}
+
 int main()
 {
   std::vector< std::function< void( void ) > > tests = { testLocalLimit,
@@ -391,7 +407,8 @@ int main()
                                                          testTangents,
                                                          testZeroStrainIncrement,
                                                          testPropertiesAndFactory,
-                                                         testElementStiffness };
+                                                         testElementStiffness,
+                                                         testCompleteDamageThrows };
 
   executeTestsAndCollectExceptions( tests );
   return 0;
