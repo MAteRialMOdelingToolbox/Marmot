@@ -1,4 +1,6 @@
+#include "Marmot/GeneralGradientEnhancedDisplacementFiniteElement.h"
 #include "Marmot/MarmotElasticity.h"
+#include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
 #include "Marmot/MarmotTesting.h"
@@ -281,13 +283,115 @@ void testPropertiesAndFactory()
                            "factory: nonlocal viscosity default is not zero" );
 }
 
+/// Element stiffness of GeneralGradientEnhancedDisplacementFiniteElement (C3D8 and C3D20R with the nonlocal field)
+/// with this material against central differences of the residual, from a damaged state.
+template < int nNodes >
+void checkElementStiffness( double m )
+{
+  using Element      = Marmot::Elements::GeneralGradientEnhancedDisplacementFiniteElement< 3, nNodes >;
+  const auto intType = nNodes == 20 ? FiniteElement::Quadrature::IntegrationTypes::ReducedIntegration
+                                    : FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  Element    element( 1, intType, Element::SectionType::Solid );
+
+  const std::vector< Eigen::Vector3d > corners = { { 0, 0, 0 },
+                                                   { 1.1, 0, 0.05 },
+                                                   { 1, 1, 0 },
+                                                   { -0.05, 0.9, 0 },
+                                                   { 0, 0.05, 1 },
+                                                   { 1, 0, 1.1 },
+                                                   { 1.05, 1, 1 },
+                                                   { 0, 1, 0.95 } };
+  std::vector< Eigen::Vector3d >       nodes   = corners;
+  if constexpr ( nNodes == 20 ) {
+    const int edges[12][2] = { { 0, 1 },
+                               { 1, 2 },
+                               { 2, 3 },
+                               { 3, 0 },
+                               { 4, 5 },
+                               { 5, 6 },
+                               { 6, 7 },
+                               { 7, 4 },
+                               { 0, 4 },
+                               { 1, 5 },
+                               { 2, 6 },
+                               { 3, 7 } };
+    for ( const auto& e : edges )
+      nodes.push_back( 0.5 * ( corners[e[0]] + corners[e[1]] ) );
+  }
+  std::vector< double > coordinates;
+  for ( const auto& x : nodes )
+    coordinates.insert( coordinates.end(), x.data(), x.data() + 3 );
+
+  const auto props = propertiesWith( m );
+  element.assignNodeCoordinates( coordinates.data() );
+  element.assignProperty( MarmotMaterialSection( "RANKINEGRADIENTDAMAGEPLASTICITY", props.data(), props.size() ) );
+  std::vector< double > stateVars( element.getNumberOfRequiredStateVars(), 0. );
+  element.assignStateVars( stateVars.data(), stateVars.size() );
+  element.initializeYourself();
+
+  constexpr int   n = Element::sizeLoadVector, nU = Element::sizeDoFU;
+  Eigen::VectorXd dQ1 = Eigen::VectorXd::Zero( n ), dQ2 = Eigen::VectorXd::Zero( n );
+  for ( int i = 0; i < nU; i++ )
+    dQ1[i] = 1e-4 * std::sin( 1.5 * ( i + 1 ) ) + ( i % 3 == 0 ? 2e-4 * coordinates[i] : 0. );
+  for ( int A = 0; A < nNodes; A++ )
+    dQ1[nU + A] = 2e-4 * ( 1. + 0.2 * std::cos( 0.9 * ( A + 1 ) ) );
+  dQ2 = 0.75 * dQ1;
+
+  auto kernels = [&]( const Eigen::VectorXd& Q, const Eigen::VectorXd& dQ ) {
+    Eigen::VectorXd P = Eigen::VectorXd::Zero( n );
+    Eigen::MatrixXd K = Eigen::MatrixXd::Zero( n, n );
+    element.computeKernels( Q.data(), dQ.data(), P.data(), K.data(), 0., 1. );
+    return std::make_pair( P, K );
+  };
+  kernels( dQ1, dQ1 );
+  const std::vector< double > stateVarsOld = stateVars;
+  auto                        residual     = [&]( const Eigen::VectorXd& dQ ) {
+    std::copy( stateVarsOld.begin(), stateVarsOld.end(), stateVars.begin() );
+    return kernels( dQ1 + dQ, dQ );
+  };
+
+  const auto [P, K] = residual( dQ2 );
+  Eigen::MatrixXd KNumerical( n, n );
+  for ( int j = 0; j < n; j++ ) {
+    const double    h  = 1e-7 * std::max( std::abs( dQ2[j] ), 1e-4 );
+    Eigen::VectorXd dp = dQ2, dm = dQ2;
+    dp[j] += h;
+    dm[j] -= h;
+    KNumerical.col( j ) = ( residual( dp ).first - residual( dm ).first ) / ( 2. * h );
+  }
+  const auto blockError = [&]( int r0, int c0, int nr, int nc ) {
+    return ( K.block( r0, c0, nr, nc ) - KNumerical.block( r0, c0, nr, nc ) ).cwiseAbs().maxCoeff() /
+           K.block( r0, c0, nr, nc ).cwiseAbs().maxCoeff();
+  };
+  const double error = std::max( { blockError( 0, 0, nU, nU ),
+                                   blockError( 0, nU, nU, nNodes ),
+                                   blockError( nU, 0, nNodes, nU ),
+                                   blockError( nU, nU, nNodes, nNodes ) } );
+  throwExceptionOnFailure( error < 1e-5,
+                           MakeString() << "element stiffness differs from central differences, m = " << m
+                                        << ", relative error " << error );
+  double omegaMax = 0.;
+  for ( int q = 0; q < element.getNumberOfQuadraturePoints(); q++ )
+    omegaMax = std::max( omegaMax, element.getStateView( "omega", q ).stateLocation[0] );
+  throwExceptionOnFailure( omegaMax > 0.1, "element stiffness: no damage" );
+}
+
+void testElementStiffness()
+{
+  for ( const double m : { 1., 2. } ) {
+    checkElementStiffness< 8 >( m );
+    checkElementStiffness< 20 >( m );
+  }
+}
+
 int main()
 {
   std::vector< std::function< void( void ) > > tests = { testLocalLimit,
                                                          testUniaxialStrain,
                                                          testTangents,
                                                          testZeroStrainIncrement,
-                                                         testPropertiesAndFactory };
+                                                         testPropertiesAndFactory,
+                                                         testElementStiffness };
 
   executeTestsAndCollectExceptions( tests );
   return 0;
