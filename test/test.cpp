@@ -1,4 +1,5 @@
 #include "Marmot/MarmotElasticity.h"
+#include "Marmot/MarmotExceptions.h"
 #include "Marmot/MarmotMaterialPointSolverHypoElastic.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
 #include "Marmot/MarmotTesting.h"
@@ -337,6 +338,56 @@ void testCoordinateInvariance()
   throwExceptionOnFailure( spinTurbokreisel( solver, 1e-10, 1e-8 ), "Turbokreisel failed!" );
 }
 
+/// Quadrature point states of a diverged iterate (dissipation control, tensile bar at the onset of dissipation, strain
+/// increments of about 1e288): the update overflows (the elastic energy to inf, its tangent to 0 * inf = NaN, complete
+/// damage at the plastic point) and must request a cutback instead of returning non-finite results.
+void testDivergedIterateRequestsCutback()
+{
+  const std::vector< double >   props = { 210000., 0.3, 693., 3.3 };
+  const RankineDamagePlasticity material( props.data(), props.size(), 1 );
+
+  struct Case {
+    MaterialPointState state;
+    Vector6d           dStrain;
+  };
+  std::vector< Case > cases( 3 );
+  // elastic quadrature point
+  cases[0].state.stress << 6.5087488797518449e+02, -1.1460284989614635e+00, -9.2737855777728662e-01,
+    1.2095787026234459e+00, 5.0457762116698635e-01, -5.0845805470899919e-01;
+  cases[0].dStrain << -2.1304181664190551e+287, -1.0379772584363431e+287, 1.1922728518060270e+045,
+    -2.9804698180504283e+287, -3.2636090085991650e+287, -2.4320172494955940e+287;
+  // plastic quadrature point
+  cases[1].state.stress << 6.6713904544172669e+02, 3.5094066506532569e+00, 5.5710345496692897e+00,
+    5.0537225453201051e-01, -2.2062866091754861e-02, -3.2671228863947905e+00;
+  cases[1].state.stateVars << 1.0908213453838e-04, 1., 3.3054645967478535e-05;
+  cases[1].dStrain << -7.9390800699293370e+287, 2.4129632418183885e+287, 2.9152508981520328e+044,
+    -2.6781038693586638e+287, -1.0266542866855759e+288, -7.6505516681351224e+287;
+  // elastic quadrature point, larger increment
+  cases[2].state.stress << 6.3594567924872888e+02, 4.6210448040177383e+01, 4.5978543623505857e+01,
+    -7.7865816008572999e+00, -6.7477652659058602e+00, -3.9672606952376455e-01;
+  cases[2].dStrain << -7.0908769355913750e+288, 8.0118534558425438e+287, -3.0696396257343197e+009,
+    4.6872184635987446e+288, 2.7759733987994883e+288, -1.8229633857534692e+287;
+
+  for ( const auto& c : cases ) {
+    bool cutback = false;
+    try {
+      update( material, c.state, c.dStrain );
+    }
+    catch ( const StressUpdateFailed& ) {
+      cutback = true;
+    }
+    throwExceptionOnFailure( cutback, "diverged iterate did not request a cutback" );
+  }
+
+  // the converged states themselves with a regular increment remain valid
+  for ( const auto& c : cases ) {
+    const auto result = update( material, c.state, Vector6d::Constant( 1e-4 ) );
+    throwExceptionOnFailure( result.state.stress.allFinite() && result.dPsi_dE.allFinite() &&
+                               result.dDissipation_dE.allFinite(),
+                             "regular increment gave non-finite results" );
+  }
+}
+
 int main()
 {
   std::vector< std::function< void( void ) > > tests = { testUniaxialStress,
@@ -345,7 +396,8 @@ int main()
                                                          testTangentSingleAndMultiSurface,
                                                          testTangentGeneralLoadingPath,
                                                          testEnergyBalance,
-                                                         testCoordinateInvariance };
+                                                         testCoordinateInvariance,
+                                                         testDivergedIterateRequestsCutback };
 
   executeTestsAndCollectExceptions( tests );
   return 0;

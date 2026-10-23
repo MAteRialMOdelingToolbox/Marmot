@@ -48,6 +48,22 @@ namespace Marmot::Materials {
                                                const Vector6d& dStrain,
                                                const timeInfo& timeInfo ) const
   {
+    updateStress( state, dStress_dStrain, dStrain, timeInfo );
+
+    // a diverging iterate (e.g., of an arc-length iteration) may overflow the results: request a cutback instead of
+    // passing non-finite values (e.g., NaN energy tangents from 0 * inf) to the solver
+    if ( !( state.stress.allFinite() && dStress_dStrain.allFinite() && std::isfinite( state.elasticEnergyDensity ) &&
+            std::isfinite( state.dissipation ) && state.dElasticEnergyDensity_dStrain.allFinite() &&
+            state.dDissipation_dStrain.allFinite() ) )
+      throw StressUpdateFailed( MakeString()
+                                << __PRETTY_FUNCTION__ << ": non-finite results, e.g., from a diverging iterate" );
+  }
+
+  void RankineDamagePlasticity::updateStress( state3D&        state,
+                                              Matrix6d&       dStress_dStrain,
+                                              const Vector6d& dStrain,
+                                              const timeInfo& timeInfo ) const
+  {
     const double& E        = this->materialProperties[0];
     const double& nu       = this->materialProperties[1];
     const double& epsilonF = this->materialProperties[3];
@@ -94,6 +110,9 @@ namespace Marmot::Materials {
     const double integrity      = std::exp( -kappaD / epsilonF );
     const double dOmega_dKappaD = integrity / epsilonF;
     omega                       = 1. - integrity;
+    // complete damage only from a diverging iterate: request a cutback
+    if ( !( integrity > 0. ) )
+      throw StressUpdateFailed( MakeString() << __PRETTY_FUNCTION__ << ": complete damage, kappaD = " << kappaD );
 
     // dKappaD = tr( dE - Cel^-1 dEffStress ), which vanishes for elastic steps
     const Vector6d I          = ( Vector6d() << 1., 1., 1., 0., 0., 0. ).finished();
