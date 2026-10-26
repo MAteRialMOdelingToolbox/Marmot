@@ -109,7 +109,6 @@ namespace Marmot::Elements {
     using JacobianSizedK         = typename ParentGeometryElementK::JacobianSized;
     using NSizedK                = typename ParentGeometryElementK::NSized;
     using dNdXiSizedK            = typename ParentGeometryElementK::dNdXiSized;
-    using BSizedK                = typename ParentGeometryElementK::BSized;
 
     /** Element-level properties (e.g., thickness for 2D, area for 1D). */
     Map< const VectorXd > elementProperties;
@@ -129,8 +128,9 @@ namespace Marmot::Elements {
     /**
      * @brief Data and state associated with a quadrature point.
      * @details Holds parent coordinates, integration weight, Jacobian determinant, shape functions N and their
-     * gradients dNdX, kinematic (strain-displacement) B-matrices for both local and non-local evaluations, and a
-     * material instance with managed state variables.
+     * gradients dNdX for both local and non-local evaluations, and a material instance with managed state
+     * variables. The strain-displacement operator B is not stored: it is built from dNdX where it is used,
+     * because it is a sparse rearrangement of dNdX up to six times its size (3D).
      */
     struct QuadraturePoint {
 
@@ -141,10 +141,8 @@ namespace Marmot::Elements {
       double      J0xW;
       NSized      N;
       dNdXiSized  dNdX;
-      BSized      B;
       NSizedK     N_K;
       dNdXiSizedK dNdX_K;
-      BSizedK     B_K;
 
       /**
        * @brief The element's smallest physical extent at this quadrature point.
@@ -235,10 +233,8 @@ namespace Marmot::Elements {
           J0xW( 0.0 ),
           N( NSized::Zero() ),
           dNdX( dNdXiSized::Zero() ),
-          B( BSized::Zero() ),
           N_K( NSizedK::Zero() ),
-          dNdX_K( dNdXiSizedK::Zero() ),
-          B_K( BSizedK::Zero() ){};
+          dNdX_K( dNdXiSizedK::Zero() ){};
     };
 
     /// Quadrature points owned by the element (one per integration point).
@@ -323,7 +319,7 @@ namespace Marmot::Elements {
     /** @brief Provide nodal coordinates to local and non-local geometry elements. */
     void assignNodeCoordinates( const double* coordinates ) override;
 
-    /** @brief Precompute geometry-related quantities at quadrature points (B, detJ, J0xW, N_K, dNdX_K). */
+    /** @brief Precompute geometry-related quantities at quadrature points (detJ, J0xW, N, dNdX, N_K, dNdX_K). */
     void initializeYourself() override;
 
     /**
@@ -796,7 +792,6 @@ namespace Marmot::Elements {
       qp.detJ                   = J.determinant();
       qp.N                      = localGeometryElement.N( qp.xi );
       qp.dNdX                   = localGeometryElement.dNdX( dNdXi, JInv );
-      qp.B                      = localGeometryElement.B( qp.dNdX );
 
       qp.characteristicElementLength = characteristicElementLengthAt( qp.xi );
       qp.referenceWaveSpeed          = 0.0;
@@ -806,7 +801,6 @@ namespace Marmot::Elements {
       const JacobianSizedK JInv_K  = J_K.inverse();
       qp.N_K                       = nonLocalGeometryElement.N( qp.xi );
       qp.dNdX_K                    = nonLocalGeometryElement.dNdX( dNdXi_K, JInv_K );
-      qp.B_K                       = nonLocalGeometryElement.B( qp.dNdX_K );
 
       if constexpr ( nDim == 3 ) {
         qp.J0xW = qp.weight * qp.detJ;
@@ -861,7 +855,7 @@ namespace Marmot::Elements {
 
       QuadraturePoint& qp = this->qps[i];
 
-      const BSized&      B      = qp.B;
+      const BSized       B      = localGeometryElement.B( qp.dNdX );
       const NSizedK&     N_K    = qp.N_K;
       const dNdXiSizedK& dNdX_K = qp.dNdX_K;
 
@@ -1003,7 +997,7 @@ namespace Marmot::Elements {
 
       QuadraturePoint& qp = this->qps[i];
 
-      const BSized&      B      = qp.B;
+      const BSized       B      = localGeometryElement.B( qp.dNdX );
       const NSizedK&     N_K    = qp.N_K;
       const dNdXiSizedK& dNdX_K = qp.dNdX_K;
 
