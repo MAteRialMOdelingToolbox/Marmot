@@ -11,8 +11,8 @@ GM7 is a nonlocal, gradient-enhanced extension of the :ref:`microplane model M7 
 with six nonlocal fields: the nonlocal macroscopic strain :math:`\bar{\eps}`, which is the solution of the
 implicit gradient equation driven by the local strain :math:`\eps` with the interaction parameter :math:`c`.
 
-The elastic predictor on the microplanes is evaluated with the local strain, while the tensile, deviatoric and
-volumetric boundaries are evaluated with the *over-nonlocal* strain increment
+The elastic predictor on the microplanes is evaluated with the local strain, while the tensile, deviatoric,
+volumetric and shear boundaries are evaluated with the *over-nonlocal* strain increment
 
 .. math::
 
@@ -22,11 +22,17 @@ in which :math:`m` weights the nonlocal against the local strain. The consistent
 and the nonlocal strain follow accordingly.
 
 The microplane discretization is taken from the shared ``Marmot::Microplane`` module (37-microplane scheme ``N37``,
-fixed at compile time). The closed-form transition function for the unloading stiffness and the gradient
-enhancement of the boundaries are introduced in Basche et al. (2026).
+fixed at compile time). The closed-form transition function for the elastic unloading stiffness and the gradient
+enhancement of the boundaries are introduced in Basche et al. (2026). The constitutive laws of M7 are
+implemented once in ``MicroplaneM7Formulation`` and shared with :ref:`MicroplaneM7 <microplanem7>`; GM7 therefore
+requires the ``MicroplaneM7`` module.
 
 Properties
 ----------
+
+The fixed parameters of Caner and Bažant (2013) are calibrated in N and mm. Therefore :math:`E`, :math:`f_c` and
+``transitionWidth`` have to be given in N/mm² (MPa); the M7 parameters :math:`\nu`, :math:`k_1, \ldots, k_5`,
+:math:`c_3` and ``transitionExponent`` are dimensionless.
 
 .. list-table::
    :header-rows: 1
@@ -37,7 +43,7 @@ Properties
      - Description
    * - 0
      - ``E``
-     - Young's modulus :math:`E`
+     - Young's modulus :math:`E` in N/mm²
    * - 1
      - ``nu``
      - Poisson's ratio :math:`\nu`
@@ -67,11 +73,11 @@ Properties
      - Optional, slope of the postpeak in uniaxial tension :math:`c_3` (default 4.0)
    * - 10
      - ``fc``
-     - Optional, compressive strength :math:`f_c` in MPa, used by the deviatoric boundary (default 36.0)
+     - Optional, compressive strength :math:`f_c` in N/mm², used by the deviatoric boundary (default 36.0)
    * - 11
      - ``transitionWidth``
-     - Optional, stress offset from the virtual elastic loading path at which the unloading transition starts
-       (default 4.0)
+     - Optional, stress offset in N/mm² from the virtual elastic loading path at which the unloading transition
+       starts (default 4.0)
    * - 12
      - ``transitionExponent``
      - Optional, exponent of the unloading transition function (default 0.4)
@@ -86,6 +92,13 @@ Properties
 The material is registered as ``GM7`` in the general gradient-enhanced hypoelastic material factory (six nonlocal
 fields), and is used with the six-field ``GeneralGradientEnhancedDisplacementFiniteElement`` elements (``G6GCPS8``,
 ``G6GC3D8``, ``G6GC3D20``, ...).
+
+The state variables are the volumetric stress ``sig_v0``, ``zeta``, the microplane stresses ``sig_N0``, ``sig_M0``,
+``sig_L0``, the extremal over-nonlocal normal strains ``eps_N0pos``, ``eps_N0neg``, the macroscopic over-nonlocal
+strain ``strain_macro0OverNonLocal`` and the macroscopic local strain ``strain_macro0Local``, which is returned as
+the local driving variable of the nonlocal fields. For postprocessing, ``activeTensileBoundary``,
+``activeCompressiveBoundary`` and ``activeShearBoundary`` hold the fractions of the microplanes on the tensile,
+compressive and shear boundary in the last increment.
 
 Implementation
 --------------

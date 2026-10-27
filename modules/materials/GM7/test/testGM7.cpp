@@ -1,6 +1,7 @@
 #include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h"
 #include "Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h"
+#include "Marmot/MarmotMaterialHypoElasticFactory.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
 #include "Marmot/MarmotTesting.h"
 #include "Marmot/MarmotTypedefs.h"
@@ -8,6 +9,8 @@
 #include "memory"
 #include <algorithm>
 #include <array>
+#include <stdexcept>
+#include <string>
 
 using namespace Marmot::Testing;
 using response  = typename MarmotMaterialGeneralGradientEnhancedHypoElastic< 6 >::response;
@@ -301,6 +304,82 @@ void testCombinedNormalShear()
                            MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
+// With m = 0 the over-nonlocal strain equals the local strain, so GM7 must reproduce MicroplaneM7: same stress,
+// and dStressddStrain + dStressddK equal to the MicroplaneM7 tangent. The strain path is given as a list of
+// (increment, number of steps) segments, so that load reversals are covered too.
+void checkEquivalenceWithMicroplaneM7( const std::string&                                       testName,
+                                       const std::vector< std::pair< Marmot::Vector6d, int > >& segments )
+{
+  // {E, nu, k1, k2, k3, k4, k5, c, m = 0}, and the same properties without c and m for MicroplaneM7
+  const std::array< double, 9 > propertiesGM7 = { 2.5e4, 0.18, 1.5e-4, 110, 30, 100, 1e-4, 25.0, 0.0 };
+  const std::array< double, 7 > propertiesM7  = { 2.5e4, 0.18, 1.5e-4, 110, 30, 100, 1e-4 };
+
+  auto                                         gm7 = createGM7( propertiesGM7.data(), propertiesGM7.size() );
+  std::unique_ptr< MarmotMaterialHypoElastic > m7(
+    MarmotLibrary::MarmotMaterialHypoElasticFactory::createMaterial( "MICROPLANEM7",
+                                                                     propertiesM7.data(),
+                                                                     propertiesM7.size(),
+                                                                     1 ) );
+
+  std::vector< double > stateVarsGM7( gm7->getNumberOfRequiredStateVars(), 0.0 );
+  std::vector< double > stateVarsM7( m7->getNumberOfRequiredStateVars(), 0.0 );
+
+  response  res;
+  tangents  tan;
+  increment inc;
+  res.stress    = { 0., 0., 0., 0., 0., 0. };
+  res.stateVars = stateVarsGM7.data();
+  inc.K         = Eigen::Vector< double, 6 >::Zero();
+
+  MarmotMaterialHypoElastic::state3D state;
+  state.stress    = Marmot::Vector6d::Zero();
+  state.stateVars = stateVarsM7.data();
+  MarmotMaterialHypoElastic::timeInfo timeInfo{ 0.0, 1.0 };
+  Marmot::Matrix6d                    tangentM7;
+
+  const auto relativeDifference = []( const auto& a, const auto& b ) {
+    return ( a - b ).norm() / std::max( b.norm(), 1.0 );
+  };
+
+  int step = 0;
+  for ( const auto& [dStrain, nSteps] : segments ) {
+    for ( int i = 0; i < nSteps; i++, step++ ) {
+      inc.dStrain = dStrain;
+      inc.dK      = dStrain;
+      gm7->computeStress( res, tan, inc );
+      inc.K = res.KLocal;
+
+      m7->computeStress( state, tangentM7, dStrain, timeInfo );
+      timeInfo.time += timeInfo.dT;
+
+      const Marmot::Vector6d stressGM7  = res.stress;
+      const Marmot::Matrix6d tangentGM7 = tan.dStressddStrain + tan.dStressddK;
+
+      throwExceptionOnFailure( relativeDifference( stressGM7, state.stress ) < 1e-10 &&
+                                 relativeDifference( tangentGM7, tangentM7 ) < 1e-10,
+                               MakeString() << testName << ": GM7 (m = 0) differs from MicroplaneM7 in step " << step
+                                            << "\nstress GM7: " << stressGM7.transpose()
+                                            << "\nstress M7:  " << state.stress.transpose() << "\ntangent GM7:\n"
+                                            << tangentGM7 << "\ntangent M7:\n"
+                                            << tangentM7 );
+    }
+  }
+}
+
+void testEquivalenceWithMicroplaneM7()
+{
+  using V = Marmot::Vector6d;
+  checkEquivalenceWithMicroplaneM7( "oedometricCompression", { { V{ -1e-5, 0., 0., 0., 0., 0. }, 100 } } );
+  checkEquivalenceWithMicroplaneM7( "triaxialCompression", { { V{ -1e-5, -6e-6, -2e-6, 0., 0., 0. }, 100 } } );
+  checkEquivalenceWithMicroplaneM7( "shear", { { V{ 0., 0., 0., 5e-6, -3e-6, 2e-6 }, 100 } } );
+  checkEquivalenceWithMicroplaneM7( "combinedNormalShear", { { V{ -5e-6, -2e-6, -2e-6, 3e-6, -2e-6, 1e-6 }, 100 } } );
+  // tension beyond the peak, then unloading into compression: covers the unloading transition and the sign
+  // changes of the microplane normal stresses
+  checkEquivalenceWithMicroplaneM7( "tensionUnloadingCompression",
+                                    { { V{ 1e-5, 0., 0., 0., 0., 0. }, 100 },
+                                      { V{ -1e-5, 0., 0., 0., 0., 0. }, 200 } } );
+}
+
 void testTangent()
 {
   // initialize material parameters
@@ -393,6 +472,23 @@ void testCubicSymmetryInvarianceTensionShear()
                                           1e-8 );
 }
 
+// Fewer than the 9 required material properties (E, nu, k1 ... k5, c, m) must be rejected with
+// std::invalid_argument from the property check, before c and m are read past the end of the property array.
+void testTooFewMaterialProperties()
+{
+  const std::array< double, 8 > materialProperties = { 2.5e4, 0.18, 1.5e-4, 110, 30, 100, 1e-4, 25.0 };
+
+  bool rejected = false;
+  try {
+    createGM7( materialProperties.data(), materialProperties.size() );
+  }
+  catch ( const std::invalid_argument& e ) {
+    rejected = std::string( e.what() ).find( "material properties required" ) != std::string::npos;
+  }
+
+  throwExceptionOnFailure( rejected, MakeString() << __PRETTY_FUNCTION__ << " failed" );
+}
+
 int main()
 {
   testOedometricCompression();
@@ -401,11 +497,13 @@ int main()
   testGeneralTriaxialCompression();
   testShear();
   testCombinedNormalShear();
+  testEquivalenceWithMicroplaneM7();
   testTangent();
   testTangentOedometricExtension();
   testTangentCombinedNormalShear();
   testCoordinateInvarianceTurbokreisel();
   testCubicSymmetryInvarianceCombinedNormalShear();
   testCubicSymmetryInvarianceTensionShear();
+  testTooFewMaterialProperties();
   return 0;
 }

@@ -9,6 +9,8 @@
 #include "memory"
 #include <algorithm>
 #include <array>
+#include <stdexcept>
+#include <string>
 
 using namespace Marmot::Testing;
 using namespace Marmot::Solvers;
@@ -374,7 +376,7 @@ void testTangentOedometricExtension()
 {
   // Small strain increment (same order of magnitude as testTangent()) so the tensile boundary
   // is only just engaged on some microplanes, avoiding the strongly non-smooth shear-boundary
-  // branch switching (shear_lawCaner's R27/R28 selection on sign(sig_N)) seen at larger strains.
+  // branch switching (shear_law's R27/R28 selection on sign(sig_N)) seen at larger strains.
   Marmot::Vector6d dStrain = { 1e-5, 0., 0., 0., 0., 0. };
   checkTangentForStrainPath( __PRETTY_FUNCTION__, dStrain, 5, 0.5 );
 }
@@ -503,6 +505,23 @@ void testCubicSymmetryInvarianceTensionShear()
   checkCubicSymmetryInvarianceForStrainPath( __PRETTY_FUNCTION__, { 3e-5, 6e-6, -3e-6, 1.5e-5, -9e-6, 6e-6 }, 100 );
 }
 
+// Fewer than the 7 required material properties must be rejected with std::invalid_argument from the property
+// check, instead of reading past the end of the property array.
+void testTooFewMaterialProperties()
+{
+  const std::array< double, 6 > materialProperties = { 2.5e4, 0.18, 1.5e-4, 110, 30, 100 };
+
+  bool rejected = false;
+  try {
+    createMarmotMaterialHypoElastic( "MICROPLANEM7", materialProperties.data(), materialProperties.size() );
+  }
+  catch ( const std::invalid_argument& e ) {
+    rejected = std::string( e.what() ).find( "material properties required" ) != std::string::npos;
+  }
+
+  throwExceptionOnFailure( rejected, MakeString() << __PRETTY_FUNCTION__ << " failed" );
+}
+
 int main()
 {
   testOedometricCompression();
@@ -517,5 +536,6 @@ int main()
   testCoordinateInvarianceTurbokreisel();
   testCubicSymmetryInvarianceCombinedNormalShear();
   testCubicSymmetryInvarianceTensionShear();
+  testTooFewMaterialProperties();
   return 0;
 }
