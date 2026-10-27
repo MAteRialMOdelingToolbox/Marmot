@@ -344,12 +344,12 @@ namespace Marmot::MaterialPoints {
                                        const TensorDD& displacementGradientIncrement ) = 0;
 
     /// response of the last computeYourself()
-    struct {
+    struct Response {
       Fastor::Tensor< double, nDim, nDim > S; ///< Kirchhoff stress @f$ \boldsymbol{\tau} @f$ (in-plane part in 2D)
     } response;
 
     /// algorithmic tangents of the last computeYourself()
-    struct {
+    struct Tangents {
       /// @f$ \partial \tau_{ij} / \partial \Delta F_{kL} @f$ (in-plane part in 2D)
       Fastor::Tensor< double, nDim, nDim, nDim, nDim > dS_dDeltaF;
     } tangents;

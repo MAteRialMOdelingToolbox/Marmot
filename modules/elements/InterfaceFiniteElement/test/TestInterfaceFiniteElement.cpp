@@ -98,7 +98,9 @@ namespace {
     element->assignProperty( elProps );
 
     static std::array< double, 8 > materialProperties = { 4000.0, 0.30, 0.01, 1.06e-3, 0.334, 12, 1.0e-2, 1 };
-    element->assignMaterial( "LINEARVISCOELASTICPOWERLAW", materialProperties.data(), materialProperties.size() );
+    element->assignMaterial( "LINEARVISCOELASTICPOWERLAW",
+                             materialProperties.data(),
+                             static_cast< int >( materialProperties.size() ) );
     return element;
   }
 
@@ -130,7 +132,9 @@ namespace {
     element->assignProperty( elProps );
 
     static std::array< double, 3 > materialProperties = { 1000.0, 0.25, 0.1 };
-    element->assignMaterial( "LINEARELASTIC", materialProperties.data(), materialProperties.size() );
+    element->assignMaterial( "LINEARELASTIC",
+                             materialProperties.data(),
+                             static_cast< int >( materialProperties.size() ) );
 
     return element;
   }
@@ -159,14 +163,16 @@ namespace {
     element->assignNodeCoordinates( coordinates.data() );
 
     static std::array< double, 1 > elementProperties = { 1.0 };
-    ElementProperties              properties( elementProperties.data(), elementProperties.size() );
+    ElementProperties properties( elementProperties.data(), static_cast< int >( elementProperties.size() ) );
     element->assignProperty( properties );
 
     static std::array< double, 8 > materialProperties = { 4000.0, 0.30, 0.01, 1.06e-3, 0.334, 12, 1.0e-2, 1 };
-    element->assignMaterial( "LINEARVISCOELASTICPOWERLAW", materialProperties.data(), materialProperties.size() );
+    element->assignMaterial( "LINEARVISCOELASTICPOWERLAW",
+                             materialProperties.data(),
+                             static_cast< int >( materialProperties.size() ) );
 
     std::vector< double > stateVars( element->getNumberOfRequiredStateVars(), 0.0 );
-    element->assignStateVars( stateVars.data(), stateVars.size() );
+    element->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
 
     for ( auto& qp : element->qps ) {
       qp.managedStateVars->materialStateVars.setOnes();
@@ -219,7 +225,7 @@ namespace {
     auto element = makeSingleInputFileInterfaceElement();
 
     std::vector< double > stateVars( element->getNumberOfRequiredStateVars(), 0.0 );
-    element->assignStateVars( stateVars.data(), stateVars.size() );
+    element->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
     element->initializeYourself();
 
     element->material = std::make_unique< FailingInterfaceMaterial >();
@@ -973,7 +979,9 @@ void TestSharedMaterialSeesEachQuadraturePointCharacteristicLength()
   element->assignProperty( elProps );
 
   static std::array< double, 3 > materialProperties = { 4000.0, 0.3, 0.01 };
-  element->assignMaterial( "LINEARELASTIC", materialProperties.data(), materialProperties.size() );
+  element->assignMaterial( "LINEARELASTIC",
+                           materialProperties.data(),
+                           static_cast< int >( materialProperties.size() ) );
 
   std::vector< double > stateVars( element->getNumberOfRequiredStateVars(), 0.0 );
   element->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
@@ -1202,7 +1210,9 @@ void checkMaterialAssignmentThroughSection( const std::array< double, nDim * nNo
                            "The state-variable count must be available before a material is assigned." );
 
   const std::array< double, 8 > properties = { 4000.0, 0.30, 0.01, 1.06e-3, 0.334, 12, 1.0e-2, 1 };
-  const MarmotMaterialSection   section( "LINEARVISCOELASTICPOWERLAW", properties.data(), properties.size() );
+  const MarmotMaterialSection   section( "LINEARVISCOELASTICPOWERLAW",
+                                       properties.data(),
+                                       static_cast< int >( properties.size() ) );
   element->assignProperty( section );
 
   throwExceptionOnFailure( element->material != nullptr, "A material section must create the interface material." );

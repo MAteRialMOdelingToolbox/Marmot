@@ -377,7 +377,7 @@ namespace Marmot::MaterialPoints {
                                        double          nonLocalDamage ) = 0;
 
     /// @brief Response of the last computeYourself(), in nDim components.
-    struct {
+    struct Response {
       Fastor::Tensor< double, nDim, nDim > S;  ///< Kirchhoff stress @f$ \boldsymbol{\tau} @f$
       double                               dL; ///< @f$ \Delta L @f$: the local driving force of this evaluation
                                                ///< minus the value stored in the state variable `local damage`
@@ -387,7 +387,7 @@ namespace Marmot::MaterialPoints {
 
     /// @brief Algorithmic tangents of the last computeYourself(), with respect to @f$ \Delta\boldsymbol{F} @f$ and
     /// @f$ \bar{N} @f$, in nDim components.
-    struct {
+    struct Tangents {
       Fastor::Tensor< double, nDim, nDim, nDim, nDim > dS_dDeltaF; ///< @f$ \partial\tau_{ij}/\partial\Delta F_{kL} @f$
       Fastor::Tensor< double, nDim, nDim >             dS_dN;      ///< @f$ \partial\tau_{ij}/\partial\bar{N} @f$
       Fastor::Tensor< double, nDim, nDim >             dL_dDeltaF; ///< @f$ \partial L/\partial\Delta F_{kL} @f$

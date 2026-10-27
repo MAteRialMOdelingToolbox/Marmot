@@ -1,5 +1,13 @@
 // #include "Marmot/MarmotJournal.h"
+/* Fastor/Fastor.h ends with `#pragma warning( default : ... )`; scope it so it neither overrides the build's warning
+ * flags nor leaks into consumers. */
+#ifdef _MSC_VER
+#  pragma warning( push )
+#endif
 #include "Fastor/Fastor.h"
+#ifdef _MSC_VER
+#  pragma warning( pop )
+#endif
 #include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotNumericalDifferentiationForFastor.h"
