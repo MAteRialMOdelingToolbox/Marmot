@@ -115,8 +115,8 @@ using one-based matrix indices, i.e. entries ``(3,3)``, ``(4,4)`` and ``(5,5)`` 
 code. The corresponding compliance matrix holds :math:`1/G_{12}`, :math:`1/G_{13}` and
 :math:`1/G_{23}` in the same positions.
 
-Conversion to and from the full fourth order tensor is available as ``voigtToStiffness`` (Eigen),
-``voigtToStiffnessFastor`` (Fastor) and ``stiffnessToVoigt``. These populate
+Conversion to and from the full fourth order tensor is available as ``voigtToStiffness`` and
+``stiffnessToVoigt``. These populate
 
 .. math::
    \Cel_{ijkl} = \Cel^\mathrm{Voigt}_{\,\mathrm{toVoigt}(i,j)\,,\,\mathrm{toVoigt}(k,l)},

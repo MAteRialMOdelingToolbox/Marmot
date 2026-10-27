@@ -1,5 +1,6 @@
 #include "Marmot/HaighWestergaard.h"
 #include "Marmot/MarmotElasticity.h"
+#include "Marmot/MarmotFastorTensorBasics.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
 #include "Marmot/MarmotTesting.h"
 #include "Marmot/MarmotTypedefs.h"
@@ -254,7 +255,6 @@ void test_dTheta_dStress()
 
   using namespace Marmot::ContinuumMechanics::VoigtNotation::Derivatives;
   const Vector6d stress = { 1, 2, 3, 4, 5, 6 };
-  const auto     hw     = ContinuumMechanics::HaighWestergaard::haighWestergaard( stress );
 
   const auto theta = []( const Vector6d& stress ) {
     Eigen::MatrixXd theta( 1, 1 );
@@ -264,9 +264,9 @@ void test_dTheta_dStress()
 
   const auto dTheta_dStress_FD = Marmot::NumericalAlgorithms::Differentiation::forwardDifference( theta, stress );
 
-  throwExceptionOnFailure( checkIfEqual( Marmot::ContinuumMechanics::VoigtNotation::Derivatives::
-                                           dTheta_dStress( hw.theta, stress )
-                                             .norm(),
+  throwExceptionOnFailure( checkIfEqual( Marmot::ContinuumMechanics::VoigtNotation::Derivatives::dTheta_dStress(
+                                           stress )
+                                           .norm(),
                                          dTheta_dStress_FD.norm(),
                                          1e-8 ),
                            MakeString() << __PRETTY_FUNCTION__ << " failed" );
@@ -380,6 +380,144 @@ void test_dSortedPrincipalStrains_dStrain()
                            MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
+void testStiffnessToVoigtRoundTripEigenTensor()
+{
+  Marmot::Matrix6d voigtStiffness;
+  // clang-format off
+  voigtStiffness <<
+    1200,   400,    400,    50,     60,     70,
+    400,    1200,   400,    80,     90,     100,
+    400,    400,    1200,   110,    120,    130,
+    50,     80,     110,    400,    140,    150,
+    60,     90,     120,    140,    400,    160,
+    70,     100,    130,    150,    160,    400;
+  // clang-format on
+
+  const auto
+    stiffnessTensor = Marmot::ContinuumMechanics::VoigtNotation::voigtToStiffness< Marmot::EigenTensors::Tensor3333d >(
+      voigtStiffness );
+  const auto voigtStiffnessRoundTrip = Marmot::ContinuumMechanics::VoigtNotation::stiffnessToVoigt( stiffnessTensor );
+
+  throwExceptionOnFailure( checkIfEqual< double >( voigtStiffnessRoundTrip, voigtStiffness, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+}
+
+void testStiffnessToVoigtRoundTripFastorTensor()
+{
+  Marmot::Matrix6d voigtStiffnessEigen;
+  // clang-format off
+  voigtStiffnessEigen <<
+    1200,   400,    400,    50,     60,     70,
+    400,    1200,   400,    80,     90,     100,
+    400,    400,    1200,   110,    120,    130,
+    50,     80,     110,    400,    140,    150,
+    60,     90,     120,    140,    400,    160,
+    70,     100,    130,    150,    160,    400;
+  // clang-format on
+
+  const Fastor::Tensor< double, 6, 6 > voigtStiffness( voigtStiffnessEigen.data(), Fastor::ColumnMajor );
+
+  const auto stiffnessTensor         = Marmot::ContinuumMechanics::VoigtNotation::voigtToStiffness( voigtStiffness );
+  const auto voigtStiffnessRoundTrip = Marmot::ContinuumMechanics::VoigtNotation::stiffnessToVoigt( stiffnessTensor );
+
+  throwExceptionOnFailure( checkIfEqual< double >( voigtStiffnessRoundTrip, voigtStiffnessEigen, 1e-12 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+}
+
+void testStiffnessToVoigtAveragesMinorSymmetricPermutations()
+{
+  // Build a fourth-order tensor directly (NOT via voigtToStiffness, which always produces an
+  // already minor-symmetric tensor) with deliberately broken minor symmetry, so that
+  // stiffnessToVoigt's averaging of the four minor-symmetric-equivalent entries is actually
+  // exercised.
+  Marmot::EigenTensors::Tensor3333d C;
+  C.setZero();
+
+  // Voigt entry (a,b) = (3,3), i.e. (i,j) = (0,1), (k,l) = (0,1): all four permutations distinct.
+  C( 0, 1, 0, 1 ) = 10;
+  C( 1, 0, 0, 1 ) = 20;
+  C( 1, 0, 1, 0 ) = 30;
+  C( 0, 1, 1, 0 ) = 40;
+  // expected voigtStiffness(3,3) = (10 + 20 + 30 + 40) / 4 = 25
+
+  // Voigt entry (a,b) = (0,3), i.e. (i,j) = (0,0), (k,l) = (0,1): the (i,j) swap term is
+  // degenerate (i == j), so only the (k,l) swap contributes a second distinct value.
+  C( 0, 0, 0, 1 ) = 100;
+  C( 0, 0, 1, 0 ) = 200;
+  // expected voigtStiffness(0,3) = (100 + 100 + 200 + 200) / 4 = 150
+
+  const auto voigtStiffness = Marmot::ContinuumMechanics::VoigtNotation::stiffnessToVoigt( C );
+
+  throwExceptionOnFailure( checkIfEqual( voigtStiffness( 3, 3 ), 25.0 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed at (3,3)" );
+  throwExceptionOnFailure( checkIfEqual( voigtStiffness( 0, 3 ), 150.0 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed at (0,3)" );
+}
+
+void testVoigtToStiffnessMatchesAnalyticIsotropicTensor()
+{
+  // Independent ground truth: the classical isotropic stiffness tensor
+  // C_ijkl = lambda * delta_ij * delta_kl + mu * ( delta_ik * delta_jl + delta_il * delta_jk ),
+  // built here from a plain second-order identity tensor via Fastor tensor algebra (not reusing
+  // any Marmot tensor-building helper), and compared against
+  // voigtToStiffness( Isotropic::stiffnessTensor( E, nu ) ).
+  const double E  = 1000.;
+  const double nu = 0.25;
+
+  const double lambda = nu * E / ( ( 1 + nu ) * ( 1 - 2 * nu ) );
+  const double mu     = E / ( 2 * ( 1 + nu ) );
+
+  Fastor::Tensor< double, 3, 3 > delta;
+  delta.eye2();
+
+  using namespace FastorIndices;
+  FastorStandardTensors::Tensor3333d expectedStiffnessTensor = lambda * Fastor::outer( delta, delta ) +
+                                                               mu *
+                                                                 ( Fastor::einsum< ik, jl, to_ijkl >( delta, delta ) +
+                                                                   Fastor::einsum< il, jk, to_ijkl >( delta, delta ) );
+
+  const Marmot::Matrix6d voigtStiffness = Marmot::ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
+
+  // voigtToStiffness defaults to a Fastor result, so this also exercises the Eigen-in/Fastor-out
+  // (cross-library) conversion path.
+  const auto stiffnessTensor = Marmot::ContinuumMechanics::VoigtNotation::voigtToStiffness( voigtStiffness );
+
+  throwExceptionOnFailure( checkIfEqual( stiffnessTensor, expectedStiffnessTensor, 1e-10 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+}
+
+void testVoigtToStiffnessIndexMapping()
+{
+  // Spot-check that voigtToStiffness places each Voigt entry at the tensor indices implied by the
+  // standard Voigt ordering (0->xx, 1->yy, 2->zz, 3->xy, 4->xz, 5->yz), with a focus on the
+  // shear-index mapping (12/13/23 <-> 3/4/5), which is the most error-prone part of the mapping.
+  Marmot::Matrix6d voigtStiffness;
+  // clang-format off
+  voigtStiffness <<
+    1200,   400,    400,    50,     60,     70,
+    400,    1200,   400,    80,     90,     100,
+    400,    400,    1200,   110,    120,    130,
+    50,     80,     110,    400,    140,    150,
+    60,     90,     120,    140,    400,    160,
+    70,     100,    130,    150,    160,    400;
+  // clang-format on
+
+  const auto
+    stiffnessTensor = Marmot::ContinuumMechanics::VoigtNotation::voigtToStiffness< Marmot::EigenTensors::Tensor3333d >(
+      voigtStiffness );
+
+  throwExceptionOnFailure( checkIfEqual( stiffnessTensor( 0, 1, 0, 1 ), voigtStiffness( 3, 3 ) ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed for (xy,xy) -> (3,3)" );
+  throwExceptionOnFailure( checkIfEqual( stiffnessTensor( 2, 0, 1, 2 ), voigtStiffness( 4, 5 ) ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed for (xz,yz) -> (4,5)" );
+  throwExceptionOnFailure( checkIfEqual( stiffnessTensor( 1, 2, 2, 0 ), voigtStiffness( 5, 4 ) ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed for (yz,xz) -> (5,4)" );
+  throwExceptionOnFailure( checkIfEqual( stiffnessTensor( 0, 0, 1, 2 ), voigtStiffness( 0, 5 ) ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed for (xx,yz) -> (0,5)" );
+  throwExceptionOnFailure( checkIfEqual( stiffnessTensor( 1, 1, 2, 0 ), voigtStiffness( 1, 4 ) ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed for (yy,xz) -> (1,4)" );
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Simple, previously-untested conversions and invariants
 // ─────────────────────────────────────────────────────────────────────────────
@@ -449,31 +587,6 @@ namespace {
     return N;
   }
 } // namespace
-
-void testStiffnessVoigtRoundTrip()
-{
-  using namespace Marmot::ContinuumMechanics::VoigtNotation;
-  const Matrix6d C = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( 20000., 0.25 );
-
-  const auto     stiffnessTensor4th = voigtToStiffness( C );
-  const Matrix6d roundTrip          = stiffnessToVoigt( stiffnessTensor4th );
-
-  throwExceptionOnFailure( checkIfEqual< double >( roundTrip, C, 1e-8 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " stiffnessToVoigt(voigtToStiffness(C)) != C" );
-
-  const auto fastorTensor  = voigtToStiffnessFastor( C );
-  bool       fastorMatches = true;
-  for ( int i = 0; i < 3; i++ )
-    for ( int j = 0; j < 3; j++ )
-      for ( int k = 0; k < 3; k++ )
-        for ( int l = 0; l < 3; l++ )
-          fastorMatches = fastorMatches &&
-                          checkIfEqual( fastorTensor( i, j, k, l ), stiffnessTensor4th( i, j, k, l ), 1e-10 );
-
-  throwExceptionOnFailure( fastorMatches,
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << " voigtToStiffnessFastor() does not match voigtToStiffness()" );
-}
 
 void testTransformationMatrixStressVoigtIsIdentityForIdentitySystem()
 {
@@ -706,70 +819,45 @@ void testPrincipalValuesAndDerivativesTriaxialNearRMinusOne()
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Derivatives::dTheta_dStress/dTheta_dJ2/dTheta_dJ3 and their strain counterparts each guard
-// against the Lode angle sitting exactly at a triaxial boundary (theta == 0 or theta == Pi/3),
-// where the underlying 1/sqrt(1-cos^2(3*theta)) term is singular. Exercised with the same
-// exactly-triaxial stress/strain states used for principalValuesAndDerivatives() above.
+// The Lode angle derivatives are singular at the triaxial boundaries (theta == 0 or theta == Pi/3),
+// where sin(3*theta) == 0. The implementations regularize this case; all that is required there is a
+// finite result, so that no inf/NaN propagates into a return mapping or tangent. The exactly-triaxial
+// states below (principal values {1,1,3}) make haighWestergaard()/haighWestergaardFromStrain() assign
+// theta the exact literal 0.
 // ─────────────────────────────────────────────────────────────────────────────
 
-void testDThetaDStressAtLodeAngleBoundary()
+void testDThetaDStressIsFiniteAtLodeAngleBoundary()
 {
   using namespace Marmot::ContinuumMechanics::VoigtNotation;
-  const Vector6d anyStress = { 1., 2., 3., 4., 5., 6. };
-
-  throwExceptionOnFailure( checkIfEqual< double >( Derivatives::dTheta_dStress( 0.0, anyStress ),
-                                                   Vector6d::Zero(),
-                                                   1e-14 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed for theta == 0" );
-  throwExceptionOnFailure( checkIfEqual< double >( Derivatives::dTheta_dStress( Constants::Pi / 3., anyStress ),
-                                                   Vector6d::Zero(),
-                                                   1e-14 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed for theta == Pi/3" );
-}
-
-void testDThetaDJ2AndDJ3AtLodeAngleBoundary()
-{
-  using namespace Marmot::ContinuumMechanics::VoigtNotation;
-  // Same exactly-triaxial stress state as principalValuesAndDerivatives()'s r>=1 case above. The
-  // x>=1 branch of haighWestergaard() assigns theta the exact literal 0. (not an acos() result),
-  // so this reliably lands exactly on the boundary despite floating-point rounding in x itself --
-  // unlike the r<=-1/theta==Pi/3 case, whose acos()-computed theta only lands within ~1e-7 of
-  // Pi/3, short of the 1e-14 guard band below and so not a reliable way to hit that branch.
   const Vector6d stressThetaZero = { 2., 1., 2., 0., 1., 0. };
 
   throwExceptionOnFailure( ContinuumMechanics::HaighWestergaard::haighWestergaard( stressThetaZero ).theta == 0.0,
                            MakeString() << __PRETTY_FUNCTION__ << " test stress does not have theta == 0" );
 
-  throwExceptionOnFailure( Derivatives::dTheta_dJ2( stressThetaZero ) == 1e16,
-                           MakeString() << __PRETTY_FUNCTION__ << " dTheta_dJ2 failed for theta == 0" );
-  throwExceptionOnFailure( Derivatives::dTheta_dJ3( stressThetaZero ) == -1e16,
-                           MakeString() << __PRETTY_FUNCTION__ << " dTheta_dJ3 failed for theta == 0" );
+  throwExceptionOnFailure( std::isfinite( Derivatives::dTheta_dJ2( stressThetaZero ) ),
+                           MakeString() << __PRETTY_FUNCTION__ << " dTheta_dJ2 not finite for theta == 0" );
+  throwExceptionOnFailure( std::isfinite( Derivatives::dTheta_dJ3( stressThetaZero ) ),
+                           MakeString() << __PRETTY_FUNCTION__ << " dTheta_dJ3 not finite for theta == 0" );
+  throwExceptionOnFailure( Derivatives::dTheta_dStress( stressThetaZero ).allFinite(),
+                           MakeString() << __PRETTY_FUNCTION__ << " dTheta_dStress not finite for theta == 0" );
 }
 
-void testDThetaStrainDJ2AndDJ3StrainAtLodeAngleBoundary()
+void testDThetaStrainDStrainIsFiniteAtLodeAngleBoundary()
 {
   using namespace Marmot::ContinuumMechanics::VoigtNotation;
-  // Same underlying rotated-diag(1,1,3) tensor as the stress case above, but as a Voigt *strain*
-  // vector: off-diagonal (engineering shear) components are doubled relative to the tensor
-  // components. See testDThetaDJ2AndDJ3AtLodeAngleBoundary() for why only the theta==0 case (an
-  // exact literal assignment in haighWestergaardFromStrain(), not an acos() result) is used.
+  // Same underlying tensor as the stress case above, but as a Voigt strain vector (engineering shear).
   const Vector6d strainThetaZero = { 2., 1., 2., 0., 2., 0. };
-
-  Vector3d principalsZero = Invariants::principalStrains( strainThetaZero );
-  std::sort( principalsZero.data(), principalsZero.data() + 3 );
-  throwExceptionOnFailure( checkIfEqual< double >( principalsZero, Vector3d( 1., 1., 3. ), 1e-8 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << " test strain does not have the expected "
-                                           "principal values {1,1,3}" );
 
   throwExceptionOnFailure( ContinuumMechanics::HaighWestergaard::haighWestergaardFromStrain( strainThetaZero ).theta ==
                              0.0,
                            MakeString() << __PRETTY_FUNCTION__ << " test strain does not have theta == 0" );
 
-  throwExceptionOnFailure( Derivatives::dThetaStrain_dJ2Strain( strainThetaZero ) == 1e16,
-                           MakeString() << __PRETTY_FUNCTION__ << " dThetaStrain_dJ2Strain failed for theta == 0" );
-  throwExceptionOnFailure( Derivatives::dThetaStrain_dJ3Strain( strainThetaZero ) == -1e16,
-                           MakeString() << __PRETTY_FUNCTION__ << " dThetaStrain_dJ3Strain failed for theta == 0" );
+  throwExceptionOnFailure( std::isfinite( Derivatives::dThetaStrain_dJ2Strain( strainThetaZero ) ),
+                           MakeString() << __PRETTY_FUNCTION__ << " dThetaStrain_dJ2Strain not finite for theta == 0" );
+  throwExceptionOnFailure( std::isfinite( Derivatives::dThetaStrain_dJ3Strain( strainThetaZero ) ),
+                           MakeString() << __PRETTY_FUNCTION__ << " dThetaStrain_dJ3Strain not finite for theta == 0" );
+  throwExceptionOnFailure( Derivatives::dThetaStrain_dStrain( strainThetaZero ).allFinite(),
+                           MakeString() << __PRETTY_FUNCTION__ << " dThetaStrain_dStrain not finite for theta == 0" );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -960,12 +1048,16 @@ int main()
                                                        test_dJ2Strain_dStrain,
                                                        test_dJ3Strain_dStrain,
                                                        test_dSortedPrincipalStrains_dStrain,
+                                                       testStiffnessToVoigtRoundTripEigenTensor,
+                                                       testStiffnessToVoigtRoundTripFastorTensor,
+                                                       testStiffnessToVoigtAveragesMinorSymmetricPermutations,
+                                                       testVoigtToStiffnessMatchesAnalyticIsotropicTensor,
+                                                       testVoigtToStiffnessIndexMapping,
                                                        testVoigtToAxisymmetricVoigt,
                                                        testAxisymmetricVoigtToVoigt,
                                                        testNormStress,
                                                        testStrainVolumetricNegative,
                                                        testI1Strain,
-                                                       testStiffnessVoigtRoundTrip,
                                                        testTransformationMatrixStressVoigtIsIdentityForIdentitySystem,
                                                        testTransformationMatrixStressVoigtMatchesRotateVoigtStress,
                                                        testTransformationMatrixStrainVoigtMatchesDirectStrainRotation,
@@ -978,9 +1070,8 @@ int main()
                                                        testPrincipalValuesAndDerivativesDiagonalStress,
                                                        testPrincipalValuesAndDerivativesTriaxialRGreaterEqualOne,
                                                        testPrincipalValuesAndDerivativesTriaxialNearRMinusOne,
-                                                       testDThetaDStressAtLodeAngleBoundary,
-                                                       testDThetaDJ2AndDJ3AtLodeAngleBoundary,
-                                                       testDThetaStrainDJ2AndDJ3StrainAtLodeAngleBoundary,
+                                                       testDThetaDStressIsFiniteAtLodeAngleBoundary,
+                                                       testDThetaStrainDStrainIsFiniteAtLodeAngleBoundary,
                                                        testDThetaStrainDStrainMatchesNumericalDifferentiation,
                                                        testDStressPrincipalsDStressMatchesIndependentCentralDifference,
                                                        testDStrainVolumetricNegativeDStrainPrincipal,

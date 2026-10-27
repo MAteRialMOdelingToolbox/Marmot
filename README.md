@@ -21,6 +21,14 @@ Truss in compression using a micropolar von Mises plasticity model.
 
 ## Quick start
 
+Prebuilt packages of released versions (Linux, macOS, Windows):
+
+```bash
+conda create -n marmot -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge marmot
+```
+
+To develop Marmot or add modules, build it yourself as described below, in a separate environment.
+
 `Marmot` requires the
 [Eigen](https://gitlab.com/libeigen/eigen) (>3.3.8, including Eigen 5),
 [autodiff](https://github.com/autodiff/autodiff) (>0.6.0)
