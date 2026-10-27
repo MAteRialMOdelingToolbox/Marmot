@@ -1279,9 +1279,11 @@ void testAxiSymmetricHomogeneousRadialExpansionIsInEquilibrium()
     std::unique_ptr< MarmotElement >
       element = std::make_unique< AxiSymmetricDisplacementFiniteStrainULElement< 4 > >( e + 1, intType, secType );
     element->assignNodeCoordinates( nodeCoords[e].data() );
-    MarmotMaterialSection materialSection( "COMPRESSIBLENEOHOOKE", matProps.data(), matProps.size() );
+    MarmotMaterialSection materialSection( "COMPRESSIBLENEOHOOKE",
+                                           matProps.data(),
+                                           static_cast< int >( matProps.size() ) );
     element->assignProperty( materialSection );
-    ElementProperties elProps( elPropsVec.data(), elPropsVec.size() );
+    ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
     element->assignProperty( elProps );
     const int nStateVarsTotal = element->getNumberOfRequiredStateVars();
     stateVars[e].assign( nStateVarsTotal, 0.0 );
