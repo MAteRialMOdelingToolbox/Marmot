@@ -221,8 +221,8 @@ namespace Marmot::Microplane::Discretization {
     const size_t          nqp    = nqpFromScheme( scheme );
     std::vector< double > mpdata = rawQuadratureData( scheme );
 
-    Map< Matrix< double, Eigen::Dynamic, 4, RowMajor > > rowMajorMatrix( mpdata.data(), nqp, 4 );
-    Eigen::MatrixXd                                      colMajorMatrix = rowMajorMatrix;
+    Eigen::Map< Eigen::Matrix< double, Eigen::Dynamic, 4, Eigen::RowMajor > > rowMajorMatrix( mpdata.data(), nqp, 4 );
+    Eigen::MatrixXd                                                           colMajorMatrix = rowMajorMatrix;
 
     Data data;
     data.normals = colMajorMatrix.block( 0, 0, nqp, 3 );

@@ -30,10 +30,6 @@
 #include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotTypedefs.h"
 
-using namespace Marmot::ContinuumMechanics::CommonTensors;
-using namespace Marmot::ContinuumMechanics::TensorUtility;
-using namespace Eigen;
-
 namespace Marmot {
   /**
    * @namespace Marmot::Microplane
@@ -202,15 +198,15 @@ namespace Marmot {
        * @brief Homogenizes per-microplane normal and in-plane shear tangents to the macroscopic
        * tangent, in Voigt notation.
        * @details Approximates the continuum microplane virtual-work homogenization over the unit
-       * sphere \f$ \Omega \f$ of the macroscopic tangent, in tensor (index) notation:
+       * hemisphere \f$ \Omega \f$ of the macroscopic tangent, in tensor (index) notation:
        * \f[
-       *   \frac{\partial \sigma_{ij}}{\partial \varepsilon_{kl}} = \int_\Omega \left(
+       *   \frac{\partial \sigma_{ij}}{\partial \varepsilon_{kl}} = \frac{3}{2\pi} \int_\Omega \left(
        *       N_{ij} \frac{\partial \sigma_N}{\partial \varepsilon_{kl}}
        *     + M_{ij} \frac{\partial \sigma_M}{\partial \varepsilon_{kl}}
        *     + L_{ij} \frac{\partial \sigma_L}{\partial \varepsilon_{kl}} \right) \, d\Omega
        * \f]
        * approximated by the quadrature sum actually evaluated here (see #homogenizeStress for how
-       * the hemisphere/sphere-integral normalization is absorbed into the weights \f$ w^{(m)} \f$).
+       * the hemisphere-integral normalization is absorbed into the weights \f$ w^{(m)} \f$).
        * @tparam T Scalar type of the per-microplane tangents (see #homogenizeStress).
        * @param dSigNddStrain Per-microplane normal-direction tangent \f$ \partial \sigma_N^{(m)} /
        * \partial \boldsymbol{\varepsilon} \f$, size \f$ 6 \times n_{qp} \f$; taken by value since
@@ -270,13 +266,13 @@ namespace Marmot {
       projectionTensors pTensors;
       pTensors.w = data.weights;
 
-      Matrix< int, 6, 2 > ij;
+      Eigen::Matrix< int, 6, 2 > ij;
       ij << 1, 1, 2, 2, 3, 3, 1, 2, 1, 3, 2, 3;
 
       // Fixed in-plane basis vector spanning the M/L directions together with each microplane
       // normal - not actually "random", just a vector not parallel to any of the hard-coded normals.
-      const Vector3d rand_vec( -0.46, 0.29, 0.82 );
-      Vector3d       n_vec, m_vec, l_vec;
+      const Eigen::Vector3d rand_vec( -0.46, 0.29, 0.82 );
+      Eigen::Vector3d       n_vec, m_vec, l_vec;
 
       for ( size_t qp_i = 0; qp_i < nqp; qp_i++ ) {
         n_vec = data.normals.row( qp_i );
@@ -338,7 +334,7 @@ namespace Marmot {
          * where the first index selects the microplane and \f$ Dev^{(m)} \f$ above denotes the corresponding
          * 3rd-order slice.
          */
-        TensorFixedSize< double, Sizes< nqp, 3, 3, 3 > > Dev;
+        Eigen::TensorFixedSize< double, Eigen::Sizes< nqp, 3, 3, 3 > > Dev;
         /**
          * @brief Volumetric projection tensor \f$ V_{ij} = \delta_{ij}/3 \f$, tensor form of #Vol.
          * @details Projects the macroscopic strain tensor \f$ \eps \f$ onto the (microplane-independent)
@@ -347,16 +343,16 @@ namespace Marmot {
          *   \varepsilon_V = V_{ij} \varepsilon_{ij} = \tfrac{1}{3} \operatorname{tr}( \eps )
          * \f]
          */
-        TensorFixedSize< double, Sizes< 3, 3 > > VolT;
+        Eigen::TensorFixedSize< double, Eigen::Sizes< 3, 3 > > VolT;
         /**
          * @brief Volumetric projection tensor \f$ V_{ij} = \delta_{ij}/3 \f$, matrix form; see #VolT for the
          * kinematic projection \f$ \varepsilon_V = V_{ij} \varepsilon_{ij} \f$.
          */
-        Matrix< double, 3, 3 > Vol;
+        Eigen::Matrix< double, 3, 3 > Vol;
         /// @brief Integration weights \f$ w^{(m)} \f$ for the chosen scheme; see Discretization::Data::weights.
-        Matrix< double, nqp, 1 > w;
+        Eigen::Matrix< double, nqp, 1 > w;
         /// @brief Microplane normal vectors \f$ n^{(m)} \f$, one per row; see Discretization::Data::normals.
-        Matrix< double, nqp, 3 > nMatrix;
+        Eigen::Matrix< double, nqp, 3 > nMatrix;
       };
       /// @brief The volumetric/deviatoric projection tensors and integration weights for this instance; see
       /// #projectionTensors.
@@ -380,7 +376,7 @@ namespace Marmot {
        * @param devValue Per-microplane deviatoric value \f$ X_D^{(m)} \f$, size \f$ n_{qp} \times 3 \f$.
        * @return Homogenized macroscopic tensor \f$ X_{jk} \f$ (3x3).
        */
-      Matrix3d homogenize( const auto& volValue, const auto& devValue ) const;
+      Eigen::Matrix3d homogenize( const auto& volValue, const auto& devValue ) const;
 
       /**
        * @brief Applies the projection tensors of a single microplane @p m to a volumetric/deviatoric
@@ -396,7 +392,9 @@ namespace Marmot {
        * @param m Index of the microplane.
        * @return The 3x3 tensor contribution \f$ X_{jk} \f$ of microplane @p m.
        */
-      Matrix3d applyProjectionTensors( const double volValue, const Vector3d& devValue, const int m ) const;
+      Eigen::Matrix3d applyProjectionTensors( const double           volValue,
+                                              const Eigen::Vector3d& devValue,
+                                              const int              m ) const;
 
     private:
       /**
@@ -407,30 +405,33 @@ namespace Marmot {
     };
 
     template < QuadratureScheme scheme >
-    Matrix3d VDSplit< scheme >::homogenize( const auto& volValue, const auto& devValue ) const
+    Eigen::Matrix3d VDSplit< scheme >::homogenize( const auto& volValue, const auto& devValue ) const
     {
-      Matrix3d vol_3x3 = pTensors.Vol * pTensors.w.dot( volValue );
+      Eigen::Matrix3d vol_3x3 = pTensors.Vol * pTensors.w.dot( volValue );
 
-      Matrix< double, nqp, 3 > devValue_weighted = ( devValue.array().colwise() * pTensors.w.array() ).matrix();
-      TensorFixedSize< double, Sizes< 3, 3 > > dev_3x3T;
-      TensorMap< Tensor< double, 2 > >         devValue_weightedT( devValue_weighted.data(), nqp, 3 );
-      dev_3x3T = pTensors.Dev.contract( devValue_weightedT, contractionDims< 0, 0, 1, 1 >() );
-      Map< Matrix< double, 3, 3 > > dev_3x3( dev_3x3T.data() );
+      Eigen::Matrix< double, nqp, 3 > devValue_weighted = ( devValue.array().colwise() * pTensors.w.array() ).matrix();
+      Eigen::TensorFixedSize< double, Eigen::Sizes< 3, 3 > > dev_3x3T;
+      Eigen::TensorMap< Eigen::Tensor< double, 2 > >         devValue_weightedT( devValue_weighted.data(), nqp, 3 );
+      dev_3x3T = pTensors.Dev.contract( devValue_weightedT,
+                                        Marmot::ContinuumMechanics::TensorUtility::contractionDims< 0, 0, 1, 1 >() );
+      Eigen::Map< Eigen::Matrix< double, 3, 3 > > dev_3x3( dev_3x3T.data() );
 
       return vol_3x3 + dev_3x3;
     }
 
     template < QuadratureScheme scheme > // V * sigv + Dev^T * sigd
-    Matrix3d VDSplit< scheme >::applyProjectionTensors( const double    volValue,
-                                                        const Vector3d& devValue,
-                                                        const int       m ) const
+    Eigen::Matrix3d VDSplit< scheme >::applyProjectionTensors( const double           volValue,
+                                                               const Eigen::Vector3d& devValue,
+                                                               const int              m ) const
     { // without damage
-      TensorMap< const Tensor< double, 1 > > devValueT( devValue.data(), 3 );
-      TensorFixedSize< double, Sizes< 3, 3 > >
-        deviatoricPart = pTensors.Dev.chip( m, 0 ).eval().contract( devValueT, contractionDims< 0, 0 >() );
+      Eigen::TensorMap< const Eigen::Tensor< double, 1 > > devValueT( devValue.data(), 3 );
+      Eigen::TensorFixedSize< double, Eigen::Sizes< 3, 3 > >
+        deviatoricPart = pTensors.Dev.chip( m, 0 )
+                           .eval()
+                           .contract( devValueT, Marmot::ContinuumMechanics::TensorUtility::contractionDims< 0, 0 >() );
 
       // Map Tensor back to Matrix
-      Map< const Matrix< double, 3, 3 > > deviatoricPartM( deviatoricPart.data(), 3, 3 );
+      Eigen::Map< const Eigen::Matrix< double, 3, 3 > > deviatoricPartM( deviatoricPart.data(), 3, 3 );
 
       return pTensors.Vol * volValue + deviatoricPartM;
     }
@@ -445,26 +446,30 @@ namespace Marmot {
       pTensors.w       = data.weights;
 
       // Deviatoric projection tensor
-      TensorFixedSize< double, Sizes< 3, 3 > > kronDelta_33;
+      Eigen::TensorFixedSize< double, Eigen::Sizes< 3, 3 > > kronDelta_33;
       for ( int i = 0; i < 3; ++i ) {
         for ( int j = 0; j < 3; ++j ) {
           kronDelta_33( i, j ) = ( i == j );
         }
       }
 
-      TensorFixedSize< double, Sizes< 3, 3, 3, 3 > > delta_ijDelta_kl;
+      Eigen::TensorFixedSize< double, Eigen::Sizes< 3, 3, 3, 3 > > delta_ijDelta_kl;
       delta_ijDelta_kl = kronDelta_33.contract( kronDelta_33,
-                                                contractionDims<>() ); // outer product: delta_ij delta_kl
+                                                Marmot::ContinuumMechanics::TensorUtility::
+                                                  contractionDims<>() ); // outer product: delta_ij delta_kl
 
       // map the tensor on matrix to use Eigen's contraction
-      TensorMap< Tensor< double, 2 > > normVec_tensor( pTensors.nMatrix.data(), nqp, 3 );
+      Eigen::TensorMap< Eigen::Tensor< double, 2 > > normVec_tensor( pTensors.nMatrix.data(), nqp, 3 );
 
       // Deviatoric projection tensor nqp x 3 x 3 x 3
-      pTensors.Dev = normVec_tensor.contract( Isym, contractionDims< 1, 0 >() ) -
-                     1. / 3. * normVec_tensor.contract( delta_ijDelta_kl, contractionDims< 1, 0 >() );
+      pTensors.Dev = normVec_tensor.contract( Marmot::ContinuumMechanics::CommonTensors::Isym,
+                                              Marmot::ContinuumMechanics::TensorUtility::contractionDims< 1, 0 >() ) -
+                     1. / 3. *
+                       normVec_tensor.contract( delta_ijDelta_kl,
+                                                Marmot::ContinuumMechanics::TensorUtility::contractionDims< 1, 0 >() );
 
       // Volumetric projection tensor
-      pTensors.Vol = 1. / 3. * Matrix3d::Identity();
+      pTensors.Vol = 1. / 3. * Eigen::Matrix3d::Identity();
       pTensors.VolT.setZero();           // same as Vol but of type Tensor
       for ( int i = 0; i < 3; ++i ) {
         pTensors.VolT( i, i ) = 1. / 3.; // Set diagonal elements to 1

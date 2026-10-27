@@ -39,7 +39,7 @@ namespace {
   // values back to a macroscopic tensor and checks that the original eps is recovered exactly: this is the completeness
   // property of the microplane quadrature.
   template < QuadratureScheme scheme >
-  void checkVDSplitProjectionAndHomogenization( const Matrix3d& eps, const std::string& name )
+  void checkVDSplitProjectionAndHomogenization( const Eigen::Matrix3d& eps, const std::string& name )
   {
     VDSplit< scheme > vdSplit;
     constexpr size_t  nqp = VDSplit< scheme >::nqp;
@@ -50,8 +50,10 @@ namespace {
     const auto epsD_analytic = ( vdSplit.pTensors.nMatrix * eps - epsV * vdSplit.pTensors.nMatrix ).eval();
 
     // Actual kinematic projection via the Dev tensor, exactly as done in MDP.cpp/GMDP.cpp.
-    TensorMap< const Tensor< double, 2 > > epsT( eps.data(), 3, 3 );
-    Eigen::Tensor< double, 2 > epsD_actualT = vdSplit.pTensors.Dev.contract( epsT, contractionDims< 2, 0, 3, 1 >() );
+    Eigen::TensorMap< const Eigen::Tensor< double, 2 > > epsT( eps.data(), 3, 3 );
+    Eigen::Tensor< double, 2 >
+      epsD_actualT = vdSplit.pTensors.Dev
+                       .contract( epsT, Marmot::ContinuumMechanics::TensorUtility::contractionDims< 2, 0, 3, 1 >() );
     Eigen::Map< const Eigen::Matrix< double, Eigen::Dynamic, 3 > > epsD_actual( epsD_actualT.data(), nqp, 3 );
 
     throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( epsD_actual ), Eigen::MatrixXd( epsD_analytic ), 1e-12 ),
@@ -61,20 +63,18 @@ namespace {
     // is recovered exactly.
     auto volValue = vdSplit.pTensors.w;
     volValue.setConstant( epsV );
-    const Matrix3d recovered = vdSplit.homogenize( volValue, epsD_analytic );
+    const Eigen::Matrix3d recovered = vdSplit.homogenize( volValue, epsD_analytic );
 
-    if constexpr ( scheme != QuadratureScheme::N61 ) {
-      throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( recovered ), Eigen::MatrixXd( eps ), 1e-8 ),
-                               name + ": homogenize(project(eps)) recovers eps" );
-    }
+    throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( recovered ), Eigen::MatrixXd( eps ), 1e-8 ),
+                             name + ": homogenize(project(eps)) recovers eps" );
 
     // The weighted sum of the single-microplane contributions (applyProjectionTensors) must agree
     // with the batched homogenize() call above, regardless of whether the completeness identity
     // holds for this scheme.
-    Matrix3d accumulated = Matrix3d::Zero();
+    Eigen::Matrix3d accumulated = Eigen::Matrix3d::Zero();
     for ( size_t m = 0; m < nqp; m++ )
       accumulated += vdSplit.pTensors.w( m ) *
-                     vdSplit.applyProjectionTensors( epsV, Vector3d( epsD_analytic.row( m ).transpose() ), m );
+                     vdSplit.applyProjectionTensors( epsV, Eigen::Vector3d( epsD_analytic.row( m ).transpose() ), m );
 
     throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( accumulated ), Eigen::MatrixXd( recovered ), 1e-10 ),
                              name + ": weighted sum of applyProjectionTensors matches homogenize" );
@@ -87,7 +87,7 @@ namespace {
   // the symmetric identity tensor, this round trip must recover the original tensor exactly - the
   // N-T split analogue of the V-D split completeness check above.
   template < QuadratureScheme scheme >
-  void checkNTSplitProjectionAndHomogenization( const Matrix3d& eps, const std::string& name )
+  void checkNTSplitProjectionAndHomogenization( const Eigen::Matrix3d& eps, const std::string& name )
   {
     NTSplit< scheme > ntSplit;
 
@@ -122,15 +122,15 @@ namespace {
     const double G = shearModulus( E, nu );
     const double K = lameParameter( E, nu ) + 2. / 3. * G;
 
-    const Matrix3d deps  = voigtToStrain( depsVoigt );
-    const double   depsV = deps.trace() / 3.;
-    const auto     depsD = ( vdSplit.pTensors.nMatrix * deps - depsV * vdSplit.pTensors.nMatrix ).eval();
+    const Eigen::Matrix3d deps  = voigtToStrain( depsVoigt );
+    const double          depsV = deps.trace() / 3.;
+    const auto            depsD = ( vdSplit.pTensors.nMatrix * deps - depsV * vdSplit.pTensors.nMatrix ).eval();
 
     auto sigV = vdSplit.pTensors.w;
     sigV.setConstant( 3. * K * depsV );
     const auto sigD = ( 2. * G * depsD ).eval();
 
-    const Matrix3d         stress_microplane = vdSplit.homogenize( sigV, sigD );
+    const Eigen::Matrix3d  stress_microplane = vdSplit.homogenize( sigV, sigD );
     const Marmot::Vector6d stress_macro      = stiffnessTensor( E, nu ) * depsVoigt;
 
     throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( stressToVoigt( stress_microplane ) ),
@@ -185,7 +185,7 @@ void testDiscretizationSchemes()
 
 void testVDSplitProjectionAndHomogenization()
 {
-  Matrix3d eps;
+  Eigen::Matrix3d eps;
   // clang-format off
   eps << 0.020,  0.010, -0.015,
          0.010, -0.030,  0.008,
@@ -201,7 +201,7 @@ void testVDSplitProjectionAndHomogenization()
 
 void testNTSplitProjectionAndHomogenization()
 {
-  Matrix3d eps;
+  Eigen::Matrix3d eps;
   // clang-format off
   eps << 0.020,  0.010, -0.015,
          0.010, -0.030,  0.008,
