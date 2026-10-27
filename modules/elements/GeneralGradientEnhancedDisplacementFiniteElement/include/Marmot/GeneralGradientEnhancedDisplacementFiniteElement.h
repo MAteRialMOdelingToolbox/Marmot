@@ -1552,12 +1552,12 @@ namespace Marmot::Elements {
   void GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
     computeDistributedLoad( MarmotElement::DistributedLoadTypes loadType,
                             double*                             P,
-                            double*                             K,
+                            [[maybe_unused]] double*            K,
                             int                                 elementFace,
                             const double*                       load,
-                            const double*                       QTotal,
-                            double                              time,
-                            double                              dT )
+                            [[maybe_unused]] const double*      QTotal,
+                            [[maybe_unused]] double             time,
+                            [[maybe_unused]] double             dT )
   {
 
     Map< RhsSized >     P_( P );
@@ -1629,13 +1629,13 @@ namespace Marmot::Elements {
 
   template < int nDim, int nNodes, int nNonlocalVariables, int nNonLocalNodes >
   void GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVariables, nNonLocalNodes >::
-    computeBodyForce( double*       P_,
-                      double*       K,
-                      const double* load,
+    computeBodyForce( double*                  P_,
+                      [[maybe_unused]] double* K,
+                      const double*            load,
 
-                      const double* QTotal,
-                      double        time,
-                      double        dT )
+                      [[maybe_unused]] const double* QTotal,
+                      [[maybe_unused]] double        time,
+                      [[maybe_unused]] double        dT )
   {
     Map< RhsSized >                              P( P_ );
     Ref< USizedVector >                          Pe( P.head( sizeDoFU ) );

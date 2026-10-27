@@ -148,7 +148,7 @@ public:
    * @param[out] I Lumped mass vector (getNDofPerCell() values).
    * @throws std::invalid_argument if not implemented by the concrete cell (default).
    */
-  virtual void computeLumpedInertia( double* I )
+  virtual void computeLumpedInertia( [[maybe_unused]] double* I )
   {
     throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "not yet implemented" );
   }
@@ -158,7 +158,7 @@ public:
    * @param[out] I Mass matrix, getNDofPerCell() @f$ \times @f$ getNDofPerCell().
    * @throws std::invalid_argument if not implemented by the concrete cell (default).
    */
-  virtual void computeConsistentInertia( double* I )
+  virtual void computeConsistentInertia( [[maybe_unused]] double* I )
   {
     throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << "not yet implemented" );
   }

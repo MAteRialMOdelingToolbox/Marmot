@@ -172,7 +172,7 @@ namespace Marmot::Materials {
     return;
   }
 
-  double B4::getDensity( const double* stateVars ) const
+  double B4::getDensity( [[maybe_unused]] const double* stateVars ) const
   {
     if ( nMaterialProperties >= 23 )
       return materialProperties[22];

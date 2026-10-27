@@ -218,7 +218,6 @@ namespace Marmot::Testing {
   {
     double                        phi;
     double                        theta;
-    Eigen::Matrix< double, 1, 2 > pt;
     Eigen::Matrix< double, N, 2 > pts;
 
     // i1 = 1, 2, ..., N

@@ -566,7 +566,7 @@ namespace Marmot {
    * @param x input size_t
    * @return always returns 3
    */
-  constexpr int const3( size_t x )
+  constexpr int const3( [[maybe_unused]] size_t x )
   {
     return 3;
   }

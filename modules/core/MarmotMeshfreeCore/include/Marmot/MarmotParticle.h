@@ -258,14 +258,16 @@ namespace Marmot::Meshfree {
      * @param[in] timeNew Time at the end of the increment.
      * @param[in] dT Time increment.
      */
-    virtual void updatePhysicsExplicit( const double* dQ, double timeNew, double dT ){};
+    virtual void updatePhysicsExplicit( [[maybe_unused]] const double* dQ,
+                                        [[maybe_unused]] double        timeNew,
+                                        [[maybe_unused]] double        dT ){};
 
     /**
      * @brief Explicit dynamics: compute the internal force vector for the state set by updatePhysicsExplicit().
      * @details The default implementation does nothing.
      * @param[in,out] fInt Internal force vector (node-wise).
      */
-    virtual void computePhysicsKernelsExplicit( double* fInt ){};
+    virtual void computePhysicsKernelsExplicit( [[maybe_unused]] double* fInt ){};
 
     /**
      * @brief Explicit dynamics: compute a body load (no tangent).
@@ -276,11 +278,11 @@ namespace Marmot::Meshfree {
      * @param[in] timeNew Time at the end of the increment.
      * @param[in] dT Time increment.
      */
-    virtual void computeBodyLoadExplicit( int           type,
-                                          const double* load,
-                                          double*       fExt,
-                                          double        timeNew,
-                                          double        dT ) const {};
+    virtual void computeBodyLoadExplicit( [[maybe_unused]] int           type,
+                                          [[maybe_unused]] const double* load,
+                                          [[maybe_unused]] double*       fExt,
+                                          [[maybe_unused]] double        timeNew,
+                                          [[maybe_unused]] double        dT ) const {};
 
     /**
      * @brief Explicit dynamics: compute a distributed load (no tangent).
@@ -292,26 +294,32 @@ namespace Marmot::Meshfree {
      * @param[in] timeNew Time at the end of the increment.
      * @param[in] dT Time increment.
      */
-    virtual void computeDistributedLoadExplicit( int           type,
-                                                 int           boundaryFaceID,
-                                                 const double* load,
-                                                 double*       fExt,
-                                                 double        timeNew,
-                                                 double        dT ) const {};
+    virtual void computeDistributedLoadExplicit( [[maybe_unused]] int           type,
+                                                 [[maybe_unused]] int           boundaryFaceID,
+                                                 [[maybe_unused]] const double* load,
+                                                 [[maybe_unused]] double*       fExt,
+                                                 [[maybe_unused]] double        timeNew,
+                                                 [[maybe_unused]] double        dT ) const {};
 
     /**
      * @brief Compute the lumped (row-sum) inertia contribution of the particle.
      * @param[in,out] mLumped Lumped mass vector (node-wise).
      * @throws std::runtime_error in the default implementation.
      */
-    virtual void computeLumpedInertia( double* mLumped ) const { throw std::runtime_error( "Not implemented yet!" ); };
+    virtual void computeLumpedInertia( [[maybe_unused]] double* mLumped ) const
+    {
+      throw std::runtime_error( "Not implemented yet!" );
+    };
 
     /**
      * @brief Compute the lumped momentum contribution of the particle.
      * @param[in,out] mLumped Lumped momentum vector (node-wise).
      * @throws std::runtime_error in the default implementation.
      */
-    virtual void computeLumpedMomentum( double* mLumped ) const { throw std::runtime_error( "Not implemented yet!" ); };
+    virtual void computeLumpedMomentum( [[maybe_unused]] double* mLumped ) const
+    {
+      throw std::runtime_error( "Not implemented yet!" );
+    };
 
     /**
      * @brief Evaluate the shape functions of the assigned kernel functions at arbitrary coordinates.

@@ -9,7 +9,7 @@ using namespace Eigen;
 
 namespace Marmot::Materials {
 
-  double LinearViscoelasticPowerLaw::getDensity( const double* stateVars ) const
+  double LinearViscoelasticPowerLaw::getDensity( [[maybe_unused]] const double* stateVars ) const
   {
     if ( nMaterialProperties < 8 ) {
       throw std::runtime_error( MakeString()

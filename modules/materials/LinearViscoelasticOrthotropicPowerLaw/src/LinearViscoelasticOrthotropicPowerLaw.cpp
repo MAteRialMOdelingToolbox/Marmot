@@ -14,7 +14,7 @@ using namespace Eigen;
 
 namespace Marmot::Materials {
 
-  double LinearViscoelasticOrthotropicPowerLaw::getDensity( const double* stateVars ) const
+  double LinearViscoelasticOrthotropicPowerLaw::getDensity( [[maybe_unused]] const double* stateVars ) const
   {
     if ( nMaterialProperties < 24 ) {
       throw std::runtime_error( MakeString()

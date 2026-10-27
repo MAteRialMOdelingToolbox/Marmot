@@ -1018,12 +1018,12 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   void DisplacementFiniteElement< nDim, nNodes >::computeDistributedLoad( MarmotElement::DistributedLoadTypes loadType,
                                                                           double*                             P,
-                                                                          double*                             K,
-                                                                          int           elementFace,
-                                                                          const double* load,
-                                                                          const double* QTotal,
-                                                                          double        time,
-                                                                          double        dT )
+                                                                          [[maybe_unused]] double*            K,
+                                                                          int                            elementFace,
+                                                                          const double*                  load,
+                                                                          [[maybe_unused]] const double* QTotal,
+                                                                          [[maybe_unused]] double        time,
+                                                                          [[maybe_unused]] double        dT )
   {
     Map< RhsSized > fU( P );
 
@@ -1063,12 +1063,12 @@ namespace Marmot::Elements {
   }
 
   template < int nDim, int nNodes >
-  void DisplacementFiniteElement< nDim, nNodes >::computeBodyForce( double*       P_,
-                                                                    double*       K,
-                                                                    const double* load,
-                                                                    const double* QTotal,
-                                                                    double        time,
-                                                                    double        dT )
+  void DisplacementFiniteElement< nDim, nNodes >::computeBodyForce( double*                        P_,
+                                                                    [[maybe_unused]] double*       K,
+                                                                    const double*                  load,
+                                                                    [[maybe_unused]] const double* QTotal,
+                                                                    [[maybe_unused]] double        time,
+                                                                    [[maybe_unused]] double        dT )
   {
     Map< RhsSized >                              Pe( P_ );
     const Map< const Matrix< double, nDim, 1 > > f( load );
@@ -1135,8 +1135,9 @@ namespace Marmot::Elements {
   }
 
   template < int nDim, int nNodes >
-  void DisplacementFiniteElement< nDim, nNodes >::computeCriticalTimeStepForExplicitDynamics( double& criticalTimeStep,
-                                                                                              const double* QTotal )
+  void DisplacementFiniteElement< nDim, nNodes >::computeCriticalTimeStepForExplicitDynamics(
+    double&                        criticalTimeStep,
+    [[maybe_unused]] const double* QTotal )
   {
 
     /* The l / c estimate below assumes the element's mass is spread UNIFORMLY over its nodes, each
