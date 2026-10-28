@@ -540,6 +540,8 @@ namespace Marmot::Discretizations::Elements {
 
     /// compute the element load vector for a unit vectorial load in a given direction.
     Eigen::VectorXd computeVectorialLoadVector( const Eigen::VectorXd& direction );
+    /// @brief Compute the load vector for a unit vectorial load in a given direction for axisymmetric elements.
+    Eigen::VectorXd computeVectorialLoadVectorForAxisymmetricElements( const Eigen::VectorXd& direction );
     /// @brief Compute the derivative of the directional load vector with respect to nodal coordinates.
     Eigen::MatrixXd computeDVectorialLoadVector_dCoordinates( const Eigen::VectorXd& direction );
 

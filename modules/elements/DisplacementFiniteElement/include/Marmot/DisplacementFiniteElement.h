@@ -1277,4 +1277,200 @@ namespace Marmot::Discretizations::Elements {
   {
     return static_cast< int >( qps.size() );
   }
+
+  /**
+   * @class Marmot::Discretizations::Elements::AxiSymmetricDisplacementFiniteElement
+   * @tparam nNodes Number of element nodes.
+   * @brief Small-strain axisymmetric variant of DisplacementFiniteElement, with \f$r = x_1\f$ and \f$z = x_2\f$.
+   * @details Adds the hoop strain \f$\varepsilon_{\theta\theta} = u_r / r\f$ and integrates over the full
+   * revolution, \f$J_0 w = w \det\mathbf{J}\, 2\pi r\f$, so internal forces and energies are those of the full
+   * ring; this includes body forces and distributed loads. Artificial bulk viscosity is not supported.
+   */
+  template < int nNodes >
+  class AxiSymmetricDisplacementFiniteElement : public DisplacementFiniteElement< 2, nNodes > {
+
+  public:
+    using Parent = DisplacementFiniteElement< 2, nNodes >;
+    using Parent::Parent;
+
+    using BSizedAxisymmetric = typename Parent::ParentGeometryElement::BSizedAxisymmetric;
+
+    /// Axisymmetric B-operator (rows rr, zz, tt, rz) at each quadrature point
+    std::vector< BSizedAxisymmetric > BAxisymmetric;
+
+    /** @brief Precompute the axisymmetric B-operator and \f$J_0 w = w \det\mathbf{J}\, 2\pi r\f$. */
+    void initializeYourself();
+
+    /** @brief Internal force and consistent tangent \f$\mathbf{K}_e = \sum_{qp} \mathbf{B}^\mathsf{T} \mathbf{C}
+     * \mathbf{B}\, J_0 w\f$ with the 4-component axisymmetric strain. */
+    void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT );
+
+    /** @brief Internal force only, with the 4-component axisymmetric strain. */
+    void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT );
+
+    /** @brief Pressure and traction loads on a boundary face, integrated over the ring (\f$2\pi r\,
+     * \mathrm{d}\Gamma\f$). */
+    void computeDistributedLoad( Element::DistributedLoadTypes loadType,
+                                 double*                       P,
+                                 double*                       K,
+                                 const int                     elementFace,
+                                 const double*                 load,
+                                 const double*                 QTotal,
+                                 double                        time,
+                                 double                        dT );
+
+  private:
+    // material update at one quadrature point; returns the stress and, if C is given, the tangent in axisymmetric
+    // Voigt notation
+    Math::Vector4d updateQuadraturePoint( typename Parent::QuadraturePoint& qp,
+                                          const Math::Vector4d&             dE,
+                                          Eigen::Matrix4d*                  C,
+                                          double                            time,
+                                          double                            dT );
+  };
+
+  template < int nNodes >
+  void AxiSymmetricDisplacementFiniteElement< nNodes >::initializeYourself()
+  {
+    BAxisymmetric.clear();
+    BAxisymmetric.reserve( this->qps.size() );
+
+    for ( auto& qp : this->qps ) {
+      const auto                     dNdXi = this->dNdXi( qp.xi );
+      const auto                     J     = this->Jacobian( dNdXi );
+      const auto                     dNdX  = this->dNdX( dNdXi, J.inverse() );
+      const auto                     N     = this->N( qp.xi );
+      const typename Parent::XiSized x     = this->NB( N ) * this->coordinates;
+
+      qp.detJ                        = J.determinant();
+      qp.B                           = this->B( dNdX );
+      qp.characteristicElementLength = this->characteristicElementLengthAt( qp.xi );
+      qp.referenceWaveSpeed.reset();
+      qp.J0xW = qp.weight * qp.detJ * 2 * Math::Constants::Pi * x( 0 );
+
+      BAxisymmetric.push_back( this->B_axisymmetric( dNdX, N, x ) );
+    }
+  }
+
+  template < int nNodes >
+  Math::Vector4d AxiSymmetricDisplacementFiniteElement< nNodes >::updateQuadraturePoint(
+    typename Parent::QuadraturePoint& qp,
+    const Math::Vector4d&             dE,
+    Eigen::Matrix4d*                  C,
+    double                            time,
+    double                            dT )
+  {
+    using namespace ContinuumMechanics::Voigt;
+
+    const Math::Vector6d dE6 = axisymmetricVoigtToVoigt( dE );
+
+    Materials::MaterialHypoElastic::state3D  state;
+    Materials::MaterialHypoElastic::timeInfo timeInfo;
+
+    state.stress               = qp.managedStateVars->stress;
+    state.elasticEnergyDensity = qp.J0xW > 0.0 ? qp.managedStateVars->elasticStrainEnergy / qp.J0xW : 0.0;
+    state.dissipation          = qp.J0xW > 0.0 ? qp.managedStateVars->dissipation / qp.J0xW : 0.0;
+    state.stateVars            = qp.managedStateVars->materialStateVars.data();
+
+    timeInfo.time = time;
+    timeInfo.dT   = dT;
+
+    if ( C ) {
+      Math::Matrix6d C66;
+      qp.material->computeStress( state, C66, dE6, timeInfo );
+      *C = C66.topLeftCorner< 4, 4 >();
+    }
+    else
+      qp.material->computeStressExplicit( state, dE6, timeInfo );
+
+    qp.managedStateVars->stress              = state.stress;
+    qp.managedStateVars->elasticStrainEnergy = state.elasticEnergyDensity * qp.J0xW;
+    qp.managedStateVars->dissipation         = state.dissipation * qp.J0xW;
+    qp.managedStateVars->totalStrainEnergy   = ( state.elasticEnergyDensity + state.dissipation ) * qp.J0xW;
+    qp.managedStateVars->strain += dE6;
+
+    return state.stress.head< 4 >();
+  }
+
+  template < int nNodes >
+  void AxiSymmetricDisplacementFiniteElement< nNodes >::computeKernels( const double* QTotal_,
+                                                                        const double* dQ_,
+                                                                        double*       Pe_,
+                                                                        double*       Ke_,
+                                                                        double        time,
+                                                                        double        dT )
+  {
+    Eigen::Map< const typename Parent::RhsSized > dQ( dQ_ );
+    Eigen::Map< typename Parent::KeSizedMatrix >  Ke( Ke_ );
+    Eigen::Map< typename Parent::RhsSized >       Pe( Pe_ );
+
+    Eigen::Matrix4d C;
+    for ( size_t i = 0; i < this->qps.size(); i++ ) {
+      auto&       qp = this->qps[i];
+      const auto& B  = BAxisymmetric[i];
+
+      const Math::Vector4d S = updateQuadraturePoint( qp, B * dQ, &C, time, dT );
+
+      Ke += B.transpose() * C * B * qp.J0xW;
+      Pe += B.transpose() * S * qp.J0xW;
+    }
+  }
+
+  template < int nNodes >
+  void AxiSymmetricDisplacementFiniteElement< nNodes >::computeKernelsExplicit( const double* QTotal_,
+                                                                                const double* dQ_,
+                                                                                double*       Pe_,
+                                                                                double        time,
+                                                                                double        dT )
+  {
+    if ( this->bulkViscosityCoefficients.areActive() )
+      throw std::invalid_argument( Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__
+                                   << ": artificial bulk viscosity is not supported by axisymmetric "
+                                      "elements." );
+
+    Eigen::Map< const typename Parent::RhsSized > dQ( dQ_ );
+    Eigen::Map< typename Parent::RhsSized >       Pe( Pe_ );
+
+    for ( size_t i = 0; i < this->qps.size(); i++ ) {
+      auto&       qp = this->qps[i];
+      const auto& B  = BAxisymmetric[i];
+
+      const Math::Vector4d S = updateQuadraturePoint( qp, B * dQ, nullptr, time, dT );
+
+      Pe += B.transpose() * S * qp.J0xW;
+    }
+  }
+
+  template < int nNodes >
+  void AxiSymmetricDisplacementFiniteElement< nNodes >::computeDistributedLoad( Element::DistributedLoadTypes loadType,
+                                                                                double*                       P,
+                                                                                double*                       K,
+                                                                                const int     elementFace,
+                                                                                const double* load,
+                                                                                const double* QTotal,
+                                                                                double        time,
+                                                                                double        dT )
+  {
+    Eigen::Map< typename Parent::RhsSized > fU( P );
+
+    BoundaryElement boundaryEl( this->shape, elementFace, 2, this->coordinates );
+
+    switch ( loadType ) {
+    case Element::Pressure: {
+      const Eigen::VectorXd Pk = -load[0] * boundaryEl.computeSurfaceNormalVectorialLoadVectorForAxisymmetricElements();
+      boundaryEl.assembleIntoParentVectorial( Pk, fU );
+      break;
+    }
+    case Element::SurfaceTraction: {
+      const Eigen::VectorXd Pk = boundaryEl.computeVectorialLoadVectorForAxisymmetricElements(
+        typename Parent::XiSized( load ) );
+      boundaryEl.assembleIntoParentVectorial( Pk, fU );
+      break;
+    }
+    default: {
+      throw std::invalid_argument( "Invalid Load Type specified" );
+    }
+    }
+  }
 } // namespace Marmot::Discretizations::Elements
