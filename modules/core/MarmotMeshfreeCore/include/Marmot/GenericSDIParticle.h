@@ -31,7 +31,15 @@
 #include "Marmot/MarmotParticleDomain.h"
 #include <Eigen/Core>
 #include <Eigen/Dense>
+/* Fastor/Fastor.h ends with `#pragma warning( default : ... )`; scope it so it neither overrides the build's warning
+ * flags nor leaks into consumers. */
+#ifdef _MSC_VER
+#  pragma warning( push )
+#endif
 #include <Fastor/Fastor.h>
+#ifdef _MSC_VER
+#  pragma warning( pop )
+#endif
 #include <stdexcept>
 #include <tuple>  // Explicitly include tuple for std::tuple usage
 #include <vector> // Explicitly include vector for clarity
