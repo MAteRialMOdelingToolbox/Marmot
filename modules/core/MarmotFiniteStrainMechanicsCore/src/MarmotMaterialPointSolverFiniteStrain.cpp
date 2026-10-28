@@ -121,7 +121,7 @@ namespace Marmot {
           stateVars = stateVarsTemp;
           counter++;
         }
-        catch ( const Marmot::StressUpdateFailed& e ) {
+        catch ( const Marmot::StressUpdateFailed& ) {
           // if failed, reduce time step and retry
           if ( dT <= step.dTMin )
             throw Marmot::SolverTimestepExhausted( "Minimum time step reached, cannot proceed." );
@@ -152,7 +152,7 @@ namespace Marmot {
       // temporary variables for material state
       MarmotMaterialFiniteStrain::ConstitutiveResponse< 3 > state;
       MarmotMaterialFiniteStrain::Deformation< 3 >          deformation;
-      MarmotMaterialFiniteStrain::AlgorithmicModuli< 3 >    algorithmicModuli;
+      MarmotMaterialFiniteStrain::AlgorithmicModuli< 3 >    algorithmicModuli{};
       MarmotMaterialFiniteStrain::TimeIncrement timeInfo = { increment.timeOld + increment.dT, increment.dT };
 
       // store identical rows

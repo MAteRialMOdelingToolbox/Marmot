@@ -72,7 +72,8 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ${{ matrix.cmake_options }} ..
+          # Fail on compiler warnings (-Werror, /WX); local builds keep warnings non-fatal.
+          cmake -DCMAKE_COMPILE_WARNING_AS_ERROR=ON ${{ matrix.cmake_options }} ..
           sudo make install
           # --no-tests=error: ctest exits 0 on an empty test set, which would
           # report success for a build that produced no tests at all.

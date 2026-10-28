@@ -72,10 +72,10 @@ namespace Marmot {
     /**
      * Computes the strain coordinates in the Haigh-Westergaard space.
      *
-     * \note The computation is equal to @ref haighWestergaard by replacing the stress invariants with the strain
+     * \note The computation is equal to haighWestergaard() by replacing the stress invariants with the strain
      * invariants.
      *
-     * @param strain Strain tensor \f$\eps\f$ given in \ref voignotation "Voigt notation".
+     * @param strain Strain tensor \f$\eps\f$ given in Voigt notation.
      */
     HaighWestergaardCoordinates< double > haighWestergaardFromStrain( const Marmot::Vector6d& strain );
 

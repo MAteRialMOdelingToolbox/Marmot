@@ -27,7 +27,15 @@
 #include "Marmot/DisplacementParticleSQCNI.h"
 #include "Marmot/MarmotMeshfreeApproximation.h"
 #include "Marmot/NewmarkBetaIntegrator.h"
+/* Fastor/Fastor.h ends with `#pragma warning( default : ... )`; scope it so it neither overrides the build's warning
+ * flags nor leaks into consumers. */
+#ifdef _MSC_VER
+#  pragma warning( push )
+#endif
 #include <Fastor/Fastor.h>
+#ifdef _MSC_VER
+#  pragma warning( pop )
+#endif
 
 namespace Marmot::Meshfree {
 
@@ -94,7 +102,6 @@ namespace Marmot::Meshfree {
     /// velocity gradient with respect to @f$ \boldsymbol{Y} @f$ (explicit scheme only, used by computeLumpedMomentum())
     TensorDD _dv_dY = TensorDD( 0.0 );
 
-    double dT = 0.0; ///< not used (the methods take the time increment as an argument)
     /**
      * @brief Second derivatives of the shape functions with respect to the intermediate coordinates.
      *
@@ -145,7 +152,8 @@ namespace Marmot::Meshfree {
     {
       ParentPointParticle::_assignedKernelFunctions = kernelFunctions;
 
-      ParentPointParticle::_nNodes = DisplacementParticle< nDim >::_assignedKernelFunctions.size();
+      ParentPointParticle::_nNodes = static_cast< int >(
+        DisplacementParticle< nDim >::_assignedKernelFunctions.size() );
 
       Eigen::Matrix< double, nDim, 1 > centerCoordinates;
       this->getCenterCoordinates( centerCoordinates.data() );
@@ -229,7 +237,7 @@ namespace Marmot::Meshfree {
      * of the last updatePhysicsExplicit().
      * @param[in,out] mLumped Lumped momentum vector (nDim values per node), the contribution is added.
      */
-    virtual void computeLumpedMomentum( double* mLumped ) const override;
+    void computeLumpedMomentum( double* mLumped ) const override;
 
     /// \brief Extract the second derivative of the shape function for a given node
     /// \param[in] d2N_dYdY The second derivative of the shape function
@@ -254,7 +262,7 @@ namespace Marmot::Meshfree {
      * It updates the base class state and also computes the moments of inertia
      * for the intermediate reference configuration, which are used in the NSNI stabilization.
      */
-    virtual void acceptStateAndPosition() override
+    void acceptStateAndPosition() override
     {
       ParentSQCNIParticle::acceptStateAndPosition();
       _momentsOfInertia_IntermediateReference = TensorDD( this->_particleDomain.getGeometrySecondMoments().data() );

@@ -30,7 +30,15 @@
 #include <Eigen/Core>
 #include <Eigen/Dense>
 #include <Eigen/src/Core/util/Constants.h>
+/* Fastor/Fastor.h ends with `#pragma warning( default : ... )`; scope it so it neither overrides the build's warning
+ * flags nor leaks into consumers. */
+#ifdef _MSC_VER
+#  pragma warning( push )
+#endif
 #include <Fastor/Fastor.h>
+#ifdef _MSC_VER
+#  pragma warning( pop )
+#endif
 #include <cmath>
 
 namespace Marmot::Meshfree {
@@ -108,7 +116,7 @@ namespace Marmot::Meshfree {
      * @brief Vertices of the particle geometry in the intermediate configuration.
      * @param[out] coordinates The vertex coordinates (nDim x nVertices, column major).
      */
-    virtual void getVertexCoordinates( double* coordinates ) const override
+    void getVertexCoordinates( double* coordinates ) const override
     {
       Eigen::Map< Eigen::Matrix< double, nDim, nVertices > > coordinatesMap( coordinates );
       coordinatesMap = _particleDomain.getGeometryDeformedVertexCoordinates();
@@ -118,7 +126,7 @@ namespace Marmot::Meshfree {
      * @brief Vertices of the smoothing domain, used for visualization.
      * @param[out] coordinates The vertex coordinates (nDim x nVertices, column major).
      */
-    virtual void getVisualizationVertexCoordinates( double* coordinates ) const override
+    void getVisualizationVertexCoordinates( double* coordinates ) const override
     {
       Eigen::Map< Eigen::Matrix< double, nDim, nVertices > > coordinatesMap( coordinates );
       coordinatesMap = _particleDomain.getSmoothingVertexCoordinates();
@@ -128,20 +136,20 @@ namespace Marmot::Meshfree {
      * @brief Number of vertices of the particle geometry.
      * @return nVertices.
      */
-    virtual int getNumberOfVertices() const override { return _particleDomain.getNumberOfVertices(); }
+    int getNumberOfVertices() const override { return _particleDomain.getNumberOfVertices(); }
 
     /**
      * @brief Shape of the particle geometry.
      * @return The shape name, e.g. "quad4" or "hexa8".
      */
-    virtual std::string getParticleShape() const override { return _particleDomain.getParticleShape(); }
+    std::string getParticleShape() const override { return _particleDomain.getParticleShape(); }
 
     /**
      * @brief Center of a face of the particle geometry (intermediate configuration).
      * @param[in] faceID The face ID (1-based).
      * @param[out] coordinates The coordinates (nDim values).
      */
-    virtual void getFaceCoordinates( int faceID, double* coordinates ) const override
+    void getFaceCoordinates( int faceID, double* coordinates ) const override
     {
       Eigen::Map< Eigen::Matrix< double, nDim, 1 > > coordinatesMap( coordinates );
       coordinatesMap = _particleDomain.getFaceCenterCoordinates( faceID );
@@ -151,7 +159,7 @@ namespace Marmot::Meshfree {
      * @brief Evaluation points of the shape functions: the face centers of the smoothing domain.
      * @param[out] coordinates The coordinates (nDim x number of faces, column major).
      */
-    virtual void getEvaluationCoordinates( double* coordinates ) const override
+    void getEvaluationCoordinates( double* coordinates ) const override
     {
       Eigen::Map< Eigen::Matrix< double, nDim, Eigen::Dynamic > > coordinatesMap( coordinates,
                                                                                   nDim,
@@ -166,13 +174,13 @@ namespace Marmot::Meshfree {
      * @brief Number of evaluation points.
      * @return The number of faces of the smoothing domain.
      */
-    virtual int getNumberOfEvaluationPoints() const override { return _particleDomain.getNumberOfFaces(); }
+    int getNumberOfEvaluationPoints() const override { return _particleDomain.getNumberOfFaces(); }
 
     /**
      * @brief Center of the particle in the intermediate configuration, from the material point.
      * @param[out] coordinates The coordinates (nDim values).
      */
-    virtual void getCenterCoordinates( double* coordinates ) const override
+    void getCenterCoordinates( double* coordinates ) const override
     {
       // Use the material point's center coordinates, which is physics-specific
       this->_mp->getCoordinatesAtCenter( coordinates );
@@ -182,7 +190,7 @@ namespace Marmot::Meshfree {
      * @brief Volume in the undeformed configuration.
      * @return @f$ V_0 @f$.
      */
-    virtual double getVolumeUndeformed() const override { return this->_mp->getVolumeUndeformed(); };
+    double getVolumeUndeformed() const override { return this->_mp->getVolumeUndeformed(); };
 
     /**
      * @brief Supported distributed loads, on the faces of the particle domain.
@@ -203,7 +211,7 @@ namespace Marmot::Meshfree {
      * @param[in] qp Evaluation point (not used).
      * @return The view on the state.
      */
-    virtual StateView getStateView( const std::string& stateName, int qp ) const override
+    StateView getStateView( const std::string& stateName, int qp ) const override
     {
       if ( stateName == "vertex displacements" )
         return StateView( const_cast< double* >( _particleDomain.getGeometryDeformedVertexDisplacements().data() ),
@@ -231,7 +239,7 @@ namespace Marmot::Meshfree {
      * @brief Accepts the increment (see DisplacementParticle::acceptStateAndPosition()) and moves the particle geometry
      * and the smoothing domain to the new intermediate configuration.
      */
-    virtual void acceptStateAndPosition() override
+    void acceptStateAndPosition() override
     {
       // First, call the DisplacementParticle's acceptStateAndPosition to update material point and GenericParticle's
       // center and volume.
@@ -253,11 +261,11 @@ namespace Marmot::Meshfree {
      *
      * @param[in] kernelFunctions A vector of pointers to the meshfree kernel functions.
      */
-    virtual void assignMeshfreeKernelFunctions(
+    void assignMeshfreeKernelFunctions(
       const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) override
     {
       this->_assignedKernelFunctions = kernelFunctions;
-      this->_nNodes                  = this->_assignedKernelFunctions.size();
+      this->_nNodes                  = static_cast< int >( this->_assignedKernelFunctions.size() );
 
       Eigen::Matrix< double, nDim, 1 > coords;
       this->getCenterCoordinates( coords.data() ); // Uses DisplacementParticleSQCNI's getCenterCoordinates
@@ -301,9 +309,9 @@ namespace Marmot::Meshfree {
      * geometry is used instead).
      * @param[in] boundaryFaceID The ID of the boundary face.
      */
-    virtual void vci_compute_Test_P_BoundaryIntegral( double*       R_AiC_RowMajor,
-                                                      const double* boundarySurfaceVector,
-                                                      int           boundaryFaceID ) override
+    void vci_compute_Test_P_BoundaryIntegral( double*       R_AiC_RowMajor,
+                                              const double* boundarySurfaceVector,
+                                              int           boundaryFaceID ) override
     {
       using namespace Fastor;
 
@@ -363,13 +371,13 @@ namespace Marmot::Meshfree {
      * @param[in] dT The time increment.
      * @throws std::invalid_argument if an invalid DistributedLoad type is specified.
      */
-    virtual void computeDistributedLoad( int           type,
-                                         int           surfaceID,
-                                         const double* load,
-                                         double*       fExt,
-                                         double*       dExt_dQ,
-                                         double        timeNew,
-                                         double        dT ) const override;
+    void computeDistributedLoad( int           type,
+                                 int           surfaceID,
+                                 const double* load,
+                                 double*       fExt,
+                                 double*       dExt_dQ,
+                                 double        timeNew,
+                                 double        dT ) const override;
 
     /**
      * @brief Distributed load for explicit time integration: the Pressure force of computeDistributedLoad(), without
@@ -382,12 +390,12 @@ namespace Marmot::Meshfree {
      * @param[in] dT The time increment.
      * @throws std::invalid_argument if an invalid DistributedLoad type is specified.
      */
-    virtual void computeDistributedLoadExplicit( int           type,
-                                                 int           boundaryFaceID,
-                                                 const double* load,
-                                                 double*       fExt,
-                                                 double        timeNew,
-                                                 double        dT ) const override;
+    void computeDistributedLoadExplicit( int           type,
+                                         int           boundaryFaceID,
+                                         const double* load,
+                                         double*       fExt,
+                                         double        timeNew,
+                                         double        dT ) const override;
   };
 
   template < int nDim, int nVertices >
@@ -518,7 +526,6 @@ namespace Marmot::Meshfree {
 
       const auto                         deltaF    = this->dx_dY();
       const Tensor< double, nDim, nDim > deltaFInv = inverse( deltaF );
-      const double                       deltaJ    = determinant( deltaF );
 
       // the internal force integrates tau over the undeformed volume V0 = V_Y / J_Y, so the boundary term of the same
       // weak form is tau * deltaF^-T * N dA_Y / J_Y, with J_Y the Jacobian of the intermediate configuration

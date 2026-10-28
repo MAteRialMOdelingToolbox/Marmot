@@ -127,6 +127,7 @@ namespace Marmot::Elements {
        */
       class QPStateVarManager : public MarmotStateVarVectorManager {
 
+        /// @cond INTERNAL (designated initializers are not parseable by the Sphinx C++ domain)
         inline const static auto layout = makeLayout( {
           { .name = "stress", .length = 9 },
           { .name = "elastic energy density", .length = 1 },
@@ -136,6 +137,7 @@ namespace Marmot::Elements {
           { .name = "F0 ZZ", .length = 1 },
           { .name = "begin of material state", .length = 0 },
         } );
+        /// @endcond
 
       public:
         Eigen::Map< Marmot::Vector9d > stress; ///< Kirchhoff stress (3D, also in plane strain)
@@ -216,53 +218,53 @@ namespace Marmot::Elements {
       SectionType                                         sectionType );
 
     /// @brief Number of state variables of the element (of all quadrature points).
-    int getNumberOfRequiredStateVars();
+    int getNumberOfRequiredStateVars() override;
 
     /// @brief Fields per node: "displacement" and "nonlocal damage".
-    std::vector< std::vector< std::string > > getNodeFields();
+    std::vector< std::vector< std::string > > getNodeFields() override;
 
     /// @brief Permutation from the node-by-node dof order of the host to the field-by-field order of the element.
-    std::vector< int > getDofIndicesPermutationPattern();
+    std::vector< int > getDofIndicesPermutationPattern() override;
 
     /// @brief Number of nodes.
-    int getNNodes() { return nNodes; }
+    int getNNodes() override { return nNodes; }
 
     /// @brief Number of spatial dimensions.
-    int getNSpatialDimensions() { return nDim; }
+    int getNSpatialDimensions() override { return nDim; }
 
     /// @brief Number of dofs of the element.
-    int getNDofPerElement() { return sizeLoadVector; }
+    int getNDofPerElement() override { return sizeLoadVector; }
 
     /// @brief Shape of the element.
-    std::string getElementShape() { return ParentGeometryElement::getElementShape(); }
+    std::string getElementShape() override { return ParentGeometryElement::getElementShape(); }
 
     /**
      * @brief Assign the state variables, split evenly among the quadrature points.
      * @param[in] managedStateVars State variables of the element.
      * @param[in] nStateVars Their number.
      */
-    void assignStateVars( double* managedStateVars, int nStateVars );
+    void assignStateVars( double* managedStateVars, int nStateVars ) override;
 
     /**
      * @brief Assign the element properties.
      * @param[in] MarmotElementProperty Element properties: the thickness in 2D.
      */
-    void assignProperty( const ElementProperties& MarmotElementProperty );
+    void assignProperty( const ElementProperties& MarmotElementProperty ) override;
 
     /**
      * @brief Create the material of every quadrature point.
      * @param[in] MarmotElementProperty Material name and properties.
      */
-    void assignProperty( const MarmotMaterialSection& MarmotElementProperty );
+    void assignProperty( const MarmotMaterialSection& MarmotElementProperty ) override;
 
     /**
      * @brief Assign the nodal coordinates in the reference configuration.
      * @param[in] coordinates Nodal coordinates, node by node.
      */
-    void assignNodeCoordinates( const double* coordinates );
+    void assignNodeCoordinates( const double* coordinates ) override;
 
     /// @brief Compute the reference shape function derivatives and integration weights of the quadrature points.
-    void initializeYourself();
+    void initializeYourself() override;
 
     /**
      * @brief Set initial conditions.
@@ -271,7 +273,7 @@ namespace Marmot::Elements {
      * @param[in] values Definition of the geostatic stress distribution.
      * @throws std::invalid_argument for another initial condition.
      */
-    void setInitialConditions( StateTypes state, const double* values );
+    void setInitialConditions( StateTypes state, const double* values ) override;
 
     /**
      * @brief Compute a distributed load on an element face.
@@ -289,11 +291,11 @@ namespace Marmot::Elements {
     void computeDistributedLoad( MarmotElement::DistributedLoadTypes loadType,
                                  double*                             P,
                                  double*                             K,
-                                 const int                           elementFace,
+                                 int                                 elementFace,
                                  const double*                       load,
                                  const double*                       QTotal,
                                  double                              time,
-                                 double                              dT );
+                                 double                              dT ) override;
 
     /**
      * @brief Compute a body force per reference volume.
@@ -304,7 +306,8 @@ namespace Marmot::Elements {
      * @param[in] time Time.
      * @param[in] dT Time increment.
      */
-    void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, double time, double dT );
+    void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, double time, double dT )
+      override;
 
     /**
      * @brief Compute the residual (internal forces) and the stiffness matrix, and update the state.
@@ -315,7 +318,8 @@ namespace Marmot::Elements {
      * @param[in] time Time.
      * @param[in] dT Time increment.
      */
-    void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT );
+    void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT )
+      override;
 
     /**
      * @brief Compute the residual (internal forces) only, and update the state, for explicit time integration.
@@ -326,7 +330,7 @@ namespace Marmot::Elements {
      * @param[in] time Time.
      * @param[in] dT Time increment.
      */
-    void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT );
+    void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT ) override;
 
     /**
      * @brief A view of a state of a quadrature point, of the element or of its material.
@@ -334,16 +338,16 @@ namespace Marmot::Elements {
      * @param[in] qpNumber Number of the quadrature point.
      * @return The view.
      */
-    StateView getStateView( const std::string& stateName, int qpNumber );
+    StateView getStateView( const std::string& stateName, int qpNumber ) override;
 
     /// @brief Coordinates of the element center in the reference configuration.
-    std::vector< double > getCoordinatesAtCenter();
+    std::vector< double > getCoordinatesAtCenter() override;
 
     /// @brief Coordinates of the quadrature points in the reference configuration.
-    std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints();
+    std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints() override;
 
     /// @brief Number of quadrature points.
-    int getNumberOfQuadraturePoints();
+    int getNumberOfQuadraturePoints() override;
 
   private:
     /**
@@ -403,7 +407,7 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   int GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::getNumberOfRequiredStateVars()
   {
-    return qps[0].getNumberOfRequiredStateVars() * qps.size();
+    return qps[0].getNumberOfRequiredStateVars() * static_cast< int >( qps.size() );
   }
 
   template < int nDim, int nNodes >
@@ -442,7 +446,7 @@ namespace Marmot::Elements {
   void GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::assignStateVars( double* managedStateVars,
                                                                                          int     nStateVars )
   {
-    const int nQpStateVars = nStateVars / qps.size();
+    const int nQpStateVars = nStateVars / static_cast< int >( qps.size() );
 
     for ( size_t i = 0; i < qps.size(); i++ ) {
       auto&   qp          = qps[i];
@@ -721,7 +725,7 @@ namespace Marmot::Elements {
     MarmotElement::DistributedLoadTypes loadType,
     double*                             rightHandSide,
     double*                             stiffnessMatrix,
-    const int                           elementFace,
+    int                                 elementFace,
     const double*                       load,
     const double*                       QTotal_,
     double                              time,
@@ -743,7 +747,7 @@ namespace Marmot::Elements {
       Eigen::VectorXd Pb = -p * boundaryEl.computeSurfaceNormalVectorialLoadVector();
       Eigen::MatrixXd Kb = -p * boundaryEl.computeDSurfaceNormalVectorialLoadVector_dCoordinates();
 
-      if ( nDim == 2 ) {
+      if constexpr ( nDim == 2 ) {
         Pb *= elementProperties[0]; // thickness
         Kb *= elementProperties[0];
       }
@@ -760,7 +764,7 @@ namespace Marmot::Elements {
       const XiSized tractionVector( load );
 
       auto Pk = boundaryEl.computeVectorialLoadVector( tractionVector );
-      if ( nDim == 2 )
+      if constexpr ( nDim == 2 )
         Pk *= elementProperties[0]; // thickness
       boundaryEl.assembleIntoParentVectorial( Pk, r_U );
 
@@ -788,7 +792,7 @@ namespace Marmot::Elements {
           qp.managedStateVars->F0_ZZ = 1.0;
 
           qp.material->initializeYourself( qp.managedStateVars->materialStateVars.data(),
-                                           qp.managedStateVars->materialStateVars.size() );
+                                           static_cast< int >( qp.managedStateVars->materialStateVars.size() ) );
         }
         break;
       }
@@ -871,7 +875,7 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   int GradientEnhancedFiniteStrainDisplacementElement< nDim, nNodes >::getNumberOfQuadraturePoints()
   {
-    return qps.size();
+    return static_cast< int >( qps.size() );
   }
 
 } // namespace Marmot::Elements

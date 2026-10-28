@@ -110,7 +110,7 @@ namespace {
         for ( int pp = 0; pp < nN; pp++ ) {
           g.nodes.push_back( greville[pp] );
           g.nodes.push_back( greville[q] );
-          if ( nDim == 3 )
+          if constexpr ( nDim == 3 )
             g.nodes.push_back( greville[r] );
         }
     g.lower.setConstant( p );
@@ -133,14 +133,17 @@ namespace {
     Setup( const CellGeometry< nDim >& g )
     {
       if ( g.knots.empty() )
-        cell.reset( MarmotLibrary::MarmotCellFactory::createCell( g.name, 1, g.nodes.data(), g.nodes.size() ) );
+        cell.reset( MarmotLibrary::MarmotCellFactory::createCell( g.name,
+                                                                  1,
+                                                                  g.nodes.data(),
+                                                                  static_cast< int >( g.nodes.size() ) ) );
       else
         cell.reset( MarmotLibrary::MarmotCellFactory::createBSplineCell( g.name,
                                                                          1,
                                                                          g.nodes.data(),
-                                                                         g.nodes.size(),
+                                                                         static_cast< int >( g.nodes.size() ),
                                                                          g.knots.data(),
-                                                                         g.knots.size() ) );
+                                                                         static_cast< int >( g.knots.size() ) ) );
       nDof     = cell->getNDofPerCell();
       mpVolume = ( g.upper - g.lower ).prod() / std::pow( 2, nDim );
 
@@ -162,7 +165,7 @@ namespace {
       for ( auto& mp : mps ) {
         mp->assignMaterial( section );
         stateVars.emplace_back( mp->getNumberOfRequiredStateVars(), 0.0 );
-        mp->assignStateVars( stateVars.back().data(), stateVars.back().size() );
+        mp->assignStateVars( stateVars.back().data(), static_cast< int >( stateVars.back().size() ) );
         mp->initializeYourself();
       }
 
@@ -194,7 +197,7 @@ namespace {
       auto       result = kernels( dQ );
       stateVars         = backup;
       for ( size_t i = 0; i < mps.size(); i++ )
-        mps[i]->assignStateVars( stateVars[i].data(), stateVars[i].size() );
+        mps[i]->assignStateVars( stateVars[i].data(), static_cast< int >( stateVars[i].size() ) );
       return result;
     }
 
@@ -252,7 +255,7 @@ namespace {
                                           double                                                            hU,
                                           double                                                            hN )
   {
-    const int        n = Q0.size();
+    const int        n = static_cast< int >( Q0.size() );
     NumericalTangent t;
     if ( n <= 64 ) {
       t.D = Eigen::MatrixXd::Identity( n, n );
@@ -301,7 +304,7 @@ namespace {
   void checkCell( const CellGeometry< nDim >& g )
   {
     using Vec          = Eigen::Matrix< double, nDim, 1 >;
-    const int  nNodes  = g.nodes.size() / nDim;
+    const int  nNodes  = static_cast< int >( g.nodes.size() ) / nDim;
     const int  nU      = nDim * nNodes;
     const auto nodeAt  = [&]( int A ) { return Eigen::Map< const Vec >( &g.nodes[A * nDim] ); };
     const Vec  inside  = g.lower + 0.37 * ( g.upper - g.lower );
