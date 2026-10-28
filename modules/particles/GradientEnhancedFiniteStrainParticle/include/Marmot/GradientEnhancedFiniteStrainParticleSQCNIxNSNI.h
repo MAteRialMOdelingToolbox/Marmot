@@ -227,7 +227,7 @@ namespace Marmot::Meshfree {
      * J_Y\,\boldsymbol{F}_n\,\boldsymbol{M}^0\,\boldsymbol{F}_n^\mathsf{T}
      * @f$.
      */
-    virtual void acceptStateAndPosition() override
+    void acceptStateAndPosition() override
     {
       ParentSQCNIParticle::acceptStateAndPosition();
 

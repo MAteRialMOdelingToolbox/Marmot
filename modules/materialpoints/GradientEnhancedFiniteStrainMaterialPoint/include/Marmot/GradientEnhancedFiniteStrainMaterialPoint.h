@@ -332,7 +332,7 @@ namespace Marmot::MaterialPoints {
      * @param[in] timeNew Time at the end of the increment (unused).
      * @param[in] dT      Time increment (unused).
      */
-    virtual void prepareYourself( double timeNew, double dT ) override;
+    void prepareYourself( double timeNew, double dT ) override;
 
     /**
      * @brief Evaluate the material at @f$ \boldsymbol{F} = \Delta\boldsymbol{F}\,\boldsymbol{F}_n @f$ and
@@ -340,7 +340,7 @@ namespace Marmot::MaterialPoints {
      * @param[in] timeNew Time at the end of the increment.
      * @param[in] dT      Time increment.
      */
-    virtual void computeYourself( double timeNew, double dT ) override = 0;
+    void computeYourself( double timeNew, double dT ) override = 0;
 
     /**
      * @brief Accept the current increment: @f$ \boldsymbol{u} \leftarrow \boldsymbol{u} + \Delta\boldsymbol{u} @f$,
@@ -348,7 +348,7 @@ namespace Marmot::MaterialPoints {
      *
      * The increment itself is not reset here; the next prepareYourself() does that.
      */
-    virtual void acceptStateAndPosition() override
+    void acceptStateAndPosition() override
     {
       const auto&                           u_n  = state->u;
       const FastorStandardTensors::Tensor3d u_np = u_n + state->du;
@@ -450,7 +450,7 @@ namespace Marmot::MaterialPoints {
      * @param[in] value         Its value(s); `value[0]` is the geostatic normal stress.
      * @throws std::invalid_argument for any other condition.
      */
-    virtual void setInitialCondition( const std::string& conditionName, const double* value ) override
+    void setInitialCondition( const std::string& conditionName, const double* value ) override
     {
       if ( conditionName == "geostaticstress" ) {
         std::tuple< double, double, double > geostaticNormalStressComponents = { value[0], value[0], value[0] };

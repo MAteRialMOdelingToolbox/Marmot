@@ -303,7 +303,7 @@ namespace Marmot::MaterialPoints {
      * @param[in] timeNew Time at the end of the increment (not used).
      * @param[in] dT Time increment (not used).
      */
-    virtual void prepareYourself( double timeNew, double dT ) override;
+    void prepareYourself( double timeNew, double dT ) override;
 
     /**
      * @brief Evaluates the material with @f$ \boldsymbol{F} = \Delta\boldsymbol{F}\,\boldsymbol{F}_n @f$ and fills
@@ -311,14 +311,14 @@ namespace Marmot::MaterialPoints {
      * @param[in] timeNew Time at the end of the increment.
      * @param[in] dT Time increment.
      */
-    virtual void computeYourself( double timeNew, double dT ) override = 0;
+    void computeYourself( double timeNew, double dT ) override = 0;
 
     /**
      * @brief Accepts the increment: @f$ \boldsymbol{u} \leftarrow \boldsymbol{u} + \Delta\boldsymbol{u} @f$ and
      * @f$ \boldsymbol{F}_n \leftarrow \Delta\boldsymbol{F}\,\boldsymbol{F}_n @f$. The increment itself is reset
      * by the next prepareYourself().
      */
-    virtual void acceptStateAndPosition() override
+    void acceptStateAndPosition() override
     {
 
       const auto&                           u_n  = state->u;
@@ -406,7 +406,7 @@ namespace Marmot::MaterialPoints {
      * @throws std::invalid_argument always, so that an input with an initial condition does not silently start from
      *         the unloaded state.
      */
-    virtual void setInitialCondition( const std::string& conditionName, const double* value ) override
+    void setInitialCondition( const std::string& conditionName, const double* value ) override
     {
       throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": initial condition '" << conditionName
                                                 << "' is not supported" );

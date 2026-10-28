@@ -115,13 +115,13 @@ namespace Marmot::Meshfree {
      * @brief Vertex coordinates of the smoothing domain: undeformed coordinates plus `vertex displacements`.
      * @param[out] coordinates Coordinates, vertex by vertex (nDim x nVertices).
      */
-    virtual void getVertexCoordinates( double* coordinates ) const override;
+    void getVertexCoordinates( double* coordinates ) const override;
 
     /**
      * @brief Vertex coordinates for visualization, identical to getVertexCoordinates().
      * @param[out] coordinates Coordinates, vertex by vertex.
      */
-    virtual void getVisualizationVertexCoordinates( double* coordinates ) const override
+    void getVisualizationVertexCoordinates( double* coordinates ) const override
     {
       getVertexCoordinates( coordinates );
     };
@@ -130,13 +130,13 @@ namespace Marmot::Meshfree {
      * @brief Number of vertices.
      * @return nVertices.
      */
-    virtual int getNumberOfVertices() const override { return nVertices; };
+    int getNumberOfVertices() const override { return nVertices; };
 
     /**
      * @brief Shape of the particle.
      * @return Shape name of the undeformed smoothing domain cell.
      */
-    virtual std::string getParticleShape() const override { return _makeUndeformedCell().getCellShape(); }
+    std::string getParticleShape() const override { return _makeUndeformedCell().getCellShape(); }
 
     /**
      * @brief Construct the particle from its vertices.
@@ -173,7 +173,7 @@ namespace Marmot::Meshfree {
      *
      * @param[in] kernelFunctions Kernel functions of the nodes that support the particle.
      */
-    virtual void assignMeshfreeKernelFunctions(
+    void assignMeshfreeKernelFunctions(
       const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) override;
 
     /// \brief Get the smoothing volume of the particle
@@ -188,10 +188,7 @@ namespace Marmot::Meshfree {
      * @brief Center coordinates: the material point position of the last accepted state.
      * @param[out] coordinates Coordinates (nDim values).
      */
-    virtual void getCenterCoordinates( double* coordinates ) const override
-    {
-      this->_mp.getCoordinatesAtCenter( coordinates );
-    }
+    void getCenterCoordinates( double* coordinates ) const override { this->_mp.getCoordinatesAtCenter( coordinates ); }
 
     /**
      * @brief Centroid of a cell spanned by given vertices.
@@ -239,7 +236,7 @@ namespace Marmot::Meshfree {
      * @brief Number of state variables: those of the point particle plus the vertex displacements.
      * @return Required size of the state variable vector.
      */
-    virtual int getNumberOfRequiredStateVars() const override
+    int getNumberOfRequiredStateVars() const override
     {
       return GradientEnhancedFiniteStrainParticle< nDim >::getNumberOfRequiredStateVars() + nDim * nVertices;
     };
@@ -261,7 +258,7 @@ namespace Marmot::Meshfree {
      * @param[in] qp        Evaluation point (unused).
      * @return View on the state variable.
      */
-    virtual StateView getStateView( const std::string& stateName, int qp ) const override
+    StateView getStateView( const std::string& stateName, int qp ) const override
     {
       if ( stateName == "vertex displacements" ) {
         return { _vertexDisplacements_SmoothingDomain, nDim * nVertices };
@@ -300,13 +297,13 @@ namespace Marmot::Meshfree {
      * @param[in]     dT        Time increment (unused).
      * @throws std::invalid_argument for an unknown load type.
      */
-    virtual void computeDistributedLoad( int           type,
-                                         int           surfaceID,
-                                         const double* load,
-                                         double*       fExt,
-                                         double*       dExt_dQ,
-                                         double        timeNew,
-                                         double        dT ) const override;
+    void computeDistributedLoad( int           type,
+                                 int           surfaceID,
+                                 const double* load,
+                                 double*       fExt,
+                                 double*       dExt_dQ,
+                                 double        timeNew,
+                                 double        dT ) const override;
 
     /**
      * @brief Surface vector and center of a face in the intermediate reference configuration.
@@ -332,9 +329,9 @@ namespace Marmot::Meshfree {
      * @param[in]     boundarySurfaceVector Unused.
      * @param[in]     boundaryFaceID        Face id (1-based).
      */
-    virtual void vci_compute_Test_P_BoundaryIntegral( double*       R_AiC_RowMajor,
-                                                      const double* boundarySurfaceVector,
-                                                      int           boundaryFaceID ) override
+    void vci_compute_Test_P_BoundaryIntegral( double*       R_AiC_RowMajor,
+                                              const double* boundarySurfaceVector,
+                                              int           boundaryFaceID ) override
     {
       using namespace Fastor;
 
@@ -360,7 +357,7 @@ namespace Marmot::Meshfree {
      * @brief Coordinates of the evaluation points: the face centers of the smoothing domain.
      * @param[out] coordinates Coordinates, face by face (nDim x number of faces).
      */
-    virtual void getEvaluationCoordinates( double* coordinates ) const override
+    void getEvaluationCoordinates( double* coordinates ) const override
     {
       const auto cell = _makeSmoothingDomainCell();
 
@@ -377,7 +374,7 @@ namespace Marmot::Meshfree {
      * @param[in]  faceID      Face id (1-based).
      * @param[out] coordinates Face center (nDim values).
      */
-    virtual void getFaceCoordinates( int faceID, double* coordinates ) const override
+    void getFaceCoordinates( int faceID, double* coordinates ) const override
     {
       Eigen::Map< Eigen::Matrix< double, nDim, 1 > > faceCenter( coordinates );
       faceCenter = _makeSmoothingDomainCell().getFaceCenterCoordinates( faceID );
@@ -387,7 +384,7 @@ namespace Marmot::Meshfree {
      * @brief Number of evaluation points.
      * @return Number of faces of the smoothing domain.
      */
-    virtual int getNumberOfEvaluationPoints() const override { return _makeUndeformedCell().getNumberOfFaces(); };
+    int getNumberOfEvaluationPoints() const override { return _makeUndeformedCell().getNumberOfFaces(); };
 
   private:
     /// @brief Update the vertex displacements of the smoothing domain from @f$ \boldsymbol{F}_n @f$ and the particle
@@ -395,7 +392,7 @@ namespace Marmot::Meshfree {
     void _updateVertexDisplacementsFromMaterialPointDeformation();
 
     /// @brief Update the smoothing domain, then set the center to the accepted material point position.
-    virtual void updateParticlePositionToReferenceIntermediate() override
+    void updateParticlePositionToReferenceIntermediate() override
     {
       _updateVertexDisplacementsFromMaterialPointDeformation();
 

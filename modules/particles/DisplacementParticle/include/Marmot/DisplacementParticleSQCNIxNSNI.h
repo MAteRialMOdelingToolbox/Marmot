@@ -229,7 +229,7 @@ namespace Marmot::Meshfree {
      * of the last updatePhysicsExplicit().
      * @param[in,out] mLumped Lumped momentum vector (nDim values per node), the contribution is added.
      */
-    virtual void computeLumpedMomentum( double* mLumped ) const override;
+    void computeLumpedMomentum( double* mLumped ) const override;
 
     /// \brief Extract the second derivative of the shape function for a given node
     /// \param[in] d2N_dYdY The second derivative of the shape function
@@ -254,7 +254,7 @@ namespace Marmot::Meshfree {
      * It updates the base class state and also computes the moments of inertia
      * for the intermediate reference configuration, which are used in the NSNI stabilization.
      */
-    virtual void acceptStateAndPosition() override
+    void acceptStateAndPosition() override
     {
       ParentSQCNIParticle::acceptStateAndPosition();
       _momentsOfInertia_IntermediateReference = TensorDD( this->_particleDomain.getGeometrySecondMoments().data() );
