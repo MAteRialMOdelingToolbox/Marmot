@@ -93,6 +93,8 @@ elseif(MSVC)
     # for every translation unit instantiating Fastor's matmul and SIMD kernels, which we cannot change.
     # C4701 (potentially uninitialized local) is likewise reported inside Fastor's nd tensor views
     # (tensor_views_nd.h, the index array of the strided assignment loops).
+    # Both are global, so MSVC does not report them for Marmot code either; GCC's -Wmaybe-uninitialized and
+    # clang's -Wsometimes-uninitialized in the Ubuntu and macOS pipelines still cover uninitialized locals.
     add_compile_options(/wd4702 /wd4701)
     # Keep MSVC's secure-CRT deprecation warnings (C4996 for std::getenv, sscanf, ...) out of the /W4 output.
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
