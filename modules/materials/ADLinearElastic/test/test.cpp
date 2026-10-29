@@ -14,7 +14,7 @@ auto initializeSolverADLinearElastic()
   return std::unique_ptr< Marmot::Materials::MaterialPointSolverHypoElastic >(
     new Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                            &materialProperties[0],
-                                                           materialProperties.size(),
+                                                           static_cast< int >( materialProperties.size() ),
                                                            solveropts ) );
 }
 
@@ -26,7 +26,7 @@ void testADLinearElasticObjectivity()
   std::string           matName            = "ADLINEARELASTIC";
   auto                  solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                                    &materialProperties[0],
-                                                                   materialProperties.size(),
+                                                                   static_cast< int >( materialProperties.size() ),
                                                                    solveropts );
 
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
@@ -52,7 +52,7 @@ void testADLinearElastic()
   std::string           matName            = "ADLINEARELASTIC";
   auto                  solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                                    &materialProperties[0],
-                                                                   materialProperties.size(),
+                                                                   static_cast< int >( materialProperties.size() ),
                                                                    solveropts );
 
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;

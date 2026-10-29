@@ -22,14 +22,22 @@
  * the top level directory of marmot.
  * ---------------------------------------------------------------------
  */
-
+#pragma once
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotMaterialPointSolverHypoElastic.h"
 #include "autodiff/forward/dual/dual.hpp"
 #include "unsupported/Eigen/CXX11/Tensor"
 #include <Eigen/Core>
+/* Fastor/Fastor.h ends with `#pragma warning( default : ... )`; scope it so it neither overrides the build's warning
+ * flags nor leaks into consumers. */
+#ifdef _MSC_VER
+#  pragma warning( push )
+#endif
 #include <Fastor/Fastor.h>
+#ifdef _MSC_VER
+#  pragma warning( pop )
+#endif
 #include <iostream>
 
 /**
@@ -210,7 +218,6 @@ namespace Marmot::Testing {
   {
     double                        phi;
     double                        theta;
-    Eigen::Matrix< double, 1, 2 > pt;
     Eigen::Matrix< double, N, 2 > pts;
 
     // i1 = 1, 2, ..., N

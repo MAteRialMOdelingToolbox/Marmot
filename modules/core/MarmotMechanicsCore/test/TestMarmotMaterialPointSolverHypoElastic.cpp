@@ -69,7 +69,7 @@ void testSetInitialStateAndResetToInitialState()
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                                    materialProperties.data(),
-                                                                   materialProperties.size(),
+                                                                   static_cast< int >( materialProperties.size() ),
                                                                    solveropts );
 
   Marmot::Math::Vector6d initialStress = Marmot::Math::Vector6d::Zero();
@@ -122,7 +122,7 @@ void testSolveStepRetriesThenThrowsSolverTimestepExhausted()
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                                    materialProperties.data(),
-                                                                   materialProperties.size(),
+                                                                   static_cast< int >( materialProperties.size() ),
                                                                    solveropts );
 
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
@@ -160,7 +160,7 @@ void testSolveStepThrowsSolverIncrementsExhausted()
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                                    materialProperties.data(),
-                                                                   materialProperties.size(),
+                                                                   static_cast< int >( materialProperties.size() ),
                                                                    solveropts );
 
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
@@ -203,7 +203,7 @@ void testSolveIncrementMixedControlNeedsNewtonCorrection()
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                                    materialProperties.data(),
-                                                                   materialProperties.size(),
+                                                                   static_cast< int >( materialProperties.size() ),
                                                                    solveropts );
 
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
@@ -225,7 +225,7 @@ void testSolveIncrementMixedControlNeedsNewtonCorrection()
 
   // Cross-check against a freshly constructed material evaluated directly at the converged
   // strain, rather than re-deriving the expected stress analytically.
-  Marmot::Materials::LinearElastic                 mat( materialProperties.data(), materialProperties.size(), 1 );
+  Marmot::Materials::LinearElastic mat( materialProperties.data(), static_cast< int >( materialProperties.size() ), 1 );
   Marmot::Materials::MaterialHypoElastic&          matBase = mat;
   Marmot::Materials::MaterialHypoElastic::state3D  state( Marmot::Math::Vector6d::Zero(), 0.0, 0.0, nullptr );
   Marmot::Math::Matrix6d                           tangent;
@@ -250,7 +250,7 @@ void testSolveIncrementThrowsSolverConvergenceFailed()
   solveropts.maxIterations                 = 3; // keep the test fast
   auto solver                              = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                                    materialProperties.data(),
-                                                                   materialProperties.size(),
+                                                                   static_cast< int >( materialProperties.size() ),
                                                                    solveropts );
 
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
@@ -286,7 +286,7 @@ void testPrintHistoryDoesNotThrow()
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                                    materialProperties.data(),
-                                                                   materialProperties.size(),
+                                                                   static_cast< int >( materialProperties.size() ),
                                                                    solveropts );
 
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
@@ -309,7 +309,7 @@ void testExportHistoryToCSVWritesExpectedContent()
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                                    materialProperties.data(),
-                                                                   materialProperties.size(),
+                                                                   static_cast< int >( materialProperties.size() ),
                                                                    solveropts );
 
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
@@ -362,7 +362,7 @@ void testExportHistoryToCSVThrowsForInvalidPath()
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                                    materialProperties.data(),
-                                                                   materialProperties.size(),
+                                                                   static_cast< int >( materialProperties.size() ),
                                                                    solveropts );
 
   bool threw = false;
@@ -388,7 +388,7 @@ void testExportHistoryToCSVWritesStateVarColumnsForAMaterialWithStateVars()
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                                    materialProperties.data(),
-                                                                   materialProperties.size(),
+                                                                   static_cast< int >( materialProperties.size() ),
                                                                    solveropts );
 
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;

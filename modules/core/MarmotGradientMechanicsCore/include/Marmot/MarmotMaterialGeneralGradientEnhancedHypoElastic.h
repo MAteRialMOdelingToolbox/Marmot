@@ -314,6 +314,17 @@ namespace Marmot::Materials {
      *       is" -- and where damage is driven by that field alone (`m = 1` in GCDP) that is the
      *       virgin tangent however damaged the point is. Pass the current field for the current wave
      *       speed; take the default for an undamaged reference or a conservative critical time step.
+     *
+     * @note The default is not cheap: it copies the state and runs the full stress update at a zero
+     *       strain increment, which on a non-yielding point costs about as much as the stress update
+     *       itself. That is fine for a critical time step, computed once per step, but the artificial
+     *       bulk viscosity's damage degradation asks for the CURRENT wave speed on every quadrature
+     *       point on every explicit increment, and there the default doubles the material cost. A
+     *       material whose degraded tangent at a zero strain increment has a closed form -- the usual
+     *       \f$(1-\omega)\,\mathbb{C}^\mathrm{el}\f$ of a damage model -- should override this with
+     *       that closed form. The override must return what the default returns for it, must honour
+     *       `K` as an input, and must not touch the state.
+     * Marmot::Testing::checkMaximumWaveSpeedOverrideMatchesDefault() checks all three against the default.
      */
     virtual double getMaximumWaveSpeed(
       const response&                                    currentResponse,
@@ -387,7 +398,7 @@ namespace Marmot::Materials {
      * override reads -- so this is deliberately not pure virtual, unlike getNonlocalViscosity(), which a
      * gradient-enhanced material must answer for any explicit path to exist at all.
      */
-    virtual std::vector< double > getNonlocalMicroInertia( const double* stateVars ) const
+    virtual std::vector< double > getNonlocalMicroInertia( [[maybe_unused]] const double* stateVars ) const
     {
       return std::vector< double >( nNonlocalVariables, 0.0 );
     }

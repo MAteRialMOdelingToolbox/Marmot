@@ -127,7 +127,7 @@ namespace Marmot::Math::Differentiation::Numerical {
       VectorXcd  rightX( xSize );
       VectorXcd  leftX( xSize );
 
-      Marmot::Math::complexDouble i_ = Marmot::Math::Constants::sqrt2 / 2. * complexUnit;
+      Marmot::Math::complexDouble iUnit = Marmot::Math::Constants::sqrt2 / 2. * complexUnit;
 
       for ( auto i = 0; i < xSize; i++ ) {
         double h = std::max( 1.0, std::abs( X( i ) ) ) * Marmot::Math::Constants::SquareRootEps;
@@ -136,10 +136,10 @@ namespace Marmot::Math::Differentiation::Numerical {
         e( i ) = 1.;
 
         leftX = X;
-        leftX -= e * i_ * h;
+        leftX -= e * iUnit * h;
 
         rightX = X;
-        rightX += e * i_ * h;
+        rightX += e * iUnit * h;
 
         // clang-format off
           J.col( i ) =      ( F( rightX ) - F( leftX )  ).imag()

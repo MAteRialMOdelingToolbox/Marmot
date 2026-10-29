@@ -28,7 +28,15 @@
 #include "Marmot/GenericSDIParticle.h"
 #include <Eigen/Core>
 #include <Eigen/Dense>
+/* Fastor/Fastor.h ends with `#pragma warning( default : ... )`; scope it so it neither overrides the build's warning
+ * flags nor leaks into consumers. */
+#ifdef _MSC_VER
+#  pragma warning( push )
+#endif
 #include <Fastor/Fastor.h>
+#ifdef _MSC_VER
+#  pragma warning( pop )
+#endif
 #include <stdexcept>
 
 namespace Marmot::Discretizations::Meshfree {
@@ -116,7 +124,7 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] property Its value.
      * @throws std::runtime_error for an unknown name.
      */
-    virtual void setPropertyOnSubdomains( const std::string& propertyName, const double* property ) override
+    void setPropertyOnSubdomains( const std::string& propertyName, const double* property ) override
     {
       if ( propertyName == "newmark-beta beta" ) {
         _newmark_beta = property[0];
@@ -131,13 +139,13 @@ namespace Marmot::Discretizations::Meshfree {
 
     /// \brief Get the names of the properties
     /// \return The names of the properties
-    virtual std::vector< std::string > getSubdomainPropertyNames() const override { return _validProperties; };
+    std::vector< std::string > getSubdomainPropertyNames() const override { return _validProperties; };
 
     /**
      * @brief Number of dofs per node.
      * @return nDim.
      */
-    virtual int getNBaseDof() const override { return nDofPerNodeU; };
+    int getNBaseDof() const override { return nDofPerNodeU; };
 
     /**
      * @brief Initializes the material points of all subdomains.
@@ -160,12 +168,8 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] dT Time increment.
      * @throws std::invalid_argument for another load type.
      */
-    virtual void computeBodyLoad( int           type,
-                                  const double* load,
-                                  double*       fExt,
-                                  double*       dExt_dQ,
-                                  double        timeNew,
-                                  double        dT ) const override
+    void computeBodyLoad( int type, const double* load, double* fExt, double* dExt_dQ, double timeNew, double dT )
+      const override
     {
       switch ( type ) {
       case BodyForce: {
@@ -189,7 +193,7 @@ namespace Marmot::Discretizations::Meshfree {
      * @brief Node fields.
      * @return "displacement".
      */
-    virtual const std::vector< std::string >& getFields() const override
+    const std::vector< std::string >& getFields() const override
     {
       static const std::vector< std::string > nodeFields = { "displacement" };
       return nodeFields;
@@ -224,7 +228,7 @@ namespace Marmot::Discretizations::Meshfree {
      * @brief Volume in the undeformed configuration, the sum over the subdomains.
      * @return @f$ V_0 = \sum_s V_{0,s} @f$.
      */
-    virtual double getVolumeUndeformed() const
+    double getVolumeUndeformed() const override
     {
 
       double V0 = 0.0;
@@ -252,7 +256,7 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] subdomain The subdomain (one of the subdomains of this particle).
      * @return @f$ V_{0,s}\,\det\boldsymbol{F}_{n,s} @f$.
      */
-    virtual double getSubdomainVolume( const ParticleDomain< nDim, nVertices >& subdomain ) const override
+    double getSubdomainVolume( const ParticleDomain< nDim, nVertices >& subdomain ) const override
     {
       int subdomainIndex = -1;
       for ( size_t i = 0; i < this->_subDomains.size(); i++ ) {
@@ -272,7 +276,7 @@ namespace Marmot::Discretizations::Meshfree {
     /**
      * @brief Accepts the increment of the material points of all subdomains.
      */
-    virtual void acceptStateAndPositionOnSubdomains() override
+    void acceptStateAndPositionOnSubdomains() override
     {
       for ( auto& mp : _subdomainMaterialPoints ) {
         mp->acceptStateAndPosition();
@@ -283,7 +287,7 @@ namespace Marmot::Discretizations::Meshfree {
      * @brief Number of state variables of the subdomains: the state of each material point, padded to a multiple of 8.
      * @return The number of state variables.
      */
-    virtual int getNumberOfRequiredStateVarsOnSubdomains() const override
+    int getNumberOfRequiredStateVarsOnSubdomains() const override
     {
       int nStateVars = 0;
 
@@ -300,7 +304,7 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] nStateVars Its length.
      * @throws std::runtime_error if the length does not match getNumberOfRequiredStateVarsOnSubdomains().
      */
-    virtual void assignStateVarsOnSubdomains( double* stateVars, int nStateVars ) override
+    void assignStateVarsOnSubdomains( double* stateVars, int nStateVars ) override
     {
       int offset = 0;
 
@@ -322,8 +326,8 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] subdomainIndex Index of the subdomain.
      * @return The view on the state.
      */
-    virtual Marmot::Utilities::StateView getStateViewOnSubdomains( const std::string& stateName,
-                                                                   int                subdomainIndex ) const
+    Marmot::Utilities::StateView getStateViewOnSubdomains( const std::string& stateName,
+                                                           int                subdomainIndex ) const override
     {
       return _subdomainMaterialPoints[subdomainIndex]->getStateView( stateName );
     }
@@ -337,11 +341,11 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] timeNew Time at the end of the increment.
      * @param[in] dT Time increment.
      */
-    virtual void computePhysicsKernelsOnSubdomains( const double* dQ,
-                                                    double*       fInt,
-                                                    double*       dFInt_ddQ,
-                                                    double        timeNew,
-                                                    double        dT );
+    void computePhysicsKernelsOnSubdomains( const double* dQ,
+                                            double*       fInt,
+                                            double*       dFInt_ddQ,
+                                            double        timeNew,
+                                            double        dT ) override;
 
     /**
      * @brief Follower pressure on a face of the particle geometry.
@@ -358,13 +362,13 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] dT Time increment.
      * @throws std::invalid_argument for an unsupported type.
      */
-    virtual void computeDistributedLoad( int           type,
-                                         int           surfaceID,
-                                         const double* load,
-                                         double*       fExt,
-                                         double*       dExt_dQ,
-                                         double        timeNew,
-                                         double        dT ) const override;
+    void computeDistributedLoad( int           type,
+                                 int           surfaceID,
+                                 const double* load,
+                                 double*       fExt,
+                                 double*       dExt_dQ,
+                                 double        timeNew,
+                                 double        dT ) const override;
     /**
      * @brief VCI boundary term @f$ R_{AiC} \mathrel{+}= T_A(\boldsymbol{Y}_N)\,P_C(\boldsymbol{Y}_N)\,(N\,dA_Y)_i @f$
      * at the face center @f$ \boldsymbol{Y}_N @f$ of the particle geometry, with its boundary vector in the
@@ -374,9 +378,9 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] boundarySurfaceVector Boundary surface vector (not used; the face of the particle geometry is used).
      * @param[in] boundaryFaceID The face ID (1-based).
      */
-    virtual void vci_compute_Test_P_BoundaryIntegral( double*       R_AiC_RowMajor,
-                                                      const double* boundarySurfaceVector,
-                                                      int           boundaryFaceID ) override
+    void vci_compute_Test_P_BoundaryIntegral( double*       R_AiC_RowMajor,
+                                              const double* boundarySurfaceVector,
+                                              int           boundaryFaceID ) override
     {
       const auto [N_dAY, Y_N]   = this->getIntermediateConfigurationBoundaryVector( boundaryFaceID,
                                                                                   this->_particleDomainMain );
@@ -409,7 +413,7 @@ namespace Marmot::Discretizations::Meshfree {
      * domains of the subdomains adjacent to that face.
      * @param[out] coordinates The coordinates (nDim x getNumberOfEvaluationPoints(), column major).
      */
-    virtual void getEvaluationCoordinates( double* coordinates ) const override
+    void getEvaluationCoordinates( double* coordinates ) const override
     {
       const int nEvalPoints = this->getNumberOfEvaluationPoints();
 
@@ -430,7 +434,7 @@ namespace Marmot::Discretizations::Meshfree {
      * @brief Number of evaluation points, see getEvaluationCoordinates().
      * @return The number of evaluation points.
      */
-    virtual int getNumberOfEvaluationPoints() const
+    int getNumberOfEvaluationPoints() const override
     {
 
       int nEvalPoints = 0;
@@ -447,7 +451,7 @@ namespace Marmot::Discretizations::Meshfree {
      * @param[in] value Its values.
      * @throws std::invalid_argument always.
      */
-    virtual void setInitialCondition( const std::string& conditionName, const double* value ) override
+    void setInitialCondition( const std::string& conditionName, const double* value ) override
     {
       throw std::invalid_argument( Marmot::Utilities::MakeString()
                                    << __PRETTY_FUNCTION__ << ": invalid initial condition" );

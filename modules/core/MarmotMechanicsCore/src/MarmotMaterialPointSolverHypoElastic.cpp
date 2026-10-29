@@ -122,9 +122,9 @@ void MaterialPointSolverHypoElastic::solveIncrement( const Increment& increment 
       target[i] = increment.strainIncrement[i];
 
   Marmot::Math::Vector6d stressTemp = stress;
-  Marmot::Math::Matrix6d tangent, dStressDStrain;
+  Marmot::Math::Matrix6d tangent, dStressDStrainIncr;
   tangent.setZero();
-  dStressDStrain.setZero();
+  dStressDStrainIncr.setZero();
 
   int    counter = 0;
   double resNorm = 1e12;
@@ -148,7 +148,7 @@ void MaterialPointSolverHypoElastic::solveIncrement( const Increment& increment 
     timeInfo.dT   = increment.dT;
 
     // compute stress and tangent
-    material->computeStress( state, dStressDStrain, dStrain, timeInfo );
+    material->computeStress( state, dStressDStrainIncr, dStrain, timeInfo );
 
     // get updated stress
     stressTemp = state.stress;
@@ -157,7 +157,7 @@ void MaterialPointSolverHypoElastic::solveIncrement( const Increment& increment 
     Marmot::Math::Vector6d residual = computeResidual( stressTemp - stress, target, increment );
 
     // set tangent
-    tangent = dStressDStrain;
+    tangent = dStressDStrainIncr;
 
     // modify tangent for mixed control
     modifyTangent( tangent, increment );
@@ -189,7 +189,7 @@ void MaterialPointSolverHypoElastic::solveIncrement( const Increment& increment 
 
   // copy back updated state variables
   stateVars = stateVarsTemp;
-  history.push_back( HistoryEntry{ increment.timeOld + increment.dT, stress, strain, dStressDStrain, stateVars } );
+  history.push_back( HistoryEntry{ increment.timeOld + increment.dT, stress, strain, dStressDStrainIncr, stateVars } );
 }
 
 Marmot::Math::Vector6d MaterialPointSolverHypoElastic::computeResidual( const Marmot::Math::Vector6d& stressIncrement,

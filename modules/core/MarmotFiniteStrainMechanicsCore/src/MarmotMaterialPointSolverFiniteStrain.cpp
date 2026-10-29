@@ -152,7 +152,7 @@ namespace Marmot::Materials {
     // temporary variables for material state
     Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse< 3 > state;
     Marmot::Materials::MaterialFiniteStrain::Deformation< 3 >          deformation;
-    Marmot::Materials::MaterialFiniteStrain::AlgorithmicModuli< 3 >    algorithmicModuli;
+    Marmot::Materials::MaterialFiniteStrain::AlgorithmicModuli< 3 >    algorithmicModuli{};
     Marmot::Materials::MaterialFiniteStrain::TimeIncrement             timeInfo = { increment.timeOld + increment.dT,
                                                                                     increment.dT };
 

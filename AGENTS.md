@@ -38,6 +38,29 @@ genhtml coverage.filtered.info --output-directory coverage_html      # open cove
 ```
 CI runs the same instrumentation on every push/PR (`.github/workflows/coverage.yml`) and uploads results to Codecov.
 
+### Warning-Free Builds
+
+Every change must build **without any warning** in all CI pipelines (`.github/workflows/`): GCC 14 (`build_ubuntu.yml`,
+both matrix entries, and `coverage.yml`), Apple clang (`build_macos.yml`), MSVC `/W4` (`build_windows.yml`) and the
+Doxygen/Sphinx documentation build (`sphinx.yml`). This covers library sources, headers, tests and examples alike.
+CI enforces this: the builds configure with `-DCMAKE_COMPILE_WARNING_AS_ERROR=ON` (`-Werror`, `/WX`), and the docs
+are built with `--werror` (Doxygen `WARN_AS_ERROR`, `sphinx-build -W`). Local builds keep warnings non-fatal.
+
+- Reproduce CI locally before finishing: configure with `-DCMAKE_COMPILE_WARNING_AS_ERROR=ON`, and run
+  `python scripts/buildDocumentation.py --werror` when touching docstrings or `doc/`.
+- Code for all three compilers even when only one is available locally. Common pitfalls:
+  - **MSVC**: implicit narrowing of `size()`/`rows()`/`Eigen::Index` to `int` (C4267/C4244) → `static_cast<int>`;
+    unused named `catch` variables (C4101); constant conditions (C4127) → `if constexpr`; members shadowed by
+    parameters or locals (C4458/C4456).
+  - **GCC**: unused variables, possibly uninitialized values (`-Wmaybe-uninitialized`) → initialize them; copies in
+    range-`for` loops (`-Wrange-loop-construct`) → `const auto&`.
+  - **clang**: missing `override` on some but not all overriding members (`-Winconsistent-missing-override`);
+    missing `template` keyword on dependent member template calls (`stateLayout.template getAs<...>(...)`).
+  - **Doxygen/Sphinx**: undocumented or misnamed `@param`s, and C++ constructs the Sphinx C++ domain cannot parse.
+- Fix the cause; do not silence warnings with pragmas, `-Wno-*`/`/wd*` flags or by editing the CI workflows. The
+  existing suppressions in `CMakeLists.txt` are limited to third-party headers and are not a template for new ones.
+  If a warning genuinely cannot be fixed in Marmot code, raise it instead of suppressing it.
+
 ## Namespace Convention
 
 All code lives in the global `Marmot` namespace. The second level is a **closed set** — new second-level namespaces require maintainer approval:
@@ -72,18 +95,19 @@ Rules:
 - **Zero-Copy & Memory Hygiene**: Avoid variable/tensor copies. Use `const&`, `Eigen::Map` (`mVector6d`, `mMatrix6d`), `std::span`, and modify `stateVars` strictly in place.
 - **No Reinvention**: Reuse core math, tensor transformations, return mappers, and shape functions in `modules/core/`.
 - **Reuse & Generalize**: Generalize templated formulations (`<int nDim, int nNodes>`) where applicable.
-- **State Variable In-Place Writes**: Manage layout via `stateLayout.add("name", size)` / `finalize()`, access via `stateLayout.getAs<double&>(...)`. Elements slice state via `QPStateVarManager` / `MarmotStateVarVectorManager`.
+- **State Variable In-Place Writes**: Manage layout via `stateLayout.add("name", size)` / `finalize()`, access via `stateLayout.getAs<double&>(...)`. Elements slice state via `QPStateVarManager` / `Utilities::StateVarVectorManager`.
 - **Early Exit on Trivial Increments**: Check `if (dE.isZero(1e-14)) { dS_dE = Cel; return; }` to bypass return mapping.
-- **Exceptions & Cutbacks**: Throw `MarmotExceptions.h` subclasses (`StressUpdateFailed`, `SolverConvergenceFailed`, `SolverTimestepExhausted`, `SolverIncrementsExhausted`) with `MakeString() << __PRETTY_FUNCTION__`.
-- **Framework Logging**: Use `MarmotJournal::warningToMSG(...)` and `notificationToMSG(...)` instead of `std::cout`/`std::cerr`.
+- **Exceptions & Cutbacks**: Throw `MarmotExceptions.h` subclasses (`StressUpdateFailed`, `SolverConvergenceFailed`, `SolverTimestepExhausted`, `SolverIncrementsExhausted`) with `Utilities::MakeString() << __PRETTY_FUNCTION__`.
+- **Framework Logging**: Use `Utilities::Journal::warningToMSG(...)` and `notificationToMSG(...)` instead of `std::cout`/`std::cerr`.
 - **Test Every Feature**: Register standalone executables in `test.cmake`. Verify against **analytical solutions** and validate tangents via `MarmotMathCore`'s `numdiff`/`autodiff`.
+- **Zero Warnings**: No new compiler or documentation warnings on GCC, clang, MSVC or Doxygen/Sphinx — see [Warning-Free Builds](#warning-free-builds).
 - **Linting & Commits**: Format with `pre-commit run --all-files`. Commits follow [Conventional Commits](https://www.conventionalcommits.org). PRs target active `next_v<YY>.<MM>` branch.
 
 ## Workspace Skills (`.agents/skills/`)
 
 - **[`marmot-add-module`](.agents/skills/marmot-add-module/SKILL.md)**: Universal lifecycle for adding/extending modules across categories and routing to specialized skills.
 - **[`marmot-add-material`](.agents/skills/marmot-add-material/SKILL.md)**: Implementing small-strain, finite-strain, or nonlocal materials with in-place `stateVars` and factory registration.
-- **[`marmot-add-element`](.agents/skills/marmot-add-element/SKILL.md)**: Implementing templated `<int nDim, int nNodes>` finite elements with `MarmotGeometryElement` and `MarmotElementFactory`.
+- **[`marmot-add-element`](.agents/skills/marmot-add-element/SKILL.md)**: Implementing templated `<int nDim, int nNodes>` finite elements with `Marmot::Discretizations::Elements::GeometryElement` and `MarmotElementFactory`.
 - **[`marmot-create-test`](.agents/skills/marmot-create-test/SKILL.md)**: Constructing CTest suites validated against analytical solutions and `MarmotMathCore` `numdiff`/`autodiff` tangents.
 - **[`marmot-documentation`](.agents/skills/marmot-documentation/SKILL.md)**: Authoring Doxygen API docstrings and Sphinx/Breathe feature pages (`python scripts/buildDocumentation.py`).
 - **[`marmot-code-review`](.agents/skills/marmot-code-review/SKILL.md)**: QA review checklist covering C++20 standards, memory hygiene, factory registrations, and pre-commit checks.

@@ -79,34 +79,34 @@ namespace Marmot::Discretizations::Elements {
                            std::unique_ptr< Element > childElement );
 
     /// @copydoc Element::getNumberOfRequiredStateVars
-    int getNumberOfRequiredStateVars();
+    int getNumberOfRequiredStateVars() override;
 
     /// @copydoc Element::getNodeFields
-    std::vector< std::vector< std::string > > getNodeFields();
+    std::vector< std::vector< std::string > > getNodeFields() override;
 
     /// @copydoc Element::getDofIndicesPermutationPattern
-    std::vector< int > getDofIndicesPermutationPattern();
+    std::vector< int > getDofIndicesPermutationPattern() override;
 
     /// @copydoc Element::getNNodes
-    int getNNodes();
+    int getNNodes() override;
 
     /// @copydoc Element::getNSpatialDimensions
-    int getNSpatialDimensions();
+    int getNSpatialDimensions() override;
 
     /// @copydoc Element::getNDofPerElement
-    int getNDofPerElement();
+    int getNDofPerElement() override;
 
     /// @copydoc Element::getElementShape
-    std::string getElementShape();
+    std::string getElementShape() override;
 
     /// @copydoc Element::assignStateVars
-    void assignStateVars( double* stateVars, int nStateVars );
+    void assignStateVars( double* stateVars, int nStateVars ) override;
 
     /// @copydoc Element::assignProperty(const Marmot::Discretizations::ElementProperties&)
-    void assignProperty( const Marmot::Discretizations::ElementProperties& property );
+    void assignProperty( const Marmot::Discretizations::ElementProperties& property ) override;
 
     /// @copydoc Element::assignProperty(const Marmot::Discretizations::MaterialSection&)
-    void assignProperty( const Marmot::Discretizations::MaterialSection& property );
+    void assignProperty( const Marmot::Discretizations::MaterialSection& property ) override;
 
     /// @copydoc Element::assignProperty(const std::string&, const double*, int)
     void assignProperty( const std::string& propertyName, const double* properties, int nProperties ) override;
@@ -115,10 +115,10 @@ namespace Marmot::Discretizations::Elements {
     std::vector< std::string > getPropertyNames() const override;
 
     /// @copydoc Element::assignNodeCoordinates
-    void assignNodeCoordinates( const double* coordinates );
+    void assignNodeCoordinates( const double* coordinates ) override;
 
     /// @copydoc Element::initializeYourself
-    void initializeYourself();
+    void initializeYourself() override;
 
     /**
      * @brief Perform element computations with coordinate transformation.
@@ -129,10 +129,11 @@ namespace Marmot::Discretizations::Elements {
      * @param[in]  time    Current time.
      * @param[in]  dT      Time step size.
      */
-    void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT );
+    void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT )
+      override;
 
     /// @copydoc Element::setInitialConditions
-    void setInitialConditions( StateTypes state, const double* values );
+    void setInitialConditions( StateTypes state, const double* values ) override;
 
     /**
      * @brief Compute contribution from distributed surface loads with coordinate transformation.
@@ -152,7 +153,7 @@ namespace Marmot::Discretizations::Elements {
                                  const double*        load,
                                  const double*        QTotal,
                                  double               time,
-                                 double               dT );
+                                 double               dT ) override;
 
     /**
      * @brief Compute body force contribution with coordinate transformation.
@@ -163,19 +164,20 @@ namespace Marmot::Discretizations::Elements {
      * @param[in]  time   Current time.
      * @param[in]  dT     Time step size.
      */
-    void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, double time, double dT );
+    void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, double time, double dT )
+      override;
 
     /// @copydoc Element::getStateView
-    Marmot::Utilities::StateView getStateView( const std::string& stateName, int quadraturePoint );
+    Marmot::Utilities::StateView getStateView( const std::string& stateName, int quadraturePoint ) override;
 
     /// @copydoc Element::getCoordinatesAtCenter
-    std::vector< double > getCoordinatesAtCenter();
+    std::vector< double > getCoordinatesAtCenter() override;
 
     /// @copydoc Element::getCoordinatesAtQuadraturePoints
-    std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints();
+    std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints() override;
 
     /// @copydoc Element::getNumberOfQuadraturePoints
-    int getNumberOfQuadraturePoints();
+    int getNumberOfQuadraturePoints() override;
   };
 
 } // namespace Marmot::Discretizations::Elements

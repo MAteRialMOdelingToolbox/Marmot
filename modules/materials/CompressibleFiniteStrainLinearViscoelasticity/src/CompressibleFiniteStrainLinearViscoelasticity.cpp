@@ -96,7 +96,8 @@ namespace Marmot::Materials {
       elasticProperties( &materialProperties[2], nElasticPropertiesMap.at( hyperelasticBase ) ),
       maxwellProperties(
         ContinuumMechanics::Viscoelasticity::
-          createMaxwellProperties( materialProperties[2 + nElasticPropertiesMap.at( hyperelasticBase )],
+          createMaxwellProperties( static_cast< int >(
+                                     materialProperties[2 + nElasticPropertiesMap.at( hyperelasticBase )] ),
                                    &materialProperties[3 + nElasticPropertiesMap.at( hyperelasticBase )] ) )
   {
 

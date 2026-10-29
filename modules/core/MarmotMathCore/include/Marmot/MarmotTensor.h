@@ -24,7 +24,15 @@
  */
 
 #pragma once
+/* Fastor/Fastor.h ends with `#pragma warning( default : ... )`; scope it so it neither overrides the build's warning
+ * flags nor leaks into consumers. */
+#ifdef _MSC_VER
+#  pragma warning( push )
+#endif
 #include "Fastor/Fastor.h"
+#ifdef _MSC_VER
+#  pragma warning( pop )
+#endif
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotTypedefs.h"
 #include <utility>
@@ -259,7 +267,15 @@ namespace Marmot::Math::Tensors {
 
   /**
    * @brief Map an object's raw data as a fixed-size Eigen matrix (const version).
-   * @copydetails as
+   *
+   * @details Creates an `Eigen::Map` view of @p t reinterpreted as an `x`-by-`y` matrix. No data is copied; the map
+   * directly references the storage returned by `t.data()`.
+   *
+   * @tparam x Number of rows (compile-time).
+   * @tparam y Number of columns (compile-time).
+   * @tparam T Object type, must define `Scalar` and provide `data()`.
+   * @param t Input object.
+   * @return `Eigen::Map<const Eigen::Matrix<typename T::Scalar, x, y>>`.
    */
   template < int x, int y, typename T, typename = void >
   auto as( const T& t )
@@ -357,14 +373,14 @@ namespace Marmot::Math::Tensors {
     {
       if constexpr ( nDim == 1 )
         return std::pair< int, int >( 0, 0 );
-      else if ( nDim == 2 )
+      else if constexpr ( nDim == 2 )
         switch ( ij ) {
         case 0: return std::pair< int, int >( 0, 0 );
         case 1: return std::pair< int, int >( 1, 1 );
         case 2: return std::pair< int, int >( 0, 1 );
         }
 
-      else if ( nDim == 3 ) {
+      else if constexpr ( nDim == 3 ) {
         switch ( ij ) {
         case 0: return std::pair< int, int >( 0, 0 );
         case 1: return std::pair< int, int >( 1, 1 );
@@ -394,10 +410,10 @@ namespace Marmot::Math::Tensors {
     {
       if constexpr ( nDim == 1 )
         return 0;
-      else if ( nDim == 2 )
+      else if constexpr ( nDim == 2 )
         return ( i == j ) ? ( i == 0 ? 0 : 1 ) : 2;
 
-      else if ( nDim == 3 ) {
+      else if constexpr ( nDim == 3 ) {
         constexpr int tensor2VoigtIndicesMapping[3][3] = { { 0, 3, 4 }, { 3, 1, 5 }, { 4, 5, 2 } };
         return tensor2VoigtIndicesMapping[i][j];
       }
@@ -466,54 +482,54 @@ namespace Marmot::Math::Tensors {
 
   Tensor3333d Initialize_I2xI2()
   {
-    Tensor3333d I2xI2;
+    Tensor3333d result;
 
     for ( int i = 0; i < 3; i++ )
       for ( int j = 0; j < 3; j++ )
         for ( int k = 0; k < 3; k++ )
           for ( int l = 0; l < 3; l++ ) {
-            I2xI2( i, j, k, l ) = Marmot::Math::Tensors::d( i, j ) * Marmot::Math::Tensors::d( k, l );
+            result( i, j, k, l ) = Marmot::Math::Tensors::d( i, j ) * Marmot::Math::Tensors::d( k, l );
           }
-    return I2xI2;
+    return result;
   }
 
   Tensor33d Initialize_I2()
   {
-    Tensor33d I2;
+    Tensor33d result;
 
     for ( int i = 0; i < 3; i++ )
       for ( int j = 0; j < 3; j++ )
-        I2( i, j ) = Marmot::Math::Tensors::d( i, j );
+        result( i, j ) = Marmot::Math::Tensors::d( i, j );
 
-    return I2;
+    return result;
   }
 
   Tensor3333d Initialize_Isym()
   {
-    Tensor3333d Isym;
+    Tensor3333d result;
 
     for ( int i = 0; i < 3; i++ )
       for ( int j = 0; j < 3; j++ )
         for ( int k = 0; k < 3; k++ )
           for ( int l = 0; l < 3; l++ ) {
-            Isym( i, j, k, l ) = 0.5 * ( Marmot::Math::Tensors::d( i, k ) * Marmot::Math::Tensors::d( j, l ) +
-                                         Marmot::Math::Tensors::d( i, l ) * Marmot::Math::Tensors::d( j, k ) );
+            result( i, j, k, l ) = 0.5 * ( Marmot::Math::Tensors::d( i, k ) * Marmot::Math::Tensors::d( j, l ) +
+                                           Marmot::Math::Tensors::d( i, l ) * Marmot::Math::Tensors::d( j, k ) );
           }
-    return Isym;
+    return result;
   }
 
   Tensor3333d Initialize_Iskew()
   {
-    Tensor3333d Iskew;
+    Tensor3333d result;
 
     for ( int i = 0; i < 3; i++ )
       for ( int j = 0; j < 3; j++ )
         for ( int k = 0; k < 3; k++ )
           for ( int l = 0; l < 3; l++ ) {
-            Iskew( i, j, k, l ) = 0.5 * ( Marmot::Math::Tensors::d( i, k ) * Marmot::Math::Tensors::d( j, l ) -
-                                          Marmot::Math::Tensors::d( i, l ) * Marmot::Math::Tensors::d( j, k ) );
+            result( i, j, k, l ) = 0.5 * ( Marmot::Math::Tensors::d( i, k ) * Marmot::Math::Tensors::d( j, l ) -
+                                           Marmot::Math::Tensors::d( i, l ) * Marmot::Math::Tensors::d( j, k ) );
           }
-    return Iskew;
+    return result;
   }
 
   Tensor3333d Initialize_dDeviatoricStress_dStress()

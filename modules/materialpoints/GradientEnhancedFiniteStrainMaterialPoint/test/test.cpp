@@ -54,9 +54,9 @@ namespace {
       mp.reset( Marmot::Registry::MaterialPointFactory::createMaterialPoint( name, 1, x, nDim, 0.5 ) );
       mp->assignMaterial( Marmot::Discretizations::MaterialSection( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
                                                                     matProps.data(),
-                                                                    matProps.size() ) );
+                                                                    static_cast< int >( matProps.size() ) ) );
       stateVars.assign( mp->getNumberOfRequiredStateVars(), 0.0 );
-      mp->assignStateVars( stateVars.data(), stateVars.size() );
+      mp->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
       mp->initializeYourself();
     }
 

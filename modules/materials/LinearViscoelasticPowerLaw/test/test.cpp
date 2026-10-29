@@ -31,7 +31,7 @@ void testLinearViscoelasticPowerLaw()
   std::string matName            = "LINEARVISCOELASTICPOWERLAW";
   auto        solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                                    &materialProperties[0],
-                                                                   materialProperties.size(),
+                                                                   static_cast< int >( materialProperties.size() ),
                                                                    solveropts );
 
   // step 1: advance time to 28 days
@@ -93,7 +93,7 @@ void testLinearViscoelasticPowerLawCoordinateInvariance()
   std::string matName            = "LINEARVISCOELASTICPOWERLAW";
   auto        solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                                    &materialProperties[0],
-                                                                   materialProperties.size(),
+                                                                   static_cast< int >( materialProperties.size() ),
                                                                    solveropts );
 
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
