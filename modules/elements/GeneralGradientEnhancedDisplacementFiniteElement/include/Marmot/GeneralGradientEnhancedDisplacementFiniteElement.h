@@ -36,6 +36,7 @@
 #include "Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h"
 #include "Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h"
 #include "Marmot/MarmotMath.h"
+#include "Marmot/MarmotSmallStrainKinematics.h"
 #include "Marmot/MarmotStateVarVectorManager.h"
 #include "Marmot/MarmotTypedefs.h"
 #include "Marmot/MarmotVoigt.h"
@@ -44,6 +45,7 @@
 #include <cmath>
 #include <memory>
 #include <optional>
+#include <type_traits>
 #include <vector>
 
 using namespace Marmot;
@@ -110,7 +112,6 @@ namespace Marmot::Elements {
     using JacobianSizedK         = typename ParentGeometryElementK::JacobianSized;
     using NSizedK                = typename ParentGeometryElementK::NSized;
     using dNdXiSizedK            = typename ParentGeometryElementK::dNdXiSized;
-    using BSizedK                = typename ParentGeometryElementK::BSized;
 
     /** Element-level properties (e.g., thickness for 2D, area for 1D). */
     Map< const VectorXd > elementProperties;
@@ -128,24 +129,71 @@ namespace Marmot::Elements {
     FiniteElement::BulkViscosity::Coefficients bulkViscosityCoefficients;
 
     /**
+     * @brief Whether the non-local field is interpolated with the displacement shape functions.
+     * @details True for equal-order elements: the same number of nodes on the same geometry gives the
+     * same N and dNdX, so the quadrature points store them only once.
+     */
+    static constexpr bool nonLocalSharesShapeFunctions = nNonLocalNodes == nNodes;
+
+    /// @brief Base of the quadrature point of equal-order elements: nothing to store.
+    struct NoNonLocalShapeFunctions {};
+
+    /// @brief Base of the quadrature point of mixed-order elements: the non-local shape functions and their gradients.
+    struct NonLocalShapeFunctions {
+      /// @brief Shape functions of the non-local field.
+      NSizedK NK = NSizedK::Zero();
+      /// @brief Gradients of the shape functions of the non-local field with respect to the physical coordinates.
+      dNdXiSizedK dNdXK = dNdXiSizedK::Zero();
+    };
+
+    /**
      * @brief Data and state associated with a quadrature point.
      * @details Holds parent coordinates, integration weight, Jacobian determinant, shape functions N and their
-     * gradients dNdX, kinematic (strain-displacement) B-matrices for both local and non-local evaluations, and a
-     * material instance with managed state variables.
+     * gradients dNdX for the displacement and the non-local field, and a material instance with managed state
+     * variables. The strain-displacement B-matrix is not stored: it is mostly zeros, the explicit kernel does not
+     * need it, and the implicit kernel forms it on the fly for the tangent blocks. Without it, the data the kernels
+     * read per point shrinks from about 5 KB to under 1 KB (GC3D20R), which matters because the element loop is bound
+     * by the memory traffic on this data. For equal-order elements, the non-local field shares N and dNdX with the
+     * displacement field, see N_K() and dNdX_K(); otherwise they are held by a base class.
      */
-    struct QuadraturePoint {
+    struct QuadraturePoint
+      : std::conditional_t< nonLocalSharesShapeFunctions, NoNonLocalShapeFunctions, NonLocalShapeFunctions > {
 
       const XiSized xi;
       const double  weight;
 
-      double      detJ;
-      double      J0xW;
-      NSized      N;
-      dNdXiSized  dNdX;
-      BSized      B;
-      NSizedK     N_K;
-      dNdXiSizedK dNdX_K;
-      BSizedK     B_K;
+      /// @brief Determinant of the Jacobian of the geometry mapping.
+      double detJ;
+      /// @brief Integration weight times detJ (times thickness or cross section in 2D and 1D).
+      double J0xW;
+      /// @brief Gradients of the displacement shape functions with respect to the physical coordinates.
+      dNdXiSized dNdX;
+      /// @brief Displacement shape functions.
+      NSized N;
+
+      /**
+       * @brief Shape functions of the non-local field.
+       * @return N for equal-order elements, else the separately stored non-local shape functions.
+       */
+      const NSizedK& N_K() const
+      {
+        if constexpr ( nonLocalSharesShapeFunctions )
+          return N;
+        else
+          return this->NK;
+      }
+
+      /**
+       * @brief Shape function gradients of the non-local field.
+       * @return dNdX for equal-order elements, else the separately stored non-local gradients.
+       */
+      const dNdXiSizedK& dNdX_K() const
+      {
+        if constexpr ( nonLocalSharesShapeFunctions )
+          return dNdX;
+        else
+          return this->dNdXK;
+      }
 
       /**
        * @brief The element's smallest physical extent at this quadrature point.
@@ -232,20 +280,54 @@ namespace Marmot::Elements {
       }
 
       QuadraturePoint( XiSized xi, double weight )
-        : xi( xi ),
-          weight( weight ),
-          detJ( 0.0 ),
-          J0xW( 0.0 ),
-          N( NSized::Zero() ),
-          dNdX( dNdXiSized::Zero() ),
-          B( BSized::Zero() ),
-          N_K( NSizedK::Zero() ),
-          dNdX_K( dNdXiSizedK::Zero() ),
-          B_K( BSizedK::Zero() ){};
+        : xi( xi ), weight( weight ), detJ( 0.0 ), J0xW( 0.0 ), dNdX( dNdXiSized::Zero() ), N( NSized::Zero() ){};
     };
 
     /// Quadrature points owned by the element (one per integration point).
     std::vector< QuadraturePoint > qps;
+
+    /**
+     * @brief Gradient of the n-th non-local field at a quadrature point.
+     * @details \f$\partial_\mathbf{x} \knl = \partial_\mathbf{x}\mathbf{N}_k\, \mathbf{\qk}\f$, a nDim x 1 vector.
+     * @param qp The quadrature point.
+     * @param n Index of the non-local field.
+     * @param qK The nodal values of all non-local fields, field-wise.
+     */
+    Matrix< double, nDim, 1 > nonLocalFieldGradientAt( const QuadraturePoint&           qp,
+                                                       int                              n,
+                                                       const Ref< const KSizedVector >& qK ) const
+    {
+      return qp.dNdX_K() * qK.segment( n * nNonLocalNodes, nNonLocalNodes );
+    }
+
+    /**
+     * @brief Add the residual of the n-th non-local field at a quadrature point.
+     * @details \f$\left( \mathbf{N}_k^\mathsf{T} (\knl - \kl) + \partial_\mathbf{x}\mathbf{N}_k^\mathsf{T}\,
+     * (c\, \partial_\mathbf{x} \knl) \right) J_0 w\f$, with the gradient of the non-local field
+     * \f$\partial_\mathbf{x} \knl = \partial_\mathbf{x}\mathbf{N}_k\, \mathbf{\qk}\f$ formed first: this costs
+     * O(nNodes) per point, whereas the equivalent
+     * \f$(\partial_\mathbf{x}\mathbf{N}_k^\mathsf{T}\,\partial_\mathbf{x}\mathbf{N}_k)\, \mathbf{\qk}\f$ forms a nNodes
+     * x nNodes matrix first.
+     * @param fK_n The residual block of the n-th non-local field.
+     * @param qp The quadrature point.
+     * @param n Index of the non-local field.
+     * @param K_n The interpolated non-local field at the quadrature point.
+     * @param res The material response, providing the local counterpart and the gradient coefficient.
+     * @param qK The nodal values of all non-local fields, field-wise.
+     */
+    void addNonLocalResidualAt(
+      Ref< Matrix< double, nNonLocalNodes, 1 > >                                                       fK_n,
+      const QuadraturePoint&                                                                           qp,
+      int                                                                                              n,
+      double                                                                                           K_n,
+      const typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >::response& res,
+      const Ref< const KSizedVector >&                                                                 qK ) const
+    {
+      const Matrix< double, nDim, 1 > dK_dX = nonLocalFieldGradientAt( qp, n, qK );
+
+      fK_n += ( qp.N_K().transpose() * ( K_n - res.KLocal( n ) ) + qp.dNdX_K().transpose() * ( res.c( n ) * dK_dX ) ) *
+              qp.J0xW;
+    }
 
     /**
      * @brief Construct element with ID, quadrature rule and section assumption.
@@ -326,7 +408,8 @@ namespace Marmot::Elements {
     /** @brief Provide nodal coordinates to local and non-local geometry elements. */
     void assignNodeCoordinates( const double* coordinates ) override;
 
-    /** @brief Precompute geometry-related quantities at quadrature points (B, detJ, J0xW, N_K, dNdX_K). */
+    /** @brief Precompute geometry-related quantities at quadrature points (detJ, J0xW, N, dNdX, and N_K, dNdX_K if they
+     * differ). */
     void initializeYourself() override;
 
     /**
@@ -413,15 +496,13 @@ namespace Marmot::Elements {
 
     /**
      * @brief Compute internal force without tangents.
-     * @details Uses the small-strain relation \f$\Delta \eps = \mathbf{B}\, \Delta \mathbf{\qu}\f$,
-     * interpolates the non-local variables as \f$ \knl = \Nk\, \mathbf{\qk}\f$. Internal forces
-     * are evaluated by Gauss quadrature:
-     * \f[
-     * \mathbf{\fk} = \sum_{qp} \left (\mathbf{\Nk}^\mathsf{T}\, \knl\, + c\, \partial_\mathbf{x}
-     * \mathbf{\Nk}^\mathsf{T}\,\partial_\mathbf{x} \mathbf{\Nk}\, \mathbf{\qk} - \mathbf{\Nk}^\mathsf{T}\, \kl \right )
-     * J_0\, w_{qp} \, .
-     * \f]
-     * If pNewdT<1, the routine returns early to signal time step reduction.
+     * @details Uses the small-strain relation \f$\Delta \eps = \mathbf{B}\, \Delta \mathbf{\qu}\f$, which in 3D
+     * is evaluated as the symmetric part of the displacement gradient, without forming B (see
+     * FiniteElement::SmallStrain::strainIncrement() and addInternalForce()), interpolates the non-local variables as
+     * \f$ \knl = \Nk\, \mathbf{\qk}\f$. Internal forces are evaluated by Gauss quadrature: \f[ \mathbf{\fk} = \sum_{qp}
+     * \left (\mathbf{\Nk}^\mathsf{T}\, \knl\, + c\, \partial_\mathbf{x} \mathbf{\Nk}^\mathsf{T}\,\partial_\mathbf{x}
+     * \mathbf{\Nk}\, \mathbf{\qk} - \mathbf{\Nk}^\mathsf{T}\, \kl \right ) J_0\, w_{qp} \, . \f] If pNewdT<1, the
+     * routine returns early to signal time step reduction.
      * @param QTotal Total displacement vector in field-wise format: \f$\mathbf{q} = [\mathbf{\qu},
      * \mathbf{\qk}]^\mathsf{T}\f$.
      * @param dQ Incremental displacement.
@@ -799,17 +880,17 @@ namespace Marmot::Elements {
       qp.detJ                   = J.determinant();
       qp.N                      = localGeometryElement.N( qp.xi );
       qp.dNdX                   = localGeometryElement.dNdX( dNdXi, JInv );
-      qp.B                      = localGeometryElement.B( qp.dNdX );
 
       qp.characteristicElementLength = characteristicElementLengthAt( qp.xi );
       qp.referenceWaveSpeed.reset();
 
-      const auto           dNdXi_K = nonLocalGeometryElement.dNdXi( qp.xi );
-      const JacobianSizedK J_K     = nonLocalGeometryElement.Jacobian( dNdXi_K );
-      const JacobianSizedK JInv_K  = J_K.inverse();
-      qp.N_K                       = nonLocalGeometryElement.N( qp.xi );
-      qp.dNdX_K                    = nonLocalGeometryElement.dNdX( dNdXi_K, JInv_K );
-      qp.B_K                       = nonLocalGeometryElement.B( qp.dNdX_K );
+      if constexpr ( !nonLocalSharesShapeFunctions ) {
+        const auto           dNdXi_K = nonLocalGeometryElement.dNdXi( qp.xi );
+        const JacobianSizedK J_K     = nonLocalGeometryElement.Jacobian( dNdXi_K );
+        const JacobianSizedK JInv_K  = J_K.inverse();
+        qp.NK                        = nonLocalGeometryElement.N( qp.xi );
+        qp.dNdXK                     = nonLocalGeometryElement.dNdX( dNdXi_K, JInv_K );
+      }
 
       if constexpr ( nDim == 3 ) {
         qp.J0xW = qp.weight * qp.detJ;
@@ -864,11 +945,13 @@ namespace Marmot::Elements {
 
       QuadraturePoint& qp = this->qps[i];
 
-      const BSized&      B      = qp.B;
-      const NSizedK&     N_K    = qp.N_K;
-      const dNdXiSizedK& dNdX_K = qp.dNdX_K;
+      /* B is not stored (see QuadraturePoint) and needed here for the tangent blocks only: the strain and the internal
+       * force are evaluated from dNdX, exactly as in the explicit kernel. */
+      const BSized       B      = localGeometryElement.B( qp.dNdX );
+      const NSizedK&     N_K    = qp.N_K();
+      const dNdXiSizedK& dNdX_K = qp.dNdX_K();
 
-      Voigt dE = B * dQU;
+      const Voigt dE = FiniteElement::SmallStrain::strainIncrement< nDim, nNodes >( dQU, qp.dNdX );
 
       // delta of _K at Gausspoint
       Vector< double, nNonlocalVariables > K;
@@ -907,28 +990,26 @@ namespace Marmot::Elements {
           throw std::invalid_argument( "Invalid section type for 2D element, expected PlaneStress or PlaneStrain" );
         }
 
-        fU += B.transpose() * S * qp.J0xW;
+        FiniteElement::SmallStrain::addInternalForce< nDim, nNodes >( fU, qp.dNdX, S, qp.J0xW );
         kUU += B.transpose() * C * B * qp.J0xW;
 
         for ( int n = 0; n < nNonlocalVariables; n++ ) {
           Eigen::Index idx = n * nNonLocalNodes;
-          fK.segment( idx, nNonLocalNodes ) += ( N_K.transpose() * K( n ) +
-                                                 res.c( n ) * dNdX_K.transpose() * dNdX_K *
-                                                   qK.segment( idx, nNonLocalNodes ) -
-                                                 N_K.transpose() * res.KLocal( n ) ) *
-                                               qp.J0xW;
+          addNonLocalResidualAt( fK.segment( idx, nNonLocalNodes ), qp, n, K( n ), res, qK );
           const auto dSdK         = ContinuumMechanics::VoigtNotation::voigtToPlaneVoigt( tan.dStressddK.col( n ) );
           const auto dK_Local_dDE = ContinuumMechanics::VoigtNotation::voigtToPlaneVoigt(
             tan.dKLocalddStrain.row( n ).transpose() );
 
           kUK.block( 0, idx, sizeDoFU, nNonLocalNodes ) += B.transpose() * dSdK * N_K * qp.J0xW;
           kKU.block( idx, 0, nNonLocalNodes, sizeDoFU ) += N_K.transpose() * -dK_Local_dDE.transpose() * B * qp.J0xW;
-          kKK.block( idx, idx, nNonLocalNodes, nNonLocalNodes ) += ( N_K.transpose() * N_K +
-                                                                     res.c( n ) * dNdX_K.transpose() * dNdX_K +
-                                                                     tan.dcddK( n ) * dNdX_K.transpose() * dNdX_K *
-                                                                       qK.segment( idx, nNonLocalNodes ) * N_K -
-                                                                     N_K.transpose() * tan.dKLocalddK( n, n ) * N_K ) *
-                                                                   qp.J0xW;
+          kKK.block( idx,
+                     idx,
+                     nNonLocalNodes,
+                     nNonLocalNodes ) += ( N_K.transpose() * N_K + res.c( n ) * dNdX_K.transpose() * dNdX_K +
+                                           dNdX_K.transpose() *
+                                             ( tan.dcddK( n ) * nonLocalFieldGradientAt( qp, n, qK ) ) * N_K -
+                                           N_K.transpose() * tan.dKLocalddK( n, n ) * N_K ) *
+                                         qp.J0xW;
         }
       }
 
@@ -942,28 +1023,25 @@ namespace Marmot::Elements {
           inc                      = { dE, K, dK, time, dT };
           qp.material->computeStress( res, tan, inc );
 
-          fU += B.transpose() * res.stress * qp.J0xW;
+          FiniteElement::SmallStrain::addInternalForce< nDim, nNodes >( fU, qp.dNdX, res.stress, qp.J0xW );
           kUU += B.transpose() * tan.dStressddStrain * B * qp.J0xW;
 
           for ( int n = 0; n < nNonlocalVariables; n++ ) {
             Eigen::Index idx = n * nNonLocalNodes;
-            fK.segment( idx, nNonLocalNodes ) += ( N_K.transpose() * K( n ) +
-                                                   res.c( n ) * dNdX_K.transpose() * dNdX_K *
-                                                     qK.segment( idx, nNonLocalNodes ) -
-                                                   N_K.transpose() * res.KLocal( n ) ) *
-                                                 qp.J0xW;
+            addNonLocalResidualAt( fK.segment( idx, nNonLocalNodes ), qp, n, K( n ), res, qK );
 
             kUK.block( 0, idx, sizeDoFU, nNonLocalNodes ) += B.transpose() * tan.dStressddK.col( n ) * N_K * qp.J0xW;
             kKU.block( idx, 0, nNonLocalNodes, sizeDoFU ) += N_K.transpose() * -tan.dKLocalddStrain.row( n ) * B *
                                                              qp.J0xW;
 
-            kKK.block( idx, idx, nNonLocalNodes, nNonLocalNodes ) += ( N_K.transpose() * N_K +
-                                                                       res.c( n ) * dNdX_K.transpose() * dNdX_K +
-                                                                       tan.dcddK( n ) * dNdX_K.transpose() * dNdX_K *
-                                                                         qK.segment( idx, nNonLocalNodes ) * N_K -
-                                                                       N_K.transpose() * tan.dKLocalddK( n, n ) *
-                                                                         N_K ) *
-                                                                     qp.J0xW;
+            kKK.block( idx,
+                       idx,
+                       nNonLocalNodes,
+                       nNonLocalNodes ) += ( N_K.transpose() * N_K + res.c( n ) * dNdX_K.transpose() * dNdX_K +
+                                             dNdX_K.transpose() *
+                                               ( tan.dcddK( n ) * nonLocalFieldGradientAt( qp, n, qK ) ) * N_K -
+                                             N_K.transpose() * tan.dKLocalddK( n, n ) * N_K ) *
+                                           qp.J0xW;
           }
         }
         else
@@ -1006,11 +1084,9 @@ namespace Marmot::Elements {
 
       QuadraturePoint& qp = this->qps[i];
 
-      const BSized&      B      = qp.B;
-      const NSizedK&     N_K    = qp.N_K;
-      const dNdXiSizedK& dNdX_K = qp.dNdX_K;
+      const NSizedK& N_K = qp.N_K();
 
-      Voigt dE = B * dQU;
+      const Voigt dE = FiniteElement::SmallStrain::strainIncrement< nDim, nNodes >( dQU, qp.dNdX );
 
       /* Added to the stress that is INTEGRATED, never to the one that is STORED: the constitutive
        * law must not see it and it must leave no trace in the state. With inactive coefficients it
@@ -1098,15 +1174,11 @@ namespace Marmot::Elements {
         if ( bulkViscosityCoefficients.areActive() )
           S.head( nNormalComponents ).array() += bulkViscousStressAt( qp, res, K );
 
-        fU += B.transpose() * S * qp.J0xW;
+        FiniteElement::SmallStrain::addInternalForce< nDim, nNodes >( fU, qp.dNdX, S, qp.J0xW );
 
         for ( int n = 0; n < nNonlocalVariables; n++ ) {
           Eigen::Index idx = n * nNonLocalNodes;
-          fK.segment( idx, nNonLocalNodes ) += ( N_K.transpose() * K( n ) +
-                                                 res.c( n ) * dNdX_K.transpose() * dNdX_K *
-                                                   qK.segment( idx, nNonLocalNodes ) -
-                                                 N_K.transpose() * res.KLocal( n ) ) *
-                                               qp.J0xW;
+          addNonLocalResidualAt( fK.segment( idx, nNonLocalNodes ), qp, n, K( n ), res, qK );
         }
       }
 
@@ -1124,15 +1196,11 @@ namespace Marmot::Elements {
           if ( bulkViscosityCoefficients.areActive() )
             integratedStress.head( nNormalComponents ).array() += bulkViscousStressAt( qp, res, K );
 
-          fU += B.transpose() * integratedStress * qp.J0xW;
+          FiniteElement::SmallStrain::addInternalForce< nDim, nNodes >( fU, qp.dNdX, integratedStress, qp.J0xW );
 
           for ( int n = 0; n < nNonlocalVariables; n++ ) {
             Eigen::Index idx = n * nNonLocalNodes;
-            fK.segment( idx, nNonLocalNodes ) += ( N_K.transpose() * K( n ) +
-                                                   res.c( n ) * dNdX_K.transpose() * dNdX_K *
-                                                     qK.segment( idx, nNonLocalNodes ) -
-                                                   N_K.transpose() * res.KLocal( n ) ) *
-                                                 qp.J0xW;
+            addNonLocalResidualAt( fK.segment( idx, nNonLocalNodes ), qp, n, K( n ), res, qK );
           }
         }
         else
@@ -1449,7 +1517,7 @@ namespace Marmot::Elements {
 
       Eigen::Vector< double, nNonlocalVariables > K;
       for ( int n = 0; n < nNonlocalVariables; n++ )
-        K( n ) = qp.N_K * qK.segment( n * nNonLocalNodes, nNonLocalNodes );
+        K( n ) = qp.N_K() * qK.segment( n * nNonLocalNodes, nNonLocalNodes );
 
       response nonlocalResponse;
       nonlocalResponse.stress = qp.managedStateVars->stress;
@@ -1487,8 +1555,8 @@ namespace Marmot::Elements {
 
       for ( size_t i = 0; i < qps.size(); i++ ) {
         const QuadraturePoint& qp = qps[i];
-        KK += ( qp.N_K.transpose() * qp.N_K +
-                cAtQp( n, static_cast< Eigen::Index >( i ) ) * qp.dNdX_K.transpose() * qp.dNdX_K ) *
+        KK += ( qp.N_K().transpose() * qp.N_K() +
+                cAtQp( n, static_cast< Eigen::Index >( i ) ) * qp.dNdX_K().transpose() * qp.dNdX_K() ) *
               qp.J0xW;
       }
 
