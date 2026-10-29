@@ -1,6 +1,8 @@
 #include "Marmot/DisplacementFiniteElement.h"
+#include "Marmot/LinearElastic.h"
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotFiniteElement.h"
+#include "Marmot/MarmotMaterialHypoElasticFactory.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
 #include "Marmot/MarmotTesting.h"
 #include <Eigen/Dense>
@@ -1761,6 +1763,88 @@ namespace {
     return P;
   }
 
+  /* Linear elasticity that counts how often its wave speed is asked for. Created by the element
+   * the ordinary way, from a registered name, so that what is counted is what a real material sees.
+   */
+  class WaveSpeedQueryCountingLinearElastic : public Marmot::Materials::LinearElastic {
+  public:
+    using Marmot::Materials::LinearElastic::LinearElastic;
+
+    /// @brief Calls to getMaximumWaveSpeed() since the last reset, over all instances.
+    static inline int nWaveSpeedQueries = 0;
+
+    /**
+     * @brief The base class' default, counted.
+     * @param state The current state.
+     * @return The wave speed the default returns.
+     */
+    double getMaximumWaveSpeed( const state3D& state ) const override
+    {
+      nWaveSpeedQueries++;
+      return MarmotMaterialHypoElastic::getMaximumWaveSpeed( state );
+    }
+  };
+
+  [[maybe_unused]] const bool waveSpeedQueryCountingLinearElasticRegistered = MarmotLibrary::
+    MarmotMaterialHypoElasticFactory::registerMaterial< WaveSpeedQueryCountingLinearElastic >(
+      "WAVESPEEDQUERYCOUNTINGLINEARELASTIC" );
+
+  /// @brief The material's wave-speed queries over two explicit increments, and the element's quadrature points.
+  struct WaveSpeedQueries {
+    int firstIncrement;
+    int secondIncrement;
+    int nQuadraturePoints;
+  };
+
+  /// A hexa8 element under volumetric compression, with the bulk viscosity and its degradation as requested.
+  WaveSpeedQueries waveSpeedQueriesOverTwoIncrements( bool   withBulkViscosity,
+                                                      double degradationExponent,
+                                                      double density = 2.0e-9 )
+  {
+    constexpr int nDim   = 3;
+    constexpr int nNodes = 8;
+    using ElemType       = DisplacementFiniteElement< nDim, nNodes >;
+
+    const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                                  0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+    const std::vector< double > matProps      = { 10000.0, 0.2, density };
+    const std::vector< double > bulkViscosity = { 0.06, 1.2 };
+
+    auto element = std::make_unique< ElemType >( 1,
+                                                 FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
+                                                 ElemType::SectionType::Solid );
+    element->assignNodeCoordinates( nodeCoordsVec.data() );
+    MarmotMaterialSection materialSection( "WAVESPEEDQUERYCOUNTINGLINEARELASTIC", matProps.data(), matProps.size() );
+    element->assignProperty( materialSection );
+    if ( withBulkViscosity )
+      element->assignProperty( "bulk viscosity", bulkViscosity.data(), bulkViscosity.size() );
+    if ( degradationExponent > 0.0 )
+      element->assignProperty( "bulk viscosity damage degradation", &degradationExponent, 1 );
+
+    const int             nStateVars = element->getNumberOfRequiredStateVars();
+    std::vector< double > stateVars( nStateVars, 0.0 );
+    element->assignStateVars( stateVars.data(), nStateVars );
+    element->initializeYourself();
+
+    const int       nDof = element->getNDofPerElement();
+    Eigen::VectorXd dQ   = Eigen::VectorXd::Zero( nDof );
+    Eigen::VectorXd U    = Eigen::VectorXd::Zero( nDof );
+    Eigen::VectorXd P    = Eigen::VectorXd::Zero( nDof );
+    for ( int node = 0; node < nNodes; node++ )
+      for ( int axis = 0; axis < nDim; axis++ )
+        dQ( node * nDim + axis ) = -1.0e-4 * nodeCoordsVec[node * nDim + axis];
+
+    WaveSpeedQueryCountingLinearElastic::nWaveSpeedQueries = 0;
+    element->computeKernelsExplicit( U.data(), dQ.data(), P.data(), 0.0, 1.0e-3 );
+    const int overTheFirstIncrement = WaveSpeedQueryCountingLinearElastic::nWaveSpeedQueries;
+
+    WaveSpeedQueryCountingLinearElastic::nWaveSpeedQueries = 0;
+    element->computeKernelsExplicit( U.data(), dQ.data(), P.data(), 1.0e-3, 1.0e-3 );
+    const int overTheSecondIncrement = WaveSpeedQueryCountingLinearElastic::nWaveSpeedQueries;
+
+    return { overTheFirstIncrement, overTheSecondIncrement, element->getNumberOfQuadraturePoints() };
+  }
+
   /// The dilatational wave speed the hypoelastic base class reports for the material above.
   double linearElasticWaveSpeed( double density )
   {
@@ -1890,6 +1974,37 @@ void testBulkViscosityDissipatesVolumetricWork()
                            "The quadratic bulk viscosity term must not act in expansion." );
 }
 
+/* What the degradation costs is what the material makes of ONE wave-speed query per quadrature
+ * point per increment: the reference is cached on the first increment -- also when it is zero --
+ * and without the degradation the material is not asked for its current speed. A second query per
+ * increment, or a reference that is asked for again, would change no result and would double the
+ * material cost of an explicit run.
+ */
+void testBulkViscosityDegradationAsksForTheWaveSpeedOncePerQuadraturePointPerIncrement()
+{
+  {
+    const auto [first, second, nQuadraturePoints] = waveSpeedQueriesOverTwoIncrements( false, 0.0 );
+    throwExceptionOnFailure( first == 0 && second == 0,
+                             MakeString() << __PRETTY_FUNCTION__ << ": without bulk viscosity the material was asked "
+                                          << first << " and " << second << " times for its wave speed" );
+  }
+  {
+    const auto [first, second, nQuadraturePoints] = waveSpeedQueriesOverTwoIncrements( true, 0.0 );
+    throwExceptionOnFailure( first == nQuadraturePoints && second == 0,
+                             MakeString() << __PRETTY_FUNCTION__ << ": undegraded, the material was asked " << first
+                                          << " and " << second << " times; expected the " << nQuadraturePoints
+                                          << " reference queries once and nothing after" );
+  }
+  for ( const double density : { 2.0e-9, 0.0 } ) {
+    const auto [first, second, nQuadraturePoints] = waveSpeedQueriesOverTwoIncrements( true, 2.0, density );
+    throwExceptionOnFailure( first == 2 * nQuadraturePoints && second == nQuadraturePoints,
+                             MakeString() << __PRETTY_FUNCTION__ << ": degraded at a density of " << density
+                                          << ", the material was asked " << first << " and " << second
+                                          << " times; expected the reference plus one current query per quadrature "
+                                          << "point, then one current query per quadrature point" );
+  }
+}
+
 void testBulkViscosityRejectsNegativeCoefficients()
 {
   constexpr int nDim    = 3;
@@ -1935,6 +2050,7 @@ int main()
     testBulkViscosityIsInertWhenUnset,
     testBulkViscosityDissipatesVolumetricWork,
     testBulkViscosityRejectsNegativeCoefficients,
+    testBulkViscosityDegradationAsksForTheWaveSpeedOncePerQuadraturePointPerIncrement,
     testComputeKernelsPlaneStrainTangentMatchesNumericalDifferentiation,
     testComputeKernelsSolid3DTangentMatchesNumericalDifferentiation,
     testComputeKernelsUniaxialStressTangentMatchesNumericalDifferentiation,

@@ -41,6 +41,11 @@ All notable changes to Marmot are documented in this file. The format follows
 - Point particles have no faces and no longer advertise `PRESSURE` / `CWFCORRECTION`.
 - The cell, particle and material point registries are function-local statics; the public `register*` functions
   are unchanged.
+- The reference wave speed of the artificial bulk viscosity is cached also when it is zero (it was asked for again on
+  every increment), in `DisplacementFiniteElement` and `GeneralGradientEnhancedDisplacementFiniteElement`. A material
+  meant to run with the damage degradation should override `getMaximumWaveSpeed()` with its closed form; the new
+  `Marmot::Testing::checkMaximumWaveSpeedOverrideMatchesDefault()` (`MarmotWaveSpeedContract.h`) checks an override
+  against the default.
 
 ### Fixed
 - **Results:** sign of the hoop term in the axisymmetric finite-strain UL elements (`CX8UL`, `CX8RUL`, residual and

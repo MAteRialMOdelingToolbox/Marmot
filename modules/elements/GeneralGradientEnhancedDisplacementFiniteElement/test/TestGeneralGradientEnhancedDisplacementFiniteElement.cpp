@@ -5,6 +5,7 @@
 #include "Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
 #include "Marmot/MarmotTesting.h"
+#include "Marmot/MarmotWaveSpeedContract.h"
 #include <Eigen/Dense>
 #include <algorithm>
 #include <cmath>
@@ -2082,10 +2083,19 @@ namespace {
     MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< 1 >::registerMaterial< WaveSpeedQueryCountingMaterial >(
       "WAVESPEEDQUERYCOUNTINGMATERIAL" );
 
+  /// @brief The material's wave-speed queries over two explicit increments, and the element's quadrature points.
+  struct WaveSpeedQueries {
+    int firstIncrement;
+    int secondIncrement;
+    int nQuadraturePoints;
+  };
+
   /* The material's wave-speed queries over the first and over the second explicit increment of a
    * GC3D8 element under volumetric compression at a non-zero field.
    */
-  std::pair< int, int > waveSpeedQueriesOverTwoIncrements( bool withBulkViscosity, double degradationExponent )
+  WaveSpeedQueries waveSpeedQueriesOverTwoIncrements( bool   withBulkViscosity,
+                                                      double degradationExponent,
+                                                      double density = 2.0e-9 )
   {
     constexpr int nDim          = 3;
     constexpr int nNodes        = 8;
@@ -2094,7 +2104,7 @@ namespace {
 
     const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
                                                   0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
-    const std::vector< double > matProps      = { 20000.0, 0.2, 2.0e-9, 1.0e-6 };
+    const std::vector< double > matProps      = { 20000.0, 0.2, density, 1.0e-6 };
     const std::vector< double > bulkViscosity = { 0.06, 1.2 };
 
     auto element = std::make_unique< ElemType >( 1,
@@ -2130,7 +2140,7 @@ namespace {
     element->computeKernelsExplicit( Q.data(), Q.data(), P.data(), 1.0e-3, 1.0e-3 );
     const int overTheSecondIncrement = WaveSpeedQueryCountingMaterial::nWaveSpeedQueries;
 
-    return { overTheFirstIncrement, overTheSecondIncrement };
+    return { overTheFirstIncrement, overTheSecondIncrement, element->getNumberOfQuadraturePoints() };
   }
 
 } // namespace
@@ -2145,29 +2155,131 @@ namespace {
  */
 void testBulkViscosityDegradationAsksForTheWaveSpeedOncePerQuadraturePointPerIncrement()
 {
-  constexpr int nQuadraturePoints = 8;
-
   {
-    const auto [first, second] = waveSpeedQueriesOverTwoIncrements( false, 0.0 );
+    const auto [first, second, nQuadraturePoints] = waveSpeedQueriesOverTwoIncrements( false, 0.0 );
     throwExceptionOnFailure( first == 0 && second == 0,
                              MakeString() << __PRETTY_FUNCTION__ << ": without bulk viscosity the material was asked "
                                           << first << " and " << second << " times for its wave speed" );
   }
   {
-    const auto [first, second] = waveSpeedQueriesOverTwoIncrements( true, 0.0 );
+    const auto [first, second, nQuadraturePoints] = waveSpeedQueriesOverTwoIncrements( true, 0.0 );
     throwExceptionOnFailure( first == nQuadraturePoints && second == 0,
                              MakeString() << __PRETTY_FUNCTION__ << ": undegraded, the material was asked " << first
                                           << " and " << second << " times; expected the " << nQuadraturePoints
                                           << " reference queries once and nothing after" );
   }
   {
-    const auto [first, second] = waveSpeedQueriesOverTwoIncrements( true, 2.0 );
+    const auto [first, second, nQuadraturePoints] = waveSpeedQueriesOverTwoIncrements( true, 2.0 );
     throwExceptionOnFailure( first == 2 * nQuadraturePoints && second == nQuadraturePoints,
                              MakeString()
                                << __PRETTY_FUNCTION__ << ": degraded, the material was asked " << first << " and "
                                << second << " times; expected the reference plus one current "
                                << "query per quadrature point, then one current query per quadrature point" );
   }
+}
+
+/* A material that reports a reference wave speed of zero -- no density here -- must be asked for it
+ * ONCE, like any other: a reference of zero is a value, not "not yet computed". Re-asking every
+ * increment would put a full constitutive evaluation per quadrature point per increment back, for
+ * exactly the materials whose answer never changes.
+ */
+void testBulkViscosityReferenceWaveSpeedOfZeroIsCachedToo()
+{
+  const auto [first, second, nQuadraturePoints] = waveSpeedQueriesOverTwoIncrements( true, 2.0, 0.0 );
+
+  throwExceptionOnFailure( first == 2 * nQuadraturePoints && second == nQuadraturePoints,
+                           MakeString() << __PRETTY_FUNCTION__ << ": with a reference wave speed of zero the material "
+                                        << "was asked " << first << " and " << second
+                                        << " times; expected the reference once per quadrature point, then only the "
+                                        << "current speed" );
+}
+
+namespace {
+
+  /* The two ways of overriding getMaximumWaveSpeed() with a closed form for the material of the
+   * counting test, (1 - K) C_el: the right one, and one that ignores the field.
+   */
+  class ClosedFormWaveSpeedMaterial : public WaveSpeedQueryCountingMaterial {
+  public:
+    using WaveSpeedQueryCountingMaterial::WaveSpeedQueryCountingMaterial;
+
+    /**
+     * @brief The closed form: the largest diagonal entry of the degraded stiffness over the density.
+     * @param currentResponse Unused.
+     * @param K The non-local field.
+     * @return The wave speed the default returns, to the bit.
+     */
+    double getMaximumWaveSpeed(
+      const response&                   currentResponse,
+      const Eigen::Vector< double, 1 >& K = Eigen::Vector< double, 1 >::Zero() ) const override
+    {
+      const double
+        maxStiffnessDiagonal = ( 1.0 - K[0] ) *
+                               ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( this->materialProperties[0],
+                                                                                           this->materialProperties[1] )
+                                 .diagonal()
+                                 .maxCoeff();
+      return std::sqrt( std::max( 0.0, maxStiffnessDiagonal ) / this->materialProperties[2] );
+    }
+  };
+
+  class FieldBlindWaveSpeedMaterial : public ClosedFormWaveSpeedMaterial {
+  public:
+    using ClosedFormWaveSpeedMaterial::ClosedFormWaveSpeedMaterial;
+
+    /**
+     * @brief The closed form at a zero field, whatever the field: what the degradation silently turns inert with.
+     * @param currentResponse The current response.
+     * @param K Ignored.
+     * @return The undamaged wave speed.
+     */
+    double getMaximumWaveSpeed(
+      const response&                   currentResponse,
+      const Eigen::Vector< double, 1 >& K = Eigen::Vector< double, 1 >::Zero() ) const override
+    {
+      return ClosedFormWaveSpeedMaterial::getMaximumWaveSpeed( currentResponse, Eigen::Vector< double, 1 >::Zero() );
+    }
+  };
+
+} // namespace
+
+/* The contract an override of getMaximumWaveSpeed() has to keep is checked against the default, over
+ * a range of fields. An override that ignores the field must be caught: it would make the degradation
+ * factor identically 1 and the property inert, which is what the element's comments say happened once.
+ */
+void testWaveSpeedOverrideCheckAcceptsTheClosedFormAndRejectsAnOverrideThatIgnoresTheField()
+{
+  using Response = MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >::response;
+
+  const std::vector< double >       matProps = { 20000.0, 0.2, 2.0e-9, 1.0e-6 };
+  const ClosedFormWaveSpeedMaterial closedForm( matProps.data(), matProps.size(), 1 );
+  const FieldBlindWaveSpeedMaterial fieldBlind( matProps.data(), matProps.size(), 2 );
+
+  std::vector< double > stateVars( closedForm.getNumberOfRequiredStateVars(), 0.0 );
+  Response              response;
+  response.stress               = Marmot::Vector6d::Zero();
+  response.elasticEnergyDensity = 0.0;
+  response.dissipation          = 0.0;
+  response.KLocal.setZero();
+  response.c.setZero();
+  response.stateVars = stateVars.data();
+
+  const std::vector< Eigen::Vector< double, 1 > > fields = { Eigen::Vector< double, 1 >::Zero(),
+                                                             Eigen::Vector< double, 1 >::Constant( 0.3 ),
+                                                             Eigen::Vector< double, 1 >::Constant( 0.9 ) };
+
+  checkMaximumWaveSpeedOverrideMatchesDefault< 1 >( closedForm, response, fields );
+
+  bool rejected = false;
+  try {
+    checkMaximumWaveSpeedOverrideMatchesDefault< 1 >( fieldBlind, response, fields );
+  }
+  catch ( const std::runtime_error& ) {
+    rejected = true;
+  }
+  throwExceptionOnFailure( rejected,
+                           MakeString() << __PRETTY_FUNCTION__ << ": an override that ignores the non-local field "
+                                        << "passed the contract check" );
 }
 
 /* A rejected property assignment must leave the element as it was -- checked through the assembled
@@ -2331,6 +2443,8 @@ int main()
     testBulkViscosityDegradesWithTheNonlocalField,
     testBulkViscosityIsUndegradedByDefault,
     testBulkViscosityDegradationAsksForTheWaveSpeedOncePerQuadraturePointPerIncrement,
+    testBulkViscosityReferenceWaveSpeedOfZeroIsCachedToo,
+    testWaveSpeedOverrideCheckAcceptsTheClosedFormAndRejectsAnOverrideThatIgnoresTheField,
     testRejectedPropertyAssignmentLeavesTheElementUnchanged,
     testNodeFieldsTwoNonlocalVars,
     testComputeKernelsPlaneStrainTangentMatchesNumericalDifferentiation,

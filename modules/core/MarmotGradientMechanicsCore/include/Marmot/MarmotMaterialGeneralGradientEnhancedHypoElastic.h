@@ -319,8 +319,8 @@ public:
    *       material whose degraded tangent at a zero strain increment has a closed form -- the usual
    *       \f$(1-\omega)\,\mathbb{C}^\mathrm{el}\f$ of a damage model -- should override this with
    *       that closed form. The override must return what the default returns for it, must honour
-   *       `K` as an input, and must not touch the state; see GCDPModel::getMaximumWaveSpeed() for
-   *       one that does so to the bit.
+   *       `K` as an input, and must not touch the state. Marmot::Testing::checkMaximumWaveSpeedOverrideMatchesDefault()
+   *       checks all three against the default.
    */
   virtual double getMaximumWaveSpeed(
     const response&                                    currentResponse,

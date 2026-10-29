@@ -22,7 +22,7 @@
  * the top level directory of marmot.
  * ---------------------------------------------------------------------
  */
-
+#pragma once
 #include "Marmot/MarmotConstants.h"
 #include "Marmot/MarmotMaterialHypoElastic.h"
 #include "Marmot/MarmotMaterialPointSolverHypoElastic.h"

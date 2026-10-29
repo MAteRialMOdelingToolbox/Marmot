@@ -88,7 +88,8 @@ namespace Marmot::FiniteElement::BulkViscosity {
    * every increment, which is why the reference is cached and why this is opt-in. With the material
    * interface's default `getMaximumWaveSpeed()` that query is a full constitutive evaluation --
    * about the cost of the stress update itself on a non-yielding point -- so a damage model meant
-   * to run with this should override it with its closed form, as GCDP does.
+   * to run with this should override it with its closed form, and check the override against the default
+   * with Marmot::Testing::checkMaximumWaveSpeedOverrideMatchesDefault().
    */
   inline double degradationFactor( double currentWaveSpeed, double referenceWaveSpeed, double exponent )
   {

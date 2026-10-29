@@ -147,14 +147,23 @@ It is requested through a second named property, taking exactly one value:
    stress update itself on a non-yielding point, so enabling the degradation roughly doubled the
    material cost of a run. A damage model meant to run with it should therefore override
    ``getMaximumWaveSpeed()`` with its closed form, :math:`\sqrt{(1-\omega)\,\max_i C_{ii}/\rho}`
-   for the usual :math:`(1-\omega)\,\mathbb{C}_0` tangent; GCDP does, bit-identically to the
-   default, at a few tens of nanoseconds per query.
+   for the usual :math:`(1-\omega)\,\mathbb{C}_0` tangent. The override must return what the
+   default returns, must take the non-local field as an input, and must leave the state alone. An
+   override that ignores the field returns the same speed at the current and at the zero field, so the
+   degradation silently does nothing; ``Marmot::Testing::checkMaximumWaveSpeedOverrideMatchesDefault()``
+   (``MarmotWaveSpeedContract.h``) compares an override with the default over a set of fields and
+   states, and is meant for the test of every material that overrides it.
 
 Notes and limitations
 ^^^^^^^^^^^^^^^^^^^^^^
 
 - **Volumetric only.** Ringing that is predominantly deviatoric or flexural is not reached, which
   is a property of the device and not of this implementation.
+- **After a restart, the displacement element's degradation is inert.** Its reference wave speed is
+  taken from the state the element has when the first explicit increment runs, because the
+  hypoelastic interface has no query for the virgin material; a run resumed from an already damaged
+  state measures no degradation. The viscosity is then simply not degraded. The gradient-enhanced
+  element is not affected: its reference is the speed at a zero non-local field.
 - **The reference wave speed is cached.** The **undamaged** wave speed is cached on first use and
   is what the viscous stress is formed with. That leaves the damping slightly stronger than a
   current-stiffness value would as the material softens -- the safe direction for a device whose
