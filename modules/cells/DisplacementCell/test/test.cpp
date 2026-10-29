@@ -35,6 +35,9 @@
 #include <string>
 #include <vector>
 
+using namespace Marmot::Math::Tensors::FastorTensors;
+using namespace Fastor;
+
 using namespace Marmot;
 using namespace Marmot::Testing;
 
@@ -434,7 +437,7 @@ void checkStressStateOfTheMaterialPoints( const CellGeometry< nDim >& g )
   Setup< nDim > s( g );
   s.kernels( increment( s.nDof, 1e-2 ) );
 
-  using Math::Tensors::FastorTensors::Tensor33d;
+  using Marmot::Math::Tensors::FastorTensors::Tensor33d;
   Marmot::Materials::CompressibleNeoHooke reference( matProps.data(), static_cast< int >( matProps.size() ), 1 );
   for ( auto& mp : s.mps ) {
     const Tensor33d dF( mp->getStateView( "delta deformation gradient" ).stateLocation );

@@ -180,5 +180,5 @@ Practical Applications
 - Educational demonstrations of hypo-elastic material response
 
 
-.. doxygenclass:: Marmot::Materials::MarmotMaterialPointSolverHypoElastic
+.. doxygenclass:: Marmot::Materials::MaterialPointSolverHypoElastic
    :allow-dot-graphs:

@@ -121,7 +121,7 @@ namespace Marmot::Materials {
         stateVars = stateVarsTemp;
         counter++;
       }
-      catch ( const Marmot::Utilities::StressUpdateFailed& e ) {
+      catch ( const Marmot::Utilities::StressUpdateFailed& ) {
         // if failed, reduce time step and retry
         if ( dT <= step.dTMin )
           throw Marmot::Utilities::SolverTimestepExhausted( "Minimum time step reached, cannot proceed." );

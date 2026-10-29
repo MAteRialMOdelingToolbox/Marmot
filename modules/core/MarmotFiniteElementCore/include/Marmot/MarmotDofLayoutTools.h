@@ -48,9 +48,9 @@ namespace Marmot::Discretizations::Elements {
   /**
    * @brief Computes the DOF permutation pattern for a blocked (field-major) layout.
    *
-   * @param nodeFields     Node-field layout as returned by @ref makeNodeFieldLayout.
+   * @param nodeFields     Node-field layout as returned by makeNodeFieldLayout().
    * @param fieldSizes     Map from field name to a pair (dofsPerNode, nodesForField); see
-   * @ref makeNodeFieldLayout.
+   * makeNodeFieldLayout().
    * @return Integer permutation vector that reorders DOFs from node-major to field-major order.
    */
   std::vector< int > makeBlockedLayoutPermutationPattern(
