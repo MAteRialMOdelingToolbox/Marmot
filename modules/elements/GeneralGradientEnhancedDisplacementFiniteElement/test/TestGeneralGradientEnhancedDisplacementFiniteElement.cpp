@@ -2111,10 +2111,12 @@ namespace {
                                                  FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
                                                  ElemType::SectionType::Solid );
     element->assignNodeCoordinates( nodeCoordsVec.data() );
-    MarmotMaterialSection materialSection( "WAVESPEEDQUERYCOUNTINGMATERIAL", matProps.data(), matProps.size() );
+    MarmotMaterialSection materialSection( "WAVESPEEDQUERYCOUNTINGMATERIAL",
+                                           matProps.data(),
+                                           static_cast< int >( matProps.size() ) );
     element->assignProperty( materialSection );
     if ( withBulkViscosity )
-      element->assignProperty( "bulk viscosity", bulkViscosity.data(), bulkViscosity.size() );
+      element->assignProperty( "bulk viscosity", bulkViscosity.data(), static_cast< int >( bulkViscosity.size() ) );
     if ( degradationExponent > 0.0 )
       element->assignProperty( "bulk viscosity damage degradation", &degradationExponent, 1 );
 
@@ -2252,8 +2254,8 @@ void testWaveSpeedOverrideCheckAcceptsTheClosedFormAndRejectsAnOverrideThatIgnor
   using Response = MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >::response;
 
   const std::vector< double >       matProps = { 20000.0, 0.2, 2.0e-9, 1.0e-6 };
-  const ClosedFormWaveSpeedMaterial closedForm( matProps.data(), matProps.size(), 1 );
-  const FieldBlindWaveSpeedMaterial fieldBlind( matProps.data(), matProps.size(), 2 );
+  const ClosedFormWaveSpeedMaterial closedForm( matProps.data(), static_cast< int >( matProps.size() ), 1 );
+  const FieldBlindWaveSpeedMaterial fieldBlind( matProps.data(), static_cast< int >( matProps.size() ), 2 );
 
   std::vector< double > stateVars( closedForm.getNumberOfRequiredStateVars(), 0.0 );
   Response              response;

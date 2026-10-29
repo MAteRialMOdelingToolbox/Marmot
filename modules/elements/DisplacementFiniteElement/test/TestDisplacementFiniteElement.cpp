@@ -1814,10 +1814,12 @@ namespace {
                                                  FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
                                                  ElemType::SectionType::Solid );
     element->assignNodeCoordinates( nodeCoordsVec.data() );
-    MarmotMaterialSection materialSection( "WAVESPEEDQUERYCOUNTINGLINEARELASTIC", matProps.data(), matProps.size() );
+    MarmotMaterialSection materialSection( "WAVESPEEDQUERYCOUNTINGLINEARELASTIC",
+                                           matProps.data(),
+                                           static_cast< int >( matProps.size() ) );
     element->assignProperty( materialSection );
     if ( withBulkViscosity )
-      element->assignProperty( "bulk viscosity", bulkViscosity.data(), bulkViscosity.size() );
+      element->assignProperty( "bulk viscosity", bulkViscosity.data(), static_cast< int >( bulkViscosity.size() ) );
     if ( degradationExponent > 0.0 )
       element->assignProperty( "bulk viscosity damage degradation", &degradationExponent, 1 );
 
