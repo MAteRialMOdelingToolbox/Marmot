@@ -51,7 +51,7 @@ void testB4()
   std::string matName            = "B4";
   auto        solver             = MarmotMaterialPointSolverHypoElastic( matName,
                                                       &materialProperties[0],
-                                                      materialProperties.size(),
+                                                      static_cast< int >( materialProperties.size() ),
                                                       solveropts );
 
   // step 1: advance time to 28 days
@@ -114,7 +114,7 @@ void testB4CoordinateInvariance()
   std::string matName            = "B4";
   auto        solver             = MarmotMaterialPointSolverHypoElastic( matName,
                                                       &materialProperties[0],
-                                                      materialProperties.size(),
+                                                      static_cast< int >( materialProperties.size() ),
                                                       solveropts );
 
   MarmotMaterialPointSolverHypoElastic::Step step;

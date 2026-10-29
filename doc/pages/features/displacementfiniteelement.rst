@@ -32,6 +32,16 @@ where :math:`\mathbf{M}_e` is the consistent mass matrix, :math:`\rho` the mass 
 :math:`\mathbf{N}` the shape-function matrix of the displacement field, and
 :math:`\mathbf{f}` the body-force vector per unit volume.
 
+The consistent mass is integrated with the **full** Gauss rule of the element's shape (3x3x3 for a
+20-node hexahedron, 3x3 for an 8-node quadrilateral), also for a reduced-integration element: its
+own rule cannot produce a mass matrix of full rank -- 8 points give a 20-node hexahedron a mass of
+rank 24 out of 60 -- and a singular mass leaves the modes of its null space without inertia and
+makes an equilibrium solve for the initial acceleration, :math:`\mathbf{M}\,\mathbf{a}_0 = \mathbf{R}`,
+ill-posed. The density at a point of that rule is taken from the nearest quadrature point of the
+element, which is exact for a density that is constant over the element. The same applies to the
+finite-strain (UL) and the gradient-enhanced displacement elements, for the latter to the
+micro-inertia of the non-local block as well.
+
 Surface tractions and pressures on a boundary face :math:`\Gamma_e` are integrated as
 
 .. math::

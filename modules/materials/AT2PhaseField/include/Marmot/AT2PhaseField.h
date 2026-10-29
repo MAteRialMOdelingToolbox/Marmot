@@ -43,6 +43,9 @@ namespace Marmot::Materials {
    *  - \f$ l \f$   : Internal length scale
    *  - \f$ \rho \f$ : Mass density (optional, mandatory for dynamic simulations)
    *  - \f$ \eta \f$ : phase-field viscosity (optional, mandatory for dynamic simulations)
+   *  - \f$ m_k \f$ : phase-field micro-inertia (optional; zero, i.e. a first-order phase field,
+   *    unless given. Admissible up to \f$ \eta^2/4 \f$, where it is best -- see
+   *    MarmotMaterialGeneralGradientEnhancedHypoElastic::getNonlocalMicroInertia)
    */
   class AT2PhaseField : public MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 > {
 
@@ -61,6 +64,8 @@ namespace Marmot::Materials {
     double getDensity( const double* stateVars ) const override;
 
     std::vector< double > getNonlocalViscosity( const double* stateVars ) const override;
+
+    std::vector< double > getNonlocalMicroInertia( const double* stateVars ) const override;
 
   private:
     /// @brief Elastic stiffness tensor

@@ -9,4 +9,5 @@ Code documentation
   codedocumentation/gradientmechanicscore
   codedocumentation/mathcore
   codedocumentation/mechanicscore
+  codedocumentation/meshfreecore
   codedocumentation/utilitiescore

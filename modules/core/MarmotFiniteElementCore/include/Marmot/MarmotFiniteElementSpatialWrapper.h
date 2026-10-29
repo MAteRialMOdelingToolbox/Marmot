@@ -54,6 +54,9 @@ public:
   Eigen::MatrixXd                  T;            ///< Coordinate transformation matrix from child to parent space.
   Eigen::MatrixXd                  P;            ///< Projection matrix mapping parent DOFs to child DOFs.
   Eigen::MatrixXd                  projectedCoordinates; ///< Nodal coordinates expressed in the child (local) frame.
+  Eigen::VectorXd referenceCoordinates; ///< Ambient-space coordinates of node 0, needed to recover the translation
+                                        ///< (T alone only encodes the rotation) when mapping a child-space point
+                                        ///< back into ambient space.
 
   /**
    * @brief Construct the spatial wrapper.
@@ -74,40 +77,46 @@ public:
                                std::unique_ptr< MarmotElement > childElement );
 
   /// @copydoc MarmotElement::getNumberOfRequiredStateVars
-  int getNumberOfRequiredStateVars();
+  int getNumberOfRequiredStateVars() override;
 
   /// @copydoc MarmotElement::getNodeFields
-  std::vector< std::vector< std::string > > getNodeFields();
+  std::vector< std::vector< std::string > > getNodeFields() override;
 
   /// @copydoc MarmotElement::getDofIndicesPermutationPattern
-  std::vector< int > getDofIndicesPermutationPattern();
+  std::vector< int > getDofIndicesPermutationPattern() override;
 
   /// @copydoc MarmotElement::getNNodes
-  int getNNodes();
+  int getNNodes() override;
 
   /// @copydoc MarmotElement::getNSpatialDimensions
-  int getNSpatialDimensions();
+  int getNSpatialDimensions() override;
 
   /// @copydoc MarmotElement::getNDofPerElement
-  int getNDofPerElement();
+  int getNDofPerElement() override;
 
   /// @copydoc MarmotElement::getElementShape
-  std::string getElementShape();
+  std::string getElementShape() override;
 
   /// @copydoc MarmotElement::assignStateVars
-  void assignStateVars( double* stateVars, int nStateVars );
+  void assignStateVars( double* stateVars, int nStateVars ) override;
 
   /// @copydoc MarmotElement::assignProperty(const ElementProperties&)
-  void assignProperty( const ElementProperties& property );
+  void assignProperty( const ElementProperties& property ) override;
 
   /// @copydoc MarmotElement::assignProperty(const MarmotMaterialSection&)
-  void assignProperty( const MarmotMaterialSection& property );
+  void assignProperty( const MarmotMaterialSection& property ) override;
+
+  /// @copydoc MarmotElement::assignProperty(const std::string&, const double*, int)
+  void assignProperty( const std::string& propertyName, const double* properties, int nProperties ) override;
+
+  /// @copydoc MarmotElement::getPropertyNames
+  std::vector< std::string > getPropertyNames() const override;
 
   /// @copydoc MarmotElement::assignNodeCoordinates
-  void assignNodeCoordinates( const double* coordinates );
+  void assignNodeCoordinates( const double* coordinates ) override;
 
   /// @copydoc MarmotElement::initializeYourself
-  void initializeYourself();
+  void initializeYourself() override;
 
   /**
    * @brief Perform element computations with coordinate transformation.
@@ -117,18 +126,12 @@ public:
    * @param[out] Ke      Stiffness matrix in the ambient space.
    * @param[in]  time    Current time.
    * @param[in]  dT      Time step size.
-   * @param[out] pNewdT  Suggested new time step size.
    */
-  void computeYourself( const double* QTotal,
-                        const double* dQ,
-                        double*       Pe,
-                        double*       Ke,
-                        const double* time,
-                        double        dT,
-                        double&       pNewdT );
+  void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT )
+    override;
 
   /// @copydoc MarmotElement::setInitialConditions
-  void setInitialConditions( StateTypes state, const double* values );
+  void setInitialConditions( StateTypes state, const double* values ) override;
 
   /**
    * @brief Compute contribution from distributed surface loads with coordinate transformation.
@@ -147,8 +150,8 @@ public:
                                int                  elementFace,
                                const double*        load,
                                const double*        QTotal,
-                               const double*        time,
-                               double               dT );
+                               double               time,
+                               double               dT ) override;
 
   /**
    * @brief Compute body force contribution with coordinate transformation.
@@ -159,22 +162,18 @@ public:
    * @param[in]  time   Current time.
    * @param[in]  dT     Time step size.
    */
-  void computeBodyForce( double*       P,
-                         double*       K,
-                         const double* load,
-                         const double* QTotal,
-                         const double* time,
-                         double        dT );
+  void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, double time, double dT )
+    override;
 
   /// @copydoc MarmotElement::getStateView
-  StateView getStateView( const std::string& stateName, int quadraturePoint );
+  StateView getStateView( const std::string& stateName, int quadraturePoint ) override;
 
   /// @copydoc MarmotElement::getCoordinatesAtCenter
-  std::vector< double > getCoordinatesAtCenter();
+  std::vector< double > getCoordinatesAtCenter() override;
 
   /// @copydoc MarmotElement::getCoordinatesAtQuadraturePoints
-  std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints();
+  std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints() override;
 
   /// @copydoc MarmotElement::getNumberOfQuadraturePoints
-  int getNumberOfQuadraturePoints();
+  int getNumberOfQuadraturePoints() override;
 };

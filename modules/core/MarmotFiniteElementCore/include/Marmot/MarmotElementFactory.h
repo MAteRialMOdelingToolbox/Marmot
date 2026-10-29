@@ -36,7 +36,7 @@ namespace MarmotLibrary {
    * This class provides a mechanism to register elements by their code and name,
    * and to create element instances based on their properties.
    */
-  class MarmotElementFactory {
+  class MARMOT_API MarmotElementFactory {
   public:
     /// @brief Factory function pointer type: takes an element number and returns a new MarmotElement.
     using elementFactoryFunction = MarmotElement* (*)( int elementNumber );

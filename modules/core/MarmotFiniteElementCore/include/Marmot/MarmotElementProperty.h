@@ -23,7 +23,15 @@
  * ---------------------------------------------------------------------
  */
 #pragma once
+#include "Marmot/MarmotPortability.h"
 #include <string>
+
+#ifdef _MSC_VER
+// C4251: the std::string member is only used inside the library's inline interface; the standard library types are
+// not exported (no dll-interface), which is harmless as long as consumers are built with the same toolset.
+#  pragma warning( push )
+#  pragma warning( disable : 4251 )
+#endif
 
 /** @struct MarmotMaterialSection
  * @brief Structure to hold material section properties.
@@ -31,7 +39,7 @@
  * This structure is used to define a material section with its code and properties,
  * allowing for flexible material definitions in finite element analysis.
  */
-class MarmotMaterialSection {
+class MARMOT_API MarmotMaterialSection {
 public:
   const std::string materialName;        ///< Name identifying the material model.
   const double*     materialProperties;  ///< Pointer to the array of material property values.
@@ -49,13 +57,17 @@ public:
       nMaterialProperties( nMaterialProperties ){};
 };
 
+#ifdef _MSC_VER
+#  pragma warning( pop )
+#endif
+
 /** @struct ElementProperties
  * @brief Structure to hold element properties.
  *
  * This structure is used to define properties of a finite element,
  * allowing for flexible element definitions in finite element analysis.
  */
-class ElementProperties {
+class MARMOT_API ElementProperties {
 public:
   const double* elementProperties;  ///< Pointer to the array of element property values.
   int           nElementProperties; ///< Number of element property values.

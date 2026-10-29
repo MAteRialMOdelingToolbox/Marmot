@@ -254,6 +254,39 @@ void test_getExponentPowerTen()
     throwExceptionOnFailure( checkIfEqual( computed, expected ),
                              MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
   }
+
+  // Testcase 3: value exactly zero must return 0, not floor(log10(0)) == -inf
+  {
+    double computed = getExponentPowerTen( 0.0 );
+    double expected = 0;
+    throwExceptionOnFailure( checkIfEqual( computed, expected ),
+                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3 (x == 0)" );
+  }
+
+  // Testcase 4: value close to (but not exactly) zero, on both sides
+  {
+    double computed = getExponentPowerTen( 5e-17 );
+    double expected = 0;
+    throwExceptionOnFailure( checkIfEqual( computed, expected ),
+                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 4 (positive, close to 0)" );
+  }
+  {
+    double computed = getExponentPowerTen( -5e-17 );
+    double expected = 0;
+    throwExceptionOnFailure( checkIfEqual( computed, expected ),
+                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 4 (negative, close to 0)" );
+  }
+}
+
+void test_factorial()
+{
+  throwExceptionOnFailure( checkIfEqual( static_cast< double >( factorial( 0 ) ), 1.0 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed for n = 0" );
+  throwExceptionOnFailure( checkIfEqual( static_cast< double >( factorial( 1 ) ), 1.0 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed for n = 1" );
+  // n = 5 exercises the recursive branch: 5! = 120
+  throwExceptionOnFailure( checkIfEqual( static_cast< double >( factorial( 5 ) ), 120.0 ),
+                           MakeString() << __PRETTY_FUNCTION__ << " failed for n = 5" );
 }
 
 void test_orthonormalCoordinateSystem()
@@ -290,6 +323,44 @@ void test_orthonormalCoordinateSystem()
 
     throwExceptionOnFailure( checkIfEqual< double >( computed, expected ),
                              MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 2" );
+  }
+
+  {
+    // Test 3: normal vector along the z-axis, i.e. its x and y components are exactly
+    // zero -- exercises the dedicated branch that special-cases this to avoid degenerating
+    // the arbitrary-perpendicular-vector construction.
+    Marmot::Vector3d normalVector( 0.0, 0.0, 1.0 );
+    Marmot::Matrix3d computed = orthonormalCoordinateSystem( normalVector );
+
+    // columns: normal vector (0,0,1); hard-coded orthogonal vector (0,1,0);
+    // cross product of the two, (0,0,1) x (0,1,0) = (-1,0,0)
+    Marmot::Matrix3d expected;
+    // clang-format off
+    expected <<  0.0, 0.0, -1.0,
+                 0.0, 1.0,  0.0,
+                 1.0, 0.0,  0.0;
+    // clang-format on
+
+    throwExceptionOnFailure( checkIfEqual< double >( computed, expected ),
+                             MakeString() << __PRETTY_FUNCTION__ << " failed for Testcase 3 (normal along z-axis)" );
+  }
+
+  {
+    // Test 4: non-orthogonal n1, n2 must throw
+    Marmot::Vector3d n1( 1.0, 0.0, 0.0 );
+    Marmot::Vector3d n2( 1.0, 1.0, 0.0 );
+
+    bool threw = false;
+    try {
+      orthonormalCoordinateSystem( n1, n2 );
+    }
+    catch ( const std::invalid_argument& ) {
+      threw = true;
+    }
+
+    throwExceptionOnFailure( threw,
+                             MakeString()
+                               << __PRETTY_FUNCTION__ << " failed to throw for non-orthogonal n1, n2 (Testcase 4)" );
   }
 }
 
@@ -721,6 +792,7 @@ int main()
                                                        test_exp,
                                                        test_makeReal,
                                                        test_getExponentPowerTen,
+                                                       test_factorial,
                                                        test_orthonormalCoordinateSystem,
                                                        test_directionCosines,
                                                        test_isNaN,

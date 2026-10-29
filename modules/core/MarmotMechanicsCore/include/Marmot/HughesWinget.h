@@ -106,10 +106,10 @@ namespace Marmot::NumericalAlgorithms {
     Eigen::Matrix3d compute_dScalar_dF( const Eigen::Matrix3d& FInv, const Marmot::Vector6d& dScalarDEps );
 
   private:
-    Formulation      theFormulation;
-    Eigen::Matrix3d  l;
-    Eigen::Matrix3d  dOmega;
-    Eigen::Matrix3d  dR;
-    Marmot::Vector6d dEps;
+    [[maybe_unused]] Formulation theFormulation;
+    Eigen::Matrix3d              l;
+    Eigen::Matrix3d              dOmega;
+    Eigen::Matrix3d              dR;
+    Marmot::Vector6d             dEps;
   };
 } // namespace Marmot::NumericalAlgorithms

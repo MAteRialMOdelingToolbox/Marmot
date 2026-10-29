@@ -24,6 +24,7 @@
  */
 
 #pragma once
+#include "Marmot/MarmotPortability.h"
 #include "Marmot/MarmotStateHelpers.h"
 #include "Marmot/MarmotTypedefs.h"
 #include <algorithm>
@@ -150,7 +151,7 @@ public:
    *
    * @param[in] length characteristic length; will be assigned to @ref characteristicElementLength
    */
-  void setCharacteristicElementLength( double length );
+  MARMOT_API void setCharacteristicElementLength( double length );
 
   /**
    * For a given linearized strain increment \f$\Delta\boldsymbol{\varepsilon}\f$ at the old and the current time,

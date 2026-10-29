@@ -129,7 +129,7 @@ namespace Marmot::Materials {
       baseMaterial->initializeYourself( stateLayout.getPtr( stateVars, "materialstate" ), baseVarsCount );
 
       FastorStandardTensors::TensorMap33d
-        Fn = this->stateLayout.getAs< FastorStandardTensors::TensorMap33d >( stateVars, "Substepping_F_n" );
+        Fn = this->stateLayout.template getAs< FastorStandardTensors::TensorMap33d >( stateVars, "Substepping_F_n" );
       memcpy( Fn.data(), FastorStandardTensors::Spatial3D::I.data(), 9 * sizeof( double ) );
     }
 
@@ -254,9 +254,9 @@ namespace Marmot::Materials {
       using namespace Eigen;
       using namespace FastorStandardTensors;
 
-      TensorMap33d    Fn_ref = this->stateLayout.getAs< TensorMap33d >( response.stateVars, "Substepping_F_n" );
-      const Tensor33d Fn     = Fn_ref;
-      const Tensor33d Fn1    = deformation.F;
+      TensorMap33d Fn_ref = this->stateLayout.template getAs< TensorMap33d >( response.stateVars, "Substepping_F_n" );
+      const Tensor33d Fn  = Fn_ref;
+      const Tensor33d Fn1 = deformation.F;
 
       int nBaseState = baseMaterial->getNumberOfRequiredStateVars();
 

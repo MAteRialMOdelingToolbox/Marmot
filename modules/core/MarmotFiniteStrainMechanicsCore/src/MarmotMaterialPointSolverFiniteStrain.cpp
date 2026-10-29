@@ -79,15 +79,27 @@ namespace Marmot {
       double dT       = 0.0;
       double stepTime = step.timeEnd - step.timeStart;
 
-      int counter = 0;
+      int  counter         = 0;
+      bool dTStartAssigned = false;
 
       while ( time < step.timeEnd && counter <= step.maxIncrements ) {
 
         // adjust time step if overshooting
         if ( time + dT > step.timeEnd )
           dT = step.timeEnd - time;
-        if ( counter == 1 )
-          dT = step.dTStart; // use initial time step for the first increment, then adjust based on convergence
+        // use the initial time step for the first real increment, then adjust based on
+        // convergence -- assigned only once (not on every retry of that increment): counter
+        // stays at 1 across repeated failed retries of the same increment (it only advances
+        // on success), so gating this solely on `counter == 1` used to re-assign dT = dTStart
+        // on every such retry too, silently discarding the catch block's cutback below and
+        // preventing dT from ever reaching dTMin.
+        if ( counter == 1 && !dTStartAssigned ) {
+          dT              = step.dTStart;
+          dTStartAssigned = true;
+          // ensure the very first assigned dT does not overshoot the step end
+          if ( time + dT > step.timeEnd )
+            dT = step.timeEnd - time;
+        }
 
         // setup increment
         Increment increment;
@@ -109,7 +121,7 @@ namespace Marmot {
           stateVars = stateVarsTemp;
           counter++;
         }
-        catch ( const Marmot::StressUpdateFailed& e ) {
+        catch ( const Marmot::StressUpdateFailed& ) {
           // if failed, reduce time step and retry
           if ( dT <= step.dTMin )
             throw Marmot::SolverTimestepExhausted( "Minimum time step reached, cannot proceed." );
@@ -140,7 +152,7 @@ namespace Marmot {
       // temporary variables for material state
       MarmotMaterialFiniteStrain::ConstitutiveResponse< 3 > state;
       MarmotMaterialFiniteStrain::Deformation< 3 >          deformation;
-      MarmotMaterialFiniteStrain::AlgorithmicModuli< 3 >    algorithmicModuli;
+      MarmotMaterialFiniteStrain::AlgorithmicModuli< 3 >    algorithmicModuli{};
       MarmotMaterialFiniteStrain::TimeIncrement timeInfo = { increment.timeOld + increment.dT, increment.dT };
 
       // store identical rows

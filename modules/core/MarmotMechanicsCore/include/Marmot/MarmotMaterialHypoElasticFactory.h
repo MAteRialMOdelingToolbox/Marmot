@@ -39,7 +39,7 @@ namespace MarmotLibrary {
    * and to create material instances based on their properties.
    * It allows for dynamic material creation without hardcoding specific material types.
    */
-  class MarmotMaterialHypoElasticFactory {
+  class MARMOT_API MarmotMaterialHypoElasticFactory {
   public:
     /// Function signature for material factory functions registered in the map.
     using materialFactoryFunction = std::function<

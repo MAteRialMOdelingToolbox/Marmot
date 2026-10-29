@@ -68,5 +68,26 @@ int main()
   throwExceptionOnFailure( checker.isConverged( residual, X, increment, 15 ) == true,
                            "checker.isConverged( residual, X, increment, 15 ) != true" );
 
+  // convergence within nMaxNewtonCycles using the *normal* (non-alt) tolerances
+  residual << 1e-9;
+  increment << 1e-9;
+  throwExceptionOnFailure( checker.isConverged( residual, X, increment, 5 ) == true,
+                           "checker.isConverged() must be true for a residual/increment satisfying the normal "
+                           "tolerances within nMaxNewtonCycles" );
+  throwExceptionOnFailure( checker.iterationFinished( residual, X, increment, 5 ) == true,
+                           "checker.iterationFinished() must be true once isConverged() is true" );
+
+  // relativeNorm: increment norm below 1e-14 must short-circuit to incNorm itself
+  Eigen::VectorXd tinyIncrement( 1 );
+  tinyIncrement << 1e-15;
+  throwExceptionOnFailure( checkIfEqual( checker.relativeNorm( tinyIncrement, X ), tinyIncrement.norm() ),
+                           "relativeNorm() must return incNorm unchanged when incNorm < 1e-14" );
+
+  // relativeNorm: reference norm below 1e-12 must yield 0.0 (undefined relative norm)
+  Eigen::VectorXd tinyX( 1 );
+  tinyX << 1e-13;
+  throwExceptionOnFailure( checkIfEqual( checker.relativeNorm( increment, tinyX ), 0.0 ),
+                           "relativeNorm() must return 0.0 when the reference norm < 1e-12" );
+
   return 0;
 }

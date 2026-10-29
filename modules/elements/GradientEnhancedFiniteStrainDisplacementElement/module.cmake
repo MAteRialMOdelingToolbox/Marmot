@@ -1,0 +1,2 @@
+marmot_add_module(GradientEnhancedFiniteStrainDisplacementElement
+    REQUIRES MarmotFiniteElementCore MarmotFiniteStrainMechanicsCore)

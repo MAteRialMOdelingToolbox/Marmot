@@ -18,22 +18,27 @@ the initial elastic stiffness tensor :math:`\Cel` is replaced by
 
 .. math::
 
-   \Cel_0 = s\, \Cel( E_1, E_2, E_3, G_{12}, G_{23}, G_{31}, \nu_{12}, \nu_{23}, \nu_{31} ),
+   \Cel_0 = s\, \Cel( E_1, E_2, E_3, G_{12}, G_{23}, G_{13}, \nu_{12}, \nu_{23}, \nu_{13} ),
 
 where the Young's moduli :math:`E_1`, :math:`E_2`, and :math:`E_3`
-and the shear moduli :math:`G_{12}`, :math:`G_{23}`, and :math:`G_{31}`
+and the shear moduli :math:`G_{12}`, :math:`G_{23}`, and :math:`G_{13}`
 are given in the material directions :math:`x_1`, :math:`x_2`, and :math:`x_3`.
-Additionally, the Poisson's ratios :math:`\nu_{12}`, :math:`\nu_{23}`, and :math:`\nu_{31}` are used.
+Additionally, the Poisson's ratios :math:`\nu_{12}`, :math:`\nu_{23}`, and :math:`\nu_{13}` are used.
 
 .. note::
    The scaling factor :math:`s` is applied to all initial elastic moduli.
    This means that the ratios between the Young's moduli and shear moduli remain unchanged.
    Only the absolute values of the initial elastic moduli are scaled.
 
-.. warning::
-   The definition of Poisson's ratio in Marmot differs from the standard definition.
-   In Marmot, Poisson's ratio :math:`\nu_{ij}` is defined as the ratio of the lateral strain in direction :math:`x_j`
-   to the axial strain in direction :math:`x_i` when a uniaxial stress is applied in direction :math:`x_i`.
+.. note::
+   Poisson's ratio :math:`\nu_{ij}` is defined as the negative ratio of the lateral strain in direction :math:`x_j`
+   to the axial strain in direction :math:`x_i` when a uniaxial stress is applied in direction :math:`x_i`,
+
+   .. math::
+
+      \nu_{ij} = -\frac{\varepsilon_j}{\varepsilon_i},
+
+   so that the corresponding compliance entry reads :math:`\CelInv_{ji} = -\nu_{ij} / E_i`.
    See namespace :cpp:any:`Marmot::ContinuumMechanics::Elasticity` for more details.
 
 Accordingly, the normalized initial elastic compliance tensor now reads

@@ -13,7 +13,9 @@ void testMarmotLocalization()
   Eigen::Vector< double, 6 > materialProperties;
   materialProperties << 210000., 0.3, 200., 0., 0., 0.;
 
-  auto material = Marmot::Materials::VonMisesModel( materialProperties.data(), materialProperties.size(), 0 );
+  auto material = Marmot::Materials::VonMisesModel( materialProperties.data(),
+                                                    static_cast< int >( materialProperties.size() ),
+                                                    0 );
 
   // set state vars
   if ( material.getNumberOfRequiredStateVars() > 1 ) {
@@ -65,9 +67,31 @@ void testMarmotLocalization()
                            "test minimumDeterminantAcousticTensor" );
 }
 
+void testLocalizationChecker()
+{
+  using namespace Marmot::ContinuumMechanics::LocalizationAnalysis;
+
+  // A well-conditioned (positive-definite, non-singular) acoustic tensor: no localization.
+  Marmot::Matrix3d wellConditioned = Marmot::Matrix3d::Identity() * 1000.;
+  throwExceptionOnFailure( localizationChecker( wellConditioned ) == false,
+                           "localizationChecker() must return false for a well-conditioned acoustic tensor in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+
+  // A singular (zero-determinant) acoustic tensor: localization detected.
+  Marmot::Matrix3d singular = Marmot::Matrix3d::Zero();
+  singular( 0, 0 )          = 1000.;
+  singular( 1, 1 )          = 1000.;
+  // row/col 2 left as zero -> determinant exactly 0
+  throwExceptionOnFailure( localizationChecker( singular ) == true,
+                           "localizationChecker() must return true for a singular acoustic tensor in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
 int main()
 {
-  testMarmotLocalization();
+  auto tests = std::vector< std::function< void() > >{ testMarmotLocalization, testLocalizationChecker };
+
+  executeTestsAndCollectExceptions( tests );
 
   return 0;
 }

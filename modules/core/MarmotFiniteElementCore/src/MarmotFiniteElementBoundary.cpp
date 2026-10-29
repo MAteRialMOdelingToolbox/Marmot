@@ -51,7 +51,7 @@ namespace Marmot {
       }
 
       // get the 'condensed' boundary element coordinates
-      nParentCoordinates           = parentCoordinates.size();
+      nParentCoordinates           = static_cast< int >( parentCoordinates.size() );
       mapBoundaryToParentVectorial = expandNodeIndicesToCoordinateIndices( mapBoundaryToParentScalar, nDim );
       coordinates                  = condenseParentToBoundaryVectorial( parentCoordinates );
 
@@ -214,9 +214,9 @@ namespace Marmot {
           // clang-format on
 
           for ( int I = 0; I < nNodes; I++ )
-            for ( int J = 0; J < nNodes; J++ )
-              K.block< 3, 3 >( I * 3, J * 3 ) += qp.N( I ) * ( qp.dNdXi( 0, J ) * HXi1 - qp.dNdXi( 1, J ) * HXi0 ) *
-                                                 qp.weight;
+            for ( int Jn = 0; Jn < nNodes; Jn++ )
+              K.block< 3, 3 >( I * 3, Jn * 3 ) += qp.N( I ) * ( qp.dNdXi( 0, Jn ) * HXi1 - qp.dNdXi( 1, Jn ) * HXi0 ) *
+                                                  qp.weight;
         }
       }
 
@@ -251,7 +251,7 @@ namespace Marmot {
       /** Condense any scalar quantiaty parent vector to the corresponding boundary child vector (e.g.
        * temperature fields ) dependent on the underlying indices mapping
        * */
-      VectorXd boundaryVector( nNodes * nDim );
+      VectorXd boundaryVector( nNodes );
 
       for ( int i = 0; i < mapBoundaryToParentScalar.size(); i++ )
         boundaryVector( i ) = parentVector( mapBoundaryToParentScalar( i ) );

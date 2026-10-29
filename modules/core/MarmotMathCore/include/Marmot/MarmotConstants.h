@@ -25,6 +25,7 @@
 
 #pragma once
 #include <cmath>
+#include <limits>
 
 namespace Marmot {
   namespace Constants {

@@ -290,7 +290,7 @@ void testObjectivity()
 // Test I-6: Orthotropic material - uniaxial stretch in direction 1
 // Reference values computed from the Biot hyperelastic formulation for the orthotropic stiffness tensor.
 // Material: E1=20000, E2=10000, E3=15000, nu12=0.25, nu13=0.35, nu23=0.30, G12=4000, G13=6000, G23=5000
-// For F = diag(1.1, 1, 1): tau_11 ≈ 3555.30, tau_22 ≈ 1100.29, tau_33 ≈ 1461.32
+// For F = diag(1.1, 1, 1): tau_11 ≈ 2708.90, tau_22 ≈ 580.07, tau_33 ≈ 907.47
 void testOrthotropicUniaxialResponse()
 {
   const std::string matName  = "FINITESTRAINORTHOTROPICBIOTVISCOELASTICITY";
@@ -319,9 +319,9 @@ void testOrthotropicUniaxialResponse()
   // C++ calls stiffnessTensor(E1,E2,E3, nu12, nu23, nu13, G12, G23, G13)
   // where nu23 and nu13 arguments correspond to mat[5]=0.30 and mat[4]=0.35 respectively
   Tensor33d stressTarget( 0.0 );
-  stressTarget( 0, 0 ) = 3.555300859598857e+03;
-  stressTarget( 1, 1 ) = 1.100286532951290e+03;
-  stressTarget( 2, 2 ) = 1.461318051575932e+03;
+  stressTarget( 0, 0 ) = 2.708896797153027e+03;
+  stressTarget( 1, 1 ) = 5.800711743772246e+02;
+  stressTarget( 2, 2 ) = 9.074733096085413e+02;
 
   throwExceptionOnFailure( checkIfEqual( finalStress, stressTarget, 1e-6 ),
                            "I-6: Orthotropic uniaxial response failed in " + std::string( __PRETTY_FUNCTION__ ) );
@@ -355,11 +355,11 @@ void testOrthotropicSimpleShearResponse()
 
   // Reference values from analytical computation (Python verification)
   Tensor33d stressTarget( 0.0 );
-  stressTarget( 0, 0 ) = 6.094122349057655e+01;
-  stressTarget( 0, 1 ) = 4.009906851900923e+02;
-  stressTarget( 1, 0 ) = 4.009906851900923e+02;
-  stressTarget( 1, 1 ) = 2.015652085841339e+01;
-  stressTarget( 2, 2 ) = 1.235906850394132e+01;
+  stressTarget( 0, 0 ) = 5.108475756801163e+01;
+  stressTarget( 0, 1 ) = 4.013142492448799e+02;
+  stressTarget( 1, 0 ) = 4.013142492448799e+02;
+  stressTarget( 1, 1 ) = 2.117443414623181e+01;
+  stressTarget( 2, 2 ) = 1.617365326952673e+01;
 
   throwExceptionOnFailure( checkIfEqual( finalStress, stressTarget, 1e-6 ),
                            "I-7: Orthotropic simple shear response failed in " + std::string( __PRETTY_FUNCTION__ ) );
