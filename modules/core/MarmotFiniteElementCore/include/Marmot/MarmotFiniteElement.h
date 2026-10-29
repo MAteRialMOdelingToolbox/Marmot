@@ -55,7 +55,7 @@ namespace Marmot::Discretizations::Elements {
    * @brief Determine the element shape from spatial dimension and node count.
    * @param[in] nDim   Number of spatial dimensions.
    * @param[in] nNodes Number of element nodes.
-   * @return Matching @ref ElementShapes enumerator.
+   * @return Matching @ref Marmot::Discretizations::Elements::ElementShapes enumerator.
    */
   ElementShapes getElementShapeByMetric( int nDim, int nNodes );
 
