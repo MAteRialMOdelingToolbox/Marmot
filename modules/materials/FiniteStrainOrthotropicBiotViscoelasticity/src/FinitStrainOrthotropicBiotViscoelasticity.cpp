@@ -42,8 +42,9 @@ namespace Marmot::Materials {
       G12( materialProperties[6] ),
       G13( materialProperties[7] ),
       G23( materialProperties[8] ),
-      maxwellProperties( ContinuumMechanics::Viscoelasticity::createMaxwellProperties( materialProperties[9],
-                                                                                       &materialProperties[10] ) ),
+      maxwellProperties(
+        ContinuumMechanics::Viscoelasticity::createMaxwellProperties( static_cast< int >( materialProperties[9] ),
+                                                                      &materialProperties[10] ) ),
       dBiotStress_dU( Marmot::Math::Tensors::makeDual( ContinuumMechanics::Voigt::voigtToStiffness(
         ContinuumMechanics::Elasticity::Orthotropic::
           stiffnessTensor( E1, E2, E3, nu12, nu23, nu13, G12, G23, G13 ) ) ) )

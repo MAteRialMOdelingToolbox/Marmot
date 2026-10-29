@@ -58,12 +58,13 @@ namespace {
     {
       element->assignNodeCoordinates( coordinates.data() );
       element->assignProperty(
-        Marmot::Discretizations::ElementProperties( elementProperties.data(), elementProperties.size() ) );
+        Marmot::Discretizations::ElementProperties( elementProperties.data(),
+                                                    static_cast< int >( elementProperties.size() ) ) );
       element->assignProperty( Marmot::Discretizations::MaterialSection( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
                                                                          matProps.data(),
-                                                                         matProps.size() ) );
+                                                                         static_cast< int >( matProps.size() ) ) );
       stateVars.assign( element->getNumberOfRequiredStateVars(), 0.0 );
-      element->assignStateVars( stateVars.data(), stateVars.size() );
+      element->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
       element->initializeYourself();
       reset();
     }

@@ -45,12 +45,14 @@ namespace {
 
     wrapper->assignNodeCoordinates( nodeCoordsVec.data() );
 
-    Marmot::Discretizations::MaterialSection materialSection( "LINEARELASTIC", matProps.data(), matProps.size() );
+    Marmot::Discretizations::MaterialSection materialSection( "LINEARELASTIC",
+                                                              matProps.data(),
+                                                              static_cast< int >( matProps.size() ) );
     // assignProperty(Marmot::Discretizations::ElementProperties&) stores a zero-copy view into this array (see
     // DisplacementFiniteElement::assignProperty), so it must outlive the element; `static`
     // gives it program lifetime rather than dangling once this factory function returns.
     static const std::vector< double >         elPropsVec = { 1.0 }; // cross-section area
-    Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), elPropsVec.size() );
+    Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
     wrapper->assignProperty( elProps );
     wrapper->assignProperty( materialSection );
 

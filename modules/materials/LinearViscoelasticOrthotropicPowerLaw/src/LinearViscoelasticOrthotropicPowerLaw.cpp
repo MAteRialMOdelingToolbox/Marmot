@@ -14,7 +14,7 @@ using namespace Eigen;
 
 namespace Marmot::Materials {
 
-  double LinearViscoelasticOrthotropicPowerLaw::getDensity( const double* stateVars ) const
+  double LinearViscoelasticOrthotropicPowerLaw::getDensity( [[maybe_unused]] const double* stateVars ) const
   {
     if ( nMaterialProperties < 24 ) {
       throw std::runtime_error( Marmot::Utilities::MakeString()
@@ -43,7 +43,7 @@ namespace Marmot::Materials {
       // viscoelastic parameters
       m                                 ( materialProperties[10] ),
       n                                 ( materialProperties[11] ),
-      powerLawApproximationOrder        ( static_cast< size_t > ( materialProperties[12] ) ),
+      powerLawApproximationOrder        ( static_cast< int >( materialProperties[12] ) ),
       nKelvin                           ( static_cast< size_t > ( materialProperties[13] ) ),
       minTau                            ( materialProperties[14] ),
       spacing                           ( materialProperties[15] ),
@@ -56,7 +56,8 @@ namespace Marmot::Materials {
     stateLayout.add( "kelvinStateVars", 6 * nKelvin );
     stateLayout.finalize();
 
-    retardationTimes = ContinuumMechanics::Viscoelasticity::KelvinChain::generateRetardationTimes( nKelvin,
+    retardationTimes = ContinuumMechanics::Viscoelasticity::KelvinChain::generateRetardationTimes( static_cast< int >(
+                                                                                                     nKelvin ),
                                                                                                    minTau,
                                                                                                    spacing );
 

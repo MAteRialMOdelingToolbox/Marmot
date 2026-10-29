@@ -58,7 +58,8 @@ jobs:
 
       - name: Build Marmot
         run: |
-          cmake -S Marmot -B Marmot/_build -DCMAKE_PREFIX_PATH="$env:DEPS_PREFIX" `
+          # Fail on compiler warnings (/WX); local builds keep warnings non-fatal.
+          cmake -S Marmot -B Marmot/_build -DCMAKE_COMPILE_WARNING_AS_ERROR=ON -DCMAKE_PREFIX_PATH="$env:DEPS_PREFIX" `
             -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}/marmot-install"
           cmake --build Marmot/_build --config Release --parallel
 

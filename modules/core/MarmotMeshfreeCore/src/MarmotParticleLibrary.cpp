@@ -84,7 +84,7 @@ namespace Marmot::Registry {
                                                                           sizeMaterialProperties,
                                                                           approximation );
     }
-    catch ( const std::out_of_range& e ) {
+    catch ( const std::out_of_range& ) {
       throw std::invalid_argument( Marmot::Utilities::MakeString()
                                    << "Invalid particle " << particleName << " requested!" );
     }

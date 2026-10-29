@@ -26,7 +26,7 @@ namespace Marmot::Materials {
       fyInf( materialProperties[3] ),
       eta( materialProperties[4] ),
       H( materialProperties[5] ),
-      implementationType( materialProperties[6] ),
+      implementationType( static_cast< int >( materialProperties[6] ) ),
       density( nMaterialProperties > 7 ? materialProperties[7] : 0.0 ) // TODO: make mandatory material parameter
   {
     stateLayout.add( "Fp", 9 );                                        // plastic deformation gradient

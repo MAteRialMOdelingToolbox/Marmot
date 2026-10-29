@@ -27,7 +27,15 @@
 #include "Marmot/GradientEnhancedFiniteStrainParticleSQCNI.h"
 #include "Marmot/MarmotMeshfreeApproximation.h"
 #include "Marmot/NewmarkBetaIntegrator.h"
+/* Fastor/Fastor.h ends with `#pragma warning( default : ... )`; scope it so it neither overrides the build's warning
+ * flags nor leaks into consumers. */
+#ifdef _MSC_VER
+#  pragma warning( push )
+#endif
 #include <Fastor/Fastor.h>
+#ifdef _MSC_VER
+#  pragma warning( pop )
+#endif
 
 namespace Marmot::Discretizations::Meshfree {
 
@@ -141,7 +149,8 @@ namespace Marmot::Discretizations::Meshfree {
     {
       ParentPointParticle::_assignedKernelFunctions = kernelFunctions;
 
-      ParentPointParticle::_nNodes = GradientEnhancedFiniteStrainParticle< nDim >::_assignedKernelFunctions.size();
+      ParentPointParticle::_nNodes = static_cast< int >(
+        GradientEnhancedFiniteStrainParticle< nDim >::_assignedKernelFunctions.size() );
 
       Eigen::Matrix< double, nDim, 1 > coords;
       ParentPointParticle::_mp.getCoordinatesAtCenter( coords.data() );
@@ -226,7 +235,7 @@ namespace Marmot::Discretizations::Meshfree {
      * J_Y\,\boldsymbol{F}_n\,\boldsymbol{M}^0\,\boldsymbol{F}_n^\mathsf{T}
      * @f$.
      */
-    virtual void acceptStateAndPosition() override
+    void acceptStateAndPosition() override
     {
       ParentSQCNIParticle::acceptStateAndPosition();
 
@@ -282,7 +291,6 @@ namespace Marmot::Discretizations::Meshfree {
   {
     using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Fastor;
-    using ink   = Fastor::Index< i_, n_, k_ >;
     using to_jk = Fastor::OIndex< j_, k_ >;
     using ijmM  = Index< i_, j_, m_, M_ >;
     using mMK   = Index< m_, M_, K_ >;
@@ -404,7 +412,6 @@ namespace Marmot::Discretizations::Meshfree {
 
       const TensorDD d2NA_dYdY_x_MOIScaled = einsum< ij, jk >( d2NA_dYdY, _momentsOfInertia_IntermediateReference ) / detJIntermediate;
       const TensorDD d2NA_dxdY_x_MOIScaled = einsum< ji, jk >( dY_dx, d2NA_dYdY_x_MOIScaled ) ;
-      const TensorD dTA_dY_x_MOIScaled = einsum< j, jk >( dT_A_dY, _momentsOfInertia_IntermediateReference ) / detJIntermediate;
 
       TensorD rU_Stab = einsum< iK, ijK >( d2NA_dxdY_x_MOIScaled, dS_dY );
 

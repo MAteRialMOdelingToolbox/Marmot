@@ -132,9 +132,8 @@ namespace Marmot::Materials {
 
       baseMaterial->initializeYourself( stateLayout.getPtr( stateVars, "materialstate" ), baseVarsCount );
 
-      Marmot::Math::Tensors::FastorTensors::TensorMap33d
-        Fn = this->stateLayout.getAs< Marmot::Math::Tensors::FastorTensors::TensorMap33d >( stateVars,
-                                                                                            "Substepping_F_n" );
+      Marmot::Math::Tensors::FastorTensors::TensorMap33d Fn = this->stateLayout.template getAs<
+        Marmot::Math::Tensors::FastorTensors::TensorMap33d >( stateVars, "Substepping_F_n" );
       memcpy( Fn.data(), Marmot::Math::Tensors::FastorTensors::Spatial3D::I.data(), 9 * sizeof( double ) );
     }
 
@@ -261,8 +260,8 @@ namespace Marmot::Materials {
       using namespace Eigen;
 
       Math::Tensors::FastorTensors::TensorMap33d
-        Fn_ref = this->stateLayout.getAs< Math::Tensors::FastorTensors::TensorMap33d >( response.stateVars,
-                                                                                        "Substepping_F_n" );
+        Fn_ref = this->stateLayout.template getAs< Math::Tensors::FastorTensors::TensorMap33d >( response.stateVars,
+                                                                                                 "Substepping_F_n" );
       const Math::Tensors::FastorTensors::Tensor33d Fn  = Fn_ref;
       const Math::Tensors::FastorTensors::Tensor33d Fn1 = deformation.F;
 

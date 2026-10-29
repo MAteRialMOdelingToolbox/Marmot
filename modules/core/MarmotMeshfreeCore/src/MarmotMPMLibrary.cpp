@@ -93,7 +93,7 @@ namespace Marmot::Registry {
                                       /* material */
       );
     }
-    catch ( const std::out_of_range& e ) {
+    catch ( const std::out_of_range& ) {
       throw std::invalid_argument( Marmot::Utilities::MakeString()
                                    << "Invalid materialPoint " << materialPointName << " requested!" );
     }
@@ -137,7 +137,7 @@ namespace Marmot::Registry {
     try {
       return cellFactoryFunctionByName().at( cellNameUpperCase )( cellNumber, nodeCoordinates, sizeNodeCoordinates );
     }
-    catch ( const std::out_of_range& e ) {
+    catch ( const std::out_of_range& ) {
       throw std::invalid_argument( Marmot::Utilities::MakeString() << "Invalid cell " << cellName << " requested!" );
     }
   }
@@ -183,7 +183,7 @@ namespace Marmot::Registry {
       return bSplineCellFactoryFunctionByName().at(
         cellNameUpperCase )( cellNumber, nodeCoordinates, sizeNodeCoordinates, knotVectors, sizeKnotVectors );
     }
-    catch ( const std::out_of_range& e ) {
+    catch ( const std::out_of_range& ) {
       throw std::invalid_argument( Marmot::Utilities::MakeString() << "Invalid cell " << cellName << " requested!" );
     }
   }
@@ -231,7 +231,7 @@ namespace Marmot::Registry {
       return cellElementFactoryFunctionByName().at(
         cellNameUpperCase )( cellElementNumber, nodeCoordinates, sizeNodeCoordinates, quadratureRule, quadratureOrder );
     }
-    catch ( const std::out_of_range& e ) {
+    catch ( const std::out_of_range& ) {
       throw std::invalid_argument( Marmot::Utilities::MakeString()
                                    << "Invalid cellElement " << cellElementName << " requested!" );
     }

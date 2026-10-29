@@ -209,7 +209,7 @@ namespace Marmot::Discretizations::Meshfree {
     {
       _assignedKernelFunctions = kernelFunctions;
 
-      _nNodes = _assignedKernelFunctions.size();
+      _nNodes = static_cast< int >( _assignedKernelFunctions.size() );
 
       Eigen::Matrix< double, nDim, 1 > coords;
       getCenterCoordinates( coords.data() );

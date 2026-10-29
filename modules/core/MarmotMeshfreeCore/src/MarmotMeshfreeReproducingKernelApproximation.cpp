@@ -44,7 +44,8 @@ namespace Marmot::Discretizations::Meshfree {
     const std::vector< const KernelFunction* >& coveringShapeFunctions,
     const int                                   completenessOrder )
   {
-    const auto _sizeH = Math::computeSizeOfMonomialBasisVector( completenessOrder, x_minus_xI.size() );
+    const auto _sizeH = Math::computeSizeOfMonomialBasisVector( completenessOrder,
+                                                                static_cast< int >( x_minus_xI.size() ) );
 
     Eigen::VectorXd res = Eigen::VectorXd::Ones( _sizeH );
 
@@ -58,7 +59,8 @@ namespace Marmot::Discretizations::Meshfree {
     const std::vector< const KernelFunction* >& coveringShapeFunctions,
     const int                                   completenessOrder )
   {
-    const auto _sizeH = Math::computeSizeOfMonomialBasisVector( completenessOrder, x_minus_xI.size() );
+    const auto _sizeH = Math::computeSizeOfMonomialBasisVector( completenessOrder,
+                                                                static_cast< int >( x_minus_xI.size() ) );
 
     Eigen::MatrixXd res = Eigen::MatrixXd::Ones( _sizeH, x_minus_xI.size() );
 
@@ -98,7 +100,8 @@ namespace Marmot::Discretizations::Meshfree {
     const std::vector< const KernelFunction* >& coveringShapeFunctions,
     int                                         completenessOrder )
   {
-    const auto _sizeH = Math::computeSizeOfMonomialBasisVector( completenessOrder, globalCoord.size() );
+    const auto _sizeH = Math::computeSizeOfMonomialBasisVector( completenessOrder,
+                                                                static_cast< int >( globalCoord.size() ) );
 
     Eigen::MatrixXd M = Eigen::MatrixXd::Zero( _sizeH, _sizeH );
 
@@ -120,7 +123,7 @@ namespace Marmot::Discretizations::Meshfree {
                                int                                         completenessOrder )
   {
 
-    const int  _dim   = globalCoord.size();
+    const int  _dim   = static_cast< int >( globalCoord.size() );
     const auto _sizeH = Math::computeSizeOfMonomialBasisVector( completenessOrder, _dim );
 
     Eigen::MatrixXd                M = Eigen::MatrixXd::Zero( _sizeH, _sizeH );
@@ -160,7 +163,8 @@ namespace Marmot::Discretizations::Meshfree {
   {
     const auto coveringKernelFunctionsIndices = findCoveringKernelFunctionIndices( coord, kernelFunctionCandidates );
 
-    const auto correctedCompletenessOrder = getCorrectedCompletenessOrder( coveringKernelFunctionsIndices.size() );
+    const auto correctedCompletenessOrder = getCorrectedCompletenessOrder(
+      static_cast< int >( coveringKernelFunctionsIndices.size() ) );
 
     std::vector< const KernelFunction* > coveringKernelFunctions;
     for ( const auto& idx : coveringKernelFunctionsIndices )
@@ -173,9 +177,10 @@ namespace Marmot::Discretizations::Meshfree {
 
     // solve for b(x)
     // b = M^-1 * H0
-    const auto H0 = H0Vector( M.rows() );
+    const auto H0 = H0Vector( static_cast< int >( M.rows() ) );
 
-    const Eigen::VectorXd b = factorizeMomentMatrix( M, coord, coveringKernelFunctionsIndices.size() ).solve( H0 );
+    const Eigen::VectorXd
+      b = factorizeMomentMatrix( M, coord, static_cast< int >( coveringKernelFunctionsIndices.size() ) ).solve( H0 );
 
     // compute the shape function values
 
@@ -230,7 +235,8 @@ namespace Marmot::Discretizations::Meshfree {
     for ( const auto& idx : coveringKernelFunctionIndices )
       coveringKernelFunctions.push_back( kernelFunctionCandidates[idx] );
 
-    const auto correctedCompletenessOrder = getCorrectedCompletenessOrder( coveringKernelFunctionIndices.size() );
+    const auto correctedCompletenessOrder = getCorrectedCompletenessOrder(
+      static_cast< int >( coveringKernelFunctionIndices.size() ) );
 
     const Eigen::Map< const Eigen::VectorXd > coordVec( coord, _dim );
     const auto sizeH = Math::computeSizeOfMonomialBasisVector( correctedCompletenessOrder, _dim );
@@ -286,7 +292,7 @@ namespace Marmot::Discretizations::Meshfree {
     // b = M^-1 * H0
     const auto H0 = H0Vector( sizeH );
 
-    const auto MHr = factorizeMomentMatrix( M, coord, coveringKernelFunctionIndices.size() );
+    const auto MHr = factorizeMomentMatrix( M, coord, static_cast< int >( coveringKernelFunctionIndices.size() ) );
 
     const Eigen::VectorXd b = MHr.solve( H0 );
 

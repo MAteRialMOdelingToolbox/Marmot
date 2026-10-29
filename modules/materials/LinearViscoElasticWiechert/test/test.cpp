@@ -25,10 +25,12 @@ namespace {
   void testLinearViscoElasticWiechertReferenceStress()
   {
     auto materialProperties = getMaterialPropertiesLinearViscoElasticWiechert();
-    Marmot::Materials::LinearViscoElasticWiechert material( materialProperties.data(), materialProperties.size(), 1 );
+    Marmot::Materials::LinearViscoElasticWiechert material( materialProperties.data(),
+                                                            static_cast< int >( materialProperties.size() ),
+                                                            1 );
 
     Eigen::VectorXd stateVars( material.getNumberOfRequiredStateVars() );
-    material.initializeYourself( stateVars.data(), stateVars.size() );
+    material.initializeYourself( stateVars.data(), static_cast< int >( stateVars.size() ) );
 
     Marmot::Materials::MaterialHypoElastic::state3D state{ Marmot::Math::Vector6d::Zero(), 0.0, 0.0, stateVars.data() };
     Marmot::Math::Matrix6d                          tangent = Marmot::Math::Matrix6d::Zero();
@@ -109,10 +111,12 @@ namespace {
   void testZeroIncrementReturnsInstantaneousElasticTangent()
   {
     auto materialProperties = getMaterialPropertiesLinearViscoElasticWiechert();
-    Marmot::Materials::LinearViscoElasticWiechert material( materialProperties.data(), materialProperties.size(), 1 );
+    Marmot::Materials::LinearViscoElasticWiechert material( materialProperties.data(),
+                                                            static_cast< int >( materialProperties.size() ),
+                                                            1 );
 
     Eigen::VectorXd stateVars( material.getNumberOfRequiredStateVars() );
-    material.initializeYourself( stateVars.data(), stateVars.size() );
+    material.initializeYourself( stateVars.data(), static_cast< int >( stateVars.size() ) );
 
     Marmot::Materials::MaterialHypoElastic::state3D state{ Marmot::Math::Vector6d::Zero(), 0.0, 0.0, stateVars.data() };
     Marmot::Math::Matrix6d                          tangent = Marmot::Math::Matrix6d::Zero();

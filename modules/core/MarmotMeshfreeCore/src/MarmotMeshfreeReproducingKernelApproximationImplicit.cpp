@@ -56,7 +56,8 @@ namespace Marmot::Discretizations::Meshfree {
     for ( const auto& idx : coveringKernelFunctionIndices )
       coveringKernelFunctions.push_back( kernelFunctionCandidates[idx] );
 
-    const auto correctedCompletenessOrder = getCorrectedCompletenessOrder( coveringKernelFunctionIndices.size() );
+    const auto correctedCompletenessOrder = getCorrectedCompletenessOrder(
+      static_cast< int >( coveringKernelFunctionIndices.size() ) );
 
     const auto sizeH = Math::computeSizeOfMonomialBasisVector( correctedCompletenessOrder, _dim );
 
@@ -78,7 +79,7 @@ namespace Marmot::Discretizations::Meshfree {
 
     // solve for b(x)
     // b = M^-1 * H0
-    const auto H0 = H0Vector( M.rows() );
+    const auto H0 = H0Vector( static_cast< int >( M.rows() ) );
 
     using namespace Eigen;
 
@@ -99,7 +100,10 @@ namespace Marmot::Discretizations::Meshfree {
             H0Mat( k, 1 + i ) = -1.0;
     }
 
-    const Eigen::MatrixXd bMat = factorizeMomentMatrix( M, coord, coveringKernelFunctionIndices.size() ).solve( H0Mat );
+    const Eigen::MatrixXd bMat = factorizeMomentMatrix( M,
+                                                        coord,
+                                                        static_cast< int >( coveringKernelFunctionIndices.size() ) )
+                                   .solve( H0Mat );
 
     const VectorXd b0    = bMat.col( 0 );
     const MatrixXd bGrad = bMat.block( 0, 1, M.rows(), _dim );

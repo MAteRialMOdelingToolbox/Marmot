@@ -307,9 +307,11 @@ void checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadratu
 
   // AT2PhaseField properties: E, nu, Gc, l, density, nonlocalViscosity
   const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
   const std::vector< double >                elPropsVec = { 1.0 }; // thickness
-  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -469,7 +471,9 @@ void checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrat
 
   // AT2PhaseField properties: E, nu, Gc, l, density, nonlocalViscosity
   const std::vector< double >              matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  Marmot::Discretizations::MaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
 
   element->assignProperty( materialSection );
 
@@ -603,9 +607,11 @@ void testComputeKernelsPlaneStrainTangentMatchesNumericalDifferentiation()
 
   // AT2PhaseField properties: E, nu, Gc, l, density, nonlocalViscosity
   const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
   const std::vector< double >                elPropsVec = { 1.0 }; // thickness
-  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -662,9 +668,11 @@ void testComputeKernelsPlaneStressTangentMatchesNumericalDifferentiation()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
   const std::vector< double >                elPropsVec = { 1.0 };
-  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -722,7 +730,9 @@ void testComputeKernelsSolid3DTangentMatchesNumericalDifferentiation()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double >              matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  Marmot::Discretizations::MaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
 
   const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
@@ -778,9 +788,11 @@ void testComputeKernelsThrowsForMismatchedSectionType()
     element->assignNodeCoordinates( nodeCoordsVec.data() );
 
     const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-    Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+    Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                              matProps.data(),
+                                                              static_cast< int >( matProps.size() ) );
     const std::vector< double >                elPropsVec = { 1.0 };
-    Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), elPropsVec.size() );
+    Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
     element->assignProperty( elProps );
     element->assignProperty( materialSection );
 
@@ -821,7 +833,9 @@ void testComputeKernelsThrowsForMismatchedSectionType()
     element->assignNodeCoordinates( nodeCoordsVec.data() );
 
     const std::vector< double >              matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-    Marmot::Discretizations::MaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+    Marmot::Discretizations::MaterialSection materialSection( "AT2PHASEFIELD",
+                                                              matProps.data(),
+                                                              static_cast< int >( matProps.size() ) );
     element->assignProperty( materialSection );
 
     const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
@@ -861,8 +875,11 @@ void testComputeKernelsExplicitMatchesImplicitResidual()
 
   auto elementImplicit = std::make_unique< ElemType >( 1, intType, secType );
   elementImplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  Marmot::Discretizations::MaterialSection materialSectionImplicit( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  Marmot::Discretizations::ElementProperties elPropsImplicit( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::MaterialSection   materialSectionImplicit( "AT2PHASEFIELD",
+                                                                    matProps.data(),
+                                                                    static_cast< int >( matProps.size() ) );
+  Marmot::Discretizations::ElementProperties elPropsImplicit( elPropsVec.data(),
+                                                              static_cast< int >( elPropsVec.size() ) );
   elementImplicit->assignProperty( elPropsImplicit );
   elementImplicit->assignProperty( materialSectionImplicit );
   const int             nStateVarsTotalImplicit = elementImplicit->getNumberOfRequiredStateVars();
@@ -872,8 +889,11 @@ void testComputeKernelsExplicitMatchesImplicitResidual()
 
   auto elementExplicit = std::make_unique< ElemType >( 1, intType, secType );
   elementExplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  Marmot::Discretizations::MaterialSection materialSectionExplicit( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  Marmot::Discretizations::ElementProperties elPropsExplicit( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::MaterialSection   materialSectionExplicit( "AT2PHASEFIELD",
+                                                                    matProps.data(),
+                                                                    static_cast< int >( matProps.size() ) );
+  Marmot::Discretizations::ElementProperties elPropsExplicit( elPropsVec.data(),
+                                                              static_cast< int >( elPropsVec.size() ) );
   elementExplicit->assignProperty( elPropsExplicit );
   elementExplicit->assignProperty( materialSectionExplicit );
   const int             nStateVarsTotalExplicit = elementExplicit->getNumberOfRequiredStateVars();
@@ -917,8 +937,11 @@ void testComputeKernelsExplicitMatchesImplicitResidualPlaneStress()
 
   auto elementImplicit = std::make_unique< ElemType >( 1, intType, secType );
   elementImplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  Marmot::Discretizations::MaterialSection materialSectionImplicit( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  Marmot::Discretizations::ElementProperties elPropsImplicit( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::MaterialSection   materialSectionImplicit( "AT2PHASEFIELD",
+                                                                    matProps.data(),
+                                                                    static_cast< int >( matProps.size() ) );
+  Marmot::Discretizations::ElementProperties elPropsImplicit( elPropsVec.data(),
+                                                              static_cast< int >( elPropsVec.size() ) );
   elementImplicit->assignProperty( elPropsImplicit );
   elementImplicit->assignProperty( materialSectionImplicit );
   const int             nStateVarsTotalImplicit = elementImplicit->getNumberOfRequiredStateVars();
@@ -928,8 +951,11 @@ void testComputeKernelsExplicitMatchesImplicitResidualPlaneStress()
 
   auto elementExplicit = std::make_unique< ElemType >( 1, intType, secType );
   elementExplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  Marmot::Discretizations::MaterialSection materialSectionExplicit( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  Marmot::Discretizations::ElementProperties elPropsExplicit( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::MaterialSection   materialSectionExplicit( "AT2PHASEFIELD",
+                                                                    matProps.data(),
+                                                                    static_cast< int >( matProps.size() ) );
+  Marmot::Discretizations::ElementProperties elPropsExplicit( elPropsVec.data(),
+                                                              static_cast< int >( elPropsVec.size() ) );
   elementExplicit->assignProperty( elPropsExplicit );
   elementExplicit->assignProperty( materialSectionExplicit );
   const int             nStateVarsTotalExplicit = elementExplicit->getNumberOfRequiredStateVars();
@@ -973,7 +999,9 @@ void testComputeKernelsExplicitMatchesImplicitResidualSolid3D()
 
   auto elementImplicit = std::make_unique< ElemType >( 1, intType, secType );
   elementImplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  Marmot::Discretizations::MaterialSection materialSectionImplicit( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection materialSectionImplicit( "AT2PHASEFIELD",
+                                                                    matProps.data(),
+                                                                    static_cast< int >( matProps.size() ) );
   elementImplicit->assignProperty( materialSectionImplicit );
   const int             nStateVarsTotalImplicit = elementImplicit->getNumberOfRequiredStateVars();
   std::vector< double > stateVarsImplicit( nStateVarsTotalImplicit, 0.0 );
@@ -982,7 +1010,9 @@ void testComputeKernelsExplicitMatchesImplicitResidualSolid3D()
 
   auto elementExplicit = std::make_unique< ElemType >( 1, intType, secType );
   elementExplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  Marmot::Discretizations::MaterialSection materialSectionExplicit( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection materialSectionExplicit( "AT2PHASEFIELD",
+                                                                    matProps.data(),
+                                                                    static_cast< int >( matProps.size() ) );
   elementExplicit->assignProperty( materialSectionExplicit );
   const int             nStateVarsTotalExplicit = elementExplicit->getNumberOfRequiredStateVars();
   std::vector< double > stateVarsExplicit( nStateVarsTotalExplicit, 0.0 );
@@ -1026,9 +1056,11 @@ void testComputeKernelsExplicitThrowsForMismatchedSectionType()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
   const std::vector< double >                elPropsVec = { 1.0 };
-  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1071,9 +1103,11 @@ void testSetInitialConditionsGeostaticStressAssignsInterpolatedStress()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
   const std::vector< double >                elPropsVec = { 1.0 };
-  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1118,9 +1152,11 @@ void testSetInitialConditionsMaterialInitializationDoesNotThrow()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
   const std::vector< double >                elPropsVec = { 1.0 };
-  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1218,14 +1254,14 @@ void testComputeConsistentInertiaConservesTotalMassAndMicroInertia()
 
     Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
                                                               matPropsStorage.data(),
-                                                              matPropsStorage.size() );
+                                                              static_cast< int >( matPropsStorage.size() ) );
     const std::vector< double >                elPropsVec = { 1.0 };
-    Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), elPropsVec.size() );
+    Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
     element->assignProperty( elProps );
     element->assignProperty( materialSection );
 
     stateVars.assign( element->getNumberOfRequiredStateVars(), 0.0 );
-    element->assignStateVars( stateVars.data(), stateVars.size() );
+    element->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
     element->initializeYourself();
   };
 
@@ -1312,13 +1348,15 @@ void testConsistentInertiaHexa20ReducedIntegrationIsIntegratedWithTheFullRule()
     ElemType element( 1, intType, ElemType::SectionType::Solid );
     element.assignNodeCoordinates( nodeCoordsVec.data() );
 
-    Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-    Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), elPropsVec.size() );
+    Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                              matProps.data(),
+                                                              static_cast< int >( matProps.size() ) );
+    Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
     element.assignProperty( elProps );
     element.assignProperty( materialSection );
 
     std::vector< double > stateVars( element.getNumberOfRequiredStateVars(), 0.0 );
-    element.assignStateVars( stateVars.data(), stateVars.size() );
+    element.assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
     element.initializeYourself();
 
     const int             nDof = element.getNDofPerElement();
@@ -1356,9 +1394,11 @@ void testComputeBodyForceConservesTotalForcePerDirection()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
   const std::vector< double >                elPropsVec = { 1.0 };
-  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1415,7 +1455,9 @@ void testComputeCriticalTimeStepMatchesMaterialWaveSpeedForRegularHexa8()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double >              matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  Marmot::Discretizations::MaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
 
   const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
@@ -1470,9 +1512,11 @@ void testComputeInternalEnergyMatchesSumOverQuadraturePoints()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
   const std::vector< double >                elPropsVec = { 1.0 };
-  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1520,9 +1564,11 @@ void testGetStateViewVariants()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
   const std::vector< double >                elPropsVec = { 1.0 };
-  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1587,9 +1633,11 @@ void testComputeDistributedLoadThrowsForUnhandledLoadType()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
   const std::vector< double >                elPropsVec = { 1.0 };
-  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1667,9 +1715,11 @@ double criticalTimeStepOfCube( double edgeLength, double microInertia, double no
   if ( microInertia > 0.0 )
     matProps.push_back( microInertia );
 
-  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
   const std::vector< double >                elPropsVec = { 1.0 };
-  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -1704,9 +1754,11 @@ void testNonlocalMicroInertiaIsZeroUnlessAssigned()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
   const std::vector< double >                elPropsVec = { 1.0 };
-  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1750,9 +1802,11 @@ void testNonlocalMicroInertiaSumsToMicroInertiaTimesVolume()
   // eta = 1 admits any micro-inertia up to 1/4, so the value below is far inside the bound.
   const double                               microInertiaValue = 3.0e-7;
   const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0, microInertiaValue };
-  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
   const std::vector< double >                elPropsVec = { 1.0 };
-  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1969,11 +2023,13 @@ namespace {
     const auto internalForce = [&]( bool withBulkViscosity ) {
       auto element = std::make_unique< ElemType >( 1, intType, secType );
       element->assignNodeCoordinates( nodeCoordsVec.data() );
-      Marmot::Discretizations::MaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+      Marmot::Discretizations::MaterialSection materialSection( "AT2PHASEFIELD",
+                                                                matProps.data(),
+                                                                static_cast< int >( matProps.size() ) );
       element->assignProperty( materialSection );
 
       if ( withBulkViscosity ) {
-        element->assignProperty( "bulk viscosity", bulkViscosity.data(), bulkViscosity.size() );
+        element->assignProperty( "bulk viscosity", bulkViscosity.data(), static_cast< int >( bulkViscosity.size() ) );
         element->assignProperty( "bulk viscosity damage degradation", &degradationExponent, 1 );
       }
 
@@ -2064,7 +2120,9 @@ void testRejectedPropertyAssignmentLeavesTheElementUnchanged()
                 Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
                 ElemType::SectionType::Solid );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
-  Marmot::Discretizations::MaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
 
   const int             nStateVars = element->getNumberOfRequiredStateVars();
@@ -2073,7 +2131,7 @@ void testRejectedPropertyAssignmentLeavesTheElementUnchanged()
   element->initializeYourself();
 
   const std::vector< double > valid = { 0.06, 1.2 };
-  element->assignProperty( "bulk viscosity", valid.data(), valid.size() );
+  element->assignProperty( "bulk viscosity", valid.data(), static_cast< int >( valid.size() ) );
 
   const double                               nan      = std::numeric_limits< double >::quiet_NaN();
   const std::vector< std::vector< double > > rejected = { { -1.0, 1.2 }, { 0.06, -1.0 }, { nan, 1.2 }, { 0.06, nan } };
@@ -2081,7 +2139,7 @@ void testRejectedPropertyAssignmentLeavesTheElementUnchanged()
   for ( const auto& values : rejected ) {
     bool threw = false;
     try {
-      element->assignProperty( "bulk viscosity", values.data(), values.size() );
+      element->assignProperty( "bulk viscosity", values.data(), static_cast< int >( values.size() ) );
     }
     catch ( const std::invalid_argument& ) {
       threw = true;
@@ -2138,9 +2196,11 @@ void testTinyMicroInertiaIsNotTreatedAsAbsent()
   // eta = 1 here rather than the 2e-7 above, so the tiny value is admissible by a wide margin: what
   // is under test is that it is not ROUNDED AWAY, not where the admissibility bound lies.
   const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0, tinyMicroInertia };
-  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
   const std::vector< double >                elPropsVec = { 1.0 };
-  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 

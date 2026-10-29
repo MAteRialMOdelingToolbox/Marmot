@@ -9,7 +9,7 @@ using namespace Eigen;
 
 namespace Marmot::Materials {
 
-  double LinearViscoelasticPowerLaw::getDensity( const double* stateVars ) const
+  double LinearViscoelasticPowerLaw::getDensity( [[maybe_unused]] const double* stateVars ) const
   {
     if ( nMaterialProperties < 8 ) {
       throw std::runtime_error( Marmot::Utilities::MakeString()
@@ -39,7 +39,8 @@ namespace Marmot::Materials {
     stateLayout.finalize();
 
     // assume sqrt( 10 ) spacing between retardation times
-    retardationTimes = ContinuumMechanics::Viscoelasticity::KelvinChain::generateRetardationTimes( nKelvin,
+    retardationTimes = ContinuumMechanics::Viscoelasticity::KelvinChain::generateRetardationTimes( static_cast< int >(
+                                                                                                     nKelvin ),
                                                                                                    minTau,
                                                                                                    sqrt( 10. ) );
 

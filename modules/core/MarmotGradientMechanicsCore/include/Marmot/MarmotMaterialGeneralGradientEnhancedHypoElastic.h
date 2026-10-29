@@ -387,7 +387,7 @@ namespace Marmot::Materials {
      * override reads -- so this is deliberately not pure virtual, unlike getNonlocalViscosity(), which a
      * gradient-enhanced material must answer for any explicit path to exist at all.
      */
-    virtual std::vector< double > getNonlocalMicroInertia( const double* stateVars ) const
+    virtual std::vector< double > getNonlocalMicroInertia( [[maybe_unused]] const double* stateVars ) const
     {
       return std::vector< double >( nNonlocalVariables, 0.0 );
     }

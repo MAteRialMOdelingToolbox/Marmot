@@ -370,20 +370,20 @@ namespace Marmot::ContinuumMechanics::Invariants::Derivatives {
     Marmot::Math::Vector3d dEpPrinc_dEprho   = Marmot::Math::Vector3d::Zero();
     Marmot::Math::Vector3d dEPprinc_dEptheta = Marmot::Math::Vector3d::Zero();
 
-    const double                      sqrt2_3 = std::sqrt( 2. / 3. );
-    const HaighWestergaardCoordinates hw      = haighWestergaardFromStrain( dEp );
+    const double                      sqrt23 = std::sqrt( 2. / 3. );
+    const HaighWestergaardCoordinates hw     = haighWestergaardFromStrain( dEp );
     // const double& epsM =		hw(0);
     const double& rhoE = hw.rho;
     // const double& thetaE =		hw(2);
 
     dEpPrinc_dEpvol = 1. / 3. * Marmot::Math::Vector3d::Ones();
-    dEpPrinc_dEprho << sqrt2_3 * std::cos( hw.theta ),
-      sqrt2_3 * std::cos( hw.theta - 2. * Marmot::Math::Constants::Pi / 3. ),
-      sqrt2_3 * std::cos( hw.theta + 2. * Marmot::Math::Constants::Pi / 3. );
+    dEpPrinc_dEprho << sqrt23 * std::cos( hw.theta ),
+      sqrt23 * std::cos( hw.theta - 2. * Marmot::Math::Constants::Pi / 3. ),
+      sqrt23 * std::cos( hw.theta + 2. * Marmot::Math::Constants::Pi / 3. );
 
-    dEPprinc_dEptheta << -sqrt2_3 * hw.rho * std::sin( hw.theta ),
-      -sqrt2_3 * hw.rho * std::sin( hw.theta - 2. * Marmot::Math::Constants::Pi / 3. ),
-      -sqrt2_3 * hw.rho * std::sin( hw.theta + 2. * Marmot::Math::Constants::Pi / 3. );
+    dEPprinc_dEptheta << -sqrt23 * hw.rho * std::sin( hw.theta ),
+      -sqrt23 * hw.rho * std::sin( hw.theta - 2. * Marmot::Math::Constants::Pi / 3. ),
+      -sqrt23 * hw.rho * std::sin( hw.theta + 2. * Marmot::Math::Constants::Pi / 3. );
 
     Marmot::Math::RowVector6d dEpvol_dEp   = Marmot::Math::RowVector6d::Zero();
     dEpvol_dEp                             = I;

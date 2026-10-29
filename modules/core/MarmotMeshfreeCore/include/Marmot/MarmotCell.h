@@ -153,7 +153,7 @@ namespace Marmot::Discretizations::Cells {
      * @param[out] I Lumped mass vector (getNDofPerCell() values).
      * @throws std::invalid_argument if not implemented by the concrete cell (default).
      */
-    virtual void computeLumpedInertia( double* I )
+    virtual void computeLumpedInertia( [[maybe_unused]] double* I )
     {
       throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "not yet implemented" );
     }
@@ -163,7 +163,7 @@ namespace Marmot::Discretizations::Cells {
      * @param[out] I Mass matrix, getNDofPerCell() @f$ \times @f$ getNDofPerCell().
      * @throws std::invalid_argument if not implemented by the concrete cell (default).
      */
-    virtual void computeConsistentInertia( double* I )
+    virtual void computeConsistentInertia( [[maybe_unused]] double* I )
     {
       throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "not yet implemented" );
     }

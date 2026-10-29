@@ -108,7 +108,9 @@ namespace Marmot::Discretizations::MaterialPoints {
      */
     class MPStateVarManager : public Marmot::Utilities::StateVarVectorManager {
 
-      /// the layout of the state vector (names and lengths)
+      /// @cond INTERNAL (designated initializers are not parseable by the Sphinx C++ domain)
+
+      // the layout of the state vector (names and lengths)
       inline const static auto layout = makeLayout( {
         { .name = "displacement", .length = 3 },
         { .name = "velocity", .length = 3 },
@@ -119,6 +121,8 @@ namespace Marmot::Discretizations::MaterialPoints {
         { .name = "stress", .length = 9 },
         { .name = "begin of material state", .length = 0 },
       } );
+
+      /// @endcond
 
     public:
       Marmot::Math::Tensors::FastorTensors::TensorMap3d u;  ///< total displacement of the last accepted state
@@ -178,57 +182,57 @@ namespace Marmot::Discretizations::MaterialPoints {
      * @param[in] stateVars State vector, owned by the host.
      * @param[in] nStateVars Length of the state vector, see getNumberOfRequiredStateVars().
      */
-    void assignStateVars( double* stateVars, int nStateVars );
+    void assignStateVars( double* stateVars, int nStateVars ) override;
 
     /**
      * @brief Returns a view on a state of the material point or, if not found, of the material.
      * @param[in] stateName Name of the state, e.g. "deformation gradient", "stress" or a material state.
      * @return The view on the state.
      */
-    Marmot::Utilities::StateView getStateView( const std::string& stateName ) const;
+    Marmot::Utilities::StateView getStateView( const std::string& stateName ) const override;
 
     /**
      * @brief Shape of the material point.
      * @return Always "point".
      */
-    std::string getMaterialPointShape() const { return "point"; };
+    std::string getMaterialPointShape() const override { return "point"; };
 
     /**
      * @brief Creates the material through the Marmot::Registry::MaterialFiniteStrainFactory.
      * @param[in] property Section with the material name and properties.
      * @throws std::invalid_argument if no finite-strain material of that name exists.
      */
-    void assignMaterial( const Marmot::Discretizations::MaterialSection& property );
+    void assignMaterial( const Marmot::Discretizations::MaterialSection& property ) override;
 
     /**
      * @brief Initializes the state: @f$ \boldsymbol{F}_n = \boldsymbol{I} @f$, a zero increment, the material state
      * and the density (so that the inertia can be assembled before the first computation).
      */
-    void initializeYourself();
+    void initializeYourself() override;
 
     /**
      * @brief Label of the material point.
      * @return The label.
      */
-    int getMaterialPointNumber() const { return _mpNumber; }
+    int getMaterialPointNumber() const override { return _mpNumber; }
 
     /**
      * @brief Spatial dimension.
      * @return nDim.
      */
-    int getDimension() const { return nDim; }
+    int getDimension() const override { return nDim; }
 
     /**
      * @brief Number of vertices.
      * @return 1.
      */
-    int getNumberOfVertices() const { return _nVertices; };
+    int getNumberOfVertices() const override { return _nVertices; };
 
     /**
      * @brief Number of state variables required by the material point, including those of the material.
      * @return The number of state variables.
      */
-    int getNumberOfRequiredStateVars() const
+    int getNumberOfRequiredStateVars() const override
     {
       return MPStateVarManager::getNumberOfRequiredStateVars() + material->getNumberOfRequiredStateVars();
     };
@@ -243,7 +247,7 @@ namespace Marmot::Discretizations::MaterialPoints {
      * @brief Volume in the undeformed configuration.
      * @return @f$ V_0 @f$.
      */
-    double getVolumeUndeformed() const { return _vol0; }
+    double getVolumeUndeformed() const override { return _vol0; }
 
     /**
      * @brief Sets the coordinates in the undeformed configuration.
@@ -255,14 +259,14 @@ namespace Marmot::Discretizations::MaterialPoints {
      * @brief Coordinates of the single vertex, identical to getCoordinatesAtCenter().
      * @param[out] coordinates The coordinates (nDim values).
      */
-    void getVertexCoordinates( double* coordinates ) const { return getCoordinatesAtCenter( coordinates ); };
+    void getVertexCoordinates( double* coordinates ) const override { return getCoordinatesAtCenter( coordinates ); };
 
     /**
      * @brief Coordinates in the intermediate configuration, @f$ \boldsymbol{Y} = \boldsymbol{X} + \boldsymbol{u} @f$,
      * with the displacement of the last accepted state (the increment of the current step is not included).
      * @param[out] coordinates The coordinates (nDim values).
      */
-    void getCoordinatesAtCenter( double* coordinates ) const
+    void getCoordinatesAtCenter( double* coordinates ) const override
     {
       Eigen::Map< const Eigen::Matrix< double, nDim, 1 > > x0( _x0.data() );
       Eigen::Map< Eigen::Matrix< double, nDim, 1 > >       newCoords( coordinates );
@@ -275,7 +279,7 @@ namespace Marmot::Discretizations::MaterialPoints {
      * @brief Total displacement of the last accepted state.
      * @param[out] displacement The displacement @f$ \boldsymbol{u} @f$ (nDim values).
      */
-    void getCenterDisplacement( double* displacement ) const
+    void getCenterDisplacement( double* displacement ) const override
     {
       for ( int i = 0; i < nDim; i++ )
         displacement[i] = state->u( i );
@@ -285,7 +289,7 @@ namespace Marmot::Discretizations::MaterialPoints {
      * @brief Mass density in the undeformed configuration, as provided by the material.
      * @return The density.
      */
-    double getDensityUndeformed() const { return _density; };
+    double getDensityUndeformed() const override { return _density; };
 
     /**
      * @brief Coordinates in the undeformed configuration.
@@ -300,7 +304,7 @@ namespace Marmot::Discretizations::MaterialPoints {
      * @param[in] timeNew Time at the end of the increment (not used).
      * @param[in] dT Time increment (not used).
      */
-    virtual void prepareYourself( double timeNew, double dT );
+    void prepareYourself( double timeNew, double dT ) override;
 
     /**
      * @brief Evaluates the material with @f$ \boldsymbol{F} = \Delta\boldsymbol{F}\,\boldsymbol{F}_n @f$ and fills
@@ -308,14 +312,14 @@ namespace Marmot::Discretizations::MaterialPoints {
      * @param[in] timeNew Time at the end of the increment.
      * @param[in] dT Time increment.
      */
-    virtual void computeYourself( double timeNew, double dT ) = 0;
+    void computeYourself( double timeNew, double dT ) override = 0;
 
     /**
      * @brief Accepts the increment: @f$ \boldsymbol{u} \leftarrow \boldsymbol{u} + \Delta\boldsymbol{u} @f$ and
      * @f$ \boldsymbol{F}_n \leftarrow \Delta\boldsymbol{F}\,\boldsymbol{F}_n @f$. The increment itself is reset
      * by the next prepareYourself().
      */
-    virtual void acceptStateAndPosition()
+    void acceptStateAndPosition() override
     {
 
       const auto&                                          u_n  = state->u;
@@ -341,12 +345,12 @@ namespace Marmot::Discretizations::MaterialPoints {
                                        const TensorDD& displacementGradientIncrement ) = 0;
 
     /// response of the last computeYourself()
-    struct {
+    struct Response {
       Fastor::Tensor< double, nDim, nDim > S; ///< Kirchhoff stress @f$ \boldsymbol{\tau} @f$ (in-plane part in 2D)
     } response;
 
     /// algorithmic tangents of the last computeYourself()
-    struct {
+    struct Tangents {
       /// @f$ \partial \tau_{ij} / \partial \Delta F_{kL} @f$ (in-plane part in 2D)
       Fastor::Tensor< double, nDim, nDim, nDim, nDim > dS_dDeltaF;
     } tangents;
@@ -403,7 +407,7 @@ namespace Marmot::Discretizations::MaterialPoints {
      * @throws std::invalid_argument always, so that an input with an initial condition does not silently start from
      *         the unloaded state.
      */
-    virtual void setInitialCondition( const std::string& conditionName, const double* value ) override
+    void setInitialCondition( const std::string& conditionName, const double* value ) override
     {
       throw std::invalid_argument( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": initial condition '"
                                                                    << conditionName << "' is not supported" );
@@ -446,7 +450,7 @@ namespace Marmot::Discretizations::MaterialPoints {
     state->dY_dX.eye();
     /* state->dx_dY.eye(); */
     this->prepareYourself( 0, 0 );
-    material->initializeYourself( state->materialState.data(), state->materialState.size() );
+    material->initializeYourself( state->materialState.data(), static_cast< int >( state->materialState.size() ) );
     // known from the start, so that inertia can be assembled before the first computation
     _density = material->getDensity( state->materialState.data() );
   }

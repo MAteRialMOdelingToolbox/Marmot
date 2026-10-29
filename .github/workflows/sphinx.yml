@@ -64,7 +64,7 @@ jobs:
       - name: Building Marmot documentation
         shell: bash -l {0}
         run: |
-          python scripts/buildDocumentation.py
+          python scripts/buildDocumentation.py --werror
 
       - name: Upload documentation artifact
         if: github.event_name == 'pull_request'

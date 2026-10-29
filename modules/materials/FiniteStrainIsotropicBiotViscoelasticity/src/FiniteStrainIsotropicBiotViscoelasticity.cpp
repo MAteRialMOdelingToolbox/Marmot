@@ -34,7 +34,8 @@ namespace Marmot::Materials {
       K( materialProperties[0] ),
       G( materialProperties[1] ),
       maxwellProperties(
-        ContinuumMechanics::Viscoelasticity::createMaxwellProperties( materialProperties[2], &materialProperties[3] ) ),
+        ContinuumMechanics::Viscoelasticity::createMaxwellProperties( static_cast< int >( materialProperties[2] ),
+                                                                      &materialProperties[3] ) ),
 
       initialCompliance(
         Marmot::Math::Tensors::makeDual( Marmot::Math::Tensors::invertMinorSymmetricFourthOrderTensor( std::get< 2 >(

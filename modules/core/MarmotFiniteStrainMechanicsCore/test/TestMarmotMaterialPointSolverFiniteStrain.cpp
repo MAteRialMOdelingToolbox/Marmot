@@ -129,7 +129,7 @@ void testResetToInitialStateUndoesAccumulatedDeformation()
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                                     materialProperties.data(),
-                                                                    materialProperties.size(),
+                                                                    static_cast< int >( materialProperties.size() ),
                                                                     solveropts );
 
   Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
@@ -172,7 +172,7 @@ void testSetInitialStateSeedsStateVariables()
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                                     materialProperties.data(),
-                                                                    materialProperties.size(),
+                                                                    static_cast< int >( materialProperties.size() ),
                                                                     solveropts );
 
   const int nStateVars = solver.getNumberOfStateVariables();
@@ -213,7 +213,7 @@ void testSolveStepRetriesThenThrowsSolverTimestepExhausted()
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                                     materialProperties.data(),
-                                                                    materialProperties.size(),
+                                                                    static_cast< int >( materialProperties.size() ),
                                                                     solveropts );
 
   Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
@@ -251,7 +251,7 @@ void testSolveStepThrowsSolverIncrementsExhausted()
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                                     materialProperties.data(),
-                                                                    materialProperties.size(),
+                                                                    static_cast< int >( materialProperties.size() ),
                                                                     solveropts );
 
   Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
@@ -294,7 +294,7 @@ void testSolveStepCapsNewlyAssignedDTStartToAvoidOvershoot()
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                                     materialProperties.data(),
-                                                                    materialProperties.size(),
+                                                                    static_cast< int >( materialProperties.size() ),
                                                                     solveropts );
 
   Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
@@ -327,7 +327,7 @@ void testSolveStepHalvesDTOnRetryBeforeExhaustingIt()
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                                     materialProperties.data(),
-                                                                    materialProperties.size(),
+                                                                    static_cast< int >( materialProperties.size() ),
                                                                     solveropts );
 
   Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
@@ -365,7 +365,7 @@ void testSolveIncrementThrowsOnNaN()
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                                     materialProperties.data(),
-                                                                    materialProperties.size(),
+                                                                    static_cast< int >( materialProperties.size() ),
                                                                     solveropts );
 
   Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
@@ -407,7 +407,7 @@ void testSolveIncrementThrowsWhenIterationsExhausted()
   solveropts.maxIterations                 = 3; // keep the test fast
   auto solver                              = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                                     materialProperties.data(),
-                                                                    materialProperties.size(),
+                                                                    static_cast< int >( materialProperties.size() ),
                                                                     solveropts );
 
   Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
@@ -449,7 +449,7 @@ void testPrintHistoryDoesNotThrow()
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                                     materialProperties.data(),
-                                                                    materialProperties.size(),
+                                                                    static_cast< int >( materialProperties.size() ),
                                                                     solveropts );
 
   Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
@@ -472,7 +472,7 @@ void testExportHistoryToCSVWritesExpectedContentWithNoStateVars()
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                                     materialProperties.data(),
-                                                                    materialProperties.size(),
+                                                                    static_cast< int >( materialProperties.size() ),
                                                                     solveropts );
 
   Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
@@ -524,7 +524,7 @@ void testExportHistoryToCSVWritesStateVarColumnsForAMaterialWithStateVars()
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                                     materialProperties.data(),
-                                                                    materialProperties.size(),
+                                                                    static_cast< int >( materialProperties.size() ),
                                                                     solveropts );
 
   throwExceptionOnFailure( solver.getNumberOfStateVariables() > 0,
@@ -571,7 +571,7 @@ void testExportHistoryToCSVThrowsForInvalidPath()
   auto                  solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   auto                  solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
                                                                     materialProperties.data(),
-                                                                    materialProperties.size(),
+                                                                    static_cast< int >( materialProperties.size() ),
                                                                     solveropts );
 
   bool threw = false;

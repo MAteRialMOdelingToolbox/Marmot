@@ -139,7 +139,7 @@ namespace {
     auto                         solveropts = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
     return Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                               materialProperties.data(),
-                                                              materialProperties.size(),
+                                                              static_cast< int >( materialProperties.size() ),
                                                               solveropts );
   }
 
@@ -212,7 +212,7 @@ void testSpinTurbokreiselDetectsAnAnisotropicMaterial()
   auto                         solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   auto                         solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                                    materialProperties.data(),
-                                                                   materialProperties.size(),
+                                                                   static_cast< int >( materialProperties.size() ),
                                                                    solveropts );
 
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
@@ -243,7 +243,7 @@ void testSpinTurbokreiselDetectsATangentOnlyMismatch()
   auto                         solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   auto                         solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
                                                                    materialProperties.data(),
-                                                                   materialProperties.size(),
+                                                                   static_cast< int >( materialProperties.size() ),
                                                                    solveropts );
 
   Marmot::Materials::MaterialPointSolverHypoElastic::Step step;

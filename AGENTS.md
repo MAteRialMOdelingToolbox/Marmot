@@ -38,6 +38,29 @@ genhtml coverage.filtered.info --output-directory coverage_html      # open cove
 ```
 CI runs the same instrumentation on every push/PR (`.github/workflows/coverage.yml`) and uploads results to Codecov.
 
+### Warning-Free Builds
+
+Every change must build **without any warning** in all CI pipelines (`.github/workflows/`): GCC 14 (`build_ubuntu.yml`,
+both matrix entries, and `coverage.yml`), Apple clang (`build_macos.yml`), MSVC `/W4` (`build_windows.yml`) and the
+Doxygen/Sphinx documentation build (`sphinx.yml`). This covers library sources, headers, tests and examples alike.
+CI enforces this: the builds configure with `-DCMAKE_COMPILE_WARNING_AS_ERROR=ON` (`-Werror`, `/WX`), and the docs
+are built with `--werror` (Doxygen `WARN_AS_ERROR`, `sphinx-build -W`). Local builds keep warnings non-fatal.
+
+- Reproduce CI locally before finishing: configure with `-DCMAKE_COMPILE_WARNING_AS_ERROR=ON`, and run
+  `python scripts/buildDocumentation.py --werror` when touching docstrings or `doc/`.
+- Code for all three compilers even when only one is available locally. Common pitfalls:
+  - **MSVC**: implicit narrowing of `size()`/`rows()`/`Eigen::Index` to `int` (C4267/C4244) → `static_cast<int>`;
+    unused named `catch` variables (C4101); constant conditions (C4127) → `if constexpr`; members shadowed by
+    parameters or locals (C4458/C4456).
+  - **GCC**: unused variables, possibly uninitialized values (`-Wmaybe-uninitialized`) → initialize them; copies in
+    range-`for` loops (`-Wrange-loop-construct`) → `const auto&`.
+  - **clang**: missing `override` on some but not all overriding members (`-Winconsistent-missing-override`);
+    missing `template` keyword on dependent member template calls (`stateLayout.template getAs<...>(...)`).
+  - **Doxygen/Sphinx**: undocumented or misnamed `@param`s, and C++ constructs the Sphinx C++ domain cannot parse.
+- Fix the cause; do not silence warnings with pragmas, `-Wno-*`/`/wd*` flags or by editing the CI workflows. The
+  existing suppressions in `CMakeLists.txt` are limited to third-party headers and are not a template for new ones.
+  If a warning genuinely cannot be fixed in Marmot code, raise it instead of suppressing it.
+
 ## Namespace Convention
 
 All code lives in the global `Marmot` namespace. The second level is a **closed set** — new second-level namespaces require maintainer approval:
@@ -77,6 +100,7 @@ Rules:
 - **Exceptions & Cutbacks**: Throw `MarmotExceptions.h` subclasses (`StressUpdateFailed`, `SolverConvergenceFailed`, `SolverTimestepExhausted`, `SolverIncrementsExhausted`) with `MakeString() << __PRETTY_FUNCTION__`.
 - **Framework Logging**: Use `MarmotJournal::warningToMSG(...)` and `notificationToMSG(...)` instead of `std::cout`/`std::cerr`.
 - **Test Every Feature**: Register standalone executables in `test.cmake`. Verify against **analytical solutions** and validate tangents via `MarmotMathCore`'s `numdiff`/`autodiff`.
+- **Zero Warnings**: No new compiler or documentation warnings on GCC, clang, MSVC or Doxygen/Sphinx — see [Warning-Free Builds](#warning-free-builds).
 - **Linting & Commits**: Format with `pre-commit run --all-files`. Commits follow [Conventional Commits](https://www.conventionalcommits.org). PRs target active `next_v<YY>.<MM>` branch.
 
 ## Workspace Skills (`.agents/skills/`)
