@@ -38,16 +38,16 @@
 #include <unordered_map>
 #include <vector>
 
-namespace Marmot::Cells {
+namespace Marmot::Discretizations::Cells {
 
   /**
-   * @class Marmot::Cells::GradientEnhancedFiniteStrainCell
+   * @class Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell
    * @brief MPM background cell for gradient-enhanced (implicit-gradient) finite-strain materials.
    *
    * The cell carries the displacement field @f$ \boldsymbol{u} @f$ (nDim dofs per node) and one scalar nonlocal
    * field @f$ \bar{N} @f$ (1 dof per node, field name `nonlocal damage`), and consumes
-   * Marmot::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint instances, which in turn drive a
-   * MarmotMaterialGradientEnhancedFiniteStrain. It is the MPM counterpart of the finite element
+   * Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint instances, which in turn drive a
+   * Marmot::Materials::MaterialGradientEnhancedFiniteStrain. It is the MPM counterpart of the finite element
    * GradientEnhancedFiniteStrainDisplacementElement.
    *
    * As usual in MPM, the grid dofs are the INCREMENTS of the current step, @f$ \Delta\boldsymbol{q} @f$; the
@@ -102,7 +102,7 @@ namespace Marmot::Cells {
    *
    * @tparam nDim         Spatial dimension (2: plane strain, 3).
    * @tparam nNodes       Number of cell nodes.
-   * @tparam CellBase     Base class, MarmotCell.
+   * @tparam CellBase     Base class, Marmot::Discretizations::Cells::Cell.
    * @tparam GeometryCell Geometry policy, Lagrangian or B-spline.
    */
   template < int nDim, int nNodes, class CellBase, GeometryCellPolicy< nDim, nNodes > GeometryCell >
@@ -144,7 +144,8 @@ namespace Marmot::Cells {
     static constexpr int idxU = 0;                    ///< first index of the displacement block
     static constexpr int idxN = idxU + bsU;           ///< first index of the nonlocal block
 
-    using MaterialPoint = MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint< nDim >; ///< consumed point type
+    using MaterialPoint = Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint<
+      nDim >;                                                         ///< consumed point type
 
     using NSized    = typename GeometryCell::NSized;                  ///< shape function vector of the geometry
     using dNdXSized = typename GeometryCell::dNdXSized;               ///< shape function gradients of the geometry
@@ -156,7 +157,7 @@ namespace Marmot::Cells {
     const int _cellLabel;                                                          ///< label of the cell
 
     /**
-     * @struct Marmot::Cells::GradientEnhancedFiniteStrainCell::MaterialPointLocation
+     * @struct Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::MaterialPointLocation
      * @brief A hosted material point with its cached shape functions.
      */
     struct MaterialPointLocation {
@@ -251,7 +252,8 @@ namespace Marmot::Cells {
      * @param[in] materialPoints The material points.
      * @throws std::invalid_argument if a point is not a GradientEnhancedFiniteStrainMaterialPoint of this dimension.
      */
-    void assignMaterialPoints( const std::vector< MarmotMaterialPoint* >& materialPoints );
+    void assignMaterialPoints(
+      const std::vector< Marmot::Discretizations::MaterialPoints::MaterialPoint* >& materialPoints );
 
     /**
      * @brief Assemble the internal force vector and its tangent from the material points.
@@ -352,7 +354,7 @@ namespace Marmot::Cells {
 
   template < int nDim, int nNodes, class CellBase, GeometryCellPolicy< nDim, nNodes > GeometryCell >
   void GradientEnhancedFiniteStrainCell< nDim, nNodes, CellBase, GeometryCell >::assignMaterialPoints(
-    const std::vector< MarmotMaterialPoint* >& materialPoints )
+    const std::vector< Marmot::Discretizations::MaterialPoints::MaterialPoint* >& materialPoints )
   {
     _materialPointLocations.clear();
 
@@ -362,7 +364,7 @@ namespace Marmot::Cells {
 
       auto geMp = dynamic_cast< MaterialPoint* >( mp );
       if ( !geMp )
-        throw std::invalid_argument( MakeString()
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__ << ": material point " << mp->getMaterialPointNumber()
                                      << " is not a GradientEnhancedFiniteStrainMaterialPoint" );
 
@@ -391,7 +393,7 @@ namespace Marmot::Cells {
     static std::vector< std::vector< std::string > > nodeFields;
 
     if ( nodeFields.empty() )
-      nodeFields = FiniteElement::makeNodeFieldLayout( _fields );
+      nodeFields = Marmot::Discretizations::Elements::makeNodeFieldLayout( _fields );
 
     return nodeFields;
   }
@@ -403,7 +405,8 @@ namespace Marmot::Cells {
     static std::vector< int > permutationPattern;
 
     if ( permutationPattern.empty() )
-      permutationPattern = FiniteElement::makeBlockedLayoutPermutationPattern( getNodeFields(), _fields );
+      permutationPattern = Marmot::Discretizations::Elements::makeBlockedLayoutPermutationPattern( getNodeFields(),
+                                                                                                   _fields );
 
     return permutationPattern;
   }
@@ -412,7 +415,7 @@ namespace Marmot::Cells {
   void GradientEnhancedFiniteStrainCell< nDim, nNodes, CellBase, GeometryCell >::interpolateFieldsToMaterialPoints(
     const double* dQ ) const
   {
-    using namespace Marmot::FastorIndices;
+    using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Fastor;
 
     const auto dQU = TensorMap< const double, nNodes, nDim >( dQ );
@@ -436,7 +439,7 @@ namespace Marmot::Cells {
     double        dT ) const
   {
     using namespace Fastor;
-    using namespace Marmot::FastorIndices;
+    using namespace Marmot::Math::Tensors::FastorIndices;
 
     const auto dQN = TensorMap< const double, nNodes >( dQ + idxN );
 
@@ -561,7 +564,8 @@ namespace Marmot::Cells {
       break;
     }
     default: {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid BodyLoadType specified" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": invalid BodyLoadType specified" );
     }
     }
   }
@@ -582,7 +586,7 @@ namespace Marmot::Cells {
     case Pressure: {
 
       using namespace Fastor;
-      using namespace FastorIndices;
+      using namespace Marmot::Math::Tensors::FastorIndices;
 
       TensorMap< double, nNodes, nDim > r_U( fExt_ );
 
@@ -630,7 +634,8 @@ namespace Marmot::Cells {
       break;
     }
     default: {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid DistributedLoadType specified" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": invalid DistributedLoadType specified" );
     }
     }
   }
@@ -647,21 +652,25 @@ namespace Marmot::Cells {
   }
 
   /**
-   * @class Marmot::Cells::LagrangianGradientEnhancedFiniteStrainCell
+   * @class Marmot::Discretizations::Cells::LagrangianGradientEnhancedFiniteStrainCell
    * @brief GradientEnhancedFiniteStrainCell on a Lagrangian cell geometry (Quad4, Hexa8).
    * @tparam nDim   Spatial dimension.
    * @tparam nNodes Number of cell nodes.
    */
   template < int nDim, int nNodes >
   class LagrangianGradientEnhancedFiniteStrainCell
-    : public GradientEnhancedFiniteStrainCell< nDim,
-                                               nNodes,
-                                               MarmotCell,
-                                               MarmotLagrangianCellGeometry< nDim, nNodes > > {
+    : public GradientEnhancedFiniteStrainCell<
+        nDim,
+        nNodes,
+        Marmot::Discretizations::Cells::Cell,
+        Marmot::Discretizations::Cells::LagrangianCellGeometry< nDim, nNodes > > {
 
-    using Geometry      = MarmotLagrangianCellGeometry< nDim, nNodes >;                           ///< cell geometry
-    using PhysicsParent = GradientEnhancedFiniteStrainCell< nDim, nNodes, MarmotCell, Geometry >; ///< physics base
-                                                                                                  ///< class
+    using Geometry      = Marmot::Discretizations::Cells::LagrangianCellGeometry< nDim, nNodes >; ///< cell geometry
+    using PhysicsParent = GradientEnhancedFiniteStrainCell< nDim,
+                                                            nNodes,
+                                                            Marmot::Discretizations::Cells::Cell,
+                                                            Geometry >; ///< physics base
+                                                                        ///< class
 
   public:
     /**
@@ -675,7 +684,7 @@ namespace Marmot::Cells {
   };
 
   /**
-   * @class Marmot::Cells::BSplineGradientEnhancedFiniteStrainCell
+   * @class Marmot::Discretizations::Cells::BSplineGradientEnhancedFiniteStrainCell
    * @brief GradientEnhancedFiniteStrainCell on a B-spline cell geometry.
    * @tparam nDim   Spatial dimension.
    * @tparam nNodes Number of control points of the cell, @f$ (p+1)^{n_\mathrm{dim}} @f$.
@@ -683,11 +692,17 @@ namespace Marmot::Cells {
    */
   template < int nDim, int nNodes, int order >
   class BSplineGradientEnhancedFiniteStrainCell
-    : public GradientEnhancedFiniteStrainCell< nDim, nNodes, MarmotCell, MarmotBSplineCellGeometry< nDim, order > > {
+    : public GradientEnhancedFiniteStrainCell< nDim,
+                                               nNodes,
+                                               Marmot::Discretizations::Cells::Cell,
+                                               Marmot::Discretizations::Cells::BSplineCellGeometry< nDim, order > > {
 
-    using Geometry      = MarmotBSplineCellGeometry< nDim, order >;                               ///< cell geometry
-    using PhysicsParent = GradientEnhancedFiniteStrainCell< nDim, nNodes, MarmotCell, Geometry >; ///< physics base
-                                                                                                  ///< class
+    using Geometry      = Marmot::Discretizations::Cells::BSplineCellGeometry< nDim, order >; ///< cell geometry
+    using PhysicsParent = GradientEnhancedFiniteStrainCell< nDim,
+                                                            nNodes,
+                                                            Marmot::Discretizations::Cells::Cell,
+                                                            Geometry >; ///< physics base
+                                                                        ///< class
 
   public:
     /**
@@ -706,4 +721,4 @@ namespace Marmot::Cells {
       : PhysicsParent( cellLabel, Geometry( nodeCoordinates, sizeNodeCoordinates, knotVectors, sizeKnotVectors ) ){};
   };
 
-} // namespace Marmot::Cells
+} // namespace Marmot::Discretizations::Cells

@@ -52,27 +52,29 @@ namespace Marmot::Testing {
    */
   template < int nNonlocalVariables >
   void checkMaximumWaveSpeedOverrideMatchesDefault(
-    const MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >&                    material,
-    const typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >::response& currentResponse,
-    const std::vector< Eigen::Vector< double, nNonlocalVariables > >&                                fields,
-    double relativeTolerance = 0.0 )
+    const Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >& material,
+    const typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >::response&
+                                                                      currentResponse,
+    const std::vector< Eigen::Vector< double, nNonlocalVariables > >& fields,
+    double                                                            relativeTolerance = 0.0 )
   {
     const int                   nStateVars = material.getNumberOfRequiredStateVars();
     const std::vector< double > stateVarsBefore( currentResponse.stateVars, currentResponse.stateVars + nStateVars );
 
     for ( const auto& K : fields ) {
       const double override_ = material.getMaximumWaveSpeed( currentResponse, K );
-      const double default_  = material.MarmotMaterialGeneralGradientEnhancedHypoElastic<
+      const double default_  = material.Marmot::Materials::MaterialGradientEnhancedHypoElastic<
         nNonlocalVariables >::getMaximumWaveSpeed( currentResponse, K );
 
       throwExceptionOnFailure( std::abs( override_ - default_ ) <= relativeTolerance * std::abs( default_ ),
-                               MakeString() << __PRETTY_FUNCTION__ << ": getMaximumWaveSpeed() returns " << override_
-                                            << " at the non-local field " << K.transpose() << ", the default returns "
-                                            << default_ );
+                               Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__ << ": getMaximumWaveSpeed() returns " << override_
+                                 << " at the non-local field " << K.transpose() << ", the default returns "
+                                 << default_ );
     }
 
     throwExceptionOnFailure( std::equal( stateVarsBefore.begin(), stateVarsBefore.end(), currentResponse.stateVars ),
-                             MakeString()
+                             Marmot::Utilities::MakeString()
                                << __PRETTY_FUNCTION__ << ": getMaximumWaveSpeed() changed the state variables" );
   }
 

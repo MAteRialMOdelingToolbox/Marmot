@@ -5,7 +5,7 @@ Theory
 ------
 
 The displacement material point is the carrier of the material state in the finite-strain displacement formulation of
-the material point method (MPM). It consumes any material of the ``MarmotMaterialFiniteStrain`` interface and is
+the material point method (MPM). It consumes any material of the ``Marmot::Materials::MaterialFiniteStrain`` interface and is
 hosted by a :doc:`displacementcell` (MPM) or owned by a :doc:`displacementparticle` (RKPM). The general interfaces of
 material points and cells are described in :doc:`meshfreecells`, those of the particles in :doc:`meshfreeparticles`.
 
@@ -48,7 +48,7 @@ In plane strain, the in-plane increment is expanded to 3D (the out-of-plane comp
 and :math:`\boldsymbol{F}_n` remain those of the identity), the material is evaluated by ``computePlaneStrain`` with the
 3D deformation gradient, and the in-plane parts of :math:`\boldsymbol{\tau}` and of its tangent are passed to the host.
 The 3D material point evaluates the material with the 3D deformation gradient; the call also goes through
-``computePlaneStrain``, whose default implementation in ``MarmotMaterialFiniteStrain`` forwards to ``computeStress``.
+``computePlaneStrain``, whose default implementation in ``Marmot::Materials::MaterialFiniteStrain`` forwards to ``computeStress``.
 
 Registered material points
 --------------------------
@@ -109,11 +109,11 @@ The material point has no properties of its own; the material is assigned by nam
 Implementation
 --------------
 
-.. doxygenclass:: Marmot::MaterialPoints::DisplacementMaterialPoint
+.. doxygenclass:: Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::MaterialPoints::DisplacementMaterialPoint2D
+.. doxygenclass:: Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::MaterialPoints::DisplacementMaterialPoint3D
+.. doxygenclass:: Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D
    :allow-dot-graphs:

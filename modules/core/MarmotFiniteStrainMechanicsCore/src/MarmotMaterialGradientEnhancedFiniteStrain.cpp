@@ -40,7 +40,7 @@ namespace {
 
 } // namespace
 
-void MarmotMaterialGradientEnhancedFiniteStrain::computeStress(
+void Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computeStress(
   ConstitutiveResponse< 3 >&                  response,
   AlgorithmicModuli< 3 >&                     tangents,
   const Deformation< 3 >&                     deformation,
@@ -59,15 +59,16 @@ void MarmotMaterialGradientEnhancedFiniteStrain::computeStress(
   applyEigenDeformationToTangent( tangents.dL_dF, F0_XX, F0_YY, F0_ZZ );
 }
 
-void MarmotMaterialGradientEnhancedFiniteStrain::computePlaneStrain( ConstitutiveResponse< 3 >& response,
-                                                                     AlgorithmicModuli< 3 >&    algorithmicModuli,
-                                                                     const Deformation< 3 >&    deformation,
-                                                                     const TimeIncrement&       timeIncrement ) const
+void Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain(
+  ConstitutiveResponse< 3 >& response,
+  AlgorithmicModuli< 3 >&    algorithmicModuli,
+  const Deformation< 3 >&    deformation,
+  const TimeIncrement&       timeIncrement ) const
 {
   return computeStress( response, algorithmicModuli, deformation, timeIncrement );
 }
 
-void MarmotMaterialGradientEnhancedFiniteStrain::computePlaneStrain(
+void Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain(
   ConstitutiveResponse< 3 >&                  response,
   AlgorithmicModuli< 3 >&                     algorithmicModuli,
   const Deformation< 3 >&                     deformation,
@@ -80,10 +81,10 @@ void MarmotMaterialGradientEnhancedFiniteStrain::computePlaneStrain(
 /** The basic implementation here assumes non-chiral, isotropic elastic behavior, and an undamaged
  * initial state: the nonlocal field is held at zero throughout the iteration.
  */
-std::tuple< double, double, double > MarmotMaterialGradientEnhancedFiniteStrain::findEigenDeformationForEigenStress(
-  const std::tuple< double, double, double >& initialGuess,
-  const std::tuple< double, double, double >& eigenStress,
-  double*                                     stateVars ) const
+std::tuple< double, double, double > Marmot::Materials::MaterialGradientEnhancedFiniteStrain::
+  findEigenDeformationForEigenStress( const std::tuple< double, double, double >& initialGuess,
+                                      const std::tuple< double, double, double >& eigenStress,
+                                      double*                                     stateVars ) const
 {
   using namespace Marmot;
 
@@ -96,15 +97,15 @@ std::tuple< double, double, double > MarmotMaterialGradientEnhancedFiniteStrain:
 
   Eigen::Map< Eigen::VectorXd > theStateVars( stateVars, stateLayout.totalSize() );
 
-  auto evaluateStress = [&]( const Vector3d& F0 ) {
+  auto evaluateStress = [&]( const Marmot::Math::Vector3d& F0 ) {
     deformation.F( 0, 0 ) = F0( 0 );
     deformation.F( 1, 1 ) = F0( 1 );
     deformation.F( 2, 2 ) = F0( 2 );
 
     computeStress( response, tangents, deformation, timeIncrement );
 
-    Vector3d tau = { response.tau( 0, 0 ), response.tau( 1, 1 ), response.tau( 2, 2 ) };
-    Matrix3d dTau_dF;
+    Marmot::Math::Vector3d tau = { response.tau( 0, 0 ), response.tau( 1, 1 ), response.tau( 2, 2 ) };
+    Marmot::Math::Matrix3d dTau_dF;
     dTau_dF << tangents.dTau_dF( 0, 0, 0, 0 ), tangents.dTau_dF( 0, 0, 1, 1 ), tangents.dTau_dF( 0, 0, 2, 2 ),
       tangents.dTau_dF( 1, 1, 0, 0 ), tangents.dTau_dF( 1, 1, 1, 1 ), tangents.dTau_dF( 1, 1, 2, 2 ),
       tangents.dTau_dF( 2, 2, 0, 0 ), tangents.dTau_dF( 2, 2, 1, 1 ), tangents.dTau_dF( 2, 2, 2, 2 );
@@ -149,7 +150,7 @@ std::tuple< double, double, double > MarmotMaterialGradientEnhancedFiniteStrain:
       break;
 
     if ( itCounter > 5 )
-      throw std::invalid_argument( MakeString()
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
                                    << __PRETTY_FUNCTION__ << ": failed to find eigen deformation within 5 iterations" );
 
     itCounter++;

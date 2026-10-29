@@ -12,90 +12,104 @@ using namespace Eigen;
 
 // Bar2
 template <>
-MarmotGeometryElement< 1, 2 >::NSized MarmotGeometryElement< 1, 2 >::N( const XiSized& xi ) const
+Marmot::Discretizations::Elements::GeometryElement< 1, 2 >::NSized Marmot::Discretizations::Elements::
+  GeometryElement< 1, 2 >::N( const XiSized& xi ) const
 {
-  return Marmot::FiniteElement::Spatial1D::Bar2::N( xi( 0 ) );
+  return Marmot::Discretizations::Elements::Spatial1D::Bar2::N( xi( 0 ) );
 }
 // Quad4
 template <>
-MarmotGeometryElement< 2, 4 >::NSized MarmotGeometryElement< 2, 4 >::N( const XiSized& xi ) const
+Marmot::Discretizations::Elements::GeometryElement< 2, 4 >::NSized Marmot::Discretizations::Elements::
+  GeometryElement< 2, 4 >::N( const XiSized& xi ) const
 {
-  return Marmot::FiniteElement::Spatial2D::Quad4::N( xi );
+  return Marmot::Discretizations::Elements::Spatial2D::Quad4::N( xi );
 }
 // Quad8
 template <>
-MarmotGeometryElement< 2, 8 >::NSized MarmotGeometryElement< 2, 8 >::N( const XiSized& xi ) const
+Marmot::Discretizations::Elements::GeometryElement< 2, 8 >::NSized Marmot::Discretizations::Elements::
+  GeometryElement< 2, 8 >::N( const XiSized& xi ) const
 {
-  return Marmot::FiniteElement::Spatial2D::Quad8::N( xi );
+  return Marmot::Discretizations::Elements::Spatial2D::Quad8::N( xi );
 }
 // Tetra4
 template <>
-MarmotGeometryElement< 3, 4 >::NSized MarmotGeometryElement< 3, 4 >::N( const XiSized& xi ) const
+Marmot::Discretizations::Elements::GeometryElement< 3, 4 >::NSized Marmot::Discretizations::Elements::
+  GeometryElement< 3, 4 >::N( const XiSized& xi ) const
 {
-  return Marmot::FiniteElement::Spatial3D::Tetra4::N( xi );
+  return Marmot::Discretizations::Elements::Spatial3D::Tetra4::N( xi );
 }
 // Tetra10
 template <>
-MarmotGeometryElement< 3, 10 >::NSized MarmotGeometryElement< 3, 10 >::N( const XiSized& xi ) const
+Marmot::Discretizations::Elements::GeometryElement< 3, 10 >::NSized Marmot::Discretizations::Elements::
+  GeometryElement< 3, 10 >::N( const XiSized& xi ) const
 {
-  return Marmot::FiniteElement::Spatial3D::Tetra10::N( xi );
+  return Marmot::Discretizations::Elements::Spatial3D::Tetra10::N( xi );
 }
 // Hexa8
 template <>
-MarmotGeometryElement< 3, 8 >::NSized MarmotGeometryElement< 3, 8 >::N( const XiSized& xi ) const
+Marmot::Discretizations::Elements::GeometryElement< 3, 8 >::NSized Marmot::Discretizations::Elements::
+  GeometryElement< 3, 8 >::N( const XiSized& xi ) const
 {
-  return Marmot::FiniteElement::Spatial3D::Hexa8::N( xi );
+  return Marmot::Discretizations::Elements::Spatial3D::Hexa8::N( xi );
 }
 // Hexa20
 template <>
-MarmotGeometryElement< 3, 20 >::NSized MarmotGeometryElement< 3, 20 >::N( const XiSized& xi ) const
+Marmot::Discretizations::Elements::GeometryElement< 3, 20 >::NSized Marmot::Discretizations::Elements::
+  GeometryElement< 3, 20 >::N( const XiSized& xi ) const
 {
-  return Marmot::FiniteElement::Spatial3D::Hexa20::N( xi );
+  return Marmot::Discretizations::Elements::Spatial3D::Hexa20::N( xi );
 }
 
 /* Template Specialization for Shape functions derivatives.
  * */
 // Bar2
 template <>
-MarmotGeometryElement< 1, 2 >::dNdXiSized MarmotGeometryElement< 1, 2 >::dNdXi( const XiSized& xi ) const
+Marmot::Discretizations::Elements::GeometryElement< 1, 2 >::dNdXiSized Marmot::Discretizations::Elements::
+  GeometryElement< 1, 2 >::dNdXi( const XiSized& xi ) const
 {
-  return Marmot::FiniteElement::Spatial1D::Bar2::dNdXi( xi( 0 ) );
+  return Marmot::Discretizations::Elements::Spatial1D::Bar2::dNdXi( xi( 0 ) );
 }
 // Quad4
 template <>
-MarmotGeometryElement< 2, 4 >::dNdXiSized MarmotGeometryElement< 2, 4 >::dNdXi( const XiSized& xi ) const
+Marmot::Discretizations::Elements::GeometryElement< 2, 4 >::dNdXiSized Marmot::Discretizations::Elements::
+  GeometryElement< 2, 4 >::dNdXi( const XiSized& xi ) const
 {
-  return Marmot::FiniteElement::Spatial2D::Quad4::dNdXi( xi );
+  return Marmot::Discretizations::Elements::Spatial2D::Quad4::dNdXi( xi );
 }
 // Quad8
 template <>
-MarmotGeometryElement< 2, 8 >::dNdXiSized MarmotGeometryElement< 2, 8 >::dNdXi( const XiSized& xi ) const
+Marmot::Discretizations::Elements::GeometryElement< 2, 8 >::dNdXiSized Marmot::Discretizations::Elements::
+  GeometryElement< 2, 8 >::dNdXi( const XiSized& xi ) const
 {
-  return Marmot::FiniteElement::Spatial2D::Quad8::dNdXi( xi );
+  return Marmot::Discretizations::Elements::Spatial2D::Quad8::dNdXi( xi );
 }
 // Tetra4
 template <>
-MarmotGeometryElement< 3, 4 >::dNdXiSized MarmotGeometryElement< 3, 4 >::dNdXi( const XiSized& xi ) const
+Marmot::Discretizations::Elements::GeometryElement< 3, 4 >::dNdXiSized Marmot::Discretizations::Elements::
+  GeometryElement< 3, 4 >::dNdXi( const XiSized& xi ) const
 {
-  return Marmot::FiniteElement::Spatial3D::Tetra4::dNdXi( xi );
+  return Marmot::Discretizations::Elements::Spatial3D::Tetra4::dNdXi( xi );
 }
 // Tetra10
 template <>
-MarmotGeometryElement< 3, 10 >::dNdXiSized MarmotGeometryElement< 3, 10 >::dNdXi( const XiSized& xi ) const
+Marmot::Discretizations::Elements::GeometryElement< 3, 10 >::dNdXiSized Marmot::Discretizations::Elements::
+  GeometryElement< 3, 10 >::dNdXi( const XiSized& xi ) const
 {
-  return Marmot::FiniteElement::Spatial3D::Tetra10::dNdXi( xi );
+  return Marmot::Discretizations::Elements::Spatial3D::Tetra10::dNdXi( xi );
 }
 // Hexa8
 template <>
-MarmotGeometryElement< 3, 8 >::dNdXiSized MarmotGeometryElement< 3, 8 >::dNdXi( const XiSized& xi ) const
+Marmot::Discretizations::Elements::GeometryElement< 3, 8 >::dNdXiSized Marmot::Discretizations::Elements::
+  GeometryElement< 3, 8 >::dNdXi( const XiSized& xi ) const
 {
-  return Marmot::FiniteElement::Spatial3D::Hexa8::dNdXi( xi );
+  return Marmot::Discretizations::Elements::Spatial3D::Hexa8::dNdXi( xi );
 }
 // Hexa20
 template <>
-MarmotGeometryElement< 3, 20 >::dNdXiSized MarmotGeometryElement< 3, 20 >::dNdXi( const XiSized& xi ) const
+Marmot::Discretizations::Elements::GeometryElement< 3, 20 >::dNdXiSized Marmot::Discretizations::Elements::
+  GeometryElement< 3, 20 >::dNdXi( const XiSized& xi ) const
 {
-  return Marmot::FiniteElement::Spatial3D::Hexa20::dNdXi( xi );
+  return Marmot::Discretizations::Elements::Spatial3D::Hexa20::dNdXi( xi );
 }
 
 /* Template Specialization for B Operator
@@ -111,118 +125,125 @@ MarmotGeometryElement< 3, 20 >::dNdXiSized MarmotGeometryElement< 3, 20 >::dNdXi
 
 // Bar2
 template <>
-typename MarmotGeometryElement< 1, 2 >::BSized MarmotGeometryElement< 1, 2 >::B( const dNdXiSized& dNdX ) const
+typename Marmot::Discretizations::Elements::GeometryElement< 1, 2 >::BSized Marmot::Discretizations::Elements::
+  GeometryElement< 1, 2 >::B( const dNdXiSized& dNdX ) const
 {
   return dNdX;
 }
 // Quad4
 template <>
-typename MarmotGeometryElement< 2, 4 >::BSized MarmotGeometryElement< 2, 4 >::B( const dNdXiSized& dNdX ) const
+typename Marmot::Discretizations::Elements::GeometryElement< 2, 4 >::BSized Marmot::Discretizations::Elements::
+  GeometryElement< 2, 4 >::B( const dNdXiSized& dNdX ) const
 {
-  return Marmot::FiniteElement::Spatial2D::B< 4 >( dNdX );
+  return Marmot::Discretizations::Elements::Spatial2D::B< 4 >( dNdX );
 }
 // axisymmetric quad8
 template <>
-typename MarmotGeometryElement< 2, 4 >::BSizedAxisymmetric MarmotGeometryElement< 2, 4 >::B_axisymmetric(
-  const dNdXiSized& dNdX,
-  const NSized&     N,
-  const XiSized&    x_gauss ) const
+typename Marmot::Discretizations::Elements::GeometryElement< 2, 4 >::BSizedAxisymmetric Marmot::Discretizations::
+  Elements::GeometryElement< 2, 4 >::B_axisymmetric( const dNdXiSized& dNdX,
+                                                     const NSized&     N,
+                                                     const XiSized&    x_gauss ) const
 {
-  return Marmot::FiniteElement::Spatial2D::axisymmetric::B< 4 >( dNdX, N, x_gauss );
+  return Marmot::Discretizations::Elements::Spatial2D::Axisymmetric::B< 4 >( dNdX, N, x_gauss );
 }
 // Quad8
 template <>
-typename MarmotGeometryElement< 2, 8 >::BSized MarmotGeometryElement< 2, 8 >::B( const dNdXiSized& dNdX ) const
+typename Marmot::Discretizations::Elements::GeometryElement< 2, 8 >::BSized Marmot::Discretizations::Elements::
+  GeometryElement< 2, 8 >::B( const dNdXiSized& dNdX ) const
 {
-  return Marmot::FiniteElement::Spatial2D::B< 8 >( dNdX );
+  return Marmot::Discretizations::Elements::Spatial2D::B< 8 >( dNdX );
 }
 // axisymmetric quad8
 template <>
-typename MarmotGeometryElement< 2, 8 >::BSizedAxisymmetric MarmotGeometryElement< 2, 8 >::B_axisymmetric(
-  const dNdXiSized& dNdX,
-  const NSized&     N,
-  const XiSized&    x_gauss ) const
+typename Marmot::Discretizations::Elements::GeometryElement< 2, 8 >::BSizedAxisymmetric Marmot::Discretizations::
+  Elements::GeometryElement< 2, 8 >::B_axisymmetric( const dNdXiSized& dNdX,
+                                                     const NSized&     N,
+                                                     const XiSized&    x_gauss ) const
 {
-  return Marmot::FiniteElement::Spatial2D::axisymmetric::B< 8 >( dNdX, N, x_gauss );
+  return Marmot::Discretizations::Elements::Spatial2D::Axisymmetric::B< 8 >( dNdX, N, x_gauss );
 }
 // Tetra4
 template <>
-typename MarmotGeometryElement< 3, 4 >::BSized MarmotGeometryElement< 3, 4 >::B( const dNdXiSized& dNdX ) const
+typename Marmot::Discretizations::Elements::GeometryElement< 3, 4 >::BSized Marmot::Discretizations::Elements::
+  GeometryElement< 3, 4 >::B( const dNdXiSized& dNdX ) const
 {
-  return Marmot::FiniteElement::Spatial3D::B< 4 >( dNdX );
+  return Marmot::Discretizations::Elements::Spatial3D::B< 4 >( dNdX );
 }
 // Tetra10
 template <>
-typename MarmotGeometryElement< 3, 10 >::BSized MarmotGeometryElement< 3, 10 >::B( const dNdXiSized& dNdX ) const
+typename Marmot::Discretizations::Elements::GeometryElement< 3, 10 >::BSized Marmot::Discretizations::Elements::
+  GeometryElement< 3, 10 >::B( const dNdXiSized& dNdX ) const
 {
-  return Marmot::FiniteElement::Spatial3D::B< 10 >( dNdX );
+  return Marmot::Discretizations::Elements::Spatial3D::B< 10 >( dNdX );
 }
 // Hexa8
 template <>
-typename MarmotGeometryElement< 3, 8 >::BSized MarmotGeometryElement< 3, 8 >::B( const dNdXiSized& dNdX ) const
+typename Marmot::Discretizations::Elements::GeometryElement< 3, 8 >::BSized Marmot::Discretizations::Elements::
+  GeometryElement< 3, 8 >::B( const dNdXiSized& dNdX ) const
 {
-  return Marmot::FiniteElement::Spatial3D::B< 8 >( dNdX );
+  return Marmot::Discretizations::Elements::Spatial3D::B< 8 >( dNdX );
 }
 // Hexa8 B-bar
 template <>
-typename MarmotGeometryElement< 3, 8 >::BSized MarmotGeometryElement< 3, 8 >::B_bar( const dNdXiSized& dNdX,
-                                                                                     const dNdXiSized& dNdX0 ) const
+typename Marmot::Discretizations::Elements::GeometryElement< 3, 8 >::BSized Marmot::Discretizations::Elements::
+  GeometryElement< 3, 8 >::B_bar( const dNdXiSized& dNdX, const dNdXiSized& dNdX0 ) const
 {
-  return Marmot::FiniteElement::Spatial3D::B_bar< 8 >( dNdX, dNdX0 );
+  return Marmot::Discretizations::Elements::Spatial3D::B_bar< 8 >( dNdX, dNdX0 );
 }
 // Hexa20
 template <>
-typename MarmotGeometryElement< 3, 20 >::BSized MarmotGeometryElement< 3, 20 >::B( const dNdXiSized& dNdX ) const
+typename Marmot::Discretizations::Elements::GeometryElement< 3, 20 >::BSized Marmot::Discretizations::Elements::
+  GeometryElement< 3, 20 >::B( const dNdXiSized& dNdX ) const
 {
-  return Marmot::FiniteElement::Spatial3D::B< 20 >( dNdX );
+  return Marmot::Discretizations::Elements::Spatial3D::B< 20 >( dNdX );
 }
 
 // Bar2
 template <>
-typename MarmotGeometryElement< 1, 2 >::BSized MarmotGeometryElement< 1, 2 >::BGreen( const dNdXiSized&    dNdX,
-                                                                                      const JacobianSized& F ) const
+typename Marmot::Discretizations::Elements::GeometryElement< 1, 2 >::BSized Marmot::Discretizations::Elements::
+  GeometryElement< 1, 2 >::BGreen( const dNdXiSized& dNdX, const JacobianSized& F ) const
 {
   return dNdX * F( 0, 0 );
 }
 // Quad4
 template <>
-typename MarmotGeometryElement< 2, 4 >::BSized MarmotGeometryElement< 2, 4 >::BGreen( const dNdXiSized&    dNdX,
-                                                                                      const JacobianSized& F ) const
+typename Marmot::Discretizations::Elements::GeometryElement< 2, 4 >::BSized Marmot::Discretizations::Elements::
+  GeometryElement< 2, 4 >::BGreen( const dNdXiSized& dNdX, const JacobianSized& F ) const
 {
-  return Marmot::FiniteElement::Spatial2D::BGreen< 4 >( dNdX, F );
+  return Marmot::Discretizations::Elements::Spatial2D::BGreen< 4 >( dNdX, F );
 }
 // Quad8
 template <>
-typename MarmotGeometryElement< 2, 8 >::BSized MarmotGeometryElement< 2, 8 >::BGreen( const dNdXiSized&    dNdX,
-                                                                                      const JacobianSized& F ) const
+typename Marmot::Discretizations::Elements::GeometryElement< 2, 8 >::BSized Marmot::Discretizations::Elements::
+  GeometryElement< 2, 8 >::BGreen( const dNdXiSized& dNdX, const JacobianSized& F ) const
 {
-  return Marmot::FiniteElement::Spatial2D::BGreen< 8 >( dNdX, F );
+  return Marmot::Discretizations::Elements::Spatial2D::BGreen< 8 >( dNdX, F );
 }
 // Tetra4
 template <>
-typename MarmotGeometryElement< 3, 4 >::BSized MarmotGeometryElement< 3, 4 >::BGreen( const dNdXiSized&    dNdX,
-                                                                                      const JacobianSized& F ) const
+typename Marmot::Discretizations::Elements::GeometryElement< 3, 4 >::BSized Marmot::Discretizations::Elements::
+  GeometryElement< 3, 4 >::BGreen( const dNdXiSized& dNdX, const JacobianSized& F ) const
 {
-  return Marmot::FiniteElement::Spatial3D::BGreen< 4 >( dNdX, F );
+  return Marmot::Discretizations::Elements::Spatial3D::BGreen< 4 >( dNdX, F );
 }
 // Tetra10
 template <>
-typename MarmotGeometryElement< 3, 10 >::BSized MarmotGeometryElement< 3, 10 >::BGreen( const dNdXiSized&    dNdX,
-                                                                                        const JacobianSized& F ) const
+typename Marmot::Discretizations::Elements::GeometryElement< 3, 10 >::BSized Marmot::Discretizations::Elements::
+  GeometryElement< 3, 10 >::BGreen( const dNdXiSized& dNdX, const JacobianSized& F ) const
 {
-  return Marmot::FiniteElement::Spatial3D::BGreen< 10 >( dNdX, F );
+  return Marmot::Discretizations::Elements::Spatial3D::BGreen< 10 >( dNdX, F );
 }
 // Hexa8
 template <>
-typename MarmotGeometryElement< 3, 8 >::BSized MarmotGeometryElement< 3, 8 >::BGreen( const dNdXiSized&    dNdX,
-                                                                                      const JacobianSized& F ) const
+typename Marmot::Discretizations::Elements::GeometryElement< 3, 8 >::BSized Marmot::Discretizations::Elements::
+  GeometryElement< 3, 8 >::BGreen( const dNdXiSized& dNdX, const JacobianSized& F ) const
 {
-  return Marmot::FiniteElement::Spatial3D::BGreen< 8 >( dNdX, F );
+  return Marmot::Discretizations::Elements::Spatial3D::BGreen< 8 >( dNdX, F );
 }
 // Hexa20
 template <>
-typename MarmotGeometryElement< 3, 20 >::BSized MarmotGeometryElement< 3, 20 >::BGreen( const dNdXiSized&    dNdX,
-                                                                                        const JacobianSized& F ) const
+typename Marmot::Discretizations::Elements::GeometryElement< 3, 20 >::BSized Marmot::Discretizations::Elements::
+  GeometryElement< 3, 20 >::BGreen( const dNdXiSized& dNdX, const JacobianSized& F ) const
 {
-  return Marmot::FiniteElement::Spatial3D::BGreen< 20 >( dNdX, F );
+  return Marmot::Discretizations::Elements::Spatial3D::BGreen< 20 >( dNdX, F );
 }

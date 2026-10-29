@@ -41,15 +41,16 @@
 #include <memory>
 #include <vector>
 
-namespace Marmot::MaterialPoints {
+namespace Marmot::Discretizations::MaterialPoints {
 
   /**
-   * @class Marmot::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint
+   * @class Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint
    * @brief Material point for gradient-enhanced (implicit-gradient) finite-strain materials without a micropolar
    *        continuum.
    *
    * The material point carries the displacement field @f$ \boldsymbol{u} @f$ and a single scalar nonlocal field
-   * @f$ \bar{N} @f$ and drives a MarmotMaterialGradientEnhancedFiniteStrain, which returns the Kirchhoff stress
+   * @f$ \bar{N} @f$ and drives a Marmot::Materials::MaterialGradientEnhancedFiniteStrain, which returns the Kirchhoff
+   * stress
    * @f$ \boldsymbol{\tau} @f$, the local driving force @f$ L @f$ (the source of @f$ \bar{N} - c\,\nabla^2\bar{N} = L
    * @f$, @f$ c = R^2 @f$ with the nonlocal radius @f$ R @f$) and the four algorithmic tangents. It is the material
    * point both of the MPM cell GradientEnhancedFiniteStrainCell and of the RKPM particle
@@ -77,12 +78,12 @@ namespace Marmot::MaterialPoints {
    * and stores them in #tangents together with the response in #response.
    *
    * In plane strain (@c nDim = 2) all tensors are stored in 3D, the material is evaluated through
-   * MarmotMaterialGradientEnhancedFiniteStrain::computePlaneStrain, and the in-plane parts are handed out.
+   * Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain, and the in-plane parts are handed out.
    *
    * @tparam nDim Spatial dimension (2: plane strain, 3: 3D).
    */
   template < int nDim >
-  class GradientEnhancedFiniteStrainMaterialPoint : public MarmotMaterialPoint {
+  class GradientEnhancedFiniteStrainMaterialPoint : public Marmot::Discretizations::MaterialPoints::MaterialPoint {
 
   protected:
     constexpr static int _nVertices = 1;                     ///< a material point is represented by a single vertex
@@ -98,17 +99,17 @@ namespace Marmot::MaterialPoints {
     double _vol0;    ///< volume @f$ V_0 @f$ in the undeformed configuration
     double _density; ///< mass density in the reference configuration, as reported by the material
 
-    using Material = MarmotMaterialGradientEnhancedFiniteStrain;            ///< the consumed material interface
+    using Material = Marmot::Materials::MaterialGradientEnhancedFiniteStrain; ///< the consumed material interface
 
-    std::unique_ptr< MarmotMaterialGradientEnhancedFiniteStrain > material; ///< the assigned material
+    std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedFiniteStrain > material; ///< the assigned material
 
     /**
-     * @class Marmot::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::MPStateVarManager
+     * @class Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint::MPStateVarManager
      * @brief State variable layout of the material point, followed by the state of the material.
      *
      * All kinematic quantities are stored with 3 (vectors) or 9 (tensors) entries, also in plane strain.
      */
-    class MPStateVarManager : public MarmotStateVarVectorManager {
+    class MPStateVarManager : public Marmot::Utilities::StateVarVectorManager {
 
       /// @cond INTERNAL (designated initializers are not parseable by the Sphinx C++ domain)
 
@@ -132,20 +133,23 @@ namespace Marmot::MaterialPoints {
       /// @endcond
 
     public:
-      FastorStandardTensors::TensorMap3d  u;     ///< displacement of the last accepted state
-      FastorStandardTensors::TensorMap3d  v;     ///< velocity (Newmark-beta, set by the particle)
-      FastorStandardTensors::TensorMap3d  a;     ///< acceleration (Newmark-beta, set by the particle)
-      FastorStandardTensors::TensorMap3d  du;    ///< displacement increment of the current step
-      FastorStandardTensors::TensorMap33d dx_dY; ///< deformation gradient increment @f$ \Delta\boldsymbol{F} @f$
-      FastorStandardTensors::TensorMap33d dY_dX; ///< deformation gradient @f$ \boldsymbol{F}_n @f$, last accepted
+      Marmot::Math::Tensors::FastorTensors::TensorMap3d u;  ///< displacement of the last accepted state
+      Marmot::Math::Tensors::FastorTensors::TensorMap3d v;  ///< velocity (Newmark-beta, set by the particle)
+      Marmot::Math::Tensors::FastorTensors::TensorMap3d a;  ///< acceleration (Newmark-beta, set by the particle)
+      Marmot::Math::Tensors::FastorTensors::TensorMap3d du; ///< displacement increment of the current step
+      Marmot::Math::Tensors::FastorTensors::TensorMap33d
+        dx_dY;                ///< deformation gradient increment @f$ \Delta\boldsymbol{F} @f$
+      Marmot::Math::Tensors::FastorTensors::TensorMap33d
+              dY_dX;          ///< deformation gradient @f$ \boldsymbol{F}_n @f$, last accepted
       double& nonLocalDamage; ///< nonlocal field @f$ \bar{N} @f$ (total; incrementDeformation() adds the increment of
-                              ///< the step to the committed value, see the state contract of MarmotMaterialPoint)
+                              ///< the step to the committed value, see the state contract of
+                              ///< Marmot::Discretizations::MaterialPoints::MaterialPoint)
       double& localDamage;    ///< local driving force @f$ L @f$ of the last material evaluation
-      FastorStandardTensors::TensorMap33d stress;        ///< Kirchhoff stress @f$ \boldsymbol{\tau} @f$ (3x3)
-      double&                             F0_XX;         ///< eigen deformation (geostatic stress), XX component
-      double&                             F0_YY;         ///< eigen deformation (geostatic stress), YY component
-      double&                             F0_ZZ;         ///< eigen deformation (geostatic stress), ZZ component
-      Eigen::Map< Eigen::VectorXd >       materialState; ///< state variables of the material
+      Marmot::Math::Tensors::FastorTensors::TensorMap33d stress; ///< Kirchhoff stress @f$ \boldsymbol{\tau} @f$ (3x3)
+      double&                                            F0_XX;  ///< eigen deformation (geostatic stress), XX component
+      double&                                            F0_YY;  ///< eigen deformation (geostatic stress), YY component
+      double&                                            F0_ZZ;  ///< eigen deformation (geostatic stress), ZZ component
+      Eigen::Map< Eigen::VectorXd >                      materialState; ///< state variables of the material
 
       /**
        * @brief Number of state variables of the material point itself (without the material).
@@ -159,7 +163,7 @@ namespace Marmot::MaterialPoints {
        * @param[in]     nStateVars        Total size of the vector (material point + material).
        */
       MPStateVarManager( double* theStateVarVector, int nStateVars )
-        : MarmotStateVarVectorManager( theStateVarVector, layout ),
+        : Marmot::Utilities::StateVarVectorManager( theStateVarVector, layout ),
           u( &find( "displacement" ) ),
           v( &find( "velocity" ) ),
           a( &find( "acceleration" ) ),
@@ -209,7 +213,7 @@ namespace Marmot::MaterialPoints {
      * @param[in] stateName Name of the state variable (see MPStateVarManager).
      * @return View on the state variable.
      */
-    StateView getStateView( const std::string& stateName ) const override;
+    Marmot::Utilities::StateView getStateView( const std::string& stateName ) const override;
 
     /**
      * @brief Shape of the material point.
@@ -218,11 +222,12 @@ namespace Marmot::MaterialPoints {
     std::string getMaterialPointShape() const override { return "point"; };
 
     /**
-     * @brief Create the material from the MarmotMaterialGradientEnhancedFiniteStrainFactory.
+     * @brief Create the material from the Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory.
      * @param[in] property Material section (name and properties).
-     * @throws std::invalid_argument if the material does not implement MarmotMaterialGradientEnhancedFiniteStrain.
+     * @throws std::invalid_argument if the material does not implement
+     * Marmot::Materials::MaterialGradientEnhancedFiniteStrain.
      */
-    void assignMaterial( const MarmotMaterialSection& property ) override;
+    void assignMaterial( const Marmot::Discretizations::MaterialSection& property ) override;
 
     /**
      * @brief Initialize the state: @f$ \boldsymbol{F}_n = \boldsymbol{I} @f$, unit eigen deformation, a zero
@@ -350,14 +355,14 @@ namespace Marmot::MaterialPoints {
      */
     void acceptStateAndPosition() override
     {
-      const auto&                           u_n  = state->u;
-      const FastorStandardTensors::Tensor3d u_np = u_n + state->du;
+      const auto&                                          u_n  = state->u;
+      const Marmot::Math::Tensors::FastorTensors::Tensor3d u_np = u_n + state->du;
 
-      const FastorStandardTensors::Tensor33d dx_dX_n  = state->dY_dX;
-      const FastorStandardTensors::Tensor33d dx_dX_np = state->dx_dY % dx_dX_n;
+      const Marmot::Math::Tensors::FastorTensors::Tensor33d dx_dX_n  = state->dY_dX;
+      const Marmot::Math::Tensors::FastorTensors::Tensor33d dx_dX_np = state->dx_dY % dx_dX_n;
 
-      mapEigenToFastor( state->u )     = mapEigenToFastor( u_np );
-      mapEigenToFastor( state->dY_dX ) = mapEigenToFastor( dx_dX_np );
+      Marmot::Math::Tensors::mapEigenToFastor( state->u )     = Marmot::Math::Tensors::mapEigenToFastor( u_np );
+      Marmot::Math::Tensors::mapEigenToFastor( state->dY_dX ) = Marmot::Math::Tensors::mapEigenToFastor( dx_dX_np );
     };
 
     /**
@@ -443,8 +448,8 @@ namespace Marmot::MaterialPoints {
      *
      * Only `geostaticstress` is supported: the eigen deformation that produces the hydrostatic stress
      * @f$ \tau_{XX} = \tau_{YY} = \tau_{ZZ} = \mathrm{value}[0] @f$ is found by
-     * MarmotMaterialGradientEnhancedFiniteStrain::findEigenDeformationForEigenStress and applied in every subsequent
-     * material evaluation.
+     * Marmot::Materials::MaterialGradientEnhancedFiniteStrain::findEigenDeformationForEigenStress and applied in every
+     * subsequent material evaluation.
      *
      * @param[in] conditionName Name of the condition.
      * @param[in] value         Its value(s); `value[0]` is the geostatic normal stress.
@@ -467,7 +472,8 @@ namespace Marmot::MaterialPoints {
         hasEigenDeformation = true;
       }
       else {
-        throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << ": invalid initial condition" );
       }
     }
   };
@@ -479,7 +485,8 @@ namespace Marmot::MaterialPoints {
   }
 
   template < int nDim >
-  StateView GradientEnhancedFiniteStrainMaterialPoint< nDim >::getStateView( const std::string& stateName ) const
+  Marmot::Utilities::StateView GradientEnhancedFiniteStrainMaterialPoint< nDim >::getStateView(
+    const std::string& stateName ) const
   {
     if ( state->contains( stateName ) )
       return state->getStateView( stateName );
@@ -488,19 +495,21 @@ namespace Marmot::MaterialPoints {
   }
 
   template < int nDim >
-  void GradientEnhancedFiniteStrainMaterialPoint< nDim >::assignMaterial( const MarmotMaterialSection& section )
+  void GradientEnhancedFiniteStrainMaterialPoint< nDim >::assignMaterial(
+    const Marmot::Discretizations::MaterialSection& section )
   {
-    material = std::unique_ptr< MarmotMaterialGradientEnhancedFiniteStrain >(
-      dynamic_cast< MarmotMaterialGradientEnhancedFiniteStrain* >(
-        MarmotLibrary::MarmotMaterialGradientEnhancedFiniteStrainFactory::createMaterial( section.materialName,
-                                                                                          section.materialProperties,
-                                                                                          section.nMaterialProperties,
-                                                                                          _mpNumber ) ) );
+    material = std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedFiniteStrain >(
+      dynamic_cast< Marmot::Materials::MaterialGradientEnhancedFiniteStrain* >(
+        Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory::createMaterial( section.materialName,
+                                                                                       section.materialProperties,
+                                                                                       section.nMaterialProperties,
+                                                                                       _mpNumber ) ) );
 
     if ( !material )
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__
-                                                << ": invalid material assigned; cannot cast to "
-                                                   "MarmotMaterialGradientEnhancedFiniteStrain!" );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__
+                                   << ": invalid material assigned; cannot cast to "
+                                      "Marmot::Materials::MaterialGradientEnhancedFiniteStrain!" );
   }
 
   template < int nDim >
@@ -524,13 +533,13 @@ namespace Marmot::MaterialPoints {
   }
 
   /**
-   * @class Marmot::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint2D
+   * @class Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint2D
    * @brief Plane-strain gradient-enhanced finite-strain material point (registered as
    *        `GradientEnhancedFiniteStrain/PlaneStrain`).
    *
-   * The material is evaluated through MarmotMaterialGradientEnhancedFiniteStrain::computePlaneStrain with the 3D
-   * deformation gradient whose out-of-plane entries are those of the identity; the response and tangents are reduced
-   * to their in-plane components.
+   * The material is evaluated through Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain with
+   * the 3D deformation gradient whose out-of-plane entries are those of the identity; the response and tangents are
+   * reduced to their in-plane components.
    */
   class GradientEnhancedFiniteStrainMaterialPoint2D : public GradientEnhancedFiniteStrainMaterialPoint< 2 > {
 
@@ -556,7 +565,7 @@ namespace Marmot::MaterialPoints {
   };
 
   /**
-   * @class Marmot::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint3D
+   * @class Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint3D
    * @brief Three-dimensional gradient-enhanced finite-strain material point (registered as
    *        `GradientEnhancedFiniteStrain/3D`).
    */
@@ -583,4 +592,4 @@ namespace Marmot::MaterialPoints {
                                double          nonLocalDamage );
   };
 
-} // namespace Marmot::MaterialPoints
+} // namespace Marmot::Discretizations::MaterialPoints

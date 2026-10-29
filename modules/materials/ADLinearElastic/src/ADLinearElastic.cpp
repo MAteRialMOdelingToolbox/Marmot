@@ -11,9 +11,9 @@ namespace Marmot::Materials {
   using namespace ContinuumMechanics::Elasticity;
 
   ADLinearElastic::ADLinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber )
-    : MarmotMaterialHypoElasticAD::MarmotMaterialHypoElasticAD( materialProperties,
-                                                                nMaterialProperties,
-                                                                materialNumber ),
+    : Marmot::Materials::MaterialHypoElasticAD::MaterialHypoElasticAD( materialProperties,
+                                                                       nMaterialProperties,
+                                                                       materialNumber ),
       C( Isotropic::stiffnessTensor( materialProperties[0], materialProperties[1] ) )
   {
     stateLayout.finalize();
@@ -23,18 +23,18 @@ namespace Marmot::Materials {
   {
     if ( nMaterialProperties >= 3 )
       return materialProperties[2];
-    throw std::runtime_error(
-      std::string( MakeString() << __PRETTY_FUNCTION__ << ": Density not specified for ADLinearElastic." ) );
+    throw std::runtime_error( std::string( Marmot::Utilities::MakeString()
+                                           << __PRETTY_FUNCTION__ << ": Density not specified for ADLinearElastic." ) );
   }
 
-  void ADLinearElastic::computeStressAD( state3DAD&                 state,
-                                         const Marmot::Vector6dual& dStrain,
-                                         const timeInfo&            timeInfo ) const
+  void ADLinearElastic::computeStressAD( state3DAD&                       state,
+                                         const Marmot::Math::Vector6dual& dStrain,
+                                         const timeInfo&                  timeInfo ) const
   {
 
-    const Vector6dual dStress = C * dStrain;
+    const Marmot::Math::Vector6dual dStress = C * dStrain;
     state.stress += dStress;
-    state.elasticEnergyDensity += 0.5 * Math::makeReal( dStrain.dot( dStress ) );
+    state.elasticEnergyDensity += 0.5 * Math::Tensors::makeReal( dStrain.dot( dStress ) );
     state.dissipation = 0.0;
   }
 } // namespace Marmot::Materials

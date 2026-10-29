@@ -4,7 +4,7 @@
 
 using namespace Marmot;
 using namespace Marmot::Testing;
-using namespace Marmot::FiniteElement::EAS;
+using namespace Marmot::Discretizations::Elements::EAS;
 
 // ---------------------------------------------------------------------------------------------
 // F(J): the EAS transformation matrix built from the element Jacobian.

@@ -33,17 +33,16 @@
 #include <stdexcept>
 #include <vector>
 
-namespace Marmot::Meshfree {
-  MarmotMeshfreeReproducingKernelApproximation::MarmotMeshfreeReproducingKernelApproximation( int dim,
-                                                                                              int completenessOrder )
+namespace Marmot::Discretizations::Meshfree {
+  ReproducingKernelApproximation::ReproducingKernelApproximation( int dim, int completenessOrder )
     : _dim( dim ), _desiredCompletenessOrder( completenessOrder )
   {
   }
 
-  Eigen::VectorXd MarmotMeshfreeReproducingKernelApproximation::computeHVector(
-    const Eigen::VectorXd&                                    x_minus_xI,
-    const std::vector< const MarmotMeshfreeKernelFunction* >& coveringShapeFunctions,
-    const int                                                 completenessOrder )
+  Eigen::VectorXd ReproducingKernelApproximation::computeHVector(
+    const Eigen::VectorXd&                      x_minus_xI,
+    const std::vector< const KernelFunction* >& coveringShapeFunctions,
+    const int                                   completenessOrder )
   {
     const auto _sizeH = Math::computeSizeOfMonomialBasisVector( completenessOrder,
                                                                 static_cast< int >( x_minus_xI.size() ) );
@@ -55,10 +54,10 @@ namespace Marmot::Meshfree {
     return res;
   }
 
-  Eigen::MatrixXd MarmotMeshfreeReproducingKernelApproximation::computeHVectorGradient(
-    const Eigen::VectorXd&                                    x_minus_xI,
-    const std::vector< const MarmotMeshfreeKernelFunction* >& coveringShapeFunctions,
-    const int                                                 completenessOrder )
+  Eigen::MatrixXd ReproducingKernelApproximation::computeHVectorGradient(
+    const Eigen::VectorXd&                      x_minus_xI,
+    const std::vector< const KernelFunction* >& coveringShapeFunctions,
+    const int                                   completenessOrder )
   {
     const auto _sizeH = Math::computeSizeOfMonomialBasisVector( completenessOrder,
                                                                 static_cast< int >( x_minus_xI.size() ) );
@@ -70,35 +69,36 @@ namespace Marmot::Meshfree {
     return res;
   }
 
-  Eigen::VectorXd MarmotMeshfreeReproducingKernelApproximation::H0Vector( int sizeHVector )
+  Eigen::VectorXd ReproducingKernelApproximation::H0Vector( int sizeHVector )
   {
     Eigen::VectorXd H0 = Eigen::VectorXd::Zero( sizeHVector );
     H0( 0 )            = 1;
     return H0;
   }
 
-  Eigen::ColPivHouseholderQR< Eigen::MatrixXd > MarmotMeshfreeReproducingKernelApproximation::factorizeMomentMatrix(
+  Eigen::ColPivHouseholderQR< Eigen::MatrixXd > ReproducingKernelApproximation::factorizeMomentMatrix(
     const Eigen::MatrixXd& M,
     const double*          coord,
     int                    nCoveringKernels ) const
   {
     Eigen::ColPivHouseholderQR< Eigen::MatrixXd > MQr( M );
     if ( MQr.rank() < M.rows() )
-      throw std::runtime_error(
-        MakeString() << __PRETTY_FUNCTION__ << ": singular moment matrix (rank " << MQr.rank() << " < " << M.rows()
-                     << ") at " << Eigen::Map< const Eigen::VectorXd >( coord, _dim ).transpose() << ", covered by "
-                     << nCoveringKernels
-                     << " kernels: no kernel covers the point, or the kernel centres are degenerate for the "
-                        "completeness order (e.g. all coplanar in 3D, as for a single layer of particles through the "
-                        "thickness). Use at least two layers of kernels in every direction, larger supports, or a "
-                        "lower completeness order" );
+      throw std::
+        runtime_error( Marmot::Utilities::MakeString()
+                       << __PRETTY_FUNCTION__ << ": singular moment matrix (rank " << MQr.rank() << " < " << M.rows()
+                       << ") at " << Eigen::Map< const Eigen::VectorXd >( coord, _dim ).transpose() << ", covered by "
+                       << nCoveringKernels
+                       << " kernels: no kernel covers the point, or the kernel centres are degenerate for the "
+                          "completeness order (e.g. all coplanar in 3D, as for a single layer of particles through the "
+                          "thickness). Use at least two layers of kernels in every direction, larger supports, or a "
+                          "lower completeness order" );
     return MQr;
   }
 
-  Eigen::MatrixXd MarmotMeshfreeReproducingKernelApproximation::computeMMatrix(
-    const Eigen::VectorXd&                                    globalCoord,
-    const std::vector< const MarmotMeshfreeKernelFunction* >& coveringShapeFunctions,
-    int                                                       completenessOrder )
+  Eigen::MatrixXd ReproducingKernelApproximation::computeMMatrix(
+    const Eigen::VectorXd&                      globalCoord,
+    const std::vector< const KernelFunction* >& coveringShapeFunctions,
+    int                                         completenessOrder )
   {
     const auto _sizeH = Math::computeSizeOfMonomialBasisVector( completenessOrder,
                                                                 static_cast< int >( globalCoord.size() ) );
@@ -117,10 +117,10 @@ namespace Marmot::Meshfree {
     return M;
   }
 
-  std::pair< Eigen::MatrixXd, std::vector< Eigen::MatrixXd > > MarmotMeshfreeReproducingKernelApproximation::
-    computeMMatrixAndGradient( const Eigen::VectorXd&                                    globalCoord,
-                               const std::vector< const MarmotMeshfreeKernelFunction* >& coveringShapeFunctions,
-                               int                                                       completenessOrder )
+  std::pair< Eigen::MatrixXd, std::vector< Eigen::MatrixXd > > ReproducingKernelApproximation::
+    computeMMatrixAndGradient( const Eigen::VectorXd&                      globalCoord,
+                               const std::vector< const KernelFunction* >& coveringShapeFunctions,
+                               int                                         completenessOrder )
   {
 
     const int  _dim   = static_cast< int >( globalCoord.size() );
@@ -156,17 +156,17 @@ namespace Marmot::Meshfree {
     return { M, MGradients };
   }
 
-  void MarmotMeshfreeReproducingKernelApproximation::computeShapeFunctions(
-    const double*                                             coord,
-    const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctionCandidates,
-    double*                                                   shapeFunctionValues ) const
+  void ReproducingKernelApproximation::computeShapeFunctions(
+    const double*                               coord,
+    const std::vector< const KernelFunction* >& kernelFunctionCandidates,
+    double*                                     shapeFunctionValues ) const
   {
     const auto coveringKernelFunctionsIndices = findCoveringKernelFunctionIndices( coord, kernelFunctionCandidates );
 
     const auto correctedCompletenessOrder = getCorrectedCompletenessOrder(
       static_cast< int >( coveringKernelFunctionsIndices.size() ) );
 
-    std::vector< const MarmotMeshfreeKernelFunction* > coveringKernelFunctions;
+    std::vector< const KernelFunction* > coveringKernelFunctions;
     for ( const auto& idx : coveringKernelFunctionsIndices )
       coveringKernelFunctions.push_back( kernelFunctionCandidates[idx] );
 
@@ -201,17 +201,17 @@ namespace Marmot::Meshfree {
     }
   }
 
-  void MarmotMeshfreeReproducingKernelApproximation::computeShapeFunctionGradients(
-    const double*                                             coord,
-    const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions,
-    double*                                                   shapeFunctionValueGradients ) const
+  void ReproducingKernelApproximation::computeShapeFunctionGradients(
+    const double*                               coord,
+    const std::vector< const KernelFunction* >& kernelFunctions,
+    double*                                     shapeFunctionValueGradients ) const
   {
     throw std::runtime_error( "Not implemented" );
   }
 
-  const std::vector< int > MarmotMeshfreeReproducingKernelApproximation::findCoveringKernelFunctionIndices(
-    const double*                                             coord,
-    const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) const
+  const std::vector< int > ReproducingKernelApproximation::findCoveringKernelFunctionIndices(
+    const double*                               coord,
+    const std::vector< const KernelFunction* >& kernelFunctions ) const
 
   {
     std::vector< int > coveringFunctionsIndices;
@@ -223,15 +223,15 @@ namespace Marmot::Meshfree {
     return coveringFunctionsIndices;
   }
 
-  void MarmotMeshfreeReproducingKernelApproximation::computeShapeFunctionsAndGradients(
-    const double*                                             coord,
-    const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctionCandidates,
-    double*                                                   shapeFunctionValues,
-    double*                                                   shapeFunctionValueGradients_ ) const
+  void ReproducingKernelApproximation::computeShapeFunctionsAndGradients(
+    const double*                               coord,
+    const std::vector< const KernelFunction* >& kernelFunctionCandidates,
+    double*                                     shapeFunctionValues,
+    double*                                     shapeFunctionValueGradients_ ) const
   {
     const auto coveringKernelFunctionIndices = findCoveringKernelFunctionIndices( coord, kernelFunctionCandidates );
 
-    std::vector< const MarmotMeshfreeKernelFunction* > coveringKernelFunctions;
+    std::vector< const KernelFunction* > coveringKernelFunctions;
     for ( const auto& idx : coveringKernelFunctionIndices )
       coveringKernelFunctions.push_back( kernelFunctionCandidates[idx] );
 
@@ -339,4 +339,4 @@ namespace Marmot::Meshfree {
     }
   }
 
-}; // namespace Marmot::Meshfree
+}; // namespace Marmot::Discretizations::Meshfree

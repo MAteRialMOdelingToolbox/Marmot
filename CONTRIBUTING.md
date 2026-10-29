@@ -17,6 +17,16 @@ By participating in this project you agree to uphold a respectful, inclusive env
 
 ---
 
+## Namespace Convention
+
+All C++ code follows the namespace convention documented in [AGENTS.md](AGENTS.md#namespace-convention):
+everything lives in the global `Marmot` namespace, the second level is a closed set
+(`Utilities`, `Math`, `ContinuumMechanics`, `Materials`, `Discretizations`, `Registry`, `Testing`),
+class names never start with `Marmot`, and deeper descriptive nesting is welcome.
+Run `scripts/checkNamespaceConventions.sh` before opening a PR.
+
+---
+
 ## Pre-commit Hooks
 We use **pre-commit** to run formatting and static checks before each commit to keep the codebase clean and consistent.
 

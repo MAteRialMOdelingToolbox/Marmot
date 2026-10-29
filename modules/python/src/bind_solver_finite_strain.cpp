@@ -31,7 +31,7 @@
 #include "fastor_nanobind_caster.h"
 
 namespace nb = nanobind;
-using Solver = Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain;
+using Solver = Marmot::Materials::MaterialPointSolverFiniteStrain;
 
 void bind_finite_strain_solver( nb::module_& m )
 {

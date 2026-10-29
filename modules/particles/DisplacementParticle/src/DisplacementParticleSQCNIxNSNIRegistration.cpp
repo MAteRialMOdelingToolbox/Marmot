@@ -25,9 +25,8 @@
 #include "Marmot/DisplacementParticleSQCNIxNSNI.h"
 #include "Marmot/MarmotParticleLibrary.h"
 
-namespace Marmot::Meshfree {
-
-  using namespace MarmotLibrary;
+namespace {
+  using namespace Marmot::Discretizations::Meshfree;
 
   namespace {
 
@@ -35,14 +34,15 @@ namespace Marmot::Meshfree {
     using Particle = DisplacementParticleSQCNIxNSNI< nDim, nVertices >;
 
     template < int nDim, int nVertices, typename Particle< nDim, nVertices >::SmoothingDomainUpdateType updateType >
-    MarmotParticle* create( int                                cellID,
-                            const double*                      nodeCoordinates,
-                            int                                sizeNodeCoordinates,
-                            double                             volume,
-                            const std::string&                 materialName,
-                            const double*                      materialProperties,
-                            int                                sizeMaterialProperties,
-                            const MarmotMeshfreeApproximation& approximation )
+    Marmot::Discretizations::Meshfree::Particle* create(
+      int                                                     cellID,
+      const double*                                           nodeCoordinates,
+      int                                                     sizeNodeCoordinates,
+      double                                                  volume,
+      const std::string&                                      materialName,
+      const double*                                           materialProperties,
+      int                                                     sizeMaterialProperties,
+      const Marmot::Discretizations::Meshfree::Approximation& approximation )
     {
       return new Particle< nDim, nVertices >( cellID,
                                               nodeCoordinates,
@@ -57,12 +57,12 @@ namespace Marmot::Meshfree {
 
     /// register under the name of the naming convention <Formulation><IntegrationScheme>/<Dimension>/<Shape> (as all
     /// other particles) and under the former name of the displacement NSNI particles, kept for existing input files
-    bool registerWithFormerName( const std::string&                             name,
-                                 const std::string&                             formerName,
-                                 MarmotParticleFactory::particleFactoryFunction factoryFunction )
+    bool registerWithFormerName( const std::string&                                         name,
+                                 const std::string&                                         formerName,
+                                 Marmot::Registry::ParticleFactory::particleFactoryFunction factoryFunction )
     {
-      return MarmotParticleFactory::registerParticle( name, factoryFunction ) &&
-             MarmotParticleFactory::registerParticle( formerName, factoryFunction );
+      return Marmot::Registry::ParticleFactory::registerParticle( name, factoryFunction ) &&
+             Marmot::Registry::ParticleFactory::registerParticle( formerName, factoryFunction );
     }
 
     using U2 = Particle< 2, 4 >::SmoothingDomainUpdateType;
@@ -95,4 +95,4 @@ namespace Marmot::Meshfree {
 
   } // namespace
 
-} // namespace Marmot::Meshfree
+} // namespace

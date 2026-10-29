@@ -1,0 +1,14 @@
+name: Namespace conventions
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - run: scripts/checkNamespaceConventions.sh

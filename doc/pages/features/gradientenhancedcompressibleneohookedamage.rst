@@ -1,7 +1,7 @@
 Gradient-enhanced compressible Neo-Hooke damage
 ===============================================
 
-A minimal, fully consistent reference model for ``MarmotMaterialGradientEnhancedFiniteStrain``: the compressible
+A minimal, fully consistent reference model for ``Marmot::Materials::MaterialGradientEnhancedFiniteStrain``: the compressible
 Neo-Hookean solid of :doc:`compressibleneohooke` with isotropic damage driven by the nonlocal field, in the spirit of
 the implicit-gradient damage model of Peerlings et al. (1996). It is registered as
 ``GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE``.

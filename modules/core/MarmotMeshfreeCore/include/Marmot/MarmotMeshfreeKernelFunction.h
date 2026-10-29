@@ -25,14 +25,14 @@
 
 #pragma once
 
-namespace Marmot::Meshfree {
+namespace Marmot::Discretizations::Meshfree {
 
   /**
-   * @class Marmot::Meshfree::MarmotMeshfreeKernelFunction
+   * @class Marmot::Discretizations::Meshfree::KernelFunction
    * @brief Abstract interface of a meshfree kernel (window) function @f$ \phi_A(\boldsymbol{x}) @f$.
    *
    * A kernel function is attached to a node (particle) @f$ A @f$ with center @f$ \boldsymbol{x}_A @f$ and has
-   * compact support. The reproducing kernel approximation (MarmotMeshfreeReproducingKernelApproximation) builds its
+   * compact support. The reproducing kernel approximation (ReproducingKernelApproximation) builds its
    * shape functions @f$ \Psi_A @f$ by correcting these kernels such that polynomials up to a given order are
    * reproduced exactly; the continuity of @f$ \Psi_A @f$ is inherited from the kernel.
    *
@@ -40,14 +40,14 @@ namespace Marmot::Meshfree {
    * configuration in which the coordinates are given (reference or current) is decided by the caller; the kernel
    * only compares them with its center coordinates.
    */
-  class MarmotMeshfreeKernelFunction {
+  class KernelFunction {
 
   public:
     /// @brief Default constructor.
-    MarmotMeshfreeKernelFunction() = default;
+    KernelFunction() = default;
 
     /// @brief Virtual destructor; kernels are used through base-class pointers.
-    virtual ~MarmotMeshfreeKernelFunction() = default;
+    virtual ~KernelFunction() = default;
 
     /**
      * @brief Evaluate the kernel function @f$ \phi_A(\boldsymbol{x}) @f$.
@@ -90,4 +90,4 @@ namespace Marmot::Meshfree {
     virtual void moveTo( const double* coord ) = 0;
   };
 
-} // namespace Marmot::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

@@ -57,7 +57,7 @@ Example Usage
    #include <iostream>
 
    int main() {
-     using Vec6 = Marmot::Vector6d;
+     using Vec6 = Marmot::Math::Vector6d;
 
      // 1) Define the material model (must be registered in Marmot)
      std::string materialName = "LINEARELASTIC";
@@ -65,13 +65,13 @@ Example Usage
      int nProps = 2;
 
      // 2) Configure solver options
-     MarmotMaterialPointSolverHypoElastic::SolverOptions options;
+     Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions options;
      options.maxIterations       = 25;
      options.residualTolerance   = 1e-10;
      options.correctionTolerance = 1e-10;
 
      // 3) Create solver instance
-     MarmotMaterialPointSolverHypoElastic solver(materialName, properties, nProps, options);
+     Marmot::Materials::MaterialPointSolverHypoElastic solver(materialName, properties, nProps, options);
 
      // 4) Set the initial state
      int nSV = 0;
@@ -80,7 +80,7 @@ Example Usage
      solver.setInitialState(Vec6::Zero(), initialSV);
 
      // 5) Define a loading step (uniaxial strain-controlled on ε_11)
-     MarmotMaterialPointSolverHypoElastic::Step step;
+     Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
      step.timeStart = 0.0;
      step.timeEnd   = 1.0;
      step.dTStart   = 0.2;
@@ -180,5 +180,5 @@ Practical Applications
 - Educational demonstrations of hypo-elastic material response
 
 
-.. doxygenclass:: Marmot::Solvers::MarmotMaterialPointSolverHypoElastic
+.. doxygenclass:: Marmot::Materials::MaterialPointSolverHypoElastic
    :allow-dot-graphs:

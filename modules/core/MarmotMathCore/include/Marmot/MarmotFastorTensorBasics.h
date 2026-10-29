@@ -37,7 +37,7 @@
 #include "Marmot/MarmotTensor.h"
 #include <autodiff/forward/dual/dual.hpp>
 
-namespace Marmot {
+namespace Marmot::Math::Tensors {
 
   /**
    * @brief Compile-time trait to detect whether a pack of tensor dimensions describes a square rank-2 tensor
@@ -69,7 +69,7 @@ namespace Marmot {
   };
   /// \endcond
 
-  namespace FastorStandardTensors {
+  namespace FastorTensors {
 
     using Tensor3d      = Fastor::Tensor< double, 3 >;
     using Tensor33d     = Fastor::Tensor< double, 3, 3 >;
@@ -124,27 +124,18 @@ namespace Marmot {
       inline const Tensor33d I = Tensor33d( ( Eigen::Matrix3d() << Eigen::Matrix3d::Identity() ).finished().data(),
                                             Fastor::ColumnMajor );
 
-      inline const Tensor333d
-        LeviCivita = Tensor333d( Marmot::ContinuumMechanics::CommonTensors::Initialize_LeviCivita3D().data(),
-                                 Fastor::ColumnMajor );
+      inline const Tensor333d LeviCivita = Tensor333d( Tensors::Initialize_LeviCivita3D().data(), Fastor::ColumnMajor );
 
-      inline const Tensor3333d IHyd = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::Initialize_I2xI2().data(),
-                                                   Fastor::ColumnMajor );
+      inline const Tensor3333d IHyd = Tensor3333d( Tensors::Initialize_I2xI2().data(), Fastor::ColumnMajor );
 
-      inline const Tensor3333d ISymm = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::Initialize_Isym().data(),
-                                                    Fastor::ColumnMajor );
+      inline const Tensor3333d ISymm = Tensor3333d( Tensors::Initialize_Isym().data(), Fastor::ColumnMajor );
 
-      inline const Tensor3333d ISkew = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::Initialize_Iskew()
-                                                      .data(),
-                                                    Fastor::ColumnMajor );
+      inline const Tensor3333d ISkew = Tensor3333d( Tensors::Initialize_Iskew().data(), Fastor::ColumnMajor );
 
-      inline const Tensor3333d I4 = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::Initialize_IFourthOrder()
-                                                   .data(),
-                                                 Fastor::ColumnMajor );
+      inline const Tensor3333d I4 = Tensor3333d( Tensors::Initialize_IFourthOrder().data(), Fastor::ColumnMajor );
 
-      inline const Tensor3333d
-        ITranspose = Tensor3333d( Marmot::ContinuumMechanics::CommonTensors::Initialize_IFourthOrderTranspose().data(),
-                                  Fastor::ColumnMajor );
+      inline const Tensor3333d ITranspose = Tensor3333d( Tensors::Initialize_IFourthOrderTranspose().data(),
+                                                         Fastor::ColumnMajor );
 
       inline const Tensor3333d Deviatoric = I4 - 1. / 3 * IHyd;
 
@@ -154,7 +145,7 @@ namespace Marmot {
 
     } // namespace Spatial3D
 
-  }   // namespace FastorStandardTensors
+  }   // namespace FastorTensors
 
   namespace FastorIndices {
     enum IndexTag { i_, j_, k_, l_, m_, n_, o_, p_, A_, B_, I_, J_, K_, L_, M_, N_, P_ };
@@ -648,8 +639,7 @@ namespace Marmot {
    * This is the case for example when T is autodiff::dual.
    */
   template < typename T >
-  T einsum_ij_ij_hardcoded( const FastorStandardTensors::Tensor33t< T >& A,
-                            const FastorStandardTensors::Tensor33t< T >& B )
+  T einsum_ij_ij_hardcoded( const FastorTensors::Tensor33t< T >& A, const FastorTensors::Tensor33t< T >& B )
   {
     T result( 0.0 );
 
@@ -804,9 +794,9 @@ namespace Marmot {
    * It actually computes \f$ \text{sym}\, t_ij = 0.5 ( t_{ij} + t_{ji} ) \f$
    */
   template < typename T >
-  FastorStandardTensors::Tensor33t< T > symmetric( const FastorStandardTensors::Tensor33t< T >& t )
+  FastorTensors::Tensor33t< T > symmetric( const FastorTensors::Tensor33t< T >& t )
   {
-    const FastorStandardTensors::Tensor33t< T > sym = 0.5 * ( t + Fastor::transpose( t ) );
+    const FastorTensors::Tensor33t< T > sym = 0.5 * ( t + Fastor::transpose( t ) );
     return sym;
   }
 
@@ -819,12 +809,11 @@ namespace Marmot {
    * It actually computes \f$ \text{dev} \, t_{ij} = t_{ij} - \frac{1}{3}t_{kk}\delta_{ij}\f$
    */
   template < typename T >
-  FastorStandardTensors::Tensor33t< T > deviatoric( const FastorStandardTensors::Tensor33t< T >& t )
+  FastorTensors::Tensor33t< T > deviatoric( const FastorTensors::Tensor33t< T >& t )
   {
-    Eigen::Matrix< T, 3, 3 >                    dummy = Eigen::Matrix< T, 3, 3 >::Identity();
-    const FastorStandardTensors::Tensor33t< T > I     = FastorStandardTensors::Tensor33t< T >( dummy.data(),
-                                                                                           Fastor::ColumnMajor );
-    const FastorStandardTensors::Tensor33t< T > dev   = t - 1. / 3 * multiplyFastorTensorWithScalar( I, trace( t ) );
+    Eigen::Matrix< T, 3, 3 >            dummy = Eigen::Matrix< T, 3, 3 >::Identity();
+    const FastorTensors::Tensor33t< T > I     = FastorTensors::Tensor33t< T >( dummy.data(), Fastor::ColumnMajor );
+    const FastorTensors::Tensor33t< T > dev   = t - 1. / 3 * multiplyFastorTensorWithScalar( I, trace( t ) );
     return dev;
   }
 
@@ -838,6 +827,5 @@ namespace Marmot {
    * such that \f$ C^{-1}_{ijmn} C_{mnkl} = \delta_{ik}\delta_{jl} \f$ using Mandel notation and Fastor's inverse
    * function for second order tensors.
    */
-  FastorStandardTensors::Tensor3333d invertMinorSymmetricFourthOrderTensor(
-    const FastorStandardTensors::Tensor3333d& C );
-} // namespace Marmot
+  FastorTensors::Tensor3333d invertMinorSymmetricFourthOrderTensor( const FastorTensors::Tensor3333d& C );
+} // namespace Marmot::Math::Tensors

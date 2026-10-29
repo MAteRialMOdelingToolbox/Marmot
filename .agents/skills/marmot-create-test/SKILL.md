@@ -14,7 +14,7 @@ All unit and regression tests are standalone C++ executables registered in CMake
 ## 1. Testing Rules
 1. **Analytical Validation**: Validate constitutive responses and element modes against closed-form analytical solutions.
 2. **Tangent Verification**: Validate consistent tangents against `MarmotMathCore` numerical differentiation (`MarmotNumericalDifferentiation.h`) or automatic differentiation (`autodiff` / `MarmotAutomaticDifferentiation.h`).
-3. **Complex-Step Method**: Use `Marmot::NumericalAlgorithms::Differentiation::Complex::forwardDifference` for machine-precision derivatives ($h \sim 10^{-20}$) without subtractive cancellation.
+3. **Complex-Step Method**: Use `Marmot::Math::Differentiation::Numerical::Complex::forwardDifference` for machine-precision derivatives ($h \sim 10^{-20}$) without subtractive cancellation.
 4. **Performance & Hygiene**: Tests must run fast (< 0.1s), remain deterministic, and update `stateVars` in place.
 
 ---
@@ -30,21 +30,21 @@ All unit and regression tests are standalone C++ executables registered in CMake
 
 using namespace Marmot;
 using namespace Marmot::Testing;
-namespace NumDiff = Marmot::NumericalAlgorithms::Differentiation;
+namespace NumDiff = Marmot::Math::Differentiation::Numerical;
 
 int testMaterial() {
   std::vector< double > props{ 210000.0, 0.3, 7.85e-9 }; // E, nu, rho
   Materials::MyMaterial mat( props.data(), static_cast< int >( props.size() ), 1 );
 
-  MarmotMaterialHypoElastic::state3D state;
+  Marmot::Materials::MaterialHypoElastic::state3D state;
   double stateVars[10] = { 0.0 };
   state.stateVars = stateVars;
 
-  Vector6d dStrain = Vector6d::Zero();
+  Marmot::Math::Vector6d dStrain = Marmot::Math::Vector6d::Zero();
   dStrain( 0 ) = 1e-3;
 
-  Matrix6d tangent = Matrix6d::Zero();
-  MarmotMaterialHypoElastic::timeInfo tInfo{ 0.0, 1.0 };
+  Marmot::Math::Matrix6d tangent = Marmot::Math::Matrix6d::Zero();
+  Marmot::Materials::MaterialHypoElastic::timeInfo tInfo{ 0.0, 1.0 };
   mat.computeStress( state, tangent, dStrain, tInfo );
 
   // 1. Check against analytical solution: sigma_11 = 210.0 MPa
@@ -55,11 +55,11 @@ int testMaterial() {
 
   // 2. Check tangent against MarmotMathCore numerical differentiation
   NumDiff::vector_to_vector_function_type stressFunc = [&]( const VectorXd& dEps ) -> VectorXd {
-    MarmotMaterialHypoElastic::state3D tmpState;
+    Marmot::Materials::MaterialHypoElastic::state3D tmpState;
     double tmpVars[10] = { 0.0 };
     std::copy( stateVars, stateVars + 10, tmpVars );
     tmpState.stateVars = tmpVars;
-    Matrix6d tmpTangent = Matrix6d::Zero();
+    Marmot::Math::Matrix6d tmpTangent = Marmot::Math::Matrix6d::Zero();
     mat.computeStress( tmpState, tmpTangent, dEps, tInfo );
     return tmpState.stress;
   };

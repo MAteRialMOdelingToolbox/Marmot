@@ -34,18 +34,19 @@
 #include "Marmot/NewmarkBetaIntegrator.h"
 #include <vector>
 
-namespace Marmot::Meshfree {
+namespace Marmot::Discretizations::Meshfree {
 
   /**
-   * @class Marmot::Meshfree::GradientEnhancedFiniteStrainParticle
+   * @class Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticle
    * @brief Nodally integrated point particle for gradient-enhanced (implicit-gradient) finite-strain materials
    *        without a micropolar continuum.
    *
    * The particle couples the displacement field @f$ \boldsymbol{u} @f$ to a single scalar nonlocal field
    * @f$ \bar{N} @f$ (nodal fields `displacement` and `nonlocal damage`, node block
    * @f$ n_\mathrm{dim}+1 @f$, dofs ordered node by node as @f$ \{u_1,\dots,u_{n_\mathrm{dim}},\bar{N}\} @f$). It owns
-   * a single Marmot::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint, which drives a
-   * MarmotMaterialGradientEnhancedFiniteStrain, and is integrated with that single point (direct nodal integration).
+   * a single Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint, which drives a
+   * Marmot::Materials::MaterialGradientEnhancedFiniteStrain, and is integrated with that single point (direct nodal
+   * integration).
    *
    * **Kinematics.** The dofs are the increments of the current step. The trial shape functions @f$ N_B @f$ and
    * gradients @f$ \partial N_B/\partial\boldsymbol{Y} @f$ are those of the meshfree approximation at the particle
@@ -93,7 +94,7 @@ namespace Marmot::Meshfree {
    * @f]
    * as in the MPM cell and the finite element.
    *
-   * **VCI.** The particle implements the variationally consistent integration hooks of MarmotParticle: the test
+   * **VCI.** The particle implements the variationally consistent integration hooks of Particle: the test
    * function gradients are corrected by @f$ \partial T_A/\partial Y_i \mathrel{+}= \eta_{AiC}\,P_C(\boldsymbol{Y}) @f$
    * with a monomial basis @f$ P_C @f$ of order `VCI order` (Chen, Hillman, Rüter, 2013). The correction applies to
    * both weak forms.
@@ -105,7 +106,7 @@ namespace Marmot::Meshfree {
    * @tparam nDim Spatial dimension (2: plane strain, 3: 3D).
    */
   template < int nDim >
-  class GradientEnhancedFiniteStrainParticle : public Marmot::Meshfree::MarmotParticle {
+  class GradientEnhancedFiniteStrainParticle : public Marmot::Discretizations::Meshfree::Particle {
 
   protected:
     Eigen::Matrix< double, nDim, 1 > _centerCoordinatesUndeformed; ///< center @f$ \boldsymbol{X}_c @f$, undeformed
@@ -113,10 +114,10 @@ namespace Marmot::Meshfree {
                                                                    ///< configuration @f$ \boldsymbol{Y} @f$
     double _volReferenceIntermediate; ///< volume @f$ V_Y = V_0 \det\boldsymbol{F}_n @f$ (updated at each accept)
 
-    MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint< nDim >* __mp;     ///< the owned material point
-    MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint< nDim >& _mp;      ///< reference to the material point
-    const MarmotMeshfreeApproximation&                 _meshfreeApproximation;   ///< the meshfree approximation
-    std::vector< const MarmotMeshfreeKernelFunction* > _assignedKernelFunctions; ///< kernel functions of the nodes
+    MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint< nDim >* __mp; ///< the owned material point
+    MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint< nDim >& _mp;  ///< reference to the material point
+    const Approximation&                 _meshfreeApproximation;             ///< the meshfree approximation
+    std::vector< const KernelFunction* > _assignedKernelFunctions;           ///< kernel functions of the nodes
 
     double _newmark_beta;  ///< Newmark-beta parameter @f$ \beta @f$ (property `newmark-beta beta`)
     double _newmark_gamma; ///< Newmark-beta parameter @f$ \gamma @f$ (property `newmark-beta gamma`)
@@ -179,12 +180,12 @@ namespace Marmot::Meshfree {
       return _supportedDistributedLoadTypes;
     };
 
-    static constexpr int nDofPerNodeU = nDim;                    ///< dofs per node of the displacement field U
-    static constexpr int nDofPerNodeN = 1;                       ///< dofs per node of the nonlocal field N
+    static constexpr int nDofPerNodeU = nDim; ///< dofs per node of the displacement field U
+    static constexpr int nDofPerNodeN = 1;    ///< dofs per node of the nonlocal field N
 
-    using Material = MarmotMaterialGradientEnhancedFiniteStrain; ///< the consumed material interface
+    using Material = Marmot::Materials::MaterialGradientEnhancedFiniteStrain; ///< the consumed material interface
 
-    using ForceSized = Eigen::Matrix< double, nDim, 1 >;         ///< force vector of size nDim
+    using ForceSized = Eigen::Matrix< double, nDim, 1 >;                      ///< force vector of size nDim
 
     /**
      * @brief Set all properties, in the order of getPropertyNames().
@@ -269,8 +270,7 @@ namespace Marmot::Meshfree {
      *
      * @param[in] kernelFunctions Kernel functions of the nodes that support the particle.
      */
-    void assignMeshfreeKernelFunctions(
-      const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) override
+    void assignMeshfreeKernelFunctions( const std::vector< const KernelFunction* >& kernelFunctions ) override
     {
       _assignedKernelFunctions = kernelFunctions;
 
@@ -363,20 +363,20 @@ namespace Marmot::Meshfree {
      * @param[in] nodeCoordinates     Undeformed center coordinates (nDim values).
      * @param[in] nNodeCoordiantes    Number of coordinates; must equal nDim.
      * @param[in] volume              Undeformed volume @f$ V_0 @f$.
-     * @param[in] materialName        Name of a MarmotMaterialGradientEnhancedFiniteStrain material.
+     * @param[in] materialName        Name of a Marmot::Materials::MaterialGradientEnhancedFiniteStrain material.
      * @param[in] materialProperties  Material properties.
      * @param[in] nMaterialProperties Number of material properties.
      * @param[in] approximation       Meshfree approximation used for the shape functions.
      * @throws std::invalid_argument for a wrong number of coordinates or an unsuitable material.
      */
-    GradientEnhancedFiniteStrainParticle( int                                elementID,
-                                          const double*                      nodeCoordinates,
-                                          int                                nNodeCoordiantes,
-                                          double                             volume,
-                                          const std::string&                 materialName,
-                                          const double*                      materialProperties,
-                                          int                                nMaterialProperties,
-                                          const MarmotMeshfreeApproximation& approximation );
+    GradientEnhancedFiniteStrainParticle( int                  elementID,
+                                          const double*        nodeCoordinates,
+                                          int                  nNodeCoordiantes,
+                                          double               volume,
+                                          const std::string&   materialName,
+                                          const double*        materialProperties,
+                                          int                  nMaterialProperties,
+                                          const Approximation& approximation );
 
     /**
      * @brief Initialize the material point (unit deformation gradient, material state, density).
@@ -465,7 +465,7 @@ namespace Marmot::Meshfree {
      * @param[in] qp        Evaluation point (unused, there is only one).
      * @return View on the state variable.
      */
-    StateView getStateView( const std::string& stateName, int qp ) const override;
+    Marmot::Utilities::StateView getStateView( const std::string& stateName, int qp ) const override;
 
     /**
      * @brief Meshfree shape functions of the assigned nodes at a point.
@@ -598,7 +598,8 @@ namespace Marmot::Meshfree {
         _mp.setInitialCondition( conditionName, value );
       }
       else {
-        throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid initial condition" );
+        throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << ": invalid initial condition" );
       }
     };
 
@@ -649,7 +650,8 @@ namespace Marmot::Meshfree {
   };
 
   template < int nDim >
-  StateView GradientEnhancedFiniteStrainParticle< nDim >::getStateView( const std::string& stateName, int qp ) const
+  Marmot::Utilities::StateView GradientEnhancedFiniteStrainParticle< nDim >::getStateView( const std::string& stateName,
+                                                                                           int                qp ) const
   {
     if ( stateName == "vertex displacements" )
       // the point particle's single vertex is the material point itself
@@ -659,14 +661,14 @@ namespace Marmot::Meshfree {
 
   template < int nDim >
   GradientEnhancedFiniteStrainParticle< nDim >::GradientEnhancedFiniteStrainParticle(
-    int                                                  elementID,
-    const double*                                        centerCoordinates0,
-    int                                                  sizeCenterCoordinates0,
-    double                                               volume,
-    const std::string&                                   materialName,
-    const double*                                        materialProperties,
-    int                                                  nMaterialProperties,
-    const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation )
+    int                                                     elementID,
+    const double*                                           centerCoordinates0,
+    int                                                     sizeCenterCoordinates0,
+    double                                                  volume,
+    const std::string&                                      materialName,
+    const double*                                           materialProperties,
+    int                                                     nMaterialProperties,
+    const Marmot::Discretizations::Meshfree::Approximation& approximation )
     : _centerCoordinatesUndeformed( Eigen::Map< const Eigen::Matrix< double, nDim, 1 > >( centerCoordinates0 ) ),
       _centerReferenceIntermediate( _centerCoordinatesUndeformed ),
       _volReferenceIntermediate( volume ), // the reference is the undeformed configuration until the first accept
@@ -693,11 +695,12 @@ namespace Marmot::Meshfree {
       _vciOrder( 0 )
   {
     if ( sizeCenterCoordinates0 != nDim ) {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": size of center coordinates must be "
-                                                << nDim << ", but got " << sizeCenterCoordinates0 );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": size of center coordinates must be " << nDim
+                                   << ", but got " << sizeCenterCoordinates0 );
     }
 
-    MarmotMaterialSection section( materialName, materialProperties, nMaterialProperties );
+    Marmot::Discretizations::MaterialSection section( materialName, materialProperties, nMaterialProperties );
 
     _mp.assignMaterial( section );
 
@@ -711,7 +714,7 @@ namespace Marmot::Meshfree {
                                                                             double        timeNew,
                                                                             double        dT )
   {
-    using namespace Marmot::FastorIndices;
+    using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Fastor;
     using to_jk = Fastor::OIndex< j_, k_ >;
 
@@ -751,13 +754,13 @@ namespace Marmot::Meshfree {
     auto a = _mp.getAcceleration();
 
     Tensor< double, nDim, nDim > da_ddu( 0.0 );
-    Marmot::TimeIntegration::newmarkBetaIntegration< nDim >( du.data(),
-                                                             v.data(),
-                                                             a.data(),
-                                                             dT,
-                                                             this->_newmark_beta,
-                                                             this->_newmark_gamma,
-                                                             da_ddu.data() );
+    Marmot::ContinuumMechanics::TimeIntegration::newmarkBetaIntegration< nDim >( du.data(),
+                                                                                 v.data(),
+                                                                                 a.data(),
+                                                                                 dT,
+                                                                                 this->_newmark_beta,
+                                                                                 this->_newmark_gamma,
+                                                                                 da_ddu.data() );
     _mp.setVelocity( v );
     _mp.setAcceleration( a );
 
@@ -851,7 +854,7 @@ namespace Marmot::Meshfree {
                                                                              double        timeNew,
                                                                              double        dT ) const
   {
-    throw std::invalid_argument( MakeString()
+    throw std::invalid_argument( Marmot::Utilities::MakeString()
                                  << __PRETTY_FUNCTION__ << ": a point particle has no faces for a distributed load" );
   }
 
@@ -872,8 +875,10 @@ namespace Marmot::Meshfree {
           fExt[nodeBlockSize * A + i] -= this->_T( A ) * load[i] * V0;
       break;
     }
-    default: throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": invalid body load type" );
+    default:
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": invalid body load type" );
     }
   }
 
-} // namespace Marmot::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

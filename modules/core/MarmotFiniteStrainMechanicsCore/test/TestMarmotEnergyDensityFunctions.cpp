@@ -3,7 +3,7 @@
 #include "Marmot/MarmotTesting.h"
 
 using namespace Marmot::Testing;
-using namespace Marmot::FastorStandardTensors;
+using namespace Marmot::Math::Tensors::FastorTensors;
 
 std::tuple< Tensor33d, Tensor33d, double, double, double, double > computationParameters()
 {
@@ -40,7 +40,7 @@ std::tuple< Tensor33d, Tensor33d, double, double, double, double > computationPa
 
 auto testPenceGouPotentialA()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
   // get computation parameters
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
@@ -50,12 +50,13 @@ auto testPenceGouPotentialA()
   double expected = 5098.519486106722;
   double res      = PenceGouPotentialA( C, K, G );
   throwExceptionOnFailure( checkIfEqual( res, expected, 1e-15 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " energy density A function failed." );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " energy density A function failed." );
 }
 
 auto testPenceGouPotentialB()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
   // get computation parameters
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
@@ -65,12 +66,13 @@ auto testPenceGouPotentialB()
   double expected = 2966.146377987021;
   double res      = PenceGouPotentialB( C, K, G );
   throwExceptionOnFailure( checkIfEqual( res, expected, 1e-15 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " energy density B function failed." );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " energy density B function failed." );
 }
 
 auto testPenceGouPotentialC()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
   // get computation parameters
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
@@ -80,12 +82,13 @@ auto testPenceGouPotentialC()
   double expected = 1018.0232353221228;
   double res      = PenceGouPotentialC( C, K, G );
   throwExceptionOnFailure( checkIfEqual( res, expected, 1e-15 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " energy density C function failed." );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " energy density C function failed." );
 }
 
 auto testFirstOrderDerivedB()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder;
   // get computation parameters
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
@@ -101,7 +104,8 @@ auto testFirstOrderDerivedB()
   Tensor33d                       resS       = get< 1 >( res );
   // compare energy density
   throwExceptionOnFailure( checkIfEqual( resED, expectedED, 1e-15 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " energy density B function failed." );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " energy density B function failed." );
   // constant parameters
   const double dW_dI1 = G / 2. * pow( J, -2. / 3 );
   const double dW_dJ  = K / 4. * ( J - pow( J, -3. ) ) - G * I1 / 3. * pow( J, -5. / 3 );
@@ -111,14 +115,15 @@ auto testFirstOrderDerivedB()
     for ( int j = 0; j < 3; j++ ) {
       expectedS = dW_dI1 * ( i == j ? 1 : 0 ) + dW_dJ * J / 2. * invC( i, j );
       throwExceptionOnFailure( checkIfEqual( resS( i, j ), expectedS, 1e-12 ),
-                               MakeString() << __PRETTY_FUNCTION__ << " stress computation B failed for position (" << i
-                                            << ", " << j << ")" );
+                               Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__ << " stress computation B failed for position (" << i << ", "
+                                 << j << ")" );
     }
 }
 
 auto testSecondOrderDerivedB()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrderDerived;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::SecondOrder;
   // get computation parameters
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
@@ -135,7 +140,8 @@ auto testSecondOrderDerivedB()
   Tensor3333t< double >                                  resCSE     = get< 2 >( res );
   // compare energy density
   throwExceptionOnFailure( checkIfEqual( resED, expectedED, 1e-15 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " energy density B function failed." );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " energy density B function failed." );
   // constant parameters
   const double dW_dI1    = G / 2. * pow( J, -2. / 3 );
   const double dW_dJ     = K / 8. * ( pow( J, 2. ) - pow( J, -2. ) ) - G * I1 / 6. * pow( J, -2. / 3 );
@@ -148,23 +154,25 @@ auto testSecondOrderDerivedB()
     for ( int j = 0; j < 3; j++ ) {
       expectedS = dW_dI1 * ( i == j ? 1 : 0 ) + dW_dJ * J / 2. * invC( i, j );
       throwExceptionOnFailure( checkIfEqual( resS( i, j ), expectedS, 1e-12 ),
-                               MakeString() << __PRETTY_FUNCTION__ << " stress computation B failed for position (" << i
-                                            << ", " << j << ")" );
+                               Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__ << " stress computation B failed for position (" << i << ", "
+                                 << j << ")" );
       for ( int k = 0; k < 3; k++ )
         for ( int l = 0; l < 3; l++ ) {
           expectedCSE = ( J * J ) / 4 * d2W_dJ2 * invC( j, i ) * invC( l, k ) +
                         dW_dJ * ( J / 4. * invC( j, i ) * invC( l, k ) - J / 2. * invC( j, k ) * invC( l, i ) ) +
                         d2W_dI1dJ * J / 2. * ( invC( j, i ) * ( k == l ? 1 : 0 ) + ( i == j ? 1 : 0 ) * invC( l, k ) );
           throwExceptionOnFailure( checkIfEqual( resCSE( i, j, k, l ), expectedCSE, 1e-12 ),
-                                   MakeString() << __PRETTY_FUNCTION__ << " tangent computation B failed for position ("
-                                                << i << ", " << j << ", " << k << ", " << l << ")" );
+                                   Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << " tangent computation B failed for position (" << i
+                                     << ", " << j << ", " << k << ", " << l << ")" );
         }
     }
 }
 
 auto testStandardNeoHookeEnergyMatchesClosedForm()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrderDerived;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder;
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
   const double                                                       K      = get< 2 >( params );
@@ -178,12 +186,13 @@ auto testStandardNeoHookeEnergyMatchesClosedForm()
   auto [psi, dPsi_dC, d2Psi_dC2, d3Psi_dC3] = standardNeoHooke( C, K, G );
 
   throwExceptionOnFailure( checkIfEqual( psi, expected, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " energy density does not match the closed form" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " energy density does not match the closed form" );
 }
 
 auto testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrderDerived;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder;
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
   const double                                                       K      = get< 2 >( params );
@@ -202,8 +211,9 @@ auto testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation()
       const double psiMinus = std::get< 0 >( standardNeoHooke( Cm, K, G ) );
       const double numDeriv = ( psiPlus - psiMinus ) / ( 2. * h );
       throwExceptionOnFailure( checkIfEqual( dPsi_dC( i, j ), numDeriv, 1e-6 ),
-                               MakeString() << __PRETTY_FUNCTION__ << " dPsi_dC(" << i << "," << j
-                                            << ") does not match central-difference numerical differentiation" );
+                               Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__ << " dPsi_dC(" << i << "," << j
+                                 << ") does not match central-difference numerical differentiation" );
     }
 }
 
@@ -229,7 +239,7 @@ std::vector< Tensor33d > symmetricUnitDirections()
 
 auto testStandardNeoHookeSecondDerivativeMatchesNumericalDifferentiation()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrderDerived;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder;
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
   const double                                                       K      = get< 2 >( params );
@@ -255,16 +265,17 @@ auto testStandardNeoHookeSecondDerivativeMatchesNumericalDifferentiation()
             analyticalDirectional += d2Psi_dC2( i, j, k, l ) * dC( k, l );
 
         throwExceptionOnFailure( checkIfEqual( analyticalDirectional, numDirectional, 1e-4 ),
-                                 MakeString() << __PRETTY_FUNCTION__ << " d2Psi_dC2 contracted with a symmetric "
-                                              << "direction does not match numerical differentiation at (" << i << ","
-                                              << j << ")" );
+                                 Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << " d2Psi_dC2 contracted with a symmetric "
+                                   << "direction does not match numerical differentiation at (" << i << "," << j
+                                   << ")" );
       }
   }
 }
 
 auto testStandardNeoHookeThirdDerivativeMatchesNumericalDifferentiation()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrderDerived;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder;
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
   const double                                                       K      = get< 2 >( params );
@@ -301,9 +312,10 @@ auto testStandardNeoHookeThirdDerivativeMatchesNumericalDifferentiation()
                   analyticalDirectional += d3Psi_dC3( i, j, k, l, m, n ) * dCInner( k, l ) * dCOuter( m, n );
 
           throwExceptionOnFailure( checkIfEqual( analyticalDirectional, numDirectional, 1e-2 ),
-                                   MakeString() << __PRETTY_FUNCTION__ << " d3Psi_dC3 contracted with two symmetric "
-                                                << "directions does not match numerical differentiation at (" << i
-                                                << "," << j << ")" );
+                                   Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << " d3Psi_dC3 contracted with two symmetric "
+                                     << "directions does not match numerical differentiation at (" << i << "," << j
+                                     << ")" );
         }
   }
 }

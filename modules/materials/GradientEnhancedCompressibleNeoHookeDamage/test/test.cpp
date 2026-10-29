@@ -10,8 +10,8 @@
 
 using namespace Marmot::Testing;
 using namespace Marmot::Materials;
-using namespace Marmot::FastorStandardTensors;
-using namespace Marmot::FastorIndices;
+using namespace Marmot::Math::Tensors::FastorTensors;
+using namespace Marmot::Math::Tensors::FastorIndices;
 
 using Mat = GradientEnhancedCompressibleNeoHookeDamage;
 
@@ -169,8 +169,8 @@ void testObjectivity()
 
 void testFactoryAndProperties()
 {
-  std::unique_ptr< MarmotMaterialGradientEnhancedFiniteStrain > mat(
-    MarmotLibrary::MarmotMaterialGradientEnhancedFiniteStrainFactory::
+  std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedFiniteStrain > mat(
+    Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory::
       createMaterial( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
                       props.data(),
                       static_cast< int >( props.size() ),

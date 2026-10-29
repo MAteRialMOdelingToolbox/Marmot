@@ -18,7 +18,7 @@ All classes of this page are part of the module ``core/MarmotMeshfreeCore``.
 Cells
 -----
 
-A cell (``MarmotCell``) is a background element with :math:`n_\mathrm{nodes}` nodes and shape functions
+A cell (``Marmot::Discretizations::Cells::Cell``) is a background element with :math:`n_\mathrm{nodes}` nodes and shape functions
 :math:`N_A`. It owns no quadrature points: the host assigns to it the material points :math:`p` located inside it, and
 the cell evaluates its integrals as sums over those material points. For the finite-strain cells of Marmot, the grid
 is in the configuration :math:`\boldsymbol{Y}` at the beginning of the increment, the nodal unknowns are the increments
@@ -91,10 +91,10 @@ Cell geometries
 The formulation cells are templates over a *geometry policy*, a class that satisfies the concept
 ``GeometryCellPolicy``: it provides the types ``XiSized``, ``NSized``, ``dNdXSized`` and the methods
 ``findReferenceCoordinate`` (inverse map), ``N``, ``dNdX`` and ``detJ``; the cells additionally use
-``isCoordinateInCell``, ``getBoundingBox`` and ``getElementShape``. (The virtual interface ``MarmotCellGeometry``
+``isCoordinateInCell``, ``getBoundingBox`` and ``getElementShape``. (The virtual interface ``Marmot::Discretizations::Cells::CellGeometry``
 describing the same contract is deprecated and unused.) Two policies are available.
 
-**Lagrangian cells** (``MarmotLagrangianCellGeometry``): isoparametric Quad4 and Hexa8 cells with Abaqus node order,
+**Lagrangian cells** (``Marmot::Discretizations::Cells::LagrangianCellGeometry``): isoparametric Quad4 and Hexa8 cells with Abaqus node order,
 
 .. math::
 
@@ -105,7 +105,7 @@ describing the same contract is deprecated and unused.) Two policies are availab
 The point location test is the half-open bounding box test :math:`X_{\min,i} \le x_i < X_{\max,i}`, so that a point on
 a shared face belongs to exactly one cell.
 
-**B-spline cells** (``MarmotBSplineCellGeometry`` on top of ``MarmotBSplineGeometryElement``): a cell is one knot span
+**B-spline cells** (``Marmot::Discretizations::Cells::BSplineCellGeometry`` on top of ``Marmot::Discretizations::Elements::BSplineGeometryElement``): a cell is one knot span
 :math:`[u_p, u_{p+1}]` per direction of a tensor-product B-spline of degree :math:`p`. The
 :math:`(p+1)^{n_\mathrm{dim}}` basis functions that are nonzero on the span follow from the :math:`2p+2` knots
 :math:`u_0,\dots,u_{2p+1}` per direction by the Cox--de Boor recursion (see :doc:`meshfreeapproximation`),
@@ -120,7 +120,7 @@ background grid whose B-spline geometry map is the identity (e.g. a uniform, axi
 box is the knot span. Compared to Lagrangian cells, B-spline cells of degree :math:`p \ge 2` have
 :math:`C^{p-1}`-continuous shape functions across cell boundaries, which mitigates the cell-crossing error of MPM.
 
-``MarmotLagrangeCell`` (aliases ``Marmot::Meshfree::Quad4`` and ``Hex8``, header ``MarmotMeshfreeQuadHexCell.h``) is a
+``Marmot::Discretizations::Meshfree::LagrangeCell`` (aliases ``Marmot::Discretizations::Meshfree::Quad4`` and ``Hex8``, header ``MarmotMeshfreeQuadHexCell.h``) is a
 self-contained Quad4/Hexa8 geometry with centroid, volume, second moments, face centers, boundary surface vectors and
 uniform subdivision, evaluated with a :math:`2^{n_\mathrm{dim}}`-point Gauss rule. It is used for the integration
 domains of particles (see :doc:`meshfreeparticles`), not by the MPM cells.
@@ -128,7 +128,7 @@ domains of particles (see :doc:`meshfreeparticles`), not by the MPM cells.
 Cell elements
 -------------
 
-A cell element (``MarmotCellElement``) is a cell that defines its own material points, as a finite element defines its
+A cell element (``Marmot::Discretizations::Cells::CellElement``) is a cell that defines its own material points, as a finite element defines its
 quadrature points: the host queries ``getNMaterialPoints()``, ``getRequestedMaterialPointCoordinates()`` and
 ``getRequestedMaterialPointVolumes()``, creates one material point per request and assigns them back with
 ``assignMaterialPoints``. The quadrature rule is passed on creation; a cell element may carry state variables of its
@@ -137,8 +137,8 @@ own. No concrete cell element is currently contained in Marmot.
 Material points
 ---------------
 
-A material point (``MarmotMaterialPoint``) owns its constitutive model (``assignMaterial`` with a
-``MarmotMaterialSection``) and works on an externally owned state variable array (``getNumberOfRequiredStateVars``,
+A material point (``Marmot::Discretizations::MaterialPoints::MaterialPoint``) owns its constitutive model (``assignMaterial`` with a
+``Marmot::Discretizations::MaterialSection``) and works on an externally owned state variable array (``getNumberOfRequiredStateVars``,
 ``assignStateVars``), which holds the state of the formulation (e.g. displacement, velocity, acceleration, deformation
 gradient and its increment, stress) followed by the state variables of the material; entries are accessible by name via ``getStateView``. Its
 kinematic update is incremental: ``prepareYourself`` sets :math:`\Delta\boldsymbol{u} = \boldsymbol{0}` and
@@ -158,11 +158,11 @@ Factories and registered types
 Cells, cell elements and material points register themselves at static initialization with a factory function in
 their module's ``*Registration.cpp``, and the host creates them by name (case-insensitive, stored in upper case):
 
-- ``MarmotLibrary::MarmotMaterialPointFactory::createMaterialPoint(name, number, vertexCoordinates, size, volume)``,
-- ``MarmotLibrary::MarmotCellFactory::createCell(name, number, nodeCoordinates, size)`` for Lagrangian cells and
+- ``Marmot::Registry::MaterialPointFactory::createMaterialPoint(name, number, vertexCoordinates, size, volume)``,
+- ``Marmot::Registry::CellFactory::createCell(name, number, nodeCoordinates, size)`` for Lagrangian cells and
   ``createBSplineCell(name, number, controlPointCoordinates, size, knotVectors, sizeKnotVectors)`` for B-spline cells
   (two separate registries),
-- ``MarmotLibrary::MarmotCellElementFactory::createCellElement(name, number, nodeCoordinates, size, quadratureRule,
+- ``Marmot::Registry::CellElementFactory::createCellElement(name, number, nodeCoordinates, size, quadratureRule,
   quadratureOrder)``.
 
 An unknown name throws ``std::invalid_argument``; the caller owns the returned object. The cells map (do not copy) the
@@ -220,49 +220,49 @@ A cell must be combined with a material point of the same formulation and dimens
 Limitations
 -----------
 
-- The inverse map of the Lagrangian cells (``MarmotLagrangianCellGeometry::findReferenceCoordinate``) uses the affine
+- The inverse map of the Lagrangian cells (``Marmot::Discretizations::Cells::LagrangianCellGeometry::findReferenceCoordinate``) uses the affine
   map of the cell's bounding box and has no Newton update yet; together with the bounding-box point location test, the
   Lagrangian cells are therefore only valid for **axis-aligned, box-shaped** cells. For a distorted cell the inverse
   map throws ``std::runtime_error``.
 - The B-spline cells assume an identity geometry map (see above); the control point coordinates enter only ``detJ``.
 - Cubic B-spline cells have no output shape name: ``getCellShape()`` returns an empty string for
   ``.../BSpline/3`` and ``.../BSpline/3D/3`` (``Quad16`` and ``Hexa64`` are missing in the shape table of
-  ``MarmotBSplineGeometryElement``).
-- ``MarmotBSplineGeometryElement`` is usable in 2D and 3D only: in 1D, ``dNdXi`` would not compile if instantiated,
+  ``Marmot::Discretizations::Elements::BSplineGeometryElement``).
+- ``Marmot::Discretizations::Elements::BSplineGeometryElement`` is usable in 2D and 3D only: in 1D, ``dNdXi`` would not compile if instantiated,
   and the constructor throws for degrees above 1.
 
 Implementation
 --------------
 
-.. doxygenclass:: MarmotCell
+.. doxygenclass:: Marmot::Discretizations::Cells::Cell
    :allow-dot-graphs:
 
-.. doxygenclass:: MarmotCellElement
+.. doxygenclass:: Marmot::Discretizations::Cells::CellElement
    :allow-dot-graphs:
 
-.. doxygenclass:: MarmotMaterialPoint
+.. doxygenclass:: Marmot::Discretizations::MaterialPoints::MaterialPoint
    :allow-dot-graphs:
 
-.. doxygenclass:: MarmotLagrangianCellGeometry
+.. doxygenclass:: Marmot::Discretizations::Cells::LagrangianCellGeometry
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::Cells::MarmotBSplineCellGeometry
+.. doxygenclass:: Marmot::Discretizations::Cells::BSplineCellGeometry
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::FiniteElement::MarmotBSplineGeometryElement
+.. doxygenclass:: Marmot::Discretizations::Elements::BSplineGeometryElement
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::Meshfree::MarmotLagrangeCell
+.. doxygenclass:: Marmot::Discretizations::Meshfree::LagrangeCell
    :allow-dot-graphs:
 
-.. doxygenclass:: MarmotCellGeometry
+.. doxygenclass:: Marmot::Discretizations::Cells::CellGeometry
    :allow-dot-graphs:
 
-.. doxygenclass:: MarmotLibrary::MarmotMaterialPointFactory
+.. doxygenclass:: Marmot::Registry::MaterialPointFactory
    :allow-dot-graphs:
 
-.. doxygenclass:: MarmotLibrary::MarmotCellFactory
+.. doxygenclass:: Marmot::Registry::CellFactory
    :allow-dot-graphs:
 
-.. doxygenclass:: MarmotLibrary::MarmotCellElementFactory
+.. doxygenclass:: Marmot::Registry::CellElementFactory
    :allow-dot-graphs:

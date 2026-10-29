@@ -6,7 +6,7 @@ using namespace Marmot::Testing;
 // test automatic differentiation for scalar functions
 void testAutomaticDifferentiationForScalars()
 {
-  using namespace Marmot::AutomaticDifferentiation;
+  using namespace Marmot::Math::Differentiation::Automatic;
 
   // check scalar first derivative
   auto scalar_func = [&]( const autodiff::dual x ) {
@@ -34,7 +34,7 @@ void testAutomaticDifferentiationForScalars()
 
 void testADForVectorValuedFunctions()
 {
-  using namespace Marmot::AutomaticDifferentiation;
+  using namespace Marmot::Math::Differentiation::Automatic;
 
   // check jacobian with autodiff::dual
   auto vector_func = [&]( const autodiff::VectorXdual x ) {
@@ -78,7 +78,7 @@ void testADForVectorValuedFunctions()
 
 void testShiftTo2ndOrderDualForVectors()
 {
-  using namespace Marmot::AutomaticDifferentiation;
+  using namespace Marmot::Math::Differentiation::Automatic;
 
   // seed both the value AND the first-order derivative of every input, so that
   // this test actually exercises shiftTo2ndOrderDual's documented behavior of

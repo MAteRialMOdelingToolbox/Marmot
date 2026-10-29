@@ -16,7 +16,7 @@ add_marmot_test("TestMarmotEnhancedAssumedStrain" "${CURR_TEST_SOURCE_DIR}/TestM
 # Tests for MarmotFiniteElement2D
 add_marmot_test("TestMarmotFiniteElement2D" "${CURR_TEST_SOURCE_DIR}/TestMarmotFiniteElement2D.cpp")
 
-# Tests for MarmotGeometryElement
+# Tests for Marmot::Discretizations::Elements::GeometryElement
 add_marmot_test("TestMarmotGeometryElement" "${CURR_TEST_SOURCE_DIR}/TestMarmotGeometryElement.cpp")
 
 # Tests for MarmotFiniteElementBasic

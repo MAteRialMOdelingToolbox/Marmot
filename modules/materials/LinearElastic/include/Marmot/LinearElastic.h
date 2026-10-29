@@ -36,9 +36,9 @@ namespace Marmot::Materials {
    *
    * For further information see the linear elastic page of the feature documentation.
    */
-  class LinearElastic : public MarmotMaterialHypoElastic {
+  class LinearElastic : public Marmot::Materials::MaterialHypoElastic {
   public:
-    using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
+    using Marmot::Materials::MaterialHypoElastic::MaterialHypoElastic;
 
     LinearElastic( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
@@ -156,11 +156,11 @@ namespace Marmot::Materials {
      * It is calculated by the functions implemented in *MarmotElasticity.h*.
      */
 
-    Matrix6d globalStiffnessTensor;
+    Marmot::Math::Matrix6d globalStiffnessTensor;
 
-    void computeStress( state3D&                state,
-                        Marmot::Matrix6d&       dStressDDStrain,
-                        const Marmot::Vector6d& dStrain,
-                        const timeInfo&         timeInfo ) const override;
+    void computeStress( state3D&                      state,
+                        Marmot::Math::Matrix6d&       dStressDDStrain,
+                        const Marmot::Math::Vector6d& dStrain,
+                        const timeInfo&               timeInfo ) const override;
   };
 } // namespace Marmot::Materials

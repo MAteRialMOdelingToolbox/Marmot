@@ -29,11 +29,11 @@
 #include <string>
 #include <unordered_map>
 
-namespace MarmotLibrary {
+namespace Marmot::Registry {
 
   /**
-   * @class MarmotLibrary::MarmotParticleFactory
-   * @brief Registry and factory of the meshfree particles (Marmot::Meshfree::MarmotParticle).
+   * @class Marmot::Registry::ParticleFactory
+   * @brief Registry and factory of the meshfree particles (Marmot::Discretizations::Meshfree::Particle).
    *
    * - Allows particles to register themselves with their name (see registerParticle(); particle modules do this in
    *   their *Registration.cpp files at static initialization).
@@ -43,7 +43,7 @@ namespace MarmotLibrary {
    * They follow the pattern `<Physics><IntegrationScheme>/<Dimension>/<Shape>`, e.g.,
    * @c DisplacementSQCNI/PlaneStrain/Quad or @c GradientEnhancedFiniteStrainSQCNIxNSNI/3D/Hexa.
    */
-  class MarmotParticleFactory {
+  class ParticleFactory {
   public:
     /**
      * @brief Signature of the factory function of a particle type.
@@ -52,19 +52,20 @@ namespace MarmotLibrary {
      * the material name, the material properties and their number, and the meshfree approximation.
      */
     using particleFactoryFunction =
-      Marmot::Meshfree::MarmotParticle* (*)( int           particleNumber,
-                                             const double* vertexCoordinates,
-                                             int           sizeVertexCoordinates,
-                                             double        volume,
-                                             // MarmotMaterialPoint&                                 mp,
-                                             //
-                                             const std::string& materialName,
-                                             const double*      materialProperties,
-                                             int                nMaterialProperties,
+      Marmot::Discretizations::Meshfree::Particle* (*)( int           particleNumber,
+                                                        const double* vertexCoordinates,
+                                                        int           sizeVertexCoordinates,
+                                                        double        volume,
+                                                        // Marmot::Discretizations::MaterialPoints::MaterialPoint& mp,
+                                                        //
+                                                        const std::string& materialName,
+                                                        const double*      materialProperties,
+                                                        int                nMaterialProperties,
 
-                                             const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation );
+                                                        const Marmot::Discretizations::Meshfree::Approximation&
+                                                          approximation );
     /// @brief The factory is a static class and cannot be instantiated.
-    MarmotParticleFactory() = delete;
+    ParticleFactory() = delete;
 
     /**
      * @brief Create a particle by its registered name.
@@ -81,19 +82,19 @@ namespace MarmotLibrary {
      * @return A new particle, owned by the caller.
      * @throws std::invalid_argument if no particle is registered under @p particleName.
      */
-    static Marmot::Meshfree::MarmotParticle* createParticle(
+    static Marmot::Discretizations::Meshfree::Particle* createParticle(
       const std::string& particleName,
       int                materialNumber,
       const double*      vertexCoordinates,
       int                sizeVertexCoordinates,
       double             volume,
-      // MarmotMaterialPoint&                                 mp,
+      // Marmot::Discretizations::MaterialPoints::MaterialPoint&                                 mp,
       //
       const std::string& materialName,
       const double*      materialProperties,
       int                nMaterialProperties,
 
-      const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation );
+      const Marmot::Discretizations::Meshfree::Approximation& approximation );
 
     /**
      * @brief Register a particle type under a name.
@@ -118,4 +119,4 @@ namespace MarmotLibrary {
     static std::unordered_map< std::string, particleFactoryFunction >& particleFactoryFunctionByName();
   };
 
-} // namespace MarmotLibrary
+} // namespace Marmot::Registry

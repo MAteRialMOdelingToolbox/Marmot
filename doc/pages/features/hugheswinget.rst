@@ -7,7 +7,7 @@ A decorator that makes any small-strain (hypoelastic) material usable wherever a
 material is expected -- updated-Lagrangian elements such as ``C3D8UL``, and the meshfree
 ``Displacement/...`` particles and material points.
 
-``MarmotMaterialHypoElastic`` and ``MarmotMaterialFiniteStrain`` are unrelated interfaces: the former
+``Marmot::Materials::MaterialHypoElastic`` and ``Marmot::Materials::MaterialFiniteStrain`` are unrelated interfaces: the former
 returns the Cauchy stress and :math:`\partial\boldsymbol{\sigma}/\partial\boldsymbol{\varepsilon}`
 for a linearized strain increment, the latter the Kirchhoff stress and
 :math:`\partial\boldsymbol{\tau}/\partial\boldsymbol{F}`. ``HughesWingetWrapper`` bridges the two by
@@ -40,7 +40,7 @@ Add one line to that material's own ``<Name>Registration.cpp``:
 
   #include "Marmot/MarmotMaterialHughesWinget.h"
   ...
-  const static bool VonMisesHughesWingetIsRegistered = MarmotMaterialFiniteStrainFactory::registerMaterial<
+  const static bool VonMisesHughesWingetIsRegistered = Marmot::Registry::MaterialFiniteStrainFactory::registerMaterial<
     HughesWingetWrapper< VonMisesModel > >( "VONMISES/HUGHES-WINGET" );
 
 Theory

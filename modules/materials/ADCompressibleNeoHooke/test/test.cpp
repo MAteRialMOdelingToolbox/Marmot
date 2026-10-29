@@ -7,8 +7,8 @@
 
 using namespace Marmot::Testing;
 using namespace Marmot::Materials;
-using namespace Marmot::FastorStandardTensors;
-using namespace Marmot::FastorIndices;
+using namespace Marmot::Math::Tensors::FastorTensors;
+using namespace Marmot::Math::Tensors::FastorIndices;
 
 void testSetup( const std::string& testName,
                 const Tensor33d&   inputF,
@@ -129,7 +129,7 @@ void testSetup( const std::string& testName,
 // Test I-1: Undeformed configuration
 void testUndeformedResponse()
 {
-  Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+  Tensor33d inputF = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
   Tensor33d stressTarget( 0.0 );
   testSetup( "I-1: Undeformed configuration", inputF, stressTarget );
 }
@@ -138,7 +138,7 @@ void testDeformationResponse()
 {
   // Test I-2a: Finite strain simple shear load case
   {
-    Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+    Tensor33d inputF = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
     inputF( 1, 0 ) += 0.2;
 
     Tensor33d stressTarget( 0.0 );
@@ -153,7 +153,7 @@ void testDeformationResponse()
 
   // Test I-2b: Small strain simple shear load case
   {
-    Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+    Tensor33d inputF = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
     inputF( 1, 0 ) += 1e-06;
 
     Tensor33d stressTarget( 0.0 );
@@ -168,7 +168,7 @@ void testDeformationResponse()
 
   // Test I-2c: Hydrostatic load case
   {
-    Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+    Tensor33d inputF = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
     inputF( 0, 0 ) += 0.02;
     inputF( 1, 1 ) += 0.02;
     inputF( 2, 2 ) += 0.02;
@@ -209,7 +209,7 @@ void testDeformationResponse()
 // Test I-3: Computation of the algorithmic tangent
 void testAlgorithmicTangent()
 {
-  Tensor33d inputF = Marmot::FastorStandardTensors::Spatial3D::I;
+  Tensor33d inputF = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
   inputF( 0, 0 ) += 0.01;
   inputF( 1, 1 ) += 0.02;
   inputF( 2, 2 ) += 0.03;
@@ -290,17 +290,17 @@ void testRotation()
 
 void testWithMPSolver()
 {
-  using namespace Marmot::Solvers;
+  using namespace Marmot::Materials;
   auto        materialProperties = std::vector< double >{ 3500, 1500 };
-  auto        solveropts         = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
+  auto        solveropts         = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
   std::string matName            = "ADCOMPRESSIBLENEOHOOKE";
-  auto        solver             = MarmotMaterialPointSolverFiniteStrain( matName,
-                                                       materialProperties.data(),
-                                                       static_cast< int >( materialProperties.size() ),
-                                                       solveropts );
+  auto        solver             = Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
+                                                                    materialProperties.data(),
+                                                                    static_cast< int >( materialProperties.size() ),
+                                                                    solveropts );
 
   // create a step with controlled shear strain increment
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget         = Tensor33d( 0.0 );
   step.gradUIncrementTarget( 0, 1 ) = 0.0001;
   step.stressIncrementTarget        = Tensor33d( 0.0 );

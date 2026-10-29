@@ -1,15 +1,11 @@
 #include "Marmot/GradientEnhancedCompressibleNeoHookeDamage.h"
 #include "Marmot/MarmotMaterialGradientEnhancedFiniteStrainFactory.h"
 
-namespace Marmot::Materials {
+namespace {
+  using namespace Marmot::Materials;
 
-  namespace Registration {
+  const static bool GradientEnhancedCompressibleNeoHookeDamageRegistered = Marmot::Registry::
+    MaterialGradientEnhancedFiniteStrainFactory::registerMaterial< GradientEnhancedCompressibleNeoHookeDamage >(
+      "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE" );
 
-    using namespace MarmotLibrary;
-
-    const static bool
-      GradientEnhancedCompressibleNeoHookeDamageRegistered = MarmotMaterialGradientEnhancedFiniteStrainFactory::
-        registerMaterial< GradientEnhancedCompressibleNeoHookeDamage >( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE" );
-
-  } // namespace Registration
-} // namespace Marmot::Materials
+} // namespace
