@@ -43,6 +43,7 @@
 #include <iostream>
 #include <limits>
 #include <memory>
+#include <optional>
 #include <vector>
 
 using namespace Marmot;
@@ -135,7 +136,8 @@ namespace Marmot::Elements {
        * stable increment (asked for rarely) and not per quadrature point per explicit increment.
        * What is cached is the UNDAMAGED speed: the term damps the highest frequency the MESH can
        * carry, which the undamaged material sets, and holding it fixed as the material softens
-       * damps slightly harder -- the safe direction here. Zero means "not yet computed". It is
+       * damps slightly harder -- the safe direction here. Empty means "not yet computed"; a
+       * reference of zero is cached like any other value. It is
        * also the reference the optional degradation is measured against; see
        * Marmot::FiniteElement::BulkViscosity::degradationFactor.
        *
@@ -147,7 +149,7 @@ namespace Marmot::Elements {
        * was asked for. The gradient-enhanced element has no such ambiguity: its reference is the
        * speed at a ZERO non-local field.
        */
-      double referenceWaveSpeed = 0.0;
+      std::optional< double > referenceWaveSpeed;
 
       /**
        * @brief Manager for per-quadrature-point state variables.
@@ -667,7 +669,7 @@ namespace Marmot::Elements {
       qp.B                      = this->B( dNdX );
 
       qp.characteristicElementLength = characteristicElementLengthAt( qp.xi );
-      qp.referenceWaveSpeed          = 0.0;
+      qp.referenceWaveSpeed.reset();
 
       if constexpr ( nDim == 3 ) {
         qp.J0xW = qp.weight * qp.detJ;
@@ -946,19 +948,21 @@ namespace Marmot::Elements {
                                                                     dissipation,
                                                                     qp.managedStateVars->materialStateVars.data() );
 
-        if ( qp.referenceWaveSpeed <= 0.0 )
+        if ( !qp.referenceWaveSpeed )
           qp.referenceWaveSpeed = qp.material->getMaximumWaveSpeed( stateForWaveSpeed );
+        const double referenceWaveSpeed = *qp.referenceWaveSpeed;
 
         /* The optional degradation needs the material's CURRENT tangent, and asking for that costs
-         * a full constitutive evaluation. With the exponent at its default of zero the material is
-         * never asked, so a deck that does not request the degradation integrates exactly the
-         * stress it integrated before.
+         * a full constitutive evaluation per quadrature point per increment unless the material
+         * overrides getMaximumWaveSpeed() with a closed form. With the exponent at its default of
+         * zero the material is never asked, so a deck that does not request the degradation
+         * integrates exactly the stress it integrated before.
          */
         const double
           degradation = bulkViscosityCoefficients.isDegraded()
                           ? FiniteElement::BulkViscosity::degradationFactor( qp.material->getMaximumWaveSpeed(
                                                                                stateForWaveSpeed ),
-                                                                             qp.referenceWaveSpeed,
+                                                                             referenceWaveSpeed,
                                                                              bulkViscosityCoefficients.degradation )
                           : 1.0;
 
@@ -970,7 +974,7 @@ namespace Marmot::Elements {
                                                                                           qp.managedStateVars
                                                                                             ->materialStateVars
                                                                                             .data() ),
-                                                                                        qp.referenceWaveSpeed,
+                                                                                        referenceWaveSpeed,
                                                                                         qp.characteristicElementLength,
                                                                                         bulkViscosityCoefficients );
 

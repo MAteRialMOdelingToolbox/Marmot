@@ -44,6 +44,7 @@
 #include <atomic>
 #include <cmath>
 #include <memory>
+#include <optional>
 #include <type_traits>
 #include <vector>
 
@@ -208,13 +209,15 @@ namespace Marmot::Elements {
        * for the stable increment (asked for rarely) and not per quadrature point per explicit
        * increment. What is cached is the UNDAMAGED speed: the term damps the highest frequency the
        * MESH can carry, which the undamaged material sets, and holding it fixed as the material
-       * softens damps slightly harder -- the safe direction here. Zero means "not yet computed".
+       * softens damps slightly harder -- the safe direction here. Empty means "not yet computed": a
+       * reference of zero (a material without density or stiffness) is a value like any other and is
+       * cached too, so the query is made once per quadrature point whatever the material answers.
        *
        * It is also the reference the optional degradation is measured against (see
        * Marmot::FiniteElement::BulkViscosity::degradationFactor), which is the one case that does
        * ask for the current speed every increment -- hence opt-in through a named property.
        */
-      double referenceWaveSpeed = 0.0;
+      std::optional< double > referenceWaveSpeed;
 
       /**
        * @brief Manager for per-quadrature-point state variables.
@@ -879,7 +882,7 @@ namespace Marmot::Elements {
       qp.dNdX                   = localGeometryElement.dNdX( dNdXi, JInv );
 
       qp.characteristicElementLength = characteristicElementLengthAt( qp.xi );
-      qp.referenceWaveSpeed          = 0.0;
+      qp.referenceWaveSpeed.reset();
 
       if constexpr ( !nonLocalSharesShapeFunctions ) {
         const auto           dNdXi_K = nonLocalGeometryElement.dNdXi( qp.xi );
@@ -1101,13 +1104,16 @@ namespace Marmot::Elements {
          * the field alone, so their ratio measures damage and nothing else, on a restart and after
          * a refinement alike.
          */
-        if ( quadraturePoint.referenceWaveSpeed <= 0.0 )
+        if ( !quadraturePoint.referenceWaveSpeed )
           quadraturePoint.referenceWaveSpeed = quadraturePoint.material->getMaximumWaveSpeed( currentResponse );
+        const double referenceWaveSpeed = *quadraturePoint.referenceWaveSpeed;
 
         /* Evaluated here rather than inside the viscous stress because it is the only part that
-         * needs the CURRENT tangent, which costs a full constitutive evaluation. At the default
-         * exponent the material is never asked, so such a deck integrates exactly what it did
-         * before. The current field must be passed explicitly: it is an INPUT to the constitutive
+         * needs the CURRENT tangent -- a full constitutive evaluation per quadrature point per
+         * increment unless the material has a closed form for it, which is the material's
+         * business and not the element's. At the default exponent the material is
+         * never asked, so such a deck integrates exactly what it did before. The current field
+         * must be passed explicitly: it is an INPUT to the constitutive
          * law, so a query without it asks for the response at a field of zero -- the undamaged
          * tangent, wherever damage is driven by that field alone. Omitting it made this factor
          * identically 1.0 and the property inert.
@@ -1117,7 +1123,7 @@ namespace Marmot::Elements {
                           ? FiniteElement::BulkViscosity::degradationFactor( quadraturePoint.material
                                                                                ->getMaximumWaveSpeed( currentResponse,
                                                                                                       currentK ),
-                                                                             quadraturePoint.referenceWaveSpeed,
+                                                                             referenceWaveSpeed,
                                                                              bulkViscosityCoefficients.degradation )
                           : 1.0;
 
@@ -1127,7 +1133,7 @@ namespace Marmot::Elements {
                                                                          quadraturePoint.material->getDensity(
                                                                            quadraturePoint.managedStateVars
                                                                              ->materialStateVars.data() ),
-                                                                         quadraturePoint.referenceWaveSpeed,
+                                                                         referenceWaveSpeed,
                                                                          quadraturePoint.characteristicElementLength,
                                                                          bulkViscosityCoefficients );
       };
