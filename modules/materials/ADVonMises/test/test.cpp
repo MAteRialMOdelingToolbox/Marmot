@@ -13,7 +13,7 @@ void testADVonMisesCoordinateInvariance()
   std::string           matName            = "ADVONMISES";
   auto                  solver             = MarmotMaterialPointSolverHypoElastic( matName,
                                                       &materialProperties[0],
-                                                      materialProperties.size(),
+                                                      static_cast< int >( materialProperties.size() ),
                                                       solveropts );
 
   MarmotMaterialPointSolverHypoElastic::Step step;
@@ -41,7 +41,7 @@ void testADVonMises()
   // create material point solver instance
   auto solver = MarmotMaterialPointSolverHypoElastic( matName,
                                                       &materialProperties[0],
-                                                      materialProperties.size(),
+                                                      static_cast< int >( materialProperties.size() ),
                                                       solveropts );
 
   // define a step

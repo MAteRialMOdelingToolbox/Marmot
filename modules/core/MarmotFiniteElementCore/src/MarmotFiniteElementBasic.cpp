@@ -71,9 +71,9 @@ namespace Marmot {
        *
        * */
 
-      const int nDimXi = dNdXi.rows();
-      const int nNodes = dNdXi.cols();
-      const int nDimX  = coordinates.size() / nNodes;
+      const int nDimXi = static_cast< int >( dNdXi.rows() );
+      const int nNodes = static_cast< int >( dNdXi.cols() );
+      const int nDimX  = static_cast< int >( coordinates.size() ) / nNodes;
 
       MatrixXd J_ = MatrixXd::Zero( nDimX, nDimXi );
 
@@ -159,7 +159,7 @@ namespace Marmot {
 
     int getNumGaussPoints( Marmot::FiniteElement::ElementShapes shape, IntegrationTypes integrationType )
     {
-      return getGaussPointInfo( shape, integrationType ).size();
+      return static_cast< int >( getGaussPointInfo( shape, integrationType ).size() );
     }
 
   } // end of namespace FiniteElement::Quadrature

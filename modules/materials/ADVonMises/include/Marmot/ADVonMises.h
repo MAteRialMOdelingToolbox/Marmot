@@ -65,7 +65,8 @@ namespace Marmot::Materials {
 
     /**
      * @brief Hardening function.
-     * @tparam[in] kappa Hardening variable.
+     * @tparam T Scalar type (double or an automatic differentiation type).
+     * @param[in] kappa_ Hardening variable.
      * @returns Current yield stress.
      */
     template < typename T >
@@ -77,8 +78,9 @@ namespace Marmot::Materials {
 
     /**
      * @brief Yield function.
-     * @tparam[in] rho Deviatoric radius (\f$\rho = ||s||\f$).
-     * @param[in] kappa Hardening variable.
+     * @tparam T Scalar type (double or an automatic differentiation type).
+     * @param[in] rho_ Deviatoric radius (\f$\rho = ||s||\f$).
+     * @param[in] kappa_ Hardening variable.
      * @returns Value of the yield function.
      */
     template < typename T >
@@ -89,9 +91,10 @@ namespace Marmot::Materials {
 
     /**
      * @brief Objective function for stress update algorithm.
-     * @tparam[in] rhoTrial Deviatoric radius.
+     * @tparam T Scalar type (double or an automatic differentiation type).
+     * @param[in] rhoTrial Deviatoric radius.
      * @param[in] kappa Current value of the hardening variable.
-     * @tparam[in] deltaKappa Increment of the hardening variable.
+     * @param[in] deltaKappa Increment of the hardening variable.
      * @returns Value of the yield function.
      */
     template < typename T >

@@ -85,8 +85,8 @@ namespace {
 
     Eigen::VectorXd interfaceStateVars( interfaceMaterial->getNumberOfRequiredStateVars() );
     Eigen::VectorXd bulkStateVars( bulkMaterial->getNumberOfRequiredStateVars() );
-    interfaceMaterial->initializeYourself( interfaceStateVars.data(), interfaceStateVars.size() );
-    bulkMaterial->initializeYourself( bulkStateVars.data(), bulkStateVars.size() );
+    interfaceMaterial->initializeYourself( interfaceStateVars.data(), static_cast< int >( interfaceStateVars.size() ) );
+    bulkMaterial->initializeYourself( bulkStateVars.data(), static_cast< int >( bulkStateVars.size() ) );
 
     InterfaceResponse interfaceResponse;
     Marmot::Vector6d  bulkStress = Marmot::Vector6d::Zero();

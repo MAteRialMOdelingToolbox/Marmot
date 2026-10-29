@@ -47,6 +47,17 @@ All notable changes to Marmot are documented in this file. The format follows
 - Point particles have no faces and no longer advertise `PRESSURE` / `CWFCORRECTION`.
 - The cell, particle and material point registries are function-local statics; the public `register*` functions
   are unchanged.
+- `GeneralGradientEnhancedDisplacementFiniteElement` no longer stores the strain-displacement operator per quadrature
+  point: `QuadraturePoint::B` and the unused `B_K` are removed (code reading them must be rebuilt and use
+  `localGeometryElement.B( qp.dNdX )`), and `B` is built from `dNdX` where the kernels use it. 16.7 of 20.7 GB on a
+  107,508-element `GC3D20` mesh; results are bitwise identical.
+- **Results:** the kernels of `GeneralGradientEnhancedDisplacementFiniteElement` (`GC3D8`, `GC3D20`, `GCPS4`, ... and
+  the mixed-order `M` variants) compute the strain increment and the internal force from `dNdX` through
+  `FiniteElement::SmallStrain::strainIncrement` and `addInternalForce` (new, in `MarmotSmallStrainKinematics.h`)
+  instead of the dense B-matrix, and the gradient term of the non-local residual and tangent in O(nNodes) per
+  quadrature point. Residuals and tangents change in the last digits (about 1e-16 relative to the residual scale);
+  the explicit edge-breakout run is 25 % faster. The quadrature points are smaller (about 5 KB to under 1 KB per
+  point for `GC3D20R`); equal-order elements store the non-local shape functions once.
 
 ### Fixed
 - **Results:** sign of the hoop term in the axisymmetric finite-strain UL elements (`CX8UL`, `CX8RUL`, residual and

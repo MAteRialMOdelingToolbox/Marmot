@@ -18,7 +18,7 @@ MarmotElementSpatialWrapper::MarmotElementSpatialWrapper( int                   
     nRhsChild( nRhsChild ),
     rhsIndicesToBeProjected( rhsIndicesToBeWrapped, nRhsIndicesToBeWrapped ),
     projectedSize( nRhsChild ),
-    unprojectedSize( nRhsChild + rhsIndicesToBeProjected.size() * ( nDim - nDimChild ) ),
+    unprojectedSize( nRhsChild + static_cast< int >( rhsIndicesToBeProjected.size() ) * ( nDim - nDimChild ) ),
     childElement( std::move( childElement ) )
 {
 }
@@ -155,8 +155,8 @@ void MarmotElementSpatialWrapper::assignNodeCoordinates( const double* coordinat
 
   // Projection of node coordinates
   projectedCoordinates = MatrixXd::Zero( nDimChild, nNodes );
-  for ( int i = 0; i < nNodes; i++ )
-    projectedCoordinates.col( i ) = T * unprojectedCoordinates.col( i );
+  for ( int iNode = 0; iNode < nNodes; iNode++ )
+    projectedCoordinates.col( iNode ) = T * unprojectedCoordinates.col( iNode );
 
   childElement->assignNodeCoordinates( projectedCoordinates.data() );
 }

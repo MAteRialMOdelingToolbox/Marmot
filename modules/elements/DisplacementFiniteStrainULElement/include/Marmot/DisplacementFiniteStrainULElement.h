@@ -157,8 +157,8 @@ namespace Marmot::Elements {
         static int getNumberOfRequiredStateVarsQuadraturePointOnly() { return layout.nRequiredStateVars; };
 
         /** @brief Constructor of the state variable manager at the quadrature point
-         * @param theStateVarVector[in] Pointer to the state variable vector at the quadrature point
-         * @param nStateVars[in] Number of state variables at the quadrature point
+         * @param[in] theStateVarVector Pointer to the state variable vector at the quadrature point
+         * @param[in] nStateVars Number of state variables at the quadrature point
          */
         QPStateVarManager( double* theStateVarVector, int nStateVars )
           : MarmotStateVarVectorManager( theStateVarVector, layout ),
@@ -197,8 +197,8 @@ namespace Marmot::Elements {
       };
 
       /** @brief Assign the state variable vector at the quadrature point
-       * @param stateVars[in] Pointer to the state variable vector at the quadrature point
-       * @param nStateVars[in] Number of state variables at the quadrature point
+       * @param[in] stateVars Pointer to the state variable vector at the quadrature point
+       * @param[in] nStateVars Number of state variables at the quadrature point
        */
       void assignStateVars( double* stateVars, int nStateVars )
       {
@@ -206,8 +206,8 @@ namespace Marmot::Elements {
       }
 
       /** @brief Constructor of the quadrature point
-       * @param xi[in] Local coordinates of the quadrature point
-       * @param weight[in] Weight of the quadrature point
+       * @param[in] xi Local coordinates of the quadrature point
+       * @param[in] weight Weight of the quadrature point
        * @note The shape function derivatives w.r.t. material (undeformed) coordinates and the determinant of the
        * undeformed Jacobian times quadrature weight are initialized with zero values.
        */
@@ -219,72 +219,72 @@ namespace Marmot::Elements {
     std::vector< QuadraturePoint > qps;
 
     /** @brief Constructor of the displacement-based finite strain element
-     * @param elementID[in] Element ID (label) of the element
-     * @param integrationType[in] Integration type of the element
-     * @param sectionType[in] Section type of the element
+     * @param[in] elementID Element ID (label) of the element
+     * @param[in] integrationType Integration type of the element
+     * @param[in] sectionType Section type of the element
      */
     DisplacementFiniteStrainULElement( int                                                 elementID,
                                        Marmot::FiniteElement::Quadrature::IntegrationTypes integrationType,
                                        SectionType                                         sectionType );
 
     /// @brief Get the total number of required state variables of the element
-    int getNumberOfRequiredStateVars();
+    int getNumberOfRequiredStateVars() override;
 
     /// @brief Get the nodal fields of the element
-    std::vector< std::vector< std::string > > getNodeFields();
+    std::vector< std::vector< std::string > > getNodeFields() override;
 
     /// @brief Get the permutation pattern of the element degrees of freedom
-    std::vector< int > getDofIndicesPermutationPattern();
+    std::vector< int > getDofIndicesPermutationPattern() override;
 
     /** @brief Get the number of nodes of the element
      * @return Number of nodes of the element
      */
-    int getNNodes() { return nNodes; }
+    int getNNodes() override { return nNodes; }
 
     /** @brief Get the number of spatial dimensions of the element
      * @return Number of spatial dimensions of the element
      */
-    int getNSpatialDimensions() { return nDim; }
+    int getNSpatialDimensions() override { return nDim; }
 
     /** @brief Get the number of degrees of freedom per node of the element
      * @return Number of degrees of freedom per node of the element
      */
-    int getNDofPerElement() { return sizeLoadVector; }
+    int getNDofPerElement() override { return sizeLoadVector; }
 
     /** @brief Get the shape of the element
      * @return Shape of the element
      */
-    std::string getElementShape() { return ParentGeometryElement::getElementShape(); }
+    std::string getElementShape() override { return ParentGeometryElement::getElementShape(); }
 
     /** @brief Assign the state variable vector of the element
-     * @param managedStateVars[in] Pointer to the state variable vector of the element
-     * @param nStateVars[in] Number of state variables of the element
+     * @param[in] managedStateVars Pointer to the state variable vector of the element
+     * @param[in] nStateVars Number of state variables of the element
      */
-    void assignStateVars( double* managedStateVars, int nStateVars );
+    void assignStateVars( double* managedStateVars, int nStateVars ) override;
 
     /** @brief Assign the element properties of the element
-     * @param MarmotElementProperty[in] Element properties
+     * @param[in] MarmotElementProperty Element properties
      */
-    void assignProperty( const ElementProperties& MarmotElementProperty );
+    void assignProperty( const ElementProperties& MarmotElementProperty ) override;
 
     /** @brief Assign the material section of the element
-     * @param MarmotElementProperty[in] Material section
+     * @param[in] MarmotElementProperty Material section
      */
-    void assignProperty( const MarmotMaterialSection& MarmotElementProperty );
+    void assignProperty( const MarmotMaterialSection& MarmotElementProperty ) override;
 
     /** @brief Assign the nodal coordinates of the element
-     * @param coordinates[in] Pointer to the nodal coordinates of the element
+     * @param[in] coordinates Pointer to the nodal coordinates of the element
      */
-    void assignNodeCoordinates( const double* coordinates );
+    void assignNodeCoordinates( const double* coordinates ) override;
 
     /// @brief Initialize the element
-    void initializeYourself();
+    void initializeYourself() override;
 
     /** @brief Set the initial conditions of the element
-     * @param state[in] Type of the initial state
-     * @param values[in] Pointer to the values defining the initial state
+     * @param[in] state Type of the initial state
+     * @param[in] values Pointer to the values defining the initial state
      */
-    void setInitialConditions( StateTypes state, const double* values );
+    void setInitialConditions( StateTypes state, const double* values ) override;
 
     /** @brief Compute the contributions of distributed loads to the element residual vector and stiffness matrix
      *
@@ -294,23 +294,23 @@ namespace Marmot::Elements {
      * matrix \f$-\int_\bar{A}\,\mathbf{N}_{A}\,\bar{t}_i\left(\delta_{ij}\delta_{lk} -
      * \delta_{ik}\delta_{lj}\right)\,\mathbf{N}_{B,l}\,d\bar{A}\f$.
      *
-     * @param loadType[in] Type of the distributed load, e.g., pressure or surface traction
-     * @param P[in,out] Pointer to the element residual vector (right hand side of the global equation system)
-     * @param K[in,out] Pointer to the element stiffness matrix
-     * @param elementFace[in] Local face number of the element where the distributed load is applied
-     * @param load[in] Pointer to the distributed load vector
-     * @param QTotal[in] Pointer to the total element displacement vector at the current time step
-     * @param time[in] Pointer to the time at the beginning of the current time step
-     * @param dT[in] Length of the current time step
+     * @param[in] loadType Type of the distributed load, e.g., pressure or surface traction
+     * @param[in,out] P Pointer to the element residual vector (right hand side of the global equation system)
+     * @param[in,out] K Pointer to the element stiffness matrix
+     * @param[in] elementFace Local face number of the element where the distributed load is applied
+     * @param[in] load Pointer to the distributed load vector
+     * @param[in] QTotal Pointer to the total element displacement vector at the current time step
+     * @param[in] time Pointer to the time at the beginning of the current time step
+     * @param[in] dT Length of the current time step
      */
     void computeDistributedLoad( MarmotElement::DistributedLoadTypes loadType,
                                  double*                             P,
                                  double*                             K,
-                                 const int                           elementFace,
+                                 int                                 elementFace,
                                  const double*                       load,
                                  const double*                       QTotal,
                                  double                              time,
-                                 double                              dT );
+                                 double                              dT ) override;
 
     /** @brief Compute the contributions of body forces to the element residual vector and stiffness matrix
      *
@@ -319,14 +319,15 @@ namespace Marmot::Elements {
      * global newton) \f$\int_{V_0}\,\mathbf{N}_A\,f_j\,dV_0\f$. The stiffness matrix contribution is zero and thus not
      * computed.
      *
-     * @param P[in,out] Pointer to the element residual vector (right hand side of the global equation system)
-     * @param K[in,out] Pointer to the element stiffness matrix
-     * @param load[in] Pointer to the body force vector
-     * @param QTotal[in] Pointer to the total element displacement vector at the current time step
-     * @param time[in] Pointer to the time at the beginning of the current time step
-     * @param dT[in] Length of the current time step
+     * @param[in,out] P Pointer to the element residual vector (right hand side of the global equation system)
+     * @param[in,out] K Pointer to the element stiffness matrix
+     * @param[in] load Pointer to the body force vector
+     * @param[in] QTotal Pointer to the total element displacement vector at the current time step
+     * @param[in] time Pointer to the time at the beginning of the current time step
+     * @param[in] dT Length of the current time step
      */
-    void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, double time, double dT );
+    void computeBodyForce( double* P, double* K, const double* load, const double* QTotal, double time, double dT )
+      override;
 
     /** @brief Compute the negative element residual vector (right hand side of global newton) and stiffness matrix
      *
@@ -334,14 +335,15 @@ namespace Marmot::Elements {
      * compute the internal work contribution for the negative element residual vector (right hand side of global
      * newton) \f$-\int_{V_0}\,\mathbf{N}_A\,f_j\,dV_0\f$.
      *
-     * @param QTotal[in] Pointer to the total element displacement vector at the current time step
-     * @param dQ[in] Pointer to the increment of the element displacement vector at the current time step
-     * @param Pe[in,out] Pointer to the negative element residual vector (right hand side of global newton)
-     * @param Ke[in,out] Pointer to the element stiffness matrix
-     * @param time[in] Pointer to the time at the beginning of the current time step
-     * @param dT[in] Length of the current time step
+     * @param[in] QTotal Pointer to the total element displacement vector at the current time step
+     * @param[in] dQ Pointer to the increment of the element displacement vector at the current time step
+     * @param[in,out] Pe Pointer to the negative element residual vector (right hand side of global newton)
+     * @param[in,out] Ke Pointer to the element stiffness matrix
+     * @param[in] time Pointer to the time at the beginning of the current time step
+     * @param[in] dT Length of the current time step
      */
-    void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT );
+    void computeKernels( const double* QTotal, const double* dQ, double* Pe, double* Ke, double time, double dT )
+      override;
 
     /** @brief Compute the negative element residual vector (internal force only, no tangent stiffness)
      *
@@ -349,13 +351,13 @@ namespace Marmot::Elements {
      * compute the internal work contribution for the negative element residual vector (right hand side of global
      * newton) \f$-\int_{V_0}\,\mathbf{N}_A\,f_j\,dV_0\f$.
      *
-     * @param QTotal[in] Pointer to the total element displacement vector at the current time step
-     * @param dQ[in] Pointer to the increment of the element displacement vector at the current time step
-     * @param Pe[in,out] Pointer to the negative element residual vector (right hand side of global newton)
-     * @param time[in] Pointer to the time at the beginning of the current time step
-     * @param dT[in] Length of the current time step
+     * @param[in] QTotal Pointer to the total element displacement vector at the current time step
+     * @param[in] dQ Pointer to the increment of the element displacement vector at the current time step
+     * @param[in,out] Pe Pointer to the negative element residual vector (right hand side of global newton)
+     * @param[in] time Pointer to the time at the beginning of the current time step
+     * @param[in] dT Length of the current time step
      */
-    void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT );
+    void computeKernelsExplicit( const double* QTotal, const double* dQ, double* Pe, double time, double dT ) override;
 
     /**
      * @brief Compute consistent mass matrix using material density.
@@ -365,7 +367,7 @@ namespace Marmot::Elements {
      * the density is taken from the nearest quadrature point of the element. See
      * Marmot::FiniteElement::ConsistentMass.
      */
-    void computeConsistentInertia( double* M );
+    void computeConsistentInertia( double* M ) override;
 
     /**
      * @brief Compute lumped (diagonal) mass matrix using material density.
@@ -400,11 +402,12 @@ namespace Marmot::Elements {
      * corner and the remaining nodes. An incorrect weight therefore leaves the element mass, and
      * hence the model mass, perfectly correct -- and is invisible to any check on totals.
      */
-    void computeLumpedInertia( double* M );
+    void computeLumpedInertia( double* M ) override;
 
     /**
      * @brief Compute the critical time step for explicit dynamics.
-     * @param criticalTimeStep Output parameter for the computed critical time step.
+     * @param[out] criticalTimeStep Computed critical time step.
+     * @param[in] QTotal Total (current) degrees of freedom of the element.
      * @details The estimate is \f$l / c\f$, scaled by the factor
      * Marmot::FiniteElement::MassLumping::timeStepFactorFromMassDistribution() derives from the
      * same lumped mass fractions computeLumpedInertia() assembles: \f$l/c\f$ is the stable
@@ -421,35 +424,35 @@ namespace Marmot::Elements {
      * number of 0.1-0.2, i.e. roughly a further factor of five is unaccounted for. Closing that
      * properly wants an eigenvalue-based estimate rather than another factor.
      */
-    void computeCriticalTimeStepForExplicitDynamics( double& criticalTimeStep, const double* QTotal );
+    void computeCriticalTimeStepForExplicitDynamics( double& criticalTimeStep, const double* QTotal ) override;
 
     /**
      * @brief Compute the internal energy of the element.
      * @param internalEnergy Output parameter for the computed internal energy.
      */
-    void computeInternalEnergy( double& internalEnergy );
+    void computeInternalEnergy( double& internalEnergy ) override;
 
     /** @brief Get a view to a state variable at a specific quadrature point of the element
-     * @param stateName[in] Name of the state variable
-     * @param qpNumber[in] Number of the quadrature point where the state variable is stored
+     * @param[in] stateName Name of the state variable
+     * @param[in] qpNumber Number of the quadrature point where the state variable is stored
      * @return View to the requested state variable at the specified quadrature point
      */
-    StateView getStateView( const std::string& stateName, int qpNumber );
+    StateView getStateView( const std::string& stateName, int qpNumber ) override;
 
     /** @brief Get the coordinates of the element center
      * @return Coordinates of the element center
      */
-    std::vector< double > getCoordinatesAtCenter();
+    std::vector< double > getCoordinatesAtCenter() override;
 
     /** @brief Get the coordinates of all quadrature points of the element
      * @return Coordinates of all quadrature points of the element
      */
-    std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints();
+    std::vector< std::vector< double > > getCoordinatesAtQuadraturePoints() override;
 
     /** @brief Get the number of quadrature points of the element
      * @return Number of quadrature points of the element
      */
-    int getNumberOfQuadraturePoints();
+    int getNumberOfQuadraturePoints() override;
   };
 
   template < int nDim, int nNodes >
@@ -485,7 +488,7 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   int DisplacementFiniteStrainULElement< nDim, nNodes >::getNumberOfRequiredStateVars()
   {
-    return qps[0].getNumberOfRequiredStateVars() * qps.size();
+    return qps[0].getNumberOfRequiredStateVars() * static_cast< int >( qps.size() );
   }
 
   template < int nDim, int nNodes >
@@ -494,12 +497,12 @@ namespace Marmot::Elements {
     using namespace std;
 
     static const vector< vector< string > > nodeFields = [] {
-      vector< vector< string > > nodeFields;
+      vector< vector< string > > fields;
       for ( int i = 0; i < nNodes; i++ ) {
-        nodeFields.push_back( vector< string >() );
-        nodeFields[i].push_back( "displacement" );
+        fields.push_back( vector< string >() );
+        fields[i].push_back( "displacement" );
       }
-      return nodeFields;
+      return fields;
     }();
 
     return nodeFields;
@@ -509,11 +512,11 @@ namespace Marmot::Elements {
   std::vector< int > DisplacementFiniteStrainULElement< nDim, nNodes >::getDofIndicesPermutationPattern()
   {
     static const std::vector< int > permutationPattern = [] {
-      std::vector< int > permutationPattern;
+      std::vector< int > pattern;
       for ( int i = 0; i < nNodes; i++ )
         for ( int j = 0; j < nDim; j++ )
-          permutationPattern.push_back( i * nDim + j );
-      return permutationPattern;
+          pattern.push_back( i * nDim + j );
+      return pattern;
     }();
 
     return permutationPattern;
@@ -522,7 +525,7 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   void DisplacementFiniteStrainULElement< nDim, nNodes >::assignStateVars( double* managedStateVars, int nStateVars )
   {
-    const int nQpStateVars = nStateVars / qps.size();
+    const int nQpStateVars = nStateVars / static_cast< int >( qps.size() );
 
     for ( size_t i = 0; i < qps.size(); i++ ) {
       auto&   qp          = qps[i];
@@ -822,7 +825,7 @@ namespace Marmot::Elements {
     MarmotElement::DistributedLoadTypes loadType,
     double*                             rightHandSide,
     double*                             stiffnessMatrix,
-    const int                           elementFace,
+    int                                 elementFace,
     const double*                       load,
     const double*                       QTotal_,
     double                              time,
@@ -846,7 +849,7 @@ namespace Marmot::Elements {
       Eigen::VectorXd Pb = -p * boundaryEl.computeSurfaceNormalVectorialLoadVector();
       Eigen::MatrixXd Kb = -p * boundaryEl.computeDSurfaceNormalVectorialLoadVector_dCoordinates();
 
-      if ( nDim == 2 ) {
+      if constexpr ( nDim == 2 ) {
         Pb *= elementProperties[0]; // thickness
         Kb *= elementProperties[0];
       }
@@ -863,7 +866,7 @@ namespace Marmot::Elements {
       const XiSized tractionVector( load );
 
       auto Pk = boundaryEl.computeVectorialLoadVector( tractionVector );
-      if ( nDim == 2 )
+      if constexpr ( nDim == 2 )
         Pk *= elementProperties[0]; // thickness
       boundaryEl.assembleIntoParentVectorial( Pk, r_U );
 
@@ -891,7 +894,7 @@ namespace Marmot::Elements {
           qp.managedStateVars->F0_ZZ = 1.0;
 
           qp.material->initializeYourself( qp.managedStateVars->materialStateVars.data(),
-                                           qp.managedStateVars->materialStateVars.size() );
+                                           static_cast< int >( qp.managedStateVars->materialStateVars.size() ) );
         }
         break;
       }
@@ -1060,9 +1063,17 @@ namespace Marmot::Elements {
        * reproduces the previous expressions exactly -- a cube of side h gives h either way --
        * so the estimate is tightened only where it was previously wrong.
        */
-      const JacobianSized J_                          = this->Jacobian( this->dNdXi( qp.xi ) );
-      const double        characteristicElementLength = 2.0 *
+      const JacobianSized J_ = this->Jacobian( this->dNdXi( qp.xi ) );
+      // GCC reports a spurious -Wmaybe-uninitialized from inside Eigen's small fixed-size JacobiSVD.
+#if defined( __GNUC__ ) && !defined( __clang__ )
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
+      const double characteristicElementLength = 2.0 *
                                                  Eigen::JacobiSVD< JacobianSized >( J_ ).singularValues().minCoeff();
+#if defined( __GNUC__ ) && !defined( __clang__ )
+#  pragma GCC diagnostic pop
+#endif
 
       using namespace Marmot::FastorIndices;
       const auto                         dNdX = Tensor< double, nDim, nNodes >( qp.dNdX.data(), ColumnMajor );
@@ -1127,7 +1138,7 @@ namespace Marmot::Elements {
   template < int nDim, int nNodes >
   int DisplacementFiniteStrainULElement< nDim, nNodes >::getNumberOfQuadraturePoints()
   {
-    return qps.size();
+    return static_cast< int >( qps.size() );
   }
 
   template < int nNodes >

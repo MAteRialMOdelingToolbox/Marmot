@@ -34,7 +34,7 @@ namespace Marmot::Materials {
    * @brief Implementation of a linear elastic material
    * for 3D stress states.
    *
-   * For further information see \ref linearelastic.
+   * For further information see the linear elastic page of the feature documentation.
    */
   class LinearElastic : public MarmotMaterialHypoElastic {
   public:

@@ -79,10 +79,6 @@ namespace Marmot::Cells {
                                int           sizeKnotVectors )
       : ParentBSplineGeometryElement( nodeCoordinates, sizeNodeCoordinates, knotVectors, sizeKnotVectors )
     {
-      auto nodeCoords = ParentBSplineGeometryElement::_mapCoordinates.reshaped( nDim, this->nNodes );
-
-      /* _boundingBoxMin = nodeCoords.rowwise().minCoeff(); */
-      /* _boundingBoxMax = nodeCoords.rowwise().maxCoeff(); */
       _boundingBoxMin = this->_knotVectors.row( order );
       _boundingBoxMax = this->_knotVectors.row( this->nKnotsPerDir - order - 1 );
 

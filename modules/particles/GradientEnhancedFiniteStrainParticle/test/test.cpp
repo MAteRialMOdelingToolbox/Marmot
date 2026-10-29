@@ -114,14 +114,14 @@ namespace {
       particle.reset( MarmotLibrary::MarmotParticleFactory::createParticle( name,
                                                                             1,
                                                                             vertices.data(),
-                                                                            vertices.size(),
+                                                                            static_cast< int >( vertices.size() ),
                                                                             volume,
                                                                             materialName,
                                                                             matProps.data(),
-                                                                            matProps.size(),
+                                                                            static_cast< int >( matProps.size() ),
                                                                             approximation ) );
       stateVars.assign( particle->getNumberOfRequiredStateVars(), 0.0 );
-      particle->assignStateVars( stateVars.data(), stateVars.size() );
+      particle->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
       particle->initializeYourself();
       assignKernels();
     }
@@ -139,13 +139,13 @@ namespace {
         for ( int e = 0; e < nEval; e++ )
           if ( grid.pointers[g]->isInSupport( &eval[e * nDim] ) ) {
             assigned.push_back( grid.pointers[g] );
-            assignedGridIndices.push_back( g );
+            assignedGridIndices.push_back( static_cast< int >( g ) );
             break;
           }
       particle->assignMeshfreeKernelFunctions( assigned );
     }
 
-    int nNodes() const { return assignedGridIndices.size(); }
+    int nNodes() const { return static_cast< int >( assignedGridIndices.size() ); }
     int nDof() const { return nNodes() * nBlock; }
 
     // set properties by name, the others to zero
@@ -156,7 +156,7 @@ namespace {
       for ( size_t i = 0; i < names.size(); i++ )
         if ( values.count( names[i] ) )
           p[i] = values.at( names[i] );
-      particle->setProperties( p.data(), p.size() );
+      particle->setProperties( p.data(), static_cast< int >( p.size() ) );
     }
 
     std::pair< Eigen::VectorXd, Eigen::MatrixXd > trial( const Eigen::VectorXd& dQ, double dT = 1.0 )
@@ -235,7 +235,7 @@ namespace {
                                           double                                                            hU,
                                           double                                                            hN )
   {
-    const int        n = Q0.size();
+    const int        n = static_cast< int >( Q0.size() );
     NumericalTangent t;
     if ( n <= 64 ) {
       t.D = Eigen::MatrixXd::Identity( n, n );
@@ -601,7 +601,9 @@ namespace {
       throwExceptionOnFailure( std::find( names.begin(), names.end(), "VCI order" ) != names.end(),
                                name + ": VCI order is a property" );
       std::vector< double > tooFew( names.size() - 1, 0.0 );
-      throwExceptionOnFailure( throws( [&]() { s.particle->setProperties( tooFew.data(), tooFew.size() ); } ),
+      throwExceptionOnFailure( throws( [&]() {
+                                 s.particle->setProperties( tooFew.data(), static_cast< int >( tooFew.size() ) );
+                               } ),
                                name + ": a wrong number of properties must throw" );
       const double one = 1.0;
       throwExceptionOnFailure( throws( [&]() { s.particle->setProperty( "no such property", &one ); } ),
@@ -773,12 +775,13 @@ void testUnknownParticleIsRejected()
                                                                                      "NoSuchShape",
                                                                                      1,
                                                                                      v.data(),
-                                                                                     v.size(),
+                                                                                     static_cast< int >( v.size() ),
                                                                                      0.36,
                                                                                      "GRADIENTENHANCEDCOMPRESSIBLE"
                                                                                      "NEOHOOKEDAMAGE",
                                                                                      matProps.data(),
-                                                                                     matProps.size(),
+                                                                                     static_cast< int >(
+                                                                                       matProps.size() ),
                                                                                      approximation ) );
                            } ),
                            "an unknown particle type must throw" );

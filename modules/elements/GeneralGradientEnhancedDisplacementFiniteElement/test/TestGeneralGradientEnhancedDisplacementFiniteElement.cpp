@@ -1,4 +1,5 @@
 #include "Marmot/GeneralGradientEnhancedDisplacementFiniteElement.h"
+#include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotFiniteElement.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
@@ -9,6 +10,7 @@
 #include <limits>
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 using namespace Marmot;
@@ -292,9 +294,9 @@ void checkQuad8AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes
 
   // AT2PhaseField properties: E, nu, Gc, l, density, nonlocalViscosity
   const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 }; // thickness
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -452,7 +454,7 @@ void checkHexa20AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationType
 
   // AT2PhaseField properties: E, nu, Gc, l, density, nonlocalViscosity
   const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
 
   element->assignProperty( materialSection );
 
@@ -584,9 +586,9 @@ void testComputeKernelsPlaneStrainTangentMatchesNumericalDifferentiation()
 
   // AT2PhaseField properties: E, nu, Gc, l, density, nonlocalViscosity
   const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 }; // thickness
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -643,9 +645,9 @@ void testComputeKernelsPlaneStressTangentMatchesNumericalDifferentiation()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -703,7 +705,7 @@ void testComputeKernelsSolid3DTangentMatchesNumericalDifferentiation()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
 
   const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
@@ -758,9 +760,9 @@ void testComputeKernelsThrowsForMismatchedSectionType()
     element->assignNodeCoordinates( nodeCoordsVec.data() );
 
     const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-    MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+    MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
     const std::vector< double > elPropsVec = { 1.0 };
-    ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+    ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
     element->assignProperty( elProps );
     element->assignProperty( materialSection );
 
@@ -800,7 +802,7 @@ void testComputeKernelsThrowsForMismatchedSectionType()
     element->assignNodeCoordinates( nodeCoordsVec.data() );
 
     const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-    MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+    MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
     element->assignProperty( materialSection );
 
     const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
@@ -840,8 +842,10 @@ void testComputeKernelsExplicitMatchesImplicitResidual()
 
   auto elementImplicit = std::make_unique< ElemType >( 1, intType, secType );
   elementImplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSectionImplicit( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  ElementProperties     elPropsImplicit( elPropsVec.data(), elPropsVec.size() );
+  MarmotMaterialSection materialSectionImplicit( "AT2PHASEFIELD",
+                                                 matProps.data(),
+                                                 static_cast< int >( matProps.size() ) );
+  ElementProperties     elPropsImplicit( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   elementImplicit->assignProperty( elPropsImplicit );
   elementImplicit->assignProperty( materialSectionImplicit );
   const int             nStateVarsTotalImplicit = elementImplicit->getNumberOfRequiredStateVars();
@@ -851,8 +855,10 @@ void testComputeKernelsExplicitMatchesImplicitResidual()
 
   auto elementExplicit = std::make_unique< ElemType >( 1, intType, secType );
   elementExplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSectionExplicit( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  ElementProperties     elPropsExplicit( elPropsVec.data(), elPropsVec.size() );
+  MarmotMaterialSection materialSectionExplicit( "AT2PHASEFIELD",
+                                                 matProps.data(),
+                                                 static_cast< int >( matProps.size() ) );
+  ElementProperties     elPropsExplicit( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   elementExplicit->assignProperty( elPropsExplicit );
   elementExplicit->assignProperty( materialSectionExplicit );
   const int             nStateVarsTotalExplicit = elementExplicit->getNumberOfRequiredStateVars();
@@ -896,8 +902,10 @@ void testComputeKernelsExplicitMatchesImplicitResidualPlaneStress()
 
   auto elementImplicit = std::make_unique< ElemType >( 1, intType, secType );
   elementImplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSectionImplicit( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  ElementProperties     elPropsImplicit( elPropsVec.data(), elPropsVec.size() );
+  MarmotMaterialSection materialSectionImplicit( "AT2PHASEFIELD",
+                                                 matProps.data(),
+                                                 static_cast< int >( matProps.size() ) );
+  ElementProperties     elPropsImplicit( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   elementImplicit->assignProperty( elPropsImplicit );
   elementImplicit->assignProperty( materialSectionImplicit );
   const int             nStateVarsTotalImplicit = elementImplicit->getNumberOfRequiredStateVars();
@@ -907,8 +915,10 @@ void testComputeKernelsExplicitMatchesImplicitResidualPlaneStress()
 
   auto elementExplicit = std::make_unique< ElemType >( 1, intType, secType );
   elementExplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSectionExplicit( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  ElementProperties     elPropsExplicit( elPropsVec.data(), elPropsVec.size() );
+  MarmotMaterialSection materialSectionExplicit( "AT2PHASEFIELD",
+                                                 matProps.data(),
+                                                 static_cast< int >( matProps.size() ) );
+  ElementProperties     elPropsExplicit( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   elementExplicit->assignProperty( elPropsExplicit );
   elementExplicit->assignProperty( materialSectionExplicit );
   const int             nStateVarsTotalExplicit = elementExplicit->getNumberOfRequiredStateVars();
@@ -952,7 +962,9 @@ void testComputeKernelsExplicitMatchesImplicitResidualSolid3D()
 
   auto elementImplicit = std::make_unique< ElemType >( 1, intType, secType );
   elementImplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSectionImplicit( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSectionImplicit( "AT2PHASEFIELD",
+                                                 matProps.data(),
+                                                 static_cast< int >( matProps.size() ) );
   elementImplicit->assignProperty( materialSectionImplicit );
   const int             nStateVarsTotalImplicit = elementImplicit->getNumberOfRequiredStateVars();
   std::vector< double > stateVarsImplicit( nStateVarsTotalImplicit, 0.0 );
@@ -961,7 +973,9 @@ void testComputeKernelsExplicitMatchesImplicitResidualSolid3D()
 
   auto elementExplicit = std::make_unique< ElemType >( 1, intType, secType );
   elementExplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSectionExplicit( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSectionExplicit( "AT2PHASEFIELD",
+                                                 matProps.data(),
+                                                 static_cast< int >( matProps.size() ) );
   elementExplicit->assignProperty( materialSectionExplicit );
   const int             nStateVarsTotalExplicit = elementExplicit->getNumberOfRequiredStateVars();
   std::vector< double > stateVarsExplicit( nStateVarsTotalExplicit, 0.0 );
@@ -1004,9 +1018,9 @@ void testComputeKernelsExplicitThrowsForMismatchedSectionType()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1048,9 +1062,9 @@ void testSetInitialConditionsGeostaticStressAssignsInterpolatedStress()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1093,9 +1107,9 @@ void testSetInitialConditionsMaterialInitializationDoesNotThrow()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1189,14 +1203,16 @@ void testComputeConsistentInertiaConservesTotalMassAndMicroInertia()
                                             ElemType::SectionType::PlaneStrain );
     element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-    MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matPropsStorage.data(), matPropsStorage.size() );
+    MarmotMaterialSection       materialSection( "AT2PHASEFIELD",
+                                           matPropsStorage.data(),
+                                           static_cast< int >( matPropsStorage.size() ) );
     const std::vector< double > elPropsVec = { 1.0 };
-    ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+    ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
     element->assignProperty( elProps );
     element->assignProperty( materialSection );
 
     stateVars.assign( element->getNumberOfRequiredStateVars(), 0.0 );
-    element->assignStateVars( stateVars.data(), stateVars.size() );
+    element->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
     element->initializeYourself();
   };
 
@@ -1283,13 +1299,13 @@ void testConsistentInertiaHexa20ReducedIntegrationIsIntegratedWithTheFullRule()
     ElemType element( 1, intType, ElemType::SectionType::Solid );
     element.assignNodeCoordinates( nodeCoordsVec.data() );
 
-    MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-    ElementProperties     elProps( elPropsVec.data(), elPropsVec.size() );
+    MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
+    ElementProperties     elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
     element.assignProperty( elProps );
     element.assignProperty( materialSection );
 
     std::vector< double > stateVars( element.getNumberOfRequiredStateVars(), 0.0 );
-    element.assignStateVars( stateVars.data(), stateVars.size() );
+    element.assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
     element.initializeYourself();
 
     const int             nDof = element.getNDofPerElement();
@@ -1324,9 +1340,9 @@ void testComputeBodyForceConservesTotalForcePerDirection()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1382,7 +1398,7 @@ void testComputeCriticalTimeStepMatchesMaterialWaveSpeedForRegularHexa8()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
 
   const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
@@ -1436,9 +1452,9 @@ void testComputeInternalEnergyMatchesSumOverQuadraturePoints()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1485,9 +1501,9 @@ void testGetStateViewVariants()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1551,9 +1567,9 @@ void testComputeDistributedLoadThrowsForUnhandledLoadType()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1631,9 +1647,9 @@ double criticalTimeStepOfCube( double edgeLength, double microInertia, double no
   if ( microInertia > 0.0 )
     matProps.push_back( microInertia );
 
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -1667,9 +1683,9 @@ void testNonlocalMicroInertiaIsZeroUnlessAssigned()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1712,9 +1728,9 @@ void testNonlocalMicroInertiaSumsToMicroInertiaTimesVolume()
   // eta = 1 admits any micro-inertia up to 1/4, so the value below is far inside the bound.
   const double                microInertiaValue = 3.0e-7;
   const std::vector< double > matProps          = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0, microInertiaValue };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1919,11 +1935,11 @@ namespace {
     const auto internalForce = [&]( bool withBulkViscosity ) {
       auto element = std::make_unique< ElemType >( 1, intType, secType );
       element->assignNodeCoordinates( nodeCoordsVec.data() );
-      MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+      MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
       element->assignProperty( materialSection );
 
       if ( withBulkViscosity ) {
-        element->assignProperty( "bulk viscosity", bulkViscosity.data(), bulkViscosity.size() );
+        element->assignProperty( "bulk viscosity", bulkViscosity.data(), static_cast< int >( bulkViscosity.size() ) );
         element->assignProperty( "bulk viscosity damage degradation", &degradationExponent, 1 );
       }
 
@@ -2010,7 +2026,7 @@ void testRejectedPropertyAssignmentLeavesTheElementUnchanged()
                                                FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
                                                ElemType::SectionType::Solid );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
 
   const int             nStateVars = element->getNumberOfRequiredStateVars();
@@ -2019,7 +2035,7 @@ void testRejectedPropertyAssignmentLeavesTheElementUnchanged()
   element->initializeYourself();
 
   const std::vector< double > valid = { 0.06, 1.2 };
-  element->assignProperty( "bulk viscosity", valid.data(), valid.size() );
+  element->assignProperty( "bulk viscosity", valid.data(), static_cast< int >( valid.size() ) );
 
   const double                               nan      = std::numeric_limits< double >::quiet_NaN();
   const std::vector< std::vector< double > > rejected = { { -1.0, 1.2 }, { 0.06, -1.0 }, { nan, 1.2 }, { 0.06, nan } };
@@ -2027,7 +2043,7 @@ void testRejectedPropertyAssignmentLeavesTheElementUnchanged()
   for ( const auto& values : rejected ) {
     bool threw = false;
     try {
-      element->assignProperty( "bulk viscosity", values.data(), values.size() );
+      element->assignProperty( "bulk viscosity", values.data(), static_cast< int >( values.size() ) );
     }
     catch ( const std::invalid_argument& ) {
       threw = true;
@@ -2082,9 +2098,9 @@ void testTinyMicroInertiaIsNotTreatedAsAbsent()
   // eta = 1 here rather than the 2e-7 above, so the tiny value is admissible by a wide margin: what
   // is under test is that it is not ROUNDED AWAY, not where the admissibility bound lies.
   const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0, tinyMicroInertia };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), static_cast< int >( matProps.size() ) );
   const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -2124,6 +2140,260 @@ void testNonlocalViscosityLowersTheCriticalTimeStep()
                                         << dtDamped << " against " << dtLeastDamped << ")" );
 }
 
+// ---------------------------------------------------------------------------------------------
+// Consistency of the kernels: the tangent against numerical differentiation of the residual, and the
+// explicit residual against the implicit one, for
+//  - mixed-order elements: the non-local field is interpolated with fewer nodes than the displacement
+//    (Quad8/Quad4, Hexa20/Hexa8). The quadrature points then hold their own non-local shape
+//    functions, a code path the equal-order elements never take. The registered G6GCPS8M and G6GC3D20M
+//    are instances of it, and
+//  - a material whose gradient coefficient c depends on the non-local field, which makes the tangent
+//    term with dc/dK non-zero. The AT2 phase field has a constant c, so no other test here sees it.
+// ---------------------------------------------------------------------------------------------
+
+// Unit element with mildly perturbed corners and midside nodes (non-affine, so that the Jacobian
+// varies over the element). The midside nodes sit halfway between the corners they connect, in the
+// order the Marmot geometry elements expect: the edges are listed per element.
+std::vector< double > distortedElementCoordinates( int                                         nDim,
+                                                   const std::vector< double >&                corners,
+                                                   const std::vector< std::pair< int, int > >& edges )
+{
+  std::vector< double > coordinates = corners;
+  for ( const auto& edge : edges )
+    for ( int d = 0; d < nDim; d++ )
+      coordinates.push_back( 0.5 * ( corners[edge.first * nDim + d] + corners[edge.second * nDim + d] ) );
+
+  for ( size_t k = 0; k < coordinates.size(); k++ )
+    coordinates[k] += 0.04 * std::sin( 2.3 * static_cast< double >( k ) + 0.7 );
+  return coordinates;
+}
+
+namespace {
+
+  /* A linear elastic material with a gradient coefficient c = c0 (1 + 10 K) that depends on the
+   * non-local field, and nothing else non-trivial: the residual's gradient term then depends on K
+   * through c as well as through the gradient, and the tangent needs dc/dK = 10 c0.
+   */
+  class VariableGradientCoefficientMaterial : public MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 > {
+  public:
+    /**
+     * @brief Construct from E, nu, the density, the non-local viscosity and c0.
+     * @param materialProperties The five properties, in that order.
+     * @param nMaterialProperties Their number.
+     * @param materialNumber The material's label.
+     */
+    VariableGradientCoefficientMaterial( const double* materialProperties, int nMaterialProperties, int materialNumber )
+      : MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >( materialProperties, nMaterialProperties, materialNumber )
+    {
+      stateLayout.add( "unused", 1 );
+      stateLayout.finalize();
+    }
+
+    /**
+     * @brief The linear elastic stress update with the field dependent gradient coefficient.
+     * @param[in,out] res The response.
+     * @param[out] tan The tangents.
+     * @param[in] inc The increment.
+     */
+    void computeStress( response& res, tangents& tan, const increment& inc ) const override
+    {
+      tan.dStressddStrain = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( this->materialProperties[0],
+                                                                                        this->materialProperties[1] );
+      res.stress += tan.dStressddStrain * inc.dStrain;
+      res.KLocal.setZero();
+      res.c( 0 )        = this->materialProperties[4] * ( 1.0 + 10.0 * inc.K[0] );
+      tan.dcddK( 0, 0 ) = 10.0 * this->materialProperties[4];
+    }
+
+    /**
+     * @brief The density.
+     * @param stateVars Unused.
+     * @return The third property.
+     */
+    double getDensity( const double* stateVars ) const override { return this->materialProperties[2]; }
+
+    /**
+     * @brief The non-local viscosity.
+     * @param stateVars Unused.
+     * @return The fourth property.
+     */
+    std::vector< double > getNonlocalViscosity( const double* stateVars ) const override
+    {
+      return { this->materialProperties[3] };
+    }
+  };
+
+  [[maybe_unused]] const bool variableGradientCoefficientMaterialRegistered = MarmotLibrary::
+    MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< 1 >::registerMaterial<
+      VariableGradientCoefficientMaterial >( "VARIABLEGRADIENTCOEFFICIENTMATERIAL" );
+
+} // namespace
+
+template < int nDim, int nNodes, int nNonLocalNodes >
+void checkKernelsAreConsistent(
+  const std::vector< double >& nodeCoordsVec,
+  typename GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, 1, nNonLocalNodes >::SectionType secType,
+  const std::string&           materialName,
+  const std::vector< double >& matProps,
+  const std::string&           label )
+{
+  using ElemType = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, 1, nNonLocalNodes >;
+
+  const auto intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+
+  // The two evaluations need independent elements: they update the stress and strain they store.
+  struct Fixture {
+    std::unique_ptr< ElemType > element;
+    std::vector< double >       stateVars;
+  };
+  const auto makeElement = [&]() {
+    Fixture fixture;
+    fixture.element = std::make_unique< ElemType >( 1, intType, secType );
+    fixture.element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+    MarmotMaterialSection       materialSection( materialName, matProps.data(), static_cast< int >( matProps.size() ) );
+    const std::vector< double > elPropsVec = { 1.0 }; // thickness, ignored in 3D
+    ElementProperties           elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
+    fixture.element->assignProperty( elProps );
+    fixture.element->assignProperty( materialSection );
+
+    fixture.stateVars.assign( fixture.element->getNumberOfRequiredStateVars(), 0.0 );
+    fixture.element->assignStateVars( fixture.stateVars.data(), static_cast< int >( fixture.stateVars.size() ) );
+    fixture.element->initializeYourself();
+    return fixture;
+  };
+
+  Fixture implicitFixture = makeElement();
+  Fixture explicitFixture = makeElement();
+
+  const int nDof = implicitFixture.element->getNDofPerElement();
+  throwExceptionOnFailure( nDof == nNodes * nDim + nNonLocalNodes,
+                           label + ": the mixed-order element does not have nNonLocalNodes non-local DOFs." );
+
+  Eigen::VectorXd Q( nDof );
+  for ( int i = 0; i < nDof; i++ )
+    Q[i] = 0.01 * std::sin( 1.1 * ( i + 1 ) );
+
+  // The non-local field must be interpolated: a residual that ignored it would not see its DOFs.
+  Eigen::VectorXd PImplicit = Eigen::VectorXd::Zero( nDof );
+  Eigen::MatrixXd K         = Eigen::MatrixXd::Zero( nDof, nDof );
+  implicitFixture.element->computeKernels( Q.data(), Q.data(), PImplicit.data(), K.data(), 0.0, 1.0 );
+  throwExceptionOnFailure( PImplicit.tail( nNonLocalNodes ).norm() > 0.0,
+                           label + ": the non-local part of the residual is zero." );
+
+  Eigen::VectorXd PExplicit = Eigen::VectorXd::Zero( nDof );
+  explicitFixture.element->computeKernelsExplicit( Q.data(), Q.data(), PExplicit.data(), 0.0, 1.0 );
+  throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( PImplicit ), Eigen::MatrixXd( PExplicit ), 1e-10 ),
+                           label + ": computeKernelsExplicit() residual does not match computeKernels()." );
+
+  Fixture tangentFixture = makeElement();
+
+  NumDiff::vector_to_vector_function_type residual = [&]( const Eigen::VectorXd& q ) -> Eigen::VectorXd {
+    std::fill( tangentFixture.stateVars.begin(), tangentFixture.stateVars.end(), 0.0 );
+    Eigen::VectorXd Ptmp = Eigen::VectorXd::Zero( nDof );
+    Eigen::MatrixXd Ktmp = Eigen::MatrixXd::Zero( nDof, nDof );
+    tangentFixture.element->computeKernels( q.data(), q.data(), Ptmp.data(), Ktmp.data(), 0.0, 1.0 );
+    return Ptmp;
+  };
+  const Eigen::MatrixXd numK = NumDiff::centralDifference( residual, Q );
+
+  throwExceptionOnFailure( checkIfEqual( K, numK, 1e-5 ),
+                           label + ": computeKernels() stiffness matrix does not match the numerical tangent." );
+}
+
+namespace {
+  // E, nu, Gc, l, density, non-local viscosity
+  const std::vector< double > at2Properties = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+  // E, nu, density, non-local viscosity, c0
+  const std::vector< double > variableCoefficientProperties = { 20000.0, 0.2, 1.0, 1.0, 50.0 };
+} // namespace
+
+void testMixedOrderQuad8Quad4PlaneStrain()
+{
+  using ElemType                      = GeneralGradientEnhancedDisplacementFiniteElement< 2, 8, 1, 4 >;
+  const std::vector< double > corners = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
+  checkKernelsAreConsistent< 2, 8, 4 >( distortedElementCoordinates( 2,
+                                                                     corners,
+                                                                     { { 0, 1 }, { 1, 2 }, { 2, 3 }, { 3, 0 } } ),
+                                        ElemType::SectionType::PlaneStrain,
+                                        "AT2PHASEFIELD",
+                                        at2Properties,
+                                        "Quad8/Quad4 PlaneStrain" );
+}
+
+void testMixedOrderHexa20Hexa8Solid()
+{
+  using ElemType                      = GeneralGradientEnhancedDisplacementFiniteElement< 3, 20, 1, 8 >;
+  const std::vector< double > corners = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                          0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+  checkKernelsAreConsistent< 3, 20, 8 >( distortedElementCoordinates( 3,
+                                                                      corners,
+                                                                      { { 0, 1 },
+                                                                        { 1, 2 },
+                                                                        { 2, 3 },
+                                                                        { 3, 0 },
+                                                                        { 4, 5 },
+                                                                        { 5, 6 },
+                                                                        { 6, 7 },
+                                                                        { 7, 4 },
+                                                                        { 0, 4 },
+                                                                        { 1, 5 },
+                                                                        { 2, 6 },
+                                                                        { 3, 7 } } ),
+                                         ElemType::SectionType::Solid,
+                                         "AT2PHASEFIELD",
+                                         at2Properties,
+                                         "Hexa20/Hexa8 Solid" );
+}
+
+void testFieldDependentGradientCoefficientHexa8()
+{
+  using ElemType                      = GeneralGradientEnhancedDisplacementFiniteElement< 3, 8, 1, 8 >;
+  const std::vector< double > corners = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                          0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+  checkKernelsAreConsistent< 3, 8, 8 >( distortedElementCoordinates( 3, corners, {} ),
+                                        ElemType::SectionType::Solid,
+                                        "VARIABLEGRADIENTCOEFFICIENTMATERIAL",
+                                        variableCoefficientProperties,
+                                        "Hexa8 variable gradient coefficient" );
+}
+
+void testFieldDependentGradientCoefficientHexa20Hexa8()
+{
+  using ElemType                      = GeneralGradientEnhancedDisplacementFiniteElement< 3, 20, 1, 8 >;
+  const std::vector< double > corners = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                          0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+  checkKernelsAreConsistent< 3, 20, 8 >( distortedElementCoordinates( 3,
+                                                                      corners,
+                                                                      { { 0, 1 },
+                                                                        { 1, 2 },
+                                                                        { 2, 3 },
+                                                                        { 3, 0 },
+                                                                        { 4, 5 },
+                                                                        { 5, 6 },
+                                                                        { 6, 7 },
+                                                                        { 7, 4 },
+                                                                        { 0, 4 },
+                                                                        { 1, 5 },
+                                                                        { 2, 6 },
+                                                                        { 3, 7 } } ),
+                                         ElemType::SectionType::Solid,
+                                         "VARIABLEGRADIENTCOEFFICIENTMATERIAL",
+                                         variableCoefficientProperties,
+                                         "Hexa20/Hexa8 variable gradient coefficient" );
+}
+
+void testFieldDependentGradientCoefficientQuad4PlaneStrain()
+{
+  using ElemType                      = GeneralGradientEnhancedDisplacementFiniteElement< 2, 4, 1, 4 >;
+  const std::vector< double > corners = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
+  checkKernelsAreConsistent< 2, 4, 4 >( distortedElementCoordinates( 2, corners, {} ),
+                                        ElemType::SectionType::PlaneStrain,
+                                        "VARIABLEGRADIENTCOEFFICIENTMATERIAL",
+                                        variableCoefficientProperties,
+                                        "Quad4 variable gradient coefficient" );
+}
+
 int main()
 {
   auto tests = std::vector< std::function< void() > >{
@@ -2159,6 +2429,11 @@ int main()
     testComputeKernelsExplicitMatchesImplicitResidualPlaneStress,
     testComputeKernelsExplicitMatchesImplicitResidualSolid3D,
     testComputeKernelsExplicitThrowsForMismatchedSectionType,
+    testMixedOrderQuad8Quad4PlaneStrain,
+    testMixedOrderHexa20Hexa8Solid,
+    testFieldDependentGradientCoefficientHexa8,
+    testFieldDependentGradientCoefficientHexa20Hexa8,
+    testFieldDependentGradientCoefficientQuad4PlaneStrain,
     testSetInitialConditionsGeostaticStressAssignsInterpolatedStress,
     testSetInitialConditionsMaterialInitializationDoesNotThrow,
     testSetInitialConditionsRejectsUnsupportedStateTypes,

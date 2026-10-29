@@ -96,7 +96,7 @@ namespace Marmot::Materials {
     const Vector3d direction2;
 
     const std::map< std::string, std::pair< int, int > > stateVarInfo = {
-      { "kelvinStateVars", std::make_pair( 0, 6 * nKelvin ) },
+      { "kelvinStateVars", std::make_pair( 0, static_cast< int >( 6 * nKelvin ) ) },
     };
 
   public:

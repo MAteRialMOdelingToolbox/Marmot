@@ -296,7 +296,7 @@ void testWithMPSolver()
   std::string matName            = "COMPRESSIBLENEOHOOKE";
   auto        solver             = MarmotMaterialPointSolverFiniteStrain( matName,
                                                        materialProperties.data(),
-                                                       materialProperties.size(),
+                                                       static_cast< int >( materialProperties.size() ),
                                                        solveropts );
 
   // create a step with controlled shear strain increment

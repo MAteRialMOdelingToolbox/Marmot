@@ -57,11 +57,13 @@ namespace {
       : element( MarmotLibrary::MarmotElementFactory::createElement( name, 1 ) ), elementProperties( { 1.0 } )
     {
       element->assignNodeCoordinates( coordinates.data() );
-      element->assignProperty( ElementProperties( elementProperties.data(), elementProperties.size() ) );
       element->assignProperty(
-        MarmotMaterialSection( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE", matProps.data(), matProps.size() ) );
+        ElementProperties( elementProperties.data(), static_cast< int >( elementProperties.size() ) ) );
+      element->assignProperty( MarmotMaterialSection( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
+                                                      matProps.data(),
+                                                      static_cast< int >( matProps.size() ) ) );
       stateVars.assign( element->getNumberOfRequiredStateVars(), 0.0 );
-      element->assignStateVars( stateVars.data(), stateVars.size() );
+      element->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
       element->initializeYourself();
       reset();
     }
