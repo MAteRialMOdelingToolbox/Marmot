@@ -24,3 +24,6 @@ add_marmot_test("TestMarmotFiniteElementBasic" "${CURR_TEST_SOURCE_DIR}/TestMarm
 
 # Tests for MarmotBulkViscosity
 add_marmot_test("TestMarmotBulkViscosity" "${CURR_TEST_SOURCE_DIR}/TestMarmotBulkViscosity.cpp")
+
+# Tests for MarmotSmallStrainKinematics
+add_marmot_test("TestMarmotSmallStrainKinematics" "${CURR_TEST_SOURCE_DIR}/TestMarmotSmallStrainKinematics.cpp")
