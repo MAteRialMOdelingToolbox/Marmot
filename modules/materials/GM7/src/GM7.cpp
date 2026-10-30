@@ -95,14 +95,14 @@ namespace Marmot::Materials {
 
     // local microplane strains
     nmp_sized eps_N_l = ( strain_macro0Local + dE_macroLocal ).transpose() *
-                        m7_.ntSplit.pTensors.N; // eps_N local at the end of the step
-    nmp_sized deps_N_l = dE_macroLocal.transpose() * m7_.ntSplit.pTensors.N;
-    nmp_sized deps_M_l = dE_macroLocal.transpose() * m7_.ntSplit.pTensors.M;
-    nmp_sized deps_L_l = dE_macroLocal.transpose() * m7_.ntSplit.pTensors.L;
+                        m7_.ntSplit().pTensors.N; // eps_N local at the end of the step
+    nmp_sized deps_N_l = dE_macroLocal.transpose() * m7_.ntSplit().pTensors.N;
+    nmp_sized deps_M_l = dE_macroLocal.transpose() * m7_.ntSplit().pTensors.M;
+    nmp_sized deps_L_l = dE_macroLocal.transpose() * m7_.ntSplit().pTensors.L;
 
     // over non-local microplane strains
     nmp_sized eps_N_onl = ( strain_macro0OverNonLocal + dE_macroOverNonLocal ).transpose() *
-                          m7_.ntSplit.pTensors.N; // eps_N over non-local at the end of the step
+                          m7_.ntSplit().pTensors.N; // eps_N over non-local at the end of the step
 
     double eps_v0_onl = ( strain_macro0OverNonLocal( 0 ) + strain_macro0OverNonLocal( 1 ) +
                           strain_macro0OverNonLocal( 2 ) ) /
@@ -171,17 +171,17 @@ namespace Marmot::Materials {
       shearMResult.tangent_onl.col( qp_i ) = shear_response.tangentM_boundary;
     }
 
-    Vector6d stress_macro = m7_.ntSplit.homogenizeStress( normalResult.stress,
-                                                          shearMResult.stress,
-                                                          shearLResult.stress );
+    Vector6d stress_macro = m7_.ntSplit().homogenizeStress( normalResult.stress,
+                                                            shearMResult.stress,
+                                                            shearLResult.stress );
 
-    Matrix6d dStressddStrainLocal = m7_.ntSplit.homogenizeTangent( normalResult.tangent_l,
-                                                                   shearMResult.tangent_l,
-                                                                   shearLResult.tangent_l );
+    Matrix6d dStressddStrainLocal = m7_.ntSplit().homogenizeTangent( normalResult.tangent_l,
+                                                                     shearMResult.tangent_l,
+                                                                     shearLResult.tangent_l );
 
-    Matrix6d dStressddStrainOverNonLocal = m7_.ntSplit.homogenizeTangent( normalResult.tangent_onl,
-                                                                          shearMResult.tangent_onl,
-                                                                          shearLResult.tangent_onl );
+    Matrix6d dStressddStrainOverNonLocal = m7_.ntSplit().homogenizeTangent( normalResult.tangent_onl,
+                                                                            shearMResult.tangent_onl,
+                                                                            shearLResult.tangent_onl );
 
     // a NaN or inf on any microplane carries through the homogenization
     if ( !stress_macro.allFinite() || !dStressddStrainLocal.allFinite() || !dStressddStrainOverNonLocal.allFinite() ) {

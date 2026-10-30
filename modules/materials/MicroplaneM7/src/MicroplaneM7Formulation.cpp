@@ -57,6 +57,12 @@ namespace Marmot::Materials {
 
   MicroplaneM7Formulation::MicroplaneM7Formulation( const Parameters& parameters ) : p( parameters ) {}
 
+  const Marmot::Microplane::NTSplit< MicroplaneM7Formulation::scheme >& MicroplaneM7Formulation::ntSplit()
+  {
+    static const Marmot::Microplane::NTSplit< scheme > ntSplit_;
+    return ntSplit_;
+  }
+
   double MicroplaneM7Formulation::normalStiffness() const
   {
     return p.E / ( 1.0 - 2.0 * p.nu );
@@ -90,7 +96,7 @@ namespace Marmot::Materials {
       if ( s_gap_trial < p.transitionWidth && ( sig_N0 * deps_N ) < 0.0 &&
            std::abs( E_N0 - tangent ) > tangentTransitionTol ) {
         std::tie( stress, tangent ) = transitionFunctionClosedForm( eps_N0, deps_N, sig_N0, tangent, E_N0 );
-        return { stress, tangent * ntSplit.pTensors.N.col( qp_i ) };
+        return { stress, tangent * ntSplit().pTensors.N.col( qp_i ) };
       }
       // ------------ original M7 (Caner 2013) --------------
       // if ( sig_N0 > ( E_N0 * eps_N ) && ( sig_N0 * deps_N ) < 0.0 ) {
@@ -106,7 +112,7 @@ namespace Marmot::Materials {
 
     stress = sig_N0 + tangent * deps_N;
 
-    return { stress, tangent * ntSplit.pTensors.N.col( qp_i ) };
+    return { stress, tangent * ntSplit().pTensors.N.col( qp_i ) };
   }
 
   std::pair< double, double > MicroplaneM7Formulation::transitionFunctionClosedForm( const double eps_N0,
@@ -219,7 +225,8 @@ namespace Marmot::Materials {
                        E * k1 * beta_3 /
                          std::pow( 1.0 + std::pow( std::max( -eps_d, 0.0 ) / ( k1 * beta_2 ), 2.0 ), 2.0 ) * 2.0 *
                          std::max( -eps_d, 0.0 ) / ( k1 * beta_2 ) *
-                         ( Math::heaviside( -eps_d ) / ( k1 * beta_2 ) * ( -ntSplit.pTensors.N.col( qp_i ) + I / 3.0 ) -
+                         ( Math::heaviside( -eps_d ) / ( k1 * beta_2 ) *
+                             ( -ntSplit().pTensors.N.col( qp_i ) + I / 3.0 ) -
                            std::max( -eps_d, 0.0 ) / ( k1 * std::pow( beta_2, 2.0 ) ) * c5 * Math::exp( gamma_0 ) *
                              ( 1.0 - std::pow( std::tanh( c9 * std::max( -eps_v, 0.0 ) / k1 ), 2.0 ) ) * c9 / k1 *
                              Math::heaviside( -eps_v ) * -I / 3.0 );
@@ -242,7 +249,7 @@ namespace Marmot::Materials {
     double tangent = stress * -Math::heaviside( eps_N - beta_1 * c2 * k1 ) /
                      ( c4 * std::max( -sig_v0 / E_N0, 0.0 ) + k1 * c3 );
 
-    return { stress, tangent * ntSplit.pTensors.N.col( qp_i ) };
+    return { stress, tangent * ntSplit().pTensors.N.col( qp_i ) };
   }
 
   MicroplaneM7Formulation::ShearBoundaryInputs MicroplaneM7Formulation::computeShearBoundaryInputs(
@@ -312,28 +319,26 @@ namespace Marmot::Materials {
       shear_result.stressL = in.elasticL_prediction.stress * shear_boundary / in.shear_stress_elastic;
       shear_result.stressM = in.elasticM_prediction.stress * shear_boundary / in.shear_stress_elastic;
 
-      shear_result.tangentL_elastic = in.E_T * ntSplit.pTensors.L.col( qp_i ) * shear_boundary /
-                                        in.shear_stress_elastic +
-                                      in.elasticL_prediction.stress *
-                                        ( shearBoundaryTangent_elastic / in.shear_stress_elastic -
-                                          shear_boundary / ( in.shear_stress_elastic * in.shear_stress_elastic ) * 1. /
-                                            in.shear_stress_elastic *
-                                            ( in.elasticL_prediction.stress * in.E_T * ntSplit.pTensors.L.col( qp_i ) +
-                                              in.elasticM_prediction.stress * in.E_T *
-                                                ntSplit.pTensors.M.col( qp_i ) ) );
+      shear_result
+        .tangentL_elastic = in.E_T * ntSplit().pTensors.L.col( qp_i ) * shear_boundary / in.shear_stress_elastic +
+                            in.elasticL_prediction.stress *
+                              ( shearBoundaryTangent_elastic / in.shear_stress_elastic -
+                                shear_boundary / ( in.shear_stress_elastic * in.shear_stress_elastic ) * 1. /
+                                  in.shear_stress_elastic *
+                                  ( in.elasticL_prediction.stress * in.E_T * ntSplit().pTensors.L.col( qp_i ) +
+                                    in.elasticM_prediction.stress * in.E_T * ntSplit().pTensors.M.col( qp_i ) ) );
 
       shear_result.tangentL_boundary = in.elasticL_prediction.stress * shearBoundaryTangent_boundary /
                                        in.shear_stress_elastic;
 
-      shear_result.tangentM_elastic = in.E_T * ntSplit.pTensors.M.col( qp_i ) * shear_boundary /
-                                        in.shear_stress_elastic +
-                                      in.elasticM_prediction.stress *
-                                        ( shearBoundaryTangent_elastic / in.shear_stress_elastic -
-                                          shear_boundary / ( in.shear_stress_elastic * in.shear_stress_elastic ) * 1. /
-                                            in.shear_stress_elastic *
-                                            ( in.elasticL_prediction.stress * in.E_T * ntSplit.pTensors.L.col( qp_i ) +
-                                              in.elasticM_prediction.stress * in.E_T *
-                                                ntSplit.pTensors.M.col( qp_i ) ) );
+      shear_result
+        .tangentM_elastic = in.E_T * ntSplit().pTensors.M.col( qp_i ) * shear_boundary / in.shear_stress_elastic +
+                            in.elasticM_prediction.stress *
+                              ( shearBoundaryTangent_elastic / in.shear_stress_elastic -
+                                shear_boundary / ( in.shear_stress_elastic * in.shear_stress_elastic ) * 1. /
+                                  in.shear_stress_elastic *
+                                  ( in.elasticL_prediction.stress * in.E_T * ntSplit().pTensors.L.col( qp_i ) +
+                                    in.elasticM_prediction.stress * in.E_T * ntSplit().pTensors.M.col( qp_i ) ) );
 
       shear_result.tangentM_boundary = in.elasticM_prediction.stress * shearBoundaryTangent_boundary /
                                        in.shear_stress_elastic;
@@ -343,9 +348,9 @@ namespace Marmot::Materials {
       shear_result.boundaryExceeded  = false;
       shear_result.stressL           = in.elasticL_prediction.stress;
       shear_result.stressM           = in.elasticM_prediction.stress;
-      shear_result.tangentL_elastic  = in.elasticL_prediction.tangent * ntSplit.pTensors.L.col( qp_i );
+      shear_result.tangentL_elastic  = in.elasticL_prediction.tangent * ntSplit().pTensors.L.col( qp_i );
       shear_result.tangentL_boundary = Vector6d::Zero();
-      shear_result.tangentM_elastic  = in.elasticM_prediction.tangent * ntSplit.pTensors.M.col( qp_i );
+      shear_result.tangentM_elastic  = in.elasticM_prediction.tangent * ntSplit().pTensors.M.col( qp_i );
       shear_result.tangentM_boundary = Vector6d::Zero();
     }
 

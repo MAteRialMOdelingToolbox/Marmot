@@ -49,10 +49,10 @@ namespace Marmot::Materials {
     // ------------------------------------------------------------------------------------------------
     // Kinematic projection on the microplanes; colums represent the 6 values for a specific microplane
     // ------------------------------------------------------------------------------------------------
-    nmp_sized eps_N  = ( strain_macro0 + dE_macro ).transpose() * m7_.ntSplit.pTensors.N;
-    nmp_sized deps_N = dE_macro.transpose() * m7_.ntSplit.pTensors.N;
-    nmp_sized deps_M = dE_macro.transpose() * m7_.ntSplit.pTensors.M;
-    nmp_sized deps_L = dE_macro.transpose() * m7_.ntSplit.pTensors.L;
+    nmp_sized eps_N  = ( strain_macro0 + dE_macro ).transpose() * m7_.ntSplit().pTensors.N;
+    nmp_sized deps_N = dE_macro.transpose() * m7_.ntSplit().pTensors.N;
+    nmp_sized deps_M = dE_macro.transpose() * m7_.ntSplit().pTensors.M;
+    nmp_sized deps_L = dE_macro.transpose() * m7_.ntSplit().pTensors.L;
 
     double eps_v0 = ( strain_macro0( 0 ) + strain_macro0( 1 ) + strain_macro0( 2 ) ) /
                     3;                                                     // volumetric strain at start of step
@@ -113,13 +113,13 @@ namespace Marmot::Materials {
         shearB_flag++;
     }
 
-    Vector6d stress_macro = m7_.ntSplit.homogenizeStress( normalResult.stress,
-                                                          shearMResult.stress,
-                                                          shearLResult.stress );
+    Vector6d stress_macro = m7_.ntSplit().homogenizeStress( normalResult.stress,
+                                                            shearMResult.stress,
+                                                            shearLResult.stress );
 
-    Matrix6d tangent_macro = m7_.ntSplit.homogenizeTangent( normalResult.tangent,
-                                                            shearMResult.tangent,
-                                                            shearLResult.tangent );
+    Matrix6d tangent_macro = m7_.ntSplit().homogenizeTangent( normalResult.tangent,
+                                                              shearMResult.tangent,
+                                                              shearLResult.tangent );
 
     // a NaN or inf on any microplane carries through the homogenization
     if ( !stress_macro.allFinite() || !tangent_macro.allFinite() ) {

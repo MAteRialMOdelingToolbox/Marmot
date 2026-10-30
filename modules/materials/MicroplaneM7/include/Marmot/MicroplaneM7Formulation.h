@@ -11,8 +11,6 @@
  *
  * festigkeitslehre@uibk.ac.at
  *
- * Konstantin Basche konstantin.basche@uibk.ac.at
- *
  * This file is part of the MAteRialMOdellingToolbox (marmot).
  *
  * This library is free software; you can redistribute it and/or
@@ -122,8 +120,9 @@ namespace Marmot::Materials {
     // clang-format on
 
     /// @brief Kinematic (N-T split) projection tensors and integration weights for all #nqp
-    /// microplanes; see Marmot::Microplane::NTSplit.
-    const Marmot::Microplane::NTSplit< scheme > ntSplit;
+    /// microplanes; see Marmot::Microplane::NTSplit. Depends only on #scheme, so it is built
+    /// once and shared by all instances.
+    static const Marmot::Microplane::NTSplit< scheme >& ntSplit();
 
     /// @brief Undamaged microplane normal stiffness E / (1 - 2 nu).
     double normalStiffness() const;
