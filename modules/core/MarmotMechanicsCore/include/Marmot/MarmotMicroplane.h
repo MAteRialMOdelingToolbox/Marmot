@@ -43,11 +43,11 @@ namespace Marmot {
     /**
      * @brief The available hard-coded microplane quadrature schemes (integration point
      * orientations and weights on the unit hemisphere) according to Bažant (1986).
-     * @details #N21Symmetric and #N21Asymmetric both discretize the hemisphere into 21
-     * microplanes but differ in whether the orientations exhibit orthogonal symmetries (Bažant
-     * 1986, Table 1 vs. Table 4); #N28, #N37 and #N61 use 28, 37 and 61 microplanes, respectively.
-     * See #nqpFromScheme for the corresponding number of microplanes and Discretization::get() for
-     * the hard-coded orientations/weights.
+     * @details QuadratureScheme::N21Symmetric and QuadratureScheme::N21Asymmetric both discretize the hemisphere into
+     * 21 microplanes but differ in whether the orientations exhibit orthogonal symmetries (Bažant 1986, Table 1 vs.
+     * Table 4); QuadratureScheme::N28, QuadratureScheme::N37 and QuadratureScheme::N61 use 28, 37 and 61 microplanes,
+     * respectively. See #nqpFromScheme for the corresponding number of microplanes and Discretization::get() for the
+     * hard-coded orientations/weights.
      */
     enum class QuadratureScheme { N21Symmetric, N21Asymmetric, N28, N37, N61 };
 
@@ -113,9 +113,9 @@ namespace Marmot {
       /// @brief Number of microplanes for scheme; see #nqpFromScheme.
       static constexpr size_t nqp = nqpFromScheme( scheme );
 
-      /// @brief One scalar per microplane, e.g. #projectionTensors::w.
+      /// @brief One scalar per microplane, e.g. #Marmot::Microplane::NTSplit::projectionTensors::w.
       typedef Eigen::Matrix< double, 1, nqp > nmp_sized;
-      /// @brief One Voigt-notation vector per microplane, e.g. #projectionTensors::N.
+      /// @brief One Voigt-notation vector per microplane, e.g. #Marmot::Microplane::NTSplit::projectionTensors::N.
       typedef Eigen::Matrix< double, 6, nqp > nmp6_sized;
 
       NTSplit() : pTensors( initiateSystem() ){};
@@ -261,8 +261,8 @@ namespace Marmot {
     {
       const Discretization::Data data = Discretization::get( scheme );
 
-      projectionTensors pTensors;
-      pTensors.w = data.weights;
+      projectionTensors tensors;
+      tensors.w = data.weights;
 
       Eigen::Matrix< int, 6, 2 > ij;
       ij << 1, 1, 2, 2, 3, 3, 1, 2, 1, 3, 2, 3;
@@ -285,14 +285,14 @@ namespace Marmot {
 
         // calculate projection Matrices N_ij, M_ij, L_ij for kinematic constraint
         for ( size_t k = 0; k < 6; k++ ) {
-          int i                 = ij( k, 0 );
-          int j                 = ij( k, 1 );
-          pTensors.N( k, qp_i ) = n_vec( i - 1 ) * n_vec( j - 1 ); // 6 x nqp matrix
-          pTensors.L( k, qp_i ) = 0.5 * ( l_vec( i - 1 ) * n_vec( j - 1 ) + l_vec( j - 1 ) * n_vec( i - 1 ) );
-          pTensors.M( k, qp_i ) = 0.5 * ( m_vec( i - 1 ) * n_vec( j - 1 ) + m_vec( j - 1 ) * n_vec( i - 1 ) );
+          int i                = ij( k, 0 );
+          int j                = ij( k, 1 );
+          tensors.N( k, qp_i ) = n_vec( i - 1 ) * n_vec( j - 1 ); // 6 x nqp matrix
+          tensors.L( k, qp_i ) = 0.5 * ( l_vec( i - 1 ) * n_vec( j - 1 ) + l_vec( j - 1 ) * n_vec( i - 1 ) );
+          tensors.M( k, qp_i ) = 0.5 * ( m_vec( i - 1 ) * n_vec( j - 1 ) + m_vec( j - 1 ) * n_vec( i - 1 ) );
         }
       }
-      return pTensors;
+      return tensors;
     }
 
     /**
@@ -301,7 +301,8 @@ namespace Marmot {
      * @details The macroscopic strain is decomposed on each microplane into a volumetric part
      * \f$ \varepsilon_V = \tfrac{1}{3}\operatorname{tr}(\eps) \f$, identical
      * for every microplane, and a deviatoric microplane strain vector \f$ \eps_D \f$. #pTensors holds the corresponding
-     * projection tensors (#projectionTensors::Vol, #projectionTensors::Dev) built from the hard-coded discretization
+     * projection tensors (#Marmot::Microplane::VDSplit::projectionTensors::Vol,
+     * #Marmot::Microplane::VDSplit::projectionTensors::Dev) built from the hard-coded discretization
      * (Discretization::get()), and the `homogenize*` methods perform the virtual-work homogenization of per-microplane
      * volumetric/deviatoric quantities back to macroscopic 3x3 tensors.
      * @tparam scheme The #QuadratureScheme (and thus the number of microplanes #nqp) this
@@ -366,10 +367,11 @@ namespace Marmot {
        * \f]
        * Denoting the \f$ i \f$-th component of \f$ X_D^{(m)} \f$ by \f$ \big( X_D^{(m)} \big)_i \f$ (same index
        * convention as the kinematic projection \f$ (\varepsilon_D^{(m)})_i = Dev_{ijk}^{(m)} \varepsilon_{jk} \f$
-       * documented at #projectionTensors::Dev, contracted here on \f$ i \f$ instead of \f$ j,k \f$). \f$ Dev^{(m)}
-       * \f$ is #projectionTensors::Dev for microplane \f$ m \f$. This is used both to homogenize stress (\f$
-       * \boldsymbol{X} = \sig \f$) and to homogenize strain (\f$ \boldsymbol{X} = \eps \f$) - the method itself is
-       * agnostic to the physical meaning of @p volValue / @p devValue.
+       * documented at #Marmot::Microplane::VDSplit::projectionTensors::Dev, contracted here on \f$ i \f$ instead of \f$
+       * j,k \f$). \f$ Dev^{(m)} \f$ is #Marmot::Microplane::VDSplit::projectionTensors::Dev for microplane \f$ m \f$.
+       * This is used both to homogenize stress (\f$ \boldsymbol{X} = \sig \f$) and to homogenize strain (\f$
+       * \boldsymbol{X} = \eps \f$) - the method itself is agnostic to the physical meaning of @p volValue / @p
+       * devValue.
        * @param volValue Per-microplane volumetric value \f$ X_V^{(m)} \f$, size \f$ n_{qp} \times 1 \f$.
        * @param devValue Per-microplane deviatoric value \f$ X_D^{(m)} \f$, size \f$ n_{qp} \times 3 \f$.
        * @return Homogenized macroscopic tensor \f$ X_{jk} \f$ (3x3).
@@ -384,7 +386,8 @@ namespace Marmot {
        *   X_{jk} = X_V^{(m)} \, V_{jk} + Dev_{ijk}^{(m)}\, \big( X_D^{(m)} \big)_i
        * \f]
        * denoting the \f$ i \f$-th component of \f$ X_D^{(m)} \f$ by \f$ \big( X_D^{(m)} \big)_i \f$ (same index
-       * convention as #homogenize and the kinematic projection documented at #projectionTensors::Dev).
+       * convention as #homogenize and the kinematic projection documented at
+       * #Marmot::Microplane::VDSplit::projectionTensors::Dev).
        * @param volValue Volumetric value \f$ X_V^{(m)} \f$ of microplane @p m.
        * @param devValue Deviatoric value \f$ X_D^{(m)} \f$ of microplane @p m.
        * @param m Index of the microplane.
@@ -424,7 +427,7 @@ namespace Marmot {
     { // without damage
       Eigen::TensorMap< const Eigen::Tensor< double, 1 > > devValueT( devValue.data(), 3 );
       Eigen::TensorFixedSize< double, Eigen::Sizes< 3, 3 > >
-        deviatoricPart = pTensors.Dev.chip( m, 0 )
+        deviatoricPart = pTensors.Dev.template chip< 0 >( m )
                            .eval()
                            .contract( devValueT, Marmot::ContinuumMechanics::TensorUtility::contractionDims< 0, 0 >() );
 
@@ -439,41 +442,40 @@ namespace Marmot {
     {
       const Discretization::Data data = Discretization::get( scheme );
 
-      projectionTensors pTensors;
-      pTensors.nMatrix = data.normals;
-      pTensors.w       = data.weights;
+      projectionTensors tensors;
+      tensors.nMatrix = data.normals;
+      tensors.w       = data.weights;
 
       // Deviatoric projection tensor
-      Eigen::TensorFixedSize< double, Eigen::Sizes< 3, 3 > > kronDelta_33;
+      Eigen::TensorFixedSize< double, Eigen::Sizes< 3, 3, 3, 3 > > delta_ijDelta_kl;
       for ( int i = 0; i < 3; ++i ) {
         for ( int j = 0; j < 3; ++j ) {
-          kronDelta_33( i, j ) = ( i == j );
+          for ( int k = 0; k < 3; ++k ) {
+            for ( int l = 0; l < 3; ++l ) {
+              delta_ijDelta_kl( i, j, k, l ) = ( i == j ) * ( k == l ); // outer product: delta_ij delta_kl
+            }
+          }
         }
       }
 
-      Eigen::TensorFixedSize< double, Eigen::Sizes< 3, 3, 3, 3 > > delta_ijDelta_kl;
-      delta_ijDelta_kl = kronDelta_33.contract( kronDelta_33,
-                                                Marmot::ContinuumMechanics::TensorUtility::
-                                                  contractionDims<>() ); // outer product: delta_ij delta_kl
-
       // map the tensor on matrix to use Eigen's contraction
-      Eigen::TensorMap< Eigen::Tensor< double, 2 > > normVec_tensor( pTensors.nMatrix.data(), nqp, 3 );
+      Eigen::TensorMap< Eigen::Tensor< double, 2 > > normVec_tensor( tensors.nMatrix.data(), nqp, 3 );
 
       // Deviatoric projection tensor nqp x 3 x 3 x 3
-      pTensors.Dev = normVec_tensor.contract( Marmot::ContinuumMechanics::CommonTensors::Isym,
-                                              Marmot::ContinuumMechanics::TensorUtility::contractionDims< 1, 0 >() ) -
-                     1. / 3. *
-                       normVec_tensor.contract( delta_ijDelta_kl,
-                                                Marmot::ContinuumMechanics::TensorUtility::contractionDims< 1, 0 >() );
+      tensors.Dev = normVec_tensor.contract( Marmot::ContinuumMechanics::CommonTensors::Isym,
+                                             Marmot::ContinuumMechanics::TensorUtility::contractionDims< 1, 0 >() ) -
+                    1. / 3. *
+                      normVec_tensor.contract( delta_ijDelta_kl,
+                                               Marmot::ContinuumMechanics::TensorUtility::contractionDims< 1, 0 >() );
 
       // Volumetric projection tensor
-      pTensors.Vol = 1. / 3. * Eigen::Matrix3d::Identity();
-      pTensors.VolT.setZero();           // same as Vol but of type Tensor
+      tensors.Vol = 1. / 3. * Eigen::Matrix3d::Identity();
+      tensors.VolT.setZero();           // same as Vol but of type Tensor
       for ( int i = 0; i < 3; ++i ) {
-        pTensors.VolT( i, i ) = 1. / 3.; // Set diagonal elements to 1
+        tensors.VolT( i, i ) = 1. / 3.; // Set diagonal elements to 1
       }
 
-      return pTensors;
+      return tensors;
     }
 
   } // namespace Microplane

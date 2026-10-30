@@ -212,8 +212,13 @@ namespace Marmot::Materials {
     /// the normal stress.
     /// @param eps_v Volumetric strain the shear boundary is evaluated with.
     /// @param sig_N Microplane normal stress.
+    /// @param sig_M0 Shear stress in M direction at the start of the increment.
+    /// @param sig_L0 Shear stress in L direction at the start of the increment.
+    /// @param deps_M Shear strain increment in M direction.
+    /// @param deps_L Shear strain increment in L direction.
     /// @param sig_N_tangent_elastic Derivative of @p sig_N w.r.t. the strain of the elastic prediction.
     /// @param sig_N_tangent_boundary Derivative of @p sig_N w.r.t. the strain the boundaries are evaluated with.
+    /// @param qp_i Index of the microplane.
     ShearResponse shear_law( const double    eps_v,
                              const double    sig_N,
                              const double    sig_M0,

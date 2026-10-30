@@ -402,7 +402,7 @@ void testCoordinateInvarianceTurbokreisel()
 
   auto solver = MarmotMaterialPointSolverHypoElastic( matName,
                                                       materialProperties.data(),
-                                                      materialProperties.size(),
+                                                      static_cast< int >( materialProperties.size() ),
                                                       solveropts );
 
   MarmotMaterialPointSolverHypoElastic::Step step;

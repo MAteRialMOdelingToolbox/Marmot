@@ -113,6 +113,8 @@ namespace Marmot::Materials {
     /// @param dE_macroOverNonLocal Over-nonlocal macroscopic strain increment, `m * dE_macroNonLocal
     /// + (1 - m) * dE_macroLocal`; used to evaluate the tensile, deviatoric, volumetric and
     /// shear boundaries.
+    /// @param stateVars State variables at the start of the increment; overwritten with the updated
+    /// per-microplane state.
     /// @return {macroscopic stress, tangent w.r.t. local strain, tangent w.r.t. over-nonlocal strain}.
     std::tuple< Vector6d, Matrix6d, Matrix6d > stress_update( const Vector6d& dE_macroLocal,
                                                               const Vector6d& dE_macroOverNonLocal,

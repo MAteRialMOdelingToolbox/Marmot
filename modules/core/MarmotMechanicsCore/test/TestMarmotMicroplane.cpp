@@ -74,7 +74,9 @@ namespace {
     Eigen::Matrix3d accumulated = Eigen::Matrix3d::Zero();
     for ( size_t m = 0; m < nqp; m++ )
       accumulated += vdSplit.pTensors.w( m ) *
-                     vdSplit.applyProjectionTensors( epsV, Eigen::Vector3d( epsD_analytic.row( m ).transpose() ), m );
+                     vdSplit.applyProjectionTensors( epsV,
+                                                     Eigen::Vector3d( epsD_analytic.row( m ).transpose() ),
+                                                     static_cast< int >( m ) );
 
     throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( accumulated ), Eigen::MatrixXd( recovered ), 1e-10 ),
                              name + ": weighted sum of applyProjectionTensors matches homogenize" );
