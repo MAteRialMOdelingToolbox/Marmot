@@ -98,7 +98,7 @@ jobs:
             '*/build/*' \
             --output-file coverage.filtered.info \
             --ignore-errors unused,unused,inconsistent,inconsistent
-          lcov --list coverage.filtered.info
+          lcov --list coverage.filtered.info --ignore-errors inconsistent,inconsistent
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
