@@ -61,10 +61,11 @@ namespace Marmot::Testing {
     const int                   nStateVars = material.getNumberOfRequiredStateVars();
     const std::vector< double > stateVarsBefore( currentResponse.stateVars, currentResponse.stateVars + nStateVars );
 
+    using Base = Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >;
+
     for ( const auto& K : fields ) {
       const double override_ = material.getMaximumWaveSpeed( currentResponse, K );
-      const double default_  = material.Marmot::Materials::MaterialGradientEnhancedHypoElastic<
-        nNonlocalVariables >::getMaximumWaveSpeed( currentResponse, K );
+      const double default_  = material.Base::getMaximumWaveSpeed( currentResponse, K );
 
       throwExceptionOnFailure( std::abs( override_ - default_ ) <= relativeTolerance * std::abs( default_ ),
                                Marmot::Utilities::MakeString()
