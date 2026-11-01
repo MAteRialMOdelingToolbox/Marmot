@@ -61,7 +61,8 @@ namespace Marmot::Testing {
     const int                   nStateVars = material.getNumberOfRequiredStateVars();
     const std::vector< double > stateVarsBefore( currentResponse.stateVars, currentResponse.stateVars + nStateVars );
 
-    using Base = Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >;
+    // [[maybe_unused]]: clang's -Wunused-local-typedef does not count the use in the qualified call below.
+    using Base [[maybe_unused]] = Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >;
 
     for ( const auto& K : fields ) {
       const double override_ = material.getMaximumWaveSpeed( currentResponse, K );
