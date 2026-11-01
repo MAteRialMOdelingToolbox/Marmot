@@ -67,6 +67,10 @@ include(GNUInstallDirs)
 # Optimization/debug flags (-O3, -g, ...) come from CMake's per-configuration defaults.
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     add_compile_options(-Wall -Wextra -Wno-unused-parameter -Wno-long-long -pedantic)
+    # No FMA contraction: keeps results bitwise reproducible across -march settings (x86-64-v3 runners,
+    # MARMOT_MARCH_NATIVE) and consistent with MSVC's default /fp:precise. Exact-cancellation tests
+    # (e.g. dPsi_dC == 0 for F = I) rely on it.
+    add_compile_options(-ffp-contract=off)
     if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         # Third-party headers are found via plain -I paths on some platforms (e.g. /usr/local/include is not
         # an implicit system directory for Apple clang), where their warnings would not be suppressed.
