@@ -513,7 +513,9 @@ void testTooFewMaterialProperties()
 
   bool rejected = false;
   try {
-    createMarmotMaterialHypoElastic( "MICROPLANEM7", materialProperties.data(), materialProperties.size() );
+    createMarmotMaterialHypoElastic( "MICROPLANEM7",
+                                     materialProperties.data(),
+                                     static_cast< int >( materialProperties.size() ) );
   }
   catch ( const std::invalid_argument& e ) {
     rejected = std::string( e.what() ).find( "material properties required" ) != std::string::npos;

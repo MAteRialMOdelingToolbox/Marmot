@@ -39,7 +39,7 @@ namespace {
   // and returns the final macroscopic stress.
   Marmot::Vector6d runStaggeredStrainPath( const Marmot::Vector6d& dStrain, int nIncrements )
   {
-    auto mat = createGM7( defaultMaterialProperties.data(), defaultMaterialProperties.size() );
+    auto mat = createGM7( defaultMaterialProperties.data(), static_cast< int >( defaultMaterialProperties.size() ) );
 
     response  res;
     tangents  tan;
@@ -70,7 +70,7 @@ namespace {
                                   int                     nIncrements,
                                   double                  tangentTol )
   {
-    auto mat = createGM7( defaultMaterialProperties.data(), defaultMaterialProperties.size() );
+    auto mat = createGM7( defaultMaterialProperties.data(), static_cast< int >( defaultMaterialProperties.size() ) );
 
     response  res;
     tangents  tan;
@@ -135,7 +135,7 @@ namespace {
 
   GM7Result runStaggeredStrainPathWithTangents( const Marmot::Vector6d& dStrain, int nIncrements )
   {
-    auto mat = createGM7( defaultMaterialProperties.data(), defaultMaterialProperties.size() );
+    auto mat = createGM7( defaultMaterialProperties.data(), static_cast< int >( defaultMaterialProperties.size() ) );
 
     response  res;
     tangents  tan;
@@ -314,11 +314,11 @@ void checkEquivalenceWithMicroplaneM7( const std::string&                       
   const std::array< double, 9 > propertiesGM7 = { 2.5e4, 0.18, 1.5e-4, 110, 30, 100, 1e-4, 25.0, 0.0 };
   const std::array< double, 7 > propertiesM7  = { 2.5e4, 0.18, 1.5e-4, 110, 30, 100, 1e-4 };
 
-  auto                                         gm7 = createGM7( propertiesGM7.data(), propertiesGM7.size() );
+  auto gm7 = createGM7( propertiesGM7.data(), static_cast< int >( propertiesGM7.size() ) );
   std::unique_ptr< MarmotMaterialHypoElastic > m7(
     MarmotLibrary::MarmotMaterialHypoElasticFactory::createMaterial( "MICROPLANEM7",
                                                                      propertiesM7.data(),
-                                                                     propertiesM7.size(),
+                                                                     static_cast< int >( propertiesM7.size() ),
                                                                      1 ) );
 
   std::vector< double > stateVarsGM7( gm7->getNumberOfRequiredStateVars(), 0.0 );
@@ -383,7 +383,7 @@ void testEquivalenceWithMicroplaneM7()
 void testTangent()
 {
   // initialize material parameters
-  auto mat = createGM7( defaultMaterialProperties.data(), defaultMaterialProperties.size() );
+  auto mat = createGM7( defaultMaterialProperties.data(), static_cast< int >( defaultMaterialProperties.size() ) );
 
   response  res;
   tangents  tan;
@@ -480,7 +480,7 @@ void testTooFewMaterialProperties()
 
   bool rejected = false;
   try {
-    createGM7( materialProperties.data(), materialProperties.size() );
+    createGM7( materialProperties.data(), static_cast< int >( materialProperties.size() ) );
   }
   catch ( const std::invalid_argument& e ) {
     rejected = std::string( e.what() ).find( "material properties required" ) != std::string::npos;
