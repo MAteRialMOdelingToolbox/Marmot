@@ -282,9 +282,19 @@ namespace {
 
       const int nTensor = static_cast< int >( Bside.rows() );
 
+#if defined( __GNUC__ ) && !defined( __clang__ )
+// GCC's -Warray-bounds misfires on Eigen's AVX packet loops over a runtime-sized block of a small
+// fixed-size operand: the out-of-range packet lanes are dead at runtime, but GCC cannot prove it
+// (observed with GCC 14 at x86-64-v3).
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Warray-bounds"
+#endif
       Eigen::VectorXd dUGp( 2 * nDim );
       dUGp.segment( 0, nDim )    = Nside * dU.segment( halfNDof, halfNDof );
       dUGp.segment( nDim, nDim ) = Nside * dU.segment( 0, halfNDof );
+#if defined( __GNUC__ ) && !defined( __clang__ )
+#  pragma GCC diagnostic pop
+#endif
 
       Eigen::VectorXd dSurfaceStrainGp( 2 * nTensor );
       dSurfaceStrainGp.segment( 0, nTensor )       = Bside * dU.segment( halfNDof, halfNDof );

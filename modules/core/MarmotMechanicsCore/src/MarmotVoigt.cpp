@@ -320,7 +320,7 @@ namespace Marmot {
       Matrix36 dStressPrincipals_dStress( const Vector6d& stress ) // derivative when principal stresses are
                                                                    // computed from solving Eigenvalue-Problem
       {
-        MatrixXd J( 3, 6 );
+        Matrix36 J;
 
         Vector6d leftX;
         Vector6d rightX;

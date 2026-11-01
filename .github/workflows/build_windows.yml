@@ -48,7 +48,7 @@ jobs:
         if: steps.deps-cache.outputs.cache-hit != 'true'
         run: |
           git clone --depth 1 --branch V0.6.4 https://github.com/romeric/Fastor.git
-          cmake -S Fastor -B Fastor/_build -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX="$env:DEPS_PREFIX"
+          cmake -S Fastor -B Fastor/_build -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_INSTALL_PREFIX="$env:DEPS_PREFIX"
           cmake --install Fastor/_build
 
       - name: Check out Marmot

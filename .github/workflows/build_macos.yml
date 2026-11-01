@@ -72,7 +72,7 @@ jobs:
           cd Fastor
           mkdir build
           cd build
-          cmake -DBUILD_TESTING=OFF  ..
+          cmake -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5  ..
           sudo make install
           cd ../..
 

@@ -47,7 +47,16 @@ namespace Marmot::MaterialPoints {
     const Material::TimeIncrement timeIncrement{ timeNew, dT };
 
     // total deformation gradient: the increment since the last accepted state, composed onto it
+#if defined( __GNUC__ ) && !defined( __clang__ )
+// GCC's -Wmaybe-uninitialized misfires on Fastor's AVX copies of the mapped state tensors: the
+// mapped memory is initialized by the host, which GCC cannot see (observed with GCC 14 at x86-64-v3).
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
     const FastorStandardTensors::Tensor33d dx_dX = state->dx_dY % state->dY_dX;
+#if defined( __GNUC__ ) && !defined( __clang__ )
+#  pragma GCC diagnostic pop
+#endif
 
     Material::ConstitutiveResponse< 3 > response3D{ FastorStandardTensors::Tensor33d( 0.0 ),
                                                     0.0,
@@ -115,7 +124,16 @@ namespace Marmot::MaterialPoints {
   {
     const Material::TimeIncrement timeIncrement{ timeNew, dT };
 
+#if defined( __GNUC__ ) && !defined( __clang__ )
+// GCC's -Wmaybe-uninitialized misfires on Fastor's AVX copies of the mapped state tensors: the
+// mapped memory is initialized by the host, which GCC cannot see (observed with GCC 14 at x86-64-v3).
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
     const FastorStandardTensors::Tensor33d dx_dX = state->dx_dY % state->dY_dX;
+#if defined( __GNUC__ ) && !defined( __clang__ )
+#  pragma GCC diagnostic pop
+#endif
 
     Material::ConstitutiveResponse< 3 > response3D{ FastorStandardTensors::Tensor33d( 0.0 ),
                                                     0.0,

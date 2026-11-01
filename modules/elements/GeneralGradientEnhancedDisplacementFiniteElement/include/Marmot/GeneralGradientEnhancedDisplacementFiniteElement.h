@@ -1171,8 +1171,18 @@ namespace Marmot::Elements {
           throw std::invalid_argument( "Invalid section type for 2D element, expected PlaneStress or PlaneStrain" );
         }
 
+#if defined( __GNUC__ ) && !defined( __clang__ )
+// GCC's -Warray-bounds misfires on Eigen's AVX packet loops over a runtime-sized block of a small
+// fixed-size operand: the out-of-range packet lanes are dead at runtime, but GCC cannot prove it
+// (observed with GCC 14 at x86-64-v3).
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Warray-bounds"
+#endif
         if ( bulkViscosityCoefficients.areActive() )
           S.head( nNormalComponents ).array() += bulkViscousStressAt( qp, res, K );
+#if defined( __GNUC__ ) && !defined( __clang__ )
+#  pragma GCC diagnostic pop
+#endif
 
         FiniteElement::SmallStrain::addInternalForce< nDim, nNodes >( fU, qp.dNdX, S, qp.J0xW );
 

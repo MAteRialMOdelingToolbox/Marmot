@@ -49,7 +49,7 @@ jobs:
           cd Fastor
           mkdir build
           cd build
-          cmake -DBUILD_TESTING=OFF  ..
+          cmake -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5  ..
           sudo make install
           cd ../..
 
@@ -82,7 +82,12 @@ jobs:
           cd build
           # geninfo_unexecuted_blocks: geninfo's notices about unexecuted blocks stem from the system and
           # third-party headers, which are removed from the report below anyway. Other gcov errors still show.
-          lcov --gcov-tool gcov-14 --directory . --capture --output-file coverage.info --rc geninfo_unexecuted_blocks=1
+          # `inconsistent` (an error since lcov 2.x): gcc's gcov data marks some lambdas - e.g. the element
+          # registration factory lambdas - as not hit although their lines are, which is a gcov artifact,
+          # not a report problem. The doubled category also silences the warning should it not trigger.
+          lcov --gcov-tool gcov-14 --directory . --capture --output-file coverage.info \
+            --rc geninfo_unexecuted_blocks=1 \
+            --ignore-errors inconsistent,inconsistent
           # `unused,unused` is intentional: the second `unused` (lcov 2.x) also silences the warning that the
           # ignored `unused` category was not triggered, should all patterns match.
           lcov --remove coverage.info \
@@ -92,8 +97,8 @@ jobs:
             '*/Fastor/*' \
             '*/build/*' \
             --output-file coverage.filtered.info \
-            --ignore-errors unused,unused
-          lcov --list coverage.filtered.info
+            --ignore-errors unused,unused,inconsistent,inconsistent
+          lcov --list coverage.filtered.info --ignore-errors inconsistent,inconsistent
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
