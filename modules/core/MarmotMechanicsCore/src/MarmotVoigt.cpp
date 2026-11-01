@@ -325,7 +325,7 @@ namespace Marmot::ContinuumMechanics::Invariants::Derivatives {
     const Marmot::Math::Vector6d& stress ) // derivative when principal stresses are
                                            // computed from solving Eigenvalue-Problem
   {
-    MatrixXd J( 3, 6 );
+    Marmot::Math::Matrix36 J;
 
     Marmot::Math::Vector6d leftX;
     Marmot::Math::Vector6d rightX;

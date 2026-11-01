@@ -7,6 +7,13 @@
 using namespace Eigen;
 namespace Marmot::Discretizations::Elements {
 
+#if defined( __GNUC__ ) && !defined( __clang__ )
+// GCC's -Warray-bounds misfires on Eigen's AVX packet loads when a fixed-size vector expression is
+// assigned to a dynamic-size member (N, dNdXi, areaVector): the 4-wide packet loop is dead for the
+// actual runtime sizes, but GCC cannot prove it (observed with GCC 14 at x86-64-v3).
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Warray-bounds"
+#endif
   BoundaryElement::BoundaryElement( ElementShapes   parentShape,
                                     int             parentFaceNumber,
                                     int             nDim,
@@ -121,6 +128,9 @@ namespace Marmot::Discretizations::Elements {
       quadraturePoints.push_back( std::move( qp ) );
     }
   }
+#if defined( __GNUC__ ) && !defined( __clang__ )
+#  pragma GCC diagnostic pop
+#endif
 
   VectorXd BoundaryElement::computeScalarLoadVector()
   {

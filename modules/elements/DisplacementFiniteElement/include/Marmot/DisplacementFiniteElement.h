@@ -979,7 +979,17 @@ namespace Marmot::Discretizations::Elements {
                                                                                      qp.characteristicElementLength,
                                                                                      bulkViscosityCoefficients );
 
+#if defined( __GNUC__ ) && !defined( __clang__ )
+// GCC's -Warray-bounds misfires on Eigen's AVX packet loops over a runtime-sized block of a small
+// fixed-size operand: the out-of-range packet lanes are dead at runtime, but GCC cannot prove it
+// (observed with GCC 14 at x86-64-v3).
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Warray-bounds"
+#endif
         S.head( nNormalComponents ).array() += bulkViscousStress;
+#if defined( __GNUC__ ) && !defined( __clang__ )
+#  pragma GCC diagnostic pop
+#endif
       }
 
       Pe += B.transpose() * S * qp.J0xW;
@@ -1132,7 +1142,17 @@ namespace Marmot::Discretizations::Elements {
       const auto N_lin = linGeometryEl.N( qp.xi );
 
       Eigen::VectorXd N_weighted = weight * ( N_ );
+#if defined( __GNUC__ ) && !defined( __clang__ )
+// GCC's -Warray-bounds misfires on Eigen's AVX packet loops over a runtime-sized block of a small
+// fixed-size operand: the out-of-range packet lanes are dead at runtime, but GCC cannot prove it
+// (observed with GCC 14 at x86-64-v3).
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Warray-bounds"
+#endif
       N_weighted.head( nNodesLinear ) += ( 1.0 - weight ) * N_lin;
+#if defined( __GNUC__ ) && !defined( __clang__ )
+#  pragma GCC diagnostic pop
+#endif
 
       const double    rho = qp.material->getDensity( qp.managedStateVars->materialStateVars.data() );
       Eigen::VectorXd m_  = N_weighted * qp.J0xW * rho;

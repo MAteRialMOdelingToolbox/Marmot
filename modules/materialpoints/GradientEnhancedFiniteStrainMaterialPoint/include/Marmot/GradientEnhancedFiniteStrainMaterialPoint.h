@@ -358,8 +358,17 @@ namespace Marmot::Discretizations::MaterialPoints {
       const auto&                                          u_n  = state->u;
       const Marmot::Math::Tensors::FastorTensors::Tensor3d u_np = u_n + state->du;
 
+#if defined( __GNUC__ ) && !defined( __clang__ )
+// GCC's -Wmaybe-uninitialized misfires on Fastor's AVX copies of the mapped state tensors: the
+// mapped memory is initialized by the host, which GCC cannot see (observed with GCC 14 at x86-64-v3).
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
       const Marmot::Math::Tensors::FastorTensors::Tensor33d dx_dX_n  = state->dY_dX;
       const Marmot::Math::Tensors::FastorTensors::Tensor33d dx_dX_np = state->dx_dY % dx_dX_n;
+#if defined( __GNUC__ ) && !defined( __clang__ )
+#  pragma GCC diagnostic pop
+#endif
 
       Marmot::Math::Tensors::mapEigenToFastor( state->u )     = Marmot::Math::Tensors::mapEigenToFastor( u_np );
       Marmot::Math::Tensors::mapEigenToFastor( state->dY_dX ) = Marmot::Math::Tensors::mapEigenToFastor( dx_dX_np );
