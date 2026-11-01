@@ -113,10 +113,19 @@ namespace Marmot::Materials {
       }
 
       // update plastic deformation increment
-      Fe              = X.segment( 0, 9 ).data();
-      dFp             = Fastor::inverse( Fe ) % FeTrial;
-      alphaP          = X( 9 );
+      Fe     = X.segment( 0, 9 ).data();
+      dFp    = Fastor::inverse( Fe ) % FeTrial;
+      alphaP = X( 9 );
+#if defined( __GNUC__ ) && !defined( __clang__ )
+// GCC's -Wmaybe-uninitialized misfires on Fastor's AVX matmul copy of the state-variable TensorMap:
+// the mapped memory is initialized by the host, which GCC cannot see (observed with GCC 14 at x86-64-v3).
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
       Tensor33d FpNew = dFp % Fp;
+#if defined( __GNUC__ ) && !defined( __clang__ )
+#  pragma GCC diagnostic pop
+#endif
       memcpy( Fp.data(), FpNew.data(), 9 * sizeof( double ) );
 
       using namespace ContinuumMechanics;
@@ -262,10 +271,19 @@ namespace Marmot::Materials {
       /* std::cout << "inner newton iters: " << counter << std::endl; */
 
       // update plastic deformation increment
-      Fe              = X.segment( 0, 9 ).data();
-      dFp             = Fastor::inverse( Fe ) % FeTrial;
-      alphaP          = X( 9 );
+      Fe     = X.segment( 0, 9 ).data();
+      dFp    = Fastor::inverse( Fe ) % FeTrial;
+      alphaP = X( 9 );
+#if defined( __GNUC__ ) && !defined( __clang__ )
+// GCC's -Wmaybe-uninitialized misfires on Fastor's AVX matmul copy of the state-variable TensorMap:
+// the mapped memory is initialized by the host, which GCC cannot see (observed with GCC 14 at x86-64-v3).
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
       Tensor33d FpNew = dFp % Fp;
+#if defined( __GNUC__ ) && !defined( __clang__ )
+#  pragma GCC diagnostic pop
+#endif
       memcpy( Fp.data(), FpNew.data(), 9 * sizeof( double ) );
 
       using namespace ContinuumMechanics;
@@ -424,10 +442,19 @@ namespace Marmot::Materials {
       /* std::cout << "inner newton iters: " << counter << std::endl; */
 
       // update plastic deformation increment
-      Fe              = X.segment( 0, 9 ).data();
-      dFp             = Fastor::inverse( Fe ) % FeTrial;
-      alphaP          = X( 9 );
+      Fe     = X.segment( 0, 9 ).data();
+      dFp    = Fastor::inverse( Fe ) % FeTrial;
+      alphaP = X( 9 );
+#if defined( __GNUC__ ) && !defined( __clang__ )
+// GCC's -Wmaybe-uninitialized misfires on Fastor's AVX matmul copy of the state-variable TensorMap:
+// the mapped memory is initialized by the host, which GCC cannot see (observed with GCC 14 at x86-64-v3).
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
       Tensor33d FpNew = dFp % Fp;
+#if defined( __GNUC__ ) && !defined( __clang__ )
+#  pragma GCC diagnostic pop
+#endif
       memcpy( Fp.data(), FpNew.data(), 9 * sizeof( double ) );
 
       using namespace ContinuumMechanics;
@@ -588,10 +615,19 @@ namespace Marmot::Materials {
       /* std::cout << "inner newton iters: " << counter << std::endl; */
 
       // update plastic deformation increment
-      Fe              = X.segment( 0, 9 ).data();
-      dFp             = Fastor::inverse( Fe ) % FeTrial;
-      alphaP          = X( 9 );
+      Fe     = X.segment( 0, 9 ).data();
+      dFp    = Fastor::inverse( Fe ) % FeTrial;
+      alphaP = X( 9 );
+#if defined( __GNUC__ ) && !defined( __clang__ )
+// GCC's -Wmaybe-uninitialized misfires on Fastor's AVX matmul copy of the state-variable TensorMap:
+// the mapped memory is initialized by the host, which GCC cannot see (observed with GCC 14 at x86-64-v3).
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
       Tensor33d FpNew = dFp % Fp;
+#if defined( __GNUC__ ) && !defined( __clang__ )
+#  pragma GCC diagnostic pop
+#endif
       memcpy( Fp.data(), FpNew.data(), 9 * sizeof( double ) );
 
       using namespace ContinuumMechanics;

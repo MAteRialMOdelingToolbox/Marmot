@@ -462,7 +462,16 @@ namespace Marmot::Materials {
       return {};
     }
 
+#if defined( __GNUC__ ) && !defined( __clang__ )
+// GCC's -Wmaybe-uninitialized misfires on Fastor's AVX matmul copy of the state-variable TensorMap:
+// the mapped memory is initialized by the host, which GCC cannot see (observed with GCC 14 at x86-64-v3).
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
     r.FpNew = Fastor::inverse( r.Fe ) % FeTrial % FpOld;
+#if defined( __GNUC__ ) && !defined( __clang__ )
+#  pragma GCC diagnostic pop
+#endif
 
     const Tensor33d dEp = dLambda * flowDirection( M );
     r.dEpVol            = etaBar * dLambda; // tr dg/dM = etaBar
