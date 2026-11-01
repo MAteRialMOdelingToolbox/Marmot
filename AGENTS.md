@@ -107,7 +107,7 @@ Rules:
 
 - **[`marmot-add-module`](.agents/skills/marmot-add-module/SKILL.md)**: Universal lifecycle for adding/extending modules across categories and routing to specialized skills.
 - **[`marmot-add-material`](.agents/skills/marmot-add-material/SKILL.md)**: Implementing small-strain, finite-strain, or nonlocal materials with in-place `stateVars` and factory registration.
-- **[`marmot-add-element`](.agents/skills/marmot-add-element/SKILL.md)**: Implementing templated `<int nDim, int nNodes>` finite elements with `Marmot::Discretizations::Elements::GeometryElement` and `MarmotElementFactory`.
+- **[`marmot-add-element`](.agents/skills/marmot-add-element/SKILL.md)**: Implementing templated `<int nDim, int nNodes>` finite elements with `Marmot::Discretizations::Elements::GeometryElement` and `Marmot::Registry::ElementFactory`.
 - **[`marmot-create-test`](.agents/skills/marmot-create-test/SKILL.md)**: Constructing CTest suites validated against analytical solutions and `MarmotMathCore` `numdiff`/`autodiff` tangents.
 - **[`marmot-documentation`](.agents/skills/marmot-documentation/SKILL.md)**: Authoring Doxygen API docstrings and Sphinx/Breathe feature pages (`python scripts/buildDocumentation.py`).
 - **[`marmot-code-review`](.agents/skills/marmot-code-review/SKILL.md)**: QA review checklist covering C++20 standards, memory hygiene, factory registrations, and pre-commit checks.

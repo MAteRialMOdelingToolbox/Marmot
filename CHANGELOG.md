@@ -30,8 +30,10 @@ All notable changes to Marmot are documented in this file. The format follows
 - **Breaking:** complete namespace rework. All code now lives in the global `Marmot` namespace with a closed set
   of second-level namespaces (`Utilities`, `Math`, `ContinuumMechanics`, `Materials`, `Discretizations`,
   `Registry`, `Testing`); classes dropped the redundant `Marmot` name prefix; the top-level `MarmotLibrary`
-  namespace is gone. There are **no compatibility aliases** — consumers migrate with this table
-  (header file names are unchanged):
+  namespace is gone. There are **no compatibility aliases** — consumers migrate with this table.
+  Header file names are unchanged, with three exceptions: `Marmot/MarmotUtility.h` (empty, deleted — include
+  `Marmot/MarmotTypedefs.h` instead) and `Marmot/VonMisesConstants.h` / `Marmot/ADVonMisesConstants.h`
+  (dissolved into the model headers, see table):
 
   | Old | New |
   |---|---|
@@ -60,6 +62,7 @@ All notable changes to Marmot are documented in this file. The format follows
   | `ContinuumMechanics::VoigtNotation::{Invariants, Derivatives}`, `ContinuumMechanics::HaighWestergaard` | `ContinuumMechanics::Invariants`, `::Invariants::Derivatives`, `::Invariants::HaighWestergaard` |
   | derivative namespaces `*OrderDerived` spellings | unified `FirstOrder` / `SecondOrder` / `ThirdOrder` |
   | `Marmot::Materials::Shrinkage::B4` | `Marmot::Materials::B4Shrinkage` |
+  | `Marmot::Materials::VonMisesConstants` / `::ADVonMisesConstants` (headers `VonMisesConstants.h`, `ADVonMisesConstants.h`) | class members `VonMisesModel::Constants` / `ADVonMises::Constants` (in `VonMises.h`, `ADVonMises.h`) |
   | `Marmot::Microplane` (quadrature schemes, `VDSplit`, `NTSplit`) | `Marmot::ContinuumMechanics::Microplane` |
   | plain-`Marmot` typedefs (`Vector6d`, `Matrix6d`, `mVector6d`, …), general math functions and B-spline/monomial bases | `Marmot::Math::*` (root) |
 
