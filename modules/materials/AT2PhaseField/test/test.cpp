@@ -3,6 +3,7 @@
 #include "Marmot/MarmotTesting.h"
 #include "Marmot/MarmotTypedefs.h"
 #include <Eigen/Dense>
+#include <algorithm>
 #include <vector>
 
 using namespace Marmot::Testing;
@@ -23,7 +24,7 @@ static std::pair< AT2PhaseField, std::vector< double > > makeMaterial( const std
 }
 
 // Convenience typedef
-using Mat1 = MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >;
+using Mat1 = Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >;
 using Res1 = Mat1::response;
 using Tan1 = Mat1::tangents;
 using Inc1 = Mat1::increment;
@@ -38,12 +39,12 @@ void testUndamagedElasticResponse()
   const std::vector< double > properties = std::vector< double >{ E, nu, Gc, l };
   auto [mat, stateVars]                  = makeMaterial( properties );
 
-  const Matrix6d C = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
+  const Marmot::Math::Matrix6d C = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
 
   // Apply a uniaxial strain increment, no phase-field
-  Vector6d dEps      = Vector6d::Zero();
-  dEps( 0 )          = 1e-3;
-  const Vector6d eps = dEps; // starting from zero strain
+  Marmot::Math::Vector6d dEps      = Marmot::Math::Vector6d::Zero();
+  dEps( 0 )                        = 1e-3;
+  const Marmot::Math::Vector6d eps = dEps; // starting from zero strain
 
   Res1 res;
   Tan1 tan;
@@ -54,7 +55,7 @@ void testUndamagedElasticResponse()
   inc.time    = 0.0;
   inc.dT      = 1.0;
 
-  res.stress    = Vector6d::Zero();
+  res.stress    = Marmot::Math::Vector6d::Zero();
   res.KLocal    = Eigen::Vector< double, 1 >::Zero();
   res.c         = Eigen::Vector< double, 1 >::Zero();
   res.stateVars = stateVars.data();
@@ -62,7 +63,7 @@ void testUndamagedElasticResponse()
   mat.computeStress( res, tan, inc );
 
   // ── stress should equal C:eps ──
-  const Vector6d stressExpected = C * eps;
+  const Marmot::Math::Vector6d stressExpected = C * eps;
   throwExceptionOnFailure( checkIfEqual< double >( res.stress, stressExpected, 1e-10 ),
                            "undamaged stress != C:eps in " + std::string( __PRETTY_FUNCTION__ ) );
 
@@ -88,10 +89,10 @@ void testDegradedStress()
   const std::vector< double > properties = std::vector< double >{ E, nu, Gc, l };
   auto [mat, stateVars]                  = makeMaterial( properties );
 
-  const Matrix6d C = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
+  const Marmot::Math::Matrix6d C = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
 
-  Vector6d dEps = Vector6d::Zero();
-  dEps( 0 )     = 1e-3;
+  Marmot::Math::Vector6d dEps = Marmot::Math::Vector6d::Zero();
+  dEps( 0 )                   = 1e-3;
 
   const double phi = 0.5;
   const double g   = ( 1. - phi ) * ( 1. - phi ); // = 0.25
@@ -105,14 +106,14 @@ void testDegradedStress()
   inc.time    = 0.0;
   inc.dT      = 1.0;
 
-  res.stress    = Vector6d::Zero();
+  res.stress    = Marmot::Math::Vector6d::Zero();
   res.KLocal    = Eigen::Vector< double, 1 >::Zero();
   res.c         = Eigen::Vector< double, 1 >::Zero();
   res.stateVars = stateVars.data();
 
   mat.computeStress( res, tan, inc );
 
-  const Vector6d stressExpected = g * ( C * dEps );
+  const Marmot::Math::Vector6d stressExpected = g * ( C * dEps );
   throwExceptionOnFailure( checkIfEqual< double >( res.stress, stressExpected, 1e-10 ),
                            "degraded stress != g*C:eps in " + std::string( __PRETTY_FUNCTION__ ) );
 
@@ -135,8 +136,8 @@ void testIrreversibility()
   auto [mat, stateVars]                  = makeMaterial( properties );
 
   // Step 1: large strain
-  Vector6d dEps1 = Vector6d::Zero();
-  dEps1( 0 )     = 2e-3;
+  Marmot::Math::Vector6d dEps1 = Marmot::Math::Vector6d::Zero();
+  dEps1( 0 )                   = 2e-3;
 
   {
     Res1 res;
@@ -147,7 +148,7 @@ void testIrreversibility()
     inc.dK( 0 )   = 0.0;
     inc.time      = 0.0;
     inc.dT        = 1.0;
-    res.stress    = Vector6d::Zero();
+    res.stress    = Marmot::Math::Vector6d::Zero();
     res.KLocal    = Eigen::Vector< double, 1 >::Zero();
     res.c         = Eigen::Vector< double, 1 >::Zero();
     res.stateVars = stateVars.data();
@@ -158,8 +159,8 @@ void testIrreversibility()
   const double& H_after1 = stateVars[0]; // "maxCrackDrivingForce" is the first state var
 
   // Step 2: smaller strain increment that brings total strain back down
-  Vector6d dEps2 = Vector6d::Zero();
-  dEps2( 0 )     = -1e-3; // unloading: total strain becomes 1e-3
+  Marmot::Math::Vector6d dEps2 = Marmot::Math::Vector6d::Zero();
+  dEps2( 0 )                   = -1e-3; // unloading: total strain becomes 1e-3
 
   {
     Res1 res;
@@ -170,7 +171,7 @@ void testIrreversibility()
     inc.dK( 0 )   = 0.0;
     inc.time      = 1.0;
     inc.dT        = 1.0;
-    res.stress    = Vector6d::Zero();
+    res.stress    = Marmot::Math::Vector6d::Zero();
     res.KLocal    = Eigen::Vector< double, 1 >::Zero();
     res.c         = Eigen::Vector< double, 1 >::Zero();
     res.stateVars = stateVars.data();
@@ -203,12 +204,14 @@ void testTangentConsistency()
   const double dK  = 0.0;
 
   // Base increment
-  Vector6d dEps = Vector6d::Zero();
-  dEps( 0 )     = 1e-3;
-  dEps( 3 )     = 5e-4;
+  Marmot::Math::Vector6d dEps = Marmot::Math::Vector6d::Zero();
+  dEps( 0 )                   = 1e-3;
+  dEps( 3 )                   = 5e-4;
 
   // Compute base response and analytical tangent
-  auto evalAt = [&]( const Vector6d& dE, double K_val, std::vector< double >& sv ) -> std::pair< Vector6d, double > {
+  auto evalAt = [&]( const Marmot::Math::Vector6d& dE,
+                     double                        K_val,
+                     std::vector< double >&        sv ) -> std::pair< Marmot::Math::Vector6d, double > {
     Res1 res;
     Tan1 tan;
     Inc1 inc;
@@ -217,7 +220,7 @@ void testTangentConsistency()
     inc.dK( 0 )   = dK;
     inc.time      = 0.0;
     inc.dT        = 1.0;
-    res.stress    = Vector6d::Zero();
+    res.stress    = Marmot::Math::Vector6d::Zero();
     res.KLocal    = Eigen::Vector< double, 1 >::Zero();
     res.c         = Eigen::Vector< double, 1 >::Zero();
     res.stateVars = sv.data();
@@ -234,7 +237,7 @@ void testTangentConsistency()
   incBase.dK( 0 )   = dK;
   incBase.time      = 0.0;
   incBase.dT        = 1.0;
-  resBase.stress    = Vector6d::Zero();
+  resBase.stress    = Marmot::Math::Vector6d::Zero();
   resBase.KLocal    = Eigen::Vector< double, 1 >::Zero();
   resBase.c         = Eigen::Vector< double, 1 >::Zero();
   resBase.stateVars = stateVars.data();
@@ -244,40 +247,40 @@ void testTangentConsistency()
 
   // ── dStressddStrain ──
   for ( int j = 0; j < 6; j++ ) {
-    Vector6d dEp = dEps, dEm = dEps;
+    Marmot::Math::Vector6d dEp = dEps, dEm = dEps;
     dEp( j ) += h;
     dEm( j ) -= h;
     stateVars     = stateVarsOld; // reset state variables before each perturbation to avoid accumulation of changes
     auto [sp, kp] = evalAt( dEp, phi, stateVars );
     stateVars     = stateVarsOld; // reset again before the second perturbation
     auto [sm, km] = evalAt( dEm, phi, stateVars );
-    const Vector6d dSdE_num = ( sp - sm ) / ( 2. * h );
-    const Vector6d dSdE_ana = tanBase.dStressddStrain.col( j );
+    const Marmot::Math::Vector6d dSdE_num = ( sp - sm ) / ( 2. * h );
+    const Marmot::Math::Vector6d dSdE_ana = tanBase.dStressddStrain.col( j );
     throwExceptionOnFailure( checkIfEqual< double >( dSdE_ana, dSdE_num, 1e-5 ),
                              "dStressddStrain col " + std::to_string( j ) + " mismatch in " +
                                std::string( __PRETTY_FUNCTION__ ) );
   }
 
   // ── dStressddK (col 0) ──
-  stateVars               = stateVarsOld; // reset state variables before perturbation
-  auto [sp, kp]           = evalAt( dEps, phi + h, stateVars );
-  stateVars               = stateVarsOld; // reset again before second perturbation
-  auto [sm, km]           = evalAt( dEps, phi - h, stateVars );
-  const Vector6d dSdK_num = ( sp - sm ) / ( 2. * h );
-  const Vector6d dSdK_ana = tanBase.dStressddK.col( 0 );
+  stateVars                             = stateVarsOld; // reset state variables before perturbation
+  auto [sp, kp]                         = evalAt( dEps, phi + h, stateVars );
+  stateVars                             = stateVarsOld; // reset again before second perturbation
+  auto [sm, km]                         = evalAt( dEps, phi - h, stateVars );
+  const Marmot::Math::Vector6d dSdK_num = ( sp - sm ) / ( 2. * h );
+  const Marmot::Math::Vector6d dSdK_ana = tanBase.dStressddK.col( 0 );
   throwExceptionOnFailure( checkIfEqual< double >( dSdK_ana, dSdK_num, 1e-5 ),
                            "dStressddK mismatch in " + std::string( __PRETTY_FUNCTION__ ) );
 
   // ── dKLocalddStrain (row 0) ──
   for ( int j = 0; j < 6; j++ ) {
-    Vector6d dEp = dEps, dEm = dEps;
+    Marmot::Math::Vector6d dEp = dEps, dEm = dEps;
     dEp( j ) += h;
     dEm( j ) -= h;
     stateVars             = stateVarsOld; // reset state variables before each perturbation
-    auto [sp, kp]         = evalAt( dEp, phi, stateVars );
+    auto [spe, kpe]       = evalAt( dEp, phi, stateVars );
     stateVars             = stateVarsOld; // reset again before second perturbation
-    auto [sm, km]         = evalAt( dEm, phi, stateVars );
-    const double dKdE_num = ( kp - km ) / ( 2. * h );
+    auto [sme, kme]       = evalAt( dEm, phi, stateVars );
+    const double dKdE_num = ( kpe - kme ) / ( 2. * h );
     const double dKdE_ana = tanBase.dKLocalddStrain( 0, j );
     throwExceptionOnFailure( checkIfEqual( dKdE_ana, dKdE_num, 1e-5 ),
                              "dKLocalddStrain col " + std::to_string( j ) + " mismatch in " +
@@ -287,15 +290,220 @@ void testTangentConsistency()
   // ── dKLocalddK (0,0) ──
   {
     stateVars             = stateVarsOld; // reset state variables before perturbation
-    auto [sp, kp]         = evalAt( dEps, phi + h, stateVars );
+    auto [spe, kpe]       = evalAt( dEps, phi + h, stateVars );
     stateVars             = stateVarsOld; // reset again before second perturbation
-    auto [sm, km]         = evalAt( dEps, phi - h, stateVars );
-    const double dKdK_num = ( kp - km ) / ( 2. * h );
+    auto [sme, kme]       = evalAt( dEps, phi - h, stateVars );
+    const double dKdK_num = ( kpe - kme ) / ( 2. * h );
     const double dKdK_ana = tanBase.dKLocalddK( 0, 0 );
     throwExceptionOnFailure( checkIfEqual( dKdK_ana, dKdK_num, 1e-5 ),
                              "dKLocalddK mismatch in " + std::string( __PRETTY_FUNCTION__ ) );
   }
 }
+// ─────────────────────────────────────────────────────────────────────────────
+// Test 5 – computeStressExplicit() (base class default): must match computeStress()
+// with the tangents discarded, for the very same increment and starting state.
+// ─────────────────────────────────────────────────────────────────────────────
+void testComputeStressExplicitMatchesComputeStress()
+{
+  const double                E = 20000., nu = 0.25, Gc = 2.7, l = 0.01;
+  const std::vector< double > properties = std::vector< double >{ E, nu, Gc, l };
+
+  auto [matA, stateVarsA] = makeMaterial( properties );
+  auto [matB, stateVarsB] = makeMaterial( properties );
+
+  Marmot::Math::Vector6d dEps = Marmot::Math::Vector6d::Zero();
+  dEps( 0 )                   = 1e-3;
+  dEps( 3 )                   = 2e-4;
+
+  Inc1 inc;
+  inc.dStrain = dEps;
+  inc.K( 0 )  = 0.2;
+  inc.dK( 0 ) = 0.0;
+  inc.time    = 0.0;
+  inc.dT      = 1.0;
+
+  Res1 resA;
+  Tan1 tanA;
+  resA.stress    = Marmot::Math::Vector6d::Zero();
+  resA.KLocal    = Eigen::Vector< double, 1 >::Zero();
+  resA.c         = Eigen::Vector< double, 1 >::Zero();
+  resA.stateVars = stateVarsA.data();
+  matA.computeStress( resA, tanA, inc );
+
+  Res1 resB;
+  resB.stress    = Marmot::Math::Vector6d::Zero();
+  resB.KLocal    = Eigen::Vector< double, 1 >::Zero();
+  resB.c         = Eigen::Vector< double, 1 >::Zero();
+  resB.stateVars = stateVarsB.data();
+  matB.computeStressExplicit( resB, inc );
+
+  throwExceptionOnFailure( checkIfEqual< double >( resA.stress, resB.stress, 1e-14 ) &&
+                             checkIfEqual( resA.KLocal( 0 ), resB.KLocal( 0 ), 1e-14 ) &&
+                             checkIfEqual( resA.c( 0 ), resB.c( 0 ), 1e-14 ),
+                           "computeStressExplicit() must match computeStress() ignoring the tangents in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+  throwExceptionOnFailure( checkIfEqual( stateVarsA[0], stateVarsB[0], 1e-14 ),
+                           "computeStressExplicit() must update state variables identically to computeStress() in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Test 6 – computePlaneStress()/computePlaneStressExplicit() (base class default):
+// for this material, dStress/dStrain = g(phi)*C is constant throughout the
+// iteration (phi is held fixed), so the plane-stress condensation is an exactly
+// linear problem and must converge to sigma_zz == 0 with the classical plane-
+// stress-condensed stiffness relating sigma_xx to eps_xx.
+// ─────────────────────────────────────────────────────────────────────────────
+void testComputePlaneStressConvergesToZeroOutOfPlaneStress()
+{
+  const double                E = 20000., nu = 0.25, Gc = 2.7, l = 0.01;
+  const std::vector< double > properties = std::vector< double >{ E, nu, Gc, l };
+  auto [mat, stateVars]                  = makeMaterial( properties );
+
+  Marmot::Math::Vector6d dEps = Marmot::Math::Vector6d::Zero();
+  dEps( 0 )                   = 1e-3; // eps_xx only; eps_yy stays fixed at 0, eps_zz (index 2) is solved for
+
+  Inc1 inc;
+  inc.dStrain = dEps;
+  inc.K( 0 )  = 0.0; // phi = 0 (undamaged)
+  inc.dK( 0 ) = 0.0;
+  inc.time    = 0.0;
+  inc.dT      = 1.0;
+
+  Res1 res{};
+  Tan1 tan;
+  res.stress    = Marmot::Math::Vector6d::Zero();
+  res.KLocal    = Eigen::Vector< double, 1 >::Zero();
+  res.c         = Eigen::Vector< double, 1 >::Zero();
+  res.stateVars = stateVars.data();
+
+  mat.computePlaneStress( res, tan, inc );
+
+  throwExceptionOnFailure( std::abs( res.stress( 2 ) ) < 1e-8,
+                           "computePlaneStress() did not converge to sigma_zz == 0 in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+
+  // Static condensation of the elastic stiffness (eliminating eps_zz via sigma_zz=0, with eps_yy
+  // held fixed at 0): sigma_xx = (C_xx,xx - C_xx,zz^2/C_zz,zz) * eps_xx. This is *not* the familiar
+  // E*eps_xx plane-stress modulus, since that additionally assumes eps_yy is free rather than fixed.
+  const Marmot::Math::Matrix6d C                = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
+  const double                 condensedModulus = C( 0, 0 ) - C( 0, 2 ) * C( 2, 0 ) / C( 2, 2 );
+  const double                 sigmaXXExpected  = condensedModulus * dEps( 0 );
+  throwExceptionOnFailure( checkIfEqual( res.stress( 0 ), sigmaXXExpected, 1e-6 ),
+                           "computePlaneStress() sigma_xx does not match the statically condensed stiffness in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+void testComputePlaneStressExplicitMatchesComputePlaneStress()
+{
+  const double                E = 20000., nu = 0.25, Gc = 2.7, l = 0.01;
+  const std::vector< double > properties = std::vector< double >{ E, nu, Gc, l };
+
+  auto [matA, stateVarsA] = makeMaterial( properties );
+  auto [matB, stateVarsB] = makeMaterial( properties );
+
+  Marmot::Math::Vector6d dEps = Marmot::Math::Vector6d::Zero();
+  dEps( 0 )                   = 1e-3;
+
+  Inc1 inc;
+  inc.dStrain = dEps;
+  inc.K( 0 )  = 0.0;
+  inc.dK( 0 ) = 0.0;
+  inc.time    = 0.0;
+  inc.dT      = 1.0;
+
+  Res1 resA{};
+  Tan1 tanA;
+  resA.stress    = Marmot::Math::Vector6d::Zero();
+  resA.KLocal    = Eigen::Vector< double, 1 >::Zero();
+  resA.c         = Eigen::Vector< double, 1 >::Zero();
+  resA.stateVars = stateVarsA.data();
+  matA.computePlaneStress( resA, tanA, inc );
+
+  Res1 resB{};
+  resB.stress    = Marmot::Math::Vector6d::Zero();
+  resB.KLocal    = Eigen::Vector< double, 1 >::Zero();
+  resB.c         = Eigen::Vector< double, 1 >::Zero();
+  resB.stateVars = stateVarsB.data();
+  matB.computePlaneStressExplicit( resB, inc );
+
+  throwExceptionOnFailure( checkIfEqual< double >( resA.stress, resB.stress, 1e-10 ),
+                           "computePlaneStressExplicit() must match computePlaneStress() ignoring the tangents in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Test 7 – getMaximumWaveSpeed() (base class default): sqrt(max(C_ii)/rho), with
+// C_ii the diagonal of the algorithmic tangent at zero strain increment (i.e. the
+// undamaged elastic stiffness, since AT2PhaseField's tangent doesn't depend on
+// the (zero) strain increment itself).
+// ─────────────────────────────────────────────────────────────────────────────
+void testGetMaximumWaveSpeedMatchesClosedForm()
+{
+  const double                E = 20000., nu = 0.25, Gc = 2.7, l = 0.01, rho = 2400.;
+  const std::vector< double > properties = std::vector< double >{ E, nu, Gc, l, rho };
+  auto [mat, stateVars]                  = makeMaterial( properties );
+
+  const Marmot::Math::Matrix6d C = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
+
+  Res1 res{};
+  res.stress    = Marmot::Math::Vector6d::Zero();
+  res.KLocal    = Eigen::Vector< double, 1 >::Zero();
+  res.c         = Eigen::Vector< double, 1 >::Zero();
+  res.stateVars = stateVars.data();
+
+  const double waveSpeed = mat.getMaximumWaveSpeed( res );
+
+  const double maxDiag  = C.diagonal().maxCoeff();
+  const double expected = std::sqrt( maxDiag / rho );
+  throwExceptionOnFailure( checkIfEqual( waveSpeed, expected, 1e-8 ),
+                           "getMaximumWaveSpeed() does not match sqrt(max(C_ii)/rho) in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+
+  // getMaximumWaveSpeed() must not mutate the caller's state variables (it operates on a copy).
+  throwExceptionOnFailure( stateVars[0] == 0.0,
+                           "getMaximumWaveSpeed() must not mutate the caller's state variables in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Test 8 – initializeYourself() (base class default): zeroes all state variables.
+// ─────────────────────────────────────────────────────────────────────────────
+void testInitializeYourselfZeroesStateVars()
+{
+  const double                E = 20000., nu = 0.25, Gc = 2.7, l = 0.01;
+  const std::vector< double > properties = std::vector< double >{ E, nu, Gc, l };
+  auto [mat, stateVars]                  = makeMaterial( properties );
+
+  std::fill( stateVars.begin(), stateVars.end(), 42.0 );
+  mat.initializeYourself( stateVars.data(), static_cast< int >( stateVars.size() ) );
+
+  throwExceptionOnFailure( std::all_of( stateVars.begin(), stateVars.end(), []( double v ) { return v == 0.0; } ),
+                           "initializeYourself() must zero all state variables in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Test 9 – getStateView() (base class default): delegates to the state layout
+// and must return a view aliasing the correct slice of the state vector.
+// ─────────────────────────────────────────────────────────────────────────────
+void testGetStateViewReturnsAliasingView()
+{
+  const double                E = 20000., nu = 0.25, Gc = 2.7, l = 0.01;
+  const std::vector< double > properties = std::vector< double >{ E, nu, Gc, l };
+  auto [mat, stateVars]                  = makeMaterial( properties );
+
+  const Marmot::Utilities::StateView view = mat.getStateView( "maxCrackDrivingForce", stateVars.data() );
+
+  throwExceptionOnFailure( view.stateSize == 1,
+                           "getStateView() returned the wrong size in " + std::string( __PRETTY_FUNCTION__ ) );
+
+  *view.stateLocation = 7.5;
+  throwExceptionOnFailure( stateVars[0] == 7.5,
+                           "getStateView() must alias the underlying state vector, not copy it, in " +
+                             std::string( __PRETTY_FUNCTION__ ) );
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 int main()
 {
@@ -304,6 +512,12 @@ int main()
     testDegradedStress,
     testIrreversibility,
     testTangentConsistency,
+    testComputeStressExplicitMatchesComputeStress,
+    testComputePlaneStressConvergesToZeroOutOfPlaneStress,
+    testComputePlaneStressExplicitMatchesComputePlaneStress,
+    testGetMaximumWaveSpeedMatchesClosedForm,
+    testInitializeYourselfZeroesStateVars,
+    testGetStateViewReturnsAliasingView,
   };
 
   executeTestsAndCollectExceptions( tests );

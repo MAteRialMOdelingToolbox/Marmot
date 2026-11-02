@@ -1,7 +1,13 @@
 #include "Marmot/MarmotElement.h"
 
-MarmotElement::~MarmotElement() {}
+Marmot::Discretizations::Elements::Element::~Element() {}
 
-void MarmotElement::assignProperty( const ElementProperties& property ) {}
+void Marmot::Discretizations::Elements::Element::assignProperty(
+  const Marmot::Discretizations::ElementProperties& property )
+{
+}
 
-void MarmotElement::assignProperty( const MarmotMaterialSection& property ) {}
+void Marmot::Discretizations::Elements::Element::assignProperty(
+  const Marmot::Discretizations::MaterialSection& property )
+{
+}

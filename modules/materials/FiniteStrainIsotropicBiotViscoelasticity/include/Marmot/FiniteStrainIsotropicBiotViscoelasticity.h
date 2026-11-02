@@ -47,9 +47,9 @@ namespace Marmot::Materials {
    * - @c S0_old - Biot stress from the previous increment
    * - @c creepStateVars - internal variables for the generalized Maxwell chain
    */
-  class FiniteStrainIsotropicBiotViscoelasticity : public MarmotMaterialFiniteStrainAD {
+  class FiniteStrainIsotropicBiotViscoelasticity : public Marmot::Materials::MaterialFiniteStrainAD {
   public:
-    using MarmotMaterialFiniteStrainAD::MarmotMaterialFiniteStrainAD;
+    using Marmot::Materials::MaterialFiniteStrainAD::MaterialFiniteStrainAD;
 
     /**
      * @brief Construct a FiniteStrainIsotropicBiotViscoelasticity material.
@@ -86,10 +86,10 @@ namespace Marmot::Materials {
     const double G;
 
     /// @brief Generalized Maxwell model parameters.
-    const ContinuumMechanics::FiniteStrain::Viscoelasticity::MaxwellProperties maxwellProperties;
+    const ContinuumMechanics::Viscoelasticity::MaxwellProperties maxwellProperties;
 
     /// @brief Initial compliance tensor used for viscoelastic stress update.
-    const FastorStandardTensors::Tensor3333t< autodiff::dual > initialCompliance;
+    const Marmot::Math::Tensors::FastorTensors::Tensor3333t< autodiff::dual > initialCompliance;
 
     /// @brief Define the layout of persistent state variables.
     void initializeStateLayout()

@@ -1,28 +1,30 @@
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 #include "Marmot/MarmotJournal.h"
 
-using namespace MarmotLibrary;
+namespace Marmot::Registry {
 
-MarmotMaterialHypoElastic* MarmotMaterialHypoElasticFactory::createMaterial( const std::string& materialName,
-                                                                             const double*      materialProperties,
-                                                                             int                nMaterialProperties,
-                                                                             int                materialNumber )
-{
-  auto& map = materialFactoryFunctionByName();
-  auto  it  = map.find( materialName );
-  if ( it == map.end() ) {
-    std::string reg = "Registered materials are: ";
-    for ( const auto& pair : map ) {
-      reg += pair.first + ", ";
+  Marmot::Materials::MaterialHypoElastic* MaterialHypoElasticFactory::createMaterial( const std::string& materialName,
+                                                                                      const double* materialProperties,
+                                                                                      int           nMaterialProperties,
+                                                                                      int           materialNumber )
+  {
+    auto& map = materialFactoryFunctionByName();
+    auto  it  = map.find( materialName );
+    if ( it == map.end() ) {
+      std::string reg = "Registered materials are: ";
+      for ( const auto& pair : map ) {
+        reg += pair.first + ", ";
+      }
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << " Material " + materialName + " not registered!" + reg );
     }
-    throw std::invalid_argument( MakeString()
-                                 << __PRETTY_FUNCTION__ << " Material " + materialName + " not registered!" + reg );
+
+    return it->second( materialProperties, nMaterialProperties, materialNumber );
+  }
+  MaterialHypoElasticFactory::MaterialFactoryMap& MaterialHypoElasticFactory::materialFactoryFunctionByName()
+  {
+    static MaterialFactoryMap map;
+    return map;
   }
 
-  return it->second( materialProperties, nMaterialProperties, materialNumber );
-}
-MarmotMaterialHypoElasticFactory::MaterialFactoryMap& MarmotMaterialHypoElasticFactory::materialFactoryFunctionByName()
-{
-  static MaterialFactoryMap map;
-  return map;
-}
+} // namespace Marmot::Registry

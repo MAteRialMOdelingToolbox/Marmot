@@ -5,8 +5,8 @@
 
 int main()
 {
-  using namespace Marmot::Solvers;
-  using namespace Marmot::FastorStandardTensors;
+  using namespace Marmot::Materials;
+  using namespace Marmot::Math::Tensors::FastorTensors;
 
   // 1) Define the material model
   std::string materialName = "FINITESTRAINJ2PLASTICITY_SUBSTEPPED";
@@ -26,18 +26,18 @@ int main()
   int nProps = 9;
 
   // 2) Configure solver options
-  MarmotMaterialPointSolverFiniteStrain::SolverOptions options;
+  MaterialPointSolverFiniteStrain::SolverOptions options;
   options.maxIterations       = 15;
   options.residualTolerance   = 1e-8;
   options.correctionTolerance = 1e-8;
 
   // 3) Create solver instance
-  MarmotMaterialPointSolverFiniteStrain solver( materialName, properties, nProps, options );
+  MaterialPointSolverFiniteStrain solver( materialName, properties, nProps, options );
 
   // 5) Define Loading Steps
 
   // --- Step 1: Loading (Uniaxial extension to 100%) ---
-  MarmotMaterialPointSolverFiniteStrain::Step step1;
+  MaterialPointSolverFiniteStrain::Step step1;
   step1.timeStart = 0.0;
   step1.timeEnd   = 1.0;
   step1.dTStart   = 1e-0;
@@ -57,9 +57,9 @@ int main()
   solver.addStep( step1 );
 
   // --- Step 2: Unloading (Return to 0% global strain) ---
-  MarmotMaterialPointSolverFiniteStrain::Step step2 = step1;
-  step2.timeStart                                   = 1.0;
-  step2.timeEnd                                     = 2.0;
+  MaterialPointSolverFiniteStrain::Step step2 = step1;
+  step2.timeStart                             = 1.0;
+  step2.timeEnd                               = 2.0;
 
   step2.gradUIncrementTarget( 0, 0 ) = -1;
 

@@ -8,7 +8,7 @@
 
 using namespace Marmot;
 using namespace Marmot::Testing;
-using namespace Marmot::NumericalAlgorithms::Differentiation;
+using namespace Marmot::Math::Differentiation::Numerical;
 
 void testScalarToTensor()
 {
@@ -32,12 +32,12 @@ void testScalarToTensor()
   dF_dX_target( 1, 1 ) = 0.0;
 
   throwExceptionOnFailure( Fastor::isequal( dF_dX_forward, dF_dX_target, 1e-5 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << " failed: forward difference doesn't yield the right result" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " failed: forward difference doesn't yield the right result" );
 
   throwExceptionOnFailure( Fastor::isequal( dF_dX_central, dF_dX_target, 1e-9 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << " failed: central difference doesn't yield the right result" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " failed: central difference doesn't yield the right result" );
 }
 
 void testTensorToScalar()
@@ -45,7 +45,8 @@ void testTensorToScalar()
   std::function< double( const Fastor::Tensor< double, 2, 2 >& ) > tensorToScalar_func =
     []( const Fastor::Tensor< double, 2, 2 >& x ) {
       // auto   frobeniusNorm_squared = Fastor::einsum< Fastor::Index< 0, 1 >, Fastor::Index< 0, 1 > >( x, x );
-      auto   frobeniusNorm_squared = Fastor::einsum< FastorIndices::ij, FastorIndices::ij >( x, x );
+      auto   frobeniusNorm_squared = Fastor::einsum< Marmot::Math::Tensors::FastorIndices::ij,
+                                                   Marmot::Math::Tensors::FastorIndices::ij >( x, x );
       double res                   = frobeniusNorm_squared.toscalar();
       return res;
     };
@@ -57,19 +58,52 @@ void testTensorToScalar()
   Fastor::Tensor< double, 2, 2 > dF_dX_target  = 2. * x_;
 
   throwExceptionOnFailure( Fastor::isequal( dF_dX_forward, dF_dX_target, 1e-7 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << " failed: forward difference doesn't yield the right result" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " failed: forward difference doesn't yield the right result" );
 
   throwExceptionOnFailure( Fastor::isequal( dF_dX_central, dF_dX_target, 1e-9 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << " failed: central difference doesn't yield the right result" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " failed: central difference doesn't yield the right result" );
+}
+
+void testTensorToScalarSymmetric()
+{
+  std::function< double( const Fastor::Tensor< double, 3, 3 >& ) > tensorToScalar_func =
+    []( const Fastor::Tensor< double, 3, 3 >& x ) {
+      auto   frobeniusNorm_squared = Fastor::einsum< Marmot::Math::Tensors::FastorIndices::ij,
+                                                   Marmot::Math::Tensors::FastorIndices::ij >( x, x );
+      double res                   = frobeniusNorm_squared.toscalar();
+      return res;
+    };
+
+  // a genuinely symmetric tensor, e.g. akin to a right Cauchy-Green tensor
+  const Fastor::Tensor< double, 3, 3 > C{ { 4., 1., 2. }, { 1., 5., 3. }, { 2., 3., 6. } };
+
+  Fastor::Tensor< double, 3, 3 > dF_dC_forward_full = TensorToScalar::forwardDifference( tensorToScalar_func, C );
+  Fastor::Tensor< double, 3, 3 > dF_dC_forward_sym  = TensorToScalar::forwardDifference( tensorToScalar_func, C, true );
+  Fastor::Tensor< double, 3, 3 > dF_dC_central_full = TensorToScalar::centralDifference( tensorToScalar_func, C );
+  Fastor::Tensor< double, 3, 3 > dF_dC_central_sym  = TensorToScalar::centralDifference( tensorToScalar_func, C, true );
+
+  // note: the two computations perturb different (but analytically equivalent) tensor entries, so floating-point
+  // summation order can differ slightly; tolerances are chosen a couple orders of magnitude above the expected
+  // truncation error of each method rather than machine precision
+  throwExceptionOnFailure( Fastor::isequal( dF_dC_forward_sym, dF_dC_forward_full, 1e-7 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << " failed: symmetric forward difference doesn't match the dense result" );
+
+  throwExceptionOnFailure( Fastor::isequal( dF_dC_central_sym, dF_dC_central_full, 1e-7 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << " failed: symmetric central difference doesn't match the dense result" );
 }
 
 void testTensorToTensor()
 {
   std::function< Fastor::Tensor< double, 3, 3 >( const Fastor::Tensor< double, 3, 3 >& ) > tensorToTensor_func =
     []( const Fastor::Tensor< double, 3, 3 >& x ) {
-      auto matrixproduct = Fastor::einsum< FastorIndices::ij, FastorIndices::jk >( x, x );
+      auto matrixproduct = Fastor::einsum< Marmot::Math::Tensors::FastorIndices::ij,
+                                           Marmot::Math::Tensors::FastorIndices::jk >( x, x );
       return matrixproduct;
     };
 
@@ -80,18 +114,20 @@ void testTensorToTensor()
   Fastor::Tensor< double, 3, 3, 3, 3 >
     dF_dX_target = Fastor::einsum< Fastor::Index< 0, 2 >,
                                    Fastor::Index< 3, 1 >,
-                                   Fastor::OIndex< 0, 1, 2, 3 > >( FastorStandardTensors::Spatial3D::I, x_ ) +
+                                   Fastor::OIndex< 0, 1, 2, 3 > >( Marmot::Math::Tensors::FastorTensors::Spatial3D::I,
+                                                                   x_ ) +
                    Fastor::einsum< Fastor::Index< 0, 2 >,
                                    Fastor::Index< 1, 3 >,
-                                   Fastor::OIndex< 0, 1, 2, 3 > >( x_, FastorStandardTensors::Spatial3D::I );
+                                   Fastor::OIndex< 0, 1, 2, 3 > >( x_,
+                                                                   Marmot::Math::Tensors::FastorTensors::Spatial3D::I );
 
   throwExceptionOnFailure( Fastor::isequal( dF_dX_forward, dF_dX_target, 1e-6 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << " failed: forward difference doesn't yield the right result" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " failed: forward difference doesn't yield the right result" );
 
   throwExceptionOnFailure( Fastor::isequal( dF_dX_central, dF_dX_target, 1e-8 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << " failed: central difference doesn't yield the right result" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " failed: central difference doesn't yield the right result" );
 }
 
 Fastor::Tensor< double, 3, 3, 3, 3 > createRank4StiffnessTensor( double E, double nu )
@@ -116,7 +152,8 @@ Fastor::Tensor< double, 3, 3, 3, 3 > createRank4StiffnessTensor( double E, doubl
 Fastor::Tensor< double, 3, 3 > hookes_law( const Fastor::Tensor< double, 3, 3 >& strain )
 {
   Fastor::Tensor< double, 3, 3, 3, 3 > C      = createRank4StiffnessTensor( 30000., 0.2 );
-  Fastor::Tensor< double, 3, 3 >       stress = Fastor::einsum< FastorIndices::ijkl, FastorIndices::kl >( C, strain );
+  Fastor::Tensor< double, 3, 3 >       stress = Fastor::einsum< Marmot::Math::Tensors::FastorIndices::ijkl,
+                                                          Marmot::Math::Tensors::FastorIndices::kl >( C, strain );
   return stress;
 }
 
@@ -134,12 +171,43 @@ void testTensorToTensor2()
   const Fastor::Tensor< double, 3, 3, 3, 3 > dF_dX_target  = createRank4StiffnessTensor( 30000., 0.2 );
 
   throwExceptionOnFailure( Fastor::isequal( dF_dX_forward, dF_dX_target, 3e-3 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << " failed: forward difference doesn't yield the right result" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " failed: forward difference doesn't yield the right result" );
 
   throwExceptionOnFailure( Fastor::isequal( dF_dX_central, dF_dX_target, 1e-5 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << " failed: central difference doesn't yield the right result" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " failed: central difference doesn't yield the right result" );
+}
+
+void testTensorToTensorSymmetric()
+{
+  std::function< Fastor::Tensor< double, 3, 3 >( const Fastor::Tensor< double, 3, 3 >& ) >
+    tensorToTensor_func = hookes_law;
+
+  // a symmetric strain tensor: the resulting stiffness (4th order derivative) is symmetric wrt swapping the
+  // input tensor's index pair since the underlying stiffness tensor has minor symmetry C_ijkl = C_ijlk
+  const Fastor::Tensor< double, 3, 3 > strain{ { 1., 2., 3. }, { 2., 4., 5. }, { 3., 5., 6. } };
+
+  const Fastor::Tensor< double, 3, 3, 3, 3 >
+    dF_dX_forward_full = TensorToTensor::forwardDifference( tensorToTensor_func, strain );
+  const Fastor::Tensor< double, 3, 3, 3, 3 > dF_dX_forward_sym = TensorToTensor::forwardDifference( tensorToTensor_func,
+                                                                                                    strain,
+                                                                                                    true );
+  const Fastor::Tensor< double, 3, 3, 3, 3 >
+    dF_dX_central_full = TensorToTensor::centralDifference( tensorToTensor_func, strain );
+  const Fastor::Tensor< double, 3, 3, 3, 3 > dF_dX_central_sym = TensorToTensor::centralDifference( tensorToTensor_func,
+                                                                                                    strain,
+                                                                                                    true );
+
+  throwExceptionOnFailure( Fastor::isequal( dF_dX_forward_sym, dF_dX_forward_full, 1e-6 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << " failed: symmetric forward difference doesn't match the dense result" );
+
+  throwExceptionOnFailure( Fastor::isequal( dF_dX_central_sym, dF_dX_central_full, 1e-6 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << " failed: symmetric central difference doesn't match the dense result" );
 }
 
 void testScalarToTensorComplex()
@@ -177,12 +245,14 @@ void testScalarToTensorComplex()
   Fastor::Tensor< double, 2, 2 > F_target_real = convert_to_real( F_target );
 
   throwExceptionOnFailure( Fastor::isequal( dF_dX_forward, dF_dX_target, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << " failed: complex forward difference doesn't yield the right result" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << " failed: complex forward difference doesn't yield the right result" );
 
   throwExceptionOnFailure( Fastor::isequal( F_forward, F_target_real, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << " failed: complex forward difference doesn't yield the right result" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << " failed: complex forward difference doesn't yield the right result" );
 }
 
 void testTensorToScalarComplex()
@@ -190,7 +260,8 @@ void testTensorToScalarComplex()
   std::function< std::complex< double >( const Fastor::Tensor< std::complex< double >, 2, 2 >& ) > tensorToScalar_func =
     []( const Fastor::Tensor< std::complex< double >, 2, 2 >& x ) {
       // auto   frobeniusNorm_squared = Fastor::einsum< Fastor::Index< 0, 1 >, Fastor::Index< 0, 1 > >( x, x );
-      auto                   frobeniusNorm_squared = Fastor::einsum< FastorIndices::ij, FastorIndices::ij >( x, x );
+      auto                   frobeniusNorm_squared = Fastor::einsum< Marmot::Math::Tensors::FastorIndices::ij,
+                                                   Marmot::Math::Tensors::FastorIndices::ij >( x, x );
       std::complex< double > res                   = frobeniusNorm_squared.toscalar();
       return res;
     };
@@ -202,13 +273,46 @@ void testTensorToScalarComplex()
   Fastor::Tensor< double, 2, 2 > dF_dX_target   = 2. * x_;
 
   throwExceptionOnFailure( Fastor::isequal( dF_dX_forward, dF_dX_target, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << " failed: forward difference doesn't yield the right result" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " failed: forward difference doesn't yield the right result" );
 
   throwExceptionOnFailure( Fastor::isequal( dF_dX_forward2, dF_dX_target, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << " failed: forward difference (function outside of namespace TensorToScalar) "
-                                           "doesn't yield the right result" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << " failed: forward difference (function outside of namespace TensorToScalar) "
+                                "doesn't yield the right result" );
+}
+
+void testTensorToScalarComplexSymmetric()
+{
+  std::function< std::complex< double >( const Fastor::Tensor< std::complex< double >, 3, 3 >& ) > tensorToScalar_func =
+    []( const Fastor::Tensor< std::complex< double >, 3, 3 >& x ) {
+      auto                   frobeniusNorm_squared = Fastor::einsum< Marmot::Math::Tensors::FastorIndices::ij,
+                                                   Marmot::Math::Tensors::FastorIndices::ij >( x, x );
+      std::complex< double > res                   = frobeniusNorm_squared.toscalar();
+      return res;
+    };
+
+  const Fastor::Tensor< double, 3, 3 > C{ { 4., 1., 2. }, { 1., 5., 3. }, { 2., 3., 6. } };
+
+  Fastor::Tensor< double, 3, 3 > dF_dC_full = Complex::TensorToScalar::forwardDifference( tensorToScalar_func, C );
+  Fastor::Tensor< double, 3, 3 > dF_dC_sym = Complex::TensorToScalar::forwardDifference( tensorToScalar_func, C, true );
+
+  throwExceptionOnFailure( Fastor::isequal( dF_dC_sym, dF_dC_full, 1e-10 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << " failed: symmetric complex-step derivative doesn't match the dense "
+                                "result" );
+
+  // also exercise the top-level Complex::forwardDifference (distinct from Complex::TensorToScalar::forwardDifference)
+  Fastor::Tensor< double, 3, 3 > dF_dC_full2 = Complex::forwardDifference( tensorToScalar_func, C );
+  Fastor::Tensor< double, 3, 3 > dF_dC_sym2  = Complex::forwardDifference( tensorToScalar_func, C, true );
+
+  throwExceptionOnFailure( Fastor::isequal( dF_dC_sym2, dF_dC_full2, 1e-10 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << " failed: symmetric complex-step derivative (top-level function) doesn't "
+                                "match the dense result" );
 }
 
 void testTensorToTensorComplex()
@@ -216,7 +320,8 @@ void testTensorToTensorComplex()
   std::function< Fastor::Tensor< std::complex< double >, 3, 3 >(
     const Fastor::Tensor< std::complex< double >, 3, 3 >& ) >
     tensorToTensor_func = []( const Fastor::Tensor< std::complex< double >, 3, 3 >& x ) {
-      auto matrixproduct = Fastor::einsum< FastorIndices::ij, FastorIndices::jk >( x, x );
+      auto matrixproduct = Fastor::einsum< Marmot::Math::Tensors::FastorIndices::ij,
+                                           Marmot::Math::Tensors::FastorIndices::jk >( x, x );
       return matrixproduct;
     };
 
@@ -227,14 +332,16 @@ void testTensorToTensorComplex()
   Fastor::Tensor< double, 3, 3, 3, 3 >
     dF_dX_target = Fastor::einsum< Fastor::Index< 0, 2 >,
                                    Fastor::Index< 3, 1 >,
-                                   Fastor::OIndex< 0, 1, 2, 3 > >( FastorStandardTensors::Spatial3D::I, x_ ) +
+                                   Fastor::OIndex< 0, 1, 2, 3 > >( Marmot::Math::Tensors::FastorTensors::Spatial3D::I,
+                                                                   x_ ) +
                    Fastor::einsum< Fastor::Index< 0, 2 >,
                                    Fastor::Index< 1, 3 >,
-                                   Fastor::OIndex< 0, 1, 2, 3 > >( x_, FastorStandardTensors::Spatial3D::I );
+                                   Fastor::OIndex< 0, 1, 2, 3 > >( x_,
+                                                                   Marmot::Math::Tensors::FastorTensors::Spatial3D::I );
 
   throwExceptionOnFailure( Fastor::isequal( dF_dX_forward, dF_dX_target, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << " failed: forward difference doesn't yield the right result" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " failed: forward difference doesn't yield the right result" );
 }
 
 Fastor::Tensor< std::complex< double >, 3, 3 > hookes_law(
@@ -242,9 +349,10 @@ Fastor::Tensor< std::complex< double >, 3, 3 > hookes_law(
 {
   Fastor::Tensor< double, 3, 3, 3, 3 > C_double = createRank4StiffnessTensor( 30000., 0.2 );
   Fastor::Tensor< std::complex< double >, 3, 3, 3, 3 >
-    C_complex = fastorTensorFromDoubleTensor< std::complex< double > >( C_double );
+    C_complex = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< std::complex< double > >( C_double );
   Fastor::Tensor< std::complex< double >, 3, 3 >
-    stress = Fastor::einsum< FastorIndices::ijkl, FastorIndices::kl >( C_complex, strain );
+    stress = Fastor::einsum< Marmot::Math::Tensors::FastorIndices::ijkl,
+                             Marmot::Math::Tensors::FastorIndices::kl >( C_complex, strain );
   return stress;
 }
 
@@ -263,8 +371,60 @@ void testTensorToTensorComplex2()
   const Fastor::Tensor< double, 3, 3, 3, 3 > dF_dX_target = createRank4StiffnessTensor( 30000., 0.2 );
 
   throwExceptionOnFailure( Fastor::isequal( dF_dX_forward, dF_dX_target, 3e-3 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << " failed: forward difference doesn't yield the right result" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " failed: forward difference doesn't yield the right result" );
+}
+
+void testTensorToTensorComplexSymmetric()
+{
+  std::function< Fastor::Tensor< std::complex< double >, 3, 3 >(
+    const Fastor::Tensor< std::complex< double >, 3, 3 >& ) >
+    tensorToTensor_func = static_cast< Fastor::Tensor< std::complex< double >, 3, 3 > ( * )(
+      const Fastor::Tensor< std::complex< double >, 3, 3 >& ) >( hookes_law );
+
+  const Fastor::Tensor< double, 3, 3 > strain{ { 1., 2., 3. }, { 2., 4., 5. }, { 3., 5., 6. } };
+
+  const Fastor::Tensor< double, 3, 3, 3, 3 >
+    dF_dX_full = Complex::TensorToTensor::forwardDifference( tensorToTensor_func, strain );
+  const Fastor::Tensor< double, 3, 3, 3, 3 >
+    dF_dX_sym = Complex::TensorToTensor::forwardDifference( tensorToTensor_func, strain, true );
+
+  throwExceptionOnFailure( Fastor::isequal( dF_dX_sym, dF_dX_full, 1e-10 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << " failed: symmetric complex-step derivative doesn't match the dense "
+                                "result" );
+}
+
+void testTensorToTensorNonSquareRank2Output()
+{
+  // regression test: TensorToTensor::forwardDifference/centralDifference must still compile and work for outputs
+  // that are not a square rank-2 tensor (here a rank-1 vector), i.e. isSymmetric=false (the default) must be usable
+  // without triggering the isSymmetric-only code path's compile-time shape requirements
+  std::function< Fastor::Tensor< double, 2 >( const Fastor::Tensor< double, 3, 3 >& ) > f =
+    []( const Fastor::Tensor< double, 3, 3 >& x ) {
+      Fastor::Tensor< double, 2 > out( 0.0 );
+      out( 0 ) = x( 0, 0 ) * x( 0, 0 );
+      out( 1 ) = x( 1, 1 ) + x( 2, 2 );
+      return out;
+    };
+
+  const Fastor::Tensor< double, 3, 3 > x_{ { 1., 2., 3. }, { 4., 5., 6. }, { 7., 8., 9. } };
+
+  Fastor::Tensor< double, 2, 3, 3 > dF_dX_forward = TensorToTensor::forwardDifference( f, x_ );
+  Fastor::Tensor< double, 2, 3, 3 > dF_dX_central = TensorToTensor::centralDifference( f, x_ );
+
+  Fastor::Tensor< double, 2, 3, 3 > dF_dX_target( 0.0 );
+  dF_dX_target( 0, 0, 0 ) = 2. * x_( 0, 0 );
+  dF_dX_target( 1, 1, 1 ) = 1.;
+  dF_dX_target( 1, 2, 2 ) = 1.;
+
+  throwExceptionOnFailure( Fastor::isequal( dF_dX_forward, dF_dX_target, 1e-5 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " failed: forward difference doesn't yield the right result" );
+  throwExceptionOnFailure( Fastor::isequal( dF_dX_central, dF_dX_target, 1e-8 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " failed: central difference doesn't yield the right result" );
 }
 
 int main()
@@ -272,12 +432,17 @@ int main()
 
   auto tests = std::vector< std::function< void() > >{ testScalarToTensor,
                                                        testTensorToScalar,
+                                                       testTensorToScalarSymmetric,
                                                        testTensorToTensor,
                                                        testTensorToTensor2,
+                                                       testTensorToTensorSymmetric,
+                                                       testTensorToTensorNonSquareRank2Output,
                                                        testScalarToTensorComplex,
                                                        testTensorToScalarComplex,
+                                                       testTensorToScalarComplexSymmetric,
                                                        testTensorToTensorComplex,
-                                                       testTensorToTensorComplex2 };
+                                                       testTensorToTensorComplex2,
+                                                       testTensorToTensorComplexSymmetric };
 
   executeTestsAndCollectExceptions( tests );
 

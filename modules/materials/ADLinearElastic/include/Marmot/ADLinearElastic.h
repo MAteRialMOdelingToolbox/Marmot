@@ -27,17 +27,15 @@
 #include "Marmot/MarmotMaterialHypoElasticAD.h"
 #include "Marmot/MarmotTypedefs.h"
 
-using namespace Marmot;
-
 namespace Marmot::Materials {
   /**
    * @brief Implementation of a isotropic linear elastic material
    * for 3D stress states using automatic differentiation.
    *
    */
-  class ADLinearElastic : public MarmotMaterialHypoElasticAD {
+  class ADLinearElastic : public Marmot::Materials::MaterialHypoElasticAD {
   public:
-    using MarmotMaterialHypoElasticAD::MarmotMaterialHypoElasticAD;
+    using Marmot::Materials::MaterialHypoElasticAD::MaterialHypoElasticAD;
 
     /// @brief Elasticity tensor for isotropic materials
     const autodiff::MatrixXdual C;
@@ -47,8 +45,8 @@ namespace Marmot::Materials {
     double getDensity( const double* stateVars ) const override;
 
   protected:
-    void computeStressAD( state3DAD&                 state,
-                          const Marmot::Vector6dual& dStrain,
-                          const timeInfo&            timeInfo ) const override;
+    void computeStressAD( state3DAD&                       state,
+                          const Marmot::Math::Vector6dual& dStrain,
+                          const timeInfo&                  timeInfo ) const override;
   };
 } // namespace Marmot::Materials

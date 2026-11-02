@@ -29,19 +29,26 @@
 namespace Marmot::Materials {
 
   /// @brief An implementation of classical J2 plasticity with isotropic hardening.
-  class VonMisesModel : public MarmotMaterialHypoElastic {
+  class VonMisesModel : public Marmot::Materials::MaterialHypoElastic {
+
+  public:
+    /// @brief Numerical constants for the VonMises return-mapping algorithm.
+    struct Constants {
+      static constexpr double innerNewtonTol        = 1e-12; ///< Convergence tolerance for the inner Newton iteration.
+      static constexpr int    nMaxInnerNewtonCycles = 15;    ///< Maximum number of inner Newton iterations.
+    };
 
   public:
     VonMisesModel( const double* materialProperties, const int nMaterialProperties, const int materialLabel );
 
-    void computeStress( state3D&                state,
-                        Marmot::Matrix6d&       dStressDDStrain,
-                        const Marmot::Vector6d& dStrain,
-                        const timeInfo&         timeInfo ) const override;
+    void computeStress( state3D&                      state,
+                        Marmot::Math::Matrix6d&       dStressDDStrain,
+                        const Marmot::Math::Vector6d& dStrain,
+                        const timeInfo&               timeInfo ) const override;
 
-    void computeStressExplicit( state3D&                state,
-                                const Marmot::Vector6d& dStrain,
-                                const timeInfo&         timeInfo ) const override;
+    void computeStressExplicit( state3D&                      state,
+                                const Marmot::Math::Vector6d& dStrain,
+                                const timeInfo&               timeInfo ) const override;
 
     double getDensity( const double* stateVars ) const override;
   };

@@ -9,7 +9,9 @@ namespace Marmot::Materials {
   using namespace Marmot;
 
   AT2PhaseField::AT2PhaseField( const double* materialProperties, int nMaterialProperties, int materialNumber )
-    : MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >( materialProperties, nMaterialProperties, materialNumber ),
+    : Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >( materialProperties,
+                                                                   nMaterialProperties,
+                                                                   materialNumber ),
       C( ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( materialProperties[0], materialProperties[1] ) )
   {
     initializeStateLayout();
@@ -28,6 +30,19 @@ namespace Marmot::Materials {
       throw std::runtime_error( "Viscosity not provided in material properties for AT2PhaseField." );
     return { materialProperties[5] };
   }
+
+  std::vector< double > AT2PhaseField::getNonlocalMicroInertia( const double* stateVars ) const
+  {
+    /* OPTIONAL, and absent means zero: the phase field is then first order in time and is
+     * integrated by its viscosity alone, which is what every deck written before this property
+     * existed asks for and must keep getting.
+     */
+    if ( nMaterialProperties <= 6 )
+      return { 0.0 };
+
+    return validatedNonlocalMicroInertia( { materialProperties[6] }, stateVars );
+  }
+
   void AT2PhaseField::computeStress( response& res, tangents& tan, const increment& inc ) const
   {
     // material properties
@@ -36,16 +51,17 @@ namespace Marmot::Materials {
 
     // access state variables
     double& H      = stateLayout.getAs< double& >( res.stateVars, "maxCrackDrivingForce" );
-    auto    strain = stateLayout.getAs< Map< Vector6d > >( res.stateVars, "strain" );
+    auto    strain = stateLayout.getAs< Map< Marmot::Math::Vector6d > >( res.stateVars, "strain" );
 
     // accumulate total strain
-    const Vector6d eps = strain + inc.dStrain;
+    const Marmot::Math::Vector6d eps = strain + inc.dStrain;
 
     // phase-field value at the current Gauss point (nonlocal variable K)
     const double& phi = inc.K( 0 );
 
     // quadratic degradation function: g(phi) = (1-phi)^2
-    const auto [g, dg_dphi, d2g_dphi2] = PhaseField::EnergyDegradationFunctions::SecondOrderDerived::quadratic( phi );
+    const auto [g, dg_dphi, d2g_dphi2] = Marmot::ContinuumMechanics::Degradation::PhaseField::
+      EnergyDegradationFunctions::SecondOrder::quadratic( phi );
 
     // positive elastic strain energy density (no tension-compression split)
     const double psiPlus = 0.5 * eps.dot( C * eps );

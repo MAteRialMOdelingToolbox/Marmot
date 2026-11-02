@@ -2,8 +2,8 @@
   "title": "Marmot: MAteRialMOdellingToolbox",
   "description": "`Marmot` (MAteRialMOdellingToolbox) is a C++ library for robust and efficient finite elements and state-of-the-art constitutive models (especially for quasi-brittle materials such as concrete, rock, and soils). It uses modern, object-oriented programming and provides generic interfaces for solvers including Abaqus, Plaxis, MOOSE, OpenSees, and EdelweissFE. Documentation: https://materialmodelingtoolbox.github.io/Marmot/.",
   "upload_type": "software",
-  "version": "v25.11",
-  "publication_date": "2025-11-02",
+  "version": "v26.11",
+  "publication_date": "2026-11-02",
   "language": "eng",
   "access_right": "open",
   "license": "lgpl-2.1-or-later",
@@ -19,24 +19,24 @@
     "damage-plasticity"
   ],
   "creators": [
-    { "name": "Neuner, Matthias", "affiliation": "University of Innsbruck; Stanford University; BOKU University", "orcid": "0000-0003-2221-8089" },
     { "name": "Dummer, Alexander", "affiliation": "University of Innsbruck; University of Colorado Boulder", "orcid": "0000-0002-1998-1705" },
-    { "name": "Schreter-Fleischhacker, Magdalena", "affiliation": "University of Innsbruck; Technical University Munich", "orcid": "0000-0003-3888-4086" },
-    { "name": "Hofer, Paul", "affiliation": "University of Innsbruck", "orcid": "0009-0001-6589-7993" },
-    { "name": "Alkmim, Nasser", "affiliation": "University of Innsbruck" },
+    { "name": "Mader, Thomas", "affiliation": "University of Innsbruck; BOKU University", "orcid": "0000-0003-1780-4227" },
     { "name": "Basche, Konstantin", "affiliation": "University of Innsbruck", "orcid": "0009-0006-5624-9771" },
-    { "name": "Mader, Thomas", "affiliation": "University of Innsbruck; BOKU University", "orcid": "0000-0003-1780-4227" }
+    { "name": "Stathas, Alexandros", "affiliation": "BOKU University", "orcid": "0000-0001-8468-9842" },
+    { "name": "Hofer, Paul", "affiliation": "University of Innsbruck; BOKU University", "orcid": "0009-0001-6589-7993" },
+    { "name": "Neuner, Matthias", "affiliation": "University of Innsbruck; Stanford University; BOKU University", "orcid": "0000-0003-2221-8089" }
   ],
   "contributors": [
+    { "name": "Alkmim, Nasser", "affiliation": "University of Innsbruck", "type": "ProjectMember", "orcid": "0009-0006-5277-9708" },
     { "name": "Fischer, Florian", "affiliation": "University of Innsbruck", "type": "ProjectMember" },
     { "name": "Hradsky, Manuel", "affiliation": "University of Innsbruck", "type": "ProjectMember" },
-    { "name": "Mitrovic, Luka", "affiliation": "BOKU University", "type": "ProjectMember" },
-    { "name": "Reitmair, Daniel", "affiliation": "University of Innsbruck", "type": "ProjectMember", "orcid": "0000-0003-1780-4227" },
-    { "name": "Stathas, Alexandros", "affiliation": "BOKU University", "type": "ProjectMember" }
+    { "name": "Mitrovic, Luka", "affiliation": "BOKU University", "type": "ProjectMember", "orcid": "0009-0000-3365-0673" },
+    { "name": "Reitmair, Daniel", "affiliation": "University of Innsbruck", "type": "ProjectMember", "orcid": "0009-0002-2748-5442" },
+    { "name": "Schreter-Fleischhacker, Magdalena", "affiliation": "University of Innsbruck; Technical University Munich", "type": "ProjectMember", "orcid": "0000-0003-3888-4086" }
   ],
   "related_identifiers": [
     {
-      "identifier": "https://github.com/MAteRialMOdelingToolbox/Marmot/releases/tag/v25.11",
+      "identifier": "https://github.com/MAteRialMOdelingToolbox/Marmot/releases/tag/v26.11",
       "relation": "isSupplementTo"
     },
     {

@@ -1,14 +1,18 @@
 #include "Marmot/LinearElastic.h"
+#include "Marmot/MarmotMaterialFiniteStrainFactory.h"
+#include "Marmot/MarmotMaterialHughesWinget.h"
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 
-namespace Marmot::Materials {
+namespace {
+  using namespace Marmot::Materials;
 
-  namespace Registration {
-
-    using namespace MarmotLibrary;
-
-    const static bool LinearElasticIsRegistered = MarmotMaterialHypoElasticFactory::registerMaterial< LinearElastic >(
+  const static bool
+    LinearElasticIsRegistered = Marmot::Registry::MaterialHypoElasticFactory::registerMaterial< LinearElastic >(
       "LINEARELASTIC" );
 
-  } // namespace Registration
-} // namespace Marmot::Materials
+  // Co-rotational Hughes-Winget wrapper, usable wherever a Marmot::Materials::MaterialFiniteStrain is expected
+  // (finite-strain elements, meshfree particles and material points).
+  const static bool LinearElasticHughesWingetIsRegistered = Marmot::Registry::MaterialFiniteStrainFactory::
+    registerMaterial< HughesWingetWrapper< LinearElastic > >( "LINEARELASTIC/HUGHES-WINGET" );
+
+} // namespace

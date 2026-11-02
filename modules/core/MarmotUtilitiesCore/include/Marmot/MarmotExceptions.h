@@ -24,10 +24,11 @@
  */
 
 #pragma once
+#include "Marmot/MarmotPortability.h"
 #include <stdexcept>
 #include <string>
 
-namespace Marmot {
+namespace Marmot::Utilities {
 
   /** @class StressUpdateFailed
    *  @brief Exception thrown when a stress update (e.g., return-mapping iteration) fails to converge
@@ -81,4 +82,4 @@ namespace Marmot {
     explicit SolverIncrementsExhausted( const std::string& message ) : std::runtime_error( message ) {}
   };
 
-} // namespace Marmot
+} // namespace Marmot::Utilities

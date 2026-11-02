@@ -38,7 +38,8 @@ namespace Marmot::Materials {
    *
    * @par Material parameters
    * - @b E1, @b E2, @b E3 - Young's moduli in principal material directions
-   * - @b nu12, @b nu13, @b nu23 - Poisson ratios
+   * - @b nu12, @b nu13, @b nu23 - Poisson ratios, with @f$\nu_{ij} = -\varepsilon_j/\varepsilon_i@f$ for uniaxial
+   *   stress in direction @f$x_i@f$; see namespace Marmot::ContinuumMechanics::Elasticity::Orthotropic
    * - @b G12, @b G13, @b G23 - shear moduli
    * - @b n_Maxwell - number of Maxwell elements
    * - @b tau[i], beta[i] (i = 1..n_Maxwell) - Maxwell retardation times and relative weights
@@ -48,9 +49,9 @@ namespace Marmot::Materials {
    * - @c S0_old - Biot stress from the previous increment
    * - @c creepStateVars - internal variables for the generalized Maxwell chain
    */
-  class FiniteStrainOrthotropicBiotViscoelasticity : public MarmotMaterialFiniteStrainAD {
+  class FiniteStrainOrthotropicBiotViscoelasticity : public Marmot::Materials::MaterialFiniteStrainAD {
   public:
-    using MarmotMaterialFiniteStrainAD::MarmotMaterialFiniteStrainAD;
+    using Marmot::Materials::MaterialFiniteStrainAD::MaterialFiniteStrainAD;
 
     /**
      * @brief Construct a FiniteStrainOrthotropicBiotViscoelasticity material.
@@ -88,11 +89,11 @@ namespace Marmot::Materials {
     /// @brief Young's modulus in principal material direction 3.
     const double E3;
 
-    /// @brief Poisson ratio relating directions 1 and 2.
+    /// @brief Poisson ratio @f$\nu_{12} = -\varepsilon_2/\varepsilon_1@f$ for uniaxial stress in direction 1.
     const double nu12;
-    /// @brief Poisson ratio relating directions 1 and 3.
+    /// @brief Poisson ratio @f$\nu_{13} = -\varepsilon_3/\varepsilon_1@f$ for uniaxial stress in direction 1.
     const double nu13;
-    /// @brief Poisson ratio relating directions 2 and 3.
+    /// @brief Poisson ratio @f$\nu_{23} = -\varepsilon_3/\varepsilon_2@f$ for uniaxial stress in direction 2.
     const double nu23;
 
     /// @brief Shear modulus in the 1-2 plane.
@@ -103,10 +104,10 @@ namespace Marmot::Materials {
     const double G23;
 
     /// @brief Generalized Maxwell model parameters.
-    const ContinuumMechanics::FiniteStrain::Viscoelasticity::MaxwellProperties maxwellProperties;
+    const ContinuumMechanics::Viscoelasticity::MaxwellProperties maxwellProperties;
 
     /// @brief Constant derivative of Biot stress with respect to right stretch tensor.
-    const FastorStandardTensors::Tensor3333t< autodiff::dual > dBiotStress_dU;
+    const Marmot::Math::Tensors::FastorTensors::Tensor3333t< autodiff::dual > dBiotStress_dU;
 
     /// @brief Define the layout of persistent state variables.
     void initializeStateLayout()

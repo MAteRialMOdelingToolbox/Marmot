@@ -1,68 +1,65 @@
 #include "Marmot/MarmotSolidification.h"
 
-namespace Marmot::Materials {
+namespace Marmot::ContinuumMechanics::Viscoelasticity::SolidificationTheory {
 
-  namespace SolidificationTheory {
+  double solidifiedVolume( double timeInDays, Parameters params )
+  {
+    return 1. / ( pow( params.lambda0 / timeInDays, params.m ) + params.q3 / params.q2 );
+  }
 
-    double solidifiedVolume( double timeInDays, Parameters params )
-    {
-      return 1. / ( pow( params.lambda0 / timeInDays, params.m ) + params.q3 / params.q2 );
+  double computeZerothElasticModul( double tauMin, double n, int order )
+  {
+
+    const double tau0 = tauMin / std::sqrt( 10. );
+    double       E0;
+    switch ( order ) {
+    case 1: E0 = 1. / ( log( 1. + pow( tau0, n ) ) ); break;
+    case 2:
+      E0 = 1. / ( std::log( 1. + std::pow( 2. * tau0, n ) ) -
+                  n * std::pow( 2. * tau0, n ) / ( 1. + std::pow( 2. * tau0, n ) ) );
+      break;
+    case 3: E0 = 1. / ( ( 1. - n ) * log( 1. + pow( 3. * tau0, n ) ) ); break;
+    default: throw std::invalid_argument( "Invalid approximation order requested" ); break;
     }
+    return E0;
+  }
 
-    double computeZerothElasticModul( double tauMin, double n, int order )
-    {
+  Result computeCreepStrainIncrementAndComplianceComponents(
+    double                                                 tStartDays,
+    double                                                 dTimeDays,
+    double                                                 amplificationFactor,
+    const Marmot::Math::Matrix6d&                          flowUnitCompliance,
+    const Marmot::Math::Vector6d&                          stressOld,
+    const Parameters&                                      parameters,
+    const KelvinChainProperties&                           kelvinChainProperties,
+    const Eigen::Ref< const KelvinChain::StateVarMatrix >& kelvinStateVars )
+  {
 
-      const double tau0 = tauMin / std::sqrt( 10. );
-      double       E0;
-      switch ( order ) {
-      case 1: E0 = 1. / ( log( 1. + pow( tau0, n ) ) ); break;
-      case 2:
-        E0 = 1. / ( std::log( 1. + std::pow( 2. * tau0, n ) ) -
-                    n * std::pow( 2. * tau0, n ) / ( 1. + std::pow( 2. * tau0, n ) ) );
-        break;
-      case 3: E0 = 1. / ( ( 1. - n ) * log( 1. + pow( 3. * tau0, n ) ) ); break;
-      default: throw std::invalid_argument( "Invalid approximation order requested" ); break;
-      }
-      return E0;
-    }
+    Marmot::Math::Vector6d       dECreep = Marmot::Math::Vector6d::Zero();
+    UniaxialComplianceComponents complianceComponents;
 
-    Result computeCreepStrainIncrementAndComplianceComponents(
-      double                                                 tStartDays,
-      double                                                 dTimeDays,
-      double                                                 amplificationFactor,
-      const Marmot::Matrix6d&                                flowUnitCompliance,
-      const Marmot::Vector6d&                                stressOld,
-      const Parameters&                                      parameters,
-      const KelvinChainProperties&                           kelvinChainProperties,
-      const Eigen::Ref< const KelvinChain::StateVarMatrix >& kelvinStateVars )
-    {
+    const double v = solidifiedVolume( tStartDays + dTimeDays / 2., parameters );
 
-      Vector6d                     dECreep = Vector6d::Zero();
-      UniaxialComplianceComponents complianceComponents;
+    complianceComponents.elastic = parameters.q1 * 1e-6;
 
-      const double v = solidifiedVolume( tStartDays + dTimeDays / 2., parameters );
-
-      complianceComponents.elastic = parameters.q1 * 1e-6;
-
-      if ( dTimeDays <= 1e-14 )
-        return { dECreep, complianceComponents };
-
-      complianceComponents.flow = amplificationFactor * parameters.q4 / ( tStartDays + dTimeDays / 2. ) / 2. *
-                                  dTimeDays * 1e-6;
-      dECreep += complianceComponents.flow * 2. * flowUnitCompliance * stressOld;
-
-      complianceComponents.viscoelastic = parameters.q2 / ( v * kelvinChainProperties.E0 ) * amplificationFactor * 1e-6;
-
-      KelvinChain::evaluateKelvinChain( dTimeDays,
-                                        kelvinChainProperties.elasticModuli,
-                                        kelvinChainProperties.retardationTimes,
-                                        kelvinStateVars,
-                                        complianceComponents.viscoelastic,
-                                        dECreep,
-                                        1e-6 * amplificationFactor * parameters.q2 / v );
-
+    if ( dTimeDays <= 1e-14 )
       return { dECreep, complianceComponents };
-    }
 
-  } // namespace SolidificationTheory
-} // namespace Marmot::Materials
+    complianceComponents.flow = amplificationFactor * parameters.q4 / ( tStartDays + dTimeDays / 2. ) / 2. * dTimeDays *
+                                1e-6;
+    dECreep += complianceComponents.flow * 2. * flowUnitCompliance * stressOld;
+
+    complianceComponents.viscoelastic = parameters.q2 / ( v * kelvinChainProperties.E0 ) * amplificationFactor * 1e-6;
+
+    KelvinChain::evaluateKelvinChain( dTimeDays,
+                                      kelvinChainProperties.elasticModuli,
+                                      kelvinChainProperties.retardationTimes,
+                                      kelvinStateVars,
+                                      complianceComponents.viscoelastic,
+                                      dECreep,
+                                      1e-6 * amplificationFactor * parameters.q2 / v );
+
+    return { dECreep, complianceComponents };
+  }
+
+} // namespace Marmot::ContinuumMechanics::Viscoelasticity::SolidificationTheory

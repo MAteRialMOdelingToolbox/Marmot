@@ -29,23 +29,25 @@
 #include <string>
 #include <unordered_map>
 
-namespace MarmotLibrary {
+namespace Marmot::Registry {
 
   /**
-   * @class MarmotMaterialFiniteStrainFactory
+   * @class MaterialFiniteStrainFactory
    * @brief Factory class for creating finite-strain material instances.
    *
    * This class provides a mechanism to register materials by their name,
    * and to create material instances based on their properties.
    * It allows for dynamic material creation without hardcoding specific material types.
    */
-  class MarmotMaterialFiniteStrainFactory {
+  class MaterialFiniteStrainFactory {
   public:
-    /// Factory function type: creates a MarmotMaterialFiniteStrain from properties and a material number.
+    /// Factory function type: creates a Marmot::Materials::MaterialFiniteStrain from properties and a material number.
     using materialFactoryFunction = std::function<
-      MarmotMaterialFiniteStrain*( const double* materialProperties, int nMaterialProperties, int materialNumber ) >;
+      Marmot::Materials::MaterialFiniteStrain*( const double* materialProperties,
+                                                int           nMaterialProperties,
+                                                int           materialNumber ) >;
 
-    MarmotMaterialFiniteStrainFactory() = delete;
+    MaterialFiniteStrainFactory() = delete;
 
     /**
      * @brief Create a material instance based on its name and properties.
@@ -53,12 +55,12 @@ namespace MarmotLibrary {
      * @param[in] materialProperties Array of material properties.
      * @param[in] nMaterialProperties Number of properties in the array.
      * @param[in] materialNumber Unique identifier for the material instance.
-     * @return Pointer to the created MarmotMaterialFiniteStrain instance.
+     * @return Pointer to the created Marmot::Materials::MaterialFiniteStrain instance.
      */
-    static MarmotMaterialFiniteStrain* createMaterial( const std::string& materialName,
-                                                       const double*      materialProperties,
-                                                       int                nMaterialProperties,
-                                                       int                materialNumber );
+    static Marmot::Materials::MaterialFiniteStrain* createMaterial( const std::string& materialName,
+                                                                    const double*      materialProperties,
+                                                                    int                nMaterialProperties,
+                                                                    int                materialNumber );
 
     /**
      * @brief Register a material type with its name.
@@ -74,8 +76,11 @@ namespace MarmotLibrary {
 
       assert( map.find( materialName ) == map.end() && "Material already registered!" );
 
-      map[materialName] = []( const double* materialProperties, int nMaterialProperties, int materialNumber )
-        -> MarmotMaterialFiniteStrain* { return new T( materialProperties, nMaterialProperties, materialNumber ); };
+      map[materialName] = []( const double* materialProperties,
+                              int           nMaterialProperties,
+                              int           materialNumber ) -> Marmot::Materials::MaterialFiniteStrain* {
+        return new T( materialProperties, nMaterialProperties, materialNumber );
+      };
       return true;
     }
 
@@ -83,4 +88,4 @@ namespace MarmotLibrary {
     using MaterialFactoryMap = std::unordered_map< std::string, materialFactoryFunction >;
     static MaterialFactoryMap& materialFactoryFunctionByName();
   };
-} // namespace MarmotLibrary
+} // namespace Marmot::Registry

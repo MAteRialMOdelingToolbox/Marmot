@@ -1,8 +1,8 @@
 #include "Marmot/MarmotTensor.h"
 #include "Marmot/MarmotTesting.h"
 
-using namespace Marmot::ContinuumMechanics::CommonTensors;
-using namespace Marmot::ContinuumMechanics::TensorUtility;
+using namespace Marmot::Math::Tensors;
+using namespace Marmot::Math::Tensors;
 using namespace Marmot::Testing;
 using namespace Eigen;
 
@@ -18,7 +18,8 @@ auto testInitialize_IFourthOrder()
           ikjl = ( i == k ? 1 : 0 ) * ( j == l ? 1 : 0 );
           // check if they are the same
           throwExceptionOnFailure( checkIfEqual( ikjl, IFourthOrder( i, j, k, l ) ),
-                                   MakeString() << __PRETTY_FUNCTION__ << " Error in initializing IFourthOrder." );
+                                   Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << " Error in initializing IFourthOrder." );
         }
 }
 
@@ -34,7 +35,7 @@ auto testInitialize_IFourthOrderTranspose()
           iljk = ( i == l ? 1 : 0 ) * ( j == k ? 1 : 0 );
           // check if they are the same
           throwExceptionOnFailure( checkIfEqual( iljk, IFourthOrderTranspose( i, j, k, l ) ),
-                                   MakeString()
+                                   Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__ << " Error in initializing IFourthOrderTranspose." );
         }
 }
@@ -51,7 +52,8 @@ auto testInitialize_I2xI2()
           ijkl = ( i == j ? 1 : 0 ) * ( k == l ? 1 : 0 );
           // check if they are the same
           throwExceptionOnFailure( checkIfEqual( ijkl, I2xI2( i, j, k, l ) ),
-                                   MakeString() << __PRETTY_FUNCTION__ << " Error in initializing I2xI2." );
+                                   Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << " Error in initializing I2xI2." );
         }
 }
 
@@ -67,7 +69,8 @@ auto testInitialize_Isym()
           ijklSym = 0.5 * ( ( i == k ? 1 : 0 ) * ( j == l ? 1 : 0 ) + ( i == l ? 1 : 0 ) * ( j == k ? 1 : 0 ) );
           // check if they are the same
           throwExceptionOnFailure( checkIfEqual( ijklSym, Isym( i, j, k, l ) ),
-                                   MakeString() << __PRETTY_FUNCTION__ << " Error in initializing Isym." );
+                                   Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << " Error in initializing Isym." );
         }
 }
 
@@ -83,7 +86,8 @@ auto testInitialize_Iskew()
           ijklSkew = 0.5 * ( ( i == k ? 1 : 0 ) * ( j == l ? 1 : 0 ) - ( i == l ? 1 : 0 ) * ( j == k ? 1 : 0 ) );
           // check if they are the same
           throwExceptionOnFailure( checkIfEqual( ijklSkew, Iskew( i, j, k, l ) ),
-                                   MakeString() << __PRETTY_FUNCTION__ << " Error in initializing Iskew." );
+                                   Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << " Error in initializing Iskew." );
         }
 }
 
@@ -99,7 +103,7 @@ auto testInitialize_dDeviatoricStress_dStress()
           Idev = ( i == k ? 1 : 0 ) * ( j == l ? 1 : 0 ) - 1 / 3. * ( i == j ? 1 : 0 ) * ( k == l ? 1 : 0 );
           // check if they are the same
           throwExceptionOnFailure( checkIfEqual( Idev, dDeviatoricStress_dStress( i, j, k, l ) ),
-                                   MakeString()
+                                   Marmot::Utilities::MakeString()
                                      << __PRETTY_FUNCTION__ << " Error in initializing dDeviatoricStress_dStress." );
         }
 }
@@ -117,7 +121,8 @@ auto testInitialize_LeviCivita3D()
                 : 0.0 );
         // check if they are the same
         throwExceptionOnFailure( checkIfEqual( e, LeviCivita3D( i, j, k ) ),
-                                 MakeString() << __PRETTY_FUNCTION__ << " Error in initializing LeviCivita3D." );
+                                 Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << " Error in initializing LeviCivita3D." );
       }
 }
 
@@ -131,7 +136,8 @@ auto testInitialize_LeviCivita2D()
       e = ( ( j != k ) ? ( ( j > k ) ? -1.0 : 1.0 ) : 0.0 );
       // check if they are the same
       throwExceptionOnFailure( checkIfEqual( e, LeviCivita2D( 0, j, k ) ),
-                               MakeString() << __PRETTY_FUNCTION__ << " Error in initializing LeviCivita2D." );
+                               Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__ << " Error in initializing LeviCivita2D." );
     }
 }
 
@@ -144,7 +150,7 @@ auto testDyadicProduct()
   Eigen::Vector3d b;
   b << 4, 5, 6;
   throwExceptionOnFailure( checkIfEqual< double >( dyadicExpect, dyadicProduct( a, b ), 1e-15 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " Error in in dyadic product." );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " Error in in dyadic product." );
 }
 
 int main()

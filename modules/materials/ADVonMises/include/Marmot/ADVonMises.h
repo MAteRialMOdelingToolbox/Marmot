@@ -28,16 +28,21 @@
 #include "Marmot/MarmotMaterialHypoElasticAD.h"
 #include <Eigen/src/Core/Map.h>
 
-using namespace Marmot;
-
 namespace Marmot::Materials {
   /**
    * @brief Implementation of a isotropic J2-plasticity  material
    * for 3D stress states using automatic differentiation.
    */
-  class ADVonMises : public MarmotMaterialHypoElasticAD {
+  class ADVonMises : public Marmot::Materials::MaterialHypoElasticAD {
   public:
-    using MarmotMaterialHypoElasticAD::MarmotMaterialHypoElasticAD;
+    /// @brief Numerical constants for the ADVonMises return-mapping algorithm.
+    struct Constants {
+      static constexpr double innerNewtonTol        = 1e-10; ///< Convergence tolerance for the inner Newton iteration.
+      static constexpr int    nMaxInnerNewtonCycles = 15;    ///< Maximum number of inner Newton iterations.
+    };
+
+  public:
+    using Marmot::Materials::MaterialHypoElasticAD::MaterialHypoElasticAD;
 
     /// @brief Young’s modulus.
     const double& E;
@@ -59,13 +64,14 @@ namespace Marmot::Materials {
     double getDensity( const double* stateVars ) const override;
 
   protected:
-    void computeStressAD( state3DAD&                 state,
-                          const Marmot::Vector6dual& dStrain,
-                          const timeInfo&            timeInfo ) const override;
+    void computeStressAD( state3DAD&                       state,
+                          const Marmot::Math::Vector6dual& dStrain,
+                          const timeInfo&                  timeInfo ) const override;
 
     /**
      * @brief Hardening function.
-     * @tparam[in] kappa Hardening variable.
+     * @tparam T Scalar type (double or an automatic differentiation type).
+     * @param[in] kappa_ Hardening variable.
      * @returns Current yield stress.
      */
     template < typename T >
@@ -77,28 +83,31 @@ namespace Marmot::Materials {
 
     /**
      * @brief Yield function.
-     * @tparam[in] rho Deviatoric radius (\f$\rho = ||s||\f$).
-     * @param[in] kappa Hardening variable.
+     * @tparam T Scalar type (double or an automatic differentiation type).
+     * @param[in] rho_ Deviatoric radius (\f$\rho = ||s||\f$).
+     * @param[in] kappa_ Hardening variable.
      * @returns Value of the yield function.
      */
     template < typename T >
     T f( const T rho_, const double kappa_ ) const
     {
-      return rho_ - Constants::sqrt2_3 * fy( kappa_ );
+      return rho_ - Marmot::Math::Constants::sqrt2_3 * fy( kappa_ );
     }
 
     /**
      * @brief Objective function for stress update algorithm.
-     * @tparam[in] rhoTrial Deviatoric radius.
+     * @tparam T Scalar type (double or an automatic differentiation type).
+     * @param[in] rhoTrial Deviatoric radius.
      * @param[in] kappa Current value of the hardening variable.
-     * @tparam[in] deltaKappa Increment of the hardening variable.
+     * @param[in] deltaKappa Increment of the hardening variable.
      * @returns Value of the yield function.
      */
     template < typename T >
     T g( const T rhoTrial, const double kappa, const T deltaKappa ) const
     {
       const T kappa_ = kappa + deltaKappa;
-      return rhoTrial - Constants::sqrt6 * G * deltaKappa - Constants::sqrt2_3 * fy( kappa_ );
+      return rhoTrial - Marmot::Math::Constants::sqrt6 * G * deltaKappa -
+             Marmot::Math::Constants::sqrt2_3 * fy( kappa_ );
     }
   };
 } // namespace Marmot::Materials
