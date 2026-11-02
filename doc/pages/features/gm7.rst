@@ -21,7 +21,7 @@ volumetric and shear boundaries are evaluated with the *over-nonlocal* strain in
 in which :math:`m` weights the nonlocal against the local strain. The consistent tangents with respect to the local
 and the nonlocal strain follow accordingly.
 
-The microplane discretization is taken from the shared ``Marmot::Microplane`` module (37-microplane scheme ``N37``,
+The microplane discretization is taken from the shared ``Marmot::ContinuumMechanics::Microplane`` module (37-microplane scheme ``N37``,
 fixed at compile time). The closed-form transition function for the elastic unloading stiffness and the gradient
 enhancement of the boundaries are introduced in Basche et al. (2026). The constitutive laws of M7 are
 implemented once in ``MicroplaneM7Formulation`` and shared with :ref:`MicroplaneM7 <microplanem7>`; GM7 therefore

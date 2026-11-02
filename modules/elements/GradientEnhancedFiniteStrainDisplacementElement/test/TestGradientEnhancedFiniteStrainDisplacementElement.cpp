@@ -12,7 +12,7 @@
 #include <vector>
 
 using namespace Marmot;
-using namespace Marmot::Elements;
+using namespace Marmot::Discretizations::Elements;
 using namespace Marmot::Testing;
 
 namespace {
@@ -49,19 +49,20 @@ namespace {
 
   // An element made through the factory, with properties, state and initialization -- as a host does it.
   struct Setup {
-    std::unique_ptr< MarmotElement > element;
-    std::vector< double >            stateVars;
-    std::vector< double >            elementProperties;
+    std::unique_ptr< Marmot::Discretizations::Elements::Element > element;
+    std::vector< double >                                         stateVars;
+    std::vector< double >                                         elementProperties;
 
     Setup( const std::string& name, const std::vector< double >& coordinates )
-      : element( MarmotLibrary::MarmotElementFactory::createElement( name, 1 ) ), elementProperties( { 1.0 } )
+      : element( Marmot::Registry::ElementFactory::createElement( name, 1 ) ), elementProperties( { 1.0 } )
     {
       element->assignNodeCoordinates( coordinates.data() );
       element->assignProperty(
-        ElementProperties( elementProperties.data(), static_cast< int >( elementProperties.size() ) ) );
-      element->assignProperty( MarmotMaterialSection( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
-                                                      matProps.data(),
-                                                      static_cast< int >( matProps.size() ) ) );
+        Marmot::Discretizations::ElementProperties( elementProperties.data(),
+                                                    static_cast< int >( elementProperties.size() ) ) );
+      element->assignProperty( Marmot::Discretizations::MaterialSection( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
+                                                                         matProps.data(),
+                                                                         static_cast< int >( matProps.size() ) ) );
       stateVars.assign( element->getNumberOfRequiredStateVars(), 0.0 );
       element->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
       element->initializeYourself();
@@ -71,7 +72,8 @@ namespace {
     void reset()
     {
       std::fill( stateVars.begin(), stateVars.end(), 0.0 );
-      element->setInitialConditions( MarmotElement::MarmotMaterialInitialization, nullptr );
+      element->setInitialConditions( Marmot::Discretizations::Elements::Element::MarmotMaterialInitialization,
+                                     nullptr );
     }
 
     int nDof() const { return element->getNDofPerElement(); }
@@ -128,15 +130,16 @@ namespace {
 
     const double relError = ( K - numK ).norm() / numK.norm();
     throwExceptionOnFailure( relError < 1e-7,
-                             MakeString() << name << ": stiffness does not match the numerical tangent, relative error "
-                                          << relError );
+                             Marmot::Utilities::MakeString()
+                               << name << ": stiffness does not match the numerical tangent, relative error "
+                               << relError );
 
     // the coupling block dr_U/dN is small against the total, so check it on its own scale as well
     const int    nU       = nNodes * nDim;
     const double relErrUN = ( K.block( 0, nU, nU, nNodes ) - numK.block( 0, nU, nU, nNodes ) ).norm() /
                             numK.block( 0, nU, nU, nNodes ).norm();
     throwExceptionOnFailure( relErrUN < 1e-6,
-                             MakeString()
+                             Marmot::Utilities::MakeString()
                                << name << ": coupling block dr_U/dN inconsistent, relative error " << relErrUN );
   }
 
@@ -213,7 +216,8 @@ void testRigidRotationIsStressFree()
 
   const auto P = h8.kernels( Q ).first;
   throwExceptionOnFailure( P.norm() < 1e-9,
-                           MakeString() << "rigid rotation must not load the element, |P| = " << P.norm() );
+                           Marmot::Utilities::MakeString()
+                             << "rigid rotation must not load the element, |P| = " << P.norm() );
 }
 
 void testInternalForcesAreSelfEquilibrated()
@@ -238,7 +242,14 @@ void testPressureLoadTangent()
   auto load = [&]( const Eigen::VectorXd& Q ) {
     Eigen::VectorXd P = Eigen::VectorXd::Zero( q8.nDof() );
     Eigen::MatrixXd K = Eigen::MatrixXd::Zero( q8.nDof(), q8.nDof() );
-    q8.element->computeDistributedLoad( MarmotElement::Pressure, P.data(), K.data(), face, &p, Q.data(), 0.0, 1.0 );
+    q8.element->computeDistributedLoad( Marmot::Discretizations::Elements::Element::Pressure,
+                                        P.data(),
+                                        K.data(),
+                                        face,
+                                        &p,
+                                        Q.data(),
+                                        0.0,
+                                        1.0 );
     return std::make_pair( P, K );
   };
 
@@ -270,7 +281,7 @@ void testGeostaticInitialState()
           std::tuple< std::string, std::vector< double >, int, int > >{ { "GCPE8UL", quad8Coordinates, 2, 8 },
                                                                         { "GC3D8UL", hexa8Coordinates, 3, 8 } } ) {
     Setup s( name, coordinates );
-    s.element->setInitialConditions( MarmotElement::GeostaticStress, geostaticDef );
+    s.element->setInitialConditions( Marmot::Discretizations::Elements::Element::GeostaticStress, geostaticDef );
 
     Eigen::VectorXd P = Eigen::VectorXd::Zero( s.nDof() );
     Eigen::MatrixXd K = Eigen::MatrixXd::Zero( s.nDof(), s.nDof() );
@@ -280,8 +291,8 @@ void testGeostaticInitialState()
     const double* tau = s.element->getStateView( "stress", 0 ).stateLocation;
     for ( int i = 0; i < 3; i++ )
       throwExceptionOnFailure( std::abs( tau[4 * i] - sigma ) < 1e-8 * std::abs( sigma ),
-                               MakeString() << name << ": geostatic stress not reproduced, tau_" << i << i << " = "
-                                            << tau[4 * i] );
+                               Marmot::Utilities::MakeString() << name << ": geostatic stress not reproduced, tau_" << i
+                                                               << i << " = " << tau[4 * i] );
   }
 }
 
@@ -294,7 +305,14 @@ void testSurfaceTractionAndBodyForce()
     Eigen::VectorXd       P    = Eigen::VectorXd::Zero( q8.nDof() );
     Eigen::MatrixXd       K    = Eigen::MatrixXd::Zero( q8.nDof(), q8.nDof() );
     const Eigen::VectorXd Q    = Eigen::VectorXd::Zero( q8.nDof() );
-    q8.element->computeDistributedLoad( MarmotElement::SurfaceTraction, P.data(), K.data(), 1, t, Q.data(), 0., 1. );
+    q8.element->computeDistributedLoad( Marmot::Discretizations::Elements::Element::SurfaceTraction,
+                                        P.data(),
+                                        K.data(),
+                                        1,
+                                        t,
+                                        Q.data(),
+                                        0.,
+                                        1. );
     for ( int i = 0; i < 2; i++ ) {
       double sum = 0;
       for ( int A = 0; A < 8; A++ )
@@ -338,7 +356,14 @@ void testPressureLoadTangentHexa8()
   auto load = [&]( const Eigen::VectorXd& Q ) {
     Eigen::VectorXd P = Eigen::VectorXd::Zero( h8.nDof() );
     Eigen::MatrixXd K = Eigen::MatrixXd::Zero( h8.nDof(), h8.nDof() );
-    h8.element->computeDistributedLoad( MarmotElement::Pressure, P.data(), K.data(), face, &p, Q.data(), 0.0, 1.0 );
+    h8.element->computeDistributedLoad( Marmot::Discretizations::Elements::Element::Pressure,
+                                        P.data(),
+                                        K.data(),
+                                        face,
+                                        &p,
+                                        Q.data(),
+                                        0.0,
+                                        1.0 );
     return std::make_pair( P, K );
   };
 
@@ -393,7 +418,8 @@ void testEnergyAndDissipationArePersisted()
   K.setZero();
   q8.element->computeKernels( Q2.data(), dQ.data(), P.data(), K.data(), 1.0, 1.0 );
   const double d2 = *q8.element->getStateView( "dissipation density", 0 ).stateLocation;
-  throwExceptionOnFailure( d2 > d1, MakeString() << "dissipation must accumulate: " << d1 << " -> " << d2 );
+  throwExceptionOnFailure( d2 > d1,
+                           Marmot::Utilities::MakeString() << "dissipation must accumulate: " << d1 << " -> " << d2 );
 
   // the increment alone: the same second increment from a fresh state that only knows the damage history
   Setup fresh( "GCPE8UL", quad8Coordinates );
@@ -416,7 +442,14 @@ void testUnsupportedRequestsThrow()
   bool loadThrew = false;
   try {
     const double load[1] = { 1.0 };
-    q8.element->computeDistributedLoad( MarmotElement::SurfaceTorsion, P.data(), K.data(), 1, load, Q.data(), 0., 1. );
+    q8.element->computeDistributedLoad( Marmot::Discretizations::Elements::Element::SurfaceTorsion,
+                                        P.data(),
+                                        K.data(),
+                                        1,
+                                        load,
+                                        Q.data(),
+                                        0.,
+                                        1. );
   }
   catch ( const std::invalid_argument& ) {
     loadThrew = true;
@@ -425,7 +458,7 @@ void testUnsupportedRequestsThrow()
 
   bool initialConditionThrew = false;
   try {
-    q8.element->setInitialConditions( MarmotElement::HydrostaticStress, nullptr );
+    q8.element->setInitialConditions( Marmot::Discretizations::Elements::Element::HydrostaticStress, nullptr );
   }
   catch ( const std::invalid_argument& ) {
     initialConditionThrew = true;
@@ -437,7 +470,7 @@ void testUnsupportedRequestsThrow()
   for ( auto section : { Element::PlaneStress, Element::Solid } ) {
     bool sectionThrew = false;
     try {
-      Element element( 1, FiniteElement::Quadrature::IntegrationTypes::FullIntegration, section );
+      Element element( 1, Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration, section );
     }
     catch ( const std::invalid_argument& ) {
       sectionThrew = true;

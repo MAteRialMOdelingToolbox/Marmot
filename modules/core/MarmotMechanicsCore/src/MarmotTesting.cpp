@@ -101,12 +101,12 @@ namespace Marmot::Testing {
     }
   }
 
-  bool spinTurbokreisel( Marmot::Solvers::MarmotMaterialPointSolverHypoElastic& solver,
-                         const double                                           stressTol,
-                         const double                                           stiffnessTol )
+  bool spinTurbokreisel( Marmot::Materials::MaterialPointSolverHypoElastic& solver,
+                         const double                                       stressTol,
+                         const double                                       stiffnessTol )
   {
     using namespace Eigen;
-    using namespace ContinuumMechanics::VoigtNotation;
+    using namespace ContinuumMechanics::Voigt;
 
     // modify steps to account for rotation
     const auto steps = solver.getSteps();
@@ -130,11 +130,12 @@ namespace Marmot::Testing {
     // solveStep()'s internal loop run zero times, recording no history entry for it.
     // Guard against history.back() on an empty history in that (or any other) case.
     if ( history.empty() )
-      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__
-                                             << ": solver.solve() produced no history entries (check for "
-                                                "zero-duration steps, i.e. timeStart == timeEnd)" );
-    const Vector6d refStress( history.back().stress );
-    const Matrix6d refStiffness( history.back().dStressdStrain );
+      throw std::runtime_error( Marmot::Utilities::MakeString()
+                                << __PRETTY_FUNCTION__
+                                << ": solver.solve() produced no history entries (check for "
+                                   "zero-duration steps, i.e. timeStart == timeEnd)" );
+    const Marmot::Math::Vector6d refStress( history.back().stress );
+    const Marmot::Math::Matrix6d refStiffness( history.back().dStressdStrain );
 
     const int                     N   = 100;
     Eigen::Matrix< double, N, 2 > pts = fibonacciLatticeHemisphere< N >();
@@ -148,12 +149,12 @@ namespace Marmot::Testing {
       theta = pt[1];
 
       // transformation matrix
-      AngleAxisd phiX( theta, Vector3d::UnitX() );
-      AngleAxisd phiY( phi, Vector3d::UnitY() );
-      AngleAxisd phiZ( 0, Vector3d::UnitZ() );
+      AngleAxisd phiX( theta, Marmot::Math::Vector3d::UnitX() );
+      AngleAxisd phiY( phi, Marmot::Math::Vector3d::UnitY() );
+      AngleAxisd phiZ( 0, Marmot::Math::Vector3d::UnitZ() );
 
-      Matrix3d e = ( phiX * phiY * phiZ ).matrix().transpose();
-      /* Matrix3d e_ = e.transpose(); */
+      Marmot::Math::Matrix3d e = ( phiX * phiY * phiZ ).matrix().transpose();
+      /* Marmot::Math::Matrix3d e_ = e.transpose(); */
 
       std::cout << "coordinate system: iteration " << i1 << "\n" << e << "\n" << std::endl;
 
@@ -167,11 +168,11 @@ namespace Marmot::Testing {
       for ( auto& step : steps ) {
         auto modifiedStep = step;
         modifiedStep
-          .strainIncrementTarget = Transformations::transformStrainToLocalSystem( Vector6d(
+          .strainIncrementTarget = Transformations::transformStrainToLocalSystem( Marmot::Math::Vector6d(
                                                                                     step.strainIncrementTarget ),
                                                                                   e );
         std::cout << "modified strain increment target:\n"
-                  << Vector6d( modifiedStep.strainIncrementTarget ).transpose() << "\n"
+                  << Marmot::Math::Vector6d( modifiedStep.strainIncrementTarget ).transpose() << "\n"
                   << std::endl;
         solver.addStep( modifiedStep );
       };
@@ -181,8 +182,8 @@ namespace Marmot::Testing {
 
       auto history_ = solver.getHistory();
 
-      const Vector6d S  = Vector6d( history_.back().stress );
-      const Vector6d S_ = Transformations::transformStressToGlobalSystem( S, e );
+      const Marmot::Math::Vector6d S  = Marmot::Math::Vector6d( history_.back().stress );
+      const Marmot::Math::Vector6d S_ = Transformations::transformStressToGlobalSystem( S, e );
 
       // check stress
       if ( !checkIfEqual( MatrixXd( S_ ), MatrixXd( refStress ), stressTol ) ) {
@@ -194,8 +195,8 @@ namespace Marmot::Testing {
       };
 
       // get tangent in new coordinate system
-      Matrix6d dS_dE  = Matrix6d( history_.back().dStressdStrain );
-      Matrix6d dS_dE_ = Transformations::transformStiffnessToGlobalSystem( dS_dE, e );
+      Marmot::Math::Matrix6d dS_dE  = Marmot::Math::Matrix6d( history_.back().dStressdStrain );
+      Marmot::Math::Matrix6d dS_dE_ = Transformations::transformStiffnessToGlobalSystem( dS_dE, e );
 
       // check tangent
       if ( !checkIfEqual( MatrixXd( dS_dE_ ), MatrixXd( refStiffness ), stiffnessTol ) ) {

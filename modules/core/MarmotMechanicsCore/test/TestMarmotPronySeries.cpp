@@ -18,13 +18,13 @@ void testPronySeriesWithZeroMaxwellElements()
   const auto C0 = Elasticity::Isotropic::stiffnessTensor( 100, 0.3 );
 
   using namespace Marmot::ContinuumMechanics::Viscoelasticity::PronySeries;
-  Properties     props = { nMaxwell, C0, Marmot::Vector6d::Zero(), Marmot::Matrix6d::Zero() };
+  Properties     props = { nMaxwell, C0, Marmot::Math::Vector6d::Zero(), Marmot::Math::Matrix6d::Zero() };
   StateVarMatrix stateVars;
 
   // define the strain increment, stress, and stiffness
-  Marmot::Vector6d dStrain   = Vector6d::Zero();
-  Marmot::Vector6d stress    = Vector6d::Zero();
-  Marmot::Matrix6d stiffness = Matrix6d::Zero();
+  Marmot::Math::Vector6d dStrain   = Marmot::Math::Vector6d::Zero();
+  Marmot::Math::Vector6d stress    = Marmot::Math::Vector6d::Zero();
+  Marmot::Math::Matrix6d stiffness = Marmot::Math::Matrix6d::Zero();
 
   // set strain increment
   dStrain( 0 ) = 1.0e-3;
@@ -37,10 +37,10 @@ void testPronySeriesWithZeroMaxwellElements()
   evaluatePronySeries( props, stress, stiffness, stateVars, dStrain, 1.0, false );
 
   throwExceptionOnFailure( checkIfEqual< double >( stress, C0 * dStrain ),
-                           MakeString() << __PRETTY_FUNCTION__ << "stress computation failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "stress computation failed" );
 
   throwExceptionOnFailure( checkIfEqual< double >( stiffness, C0 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "stiffness computation failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << "stiffness computation failed" );
 }
 
 void testPronySeriesWithOneMaxwellElement()
@@ -57,13 +57,13 @@ void testPronySeriesWithOneMaxwellElement()
   const auto C0 = Elasticity::Isotropic::stiffnessTensor( 100, 0.0 ); // zero Poisson's ratio for simplicity
 
   using namespace Marmot::ContinuumMechanics::Viscoelasticity::PronySeries;
-  Properties     props     = { nMaxwell, C0, Marmot::Vector6d::Zero(), Marmot::Matrix6d::Zero() };
-  StateVarMatrix stateVars = Marmot::Matrix6d::Zero();
+  Properties     props     = { nMaxwell, C0, Marmot::Math::Vector6d::Zero(), Marmot::Math::Matrix6d::Zero() };
+  StateVarMatrix stateVars = Marmot::Math::Matrix6d::Zero();
 
   // define the strain increment, stress, and stiffness
-  Marmot::Vector6d dStrain   = Vector6d::Zero();
-  Marmot::Vector6d stress    = Vector6d::Zero();
-  Marmot::Matrix6d stiffness = Matrix6d::Zero();
+  Marmot::Math::Vector6d dStrain   = Marmot::Math::Vector6d::Zero();
+  Marmot::Math::Vector6d stress    = Marmot::Math::Vector6d::Zero();
+  Marmot::Math::Matrix6d stiffness = Marmot::Math::Matrix6d::Zero();
 
   // set strain increment
   dStrain( 0 ) = 1.0e-3;
@@ -74,9 +74,9 @@ void testPronySeriesWithOneMaxwellElement()
   dStrain( 5 ) = 6.0e-3;
 
   // define the Prony series parameters
-  Marmot::Matrix6d relaxationTimes = Matrix6d::Zero();
+  Marmot::Math::Matrix6d relaxationTimes = Marmot::Math::Matrix6d::Zero();
   relaxationTimes.setConstant( 1.0 );
-  Marmot::Matrix6d C1 = C0 * 0.1;
+  Marmot::Math::Matrix6d C1 = C0 * 0.1;
 
   props.pronyRelaxationTimes = relaxationTimes;
   props.pronyStiffnesses     = C1;
@@ -84,30 +84,34 @@ void testPronySeriesWithOneMaxwellElement()
   // test for a huge time step, where the Prony series should converge to the Elastic case
   evaluatePronySeries( props, stress, stiffness, stateVars, dStrain, 1e10, false );
   throwExceptionOnFailure( checkIfEqual< double >( stress, C0 * dStrain, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "stress computation failed (t -> inf)" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "stress computation failed (t -> inf)" );
 
   // testfor zero time step, where the Prony series should converge to the Elastic case
   stress.setZero();
   evaluatePronySeries( props, stress, stiffness, stateVars, dStrain, 0, true );
   throwExceptionOnFailure( checkIfEqual< double >( stress, C0 * dStrain, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "stress computation failed (dT = 0)" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "stress computation failed (dT = 0)" );
 
   // test for a small time step
-  const double     dt           = 0.2;
-  Marmot::Vector6d stressTarget = 2 * C0 * dStrain + ( stress - C0 * dStrain ) * std::exp( -dt ) +
-                                  ( 1. - std::exp( -dt ) ) / dt * C1 * dStrain;
+  const double           dt           = 0.2;
+  Marmot::Math::Vector6d stressTarget = 2 * C0 * dStrain + ( stress - C0 * dStrain ) * std::exp( -dt ) +
+                                        ( 1. - std::exp( -dt ) ) / dt * C1 * dStrain;
   evaluatePronySeries( props, stress, stiffness, stateVars, dStrain, dt, true );
 
   throwExceptionOnFailure( checkIfEqual< double >( stress, stressTarget, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "stress computation failed (loading dT != 0)" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "stress computation failed (loading dT != 0)" );
 
   // new stress target for zero strain increment (relaxation)
   stressTarget = 2 * C0 * dStrain + ( stress - 2 * C0 * dStrain ) * std::exp( -dt );
   dStrain.setZero();
-  evaluatePronySeries( props, stress, stiffness, stateVars, Vector6d::Zero(), dt, false );
+  evaluatePronySeries( props, stress, stiffness, stateVars, Marmot::Math::Vector6d::Zero(), dt, false );
 
   throwExceptionOnFailure( checkIfEqual< double >( stress, stressTarget, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__ << "stress computation failed (relaxation)" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << "stress computation failed (relaxation)" );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -127,36 +131,37 @@ void testUpdateStateVarsMatchesEvaluatePronySeries()
 
   using namespace Marmot::ContinuumMechanics::Viscoelasticity::PronySeries;
 
-  Marmot::Matrix6d relaxationTimes = Matrix6d::Zero();
+  Marmot::Math::Matrix6d relaxationTimes = Marmot::Math::Matrix6d::Zero();
   relaxationTimes.setConstant( 1.0 );
-  const Marmot::Matrix6d C1 = C0 * 0.1;
+  const Marmot::Math::Matrix6d C1 = C0 * 0.1;
 
-  Properties props           = { nMaxwell, C0, Marmot::Vector6d::Zero(), Marmot::Matrix6d::Zero() };
+  Properties props           = { nMaxwell, C0, Marmot::Math::Vector6d::Zero(), Marmot::Math::Matrix6d::Zero() };
   props.pronyRelaxationTimes = relaxationTimes;
   props.pronyStiffnesses     = C1;
 
-  Marmot::Vector6d dStrain = Vector6d::Zero();
-  dStrain( 0 )             = 1.0e-3;
-  dStrain( 3 )             = 4.0e-3;
-  const double dt          = 0.2;
+  Marmot::Math::Vector6d dStrain = Marmot::Math::Vector6d::Zero();
+  dStrain( 0 )                   = 1.0e-3;
+  dStrain( 3 )                   = 4.0e-3;
+  const double dt                = 0.2;
 
   // Give both starting points the same non-trivial initial state (as if a previous increment had
   // already been applied), rather than the all-zero initial state used above.
   StateVarMatrix initialStateVars = StateVarMatrix::Zero( 6, 6 );
   initialStateVars.setConstant( 0.01 );
 
-  StateVarMatrix   stateVarsViaEvaluate = initialStateVars;
-  Marmot::Vector6d stress               = Vector6d::Zero();
-  Marmot::Matrix6d stiffness            = Matrix6d::Zero();
+  StateVarMatrix         stateVarsViaEvaluate = initialStateVars;
+  Marmot::Math::Vector6d stress               = Marmot::Math::Vector6d::Zero();
+  Marmot::Math::Matrix6d stiffness            = Marmot::Math::Matrix6d::Zero();
   evaluatePronySeries( props, stress, stiffness, stateVarsViaEvaluate, dStrain, dt, true );
 
   StateVarMatrix stateVarsViaUpdate = initialStateVars;
   updateStateVars( props, stateVarsViaUpdate, dStrain, dt );
 
   throwExceptionOnFailure( checkIfEqual< double >( stateVarsViaUpdate, stateVarsViaEvaluate, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << " updateStateVars() does not match evaluatePronySeries()'s own "
-                                           "state-variable update" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << " updateStateVars() does not match evaluatePronySeries()'s own "
+                                "state-variable update" );
 }
 
 int main()

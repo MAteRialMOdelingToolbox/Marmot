@@ -27,13 +27,15 @@
 #include <cstring>
 #include <ctime>
 
-namespace Marmot::MaterialPoints {
+namespace Marmot::Discretizations::MaterialPoints {
 
   void DisplacementMaterialPoint2D::incrementDeformation( const TensorD& du, const TensorDD& du_dY )
   {
-    mapEigenToFastor( state->du ) += mapEigenToFastor( expandTo3D( du ) );
+    Marmot::Math::Tensors::mapEigenToFastor( state->du ) += Marmot::Math::Tensors::mapEigenToFastor(
+      Marmot::Math::Tensors::expandTo3D( du ) );
 
-    mapEigenToFastor( state->dx_dY ) += mapEigenToFastor( expandTo3D( du_dY ) );
+    Marmot::Math::Tensors::mapEigenToFastor( state->dx_dY ) += Marmot::Math::Tensors::mapEigenToFastor(
+      Marmot::Math::Tensors::expandTo3D( du_dY ) );
   };
 
   void DisplacementMaterialPoint2D::computeYourself( double timeNew, double dT )
@@ -48,7 +50,7 @@ namespace Marmot::MaterialPoints {
 #  pragma GCC diagnostic push
 #  pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 #endif
-    const FastorStandardTensors::Tensor33d dx_dX = state->dx_dY % state->dY_dX;
+    const Marmot::Math::Tensors::FastorTensors::Tensor33d dx_dX = state->dx_dY % state->dY_dX;
 #if defined( __GNUC__ ) && !defined( __clang__ )
 #  pragma GCC diagnostic pop
 #endif
@@ -64,21 +66,21 @@ namespace Marmot::MaterialPoints {
     material->computePlaneStrain( response3D, algorithmicModuli3D, deformation3D, timeIncrement );
 
     // clang-format off
-    this->response = { .S = reduceTo2D< U, U >( response3D.tau ),
+    this->response = { .S = Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U, Marmot::Math::Tensors::U >( response3D.tau ),
     };
 
     state->stress = response3D.tau;
 
-    using namespace FastorStandardTensors;
-    using namespace FastorIndices;
+    using namespace Marmot::Math::Tensors::FastorTensors;
+    using namespace Marmot::Math::Tensors::FastorIndices;
 
-    const auto& I = Marmot::FastorStandardTensors::Spatial3D::I;
+    const auto& I = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
 
     const Tensor3333d dF_dDeltaF_3D = einsum< ij, JI, to_iIjJ >(I, state->dY_dX);
-    const TensorDDDD dF_dDeltaF = reduceTo2D<U,U,U,U>(dF_dDeltaF_3D);
+    const TensorDDDD dF_dDeltaF = Marmot::Math::Tensors::reduceTo2D<Marmot::Math::Tensors::U,Marmot::Math::Tensors::U,Marmot::Math::Tensors::U,Marmot::Math::Tensors::U>(dF_dDeltaF_3D);
 
     this->tangents = {
-        reduceTo2D< U, U, U, U >    ( algorithmicModuli3D.dTau_dF),
+        Marmot::Math::Tensors::reduceTo2D< Marmot::Math::Tensors::U, Marmot::Math::Tensors::U, Marmot::Math::Tensors::U, Marmot::Math::Tensors::U >    ( algorithmicModuli3D.dTau_dF),
     };
 
     tangents.dS_dDeltaF = einsum<ijmn, mnKL>(tangents.dS_dDeltaF, dF_dDeltaF);
@@ -89,8 +91,8 @@ namespace Marmot::MaterialPoints {
 
   void DisplacementMaterialPoint3D::incrementDeformation( const TensorD& du, const TensorDD& du_dY )
   {
-    mapEigenToFastor( state->du ) += mapEigenToFastor( ( du ) );
-    mapEigenToFastor( state->dx_dY ) += mapEigenToFastor( ( du_dY ) );
+    Marmot::Math::Tensors::mapEigenToFastor( state->du ) += Marmot::Math::Tensors::mapEigenToFastor( ( du ) );
+    Marmot::Math::Tensors::mapEigenToFastor( state->dx_dY ) += Marmot::Math::Tensors::mapEigenToFastor( ( du_dY ) );
   };
 
   void DisplacementMaterialPoint3D::computeYourself( double timeNew, double dT )
@@ -98,14 +100,14 @@ namespace Marmot::MaterialPoints {
 
     const Material ::TimeIncrement timeIncrement{ timeNew, dT };
 
-    /* const FastorStandardTensors::Tensor33d dx_dX_n  = state->dY_dX; */
+    /* const Marmot::Math::Tensors::FastorTensors::Tensor33d dx_dX_n  = state->dY_dX; */
 #if defined( __GNUC__ ) && !defined( __clang__ )
 // GCC's -Wmaybe-uninitialized misfires on Fastor's AVX copies of the mapped state tensors: the
 // mapped memory is initialized by the host, which GCC cannot see (observed with GCC 14 at x86-64-v3).
 #  pragma GCC diagnostic push
 #  pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 #endif
-    const FastorStandardTensors::Tensor33d dx_dX = state->dx_dY % state->dY_dX;
+    const Marmot::Math::Tensors::FastorTensors::Tensor33d dx_dX = state->dx_dY % state->dY_dX;
 #if defined( __GNUC__ ) && !defined( __clang__ )
 #  pragma GCC diagnostic pop
 #endif
@@ -126,10 +128,10 @@ namespace Marmot::MaterialPoints {
 
     state->stress = response3D.tau;
 
-    using namespace FastorStandardTensors;
-    using namespace FastorIndices;
+    using namespace Marmot::Math::Tensors::FastorTensors;
+    using namespace Marmot::Math::Tensors::FastorIndices;
 
-    const auto& I = Marmot::FastorStandardTensors::Spatial3D::I;
+    const auto& I = Marmot::Math::Tensors::FastorTensors::Spatial3D::I;
 
     const Tensor3333d dF_dDeltaF_3D = einsum< ij, JI, to_iIjJ >(I, state->dY_dX);
     const TensorDDDD dF_dDeltaF = (dF_dDeltaF_3D);
@@ -142,4 +144,4 @@ namespace Marmot::MaterialPoints {
     _density = material->getDensity( state->materialState.data() );
   }
 
-} // namespace Marmot::MaterialPoints
+} // namespace Marmot::Discretizations::MaterialPoints

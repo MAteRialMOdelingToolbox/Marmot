@@ -4,7 +4,7 @@
 
 using namespace Marmot;
 using namespace Marmot::Testing;
-using namespace Marmot::FiniteElement::Quadrature::Spatial2D;
+using namespace Marmot::Discretizations::Elements::Quadrature::Spatial2D;
 
 // ---------------------------------------------------------------------------------------------
 // modifyCharElemLengthAbaqusLike(): has no callers anywhere in the codebase (verified by search),

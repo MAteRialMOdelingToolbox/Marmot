@@ -2,7 +2,7 @@
 #include "Marmot/MarmotMath.h"
 #include <Eigen/Dense>
 
-namespace Marmot::GeostaticStress {
+namespace Marmot::ContinuumMechanics::GeostaticStress {
 
   std::tuple< double, double, double > getGeostaticStressFromLinearDistribution(
     const double* geostaticStressDefinition,
@@ -20,4 +20,4 @@ namespace Marmot::GeostaticStress {
 
     return { S11Geostatic, S22Geostatic, S33Geostatic };
   }
-} // namespace Marmot::GeostaticStress
+} // namespace Marmot::ContinuumMechanics::GeostaticStress

@@ -150,7 +150,7 @@ The element stores the shape functions :math:`\mathbf{N}` and their gradients :m
 quadrature point, but not the strain-displacement matrix :math:`\mathbf{B}`, which is mostly zeros. The implicit kernel forms
 :math:`\mathbf{B}` on the fly, because the tangent blocks need it. Neither kernel needs it for the strain increment and the
 internal force: they are computed as the symmetric part of the displacement gradient and from the stress directly
-(``Marmot::FiniteElement::SmallStrain::strainIncrement`` and ``addInternalForce``),
+(``Marmot::Discretizations::Elements::SmallStrain::strainIncrement`` and ``addInternalForce``),
 
 .. math::
 
@@ -173,5 +173,5 @@ These are reorderings of the same floating-point operations; results change at m
 Implementation
 --------------
 
-.. doxygenclass:: Marmot::Elements::GeneralGradientEnhancedDisplacementFiniteElement
+.. doxygenclass:: Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement
    :allow-dot-graphs:

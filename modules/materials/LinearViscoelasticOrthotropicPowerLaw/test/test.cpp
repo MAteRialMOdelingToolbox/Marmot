@@ -3,7 +3,7 @@
 #include <Eigen/Dense>
 
 using namespace Marmot::Testing;
-using namespace Marmot::Solvers;
+using namespace Marmot::Materials;
 
 Eigen::Vector< double, 23 > getMaterialPropertiesIsotropic()
 {
@@ -48,15 +48,15 @@ void testLinearViscoelasticOrthotropicPowerLawIsotropic()
 {
 
   auto        materialProperties = getMaterialPropertiesIsotropic();
-  auto        solveropts         = MarmotMaterialPointSolverHypoElastic::SolverOptions();
+  auto        solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   std::string matName            = "LINEARVISCOELASTICORTHOTROPICPOWERLAW";
-  auto        solver             = MarmotMaterialPointSolverHypoElastic( matName,
-                                                      &materialProperties[0],
-                                                      static_cast< int >( materialProperties.size() ),
-                                                      solveropts );
+  auto        solver             = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
+                                                                   &materialProperties[0],
+                                                                   static_cast< int >( materialProperties.size() ),
+                                                                   solveropts );
 
   // step 1: advance time to 28 days
-  MarmotMaterialPointSolverHypoElastic::Step step1;
+  Marmot::Materials::MaterialPointSolverHypoElastic::Step step1;
 
   step1.isStrainComponentControlled = { true, true, true, true, true, true };
   step1.isStressComponentControlled = { false, false, false, false, false, false };
@@ -68,7 +68,7 @@ void testLinearViscoelasticOrthotropicPowerLawIsotropic()
   solver.addStep( step1 );
 
   // step 1: apply strain
-  MarmotMaterialPointSolverHypoElastic::Step step2;
+  Marmot::Materials::MaterialPointSolverHypoElastic::Step step2;
   step2.isStrainComponentControlled = { true, true, true, true, true, true };
   step2.isStressComponentControlled = { false, false, false, false, false, false };
   step2.stressIncrementTarget       = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -80,7 +80,7 @@ void testLinearViscoelasticOrthotropicPowerLawIsotropic()
   solver.addStep( step2 );
 
   // step 2: hold strain constant
-  MarmotMaterialPointSolverHypoElastic::Step step3;
+  Marmot::Materials::MaterialPointSolverHypoElastic::Step step3;
   step3.isStrainComponentControlled = { true, true, true, true, true, true };
   step3.isStressComponentControlled = { false, false, false, false, false, false };
   step3.stressIncrementTarget       = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -96,9 +96,9 @@ void testLinearViscoelasticOrthotropicPowerLawIsotropic()
   // read history
   auto history = solver.getHistory();
   // get computed stress
-  Marmot::Vector6d stress = history.back().stress;
+  Marmot::Math::Vector6d stress = history.back().stress;
 
-  Marmot::Vector6d stressTarget;
+  Marmot::Math::Vector6d stressTarget;
   stressTarget << 2.41296e-05, 2.41296e-05, 9.65182e-06, 0., 0., 0.;
 
   // Compare the computed stress to the expected stress and throw an exception if they differ

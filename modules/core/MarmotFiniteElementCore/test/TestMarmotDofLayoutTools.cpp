@@ -4,7 +4,7 @@
 
 using namespace Marmot;
 using namespace Marmot::Testing;
-using namespace Marmot::FiniteElement;
+using namespace Marmot::Discretizations::Elements;
 
 // ---------------------------------------------------------------------------------------------
 // These utilities have no callers anywhere in the codebase (verified by search), so there is no

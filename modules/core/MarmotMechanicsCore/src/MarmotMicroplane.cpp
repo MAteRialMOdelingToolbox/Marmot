@@ -26,7 +26,7 @@
 #include <stdexcept>
 #include <vector>
 
-namespace Marmot::Microplane::Discretization {
+namespace Marmot::ContinuumMechanics::Microplane::Discretization {
 
   namespace {
 
@@ -209,7 +209,8 @@ namespace Marmot::Microplane::Discretization {
                  0.274960591212, -0.304743149777, 0.911881728046, 0.00690477957966 };
         // clang-format on
       }
-      throw std::runtime_error( "Marmot::Microplane::Discretization::get: unsupported quadrature scheme" );
+      throw std::runtime_error(
+        "Marmot::ContinuumMechanics::Microplane::Discretization::get: unsupported quadrature scheme" );
     }
 
   } // namespace
@@ -240,4 +241,4 @@ namespace Marmot::Microplane::Discretization {
     return data;
   }
 
-} // namespace Marmot::Microplane::Discretization
+} // namespace Marmot::ContinuumMechanics::Microplane::Discretization

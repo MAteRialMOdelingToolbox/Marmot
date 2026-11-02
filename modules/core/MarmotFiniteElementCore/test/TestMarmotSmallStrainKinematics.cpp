@@ -8,7 +8,7 @@
 #include <vector>
 
 using namespace Marmot::Testing;
-namespace SmallStrain = Marmot::FiniteElement::SmallStrain;
+namespace SmallStrain = Marmot::Discretizations::Elements::SmallStrain;
 
 namespace {
 
@@ -20,9 +20,9 @@ namespace {
     if constexpr ( nDim == 1 )
       return dNdX;
     else if constexpr ( nDim == 2 )
-      return Marmot::FiniteElement::Spatial2D::B< nNodes >( dNdX );
+      return Marmot::Discretizations::Elements::Spatial2D::B< nNodes >( dNdX );
     else
-      return Marmot::FiniteElement::Spatial3D::B< nNodes >( dNdX );
+      return Marmot::Discretizations::Elements::Spatial3D::B< nNodes >( dNdX );
   }
 
   // Shape function gradients without any symmetry, so that a mixed-up index shows.

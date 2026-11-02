@@ -8,9 +8,9 @@ The RKPM particles (:doc:`meshfreeparticles`) take their shape functions from a 
 *kernel functions* :math:`\phi_A`, one per node :math:`A` with center :math:`\boldsymbol{x}_A`, is corrected such that
 polynomials up to a given *completeness order* :math:`n` are reproduced exactly. ``MarmotMeshfreeCore`` provides
 
-- the interface ``MarmotMeshfreeKernelFunction`` and the boxed tensor-product B-spline kernels of 2nd and 3rd order,
-- the interface ``MarmotMeshfreeApproximation`` and the reproducing kernel approximation with explicit
-  (``MarmotMeshfreeReproducingKernelApproximation``) and implicit (``MarmotMeshfreeReproducingKernelApproximationImplicit``)
+- the interface ``Marmot::Discretizations::Meshfree::KernelFunction`` and the boxed tensor-product B-spline kernels of 2nd and 3rd order,
+- the interface ``Marmot::Discretizations::Meshfree::Approximation`` and the reproducing kernel approximation with explicit
+  (``Marmot::Discretizations::Meshfree::ReproducingKernelApproximation``) and implicit (``Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit``)
   gradients,
 - the complete monomial basis (namespace ``Marmot::Math``),
 - B-spline basis functions of arbitrary degree (``MarmotBSpline.h``), used by the B-spline cell geometries of
@@ -80,7 +80,7 @@ requested order.
 Explicit gradients
 ^^^^^^^^^^^^^^^^^^
 
-``MarmotMeshfreeReproducingKernelApproximation`` computes the exact derivatives of :math:`\Psi_A` by the product rule,
+``Marmot::Discretizations::Meshfree::ReproducingKernelApproximation`` computes the exact derivatives of :math:`\Psi_A` by the product rule,
 with :math:`(\bullet)_{,i} = \partial(\bullet)/\partial x_i`,
 
 .. math::
@@ -103,7 +103,7 @@ derivatives of the polynomials up to order :math:`n`.
 Implicit gradients
 ^^^^^^^^^^^^^^^^^^
 
-``MarmotMeshfreeReproducingKernelApproximationImplicit`` returns the same values :math:`\Psi_A`, but constructs the
+``Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit`` returns the same values :math:`\Psi_A`, but constructs the
 gradients directly as corrected kernels (implicit, or synchronized, gradients),
 
 .. math::
@@ -153,12 +153,12 @@ Both kernels are *boxed* tensor products of a one-dimensional B-spline :math:`w`
      - :math:`w(r)` for :math:`\tfrac12 < z \le 1`
      - :math:`w(0)`
      - Continuity
-   * - ``MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed``
+   * - ``Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed``
      - :math:`1 - 2z^2`
      - :math:`2(1-z)^2`
      - :math:`1`
      - :math:`C^1`
-   * - ``MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed``
+   * - ``Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed``
      - :math:`\tfrac23 - 4z^2 + 4z^3`
      - :math:`\tfrac43(1-z)^3`
      - :math:`\tfrac23`
@@ -225,7 +225,7 @@ evaluated by the Cox--de Boor recursion,
    N_{i,p}(u) = \frac{u - z_i}{z_{i+p} - z_i}N_{i,p-1}(u) + \frac{z_{i+p+1} - u}{z_{i+p+1} - z_{i+1}}N_{i+1,p-1}(u),
 
 where a term with a knot difference below :math:`10^{-14}` (repeated knots) is omitted. The degree is a template
-parameter, so the recursion is resolved at compile time. These functions are declared in the global namespace. They are
+parameter, so the recursion is resolved at compile time. These functions are declared in the ``Marmot::Math`` namespace. They are
 the basis of the B-spline cell geometries of the material point method (:doc:`meshfreecells`); they are independent of
 the kernels above.
 
@@ -242,30 +242,30 @@ or 3rd order kernel) map to the classes of this page; see :doc:`meshfree` for th
 
    * - Class
      - Constructor arguments
-   * - ``MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed``, ``MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed``
+   * - ``Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed``, ``Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed``
      - pointer to the center coordinates, dimension :math:`d`, support radius :math:`a`
-   * - ``MarmotMeshfreeReproducingKernelApproximation``, ``MarmotMeshfreeReproducingKernelApproximationImplicit``
+   * - ``Marmot::Discretizations::Meshfree::ReproducingKernelApproximation``, ``Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit``
      - dimension :math:`d`, completeness order :math:`n`
 
 Implementation
 --------------
 
-.. doxygenclass:: Marmot::Meshfree::MarmotMeshfreeKernelFunction
+.. doxygenclass:: Marmot::Discretizations::Meshfree::KernelFunction
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::Meshfree::MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed
+.. doxygenclass:: Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::Meshfree::MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed
+.. doxygenclass:: Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::Meshfree::MarmotMeshfreeApproximation
+.. doxygenclass:: Marmot::Discretizations::Meshfree::Approximation
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::Meshfree::MarmotMeshfreeReproducingKernelApproximation
+.. doxygenclass:: Marmot::Discretizations::Meshfree::ReproducingKernelApproximation
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::Meshfree::MarmotMeshfreeReproducingKernelApproximationImplicit
+.. doxygenclass:: Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit
    :allow-dot-graphs:
 
 Monomial basis (``MarmotMonomialBasisFunctions.h``, namespace ``Marmot::Math``):
@@ -276,6 +276,6 @@ Monomial basis (``MarmotMonomialBasisFunctions.h``, namespace ``Marmot::Math``):
 
 .. doxygenfunction:: Marmot::Math::computeMonomialBasisGradient
 
-B-spline basis functions (global namespace):
+B-spline basis functions (``Marmot::Math``):
 
 .. doxygenfile:: MarmotBSpline.h

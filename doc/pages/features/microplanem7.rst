@@ -15,7 +15,7 @@ boundaries of M7. The macroscopic stress follows from the principle of virtual w
 microplanes.
 
 The microplane discretization (normal vectors, weights and the normal-tangential projection tensors) is taken from
-the shared ``Marmot::Microplane`` module of ``MarmotMechanicsCore``; the quadrature scheme is fixed at compile time
+the shared ``Marmot::ContinuumMechanics::Microplane`` module of ``MarmotMechanicsCore``; the quadrature scheme is fixed at compile time
 to the 37-microplane scheme ``N37``.
 
 In addition to the original formulation, a closed-form transition function for the elastic unloading stiffness on

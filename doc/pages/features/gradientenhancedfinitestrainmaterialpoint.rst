@@ -4,7 +4,7 @@ Gradient-Enhanced Finite-Strain Material Point
 Theory
 ------
 The gradient-enhanced finite-strain material point carries the displacement :math:`\boldsymbol u` and a single scalar
-nonlocal field :math:`\bar N` and drives a material of the interface ``MarmotMaterialGradientEnhancedFiniteStrain``,
+nonlocal field :math:`\bar N` and drives a material of the interface ``Marmot::Materials::MaterialGradientEnhancedFiniteStrain``,
 e.g. :doc:`gradientenhancedcompressibleneohookedamage` or :doc:`gradientenhancedfinitestraindruckerprager`. The
 material returns the Kirchhoff stress :math:`\boldsymbol\tau`, the local driving force :math:`L`, the nonlocal radius
 :math:`R` (with the interaction :math:`c = R^2`) and the four algorithmic tangents of the implicit-gradient problem
@@ -84,7 +84,7 @@ evaluations.
 Registered types
 ----------------
 
-The material points are registered in the ``MarmotMaterialPointFactory``:
+The material points are registered in the ``Marmot::Registry::MaterialPointFactory``:
 
 .. list-table::
    :header-rows: 1
@@ -102,7 +102,7 @@ The material points are registered in the ``MarmotMaterialPointFactory``:
      - 3
      - ``computeStress``
 
-The material is created by name from the ``MarmotMaterialGradientEnhancedFiniteStrainFactory`` (``assignMaterial``);
+The material is created by name from the ``Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory`` (``assignMaterial``);
 a material of another interface is rejected.
 
 State variables
@@ -154,11 +154,11 @@ name in the material point first, then in the material). Vectors and tensors alw
 Implementation
 --------------
 
-.. doxygenclass:: Marmot::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint
+.. doxygenclass:: Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint2D
+.. doxygenclass:: Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint2D
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint3D
+.. doxygenclass:: Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint3D
    :allow-dot-graphs:

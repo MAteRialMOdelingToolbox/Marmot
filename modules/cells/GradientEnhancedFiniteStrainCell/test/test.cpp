@@ -121,29 +121,29 @@ namespace {
   // one cell with 2^nDim material points, as the host (EdelweissMeshfree) drives it
   template < int nDim >
   struct Setup {
-    std::unique_ptr< MarmotCell >                         cell;
-    std::vector< std::unique_ptr< MarmotMaterialPoint > > mps;
-    std::vector< std::vector< double > >                  stateVars;
-    MarmotMaterialSection                                 section{ "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
-                                   matProps.data(),
-                                   (int)matProps.size() };
-    int                                                   nDof;
-    double                                                mpVolume;
+    std::unique_ptr< Marmot::Discretizations::Cells::Cell >                                  cell;
+    std::vector< std::unique_ptr< Marmot::Discretizations::MaterialPoints::MaterialPoint > > mps;
+    std::vector< std::vector< double > >                                                     stateVars;
+    Marmot::Discretizations::MaterialSection section{ "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
+                                                      matProps.data(),
+                                                      (int)matProps.size() };
+    int                                      nDof;
+    double                                   mpVolume;
 
     Setup( const CellGeometry< nDim >& g )
     {
       if ( g.knots.empty() )
-        cell.reset( MarmotLibrary::MarmotCellFactory::createCell( g.name,
-                                                                  1,
-                                                                  g.nodes.data(),
-                                                                  static_cast< int >( g.nodes.size() ) ) );
+        cell.reset( Marmot::Registry::CellFactory::createCell( g.name,
+                                                               1,
+                                                               g.nodes.data(),
+                                                               static_cast< int >( g.nodes.size() ) ) );
       else
-        cell.reset( MarmotLibrary::MarmotCellFactory::createBSplineCell( g.name,
-                                                                         1,
-                                                                         g.nodes.data(),
-                                                                         static_cast< int >( g.nodes.size() ),
-                                                                         g.knots.data(),
-                                                                         static_cast< int >( g.knots.size() ) ) );
+        cell.reset( Marmot::Registry::CellFactory::createBSplineCell( g.name,
+                                                                      1,
+                                                                      g.nodes.data(),
+                                                                      static_cast< int >( g.nodes.size() ),
+                                                                      g.knots.data(),
+                                                                      static_cast< int >( g.knots.size() ) ) );
       nDof     = cell->getNDofPerCell();
       mpVolume = ( g.upper - g.lower ).prod() / std::pow( 2, nDim );
 
@@ -153,13 +153,13 @@ namespace {
         for ( int d = 0; d < nDim; d++ )
           x[d] = g.lower[d] + ( ( k >> d ) & 1 ? 0.75 : 0.25 ) * ( g.upper[d] - g.lower[d] );
         mps.emplace_back(
-          MarmotLibrary::MarmotMaterialPointFactory::createMaterialPoint( nDim == 2
-                                                                            ? "GradientEnhancedFiniteStrain/PlaneStrain"
-                                                                            : "GradientEnhancedFiniteStrain/3D",
-                                                                          label++,
-                                                                          x.data(),
-                                                                          nDim,
-                                                                          mpVolume ) );
+          Marmot::Registry::MaterialPointFactory::createMaterialPoint( nDim == 2
+                                                                         ? "GradientEnhancedFiniteStrain/PlaneStrain"
+                                                                         : "GradientEnhancedFiniteStrain/3D",
+                                                                       label++,
+                                                                       x.data(),
+                                                                       nDim,
+                                                                       mpVolume ) );
       }
 
       for ( auto& mp : mps ) {
@@ -169,7 +169,7 @@ namespace {
         mp->initializeYourself();
       }
 
-      std::vector< MarmotMaterialPoint* > raw;
+      std::vector< Marmot::Discretizations::MaterialPoints::MaterialPoint* > raw;
       for ( auto& mp : mps )
         raw.push_back( mp.get() );
       cell->assignMaterialPoints( raw );
@@ -358,13 +358,15 @@ namespace {
       const auto   numK = numericalTangent( [&]( const Eigen::VectorXd& q ) { return s.trial( q ).first; }, dQ, nU );
       const double err  = numK.error( K );
       throwExceptionOnFailure( err < 1e-7,
-                               MakeString() << g.name << ( afterStep ? ", second" : ", first" )
-                                            << " step: tangent inconsistent, relative error " << err );
+                               Marmot::Utilities::MakeString()
+                                 << g.name << ( afterStep ? ", second" : ", first" )
+                                 << " step: tangent inconsistent, relative error " << err );
       if ( afterStep ) {
         const double errUN = numK.error(
           K, [nU]( int a ) { return a < nU; }, true );
         throwExceptionOnFailure( errUN < 1e-6,
-                                 MakeString() << g.name << ": dr_U/dN inconsistent, relative error " << errUN );
+                                 Marmot::Utilities::MakeString()
+                                   << g.name << ": dr_U/dN inconsistent, relative error " << errUN );
       }
     }
 
@@ -382,7 +384,7 @@ namespace {
       }
       const auto P = s.trial( dQ ).first;
       throwExceptionOnFailure( P.norm() < 1e-8, // round-off grows with the number of nodes (cubic B-splines)
-                               MakeString()
+                               Marmot::Utilities::MakeString()
                                  << g.name << ": rigid rotation must not load the cell, |P| = " << P.norm() );
     }
 
@@ -446,22 +448,22 @@ void testUnknownNamesAreRejected()
 {
   const double x[2] = { 0, 0 };
   throwExceptionOnFailure( throws( [&]() {
-                             std::unique_ptr< MarmotCell >(
-                               MarmotLibrary::MarmotCellFactory::createCell( "NoSuchCell", 1, x, 2 ) );
+                             std::unique_ptr< Marmot::Discretizations::Cells::Cell >(
+                               Marmot::Registry::CellFactory::createCell( "NoSuchCell", 1, x, 2 ) );
                            } ),
                            "unknown cell" );
   throwExceptionOnFailure( throws( [&]() {
-                             std::unique_ptr< MarmotCell >(
-                               MarmotLibrary::MarmotCellFactory::createBSplineCell( "NoSuchCell", 1, x, 2, x, 2 ) );
+                             std::unique_ptr< Marmot::Discretizations::Cells::Cell >(
+                               Marmot::Registry::CellFactory::createBSplineCell( "NoSuchCell", 1, x, 2, x, 2 ) );
                            } ),
                            "unknown B-spline cell" );
   throwExceptionOnFailure( throws( [&]() {
-                             std::unique_ptr< MarmotMaterialPoint >(
-                               MarmotLibrary::MarmotMaterialPointFactory::createMaterialPoint( "NoSuchPoint",
-                                                                                               1,
-                                                                                               x,
-                                                                                               2,
-                                                                                               1.0 ) );
+                             std::unique_ptr< Marmot::Discretizations::MaterialPoints::MaterialPoint >(
+                               Marmot::Registry::MaterialPointFactory::createMaterialPoint( "NoSuchPoint",
+                                                                                            1,
+                                                                                            x,
+                                                                                            2,
+                                                                                            1.0 ) );
                            } ),
                            "unknown material point" );
 }

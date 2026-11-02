@@ -28,11 +28,11 @@
 #include "Marmot/MarmotVoigt.h"
 #include <Eigen/Dense>
 
-namespace Marmot::FiniteElement::SmallStrain {
+namespace Marmot::Discretizations::Elements::SmallStrain {
 
   /// @brief Strain or stress in (plane) Voigt notation for nDim spatial dimensions (1, 3 or 6 components).
   template < int nDim >
-  using Voigt = Eigen::Matrix< double, ContinuumMechanics::VoigtNotation::voigtSizeFromDimension( nDim ), 1 >;
+  using Voigt = Eigen::Matrix< double, ContinuumMechanics::Voigt::voigtSizeFromDimension( nDim ), 1 >;
 
   /**
    * @brief Strain increment from nodal displacement increments, without forming the B-operator.
@@ -89,10 +89,10 @@ namespace Marmot::FiniteElement::SmallStrain {
     else if constexpr ( nDim == 2 )
       sigma << stress( 0 ), stress( 2 ), stress( 2 ), stress( 1 );
     else
-      sigma = ContinuumMechanics::VoigtNotation::voigtToStress( stress );
+      sigma = ContinuumMechanics::Voigt::voigtToStress( stress );
 
     Eigen::Map< Eigen::Matrix< double, nDim, nNodes > > fUNodal( fU.data() );
     fUNodal.noalias() += ( sigma * J0xW ) * dNdX;
   }
 
-} // namespace Marmot::FiniteElement::SmallStrain
+} // namespace Marmot::Discretizations::Elements::SmallStrain

@@ -5,7 +5,7 @@
 
 using namespace Marmot;
 using namespace Marmot::Testing;
-using namespace Marmot::FiniteElement;
+using namespace Marmot::Discretizations::Elements;
 
 // ---------------------------------------------------------------------------------------------
 // getElementShapeByMetric()
@@ -58,11 +58,11 @@ void testGetElementShapeByMetricThrowsForInvalidCombinations()
 
 void testDynamicNBMatchesTemplatedNBForQuad4()
 {
-  MarmotGeometryElement< 2, 4 > geo;
-  const auto                    N = geo.N( Eigen::Vector2d( 0.2, 0.3 ) ); // NSized = Matrix<double,1,4>
+  Marmot::Discretizations::Elements::GeometryElement< 2, 4 > geo;
+  const auto N = geo.N( Eigen::Vector2d( 0.2, 0.3 ) ); // NSized = Matrix<double,1,4>
 
-  const auto templatedResult = Marmot::FiniteElement::NB< 2, 4 >( N );
-  const auto dynamicResult   = Marmot::FiniteElement::NB( Eigen::VectorXd( N.transpose() ), 2 );
+  const auto templatedResult = Marmot::Discretizations::Elements::NB< 2, 4 >( N );
+  const auto dynamicResult   = Marmot::Discretizations::Elements::NB( Eigen::VectorXd( N.transpose() ), 2 );
 
   throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( dynamicResult ), Eigen::MatrixXd( templatedResult ), 1e-12 ),
                            "The dynamic NB() must match the templated NB<nDim,nNodes>() for the same input." );
@@ -72,7 +72,7 @@ void testDynamicJacobianMatchesTemplatedJacobianForQuad4()
 {
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 2.0, 0.0, 3.0, 2.0, 0.0, 1.0 }; // general quadrilateral
 
-  MarmotGeometryElement< 2, 4 > geo;
+  Marmot::Discretizations::Elements::GeometryElement< 2, 4 > geo;
   geo.assignNodeCoordinates( nodeCoordsVec.data() );
 
   const Eigen::Vector2d xi( 0.2, 0.3 );
@@ -82,7 +82,7 @@ void testDynamicJacobianMatchesTemplatedJacobianForQuad4()
 
   const Eigen::MatrixXd dynamicDNdXi = dNdXi;
   const Eigen::VectorXd dynamicCoords( Eigen::Map< const Eigen::VectorXd >( nodeCoordsVec.data(), 8 ) );
-  const Eigen::MatrixXd dynamicJ = Marmot::FiniteElement::Jacobian( dynamicDNdXi, dynamicCoords );
+  const Eigen::MatrixXd dynamicJ = Marmot::Discretizations::Elements::Jacobian( dynamicDNdXi, dynamicCoords );
 
   throwExceptionOnFailure( checkIfEqual( dynamicJ, Eigen::MatrixXd( templatedJ ), 1e-12 ),
                            "The dynamic Jacobian() must match the templated Jacobian<nDim,nNodes>() for the same "
@@ -98,7 +98,7 @@ void testDynamicJacobianMatchesTemplatedJacobianForQuad4()
 
 void testGetGaussPointInfoReducedIntegrationBranches()
 {
-  using namespace Marmot::FiniteElement::Quadrature;
+  using namespace Marmot::Discretizations::Elements::Quadrature;
 
   throwExceptionOnFailure( getGaussPointInfo( Bar2, ReducedIntegration ).size() == 1,
                            "Bar2 reduced integration must use the 1-point rule." );
@@ -110,7 +110,7 @@ void testGetGaussPointInfoReducedIntegrationBranches()
 
 void testGetGaussPointInfoTetrahedralShapes()
 {
-  using namespace Marmot::FiniteElement::Quadrature;
+  using namespace Marmot::Discretizations::Elements::Quadrature;
 
   // Tetra4/Tetra10 quadrature rules don't distinguish integration type; both calls must succeed
   // and return a non-empty rule.
@@ -122,7 +122,7 @@ void testGetGaussPointInfoTetrahedralShapes()
 
 void testGetGaussPointInfoThrowsForUnsupportedShape()
 {
-  using namespace Marmot::FiniteElement::Quadrature;
+  using namespace Marmot::Discretizations::Elements::Quadrature;
 
   bool threw = false;
   try {
@@ -136,7 +136,7 @@ void testGetGaussPointInfoThrowsForUnsupportedShape()
 
 void testGetNumGaussPointsMatchesGaussPointInfoSize()
 {
-  using namespace Marmot::FiniteElement::Quadrature;
+  using namespace Marmot::Discretizations::Elements::Quadrature;
 
   throwExceptionOnFailure( getNumGaussPoints( Hexa8, FullIntegration ) ==
                              static_cast< int >( getGaussPointInfo( Hexa8, FullIntegration ).size() ),

@@ -11,10 +11,9 @@ namespace Marmot::Materials {
 
   // constructor
   GM7::GM7( const double* materialProperties, int nMaterialProperties, int materialNumber )
-    : MarmotMaterialGeneralGradientEnhancedHypoElastic<
-        6 >::MarmotMaterialGeneralGradientEnhancedHypoElastic( materialProperties,
-                                                               nMaterialProperties,
-                                                               materialNumber ),
+    : Marmot::Materials::MaterialGradientEnhancedHypoElastic< 6 >( materialProperties,
+                                                                   nMaterialProperties,
+                                                                   materialNumber ),
       m7_( MicroplaneM7Formulation::readParameters( materialProperties, nMaterialProperties, 9 ) ),
       c( materialProperties[7] ),
       m( materialProperties[8] )
@@ -25,8 +24,8 @@ namespace Marmot::Materials {
   double GM7::getDensity( const double* stateVars ) const
   {
     if ( this->nMaterialProperties < 14 ) {
-      throw std::runtime_error(
-        std::string( MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 14." ) );
+      throw std::runtime_error( std::string(
+        Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 14." ) );
     }
     return this->materialProperties[13];
   }
@@ -34,35 +33,39 @@ namespace Marmot::Materials {
   std::vector< double > GM7::getNonlocalViscosity( const double* stateVars ) const
   {
     if ( this->nMaterialProperties < 15 ) {
-      throw std::runtime_error( std::string(
-        MakeString() << __PRETTY_FUNCTION__ << ": No nonlocal viscosity given! nMaterialProperties < 15." ) );
+      throw std::runtime_error( std::string( Marmot::Utilities::MakeString()
+                                             << __PRETTY_FUNCTION__
+                                             << ": No nonlocal viscosity given! nMaterialProperties < 15." ) );
     }
     return std::vector< double >( 6, this->materialProperties[14] );
   }
 
   void GM7::computeStress( response& res, tangents& tan, const increment& inc ) const
   {
-    const Vector6d&       dE_macroLocal = inc.dStrain;
-    Map< const Vector6d > dE_macroNonLocal( inc.dK.data() );
+    const Marmot::Math::Vector6d&       dE_macroLocal = inc.dStrain;
+    Map< const Marmot::Math::Vector6d > dE_macroNonLocal( inc.dK.data() );
 
-    mVector6d       S_macro( res.stress.data() );
-    Map< Vector6d > E_macroLocal( res.KLocal.data() );
+    Marmot::Math::mVector6d       S_macro( res.stress.data() );
+    Map< Marmot::Math::Vector6d > E_macroLocal( res.KLocal.data() );
 
-    mMatrix6d dStressddStrainLocal( tan.dStressddStrain.data() );
-    mMatrix6d dStressddStrainNonLocal( tan.dStressddK.data() );
-    mMatrix6d dStrainLocalddStrainLocal( tan.dKLocalddStrain.data() );
+    Marmot::Math::mMatrix6d dStressddStrainLocal( tan.dStressddStrain.data() );
+    Marmot::Math::mMatrix6d dStressddStrainNonLocal( tan.dStressddK.data() );
+    Marmot::Math::mMatrix6d dStrainLocalddStrainLocal( tan.dKLocalddStrain.data() );
 
     // over-nonlocal strain increment used for evaluating the tensile and deviatoric boundaries
-    const Vector6d dE_macroOverNonLocal = m * dE_macroNonLocal + ( 1. - m ) * dE_macroLocal;
+    const Marmot::Math::Vector6d dE_macroOverNonLocal = m * dE_macroNonLocal + ( 1. - m ) * dE_macroLocal;
 
     const auto [stress_macro, dStressddStrainLocal_, dStressddStrainOverNonLocal] = stress_update( dE_macroLocal,
                                                                                                    dE_macroOverNonLocal,
                                                                                                    res.stateVars );
 
     // update results
-    S_macro                             = stress_macro;
-    mVector6d strain_macro0Local        = stateLayout.getAs< mVector6d >( res.stateVars, "strain_macro0Local" );
-    mVector6d strain_macro0OverNonLocal = stateLayout.getAs< mVector6d >( res.stateVars, "strain_macro0OverNonLocal" );
+    S_macro                                    = stress_macro;
+    Marmot::Math::mVector6d strain_macro0Local = stateLayout.getAs< Marmot::Math::mVector6d >( res.stateVars,
+                                                                                               "strain_macro0Local" );
+    Marmot::Math::mVector6d
+      strain_macro0OverNonLocal = stateLayout.getAs< Marmot::Math::mVector6d >( res.stateVars,
+                                                                                "strain_macro0OverNonLocal" );
     strain_macro0Local += dE_macroLocal;
     strain_macro0OverNonLocal += dE_macroOverNonLocal;
     E_macroLocal = strain_macro0Local;
@@ -71,21 +74,25 @@ namespace Marmot::Materials {
     // update tangents
     dStressddStrainLocal      = dStressddStrainLocal_ + dStressddStrainOverNonLocal * ( 1. - m );
     dStressddStrainNonLocal   = dStressddStrainOverNonLocal * m;
-    dStrainLocalddStrainLocal = Matrix6d::Identity();
+    dStrainLocalddStrainLocal = Marmot::Math::Matrix6d::Identity();
   }
 
-  std::tuple< Vector6d, Matrix6d, Matrix6d > GM7::stress_update( const Vector6d& dE_macroLocal,
-                                                                 const Vector6d& dE_macroOverNonLocal,
-                                                                 double*         stateVars ) const
+  std::tuple< Marmot::Math::Vector6d, Marmot::Math::Matrix6d, Marmot::Math::Matrix6d > GM7::stress_update(
+    const Marmot::Math::Vector6d& dE_macroLocal,
+    const Marmot::Math::Vector6d& dE_macroOverNonLocal,
+    double*                       stateVars ) const
   {
     // get StateVars
-    double&    sig_v0                    = stateLayout.getAs< double& >( stateVars, "sig_v0" );
-    double&    zeta                      = stateLayout.getAs< double& >( stateVars, "zeta" );
-    mnmp_sized sig_N0                    = stateLayout.getAs< mnmp_sized >( stateVars, "sig_N0" );
-    mnmp_sized sig_M0                    = stateLayout.getAs< mnmp_sized >( stateVars, "sig_M0" );
-    mnmp_sized sig_L0                    = stateLayout.getAs< mnmp_sized >( stateVars, "sig_L0" );
-    mVector6d  strain_macro0Local        = stateLayout.getAs< mVector6d >( stateVars, "strain_macro0Local" );
-    mVector6d  strain_macro0OverNonLocal = stateLayout.getAs< mVector6d >( stateVars, "strain_macro0OverNonLocal" );
+    double&                 sig_v0             = stateLayout.getAs< double& >( stateVars, "sig_v0" );
+    double&                 zeta               = stateLayout.getAs< double& >( stateVars, "zeta" );
+    mnmp_sized              sig_N0             = stateLayout.getAs< mnmp_sized >( stateVars, "sig_N0" );
+    mnmp_sized              sig_M0             = stateLayout.getAs< mnmp_sized >( stateVars, "sig_M0" );
+    mnmp_sized              sig_L0             = stateLayout.getAs< mnmp_sized >( stateVars, "sig_L0" );
+    Marmot::Math::mVector6d strain_macro0Local = stateLayout.getAs< Marmot::Math::mVector6d >( stateVars,
+                                                                                               "strain_macro0Local" );
+    Marmot::Math::mVector6d
+               strain_macro0OverNonLocal = stateLayout.getAs< Marmot::Math::mVector6d >( stateVars,
+                                                                                "strain_macro0OverNonLocal" );
     mnmp_sized eps_N0pos                 = stateLayout.getAs< mnmp_sized >( stateVars, "eps_N0pos" );
     mnmp_sized eps_N0neg                 = stateLayout.getAs< mnmp_sized >( stateVars, "eps_N0neg" );
 
@@ -171,26 +178,27 @@ namespace Marmot::Materials {
       shearMResult.tangent_onl.col( qp_i ) = shear_response.tangentM_boundary;
     }
 
-    Vector6d stress_macro = m7_.ntSplit().homogenizeStress( normalResult.stress,
-                                                            shearMResult.stress,
-                                                            shearLResult.stress );
+    Marmot::Math::Vector6d stress_macro = m7_.ntSplit().homogenizeStress( normalResult.stress,
+                                                                          shearMResult.stress,
+                                                                          shearLResult.stress );
 
-    Matrix6d dStressddStrainLocal = m7_.ntSplit().homogenizeTangent( normalResult.tangent_l,
-                                                                     shearMResult.tangent_l,
-                                                                     shearLResult.tangent_l );
+    Marmot::Math::Matrix6d dStressddStrainLocal = m7_.ntSplit().homogenizeTangent( normalResult.tangent_l,
+                                                                                   shearMResult.tangent_l,
+                                                                                   shearLResult.tangent_l );
 
-    Matrix6d dStressddStrainOverNonLocal = m7_.ntSplit().homogenizeTangent( normalResult.tangent_onl,
-                                                                            shearMResult.tangent_onl,
-                                                                            shearLResult.tangent_onl );
+    Marmot::Math::Matrix6d dStressddStrainOverNonLocal = m7_.ntSplit().homogenizeTangent( normalResult.tangent_onl,
+                                                                                          shearMResult.tangent_onl,
+                                                                                          shearLResult.tangent_onl );
 
     // a NaN or inf on any microplane carries through the homogenization
     if ( !stress_macro.allFinite() || !dStressddStrainLocal.allFinite() || !dStressddStrainOverNonLocal.allFinite() ) {
-      MarmotJournal::warningToMSG( MakeString() << "stress:\n"
+      Marmot::Utilities::Journal::warningToMSG( Marmot::Utilities::MakeString()
+                                                << "stress:\n"
                                                 << stress_macro.transpose() << "\ntangent (local):\n"
                                                 << dStressddStrainLocal << "\ntangent (over-nonlocal):\n"
                                                 << dStressddStrainOverNonLocal );
-      throw Marmot::StressUpdateFailed( MakeString()
-                                        << __PRETTY_FUNCTION__ << ": non-finite value in the stress or the tangents" );
+      throw Marmot::Utilities::StressUpdateFailed(
+        Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": non-finite value in the stress or the tangents" );
     }
 
     // commit StateVars
@@ -246,7 +254,7 @@ namespace Marmot::Materials {
       if ( eps_N_onl > eps_N0pos ) // eps_N0pos shouldn't be negative
         eps_N0pos = eps_N_onl;
       tensileB_flag++;
-      return { tensile_law.stress, Vector6d::Zero(), tensile_law.tangent };
+      return { tensile_law.stress, Marmot::Math::Vector6d::Zero(), tensile_law.tangent };
     }
 
     const auto   deviatoric_law       = m7_.deviatoric_boundary( eps_d_onl, eps_v_onl, qp_i );
@@ -256,9 +264,9 @@ namespace Marmot::Materials {
       if ( eps_N_onl < eps_N0neg ) // eps_N0neg shouldn't be positive
         eps_N0neg = eps_N_onl;
       compB_flag++;
-      return { compressive_boundary, Vector6d::Zero(), deviatoric_law.tangent + volumetric_law.tangent };
+      return { compressive_boundary, Marmot::Math::Vector6d::Zero(), deviatoric_law.tangent + volumetric_law.tangent };
     }
     // elastic behaviour
-    return { elasticN_prediction.stress, elasticN_prediction.tangent, Vector6d::Zero() };
+    return { elasticN_prediction.stress, elasticN_prediction.tangent, Marmot::Math::Vector6d::Zero() };
   }
 } // namespace Marmot::Materials

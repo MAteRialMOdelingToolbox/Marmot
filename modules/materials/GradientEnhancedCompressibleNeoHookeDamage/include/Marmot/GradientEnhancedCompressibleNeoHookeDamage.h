@@ -32,8 +32,8 @@ namespace Marmot::Materials {
    * @class GradientEnhancedCompressibleNeoHookeDamage
    * @brief Compressible neo-Hookean solid with isotropic, nonlocal-field driven damage.
    *
-   * A minimal, fully consistent reference model for the MarmotMaterialGradientEnhancedFiniteStrain interface,
-   * in the spirit of the implicit-gradient damage model of Peerlings et al. (1996), carried over to finite
+   * A minimal, fully consistent reference model for the Marmot::Materials::MaterialGradientEnhancedFiniteStrain
+   * interface, in the spirit of the implicit-gradient damage model of Peerlings et al. (1996), carried over to finite
    * strains:
    * @f[
    *   \boldsymbol{\tau} = (1 - D(\kappa))\,\boldsymbol{\tau}_0(\boldsymbol{F}), \qquad
@@ -66,7 +66,7 @@ namespace Marmot::Materials {
    * The dissipation is cumulative: the incoming ConstitutiveResponse::dissipation is incremented by the energy
    * released by the damage increment, @f$ \psi_0\,\Delta D @f$.
    */
-  class GradientEnhancedCompressibleNeoHookeDamage : public MarmotMaterialGradientEnhancedFiniteStrain {
+  class GradientEnhancedCompressibleNeoHookeDamage : public Marmot::Materials::MaterialGradientEnhancedFiniteStrain {
   public:
     /**
      * @brief Construct the material and validate its properties.
@@ -79,7 +79,7 @@ namespace Marmot::Materials {
                                                 int           nMaterialProperties,
                                                 int           materialNumber );
 
-    using MarmotMaterialGradientEnhancedFiniteStrain::computeStress;
+    using Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computeStress;
 
     /**
      * @brief Compute the Kirchhoff stress, the local driving force and the algorithmic tangents.

@@ -28,7 +28,7 @@
 #include <algorithm>
 #include <cmath>
 
-namespace Marmot::FiniteElement::BulkViscosity {
+namespace Marmot::Discretizations::Elements::BulkViscosity {
 
   /**
    * @brief Coefficients of the artificial bulk viscosity.
@@ -203,4 +203,4 @@ namespace Marmot::FiniteElement::BulkViscosity {
                           coefficients );
   }
 
-} // namespace Marmot::FiniteElement::BulkViscosity
+} // namespace Marmot::Discretizations::Elements::BulkViscosity

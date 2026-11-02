@@ -36,7 +36,7 @@
  * constitutive updates.
  */
 
-namespace Marmot::NumericalAlgorithms {
+namespace Marmot::ContinuumMechanics::Algorithms {
   /**
    * @brief Hughes–Winget objective integration algorithm.
    *
@@ -66,7 +66,7 @@ namespace Marmot::NumericalAlgorithms {
     HughesWinget( const Eigen::Matrix3d& FOld, const Eigen::Matrix3d& FNew, Formulation formulation );
 
     /// @brief Returns the objective symmetric strain increment in Voigt notation.
-    Marmot::Vector6d getStrainIncrement();
+    Marmot::Math::Vector6d getStrainIncrement();
     /// @brief Returns the incremental rotation matrix \f$\Delta\mathbf{R}\f$.
     Eigen::Matrix3d getRotationIncrement();
     /**
@@ -74,7 +74,7 @@ namespace Marmot::NumericalAlgorithms {
      * @param tensor Input tensor in Voigt notation.
      * @return Rotated tensor in Voigt notation.
      */
-    Marmot::Vector6d rotateTensor( const Marmot::Vector6d& tensor );
+    Marmot::Math::Vector6d rotateTensor( const Marmot::Math::Vector6d& tensor );
 
     /**
      * @brief Compute the consistent tangent contribution \f$\frac{d\boldsymbol{S}}{d\mathbf{F}}\f$.
@@ -88,9 +88,9 @@ namespace Marmot::NumericalAlgorithms {
      * @param dChauchyDEps  Algorithmic Cauchy-stress/strain tangent (6×6).
      * @return              The 6×3×3 tangent tensor \f$\frac{d\boldsymbol{S}}{d\mathbf{F}}\f$.
      */
-    Marmot::EigenTensors::Tensor633d compute_dS_dF( const Marmot::Vector6d& stress,
-                                                    const Eigen::Matrix3d&  FInv,
-                                                    const Marmot::Matrix6d& dChauchyDEps );
+    Marmot::Math::Tensors::Tensor633d compute_dS_dF( const Marmot::Math::Vector6d& stress,
+                                                     const Eigen::Matrix3d&        FInv,
+                                                     const Marmot::Math::Matrix6d& dChauchyDEps );
 
     /**
      * @brief Compute the consistent tangent \f$\frac{d\phi}{d\mathbf{F}}\f$ for a scalar quantity.
@@ -103,13 +103,13 @@ namespace Marmot::NumericalAlgorithms {
      * @param dScalarDEps  Derivative of the scalar quantity with respect to the strain, in Voigt notation.
      * @return             The 3×3 sensitivity matrix \f$\frac{d\phi}{d\mathbf{F}}\f$.
      */
-    Eigen::Matrix3d compute_dScalar_dF( const Eigen::Matrix3d& FInv, const Marmot::Vector6d& dScalarDEps );
+    Eigen::Matrix3d compute_dScalar_dF( const Eigen::Matrix3d& FInv, const Marmot::Math::Vector6d& dScalarDEps );
 
   private:
     [[maybe_unused]] Formulation theFormulation;
     Eigen::Matrix3d              l;
     Eigen::Matrix3d              dOmega;
     Eigen::Matrix3d              dR;
-    Marmot::Vector6d             dEps;
+    Marmot::Math::Vector6d       dEps;
   };
-} // namespace Marmot::NumericalAlgorithms
+} // namespace Marmot::ContinuumMechanics::Algorithms

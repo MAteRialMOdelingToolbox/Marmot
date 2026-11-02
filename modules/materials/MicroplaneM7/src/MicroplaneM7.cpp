@@ -12,39 +12,43 @@ namespace Marmot::Materials {
   double MicroplaneM7::getDensity( const double* stateVars ) const
   {
     if ( this->nMaterialProperties < 12 ) {
-      throw std::runtime_error(
-        std::string( MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 12." ) );
+      throw std::runtime_error( std::string(
+        Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 12." ) );
     }
     return this->materialProperties[11];
   }
 
   // constructor
   MicroplaneM7::MicroplaneM7( const double* materialProperties, int nMaterialProperties, int materialNumber )
-    : MarmotMaterialHypoElastic::MarmotMaterialHypoElastic( materialProperties, nMaterialProperties, materialNumber ),
+    : Marmot::Materials::MaterialHypoElastic::MaterialHypoElastic( materialProperties,
+                                                                   nMaterialProperties,
+                                                                   materialNumber ),
       m7_( MicroplaneM7Formulation::readParameters( materialProperties, nMaterialProperties, 7 ) )
   {
     initializeStateLayout();
   }
 
-  void MicroplaneM7::computeStress( state3D&                state,
-                                    Marmot::Matrix6d&       dStressDDStrain,
-                                    const Marmot::Vector6d& dStrain,
+  void MicroplaneM7::computeStress( state3D&                      state,
+                                    Marmot::Math::Matrix6d&       dStressDDStrain,
+                                    const Marmot::Math::Vector6d& dStrain,
                                     const timeInfo& /*timeInfo*/ ) const
   {
     std::tie( state.stress, dStressDDStrain ) = stress_update( dStrain, state.stateVars );
   }
 
-  std::pair< Vector6d, Matrix6d > MicroplaneM7::stress_update( const Vector6d& dE_macro, double* stateVars ) const
+  std::pair< Marmot::Math::Vector6d, Marmot::Math::Matrix6d > MicroplaneM7::stress_update(
+    const Marmot::Math::Vector6d& dE_macro,
+    double*                       stateVars ) const
   {
     // get StateVars
-    double&    sig_v0        = stateLayout.getAs< double& >( stateVars, "sig_v0" );
-    double&    zeta          = stateLayout.getAs< double& >( stateVars, "zeta" );
-    mnmp_sized sig_N0        = stateLayout.getAs< mnmp_sized >( stateVars, "sig_N0" );
-    mnmp_sized sig_M0        = stateLayout.getAs< mnmp_sized >( stateVars, "sig_M0" );
-    mnmp_sized sig_L0        = stateLayout.getAs< mnmp_sized >( stateVars, "sig_L0" );
-    mVector6d  strain_macro0 = stateLayout.getAs< mVector6d >( stateVars, "strain_macro0" );
-    mnmp_sized eps_N0pos     = stateLayout.getAs< mnmp_sized >( stateVars, "eps_N0pos" );
-    mnmp_sized eps_N0neg     = stateLayout.getAs< mnmp_sized >( stateVars, "eps_N0neg" );
+    double&                 sig_v0        = stateLayout.getAs< double& >( stateVars, "sig_v0" );
+    double&                 zeta          = stateLayout.getAs< double& >( stateVars, "zeta" );
+    mnmp_sized              sig_N0        = stateLayout.getAs< mnmp_sized >( stateVars, "sig_N0" );
+    mnmp_sized              sig_M0        = stateLayout.getAs< mnmp_sized >( stateVars, "sig_M0" );
+    mnmp_sized              sig_L0        = stateLayout.getAs< mnmp_sized >( stateVars, "sig_L0" );
+    Marmot::Math::mVector6d strain_macro0 = stateLayout.getAs< Marmot::Math::mVector6d >( stateVars, "strain_macro0" );
+    mnmp_sized              eps_N0pos     = stateLayout.getAs< mnmp_sized >( stateVars, "eps_N0pos" );
+    mnmp_sized              eps_N0neg     = stateLayout.getAs< mnmp_sized >( stateVars, "eps_N0neg" );
 
     // ------------------------------------------------------------------------------------------------
     // Kinematic projection on the microplanes; colums represent the 6 values for a specific microplane
@@ -102,7 +106,7 @@ namespace Marmot::Materials {
                                                  deps_M( qp_i ),
                                                  deps_L( qp_i ),
                                                  normalResult.tangent.col( qp_i ),
-                                                 Vector6d::Zero(),
+                                                 Marmot::Math::Vector6d::Zero(),
                                                  qp_i );
 
       shearLResult.stress( qp_i )      = shear_response.stressL;
@@ -113,21 +117,22 @@ namespace Marmot::Materials {
         shearB_flag++;
     }
 
-    Vector6d stress_macro = m7_.ntSplit().homogenizeStress( normalResult.stress,
-                                                            shearMResult.stress,
-                                                            shearLResult.stress );
+    Marmot::Math::Vector6d stress_macro = m7_.ntSplit().homogenizeStress( normalResult.stress,
+                                                                          shearMResult.stress,
+                                                                          shearLResult.stress );
 
-    Matrix6d tangent_macro = m7_.ntSplit().homogenizeTangent( normalResult.tangent,
-                                                              shearMResult.tangent,
-                                                              shearLResult.tangent );
+    Marmot::Math::Matrix6d tangent_macro = m7_.ntSplit().homogenizeTangent( normalResult.tangent,
+                                                                            shearMResult.tangent,
+                                                                            shearLResult.tangent );
 
     // a NaN or inf on any microplane carries through the homogenization
     if ( !stress_macro.allFinite() || !tangent_macro.allFinite() ) {
-      MarmotJournal::warningToMSG( MakeString() << "stress:\n"
+      Marmot::Utilities::Journal::warningToMSG( Marmot::Utilities::MakeString()
+                                                << "stress:\n"
                                                 << stress_macro.transpose() << "\ntangent:\n"
                                                 << tangent_macro );
-      throw Marmot::StressUpdateFailed( MakeString()
-                                        << __PRETTY_FUNCTION__ << ": non-finite value in the stress or the tangent" );
+      throw Marmot::Utilities::StressUpdateFailed(
+        Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": non-finite value in the stress or the tangent" );
     }
 
     // commit StateVars

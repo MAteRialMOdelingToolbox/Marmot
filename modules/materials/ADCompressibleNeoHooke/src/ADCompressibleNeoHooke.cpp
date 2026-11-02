@@ -14,13 +14,13 @@ namespace Marmot::Materials {
 
   using namespace Marmot;
   using namespace Fastor;
-  using namespace FastorIndices;
-  using namespace FastorStandardTensors;
+  using namespace Marmot::Math::Tensors::FastorIndices;
+  using namespace Marmot::Math::Tensors::FastorTensors;
 
   ADCompressibleNeoHooke::ADCompressibleNeoHooke( const double* materialProperties,
                                                   int           nMaterialProperties,
                                                   int           materialLabel )
-    : MarmotMaterialFiniteStrainAD( materialProperties, nMaterialProperties, materialLabel )
+    : Marmot::Materials::MaterialFiniteStrainAD( materialProperties, nMaterialProperties, materialLabel )
   {
     stateLayout.finalize();
   }
@@ -36,17 +36,19 @@ namespace Marmot::Materials {
 
     using namespace ContinuumMechanics;
     // compute Cauchy-Green deformation
-    const auto C = DeformationMeasures::rightCauchyGreen( F_ );
+    const auto C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F_ );
 
     // compute energy density and first derivative w.r.t Cauchy Green deformation
-    const auto [psi_, dPsi_dC] = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C, K, G );
+    const auto [psi_, dPsi_dC] = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
+      PenceGouPotentialB( C, K, G );
 
     // compute Kirchhoff stress
-    Tensor33t< autodiff::dual > PK2 = multiplyFastorTensorWithScalar( dPsi_dC, autodiff::dual( 2.0 ) );
+    Tensor33t< autodiff::dual > PK2 = Marmot::Math::Tensors::multiplyFastorTensorWithScalar( dPsi_dC,
+                                                                                             autodiff::dual( 2.0 ) );
 
-    const auto tau                = StressMeasures::KirchhoffStressFromPK2( PK2, F_ );
+    const auto tau                = Marmot::ContinuumMechanics::StressMeasures::KirchhoffStressFromPK2( PK2, F_ );
     response.tau                  = tau;
-    response.elasticEnergyDensity = Math::makeReal( psi_ );
+    response.elasticEnergyDensity = Math::Tensors::makeReal( psi_ );
     response.dissipation          = 0.0;
   }
 } // namespace Marmot::Materials

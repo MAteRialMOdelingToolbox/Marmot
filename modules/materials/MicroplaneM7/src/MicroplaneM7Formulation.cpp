@@ -10,7 +10,7 @@ namespace Marmot::Materials {
 
   using namespace Marmot;
   using namespace Eigen;
-  using namespace ContinuumMechanics::VoigtNotation;
+  using namespace ContinuumMechanics::Voigt;
 
   namespace {
     // Fallback values for the optional material properties (c3, fc, transitionWidth,
@@ -34,7 +34,7 @@ namespace Marmot::Materials {
                                                                                int           firstOptional )
   {
     if ( nMaterialProperties < firstOptional )
-      throw std::invalid_argument( MakeString()
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
                                    << __PRETTY_FUNCTION__ << ": " << firstOptional << " material properties required, "
                                    << nMaterialProperties << " given." );
 
@@ -57,9 +57,10 @@ namespace Marmot::Materials {
 
   MicroplaneM7Formulation::MicroplaneM7Formulation( const Parameters& parameters ) : p( parameters ) {}
 
-  const Marmot::Microplane::NTSplit< MicroplaneM7Formulation::scheme >& MicroplaneM7Formulation::ntSplit()
+  const Marmot::ContinuumMechanics::Microplane::NTSplit< MicroplaneM7Formulation::scheme >& MicroplaneM7Formulation::
+    ntSplit()
   {
-    static const Marmot::Microplane::NTSplit< scheme > ntSplit_;
+    static const Marmot::ContinuumMechanics::Microplane::NTSplit< scheme > ntSplit_;
     return ntSplit_;
   }
 
@@ -176,16 +177,17 @@ namespace Marmot::Materials {
   }
 
   MicroplaneM7Formulation::NormalResponse MicroplaneM7Formulation::volumetric_boundary(
-    const double    sig_v0,
-    const Vector6d& strain_macro ) const
+    const double                  sig_v0,
+    const Marmot::Math::Vector6d& strain_macro ) const
   {
     const double E = p.E, k1 = p.k1, k3 = p.k3, k4 = p.k4, k5 = p.k5;
 
     double E_N0  = normalStiffness(); // microplane normal undamaged stiffness
     double eps_v = ( strain_macro( 0 ) + strain_macro( 1 ) + strain_macro( 2 ) ) / 3;
 
-    Vector6d strain_macroTensorComponents = strain_macro.array() * PInv.array();
-    const auto [epsPrinc, depsPrincddeps] = Invariants::principalValuesAndDerivatives( strain_macroTensorComponents );
+    Marmot::Math::Vector6d strain_macroTensorComponents = strain_macro.array() * PInv.array();
+    const auto [epsPrinc, depsPrincddeps]               = ContinuumMechanics::Invariants::principalValuesAndDerivatives(
+      strain_macroTensorComponents );
     Eigen::Index maxIndex, minIndex;
     double       prStrainDiff = epsPrinc.maxCoeff( &maxIndex ) - epsPrinc.minCoeff( &minIndex );
 
@@ -193,13 +195,13 @@ namespace Marmot::Materials {
                    k4;
     double sig_vb = -E * k1 * k3 * Math::exp( -eps_v / ( k1 * alpha ) ); // same value for all microplanes
 
-    Vector6d
+    Marmot::Math::Vector6d
       princStrainDiffDeriv = ( depsPrincddeps.row( maxIndex ) - depsPrincddeps.row( minIndex ) ).transpose().array() *
                              PInv.array();
-    Vector6d tangent = sig_vb * ( -I / ( 3.0 * k1 * alpha ) +
-                                  eps_v / ( k1 * alpha * alpha ) * k5 /
-                                    ( 1 + std::min( std::max( -sig_v0, 0.0 ), c21 ) / E_N0 ) * c20 *
-                                    std::pow( prStrainDiff / k1, c20 - 1. ) / k1 * princStrainDiffDeriv );
+    Marmot::Math::Vector6d tangent = sig_vb * ( -I / ( 3.0 * k1 * alpha ) +
+                                                eps_v / ( k1 * alpha * alpha ) * k5 /
+                                                  ( 1 + std::min( std::max( -sig_v0, 0.0 ), c21 ) / E_N0 ) * c20 *
+                                                  std::pow( prStrainDiff / k1, c20 - 1. ) / k1 * princStrainDiffDeriv );
 
     return { sig_vb, tangent };
   }
@@ -218,18 +220,20 @@ namespace Marmot::Materials {
     double pow2_term = std::max( -eps_d, 0.0 ) / ( k1 * beta_2 );
     double stress    = -E * k1 * beta_3 / ( 1.0 + pow2_term * pow2_term );
 
-    Vector6d tangent = -E * k1 * c6 * Math::exp( gamma_0 ) *
-                         ( 1.0 - std::pow( std::tanh( c9 * std::max( -eps_v, 0.0 ) / k1 ), 2.0 ) ) * c9 / k1 *
-                         Math::heaviside( -eps_v ) * -1.0 / 3.0 * I * 1.0 /
-                         ( 1.0 + std::pow( std::max( -eps_d, 0.0 ) / ( k1 * beta_2 ), 2.0 ) ) +
-                       E * k1 * beta_3 /
-                         std::pow( 1.0 + std::pow( std::max( -eps_d, 0.0 ) / ( k1 * beta_2 ), 2.0 ), 2.0 ) * 2.0 *
-                         std::max( -eps_d, 0.0 ) / ( k1 * beta_2 ) *
-                         ( Math::heaviside( -eps_d ) / ( k1 * beta_2 ) *
-                             ( -ntSplit().pTensors.N.col( qp_i ) + I / 3.0 ) -
-                           std::max( -eps_d, 0.0 ) / ( k1 * std::pow( beta_2, 2.0 ) ) * c5 * Math::exp( gamma_0 ) *
-                             ( 1.0 - std::pow( std::tanh( c9 * std::max( -eps_v, 0.0 ) / k1 ), 2.0 ) ) * c9 / k1 *
-                             Math::heaviside( -eps_v ) * -I / 3.0 );
+    Marmot::Math::Vector6d tangent = -E * k1 * c6 * Math::exp( gamma_0 ) *
+                                       ( 1.0 - std::pow( std::tanh( c9 * std::max( -eps_v, 0.0 ) / k1 ), 2.0 ) ) * c9 /
+                                       k1 * Math::heaviside( -eps_v ) * -1.0 / 3.0 * I * 1.0 /
+                                       ( 1.0 + std::pow( std::max( -eps_d, 0.0 ) / ( k1 * beta_2 ), 2.0 ) ) +
+                                     E * k1 * beta_3 /
+                                       std::pow( 1.0 + std::pow( std::max( -eps_d, 0.0 ) / ( k1 * beta_2 ), 2.0 ),
+                                                 2.0 ) *
+                                       2.0 * std::max( -eps_d, 0.0 ) / ( k1 * beta_2 ) *
+                                       ( Math::heaviside( -eps_d ) / ( k1 * beta_2 ) *
+                                           ( -ntSplit().pTensors.N.col( qp_i ) + I / 3.0 ) -
+                                         std::max( -eps_d, 0.0 ) / ( k1 * std::pow( beta_2, 2.0 ) ) * c5 *
+                                           Math::exp( gamma_0 ) *
+                                           ( 1.0 - std::pow( std::tanh( c9 * std::max( -eps_v, 0.0 ) / k1 ), 2.0 ) ) *
+                                           c9 / k1 * Math::heaviside( -eps_v ) * -I / 3.0 );
 
     return { stress, tangent };
   }
@@ -253,14 +257,14 @@ namespace Marmot::Materials {
   }
 
   MicroplaneM7Formulation::ShearBoundaryInputs MicroplaneM7Formulation::computeShearBoundaryInputs(
-    const double    eps_v,
-    const double    sig_N,
-    const double    sig_M0,
-    const double    sig_L0,
-    const double    deps_M,
-    const double    deps_L,
-    const Vector6d& sig_N_tangent_elastic,
-    const Vector6d& sig_N_tangent_boundary ) const
+    const double                  eps_v,
+    const double                  sig_N,
+    const double                  sig_M0,
+    const double                  sig_L0,
+    const double                  deps_M,
+    const double                  deps_L,
+    const Marmot::Math::Vector6d& sig_N_tangent_elastic,
+    const Marmot::Math::Vector6d& sig_N_tangent_boundary ) const
   {
     const double k1 = p.k1, k2 = p.k2;
 
@@ -304,11 +308,11 @@ namespace Marmot::Materials {
   }
 
   MicroplaneM7Formulation::ShearResponse MicroplaneM7Formulation::computeShearResponseFromBoundary(
-    const ShearBoundaryInputs& in,
-    const double               shear_boundary,
-    const Vector6d&            shearBoundaryTangent_elastic,
-    const Vector6d&            shearBoundaryTangent_boundary,
-    const size_t               qp_i ) const
+    const ShearBoundaryInputs&    in,
+    const double                  shear_boundary,
+    const Marmot::Math::Vector6d& shearBoundaryTangent_elastic,
+    const Marmot::Math::Vector6d& shearBoundaryTangent_boundary,
+    const size_t                  qp_i ) const
   {
     ShearResponse shear_result;
 
@@ -349,23 +353,24 @@ namespace Marmot::Materials {
       shear_result.stressL           = in.elasticL_prediction.stress;
       shear_result.stressM           = in.elasticM_prediction.stress;
       shear_result.tangentL_elastic  = in.elasticL_prediction.tangent * ntSplit().pTensors.L.col( qp_i );
-      shear_result.tangentL_boundary = Vector6d::Zero();
+      shear_result.tangentL_boundary = Marmot::Math::Vector6d::Zero();
       shear_result.tangentM_elastic  = in.elasticM_prediction.tangent * ntSplit().pTensors.M.col( qp_i );
-      shear_result.tangentM_boundary = Vector6d::Zero();
+      shear_result.tangentM_boundary = Marmot::Math::Vector6d::Zero();
     }
 
     return shear_result;
   }
 
-  MicroplaneM7Formulation::ShearResponse MicroplaneM7Formulation::shear_law( const double    eps_v,
-                                                                             const double    sig_N,
-                                                                             const double    sig_M0,
-                                                                             const double    sig_L0,
-                                                                             const double    deps_M,
-                                                                             const double    deps_L,
-                                                                             const Vector6d& sig_N_tangent_elastic,
-                                                                             const Vector6d& sig_N_tangent_boundary,
-                                                                             const size_t    qp_i ) const
+  MicroplaneM7Formulation::ShearResponse MicroplaneM7Formulation::shear_law(
+    const double                  eps_v,
+    const double                  sig_N,
+    const double                  sig_M0,
+    const double                  sig_L0,
+    const double                  deps_M,
+    const double                  deps_L,
+    const Marmot::Math::Vector6d& sig_N_tangent_elastic,
+    const Marmot::Math::Vector6d& sig_N_tangent_boundary,
+    const size_t                  qp_i ) const
   {
     const ShearBoundaryInputs in = computeShearBoundaryInputs( eps_v,
                                                                sig_N,
@@ -378,8 +383,10 @@ namespace Marmot::Materials {
 
     const double shear_boundary = sig_N > 0. ? in.R28 : in.R27;
 
-    const Vector6d shearBoundaryTangent_elastic  = sig_N > 0. ? Vector6d::Zero() : in.dR27ddStrain_elastic;
-    const Vector6d shearBoundaryTangent_boundary = sig_N > 0. ? in.dR28ddStrain_boundary : in.dR27ddStrain_boundary;
+    const Marmot::Math::Vector6d shearBoundaryTangent_elastic  = sig_N > 0. ? Marmot::Math::Vector6d::Zero()
+                                                                            : in.dR27ddStrain_elastic;
+    const Marmot::Math::Vector6d shearBoundaryTangent_boundary = sig_N > 0. ? in.dR28ddStrain_boundary
+                                                                            : in.dR27ddStrain_boundary;
 
     return computeShearResponseFromBoundary( in,
                                              shear_boundary,

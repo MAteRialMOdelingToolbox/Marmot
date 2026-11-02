@@ -13,19 +13,19 @@
 #include <string>
 
 using namespace Marmot::Testing;
-using namespace Marmot::Solvers;
 
-std::unique_ptr< MarmotMaterialHypoElastic > createMarmotMaterialHypoElastic( std::string   materialName,
-                                                                              const double* materialProperties,
-                                                                              const int     nMaterialProperties )
+std::unique_ptr< Marmot::Materials::MaterialHypoElastic > createMarmotMaterialHypoElastic(
+  std::string   materialName,
+  const double* materialProperties,
+  const int     nMaterialProperties )
 {
 
-  const int                                    elLabel = 1;
-  std::unique_ptr< MarmotMaterialHypoElastic > mat(
-    MarmotLibrary::MarmotMaterialHypoElasticFactory::createMaterial( materialName,
-                                                                     materialProperties,
-                                                                     nMaterialProperties,
-                                                                     elLabel ) );
+  const int                                                 elLabel = 1;
+  std::unique_ptr< Marmot::Materials::MaterialHypoElastic > mat(
+    Marmot::Registry::MaterialHypoElasticFactory::createMaterial( materialName,
+                                                                  materialProperties,
+                                                                  nMaterialProperties,
+                                                                  elLabel ) );
   return mat;
 }
 
@@ -39,18 +39,18 @@ void testOedometricCompression()
   auto mat = createMarmotMaterialHypoElastic( "MICROPLANEM7", materialProperties.data(), nMaterialProperties );
 
   // set increment
-  MarmotMaterialHypoElastic::state3D state;
-  Marmot::Vector6d                   dStrain = { -1e-3, 0., 0., 0., 0., 0. };
-  Marmot::Matrix6d                   dStressDDStrain;
-  const int                          nStateVars = mat->getNumberOfRequiredStateVars();
-  std::vector< double >              stateVars( nStateVars, 0.0 );
+  Marmot::Materials::MaterialHypoElastic::state3D state;
+  Marmot::Math::Vector6d                          dStrain = { -1e-3, 0., 0., 0., 0., 0. };
+  Marmot::Math::Matrix6d                          dStressDDStrain;
+  const int                                       nStateVars = mat->getNumberOfRequiredStateVars();
+  std::vector< double >                           stateVars( nStateVars, 0.0 );
   state.stateVars      = stateVars.data();
   double       timeOld = 0.0;
   const double dT      = 0.1;
 
   // compute material response
   for ( int i = 0; i < 10; i++ ) {
-    MarmotMaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
+    Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
     mat->computeStress( state, dStressDDStrain, dStrain, timeInfo );
     timeOld += dT;
   }
@@ -59,10 +59,10 @@ void testOedometricCompression()
   std::cout << "oedometricCompression stress = " << state.stress.transpose() << std::endl;
 
   // set the correct result
-  Marmot::Vector6d stressTarget = { -198.4872406, -59.19080234, -59.19080234, 0., 0., 0. };
+  Marmot::Math::Vector6d stressTarget = { -198.4872406, -59.19080234, -59.19080234, 0., 0., 0. };
 
   throwExceptionOnFailure( checkIfEqual< double >( state.stress, stressTarget, 1e-6 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void testTriaxialCompression()
@@ -75,18 +75,18 @@ void testTriaxialCompression()
   auto mat = createMarmotMaterialHypoElastic( "MICROPLANEM7", materialProperties.data(), nMaterialProperties );
 
   // set increment
-  MarmotMaterialHypoElastic::state3D state;
-  Marmot::Vector6d                   dStrain = { -1e-3, -2e-4, -2e-4, 0., 0., 0. };
-  Marmot::Matrix6d                   dStressDDStrain;
-  const int                          nStateVars = mat->getNumberOfRequiredStateVars();
-  std::vector< double >              stateVars( nStateVars, 0.0 );
+  Marmot::Materials::MaterialHypoElastic::state3D state;
+  Marmot::Math::Vector6d                          dStrain = { -1e-3, -2e-4, -2e-4, 0., 0., 0. };
+  Marmot::Math::Matrix6d                          dStressDDStrain;
+  const int                                       nStateVars = mat->getNumberOfRequiredStateVars();
+  std::vector< double >                           stateVars( nStateVars, 0.0 );
   state.stateVars      = stateVars.data();
   double       timeOld = 0.0;
   const double dT      = 0.05;
 
   // compute material response
   for ( int i = 0; i < 20; i++ ) {
-    MarmotMaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
+    Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
     mat->computeStress( state, dStressDDStrain, dStrain, timeInfo );
     timeOld += dT;
   }
@@ -94,10 +94,10 @@ void testTriaxialCompression()
   std::cout << "triaxialCompression stress = " << state.stress.transpose() << std::endl;
 
   // set the correct result
-  Marmot::Vector6d stressTarget = { -337.6493166, -231.1318392, -231.1318392, 0., 0., 0. };
+  Marmot::Math::Vector6d stressTarget = { -337.6493166, -231.1318392, -231.1318392, 0., 0., 0. };
 
   throwExceptionOnFailure( checkIfEqual< double >( state.stress, stressTarget, 1e-6 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void testShear()
@@ -110,18 +110,18 @@ void testShear()
   auto mat = createMarmotMaterialHypoElastic( "MICROPLANEM7", materialProperties.data(), nMaterialProperties );
 
   // set increment
-  MarmotMaterialHypoElastic::state3D state;
-  Marmot::Vector6d                   dStrain = { 0., 0., 0., 5e-4, -3e-4, 2e-4 };
-  Marmot::Matrix6d                   dStressDDStrain;
-  const int                          nStateVars = mat->getNumberOfRequiredStateVars();
-  std::vector< double >              stateVars( nStateVars, 0.0 );
+  Marmot::Materials::MaterialHypoElastic::state3D state;
+  Marmot::Math::Vector6d                          dStrain = { 0., 0., 0., 5e-4, -3e-4, 2e-4 };
+  Marmot::Math::Matrix6d                          dStressDDStrain;
+  const int                                       nStateVars = mat->getNumberOfRequiredStateVars();
+  std::vector< double >                           stateVars( nStateVars, 0.0 );
   state.stateVars      = stateVars.data();
   double       timeOld = 0.0;
   const double dT      = 0.1;
 
   // compute material response
   for ( int i = 0; i < 10; i++ ) {
-    MarmotMaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
+    Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
     mat->computeStress( state, dStressDDStrain, dStrain, timeInfo );
     timeOld += dT;
   }
@@ -129,10 +129,11 @@ void testShear()
   std::cout << "shear stress = " << state.stress.transpose() << std::endl;
 
   // set the correct result
-  Marmot::Vector6d stressTarget = { -27.1304588, -25.03769381, -17.82531926, 25.04060546, -18.02493041, 16.15387587 };
+  Marmot::Math::Vector6d stressTarget =
+    { -27.1304588, -25.03769381, -17.82531926, 25.04060546, -18.02493041, 16.15387587 };
 
   throwExceptionOnFailure( checkIfEqual< double >( state.stress, stressTarget, 1e-6 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void testTangent()
@@ -145,22 +146,22 @@ void testTangent()
   auto mat = createMarmotMaterialHypoElastic( "MICROPLANEM7", materialProperties.data(), nMaterialProperties );
 
   // set increment
-  MarmotMaterialHypoElastic::state3D state;
-  Marmot::Vector6d                   dStrain = { 1e-5, 1e-5, 1e-5, 0., 0., 0. };
-  Marmot::Matrix6d                   dStressDDStrain;
-  const int                          nStateVars = mat->getNumberOfRequiredStateVars();
-  std::vector< double >              stateVars( nStateVars, 0.0 );
+  Marmot::Materials::MaterialHypoElastic::state3D state;
+  Marmot::Math::Vector6d                          dStrain = { 1e-5, 1e-5, 1e-5, 0., 0., 0. };
+  Marmot::Math::Matrix6d                          dStressDDStrain;
+  const int                                       nStateVars = mat->getNumberOfRequiredStateVars();
+  std::vector< double >                           stateVars( nStateVars, 0.0 );
   state.stateVars      = stateVars.data();
   double       timeOld = 0.0;
   const double dT      = 0.1;
 
-  Marmot::Matrix6d Cel, Ctarget;
+  Marmot::Math::Matrix6d Cel, Ctarget;
   Ctarget = Marmot::ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( materialProperties[0],
                                                                                 materialProperties[1] );
 
   // compute material response
   for ( int i = 0; i < 5; i++ ) {
-    MarmotMaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
+    Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
     mat->computeStress( state, dStressDDStrain, dStrain, timeInfo );
     timeOld += dT;
     if ( i == 0 )
@@ -168,23 +169,23 @@ void testTangent()
   }
 
   std::vector< double > stateVarsOld( nStateVars );
-  stateVarsOld               = stateVars;
-  Marmot::Vector6d stressOld = state.stress;
+  stateVarsOld                     = stateVars;
+  Marmot::Math::Vector6d stressOld = state.stress;
 
   Eigen::MatrixXd C;
 
   const Eigen::VectorXd dEps = dStrain;
   // ----------------------------------------
-  C = Marmot::NumericalAlgorithms::Differentiation::forwardDifference(
+  C = Marmot::Math::Differentiation::Numerical::forwardDifference(
     [&]( const Eigen::VectorXd& dE_ ) {
       // reset stateVars to old state
       stateVars = stateVarsOld;
 
-      MarmotMaterialHypoElastic::state3D localState;
+      Marmot::Materials::MaterialHypoElastic::state3D localState;
       localState.stress    = stressOld;
       localState.stateVars = stateVars.data();
 
-      MarmotMaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
+      Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
       // compute stress
       mat->computeStress( localState, dStressDDStrain, dE_, timeInfo );
 
@@ -195,14 +196,14 @@ void testTangent()
 
   stateVars    = stateVarsOld;
   state.stress = stressOld;
-  MarmotMaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
+  Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
   mat->computeStress( state, dStressDDStrain, dStrain, timeInfo );
 
   throwExceptionOnFailure( checkIfEqual< double >( Cel, Ctarget, 1e-7 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " elastic tangent failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " elastic tangent failed" );
 
   throwExceptionOnFailure( checkIfEqual< double >( C, dStressDDStrain, 0.5 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " plastic tangent failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " plastic tangent failed" );
 }
 
 void testOedometricExtension()
@@ -215,18 +216,18 @@ void testOedometricExtension()
   auto mat = createMarmotMaterialHypoElastic( "MICROPLANEM7", materialProperties.data(), nMaterialProperties );
 
   // set increment
-  MarmotMaterialHypoElastic::state3D state;
-  Marmot::Vector6d                   dStrain = { 1e-4, 0., 0., 0., 0., 0. };
-  Marmot::Matrix6d                   dStressDDStrain;
-  const int                          nStateVars = mat->getNumberOfRequiredStateVars();
-  std::vector< double >              stateVars( nStateVars, 0.0 );
+  Marmot::Materials::MaterialHypoElastic::state3D state;
+  Marmot::Math::Vector6d                          dStrain = { 1e-4, 0., 0., 0., 0., 0. };
+  Marmot::Math::Matrix6d                          dStressDDStrain;
+  const int                                       nStateVars = mat->getNumberOfRequiredStateVars();
+  std::vector< double >                           stateVars( nStateVars, 0.0 );
   state.stateVars      = stateVars.data();
   double       timeOld = 0.0;
   const double dT      = 0.1;
 
   // compute material response
   for ( int i = 0; i < 10; i++ ) {
-    MarmotMaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
+    Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
     mat->computeStress( state, dStressDDStrain, dStrain, timeInfo );
     timeOld += dT;
   }
@@ -234,10 +235,10 @@ void testOedometricExtension()
   std::cout << "oedometricExtension stress = " << state.stress.transpose() << std::endl;
 
   // set the correct result
-  Marmot::Vector6d stressTarget = { 2.105194144, 2.569889942, 2.569889942, 0., 0., 0. };
+  Marmot::Math::Vector6d stressTarget = { 2.105194144, 2.569889942, 2.569889942, 0., 0., 0. };
 
   throwExceptionOnFailure( checkIfEqual< double >( state.stress, stressTarget, 1e-6 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void testGeneralTriaxialCompression()
@@ -250,18 +251,18 @@ void testGeneralTriaxialCompression()
   auto mat = createMarmotMaterialHypoElastic( "MICROPLANEM7", materialProperties.data(), nMaterialProperties );
 
   // set increment: three distinct principal normal strains (non-axisymmetric)
-  MarmotMaterialHypoElastic::state3D state;
-  Marmot::Vector6d                   dStrain = { -1e-3, -6e-4, -2e-4, 0., 0., 0. };
-  Marmot::Matrix6d                   dStressDDStrain;
-  const int                          nStateVars = mat->getNumberOfRequiredStateVars();
-  std::vector< double >              stateVars( nStateVars, 0.0 );
+  Marmot::Materials::MaterialHypoElastic::state3D state;
+  Marmot::Math::Vector6d                          dStrain = { -1e-3, -6e-4, -2e-4, 0., 0., 0. };
+  Marmot::Math::Matrix6d                          dStressDDStrain;
+  const int                                       nStateVars = mat->getNumberOfRequiredStateVars();
+  std::vector< double >                           stateVars( nStateVars, 0.0 );
   state.stateVars      = stateVars.data();
   double       timeOld = 0.0;
   const double dT      = 0.05;
 
   // compute material response
   for ( int i = 0; i < 20; i++ ) {
-    MarmotMaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
+    Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
     mat->computeStress( state, dStressDDStrain, dStrain, timeInfo );
     timeOld += dT;
   }
@@ -269,10 +270,10 @@ void testGeneralTriaxialCompression()
   std::cout << "generalTriaxialCompression stress = " << state.stress.transpose() << std::endl;
 
   // set the correct result
-  Marmot::Vector6d stressTarget = { -378.1410099, -334.6771595, -274.3581159, 0., 0., 0. };
+  Marmot::Math::Vector6d stressTarget = { -378.1410099, -334.6771595, -274.3581159, 0., 0., 0. };
 
   throwExceptionOnFailure( checkIfEqual< double >( state.stress, stressTarget, 1e-6 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 void testCombinedNormalShear()
@@ -285,18 +286,18 @@ void testCombinedNormalShear()
   auto mat = createMarmotMaterialHypoElastic( "MICROPLANEM7", materialProperties.data(), nMaterialProperties );
 
   // set increment: combined normal compression and shear in the same increment
-  MarmotMaterialHypoElastic::state3D state;
-  Marmot::Vector6d                   dStrain = { -5e-4, -2e-4, -2e-4, 3e-4, -2e-4, 1e-4 };
-  Marmot::Matrix6d                   dStressDDStrain;
-  const int                          nStateVars = mat->getNumberOfRequiredStateVars();
-  std::vector< double >              stateVars( nStateVars, 0.0 );
+  Marmot::Materials::MaterialHypoElastic::state3D state;
+  Marmot::Math::Vector6d                          dStrain = { -5e-4, -2e-4, -2e-4, 3e-4, -2e-4, 1e-4 };
+  Marmot::Math::Matrix6d                          dStressDDStrain;
+  const int                                       nStateVars = mat->getNumberOfRequiredStateVars();
+  std::vector< double >                           stateVars( nStateVars, 0.0 );
   state.stateVars      = stateVars.data();
   double       timeOld = 0.0;
   const double dT      = 0.1;
 
   // compute material response
   for ( int i = 0; i < 10; i++ ) {
-    MarmotMaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
+    Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
     mat->computeStress( state, dStressDDStrain, dStrain, timeInfo );
     timeOld += dT;
   }
@@ -304,10 +305,11 @@ void testCombinedNormalShear()
   std::cout << "combinedNormalShear stress = " << state.stress.transpose() << std::endl;
 
   // set the correct result
-  Marmot::Vector6d stressTarget = { -159.0734483, -100.9032682, -102.2851853, 28.43759883, -19.00010476, 9.570438297 };
+  Marmot::Math::Vector6d stressTarget =
+    { -159.0734483, -100.9032682, -102.2851853, 28.43759883, -19.00010476, 9.570438297 };
 
   throwExceptionOnFailure( checkIfEqual< double >( state.stress, stressTarget, 1e-6 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 // Shared tangent-verification routine: drives the material through `nIncrements` steps of
@@ -318,45 +320,45 @@ void testCombinedNormalShear()
 // struct-unification refactor (mp_response2 -> NormalResponse, projection tensor now applied
 // inside normal_elasticLaw/tensile_boundary): a mistake there would show up as the analytical
 // tangent diverging from the numerical one.
-void checkTangentForStrainPath( const std::string&      testName,
-                                const Marmot::Vector6d& dStrain,
-                                const int               nIncrements,
-                                const double            tangentTol )
+void checkTangentForStrainPath( const std::string&            testName,
+                                const Marmot::Math::Vector6d& dStrain,
+                                const int                     nIncrements,
+                                const double                  tangentTol )
 {
   const std::array< double, 7 > materialProperties  = { 2.5e4, 0.18, 1.5e-4, 110, 30, 100, 1e-4 };
   const int                     nMaterialProperties = 7;
 
   auto mat = createMarmotMaterialHypoElastic( "MICROPLANEM7", materialProperties.data(), nMaterialProperties );
 
-  MarmotMaterialHypoElastic::state3D state;
-  Marmot::Matrix6d                   dStressDDStrain;
-  const int                          nStateVars = mat->getNumberOfRequiredStateVars();
-  std::vector< double >              stateVars( nStateVars, 0.0 );
+  Marmot::Materials::MaterialHypoElastic::state3D state;
+  Marmot::Math::Matrix6d                          dStressDDStrain;
+  const int                                       nStateVars = mat->getNumberOfRequiredStateVars();
+  std::vector< double >                           stateVars( nStateVars, 0.0 );
   state.stateVars      = stateVars.data();
   double       timeOld = 0.0;
   const double dT      = 0.1;
 
   for ( int i = 0; i < nIncrements; i++ ) {
-    MarmotMaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
+    Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
     mat->computeStress( state, dStressDDStrain, dStrain, timeInfo );
     timeOld += dT;
   }
 
   std::vector< double > stateVarsOld( nStateVars );
-  stateVarsOld               = stateVars;
-  Marmot::Vector6d stressOld = state.stress;
+  stateVarsOld                     = stateVars;
+  Marmot::Math::Vector6d stressOld = state.stress;
 
   Eigen::MatrixXd       C;
   const Eigen::VectorXd dEps = dStrain;
-  C                          = Marmot::NumericalAlgorithms::Differentiation::forwardDifference(
+  C                          = Marmot::Math::Differentiation::Numerical::forwardDifference(
     [&]( const Eigen::VectorXd& dE_ ) {
       stateVars = stateVarsOld;
 
-      MarmotMaterialHypoElastic::state3D localState;
+      Marmot::Materials::MaterialHypoElastic::state3D localState;
       localState.stress    = stressOld;
       localState.stateVars = stateVars.data();
 
-      MarmotMaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
+      Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
       mat->computeStress( localState, dStressDDStrain, dE_, timeInfo );
 
       return localState.stress;
@@ -365,11 +367,11 @@ void checkTangentForStrainPath( const std::string&      testName,
 
   stateVars    = stateVarsOld;
   state.stress = stressOld;
-  MarmotMaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
+  Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
   mat->computeStress( state, dStressDDStrain, dStrain, timeInfo );
 
   throwExceptionOnFailure( checkIfEqual< double >( C, dStressDDStrain, tangentTol ),
-                           MakeString() << testName << " tangent failed" );
+                           Marmot::Utilities::MakeString() << testName << " tangent failed" );
 }
 
 void testTangentOedometricExtension()
@@ -377,13 +379,13 @@ void testTangentOedometricExtension()
   // Small strain increment (same order of magnitude as testTangent()) so the tensile boundary
   // is only just engaged on some microplanes, avoiding the strongly non-smooth shear-boundary
   // branch switching (shear_law's R27/R28 selection on sign(sig_N)) seen at larger strains.
-  Marmot::Vector6d dStrain = { 1e-5, 0., 0., 0., 0., 0. };
+  Marmot::Math::Vector6d dStrain = { 1e-5, 0., 0., 0., 0., 0. };
   checkTangentForStrainPath( __PRETTY_FUNCTION__, dStrain, 5, 0.5 );
 }
 
 void testTangentCombinedNormalShear()
 {
-  Marmot::Vector6d dStrain = { -2e-5, -1e-5, -1e-5, 1.5e-5, -1e-5, 0.5e-5 };
+  Marmot::Math::Vector6d dStrain = { -2e-5, -1e-5, -1e-5, 1.5e-5, -1e-5, 0.5e-5 };
   checkTangentForStrainPath( __PRETTY_FUNCTION__, dStrain, 5, 0.5 );
 }
 
@@ -397,15 +399,15 @@ void testTangentCombinedNormalShear()
 void testCoordinateInvarianceTurbokreisel()
 {
   std::vector< double > materialProperties = { 2.5e4, 0.18, 1.5e-4, 110, 30, 100, 1e-4 };
-  auto                  solveropts         = MarmotMaterialPointSolverHypoElastic::SolverOptions();
+  auto                  solveropts         = Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions();
   std::string           matName            = "MICROPLANEM7";
 
-  auto solver = MarmotMaterialPointSolverHypoElastic( matName,
-                                                      materialProperties.data(),
-                                                      static_cast< int >( materialProperties.size() ),
-                                                      solveropts );
+  auto solver = Marmot::Materials::MaterialPointSolverHypoElastic( matName,
+                                                                   materialProperties.data(),
+                                                                   static_cast< int >( materialProperties.size() ),
+                                                                   solveropts );
 
-  MarmotMaterialPointSolverHypoElastic::Step step;
+  Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, true };
   step.isStressComponentControlled = { false, false, false, false, false, false };
   step.stressIncrementTarget       = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -422,7 +424,7 @@ void testCoordinateInvarianceTurbokreisel()
   // and spinTurbokreisel checks every entry relative to itself. So the tangent tolerance only guards
   // against NaN/inf and gross errors; the tangent is checked sharply in testCubicSymmetryInvariance*().
   throwExceptionOnFailure( spinTurbokreisel( solver, 1e-1, 1e3 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " Turbokreisel failed!" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " Turbokreisel failed!" );
 }
 
 // The 24 proper rotations of the cube (signed permutation matrices with det = +1). The N37 quadrature
@@ -445,22 +447,23 @@ std::vector< Eigen::Matrix3d > cubicSymmetryRotations()
 
 // Drives a fresh material point through nIncrements constant strain increments and returns the final
 // stress and tangent.
-std::pair< Marmot::Vector6d, Marmot::Matrix6d > runStrainPath( const Marmot::Vector6d& dStrain, const int nIncrements )
+std::pair< Marmot::Math::Vector6d, Marmot::Math::Matrix6d > runStrainPath( const Marmot::Math::Vector6d& dStrain,
+                                                                           const int                     nIncrements )
 {
   const std::array< double, 7 > materialProperties  = { 2.5e4, 0.18, 1.5e-4, 110, 30, 100, 1e-4 };
   const int                     nMaterialProperties = 7;
 
   auto mat = createMarmotMaterialHypoElastic( "MICROPLANEM7", materialProperties.data(), nMaterialProperties );
 
-  MarmotMaterialHypoElastic::state3D state;
-  Marmot::Matrix6d                   dStressDDStrain = Marmot::Matrix6d::Zero();
-  std::vector< double >              stateVars( mat->getNumberOfRequiredStateVars(), 0.0 );
+  Marmot::Materials::MaterialHypoElastic::state3D state;
+  Marmot::Math::Matrix6d                          dStressDDStrain = Marmot::Math::Matrix6d::Zero();
+  std::vector< double >                           stateVars( mat->getNumberOfRequiredStateVars(), 0.0 );
   state.stateVars      = stateVars.data();
   double       timeOld = 0.0;
   const double dT      = 0.1;
 
   for ( int i = 0; i < nIncrements; i++ ) {
-    MarmotMaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
+    Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ timeOld + dT, dT };
     mat->computeStress( state, dStressDDStrain, dStrain, timeInfo );
     timeOld += dT;
   }
@@ -473,11 +476,11 @@ std::pair< Marmot::Vector6d, Marmot::Matrix6d > runStrainPath( const Marmot::Vec
 // must give the same response up to round-off in every regime, including softening. This catches
 // errors in the projection tensors, in the treatment of the two in-plane shear directions and in the
 // homogenization, which the loose Turbokreisel tolerances above would hide.
-void checkCubicSymmetryInvarianceForStrainPath( const std::string&      testName,
-                                                const Marmot::Vector6d& dStrain,
-                                                const int               nIncrements )
+void checkCubicSymmetryInvarianceForStrainPath( const std::string&            testName,
+                                                const Marmot::Math::Vector6d& dStrain,
+                                                const int                     nIncrements )
 {
-  using namespace Marmot::ContinuumMechanics::VoigtNotation::Transformations;
+  using namespace Marmot::ContinuumMechanics::Voigt::Transformations;
 
   const auto [refStress, refStiffness] = runStrainPath( dStrain, nIncrements );
 
@@ -485,11 +488,11 @@ void checkCubicSymmetryInvarianceForStrainPath( const std::string&      testName
     const auto [stress, stiffness] = runStrainPath( transformStrainToLocalSystem( dStrain, Q ), nIncrements );
 
     throwExceptionOnFailure( checkIfEqual< double >( transformStressToGlobalSystem( stress, Q ), refStress, 1e-10 ),
-                             MakeString() << testName << " stress failed" );
+                             Marmot::Utilities::MakeString() << testName << " stress failed" );
     throwExceptionOnFailure( checkIfEqual< double >( transformStiffnessToGlobalSystem( stiffness, Q ),
                                                      refStiffness,
                                                      1e-8 ),
-                             MakeString() << testName << " tangent failed" );
+                             Marmot::Utilities::MakeString() << testName << " tangent failed" );
   }
 }
 
@@ -521,7 +524,7 @@ void testTooFewMaterialProperties()
     rejected = std::string( e.what() ).find( "material properties required" ) != std::string::npos;
   }
 
-  throwExceptionOnFailure( rejected, MakeString() << __PRETTY_FUNCTION__ << " failed" );
+  throwExceptionOnFailure( rejected, Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
 int main()

@@ -208,8 +208,8 @@ Programs linking Marmot must find ``Marmot.dll`` at run time, e.g., through ``PA
 A Windows DLL exports only what is marked for export, which in Marmot is ``MARMOT_API``
 (defined in ``Marmot/MarmotPortability.h``).
 The rule for what is marked: the exported API is the interface layer through which a consumer drives Marmot,
-that is, the element and material factories, the interface classes they hand out (``MarmotElement``,
-``MarmotMaterialSection``, ``ElementProperties``), and the few non-virtual functions a consumer calls on them,
+that is, the element and material factories, the interface classes they hand out (``Marmot::Discretizations::Elements::Element``,
+``Marmot::Discretizations::MaterialSection``, ``Marmot::Discretizations::ElementProperties``), and the few non-virtual functions a consumer calls on them,
 marked at the smallest granularity that links (a single member rather than its class, where the class is otherwise
 reached through virtual functions only).
 Everything else is used through the virtual functions of the objects the factories create.

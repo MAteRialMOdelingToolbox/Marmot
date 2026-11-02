@@ -51,7 +51,7 @@ For the 3D case the mapping between the tensor indices :math:`(i,j)` and the Voi
    \end{bmatrix}
 
 and is available in both directions as ``toVoigt<nDim>(i, j)`` and ``fromVoigt<nDim>(ij)`` in the
-namespace ``Marmot::ContinuumMechanics::TensorUtility::IndexNotation``. Prefer these helpers over
+namespace ``Marmot::Math::Tensors::IndexNotation``. Prefer these helpers over
 hard-coded indices — code written against them stays correct if the ordering ever changes.
 
 Stress and strain
@@ -129,7 +129,7 @@ Coordinate transformations
 
 Because stress and strain use different shear scalings, they also require different transformation
 matrices under a change of basis. Both are built from a local coordinate system in
-``Marmot::ContinuumMechanics::VoigtNotation::Transformations``:
+``Marmot::ContinuumMechanics::Voigt::Transformations``:
 
 - ``transformationMatrixStressVoigt`` — for stress-like Voigt vectors
 - ``transformationMatrixStrainVoigt`` — for strain-like Voigt vectors; identical to the stress
@@ -177,7 +177,7 @@ and column 3 of the :math:`6\times6` tangent.
 Strain-displacement operators
 -----------------------------
 
-The B-operators in ``Marmot::FiniteElement`` produce strain vectors in exactly this ordering. For the
+The B-operators in ``Marmot::Discretizations::Elements`` produce strain vectors in exactly this ordering. For the
 3D case,
 
 .. math::

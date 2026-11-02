@@ -14,16 +14,16 @@
 #include <string>
 
 using namespace Marmot;
-using namespace Marmot::FastorIndices;
-using namespace Marmot::FastorStandardTensors;
+using namespace Marmot::Math::Tensors::FastorIndices;
+using namespace Marmot::Math::Tensors::FastorTensors;
 
-MarmotInterfaceMaterialHypoElastic::MarmotInterfaceMaterialHypoElastic( const std::string& materialName,
-                                                                        const double*      matProperties_,
-                                                                        int                nMaterialProperties_,
-                                                                        int                materialNumber_ )
+Marmot::Materials::InterfaceMaterialHypoElastic::InterfaceMaterialHypoElastic( const std::string& materialName,
+                                                                               const double*      matProperties_,
+                                                                               int                nMaterialProperties_,
+                                                                               int                materialNumber_ )
   : materialProperties( matProperties_ ),
     nMaterialProperties( nMaterialProperties_ ),
-    h( checkedMaterialProperty( matProperties_, nMaterialProperties_, 2 ) ),
+    h( Marmot::Utilities::checkedMaterialProperty( matProperties_, nMaterialProperties_, 2 ) ),
     materialNumber( materialNumber_ )
 {
   baseMaterialProperties.reserve( nMaterialProperties - 1 );
@@ -33,33 +33,33 @@ MarmotInterfaceMaterialHypoElastic::MarmotInterfaceMaterialHypoElastic( const st
                                  materialProperties + 3,
                                  materialProperties + nMaterialProperties );
 
-  baseMaterial = std::unique_ptr< MarmotMaterialHypoElastic >(
-    MarmotLibrary::MarmotMaterialHypoElasticFactory::createMaterial( materialName,
-                                                                     baseMaterialProperties.data(),
-                                                                     static_cast< int >(
-                                                                       baseMaterialProperties.size() ),
-                                                                     materialNumber ) );
+  baseMaterial = std::unique_ptr< Marmot::Materials::MaterialHypoElastic >(
+    Marmot::Registry::MaterialHypoElasticFactory::createMaterial( materialName,
+                                                                  baseMaterialProperties.data(),
+                                                                  static_cast< int >( baseMaterialProperties.size() ),
+                                                                  materialNumber ) );
   if ( !baseMaterial ) {
-    throw std::invalid_argument( "Unknown base material for MarmotInterfaceMaterialHypoElastic: " + materialName );
+    throw std::invalid_argument( "Unknown base material for Marmot::Materials::InterfaceMaterialHypoElastic: " +
+                                 materialName );
   }
 
   stateLayout.add( "baseMaterialStateVars", baseMaterial->getNumberOfRequiredStateVars() );
   stateLayout.finalize();
 }
 
-void MarmotInterfaceMaterialHypoElastic::setCharacteristicElementLength( double length )
+void Marmot::Materials::InterfaceMaterialHypoElastic::setCharacteristicElementLength( double length )
 {
   characteristicElementLength = length;
   baseMaterial->setCharacteristicElementLength( length );
 }
 
-void MarmotInterfaceMaterialHypoElastic::computeStress( State&               state,
-                                                        Tangents&            tangents,
-                                                        const Deformation&   deformation,
-                                                        const TimeIncrement& timeIncrement )
+void Marmot::Materials::InterfaceMaterialHypoElastic::computeStress( State&               state,
+                                                                     Tangents&            tangents,
+                                                                     const Deformation&   deformation,
+                                                                     const TimeIncrement& timeIncrement )
 {
   if ( !baseMaterial ) {
-    throw std::logic_error( "MarmotInterfaceMaterialHypoElastic has no base material." );
+    throw std::logic_error( "Marmot::Materials::InterfaceMaterialHypoElastic has no base material." );
   }
 
   using namespace Marmot::Materials::InterfaceMaterialHelperFunctions;
@@ -83,17 +83,18 @@ void MarmotInterfaceMaterialHypoElastic::computeStress( State&               sta
                                          averageSurfaceGradient;
   const Tensor33d strainIncrement = 0.5 * ( displacementGradient + Fastor::transpose( displacementGradient ) );
 
-  const Vector6d strainIncrementVoigt = ContinuumMechanics::VoigtNotation::strainToVoigt(
-    mapEigenToFastor( strainIncrement ) );
+  const Marmot::Math::Vector6d strainIncrementVoigt = ContinuumMechanics::Voigt::strainToVoigt(
+    Marmot::Math::Tensors::mapEigenToFastor( strainIncrement ) );
 
-  const auto            scaledStressCurrent = mapEigenToFastor( state.surfaceStress );
-  const Eigen::Matrix3d scaledStressSym     = 0.5 * ( scaledStressCurrent + scaledStressCurrent.transpose() );
-  const Vector6d        stressVoigt = ( 1. / h ) * ContinuumMechanics::VoigtNotation::stressToVoigt( scaledStressSym );
+  const auto                   scaledStressCurrent = Marmot::Math::Tensors::mapEigenToFastor( state.surfaceStress );
+  const Eigen::Matrix3d        scaledStressSym     = 0.5 * ( scaledStressCurrent + scaledStressCurrent.transpose() );
+  const Marmot::Math::Vector6d stressVoigt = ( 1. / h ) * ContinuumMechanics::Voigt::stressToVoigt( scaledStressSym );
 
-  Matrix6d tangent               = Matrix6d::Zero();
-  double*  baseMaterialStateVars = stateLayout.getPtr( state.stateVars, "baseMaterialStateVars" );
-  MarmotMaterialHypoElastic::state3D        baseState{ stressVoigt, 0.0, 0.0, baseMaterialStateVars };
-  const MarmotMaterialHypoElastic::timeInfo timeInfo{ timeIncrement.timeOld + timeIncrement.dT, timeIncrement.dT };
+  Marmot::Math::Matrix6d tangent               = Marmot::Math::Matrix6d::Zero();
+  double*                baseMaterialStateVars = stateLayout.getPtr( state.stateVars, "baseMaterialStateVars" );
+  Marmot::Materials::MaterialHypoElastic::state3D        baseState{ stressVoigt, 0.0, 0.0, baseMaterialStateVars };
+  const Marmot::Materials::MaterialHypoElastic::timeInfo timeInfo{ timeIncrement.timeOld + timeIncrement.dT,
+                                                                   timeIncrement.dT };
 
   baseMaterial->computeStress( baseState, tangent, strainIncrementVoigt, timeInfo );
 
@@ -103,17 +104,18 @@ void MarmotInterfaceMaterialHypoElastic::computeStress( State&               sta
   H_ijk             = H;
   Y_ijkl            = h * Y;
 
-  mapEigenToFastor( surfaceStress ) = h * ContinuumMechanics::VoigtNotation::voigtToStress( baseState.stress );
-  force                             = ( 1. / h ) * Fastor::einsum< ij, j, to_i >( surfaceStress, normal );
+  Marmot::Math::Tensors::mapEigenToFastor( surfaceStress ) = h * ContinuumMechanics::Voigt::voigtToStress(
+                                                                   baseState.stress );
+  force = ( 1. / h ) * Fastor::einsum< ij, j, to_i >( surfaceStress, normal );
 }
 
-void MarmotInterfaceMaterialHypoElastic::initializeYourself( double* stateVars, int )
+void Marmot::Materials::InterfaceMaterialHypoElastic::initializeYourself( double* stateVars, int )
 {
   baseMaterial->initializeYourself( stateLayout.getPtr( stateVars, "baseMaterialStateVars" ),
                                     baseMaterial->getNumberOfRequiredStateVars() );
 }
 
-double MarmotInterfaceMaterialHypoElastic::getDensity()
+double Marmot::Materials::InterfaceMaterialHypoElastic::getDensity()
 {
   return baseMaterial->getDensity( nullptr );
 }

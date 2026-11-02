@@ -34,14 +34,14 @@
 #include <string>
 #include <vector>
 
-namespace Marmot::Meshfree {
+namespace Marmot::Discretizations::Meshfree {
 
   /**
-   * @class Marmot::Meshfree::GenericParticle
+   * @class Marmot::Discretizations::Meshfree::GenericParticle
    * @brief Common base of the point particles (one evaluation point at the particle center), independent of the
    * physics.
    *
-   * GenericParticle implements the parts of the MarmotParticle interface that do not depend on the physics:
+   * GenericParticle implements the parts of the Particle interface that do not depend on the physics:
    *  - the geometry of a point particle: a single vertex at the center @f$ \boldsymbol{Y}_c @f$ in the reference
    *    intermediate configuration (the last accepted configuration), shape "point";
    *  - the shape functions: assignMeshfreeKernelFunctions() evaluates the trial functions @f$ N_A @f$ and their
@@ -73,7 +73,7 @@ namespace Marmot::Meshfree {
    * @tparam nDim The number of dimensions (2 or 3).
    */
   template < int nDim >
-  class GenericParticle : public Marmot::Meshfree::MarmotParticle {
+  class GenericParticle : public Marmot::Discretizations::Meshfree::Particle {
 
   protected:
     /// Center coordinates in the undeformed configuration.
@@ -84,9 +84,9 @@ namespace Marmot::Meshfree {
     double _volReferenceIntermediate;
 
     /// The meshfree approximation (shape functions).
-    const MarmotMeshfreeApproximation& _meshfreeApproximation;
+    const Approximation& _meshfreeApproximation;
     /// The assigned kernel functions (nodes), in dof order.
-    std::vector< const MarmotMeshfreeKernelFunction* > _assignedKernelFunctions;
+    std::vector< const KernelFunction* > _assignedKernelFunctions;
 
     /// The number of currently assigned nodes (= meshfree kernel functions)
     int _nNodes;
@@ -143,11 +143,11 @@ namespace Marmot::Meshfree {
      * @param[in] approximation The meshfree approximation; it must outlive the particle.
      * @throws std::invalid_argument if @p nCenterCoordinates0 != nDim.
      */
-    GenericParticle( int                                elementID,
-                     const double*                      centerCoordinates0,
-                     int                                nCenterCoordinates0,
-                     double                             volume,
-                     const MarmotMeshfreeApproximation& approximation );
+    GenericParticle( int                  elementID,
+                     const double*        centerCoordinates0,
+                     int                  nCenterCoordinates0,
+                     double               volume,
+                     const Approximation& approximation );
 
     /**
      * @brief Set the properties of GenericParticle, in the order of its own property list ("VCI order").
@@ -205,8 +205,7 @@ namespace Marmot::Meshfree {
      * resets any previous VCI correction.
      * @param[in] kernelFunctions The kernel functions (nodes) covering the particle.
      */
-    virtual void assignMeshfreeKernelFunctions(
-      const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) override
+    virtual void assignMeshfreeKernelFunctions( const std::vector< const KernelFunction* >& kernelFunctions ) override
     {
       _assignedKernelFunctions = kernelFunctions;
 
@@ -386,19 +385,19 @@ namespace Marmot::Meshfree {
      * @return Never returns.
      * @throws std::runtime_error always.
      */
-    virtual StateView getStateView( const std::string& stateName, int qp ) const override
+    virtual Marmot::Utilities::StateView getStateView( const std::string& stateName, int qp ) const override
     {
-      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": State " << stateName
-                                             << " not supported by GenericParticle." );
+      throw std::runtime_error( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": State " << stateName
+                                                                << " not supported by GenericParticle." );
     }
   };
 
   template < int nDim >
-  GenericParticle< nDim >::GenericParticle( int                                                  elementID,
-                                            const double*                                        centerCoordinates0,
-                                            int                                                  nCenterCoordinates0,
-                                            double                                               volume,
-                                            const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation )
+  GenericParticle< nDim >::GenericParticle( int                                                     elementID,
+                                            const double*                                           centerCoordinates0,
+                                            int                                                     nCenterCoordinates0,
+                                            double                                                  volume,
+                                            const Marmot::Discretizations::Meshfree::Approximation& approximation )
     : _centerCoordinatesUndeformed( Eigen::Map< const Eigen::Matrix< double, nDim, 1 > >( centerCoordinates0 ) ),
       _centerReferenceIntermediate( _centerCoordinatesUndeformed ),
       _volReferenceIntermediate( volume ), // Initial volume is undeformed volume
@@ -408,10 +407,11 @@ namespace Marmot::Meshfree {
       _nVCIConstraints( 0 )
   {
     if ( nCenterCoordinates0 != nDim ) {
-      throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": size of center coordinates must be "
-                                                << nDim << ", but got " << nCenterCoordinates0 );
+      throw std::invalid_argument( Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << ": size of center coordinates must be " << nDim
+                                   << ", but got " << nCenterCoordinates0 );
     }
     this->setVCIOrder( _vciOrder ); // Initialize VCI members
   }
 
-} // namespace Marmot::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

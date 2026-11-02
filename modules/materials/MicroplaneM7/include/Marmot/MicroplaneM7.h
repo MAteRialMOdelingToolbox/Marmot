@@ -39,7 +39,7 @@ namespace Marmot::Materials {
    * in implicit simulations, is introduced in Basche et al. (2026). The constitutive laws are implemented in
    * #MicroplaneM7Formulation, which is shared with the gradient-enhanced extension #GM7.
    */
-  class MicroplaneM7 : public MarmotMaterialHypoElastic {
+  class MicroplaneM7 : public Marmot::Materials::MaterialHypoElastic {
   public:
     MicroplaneM7( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
@@ -82,16 +82,17 @@ namespace Marmot::Materials {
       nmp6_sized tangent = nmp6_sized::Zero();
     };
 
-    void computeStress( state3D&                state,
-                        Marmot::Matrix6d&       dStressDDStrain,
-                        const Marmot::Vector6d& dStrain,
-                        const timeInfo&         timeInfo ) const override;
+    void computeStress( state3D&                      state,
+                        Marmot::Math::Matrix6d&       dStressDDStrain,
+                        const Marmot::Math::Vector6d& dStrain,
+                        const timeInfo&               timeInfo ) const override;
 
     /// @brief Performs the full microplane stress update (kinematic projection, per-microplane
     /// normal/shear boundary evaluation, and homogenization back to macroscopic stress/tangent)
     /// for one strain increment, committing the resulting state variables into @p stateVars.
     /// @return {macroscopic stress, analytical tangent}.
-    std::pair< Vector6d, Matrix6d > stress_update( const Vector6d& dE_macro, double* stateVars ) const;
+    std::pair< Marmot::Math::Vector6d, Marmot::Math::Matrix6d > stress_update( const Marmot::Math::Vector6d& dE_macro,
+                                                                               double* stateVars ) const;
 
     /// @brief Evaluates the normal-direction response of a single microplane: compares the
     /// elastic prediction (MicroplaneM7Formulation::normal_elasticLaw) against the tensile

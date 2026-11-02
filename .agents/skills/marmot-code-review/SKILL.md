@@ -9,11 +9,11 @@ description: >-
 
 ## 1. General Coding Rules & Performance
 - [ ] **Minimal Code Changes**: Diffs are clean, focused, and scoped strictly to the task.
-- [ ] **Zero-Copy & Memory Hygiene**: No copying of vectors, tensors, or state arrays. Memory is passed via `const&`, `std::span`, or mapped via `Eigen::Map` (`mVector6d`, `mMatrix6d`).
+- [ ] **Zero-Copy & Memory Hygiene**: No copying of vectors, tensors, or state arrays. Memory is passed via `const&`, `std::span`, or mapped via `Eigen::Map` (`Marmot::Math::mVector6d`, `Marmot::Math::mMatrix6d`).
 - [ ] **No Reinvention & Core Reuse**: Existing math, return mappers, Voigt conversions, and shape functions from `modules/core/` are reused.
 - [ ] **In-Place State Variables**: Both materials (`stateLayout`) and elements (`QPStateVarManager`) write `stateVars` **strictly in place**.
 - [ ] **Minimal State Variables**: Store **only strictly path-dependent** historical variables. Compute derived quantities on the fly.
-- [ ] **Templated Elements**: Elements are templated on `< int nDim, int nNodes >` and use compile-time statically sized matrices from `MarmotGeometryElement< nDim, nNodes >`.
+- [ ] **Templated Elements**: Elements are templated on `< int nDim, int nNodes >` and use compile-time statically sized matrices from `Marmot::Discretizations::Elements::GeometryElement< nDim, nNodes >`.
 
 ## 2. Formatting, Linting & Hygiene
 ```bash

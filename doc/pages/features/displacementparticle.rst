@@ -7,7 +7,7 @@ Theory
 The displacement particles are the RKPM particles of the finite-strain displacement formulation. Each particle
 integrates the weak form of the momentum balance over its domain with one of several nodal integration schemes; the
 material state is carried by one :doc:`displacementmaterialpoint` per integration point, which consumes any material of
-the ``MarmotMaterialFiniteStrain`` interface. The shape functions are those of the reproducing kernel approximation
+the ``Marmot::Materials::MaterialFiniteStrain`` interface. The shape functions are those of the reproducing kernel approximation
 (:doc:`meshfreeapproximation`); the particle interface, the particle domain and the integration schemes SQCNI, SNNI,
 NSNI, SDI and the corrections VCI and CWF are introduced in :doc:`meshfreeparticles`. The MPM counterpart of this
 formulation is the :doc:`displacementcell` (see :doc:`meshfreecells`).
@@ -298,14 +298,14 @@ multiple of 8 values; ``getStateView`` addresses a subdomain by the evaluation-p
 Implementation
 --------------
 
-.. doxygenclass:: Marmot::Meshfree::DisplacementParticle
+.. doxygenclass:: Marmot::Discretizations::Meshfree::DisplacementParticle
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::Meshfree::DisplacementParticleSQCNI
+.. doxygenclass:: Marmot::Discretizations::Meshfree::DisplacementParticleSQCNI
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::Meshfree::DisplacementParticleSQCNIxNSNI
+.. doxygenclass:: Marmot::Discretizations::Meshfree::DisplacementParticleSQCNIxNSNI
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::Meshfree::DisplacementParticleSQCNIxSDI
+.. doxygenclass:: Marmot::Discretizations::Meshfree::DisplacementParticleSQCNIxSDI
    :allow-dot-graphs:

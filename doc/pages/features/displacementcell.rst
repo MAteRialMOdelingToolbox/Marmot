@@ -96,11 +96,11 @@ assigned to the material points.
 Implementation
 --------------
 
-.. doxygenclass:: Marmot::Cells::DisplacementCell
+.. doxygenclass:: Marmot::Discretizations::Cells::DisplacementCell
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::Cells::LagrangianDisplacementCell
+.. doxygenclass:: Marmot::Discretizations::Cells::LagrangianDisplacementCell
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::Cells::BSplineDisplacementCell
+.. doxygenclass:: Marmot::Discretizations::Cells::BSplineDisplacementCell
    :allow-dot-graphs:

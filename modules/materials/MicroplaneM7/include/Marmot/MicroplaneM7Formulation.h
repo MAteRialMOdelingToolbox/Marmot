@@ -51,7 +51,7 @@ namespace Marmot::Materials {
    */
   class MicroplaneM7Formulation {
   public:
-    using QuadratureScheme = Marmot::Microplane::QuadratureScheme;
+    using QuadratureScheme = Marmot::ContinuumMechanics::Microplane::QuadratureScheme;
 
     /// @brief The quadrature scheme this compile-time instance is built with. Fixed at compile
     /// time - changing it requires editing this value and recompiling, there is no runtime
@@ -59,7 +59,7 @@ namespace Marmot::Materials {
     constexpr static QuadratureScheme scheme = QuadratureScheme::N37;
 
     /// @brief Number of microplanes (integration points on the unit hemisphere) for #scheme.
-    constexpr static size_t nqp = Marmot::Microplane::nqpFromScheme( scheme );
+    constexpr static size_t nqp = Marmot::ContinuumMechanics::Microplane::nqpFromScheme( scheme );
 
     typedef Eigen::Matrix< double, 1, nqp >               nmp_sized;
     typedef Eigen::Map< Eigen::Matrix< double, 1, nqp > > mnmp_sized;
@@ -120,9 +120,9 @@ namespace Marmot::Materials {
     // clang-format on
 
     /// @brief Kinematic (N-T split) projection tensors and integration weights for all #nqp
-    /// microplanes; see Marmot::Microplane::NTSplit. Depends only on #scheme, so it is built
+    /// microplanes; see Marmot::ContinuumMechanics::Microplane::NTSplit. Depends only on #scheme, so it is built
     /// once and shared by all instances.
-    static const Marmot::Microplane::NTSplit< scheme >& ntSplit();
+    static const Marmot::ContinuumMechanics::Microplane::NTSplit< scheme >& ntSplit();
 
     /// @brief Undamaged microplane normal stiffness E / (1 - 2 nu).
     double normalStiffness() const;
@@ -133,8 +133,8 @@ namespace Marmot::Materials {
     /// @brief Microplane normal stress and its derivative w.r.t. the macroscopic strain, i.e.
     /// `tangent = d(stress)/d(microplane strain) * projection.N.col(qp_i)`.
     struct NormalResponse {
-      double   stress;
-      Vector6d tangent;
+      double                 stress;
+      Marmot::Math::Vector6d tangent;
     };
 
     /// @brief Elastic (undamaged) stress prediction for one shear direction; see #shear_elasticLaw.
@@ -146,32 +146,32 @@ namespace Marmot::Materials {
     /// @brief Quantities of the shear law up to the point where the R27/R28 frictional-boundary
     /// branches are combined into a single shear boundary.
     struct ShearBoundaryInputs {
-      double            E_T;
-      double            sig_dach;
-      ElasticPrediction elasticL_prediction;
-      ElasticPrediction elasticM_prediction;
-      double            shear_stress_elastic;
-      double            R27_denom;
-      double            R27;
-      double            R28_denom;
-      double            R28;
-      Vector6d          dsigDachddStrain_boundary;
-      Vector6d          dR27ddStrain_elastic;
-      Vector6d          dR27ddStrain_boundary;
-      Vector6d          dR28ddStrain_boundary;
+      double                 E_T;
+      double                 sig_dach;
+      ElasticPrediction      elasticL_prediction;
+      ElasticPrediction      elasticM_prediction;
+      double                 shear_stress_elastic;
+      double                 R27_denom;
+      double                 R27;
+      double                 R28_denom;
+      double                 R28;
+      Marmot::Math::Vector6d dsigDachddStrain_boundary;
+      Marmot::Math::Vector6d dR27ddStrain_elastic;
+      Marmot::Math::Vector6d dR27ddStrain_boundary;
+      Marmot::Math::Vector6d dR28ddStrain_boundary;
     };
 
     /// @brief Microplane shear response (both in-plane directions L and M), with the tangent of
     /// each direction split into the derivatives w.r.t. the strain of the elastic predictions
     /// (`_elastic`) and w.r.t. the strain the boundaries are evaluated with (`_boundary`).
     struct ShearResponse {
-      double   stressL;
-      double   stressM;
-      Vector6d tangentL_elastic;
-      Vector6d tangentL_boundary;
-      Vector6d tangentM_elastic;
-      Vector6d tangentM_boundary;
-      bool     boundaryExceeded; ///< @brief True if the shear boundary governs.
+      double                 stressL;
+      double                 stressM;
+      Marmot::Math::Vector6d tangentL_elastic;
+      Marmot::Math::Vector6d tangentL_boundary;
+      Marmot::Math::Vector6d tangentM_elastic;
+      Marmot::Math::Vector6d tangentM_boundary;
+      bool                   boundaryExceeded; ///< @brief True if the shear boundary governs.
     };
 
     /// @brief Normal-direction elastic/damage law (tension and compression branches), including
@@ -199,7 +199,7 @@ namespace Marmot::Materials {
     double unloadingTransitionStiffness( const double s_gap, const double E_N, const double E_N0 ) const;
 
     /// @brief Volumetric compressive boundary (same for all microplanes) for the macroscopic strain @p strain_macro.
-    NormalResponse volumetric_boundary( const double sig_v0, const Vector6d& strain_macro ) const;
+    NormalResponse volumetric_boundary( const double sig_v0, const Marmot::Math::Vector6d& strain_macro ) const;
 
     /// @brief Deviatoric compressive boundary for microplane @p qp_i.
     NormalResponse deviatoric_boundary( const double eps_d, const double eps_v, const size_t qp_i ) const;
@@ -219,36 +219,36 @@ namespace Marmot::Materials {
     /// @param sig_N_tangent_elastic Derivative of @p sig_N w.r.t. the strain of the elastic prediction.
     /// @param sig_N_tangent_boundary Derivative of @p sig_N w.r.t. the strain the boundaries are evaluated with.
     /// @param qp_i Index of the microplane.
-    ShearResponse shear_law( const double    eps_v,
-                             const double    sig_N,
-                             const double    sig_M0,
-                             const double    sig_L0,
-                             const double    deps_M,
-                             const double    deps_L,
-                             const Vector6d& sig_N_tangent_elastic,
-                             const Vector6d& sig_N_tangent_boundary,
-                             const size_t    qp_i ) const;
+    ShearResponse shear_law( const double                  eps_v,
+                             const double                  sig_N,
+                             const double                  sig_M0,
+                             const double                  sig_L0,
+                             const double                  deps_M,
+                             const double                  deps_L,
+                             const Marmot::Math::Vector6d& sig_N_tangent_elastic,
+                             const Marmot::Math::Vector6d& sig_N_tangent_boundary,
+                             const size_t                  qp_i ) const;
 
     /// @brief Elastic (undamaged) shear law for one in-plane direction (M or L).
     ElasticPrediction shear_elasticLaw( const double sig_S0, const double deps_S ) const;
 
   private:
     /// @brief Computes the quantities of #shear_law before the R27/R28 branches are combined.
-    ShearBoundaryInputs computeShearBoundaryInputs( const double    eps_v,
-                                                    const double    sig_N,
-                                                    const double    sig_M0,
-                                                    const double    sig_L0,
-                                                    const double    deps_M,
-                                                    const double    deps_L,
-                                                    const Vector6d& sig_N_tangent_elastic,
-                                                    const Vector6d& sig_N_tangent_boundary ) const;
+    ShearBoundaryInputs computeShearBoundaryInputs( const double                  eps_v,
+                                                    const double                  sig_N,
+                                                    const double                  sig_M0,
+                                                    const double                  sig_L0,
+                                                    const double                  deps_M,
+                                                    const double                  deps_L,
+                                                    const Marmot::Math::Vector6d& sig_N_tangent_elastic,
+                                                    const Marmot::Math::Vector6d& sig_N_tangent_boundary ) const;
 
     /// @brief Given the combined shear boundary and its tangents, returns the microplane shear
     /// stresses and tangents for both in-plane directions.
-    ShearResponse computeShearResponseFromBoundary( const ShearBoundaryInputs& in,
-                                                    const double               shear_boundary,
-                                                    const Vector6d&            shearBoundaryTangent_elastic,
-                                                    const Vector6d&            shearBoundaryTangent_boundary,
-                                                    const size_t               qp_i ) const;
+    ShearResponse computeShearResponseFromBoundary( const ShearBoundaryInputs&    in,
+                                                    const double                  shear_boundary,
+                                                    const Marmot::Math::Vector6d& shearBoundaryTangent_elastic,
+                                                    const Marmot::Math::Vector6d& shearBoundaryTangent_boundary,
+                                                    const size_t                  qp_i ) const;
   };
 } // namespace Marmot::Materials

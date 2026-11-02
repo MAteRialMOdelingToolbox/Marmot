@@ -8,7 +8,7 @@ formulation. Each particle couples the displacement field :math:`\boldsymbol u` 
 :math:`\bar N` (nodal fields ``displacement`` and ``nonlocal damage``, dofs ordered node by node as
 :math:`\{u_1,\dots,u_{n_\mathrm{dim}},\bar N\}`), owns one :doc:`gradientenhancedfinitestrainmaterialpoint` and is
 integrated at that single point (nodal integration). The material is any material of the interface
-``MarmotMaterialGradientEnhancedFiniteStrain``, e.g. :doc:`gradientenhancedcompressibleneohookedamage` or
+``Marmot::Materials::MaterialGradientEnhancedFiniteStrain``, e.g. :doc:`gradientenhancedcompressibleneohookedamage` or
 :doc:`gradientenhancedfinitestraindruckerprager`. The shape functions come from the reproducing kernel approximation
 (:doc:`meshfreeapproximation`); the particle interface, the integration schemes and the corrections are introduced in
 :doc:`meshfreeparticles`. The weak forms are those of :doc:`gradientenhancedfinitestraindisplacementelement`, in
@@ -197,7 +197,7 @@ displacement. Neither load acts on the nonlocal field.
 Registered types
 ----------------
 
-The particles are registered in the ``MarmotParticleFactory``:
+The particles are registered in the ``Marmot::Registry::ParticleFactory``:
 
 .. list-table::
    :header-rows: 1
@@ -311,11 +311,11 @@ point. The material point's density is available from the start, since it is que
 Implementation
 --------------
 
-.. doxygenclass:: Marmot::Meshfree::GradientEnhancedFiniteStrainParticle
+.. doxygenclass:: Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticle
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::Meshfree::GradientEnhancedFiniteStrainParticleSQCNI
+.. doxygenclass:: Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticleSQCNI
    :allow-dot-graphs:
 
-.. doxygenclass:: Marmot::Meshfree::GradientEnhancedFiniteStrainParticleSQCNIxNSNI
+.. doxygenclass:: Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticleSQCNIxNSNI
    :allow-dot-graphs:

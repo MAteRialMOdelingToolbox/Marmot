@@ -44,7 +44,7 @@ namespace Marmot::Materials {
    * Basche et al. (2026). The constitutive laws of M7 are shared with #MicroplaneM7 through
    * #MicroplaneM7Formulation.
    */
-  class GM7 : public MarmotMaterialGeneralGradientEnhancedHypoElastic< 6 > {
+  class GM7 : public Marmot::Materials::MaterialGradientEnhancedHypoElastic< 6 > {
   public:
     GM7( const double* materialProperties, int nMaterialProperties, int materialNumber );
 
@@ -90,9 +90,9 @@ namespace Marmot::Materials {
     /// macroscopic (Voigt) space, split into the tangent w.r.t. the local strain increment
     /// (#tangent_l) and w.r.t. the over-nonlocal strain increment (#tangent_onl).
     struct NormalResponse {
-      double   stress;
-      Vector6d tangent_l;
-      Vector6d tangent_onl;
+      double                 stress;
+      Marmot::Math::Vector6d tangent_l;
+      Marmot::Math::Vector6d tangent_onl;
     };
 
     /// @brief Per-microplane stress and macroscopically-projected local/over-nonlocal tangents, stacked over all #nqp
@@ -116,9 +116,10 @@ namespace Marmot::Materials {
     /// @param stateVars State variables at the start of the increment; overwritten with the updated
     /// per-microplane state.
     /// @return {macroscopic stress, tangent w.r.t. local strain, tangent w.r.t. over-nonlocal strain}.
-    std::tuple< Vector6d, Matrix6d, Matrix6d > stress_update( const Vector6d& dE_macroLocal,
-                                                              const Vector6d& dE_macroOverNonLocal,
-                                                              double*         stateVars ) const;
+    std::tuple< Marmot::Math::Vector6d, Marmot::Math::Matrix6d, Marmot::Math::Matrix6d > stress_update(
+      const Marmot::Math::Vector6d& dE_macroLocal,
+      const Marmot::Math::Vector6d& dE_macroOverNonLocal,
+      double*                       stateVars ) const;
 
     /// @brief Evaluates the normal-direction response of a single microplane: compares the
     /// (local-strain) elastic prediction (MicroplaneM7Formulation::normal_elasticLaw) against the

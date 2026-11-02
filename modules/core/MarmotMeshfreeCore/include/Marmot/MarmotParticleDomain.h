@@ -30,12 +30,12 @@
 #include <string>
 #include <vector> // Explicitly include vector for clarity
 
-namespace Marmot::Meshfree {
+namespace Marmot::Discretizations::Meshfree {
 
   /**
-   * @class Marmot::Meshfree::ParticleDomain
+   * @class Marmot::Discretizations::Meshfree::ParticleDomain
    * @brief The geometry of a cell-shaped particle, independent of physics or meshfree approximation.
-   * @details A particle domain is a Lagrangian cell (MarmotLagrangeCell, e.g., a 4-node quadrilateral or an 8-node
+   * @details A particle domain is a Lagrangian cell (LagrangeCell, e.g., a 4-node quadrilateral or an 8-node
    * hexahedron) that is kept in three versions:
    *  - the **undeformed geometry** with the vertices @f$ \boldsymbol{X}_v @f$ and the centroid
    *    @f$ \boldsymbol{X}_c @f$ given at construction,
@@ -55,7 +55,7 @@ namespace Marmot::Meshfree {
    * the centroid of the parent domain, so that the subdomains remain a tiling of the deformed parent.
    * with the total deformation gradient @f$ \boldsymbol{F} @f$ of the particle for the deformed geometry, and a
    * tensor @f$ \boldsymbol{F}_s @f$ derived from it according to SmoothingDomainUpdateType for the smoothing domain.
-   * Face IDs are 1-based and follow the Abaqus convention of MarmotLagrangeCell.
+   * Face IDs are 1-based and follow the Abaqus convention of LagrangeCell.
    *
    * @tparam nDim The number of dimensions (2 or 3).
    * @tparam nVertices The number of vertices of the cell (4 for a quadrilateral, 8 for a hexahedron).
@@ -70,7 +70,7 @@ namespace Marmot::Meshfree {
                                                                              ///< coordinates.
     using DeformationGradientSized = Eigen::Matrix< double, nDim, nDim >;    ///< Alias for Eigen matrix storing
                                                                              ///< deformation gradient.
-    using LagrangeCellType = MarmotLagrangeCell< nDim, nVertices >; ///< Alias for the underlying Lagrange cell type.
+    using LagrangeCellType = LagrangeCell< nDim, nVertices >; ///< Alias for the underlying Lagrange cell type.
 
     /**
      * @brief Defines how the smoothing domain follows the deformation of the particle.
@@ -384,4 +384,4 @@ namespace Marmot::Meshfree {
   {
   }
 
-} // namespace Marmot::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

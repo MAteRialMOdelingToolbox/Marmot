@@ -5,8 +5,8 @@
 #include <cmath>
 
 using namespace Marmot::Testing;
-using namespace Marmot::Microplane;
-using namespace Marmot::ContinuumMechanics::VoigtNotation;
+using namespace Marmot::ContinuumMechanics::Microplane;
+using namespace Marmot::ContinuumMechanics::Voigt;
 using namespace Marmot::ContinuumMechanics::Elasticity::Isotropic;
 
 namespace {
@@ -52,8 +52,7 @@ namespace {
     // Actual kinematic projection via the Dev tensor, exactly as done in MDP.cpp/GMDP.cpp.
     Eigen::TensorMap< const Eigen::Tensor< double, 2 > > epsT( eps.data(), 3, 3 );
     Eigen::Tensor< double, 2 >
-      epsD_actualT = vdSplit.pTensors.Dev
-                       .contract( epsT, Marmot::ContinuumMechanics::TensorUtility::contractionDims< 2, 0, 3, 1 >() );
+      epsD_actualT = vdSplit.pTensors.Dev.contract( epsT, Marmot::Math::Tensors::contractionDims< 2, 0, 3, 1 >() );
     Eigen::Map< const Eigen::Matrix< double, Eigen::Dynamic, 3 > > epsD_actual( epsD_actualT.data(), nqp, 3 );
 
     throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( epsD_actual ), Eigen::MatrixXd( epsD_analytic ), 1e-12 ),
@@ -93,13 +92,13 @@ namespace {
   {
     NTSplit< scheme > ntSplit;
 
-    const Marmot::Vector6d epsVoigt = strainToVoigt( eps );
+    const Marmot::Math::Vector6d epsVoigt = strainToVoigt( eps );
 
     const auto eps_N = ( epsVoigt.transpose() * ntSplit.pTensors.N ).eval();
     const auto eps_M = ( epsVoigt.transpose() * ntSplit.pTensors.M ).eval();
     const auto eps_L = ( epsVoigt.transpose() * ntSplit.pTensors.L ).eval();
 
-    const Marmot::Vector6d recovered = ntSplit.homogenizeStress( eps_N, eps_M, eps_L );
+    const Marmot::Math::Vector6d recovered = ntSplit.homogenizeStress( eps_N, eps_M, eps_L );
 
     throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( recovered ),
                                            Eigen::MatrixXd( stressToVoigt( eps ) ),
@@ -114,10 +113,10 @@ namespace {
   // constitutive-model consistency check a real V-D split material relies on, not just a
   // kinematic identity.
   template < QuadratureScheme scheme >
-  void checkVDSplitLinearElasticity( const Marmot::Vector6d& depsVoigt,
-                                     const double            E,
-                                     const double            nu,
-                                     const std::string&      name )
+  void checkVDSplitLinearElasticity( const Marmot::Math::Vector6d& depsVoigt,
+                                     const double                  E,
+                                     const double                  nu,
+                                     const std::string&            name )
   {
     VDSplit< scheme > vdSplit;
 
@@ -132,8 +131,8 @@ namespace {
     sigV.setConstant( 3. * K * depsV );
     const auto sigD = ( 2. * G * depsD ).eval();
 
-    const Eigen::Matrix3d  stress_microplane = vdSplit.homogenize( sigV, sigD );
-    const Marmot::Vector6d stress_macro      = stiffnessTensor( E, nu ) * depsVoigt;
+    const Eigen::Matrix3d        stress_microplane = vdSplit.homogenize( sigV, sigD );
+    const Marmot::Math::Vector6d stress_macro      = stiffnessTensor( E, nu ) * depsVoigt;
 
     throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( stressToVoigt( stress_microplane ) ),
                                            Eigen::MatrixXd( stress_macro ),
@@ -146,10 +145,10 @@ namespace {
   // elastic moduli (as used e.g. by MicroplaneM7's elastic response), homogenized via
   // homogenizeStress() and compared to the macroscopic isotropic elastic stress.
   template < QuadratureScheme scheme >
-  void checkNTSplitLinearElasticity( const Marmot::Vector6d& depsVoigt,
-                                     const double            E,
-                                     const double            nu,
-                                     const std::string&      name )
+  void checkNTSplitLinearElasticity( const Marmot::Math::Vector6d& depsVoigt,
+                                     const double                  E,
+                                     const double                  nu,
+                                     const std::string&            name )
   {
     NTSplit< scheme > ntSplit;
 
@@ -164,8 +163,8 @@ namespace {
     const auto sig_M = ( E_T * deps_M ).eval();
     const auto sig_L = ( E_T * deps_L ).eval();
 
-    const Marmot::Vector6d stress_microplane = ntSplit.homogenizeStress( sig_N, sig_M, sig_L );
-    const Marmot::Vector6d stress_macro      = stiffnessTensor( E, nu ) * depsVoigt;
+    const Marmot::Math::Vector6d stress_microplane = ntSplit.homogenizeStress( sig_N, sig_M, sig_L );
+    const Marmot::Math::Vector6d stress_macro      = stiffnessTensor( E, nu ) * depsVoigt;
 
     // See checkVDSplitLinearElasticity for why this tolerance is looser than machine precision.
     throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( stress_microplane ),
@@ -222,7 +221,7 @@ void testVDSplitLinearElasticity()
   const double E  = 30000.;
   const double nu = 0.2;
 
-  Marmot::Vector6d depsVoigt;
+  Marmot::Math::Vector6d depsVoigt;
   depsVoigt << 0.0010, 0.0004, -0.0006, 0.0016, -0.0008, 0.0012;
 
   checkVDSplitLinearElasticity< QuadratureScheme::N21Symmetric >( depsVoigt, E, nu, "N21Symmetric" );
@@ -237,7 +236,7 @@ void testNTSplitLinearElasticity()
   const double E  = 30000.;
   const double nu = 0.2;
 
-  Marmot::Vector6d depsVoigt;
+  Marmot::Math::Vector6d depsVoigt;
   depsVoigt << 0.0010, 0.0004, -0.0006, 0.0016, -0.0008, 0.0012;
 
   checkNTSplitLinearElasticity< QuadratureScheme::N21Symmetric >( depsVoigt, E, nu, "N21Symmetric" );

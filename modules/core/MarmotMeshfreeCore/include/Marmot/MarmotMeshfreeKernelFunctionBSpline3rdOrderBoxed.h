@@ -28,10 +28,10 @@
 #include "Marmot/MarmotMeshfreeKernelFunction.h"
 #include <cmath>
 
-namespace Marmot::Meshfree {
+namespace Marmot::Discretizations::Meshfree {
 
   /**
-   * @class Marmot::Meshfree::MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed
+   * @class Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed
    * @brief Boxed tensor-product kernel from 3rd order (cubic) B-splines.
    *
    * The kernel of node @f$ A @f$ with center @f$ \boldsymbol{x}_A @f$ and support radius @f$ a @f$ is the
@@ -58,7 +58,7 @@ namespace Marmot::Meshfree {
    * @note The kernel does not own its center coordinates: it stores the pointer passed to the constructor, and
    * moveTo() writes the new center through this pointer. The pointed-to storage must outlive the kernel.
    */
-  class MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed : public MarmotMeshfreeKernelFunction {
+  class KernelFunctionBSpline3rdOrderBoxed : public KernelFunction {
 
   private:
     double*      _centerCoord;   ///< non-owning pointer to the center coordinates @f$ \boldsymbol{x}_A @f$
@@ -73,10 +73,10 @@ namespace Marmot::Meshfree {
      * @param[in] dim           Spatial dimension @f$ d @f$.
      * @param[in] supportRadius Support radius @f$ a @f$.
      */
-    MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed( double* centerCoord, int dim, double supportRadius );
+    KernelFunctionBSpline3rdOrderBoxed( double* centerCoord, int dim, double supportRadius );
 
     /// @brief Default destructor.
-    virtual ~MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed() = default;
+    virtual ~KernelFunctionBSpline3rdOrderBoxed() = default;
 
     /**
      * @brief Evaluate the tensor-product kernel @f$ \phi_A(\boldsymbol{x}) = \prod_i w(x_i - x_{A,i}) @f$.
@@ -141,4 +141,4 @@ namespace Marmot::Meshfree {
     void getBoundingBox( double* min, double* max ) const override;
   };
 
-} // namespace Marmot::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

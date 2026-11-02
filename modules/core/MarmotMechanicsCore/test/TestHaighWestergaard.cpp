@@ -2,8 +2,8 @@
 #include "Marmot/MarmotTesting.h"
 
 using namespace Marmot::Testing;
-using namespace Marmot::ContinuumMechanics::HaighWestergaard;
-using namespace Marmot::ContinuumMechanics::VoigtNotation::Invariants;
+using namespace Marmot::ContinuumMechanics::Invariants::HaighWestergaard;
+using namespace Marmot::ContinuumMechanics::Invariants;
 using namespace autodiff;
 
 void testHaighWestergaardDouble()
@@ -19,37 +19,37 @@ void testHaighWestergaardDouble()
   hwref.rho   = 0.;
   hwref.theta = 0.;
   throwExceptionOnFailure( checkIfEqual( hwoutput.xi, hwref.xi, 1e-13 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 1 failed: error in xi" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 1 failed: error in xi" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.rho, hwref.rho ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 1 failed: error in rho" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 1 failed: error in rho" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.theta, hwref.theta ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 1 failed: error in theta" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 1 failed: error in theta" );
 
   // second test: compression meridian
   stress << -10., 0., 0., 0, 0., 0.;
   hwoutput    = haighWestergaard( stress );
   hwref.xi    = -10. / 3. * sqrt( 3. );
   hwref.rho   = 10. * sqrt( 2. / 3. );
-  hwref.theta = Marmot::Constants::Pi / 3.;
+  hwref.theta = Marmot::Math::Constants::Pi / 3.;
   throwExceptionOnFailure( checkIfEqual( hwoutput.xi, hwref.xi, 1e-13 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 2 failed: error in xi" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 2 failed: error in xi" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.rho, hwref.rho, 1e-13 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 2 failed: error in rho" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 2 failed: error in rho" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.theta, hwref.theta ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 2 failed: error in theta" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 2 failed: error in theta" );
 
   // third test: pure shear
   stress << -10., 10., 0., 0, 0., 0.;
   hwoutput    = haighWestergaard( stress );
   hwref.xi    = 0.;
   hwref.rho   = sqrt( 2. ) * 10.;
-  hwref.theta = Marmot::Constants::Pi / 6.;
+  hwref.theta = Marmot::Math::Constants::Pi / 6.;
   throwExceptionOnFailure( checkIfEqual( hwoutput.xi, hwref.xi, 1e-13 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 3 failed: error in xi" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 3 failed: error in xi" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.rho, hwref.rho, 1e-13 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 3 failed: error in rho" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 3 failed: error in rho" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.theta, hwref.theta ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 3 failed: error in theta" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 3 failed: error in theta" );
 
   // fourth test: general stress state
   stress << 10., -12., -23., 1.3, -6.8, 10.3;
@@ -68,11 +68,12 @@ void testHaighWestergaardDouble()
   hwref.theta = 1. / 3. * acos( cos3theta );
 
   throwExceptionOnFailure( checkIfEqual( hwoutput.xi, hwref.xi, 1e-13 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 4  failed: error in xi" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 4  failed: error in xi" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.rho, hwref.rho ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 4  failed: error in rho" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 4  failed: error in rho" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.theta, hwref.theta ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 4  failed: error in theta" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " test 4  failed: error in theta" );
 }
 
 void testHaighWestergaardDual()
@@ -92,37 +93,38 @@ void testHaighWestergaardDual()
   hwref.theta = 0.;
 
   throwExceptionOnFailure( checkIfEqual( hwoutput.xi, hwref.xi, 1e-13 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 1  failed: error in xi" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 1  failed: error in xi" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.rho, hwref.rho ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 1  failed: error in rho" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 1  failed: error in rho" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.theta, hwref.theta ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 1  failed: error in theta" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " test 1  failed: error in theta" );
 
   // second test: compression meridian
   stress << dual( -10. ), dual( 0. ), dual( 0. ), dual( 0. ), dual( 0. ), dual( 0. );
   hwoutput    = haighWestergaard( stress );
   hwref.xi    = -10. / 3. * sqrt( 3. );
   hwref.rho   = 10. * sqrt( 2. / 3. );
-  hwref.theta = Marmot::Constants::Pi / 3.;
+  hwref.theta = Marmot::Math::Constants::Pi / 3.;
   throwExceptionOnFailure( checkIfEqual( hwoutput.xi, hwref.xi, 1e-13 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 2 failed: error in xi" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 2 failed: error in xi" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.rho, hwref.rho, 1e-13 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 2 failed: error in rho" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 2 failed: error in rho" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.theta, hwref.theta ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 2 failed: error in theta" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 2 failed: error in theta" );
 
   // third test: pure shear
   stress << dual( -10. ), dual( 10. ), dual( 0. ), dual( 0. ), dual( 0. ), dual( 0. );
   hwoutput    = haighWestergaard( stress );
   hwref.xi    = 0.;
   hwref.rho   = sqrt( 2. ) * 10.;
-  hwref.theta = Marmot::Constants::Pi / 6.;
+  hwref.theta = Marmot::Math::Constants::Pi / 6.;
   throwExceptionOnFailure( checkIfEqual( hwoutput.xi, hwref.xi, 1e-13 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 3 failed: error in xi" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 3 failed: error in xi" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.rho, hwref.rho, 1e-13 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 3 failed: error in rho" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 3 failed: error in rho" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.theta, hwref.theta ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 3 failed: error in theta" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 3 failed: error in theta" );
 
   // fourth test: general stress state
   stress << dual( 10. ), dual( -12. ), dual( -23. ), dual( 1.3 ), dual( -6.8 ), dual( 10.3 );
@@ -143,11 +145,12 @@ void testHaighWestergaardDual()
   hwref.theta = 1. / 3. * acos( cos3theta );
 
   throwExceptionOnFailure( checkIfEqual( hwoutput.xi, hwref.xi, 1e-13 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 4  failed: error in xi" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 4  failed: error in xi" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.rho, hwref.rho ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 4  failed: error in rho" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " test 4  failed: error in rho" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.theta, hwref.theta ),
-                           MakeString() << __PRETTY_FUNCTION__ << " test 4  failed: error in theta" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " test 4  failed: error in theta" );
 }
 
 void testHaighWestergaardComplexDouble()
@@ -174,11 +177,11 @@ void testHaighWestergaardComplexDouble()
   hwref.theta = 1. / 3. * acos( cos3theta );
 
   throwExceptionOnFailure( checkIfEqual( hwoutput.xi, hwref.xi, 1e-13 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed: error in xi" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed: error in xi" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.rho, hwref.rho ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed: error in rho" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed: error in rho" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.theta, hwref.theta ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed: error in theta" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed: error in theta" );
 }
 
 void testHaighWestergaardFromStrain()
@@ -201,11 +204,11 @@ void testHaighWestergaardFromStrain()
   hwref.theta = 1. / 3. * acos( cos3theta );
 
   throwExceptionOnFailure( checkIfEqual( hwoutput.xi, hwref.xi, 1e-13 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed: error in xi" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed: error in xi" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.rho, hwref.rho ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed: error in rho" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed: error in rho" );
   throwExceptionOnFailure( checkIfEqual( hwoutput.theta, hwref.theta ),
-                           MakeString() << __PRETTY_FUNCTION__ << " failed: error in theta" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed: error in theta" );
 }
 
 int main()

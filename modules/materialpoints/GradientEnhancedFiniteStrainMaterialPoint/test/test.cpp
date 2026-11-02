@@ -33,7 +33,7 @@
 #include <vector>
 
 using namespace Marmot;
-using namespace Marmot::MaterialPoints;
+using namespace Marmot::Discretizations::MaterialPoints;
 using namespace Marmot::Testing;
 
 namespace {
@@ -43,18 +43,18 @@ namespace {
 
   template < int nDim >
   struct Setup {
-    std::unique_ptr< MarmotMaterialPoint > mp;
-    std::vector< double >                  stateVars;
+    std::unique_ptr< Marmot::Discretizations::MaterialPoints::MaterialPoint > mp;
+    std::vector< double >                                                     stateVars;
 
     Setup()
     {
       const std::string name = nDim == 2 ? "GradientEnhancedFiniteStrain/PlaneStrain"
                                          : "GradientEnhancedFiniteStrain/3D";
       const double      x[3] = { 0.1, 0.2, 0.3 };
-      mp.reset( MarmotLibrary::MarmotMaterialPointFactory::createMaterialPoint( name, 1, x, nDim, 0.5 ) );
-      mp->assignMaterial( MarmotMaterialSection( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
-                                                 matProps.data(),
-                                                 static_cast< int >( matProps.size() ) ) );
+      mp.reset( Marmot::Registry::MaterialPointFactory::createMaterialPoint( name, 1, x, nDim, 0.5 ) );
+      mp->assignMaterial( Marmot::Discretizations::MaterialSection( "GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE",
+                                                                    matProps.data(),
+                                                                    static_cast< int >( matProps.size() ) ) );
       stateVars.assign( mp->getNumberOfRequiredStateVars(), 0.0 );
       mp->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
       mp->initializeYourself();
@@ -112,11 +112,11 @@ namespace {
           for ( int j = 0; j < nDim; j++ ) {
             const double num = ( rp.S( i, j ) - rm.S( i, j ) ) / ( 2 * h );
             throwExceptionOnFailure( std::abs( t0.dS_dDeltaF( i, j, k, l ) - num ) < 1e-5 * ( 1. + std::abs( num ) ),
-                                     MakeString() << nDim << "D: dS_dDeltaF inconsistent" );
+                                     Marmot::Utilities::MakeString() << nDim << "D: dS_dDeltaF inconsistent" );
           }
         const double numL = ( rp.dL - rm.dL ) / ( 2 * h );
         throwExceptionOnFailure( std::abs( t0.dL_dDeltaF( k, l ) - numL ) < 1e-6 * ( 1. + std::abs( numL ) ),
-                                 MakeString() << nDim << "D: dL_dDeltaF inconsistent" );
+                                 Marmot::Utilities::MakeString() << nDim << "D: dL_dDeltaF inconsistent" );
       }
 
     const double hN = 1e-9;
@@ -126,7 +126,7 @@ namespace {
       for ( int j = 0; j < nDim; j++ ) {
         const double num = ( rp.S( i, j ) - rm.S( i, j ) ) / ( 2 * hN );
         throwExceptionOnFailure( std::abs( t0.dS_dN( i, j ) - num ) < 1e-4 * ( 1. + std::abs( num ) ),
-                                 MakeString() << nDim << "D: dS_dN inconsistent" );
+                                 Marmot::Utilities::MakeString() << nDim << "D: dS_dN inconsistent" );
       }
   }
 
@@ -152,7 +152,7 @@ namespace {
       for ( int i = 0; i < nDim; i++ )
         for ( int j = 0; j < nDim; j++ )
           throwExceptionOnFailure( std::abs( F.stateLocation[3 * i + j] - ( ( i == j ) + H1( i, j ) ) ) < 1e-14,
-                                   MakeString() << nDim << "D: accepted deformation gradient" );
+                                   Marmot::Utilities::MakeString() << nDim << "D: accepted deformation gradient" );
 
       throwExceptionOnFailure( std::abs( *s.mp->getStateView( "nonlocal damage" ).stateLocation - 3e-3 ) < 1e-15,
                                "the nonlocal field must accumulate" );

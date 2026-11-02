@@ -37,10 +37,10 @@
 #  pragma warning( pop )
 #endif
 
-namespace Marmot::Meshfree {
+namespace Marmot::Discretizations::Meshfree {
 
   /**
-   * @class Marmot::Meshfree::GradientEnhancedFiniteStrainParticleSQCNIxNSNI
+   * @class Marmot::Discretizations::Meshfree::GradientEnhancedFiniteStrainParticleSQCNIxNSNI
    * @brief SQCNI / SNNI particle with naturally stabilized nodal integration (NSNI) for gradient-enhanced
    *        finite-strain materials.
    *
@@ -118,22 +118,22 @@ namespace Marmot::Meshfree {
      * @param[in] nodeCoordinates           Undeformed vertex coordinates, vertex by vertex.
      * @param[in] nNodeCoordiantes          Number of coordinates (unused).
      * @param[in] volume                    Volume (unused, computed from the vertices).
-     * @param[in] materialName              Name of a MarmotMaterialGradientEnhancedFiniteStrain material.
+     * @param[in] materialName              Name of a Marmot::Materials::MaterialGradientEnhancedFiniteStrain material.
      * @param[in] materialProperties        Material properties.
      * @param[in] sizeMaterialProperties    Number of material properties.
      * @param[in] approximation             Meshfree approximation used for the shape functions.
      * @param[in] smoothingVolumeUpdateType Update type of the smoothing domain.
      */
     GradientEnhancedFiniteStrainParticleSQCNIxNSNI(
-      int                                            elementID,
-      const double*                                  nodeCoordinates,
-      int                                            nNodeCoordiantes,
-      double                                         volume,
-      const std::string&                             materialName,
-      const double*                                  materialProperties,
-      int                                            sizeMaterialProperties,
-      const MarmotMeshfreeApproximation&             approximation,
-      ParentSQCNIParticle::SmoothingDomainUpdateType smoothingVolumeUpdateType );
+      int                                                     elementID,
+      const double*                                           nodeCoordinates,
+      int                                                     nNodeCoordiantes,
+      double                                                  volume,
+      const std::string&                                      materialName,
+      const double*                                           materialProperties,
+      int                                                     sizeMaterialProperties,
+      const Marmot::Discretizations::Meshfree::Approximation& approximation,
+      ParentSQCNIParticle::SmoothingDomainUpdateType          smoothingVolumeUpdateType );
 
     /**
      * @brief Assign the kernel functions and compute the smoothed first and second shape function derivatives.
@@ -145,7 +145,7 @@ namespace Marmot::Meshfree {
      * @param[in] kernelFunctions Kernel functions of the nodes that support the particle.
      */
     void assignMeshfreeKernelFunctions(
-      const std::vector< const MarmotMeshfreeKernelFunction* >& kernelFunctions ) override
+      const std::vector< const Marmot::Discretizations::Meshfree::KernelFunction* >& kernelFunctions ) override
     {
       ParentPointParticle::_assignedKernelFunctions = kernelFunctions;
 
@@ -249,15 +249,15 @@ namespace Marmot::Meshfree {
 
   template < int nDim, int nVertices >
   GradientEnhancedFiniteStrainParticleSQCNIxNSNI< nDim, nVertices >::GradientEnhancedFiniteStrainParticleSQCNIxNSNI(
-    int                                                  elementID,
-    const double*                                        vertexCoordinates,
-    int                                                  nVertexCoordinates,
-    double                                               volume,
-    const std::string&                                   materialName,
-    const double*                                        materialProperties,
-    int                                                  sizeMaterialProperties,
-    const Marmot::Meshfree::MarmotMeshfreeApproximation& approximation,
-    ParentSQCNIParticle::SmoothingDomainUpdateType       smoothingVolumeUpdateType )
+    int                                                     elementID,
+    const double*                                           vertexCoordinates,
+    int                                                     nVertexCoordinates,
+    double                                                  volume,
+    const std::string&                                      materialName,
+    const double*                                           materialProperties,
+    int                                                     sizeMaterialProperties,
+    const Marmot::Discretizations::Meshfree::Approximation& approximation,
+    ParentSQCNIParticle::SmoothingDomainUpdateType          smoothingVolumeUpdateType )
     : GradientEnhancedFiniteStrainParticleSQCNI< nDim, nVertices >( elementID,
                                                                     vertexCoordinates,
                                                                     nVertexCoordinates,
@@ -289,7 +289,7 @@ namespace Marmot::Meshfree {
                                                                                                  double  timeNew,
                                                                                                  double  dT )
   {
-    using namespace Marmot::FastorIndices;
+    using namespace Marmot::Math::Tensors::FastorIndices;
     using namespace Fastor;
     using to_jk = Fastor::OIndex< j_, k_ >;
     using ijmM  = Index< i_, j_, m_, M_ >;
@@ -348,13 +348,13 @@ namespace Marmot::Meshfree {
     auto a = _mp.getAcceleration();
 
     Tensor< double, nDim, nDim > da_ddu( 0.0 );
-    Marmot::TimeIntegration::newmarkBetaIntegration< nDim >( du.data(),
-                                                             v.data(),
-                                                             a.data(),
-                                                             dT,
-                                                             this->_newmark_beta,
-                                                             this->_newmark_gamma,
-                                                             da_ddu.data() );
+    Marmot::ContinuumMechanics::TimeIntegration::newmarkBetaIntegration< nDim >( du.data(),
+                                                                                 v.data(),
+                                                                                 a.data(),
+                                                                                 dT,
+                                                                                 this->_newmark_beta,
+                                                                                 this->_newmark_gamma,
+                                                                                 da_ddu.data() );
     _mp.setVelocity( v );
     _mp.setAcceleration( a );
 
@@ -473,4 +473,4 @@ namespace Marmot::Meshfree {
     // clang-format on
   }
 
-} // namespace Marmot::Meshfree
+} // namespace Marmot::Discretizations::Meshfree

@@ -30,7 +30,7 @@
 #include <cmath>
 #include <limits>
 
-namespace Marmot::FiniteElement::MassLumping {
+namespace Marmot::Discretizations::Elements::MassLumping {
 
   /**
    * @brief The blend weight of the manifold-based mass lumping scheme.
@@ -214,4 +214,4 @@ namespace Marmot::FiniteElement::MassLumping {
     return std::sqrt( static_cast< double >( massFractions.size() ) * smallest );
   }
 
-} // namespace Marmot::FiniteElement::MassLumping
+} // namespace Marmot::Discretizations::Elements::MassLumping
