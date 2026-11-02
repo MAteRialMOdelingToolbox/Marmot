@@ -1,0 +1,576 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.18.0" xml:lang="en-US">
+  <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation" kind="class"><name>Marmot::Discretizations::Meshfree::Approximation</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a39b7eaccea5612f607fcfdb13e9dc8ac" kind="function"><name>Approximation</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a391fe96951678125219c61e07b51d0d0" kind="function"><name>~Approximation</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a71c2229ec0a53a64d5374b87238a80e4" kind="function"><name>computeShapeFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1ac7f184812fc3d613e890e7ee8fed44c3" kind="function"><name>computeShapeFunctionGradients</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a5cd259cfef7eb185547a38b2e09cdfc6" kind="function"><name>computeShapeFunctionsAndGradients</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry" kind="class"><name>Marmot::Discretizations::Cells::BSplineCellGeometry</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a36c7c909a54e3b55d01e48b51cf6eade" kind="typedef"><name>ParentBSplineGeometryElement</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a75a740fc8e35418ee9d7b7c6ff2d56af" kind="typedef"><name>JacobianSized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1acc512877efa09971353dd6eedcb21c96" kind="typedef"><name>NSized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9af6e53749169606e2125c97a3079b25" kind="typedef"><name>dNdXSized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a38c227cdad9142d18939ce9ea754618f" kind="typedef"><name>CoordinateVector</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9738de5a9b5c7c6e5788d9e0d6dafe3a" kind="typedef"><name>XiSized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a200a47d30a0ceb5e42dc1342f58ce8fc" kind="variable"><name>_boundingBoxMin</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a077d16233633aac9ce6c81a3150c3359" kind="variable"><name>_boundingBoxMax</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1abddff042234afcbb96a3763cdae65c9b" kind="variable"><name>_boundingBoxMatchesGeometryExactly</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a33862e6dbe08997e50b63134726d207f" kind="function"><name>BSplineCellGeometry</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9a048a1cd670333056ebe8e54f6a3aa6" kind="function"><name>isCoordinateInCell</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1af59ada3c35ef8738df484534c56cf83d" kind="function"><name>getBoundingBox</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1ab5a838f4a312e258e26375337822201f" kind="function"><name>findReferenceCoordinate</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a2591c0f13dcf17f95a840fc0860aaee3" kind="function"><name>N</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a25ea7919ab76d1b6553b2b40c515b891" kind="function"><name>dNdX</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a524cf87de72ec96da9b120001e1ee868" kind="function"><name>detJ</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element" kind="class"><name>Marmot::Discretizations::Elements::BSplineGeometryElement</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a5d13194067775e6555c1f8b75c3de9eb" kind="typedef"><name>KnotVector</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1af1d68542423e3e3f83e95588955f272a" kind="typedef"><name>KnotVectors</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a70c488ce9b02a66fed661a102d28aa1b" kind="typedef"><name>NSized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a7a916dbb28a9b541bf8b20d5ba7c9775" kind="typedef"><name>CoordinateVector</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a0f690112b7437a2127ecdffed6a670d9" kind="typedef"><name>JacobianSized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a038859cf1fbcb76fde5f3948b7646f71" kind="typedef"><name>dNdXSized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a27b73029f8eee1113c721927bfc7d58e" kind="typedef"><name>XiSized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1ab0015596caa9570471dc0ff7e5904b46" kind="variable"><name>nKnotsPerDir</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a749f90215ab88d6a8c9d68630cc9dd56" kind="variable"><name>nNodes</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a1b9c8da6b0ab70a84d93962cc2dfb8ab" kind="variable"><name>_mapCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a8188ba74eaddb763f4d7cf6269427991" kind="variable"><name>_shape</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1acb44744622a5fbd9bb661b73cc335ddf" kind="variable"><name>_knotVectors</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1aa27f6a8fb4c18ad6b94ad6a4cab28637" kind="variable"><name>_knotVectorsNormalized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1aea81ca5d21d3d1852f03c368d10b98dc" kind="function"><name>pow</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a82238f0ba3ac123daf6e5a3b444f3c1b" kind="function"><name>BSplineGeometryElement</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a1fdaee6cdb461a6fb5ea07ffd163202e" kind="function"><name>getElementShape</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a902a086088be3b2816af072ee017ea05" kind="function"><name>N</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1ad1e0658864b8eaf141bacc21c2cfd678" kind="function"><name>dNdXi</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a0bf71a9872f27e54dddacab1d218a529" kind="function"><name>Jacobian</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1afc921ed5ae0aea803672eb76cd7c354c" kind="function"><name>dNdX</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell" kind="class"><name>Marmot::Discretizations::Cells::Cell</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a3432bed6ee97a9f1936b18f7537f09ff" kind="function"><name>~Cell</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a81786b3fb9cc8a705e36babbba6d9d5a" kind="function"><name>getNodeFields</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1afab13e5aa59e03f9277c5b033174dda7" kind="function"><name>getDofIndicesPermutationPattern</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a73fc590de9fad0c0cbfbaaebd1804ae5" kind="function"><name>getNNodes</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kind="function"><name>getNDofPerCell</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1ac48b2c51099325cd8bfbda272d1c29f6" kind="function"><name>getCellShape</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a6440d3f1ac93875e0d64a53b82c9ec80" kind="function"><name>isCoordinateInCell</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1ae51f08eaf8a5420cba3c7b20e7acd113" kind="function"><name>getBoundingBox</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a8b58710a1cd58fad5b96e5ab88be5d63" kind="function"><name>assignMaterialPoints</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a3a49fe2594d9dee24e95c12063b8aabb" kind="function"><name>computeMaterialPointKernels</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1ac179743ed4e2d1290fe3c3e9da2bdfd3" kind="function"><name>computeLumpedInertia</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1aa5a9cc0b484a127f857c7a69b56c0c8d" kind="function"><name>computeConsistentInertia</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a09c5672fdd820e690a2bb6ab191ab705" kind="function"><name>computeBodyLoad</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a5a94bcc3124191f5b5cf5bc3b07ad4e8" kind="function"><name>computeDistributedLoad</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a440a5126e81ad74e37fdea6a643672b3" kind="function"><name>getInterpolationVector</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1adb4a455b55cb0033e79d12eb80acd5f9" kind="function"><name>getSupportedBodyLoadTypes</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a6d5f0e895b40bf0bbdcdbb2cb151cf25" kind="function"><name>getSupportedDistributedLoadTypes</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a1ac5f5308dc52614dd36509bb7d09d7f" kind="function"><name>interpolateFieldsToMaterialPoints</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_element" kind="class"><name>Marmot::Discretizations::Cells::CellElement</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_element_1acdf603a49296ca5499f4e90638988df4" kind="function"><name>~CellElement</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_element_1a808f7adb2b75965e2b3850959ca6b24b" kind="function"><name>getNMaterialPoints</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_element_1aa76998dd6353741c07d22194001fa3e1" kind="function"><name>getRequestedMaterialPointCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_element_1a8a72361058b270c80dc43b3998ab7778" kind="function"><name>getRequestedMaterialPointVolumes</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_element_1a01da9b6332c5b8d6d2be9e78302195db" kind="function"><name>getNumberOfRequiredStateVars</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_element_1a88da80b582eedcb960d4c76639a005eb" kind="function"><name>assignStateVars</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_registry_1_1_cell_element_factory" kind="class"><name>Marmot::Registry::CellElementFactory</name>
+    <member refid="class_marmot_1_1_registry_1_1_cell_element_factory_1a14444ed3f121fc53d21870e14f3d1873" kind="typedef"><name>cellElementFactoryFunction</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_cell_element_factory_1a2920e0f2fc33c53db2ff66ba09003bd4" kind="function"><name>CellElementFactory</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_cell_element_factory_1a9e458f3bcc7ecb1a952443d3898a6613" kind="function"><name>createCellElement</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_cell_element_factory_1af43e8276b0205d40d9c9751275b9ae9e" kind="function"><name>registerCellElement</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_cell_element_factory_1a4257a17ec07a1c78c7025f2d0cb1df33" kind="function"><name>cellElementFactoryFunctionByName</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_registry_1_1_cell_factory" kind="class"><name>Marmot::Registry::CellFactory</name>
+    <member refid="class_marmot_1_1_registry_1_1_cell_factory_1a259b6fcaf9f21ac74c71d2b0c3599b3f" kind="typedef"><name>cellFactoryFunction</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_cell_factory_1a76115dd6a94eb660163b05f9e1572452" kind="typedef"><name>bSplineCellFactoryFunction</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_cell_factory_1abaa9edc278c0acbdd2eaafcb7f0d43e0" kind="function"><name>CellFactory</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_cell_factory_1a9a5214743ead01fa21508d8d2f46af05" kind="function"><name>createCell</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_cell_factory_1af86522ba5e428befdef4ecef7f69c08f" kind="function"><name>createBSplineCell</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_cell_factory_1a8aae2870a8313f0fe6f513ba70b1559d" kind="function"><name>registerCell</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_cell_factory_1a0b628d90299f9ebc529a80e52fb07671" kind="function"><name>registerBSplineCell</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_cell_factory_1a4c4889d993d8fc6a370329496c8884e8" kind="function"><name>cellFactoryFunctionByName</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_cell_factory_1aa9b2376afd6b41bda6864c3a1e82d85f" kind="function"><name>bSplineCellFactoryFunctionByName</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry" kind="class"><name>Marmot::Discretizations::Cells::CellGeometry</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1ac9ba9285eb2fd55a6176d5d49dafcb0f" kind="typedef"><name>XiSized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a534a0b64a3326fbe6bbbc8dcbe86e843" kind="typedef"><name>CoordinateVector</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a1faa1111811a7b8c7f5336ac5554dbe1" kind="typedef"><name>NSized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a5d57025902f5bf93842f98134ce73bd2" kind="typedef"><name>dNdXSized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a4878023ed744a582b2778bdc71ad0d18" kind="function"><name>isCoordinateInCell</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1ad80490564b31f58f7d8e3d9bef07d760" kind="function"><name>findReferenceCoordinate</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a7cd06501dd93bf53003a2c50719b6d37" kind="function"><name>N</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a7856bf5cfd94b79d7e8c4ebc6962c9a1" kind="function"><name>dNdX</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a1a7c91e2f0a4b673511a03b560347a32" kind="function"><name>detJ</name></member>
+  </compound>
+  <compound refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule" kind="struct"><name>Marmot::Discretizations::Meshfree::GaussRule</name>
+  </compound>
+  <compound refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_012_01_4" kind="struct"><name>Marmot::Discretizations::Meshfree::GaussRule&lt; 2 &gt;</name>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_012_01_4_1a50b50bcfcf04088bf409132866572ee1" kind="typedef"><name>Scalar</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_012_01_4_1a8c18ec674b51dbc768065c5c6aad78d1" kind="typedef"><name>Vec</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_012_01_4_1a90751a68ac91c942048410990692cd81" kind="function"><name>points</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_012_01_4_1ae2f81a55e2863914b44e8469f7dbd325" kind="function"><name>weights</name></member>
+  </compound>
+  <compound refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_013_01_4" kind="struct"><name>Marmot::Discretizations::Meshfree::GaussRule&lt; 3 &gt;</name>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_013_01_4_1af6e864591104830385baa5d1d5d03b42" kind="typedef"><name>Scalar</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_013_01_4_1ae5620a8f354c636172b5427eec3d2793" kind="typedef"><name>Vec</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_013_01_4_1a2f325618c2879608cde94de1addccadc" kind="function"><name>points</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_013_01_4_1a15da5b51dd735902f8a2566861808a86" kind="function"><name>weights</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle" kind="class"><name>Marmot::Discretizations::Meshfree::GenericParticle</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ab6bb4066457261748480e7d7262cc13d" kind="variable"><name>_centerCoordinatesUndeformed</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ac80d83b7abe8b588b4b8e2530e694bdf" kind="variable"><name>_centerReferenceIntermediate</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a82ada1080de6d746c688896732f72539" kind="variable"><name>_volReferenceIntermediate</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a2700217475aeb50a106a50a8a0c05389" kind="variable"><name>_meshfreeApproximation</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a18b8a188152ce8ee494103dfcddb6356" kind="variable"><name>_assignedKernelFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a3bd4ec7ff5b73bff27a79e760b1241dc" kind="variable"><name>_nNodes</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ab65b92846f1be0f4eed8be3cd8ff1bf9" kind="variable"><name>_vciOrder</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a9c8690c51fb47c9c7f4b8e8fd403cfd1" kind="variable"><name>_nVCIConstraints</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a55716531b442acbc4f219dcb75aa5ce9" kind="variable"><name>_P</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a3f164147aec1cadccbac70b6e4256a92" kind="variable"><name>_P_Gradient</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a254e9c2f06e820c50be4a452ca18cf3c" kind="variable"><name>_N</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a648c3f88f1d49dfb9b006e75485580a2" kind="variable"><name>_dN_dY</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ad47bc3e88ea137097f490614ec310f90" kind="variable"><name>_T</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a674c7824cc4c1ec0cc6e99729d9bae6b" kind="variable"><name>_dT_dY</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a0dedd17053a56e12be07b7b515ed2107" kind="variable"><name>_validProperties</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1af8e03a42df34772123b0643cfd322e4f" kind="function"><name>setVCIOrder</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1afe621812138785a00d89d5477d973196" kind="function"><name>GenericParticle</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a373cd53965f7ccdce967e07094732867" kind="function"><name>setProperties</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a834578ad98e8767909b63be9a2ef323f" kind="function"><name>setProperty</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a3218b9b223ea1c67b0ecfd0076ca244f" kind="function"><name>getPropertyNames</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a1527cfdf1ae129c90cf9b634ea95cab6" kind="function"><name>assignMeshfreeKernelFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a70d9aec64aee65cff563850a7f0480e9" kind="function"><name>getVertexCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1aebb1f6f8f428bc423725742eb7c06279" kind="function"><name>getFaceCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1abd48d31d107de4ea2bddfc21f40b83f9" kind="function"><name>getCenterCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a1778204a3ee3ea3512506ddfcbdd043e" kind="function"><name>getVisualizationVertexCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1aa981aea7009898cda963c186462e6b10" kind="function"><name>getNumberOfVertices</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1aeec7464e8d87a2f925eebfd9b6bfbec2" kind="function"><name>getParticleShape</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1aa3ed7cf4af833f966615ccda4a8c303d" kind="function"><name>getDimension</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a66d1fabf95051bff30c3595cc2e0aecc" kind="function"><name>getInterpolationVector</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a1b6a63e40fcbbec2b64deb7d5f0eda92" kind="function"><name>getEvaluationCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a2fcab76d899065e56dacdf579636457b" kind="function"><name>getNumberOfEvaluationPoints</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a3f917f365fd52aae1e84384d91fb9774" kind="function"><name>vci_getNumberOfConstraints</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a4849737164c12f16c82d3351aaf12d12" kind="function"><name>vci_compute_Test_P_BoundaryIntegral</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a8150f44feb4d2160f1d87ac4600710b6" kind="function"><name>vci_compute_TestGradient_P_Integral</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ac791911a6e9d21b9d30dcc40baef21c2" kind="function"><name>vci_compute_Test_PGradient_Integral</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ab3589dd2ec5a93ebe4f73bde53b4963d" kind="function"><name>vci_compute_MMatrix</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ad83d3ce1b30df998ca5561f638d7604b" kind="function"><name>vci_assignTestFunctionCorrectionTerms</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ab411ab07b9238c4e6b672f03d4d05fa9" kind="function"><name>getStateView</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle" kind="class"><name>Marmot::Discretizations::Meshfree::GenericSDIParticle</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a3ab2bd974b3cdd8ef8ada6114a58b3af" kind="typedef"><name>TensorD</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1aaf589ed0020eb77d9ccd4b593fd7b046" kind="typedef"><name>TensorDD</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a847e9493a1fee4d8ad6d0dec909445fc" kind="typedef"><name>VertexCoordinatesSized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a80f787ff2461c83f0bd2acc169a4f250" kind="typedef"><name>CoordinatesSized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a8ea0b7377ff26a8d3bf569c08eb29433" kind="typedef"><name>JacobianSized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a980847ac1a6da1487b5bdb115c71adab" kind="typedef"><name>KernelFunctionVector</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a3fb955c6b86123373da21c1c15d2b790" kind="typedef"><name>ParticleDomainType</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1aadd616997682dd5f2b21ec6d79d9eb50" kind="typedef"><name>SmoothingDomainUpdateType</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a66a4af427fd11bb6b39a5dd634f82185" kind="variable"><name>nStateVarsParticle</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ab8f7ebfcf2f7840802160b24a03e5d28" kind="variable"><name>nStateVarsCenter</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1aef92e238f539a9e51f841f7526cdf4bf" kind="variable"><name>_validProperties</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a62dc497db346b2c8199241a7ae19ff52" kind="variable"><name>_elementID</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a85849e4b4add43cdf679dcbb5ed4a117" kind="variable"><name>_nNodes</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1aa7fbc62438680b9a31a965b7e7299ca7" kind="variable"><name>_vciOrder</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a7cf3f2da3c51de0cb442f423afbcd7b9" kind="variable"><name>_nVCIConstraints</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a99d628f04476feafcb38411e5f4ac9c0" kind="variable"><name>_meshfreeApproximation</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a5a44d8d6958ee10b1455197ec6cf6a3c" kind="variable"><name>_particleDomainMain</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a731f9f726436f27d21b75e2e90c131b4" kind="variable"><name>_subDomainShapeFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1af60e1630976cd6088ec1126185c8a631" kind="variable"><name>_subDomains</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ae55f098f19c16364cd920775fcd8fe13" kind="variable"><name>_centerDisplacement</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a7da09e1da2cd9a08fea4c037b364c71a" kind="variable"><name>_centralDeformationGradient</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ab56e2470491a476c053bb73fbe20a249" kind="variable"><name>_centralDeformationGradientDelta</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a7a881d3367d36894d2a635a479fed951" kind="variable"><name>_assignedKernelFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a8155719104a1fd943d126d82804b65d3" kind="function"><name>setProperties</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a4bd33f1e93ff3dff4dc14520c2c48dc6" kind="function"><name>setProperty</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a87e4be110403d6ea379cd28fe1df063d" kind="function"><name>setPropertyOnSubdomains</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1aefa30271b0d75afc9fca47d8da24f6d6" kind="function"><name>getPropertyNames</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a6606bf608a756f005113bb00d6baea60" kind="function"><name>getSubdomainPropertyNames</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a0962f3e0aed0181887db0a86092740a6" kind="function"><name>getVertexCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ae8d5357fb52b23591d524a0c4b734d69" kind="function"><name>getFaceCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a58a9cb2416a29fef54e74dd63c2e7e58" kind="function"><name>getCenterCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a564c9b52e297c301f8021bca8f81096c" kind="function"><name>getVisualizationVertexCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a24f2feaa08e0ae7443cf26f94afbf86a" kind="function"><name>getNumberOfVertices</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a9513587cc9b9ad95e801fc3ba5ca7c0f" kind="function"><name>getSubdomainVolume</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a299cdd706ba8efa374d8da87d749265a" kind="function"><name>initializeYourself</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a09b17e009a3c1d8f46f586a79e68b2c1" kind="function"><name>initializeYourselfOnSubdomains</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a1a8686f24076310d00e85207fa9a6e9e" kind="function"><name>getParticleShape</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1af500a633466f0edd590de61e9ee52e0b" kind="function"><name>GenericSDIParticle</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ad390486161b4c6d7905785e97a102d6f" kind="function"><name>assignMeshfreeKernelFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a5634dfba8f4d884f283b61dd7cb54858" kind="function"><name>acceptStateAndPosition</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ab36edd9e0e08302d3df33ff1204b424a" kind="function"><name>acceptStateAndPositionOnSubdomains</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a24d00d4c19dd6c03da3ff8c819d689a3" kind="function"><name>getNumberOfRequiredStateVars</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a3f5df14d0c9961a37df840b413174202" kind="function"><name>getNumberOfRequiredStateVarsOnSubdomains</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ac755a40084f1934d535d31e1b3bdc868" kind="function"><name>assignStateVars</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a33cfc8a8b0db9ddded322f0e04726b6a" kind="function"><name>assignStateVarsOnSubdomains</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a6639cd17cee346754bff1970010e0144" kind="function"><name>getStateView</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a7d11e5d6f23ad50c22460523fed0683e" kind="function"><name>getStateViewOnSubdomains</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ad8040a3eddfb94aa12cd33fd429272ec" kind="function"><name>computePhysicsKernels</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a50ebf39451528cd1267f7c02d86178dc" kind="function"><name>computePhysicsKernelsOnSubdomains</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a7544bef162dc7b093ba4a6fc88b6d601" kind="function"><name>getIntermediateConfigurationBoundaryVector</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a22c3e2a15f5b660ba54d9bb9b21c91c3" kind="function"><name>getDimension</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a6c6c4031f3b3d47942639fd8e03db290" kind="function"><name>getInterpolationVector</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a5ad7e00f0a5438457d5d924de567b29e" kind="function"><name>vci_getNumberOfConstraints</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a0b7dd7a486a66db04bb3344db8cc7633" kind="function"><name>vci_compute_Test_P_BoundaryIntegral</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a99bee7eecce18ead023d8b8605b8dbaf" kind="function"><name>vci_compute_TestGradient_P_Integral</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a4603204624e60dc670790c7d6469cd3c" kind="function"><name>vci_compute_Test_PGradient_Integral</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1afaecc5e69b0d02884e7952eee96e4a8e" kind="function"><name>vci_compute_MMatrix</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1af6703ceb8e3267430add331f237c5edc" kind="function"><name>vci_assignTestFunctionCorrectionTerms</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1aa5502504cea55c412fd6694870b8e804" kind="function"><name>paddedStateVarSize</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1acb27f55392542bfb0b7e73e45bab3b9b" kind="function"><name>evaluateShapeFunctionsAndDerivativesForParticleDomain</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ada9c09dcd8c0a9088e5128af8f462e29" kind="function"><name>evaluateShapeFunctionsOnFace</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a3bf9dd14d8f7a5cb26896b61a8d62806" kind="function"><name>evaluateShapeFunctionsAndDerivativesOnFace</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1abbbe23074e669f37b85023ea8abe6420" kind="function"><name>_smoothDerivativeShapeFunctionsForParticleDomain</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a6b91ba6c233f11fb8234b8de2b06f7ac" kind="function"><name>setVCIOrder</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kind="class"><name>Marmot::Discretizations::Meshfree::KernelFunction</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a209b18279daa73856c102af4e774dfe4" kind="function"><name>KernelFunction</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a40ecf2d4ed0cca32231a8265dfb1a9fc" kind="function"><name>~KernelFunction</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1ae50a4ffcb17eae676c53d7b5ae0cf54d" kind="function"><name>computeKernelFunction</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a778a09880c6bceab2b131ce77c273682" kind="function"><name>computeKernelFunctionGradient</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a9f4792990bae39afc63d74e6388fbbd0" kind="function"><name>getBoundingBox</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a24a6624cb71c4213e5df546be25cc827" kind="function"><name>isInSupport</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a5e591e8f215f7819d1f257f683787d73" kind="function"><name>getCenterCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a210e3c2eb15d0619033d1c33c189a813" kind="function"><name>moveTo</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed" kind="class"><name>Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1aa0a270109f4658319fbc6b3a8de58038" kind="variable"><name>_centerCoord</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1ac4611d52b2f9e09622022ad8f01ffd37" kind="variable"><name>_supportRadius</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1adca5320dd0af2884098d15760367f5da" kind="variable"><name>_dim</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a6601a9e74d2d69172d89f626c44aad45" kind="function"><name>KernelFunctionBSpline2ndOrderBoxed</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a8877a8512eebfb0c056fa9976e3aba75" kind="function"><name>~KernelFunctionBSpline2ndOrderBoxed</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a25dac895f12bde15f1f6c50ba0a756c4" kind="function"><name>computeKernelFunction</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a7e26183d8d3b7a31e939f98d478812a7" kind="function"><name>computeKernelFunctionGradient</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1affd83fc774166f49a9d541807f59dbb6" kind="function"><name>computeBSpline2ndOrder</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a87a03d4cbf46bcfbd2e09e8ee1daaebd" kind="function"><name>computeBSpline2ndOrderGradient</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a80b9fed0378d0713934c7ee04518d98a" kind="function"><name>getCenterCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a33aa45f04c0f1d38a74d101efb434bd0" kind="function"><name>moveTo</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a4294e2754f450e0ef2c1b2f75ac3c228" kind="function"><name>isInSupport</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1aaeaa53f273a2e0ea1997e6d13d5361e2" kind="function"><name>getBoundingBox</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed" kind="class"><name>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1ab76b18bb2d9bf956e7a04fd29d0e8596" kind="variable"><name>_centerCoord</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1ac41b6f5643ec8d4ff0a7e94912d37fd7" kind="variable"><name>_supportRadius</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a04060b01eec913797906006ad93097f4" kind="variable"><name>_dim</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a8c464c772b4f84dbb94b913165d79c90" kind="function"><name>KernelFunctionBSpline3rdOrderBoxed</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a3401ff8c8d3dfa73aaa135e605d8ee86" kind="function"><name>~KernelFunctionBSpline3rdOrderBoxed</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1afac6dc6a0fa3b73849e75aee5ee457fc" kind="function"><name>computeKernelFunction</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1ac57ff8dedb6e456febd9c86454d0c5ac" kind="function"><name>computeKernelFunctionGradient</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1af7a41cc190cd81d288465b24f3eb15d7" kind="function"><name>computeBSpline3rdOrder</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a852890c615e3b1b7eb7ecfd231e4ddf1" kind="function"><name>computeBSpline3rdOrderGradient</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a50c867fc0fe24af6a125b57fb8275168" kind="function"><name>getCenterCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a2754f9384bb9eeecea4f94628b08739a" kind="function"><name>moveTo</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a579e742a86fc79fb6452e26dc9d9a7c2" kind="function"><name>isInSupport</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1acf1020d1bcd2b2df2a5c231c3e9ce7cd" kind="function"><name>getBoundingBox</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell" kind="class"><name>Marmot::Discretizations::Meshfree::LagrangeCell</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a205411c59efe7f02a4880453c2785a77" kind="typedef"><name>Scalar</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" kind="typedef"><name>Vec</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ade7b63c550ac654e5b6ab171c775646f" kind="typedef"><name>Mat</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a7d9c58f4ef4065344a62ce62369afec5" kind="typedef"><name>RowN</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad1434e612f24aa48ef019001a17f34a9" kind="typedef"><name>dNMat</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ac0d39c0e219dacaf6062c484c7e43b1e" kind="typedef"><name>Self</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a7a4de29f178b0b203bd22bc1d4c6fbc5" kind="variable"><name>_nodes</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad58643868bead009bf0bbb377d33ae2a" kind="function"><name>LagrangeCell</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad51f39e94ece8d9edca4494e47e10a74" kind="function"><name>LagrangeCell</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a66022765303fbd702086757bf5aca6a9" kind="function"><name>LagrangeCell</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a8ddff1834982a14349ffa09533c2a8dc" kind="function"><name>nodes</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1af7e124d9667ebc29b5521570f6580938" kind="function"><name>nodes</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a41a85c5d93aee33d014532c0ea725d3e" kind="function"><name>mapToPhysical</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a5c09c03593c292bb37cf8e82fe02a35d" kind="function"><name>jacobian</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ab0e7d1f4e21ab93a3f308dc8b088a99e" kind="function"><name>centroid</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1affe0c3f3b6da76a9557cad4b9fd9dc7e" kind="function"><name>volume</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a2f929fccc1f3731f2cfcf4bc04918c72" kind="function"><name>area</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1add17308e0c4193351b92ffee3cd79a8e" kind="function"><name>secondMoments</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a40d314513235188dfc047cfdf6264938" kind="function"><name>updateVertexCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad878ebc510f3de3c002d64d79a04bb64" kind="function"><name>applyDeformationGradient</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a98c0d06d69a7ca66c2a3c528022c7967" kind="function"><name>applyDeformationGradient</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a8c37ac8752f947d2746696b37b71021d" kind="function"><name>applyUniformDisplacement</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1aa26e24290a34c2495e9ec535037c4dad" kind="function"><name>getFaceCenterCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a4bc603c3140a1fd53d602a1e934f912e" kind="function"><name>boundarySurfaceVector</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a0c0cec2337b4e35c173d3ec6dbf87318" kind="function"><name>uniformSubdivided</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a2b63679f9a7c216ef033d4282040b3ef" kind="function"><name>getSubCellIndicesOnParentFace</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a49d29c41695fcceb06582ec2c36cf616" kind="function"><name>getCellShape</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a22e4df95236f72def750d1fcdb57e02f" kind="function"><name>getNumberOfNodes</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a450b5401753bdfaeb66699bfb109cd6d" kind="function"><name>getNumberOfDimensions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad97662c611d91bbaac06ab509a3d3711" kind="function"><name>getNumberOfFaces</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a80287fa4ab076c6880a2a69d9518fcb2" kind="function"><name>shapeFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a76a2cb4378034de6e6f07dffe5409730" kind="function"><name>dShapeFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ac7ca30d900625ea45ae749cd22b74a39" kind="function"><name>getFaceCenterCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ae502cfcaf1c649d8e5847b55ab1ed19f" kind="function"><name>boundarySurfaceVector</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ace5d8214bcd49300970b478378c91898" kind="function"><name>uniformSubdivided</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a90fe065879ecda038d78ec37bfb9c1de" kind="function"><name>getSubCellIndicesOnParentFace</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1adb4da3a113faa7ae0e0622a109b99ec4" kind="function"><name>getCellShape</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ac89d8a4f2859e5c5bf9f235a35f4c614" kind="function"><name>getNumberOfFaces</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1adc6b9658be5f4a06cf983fbee17a4f86" kind="function"><name>shapeFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a83fa138d527a765bc56752ce89f83095" kind="function"><name>dShapeFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1aaab2ce23780b34f4ace12ace76e1282d" kind="function"><name>getFaceCenterCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a966b09b5131dbd0e2acc9bf1c93ed965" kind="function"><name>boundarySurfaceVector</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad6bad4b61ae4868b78e3ddbef6bdc77d" kind="function"><name>uniformSubdivided</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a9b0f3e5a4bfa810ead6025b6d31cc46a" kind="function"><name>getSubCellIndicesOnParentFace</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a630188a935f91e010b797c55bc34bc28" kind="function"><name>getCellShape</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a8e1cea624e90d103d6688205f504ce46" kind="function"><name>getNumberOfFaces</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a84f70db7109b3f3a7c5848d8476b932f" kind="function"><name>shapeFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a9df8856c238fa4e83df1fe71818d257a" kind="function"><name>dShapeFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a8f4e9f8c1337cc028b4b8e2375533197" kind="function"><name>interpolationOperator</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a4dcd0610293d7e3c69f616ffec5056e4" kind="function"><name>getGlobalGridCoords</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry" kind="class"><name>Marmot::Discretizations::Cells::LagrangianCellGeometry</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1aad26589bd970b9a49759f4c8b0361030" kind="typedef"><name>ParentLagrangianGeometryElement</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1ad6e51ad080d97a34740361f8002bb016" kind="typedef"><name>JacobianSized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1a536b46be31e0c9199cf39c26e5ca30f8" kind="typedef"><name>NSized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1a12265f4da34f118156fa5df013d79837" kind="typedef"><name>dNdXSized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1af5955fd949216affbae2658e25ced5de" kind="typedef"><name>XiSized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1afa7703daeccf2649ccc2646a1692ed23" kind="variable"><name>_boundingBoxMin</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1a03b41d6172b9e7d582d4fb163fb423a2" kind="variable"><name>_boundingBoxMax</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1a657a874860be6b7ddcb5dc277db06ea9" kind="variable"><name>_boundingBoxMatchesGeometryExactly</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1a763dbc889c8758723324046614da4886" kind="function"><name>LagrangianCellGeometry</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1ab9538339aae84bbca7e51b7be05ea33c" kind="function"><name>isCoordinateInCell</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1ac298bc6ac8c648bbf91b8748a94311b0" kind="function"><name>getBoundingBox</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1ab8d88cbe9f44623e41d085b21affb8fa" kind="function"><name>findReferenceCoordinate</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1ab43f8191abd4fc189695fba969966ac5" kind="function"><name>N</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1af48c0ba669d94e57474682f49a28850e" kind="function"><name>dNdX</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1a27d1e9ff6938375c4e2c88ca10d7c752" kind="function"><name>detJ</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1a67c22640fbe41dd543d969db4bd0cfc2" kind="function"><name>test</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point" kind="class"><name>Marmot::Discretizations::MaterialPoints::MaterialPoint</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1ad3e6d46b5ddf460dea6aec4bb8e1eab6" kind="function"><name>~MaterialPoint</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a0e1436d59382f9bf28c7c0fe94e265f5" kind="function"><name>assignStateVars</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a47338654c1fd44ad3d9a43f6fa38a7c3" kind="function"><name>assignMaterial</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1aa2a58c0b16c0ff611715c80ae6d39250" kind="function"><name>initializeYourself</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1aba8bfd46fbfa5400d155bf8f30cac84d" kind="function"><name>prepareYourself</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a0d04a7c4c1cdb8b82bcdc1ad18e7745f" kind="function"><name>computeYourself</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a6d6222a6d143adec6714096f890f06b3" kind="function"><name>acceptStateAndPosition</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a51f4d4a25db0d9f16b3a55f799c407d0" kind="function"><name>getStateView</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1ae1298d991c2ed04786dc8b96710a80a5" kind="function"><name>getNumberOfRequiredStateVars</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a25478d8f0426db5c8a720f11e90bd139" kind="function"><name>getCoordinatesAtCenter</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a3eb83961c1aa0540edfdf29f540f2046" kind="function"><name>getMaterialPointNumber</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a33a0c15f32300da943f9041b62375078" kind="function"><name>getDimension</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a36443327a53c7a2ef93dcf32d257db95" kind="function"><name>getNumberOfVertices</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1ad7acd8d98b8ee3f11297eb99e3c2b570" kind="function"><name>getMaterialPointShape</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a5d5df6cab080042483a5eda6500d1c22" kind="function"><name>getVertexCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1af8a51713a33c3728be2846f274f9757b" kind="function"><name>getCenterDisplacement</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a93d7cee75a9feded4e96c1017efc8882" kind="function"><name>getVolumeUndeformed</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a1c389527410508cbc75798a9b607d08f" kind="function"><name>getDensityUndeformed</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a74a5d8b8927bb898b2ae6df40e35fa47" kind="function"><name>setInitialCondition</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_registry_1_1_material_point_factory" kind="class"><name>Marmot::Registry::MaterialPointFactory</name>
+    <member refid="class_marmot_1_1_registry_1_1_material_point_factory_1a1ad11422e15e92e84a23a350a9afd9b4" kind="typedef"><name>materialPointFactoryFunction</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_point_factory_1acd069008357cce5c3af5b6c04681665b" kind="function"><name>MaterialPointFactory</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_point_factory_1aa5fb0dbc87b3d9bdaf17737b9d364274" kind="function"><name>createMaterialPoint</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_point_factory_1ae7ab20142947ce63ea5d24074d42ab69" kind="function"><name>registerMaterialPoint</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_point_factory_1a8f27afbe8b1e75155524263368e45c12" kind="function"><name>checkIfMaterialPointIsRegistered</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_point_factory_1a6e9e4fd9aea7b4ae362f26f4533911ca" kind="function"><name>materialPointFactoryFunctionByName</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle" kind="class"><name>Marmot::Discretizations::Meshfree::Particle</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ac61ea90a6244b476833957aca2604685" kind="function"><name>vci_getNumberOfConstraints</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a8473a2bb44dcfc477ea5e1b5b43f1bf1" kind="function"><name>vci_compute_Test_P_BoundaryIntegral</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ab3a36559ef36ab4c6450503006396da6" kind="function"><name>vci_compute_TestGradient_P_Integral</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a8d50e229b42e2c88d072fad3fd9296d9" kind="function"><name>vci_compute_Test_PGradient_Integral</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ad08bba752f036670caa1b9d23e28c15a" kind="function"><name>vci_compute_MMatrix</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ad3dd12ee8f542b0a0130dd9a243c8d31" kind="function"><name>vci_assignTestFunctionCorrectionTerms</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a3e0a311f869ebad9df640e91a74c88a8" kind="function"><name>Particle</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aca1f817c1a3d7ac8e66afe6f0310e8dc" kind="function"><name>~Particle</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a054d08b1ecbb992b83a65d0cb0fa1986" kind="function"><name>setProperties</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aa96fbc7b18e0e211a93a8494cdd21978" kind="function"><name>setProperty</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6185a880ed7156aa4b2e8cd2584fea72" kind="function"><name>getPropertyNames</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6cc5735e24f3c305aa6a85219908527a" kind="function"><name>assignMeshfreeKernelFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a695b0ec37ec3e51e766bb9b12dd38813" kind="function"><name>assignStateVars</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a13850f7f8c70e4bf1472164a059c6732" kind="function"><name>initializeYourself</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kind="function"><name>acceptStateAndPosition</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a2d270d98f07b9888e1aa7cd29f0262a5" kind="function"><name>getStateView</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1afee420ce02ef298b0baee0e7c94d2c3e" kind="function"><name>getNumberOfRequiredStateVars</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a70b36abd0a63c5f7b18ad01ccc96c6c7" kind="function"><name>getDimension</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1acb5a8ce239ee26bf79158c31d77068a7" kind="function"><name>getNumberOfVertices</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a079069bee25014d8ffbc1a533c563bab" kind="function"><name>getVolumeUndeformed</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a1258440ecb02c95a4e980b554c2c4da4" kind="function"><name>getParticleShape</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a750a36251603e02b97cf15bf06a3cba1" kind="function"><name>getVisualizationVertexCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a09ac7d6f8b5b73438dfd75f5dae59504" kind="function"><name>getVertexCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a73f6ee2bf83f162d11fc1d795fef103f" kind="function"><name>getFaceCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ac394d0c39f485a832e4ef801f0477f5b" kind="function"><name>getCenterCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a5b7d8e653f4401f8958656bc737c92ed" kind="function"><name>getNBaseDof</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a9173eea5b80fa7f5ef3b8ae0db4f7688" kind="function"><name>getFields</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" kind="function"><name>computePhysicsKernels</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1abf6cf34751b3791f91a25d592ee9cc95" kind="function"><name>computeBodyLoad</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7d46e721a71cf53a8f00b08b0e2724a5" kind="function"><name>computeDistributedLoad</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a8a04e0e7f26751788e4f9132bc97cdaf" kind="function"><name>updatePhysicsExplicit</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6a23907b325ea1016f0190d158e00ec8" kind="function"><name>computePhysicsKernelsExplicit</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a99516fb62c45b198a972e061d4c40227" kind="function"><name>computeBodyLoadExplicit</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a14e0a4159b73753989a01bc02c1b5896" kind="function"><name>computeDistributedLoadExplicit</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a74371407f7597a403fc0def9d5b62573" kind="function"><name>computeLumpedInertia</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ae631e6c29145a031f9a4b2b8602abe0b" kind="function"><name>computeLumpedMomentum</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aff90338cf5e44ce344b9262920c25e1c" kind="function"><name>getInterpolationVector</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1adab3a066c7c7626d1280387058670df8" kind="function"><name>getSupportedBodyLoadTypes</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a88db026738f285d51971182af48d994f" kind="function"><name>getSupportedDistributedLoadTypes</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aa75023186f4b616cbef770a2582bcf3f" kind="function"><name>getEvaluationCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a96c6331a1f66f2256df0e71d7fe0f3eb" kind="function"><name>getNumberOfEvaluationPoints</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a2f273397ca5e3019269f9dae06dd95d8" kind="function"><name>setInitialCondition</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain" kind="class"><name>Marmot::Discretizations::Meshfree::ParticleDomain</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7" kind="enum"><name>SmoothingDomainUpdateType</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7a4efee53093833086a27fb9ad3c4760de" kind="enumvalue"><name>None</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7a1dbd11277d9b8f323785b95820886f11" kind="enumvalue"><name>DeformationGradient</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7a79cd9054614bf9e1a0d189e93101ad1d" kind="enumvalue"><name>RotationOnly</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a542a309d64c861cffa884da18214b9a7a9bd8a9db7a0f98c29b4e93598bd292c9" kind="enumvalue"><name>RotationAndPrincipalStretch</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1ac56afc87f9bf233c2891ae80a03856a1" kind="typedef"><name>CoordinatesSized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a5683bdf0e005ee0ef557dada1de40ef1" kind="typedef"><name>VertexCoordinatesSized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1ab3d22e6812f212a5141bb84943fe292f" kind="typedef"><name>DeformationGradientSized</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a9fb8b51970e2b6982383e7c3a217fb31" kind="typedef"><name>LagrangeCellType</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a3f9aaa7eb35f89318bcc496781a5bcfd" kind="variable"><name>smoothingVolumeUpdateType</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a9f7538b0a28c3d23092674d245c5ce2b" kind="variable"><name>_cellForGeometryUndeformed</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a04597567b6329f37349aca8bf02e89a4" kind="variable"><name>_cellForGeometryDeformed</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1aa18c434708839f1ff32f5fa2fcbec3bd" kind="variable"><name>_cellForSmoothing</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a3d2846cefb2b5a6ba11296f34c25b580" kind="variable"><name>_vertex_displacements_smoothingDomain</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a2b58d7a2dbcac5df3c5805c002d3dff8" kind="variable"><name>_vertex_displacements_geometry</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a20c0de406e8a46f291e6cc4dd90fcf98" kind="variable"><name>_deformationCenter</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1af494f98633a393be0b5d3dc2b4f6c00c" kind="function"><name>ParticleDomain</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a9adde616a6bd86ae7ed3e8b8c31efe04" kind="function"><name>getGeometryDeformedVertexCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a73681fcb481269c576c18eaeb8412a0f" kind="function"><name>getSmoothingVertexCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1acc39d7203da5d08e46e2b4a09aaa0880" kind="function"><name>getNumberOfVertices</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1ab72e7d6693191954f16f8658c3deb970" kind="function"><name>getParticleShape</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a5794dce99d69eab5a7016ca51df70df7" kind="function"><name>getFaceCenterCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a8a4b3c9d121163e61b09e640b71c0fa3" kind="function"><name>getSmoothingDomainFaceCenterCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a74a4a4d223b290bec002387e85ef3987" kind="function"><name>getNumberOfFaces</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a5987ee628975082f1bf5532ea32fab14" kind="function"><name>getSmoothingVolume</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a2a14858c6dab23dd461eb58723f51bb7" kind="function"><name>getCenterCoordinates</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a53be18e16e1d7a7b8103f73a0a08d905" kind="function"><name>getVolumeUndeformed</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a38a0a8bc74d8b6ad89be4dc4eeb0060d" kind="function"><name>getSmoothingDomainVertexDisplacements</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a3915f1ab2d891a109b219ae04e06c9d6" kind="function"><name>getGeometryDeformedVertexDisplacements</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a616d6ab223a63873cfc272279bc81d8c" kind="function"><name>getFaceBoundaryVector</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a5c6056dacc3089441face971f4dc5bdf" kind="function"><name>getSubCellIndicesOnParentFace</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a02d68503065313bd3302c6dc7d8a59f7" kind="function"><name>getSmoothingBoundarySurfaceVector</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1aba1d9e7eecde2d2266d8372581938462" kind="function"><name>getGeometrySecondMoments</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a20c534581d8d89f4a51294aa1d1f783c" kind="function"><name>acceptStateAndPosition</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a35fce6e2a32f95799655761ce927ca2c" kind="function"><name>uniformSubdivided</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a2a95bd04713d1bcf08645116f2fe3975" kind="function"><name>getCenterFromVertices</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1afc0fe71c53afe45f83b903ecebe6986b" kind="function"><name>getVolumeFromVertices</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a003c549ec08c0aa23af1d25e6b762328" kind="function"><name>_computeSmoothingDomainDeformationTensorTotal</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_registry_1_1_particle_factory" kind="class"><name>Marmot::Registry::ParticleFactory</name>
+    <member refid="class_marmot_1_1_registry_1_1_particle_factory_1aa6a3ba9e7bc9bc56814ecf3bfd7d0014" kind="typedef"><name>particleFactoryFunction</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a07ab2a45302836ad1f8b2b3adbc6e167" kind="function"><name>ParticleFactory</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a2d3fade456c7640eb56112869f4c5b30" kind="function"><name>createParticle</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a4225a503922983e75785d8b5ab140947" kind="function"><name>registerParticle</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_particle_factory_1add041efc5ad2a0fbb56a0e537b1eaae9" kind="function"><name>checkIfParticleIsRegistered</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a30490dde37f25e4c8b264bda1dda39dd" kind="function"><name>particleFactoryFunctionByName</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kind="class"><name>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a7f8b8bad3cf448ff5c15859d61825fc2" kind="variable"><name>_dim</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1af683fb5ef82e8ed68d85c77be72bf92b" kind="variable"><name>_desiredCompletenessOrder</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ae13c28d4dac93ef676bf2972add81183" kind="function"><name>computeHVector</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ab682ccd70a9b0b95c576f12f7ba37213" kind="function"><name>computeHVectorGradient</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a9795dcb299ef20e175a525e5ab6eb159" kind="function"><name>computeMMatrix</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a60e4bc73d9d6e32d0d74f43141d7048f" kind="function"><name>computeMMatrixAndGradient</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a496cdc07e9e2bf86d6a303e0a44dcf9e" kind="function"><name>H0Vector</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1aecb715dd20e218e5d92b903bd994a37e" kind="function"><name>factorizeMomentMatrix</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a4aeb663d099a242946411c54c1a777b6" kind="function"><name>factorial</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a99ec2b38ff8ef27c53faad3d7c88baba" kind="function"><name>checkNonSingularity</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a44468b35c200ffd35e24f0f0e5c34329" kind="function"><name>getCorrectedCompletenessOrder</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1abe54a98e7215e69a0c164107740713bd" kind="function"><name>findCoveringKernelFunctionIndices</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a28e26acee1cb28eae12e18e618cf19ef" kind="function"><name>ReproducingKernelApproximation</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ac593575e8f665c04c43386608c205326" kind="function"><name>~ReproducingKernelApproximation</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1aada5d6fc85de09ef69eca8839acc6f5a" kind="function"><name>computeShapeFunctions</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a9eaafffc7beceb343a869bd5e6ffaaf6" kind="function"><name>computeShapeFunctionGradients</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a39ef3534db694f1919fbbdabfad54fef" kind="function"><name>computeShapeFunctionsAndGradients</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit" kind="class"><name>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</name>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1aeb97ec0aea90ea0a8799f3337fb4c692" kind="function"><name>ReproducingKernelApproximationImplicit</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1aecad4467de4cd011c56d746620c0208e" kind="function"><name>~ReproducingKernelApproximationImplicit</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1af43334dd01f396da72483f6e2a308eb8" kind="function"><name>computeShapeFunctionGradients</name></member>
+    <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1ac284e440e26218f9a9f89c2385148662" kind="function"><name>computeShapeFunctionsAndGradients</name></member>
+  </compound>
+  <compound refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions" kind="struct"><name>Marmot::Discretizations::Meshfree::GenericSDIParticle::SubDomainShapeFunctions</name>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions_1ac6cd4a721a95565d7036ea98e493ec0d" kind="variable"><name>N</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions_1a4db8963ea55b1d14b2b7f3d687d6ae1e" kind="variable"><name>dN_dY</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions_1a6078ac44241053e545849ae53b6555b9" kind="variable"><name>T</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions_1a8bbdcc38540858379e62dfa388189854" kind="variable"><name>dT_dY</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions_1ab11e67607fc861806e477b5914aa927d" kind="variable"><name>P</name></member>
+    <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions_1ac9400063835e3e95718b5cce7f4de595" kind="variable"><name>P_Gradient</name></member>
+  </compound>
+  <compound refid="concept_marmot_1_1_discretizations_1_1_cells_1_1_geometry_cell_policy" kind="concept"><name>Marmot::Discretizations::Cells::GeometryCellPolicy</name>
+  </compound>
+  <compound refid="namespace_marmot" kind="namespace"><name>Marmot</name>
+  </compound>
+  <compound refid="namespace_marmot_1_1_discretizations" kind="namespace"><name>Marmot::Discretizations</name>
+  </compound>
+  <compound refid="namespace_marmot_1_1_discretizations_1_1_cells" kind="namespace"><name>Marmot::Discretizations::Cells</name>
+  </compound>
+  <compound refid="namespace_marmot_1_1_discretizations_1_1_elements" kind="namespace"><name>Marmot::Discretizations::Elements</name>
+  </compound>
+  <compound refid="namespace_marmot_1_1_discretizations_1_1_material_points" kind="namespace"><name>Marmot::Discretizations::MaterialPoints</name>
+  </compound>
+  <compound refid="namespace_marmot_1_1_discretizations_1_1_meshfree" kind="namespace"><name>Marmot::Discretizations::Meshfree</name>
+    <member refid="_marmot_meshfree_quad_hex_cell_8h_1af0f8e5e34e7d54b22012c2a7bdcecade" kind="typedef"><name>Quad4</name></member>
+    <member refid="_marmot_meshfree_quad_hex_cell_8h_1ad371d933cee1560674f5c014f424e590" kind="typedef"><name>Hex8</name></member>
+  </compound>
+  <compound refid="namespace_marmot_1_1_math" kind="namespace"><name>Marmot::Math</name>
+    <member refid="_marmot_monomial_basis_functions_8h_1ad1defbf9b7b712fe1dc097ba48edc70b" kind="function"><name>computeSizeOfMonomialBasisVector</name></member>
+    <member refid="_marmot_monomial_basis_functions_8h_1aa2a829ce5fd1acd3352fded2e3dfa747" kind="function"><name>_computeMonomialBasisRecursion</name></member>
+    <member refid="_marmot_monomial_basis_functions_8h_1ad5da4f8abb2edab40ace025974aae3b5" kind="function"><name>_computeMonomialBasisGradientRecursion</name></member>
+    <member refid="_marmot_monomial_basis_functions_8h_1af9d593a9f0e207edd06fcbad8c93d3ba" kind="function"><name>computeMonomialBasis</name></member>
+    <member refid="_marmot_monomial_basis_functions_8h_1abd4311e21ed9530de146ac55d62237ae" kind="function"><name>computeMonomialBasisGradient</name></member>
+    <member refid="_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11" kind="function"><name>B</name></member>
+    <member refid="_marmot_b_spline_8h_1a8ae98f20896dadb847accf4691459301" kind="function"><name>dB_dU</name></member>
+    <member refid="_marmot_b_spline_8h_1a4c515efa9f27ec2cd0f31ec9f46e3b47" kind="function"><name>B&lt; 0 &gt;</name></member>
+    <member refid="_marmot_b_spline_8h_1a1e9cf90c4718ce8557be798a2b13533d" kind="function"><name>dB_dU&lt; 0 &gt;</name></member>
+  </compound>
+  <compound refid="namespace_marmot_1_1_registry" kind="namespace"><name>Marmot::Registry</name>
+  </compound>
+  <compound refid="_generic_particle_8h" kind="file"><name>GenericParticle.h</name>
+  </compound>
+  <compound refid="_generic_s_d_i_particle_8h" kind="file"><name>GenericSDIParticle.h</name>
+  </compound>
+  <compound refid="_marmot_b_spline_8h" kind="file"><name>MarmotBSpline.h</name>
+  </compound>
+  <compound refid="_marmot_b_spline_cell_geometry_8h" kind="file"><name>MarmotBSplineCellGeometry.h</name>
+  </compound>
+  <compound refid="_marmot_b_spline_geometry_element_8h" kind="file"><name>MarmotBSplineGeometryElement.h</name>
+  </compound>
+  <compound refid="_marmot_cell_8h" kind="file"><name>MarmotCell.h</name>
+  </compound>
+  <compound refid="_marmot_cell_element_8h" kind="file"><name>MarmotCellElement.h</name>
+  </compound>
+  <compound refid="_marmot_cell_geometry_8h" kind="file"><name>MarmotCellGeometry.h</name>
+  </compound>
+  <compound refid="_marmot_lagrangian_cell_geometry_8h" kind="file"><name>MarmotLagrangianCellGeometry.h</name>
+  </compound>
+  <compound refid="_marmot_material_point_8h" kind="file"><name>MarmotMaterialPoint.h</name>
+  </compound>
+  <compound refid="_marmot_meshfree_approximation_8h" kind="file"><name>MarmotMeshfreeApproximation.h</name>
+  </compound>
+  <compound refid="_marmot_meshfree_kernel_function_8h" kind="file"><name>MarmotMeshfreeKernelFunction.h</name>
+  </compound>
+  <compound refid="_marmot_meshfree_kernel_function_b_spline2nd_order_boxed_8h" kind="file"><name>MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed.h</name>
+  </compound>
+  <compound refid="_marmot_meshfree_kernel_function_b_spline3rd_order_boxed_8h" kind="file"><name>MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h</name>
+  </compound>
+  <compound refid="_marmot_meshfree_quad_hex_cell_8h" kind="file"><name>MarmotMeshfreeQuadHexCell.h</name>
+  </compound>
+  <compound refid="_marmot_meshfree_reproducing_kernel_approximation_8h" kind="file"><name>MarmotMeshfreeReproducingKernelApproximation.h</name>
+  </compound>
+  <compound refid="_marmot_meshfree_reproducing_kernel_approximation_implicit_8h" kind="file"><name>MarmotMeshfreeReproducingKernelApproximationImplicit.h</name>
+  </compound>
+  <compound refid="_marmot_monomial_basis_functions_8h" kind="file"><name>MarmotMonomialBasisFunctions.h</name>
+  </compound>
+  <compound refid="_marmot_m_p_m_library_8h" kind="file"><name>MarmotMPMLibrary.h</name>
+  </compound>
+  <compound refid="_marmot_particle_8h" kind="file"><name>MarmotParticle.h</name>
+  </compound>
+  <compound refid="_marmot_particle_domain_8h" kind="file"><name>MarmotParticleDomain.h</name>
+  </compound>
+  <compound refid="_marmot_particle_library_8h" kind="file"><name>MarmotParticleLibrary.h</name>
+  </compound>
+  <compound refid="deprecated" kind="page"><name>deprecated</name>
+  </compound>
+  <compound refid="dir_6d4da112a1331882b0b6514a341190a0" kind="dir"><name>/home/runner/work/Marmot/Marmot/modules/core</name>
+  </compound>
+  <compound refid="dir_c651461c8bed7bd646588be6a378e004" kind="dir"><name>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include</name>
+  </compound>
+  <compound refid="dir_0dccc7b4e47d952fe0e6fe5e83a7d316" kind="dir"><name>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot</name>
+  </compound>
+  <compound refid="dir_ac4842e63124429f3b76a4e5172e7cef" kind="dir"><name>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore</name>
+  </compound>
+  <compound refid="dir_e05d7e2b1ecd646af5bb94391405f3b5" kind="dir"><name>/home/runner/work/Marmot/Marmot/modules</name>
+  </compound>
+</doxygenindex>

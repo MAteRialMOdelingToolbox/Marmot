@@ -1,0 +1,767 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Explicit dynamics devices &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Meshfree methods" href="meshfree.html" />
+    <link rel="prev" title="Interface Finite Element" href="interfacefiniteelement.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="materials.html">Material models</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="elements.html">Finite elements</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="displacementfiniteelement.html">Displacement Finite Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="displacementfinitestrainelement.html">Displacement Finite Strain Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generalgradientenhanceddisplacementfiniteelement.html">General Gradient-Enhanced Displacement Finite Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedfinitestraindisplacementelement.html">Gradient-Enhanced Finite-Strain Displacement Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="interfacefiniteelement.html">Interface Finite Element</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Explicit dynamics devices</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#artificial-bulk-viscosity">Artificial bulk viscosity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#non-local-micro-inertia-hyperbolic-gradient-damage">Non-local micro-inertia (hyperbolic gradient damage)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="meshfree.html">Meshfree methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="elements.html">Finite elements</a></li>
+      <li class="breadcrumb-item active">Explicit dynamics devices</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/explicitdynamicsdevices.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="explicit-dynamics-devices">
+<h1>Explicit dynamics devices<a class="headerlink" href="#explicit-dynamics-devices" title="Link to this heading"></a></h1>
+<p>Two numerical devices for explicit dynamics, developed and calibrated together: artificial bulk
+viscosity, which damps volumetric ringing in the mechanical field, and non-local micro-inertia,
+which makes a gradient-enhanced field second order in time so its stable increment scales linearly
+rather than quadratically with the element size. Both are inert unless given a value.</p>
+<p>They are declared in different places, and deliberately so. The bulk viscosity is an <strong>element</strong>
+property: its useful value depends on the mesh, and two meshes of one material want different
+amounts of it. The micro-inertia is a <strong>material</strong> property, because it is inseparable from the
+non-local viscosity – itself always a material property – by the bound <span class="math notranslate nohighlight">\(m_k \le \eta^2/4\)</span>,
+and because that bound can only be checked where both of its sides are visible.</p>
+<section id="artificial-bulk-viscosity">
+<h2>Artificial bulk viscosity<a class="headerlink" href="#artificial-bulk-viscosity" title="Link to this heading"></a></h2>
+<section id="theory">
+<h3>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h3>
+<p>Explicit dynamics carries no numerical dissipation of its own. The central-difference integrator
+is non-dissipative by construction, so any energy released inside the mesh – most sharply when an
+element loses its stiffness on cracking – is converted to kinetic energy and rings at the highest
+frequency the mesh can carry until something removes it. Artificial bulk viscosity is the standard
+device for removing it.</p>
+<p>A viscous stress is added to the volumetric part of the stress at every quadrature point:</p>
+<div class="math notranslate nohighlight">
+\[\sig_\mathrm{bv} = \left[ b_1\, \rho\, c_d\, L_e\, \dot{\eps}_\mathrm{vol}
+                 - \rho\, (b_2 L_e)^2\, \dot{\eps}_\mathrm{vol}^2\,
+                   H(-\dot{\eps}_\mathrm{vol}) \right] \mathbf{I}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\dot{\eps}_\mathrm{vol} = \mathrm{tr}(\dot{\boldsymbol{\eps}})\)</span> is the volumetric
+strain rate (negative in compression), <span class="math notranslate nohighlight">\(\rho\)</span> the mass density, <span class="math notranslate nohighlight">\(c_d\)</span> the dilatational
+wave speed, <span class="math notranslate nohighlight">\(L_e\)</span> the element’s smallest physical extent, <span class="math notranslate nohighlight">\(H\)</span> the Heaviside function,
+and <span class="math notranslate nohighlight">\(b_1\)</span>, <span class="math notranslate nohighlight">\(b_2\)</span> two dimensionless coefficients.</p>
+<p>The <strong>linear</strong> (Landshoff) term damps element-level ringing and acts on both signs of the
+volumetric rate. The <strong>quadratic</strong> (Von Neumann–Richtmyer) term spreads a shock over a few
+elements and is restricted to compression, so that it cannot resist the opening of a crack or a
+void. Both terms are dissipative by construction – the power density
+<span class="math notranslate nohighlight">\(\sig_\mathrm{bv} : \dot{\boldsymbol{\eps}} \ge 0\)</span> for either sign of the rate – so the term
+can only remove energy, and negative coefficients are rejected at assignment for the same reason.</p>
+<p>This is a <strong>numerical device, not a material model</strong>. It adds no state, the constitutive law never
+sees it, and it does not enter the stored or reported stress – it is added only to the stress that
+is integrated into the internal force vector.</p>
+<section id="references">
+<h4>References<a class="headerlink" href="#references" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>VonNeumann, J. &amp; Richtmyer, R. D. (1950). <em>A method for the numerical calculation of hydrodynamic
+shocks</em>. Journal of Applied Physics 21(3), 232–237. <a class="reference external" href="https://doi.org/10.1063/1.1699639">https://doi.org/10.1063/1.1699639</a></p></li>
+<li><p>Landshoff, R. (1955). <em>A numerical method for treating fluid flow in the presence of shocks</em>. Los
+Alamos Scientific Laboratory report LA-1930.</p></li>
+</ul>
+</section>
+</section>
+<section id="usage">
+<h3>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h3>
+<p>Bulk viscosity is an <strong>element</strong> property rather than a material one: the same material integrated
+implicitly needs none of it, and two meshes of the same material may want different amounts. It is
+assigned through the named-property interface under the name <code class="docutils literal notranslate"><span class="pre">bulk</span> <span class="pre">viscosity</span></code>, which takes
+exactly two values, <span class="math notranslate nohighlight">\(b_1\)</span> and <span class="math notranslate nohighlight">\(b_2\)</span>, and defaults to zero – inactive – unless
+assigned:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">coefficients</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mf">0.06</span><span class="p">,</span><span class="w"> </span><span class="mf">1.2</span><span class="w"> </span><span class="p">};</span>
+<span class="n">element</span><span class="o">-&gt;</span><span class="n">assignProperty</span><span class="p">(</span><span class="w"> </span><span class="s">"bulk viscosity"</span><span class="p">,</span><span class="w"> </span><span class="n">coefficients</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"> </span><span class="n">coefficients</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="p">);</span>
+</pre></div>
+</div>
+<p>From EdelweissFE the same property is reached through the <code class="docutils literal notranslate"><span class="pre">*elementproperty</span></code> keyword:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>*elementproperty, elSet=concrete, propertyName=bulk viscosity
+0.06, 1.2
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">0.06</span></code> and <code class="docutils literal notranslate"><span class="pre">1.2</span></code> are the values Abaqus/Explicit applies, a common choice rather than the
+default: <span class="math notranslate nohighlight">\(b_1\)</span> is sized to damp the highest resolvable frequency of the mesh, not to
+represent any physical dissipation, and a problem dominated by a single sharp energy release may
+need considerably more.</p>
+</section>
+<section id="degradation-with-damage">
+<h3>Degradation with damage<a class="headerlink" href="#degradation-with-damage" title="Link to this heading"></a></h3>
+<p>The linear term acts on both signs of the volumetric rate, so in an element whose material has
+already failed it is a viscous resistance to the crack <strong>opening</strong> – one that never relaxes, and
+whose work is charged to the dissipated energy, inflating any fracture energy measured from the
+load-displacement response.</p>
+<p>Measured on a calibrated gradient-enhanced damage-plasticity bar in tension, at the coefficients
+above, the dissipated work per unit fracture area rose by 27 to 55 percent depending on the mesh.
+Applying bulk viscosity everywhere <strong>except</strong> the elements that damaged changed the same quantity
+by <span class="math notranslate nohighlight">\(-1.6\)</span> percent: essentially all of the error is generated inside the damaged elements, and
+slowing the loading does not remove it (a ten-fold slower ramp only brought 38 percent down to 10
+percent, because the strain rate inside a localising band is set by the softening, not by the
+imposed rate).</p>
+<p>The optional degradation addresses this by scaling the viscous stress with the material’s
+remaining stiffness,</p>
+<div class="math notranslate nohighlight">
+\[\sigma_\mathrm{bv} \leftarrow \left( \frac{c}{c_0} \right)^{n} \sigma_\mathrm{bv},\]</div>
+<p>with <span class="math notranslate nohighlight">\(c\)</span> the wave speed at the current state, <span class="math notranslate nohighlight">\(c_0\)</span> the cached undamaged reference,
+and the ratio clamped to <span class="math notranslate nohighlight">\([0,1]\)</span>. This is the same argument that restricts the quadratic term
+to compression, applied to the <strong>state</strong> rather than to the sign of the rate. Because a wave speed
+is the square root of a stiffness, the exponent selects what the stress follows for a model whose
+tangent degrades as <span class="math notranslate nohighlight">\((1-\omega)\,\mathbb{C}_0\)</span>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20.0%" />
+<col style="width: 80.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><span class="math notranslate nohighlight">\(n\)</span></p></th>
+<th class="head"><p>Effect</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></td>
+<td><p>Off, and the default. The current wave speed is never evaluated.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Scales with the wave speed, i.e. with <span class="math notranslate nohighlight">\(\sqrt{1-\omega}\)</span>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p></td>
+<td><p>Scales with the tangent stiffness, i.e. with <span class="math notranslate nohighlight">\(1-\omega\)</span>.</p></td>
+</tr>
+</tbody>
+</table>
+<p>It is requested through a second named property, taking exactly one value:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>*elementproperty, elSet=concrete, propertyName=bulk viscosity damage degradation
+2.0
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The stress is degraded with the current <strong>tangent</strong>, not with a damage variable: no material
+interface here reports damage, and adding one would change the vtable of every element. For a
+quasi-brittle material in tension the two coincide, because the softening <em>is</em> the damage. For a
+model that merely yields, the algorithmic tangent also drops and the viscous stress is degraded
+by plastic flow rather than by cracking, which is not what the device is for.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is why the degradation is opt-in rather than the default: it asks the material for its
+current wave speed on every quadrature point on every increment. With the material interface’s
+default <code class="docutils literal notranslate"><span class="pre">getMaximumWaveSpeed()</span></code> that is a full constitutive evaluation – about the cost of the
+stress update itself on a non-yielding point, so enabling the degradation roughly doubled the
+material cost of a run. A damage model meant to run with it should therefore override
+<code class="docutils literal notranslate"><span class="pre">getMaximumWaveSpeed()</span></code> with its closed form, <span class="math notranslate nohighlight">\(\sqrt{(1-\omega)\,\max_i C_{ii}/\rho}\)</span>
+for the usual <span class="math notranslate nohighlight">\((1-\omega)\,\mathbb{C}_0\)</span> tangent. The override must return what the
+default returns, must take the non-local field as an input, and must leave the state alone. An
+override that ignores the field returns the same speed at the current and at the zero field, so the
+degradation silently does nothing; <code class="docutils literal notranslate"><span class="pre">Marmot::Testing::checkMaximumWaveSpeedOverrideMatchesDefault()</span></code>
+(<code class="docutils literal notranslate"><span class="pre">MarmotWaveSpeedContract.h</span></code>) compares an override with the default over a set of fields and
+states, and is meant for the test of every material that overrides it.</p>
+</div>
+</section>
+<section id="notes-and-limitations">
+<h3>Notes and limitations<a class="headerlink" href="#notes-and-limitations" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Volumetric only.</strong> Ringing that is predominantly deviatoric or flexural is not reached, which
+is a property of the device and not of this implementation.</p></li>
+<li><p><strong>After a restart, the displacement element’s degradation is inert.</strong> Its reference wave speed is
+taken from the state the element has when the first explicit increment runs, because the
+hypoelastic interface has no query for the virgin material; a run resumed from an already damaged
+state measures no degradation. The viscosity is then simply not degraded. The gradient-enhanced
+element is not affected: its reference is the speed at a zero non-local field.</p></li>
+<li><p><strong>The reference wave speed is cached.</strong> The <strong>undamaged</strong> wave speed is cached on first use and
+is what the viscous stress is formed with. That leaves the damping slightly stronger than a
+current-stiffness value would as the material softens – the safe direction for a device whose
+purpose is to remove energy – and it is the reference the optional degradation above measures
+against. Only the degradation asks for the current wave speed, once per quadrature point per
+increment, and what that costs is the material’s business (see the note above).</p></li>
+<li><p><strong>The characteristic length is the element’s smallest physical extent</strong>, twice the smallest
+singular value of the Jacobian – the same length the stable time increment is computed from,
+shared through one function so the two cannot drift apart.</p></li>
+<li><p><strong>Plane stress is approximate.</strong> The out-of-plane strain is not carried by the element’s
+kinematics there, so the trace is taken over the in-plane components only.</p></li>
+<li><p><strong>Explicit only.</strong> Evaluated in <code class="docutils literal notranslate"><span class="pre">computeKernelsExplicit</span></code>, not part of the implicit kernels,
+where it has no purpose and would need a consistent tangent contribution.</p></li>
+</ul>
+</section>
+<section id="supported-elements">
+<h3>Supported elements<a class="headerlink" href="#supported-elements" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><a class="reference internal" href="displacementfiniteelement.html#_CPPv4I_i_iEN6Marmot15Discretizations8Elements25DisplacementFiniteElementE" title="Marmot::Discretizations::Elements::DisplacementFiniteElement"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Marmot::Discretizations::Elements::DisplacementFiniteElement</span></code></a></p></li>
+<li><p><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement</span></code></p></li>
+</ul>
+<p>Not yet supported by <code class="docutils literal notranslate"><span class="pre">DisplacementFiniteStrainULElement</span></code>: a finite-strain formulation needs the
+volumetric rate taken as <span class="math notranslate nohighlight">\(\mathrm{tr}(\mathbf{D}) = \dot{J}/J\)</span> and the characteristic length
+measured in the current configuration, a separate derivation rather than a reuse of the small-strain
+one.</p>
+</section>
+</section>
+<section id="non-local-micro-inertia-hyperbolic-gradient-damage">
+<h2>Non-local micro-inertia (hyperbolic gradient damage)<a class="headerlink" href="#non-local-micro-inertia-hyperbolic-gradient-damage" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3>Theory<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>The implicit gradient-enhanced formulation regularises softening by solving a Helmholtz equation
+for the non-local variable <span class="math notranslate nohighlight">\(\bar\varepsilon\)</span> alongside the momentum balance,</p>
+<div class="math notranslate nohighlight">
+\[\bar\varepsilon - c\, \nabla^2 \bar\varepsilon = \tilde\varepsilon ,
+\qquad c = l^2 ,\]</div>
+<p>with <span class="math notranslate nohighlight">\(\tilde\varepsilon\)</span> the local driving variable and <span class="math notranslate nohighlight">\(l\)</span> the internal length. An
+explicit solver cannot march an equation with no time derivative, so it is made parabolic by adding
+a viscosity <span class="math notranslate nohighlight">\(\eta\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\eta\, \dot{\bar\varepsilon} + \bar\varepsilon - c\, \nabla^2 \bar\varepsilon
+  = \tilde\varepsilon ,\]</div>
+<p>and integrated with forward Euler. That works, but the largest eigenvalue of the discrete operator
+is <span class="math notranslate nohighlight">\(\lambda_\mathrm{max} \approx \tfrac{1}{\eta}(1 + C l^2/h^2)\)</span>, so the stable increment</p>
+<div class="math notranslate nohighlight">
+\[\Delta t \le \frac{2\eta}{1 + C\,l^2/h^2}
+          \;\xrightarrow{\;h \ll l\;}\;
+          \frac{2\eta\,h^2}{C\,l^2} \;\propto\; h^2\]</div>
+<p>falls off with the <strong>square</strong> of the element size (<span class="math notranslate nohighlight">\(C\)</span> a discretisation constant, order 4 in
+1D and roughly 12 to 24 for a hexahedron). Under refinement this is the binding constraint long
+before the mechanical one is, and the only knob it offers is <span class="math notranslate nohighlight">\(\eta\)</span> itself – the artificial
+delay between the damage front and the strain concentration driving it. Buying stability with
+<span class="math notranslate nohighlight">\(\eta\)</span> buys it by making the regularisation lag more.</p>
+<p>Adding a <strong>micro-inertia</strong> <span class="math notranslate nohighlight">\(m_k\)</span> breaks that coupling:</p>
+<div class="math notranslate nohighlight">
+\[m_k\, \ddot{\bar\varepsilon} + \eta\, \dot{\bar\varepsilon} + \bar\varepsilon
+  - c\, \nabla^2 \bar\varepsilon = \tilde\varepsilon .\]</div>
+<p>This is now a damped wave (telegraph, or damped Klein–Gordon) equation for a damage front
+travelling at <span class="math notranslate nohighlight">\(c_k = \sqrt{c/m_k} = l/\sqrt{m_k}\)</span>, with <span class="math notranslate nohighlight">\(m_k\)</span> in seconds squared. The
+viscosity has not changed meaning; it has changed <em>role</em>. What was the coefficient of the highest
+time derivative is now the damping.</p>
+<section id="stability">
+<h4>Stability<a class="headerlink" href="#stability" title="Link to this heading"></a></h4>
+<p>With a lumped micro-inertia and central differences the limit is</p>
+<div class="math notranslate nohighlight">
+\[\omega_\mathrm{max} = \sqrt{\frac{1 + C\,l^2/h^2}{m_k}} ,
+\qquad
+\zeta = \frac{\eta/m_k}{2\,\omega_\mathrm{max}} ,
+\qquad
+\Delta t \le \frac{2}{\omega_\mathrm{max}}
+              \left( \sqrt{1+\zeta^2} - \zeta \right) .\]</div>
+<p>For <span class="math notranslate nohighlight">\(h \ll l\)</span> this is <span class="math notranslate nohighlight">\(\Delta t \approx 2\sqrt{m_k}\,h / (\sqrt{C}\, l)\)</span>: <strong>linear in
+the element size</strong>, the same scaling elastodynamics has. On a mesh coarser than the internal length
+the reaction term takes over, <span class="math notranslate nohighlight">\(\omega_\mathrm{max} \to 1/\sqrt{m_k}\)</span>, and the limit saturates
+– but not at <span class="math notranslate nohighlight">\(2\sqrt{m_k}\)</span>, because the damping does not go away with the mesh. The damping
+ratio tends to <span class="math notranslate nohighlight">\(\zeta_\infty = \eta / (2\sqrt{m_k})\)</span>, which is finite, so the coarse-mesh
+limit is</p>
+<div class="math notranslate nohighlight">
+\[\Delta t_\infty = 2\sqrt{m_k} \left( \sqrt{1+\zeta_\infty^2} - \zeta_\infty \right) .\]</div>
+<p>At the recommended <span class="math notranslate nohighlight">\(m_k = \eta^2/4\)</span> that is <span class="math notranslate nohighlight">\(\zeta_\infty = 1\)</span> exactly, so
+<span class="math notranslate nohighlight">\(\Delta t_\infty = (\sqrt{2}-1)\,\eta \approx 0.414\,\eta\)</span> – for <span class="math notranslate nohighlight">\(\eta = 10^{-4}\,\mathrm{s}\)</span>,
+<span class="math notranslate nohighlight">\(4.14 \times 10^{-5}\,\mathrm{s}\)</span> rather than the <span class="math notranslate nohighlight">\(10^{-4}\,\mathrm{s}\)</span> the undamped expression suggests.
+That is the largest increment the field will ever permit, however coarse the mesh.</p>
+<p>Two things are easy to get wrong here, each costing a factor of two or more: the continuum estimate
+<span class="math notranslate nohighlight">\(\Delta t \le h/c_k\)</span> <strong>overestimates</strong> the limit, because the discrete Laplacian’s eigenvalue
+constant contributes <span class="math notranslate nohighlight">\(2/\sqrt{C} \approx 0.4\)</span> to <span class="math notranslate nohighlight">\(0.6\)</span>, not 1; and damping <strong>lowers</strong>
+the central-difference limit, never raises it. Both are accounted for in
+<a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement42computeCriticalTimeStepForExplicitDynamicsERdPKd" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeCriticalTimeStepForExplicitDynamics"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeCriticalTimeStepForExplicitDynamics()</span></code></a>,
+which bounds <span class="math notranslate nohighlight">\(\lambda_\mathrm{max}\)</span> with a Gershgorin estimate over the assembled operator
+rather than a wave speed, and takes the minimum against the mechanical limit.</p>
+</section>
+<section id="choosing-the-two-parameters">
+<h4>Choosing the two parameters<a class="headerlink" href="#choosing-the-two-parameters" title="Link to this heading"></a></h4>
+<p>They are not independent. The zeroth-order reaction term is an oscillator of frequency
+<span class="math notranslate nohighlight">\(\omega_0 = 1/\sqrt{m_k}\)</span>, damped by <span class="math notranslate nohighlight">\(\eta\)</span>; requiring that it not ring gives
+<span class="math notranslate nohighlight">\(m_k \le \eta^2/4\)</span>, and the largest admissible micro-inertia is the best one, because
+<span class="math notranslate nohighlight">\(\Delta t\)</span> grows with <span class="math notranslate nohighlight">\(\sqrt{m_k}\)</span>. So <strong>there is one free parameter, not two</strong>: pick
+<span class="math notranslate nohighlight">\(\eta\)</span> for the lag you accept – exactly as before – and take <span class="math notranslate nohighlight">\(m_k = \eta^2/4\)</span>. The
+resulting damage wave speed <span class="math notranslate nohighlight">\(c_k = 2l/\eta\)</span> should then be checked against the loading rate,
+not chosen from it.</p>
+<p>At that choice the gain over the parabolic scheme <em>at the same artificial lag</em> is</p>
+<div class="math notranslate nohighlight">
+\[\frac{\Delta t_\mathrm{hyperbolic}}{\Delta t_\mathrm{parabolic}}
+  = \frac{\sqrt{1 + C\,l^2/h^2}}{2}
+  \;\approx\; \frac{\sqrt{C}\,l}{2h} ,\]</div>
+<p>a factor that <strong>grows with every refinement level</strong> – the finer the mesh, the more the
+second-order form is worth.</p>
+</section>
+<section id="keeping-the-mechanical-problem-in-charge">
+<h4>Keeping the mechanical problem in charge<a class="headerlink" href="#keeping-the-mechanical-problem-in-charge" title="Link to this heading"></a></h4>
+<p>There is a second criterion on <span class="math notranslate nohighlight">\(\eta\)</span>, deciding whether the usual quasi-static-explicit
+tricks work at all. The two limits the element takes the minimum of,</p>
+<div class="math notranslate nohighlight">
+\[\Delta t_\mathrm{mech} \approx k_c\,\frac{h}{c_d} ,
+\qquad
+\Delta t_\mathrm{nl} \approx \frac{2 k_c}{\sqrt{C}}\,\frac{\sqrt{m_k}\,h}{l}
+\qquad (h \ll l),\]</div>
+<p>are <strong>both linear in</strong> <span class="math notranslate nohighlight">\(h\)</span>, so their ratio contains no mesh size at all:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\Delta t_\mathrm{nl}}{\Delta t_\mathrm{mech}} = \frac{\eta\,c_d}{l\,\sqrt{C}} ,\]</div>
+<p>the courant number cancelling because it applies to both. Which of the two is in charge is thus a
+property of the <em>parameters</em>, not of the discretisation: fix it once and it holds at every
+refinement level. Requiring the mechanical limit to bind gives</p>
+<div class="math notranslate nohighlight">
+\[\eta \;\ge\; \frac{\sqrt{C}\,l}{c_d}
+\qquad\Longleftrightarrow\qquad
+m_k \;\ge\; \frac{C}{4}\left(\frac{l}{c_d}\right)^{\!2} ,\]</div>
+<p>i.e. <strong>the micro-inertia must exceed the square of the time a mechanical wave needs to cross one
+non-local length</strong>. Together with <span class="math notranslate nohighlight">\(m_k \le \eta^2/4\)</span> this is a window, not a conflict: the
+non-ringing bound caps <span class="math notranslate nohighlight">\(m_k\)</span> from above, this one floors it from below.</p>
+</section>
+<section id="why-it-matters-for-mass-scaling">
+<h4>Why it matters for mass scaling<a class="headerlink" href="#why-it-matters-for-mass-scaling" title="Link to this heading"></a></h4>
+<p>Mass scaling – multiplying the density by <span class="math notranslate nohighlight">\(f\)</span> to buy a larger increment – lowers
+<span class="math notranslate nohighlight">\(c_d\)</span> as <span class="math notranslate nohighlight">\(1/\sqrt{f}\)</span>, so the floor above <strong>rises as</strong> <span class="math notranslate nohighlight">\(\sqrt{f}\)</span>. The two knobs
+have to move together; moving either alone does nothing:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 34.0%" />
+<col style="width: 22.0%" />
+<col style="width: 22.0%" />
+<col style="width: 22.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>change</p></th>
+<th class="head"><p>what it raises</p></th>
+<th class="head"><p>what still binds</p></th>
+<th class="head"><p>measured <span class="math notranslate nohighlight">\(\Delta t\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(f\!:\,1 \to 10^4\)</span> at <span class="math notranslate nohighlight">\(\eta = 10^{-5}\)</span></p></td>
+<td><p>mechanical, 100-fold</p></td>
+<td><p>non-local</p></td>
+<td><p>8.852981e-08, <em>unchanged</em></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\eta\!:\,10^{-5} \to 10^{-4}\)</span> at <span class="math notranslate nohighlight">\(f = 1\)</span></p></td>
+<td><p>non-local, tenfold</p></td>
+<td><p>mechanical</p></td>
+<td><p>6.063391e-08, <em>unchanged</em></p></td>
+</tr>
+<tr class="row-even"><td><p>both, <span class="math notranslate nohighlight">\(f = 70\)</span> and <span class="math notranslate nohighlight">\(\eta = 10^{-4}\)</span></p></td>
+<td><p>both</p></td>
+<td><p>mechanical</p></td>
+<td><p>5.072997e-07, the full <span class="math notranslate nohighlight">\(\sqrt{70}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<p>(<span class="math notranslate nohighlight">\(h = 2.5\)</span> mm, <span class="math notranslate nohighlight">\(l = 5\)</span> mm, <code class="docutils literal notranslate"><span class="pre">GC3D20R</span></code>, for which the ratio above gives
+<span class="math notranslate nohighlight">\(C \approx 40\)</span>.)</p>
+<p>Two caveats. For <span class="math notranslate nohighlight">\(h \sim l\)</span> the asymptotic forms do not hold – the non-local limit saturates
+at the reaction term – so the ratio has to be read off rather than predicted there. And a
+<strong>parabolic</strong> non-local field can never be brought into this regime: its limit is quadratic in
+<span class="math notranslate nohighlight">\(h\)</span> and density-free, so mass scaling lifts the increment straight through a bound nothing
+checks, and the run goes to NaN while still reporting that it finished. Making the field second
+order in time is what makes “keep the mechanical problem in charge” achievable.</p>
+<p>When it is not achievable, the element says so:
+<a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement42computeCriticalTimeStepForExplicitDynamicsERdPKd" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeCriticalTimeStepForExplicitDynamics"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeCriticalTimeStepForExplicitDynamics()</span></code></a>
+warns once per element type when the increment it returns came from the non-local limit rather
+than the mechanical one, since the caller receives a single number and cannot otherwise tell which
+knob would help.</p>
+</section>
+</section>
+<section id="what-this-does-not-do">
+<h3>What this does not do<a class="headerlink" href="#what-this-does-not-do" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>It does not remove the artificial lag.</strong> Below <span class="math notranslate nohighlight">\(\omega_0\)</span> the damped hyperbolic equation
+<em>is</em> the parabolic one, with <span class="math notranslate nohighlight">\(\eta\)</span> in the same place and the same meaning. What it removes
+is the need to raise <span class="math notranslate nohighlight">\(\eta\)</span> to afford the time step.</p></li>
+<li><p><strong>It does not damp short-wavelength ringing.</strong> The damping is mass-proportional, so
+<span class="math notranslate nohighlight">\(\zeta = \eta/(2\sqrt{m_k(1+C l^2/h^2)})\)</span> falls as the frequency rises: the reaction mode is
+critically damped at <span class="math notranslate nohighlight">\(m_k = \eta^2/4\)</span> and the shortest-wavelength modes are barely touched.
+Where damage rides an accumulating internal variable, an overshoot of <span class="math notranslate nohighlight">\(\bar\varepsilon\)</span>
+above <span class="math notranslate nohighlight">\(\tilde\varepsilon\)</span> is written in irreversibly – worth measuring
+(<span class="math notranslate nohighlight">\(\max(\bar\varepsilon - \tilde\varepsilon)\)</span> and the internal variable it drives) rather
+than assuming. Reaching the short modes needs a stiffness-proportional term, not implemented.</p></li>
+<li><p><strong>It is a numerical device, not a model.</strong> The physical formulation is the <span class="math notranslate nohighlight">\(m_k = 0\)</span> one.</p></li>
+</ul>
+<section id="id2">
+<h4>References<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Askes, H. &amp; Sluys, L. J. (2002). <em>Explicit and implicit gradient series in damage mechanics</em>.
+European Journal of Mechanics A/Solids 21(3), 379–390.</p></li>
+<li><p>Askes, H., Bennett, T. &amp; Aifantis, E. C. (2007). <em>A new formulation and C0 implementation of
+dynamically consistent gradient elasticity</em>. International Journal for Numerical Methods in
+Engineering 72(1), 111–126.</p></li>
+<li><p>Peerlings, R. H. J., de Borst, R., Brekelmans, W. A. M. &amp; de Vree, J. H. P. (1996). <em>Gradient
+enhanced damage for quasi-brittle materials</em>. International Journal for Numerical Methods in
+Engineering 39(19), 3391–3403.</p></li>
+</ul>
+</section>
+</section>
+<section id="id3">
+<h3>Usage<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<p>The micro-inertia is a <strong>material</strong> property, unlike the artificial bulk viscosity above. It sits
+with the non-local viscosity, and it sits there because the two are <strong>one parameter and not two</strong>:
+<span class="math notranslate nohighlight">\(m_k \le \eta^2/4\)</span> is what keeps the reaction mode from ringing, the viscosity has always
+been a material property, and a bound can only be enforced where both of its sides are visible. It
+is the last entry of the material’s property list, optional, and validated against that material’s
+own <span class="math notranslate nohighlight">\(\eta\)</span> when it is read:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>*material, name=gcdp, id=gcdp
+** ... idx 0-18 as before ...
+**viscosity  density   nonlocalViscosity   nonlocalMicroInertia
+0,           3e-9,     1e-4,               2.5e-9
+</pre></div>
+</div>
+<p>A micro-inertia above <span class="math notranslate nohighlight">\(\eta^2/4\)</span> is <strong>rejected</strong>, not warned about: above it the
+regularisation rings, and ringing on the non-local field looks exactly like the mesh-scale
+oscillation the gradient enhancement exists to remove. A negative or non-finite one is rejected for
+the same reason a NaN anywhere is – it passes every ordering test.</p>
+<p>From EdelweissFE the field also has to be moved from the first-order to the second-order
+integration scheme and declared as carrying a non-mechanical inertia rather than a mass:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>*solver, solver=NEDParallel, name=theSolver
+second-order-fields="displacement, nonlocal damage"
+non-mechanical-inertia-fields="nonlocal damage"
+</pre></div>
+</div>
+<p>Both directions of that declaration are checked: a micro-inertia the elements carry but the solver
+was not told about, and one the solver expects but the elements do not assemble, are both refused
+with a message rather than integrated. <strong>Unset, the feature is completely inert</strong>: a material that
+provides no micro-inertia – including every material that predates this interface, which inherits
+a zero – leaves its non-local field first order in time, and the stable increment is the
+mechanical one exactly as before.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The micro-inertia was briefly an <em>element</em> property, assigned with
+<code class="docutils literal notranslate"><span class="pre">*elementProperty,</span> <span class="pre">propertyName=nonlocal</span> <span class="pre">micro</span> <span class="pre">inertia</span></code>. That name is now <strong>rejected</strong> by the
+element rather than ignored, so a deck carrying it fails loudly instead of running parabolically
+while its author believes otherwise. Move the value into the material’s property list.</p>
+</div>
+</section>
+<section id="id4">
+<h3>Notes and limitations<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>The lumping matches the mass.</strong> Both are assembled by
+<a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement20computeLumpedInertiaEPd" title="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeLumpedInertia"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeLumpedInertia()</span></code></a>,
+using the same weights on the non-local block as on the displacement one, because the stable
+increment is read off that distribution and the lightest node sets the highest frequency.</p></li>
+<li><p><strong>The non-local interaction parameter is a material response.</strong> Bounding the eigenvalue needs
+<span class="math notranslate nohighlight">\(c\)</span>, exposed only through a stress evaluation – queried once per element per step on a
+scratch copy of the state variables and a zero strain increment, so it leaves no trace.</p></li>
+<li><p><strong>Explicit only.</strong> An implicit solve has no stability limit to relieve and needs the elliptic
+form.</p></li>
+</ul>
+</section>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements13BulkViscosityE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements13BulkViscosityE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements13BulkViscosityE"></span><span id="Marmot::Discretizations::Elements::BulkViscosity"></span><span class="target" id="namespaceMarmot_1_1Discretizations_1_1Elements_1_1BulkViscosity"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BulkViscosity</span></span></span><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements13BulkViscosity17degradationFactorEddd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements13BulkViscosity17degradationFactorEddd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements13BulkViscosity17degradationFactorEddd"></span><span id="Marmot::Discretizations::Elements::BulkViscosity::degradationFactor__double.double.double"></span><span class="target" id="namespaceMarmot_1_1Discretizations_1_1Elements_1_1BulkViscosity_1aa32b4d140c18cc5c28c2338868ca9b09"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">degradationFactor</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">currentWaveSpeed</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">referenceWaveSpeed</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">exponent</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Factor by which the viscous stress is degraded as the material loses stiffness. </p>
+<p>
+A fully cracked element carries no real stress, but the linear term keeps transmitting <span class="math notranslate nohighlight">\(b_1\rho c_0 L_e \dot{\varepsilon}_\mathrm{vol}\)</span> across the crack. Being active in expansion, it resists the crack OPENING and never relaxes, and its work is charged to the fracture energy: measured on a gradient-damage bar, bulk viscosity at the Abaqus/Explicit coefficients inflated <span class="math notranslate nohighlight">\(G_f\)</span> by 27 to 55 percent, while applying it everywhere EXCEPT the damaged elements changed <span class="math notranslate nohighlight">\(G_f\)</span> by -1.6 percent. This is the argument that already restricts the quadratic term to compression, applied to the STATE rather than to the sign of the rate.</p>
+<p>The wave-speed ratio is the square root of the tangent-stiffness ratio, so for a tangent degrading as <span class="math notranslate nohighlight">\((1-\omega)\,\mathbb{C}_0\)</span>: <span class="math notranslate nohighlight">\(n = 1\)</span> scales with <span class="math notranslate nohighlight">\(\sqrt{1-\omega}\)</span>, <span class="math notranslate nohighlight">\(n = 2\)</span> with <span class="math notranslate nohighlight">\(1-\omega\)</span> itself, and <span class="math notranslate nohighlight">\(n = 0\)</span> never evaluates the current wave speed at all.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Not free: the current wave speed is asked of the material on every quadrature point on every increment, which is why the reference is cached and why this is opt-in. With the material interface’s default <code class="docutils literal notranslate"><span class="pre">getMaximumWaveSpeed()</span></code> that query is a full constitutive evaluation – about the cost of the stress update itself on a non-yielding point – so a damage model meant to run with this should override it with its closed form, and check the override against the default with Marmot::Testing::checkMaximumWaveSpeedOverrideMatchesDefault(). </p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It degrades with the current TANGENT, not with a damage variable – no material interface here reports damage. For a quasi-brittle material in tension the two coincide; for one that merely yields, the viscous stress is degraded by plastic flow rather than cracking.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>currentWaveSpeed</strong> – Wave speed of the material at its CURRENT state, i.e. from the algorithmic tangent as it is now. </p></li>
+<li><p><strong>referenceWaveSpeed</strong> – Wave speed of the same material in its virgin state. </p></li>
+<li><p><strong>exponent</strong> – The exponent <span class="math notranslate nohighlight">\(n\)</span>. Zero returns exactly one. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\(\left(c/c_0\right)^n\)</span>, clamped to <span class="math notranslate nohighlight">\([0,1]\)</span>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements13BulkViscosity13viscousStressEddddRK12Coefficients">
+<span id="_CPPv3N6Marmot15Discretizations8Elements13BulkViscosity13viscousStressEddddRK12Coefficients"></span><span id="_CPPv2N6Marmot15Discretizations8Elements13BulkViscosity13viscousStressEddddRK12Coefficients"></span><span id="Marmot::Discretizations::Elements::BulkViscosity::viscousStress__double.double.double.double.CoefficientsCR"></span><span class="target" id="namespaceMarmot_1_1Discretizations_1_1Elements_1_1BulkViscosity_1a676113ff7f01e2919452ffc1ff12ac15"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">viscousStress</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">volumetricStrainRate</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">density</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">waveSpeed</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">characteristicElementLength</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8Elements13BulkViscosity12CoefficientsE" title="Marmot::Discretizations::Elements::BulkViscosity::Coefficients"><span class="n"><span class="pre">Coefficients</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coefficients</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>The artificial viscous stress added to every normal stress component. </p>
+<p><div class="math notranslate nohighlight">
+\[  \sigma_\mathrm{bv} = b_1\,\rho\,c_d\,L_e\,\dot{\varepsilon}_\mathrm{vol}
+                     - \rho\,(b_2 L_e)^2\,\dot{\varepsilon}_\mathrm{vol}^2
+                       \,H(-\dot{\varepsilon}_\mathrm{vol})
+\]</div>
+</p>
+<p>following the standard element-level artificial viscosity of</p>
+<p><ul class="simple">
+<li><p><p>VonNeumann, J. &amp; Richtmyer, R. D. (1950). “A method for the numerical calculation of</p>
+<p>hydrodynamic shocks”. Journal of Applied Physics 21(3), 232-237.</p>
+<a class="reference external" href="https://doi.org/10.1063/1.1699639">https://doi.org/10.1063/1.1699639</a></p></li>
+<li><p><p>Landshoff, R. (1955). “A numerical method for treating fluid flow in the presence of</p>
+<p>shocks”. Los Alamos Scientific Laboratory report LA-1930.</p>
+</p></li>
+</ul>
+</p>
+<p>as applied in explicit finite element codes (Abaqus/Explicit, LS-DYNA): the linear (Landshoff) term damps element-level ringing, the quadratic (Von Neumann-Richtmyer) term spreads a shock over a few elements.</p>
+<p><strong>A numerical device, not a material model.</strong> It adds no state, is not seen by the constitutive law and never enters the stored stress – only the stress that is integrated. Both terms are dissipative by construction, so it can only remove energy.</p>
+<p>The quadratic term is restricted to compression, where in expansion it would resist a crack or void opening. The linear term is not: damping one sign of the volumetric rate only would rectify the ringing it exists to remove into a net volumetric drift.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><span class="math notranslate nohighlight">\(L_e\)</span> must be the same characteristic length the stable time increment is computed from. Both scale the term to the highest frequency the mesh can carry, and if they disagree the damping is no longer tied to the mode it is meant to damp. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>volumetricStrainRate</strong> – Trace of the strain rate,  <span class="math notranslate nohighlight">\(\dot{\varepsilon}_\mathrm{vol} =
+       \mathrm{tr}(\dot{\boldsymbol{\varepsilon}})\)</span>. Negative in compression. </p></li>
+<li><p><strong>density</strong> – Current mass density <span class="math notranslate nohighlight">\(\rho\)</span>. If the run is mass scaled, this is the SCALED density, which is correct: the term exists to damp the modes of the system that is actually being integrated, and mass scaling changes those. </p></li>
+<li><p><strong>waveSpeed</strong> – Dilatational wave speed <span class="math notranslate nohighlight">\(c_d\)</span> of the material. </p></li>
+<li><p><strong>characteristicElementLength</strong> – The element’s smallest physical extent <span class="math notranslate nohighlight">\(L_e\)</span>. </p></li>
+<li><p><strong>coefficients</strong> – The two dimensionless coefficients. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The scalar <span class="math notranslate nohighlight">\(\sigma_\mathrm{bv}\)</span> to ADD to <span class="math notranslate nohighlight">\(\sigma_{xx}\)</span>, <span class="math notranslate nohighlight">\(\sigma_{yy}\)</span> and <span class="math notranslate nohighlight">\(\sigma_{zz}\)</span> (i.e.  <span class="math notranslate nohighlight">\(\boldsymbol{\sigma}_\mathrm{bv} = \sigma_\mathrm{bv}\,
+        \mathbf{I}\)</span>). Deviatoric components are untouched.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements13BulkViscosity26viscousStressFromIncrementEdddddRK12Coefficients">
+<span id="_CPPv3N6Marmot15Discretizations8Elements13BulkViscosity26viscousStressFromIncrementEdddddRK12Coefficients"></span><span id="_CPPv2N6Marmot15Discretizations8Elements13BulkViscosity26viscousStressFromIncrementEdddddRK12Coefficients"></span><span id="Marmot::Discretizations::Elements::BulkViscosity::viscousStressFromIncrement__double.double.double.double.double.CoefficientsCR"></span><span class="target" id="namespaceMarmot_1_1Discretizations_1_1Elements_1_1BulkViscosity_1a64a8dd95220e770ad7008e40a80edec3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">viscousStressFromIncrement</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">volumetricStrainIncrement</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeIncrement</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">density</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">waveSpeed</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">characteristicElementLength</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8Elements13BulkViscosity12CoefficientsE" title="Marmot::Discretizations::Elements::BulkViscosity::Coefficients"><span class="n"><span class="pre">Coefficients</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">coefficients</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>The artificial viscous stress from a strain INCREMENT rather than a rate. </p>
+<p>
+Convenience overload for an explicit element, which has the strain increment at hand and not the rate. A non-positive <span class="math notranslate nohighlight">\(\Delta t\)</span> yields exactly zero rather than an infinity: an explicit solver legitimately calls its elements with <span class="math notranslate nohighlight">\(\Delta t = 0\)</span> to prime the internal force at the start of a step, and a viscous stress is not defined there. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>volumetricStrainIncrement</strong> – Trace of the strain increment of the current time increment. </p></li>
+<li><p><strong>timeIncrement</strong> – The time increment <span class="math notranslate nohighlight">\(\Delta t\)</span> it was taken over. </p></li>
+<li><p><strong>density</strong> – Current mass density <span class="math notranslate nohighlight">\(\rho\)</span>. </p></li>
+<li><p><strong>waveSpeed</strong> – Dilatational wave speed <span class="math notranslate nohighlight">\(c_d\)</span> of the material. </p></li>
+<li><p><strong>characteristicElementLength</strong> – The element’s smallest physical extent <span class="math notranslate nohighlight">\(L_e\)</span>. </p></li>
+<li><p><strong>coefficients</strong> – The two dimensionless coefficients. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The scalar <span class="math notranslate nohighlight">\(\sigma_\mathrm{bv}\)</span> to add to the normal stress components.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements13BulkViscosity12CoefficientsE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements13BulkViscosity12CoefficientsE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements13BulkViscosity12CoefficientsE"></span><span id="Marmot::Discretizations::Elements::BulkViscosity::Coefficients"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1BulkViscosity_1_1Coefficients"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Coefficients</span></span></span><br /></dt>
+<dd><div class="docutils container">
+<em>#include &lt;MarmotBulkViscosity.h&gt;</em></div>
+<p><a class="reference internal" href="#structMarmot_1_1Discretizations_1_1Elements_1_1BulkViscosity_1_1Coefficients"><span class="std std-ref">Coefficients</span></a> of the artificial bulk viscosity. </p>
+<p>Both are dimensionless and default to zero, i.e. inactive. <span class="math notranslate nohighlight">\(b_1 = 0.06\)</span>, <span class="math notranslate nohighlight">\(b_2 = 1.2\)</span> are the values Abaqus/Explicit applies – a common choice, not the default, and a recommendation rather than a physical parameter: <span class="math notranslate nohighlight">\(b_1\)</span> is sized to damp the mesh’s highest resolvable frequency, not to model dissipation. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Elements13BulkViscosity12Coefficients9areActiveEv">
+<span id="_CPPv3NK6Marmot15Discretizations8Elements13BulkViscosity12Coefficients9areActiveEv"></span><span id="_CPPv2NK6Marmot15Discretizations8Elements13BulkViscosity12Coefficients9areActiveEv"></span><span id="Marmot::Discretizations::Elements::BulkViscosity::Coefficients::areActiveC"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1BulkViscosity_1_1Coefficients_1aad996ac59dff1ccafe95baa8fa98bae7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">areActive</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>Whether any bulk viscosity is active at all. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations8Elements13BulkViscosity12Coefficients10isDegradedEv">
+<span id="_CPPv3NK6Marmot15Discretizations8Elements13BulkViscosity12Coefficients10isDegradedEv"></span><span id="_CPPv2NK6Marmot15Discretizations8Elements13BulkViscosity12Coefficients10isDegradedEv"></span><span id="Marmot::Discretizations::Elements::BulkViscosity::Coefficients::isDegradedC"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1BulkViscosity_1_1Coefficients_1a3f5eae25fc6d3831847c4fe3e2526fe5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isDegraded</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>Whether the viscous stress is to be degraded with the material’s stiffness. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements13BulkViscosity12Coefficients6linearE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements13BulkViscosity12Coefficients6linearE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements13BulkViscosity12Coefficients6linearE"></span><span id="Marmot::Discretizations::Elements::BulkViscosity::Coefficients::linear__double"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1BulkViscosity_1_1Coefficients_1a25e68ac6feea1dac6121546f15b01c4c"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">linear</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.0</span></span><br /></dt>
+<dd><p>Linear coefficient <span class="math notranslate nohighlight">\(b_1\)</span>, active in compression and in expansion. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements13BulkViscosity12Coefficients9quadraticE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements13BulkViscosity12Coefficients9quadraticE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements13BulkViscosity12Coefficients9quadraticE"></span><span id="Marmot::Discretizations::Elements::BulkViscosity::Coefficients::quadratic__double"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1BulkViscosity_1_1Coefficients_1a543ae19e09c97dabed65710ae3e7126b"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">quadratic</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.0</span></span><br /></dt>
+<dd><p>Quadratic coefficient <span class="math notranslate nohighlight">\(b_2\)</span>, active in compression only. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements13BulkViscosity12Coefficients11degradationE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements13BulkViscosity12Coefficients11degradationE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements13BulkViscosity12Coefficients11degradationE"></span><span id="Marmot::Discretizations::Elements::BulkViscosity::Coefficients::degradation__double"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1BulkViscosity_1_1Coefficients_1a3135450ba21a3655d1204ba0f5012a06"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">degradation</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.0</span></span><br /></dt>
+<dd><p>Exponent <span class="math notranslate nohighlight">\(n\)</span> of the optional degradation with the material’s loss of stiffness; see <a class="reference internal" href="#namespaceMarmot_1_1Discretizations_1_1Elements_1_1BulkViscosity_1aa32b4d140c18cc5c28c2338868ca9b09"><span class="std std-ref">degradationFactor()</span></a>. Zero – the default – disables it entirely, which is both the pre-existing behaviour and the cheap one. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement20computeLumpedInertiaEPd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement20computeLumpedInertiaEPd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement20computeLumpedInertiaEPd"></span><span id="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeLumpedInertia__doubleP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1a66c1318342fa49df9635a3fe48235f85"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8ElementsE" title="Marmot::Discretizations::Elements"><span class="n"><span class="pre">Elements</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">GeneralGradientEnhancedDisplacementFiniteElement</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">computeLumpedInertia</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">M</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement20computeLumpedInertiaEPd" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute the lumped (diagonal) mass matrix. </p>
+<p><p>Uses the manifold-based lumping scheme according to Yang, Zheng &amp; Sivaselvan (2017) “A rigorous and unified mass lumping scheme for higher-order</p>
+<p>elements”, CMAME 319, 491-514. The hexa20 weight the derivation below yields is the split assessed by Duczek &amp; Gravenkamp (2019) “Critical assessment of different mass lumping schemes</p>
+<p>for higher order serendipity finite elements”, CMAME 350, 836-897. The lumped mass entries are computed using a weighted shape function</p>
+<span class="math notranslate nohighlight">\(\hat{N} = w\,N + (1-w)\,N_\mathrm{lin}\)</span>, where <span class="math notranslate nohighlight">\(N\)</span> is the high-order shape function and <span class="math notranslate nohighlight">\(N_\mathrm{lin}\)</span> is the corresponding linear (corner-node) shape function on the same element.</p>
+<p>The blend weight <span class="math notranslate nohighlight">\(w\)</span> cannot be a constant, which is the subtlety here. A corner node’s lumped mass is <span class="math notranslate nohighlight">\(w S^{N}_i + (1-w) S^{\mathrm{lin}}_i\)</span>, and for a serendipity element <span class="math notranslate nohighlight">\(S^{N}_i &lt; 0 &lt; S^{\mathrm{lin}}_i\)</span>, so positivity requires <div class="math notranslate nohighlight">
+\[ w &lt; w_\mathrm{max} = \min_i \frac{S^{\mathrm{lin}}_i}{S^{\mathrm{lin}}_i - S^{N}_i}. \]</div>
+ That limit is element-dependent: <span class="math notranslate nohighlight">\(0.75\)</span> for a quad8, but exactly <span class="math notranslate nohighlight">\(0.50\)</span> for a hexa20, where a hard-coded <span class="math notranslate nohighlight">\(\tfrac{1}{2}\)</span> therefore sits precisely on the boundary and yields an exactly zero corner mass for any regular (affinely-mapped) element.</p>
+<p>The weight is therefore derived per element by Marmot::Discretizations::Elements::MassLumping::manifoldBlendWeight(), which returns <span class="math notranslate nohighlight">\(w = \min(\tfrac{1}{2}, \tfrac{2}{3}\,w_\mathrm{max})\)</span>: exactly <span class="math notranslate nohighlight">\(\tfrac{1}{2}\)</span> wherever that is safe – every 2D serendipity element, and every linear element, where the result does not depend on <span class="math notranslate nohighlight">\(w\)</span> at all – and <span class="math notranslate nohighlight">\(\tfrac{1}{3}\)</span> for a hexa20. It reproduces – analytically, and to rounding in floating point – the values a per-element-type special case would give, without needing one, and the critical time step reads its mass distribution from the same helper so the two cannot disagree.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The element total is independent of <span class="math notranslate nohighlight">\(w\)</span>: the blend only moves mass between the corner and the remaining nodes. An incorrect weight therefore leaves the element mass, and hence the model mass, perfectly correct – and is invisible to any check on totals.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The non-local block reports the micro-inertia the MATERIAL provides through Marmot::Materials::MaterialGradientEnhancedHypoElastic::getNonlocalMicroInertia(), weighted with the same scheme – zero for a non-local variable whose material gives none, which is how the solver tells a second-order non-local field from a first-order one. The viscosity that integrates a first-order field, and that damps a second-order one, comes from the same material and is reported separately by <a class="reference internal" href="generalgradientenhanceddisplacementfiniteelement.html#classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1aa5f3163b7b689ad6a6441a75a0044dc0"><span class="std std-ref">computeLumpedDamping()</span></a>. </p>
+</div>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement20computeLumpedDampingEPd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement20computeLumpedDampingEPd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement20computeLumpedDampingEPd"></span><span id="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeLumpedDamping__doubleP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1aa5f3163b7b689ad6a6441a75a0044dc0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8ElementsE" title="Marmot::Discretizations::Elements"><span class="n"><span class="pre">Elements</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">GeneralGradientEnhancedDisplacementFiniteElement</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">computeLumpedDamping</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">C</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement20computeLumpedDampingEPd" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute the lumped (diagonal) damping of the non-local degrees of freedom. </p>
+<p>
+Zero on the displacement block; the non-local block carries the material’s non-local viscosity, weighted exactly as <a class="reference internal" href="generalgradientenhanceddisplacementfiniteelement.html#classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1a66c1318342fa49df9635a3fe48235f85"><span class="std std-ref">computeLumpedInertia()</span></a> weights that block, since the stable increment is read off both distributions together. Reported unconditionally, with or without a micro-inertia: it integrates a first-order field on its own and damps a second-order one. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>C</strong> – <strong>[out]</strong> Diagonal of the lumped damping, in the element’s dof order.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement42computeCriticalTimeStepForExplicitDynamicsERdPKd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement42computeCriticalTimeStepForExplicitDynamicsERdPKd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement42computeCriticalTimeStepForExplicitDynamicsERdPKd"></span><span id="Marmot::Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement::computeCriticalTimeStepForExplicitDynamics__doubleR.doubleCP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1ad87a529d4f203c028265b9744a38c157"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-prename descclassname"><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8ElementsE" title="Marmot::Discretizations::Elements"><span class="n"><span class="pre">Elements</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">GeneralGradientEnhancedDisplacementFiniteElement</span></span><span class="p"><span class="pre">::</span></span></span><span class="sig-name descname"><span class="n"><span class="pre">computeCriticalTimeStepForExplicitDynamics</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">criticalTimeStep</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">QTotal</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements48GeneralGradientEnhancedDisplacementFiniteElement42computeCriticalTimeStepForExplicitDynamicsERdPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute the critical time step for explicit dynamics based on the dilatational wave speed and the element size. </p>
+<p>
+The estimate is <span class="math notranslate nohighlight">\(l / c\)</span>, scaled by the factor Marmot::Discretizations::Elements::MassLumping::timeStepFactorFromMassDistribution() derives from the same lumped mass fractions <a class="reference internal" href="generalgradientenhanceddisplacementfiniteelement.html#classMarmot_1_1Discretizations_1_1Elements_1_1GeneralGradientEnhancedDisplacementFiniteElement_1a66c1318342fa49df9635a3fe48235f85"><span class="std std-ref">computeLumpedInertia()</span></a> assembles: <span class="math notranslate nohighlight">\(l/c\)</span> is the stable increment for an element whose mass is spread uniformly over its nodes, which lumping does not do, and the lightest node sets the highest frequency. <span class="math notranslate nohighlight">\(l\)</span> is twice the smallest singular value of the Jacobian, i.e. the element’s smallest physical extent, so a sliver is not mistaken for its volume-equivalent cube. The minimum over all quadrature points is returned.</p>
+<p>
+Where the non-local field carries a micro-inertia the returned increment is the minimum of the mechanical estimate above and the non-local field’s own limit. That one is NOT an <span class="math notranslate nohighlight">\(l/c\)</span> estimate: it is a Gershgorin bound on the largest eigenvalue of <span class="math notranslate nohighlight">\(\mathbf{M}_k^{-1}\mathbf{K}_k\)</span>, built from the micro-inertia that is actually assembled and from both parts of the non-local operator – the reaction term and the Laplacian. Both matter. Dropping the reaction term loses the ceiling the field has on a mesh coarser than its own internal length, and using <span class="math notranslate nohighlight">\(h/c_k\)</span> with the continuum wave speed <span class="math notranslate nohighlight">\(c_k = \sqrt{c/m_k}\)</span> overestimates the limit by the square root of the discrete Laplacian’s eigenvalue constant, roughly a factor of two to three for a hexahedron. The damping the non-local viscosity provides is accounted for by the usual central-difference factor <span class="math notranslate nohighlight">\(\sqrt{1+\zeta^2}-\zeta\)</span>, which only ever lowers the result.</p>
+<p>The bound is an upper bound on the eigenvalue and therefore a lower bound on the increment, i.e. it errs safe. It is tight exactly where it has to be, on the Laplacian part that dominates once the element is smaller than the internal length; on the reaction part it is loose by up to a factor of three in the eigenvalue, which costs nothing there because that part is then negligible. </p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This corrects the mass-distribution and element-distortion parts of the estimate only. It does NOT correct for polynomial order, and that residue is large: <span class="math notranslate nohighlight">\(l/c\)</span> is a linear-element formula, while a quadratic element’s highest free eigenfrequency lies well above what it predicts. A convergence study on a 20-node bar settles only around a courant number of 0.1-0.2, i.e. roughly a further factor of five is unaccounted for. Closing that properly wants an eigenvalue-based estimate rather than another factor.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>criticalTimeStep</strong> – <strong>[out]</strong> Computed critical time step. </p></li>
+<li><p><strong>QTotal</strong> – <strong>[in]</strong> Total (current) degrees of freedom of the element.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="interfacefiniteelement.html" class="btn btn-neutral float-left" title="Interface Finite Element" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="meshfree.html" class="btn btn-neutral float-right" title="Meshfree methods" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

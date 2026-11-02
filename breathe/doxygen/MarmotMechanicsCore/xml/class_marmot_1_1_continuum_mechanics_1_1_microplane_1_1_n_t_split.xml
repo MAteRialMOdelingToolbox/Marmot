@@ -1,0 +1,306 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::ContinuumMechanics::Microplane::NTSplit</compoundname>
+    <includes refid="_marmot_microplane_8h" local="no">MarmotMicroplane.h</includes>
+    <innerclass refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors" prot="public">Marmot::ContinuumMechanics::Microplane::NTSplit::projectionTensors</innerclass>
+    <templateparamlist>
+      <param>
+        <type><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1" kindref="member">QuadratureScheme</ref></type>
+        <declname>scheme</declname>
+        <defname>scheme</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a38749740a479f66216c6a5baa94672f5" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 1, <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ac4c4bf30b23d1e109496ecd4328b7340" kindref="member">nqp</ref> &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 1, nqp &gt; Marmot::ContinuumMechanics::Microplane::NTSplit&lt; scheme &gt;::nmp_sized</definition>
+        <argsstring></argsstring>
+        <name>nmp_sized</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::NTSplit::nmp_sized</qualifiedname>
+        <briefdescription>
+<para>One scalar per microplane, e.g. <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors_1a2e2fd7c62e070f2d931718c4808bf460" kindref="member">Marmot::ContinuumMechanics::Microplane::NTSplit::projectionTensors::w</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="117" column="29" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a7eb1f19d4137a551c44ef2bdc5f7c173" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 6, <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ac4c4bf30b23d1e109496ecd4328b7340" kindref="member">nqp</ref> &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 6, nqp &gt; Marmot::ContinuumMechanics::Microplane::NTSplit&lt; scheme &gt;::nmp6_sized</definition>
+        <argsstring></argsstring>
+        <name>nmp6_sized</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::NTSplit::nmp6_sized</qualifiedname>
+        <briefdescription>
+<para>One Voigt-notation vector per microplane, e.g. <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors_1a7c4d14f1ee614776e272d9a6339863ab" kindref="member">Marmot::ContinuumMechanics::Microplane::NTSplit::projectionTensors::N</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="120" column="29" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="120" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ac4c4bf30b23d1e109496ecd4328b7340" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>size_t</type>
+        <definition>size_t Marmot::ContinuumMechanics::Microplane::NTSplit&lt; scheme &gt;::nqp</definition>
+        <argsstring></argsstring>
+        <name>nqp</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::NTSplit::nqp</qualifiedname>
+        <initializer>= <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1a2a7293ad18bb1ddbceaa8b6b8d345c61" kindref="member">nqpFromScheme</ref>( scheme )</initializer>
+        <briefdescription>
+<para>Number of microplanes for scheme; see <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1a2a7293ad18bb1ddbceaa8b6b8d345c61" kindref="member">nqpFromScheme</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="114" column="31" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a47ec82902b03ef84633f1b19ef9f19d0" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors" kindref="compound">projectionTensors</ref></type>
+        <definition>projectionTensors Marmot::ContinuumMechanics::Microplane::NTSplit&lt; scheme &gt;::pTensors</definition>
+        <argsstring></argsstring>
+        <name>pTensors</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::NTSplit::pTensors</qualifiedname>
+        <briefdescription>
+<para>The N/M/L projection tensors and integration weights for this instance; see <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors" kindref="compound">projectionTensors</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="163" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="163" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a285fd05fdc2f210fe61caa68140bdf98" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::ContinuumMechanics::Microplane::NTSplit&lt; scheme &gt;::NTSplit</definition>
+        <argsstring>()</argsstring>
+        <name>NTSplit</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::NTSplit::NTSplit</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="122" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="122" bodyend="122"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ae32dc8189cbfce09adcf8dec27c140ef" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; T, 6, 1 &gt;</type>
+        <definition>Eigen::Matrix&lt; T, 6, 1 &gt; Marmot::ContinuumMechanics::Microplane::NTSplit&lt; scheme &gt;::homogenizeStress</definition>
+        <argsstring>(const Eigen::Matrix&lt; T, 1, nqp &gt; &amp;stressN, const Eigen::Matrix&lt; T, 1, nqp &gt; &amp;stressM, const Eigen::Matrix&lt; T, 1, nqp &gt; &amp;stressL) const</argsstring>
+        <name>homogenizeStress</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::NTSplit::homogenizeStress</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; T, 1, <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ac4c4bf30b23d1e109496ecd4328b7340" kindref="member">nqp</ref> &gt; &amp;</type>
+          <declname>stressN</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix&lt; T, 1, <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ac4c4bf30b23d1e109496ecd4328b7340" kindref="member">nqp</ref> &gt; &amp;</type>
+          <declname>stressM</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix&lt; T, 1, <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ac4c4bf30b23d1e109496ecd4328b7340" kindref="member">nqp</ref> &gt; &amp;</type>
+          <declname>stressL</declname>
+        </param>
+        <briefdescription>
+<para>Homogenizes per-microplane normal and in-plane shear stresses to the macroscopic stress, in Voigt notation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Approximates the continuum microplane virtual-work homogenization over the unit hemisphere:    <formula id="330">\[  \sigma_{ij} = \frac{3}{2\pi} \int_\Omega \left( \sigma_N N_{ij} + \sigma_L L_{ij} + \sigma_M M_{ij} \right)
+\, d\Omega
+\]</formula> by the quadrature sum actually evaluated here, in which the hemisphere-integral normalization constant is already absorbed into the integration weights <formula id="323">$ w^{(m)} $</formula> (see Discretization::get(), where <formula id="325">$ \sum_m w^{(m)} = 3 $</formula>):    <formula id="331">\[  \sigma_{ij} \approx \sum_{m=1}^{n_{qp}} w^{(m)} \left( \sigma_N^{(m)} N_{ij}^{(m)}
+    + \sigma_M^{(m)} M_{ij}^{(m)} + \sigma_L^{(m)} L_{ij}^{(m)} \right)
+\]</formula> <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type of the per-microplane stresses, e.g. <computeroutput>double</computeroutput> or <computeroutput>autodiff::dual</computeroutput>; the projection tensors <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a47ec82902b03ef84633f1b19ef9f19d0" kindref="member">pTensors</ref> stay <computeroutput>double</computeroutput> (they are geometric constants, never differentiated), so <computeroutput>T</computeroutput> may differ from <computeroutput>double</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stressN</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Per-microplane normal stress <formula id="332">$ \sigma_N^{(m)} $</formula>, size <formula id="333">$ 1 \times n_{qp} $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stressM</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Per-microplane shear stress <formula id="334">$ \sigma_M^{(m)} $</formula> (direction <formula id="327">$ M $</formula>), size  <formula id="335">$ 1 \times
+n_{qp} $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stressL</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Per-microplane shear stress <formula id="336">$ \sigma_L^{(m)} $</formula> (direction <formula id="328">$ L $</formula>), size  <formula id="335">$ 1 \times
+n_{qp} $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Homogenized macroscopic stress in Voigt notation. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="192" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="236" bodyend="243"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a8b54f86df9f3296595e3a0ccf1983508" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; T, 6, 6 &gt;</type>
+        <definition>Eigen::Matrix&lt; T, 6, 6 &gt; Marmot::ContinuumMechanics::Microplane::NTSplit&lt; scheme &gt;::homogenizeTangent</definition>
+        <argsstring>(Eigen::Matrix&lt; T, 6, nqp &gt; dSigNddStrain, Eigen::Matrix&lt; T, 6, nqp &gt; dSigMddStrain, Eigen::Matrix&lt; T, 6, nqp &gt; dSigLddStrain) const</argsstring>
+        <name>homogenizeTangent</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::NTSplit::homogenizeTangent</qualifiedname>
+        <param>
+          <type>Eigen::Matrix&lt; T, 6, <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ac4c4bf30b23d1e109496ecd4328b7340" kindref="member">nqp</ref> &gt;</type>
+          <declname>dSigNddStrain</declname>
+        </param>
+        <param>
+          <type>Eigen::Matrix&lt; T, 6, <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ac4c4bf30b23d1e109496ecd4328b7340" kindref="member">nqp</ref> &gt;</type>
+          <declname>dSigMddStrain</declname>
+        </param>
+        <param>
+          <type>Eigen::Matrix&lt; T, 6, <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ac4c4bf30b23d1e109496ecd4328b7340" kindref="member">nqp</ref> &gt;</type>
+          <declname>dSigLddStrain</declname>
+        </param>
+        <briefdescription>
+<para>Homogenizes per-microplane normal and in-plane shear tangents to the macroscopic tangent, in Voigt notation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Approximates the continuum microplane virtual-work homogenization over the unit hemisphere <formula id="303">$ \Omega $</formula> of the macroscopic tangent, in tensor (index) notation:      <formula id="337">\[  \frac{\partial \sigma_{ij}}{\partial \varepsilon_{kl}} = \frac{3}{2\pi} \int_\Omega \left(
+      N_{ij} \frac{\partial \sigma_N}{\partial \varepsilon_{kl}}
+    + M_{ij} \frac{\partial \sigma_M}{\partial \varepsilon_{kl}}
+    + L_{ij} \frac{\partial \sigma_L}{\partial \varepsilon_{kl}} \right) \, d\Omega
+\]</formula> approximated by the quadrature sum actually evaluated here (see <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ae32dc8189cbfce09adcf8dec27c140ef" kindref="member">homogenizeStress</ref> for how the hemisphere-integral normalization is absorbed into the weights <formula id="323">$ w^{(m)} $</formula>). <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type of the per-microplane tangents (see <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ae32dc8189cbfce09adcf8dec27c140ef" kindref="member">homogenizeStress</ref>). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dSigNddStrain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Per-microplane normal-direction tangent  <formula id="338">$ \partial \sigma_N^{(m)} /
+\partial \boldsymbol{\varepsilon} $</formula>, size <formula id="339">$ 6 \times n_{qp} $</formula>; taken by value since each row is scaled in place by the integration weight before contraction. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dSigMddStrain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Per-microplane <formula id="327">$ M $</formula>-direction tangent  <formula id="340">$ \partial \sigma_M^{(m)}
+/ \partial \boldsymbol{\varepsilon} $</formula>, size <formula id="339">$ 6 \times n_{qp} $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dSigLddStrain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Per-microplane <formula id="328">$ L $</formula>-direction tangent  <formula id="341">$ \partial \sigma_L^{(m)}
+/ \partial \boldsymbol{\varepsilon} $</formula>, size <formula id="339">$ 6 \times n_{qp} $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Homogenized macroscopic tangent  <formula id="342">$ \partial \sigma_{ij} / \partial
+\varepsilon_{kl} $</formula> in Voigt notation. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="221" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="247" bodyend="258"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1adeb7d41dd272dd34b53d77882b8d80e9" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors" kindref="compound">projectionTensors</ref></type>
+        <definition>NTSplit&lt; scheme &gt;::projectionTensors Marmot::ContinuumMechanics::Microplane::NTSplit&lt; scheme &gt;::initiateSystem</definition>
+        <argsstring>()</argsstring>
+        <name>initiateSystem</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::NTSplit::initiateSystem</qualifiedname>
+        <briefdescription>
+<para>Builds the microplane normal vectors, the fixed in-plane shear basis, and the N/M/L projection tensors and integration weights (<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors" kindref="compound">projectionTensors</ref>) from Discretization::get(scheme). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="231" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="261" bodyend="297"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Normal-tangential (N-T) split and projection tensors of the microplane theory, as used by the M7-family models (MicroplaneM7, GM7). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>On each microplane, the macroscopic strain is projected onto the normal direction <formula id="312">$ n^{(m)} $</formula> and the two in-plane orthogonal shear directions <formula id="313">$ l^{(m)} $</formula>, <formula id="314">$ m^{(m)} $</formula> (spanning the plane orthogonal to <formula id="312">$ n^{(m)} $</formula>), giving a normal strain <formula id="315">$ \varepsilon_N $</formula> and two shear strains <formula id="316">$ \varepsilon_M, \varepsilon_L $</formula>. <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a47ec82902b03ef84633f1b19ef9f19d0" kindref="member">pTensors</ref> holds the corresponding Voigt-notation projection tensors <formula id="317">$ N_{ij} = n_i n_j $</formula>, <formula id="318">$ M_{ij} = \tfrac{1}{2}(m_i n_j + m_j n_i) $</formula>, <formula id="319">$ L_{ij} = \tfrac{1}{2}(l_i n_j + l_j n_i) $</formula>, built from the hard-coded discretization (Discretization::get()), and <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ae32dc8189cbfce09adcf8dec27c140ef" kindref="member">homogenizeStress</ref> / <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a8b54f86df9f3296595e3a0ccf1983508" kindref="member">homogenizeTangent</ref> perform the virtual-work homogenization of per-microplane normal/shear stresses and tangents back to the macroscopic stress and tangent. <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>scheme</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1" kindref="member">QuadratureScheme</ref> (and thus the number of microplanes <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ac4c4bf30b23d1e109496ecd4328b7340" kindref="member">nqp</ref>) this instantiation is built for. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>Marmot::ContinuumMechanics::Microplane::NTSplit&lt; scheme &gt;::projectionTensors</label>
+        <link refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors"/>
+      </node>
+      <node id="1">
+        <label>Marmot::ContinuumMechanics::Microplane::NTSplit&lt; scheme &gt;</label>
+        <link refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>pTensors</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="111" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="111" bodyend="232"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ae32dc8189cbfce09adcf8dec27c140ef" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Microplane::NTSplit</scope><name>homogenizeStress</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a8b54f86df9f3296595e3a0ccf1983508" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Microplane::NTSplit</scope><name>homogenizeTangent</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1adeb7d41dd272dd34b53d77882b8d80e9" prot="private" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Microplane::NTSplit</scope><name>initiateSystem</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a7eb1f19d4137a551c44ef2bdc5f7c173" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Microplane::NTSplit</scope><name>nmp6_sized</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a38749740a479f66216c6a5baa94672f5" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Microplane::NTSplit</scope><name>nmp_sized</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ac4c4bf30b23d1e109496ecd4328b7340" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Microplane::NTSplit</scope><name>nqp</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a285fd05fdc2f210fe61caa68140bdf98" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Microplane::NTSplit</scope><name>NTSplit</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a47ec82902b03ef84633f1b19ef9f19d0" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Microplane::NTSplit</scope><name>pTensors</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

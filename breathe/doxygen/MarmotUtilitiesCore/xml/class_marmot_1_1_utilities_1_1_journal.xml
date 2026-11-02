@@ -1,0 +1,201 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_utilities_1_1_journal" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Utilities::Journal</compoundname>
+    <includes refid="_marmot_journal_8h" local="no">MarmotJournal.h</includes>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_utilities_1_1_journal_1aad998ac5ccb22f8f0af0a6409887c7b0" prot="private" static="no" mutable="no">
+        <type>std::ostream</type>
+        <definition>std::ostream Marmot::Utilities::Journal::output</definition>
+        <argsstring></argsstring>
+        <name>output</name>
+        <qualifiedname>Marmot::Utilities::Journal::output</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h" line="71" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_utilities_1_1_journal_1aa6b8e575dd3fc27602edfcda16f13576" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Journal &amp;</type>
+        <definition>static Journal &amp; Marmot::Utilities::Journal::getInstance</definition>
+        <argsstring>()</argsstring>
+        <name>getInstance</name>
+        <qualifiedname>Marmot::Utilities::Journal::getInstance</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h" line="69" column="20"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_marmot_1_1_utilities_1_1_journal_1add1f5d5261bf4a717ac9e9466da4c2bf" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Utilities::Journal::Journal</definition>
+        <argsstring>()</argsstring>
+        <name>Journal</name>
+        <qualifiedname>Marmot::Utilities::Journal::Journal</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h" line="73" column="5"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_utilities_1_1_journal_1a03bd2e54b01e10b2c7245743a46406ac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Utilities::Journal::Journal</definition>
+        <argsstring>(Journal const &amp;)=delete</argsstring>
+        <name>Journal</name>
+        <qualifiedname>Marmot::Utilities::Journal::Journal</qualifiedname>
+        <param>
+          <type>Journal const &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h" line="76" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_utilities_1_1_journal_1ae8f3636c6ef13265bc4dbf74e3732898" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Utilities::Journal::operator=</definition>
+        <argsstring>(Journal const &amp;)=delete</argsstring>
+        <name>operator=</name>
+        <qualifiedname>Marmot::Utilities::Journal::operator=</qualifiedname>
+        <param>
+          <type>Journal const &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h" line="77" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_utilities_1_1_journal_1a2495b568881ae0faee87a9e26c00c69e" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>static void Marmot::Utilities::Journal::setMSGOutputDirection</definition>
+        <argsstring>(std::ostream &amp;newOutputStream)</argsstring>
+        <name>setMSGOutputDirection</name>
+        <qualifiedname>Marmot::Utilities::Journal::setMSGOutputDirection</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>newOutputStream</declname>
+        </param>
+        <briefdescription>
+<para>Redirect all subsequent journal output to <computeroutput>newOutputStream</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newOutputStream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The output stream that warnings and notifications are written to. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h" line="83" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_utilities_1_1_journal_1a36687bf7390d3d2e781e0eef0a5a68f2" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool Marmot::Utilities::Journal::warningToMSG</definition>
+        <argsstring>(const std::string &amp;message)</argsstring>
+        <name>warningToMSG</name>
+        <qualifiedname>Marmot::Utilities::Journal::warningToMSG</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+<para>Write a warning message to the journal output stream. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The warning text to emit. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> after the message has been written. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h" line="90" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_utilities_1_1_journal_1a74031f39749c09adbfc51909e57ae531" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool Marmot::Utilities::Journal::notificationToMSG</definition>
+        <argsstring>(const std::string &amp;message)</argsstring>
+        <name>notificationToMSG</name>
+        <qualifiedname>Marmot::Utilities::Journal::notificationToMSG</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+<para>Write a notification message to the journal output stream. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The notification text to emit. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> after the message has been written. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h" line="97" column="17"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Singleton class for managing output messages in the Marmot framework. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class provides a centralized way to handle warning and notification messages, allowing them to be directed to a specified output stream (e.g., console, file). </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h" line="67" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h" bodystart="67" bodyend="98"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_utilities_1_1_journal_1aa6b8e575dd3fc27602edfcda16f13576" prot="private" virt="non-virtual"><scope>Marmot::Utilities::Journal</scope><name>getInstance</name></member>
+      <member refid="class_marmot_1_1_utilities_1_1_journal_1add1f5d5261bf4a717ac9e9466da4c2bf" prot="private" virt="non-virtual"><scope>Marmot::Utilities::Journal</scope><name>Journal</name></member>
+      <member refid="class_marmot_1_1_utilities_1_1_journal_1a03bd2e54b01e10b2c7245743a46406ac" prot="public" virt="non-virtual"><scope>Marmot::Utilities::Journal</scope><name>Journal</name></member>
+      <member refid="class_marmot_1_1_utilities_1_1_journal_1a74031f39749c09adbfc51909e57ae531" prot="public" virt="non-virtual"><scope>Marmot::Utilities::Journal</scope><name>notificationToMSG</name></member>
+      <member refid="class_marmot_1_1_utilities_1_1_journal_1ae8f3636c6ef13265bc4dbf74e3732898" prot="public" virt="non-virtual"><scope>Marmot::Utilities::Journal</scope><name>operator=</name></member>
+      <member refid="class_marmot_1_1_utilities_1_1_journal_1aad998ac5ccb22f8f0af0a6409887c7b0" prot="private" virt="non-virtual"><scope>Marmot::Utilities::Journal</scope><name>output</name></member>
+      <member refid="class_marmot_1_1_utilities_1_1_journal_1a2495b568881ae0faee87a9e26c00c69e" prot="public" virt="non-virtual"><scope>Marmot::Utilities::Journal</scope><name>setMSGOutputDirection</name></member>
+      <member refid="class_marmot_1_1_utilities_1_1_journal_1a36687bf7390d3d2e781e0eef0a5a68f2" prot="public" virt="non-virtual"><scope>Marmot::Utilities::Journal</scope><name>warningToMSG</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

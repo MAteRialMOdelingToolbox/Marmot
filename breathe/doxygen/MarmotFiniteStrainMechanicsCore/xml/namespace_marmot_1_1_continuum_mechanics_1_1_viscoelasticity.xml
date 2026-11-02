@@ -1,0 +1,428 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_viscoelasticity" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::Viscoelasticity</compoundname>
+    <innerclass refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_maxwell_properties" prot="public">Marmot::ContinuumMechanics::Viscoelasticity::MaxwellProperties</innerclass>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_finite_strain_viscoelasticity_8h_1a6a2510997f95038f40965cee89eabe2c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_maxwell_properties" kindref="compound">MaxwellProperties</ref></type>
+        <definition>MaxwellProperties Marmot::ContinuumMechanics::Viscoelasticity::createMaxwellProperties</definition>
+        <argsstring>(int nMaxwell, const double *gammaTauPairVector)</argsstring>
+        <name>createMaxwellProperties</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::createMaxwellProperties</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>nMaxwell</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>gammaTauPairVector</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainViscoelasticity.h" line="41" column="21" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainViscoelasticity.h" declline="41" declcolumn="21"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_finite_strain_viscoelasticity_8h_1a31c4f91fdbdd4ce7a72772639f1488bc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::ContinuumMechanics::Viscoelasticity::evaluateGeneralizedMaxwellModel</definition>
+        <argsstring>(Marmot::Math::Tensors::FastorTensors::Tensor33d &amp;stress, Marmot::Math::Tensors::FastorTensors::Tensor3333d &amp;tangent, const Marmot::Math::Tensors::FastorTensors::Tensor333333d &amp;dTangent_dDeformation, const Marmot::Math::Tensors::FastorTensors::Tensor3333d &amp;initialCompliance, const Marmot::Math::Tensors::FastorTensors::Tensor33d &amp;dStress, const double dT, const MaxwellProperties &amp;maxwellProperties, double *stateVars)</argsstring>
+        <name>evaluateGeneralizedMaxwellModel</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::evaluateGeneralizedMaxwellModel</qualifiedname>
+        <param>
+          <type>Marmot::Math::Tensors::FastorTensors::Tensor33d &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <param>
+          <type>Marmot::Math::Tensors::FastorTensors::Tensor3333d &amp;</type>
+          <declname>tangent</declname>
+        </param>
+        <param>
+          <type>const Marmot::Math::Tensors::FastorTensors::Tensor333333d &amp;</type>
+          <declname>dTangent_dDeformation</declname>
+        </param>
+        <param>
+          <type>const Marmot::Math::Tensors::FastorTensors::Tensor3333d &amp;</type>
+          <declname>initialCompliance</declname>
+        </param>
+        <param>
+          <type>const Marmot::Math::Tensors::FastorTensors::Tensor33d &amp;</type>
+          <declname>dStress</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>dT</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_maxwell_properties" kindref="compound">MaxwellProperties</ref> &amp;</type>
+          <declname>maxwellProperties</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Evaluate generalized maxwell model contribution to stress and tangent. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Stress tensor to be updated (input is the instantaneous hyperelastic stress) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">tangent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Tangent tensor to be updated (input is the instantaneous hyperelasticelastic tangent) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dTangent_dDeformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Derivative of tangent w.r.t. deformation </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">initialCompliance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial compliance tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dStress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Increment of the initial stress tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time increment </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">maxwellProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Properties of the generalized maxwell model </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>State variables array (size: nMaxwell * 9)</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This update function uses the approach in: Liu et al. 2021, A continuum and computational framework for viscoelastodynamics: I. Finite deformation linear models, Comput. Meth. Appl. Mech. Engrg. 385, 114059 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainViscoelasticity.h" line="59" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainViscoelasticity.h" declline="59" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_finite_strain_viscoelasticity_8h_1aae9bd682e79ea093e2bfe7d2bb627c01" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::ContinuumMechanics::Viscoelasticity::evaluateGeneralizedMaxwellModel</definition>
+        <argsstring>(Marmot::Math::Tensors::FastorTensors::Tensor33d &amp;stress, Marmot::Math::Tensors::FastorTensors::Tensor3333d &amp;tangent, const Marmot::Math::Tensors::FastorTensors::Tensor33d &amp;dStress, const double dT, const MaxwellProperties &amp;maxwellProperties, double *stateVars)</argsstring>
+        <name>evaluateGeneralizedMaxwellModel</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::evaluateGeneralizedMaxwellModel</qualifiedname>
+        <param>
+          <type>Marmot::Math::Tensors::FastorTensors::Tensor33d &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <param>
+          <type>Marmot::Math::Tensors::FastorTensors::Tensor3333d &amp;</type>
+          <declname>tangent</declname>
+        </param>
+        <param>
+          <type>const Marmot::Math::Tensors::FastorTensors::Tensor33d &amp;</type>
+          <declname>dStress</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>dT</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_maxwell_properties" kindref="compound">MaxwellProperties</ref> &amp;</type>
+          <declname>maxwellProperties</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Evaluate generalized maxwell model contribution to stress and tangent. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Stress tensor to be updated (input is the instantaneous hyperelastic stress) tangent) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">tangent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Tangent tensor to be updated (input is the instantaneous hyperelasticelastic tangent) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dStress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Increment of the initial stress tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time increment </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">maxwellProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Properties of the generalized maxwell model </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>State variables array (size: nMaxwell * 9)</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This update correspond to the approach by Simo (1987) and is used in the implementation of the generalized maxwell model in the finite element code </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainViscoelasticity.h" line="83" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainViscoelasticity.h" declline="83" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_finite_strain_viscoelasticity_8h_1a8b2d41fd5c63e3ca3b5b7da95447c550" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+            <defval>double</defval>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Marmot::ContinuumMechanics::Viscoelasticity::evaluateGeneralizedMaxwellModel</definition>
+        <argsstring>(Marmot::Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;stress, const Marmot::Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;dStress, const double dT, const MaxwellProperties &amp;maxwellProperties, double *stateVars)</argsstring>
+        <name>evaluateGeneralizedMaxwellModel</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::evaluateGeneralizedMaxwellModel</qualifiedname>
+        <param>
+          <type>Marmot::Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <param>
+          <type>const Marmot::Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>dStress</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>dT</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_maxwell_properties" kindref="compound">MaxwellProperties</ref> &amp;</type>
+          <declname>maxwellProperties</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Evaluate generalized maxwell model contribution to stress without tangent update. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Stress tensor to be updated (input is the instantaneous hyperelastic stress) tangent) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dStress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Increment of the initial stress tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time increment </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">maxwellProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Properties of the generalized maxwell model </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>State variables array (size: nMaxwell * 9)</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This update correspond to the approach by Simo (1987) and is used in the implementation of the generalized maxwell model in the finite element code </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainViscoelasticity.h" line="103" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainViscoelasticity.h" bodystart="103" bodyend="152"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_finite_strain_viscoelasticity_8h_1a2fecab850cc6d736420906d463c64c99" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+            <defval>double</defval>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Marmot::ContinuumMechanics::Viscoelasticity::evaluateGeneralizedMaxwellModel</definition>
+        <argsstring>(Marmot::Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;stress, const Marmot::Math::Tensors::FastorTensors::Tensor3333t&lt; T &gt; &amp;tangent, const Marmot::Math::Tensors::FastorTensors::Tensor3333t&lt; T &gt; &amp;initialCompliance, const Marmot::Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;dStress, const double dT, const MaxwellProperties &amp;maxwellProperties, double *stateVars)</argsstring>
+        <name>evaluateGeneralizedMaxwellModel</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::evaluateGeneralizedMaxwellModel</qualifiedname>
+        <param>
+          <type>Marmot::Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <param>
+          <type>const Marmot::Math::Tensors::FastorTensors::Tensor3333t&lt; T &gt; &amp;</type>
+          <declname>tangent</declname>
+        </param>
+        <param>
+          <type>const Marmot::Math::Tensors::FastorTensors::Tensor3333t&lt; T &gt; &amp;</type>
+          <declname>initialCompliance</declname>
+        </param>
+        <param>
+          <type>const Marmot::Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>dStress</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>dT</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_maxwell_properties" kindref="compound">MaxwellProperties</ref> &amp;</type>
+          <declname>maxwellProperties</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Evaluate generalized maxwell model contribution to stress without tangent update. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Stress tensor to be updated (input is the instantaneous hyperelastic stress) tangent) </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">tangent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Tangent tensor to be used for stress update </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">initialCompliance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial compliance tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dStress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Increment of the initial stress tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time increment </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">maxwellProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Properties of the generalized maxwell model </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>State variables array (size: nMaxwell * 9)</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This update function uses the approach in: Liu et al. 2021, A continuum and computational framework for viscoelastodynamics: I. Finite deformation linear models, Comput. Meth. Appl. Mech. Engrg. 385, 114059 </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainViscoelasticity.h" line="171" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainViscoelasticity.h" bodystart="171" bodyend="221"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainViscoelasticity.h" line="29" column="1"/>
+  </compounddef>
+</doxygen>

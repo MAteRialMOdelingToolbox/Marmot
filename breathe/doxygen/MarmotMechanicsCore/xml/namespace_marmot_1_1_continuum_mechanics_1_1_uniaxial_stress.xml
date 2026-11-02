@@ -1,33 +1,33 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
   <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_uniaxial_stress" kind="namespace" language="C++">
     <compoundname>Marmot::ContinuumMechanics::UniaxialStress</compoundname>
     <sectiondef kind="func">
-      <memberdef kind="function" id="_marmot_lower_dimensional_stress_8h_1ad85ade68dbdb13a6679a15de717a8b75" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_lower_dimensional_stress_8h_1a1db222ae45b3ee1995f27cfb5dd1ef0d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
         <definition>double Marmot::ContinuumMechanics::UniaxialStress::getUniaxialStressTangent</definition>
-        <argsstring>(const Eigen::Ref&lt; const Matrix6d &gt; &amp;C)</argsstring>
+        <argsstring>(const Eigen::Ref&lt; const Marmot::Math::Matrix6d &gt; &amp;C)</argsstring>
         <name>getUniaxialStressTangent</name>
         <qualifiedname>Marmot::ContinuumMechanics::UniaxialStress::getUniaxialStressTangent</qualifiedname>
         <param>
-          <type>const Eigen::Ref&lt; const Matrix6d &gt; &amp;</type>
+          <type>const Eigen::Ref&lt; const Marmot::Math::Matrix6d &gt; &amp;</type>
           <declname>C</declname>
         </param>
         <briefdescription>
 <para>Extracts the uniaxial stress-strain tangent from a 3D stiffness matrix. </para>
         </briefdescription>
         <detaileddescription>
-<para>Computes the tangent <formula id="291">$\frac{\partial\sigma}{\partial\varepsilon}$</formula> in the loading direction (uniaxial) based on the full 3D stiffness matrix <formula id="79">$\mathbb{C}$</formula> provided in Voigt notation.</para>
+<para>Computes the tangent <formula id="121">$\frac{\partial\sigma}{\partial\varepsilon}$</formula> in the loading direction (uniaxial) based on the full 3D stiffness matrix <formula id="46">$\mathbb{C}$</formula> provided in Voigt notation.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>C</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>3D stiffness matrix ( <formula id="292">$6\times6$</formula>) in Voigt notation. </para>
+<para>3D stiffness matrix ( <formula id="122">$6\times6$</formula>) in Voigt notation. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Uniaxial stress-strain tangent ( <formula id="291">$\frac{\partial\sigma}{\partial\varepsilon}$</formula>). </para>
+<simplesect kind="return"><para>Uniaxial stress-strain tangent ( <formula id="121">$\frac{\partial\sigma}{\partial\varepsilon}$</formula>). </para>
 </simplesect>
 </para>
         </detaileddescription>

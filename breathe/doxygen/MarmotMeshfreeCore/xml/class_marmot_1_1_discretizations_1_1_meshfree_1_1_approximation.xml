@@ -1,0 +1,249 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Marmot::Discretizations::Meshfree::Approximation</compoundname>
+    <derivedcompoundref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" prot="public" virt="non-virtual">Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</derivedcompoundref>
+    <includes refid="_marmot_meshfree_approximation_8h" local="no">MarmotMeshfreeApproximation.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a39b7eaccea5612f607fcfdb13e9dc8ac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Discretizations::Meshfree::Approximation::Approximation</definition>
+        <argsstring>()=default</argsstring>
+        <name>Approximation</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Approximation::Approximation</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeApproximation.h" line="50" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a391fe96951678125219c61e07b51d0d0" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Marmot::Discretizations::Meshfree::Approximation::~Approximation</definition>
+        <argsstring>()=default</argsstring>
+        <name>~Approximation</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Approximation::~Approximation</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor; approximations are used through base-class pointers. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeApproximation.h" line="53" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a71c2229ec0a53a64d5374b87238a80e4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Approximation::computeShapeFunctions</definition>
+        <argsstring>(const double *coord, const std::vector&lt; const KernelFunction * &gt; &amp;kernelFunctions, double *shapeFunctionValues) const =0</argsstring>
+        <name>computeShapeFunctions</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Approximation::computeShapeFunctions</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1aada5d6fc85de09ef69eca8839acc6f5a">computeShapeFunctions</reimplementedby>
+        <param>
+          <type>const double *</type>
+          <declname>coord</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref> * &gt; &amp;</type>
+          <declname>kernelFunctions</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>shapeFunctionValues</declname>
+        </param>
+        <briefdescription>
+<para>Compute the shape function values <formula id="165">$ \Psi_A(\boldsymbol{x}) $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">coord</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coordinates <formula id="5">$ \boldsymbol{x} $</formula> of the evaluation point (length <formula id="4">$ d $</formula>). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">kernelFunctions</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <formula id="77">$ n $</formula> candidate kernel functions. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">shapeFunctionValues</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shape function values (length <formula id="77">$ n $</formula>). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeApproximation.h" line="61" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1ac7f184812fc3d613e890e7ee8fed44c3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Approximation::computeShapeFunctionGradients</definition>
+        <argsstring>(const double *coord, const std::vector&lt; const KernelFunction * &gt; &amp;kernelFunctions, double *shapeFunctionValueGradients) const =0</argsstring>
+        <name>computeShapeFunctionGradients</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Approximation::computeShapeFunctionGradients</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a9eaafffc7beceb343a869bd5e6ffaaf6">computeShapeFunctionGradients</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1af43334dd01f396da72483f6e2a308eb8">computeShapeFunctionGradients</reimplementedby>
+        <param>
+          <type>const double *</type>
+          <declname>coord</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref> * &gt; &amp;</type>
+          <declname>kernelFunctions</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>shapeFunctionValueGradients</declname>
+        </param>
+        <briefdescription>
+<para>Compute the shape function gradients <formula id="168">$ \partial \Psi_A / \partial x_i $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">coord</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coordinates <formula id="5">$ \boldsymbol{x} $</formula> of the evaluation point. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">kernelFunctions</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <formula id="77">$ n $</formula> candidate kernel functions. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">shapeFunctionValueGradients</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shape function gradients, column-major <formula id="166">$ d \times n $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeApproximation.h" line="71" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a5cd259cfef7eb185547a38b2e09cdfc6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Approximation::computeShapeFunctionsAndGradients</definition>
+        <argsstring>(const double *coord, const std::vector&lt; const KernelFunction * &gt; &amp;kernelFunctions, double *shapeFunctionValues, double *shapeFunctionValueGradients) const =0</argsstring>
+        <name>computeShapeFunctionsAndGradients</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Approximation::computeShapeFunctionsAndGradients</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a39ef3534db694f1919fbbdabfad54fef">computeShapeFunctionsAndGradients</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1ac284e440e26218f9a9f89c2385148662">computeShapeFunctionsAndGradients</reimplementedby>
+        <param>
+          <type>const double *</type>
+          <declname>coord</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref> * &gt; &amp;</type>
+          <declname>kernelFunctions</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>shapeFunctionValues</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>shapeFunctionValueGradients</declname>
+        </param>
+        <briefdescription>
+<para>Compute the shape function values and gradients in one pass. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">coord</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coordinates <formula id="5">$ \boldsymbol{x} $</formula> of the evaluation point. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">kernelFunctions</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <formula id="77">$ n $</formula> candidate kernel functions. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">shapeFunctionValues</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shape function values (length <formula id="77">$ n $</formula>). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">shapeFunctionValueGradients</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shape function gradients, column-major <formula id="166">$ d \times n $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeApproximation.h" line="82" column="18"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Abstract interface of a meshfree approximation, which evaluates shape functions from a set of kernels. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Given an evaluation point <formula id="5">$ \boldsymbol{x} $</formula> and a list of <formula id="77">$ n $</formula> candidate kernel functions <formula id="163">$ \phi_A $</formula>, <formula id="164">$ A = 0, \dots, n-1 $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref>), an approximation computes the shape functions <formula id="165">$ \Psi_A(\boldsymbol{x}) $</formula> and/or their gradients. The output arrays are indexed by the position of the kernel in the candidate list; candidates that do not cover <formula id="5">$ \boldsymbol{x} $</formula> get zero entries.</para>
+<para>The gradient output is a column-major <formula id="166">$ d \times n $</formula> array, i.e., entry <formula id="167">$ i + d\,A $</formula> holds <formula id="168">$ \partial \Psi_A / \partial x_i $</formula>, where <formula id="4">$ d $</formula> is the spatial dimension. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Marmot::Discretizations::Meshfree::Approximation</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation"/>
+      </node>
+      <node id="2">
+        <label>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeApproximation.h" line="46" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeApproximation.h" bodystart="46" bodyend="86"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a39b7eaccea5612f607fcfdb13e9dc8ac" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::Approximation</scope><name>Approximation</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1ac7f184812fc3d613e890e7ee8fed44c3" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Approximation</scope><name>computeShapeFunctionGradients</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a71c2229ec0a53a64d5374b87238a80e4" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Approximation</scope><name>computeShapeFunctions</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a5cd259cfef7eb185547a38b2e09cdfc6" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Approximation</scope><name>computeShapeFunctionsAndGradients</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a391fe96951678125219c61e07b51d0d0" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::Approximation</scope><name>~Approximation</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

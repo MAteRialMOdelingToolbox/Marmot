@@ -1,380 +1,452 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.13.2" xml:lang="en-US">
-  <compound refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper" kind="class"><name>Marmot::NumericalAlgorithms::AdaptiveSubstepper</name>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1ae329ee6fb835483510c2d0894fc36e35" kind="enum"><name>SubsteppingState</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1ae329ee6fb835483510c2d0894fc36e35a6c5c63499b21736ded30de62c0605fb1" kind="enumvalue"><name>FullStep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1ae329ee6fb835483510c2d0894fc36e35a1018465bef20c37ad010767e4a77a883" kind="enumvalue"><name>FirstHalfStep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1ae329ee6fb835483510c2d0894fc36e35ad3a424e544a16ee64df023b8237b4cd9" kind="enumvalue"><name>SecondHalfStep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a586e986d4cc9a228232e4e27b4cc175a" kind="typedef"><name>TangentSizedMatrix</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a35849a3b7625b1e878989c3802f76023" kind="typedef"><name>IntegrationStateVector</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a8dbf12d6402f6bc15cb4b7bb0a42f642" kind="variable"><name>initialStepSize</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1ac46c65467fb10a173f3aae401703a82c" kind="variable"><name>minimumStepSize</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1aa66fce8012deaf0cc2fe6b55c28a532b" kind="variable"><name>maxScaleUpFactor</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a165555be9d61400aafbae546045495fe" kind="variable"><name>scaleDownFactor</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a485fc847b25f45867ebfa9c333079328" kind="variable"><name>integrationErrorTolerance</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a1652c5300ba9396086d274daeae8200b" kind="variable"><name>nPassesToIncrease</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1afa02f2a2e37f3108c7d5d6dcf0900f2e" kind="variable"><name>ignoreErrorToleranceOnMinimumStepSize</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1af9abba392972ca1c77dafbd93a31a69d" kind="variable"><name>currentProgress</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a037bbe7771a9e3969d0105b6340bb715" kind="variable"><name>currentSubstepSize</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a2e63421a8623e4618763c5f188263eb4" kind="variable"><name>passedSubsteps</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a514ec174a061deb39da60185b7260738" kind="variable"><name>substepIndex</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a30b93bd0f677eba9858244374698fea6" kind="variable"><name>stressProgress</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a97c42e3c1c02ebc0068b265f298df84d" kind="variable"><name>stateProgress</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a305f7b7fa12e33835419569dde766c57" kind="variable"><name>consistentTangentProgress</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a0e8f0a4b0dfb81ba581f91217050d63b" kind="variable"><name>stressProgressHalfTemp</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1aeeb4a41cfbdc3496df658a3a6e3c3c40" kind="variable"><name>stressProgressFullTemp</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a43f936b2c3c2ebe83150b4e5d2cd06ca" kind="variable"><name>stateProgressHalfTemp</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a64964b07ac5f9b9ad472d37cc7edbe15" kind="variable"><name>stateProgressFullTemp</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a4708de71d4dc94b8771db5dedaf97dc9" kind="variable"><name>consistentTangentProgressHalfTemp</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a788173c628bdffebfaf9fb54d7363b81" kind="variable"><name>consistentTangentProgressFullTemp</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a5f5d66c60d5d12a7e6c5774c63155dca" kind="variable"><name>elasticTangent</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a1ed959a6a816f4b4d2fc979ef1344c37" kind="variable"><name>currentState</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1aeba40d83fd81b76dd1450acc9596d4ef" kind="function"><name>AdaptiveSubstepper</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a3737c55eb045f30a370101a86c62257d" kind="function"><name>setConvergedProgress</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1ae18579fd2d253cda7fafba63dfb43ca1" kind="function"><name>isFinished</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1ab572cf9f8cdd71ca07f9973cf843e472" kind="function"><name>getNextSubstep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1aae48f8954120c2b898ec0e6eaa6e14d5" kind="function"><name>getNumberOfSubsteps</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1aa813700ad8a367bda8da0875d94692d6" kind="function"><name>finishSubstep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a1b1071c0fc54dab6ba07a158bf6a9739" kind="function"><name>finishElasticSubstep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a980aa6046a1bd0e45984bd4661a472d9" kind="function"><name>discardSubstep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1ae94f73c8353b2a3f4fb6083979e21f9a" kind="function"><name>repeatSubstep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a23ed6b7499d6b23f1ea939b737cbbfdb" kind="function"><name>getConvergedProgress</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a9c327f7de90a76e9a942286e14f30074" kind="function"><name>getCurrentTangentOperator</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a9a791c11976d9da416b18385a1d597ec" kind="function"><name>getResults</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1ae126e57d71268f7e8012b06f44ca89eb" kind="function"><name>acceptSubstepWithFullStepOnly</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_1a751a7723ca4331da03ffcc58656efa29" kind="function"><name>splitCurrentSubstep</name></member>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.18.0" xml:lang="en-US">
+  <compound refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper" kind="class"><name>Marmot::ContinuumMechanics::Algorithms::AdaptiveSubstepper</name>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a4eb988a642d6e87d9ac6624b1a92e306" kind="enum"><name>SubsteppingState</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a4eb988a642d6e87d9ac6624b1a92e306a2f91f31fd46435ba2fc63977808d7318" kind="enumvalue"><name>FullStep</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a4eb988a642d6e87d9ac6624b1a92e306a8545d9d37a66bf5208bde53c6a135833" kind="enumvalue"><name>FirstHalfStep</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a4eb988a642d6e87d9ac6624b1a92e306a057296dbd437e26bc8da191d2b45eee6" kind="enumvalue"><name>SecondHalfStep</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a784a53e75fb895c96eb453096d8cf512" kind="typedef"><name>TangentSizedMatrix</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a3a39ed30a7d074c71105f90857472527" kind="typedef"><name>IntegrationStateVector</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1acc5926ece51f9d858e97bd447fb0df23" kind="variable"><name>initialStepSize</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1aa2fd2c6b1a5be47131ab862b6b92e95e" kind="variable"><name>minimumStepSize</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a3e809c47a6a47b853f4ea3a305ac76df" kind="variable"><name>maxScaleUpFactor</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a42ce1ff9b1979fa91b76e385f73c3f5b" kind="variable"><name>scaleDownFactor</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a92cbd0536fd2994e5c0916f3d630e6bb" kind="variable"><name>integrationErrorTolerance</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1accdeb417be14116fbb6fa8d9504855a4" kind="variable"><name>nPassesToIncrease</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1aba67085c80e9cef602fd2e1fb0181c0f" kind="variable"><name>ignoreErrorToleranceOnMinimumStepSize</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1aaa83ccb0592639adcc4f9329d95c3169" kind="variable"><name>currentProgress</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1ab4f6d42d162621ffd1610ae5cc3d7729" kind="variable"><name>currentSubstepSize</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1ae3e8a46235b6a1337a2747c0293a765a" kind="variable"><name>passedSubsteps</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a8014c8d049f0d1fa6d2c66bbf4c723df" kind="variable"><name>substepIndex</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a40b6401abdba9edd0e8b83b2d71d7542" kind="variable"><name>stressProgress</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1ab303e334a92405d9b2d802f0243aeaab" kind="variable"><name>stateProgress</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a7b0b0fe8b56398f33b5d8a1a8984eeff" kind="variable"><name>consistentTangentProgress</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1aefb9f51b9f15fb72d63fd16ada37040d" kind="variable"><name>stressProgressHalfTemp</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a36573acce1e4c74dadd4f43d03159f74" kind="variable"><name>stressProgressFullTemp</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a98224600c7094f2a51c409c46900aa41" kind="variable"><name>stateProgressHalfTemp</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1ac5345d74b2787c5b39c998ce5037e439" kind="variable"><name>stateProgressFullTemp</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a164ee5b4d9d392c05f7a3c4c113bfb9a" kind="variable"><name>consistentTangentProgressHalfTemp</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1adf105b55f0e5e0de74368397f6ed8280" kind="variable"><name>consistentTangentProgressFullTemp</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a72d6201f1a1a9119863abdc5308dfbf7" kind="variable"><name>elasticTangent</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1ae536252489b9d9a6f7c05e0ae186da43" kind="variable"><name>currentState</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1ad1930fbfc17ab81eebc4bbd3ac89abd0" kind="function"><name>AdaptiveSubstepper</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a2cfaf4c2ce7d9cf03b3ddaee56ce463b" kind="function"><name>setConvergedProgress</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a7259fcfbe3c6e6ac1ab904eff8cd5697" kind="function"><name>isFinished</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a8f858c5270df477c7ac4a411969a8fb7" kind="function"><name>getNextSubstep</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a5a65ee634aef332a449975c97409cc21" kind="function"><name>getNumberOfSubsteps</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a341bcf3e6d3bb7a6f6b52de82ad29bcf" kind="function"><name>finishSubstep</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a3cd5a6220708c505f2e5b0d67e578106" kind="function"><name>finishElasticSubstep</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1ac4cb93e244f55adcd749d1f517ceda63" kind="function"><name>discardSubstep</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1ac4e643a31c99176bcc66e32ece40b976" kind="function"><name>repeatSubstep</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a1de02648b2107ef7137e831bfe0a42ed" kind="function"><name>getConvergedProgress</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1aa143269a473ed518349ec999e423f0bb" kind="function"><name>getCurrentTangentOperator</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a8766730dcffb12d0e51ec2f8efcecde6" kind="function"><name>getResults</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a822d87234d7499c80d7c75c33e8a1039" kind="function"><name>acceptSubstepWithFullStepOnly</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_1a4004e279247b96be5a3fe97e834b4f6e" kind="function"><name>splitCurrentSubstep</name></member>
   </compound>
-  <compound refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit" kind="class"><name>Marmot::NumericalAlgorithms::AdaptiveSubstepperExplicit</name>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ae55a45bc7a4f7bfb0cd441bbd8db97b9" kind="enum"><name>SubsteppingState</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ae55a45bc7a4f7bfb0cd441bbd8db97b9ac23fac61657efb24e68f79676aa766d7" kind="enumvalue"><name>FullStep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ae55a45bc7a4f7bfb0cd441bbd8db97b9a681fdd75b0cda3b75a34477f7438b89e" kind="enumvalue"><name>FirstHalfStep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ae55a45bc7a4f7bfb0cd441bbd8db97b9acbd1ee0edf513366eb4e377e98594fc8" kind="enumvalue"><name>SecondHalfStep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a96a082b1d7c1fc3cf3a674e0d8cc8480" kind="typedef"><name>TangentSizedMatrix</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a18e757585a1694b5112c152b72641224" kind="typedef"><name>MatrixStateStrain</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ae7500cb5b84cedd58fb2e4526f7c92f3" kind="typedef"><name>IntegrationStateVector</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a1609c9587d364a95bfae3c1cf57b569a" kind="variable"><name>initialStepSize</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a8131c893168effa6c680c2278311b577" kind="variable"><name>minimumStepSize</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a6f7edfab60fc9994b0087668a88e7621" kind="variable"><name>maxScaleUpFactor</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a70fdca9effd945b3a38935bf618b5624" kind="variable"><name>scaleDownFactor</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ab15ef9282e559df2fecd124ad5272b03" kind="variable"><name>integrationErrorTolerance</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1aadc4b8b54be4c536a309fae0b006ade3" kind="variable"><name>nPassesToIncrease</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1af17614279095f8351a96edb4c749d470" kind="variable"><name>ignoreErrorToleranceOnMinimumStepSize</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a5eae7b38760044227e8087c4e6c36a7a" kind="variable"><name>Cel</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ac3f877be1dfd17ce5f0cbfa6d53f93cc" kind="variable"><name>currentProgress</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a7852f38203713d4c84446ed4dcaf192b" kind="variable"><name>currentSubstepSize</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1abbe236370d44ed528ac247de92ad0f75" kind="variable"><name>passedSubsteps</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1abea210af5f847b3293e1b9377b1e15f9" kind="variable"><name>substepIndex</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a4623ffc89ba02065b1da9163e6729177" kind="variable"><name>discardedDueToError</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ab5f1d2f889b673c58482483ec31968b1" kind="variable"><name>stressProgress</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1afbaa60dde4f1df4da1fec91b21dfbd65" kind="variable"><name>stateProgress</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1add10f15d7cbe0b26fec08c74930bf642" kind="variable"><name>consistentTangentProgress</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a81aad97c51acc09cf2607f179f267892" kind="variable"><name>stressProgressHalfTemp</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a34db0a103644d29a78d6431aced6200c" kind="variable"><name>stressProgressFullTemp</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a0d5da0e0f016eb9c67f196bcefb13402" kind="variable"><name>stateProgressHalfTemp</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a05bd9b581b7bf74db3a33a6631fcb3d1" kind="variable"><name>stateProgressFullTemp</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1aa70379e5458513a3694b56ef3d958500" kind="variable"><name>consistentTangentProgressHalfTemp</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1af4c8d5a3af9b1dc9b68aa785c82e1f21" kind="variable"><name>consistentTangentProgressFullTemp</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ae41ab06bdb0d7a1e70425b1f4d2c8bfe" kind="variable"><name>currentState</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a8d91f379631d3470ccc0e3a83be0eaa7" kind="function"><name>AdaptiveSubstepperExplicit</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a67e94909dab57567fc90b9dbdd1a2b2b" kind="function"><name>setConvergedProgress</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1afe8273759cc89f396699141dc032e45f" kind="function"><name>isFinished</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1aa42c04e599a415ba4cd7de151085b3dd" kind="function"><name>getNextSubstep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ae041e1ffe1aae505594a441c0b894c71" kind="function"><name>getNumberOfSubsteps</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a3a820809c2dde86e285f02d03aa46e18" kind="function"><name>getNumberDiscardedSubstepsDueToError</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ad3e90207057a3302b6b3b1cab8a5c286" kind="function"><name>finishSubstep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1aa951f4c37c4f806bd8c520e9d0401335" kind="function"><name>finishElasticSubstep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1ad48a4cabec5c265a71919669f6e9609f" kind="function"><name>discardSubstep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a4dd502a21030876c82e7a9553aed7d0b" kind="function"><name>repeatSubstep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a021e6ee2771a223b1cd5580be4af9cef" kind="function"><name>getConvergedProgress</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a39df4f3b78670b0c39407dcc0714c714" kind="function"><name>getCurrentTangentOperator</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a05e1f38f902b6ed3c11ab85c01a67c52" kind="function"><name>getResults</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a8be3ddca9558bfab339932178a055f62" kind="function"><name>IXX</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a6319a86418bf4bd799ee2207c4e07fd5" kind="function"><name>IX6</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1a4ff633691171774063c121f680addfa9" kind="function"><name>acceptSubstepWithFullStepOnly</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_adaptive_substepper_explicit_1aaa8c1fd4f13eb8ddb292f48c1706b503" kind="function"><name>splitCurrentSubstep</name></member>
+  <compound refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit" kind="class"><name>Marmot::ContinuumMechanics::Algorithms::AdaptiveSubstepperExplicit</name>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a96836a407e47e2805e083f88513bb772" kind="enum"><name>SubsteppingState</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a96836a407e47e2805e083f88513bb772a8271ce5081820e6dcaa122443e54f33a" kind="enumvalue"><name>FullStep</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a96836a407e47e2805e083f88513bb772ac343f3b1a6cd5c1025987eb7f8193b67" kind="enumvalue"><name>FirstHalfStep</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a96836a407e47e2805e083f88513bb772a47d265ece4d8ed67254c5ad74dba1834" kind="enumvalue"><name>SecondHalfStep</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1abb9d96b20b93732f34ed8da4597f0d7e" kind="typedef"><name>TangentSizedMatrix</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a27e7c6c88fce9e83863849021df3af87" kind="typedef"><name>MatrixStateStrain</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a5acfc08faae6032fcf0c946057fb4745" kind="typedef"><name>IntegrationStateVector</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1ad5b1a31734d427254302573da99301cf" kind="variable"><name>initialStepSize</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a75fb27336a43780466e0d7f90bab7b29" kind="variable"><name>minimumStepSize</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1aa7a7099c03ae8e66aa0b08f56b6a1726" kind="variable"><name>maxScaleUpFactor</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a9096ce52d8446e5357975d008dd9f0fd" kind="variable"><name>scaleDownFactor</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a95c84f250d97fbe12def1a15496675ae" kind="variable"><name>integrationErrorTolerance</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a3cc73ff988541815a09487844d2ea05b" kind="variable"><name>nPassesToIncrease</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a846cda715a96a409849d8182c0828ab5" kind="variable"><name>ignoreErrorToleranceOnMinimumStepSize</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a1011f06711e182b44b8f4f6f127c376e" kind="variable"><name>Cel</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1ad39010d075ee22727377ad4a2664064b" kind="variable"><name>currentProgress</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a0c96fd45f1871ed9d6d8a32ad722625d" kind="variable"><name>currentSubstepSize</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1ae9a315a44a4194fedd1c9d2774ba24c2" kind="variable"><name>passedSubsteps</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a74e6d8c1566e3046e46bf3e1139ef0aa" kind="variable"><name>substepIndex</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a64f5c00331598df72867a3436e440516" kind="variable"><name>discardedDueToError</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a578763ff66d126dce95f70c5405ccb5f" kind="variable"><name>stressProgress</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1ab618f1858dd71058598507abade54bb4" kind="variable"><name>stateProgress</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1abd0cc8146a18cee49deb3e9cda869756" kind="variable"><name>consistentTangentProgress</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a8b6841568cb73b564fb3814fab1389b7" kind="variable"><name>stressProgressHalfTemp</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a8d4510a9cb027668697feb1f8fa573ce" kind="variable"><name>stressProgressFullTemp</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1af550f00f84e2ba9b1c7fb5bb8b88c272" kind="variable"><name>stateProgressHalfTemp</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1ae125666c718c901febfafdd3c6e3c048" kind="variable"><name>stateProgressFullTemp</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1aa171cc9c2cbe41d0c8e99b236a873813" kind="variable"><name>consistentTangentProgressHalfTemp</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1ae1e6d44efe710ab0105aa4cab83aec98" kind="variable"><name>consistentTangentProgressFullTemp</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a469eb21c9939c0978742c24b1590ca35" kind="variable"><name>currentState</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a43f19cd865c4395282eea1e2941f6ca4" kind="function"><name>AdaptiveSubstepperExplicit</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a90d71e5e46576840ea94feaff3c312de" kind="function"><name>setConvergedProgress</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a6862a247c1a70350df5f99e4eb367db2" kind="function"><name>isFinished</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1abc6bfd5f5cb5b9e806804359db16eebf" kind="function"><name>getNextSubstep</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a8b15f2d9d7b50b38fa6e75ec2ae52b55" kind="function"><name>getNumberOfSubsteps</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a367d143f3aba715ae5d47b6d2d39a443" kind="function"><name>getNumberDiscardedSubstepsDueToError</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a96da19cfffd21d62e87f6acf8522e902" kind="function"><name>finishSubstep</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a35973986b6cb430399ac228a32ec19a7" kind="function"><name>finishElasticSubstep</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1afa6f5c36c3ecd53bbb4bb3a2568d3b0e" kind="function"><name>discardSubstep</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a18fa787e9afa2f7bd9e997ba27cb7b6a" kind="function"><name>repeatSubstep</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1ab709800b8a608529cf8bf79c24aa9021" kind="function"><name>getConvergedProgress</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1aa2f76441a17b7d54a3de4798ed976cb7" kind="function"><name>getCurrentTangentOperator</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1acc6af96050299badca4ed748ca5d1cf9" kind="function"><name>getResults</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a9363dd7bd454862110609f79910cbb9d" kind="function"><name>IXX</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1ad17bd97db9fbb791cb0257bf20514868" kind="function"><name>IX6</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a5fd6ebc3bf5cb994dad34ddf33384a98" kind="function"><name>acceptSubstepWithFullStepOnly</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit_1a9da9f00515ab256ae0dd563f38a37c7f" kind="function"><name>splitCurrentSubstep</name></member>
   </compound>
-  <compound refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity" kind="class"><name>Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity</name>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1ae2af85711baa602eae4d1900f62a5332" kind="typedef"><name>TangentSizedMatrix</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1a5bcf1ffacecee603485ae64c97cd0a1b" kind="variable"><name>viscosity</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1a96c647142dfe225d953258586962aac0" kind="function"><name>DuvautLionsViscosity</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1a5c3b16993b14335c654e530fbb509dac" kind="function"><name>applyViscosityOnStateVar</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1a87c566b6818bfbcbcd6266eb8395fe33" kind="function"><name>applyViscosityOnStress</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1a616ad6bb6d38671744209ca9dd0435e9" kind="function"><name>applyViscosityOnMatTangent</name></member>
+  <compound refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data" kind="struct"><name>Marmot::ContinuumMechanics::Microplane::Discretization::Data</name>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data_1ab834b6ee4f3d30429e025c3c3275446a" kind="variable"><name>normals</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data_1aa963a3c83eebe1da387c6f693c0636c7" kind="variable"><name>weights</name></member>
   </compound>
-  <compound refid="struct_marmot_1_1_materials_1_1_kelvin_chain_1_1_factorial" kind="struct"><name>Marmot::Materials::KelvinChain::Factorial</name>
-    <member refid="struct_marmot_1_1_materials_1_1_kelvin_chain_1_1_factorial_1aa3d0890d3d4777e7cd11f82963ee8aa4" kind="enum"><name>factorial</name></member>
-    <member refid="struct_marmot_1_1_materials_1_1_kelvin_chain_1_1_factorial_1aa3d0890d3d4777e7cd11f82963ee8aa4adcbcebce91098bce3d6da9bec5e41773" kind="enumvalue"><name>value</name></member>
+  <compound refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation" kind="struct"><name>Marmot::Materials::InterfaceMaterialHypoElastic::Deformation</name>
+    <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation_1a55af3155ccbcb453f31e750017945af3" kind="variable"><name>dU</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation_1ab582394da924d35f279a0cbf6ff6ee4a" kind="variable"><name>dSurfaceStrain</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation_1a03ced0aef988f6238fb44e8a14b951b2" kind="variable"><name>normal</name></member>
   </compound>
-  <compound refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates" kind="struct"><name>Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates</name>
-    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a2245136a4cde603f80c3289529b5ac76" kind="variable"><name>xi</name></member>
-    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a5817a1a0513fc95b11943afe2c51c32a" kind="variable"><name>rho</name></member>
-    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a479e94338e0892442f3864812d85165b" kind="variable"><name>theta</name></member>
+  <compound refid="class_marmot_1_1_continuum_mechanics_1_1_viscoplasticity_1_1_duvaut_lions_viscosity" kind="class"><name>Marmot::ContinuumMechanics::Viscoplasticity::DuvautLionsViscosity</name>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_viscoplasticity_1_1_duvaut_lions_viscosity_1ae2ffe9e3a8cd75f53ef2f299886c301e" kind="typedef"><name>TangentSizedMatrix</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_viscoplasticity_1_1_duvaut_lions_viscosity_1a8716f3996dfb0eb4b8cd92cdcf3f2f9f" kind="variable"><name>viscosity</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_viscoplasticity_1_1_duvaut_lions_viscosity_1ab6cbcd77354fc034e8a2c5aa00337a9e" kind="function"><name>DuvautLionsViscosity</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_viscoplasticity_1_1_duvaut_lions_viscosity_1a85a97a36a7c33f2d803e208ef980df44" kind="function"><name>applyViscosityOnStateVar</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_viscoplasticity_1_1_duvaut_lions_viscosity_1a18ff6820de7159f8b55104ca354dcfcc" kind="function"><name>applyViscosityOnStress</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_viscoplasticity_1_1_duvaut_lions_viscosity_1a7959f732a33a3682e38468dc1eac3d40" kind="function"><name>applyViscosityOnMatTangent</name></member>
   </compound>
-  <compound refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_history_entry" kind="struct"><name>Marmot::Solvers::MarmotMaterialPointSolverHypoElastic::HistoryEntry</name>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1a2293303e2719a49540d2af07dee17344" kind="variable"><name>time</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1a9d684b14d49b4a3b15621d7d8fe2d3e1" kind="variable"><name>stress</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1a4ec698f99edbd21e00cd0da032302b77" kind="variable"><name>strain</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1ab2ca945de75fc406f25d8b1929239700" kind="variable"><name>dStressdStrain</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1a3ba92f7ad6c29737e96622e751329022" kind="variable"><name>stateVars</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_history_entry_1a47581216c8b968b93b6113f5881d926c" kind="function"><name>print</name></member>
+  <compound refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates" kind="struct"><name>Marmot::ContinuumMechanics::Invariants::HaighWestergaard::HaighWestergaardCoordinates</name>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a7a3a59d03cf15effeb0d4487026bab37" kind="variable"><name>xi</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1ab81e7aadabe403f133041c06e876ea4d" kind="variable"><name>rho</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a36f88d2b5a48e39889c5d22742577bb6" kind="variable"><name>theta</name></member>
   </compound>
-  <compound refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget" kind="class"><name>Marmot::NumericalAlgorithms::HughesWinget</name>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a4c1745525d0d00c753f29f360feadf6b" kind="enum"><name>Formulation</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a4c1745525d0d00c753f29f360feadf6bab381181a5a40ab1478a89d988d4da33b" kind="enumvalue"><name>AbaqusLike</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a25ba24e4640afbbb8f0d55c8d06488dd" kind="variable"><name>theFormulation</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a6772d8d80fbdeccda47435a981e3b310" kind="variable"><name>l</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a7367bfbf40976fb125fc215544b68cdd" kind="variable"><name>dOmega</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a1be9bcb215c08a15c743a297d764b9f4" kind="variable"><name>dR</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a7372f05f4c6989f3feb1531697a523aa" kind="variable"><name>dEps</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1ac322eff7ab6d041fede8e9c90b06a04d" kind="function"><name>HughesWinget</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a624f64f6906e6c77d6d530535c8eabe7" kind="function"><name>getStrainIncrement</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a9ab00adf92045424b6833e55dd4ee12a" kind="function"><name>getRotationIncrement</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1ac6191d06f5b557554f8b258f97167ac5" kind="function"><name>rotateTensor</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a7bf152dc9ddb33de57020f7c3d61700d" kind="function"><name>compute_dS_dF</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_hughes_winget_1a06c423472fed8c7162da652972917ca5" kind="function"><name>compute_dScalar_dF</name></member>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_history_entry" kind="struct"><name>Marmot::Materials::MaterialPointSolverHypoElastic::HistoryEntry</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_history_entry_1a49d34753cd172a5a9fa96782b59306c1" kind="variable"><name>time</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_history_entry_1ae46472f86b4a2a3f4197c26da991ede5" kind="variable"><name>stress</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_history_entry_1a2e9115ea13592819f244d48ca12597d6" kind="variable"><name>strain</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_history_entry_1ad46dce2228b2993b80dd1c0ae8bf10a4" kind="variable"><name>dStressdStrain</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_history_entry_1a8343b771c9cb10bc2e4272a3f5daaf57" kind="variable"><name>stateVars</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_history_entry_1a95b84a992f42824df5b5db0000f38e54" kind="function"><name>print</name></member>
   </compound>
-  <compound refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_increment" kind="struct"><name>Marmot::Solvers::MarmotMaterialPointSolverHypoElastic::Increment</name>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_increment_1a729e153d5a259c2213eb944d82c0ca3e" kind="variable"><name>strainIncrement</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_increment_1a7aea541ad87c20031dc947cdddf353ba" kind="variable"><name>stressIncrement</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_increment_1a8be764409ee6c3313b7a67c13dcacf38" kind="variable"><name>isStrainComponentControlled</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_increment_1ac1d275fd302cb0d6508a2a3e09c31aab" kind="variable"><name>isStressComponentControlled</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_increment_1a7739513de5a2836d3184d4322b3a2c22" kind="variable"><name>timeOld</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_increment_1aad716a440abf3f676e03f80fd749726d" kind="variable"><name>dT</name></member>
+  <compound refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget" kind="class"><name>Marmot::ContinuumMechanics::Algorithms::HughesWinget</name>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a0f102665f59a8de0b3f0fb3b7f8f386c" kind="enum"><name>Formulation</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a0f102665f59a8de0b3f0fb3b7f8f386cac934cd17769f2dd944d86984f9691502" kind="enumvalue"><name>AbaqusLike</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a33639fa82ffd712f8928281c20bd061e" kind="variable"><name>theFormulation</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a610b77be2b98d846429ea1cff870ca7d" kind="variable"><name>l</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1af148999a4d345022908ce9ec137ebd18" kind="variable"><name>dOmega</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a365ca6f10adad389b6f90891a2b755a7" kind="variable"><name>dR</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1af563084359d01bc8a203b85c8795029e" kind="variable"><name>dEps</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1aaca51624d7d22c2f01dbcc776de1e6f0" kind="function"><name>HughesWinget</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1ad2f57d618dc8ad9475a8161dba7d16ab" kind="function"><name>getStrainIncrement</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a04243ae1cddbb00d24231a914fb9d8a2" kind="function"><name>getRotationIncrement</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a6fa68dce8f6c8dbf8bdbb4eba2b52153" kind="function"><name>rotateTensor</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a462f0ab824760c0cd51f52356c2643bd" kind="function"><name>compute_dS_dF</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1af0f9491f27f9c6f380c7355d0bbd25bd" kind="function"><name>compute_dScalar_dF</name></member>
   </compound>
-  <compound refid="class_marmot_material_hypo_elastic" kind="class"><name>MarmotMaterialHypoElastic</name>
-    <member refid="class_marmot_material_hypo_elastic_1a706a93d8061610826b9aaf79038f60ec" kind="variable"><name>materialProperties</name></member>
-    <member refid="class_marmot_material_hypo_elastic_1ace64e351bd6ba3e08c915b15888e994b" kind="variable"><name>nMaterialProperties</name></member>
-    <member refid="class_marmot_material_hypo_elastic_1a544a90b3429a5b52c5c3458bccbc4cbd" kind="variable"><name>materialNumber</name></member>
-    <member refid="class_marmot_material_hypo_elastic_1a9999e819720778a8168c8df32e09d958" kind="variable"><name>stateLayout</name></member>
-    <member refid="class_marmot_material_hypo_elastic_1af526ea494a3ba4d70de3be5d2d55b5a0" kind="variable"><name>characteristicElementLength</name></member>
-    <member refid="class_marmot_material_hypo_elastic_1a9d3a107e88311ad5aeda1948c54a3d7e" kind="function"><name>MarmotMaterialHypoElastic</name></member>
-    <member refid="class_marmot_material_hypo_elastic_1a50fdcfbf6d1e8321141d9a66804a65d7" kind="function"><name>~MarmotMaterialHypoElastic</name></member>
-    <member refid="class_marmot_material_hypo_elastic_1aee2d34ac568027969f668999154b4b20" kind="function"><name>setCharacteristicElementLength</name></member>
-    <member refid="class_marmot_material_hypo_elastic_1a12ab01041209b5e89836502ad40018b3" kind="function"><name>computeStress</name></member>
-    <member refid="class_marmot_material_hypo_elastic_1a312a9d1538e79e189ba6dbed2fa6d77a" kind="function"><name>computeStressExplicit</name></member>
-    <member refid="class_marmot_material_hypo_elastic_1a28a60ba5b01d5536853bd6c42d5a756d" kind="function"><name>computePlaneStress</name></member>
-    <member refid="class_marmot_material_hypo_elastic_1a89bbeb4be69cf9b037f0d77909280fd2" kind="function"><name>computeUniaxialStress</name></member>
-    <member refid="class_marmot_material_hypo_elastic_1a32d18c99729dabd8e0bed1ad853e01d3" kind="function"><name>getStateView</name></member>
-    <member refid="class_marmot_material_hypo_elastic_1ab74195ef389dbab4bd9222859fd2e730" kind="function"><name>getNumberOfRequiredStateVars</name></member>
-    <member refid="class_marmot_material_hypo_elastic_1ac38d9e0835bf325471ca11698ff058f0" kind="function"><name>initializeYourself</name></member>
-    <member refid="class_marmot_material_hypo_elastic_1a03f6899cd7331927cc98ad68d5a4d47a" kind="function"><name>getMaximumWaveSpeed</name></member>
-    <member refid="class_marmot_material_hypo_elastic_1a22deae189dd5b49be608c54e5364fca4" kind="function"><name>getDensity</name></member>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment" kind="struct"><name>Marmot::Materials::MaterialPointSolverHypoElastic::Increment</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment_1a17cf50df16582a2162e92ea2fa36e007" kind="variable"><name>strainIncrement</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment_1a3ef26a2051c1684315a8b7562565ec2e" kind="variable"><name>stressIncrement</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment_1a4d75ae77aa87dd6e0218993ea1151765" kind="variable"><name>isStrainComponentControlled</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment_1a9f425602fa196410dbf574660b3587ef" kind="variable"><name>isStressComponentControlled</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment_1a6c6731f256cc6473460dd1f052a904fa" kind="variable"><name>timeOld</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment_1a3f9a801620e616cfe80b2aab53fb1477" kind="variable"><name>dT</name></member>
   </compound>
-  <compound refid="class_marmot_material_hypo_elastic_a_d" kind="class"><name>MarmotMaterialHypoElasticAD</name>
-    <member refid="class_marmot_material_hypo_elastic_a_d_1a5c3e19a60ee5e75d41bd74b5c4452a17" kind="function"><name>computeStressAD</name></member>
-    <member refid="class_marmot_material_hypo_elastic_a_d_1a0e9ccf3ea4764526ef87a933a2575ea1" kind="function"><name>computeStress</name></member>
-    <member refid="class_marmot_material_hypo_elastic_a_d_1a9d3a107e88311ad5aeda1948c54a3d7e" kind="function"><name>MarmotMaterialHypoElastic</name></member>
+  <compound refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic" kind="class"><name>Marmot::Materials::InterfaceMaterialHypoElastic</name>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1afddbbba8effd91c8da1077774455603b" kind="typedef"><name>Tensor3d</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a053563d78e4d48c52d59b2af828137b3" kind="typedef"><name>Tensor33d</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1aee86ca94b641b0368ee6bea9bbffebd1" kind="typedef"><name>Tensor333d</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a2e56ab744ffa60d3a47702d951dc9a67" kind="typedef"><name>Tensor3333d</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1ac94fa407decc32f4b7ddca371d0c2eb8" kind="typedef"><name>Tensor6d</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1aa23ac900b9e3c559bd2b03c12ae2a9a6" kind="typedef"><name>Tensor18d</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a27078f2795fb77da5670bea5ee605473" kind="variable"><name>materialProperties</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a9e4c9b0cc0e7b3344816c61a59462d59" kind="variable"><name>nMaterialProperties</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a106b4072d2728e2d9139f2236bd3ff39" kind="variable"><name>h</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a65d34cfa5c362fff63ce9b16b6e21b7f" kind="variable"><name>baseMaterialProperties</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a48ff992c63683201c2f568b66203c145" kind="variable"><name>baseMaterial</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1ab0b520ff001e99de5a4ac1727efe1a1b" kind="variable"><name>materialNumber</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1abc695685169b91e3d008a7f08ca72582" kind="variable"><name>stateLayout</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a966de380024ecf13c8a7973b9e04198f" kind="variable"><name>characteristicElementLength</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a1aabf93e8d5a72bc66307b40528d56e2" kind="function"><name>InterfaceMaterialHypoElastic</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1aaf5707f7998e5c42351de5d5faf1fc62" kind="function"><name>~InterfaceMaterialHypoElastic</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a5856cb1d260014c6a3883cf2cfcf6705" kind="function"><name>setCharacteristicElementLength</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a448ed0e8c582e512339fb1cb356c0a7a" kind="function"><name>computeStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a2109bf1e5deaeffb84ce4c060946188a" kind="function"><name>getStateView</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a3498421ee3b9a270dd16737eafdcc520" kind="function"><name>getNumberOfRequiredStateVars</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a2e2a5bf398f389949f8bc6d5125f7bcd" kind="function"><name>initializeYourself</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a065bd1b6c4d4a37c1323a700656df965" kind="function"><name>getDensity</name></member>
   </compound>
-  <compound refid="class_marmot_library_1_1_marmot_material_hypo_elastic_factory" kind="class"><name>MarmotLibrary::MarmotMaterialHypoElasticFactory</name>
-    <member refid="class_marmot_library_1_1_marmot_material_hypo_elastic_factory_1affbaeb908e44721a19f999d6076f5a0e" kind="typedef"><name>materialFactoryFunction</name></member>
-    <member refid="class_marmot_library_1_1_marmot_material_hypo_elastic_factory_1a82159f8bbd7f9a9f8e7b69bdda4da7b1" kind="typedef"><name>MaterialFactoryMap</name></member>
-    <member refid="class_marmot_library_1_1_marmot_material_hypo_elastic_factory_1a28000824e50184c554e614180e1a9b40" kind="function"><name>MarmotMaterialHypoElasticFactory</name></member>
-    <member refid="class_marmot_library_1_1_marmot_material_hypo_elastic_factory_1ac4636e1446f8805ccea1ec3ea8a068b5" kind="function"><name>createMaterial</name></member>
-    <member refid="class_marmot_library_1_1_marmot_material_hypo_elastic_factory_1a6538d2f9a5e8dafc1ce0dbaab3878869" kind="function"><name>registerMaterial</name></member>
-    <member refid="class_marmot_library_1_1_marmot_material_hypo_elastic_factory_1a105638b7a56f4c8b51b1e89ba9f56c9a" kind="function"><name>materialFactoryFunctionByName</name></member>
+  <compound refid="class_marmot_1_1_materials_1_1_material_hypo_elastic" kind="class"><name>Marmot::Materials::MaterialHypoElastic</name>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1adf0ade286e4f719e96d12335300fef1f" kind="variable"><name>materialProperties</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1ad60cf8c1082de3224a85d7885f616062" kind="variable"><name>nMaterialProperties</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1a0f9ce72c586d12286e8c5e9660f69500" kind="variable"><name>materialNumber</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1a0fd77a4cc730ef2445dd52a895464a04" kind="variable"><name>stateLayout</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1a7000dd6ed0cbe88c29158f13dc140ece" kind="variable"><name>characteristicElementLength</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1aecc62950e734858fd5a48b2c79f9620c" kind="function"><name>MaterialHypoElastic</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1abfcc93f884864e3f6744ee5db779e988" kind="function"><name>~MaterialHypoElastic</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1a1be16f55bc04e9928a8a6e7d73c7941e" kind="function"><name>setCharacteristicElementLength</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1af7065b0795b68e6010b1e313ee962b7e" kind="function"><name>computeStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1ad324598bc782a3c4401b7371b73fe675" kind="function"><name>computeStressExplicit</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1a88adc93e02091a821ee9e3049faf2c2a" kind="function"><name>computePlaneStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1abcb057a3f2d7c917058320792ae64416" kind="function"><name>computeUniaxialStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1acb4501a1200b25c9aa11a5de4966912e" kind="function"><name>getStateView</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1afc038e4f4ca974dfe22727fc82eafc57" kind="function"><name>getNumberOfRequiredStateVars</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1ae23273e1dbdcb870ff86abc0ad686d36" kind="function"><name>initializeYourself</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1a1b06c2f83f1a7bc53b008a503d856352" kind="function"><name>getMaximumWaveSpeed</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_1ad5c74cc37accb172fe25e0d437fb9def" kind="function"><name>getDensity</name></member>
   </compound>
-  <compound refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic" kind="class"><name>Marmot::Solvers::MarmotMaterialPointSolverHypoElastic</name>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1ac3f81dfeb7019abe292b2f156078ba1a" kind="variable"><name>material</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1acc707b7cf671e6540d6c33eebd4b54d8" kind="variable"><name>nStateVars</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1ad62833955cfba2066c5dac7969e83dd8" kind="variable"><name>stateVars</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1a8886a87efa3f19e385c3c7dbf5376e32" kind="variable"><name>_initialStateVars</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1a657fae10601f39a43caf42f4b7f9d373" kind="variable"><name>stateVarsTemp</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1a12c71acf56f5e8f4fe147c77fa409f10" kind="variable"><name>stress</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1a562cc9f1eb6aef707e83c3330ed7a912" kind="variable"><name>_initialStress</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1a5526704d05f6582169e4755c04a72a5a" kind="variable"><name>strain</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1a35a590c9f5ae88818566ddcabcb39a26" kind="variable"><name>dStressDStrain</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1aa147c9eea5aff83554674d8800ac98db" kind="variable"><name>steps</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1a84965c2a3041897c1a4cb945ead74466" kind="variable"><name>history</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1ad7d8b54e220fb5f5ff02bd7c282bc7b3" kind="variable"><name>options</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1ae7cbc4242ef9eb5d0e4927824e1341c7" kind="function"><name>MarmotMaterialPointSolverHypoElastic</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1a7470885b96d50f10b91702127316b97e" kind="function"><name>addStep</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1a52e26a95b3452f211303cca41a735f70" kind="function"><name>getSteps</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1a1a12abab1ad9c7c4845387d615edfb85" kind="function"><name>clearSteps</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1a912f4092333b2805823e78fd832b5486" kind="function"><name>setInitialState</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1aa89ce91f213151ca9bb0e060f94f3636" kind="function"><name>getNumberOfStateVariables</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1a716018a14f68bfdc0f8f77e8ff2a0d1d" kind="function"><name>resetToInitialState</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1ab07a081c73a9d421c1416cb98352b027" kind="function"><name>solve</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1a646436cc59d59a087bab3c0cf5228681" kind="function"><name>getHistory</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1a113a55543d6402c947d5385ddb0f3c6d" kind="function"><name>clearHistory</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1a847bc772ac669ac96d647ec9ae8df4f1" kind="function"><name>printHistory</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1acf195c916ef05e2a8beff1b4f534b81b" kind="function"><name>exportHistoryToCSV</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1a4826a57f2efd58265cfb0b6ba92954dd" kind="function"><name>solveStep</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1a0aaf7bafa309d04a99f951bb77e84f98" kind="function"><name>solveIncrement</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1ab0b96617415d15af7ee9d6293da0c641" kind="function"><name>computeResidual</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1a5b7fbd99a8281b8fb6740f1358aadda7" kind="function"><name>modifyTangent</name></member>
+  <compound refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_a_d" kind="class"><name>Marmot::Materials::MaterialHypoElasticAD</name>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1a2154ed011df797e6ca2eaf47b51af4ad" kind="function"><name>computeStressAD</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1aa74b99ef21ed3845df34214952a71641" kind="function"><name>computeStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1aecc62950e734858fd5a48b2c79f9620c" kind="function"><name>MaterialHypoElastic</name></member>
   </compound>
-  <compound refid="class_marmot_state_var_vector_manager" kind="class"><name>MarmotStateVarVectorManager</name>
-    <member refid="class_marmot_state_var_vector_manager_1ae1e781d5051d5c858692be57f9a1277e" kind="variable"><name>theStateVars</name></member>
-    <member refid="class_marmot_state_var_vector_manager_1a979b9f2881a9a9f70b3894960a654058" kind="variable"><name>theLayout</name></member>
-    <member refid="class_marmot_state_var_vector_manager_1aceff39cdfe989dc92a65a35b6a0202b2" kind="function"><name>getStateView</name></member>
-    <member refid="class_marmot_state_var_vector_manager_1ad8bf865c6eb13081e0fea4d70eb1f989" kind="function"><name>find</name></member>
-    <member refid="class_marmot_state_var_vector_manager_1ad9ba60397f263318324192ce1fe81746" kind="function"><name>contains</name></member>
-    <member refid="class_marmot_state_var_vector_manager_1a82db8384f80aa3ba337203e6f769ad84" kind="function"><name>makeLayout</name></member>
-    <member refid="class_marmot_state_var_vector_manager_1a97534e3961835baf08ff7878e492611d" kind="function"><name>MarmotStateVarVectorManager</name></member>
+  <compound refid="class_marmot_1_1_registry_1_1_material_hypo_elastic_factory" kind="class"><name>Marmot::Registry::MaterialHypoElasticFactory</name>
+    <member refid="class_marmot_1_1_registry_1_1_material_hypo_elastic_factory_1a20a5bea29c6772fbfccd1dfa3075540b" kind="typedef"><name>materialFactoryFunction</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_hypo_elastic_factory_1ae216f31920b28cad0c21aae82c5368a2" kind="typedef"><name>MaterialFactoryMap</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_hypo_elastic_factory_1a308d73c7ae6eafcace7ab19e1f34bcdc" kind="function"><name>MaterialHypoElasticFactory</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_hypo_elastic_factory_1af4f7f7256b4e287a4681e4a11ab2d5d5" kind="function"><name>createMaterial</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_hypo_elastic_factory_1aba0ace89300dbd663ae0f47f42ffc201" kind="function"><name>registerMaterial</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_hypo_elastic_factory_1a4d219f2e8fa9e4545f53382fee93624b" kind="function"><name>materialFactoryFunctionByName</name></member>
   </compound>
-  <compound refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam" kind="class"><name>Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam</name>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1aee31f28f31786081f5eed39684e0d13e" kind="enum"><name>MenetreyWillamType</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1aee31f28f31786081f5eed39684e0d13ea49cb105243e7fdf66099714c60355f90" kind="enumvalue"><name>Mises</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1aee31f28f31786081f5eed39684e0d13ea22ebae77a156b83cd52c31ffe36659e4" kind="enumvalue"><name>Rankine</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1aee31f28f31786081f5eed39684e0d13eab8e760502ad9eed0d63818e060313ad0" kind="enumvalue"><name>DruckerPrager</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1aee31f28f31786081f5eed39684e0d13eac61fd18636fa03149662bebe67f7e38f" kind="enumvalue"><name>MohrCoulomb</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a2e382a19d9516b3569857a142b88151a" kind="variable"><name>param</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a8ee143cb61db234593e2eeec70748bf7" kind="function"><name>MenetreyWillam</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a995459659e174b5cedc31adc02a0f708" kind="function"><name>setParameters</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a3ade49f99ffbbd015f920f20d4a62af2" kind="function"><name>polarRadius</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a5d358b2889e8ad693043f1e7a8617bdb" kind="function"><name>dPolarRadius_dTheta</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a901c05dc72df2e3e9ee027aeba4fbe80" kind="function"><name>yieldFunction</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a1349a9d288bda6205d42fecacfee5fa0" kind="function"><name>dYieldFunction_dHaighWestergaard</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a746a9b4abb21ced264feb66a16a8b341" kind="function"><name>polarRadius</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a4345f2cf3aa0b78579ae6a778acdb1af" kind="function"><name>dPolarRadius_dTheta</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1ad641e370821d42158d53517fffeb7142" kind="function"><name>d2PolarRadius_dTheta2</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a32841026833c72581b33e4382f0e9cf2" kind="function"><name>abaqusMohrCoulombPotentialVarEpsToMenetreyWillam</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a9575c86015d34dc830a80260733068f9" kind="function"><name>e</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1abd3d40fc494ae13b2c49ddc1070d6290" kind="function"><name>c</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a4804c0380beab98aba8dbd67789ed1ea" kind="function"><name>phi</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1a5515f9b917927018cefd5515c8877dff" kind="function"><name>ft</name></member>
-    <member refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1ab2a1ca168ea4b5b2570220349548cfa1" kind="function"><name>fc</name></member>
+  <compound refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic" kind="class"><name>Marmot::Materials::MaterialPointSolverHypoElastic</name>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1a1039785cd6f144c6510bcc1a1adb2786" kind="variable"><name>material</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1a5d82b78ea0f19f9c5cab5864fff05350" kind="variable"><name>nStateVars</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1abca8d3a2ca54b695b008d4b73a0a4d11" kind="variable"><name>stateVars</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1a631f0ff80483df22c5c324ab275c02da" kind="variable"><name>_initialStateVars</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1a39317c1b5af3046bb2495f9af2af06cb" kind="variable"><name>stateVarsTemp</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1a22a6df5ec1829b13d78b926fba8fb192" kind="variable"><name>stress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1ae619cd0a7c8ad7f1f28c15ca91f569b6" kind="variable"><name>_initialStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1a39ff6702395c78faf5469c3e8891a03d" kind="variable"><name>strain</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1aba349d2dff83c88023e3cd977857d9b0" kind="variable"><name>dStressDStrain</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1ab216925e86a074b3b74ffeb526e285bc" kind="variable"><name>steps</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1adec2b3c5e367672b63727ca10b06a57e" kind="variable"><name>history</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1a8bca4ecacd3a85fba4018787d021c182" kind="variable"><name>options</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1a5cacccc0c43b9a84c813819d73b76a49" kind="function"><name>MaterialPointSolverHypoElastic</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1ab74a7d51bf58f1a257423c9888339ff6" kind="function"><name>addStep</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1ada602745c61b26fa9c7b258de4481687" kind="function"><name>getSteps</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1abfb98bb7169cba9a16be6f9e7a1fa73e" kind="function"><name>clearSteps</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1ac145d1c9cea1a9929564cd8858eedd19" kind="function"><name>setInitialState</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1a027ad1768f00a2096a3e843129b038b4" kind="function"><name>getNumberOfStateVariables</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1a2f8aef45ade66b0bf4b38251d1347bc4" kind="function"><name>resetToInitialState</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1a4c185b5588e08f1fb483aefb18f634d0" kind="function"><name>solve</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1ac171418eba7cdf7eed0e19ea19088ff8" kind="function"><name>getHistory</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1a01d9de724092aced44d8f49610c4674a" kind="function"><name>clearHistory</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1a9e5a61d6ab1bd1fe307a46d18df97ecc" kind="function"><name>printHistory</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1a6fd327960b22079e3b575ba6e79f9ae9" kind="function"><name>exportHistoryToCSV</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1a5dfe1f0938a0bb31ee17de1035d72753" kind="function"><name>solveStep</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1a67bccd54442833addb11cb5a494af88b" kind="function"><name>solveIncrement</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1a6fae75009f14b6a3940437ec27657f17" kind="function"><name>computeResidual</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1a5f1fd71689bdfdab136e259c01479b42" kind="function"><name>modifyTangent</name></member>
   </compound>
-  <compound refid="struct_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1_1_menetrey_willam_parameters" kind="struct"><name>Marmot::ContinuumMechanics::CommonConstitutiveModels::MenetreyWillam::MenetreyWillamParameters</name>
-    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1aff38ed242edbdb66c5160a122d6d4e38" kind="variable"><name>Af</name></member>
-    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1aea58c0f33280a7cb9b98f1c7ae560960" kind="variable"><name>Bf</name></member>
-    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1a503531748cf305e6c3cde0132cb69509" kind="variable"><name>Cf</name></member>
-    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1a39fa28871a18188b43ba0028e23cd381" kind="variable"><name>m</name></member>
-    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1a401a2118a507a313abc8fdc932d6fff0" kind="variable"><name>e</name></member>
+  <compound refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam" kind="class"><name>Marmot::ContinuumMechanics::Plasticity::MenetreyWillam</name>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a6c6fe56d9f9dc2a50053138891110efb" kind="enum"><name>MenetreyWillamType</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a6c6fe56d9f9dc2a50053138891110efba49cb105243e7fdf66099714c60355f90" kind="enumvalue"><name>Mises</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a6c6fe56d9f9dc2a50053138891110efba22ebae77a156b83cd52c31ffe36659e4" kind="enumvalue"><name>Rankine</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a6c6fe56d9f9dc2a50053138891110efbab8e760502ad9eed0d63818e060313ad0" kind="enumvalue"><name>DruckerPrager</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a6c6fe56d9f9dc2a50053138891110efbac61fd18636fa03149662bebe67f7e38f" kind="enumvalue"><name>MohrCoulomb</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a405e5ba37067dc5e989ec3cad8e58551" kind="variable"><name>param</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a87bac01063643ad90e6b4f62a5148167" kind="function"><name>MenetreyWillam</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a2bda65657aae410c6560ac8e19893bee" kind="function"><name>setParameters</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a13dd19b4210dec392f7c44aebf8f47b4" kind="function"><name>polarRadius</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a9bed2ec034f3294e5c8a9b5ab883fbc3" kind="function"><name>dPolarRadius_dTheta</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1ad834aeae7a068c36430e4e16057c896f" kind="function"><name>yieldFunction</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1af21ccd2c5bb8ea667449e59e2a9309f1" kind="function"><name>dYieldFunction_dHaighWestergaard</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a901b4a482e1ad3b9c12d7fcbdac8d68b" kind="function"><name>polarRadius</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a088eac1bc94669643829fdbece9b3a5f" kind="function"><name>dPolarRadius_dTheta</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a26e7bbe7d415166a3e49e8170ddb13bf" kind="function"><name>d2PolarRadius_dTheta2</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a8aa0548144e4244d5d6ae123403ef74a" kind="function"><name>abaqusMohrCoulombPotentialVarEpsToMenetreyWillam</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a2313c83696de40e6637eb81d4341b611" kind="function"><name>e</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a00550bcd078c4819ab9139c930e9f328" kind="function"><name>c</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a19aeec9bd1b18ca9ae396f079e0a194a" kind="function"><name>phi</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1ad7ff1f710cb1ffccdfe1779aae430292" kind="function"><name>ft</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1a474a7e7c70acd233aa26ea1b850d47e1" kind="function"><name>fc</name></member>
   </compound>
-  <compound refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper" kind="class"><name>Marmot::NumericalAlgorithms::PerezFougetSubstepper</name>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a07cb6783734291b38b62c49bfd7a5e6a" kind="typedef"><name>TangentSizedMatrix</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a6a77df643fc3d9b6fa89aed8d134ef95" kind="variable"><name>initialStepSize</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1adf08d8d200ad249f7adc96a458eef2b3" kind="variable"><name>minimumStepSize</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ab6e8fa58fef203d923abe32c30745359" kind="variable"><name>scaleUpFactor</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a92d0782a57869d64f02f63584c6f6d3f" kind="variable"><name>scaleDownFactor</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a31aa1abea64f53637d58b3541fc04692" kind="variable"><name>nPassesToIncrease</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a67da42d150331a4781aa431ef93c8c2e" kind="variable"><name>currentProgress</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a12d313ee1b5010d70770ae7526e3f155" kind="variable"><name>currentSubstepSize</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a2dfbac2e6378980dbe2f9f23adc680f4" kind="variable"><name>passedSubsteps</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ad2362eda57a283ca38d1d22e04840726" kind="variable"><name>Cel</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ab24aa3c3d0470c7851f721c8fb646a89" kind="variable"><name>consistentTangent</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a7c6b5868526644f901d726266ff009cc" kind="function"><name>PerezFougetSubstepper</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ab79e7997a4c056372aa793abe3edb331" kind="function"><name>isFinished</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ab9e4415b529945859a03232c6675e56a" kind="function"><name>getNextSubstep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a675949cac7e8de8b343000c7c4b91ef8" kind="function"><name>decreaseSubstepSize</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a27d20da83471ab632ed120d0b05253cc" kind="function"><name>finishElasticSubstep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1ad4745a53ae0319643c8c9f3702d7f095" kind="function"><name>finishSubstep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_1a17135fceb4273dc853477269e69c7cec" kind="function"><name>consistentStiffness</name></member>
+  <compound refid="struct_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1_1_menetrey_willam_parameters" kind="struct"><name>Marmot::ContinuumMechanics::Plasticity::MenetreyWillam::MenetreyWillamParameters</name>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1a60166ddc6ecd65d4b18f16c22ef0bda1" kind="variable"><name>Af</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1aa00a8c65d8f8e249db2e3345a92033a4" kind="variable"><name>Bf</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1a565d88d8ea1a3d0c0f2beca5b914c106" kind="variable"><name>Cf</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1ab871335d1bea1a92fe2a55daee0033b6" kind="variable"><name>m</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1a865ea7beb1e3b70d767060bff0101b8e" kind="variable"><name>e</name></member>
   </compound>
-  <compound refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time" kind="class"><name>Marmot::NumericalAlgorithms::PerezFougetSubstepperTime</name>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a23be08b0fe87e7231e213b0daed44454" kind="typedef"><name>TangentSizedMatrix</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a43bbca3b43338dc1e65991ebc3ddc42f" kind="variable"><name>initialStepSize</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a365091690f04a2f2f2e1e1b57515e7c8" kind="variable"><name>minimumStepSize</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1ab80ed2f5f2dfc18f87d7b7631f992f9f" kind="variable"><name>scaleUpFactor</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1ae04f37932c2016df535116d80f1d088c" kind="variable"><name>scaleDownFactor</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1ad02efecc6d9208b1733918bfc0c1b493" kind="variable"><name>nPassesToIncrease</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1afaff708d5ae264800554573b6a2afd7b" kind="variable"><name>currentProgress</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a6c59795e24877c10121239e12fec1bcc" kind="variable"><name>currentSubstepSize</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1ad48d70e79239d90af2654fdfcfe3c442" kind="variable"><name>passedSubsteps</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a4a2df541281c687c06338e59a7eb8ab7" kind="variable"><name>elasticTangent</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1af26e1bd110a359e0052317bf3f3fe19d" kind="variable"><name>consistentTangent</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a00bf02f8bcb5d0606b87af3580ae2e23" kind="function"><name>PerezFougetSubstepperTime</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1ad1417a78711b373e5302e2eb5e69e2ed" kind="function"><name>isFinished</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1ae23ba91e98f2af28c1208073e7f5263e" kind="function"><name>getNextSubstep</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a0d3a5781c19d78ced33492ccfdbf016f" kind="function"><name>getFinishedProgress</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a6e51af86e66b75b90dac81804b9b7b59" kind="function"><name>decreaseSubstepSize</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1aae9eaf2b50e37019a7e2013e97ff3408" kind="function"><name>extendConsistentTangent</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1ae6984bb1edfd72c01f9e6a89b39c7e5b" kind="function"><name>extendConsistentTangent</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_perez_fouget_substepper_time_1a25c3a2956314a3b4dc25b9cf2f8c06d2" kind="function"><name>consistentStiffness</name></member>
+  <compound refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split" kind="class"><name>Marmot::ContinuumMechanics::Microplane::NTSplit</name>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a38749740a479f66216c6a5baa94672f5" kind="typedef"><name>nmp_sized</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a7eb1f19d4137a551c44ef2bdc5f7c173" kind="typedef"><name>nmp6_sized</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ac4c4bf30b23d1e109496ecd4328b7340" kind="variable"><name>nqp</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a47ec82902b03ef84633f1b19ef9f19d0" kind="variable"><name>pTensors</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a285fd05fdc2f210fe61caa68140bdf98" kind="function"><name>NTSplit</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ae32dc8189cbfce09adcf8dec27c140ef" kind="function"><name>homogenizeStress</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a8b54f86df9f3296595e3a0ccf1983508" kind="function"><name>homogenizeTangent</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1adeb7d41dd272dd34b53d77882b8d80e9" kind="function"><name>initiateSystem</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper" kind="class"><name>Marmot::ContinuumMechanics::Algorithms::PerezFougetSubstepper</name>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_1a152238b04bf2ddbbe0d14317a6c7109d" kind="typedef"><name>TangentSizedMatrix</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_1a8b048c68b89e061feabd22ac670dc579" kind="variable"><name>initialStepSize</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_1ac0a26436b31169abc7639672a55602b2" kind="variable"><name>minimumStepSize</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_1ad10a18dbbd1a4f928223394dd9d0ddf0" kind="variable"><name>scaleUpFactor</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_1a0a45eecd3ea6dd3d2876e3b95dbd7a1f" kind="variable"><name>scaleDownFactor</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_1a24d982f111a99bac962445d2baae95a9" kind="variable"><name>nPassesToIncrease</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_1a4d3f33d60ff4f48a8e7e79d354dbc5bc" kind="variable"><name>currentProgress</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_1ac1fd1c3b768e21af1e6b01d8bc021d3e" kind="variable"><name>currentSubstepSize</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_1affb724ab257e3436cab97cc6e45b4e07" kind="variable"><name>passedSubsteps</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_1a2cb3d06d41d0fa7dd2dee369bc4744eb" kind="variable"><name>Cel</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_1ac3ce687190c79de889edb392124d35e5" kind="variable"><name>consistentTangent</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_1ab696499a7b7d85ba4a779e9cbe6fceb1" kind="function"><name>PerezFougetSubstepper</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_1a7404cef5ccb0bccd120c48cfff404f59" kind="function"><name>isFinished</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_1afd9db301044ccdeb545874db8a8184c4" kind="function"><name>getNextSubstep</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_1a7032c212920af289a49979ac70dfedd5" kind="function"><name>decreaseSubstepSize</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_1a8d0cec9746746ff46f185d48e1401bac" kind="function"><name>finishElasticSubstep</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_1a02163cf150b153e1b11e7e33fe1ba779" kind="function"><name>finishSubstep</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_1a9f6a4731f36a106c7fc916c5380b60cb" kind="function"><name>consistentStiffness</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_time" kind="class"><name>Marmot::ContinuumMechanics::Algorithms::PerezFougetSubstepperTime</name>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_time_1aaefff05afb3bd76b5a35b9918ba56993" kind="typedef"><name>TangentSizedMatrix</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_time_1a7bfd9d2933304bf5905c240a22a98e31" kind="variable"><name>initialStepSize</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_time_1a93d4c3d4cadb1dc2a1a6d34fe537307e" kind="variable"><name>minimumStepSize</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_time_1a0da14814fb3e0faaae312c8e2919122b" kind="variable"><name>scaleUpFactor</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_time_1a241abb2d6d2549728a79e01fac9b20f0" kind="variable"><name>scaleDownFactor</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_time_1ad4efe42169128a23592b6988b37eff84" kind="variable"><name>nPassesToIncrease</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_time_1a93f105b87b0a82df2812764b52e06f92" kind="variable"><name>currentProgress</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_time_1ae51d9022dde747eaca1e984afa3874cd" kind="variable"><name>currentSubstepSize</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_time_1a234ebd1cdfc41727f6cb712f9d58fae1" kind="variable"><name>passedSubsteps</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_time_1adf5fa6fdda5bd1a81c9793b8fea73437" kind="variable"><name>elasticTangent</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_time_1ae58b1230fc49b526b2dee37c742df6bb" kind="variable"><name>consistentTangent</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_time_1a3ddc782f788a588a2a25d224b3d8085e" kind="function"><name>PerezFougetSubstepperTime</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_time_1ad603e9e1ee57b46857d95c747f42d70b" kind="function"><name>isFinished</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_time_1a50a9fa25cd97c407724e989f516e58f9" kind="function"><name>getNextSubstep</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_time_1a4c854e3485ee8038c3d9a0df8cab2641" kind="function"><name>getFinishedProgress</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_time_1ad0f95f59ee073eb7f4756ca98ebc9275" kind="function"><name>decreaseSubstepSize</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_time_1a5a79c49b7b53f6fb81da7c8b0df2806b" kind="function"><name>extendConsistentTangent</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_time_1a89181c9cca41795e6737b4c4efacd5eb" kind="function"><name>extendConsistentTangent</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_time_1ae551867bf208738f26cba649cacb375c" kind="function"><name>consistentStiffness</name></member>
+  </compound>
+  <compound refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors" kind="struct"><name>Marmot::ContinuumMechanics::Microplane::NTSplit::projectionTensors</name>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors_1a7c4d14f1ee614776e272d9a6339863ab" kind="variable"><name>N</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors_1ade9619c4b487939643fb9bc3fcdc0e63" kind="variable"><name>M</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors_1a165f333282827fb6c0e1e253238711b4" kind="variable"><name>L</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors_1a2e2fd7c62e070f2d931718c4808bf460" kind="variable"><name>w</name></member>
+  </compound>
+  <compound refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors" kind="struct"><name>Marmot::ContinuumMechanics::Microplane::VDSplit::projectionTensors</name>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a23d8ec887f3ed5f5d65ea8ca838a28a7" kind="variable"><name>Dev</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1ab05e5d7e0e5c7b0f4030b70698335488" kind="variable"><name>VolT</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a3dd8120ac7e5d892b7532e18d90adf0f" kind="variable"><name>Vol</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a6b15765548f2af578341a14ca30af59c" kind="variable"><name>w</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a5981583ac0b6c86122a143f1122a4601" kind="variable"><name>nMatrix</name></member>
   </compound>
   <compound refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties" kind="struct"><name>Marmot::ContinuumMechanics::Viscoelasticity::PronySeries::Properties</name>
     <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1a80c1544e808a4714e5fc21f0d320fd17" kind="variable"><name>nPronyTerms</name></member>
-    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1a050e4314ad75a330c5e3d900cf174681" kind="variable"><name>ultimateStiffnessMatrix</name></member>
-    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1ad990b0ecd8d393155fc5a071b97c511b" kind="variable"><name>pronyStiffnesses</name></member>
-    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1a9db95236961acffbd5473427921c9a70" kind="variable"><name>pronyRelaxationTimes</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1a70518e148d2a6199a9eef05901addcf6" kind="variable"><name>ultimateStiffnessMatrix</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1afc7977f46a8f5fe518ebe9482e62b9e0" kind="variable"><name>pronyStiffnesses</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series_1_1_properties_1a6939f9d752e12e4d375add165a3c0d98" kind="variable"><name>pronyRelaxationTimes</name></member>
   </compound>
-  <compound refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_solver_options" kind="struct"><name>Marmot::Solvers::MarmotMaterialPointSolverHypoElastic::SolverOptions</name>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_solver_options_1ae47b935ccf0f3305376188e7a9bfecfb" kind="variable"><name>maxIterations</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_solver_options_1aa89107d83625696dc82f59d03935c352" kind="variable"><name>residualTolerance</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_solver_options_1a072cdf1c05d702220a4d14331db31775" kind="variable"><name>correctionTolerance</name></member>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_solver_options" kind="struct"><name>Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_solver_options_1ab80f460c7f91f9be6caa55b6d37d29dc" kind="variable"><name>maxIterations</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_solver_options_1a3e0cee043b7060eae05848d817176e1f" kind="variable"><name>residualTolerance</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_solver_options_1ab3c1f0d8b485de075d1d0ba9fe4777ce" kind="variable"><name>correctionTolerance</name></member>
   </compound>
-  <compound refid="struct_marmot_material_hypo_elastic_1_1state1_d" kind="struct"><name>MarmotMaterialHypoElastic::state1D</name>
-    <member refid="struct_marmot_material_hypo_elastic_1_1state1_d_1a524a585621050214caf5cf254d8979d8" kind="variable"><name>stress</name></member>
-    <member refid="struct_marmot_material_hypo_elastic_1_1state1_d_1a7b6c804b12205f294608ed5a0c1506b6" kind="variable"><name>elasticEnergyDensity</name></member>
-    <member refid="struct_marmot_material_hypo_elastic_1_1state1_d_1aa68abb8a0317a88b5858e6f67abce3cb" kind="variable"><name>dissipation</name></member>
-    <member refid="struct_marmot_material_hypo_elastic_1_1state1_d_1a5242a55bce600e16efe459c7e34079bf" kind="variable"><name>stateVars</name></member>
-    <member refid="struct_marmot_material_hypo_elastic_1_1state1_d_1a23b72317252f460d50a15d3127db1a17" kind="function"><name>state1D</name></member>
+  <compound refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state" kind="struct"><name>Marmot::Materials::InterfaceMaterialHypoElastic::State</name>
+    <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state_1a91747d8ea48e78f32aebf1897de774ba" kind="variable"><name>force</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state_1a9fb076a93490374dd0fe948853f0b5b4" kind="variable"><name>surfaceStress</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state_1a6dc7692fc302112d8248db7de62acd60" kind="variable"><name>stateVars</name></member>
   </compound>
-  <compound refid="struct_marmot_material_hypo_elastic_1_1state2_d" kind="struct"><name>MarmotMaterialHypoElastic::state2D</name>
-    <member refid="struct_marmot_material_hypo_elastic_1_1state2_d_1a9ed8638afa629f76d62d24bf8f6c2bb0" kind="variable"><name>stress</name></member>
-    <member refid="struct_marmot_material_hypo_elastic_1_1state2_d_1ac3fa69fcaec8be248e0eba21c2decd05" kind="variable"><name>elasticEnergyDensity</name></member>
-    <member refid="struct_marmot_material_hypo_elastic_1_1state2_d_1ac45c35a5bd91e2747265c2894804434e" kind="variable"><name>dissipation</name></member>
-    <member refid="struct_marmot_material_hypo_elastic_1_1state2_d_1a8aba65c9d5397f820b75f73b59659662" kind="variable"><name>stateVars</name></member>
-    <member refid="struct_marmot_material_hypo_elastic_1_1state2_d_1afc259b292b98ce6dceb91c51c4592e1e" kind="function"><name>state2D</name></member>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state1_d" kind="struct"><name>Marmot::Materials::MaterialHypoElastic::state1D</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state1_d_1a5b7078e6e21fe8e81264e8469f03a041" kind="variable"><name>stress</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state1_d_1aa52650a9768ab135d8802542368af012" kind="variable"><name>elasticEnergyDensity</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state1_d_1a5f8f04a4cfeda646493ef2f90f0e3e34" kind="variable"><name>dissipation</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state1_d_1a4962f52a0c69881f84480df0236ad876" kind="variable"><name>stateVars</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state1_d_1aad1364e653ad364be8d9c7a4763d2370" kind="function"><name>state1D</name></member>
   </compound>
-  <compound refid="struct_marmot_material_hypo_elastic_1_1state3_d" kind="struct"><name>MarmotMaterialHypoElastic::state3D</name>
-    <member refid="struct_marmot_material_hypo_elastic_1_1state3_d_1aa339c8c189f13abf9738238d944ca4eb" kind="variable"><name>stress</name></member>
-    <member refid="struct_marmot_material_hypo_elastic_1_1state3_d_1aa57eb81d7fafa557a75a804239393da3" kind="variable"><name>elasticEnergyDensity</name></member>
-    <member refid="struct_marmot_material_hypo_elastic_1_1state3_d_1a13e986aafc9614e9dee5972abd6c8674" kind="variable"><name>dissipation</name></member>
-    <member refid="struct_marmot_material_hypo_elastic_1_1state3_d_1aa5bb5718c5902c7dba5761cb15af5536" kind="variable"><name>stateVars</name></member>
-    <member refid="struct_marmot_material_hypo_elastic_1_1state3_d_1a235119b08169c3ee27c2069ec4c5e83f" kind="function"><name>state3D</name></member>
-    <member refid="struct_marmot_material_hypo_elastic_1_1state3_d_1a24ee9d560121fb858e1c8b9f345e574a" kind="function"><name>state3D</name></member>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state2_d" kind="struct"><name>Marmot::Materials::MaterialHypoElastic::state2D</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state2_d_1a08013e88b395fa2f124cd001f80aebc0" kind="variable"><name>stress</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state2_d_1a6dc50ff25635c4f4fa890d324fad5569" kind="variable"><name>elasticEnergyDensity</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state2_d_1a958bac9f5d973c83e4a025035e08fda3" kind="variable"><name>dissipation</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state2_d_1aaf696a6c105d361884a402f42c0ce6b3" kind="variable"><name>stateVars</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state2_d_1a0b10a2cba78e99e3b0df5fe443822430" kind="function"><name>state2D</name></member>
   </compound>
-  <compound refid="struct_marmot_material_hypo_elastic_a_d_1_1state3_d_a_d" kind="struct"><name>MarmotMaterialHypoElasticAD::state3DAD</name>
-    <member refid="struct_marmot_material_hypo_elastic_a_d_1_1state3_d_a_d_1a8fd1312f4e72fcf4c24fee8c4b8153bb" kind="variable"><name>stress</name></member>
-    <member refid="struct_marmot_material_hypo_elastic_a_d_1_1state3_d_a_d_1acdb96f4bc3e55c56251c1a26526bdcbe" kind="variable"><name>elasticEnergyDensity</name></member>
-    <member refid="struct_marmot_material_hypo_elastic_a_d_1_1state3_d_a_d_1a033c999f1dc867dcc4c83510fe860421" kind="variable"><name>dissipation</name></member>
-    <member refid="struct_marmot_material_hypo_elastic_a_d_1_1state3_d_a_d_1a43f0fbfe90a4d248ec86876310a11486" kind="variable"><name>stateVars</name></member>
-    <member refid="struct_marmot_material_hypo_elastic_a_d_1_1state3_d_a_d_1a42d328c213f620f9f6092e2ccfff9e4b" kind="function"><name>state3DAD</name></member>
-    <member refid="struct_marmot_material_hypo_elastic_a_d_1_1state3_d_a_d_1a8393f8f263ba1c0a714aa70f1c42da3a" kind="function"><name>state3DAD</name></member>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d" kind="struct"><name>Marmot::Materials::MaterialHypoElastic::state3D</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d_1a27f4570c8c2c369dba269c0e5f3826de" kind="variable"><name>stress</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d_1a0add81b4c0d2444d82a05cfd01165384" kind="variable"><name>elasticEnergyDensity</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d_1a7b03a27d38cbc11920654bcd3253fe4a" kind="variable"><name>dissipation</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d_1a01bc27894fc06f55adee3617435beb72" kind="variable"><name>stateVars</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d_1adeb83c4ce4c00abd2f956fe122a709d3" kind="function"><name>state3D</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d_1af3dd17130acdb2cd2f967390e0e929ee" kind="function"><name>state3D</name></member>
   </compound>
-  <compound refid="struct_marmot_state_var_vector_manager_1_1_state_var_entry_definition" kind="struct"><name>MarmotStateVarVectorManager::StateVarEntryDefinition</name>
-    <member refid="struct_marmot_state_var_vector_manager_1_1_state_var_entry_definition_1ab078bcd1432d8bce265780b1f30614b2" kind="variable"><name>name</name></member>
-    <member refid="struct_marmot_state_var_vector_manager_1_1_state_var_entry_definition_1a5dc3c2e6ae7017124a26ee5c08d4bb9e" kind="variable"><name>length</name></member>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1_1state3_d_a_d" kind="struct"><name>Marmot::Materials::MaterialHypoElasticAD::state3DAD</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1_1state3_d_a_d_1a3a9205f8d700d4842c202a7080c45084" kind="variable"><name>stress</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1_1state3_d_a_d_1a4c6a55a0a6540fbf81f1ebfd4fa427b6" kind="variable"><name>elasticEnergyDensity</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1_1state3_d_a_d_1a3d9592aa4754e19a833477dc9a8b7d9a" kind="variable"><name>dissipation</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1_1state3_d_a_d_1af8017cfdbd138918ee9912a3ce71b836" kind="variable"><name>stateVars</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1_1state3_d_a_d_1a15eda23a8a2fa537345b49c167bac5dc" kind="function"><name>state3DAD</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_a_d_1_1state3_d_a_d_1aec4b02495a41309d40c2be066aa2f6fc" kind="function"><name>state3DAD</name></member>
   </compound>
-  <compound refid="struct_marmot_state_var_vector_manager_1_1_state_var_entry_location" kind="struct"><name>MarmotStateVarVectorManager::StateVarEntryLocation</name>
-    <member refid="struct_marmot_state_var_vector_manager_1_1_state_var_entry_location_1a64931f28694b5a7582ea2207bf0225b8" kind="variable"><name>index</name></member>
-    <member refid="struct_marmot_state_var_vector_manager_1_1_state_var_entry_location_1a4941fde089ac245ca1b0e91e8f978162" kind="variable"><name>length</name></member>
+  <compound refid="struct_marmot_1_1_utilities_1_1_state_var_vector_manager_1_1_state_var_entry_definition" kind="struct"><name>Marmot::Utilities::StateVarVectorManager::StateVarEntryDefinition</name>
+    <member refid="struct_marmot_1_1_utilities_1_1_state_var_vector_manager_1_1_state_var_entry_definition_1adece4cf23b206825c2e6fe7ed88651a0" kind="variable"><name>name</name></member>
+    <member refid="struct_marmot_1_1_utilities_1_1_state_var_vector_manager_1_1_state_var_entry_definition_1a7d348c278c64219cef406c5dc76e79f8" kind="variable"><name>length</name></member>
   </compound>
-  <compound refid="struct_marmot_state_var_vector_manager_1_1_state_var_vector_layout" kind="struct"><name>MarmotStateVarVectorManager::StateVarVectorLayout</name>
-    <member refid="struct_marmot_state_var_vector_manager_1_1_state_var_vector_layout_1a5af0d626c00ddde9d4c91ab3669a0bc4" kind="variable"><name>entries</name></member>
-    <member refid="struct_marmot_state_var_vector_manager_1_1_state_var_vector_layout_1aec22f82dd4e3ab562445012e042a2dc9" kind="variable"><name>nRequiredStateVars</name></member>
+  <compound refid="struct_marmot_1_1_utilities_1_1_state_var_vector_manager_1_1_state_var_entry_location" kind="struct"><name>Marmot::Utilities::StateVarVectorManager::StateVarEntryLocation</name>
+    <member refid="struct_marmot_1_1_utilities_1_1_state_var_vector_manager_1_1_state_var_entry_location_1a374b7d3307cc178caf0af34de44e76d4" kind="variable"><name>index</name></member>
+    <member refid="struct_marmot_1_1_utilities_1_1_state_var_vector_manager_1_1_state_var_entry_location_1a77c80b1ef45671fe1a40439609359e63" kind="variable"><name>length</name></member>
   </compound>
-  <compound refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_step" kind="struct"><name>Marmot::Solvers::MarmotMaterialPointSolverHypoElastic::Step</name>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_step_1af202c23b3c2fc4a0504a474662d868e9" kind="variable"><name>strainIncrementTarget</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_step_1aa082c2d942371ee4f53db7b8d3a553c0" kind="variable"><name>stressIncrementTarget</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_step_1ad18ef99c4a0b41763bec0f596ccf54b4" kind="variable"><name>isStrainComponentControlled</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_step_1a32fb637eec32e8c1c736041fc3110546" kind="variable"><name>isStressComponentControlled</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_step_1ae7483c33cdaf600c898e925094e94383" kind="variable"><name>timeStart</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_step_1a78c9aae8228152a7b75c328ba7d33123" kind="variable"><name>timeEnd</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_step_1a0a9b00fbc9f1dd6d0f70e9685627126f" kind="variable"><name>dTStart</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_step_1a2da1bec1d127fc321a225564b01e035a" kind="variable"><name>dTMin</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_step_1ae3d367df497fb13dcddc59b5d5144a29" kind="variable"><name>dTMax</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_step_1ae0e8773d557f1a3d8cf5b79d484b9eaf" kind="variable"><name>maxIncrements</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_hypo_elastic_1_1_step_1a61efc50601c6d2ed9d183c43e82bcdb6" kind="function"><name>checkControl</name></member>
+  <compound refid="struct_marmot_1_1_utilities_1_1_state_var_vector_manager_1_1_state_var_vector_layout" kind="struct"><name>Marmot::Utilities::StateVarVectorManager::StateVarVectorLayout</name>
+    <member refid="struct_marmot_1_1_utilities_1_1_state_var_vector_manager_1_1_state_var_vector_layout_1a4a5cdf886c3545d8670445f757dac4d8" kind="variable"><name>entries</name></member>
+    <member refid="struct_marmot_1_1_utilities_1_1_state_var_vector_manager_1_1_state_var_vector_layout_1a786987128c3726120aa6d2652a6714b5" kind="variable"><name>nRequiredStateVars</name></member>
   </compound>
-  <compound refid="struct_marmot_material_hypo_elastic_1_1time_info" kind="struct"><name>MarmotMaterialHypoElastic::timeInfo</name>
-    <member refid="struct_marmot_material_hypo_elastic_1_1time_info_1a336035f1bb4a3269a27f89bdd9ccf0bd" kind="variable"><name>time</name></member>
-    <member refid="struct_marmot_material_hypo_elastic_1_1time_info_1a160a1c020c7bd298cb410a1238c0fe4a" kind="variable"><name>dT</name></member>
+  <compound refid="class_marmot_1_1_utilities_1_1_state_var_vector_manager" kind="class"><name>Marmot::Utilities::StateVarVectorManager</name>
+    <member refid="class_marmot_1_1_utilities_1_1_state_var_vector_manager_1a2dfea0639985eabee94e5854754729f5" kind="variable"><name>theStateVars</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_state_var_vector_manager_1a86d44a05861cf55a0a08e9da658db9fb" kind="variable"><name>theLayout</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_state_var_vector_manager_1af8a9a39c5e825b3cf5d7d50d7677a01b" kind="function"><name>getStateView</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_state_var_vector_manager_1adb3c6e8a4a6842904619805585ea2756" kind="function"><name>find</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_state_var_vector_manager_1a6e94471bc3b662fcf59c17006ad43e91" kind="function"><name>contains</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_state_var_vector_manager_1af38c6a6402f356e944da6f4bbf883b48" kind="function"><name>makeLayout</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_state_var_vector_manager_1a56e0d8b281e3eb1d5ae8b437ff47a903" kind="function"><name>StateVarVectorManager</name></member>
   </compound>
-  <compound refid="class_marmot_1_1_numerical_algorithms_1_1_yield_surface_combination_manager" kind="class"><name>Marmot::NumericalAlgorithms::YieldSurfaceCombinationManager</name>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_yield_surface_combination_manager_1a44699f1f8fa22f1cf9311acb7c7e5250" kind="typedef"><name>YieldSurfFlagArr</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_yield_surface_combination_manager_1a4c08c14f06a50c1dbf99327644af0e4b" kind="typedef"><name>YieldSurfResArr</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_yield_surface_combination_manager_1a4b7e9405a505eb7cd2a00658fd532ef2" kind="variable"><name>idxUsedFlag</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_yield_surface_combination_manager_1a7b3ee364c216aabb55ddec085b0fb7fd" kind="variable"><name>yieldSurfaceCombinations</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_yield_surface_combination_manager_1a36ab7d695a33acb31494bbb359c271ba" kind="function"><name>YieldSurfaceCombinationManager</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_yield_surface_combination_manager_1ac7fb245059d3a71cc9d8e76024851f66" kind="function"><name>getAnotherYieldFlagCombination</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_yield_surface_combination_manager_1ad123c6b480d1e490e5b25ecc07335b9c" kind="function"><name>markYieldFlagCombinationAsUsed</name></member>
-    <member refid="class_marmot_1_1_numerical_algorithms_1_1_yield_surface_combination_manager_1a1f8a7654554eb1b769b4a6583994734c" kind="function"><name>resetUsedYieldFlagCombinations</name></member>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_step" kind="struct"><name>Marmot::Materials::MaterialPointSolverHypoElastic::Step</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_step_1a28cdd44679ef67d67e165e8f5072a985" kind="variable"><name>strainIncrementTarget</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_step_1adb9da7618200c327cb0103ba3f4bee38" kind="variable"><name>stressIncrementTarget</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_step_1af92e4dfd5faef3cab8b3b445f4dafbc9" kind="variable"><name>isStrainComponentControlled</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_step_1a9a9a4097dec67a7b84657e6623174d47" kind="variable"><name>isStressComponentControlled</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_step_1a117e141a3e95c9d18a09979ba4f3b28c" kind="variable"><name>timeStart</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_step_1a28f0d19cdf1534416c5a5f996b16f050" kind="variable"><name>timeEnd</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_step_1a86d6b26345fc6c6c26071285c4204ac7" kind="variable"><name>dTStart</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_step_1a863e3b9054fa146ba7ffd6c34b40c2d8" kind="variable"><name>dTMin</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_step_1a84864cee006e557b65342708a302503c" kind="variable"><name>dTMax</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_step_1ae609ebd5e09ecd30c9e2af3ccc964da3" kind="variable"><name>maxIncrements</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_step_1ac81037b0cd18ab3c4e188e876b1daa17" kind="function"><name>checkControl</name></member>
+  </compound>
+  <compound refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents" kind="struct"><name>Marmot::Materials::InterfaceMaterialHypoElastic::Tangents</name>
+    <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1ae8675639b0746e8a500104892f4d8f85" kind="variable"><name>Q_ij</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1a549e605ab6bc3ffe016616efaff11e98" kind="variable"><name>Z_ijkl</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1a16c42eafee583361379139bf134b3994" kind="variable"><name>H_ijk</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1acfcb979857c5410dcbec58a81c2506fb" kind="variable"><name>Y_ijkl</name></member>
+  </compound>
+  <compound refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_time_increment" kind="struct"><name>Marmot::Materials::InterfaceMaterialHypoElastic::TimeIncrement</name>
+    <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_time_increment_1a775eb81e6307c9784253a570e72342a0" kind="variable"><name>timeOld</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_time_increment_1a649a94f245e7fe80baea527285e0398d" kind="variable"><name>dT</name></member>
+  </compound>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1time_info" kind="struct"><name>Marmot::Materials::MaterialHypoElastic::timeInfo</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1time_info_1a847999971034de98b4d03593b9673137" kind="variable"><name>time</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1time_info_1a743874e695bc7143b657c355ea51e345" kind="variable"><name>dT</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split" kind="class"><name>Marmot::ContinuumMechanics::Microplane::VDSplit</name>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1a327036017ea8910dc16ab96b6472ea6c" kind="variable"><name>nqp</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1adbb2263b6b70c4eddc969cf930438bb7" kind="variable"><name>pTensors</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1a3024508b82e379e88e6be2dbd4b135d7" kind="function"><name>VDSplit</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1a30a992bd3d958b6406006406c6371e30" kind="function"><name>homogenize</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1a1f6dcfbe1940306431789e39af8c9c81" kind="function"><name>applyProjectionTensors</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1ab3fbc5c693075c8213d4f28e8f1eed15" kind="function"><name>initiateSystem</name></member>
+  </compound>
+  <compound refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_yield_surface_combination_manager" kind="class"><name>Marmot::ContinuumMechanics::Algorithms::YieldSurfaceCombinationManager</name>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_yield_surface_combination_manager_1afdb303440c1174b1678ba0e6763feda4" kind="typedef"><name>YieldSurfFlagArr</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_yield_surface_combination_manager_1a62ca09b720561f58f65abaf4227d6ab9" kind="typedef"><name>YieldSurfResArr</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_yield_surface_combination_manager_1ada4cf38a1defb32947e462f91815d5e1" kind="variable"><name>idxUsedFlag</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_yield_surface_combination_manager_1a52078faefdc25bca2136b440a3ee7fad" kind="variable"><name>yieldSurfaceCombinations</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_yield_surface_combination_manager_1aad0898aeeb42e077621817caf8e56d17" kind="function"><name>YieldSurfaceCombinationManager</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_yield_surface_combination_manager_1a7c5e909b68c1f75aed9e480904c9080b" kind="function"><name>getAnotherYieldFlagCombination</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_yield_surface_combination_manager_1a4cec636477a43be7164e451b6498e5bd" kind="function"><name>markYieldFlagCombinationAsUsed</name></member>
+    <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_yield_surface_combination_manager_1a879f64a21b38f0333de5b4a5c67e1d6f" kind="function"><name>resetUsedYieldFlagCombinations</name></member>
   </compound>
   <compound refid="namespace_continuum_mechanics" kind="namespace"><name>ContinuumMechanics</name>
   </compound>
-  <compound refid="namespace_continuum_mechanics_1_1_voigt_notation" kind="namespace"><name>ContinuumMechanics::VoigtNotation</name>
-  </compound>
-  <compound refid="namespace_eigen" kind="namespace"><name>Eigen</name>
+  <compound refid="namespace_continuum_mechanics_1_1_voigt" kind="namespace"><name>ContinuumMechanics::Voigt</name>
   </compound>
   <compound refid="namespace_marmot" kind="namespace"><name>Marmot</name>
-    <member refid="_marmot_utility_8h_1a252d6a7dd503dee472f2d47ae9782b83" kind="function"><name>discardTheIncrement</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics" kind="namespace"><name>Marmot::ContinuumMechanics</name>
   </compound>
-  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models" kind="namespace"><name>Marmot::ContinuumMechanics::CommonConstitutiveModels</name>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_algorithms" kind="namespace"><name>Marmot::ContinuumMechanics::Algorithms</name>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity" kind="namespace"><name>Marmot::ContinuumMechanics::Elasticity</name>
   </compound>
@@ -383,21 +455,67 @@
     <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_isotropic_1a9816087f223afacacbc1361ae03ef2a2" kind="function"><name>nu</name></member>
     <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_isotropic_1abd5af63b27f26503e1d51d4473706f3a" kind="function"><name>shearModulus</name></member>
     <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_isotropic_1ac85dd648af70cdb91341fcc986402963" kind="function"><name>lameParameter</name></member>
-    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_isotropic_1a90fdc11919333788a03f41babbf21afe" kind="function"><name>complianceTensor</name></member>
-    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_isotropic_1a8c6fc02e9c8552d1be0bf5135e5cab1f" kind="function"><name>stiffnessTensor</name></member>
-    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_isotropic_1a77f29e67538be4839905b21b9678ab01" kind="function"><name>stiffnessTensorKG</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_isotropic_1a6846daf482a367654d123c22dac046a7" kind="function"><name>complianceTensor</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_isotropic_1a51742155c69d08138d056859a8b4a926" kind="function"><name>stiffnessTensor</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_isotropic_1a69f20988f57cc9472aadbe3e71aaed2a" kind="function"><name>stiffnessTensorKG</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_orthotropic" kind="namespace"><name>Marmot::ContinuumMechanics::Elasticity::Orthotropic</name>
-    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_orthotropic_1a78c19737a02a2dae72187225c6e27286" kind="function"><name>complianceTensor</name></member>
-    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_orthotropic_1ad347afe8317afe2bf11f9f7c8b76b153" kind="function"><name>stiffnessTensor</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_orthotropic_1a59d0bcfb1ca1c05f1117f47341fa8a33" kind="function"><name>complianceTensor</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_orthotropic_1a9dfce9c23ec13a77b9f8083807d565e3" kind="function"><name>stiffnessTensor</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_transverse_isotropic" kind="namespace"><name>Marmot::ContinuumMechanics::Elasticity::TransverseIsotropic</name>
-    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_transverse_isotropic_1adea9e7ebcebd0d27958acf869671d177" kind="function"><name>complianceTensor</name></member>
-    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_transverse_isotropic_1a68f0e46e202ca9545127a6fe44da3fde" kind="function"><name>stiffnessTensor</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_transverse_isotropic_1a3b24da7d1e2db190e2e0ec363780a5d8" kind="function"><name>complianceTensor</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_transverse_isotropic_1a60073344f0c2c48ebec21c1b47516f29" kind="function"><name>stiffnessTensor</name></member>
   </compound>
-  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard" kind="namespace"><name>Marmot::ContinuumMechanics::HaighWestergaard</name>
-    <member refid="_haigh_westergaard_8h_1a3fbea908311f240aaaf3e552357f5fc8" kind="function"><name>haighWestergaard</name></member>
-    <member refid="_haigh_westergaard_8h_1aba76e1eed469a8f4fd743397df312257" kind="function"><name>haighWestergaardFromStrain</name></member>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_geostatic_stress" kind="namespace"><name>Marmot::ContinuumMechanics::GeostaticStress</name>
+    <member refid="_marmot_geostatic_stress_8h_1a4a6f17b3f38c65b54506b401d8dcdb93" kind="function"><name>getGeostaticStressFromLinearDistribution</name></member>
+  </compound>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_invariants" kind="namespace"><name>Marmot::ContinuumMechanics::Invariants</name>
+    <member refid="_marmot_voigt_8h_1aacdf8bbcf25f5da280161cd52ab805bb" kind="function"><name>principalStrains</name></member>
+    <member refid="_marmot_voigt_8h_1a30ded5c231ad24641a67ab37597d64bf" kind="function"><name>principalStresses</name></member>
+    <member refid="_marmot_voigt_8h_1a4c28e39dcd747fad01269fab76fb20c0" kind="function"><name>sortedPrincipalStrains</name></member>
+    <member refid="_marmot_voigt_8h_1a52f201bf9d6e00eb4d3209100e6d44f8" kind="function"><name>principalStressesDirections</name></member>
+    <member refid="_marmot_voigt_8h_1a13764b55815b103d9bf85491731a9ca4" kind="function"><name>vonMisesEquivalentStress</name></member>
+    <member refid="_marmot_voigt_8h_1af4423832d92663175b432e65acb004f8" kind="function"><name>vonMisesEquivalentStrain</name></member>
+    <member refid="_marmot_voigt_8h_1aa7da46178f52bbb5455d7d2f1b464300" kind="function"><name>normStrain</name></member>
+    <member refid="_marmot_voigt_8h_1ae2484ddc2d08e7087ee77fbd3db00e23" kind="function"><name>normStress</name></member>
+    <member refid="_marmot_voigt_8h_1a4858d6f740c76963405dfaa94fe1b214" kind="function"><name>StrainVolumetricNegative</name></member>
+    <member refid="_marmot_voigt_8h_1afc6449276794d9cef173d2ff544cc5eb" kind="function"><name>I1</name></member>
+    <member refid="_marmot_voigt_8h_1a488817ad60bbc89222070ede90be7ff5" kind="function"><name>I1Strain</name></member>
+    <member refid="_marmot_voigt_8h_1a64e5f86a1575978a4227e2a1285adfe2" kind="function"><name>I2</name></member>
+    <member refid="_marmot_voigt_8h_1a4f5484529226e5ba8925d4cef71f07d0" kind="function"><name>I2Strain</name></member>
+    <member refid="_marmot_voigt_8h_1a0467c7115b767231d81c1e6d1bcfe1fb" kind="function"><name>I3</name></member>
+    <member refid="_marmot_voigt_8h_1a443c7de3ca7375ee0730e01f1cfb1144" kind="function"><name>I3Strain</name></member>
+    <member refid="_marmot_voigt_8h_1a1311721d49d201ff80fa5d8e02618054" kind="function"><name>J2</name></member>
+    <member refid="_marmot_voigt_8h_1a04892908c47e33d476ba6754fefcda80" kind="function"><name>J2Strain</name></member>
+    <member refid="_marmot_voigt_8h_1ab88a2aac8b0b7dd8a948b74cddff2c0e" kind="function"><name>J3</name></member>
+    <member refid="_marmot_voigt_8h_1a527e66f59c2f2b74256c6781c56a4f56" kind="function"><name>J3Strain</name></member>
+    <member refid="_marmot_voigt_8h_1a576c0d446ca067cc8f0b865579952e49" kind="function"><name>principalValuesAndDerivatives</name></member>
+  </compound>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_derivatives" kind="namespace"><name>Marmot::ContinuumMechanics::Invariants::Derivatives</name>
+    <member refid="_marmot_voigt_8h_1a9bbac1ac873e86a599a07f163000b475" kind="function"><name>dStressMean_dStress</name></member>
+    <member refid="_marmot_voigt_8h_1a2d631b694508950e9dac7cdd9f780fcf" kind="function"><name>dRho_dStress</name></member>
+    <member refid="_marmot_voigt_8h_1a681a7551da1189ff95596a71d0729bd2" kind="function"><name>dRhoStrain_dStrain</name></member>
+    <member refid="_marmot_voigt_8h_1a7964dc23768b29e5428a65b495306633" kind="function"><name>dTheta_dJ2</name></member>
+    <member refid="_marmot_voigt_8h_1a3a3a1bb4acccb85922ef132a4b23a37e" kind="function"><name>dTheta_dJ3</name></member>
+    <member refid="_marmot_voigt_8h_1a46a240d6ddd22028dfd74d7994664215" kind="function"><name>dJ2_dStress</name></member>
+    <member refid="_marmot_voigt_8h_1a8c47e5d622b392d1cda82f948a28780f" kind="function"><name>dJ3_dStress</name></member>
+    <member refid="_marmot_voigt_8h_1a123d32e5b58658c9a7900a3cca3546aa" kind="function"><name>dTheta_dStress</name></member>
+    <member refid="_marmot_voigt_8h_1af63b4e7abe9706985f58758b4fe784f9" kind="function"><name>dThetaStrain_dJ2Strain</name></member>
+    <member refid="_marmot_voigt_8h_1a02f7f84d75d420fa062bec0bbfe41950" kind="function"><name>dThetaStrain_dJ3Strain</name></member>
+    <member refid="_marmot_voigt_8h_1a57205f65aaa1bc4cfc824b31523330ed" kind="function"><name>dJ2Strain_dStrain</name></member>
+    <member refid="_marmot_voigt_8h_1a43ce07f6ed931fe8675b04750ad75075" kind="function"><name>dJ3Strain_dStrain</name></member>
+    <member refid="_marmot_voigt_8h_1af393a2119a393bf5ff3585ff374cc08d" kind="function"><name>dThetaStrain_dStrain</name></member>
+    <member refid="_marmot_voigt_8h_1adba5c7356e84eabb3b9223a2e1f11958" kind="function"><name>dStressPrincipals_dStress</name></member>
+    <member refid="_marmot_voigt_8h_1ad9b3ee5f116945f94015b6bc08f04333" kind="function"><name>dStrainVolumetricNegative_dStrainPrincipal</name></member>
+    <member refid="_marmot_voigt_8h_1a8c5f43a48ba6eb454e68530b95a82713" kind="function"><name>dEp_dE</name></member>
+    <member refid="_marmot_voigt_8h_1aaac8f48d172fb368e7ce1a46c2f353d7" kind="function"><name>dDeltaEpv_dE</name></member>
+    <member refid="_marmot_voigt_8h_1ab3761c098c89b0919c1a3366d3211763" kind="function"><name>dSortedStrainPrincipal_dStrain</name></member>
+    <member refid="_marmot_voigt_8h_1a98ebd8f6eff6f427bc0db82714098323" kind="function"><name>dDeltaEpvneg_dE</name></member>
+  </compound>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard" kind="namespace"><name>Marmot::ContinuumMechanics::Invariants::HaighWestergaard</name>
+    <member refid="_haigh_westergaard_8h_1a8e3a33d0666da4cd489a8db6e7aac6e6" kind="function"><name>haighWestergaard</name></member>
+    <member refid="_haigh_westergaard_8h_1a49746efe94532b2c42a72c35fa0617f2" kind="function"><name>haighWestergaardFromStrain</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_kinematics" kind="namespace"><name>Marmot::ContinuumMechanics::Kinematics</name>
   </compound>
@@ -405,34 +523,53 @@
     <member refid="_marmot_kinematics_8h_1ae3c947fa55686ae1b743a62ddcf9faf1" kind="function"><name>make3D</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_kinematics_1_1_strain" kind="namespace"><name>Marmot::ContinuumMechanics::Kinematics::Strain</name>
-    <member refid="_marmot_kinematics_8h_1a87f54c1d86f7489b5cd21a4545ef4987" kind="function"><name>GreenLagrange</name></member>
-    <member refid="_marmot_kinematics_8h_1a31b53509041aa50af0e80b41a3dd0edb" kind="function"><name>dGreenLagrangedDeformationGradient</name></member>
+    <member refid="_marmot_kinematics_8h_1aec8798daca96282ba72df855e4c21ef9" kind="function"><name>GreenLagrange</name></member>
+    <member refid="_marmot_kinematics_8h_1a0bafac82fad7caa3cb8246a60ec59739" kind="function"><name>dGreenLagrangedDeformationGradient</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_kinematics_1_1_velocity_gradient" kind="namespace"><name>Marmot::ContinuumMechanics::Kinematics::VelocityGradient</name>
     <member refid="_marmot_kinematics_8h_1a531f6b3c1d92095864941b0c3d5133ff" kind="variable"><name>dOmega_dVelocityGradient</name></member>
     <member refid="_marmot_kinematics_8h_1ae337551640a03a2ea5bd5ed15f63961c" kind="variable"><name>dStretchingRate_dVelocityGradient</name></member>
+    <member refid="_marmot_kinematics_8h_1aabbf2ec0f43908c47d6b61b4b464c365" kind="function"><name>initializeDOmega_dVelocityGradient</name></member>
+    <member refid="_marmot_kinematics_8h_1a03a16760f68f9df64d3caa6924b12233" kind="function"><name>initializeDStretchingRate_dVelocityGradient</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_localization_analysis" kind="namespace"><name>Marmot::ContinuumMechanics::LocalizationAnalysis</name>
-    <member refid="_marmot_localization_8h_1a9692823e1e7ecc1cb29e22628c0b72b8" kind="function"><name>computeAcousticTensor</name></member>
-    <member refid="_marmot_localization_8h_1a2584a6773166e96f681967bc4e41090a" kind="function"><name>localizationChecker</name></member>
-    <member refid="_marmot_localization_8h_1a25f0c7c37fb9434b5d74af0a5b5c86d4" kind="function"><name>computeNormalVector</name></member>
-    <member refid="_marmot_localization_8h_1af73e1300206b015b834ce93a24538060" kind="function"><name>minimumDeterminantAcousticTensor</name></member>
+    <member refid="_marmot_localization_8h_1a128bcd9345e74cc889f6287faa1d97d2" kind="function"><name>computeAcousticTensor</name></member>
+    <member refid="_marmot_localization_8h_1a5261457864fd391e85f314960c58918f" kind="function"><name>localizationChecker</name></member>
+    <member refid="_marmot_localization_8h_1a89712a31fc39410a3d28cad876384f1a" kind="function"><name>computeNormalVector</name></member>
+    <member refid="_marmot_localization_8h_1ad2404ea9473b103bc91a29aed9b3688b" kind="function"><name>minimumDeterminantAcousticTensor</name></member>
+  </compound>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane" kind="namespace"><name>Marmot::ContinuumMechanics::Microplane</name>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1" kind="enum"><name>QuadratureScheme</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1aa3ee44169c0b6e8abb8ac9dcf9e66387" kind="enumvalue"><name>N21Symmetric</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1a2dbd8d9006476dc43f411faf9d7c5b5a" kind="enumvalue"><name>N21Asymmetric</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1ad507ae69e2ed722564be87aefdd92200" kind="enumvalue"><name>N28</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1a84d39f94cdd3846ac46307a3fec88124" kind="enumvalue"><name>N37</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1ac29ddb0083b9eadb1a52772aebe779c7" kind="enumvalue"><name>N61</name></member>
+    <member refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1a2a7293ad18bb1ddbceaa8b6b8d345c61" kind="function"><name>nqpFromScheme</name></member>
+  </compound>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization" kind="namespace"><name>Marmot::ContinuumMechanics::Microplane::Discretization</name>
+    <member refid="_marmot_microplane_8h_1ac0b28ff62653957e29fe4d9204062ea5" kind="function"><name>get</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_plane_strain" kind="namespace"><name>Marmot::ContinuumMechanics::PlaneStrain</name>
-    <member refid="_marmot_lower_dimensional_stress_8h_1a24cb34f9ef9ee8bd805f42470545c55d" kind="function"><name>getPlaneStrainTangent</name></member>
-    <member refid="_marmot_lower_dimensional_stress_8h_1a31a218d96f461226858199aec4406197" kind="function"><name>reduce3D_dStress_dDeformationGradient</name></member>
+    <member refid="_marmot_lower_dimensional_stress_8h_1a4a15b89206eeb2a02d86fee2edbfc8fb" kind="function"><name>getPlaneStrainTangent</name></member>
+    <member refid="_marmot_lower_dimensional_stress_8h_1afc9fe0ce3426335e5b113f0bb7ce496f" kind="function"><name>reduce3D_dStress_dDeformationGradient</name></member>
     <member refid="_marmot_lower_dimensional_stress_8h_1aa73b81d393dd2a741e4c9fbbb1ffe564" kind="function"><name>dStrainDStrainPlaneStrain</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_plane_stress" kind="namespace"><name>Marmot::ContinuumMechanics::PlaneStress</name>
-    <member refid="_marmot_lower_dimensional_stress_8h_1a1547cd32deb6777f0f2487d18d6af736" kind="function"><name>getPlaneStressTangent</name></member>
-    <member refid="_marmot_lower_dimensional_stress_8h_1aedc1da56d43d6cf710109d8d145e50c3" kind="function"><name>compute_dStress_dDeformationGradient</name></member>
-    <member refid="_marmot_lower_dimensional_stress_8h_1a4ce34b18d99821ea0600ebfae9bd2f88" kind="function"><name>planeStressCompensationStrain</name></member>
-    <member refid="_marmot_lower_dimensional_stress_8h_1a676139dcddec2c89c78fc2fe0ae81308" kind="function"><name>planeStressTangentTransformationMatrix</name></member>
-    <member refid="_marmot_lower_dimensional_stress_8h_1a4f94a4954bfa0c960cc4386e425b5f24" kind="function"><name>dStrainDStrainPlaneStress</name></member>
+    <member refid="_marmot_lower_dimensional_stress_8h_1a1ff0049fc293db48a6553b5fe0a6cdae" kind="function"><name>getPlaneStressTangent</name></member>
+    <member refid="_marmot_lower_dimensional_stress_8h_1a5e42733c08010df0e4de83622473149e" kind="function"><name>compute_dStress_dDeformationGradient</name></member>
+    <member refid="_marmot_lower_dimensional_stress_8h_1afce5599c6c018d4a85e20a1f2b30db70" kind="function"><name>planeStressCompensationStrain</name></member>
+    <member refid="_marmot_lower_dimensional_stress_8h_1ae84a6130763caa4169084a99d510a657" kind="function"><name>planeStressTangentTransformationMatrix</name></member>
+    <member refid="_marmot_lower_dimensional_stress_8h_1aabec7427f4147f76bc530572cbf78071" kind="function"><name>dStrainDStrainPlaneStress</name></member>
     <member refid="_marmot_lower_dimensional_stress_8h_1a16e505ff2bf94ba0933185e16105411b" kind="function"><name>dStressPlaneStressDStress</name></member>
   </compound>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_plasticity" kind="namespace"><name>Marmot::ContinuumMechanics::Plasticity</name>
+  </compound>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_time_integration" kind="namespace"><name>Marmot::ContinuumMechanics::TimeIntegration</name>
+    <member refid="_newmark_beta_integrator_8h_1acefc537ef15c5a11cd75bc81c8e2266f" kind="function"><name>newmarkBetaIntegration</name></member>
+  </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_uniaxial_stress" kind="namespace"><name>Marmot::ContinuumMechanics::UniaxialStress</name>
-    <member refid="_marmot_lower_dimensional_stress_8h_1ad85ade68dbdb13a6679a15de717a8b75" kind="function"><name>getUniaxialStressTangent</name></member>
+    <member refid="_marmot_lower_dimensional_stress_8h_1a1db222ae45b3ee1995f27cfb5dd1ef0d" kind="function"><name>getUniaxialStressTangent</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_viscoelasticity" kind="namespace"><name>Marmot::ContinuumMechanics::Viscoelasticity</name>
   </compound>
@@ -440,121 +577,122 @@
     <member refid="_marmot_viscoelasticity_8h_1a4c3917c5d6326d15b94d7d3cf3cc12e6" kind="function"><name>logPowerLaw</name></member>
     <member refid="_marmot_viscoelasticity_8h_1a680c3eda9be51338682998b90ca75598" kind="function"><name>powerLaw</name></member>
   </compound>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_discrete_spectrum" kind="namespace"><name>Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum</name>
+    <member refid="_marmot_viscoelasticity_8h_1acf8639fd7f712d6f9f5ad87ca771682a" kind="enum"><name>PostWidderCoefficientSign</name></member>
+    <member refid="_marmot_viscoelasticity_8h_1acf8639fd7f712d6f9f5ad87ca771682aa3289297424e01eda5b788c083bbf3147" kind="enumvalue"><name>Positive</name></member>
+    <member refid="_marmot_viscoelasticity_8h_1acf8639fd7f712d6f9f5ad87ca771682aaffb9356ff2b7da85c75c92fa7ea03b8b" kind="enumvalue"><name>Negative</name></member>
+    <member refid="_marmot_viscoelasticity_8h_1a76b5929c0f0a54cb769ea4b00eac078b" kind="typedef"><name>Properties</name></member>
+    <member refid="_marmot_viscoelasticity_8h_1a44e738c723040f03137a8b9bab35cf24" kind="typedef"><name>mapProperties</name></member>
+    <member refid="_marmot_viscoelasticity_8h_1adecf74d34611f67b1f1770a209a687c9" kind="typedef"><name>StateVarMatrix</name></member>
+    <member refid="_marmot_viscoelasticity_8h_1a29cb9fe18c33d998f80fc1a785390f18" kind="typedef"><name>mapStateVarMatrix</name></member>
+    <member refid="_marmot_viscoelasticity_8h_1a92ca5c272f82c3911db3843ee2c5f104" kind="function"><name>evaluatePostWidderFormula</name></member>
+    <member refid="_marmot_viscoelasticity_8h_1a288ca90884213792bf5b9ee8d8638144" kind="function"><name>generateLogarithmicTimes</name></member>
+    <member refid="_marmot_viscoelasticity_8h_1a879d3133826c713bc22bec565f21ae72" kind="function"><name>computeLambdaAndBeta</name></member>
+  </compound>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_kelvin_chain" kind="namespace"><name>Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain</name>
+    <member refid="_marmot_kelvin_chain_8h_1a38757fbe6a2c906b4feba4365bbd7d9c" kind="typedef"><name>Properties</name></member>
+    <member refid="_marmot_kelvin_chain_8h_1a794089f2b4817ba2183038c6b829b352" kind="typedef"><name>mapProperties</name></member>
+    <member refid="_marmot_kelvin_chain_8h_1ab44cd50562a8d71e3b38ef5527349b1d" kind="typedef"><name>StateVarMatrix</name></member>
+    <member refid="_marmot_kelvin_chain_8h_1ab7109dfd6553808e6af27c46429fbb65" kind="typedef"><name>mapStateVarMatrix</name></member>
+    <member refid="_marmot_kelvin_chain_8h_1a721ba7e5f9564c4c3cbcadc0512f01c0" kind="function"><name>evaluatePostWidderFormula</name></member>
+    <member refid="_marmot_kelvin_chain_8h_1a7f1993c99a33ecb172e5aa5c300d6534" kind="function"><name>approximateZerothCompliance</name></member>
+    <member refid="_marmot_kelvin_chain_8h_1ad99d730bb5bebbbb29b17a4b5e3b5594" kind="function"><name>computeElasticModuli</name></member>
+    <member refid="_marmot_kelvin_chain_8h_1a346d4645273cbeca4695f8b94214ff9c" kind="function"><name>generateRetardationTimes</name></member>
+    <member refid="_marmot_kelvin_chain_8h_1a2969c1a3f2a3e325717ef4e5962513ba" kind="function"><name>updateStateVarMatrix</name></member>
+    <member refid="_marmot_kelvin_chain_8h_1ae3592e2410b7e002f60ecd0c6af5f338" kind="function"><name>evaluateKelvinChain</name></member>
+    <member refid="_marmot_kelvin_chain_8h_1a5c50db5fbcf64c828c3ec9380773fba7" kind="function"><name>computeLambdaAndBeta</name></member>
+  </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_prony_series" kind="namespace"><name>Marmot::ContinuumMechanics::Viscoelasticity::PronySeries</name>
     <member refid="_marmot_prony_series_8h_1a1170bd07fd7a83069a798b3699c77c89" kind="typedef"><name>StateVarMatrix</name></member>
     <member refid="_marmot_prony_series_8h_1a481a6a7f467111c775dc5a2c18a979ef" kind="typedef"><name>mapStateVarMatrix</name></member>
-    <member refid="_marmot_prony_series_8h_1aa5b16d91c3cfbcbc30c893e6351ab508" kind="function"><name>evaluatePronySeries</name></member>
-    <member refid="_marmot_prony_series_8h_1adb89adab7ab07742866e458ca0d5aacf" kind="function"><name>updateStateVars</name></member>
+    <member refid="_marmot_prony_series_8h_1a2b84f62ae5f946d06444fbef5856c703" kind="function"><name>evaluatePronySeries</name></member>
+    <member refid="_marmot_prony_series_8h_1ab334d12b546bf8b83b1caa7223797365" kind="function"><name>updateStateVars</name></member>
   </compound>
-  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_voigt_notation" kind="namespace"><name>Marmot::ContinuumMechanics::VoigtNotation</name>
-    <member refid="_marmot_voigt_8h_1ad2929e869c726f5ae5e7f2f5cb1f6f35" kind="enum"><name>VoigtSize</name></member>
-    <member refid="_marmot_voigt_8h_1ad2929e869c726f5ae5e7f2f5cb1f6f35a4e7ac74cb7d3e491e3236ab11d940747" kind="enumvalue"><name>OneD</name></member>
-    <member refid="_marmot_voigt_8h_1ad2929e869c726f5ae5e7f2f5cb1f6f35a5796253cd75835a97f51da8153d8b6c1" kind="enumvalue"><name>TwoD</name></member>
-    <member refid="_marmot_voigt_8h_1ad2929e869c726f5ae5e7f2f5cb1f6f35a8375e843d49cef703da0de814e6dffe9" kind="enumvalue"><name>ThreeD</name></member>
-    <member refid="_marmot_voigt_8h_1ad2929e869c726f5ae5e7f2f5cb1f6f35ae80d9e99c856074fee0bc846f771a017" kind="enumvalue"><name>Axial</name></member>
-    <member refid="_marmot_voigt_8h_1a9ced2ccba0453d40c8258b5b8fcd6dc5" kind="variable"><name>P</name></member>
-    <member refid="_marmot_voigt_8h_1a80e5caee708bb8aa73d42a256c8a714a" kind="variable"><name>PInv</name></member>
-    <member refid="_marmot_voigt_8h_1acf9352cae95af25313c71032e776af4f" kind="variable"><name>I</name></member>
-    <member refid="_marmot_voigt_8h_1abebf5caff1d107a6c8f5993bf6639ac9" kind="variable"><name>IHyd</name></member>
-    <member refid="_marmot_voigt_8h_1a37017d3a6a002dee6ca7127fc7f42736" kind="variable"><name>IDev</name></member>
-    <member refid="_marmot_voigt_8h_1a43f9254e1161e4f4209858acbddca1ff" kind="function"><name>voigtSizeFromDimension</name></member>
-    <member refid="_marmot_voigt_8h_1ac44e1e21a8541d4bc7a989810c929e30" kind="function"><name>voigtToPlaneVoigt</name></member>
-    <member refid="_marmot_voigt_8h_1aa86b1eb47a5be769028c3286112f8a72" kind="function"><name>voigtToAxisymmetricVoigt</name></member>
-    <member refid="_marmot_voigt_8h_1ab3ceb10ac45895af2d82391eae901810" kind="function"><name>planeVoigtToVoigt</name></member>
-    <member refid="_marmot_voigt_8h_1a12ebb5daa216ecc29c8d7868058e549d" kind="function"><name>axisymmetricVoigtToVoigt</name></member>
-    <member refid="_marmot_voigt_8h_1af99f601e98c1a9135caef4de888542c6" kind="function"><name>reduce3DVoigt</name></member>
-    <member refid="_marmot_voigt_8h_1a5bb68f6bf21cd36b0d38703692e98a90" kind="function"><name>make3DVoigt</name></member>
-    <member refid="_marmot_voigt_8h_1aa1776cbb1ed1825ecdd9a96b4e7ddfa4" kind="function"><name>voigtToStrain</name></member>
-    <member refid="_marmot_voigt_8h_1ae1581dc1677ced10242837a5f509df51" kind="function"><name>voigtToStress</name></member>
-    <member refid="_marmot_voigt_8h_1acaf4a0c04d16233a574008900e128857" kind="function"><name>strainToVoigt</name></member>
-    <member refid="_marmot_voigt_8h_1a02fcdad0184c1dd32f766a0f7c26c0e5" kind="function"><name>stressToVoigt</name></member>
-    <member refid="_marmot_voigt_8h_1afa21f2ad2f43a90916727d1241a9495c" kind="function"><name>stiffnessToVoigt</name></member>
-    <member refid="_marmot_voigt_8h_1af2be3ea06cd31196eb19547c317d094c" kind="function"><name>voigtToStiffness</name></member>
-    <member refid="_marmot_voigt_8h_1a0760a0f82c2d9212e157431faec76da8" kind="function"><name>voigtToStiffnessFastor</name></member>
-    <member refid="_marmot_voigt_8h_1ac1e1d50ccf1ef1340c6447e1fbd54dac" kind="function"><name>stressMatrixFromVoigt</name></member>
-    <member refid="_marmot_voigt_8h_1ae8eac19a17822352de1d8c2bc2775b86" kind="function"><name>voigtFromStrainMatrix</name></member>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_relaxation_functions" kind="namespace"><name>Marmot::ContinuumMechanics::Viscoelasticity::RelaxationFunctions</name>
+    <member refid="_marmot_viscoelasticity_8h_1a00dc9ad8b4cb63f389f5c1038a6d8bd7" kind="function"><name>powerLaw</name></member>
   </compound>
-  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_voigt_notation_1_1_derivatives" kind="namespace"><name>Marmot::ContinuumMechanics::VoigtNotation::Derivatives</name>
-    <member refid="_marmot_voigt_8h_1a41acc2721fe56820734fe87999014552" kind="function"><name>dStressMean_dStress</name></member>
-    <member refid="_marmot_voigt_8h_1a50b23becf6b6938f52e1a7728d42afb7" kind="function"><name>dRho_dStress</name></member>
-    <member refid="_marmot_voigt_8h_1a755b102dd8a1533e5a436cd5b28bb626" kind="function"><name>dRhoStrain_dStrain</name></member>
-    <member refid="_marmot_voigt_8h_1aa876b96e41a7ef09cef0e4671726be21" kind="function"><name>dTheta_dStress</name></member>
-    <member refid="_marmot_voigt_8h_1aaf4858d1cc1fcb49df97ff628bfca2d0" kind="function"><name>dTheta_dJ2</name></member>
-    <member refid="_marmot_voigt_8h_1ae3245e5bf0245bc6cec29bd8fd4a41d6" kind="function"><name>dTheta_dJ3</name></member>
-    <member refid="_marmot_voigt_8h_1af1e45032518a82b57a4270f9a025053f" kind="function"><name>dThetaStrain_dJ2Strain</name></member>
-    <member refid="_marmot_voigt_8h_1a707baebe1eaa4dd7cd1434bb174dbcc1" kind="function"><name>dThetaStrain_dJ3Strain</name></member>
-    <member refid="_marmot_voigt_8h_1a61cba99154751cba78d0eadffe996146" kind="function"><name>dJ2_dStress</name></member>
-    <member refid="_marmot_voigt_8h_1a19119e54b19dd4d832c5be3b42acec83" kind="function"><name>dJ3_dStress</name></member>
-    <member refid="_marmot_voigt_8h_1abf2b3b18118cf171c59b1642ffae50f5" kind="function"><name>dJ2Strain_dStrain</name></member>
-    <member refid="_marmot_voigt_8h_1a22d949138e496c4639462980e24fe971" kind="function"><name>dJ3Strain_dStrain</name></member>
-    <member refid="_marmot_voigt_8h_1a75b9ecfa6f3df0bad02c94c072a7d015" kind="function"><name>dThetaStrain_dStrain</name></member>
-    <member refid="_marmot_voigt_8h_1a1bd33dbb691a4836d39d458d7cc28acb" kind="function"><name>dStressPrincipals_dStress</name></member>
-    <member refid="_marmot_voigt_8h_1a3f21653a90f5ec848eecef87dc68ca43" kind="function"><name>dStrainVolumetricNegative_dStrainPrincipal</name></member>
-    <member refid="_marmot_voigt_8h_1a7e58d97abe0747e53f88d9f61b94a729" kind="function"><name>dEp_dE</name></member>
-    <member refid="_marmot_voigt_8h_1a2a2df9d5bd64a9a36ab1cc273b903cfc" kind="function"><name>dDeltaEpv_dE</name></member>
-    <member refid="_marmot_voigt_8h_1a2bd189bc6410a4ad365dc42e66e8601e" kind="function"><name>dSortedStrainPrincipal_dStrain</name></member>
-    <member refid="_marmot_voigt_8h_1ad21af03e3faa72f38e1e39e07cf5aa4f" kind="function"><name>dDeltaEpvneg_dE</name></member>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_wiechert" kind="namespace"><name>Marmot::ContinuumMechanics::Viscoelasticity::Wiechert</name>
+    <member refid="_marmot_wiechert_8h_1a8466d655f5e91e02bb5e5efc97d6364b" kind="typedef"><name>Properties</name></member>
+    <member refid="_marmot_wiechert_8h_1a476fa861d663094d5486fd3bbf920e68" kind="typedef"><name>mapProperties</name></member>
+    <member refid="_marmot_wiechert_8h_1a85bb8d29b93776c133601e9456e15031" kind="typedef"><name>StateVarMatrix</name></member>
+    <member refid="_marmot_wiechert_8h_1aa4c2b136bba3307fe535cb01d387b324" kind="typedef"><name>mapStateVarMatrix</name></member>
+    <member refid="_marmot_wiechert_8h_1aac135485ad2879bdc4c1da97fba5cd2b" kind="function"><name>evaluatePostWidderFormula</name></member>
+    <member refid="_marmot_wiechert_8h_1a31e07d2c5576be3efa1ed7a4233b4f9c" kind="function"><name>computeElasticModuli</name></member>
+    <member refid="_marmot_wiechert_8h_1a4b0ac5c4236dcf66bf761a55bd2a2023" kind="function"><name>generateRelaxationTimes</name></member>
+    <member refid="_marmot_wiechert_8h_1a4c1b978973063aaa7658911f5dcd7b87" kind="function"><name>updateStateVarMatrix</name></member>
+    <member refid="_marmot_wiechert_8h_1a4091dc204de492104c927d30402ea717" kind="function"><name>evaluateWiechert</name></member>
   </compound>
-  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_voigt_notation_1_1_invariants" kind="namespace"><name>Marmot::ContinuumMechanics::VoigtNotation::Invariants</name>
-    <member refid="_marmot_voigt_8h_1a12a13045613fe373c03720aef8630866" kind="function"><name>principalStrains</name></member>
-    <member refid="_marmot_voigt_8h_1a863f91676676e450193736532678fb90" kind="function"><name>principalStresses</name></member>
-    <member refid="_marmot_voigt_8h_1a61929730411e802a0fadc3f12966798b" kind="function"><name>sortedPrincipalStrains</name></member>
-    <member refid="_marmot_voigt_8h_1a5d8c2f6f1a341f2d9e29bf6fec3ca204" kind="function"><name>principalStressesDirections</name></member>
-    <member refid="_marmot_voigt_8h_1a2edc962186bf90e55cd2acee21d1a61c" kind="function"><name>vonMisesEquivalentStress</name></member>
-    <member refid="_marmot_voigt_8h_1af903ffc878150a05e74b17290a430b84" kind="function"><name>vonMisesEquivalentStrain</name></member>
-    <member refid="_marmot_voigt_8h_1ae4e298aa6f4d7bfa8231d9df64ecc61d" kind="function"><name>normStrain</name></member>
-    <member refid="_marmot_voigt_8h_1ada9f38d87be94a8a05b7339194c6444a" kind="function"><name>normStress</name></member>
-    <member refid="_marmot_voigt_8h_1ae275c2f0305a1bf414deddf817fb3054" kind="function"><name>StrainVolumetricNegative</name></member>
-    <member refid="_marmot_voigt_8h_1a883a95d72751811ef6d6742fab5963fa" kind="function"><name>I1</name></member>
-    <member refid="_marmot_voigt_8h_1af4cd9b2ea20e6a75ad170ae5e82a5188" kind="function"><name>I1Strain</name></member>
-    <member refid="_marmot_voigt_8h_1a544c203f442fc5f246ca967b0f23a61d" kind="function"><name>I2</name></member>
-    <member refid="_marmot_voigt_8h_1a7538512afcfa0da0120be0543a8de8f5" kind="function"><name>I2Strain</name></member>
-    <member refid="_marmot_voigt_8h_1ad127aa2c7cc78fc5bf83415f65916172" kind="function"><name>I3</name></member>
-    <member refid="_marmot_voigt_8h_1aef9a84bd3889df8cfca684cb49c38797" kind="function"><name>I3Strain</name></member>
-    <member refid="_marmot_voigt_8h_1ae702186a60a83cde80cbceaed08b24cc" kind="function"><name>J2</name></member>
-    <member refid="_marmot_voigt_8h_1ae4c9d6d842598eb0d6682d978e5008c1" kind="function"><name>J2Strain</name></member>
-    <member refid="_marmot_voigt_8h_1a49567e69a8e1e6a915b0713855a6e041" kind="function"><name>J3</name></member>
-    <member refid="_marmot_voigt_8h_1a571380851ff93b32a4543a1e2c7c3854" kind="function"><name>J3Strain</name></member>
-    <member refid="_marmot_voigt_8h_1ab252b71e58c195a80087b23a0aacd4d9" kind="function"><name>principalValuesAndDerivatives</name></member>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_viscoplasticity" kind="namespace"><name>Marmot::ContinuumMechanics::Viscoplasticity</name>
   </compound>
-  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_voigt_notation_1_1_transformations" kind="namespace"><name>Marmot::ContinuumMechanics::VoigtNotation::Transformations</name>
-    <member refid="_marmot_voigt_8h_1a919cdeaa2f260cbaa188d1903beccac9" kind="function"><name>transformationMatrixStrainVoigt</name></member>
-    <member refid="_marmot_voigt_8h_1a1f238e3059305fef27abab60129da6f8" kind="function"><name>transformationMatrixStressVoigt</name></member>
-    <member refid="_marmot_voigt_8h_1af2463878e51e212c756a4f649679ebdb" kind="function"><name>projectVoigtStressToPlane</name></member>
-    <member refid="_marmot_voigt_8h_1ab366f2ee9f7cc0234e023a0c5efdf50c" kind="function"><name>projectVoigtStrainToPlane</name></member>
-    <member refid="_marmot_voigt_8h_1a9468627115928bf8eaba7e41396e2110" kind="function"><name>rotateVoigtStress</name></member>
-    <member refid="_marmot_voigt_8h_1aea2d6f9be5fe27ec25285332338af85b" kind="function"><name>transformStressToLocalSystem</name></member>
-    <member refid="_marmot_voigt_8h_1abb6e32db28e6d8369116974dc4f632d3" kind="function"><name>transformStrainToLocalSystem</name></member>
-    <member refid="_marmot_voigt_8h_1a0c5a26a04597686ce9a81a60867709c0" kind="function"><name>transformStressToGlobalSystem</name></member>
-    <member refid="_marmot_voigt_8h_1a60f5690e0da15c54d37a1ea0785f0745" kind="function"><name>transformStrainToGlobalSystem</name></member>
-    <member refid="_marmot_voigt_8h_1aae47103a4b953afe89ca942a0ff3d49c" kind="function"><name>transformStiffnessToGlobalSystem</name></member>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_voigt" kind="namespace"><name>Marmot::ContinuumMechanics::Voigt</name>
+    <member refid="_marmot_voigt_8h_1ac80d9de7aaddb2d11391cea696098561" kind="enum"><name>VoigtSize</name></member>
+    <member refid="_marmot_voigt_8h_1ac80d9de7aaddb2d11391cea696098561ac4a7063e04ea2fac8e5b364247c10c05" kind="enumvalue"><name>OneD</name></member>
+    <member refid="_marmot_voigt_8h_1ac80d9de7aaddb2d11391cea696098561a9114e095671230ecd1efd3c6120c7cb8" kind="enumvalue"><name>TwoD</name></member>
+    <member refid="_marmot_voigt_8h_1ac80d9de7aaddb2d11391cea696098561a9bae85f7e29f1a53f68900bf96f7300f" kind="enumvalue"><name>ThreeD</name></member>
+    <member refid="_marmot_voigt_8h_1ac80d9de7aaddb2d11391cea696098561a9bfe6bdaf0de6a5b86146f9b16b82f4b" kind="enumvalue"><name>Axial</name></member>
+    <member refid="_marmot_voigt_8h_1aecca5b8d20baad1f6f17464e4c13fb77" kind="variable"><name>IndicesToVoigtIndex</name></member>
+    <member refid="_marmot_voigt_8h_1aba49d78a098b8c46d7457020b819e4a4" kind="variable"><name>P</name></member>
+    <member refid="_marmot_voigt_8h_1a092b56db5b18c89398f2821dd4d448df" kind="variable"><name>PInv</name></member>
+    <member refid="_marmot_voigt_8h_1a42f20a2edc2458471669cf7f5f18474c" kind="variable"><name>I</name></member>
+    <member refid="_marmot_voigt_8h_1a988f5b37ea23a08c592146ea77888c2e" kind="variable"><name>IHyd</name></member>
+    <member refid="_marmot_voigt_8h_1aa807db8f654a16a56fb9d58da2d051c2" kind="variable"><name>IDev</name></member>
+    <member refid="_marmot_voigt_8h_1a2774d9ab3c6fecde50a95751e63b887b" kind="function"><name>voigtSizeFromDimension</name></member>
+    <member refid="_marmot_voigt_8h_1a90546ed3ff5a0d9c43da69202931a02d" kind="function"><name>voigtToPlaneVoigt</name></member>
+    <member refid="_marmot_voigt_8h_1a359cfbca9955d1adf4937a818e44ce5e" kind="function"><name>voigtToAxisymmetricVoigt</name></member>
+    <member refid="_marmot_voigt_8h_1ae41f2cd8a963e578401805cf2d6d6319" kind="function"><name>planeVoigtToVoigt</name></member>
+    <member refid="_marmot_voigt_8h_1a5983f7b718c0aecb1c86323fd3b3fc25" kind="function"><name>axisymmetricVoigtToVoigt</name></member>
+    <member refid="_marmot_voigt_8h_1aa90398ab5b16f5dcce58ac70830871e2" kind="function"><name>reduce3DVoigt</name></member>
+    <member refid="_marmot_voigt_8h_1a4e88b4166a74f88857a7f97f24b6fae2" kind="function"><name>make3DVoigt</name></member>
+    <member refid="_marmot_voigt_8h_1a71bdf8bc4b0bc764758b66ff03368340" kind="function"><name>voigtToStrain</name></member>
+    <member refid="_marmot_voigt_8h_1a7f3a83bcb971fb1242668b713d42e9b1" kind="function"><name>voigtToStress</name></member>
+    <member refid="_marmot_voigt_8h_1a373c1835926cc6ddeb3b9e9276cabd7c" kind="function"><name>strainToVoigt</name></member>
+    <member refid="_marmot_voigt_8h_1a9d2ab0498d161704555b4ad1097fc3e2" kind="function"><name>stressToVoigt</name></member>
+    <member refid="_marmot_voigt_8h_1a5cd3b055974f5bb4db432a1a1d2ec9de" kind="function"><name>stiffnessToVoigt</name></member>
+    <member refid="_marmot_voigt_8h_1a29b1737c112dc30aaec9e868504c2219" kind="function"><name>voigtToStiffness</name></member>
+    <member refid="_marmot_voigt_8h_1adce683a5dd69af87b24130522e6a2352" kind="function"><name>stressMatrixFromVoigt</name></member>
+    <member refid="_marmot_voigt_8h_1a8475b652c57e19040441472c6044e15a" kind="function"><name>voigtFromStrainMatrix</name></member>
   </compound>
-  <compound refid="namespace_marmot_1_1_geostatic_stress" kind="namespace"><name>Marmot::GeostaticStress</name>
-    <member refid="_marmot_geostatic_stress_8h_1a30a10dd2f8cea9d588fcf7dc4cefdf7e" kind="function"><name>getGeostaticStressFromLinearDistribution</name></member>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_voigt_1_1_transformations" kind="namespace"><name>Marmot::ContinuumMechanics::Voigt::Transformations</name>
+    <member refid="_marmot_voigt_8h_1a9ad31aa8d2f58bddb44abddfe11df69d" kind="function"><name>transformationMatrixStrainVoigt</name></member>
+    <member refid="_marmot_voigt_8h_1a22fcf8c6a9d0af8967380f77835ff368" kind="function"><name>transformationMatrixStressVoigt</name></member>
+    <member refid="_marmot_voigt_8h_1aa1fcb6767018ef87d876e2cb0e9ed00f" kind="function"><name>projectVoigtStressToPlane</name></member>
+    <member refid="_marmot_voigt_8h_1af02ec8dbe7112374bdd4389c7435674b" kind="function"><name>projectVoigtStrainToPlane</name></member>
+    <member refid="_marmot_voigt_8h_1ae1cee30698d20f708c65dd8938322c7a" kind="function"><name>rotateVoigtStress</name></member>
+    <member refid="_marmot_voigt_8h_1a820d201433c58c3e0ac377fcdd2bb15f" kind="function"><name>transformStressToLocalSystem</name></member>
+    <member refid="_marmot_voigt_8h_1a34dcdd01e7e5e5d7a90a294d1d3d6a96" kind="function"><name>transformStrainToLocalSystem</name></member>
+    <member refid="_marmot_voigt_8h_1a623ab32aabb9c0be53efc9b1ee05e2a3" kind="function"><name>transformStressToGlobalSystem</name></member>
+    <member refid="_marmot_voigt_8h_1a8bc5a4a9330f86ef7f98fd341af74488" kind="function"><name>transformStrainToGlobalSystem</name></member>
+    <member refid="_marmot_voigt_8h_1a8ca85abbb3b0ba96341b5b02defcc6a2" kind="function"><name>transformStiffnessToGlobalSystem</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_materials" kind="namespace"><name>Marmot::Materials</name>
   </compound>
-  <compound refid="namespace_marmot_1_1_materials_1_1_kelvin_chain" kind="namespace"><name>Marmot::Materials::KelvinChain</name>
-    <member refid="_marmot_kelvin_chain_8h_1a4161f4ca08c7a35dd1dcd75e630f60f4" kind="typedef"><name>Properties</name></member>
-    <member refid="_marmot_kelvin_chain_8h_1a9fc5728c546ccca8041fc22a969235fa" kind="typedef"><name>mapProperties</name></member>
-    <member refid="_marmot_kelvin_chain_8h_1ac6c31e76aceb440b9b6ea4aee7aae8f3" kind="typedef"><name>StateVarMatrix</name></member>
-    <member refid="_marmot_kelvin_chain_8h_1a01798c882d4d09e944aaa13153c21079" kind="typedef"><name>mapStateVarMatrix</name></member>
-    <member refid="_marmot_kelvin_chain_8h_1a3f564758677f0016ead1ed7dc89fd610" kind="function"><name>evaluatePostWidderFormula</name></member>
-    <member refid="_marmot_kelvin_chain_8h_1a7fddff12d5c5fcc1b6145e7b93fbcc3f" kind="function"><name>approximateZerothCompliance</name></member>
-    <member refid="_marmot_kelvin_chain_8h_1a2f2efb416b0dab23259040740294e9e6" kind="function"><name>computeElasticModuli</name></member>
-    <member refid="_marmot_kelvin_chain_8h_1ad2bfc2546999dd6545dcf008b66e6798" kind="function"><name>generateRetardationTimes</name></member>
-    <member refid="_marmot_kelvin_chain_8h_1a59398da9ad5bc47468fef8fc9e6239f0" kind="function"><name>updateStateVarMatrix</name></member>
-    <member refid="_marmot_kelvin_chain_8h_1aac946db2dcafaf4619982a13535b6a5c" kind="function"><name>evaluateKelvinChain</name></member>
-    <member refid="_marmot_kelvin_chain_8h_1a24aa27592ecdf22a6880d8dbc64d37c0" kind="function"><name>computeLambdaAndBeta</name></member>
+  <compound refid="namespace_marmot_1_1_materials_1_1_interface_material_helper_functions" kind="namespace"><name>Marmot::Materials::InterfaceMaterialHelperFunctions</name>
+    <member refid="_marmot_interface_material_helper_functions_8h_1a4d7e903ca35cfe1851f75283b13830ce" kind="typedef"><name>Tensor3333d</name></member>
+    <member refid="_marmot_interface_material_helper_functions_8h_1ae2a6b146d6e90dba72ce01952119ad1b" kind="typedef"><name>Tensor333d</name></member>
+    <member refid="_marmot_interface_material_helper_functions_8h_1a715d673cb0a2201e7c6a71a5dc74a644" kind="typedef"><name>Tensor33d</name></member>
+    <member refid="_marmot_interface_material_helper_functions_8h_1a6b0ad0130dc7c7ee4f89379cf3a35eda" kind="typedef"><name>Tensor3d</name></member>
+    <member refid="_marmot_interface_material_helper_functions_8h_1a3c598f2a90d529affb22bd076d5dc700" kind="function"><name>interfaceGeometrySystemCouplings</name></member>
+    <member refid="_marmot_interface_material_helper_functions_8h_1a18b5f6da796e248890273b73cf0dc65f" kind="function"><name>calculateMaterialMatrices</name></member>
+    <member refid="_marmot_interface_material_helper_functions_8h_1aa9ef94ca150f62d505cb25df51ae5d72" kind="function"><name>calculateInterfaceMaterialParameters</name></member>
+    <member refid="_marmot_interface_material_helper_functions_8h_1ab047314b82f46dbf9a4fa4c7fb43d90f" kind="function"><name>calculateInterfaceMaterialParameters</name></member>
   </compound>
-  <compound refid="namespace_marmot_1_1_numerical_algorithms" kind="namespace"><name>Marmot::NumericalAlgorithms</name>
+  <compound refid="namespace_marmot_1_1_registry" kind="namespace"><name>Marmot::Registry</name>
   </compound>
-  <compound refid="namespace_marmot_1_1_solvers" kind="namespace"><name>Marmot::Solvers</name>
+  <compound refid="namespace_marmot_1_1_testing" kind="namespace"><name>Marmot::Testing</name>
+    <member refid="_marmot_testing_8h_1a0fd6d75987f47297f37a92bdc698fb04" kind="function"><name>checkIfEqual</name></member>
+    <member refid="_marmot_testing_8h_1abc0bb108985d93862de52d8efb07d457" kind="function"><name>checkIfEqual</name></member>
+    <member refid="_marmot_testing_8h_1a536c090df341abb53026544c6ba29a80" kind="function"><name>checkIfEqual</name></member>
+    <member refid="_marmot_testing_8h_1a87715a3d2e074a8043020ceaffc9e82e" kind="function"><name>getString</name></member>
+    <member refid="_marmot_testing_8h_1a0483b94b58257122784697c6492627f8" kind="function"><name>getString</name></member>
+    <member refid="_marmot_testing_8h_1ae8532780a87a911bd99a477fe5e8c812" kind="function"><name>checkIfEqual</name></member>
+    <member refid="_marmot_testing_8h_1aa9631a49d5e76b29696611bf3ed21ceb" kind="function"><name>checkIfEqual</name></member>
+    <member refid="_marmot_testing_8h_1a2650f599f03fc8c503c969366b1b5812" kind="function"><name>checkIfEqual</name></member>
+    <member refid="_marmot_testing_8h_1af036d587586043fa17744b4d17a459db" kind="function"><name>throwExceptionOnFailure</name></member>
+    <member refid="_marmot_testing_8h_1a419cfd0357321b6165f13314560b904a" kind="function"><name>executeTestsAndCollectExceptions</name></member>
+    <member refid="_marmot_testing_8h_1a06f3f34b638c6c214635b15cb7e2b62f" kind="function"><name>fibonacciLatticeHemisphere</name></member>
+    <member refid="_marmot_testing_8h_1a3b07c3d6f6c8bc0015eb72b04978595c" kind="function"><name>spinTurbokreisel</name></member>
   </compound>
-  <compound refid="namespace_marmot_1_1_time_integration" kind="namespace"><name>Marmot::TimeIntegration</name>
-    <member refid="_newmark_beta_integrator_8h_1acc2ce8e1c2303f444a27d1d36dcd059e" kind="function"><name>newmarkBetaIntegration</name></member>
-  </compound>
-  <compound refid="namespace_marmot_library" kind="namespace"><name>MarmotLibrary</name>
+  <compound refid="namespace_marmot_1_1_utilities" kind="namespace"><name>Marmot::Utilities</name>
   </compound>
   <compound refid="_adaptive_substepper_8h" kind="file"><name>AdaptiveSubstepper.h</name>
   </compound>
@@ -569,6 +707,10 @@
   <compound refid="_marmot_elasticity_8h" kind="file"><name>MarmotElasticity.h</name>
   </compound>
   <compound refid="_marmot_geostatic_stress_8h" kind="file"><name>MarmotGeostaticStress.h</name>
+  </compound>
+  <compound refid="_marmot_interface_material_helper_functions_8h" kind="file"><name>MarmotInterfaceMaterialHelperFunctions.h</name>
+  </compound>
+  <compound refid="_marmot_interface_material_hypo_elastic_8h" kind="file"><name>MarmotInterfaceMaterialHypoElastic.h</name>
   </compound>
   <compound refid="_marmot_kelvin_chain_8h" kind="file"><name>MarmotKelvinChain.h</name>
   </compound>
@@ -586,15 +728,19 @@
   </compound>
   <compound refid="_marmot_material_point_solver_hypo_elastic_8h" kind="file"><name>MarmotMaterialPointSolverHypoElastic.h</name>
   </compound>
+  <compound refid="_marmot_microplane_8h" kind="file"><name>MarmotMicroplane.h</name>
+  </compound>
   <compound refid="_marmot_prony_series_8h" kind="file"><name>MarmotPronySeries.h</name>
   </compound>
   <compound refid="_marmot_state_var_vector_manager_8h" kind="file"><name>MarmotStateVarVectorManager.h</name>
   </compound>
-  <compound refid="_marmot_utility_8h" kind="file"><name>MarmotUtility.h</name>
+  <compound refid="_marmot_testing_8h" kind="file"><name>MarmotTesting.h</name>
   </compound>
   <compound refid="_marmot_viscoelasticity_8h" kind="file"><name>MarmotViscoelasticity.h</name>
   </compound>
   <compound refid="_marmot_voigt_8h" kind="file"><name>MarmotVoigt.h</name>
+  </compound>
+  <compound refid="_marmot_wiechert_8h" kind="file"><name>MarmotWiechert.h</name>
   </compound>
   <compound refid="_menetrey_willam_8h" kind="file"><name>MenetreyWillam.h</name>
   </compound>

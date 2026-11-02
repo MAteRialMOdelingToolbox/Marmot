@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement</compoundname>
+    <includes refid="_marmot_material_gradient_enhanced_finite_strain_8h" local="no">MarmotMaterialGradientEnhancedFiniteStrain.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment_1a1882c11cf1955e4d0de1b804c6c42af0" prot="public" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement::time</definition>
+        <argsstring></argsstring>
+        <name>time</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement::time</qualifiedname>
+        <briefdescription>
+<para>time at the beginning of the increment </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="185" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="185" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment_1ae962da1dac7f7e677ac2fb688a488988" prot="public" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement::dT</definition>
+        <argsstring></argsstring>
+        <name>dT</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement::dT</qualifiedname>
+        <briefdescription>
+<para>size of the time increment </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="186" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="186" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Time and time increment of the current step. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="184" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="184" bodyend="187"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment_1ae962da1dac7f7e677ac2fb688a488988" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement</scope><name>dT</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment_1a1882c11cf1955e4d0de1b804c6c42af0" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement</scope><name>time</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

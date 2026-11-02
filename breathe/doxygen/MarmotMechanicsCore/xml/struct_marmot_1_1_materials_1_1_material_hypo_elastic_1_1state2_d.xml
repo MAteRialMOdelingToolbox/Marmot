@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state2_d" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Materials::MaterialHypoElastic::state2D</compoundname>
+    <includes refid="_marmot_material_hypo_elastic_8h" local="no">MarmotMaterialHypoElastic.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state2_d_1a08013e88b395fa2f124cd001f80aebc0" prot="public" static="no" mutable="no">
+        <type>Marmot::Math::Vector3d</type>
+        <definition>Marmot::Math::Vector3d Marmot::Materials::MaterialHypoElastic::state2D::stress</definition>
+        <argsstring></argsstring>
+        <name>stress</name>
+        <qualifiedname>Marmot::Materials::MaterialHypoElastic::state2D::stress</qualifiedname>
+        <briefdescription>
+<para>2D Cauchy stress tensor in Voigt notation </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="122" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="122" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state2_d_1a6dc50ff25635c4f4fa890d324fad5569" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Materials::MaterialHypoElastic::state2D::elasticEnergyDensity</definition>
+        <argsstring></argsstring>
+        <name>elasticEnergyDensity</name>
+        <qualifiedname>Marmot::Materials::MaterialHypoElastic::state2D::elasticEnergyDensity</qualifiedname>
+        <briefdescription>
+<para>Elastic strain energy density. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="123" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="123" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state2_d_1a958bac9f5d973c83e4a025035e08fda3" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Materials::MaterialHypoElastic::state2D::dissipation</definition>
+        <argsstring></argsstring>
+        <name>dissipation</name>
+        <qualifiedname>Marmot::Materials::MaterialHypoElastic::state2D::dissipation</qualifiedname>
+        <briefdescription>
+<para>Dissipation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="124" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="124" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state2_d_1aaf696a6c105d361884a402f42c0ce6b3" prot="public" static="no" mutable="no">
+        <type>double *</type>
+        <definition>double* Marmot::Materials::MaterialHypoElastic::state2D::stateVars</definition>
+        <argsstring></argsstring>
+        <name>stateVars</name>
+        <qualifiedname>Marmot::Materials::MaterialHypoElastic::state2D::stateVars</qualifiedname>
+        <briefdescription>
+<para>Pointer to array of state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="125" column="29" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="125" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state2_d_1a0b10a2cba78e99e3b0df5fe443822430" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Materials::MaterialHypoElastic::state2D::state2D</definition>
+        <argsstring>()</argsstring>
+        <name>state2D</name>
+        <qualifiedname>Marmot::Materials::MaterialHypoElastic::state2D::state2D</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="127" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="127" bodyend="133"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Structure holding the material state at a material point for 2D plane stress. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="121" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="121" bodyend="134"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state2_d_1a958bac9f5d973c83e4a025035e08fda3" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialHypoElastic::state2D</scope><name>dissipation</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state2_d_1a6dc50ff25635c4f4fa890d324fad5569" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialHypoElastic::state2D</scope><name>elasticEnergyDensity</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state2_d_1a0b10a2cba78e99e3b0df5fe443822430" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialHypoElastic::state2D</scope><name>state2D</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state2_d_1aaf696a6c105d361884a402f42c0ce6b3" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialHypoElastic::state2D</scope><name>stateVars</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state2_d_1a08013e88b395fa2f124cd001f80aebc0" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialHypoElastic::state2D</scope><name>stress</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

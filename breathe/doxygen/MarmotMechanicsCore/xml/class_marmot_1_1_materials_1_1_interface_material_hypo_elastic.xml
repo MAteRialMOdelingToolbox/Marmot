@@ -1,0 +1,513 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Materials::InterfaceMaterialHypoElastic</compoundname>
+    <includes refid="_marmot_interface_material_hypo_elastic_8h" local="no">MarmotInterfaceMaterialHypoElastic.h</includes>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state" prot="public">Marmot::Materials::InterfaceMaterialHypoElastic::State</innerclass>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents" prot="public">Marmot::Materials::InterfaceMaterialHypoElastic::Tangents</innerclass>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation" prot="public">Marmot::Materials::InterfaceMaterialHypoElastic::Deformation</innerclass>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_time_increment" prot="public">Marmot::Materials::InterfaceMaterialHypoElastic::TimeIncrement</innerclass>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1afddbbba8effd91c8da1077774455603b" prot="public" static="no">
+        <type>Marmot::Math::Tensors::FastorTensors::Tensor3d</type>
+        <definition>using Marmot::Materials::InterfaceMaterialHypoElastic::Tensor3d = Marmot::Math::Tensors::FastorTensors::Tensor3d</definition>
+        <argsstring></argsstring>
+        <name>Tensor3d</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::Tensor3d</qualifiedname>
+        <briefdescription>
+<para>first order tensor in 3D </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="58" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a053563d78e4d48c52d59b2af828137b3" prot="public" static="no">
+        <type>Marmot::Math::Tensors::FastorTensors::Tensor33d</type>
+        <definition>using Marmot::Materials::InterfaceMaterialHypoElastic::Tensor33d = Marmot::Math::Tensors::FastorTensors::Tensor33d</definition>
+        <argsstring></argsstring>
+        <name>Tensor33d</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::Tensor33d</qualifiedname>
+        <briefdescription>
+<para>second order tensor in 3D </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="59" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1aee86ca94b641b0368ee6bea9bbffebd1" prot="public" static="no">
+        <type>Marmot::Math::Tensors::FastorTensors::Tensor333d</type>
+        <definition>using Marmot::Materials::InterfaceMaterialHypoElastic::Tensor333d = Marmot::Math::Tensors::FastorTensors::Tensor333d</definition>
+        <argsstring></argsstring>
+        <name>Tensor333d</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::Tensor333d</qualifiedname>
+        <briefdescription>
+<para>third order tensor in 3D </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="60" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a2e56ab744ffa60d3a47702d951dc9a67" prot="public" static="no">
+        <type>Marmot::Math::Tensors::FastorTensors::Tensor3333d</type>
+        <definition>using Marmot::Materials::InterfaceMaterialHypoElastic::Tensor3333d = Marmot::Math::Tensors::FastorTensors::Tensor3333d</definition>
+        <argsstring></argsstring>
+        <name>Tensor3333d</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::Tensor3333d</qualifiedname>
+        <briefdescription>
+<para>fourth order tensor in 3D </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="61" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1ac94fa407decc32f4b7ddca371d0c2eb8" prot="public" static="no">
+        <type>Marmot::Math::Tensors::FastorTensors::Tensor6d</type>
+        <definition>using Marmot::Materials::InterfaceMaterialHypoElastic::Tensor6d = Marmot::Math::Tensors::FastorTensors::Tensor6d</definition>
+        <argsstring></argsstring>
+        <name>Tensor6d</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::Tensor6d</qualifiedname>
+        <briefdescription>
+<para>vector of six components, one block per side </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="62" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1aa23ac900b9e3c559bd2b03c12ae2a9a6" prot="public" static="no">
+        <type>Marmot::Math::Tensors::FastorTensors::Tensor18d</type>
+        <definition>using Marmot::Materials::InterfaceMaterialHypoElastic::Tensor18d = Marmot::Math::Tensors::FastorTensors::Tensor18d</definition>
+        <argsstring></argsstring>
+        <name>Tensor18d</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::Tensor18d</qualifiedname>
+        <briefdescription>
+<para>vector of 18 components, one block per side </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="63" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a27078f2795fb77da5670bea5ee605473" prot="protected" static="no" mutable="no">
+        <type>const double *</type>
+        <definition>const double* Marmot::Materials::InterfaceMaterialHypoElastic::materialProperties</definition>
+        <argsstring></argsstring>
+        <name>materialProperties</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::materialProperties</qualifiedname>
+        <briefdescription>
+<para>material properties [E, nu, h, properties of the base material...] </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="51" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a9e4c9b0cc0e7b3344816c61a59462d59" prot="protected" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::Materials::InterfaceMaterialHypoElastic::nMaterialProperties</definition>
+        <argsstring></argsstring>
+        <name>nMaterialProperties</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::nMaterialProperties</qualifiedname>
+        <briefdescription>
+<para>number of material properties </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="52" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a106b4072d2728e2d9139f2236bd3ff39" prot="protected" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::Materials::InterfaceMaterialHypoElastic::h</definition>
+        <argsstring></argsstring>
+        <name>h</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::h</qualifiedname>
+        <briefdescription>
+<para>thickness of the interface, the third material property </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="53" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a65d34cfa5c362fff63ce9b16b6e21b7f" prot="protected" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; Marmot::Materials::InterfaceMaterialHypoElastic::baseMaterialProperties</definition>
+        <argsstring></argsstring>
+        <name>baseMaterialProperties</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::baseMaterialProperties</qualifiedname>
+        <briefdescription>
+<para>properties handed to the base material </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="54" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a48ff992c63683201c2f568b66203c145" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_marmot_1_1_materials_1_1_material_hypo_elastic" kindref="compound">MaterialHypoElastic</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; MaterialHypoElastic &gt; Marmot::Materials::InterfaceMaterialHypoElastic::baseMaterial</definition>
+        <argsstring></argsstring>
+        <name>baseMaterial</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::baseMaterial</qualifiedname>
+        <briefdescription>
+<para>hypoelastic material of the bulk </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="55" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1ab0b520ff001e99de5a4ac1727efe1a1b" prot="public" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::Materials::InterfaceMaterialHypoElastic::materialNumber</definition>
+        <argsstring></argsstring>
+        <name>materialNumber</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::materialNumber</qualifiedname>
+        <briefdescription>
+<para>number of the material </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="66" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1abc695685169b91e3d008a7f08ca72582" prot="public" static="no" mutable="no">
+        <type>Marmot::Utilities::StateLayoutDynamic</type>
+        <definition>Marmot::Utilities::StateLayoutDynamic Marmot::Materials::InterfaceMaterialHypoElastic::stateLayout</definition>
+        <argsstring></argsstring>
+        <name>stateLayout</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::stateLayout</qualifiedname>
+        <briefdescription>
+<para>Layout of the state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="90" column="43" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a966de380024ecf13c8a7973b9e04198f" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Materials::InterfaceMaterialHypoElastic::characteristicElementLength</definition>
+        <argsstring></argsstring>
+        <name>characteristicElementLength</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::characteristicElementLength</qualifiedname>
+        <briefdescription>
+<para>Characteristic element length. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="93" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a1aabf93e8d5a72bc66307b40528d56e2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Materials::InterfaceMaterialHypoElastic::InterfaceMaterialHypoElastic</definition>
+        <argsstring>(const std::string &amp;materialName, const double *matProperties_, int nMaterialProperties_, int materialNumber_)</argsstring>
+        <name>InterfaceMaterialHypoElastic</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::InterfaceMaterialHypoElastic</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>materialName</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>matProperties_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaterialProperties_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>materialNumber_</declname>
+        </param>
+        <briefdescription>
+<para>Construct an interface material from a registered hypoelastic material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The material properties are [E, nu, h, properties of the base material...], where h is the thickness of the interface. The base material receives E, nu and the properties after h.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">materialName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>name of the base material, registered in the MarmotMaterialHypoElasticFactory </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">matProperties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>material properties </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nMaterialProperties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of material properties, at least three </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialNumber_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of the material</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if fewer than three properties are given or the base material is not registered </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="81" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1aaf5707f7998e5c42351de5d5faf1fc62" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Marmot::Materials::InterfaceMaterialHypoElastic::~InterfaceMaterialHypoElastic</definition>
+        <argsstring>()=default</argsstring>
+        <name>~InterfaceMaterialHypoElastic</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::~InterfaceMaterialHypoElastic</qualifiedname>
+        <briefdescription>
+<para>Default destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="87" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a5856cb1d260014c6a3883cf2cfcf6705" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::InterfaceMaterialHypoElastic::setCharacteristicElementLength</definition>
+        <argsstring>(double length)</argsstring>
+        <name>setCharacteristicElementLength</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::setCharacteristicElementLength</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>length</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set the characteristic element length at the considered quadrature point. It is needed for the regularization of materials with softening behavior based on the mesh-adjusted softening modulus.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">length</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>characteristic length; will be assigned to <ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a966de380024ecf13c8a7973b9e04198f" kindref="member">characteristicElementLength</ref> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="103" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a448ed0e8c582e512339fb1cb356c0a7a" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::InterfaceMaterialHypoElastic::computeStress</definition>
+        <argsstring>(State &amp;state, Tangents &amp;tangents, const Deformation &amp;deformation, const TimeIncrement &amp;timeIncrement)</argsstring>
+        <name>computeStress</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::computeStress</qualifiedname>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state" kindref="compound">State</ref> &amp;</type>
+          <declname>state</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents" kindref="compound">Tangents</ref> &amp;</type>
+          <declname>tangents</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation" kindref="compound">Deformation</ref> &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_time_increment" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>For a given interface displacement jump increment and surface strain increment, compute the conjugate interface quantities and algorithmic tangent terms. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="138" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a2109bf1e5deaeffb84ce4c060946188a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>Marmot::Utilities::StateView</type>
+        <definition>Marmot::Utilities::StateView Marmot::Materials::InterfaceMaterialHypoElastic::getStateView</definition>
+        <argsstring>(const std::string &amp;stateName, double *stateVars) const</argsstring>
+        <name>getStateView</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::getStateView</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>stateName</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Get a view to the state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stateName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the state variable. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Marmot::Utilities::StateView to access the requested state variable. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="150" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="150" bodyend="153"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a3498421ee3b9a270dd16737eafdcc520" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>virtual int Marmot::Materials::InterfaceMaterialHypoElastic::getNumberOfRequiredStateVars</definition>
+        <argsstring>() const</argsstring>
+        <name>getNumberOfRequiredStateVars</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::getNumberOfRequiredStateVars</qualifiedname>
+        <briefdescription>
+<para>Get the total number of required state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Total number of required state variables. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="160" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="160" bodyend="160"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a2e2a5bf398f389949f8bc6d5125f7bcd" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::InterfaceMaterialHypoElastic::initializeYourself</definition>
+        <argsstring>(double *stateVars, int nStateVars)</argsstring>
+        <name>initializeYourself</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::initializeYourself</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nStateVars</declname>
+        </param>
+        <briefdescription>
+<para>Initialize the state variables at a material point. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The default implementation initializes all state variables to zero. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="167" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a065bd1b6c4d4a37c1323a700656df965" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>double</type>
+        <definition>virtual double Marmot::Materials::InterfaceMaterialHypoElastic::getDensity</definition>
+        <argsstring>()</argsstring>
+        <name>getDensity</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::getDensity</qualifiedname>
+        <briefdescription>
+<para>Get the density of the material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>the density of the base material </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="174" column="20"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Abstract base class for hypoelastic interface materials.</para>
+<para>This class remains an independent interface-material base class because interface materials have their own stress-update signature. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="48" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="48" bodyend="175"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a48ff992c63683201c2f568b66203c145" prot="protected" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>baseMaterial</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a65d34cfa5c362fff63ce9b16b6e21b7f" prot="protected" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>baseMaterialProperties</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a966de380024ecf13c8a7973b9e04198f" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>characteristicElementLength</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a448ed0e8c582e512339fb1cb356c0a7a" prot="public" virt="virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>computeStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a065bd1b6c4d4a37c1323a700656df965" prot="public" virt="virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>getDensity</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a3498421ee3b9a270dd16737eafdcc520" prot="public" virt="virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>getNumberOfRequiredStateVars</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a2109bf1e5deaeffb84ce4c060946188a" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>getStateView</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a106b4072d2728e2d9139f2236bd3ff39" prot="protected" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>h</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a2e2a5bf398f389949f8bc6d5125f7bcd" prot="public" virt="virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>initializeYourself</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a1aabf93e8d5a72bc66307b40528d56e2" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>InterfaceMaterialHypoElastic</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1ab0b520ff001e99de5a4ac1727efe1a1b" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>materialNumber</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a27078f2795fb77da5670bea5ee605473" prot="protected" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>materialProperties</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a9e4c9b0cc0e7b3344816c61a59462d59" prot="protected" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>nMaterialProperties</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a5856cb1d260014c6a3883cf2cfcf6705" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>setCharacteristicElementLength</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1abc695685169b91e3d008a7f08ca72582" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>stateLayout</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1aa23ac900b9e3c559bd2b03c12ae2a9a6" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>Tensor18d</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a2e56ab744ffa60d3a47702d951dc9a67" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>Tensor3333d</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1aee86ca94b641b0368ee6bea9bbffebd1" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>Tensor333d</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a053563d78e4d48c52d59b2af828137b3" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>Tensor33d</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1afddbbba8effd91c8da1077774455603b" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>Tensor3d</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1ac94fa407decc32f4b7ddca371d0c2eb8" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>Tensor6d</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1aaf5707f7998e5c42351de5d5faf1fc62" prot="public" virt="virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic</scope><name>~InterfaceMaterialHypoElastic</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,5 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot::Discretizations::Meshfree::GenericParticle&lt; nDim &gt;" alt="" coords="5,5,614,53"/>
+<area shape="rect" id="node2" title="Marmot::Discretizations::Meshfree::Particle" alt="" coords="90,101,529,149"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="311,52,312,87,307,84,308,56"/>
+</map>

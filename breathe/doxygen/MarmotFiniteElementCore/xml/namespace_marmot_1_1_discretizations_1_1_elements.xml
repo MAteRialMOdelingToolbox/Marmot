@@ -1,0 +1,517 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_discretizations_1_1_elements" kind="namespace" language="C++">
+    <compoundname>Marmot::Discretizations::Elements</compoundname>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_elements_1_1_boundary_element" prot="public">Marmot::Discretizations::Elements::BoundaryElement</innerclass>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element" prot="public">Marmot::Discretizations::Elements::Element</innerclass>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper" prot="public">Marmot::Discretizations::Elements::ElementSpatialWrapper</innerclass>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element" prot="public">Marmot::Discretizations::Elements::GeometryElement</innerclass>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_interface_element" prot="public">Marmot::Discretizations::Elements::GeometryInterfaceElement</innerclass>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_bulk_viscosity">Marmot::Discretizations::Elements::BulkViscosity</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_consistent_mass">Marmot::Discretizations::Elements::ConsistentMass</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_e_a_s">Marmot::Discretizations::Elements::EAS</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_mass_lumping">Marmot::Discretizations::Elements::MassLumping</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_quadrature">Marmot::Discretizations::Elements::Quadrature</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_small_strain">Marmot::Discretizations::Elements::SmallStrain</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_spatial1_d">Marmot::Discretizations::Elements::Spatial1D</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_spatial2_d">Marmot::Discretizations::Elements::Spatial2D</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_spatial3_d">Marmot::Discretizations::Elements::Spatial3D</innernamespace>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78d" prot="public" static="no" strong="no">
+        <type></type>
+        <name>ElementShapes</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementShapes</qualifiedname>
+        <enumvalue id="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78da1f6416415f77d673ba51042ec1baf81a" prot="public">
+          <name>Bar2</name>
+          <briefdescription>
+<para>1-D 2-node bar </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78da33e7ea18677b5dfda2d4df095bdeb617" prot="public">
+          <name>Bar3</name>
+          <briefdescription>
+<para>1-D 3-node bar </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78da70c9ce7e668ebd139d178d3d4e86fbba" prot="public">
+          <name>Quad4</name>
+          <briefdescription>
+<para>2-D 4-node quadrilateral </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78daa097d47e5885d89579cc3a648260cfb9" prot="public">
+          <name>Quad8</name>
+          <briefdescription>
+<para>2-D 8-node serendipity quadrilateral </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78da1b215d42f939c3ed62c62b3018360350" prot="public">
+          <name>Quad9</name>
+          <briefdescription>
+<para>2-D 9-node quadrilateral </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78da04f154c9b59bc515295825a3e2348383" prot="public">
+          <name>Quad16</name>
+          <briefdescription>
+<para>2-D 16-node quadrilateral </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78da3a05254289f2500f35ea33a066221a12" prot="public">
+          <name>Tetra4</name>
+          <briefdescription>
+<para>3-D 4-node tetrahedron </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78da196f8ecc8267fb49d871c624be581684" prot="public">
+          <name>Tetra10</name>
+          <briefdescription>
+<para>3-D 10-node tetrahedron </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78da568cc503e8e7c8d675b7a321cfa3009f" prot="public">
+          <name>Hexa8</name>
+          <briefdescription>
+<para>3-D 8-node hexahedron </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78da411cdcc5ae137d10f0823f5aab2a24cd" prot="public">
+          <name>Hexa20</name>
+          <briefdescription>
+<para>3-D 20-node serendipity hexahedron </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78dacdaecf236724a72a5815be6fb1e0c82b" prot="public">
+          <name>Hexa27</name>
+          <briefdescription>
+<para>3-D 27-node hexahedron </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78da57fb180eaa3ccc779fad9635182b17b2" prot="public">
+          <name>Hexa64</name>
+          <briefdescription>
+<para>3-D 64-node hexahedron </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Supported isoparametric element shapes. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="39" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="39" bodyend="52"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_finite_element_8h_1a4c2217bb190e17d97dcd97e5318ab45b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78d" kindref="member">ElementShapes</ref></type>
+        <definition>ElementShapes Marmot::Discretizations::Elements::getElementShapeByMetric</definition>
+        <argsstring>(int nDim, int nNodes)</argsstring>
+        <name>getElementShapeByMetric</name>
+        <qualifiedname>Marmot::Discretizations::Elements::getElementShapeByMetric</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>nDim</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nNodes</declname>
+        </param>
+        <briefdescription>
+<para>Determine the element shape from spatial dimension and node count. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of spatial dimensions. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of element nodes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Matching <ref refid="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78d" kindref="member">Marmot::Discretizations::Elements::ElementShapes</ref> enumerator. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="60" column="17" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="60" declcolumn="17"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_finite_element_8h_1acb650496b98651c0a532e189c54f1acb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::MatrixXd</type>
+        <definition>Eigen::MatrixXd Marmot::Discretizations::Elements::NB</definition>
+        <argsstring>(const Eigen::VectorXd &amp;N, const int nDoFPerNode)</argsstring>
+        <name>NB</name>
+        <qualifiedname>Marmot::Discretizations::Elements::NB</qualifiedname>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>N</declname>
+        </param>
+        <param>
+          <type>const int</type>
+          <declname>nDoFPerNode</declname>
+        </param>
+        <briefdescription>
+<para>Compute the expanded interpolation operator N_B (dynamic version). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">N</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shape function row vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nDoFPerNode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of degrees of freedom per node. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Expanded matrix of size <computeroutput>nDoFPerNode</computeroutput> × (nNodes * nDoFPerNode). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="68" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="68" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_finite_element_8h_1aadc18ce31dc8208f8a8c009a5efb4680" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+          <param>
+            <type>int</type>
+            <declname>nNodes</declname>
+            <defname>nNodes</defname>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; double, nDim, nDim *nNodes &gt;</type>
+        <definition>Eigen::Matrix&lt; double, nDim, nDim *nNodes &gt; Marmot::Discretizations::Elements::NB</definition>
+        <argsstring>(const Eigen::Matrix&lt; double, 1, nNodes &gt; &amp;N)</argsstring>
+        <name>NB</name>
+        <qualifiedname>Marmot::Discretizations::Elements::NB</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; double, 1, nNodes &gt; &amp;</type>
+          <declname>N</declname>
+        </param>
+        <briefdescription>
+<para>Compute the expanded interpolation operator N_B (compile-time size version). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of spatial dimensions. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of element nodes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">N</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shape function row vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Expanded matrix of size <computeroutput>nDim</computeroutput> × (nDim * nNodes). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="79" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="79" bodyend="89"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_finite_element_8h_1af2edfffc9fb728f9cb28cdec52490e6a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::MatrixXd</type>
+        <definition>Eigen::MatrixXd Marmot::Discretizations::Elements::Jacobian</definition>
+        <argsstring>(const Eigen::MatrixXd &amp;dN_dXi, const Eigen::VectorXd &amp;coordinates)</argsstring>
+        <name>Jacobian</name>
+        <qualifiedname>Marmot::Discretizations::Elements::Jacobian</qualifiedname>
+        <param>
+          <type>const Eigen::MatrixXd &amp;</type>
+          <declname>dN_dXi</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>coordinates</declname>
+        </param>
+        <briefdescription>
+<para>Compute the element Jacobian matrix (dynamic version). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dN_dXi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Matrix of shape function natural derivatives. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">coordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Flat vector of nodal coordinates. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Jacobian matrix. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="97" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="97" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_finite_element_8h_1a963071c3bb1582ad43dcd54c2152d66c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+          <param>
+            <type>int</type>
+            <declname>nNodes</declname>
+            <defname>nNodes</defname>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; double, nDim, nDim &gt;</type>
+        <definition>Eigen::Matrix&lt; double, nDim, nDim &gt; Marmot::Discretizations::Elements::Jacobian</definition>
+        <argsstring>(const Eigen::Matrix&lt; double, nDim, nNodes &gt; &amp;dNdXi, const Eigen::Matrix&lt; double, nDim *nNodes, 1 &gt; &amp;coordinates)</argsstring>
+        <name>Jacobian</name>
+        <qualifiedname>Marmot::Discretizations::Elements::Jacobian</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; double, nDim, nNodes &gt; &amp;</type>
+          <declname>dNdXi</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix&lt; double, nDim *nNodes, 1 &gt; &amp;</type>
+          <declname>coordinates</declname>
+        </param>
+        <briefdescription>
+<para>Compute the element Jacobian matrix (compile-time size version). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of spatial dimensions. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of element nodes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dNdXi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Matrix of shape function natural derivatives. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">coordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Flat nodal-coordinate vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Square Jacobian matrix of size <computeroutput>nDim</computeroutput> × nDim. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="109" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="109" bodyend="120"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_finite_element_8h_1aa3cdab971a5ca6cf606eb53ecbce0e47" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::VectorXi</type>
+        <definition>Eigen::VectorXi Marmot::Discretizations::Elements::expandNodeIndicesToCoordinateIndices</definition>
+        <argsstring>(const Eigen::VectorXi &amp;nodeIndices, int nDim)</argsstring>
+        <name>expandNodeIndicesToCoordinateIndices</name>
+        <qualifiedname>Marmot::Discretizations::Elements::expandNodeIndicesToCoordinateIndices</qualifiedname>
+        <param>
+          <type>const Eigen::VectorXi &amp;</type>
+          <declname>nodeIndices</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nDim</declname>
+        </param>
+        <briefdescription>
+<para>Expand scalar node indices to coordinate (DOF) indices. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">nodeIndices</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vector of node indices. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of spatial dimensions (DOFs per node). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Vector of coordinate indices. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="128" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" declline="128" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_dof_layout_tools_8h_1a98c08d5215757d34e1f1512070231093" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::vector&lt; std::vector&lt; std::string &gt; &gt;</type>
+        <definition>const std::vector&lt; std::vector&lt; std::string &gt; &gt; Marmot::Discretizations::Elements::makeNodeFieldLayout</definition>
+        <argsstring>(const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;fieldSizes)</argsstring>
+        <name>makeNodeFieldLayout</name>
+        <qualifiedname>Marmot::Discretizations::Elements::makeNodeFieldLayout</qualifiedname>
+        <param>
+          <type>const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;</type>
+          <declname>fieldSizes</declname>
+        </param>
+        <briefdescription>
+<para>Utilities for constructing DOF-layout structures in finite element assemblies. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Builds a node-field layout from a map of field names to their DOF dimensions.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fieldSizes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Map from field name to a pair (dofsPerNode, nodesForField): the number of scalar components the field has at each of its nodes, and how many of the element&apos;s nodes carry that field (&lt;= the element&apos;s total node count for a reduced-order field, e.g. corner- only pressure in a mixed Taylor-Hood-style element). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A 2-D vector where each row corresponds to a node and each entry is a field name. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" line="45" column="21" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" declline="45" declcolumn="21"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_dof_layout_tools_8h_1a804b8a9246613f1b61b2d79200c0f01d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt; int &gt; Marmot::Discretizations::Elements::makeBlockedLayoutPermutationPattern</definition>
+        <argsstring>(const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;nodeFields, const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;fieldSizes)</argsstring>
+        <name>makeBlockedLayoutPermutationPattern</name>
+        <qualifiedname>Marmot::Discretizations::Elements::makeBlockedLayoutPermutationPattern</qualifiedname>
+        <param>
+          <type>const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;</type>
+          <declname>nodeFields</declname>
+        </param>
+        <param>
+          <type>const std::map&lt; std::string, std::pair&lt; int, int &gt; &gt; &amp;</type>
+          <declname>fieldSizes</declname>
+        </param>
+        <briefdescription>
+<para>Computes the DOF permutation pattern for a blocked (field-major) layout. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>nodeFields</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Node-field layout as returned by makeNodeFieldLayout(). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>fieldSizes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Map from field name to a pair (dofsPerNode, nodesForField); see makeNodeFieldLayout(). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Integer permutation vector that reorders DOFs from node-major to field-major order. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" line="56" column="15" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotDofLayoutTools.h" declline="56" declcolumn="15"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotConsistentMass.h" line="58" column="1"/>
+  </compounddef>
+</doxygen>

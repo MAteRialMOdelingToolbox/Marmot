@@ -1,0 +1,7 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSpline.h" alt="" coords="92,5,1141,53"/>
+<area shape="rect" id="node3" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" alt="" coords="5,101,1228,149"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="618,67,619,103,614,100,615,71"/>
+<area shape="rect" id="node2" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" alt="" coords="28,197,1205,245"/>
+<area shape="poly" id="edge2" title="include" alt="" coords="618,163,619,199,614,195,615,167"/>
+</map>

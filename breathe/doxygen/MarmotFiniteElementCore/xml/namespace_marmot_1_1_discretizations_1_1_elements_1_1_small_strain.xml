@@ -1,0 +1,204 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_discretizations_1_1_elements_1_1_small_strain" kind="namespace" language="C++">
+    <compoundname>Marmot::Discretizations::Elements::SmallStrain</compoundname>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_marmot_small_strain_kinematics_8h_1a35c07c89b450d37749b5e78c39bdaa7c" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; double, ContinuumMechanics::Voigt::voigtSizeFromDimension(nDim), 1 &gt;</type>
+        <definition>using Marmot::Discretizations::Elements::SmallStrain::Voigt = Eigen::Matrix&lt; double, ContinuumMechanics::Voigt::voigtSizeFromDimension( nDim ), 1 &gt;</definition>
+        <argsstring></argsstring>
+        <name>Voigt</name>
+        <qualifiedname>Marmot::Discretizations::Elements::SmallStrain::Voigt</qualifiedname>
+        <briefdescription>
+<para>Strain or stress in (plane) Voigt notation for nDim spatial dimensions (1, 3 or 6 components). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotSmallStrainKinematics.h" line="35" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotSmallStrainKinematics.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_small_strain_kinematics_8h_1af62cbc0fcfdb430886f26e3833aac50a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+          <param>
+            <type>int</type>
+            <declname>nNodes</declname>
+            <defname>nNodes</defname>
+          </param>
+        </templateparamlist>
+        <type>Voigt&lt; nDim &gt;</type>
+        <definition>Voigt&lt; nDim &gt; Marmot::Discretizations::Elements::SmallStrain::strainIncrement</definition>
+        <argsstring>(const Eigen::Ref&lt; const Eigen::Matrix&lt; double, nDim *nNodes, 1 &gt; &gt; &amp;dQU, const Eigen::Matrix&lt; double, nDim, nNodes &gt; &amp;dNdX)</argsstring>
+        <name>strainIncrement</name>
+        <qualifiedname>Marmot::Discretizations::Elements::SmallStrain::strainIncrement</qualifiedname>
+        <param>
+          <type>const Eigen::Ref&lt; const Eigen::Matrix&lt; double, nDim *nNodes, 1 &gt; &gt; &amp;</type>
+          <declname>dQU</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix&lt; double, nDim, nNodes &gt; &amp;</type>
+          <declname>dNdX</declname>
+        </param>
+        <briefdescription>
+<para>Strain increment from nodal displacement increments, without forming the B-operator. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The symmetric part of the incremental displacement gradient <formula id="4">$\partial_\mathbf{x} \Delta\mathbf{u} = \Delta\mathbf{U}\, \partial_\mathbf{x}\mathbf{N}^\mathsf{T}$</formula>, with the nodal increments <formula id="5">$\Delta\mathbf{U}$</formula> arranged as a nDim x nNodes matrix, in Voigt notation with engineering shear strains. This is <formula id="6">$\mathbf{B}\, \Delta\mathbf{\qu}$</formula> with a sixth (3D) of the data and half of the operations of the dense product. <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of spatial dimensions (1, 2 or 3). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of element nodes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dQU</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Incremental nodal displacements, node-wise (u1, u2, u3 of node 1, then node 2, ...). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dNdX</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shape function gradients with respect to the physical coordinates (nDim x nNodes). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The strain increment in (plane) Voigt notation. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotSmallStrainKinematics.h" line="51" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotSmallStrainKinematics.h" bodystart="51" bodyend="66"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_small_strain_kinematics_8h_1ade87aded2b979882a03eaac4667ef707" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+          <param>
+            <type>int</type>
+            <declname>nNodes</declname>
+            <defname>nNodes</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Elements::SmallStrain::addInternalForce</definition>
+        <argsstring>(Eigen::Ref&lt; Eigen::Matrix&lt; double, nDim *nNodes, 1 &gt; &gt; fU, const Eigen::Matrix&lt; double, nDim, nNodes &gt; &amp;dNdX, const Voigt&lt; nDim &gt; &amp;stress, double J0xW)</argsstring>
+        <name>addInternalForce</name>
+        <qualifiedname>Marmot::Discretizations::Elements::SmallStrain::addInternalForce</qualifiedname>
+        <param>
+          <type>Eigen::Ref&lt; Eigen::Matrix&lt; double, nDim *nNodes, 1 &gt; &gt;</type>
+          <declname>fU</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix&lt; double, nDim, nNodes &gt; &amp;</type>
+          <declname>dNdX</declname>
+        </param>
+        <param>
+          <type>const Voigt&lt; nDim &gt; &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>J0xW</declname>
+        </param>
+        <briefdescription>
+<para>Add the internal force of a stress at a quadrature point,  <formula id="7">$\mathbf{B}^\mathsf{T} \boldsymbol{\sigma}\,
+J_0 w$</formula>, without forming the B-operator. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Computed as <formula id="8">$(\boldsymbol{\sigma} J_0 w)\, \partial_\mathbf{x} \mathbf{N}$</formula>, a nDim x nNodes matrix of nodal forces (see strainIncrement()). <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of spatial dimensions (1, 2 or 3). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of element nodes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">fU</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The internal force vector of the displacement field, node-wise. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dNdX</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shape function gradients with respect to the physical coordinates (nDim x nNodes). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The stress to integrate in (plane) Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">J0xW</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Integration weight times the Jacobian determinant (times thickness or cross section). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotSmallStrainKinematics.h" line="81" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotSmallStrainKinematics.h" bodystart="81" bodyend="96"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotSmallStrainKinematics.h" line="31" column="1"/>
+  </compounddef>
+</doxygen>

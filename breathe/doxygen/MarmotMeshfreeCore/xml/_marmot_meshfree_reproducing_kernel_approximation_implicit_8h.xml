@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="_marmot_meshfree_reproducing_kernel_approximation_implicit_8h" kind="file" language="C++">
+    <compoundname>MarmotMeshfreeReproducingKernelApproximationImplicit.h</compoundname>
+    <includes refid="_marmot_meshfree_kernel_function_8h" local="yes">Marmot/MarmotMeshfreeKernelFunction.h</includes>
+    <includes refid="_marmot_meshfree_reproducing_kernel_approximation_8h" local="yes">Marmot/MarmotMeshfreeReproducingKernelApproximation.h</includes>
+    <includes local="no">Eigen/Core</includes>
+    <includes local="no">cmath</includes>
+    <includes local="no">vector</includes>
+    <incdepgraph>
+      <node id="4">
+        <label>Marmot/MarmotMeshfreeApproximation.h</label>
+        <link refid="_marmot_meshfree_approximation_8h_source"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot/MarmotMeshfreeKernelFunction.h</label>
+        <link refid="_marmot_meshfree_kernel_function_8h_source"/>
+      </node>
+      <node id="3">
+        <label>Marmot/MarmotMeshfreeReproducingKernelApproximation.h</label>
+        <link refid="_marmot_meshfree_reproducing_kernel_approximation_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximationImplicit.h</label>
+        <link refid="_marmot_meshfree_reproducing_kernel_approximation_implicit_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Eigen/Core</label>
+      </node>
+      <node id="7">
+        <label>Eigen/QR</label>
+      </node>
+      <node id="8">
+        <label>cmath</label>
+      </node>
+      <node id="5">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit" prot="public">Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</innerclass>
+    <innernamespace refid="namespace_marmot">Marmot</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations">Marmot::Discretizations</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_meshfree">Marmot::Discretizations::Meshfree</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/><sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>__<sp/>_<sp/>_<sp/>__<sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>___<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_`<sp/>|<sp/>&apos;__|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_<sp/>\|<sp/>__|</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_|<sp/>|<sp/>|<sp/><sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_)<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>|_|<sp/>|_|<sp/>|_|\__,_|_|<sp/><sp/>|_|<sp/>|_|<sp/>|_|\___/<sp/>\__|</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Unit<sp/>of<sp/>Strength<sp/>of<sp/>Materials<sp/>and<sp/>Structural<sp/>Analysis</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>University<sp/>of<sp/>Innsbruck</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>2020<sp/>-<sp/>today</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>festigkeitslehre@uibk.ac.at</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>the<sp/>MAteRialMOdellingToolbox<sp/>(marmot).</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>This<sp/>library<sp/>is<sp/>free<sp/>software;<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>modify<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>License<sp/>as<sp/>published<sp/>by<sp/>the<sp/>Free<sp/>Software<sp/>Foundation;<sp/>either</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>version<sp/>2.1<sp/>of<sp/>the<sp/>License,<sp/>or<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>The<sp/>full<sp/>text<sp/>of<sp/>the<sp/>license<sp/>can<sp/>be<sp/>found<sp/>in<sp/>the<sp/>file<sp/>LICENSE.md<sp/>at</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>the<sp/>top<sp/>level<sp/>directory<sp/>of<sp/>marmot.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotMeshfreeKernelFunction.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotMeshfreeReproducingKernelApproximation.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;Eigen/Core&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cmath&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::Discretizations::Meshfree<sp/>{</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1aeb97ec0aea90ea0a8799f3337fb4c692" kindref="member">ReproducingKernelApproximationImplicit</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a28e26acee1cb28eae12e18e618cf19ef" kindref="member">ReproducingKernelApproximation</ref><sp/>{</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="71" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1aeb97ec0aea90ea0a8799f3337fb4c692" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1aeb97ec0aea90ea0a8799f3337fb4c692" kindref="member">ReproducingKernelApproximationImplicit</ref>(<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>dim,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>completenessOrder<sp/>);</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1aecad4467de4cd011c56d746620c0208e" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1aecad4467de4cd011c56d746620c0208e" kindref="member">~ReproducingKernelApproximationImplicit</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1af43334dd01f396da72483f6e2a308eb8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1af43334dd01f396da72483f6e2a308eb8" kindref="member">computeShapeFunctionGradients</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>coord,</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;<sp/>const<sp/>KernelFunction*<sp/>&gt;&amp;<sp/>kernelFunctions,</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>shapeFunctionValueGradients<sp/>)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"></highlight></codeline>
+<codeline lineno="98" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1ac284e440e26218f9a9f89c2385148662" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1ac284e440e26218f9a9f89c2385148662" kindref="member">computeShapeFunctionsAndGradients</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>coord,</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::vector&lt;<sp/>const<sp/>KernelFunction*<sp/>&gt;&amp;<sp/>kernelFunctions,</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>shapeFunctionValues,</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>shapeFunctionValueGradients_ColMajor<sp/>)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::Discretizations::Meshfree</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximationImplicit.h"/>
+  </compounddef>
+</doxygen>

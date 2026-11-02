@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="_marmot_material_point_8h" kind="file" language="C++">
+    <compoundname>MarmotMaterialPoint.h</compoundname>
+    <includes local="yes">Marmot/MarmotElementProperty.h</includes>
+    <includes local="yes">Marmot/MarmotUtils.h</includes>
+    <includes local="no">string</includes>
+    <includedby refid="_marmot_cell_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h</includedby>
+    <includedby refid="_marmot_m_p_m_library_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h</label>
+        <link refid="_marmot_material_point_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot/MarmotElementProperty.h</label>
+      </node>
+      <node id="3">
+        <label>Marmot/MarmotUtils.h</label>
+      </node>
+      <node id="4">
+        <label>string</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h</label>
+        <link refid="_marmot_cell_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCellElement.h</label>
+        <link refid="_marmot_cell_element_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+      <node id="4">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h</label>
+        <link refid="_marmot_m_p_m_library_8h_source"/>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h</label>
+        <link refid="_marmot_material_point_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point" prot="public">Marmot::Discretizations::MaterialPoints::MaterialPoint</innerclass>
+    <innernamespace refid="namespace_marmot">Marmot</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations">Marmot::Discretizations</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_material_points">Marmot::Discretizations::MaterialPoints</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/><sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>__<sp/>_<sp/>_<sp/>__<sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>___<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_`<sp/>|<sp/>&apos;__|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_<sp/>\|<sp/>__|</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_|<sp/>|<sp/>|<sp/><sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_)<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>|_|<sp/>|_|<sp/>|_|\__,_|_|<sp/><sp/>|_|<sp/>|_|<sp/>|_|\___/<sp/>\__|</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Unit<sp/>of<sp/>Strength<sp/>of<sp/>Materials<sp/>and<sp/>Structural<sp/>Analysis</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>University<sp/>of<sp/>Innsbruck</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>2020<sp/>-<sp/>today</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>festigkeitslehre@uibk.ac.at</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>the<sp/>MAteRialMOdellingToolbox<sp/>(marmot).</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>This<sp/>library<sp/>is<sp/>free<sp/>software;<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>modify<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>License<sp/>as<sp/>published<sp/>by<sp/>the<sp/>Free<sp/>Software<sp/>Foundation;<sp/>either</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>version<sp/>2.1<sp/>of<sp/>the<sp/>License,<sp/>or<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>The<sp/>full<sp/>text<sp/>of<sp/>the<sp/>license<sp/>can<sp/>be<sp/>found<sp/>in<sp/>the<sp/>file<sp/>LICENSE.md<sp/>at</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>the<sp/>top<sp/>level<sp/>directory<sp/>of<sp/>marmot.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotElementProperty.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotUtils.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::Discretizations::MaterialPoints<sp/>{</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66" refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point" kindref="compound">MaterialPoint</ref><sp/>{</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="70" refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1ad3e6d46b5ddf460dea6aec4bb8e1eab6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1ad3e6d46b5ddf460dea6aec4bb8e1eab6" kindref="member">~MaterialPoint</ref>(){};</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"></highlight></codeline>
+<codeline lineno="77" refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a0e1436d59382f9bf28c7c0fe94e265f5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a0e1436d59382f9bf28c7c0fe94e265f5" kindref="member">assignStateVars</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>stateVars,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nStateVars<sp/>)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83" refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a47338654c1fd44ad3d9a43f6fa38a7c3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a47338654c1fd44ad3d9a43f6fa38a7c3" kindref="member">assignMaterial</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Discretizations::MaterialSection&amp;<sp/>material<sp/>)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88" refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1aa2a58c0b16c0ff611715c80ae6d39250" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1aa2a58c0b16c0ff611715c80ae6d39250" kindref="member">initializeYourself</ref>()<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95" refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1aba8bfd46fbfa5400d155bf8f30cac84d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1aba8bfd46fbfa5400d155bf8f30cac84d" kindref="member">prepareYourself</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>timeNew,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>dT<sp/>)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="102" refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a0d04a7c4c1cdb8b82bcdc1ad18e7745f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a0d04a7c4c1cdb8b82bcdc1ad18e7745f" kindref="member">computeYourself</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>timeNew,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>dT<sp/>)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105" refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a6d6222a6d143adec6714096f890f06b3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a6d6222a6d143adec6714096f890f06b3" kindref="member">acceptStateAndPosition</ref>(){};</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"></highlight></codeline>
+<codeline lineno="112" refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a51f4d4a25db0d9f16b3a55f799c407d0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>Marmot::Utilities::StateView<sp/><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a51f4d4a25db0d9f16b3a55f799c407d0" kindref="member">getStateView</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>stateName<sp/>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"></highlight></codeline>
+<codeline lineno="118" refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1ae1298d991c2ed04786dc8b96710a80a5" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1ae1298d991c2ed04786dc8b96710a80a5" kindref="member">getNumberOfRequiredStateVars</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="126" refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a25478d8f0426db5c8a720f11e90bd139" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a25478d8f0426db5c8a720f11e90bd139" kindref="member">getCoordinatesAtCenter</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>coordinates<sp/>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="132" refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a3eb83961c1aa0540edfdf29f540f2046" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a3eb83961c1aa0540edfdf29f540f2046" kindref="member">getMaterialPointNumber</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138" refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a33a0c15f32300da943f9041b62375078" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a33a0c15f32300da943f9041b62375078" kindref="member">getDimension</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"></highlight></codeline>
+<codeline lineno="144" refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a36443327a53c7a2ef93dcf32d257db95" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a36443327a53c7a2ef93dcf32d257db95" kindref="member">getNumberOfVertices</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150" refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1ad7acd8d98b8ee3f11297eb99e3c2b570" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/>std::string<sp/><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1ad7acd8d98b8ee3f11297eb99e3c2b570" kindref="member">getMaterialPointShape</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="151"><highlight class="normal"></highlight></codeline>
+<codeline lineno="156" refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a5d5df6cab080042483a5eda6500d1c22" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a5d5df6cab080042483a5eda6500d1c22" kindref="member">getVertexCoordinates</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>coordinates<sp/>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="157"><highlight class="normal"></highlight></codeline>
+<codeline lineno="162" refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1af8a51713a33c3728be2846f274f9757b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1af8a51713a33c3728be2846f274f9757b" kindref="member">getCenterDisplacement</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>displacement<sp/>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="163"><highlight class="normal"></highlight></codeline>
+<codeline lineno="168" refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a93d7cee75a9feded4e96c1017efc8882" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a93d7cee75a9feded4e96c1017efc8882" kindref="member">getVolumeUndeformed</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="169"><highlight class="normal"></highlight></codeline>
+<codeline lineno="174" refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a1c389527410508cbc75798a9b607d08f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a1c389527410508cbc75798a9b607d08f" kindref="member">getDensityUndeformed</ref>()<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181" refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a74a5d8b8927bb898b2ae6df40e35fa47" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a74a5d8b8927bb898b2ae6df40e35fa47" kindref="member">setInitialCondition</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>conditionName,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>value<sp/>)<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="182"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="183"><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::Discretizations::MaterialPoints</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h"/>
+  </compounddef>
+</doxygen>

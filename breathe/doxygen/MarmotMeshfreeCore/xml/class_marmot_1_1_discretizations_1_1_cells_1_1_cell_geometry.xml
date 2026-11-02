@@ -1,0 +1,276 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Marmot::Discretizations::Cells::CellGeometry</compoundname>
+    <includes refid="_marmot_cell_geometry_8h" local="no">MarmotCellGeometry.h</includes>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>nDim</declname>
+        <defname>nDim</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>nNodes</declname>
+        <defname>nNodes</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1ac9ba9285eb2fd55a6176d5d49dafcb0f" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, nDim, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, nDim, 1 &gt; Marmot::Discretizations::Cells::CellGeometry&lt; nDim, nNodes &gt;::XiSized</definition>
+        <argsstring></argsstring>
+        <name>XiSized</name>
+        <qualifiedname>Marmot::Discretizations::Cells::CellGeometry::XiSized</qualifiedname>
+        <briefdescription>
+<para>Parametric (or physical) point. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCellGeometry.h" line="50" column="36" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCellGeometry.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a534a0b64a3326fbe6bbbc8dcbe86e843" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, nDim *nNodes, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, nDim * nNodes, 1 &gt; Marmot::Discretizations::Cells::CellGeometry&lt; nDim, nNodes &gt;::CoordinateVector</definition>
+        <argsstring></argsstring>
+        <name>CoordinateVector</name>
+        <qualifiedname>Marmot::Discretizations::Cells::CellGeometry::CoordinateVector</qualifiedname>
+        <briefdescription>
+<para>Flat nodal coordinates. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCellGeometry.h" line="51" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCellGeometry.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a1faa1111811a7b8c7f5336ac5554dbe1" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 1, nNodes &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 1, nNodes &gt; Marmot::Discretizations::Cells::CellGeometry&lt; nDim, nNodes &gt;::NSized</definition>
+        <argsstring></argsstring>
+        <name>NSized</name>
+        <qualifiedname>Marmot::Discretizations::Cells::CellGeometry::NSized</qualifiedname>
+        <briefdescription>
+<para>Row vector of shape function values. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCellGeometry.h" line="52" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCellGeometry.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a5d57025902f5bf93842f98134ce73bd2" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, nDim, nNodes &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, nDim, nNodes &gt; Marmot::Discretizations::Cells::CellGeometry&lt; nDim, nNodes &gt;::dNdXSized</definition>
+        <argsstring></argsstring>
+        <name>dNdXSized</name>
+        <qualifiedname>Marmot::Discretizations::Cells::CellGeometry::dNdXSized</qualifiedname>
+        <briefdescription>
+<para>Shape function gradients. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCellGeometry.h" line="53" column="31" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCellGeometry.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a4878023ed744a582b2778bdc71ad0d18" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool Marmot::Discretizations::Cells::CellGeometry&lt; nDim, nNodes &gt;::isCoordinateInCell</definition>
+        <argsstring>(const double *coordinates) const =0</argsstring>
+        <name>isCoordinateInCell</name>
+        <qualifiedname>Marmot::Discretizations::Cells::CellGeometry::isCoordinateInCell</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>coordinates</declname>
+        </param>
+        <briefdescription>
+<para>Checks whether a point lies inside the cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">coordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Point coordinates (nDim values). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> if the point is inside the cell. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCellGeometry.h" line="60" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1ad80490564b31f58f7d8e3d9bef07d760" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1ac9ba9285eb2fd55a6176d5d49dafcb0f" kindref="member">XiSized</ref></type>
+        <definition>virtual XiSized Marmot::Discretizations::Cells::CellGeometry&lt; nDim, nNodes &gt;::findReferenceCoordinate</definition>
+        <argsstring>(const XiSized &amp;coord) const =0</argsstring>
+        <name>findReferenceCoordinate</name>
+        <qualifiedname>Marmot::Discretizations::Cells::CellGeometry::findReferenceCoordinate</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1ac9ba9285eb2fd55a6176d5d49dafcb0f" kindref="member">XiSized</ref> &amp;</type>
+          <declname>coord</declname>
+        </param>
+        <briefdescription>
+<para>Inverse geometry map: parametric coordinates of a physical point. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">coord</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Physical coordinates. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Parametric coordinates <formula id="61">$ \boldsymbol{\xi} $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCellGeometry.h" line="67" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a7cd06501dd93bf53003a2c50719b6d37" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a1faa1111811a7b8c7f5336ac5554dbe1" kindref="member">NSized</ref></type>
+        <definition>virtual NSized Marmot::Discretizations::Cells::CellGeometry&lt; nDim, nNodes &gt;::N</definition>
+        <argsstring>(const XiSized &amp;xi) const =0</argsstring>
+        <name>N</name>
+        <qualifiedname>Marmot::Discretizations::Cells::CellGeometry::N</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1ac9ba9285eb2fd55a6176d5d49dafcb0f" kindref="member">XiSized</ref> &amp;</type>
+          <declname>xi</declname>
+        </param>
+        <briefdescription>
+<para>Shape functions. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">xi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Parametric coordinates. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="50">$ N_A(\boldsymbol{\xi}) $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCellGeometry.h" line="74" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a7856bf5cfd94b79d7e8c4ebc6962c9a1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a5d57025902f5bf93842f98134ce73bd2" kindref="member">dNdXSized</ref></type>
+        <definition>virtual dNdXSized Marmot::Discretizations::Cells::CellGeometry&lt; nDim, nNodes &gt;::dNdX</definition>
+        <argsstring>(const XiSized &amp;xi) const =0</argsstring>
+        <name>dNdX</name>
+        <qualifiedname>Marmot::Discretizations::Cells::CellGeometry::dNdX</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1ac9ba9285eb2fd55a6176d5d49dafcb0f" kindref="member">XiSized</ref> &amp;</type>
+          <declname>xi</declname>
+        </param>
+        <briefdescription>
+<para>Shape function gradients w.r.t. the physical coordinates. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">xi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Parametric coordinates. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="108">$ \partial N_A / \partial X_i $</formula> (row <formula id="65">$ i $</formula>, column <formula id="1">$ A $</formula>). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCellGeometry.h" line="81" column="23"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a1a7c91e2f0a4b673511a03b560347a32" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>double</type>
+        <definition>virtual double Marmot::Discretizations::Cells::CellGeometry&lt; nDim, nNodes &gt;::detJ</definition>
+        <argsstring>(const XiSized &amp;xi) const =0</argsstring>
+        <name>detJ</name>
+        <qualifiedname>Marmot::Discretizations::Cells::CellGeometry::detJ</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1ac9ba9285eb2fd55a6176d5d49dafcb0f" kindref="member">XiSized</ref> &amp;</type>
+          <declname>xi</declname>
+        </param>
+        <briefdescription>
+<para>Determinant of the Jacobian of the geometry map. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">xi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Parametric coordinates. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="109">$ \det(\partial \boldsymbol{X}/\partial\boldsymbol{\xi}) $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCellGeometry.h" line="88" column="20"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Deprecated dynamic-polymorphism interface of a cell geometry; superseded by <ref refid="concept_marmot_1_1_discretizations_1_1_cells_1_1_geometry_cell_policy" kindref="compound">GeometryCellPolicy</ref>. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><xrefsect id="deprecated_1_deprecated000001"><xreftitle>Deprecated</xreftitle><xrefdescription><para>Currently unused</para>
+</xrefdescription></xrefsect></para>
+<para>Unused: the cells take their geometry as a template parameter constrained by the concept <ref refid="concept_marmot_1_1_discretizations_1_1_cells_1_1_geometry_cell_policy" kindref="compound">GeometryCellPolicy</ref> (static polymorphism), with <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry" kindref="compound">Marmot::Discretizations::Cells::LagrangianCellGeometry</ref> and <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry" kindref="compound">Marmot::Discretizations::Cells::BSplineCellGeometry</ref> as implementations. The members describe the same contract.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Spatial dimension. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of cell nodes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCellGeometry.h" line="47" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCellGeometry.h" bodystart="47" bodyend="89"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a534a0b64a3326fbe6bbbc8dcbe86e843" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::CellGeometry</scope><name>CoordinateVector</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a1a7c91e2f0a4b673511a03b560347a32" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Cells::CellGeometry</scope><name>detJ</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a7856bf5cfd94b79d7e8c4ebc6962c9a1" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Cells::CellGeometry</scope><name>dNdX</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a5d57025902f5bf93842f98134ce73bd2" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::CellGeometry</scope><name>dNdXSized</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1ad80490564b31f58f7d8e3d9bef07d760" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Cells::CellGeometry</scope><name>findReferenceCoordinate</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a4878023ed744a582b2778bdc71ad0d18" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Cells::CellGeometry</scope><name>isCoordinateInCell</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a7cd06501dd93bf53003a2c50719b6d37" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Cells::CellGeometry</scope><name>N</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a1faa1111811a7b8c7f5336ac5554dbe1" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::CellGeometry</scope><name>NSized</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1ac9ba9285eb2fd55a6176d5d49dafcb0f" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::CellGeometry</scope><name>XiSized</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

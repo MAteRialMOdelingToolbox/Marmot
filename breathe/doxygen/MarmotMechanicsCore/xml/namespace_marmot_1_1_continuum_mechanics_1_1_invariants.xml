@@ -1,0 +1,794 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_invariants" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::Invariants</compoundname>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_derivatives">Marmot::ContinuumMechanics::Invariants::Derivatives</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard">Marmot::ContinuumMechanics::Invariants::HaighWestergaard</innernamespace>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_voigt_8h_1aacdf8bbcf25f5da280161cd52ab805bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::Vector3d</type>
+        <definition>Eigen::Vector3d Marmot::ContinuumMechanics::Invariants::principalStrains</definition>
+        <argsstring>(const Marmot::Math::Vector6d &amp;strain)</argsstring>
+        <name>principalStrains</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Invariants::principalStrains</qualifiedname>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>strain</declname>
+        </param>
+        <briefdescription>
+<para>Computes the principal strains by solving the eigenvalue problem. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This function computes the eigenvalues of the strain tensor reconstructed from the given Voigt strain vector. The eigenvalues correspond to the principal strains <formula id="168">$ \varepsilon_1, \varepsilon_2, \varepsilon_3 $</formula>:    <formula id="169">\[    \displaystyle |\varepsilon_{ij} - \lambda\, \delta_{ij}| = 0 \hspace{.5cm} \Rightarrow \hspace{.5cm}
+\lambda^{(1)},\lambda^{(2)},\lambda^{(3)}\hspace{0.3cm} \widehat{=}\hspace{0.3cm} \varepsilon_1,\,
+\varepsilon_2,\, \varepsilon_3 \]</formula> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>strain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6-component strain vector in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A 3D vector containing the principal strains (unsorted). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="501" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="501" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1a30ded5c231ad24641a67ab37597d64bf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::Vector3d</type>
+        <definition>Eigen::Vector3d Marmot::ContinuumMechanics::Invariants::principalStresses</definition>
+        <argsstring>(const Marmot::Math::Vector6d &amp;stress)</argsstring>
+        <name>principalStresses</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Invariants::principalStresses</qualifiedname>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <briefdescription>
+<para>Computes the principal stresses by solving the eigenvalue problem. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This function computes the eigenvalues of the stress tensor reconstructed from the given Voigt stress vector. The eigenvalues correspond to the principal stresses <formula id="170">$ \sigma_1, \sigma_2, \sigma_3 $</formula>:    <formula id="171">\[    \displaystyle |\sigma_{ij} - \lambda\, \delta_{ij}| = 0 \hspace{.5cm} \Rightarrow \hspace{.5cm}
+\lambda^{(1)},\lambda^{(2)},\lambda^{(3)}\hspace{0.3cm} \widehat{=}\hspace{0.3cm}\sigma_1,\, \sigma_2,\, \sigma_3
+\]</formula> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6-component stress vector in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A 3D vector containing the principal stresses (unsorted). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="516" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="516" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1a4c28e39dcd747fad01269fab76fb20c0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::Vector3d</type>
+        <definition>Eigen::Vector3d Marmot::ContinuumMechanics::Invariants::sortedPrincipalStrains</definition>
+        <argsstring>(const Marmot::Math::Vector6d &amp;strain)</argsstring>
+        <name>sortedPrincipalStrains</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Invariants::sortedPrincipalStrains</qualifiedname>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>strain</declname>
+        </param>
+        <briefdescription>
+<para>Computes the principal strains from Haigh–Westergaard coordinates. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This function transforms the Haigh–Westergaard coordinates <formula id="172">$ (\xi, \rho, \theta) $</formula> into the corresponding principal strains <formula id="168">$ \varepsilon_1, \varepsilon_2, \varepsilon_3 $</formula> using:                    <formula id="173">\[  \begin{bmatrix}
+    \varepsilon_{1} \\
+    \varepsilon_{2} \\
+    \varepsilon_{3}
+  \end{bmatrix}
+  =
+  \frac{1}{\sqrt{3}}
+  \begin{bmatrix}
+    \xi \\
+    \xi \\
+    \xi
+  \end{bmatrix}
+  + \sqrt{\tfrac{2}{3}}\, \rho \,
+  \begin{bmatrix}
+    \cos(\theta) \\
+    -\sin\!\left(\tfrac{\pi}{6} - \theta\right) \\
+    -\sin\!\left(\tfrac{\pi}{6} + \theta\right)
+  \end{bmatrix}
+\]</formula> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>strain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6-component strain vector in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A 3D vector of the principal strains, sorted by magnitude. </para>
+</simplesect>
+<simplesect kind="note"><para>The computation of <formula id="174">$ \xi $</formula>, <formula id="175">$ \rho $</formula>, and <formula id="176">$ \theta $</formula> is performed in <computeroutput>haighWestergaardFromStrain()</computeroutput>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="550" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="550" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1a52f201bf9d6e00eb4d3209100e6d44f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::Matrix3d</type>
+        <definition>Eigen::Matrix3d Marmot::ContinuumMechanics::Invariants::principalStressesDirections</definition>
+        <argsstring>(const Marmot::Math::Vector6d &amp;stress)</argsstring>
+        <name>principalStressesDirections</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Invariants::principalStressesDirections</qualifiedname>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <briefdescription>
+<para>Computes the principal stress directions corresponding to the principal stresses. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This function solves the eigenvalue problem    <formula id="177">\[  \left( \boldsymbol{\sigma} - \sigma_k \cdot \boldsymbol{I} \right) \cdot
+  \boldsymbol{x}^{(k)} = 0
+\]</formula> to obtain the eigenvectors <formula id="178">$ \boldsymbol{x}^{(k)} $</formula> associated with the principal stresses <formula id="179">$ \sigma_k $</formula>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6-component stress vector in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A 3x3 matrix whose columns are the principal stress directions (unsorted). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="566" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="566" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1a13764b55815b103d9bf85491731a9ca4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::Invariants::vonMisesEquivalentStress</definition>
+        <argsstring>(const Marmot::Math::Vector6d &amp;stress)</argsstring>
+        <name>vonMisesEquivalentStress</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Invariants::vonMisesEquivalentStress</qualifiedname>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <briefdescription>
+<para>Computes the equivalent von Mises stress. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Defined as:   <formula id="180">\[  \sigma_\text{eq} = \sqrt{3 \cdot J_2}
+\]</formula> where <formula id="181">$ J_2 $</formula> is the second invariant of the deviatoric stress tensor (see <computeroutput>J2()</computeroutput>). <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6-component stress vector in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The von Mises equivalent stress. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="580" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="580" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1af4423832d92663175b432e65acb004f8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::Invariants::vonMisesEquivalentStrain</definition>
+        <argsstring>(const Marmot::Math::Vector6d &amp;strain)</argsstring>
+        <name>vonMisesEquivalentStrain</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Invariants::vonMisesEquivalentStrain</qualifiedname>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>strain</declname>
+        </param>
+        <briefdescription>
+<para>Computes the equivalent von Mises strain. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Based on the deviatoric strain tensor <formula id="182">$ e_{ij} $</formula>:   <formula id="183">\[  \varepsilon^\text{(eq)} = \sqrt{\tfrac{2}{3} \, e_{ij} e_{ij}}
+\]</formula> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>strain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6-component strain vector in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The von Mises equivalent strain. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="592" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="592" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1aa7da46178f52bbb5455d7d2f1b464300" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T Marmot::ContinuumMechanics::Invariants::normStrain</definition>
+        <argsstring>(const Eigen::Matrix&lt; T, 6, 1 &gt; &amp;strain)</argsstring>
+        <name>normStrain</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Invariants::normStrain</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; T, 6, 1 &gt; &amp;</type>
+          <declname>strain</declname>
+        </param>
+        <briefdescription>
+<para>Computes the Euclidean norm of the strain tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Defined as:   <formula id="184">\[  ||\boldsymbol{\varepsilon}|| = \sqrt{ \varepsilon_{ij}\varepsilon_{ij}}
+\]</formula> <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type (e.g., double, float). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>strain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6-component strain vector in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The Euclidean norm of the strain tensor. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="606" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="606" bodyend="609"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1ae2484ddc2d08e7087ee77fbd3db00e23" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::Invariants::normStress</definition>
+        <argsstring>(const Marmot::Math::Vector6d &amp;stress)</argsstring>
+        <name>normStress</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Invariants::normStress</qualifiedname>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <briefdescription>
+<para>Computes the Euclidean norm of the stress tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Defined as:   <formula id="185">\[  ||\boldsymbol{\sigma}|| = \sqrt{\sigma_{ij}\sigma_{ij}}
+\]</formula> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6-component stress vector in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The Euclidean norm of the stress tensor. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="621" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="621" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1a4858d6f740c76963405dfaa94fe1b214" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::Invariants::StrainVolumetricNegative</definition>
+        <argsstring>(const Marmot::Math::Vector6d &amp;strain)</argsstring>
+        <name>StrainVolumetricNegative</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Invariants::StrainVolumetricNegative</qualifiedname>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>strain</declname>
+        </param>
+        <briefdescription>
+<para>Computes the volumetric plastic strain in compression. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Defined as:    <formula id="186">\[  \varepsilon^{\text{vol}}_{\ominus}
+  = \sum_{i=1}^3 \left\langle -\varepsilon_i \right\rangle
+\]</formula> where <formula id="187">$ \varepsilon_i $</formula> are the principal strains and <formula id="188">$ \langle \bullet \rangle $</formula> denotes the Macaulay brackets. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>strain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6-component strain vector in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The volumetric compressive strain. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="637" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="637" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1afc6449276794d9cef173d2ff544cc5eb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T Marmot::ContinuumMechanics::Invariants::I1</definition>
+        <argsstring>(const Eigen::Matrix&lt; T, 6, 1 &gt; &amp;stress)</argsstring>
+        <name>I1</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Invariants::I1</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; T, 6, 1 &gt; &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <briefdescription>
+<para>Computes the first invariant <formula id="189">$ I_1 $</formula> of the stress tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The first invariant of the stress tensor <formula id="190">$ \boldsymbol{\sigma} $</formula> is the trace:    <formula id="191">\[  I_1 = \operatorname{tr}(\boldsymbol{\sigma})
+      = \sigma_{11} + \sigma_{22} + \sigma_{33}
+\]</formula> <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type (e.g., double, float). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6-component stress vector in Voigt notation:    <formula id="192">$ \boldsymbol{\sigma}^{\text{Voigt}} =
+    \begin{bmatrix}
+      \sigma_{11} &amp; \sigma_{22} &amp; \sigma_{33} &amp; \sigma_{12} &amp; \sigma_{13} &amp; \sigma_{23}
+    \end{bmatrix}^T $</formula> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Value of the first invariant <formula id="189">$ I_1 $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="656" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="656" bodyend="659"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1a488817ad60bbc89222070ede90be7ff5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::Invariants::I1Strain</definition>
+        <argsstring>(const Marmot::Math::Vector6d &amp;strain)</argsstring>
+        <name>I1Strain</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Invariants::I1Strain</qualifiedname>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>strain</declname>
+        </param>
+        <briefdescription>
+<para>Computes the first invariant <formula id="193">$ I^{(\varepsilon)}_1 $</formula> of the strain tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The first invariant of the strain tensor <formula id="194">$ \boldsymbol{\varepsilon} $</formula> is the trace:    <formula id="195">\[  I^{(\varepsilon)}_1 = \operatorname{tr}(\boldsymbol{\varepsilon})
+      = \varepsilon_{11} + \varepsilon_{22} + \varepsilon_{33}
+\]</formula> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>strain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6-component strain vector in Voigt notation:     <formula id="196">$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
+    \begin{bmatrix}
+      \varepsilon_{11} &amp; \varepsilon_{22} &amp; \varepsilon_{33} &amp;
+      \gamma_{12} &amp; \gamma_{13} &amp; \gamma_{23}
+    \end{bmatrix}^T $</formula> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Value of the first strain invariant <formula id="193">$ I^{(\varepsilon)}_1 $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="677" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="677" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1a64e5f86a1575978a4227e2a1285adfe2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T Marmot::ContinuumMechanics::Invariants::I2</definition>
+        <argsstring>(const Eigen::Matrix&lt; T, 6, 1 &gt; &amp;stress)</argsstring>
+        <name>I2</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Invariants::I2</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; T, 6, 1 &gt; &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <briefdescription>
+<para>Computes the second invariant <formula id="197">$ I_2 $</formula> of the stress tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The second invariant of the stress tensor <formula id="190">$ \boldsymbol{\sigma} $</formula> is defined as:    <formula id="198">\[  I_2 = \tfrac{1}{2}\left( \operatorname{tr}(\boldsymbol{\sigma})^2
+        - \operatorname{tr}(\boldsymbol{\sigma}^2) \right)
+\]</formula> In Voigt notation, this expands to:    <formula id="199">\[  I_2 = \sigma_{11}\sigma_{22} + \sigma_{22}\sigma_{33} + \sigma_{33}\sigma_{11}
+        - \sigma_{12}^2 - \sigma_{13}^2 - \sigma_{23}^2
+\]</formula> <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type (e.g., double, float). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6-component stress vector in Voigt notation:    <formula id="192">$ \boldsymbol{\sigma}^{\text{Voigt}} =
+    \begin{bmatrix}
+      \sigma_{11} &amp; \sigma_{22} &amp; \sigma_{33} &amp; \sigma_{12} &amp; \sigma_{13} &amp; \sigma_{23}
+    \end{bmatrix}^T $</formula></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Value of the second invariant <formula id="197">$ I_2 $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="702" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="702" bodyend="706"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1a4f5484529226e5ba8925d4cef71f07d0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::Invariants::I2Strain</definition>
+        <argsstring>(const Marmot::Math::Vector6d &amp;strain)</argsstring>
+        <name>I2Strain</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Invariants::I2Strain</qualifiedname>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>strain</declname>
+        </param>
+        <briefdescription>
+<para>Computes the second invariant <formula id="200">$ I^{(\varepsilon)}_2 $</formula> of the strain tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>For a strain tensor <formula id="194">$ \boldsymbol{\varepsilon} $</formula> in Voigt notation, the second invariant is:       <formula id="201">\[  I^{(\varepsilon)}_2 =
+    \varepsilon_{11}\varepsilon_{22} +
+    \varepsilon_{22}\varepsilon_{33} +
+    \varepsilon_{33}\varepsilon_{11}
+    - \tfrac{1}{4}\left(\gamma_{12}^2 + \gamma_{13}^2 + \gamma_{23}^2\right)
+\]</formula> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>strain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6-component strain vector in Voigt notation:   <formula id="202">$ \boldsymbol{\varepsilon}^{\text{Voigt}} =
+    [ \varepsilon_{11}, \varepsilon_{22}, \varepsilon_{33},
+      \gamma_{12}, \gamma_{13}, \gamma_{23} ]^T $</formula> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Value of the second invariant <formula id="200">$ I^{(\varepsilon)}_2 $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="726" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="726" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1a0467c7115b767231d81c1e6d1bcfe1fb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T Marmot::ContinuumMechanics::Invariants::I3</definition>
+        <argsstring>(const Eigen::Matrix&lt; T, 6, 1 &gt; &amp;stress)</argsstring>
+        <name>I3</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Invariants::I3</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; T, 6, 1 &gt; &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <briefdescription>
+<para>Computes the third invariant <formula id="203">$ I_3 $</formula> of the stress tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Defined as the determinant of the Cauchy stress tensor <formula id="190">$ \boldsymbol{\sigma} $</formula>:   <formula id="204">\[  I_3 = \det(\boldsymbol{\sigma})
+\]</formula> Expanded in Voigt notation:        <formula id="205">\[  I_3 =
+    \sigma_{11}\sigma_{22}\sigma_{33}
+    + 2\sigma_{12}\sigma_{13}\sigma_{23}
+    - \sigma_{11}\sigma_{23}^2
+    - \sigma_{22}\sigma_{13}^2
+    - \sigma_{33}\sigma_{12}^2
+\]</formula> <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type (e.g., double, float). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6-component stress vector in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Value of the third invariant <formula id="203">$ I_3 $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="749" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="749" bodyend="754"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1a443c7de3ca7375ee0730e01f1cfb1144" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::Invariants::I3Strain</definition>
+        <argsstring>(const Marmot::Math::Vector6d &amp;strain)</argsstring>
+        <name>I3Strain</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Invariants::I3Strain</qualifiedname>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>strain</declname>
+        </param>
+        <briefdescription>
+<para>Computes the third invariant <formula id="206">$ I^{(\varepsilon)}_3 $</formula> of the strain tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The third invariant is given by the determinant of the strain tensor:   <formula id="207">\[  I^{(\varepsilon)}_3 = \det(\boldsymbol{\varepsilon})
+\]</formula> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>strain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6-component strain vector in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Value of the third strain invariant <formula id="206">$ I^{(\varepsilon)}_3 $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="766" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="766" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1a1311721d49d201ff80fa5d8e02618054" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T Marmot::ContinuumMechanics::Invariants::J2</definition>
+        <argsstring>(const Eigen::Matrix&lt; T, 6, 1 &gt; &amp;stress)</argsstring>
+        <name>J2</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Invariants::J2</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; T, 6, 1 &gt; &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <briefdescription>
+<para>Computes the second invariant <formula id="181">$ J_2 $</formula> of the deviatoric stress tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>For the deviatoric stress tensor <formula id="208">$ \boldsymbol{s} $</formula>:   <formula id="209">\[  J_2 = \tfrac{1}{3} I_1^2 - I_2
+\]</formula> <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type (e.g., double, float). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6-component stress vector in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Value of the second deviatoric invariant <formula id="181">$ J_2 $</formula> (clamped to non-negative). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="780" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="780" bodyend="786"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1a04892908c47e33d476ba6754fefcda80" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::Invariants::J2Strain</definition>
+        <argsstring>(const Marmot::Math::Vector6d &amp;strain)</argsstring>
+        <name>J2Strain</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Invariants::J2Strain</qualifiedname>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>strain</declname>
+        </param>
+        <briefdescription>
+<para>Computes the second invariant <formula id="210">$ J^{(\varepsilon)}_2 $</formula> of the deviatoric strain tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>For the deviatoric strain tensor <formula id="211">$ \boldsymbol{e} $</formula>:     <formula id="212">\[  J^{(\varepsilon)}_2 =
+    \tfrac{1}{3} \left(I^{(\varepsilon)}_1\right)^2
+    - I^{(\varepsilon)}_2
+\]</formula> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>strain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6-component strain vector in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Value of the second deviatoric strain invariant <formula id="210">$ J^{(\varepsilon)}_2 $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="800" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="800" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1ab88a2aac8b0b7dd8a948b74cddff2c0e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T Marmot::ContinuumMechanics::Invariants::J3</definition>
+        <argsstring>(const Eigen::Matrix&lt; T, 6, 1 &gt; &amp;stress)</argsstring>
+        <name>J3</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Invariants::J3</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; T, 6, 1 &gt; &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <briefdescription>
+<para>Computes the third invariant <formula id="213">$ J_3 $</formula> of the deviatoric stress tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>For the deviatoric stress tensor <formula id="208">$ \boldsymbol{s} $</formula>:   <formula id="214">\[  J_3 = \tfrac{2}{27} I_1^3 - \tfrac{1}{3} I_1 I_2 + I_3
+\]</formula> <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type (e.g., double, float). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6-component stress vector in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Value of the third deviatoric stress invariant <formula id="213">$ J_3 $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="814" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" bodystart="814" bodyend="821"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1a527e66f59c2f2b74256c6781c56a4f56" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::Invariants::J3Strain</definition>
+        <argsstring>(const Marmot::Math::Vector6d &amp;strain)</argsstring>
+        <name>J3Strain</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Invariants::J3Strain</qualifiedname>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>strain</declname>
+        </param>
+        <briefdescription>
+<para>Computes the third invariant <formula id="215">$ J^{(\varepsilon)}_3 $</formula> of the deviatoric strain tensor  <formula id="216">$\boldsymbol{e} $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The third invariant is obtained by reconstructing the strain tensor from Voigt notation and computing its determinant:   <formula id="217">\[  J^{(\varepsilon)}_3 = \det(\boldsymbol{e})
+\]</formula> <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>strain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6-component strain vector in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Value of the third deviatoric strain invariant <formula id="215">$ J^{(\varepsilon)}_3 $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="835" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="835" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_voigt_8h_1a576c0d446ca067cc8f0b865579952e49" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::pair&lt; Eigen::Vector3d, Eigen::Matrix&lt; double, 3, 6 &gt; &gt;</type>
+        <definition>std::pair&lt; Eigen::Vector3d, Eigen::Matrix&lt; double, 3, 6 &gt; &gt; Marmot::ContinuumMechanics::Invariants::principalValuesAndDerivatives</definition>
+        <argsstring>(const Eigen::Matrix&lt; double, 6, 1 &gt; &amp;S)</argsstring>
+        <name>principalValuesAndDerivatives</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Invariants::principalValuesAndDerivatives</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; double, 6, 1 &gt; &amp;</type>
+          <declname>S</declname>
+        </param>
+        <briefdescription>
+<para>Computes principal values and their derivatives for a symmetric 3×3 matrix in Voigt notation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This routine implements a fast algorithm to compute the principal values (eigenvalues) of a symmetric second-order tensor in Voigt notation (off-diagonal entries are expected without the factor of 2). <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>S</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6-component symmetric matrix in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A pair consisting of:<itemizedlist>
+<listitem><para>A vector containing the (unsorted) principal values.</para>
+</listitem><listitem><para>An <formula id="218">$ 3 \times 6 $</formula> matrix containing the derivatives of the principal values with respect to the Voigt components of <formula id="219">$ S $</formula>. </para>
+</listitem></itemizedlist>
+</para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="849" column="13" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" declline="849" declcolumn="13"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h" line="486" column="1"/>
+  </compounddef>
+</doxygen>

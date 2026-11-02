@@ -1,0 +1,283 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_materials_1_1_interface_material_helper_functions" kind="namespace" language="C++">
+    <compoundname>Marmot::Materials::InterfaceMaterialHelperFunctions</compoundname>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_marmot_interface_material_helper_functions_8h_1a4d7e903ca35cfe1851f75283b13830ce" prot="public" static="no">
+        <type>Marmot::Math::Tensors::FastorTensors::Tensor3333d</type>
+        <definition>using Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor3333d = Marmot::Math::Tensors::FastorTensors::Tensor3333d</definition>
+        <argsstring></argsstring>
+        <name>Tensor3333d</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor3333d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHelperFunctions.h" line="35" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHelperFunctions.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_interface_material_helper_functions_8h_1ae2a6b146d6e90dba72ce01952119ad1b" prot="public" static="no">
+        <type>Marmot::Math::Tensors::FastorTensors::Tensor333d</type>
+        <definition>using Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor333d = Marmot::Math::Tensors::FastorTensors::Tensor333d</definition>
+        <argsstring></argsstring>
+        <name>Tensor333d</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor333d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHelperFunctions.h" line="36" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHelperFunctions.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_interface_material_helper_functions_8h_1a715d673cb0a2201e7c6a71a5dc74a644" prot="public" static="no">
+        <type>Marmot::Math::Tensors::FastorTensors::Tensor33d</type>
+        <definition>using Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor33d = Marmot::Math::Tensors::FastorTensors::Tensor33d</definition>
+        <argsstring></argsstring>
+        <name>Tensor33d</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor33d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHelperFunctions.h" line="37" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHelperFunctions.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_interface_material_helper_functions_8h_1a6b0ad0130dc7c7ee4f89379cf3a35eda" prot="public" static="no">
+        <type>Marmot::Math::Tensors::FastorTensors::Tensor3d</type>
+        <definition>using Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor3d = Marmot::Math::Tensors::FastorTensors::Tensor3d</definition>
+        <argsstring></argsstring>
+        <name>Tensor3d</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor3d</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHelperFunctions.h" line="38" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHelperFunctions.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_interface_material_helper_functions_8h_1a3c598f2a90d529affb22bd076d5dc700" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::tuple&lt; Tensor3333d, const Tensor3333d, Tensor3333d, Tensor33d &gt;</type>
+        <definition>std::tuple&lt; Tensor3333d, const Tensor3333d, Tensor3333d, Tensor33d &gt; Marmot::Materials::InterfaceMaterialHelperFunctions::interfaceGeometrySystemCouplings</definition>
+        <argsstring>(const Tensor33d &amp;N, const Tensor3333d &amp;L)</argsstring>
+        <name>interfaceGeometrySystemCouplings</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHelperFunctions::interfaceGeometrySystemCouplings</qualifiedname>
+        <param>
+          <type>const Tensor33d &amp;</type>
+          <declname>N</declname>
+        </param>
+        <param>
+          <type>const Tensor3333d &amp;</type>
+          <declname>L</declname>
+        </param>
+        <briefdescription>
+<para>Computes the geometry-system coupling tensors for an interface. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Forms the contracted matrix <formula id="68">$Q = L:N$</formula> and its inverse <formula id="49">$G$</formula>, then computes the coupling tensor <formula id="69">$A = G \otimes N$</formula> and the condensed constitutive tensor <formula id="70">$B = L - L:A:L$</formula>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">N</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Normal projector <formula id="71">$\boldsymbol{n} \otimes \boldsymbol{n}$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">L</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Fourth-order constitutive tensor.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Tuple containing, in order:<itemizedlist>
+<listitem><para><formula id="72">$B$</formula>: condensed fourth-order constitutive tensor,</para>
+</listitem><listitem><para><formula id="73">$L$</formula>: unchanged input constitutive tensor,</para>
+</listitem><listitem><para><formula id="74">$A$</formula>: fourth-order geometry-system coupling tensor,</para>
+</listitem><listitem><para><formula id="75">$G = Q^{-1}$</formula>: inverse contracted constitutive matrix. </para>
+</listitem></itemizedlist>
+</para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHelperFunctions.h" line="56" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHelperFunctions.h" declline="56" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_interface_material_helper_functions_8h_1a18b5f6da796e248890273b73cf0dc65f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::tuple&lt; Tensor3333d, Tensor33d, Tensor333d, Tensor3333d &gt;</type>
+        <definition>std::tuple&lt; Tensor3333d, Tensor33d, Tensor333d, Tensor3333d &gt; Marmot::Materials::InterfaceMaterialHelperFunctions::calculateMaterialMatrices</definition>
+        <argsstring>(const Tensor3d &amp;normal, const Tensor33d &amp;N, const Tensor3333d &amp;C_nu_aibj)</argsstring>
+        <name>calculateMaterialMatrices</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHelperFunctions::calculateMaterialMatrices</qualifiedname>
+        <param>
+          <type>const Tensor3d &amp;</type>
+          <declname>normal</declname>
+        </param>
+        <param>
+          <type>const Tensor33d &amp;</type>
+          <declname>N</declname>
+        </param>
+        <param>
+          <type>const Tensor3333d &amp;</type>
+          <declname>C_nu_aibj</declname>
+        </param>
+        <briefdescription>
+<para>Computes the four constitutive operators used by an interface material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Condenses the bulk constitutive tensor with respect to the interface normal direction and derives the operators coupling displacement jumps, surface strains, interface forces, and surface stresses.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">normal</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unit normal vector of the interface. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">N</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Normal projector <formula id="71">$\boldsymbol{n} \otimes \boldsymbol{n}$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">C_nu_aibj</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Fourth-order constitutive tensor.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Tuple containing, in order:<itemizedlist>
+<listitem><para><formula id="76">$Z$</formula>: condensed fourth-order surface-strain operator,</para>
+</listitem><listitem><para><formula id="77">$H^{-1}$</formula>: second-order displacement-jump operator,</para>
+</listitem><listitem><para><formula id="78">$H^{-1}nF$</formula>: third-order jump/surface-strain coupling operator,</para>
+</listitem><listitem><para><formula id="79">$nYH^{-1}Fn$</formula>: fourth-order coupling correction. </para>
+</listitem></itemizedlist>
+</para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHelperFunctions.h" line="77" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHelperFunctions.h" declline="77" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_interface_material_helper_functions_8h_1aa9ef94ca150f62d505cb25df51ae5d72" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::tuple&lt; Tensor3333d, Tensor33d, Tensor333d, Tensor3333d &gt;</type>
+        <definition>std::tuple&lt; Tensor3333d, Tensor33d, Tensor333d, Tensor3333d &gt; Marmot::Materials::InterfaceMaterialHelperFunctions::calculateInterfaceMaterialParameters</definition>
+        <argsstring>(const Tensor3d &amp;normal, const double &amp;nu_0)</argsstring>
+        <name>calculateInterfaceMaterialParameters</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHelperFunctions::calculateInterfaceMaterialParameters</qualifiedname>
+        <param>
+          <type>const Tensor3d &amp;</type>
+          <declname>normal</declname>
+        </param>
+        <param>
+          <type>const double &amp;</type>
+          <declname>nu_0</declname>
+        </param>
+        <briefdescription>
+<para>Calculates interface material parameters from a normal vector and Poisson&apos;s ratio. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This overload computes interface material matrices assuming an isotropic elastic material defined by a normal direction and Poisson&apos;s ratio. The elastic properties are derived from these parameters.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">normal</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>3-component unit normal vector to the interface </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nu_0</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Poisson&apos;s ratio of the interface material</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tuple containing four tensors:<itemizedlist>
+<listitem><para>Tensor3333d: 1st material matrix parameter (4th-order tensor)</para>
+</listitem><listitem><para>Tensor33d: 2nd material matrix parameter (2nd-order tensor)</para>
+</listitem><listitem><para>Tensor333d: 3rd material matrix parameter (3rd-order tensor)</para>
+</listitem><listitem><para>Tensor3333d: 4th material matrix parameter (4th-order tensor) </para>
+</listitem></itemizedlist>
+</para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHelperFunctions.h" line="98" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHelperFunctions.h" declline="98" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_interface_material_helper_functions_8h_1ab047314b82f46dbf9a4fa4c7fb43d90f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::tuple&lt; Tensor3333d, Tensor33d, Tensor333d, Tensor3333d &gt;</type>
+        <definition>std::tuple&lt; Tensor3333d, Tensor33d, Tensor333d, Tensor3333d &gt; Marmot::Materials::InterfaceMaterialHelperFunctions::calculateInterfaceMaterialParameters</definition>
+        <argsstring>(const Tensor3d &amp;normal, const Marmot::Math::Matrix6d &amp;C_ep_voigt)</argsstring>
+        <name>calculateInterfaceMaterialParameters</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHelperFunctions::calculateInterfaceMaterialParameters</qualifiedname>
+        <param>
+          <type>const Tensor3d &amp;</type>
+          <declname>normal</declname>
+        </param>
+        <param>
+          <type>const Marmot::Math::Matrix6d &amp;</type>
+          <declname>C_ep_voigt</declname>
+        </param>
+        <briefdescription>
+<para>Calculates interface material parameters from a normal vector and elastic stiffness matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This overload computes interface material matrices given a normal direction and a 6x6 Voigt representation of the elastic stiffness tensor. This allows specification of arbitrary (including anisotropic) elastic properties for the interface material.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">normal</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>3-component unit normal vector to the interface </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">C_ep_voigt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>6x6 elastic stiffness matrix in Voigt notation</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tuple containing four tensors:<itemizedlist>
+<listitem><para>Tensor3333d: 1st material matrix parameter (4th-order tensor)</para>
+</listitem><listitem><para>Tensor33d: 2nd material matrix parameter (2nd-order tensor)</para>
+</listitem><listitem><para>Tensor333d: 3rd material matrix parameter (3rd-order tensor)</para>
+</listitem><listitem><para>Tensor3333d: 4th material matrix parameter (4th-order tensor) </para>
+</listitem></itemizedlist>
+</para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHelperFunctions.h" line="118" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHelperFunctions.h" declline="118" declcolumn="14"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHelperFunctions.h" line="33" column="1"/>
+  </compounddef>
+</doxygen>

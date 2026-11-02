@@ -1,75 +1,64 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.13.2" xml:lang="en-US">
-  <compound refid="class_make_string" kind="class"><name>MakeString</name>
-    <member refid="class_make_string_1a81b5bb4a52ad4612c9e6a8620e4a8691" kind="variable"><name>stream</name></member>
-    <member refid="class_make_string_1afcf4c7d21e62074820cad078d6b2b449" kind="function"><name>operator std::string</name></member>
-    <member refid="class_make_string_1a0bed086d03acc5a34ab06324b39d0dfd" kind="function"><name>operator&lt;&lt;</name></member>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.18.0" xml:lang="en-US">
+  <compound refid="class_marmot_1_1_utilities_1_1_journal" kind="class"><name>Marmot::Utilities::Journal</name>
+    <member refid="class_marmot_1_1_utilities_1_1_journal_1aad998ac5ccb22f8f0af0a6409887c7b0" kind="variable"><name>output</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_journal_1aa6b8e575dd3fc27602edfcda16f13576" kind="function"><name>getInstance</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_journal_1add1f5d5261bf4a717ac9e9466da4c2bf" kind="function"><name>Journal</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_journal_1a03bd2e54b01e10b2c7245743a46406ac" kind="function"><name>Journal</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_journal_1ae8f3636c6ef13265bc4dbf74e3732898" kind="function"><name>operator=</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_journal_1a2495b568881ae0faee87a9e26c00c69e" kind="function"><name>setMSGOutputDirection</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_journal_1a36687bf7390d3d2e781e0eef0a5a68f2" kind="function"><name>warningToMSG</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_journal_1a74031f39749c09adbfc51909e57ae531" kind="function"><name>notificationToMSG</name></member>
   </compound>
-  <compound refid="class_marmot_journal" kind="class"><name>MarmotJournal</name>
-    <member refid="class_marmot_journal_1a2bc6eb1e3722defb63a2747e188910d5" kind="variable"><name>output</name></member>
-    <member refid="class_marmot_journal_1aec32a294fda0f71118cc69ab8f5f8453" kind="function"><name>getInstance</name></member>
-    <member refid="class_marmot_journal_1acd37fb2c4858066bcac9377b09c7a5ac" kind="function"><name>MarmotJournal</name></member>
-    <member refid="class_marmot_journal_1ae3bda2f1b17ff6fcc7d331b1d0b7a78e" kind="function"><name>MarmotJournal</name></member>
-    <member refid="class_marmot_journal_1a146bd889594dd2d9408beed1259ae2a5" kind="function"><name>operator=</name></member>
-    <member refid="class_marmot_journal_1aba36e05ad5a8e246c89d687af76f76df" kind="function"><name>setMSGOutputDirection</name></member>
-    <member refid="class_marmot_journal_1a8c5a22ab8c67629c388d07747d8d8e11" kind="function"><name>warningToMSG</name></member>
-    <member refid="class_marmot_journal_1af95371cfa0570065da35eb3ba8b7aa69" kind="function"><name>notificationToMSG</name></member>
+  <compound refid="class_marmot_1_1_utilities_1_1_make_string" kind="class"><name>Marmot::Utilities::MakeString</name>
+    <member refid="class_marmot_1_1_utilities_1_1_make_string_1ab9ca881efb011066a9f068e9a8c30e3f" kind="variable"><name>stream</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_make_string_1a7c37cca0e86b56652f0cc978560e9efc" kind="function"><name>operator std::string</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_make_string_1a3afdaadc3a4774594f3029c083a7c8cd" kind="function"><name>operator&lt;&lt;</name></member>
   </compound>
-  <compound refid="class_marmot_state_layout_dynamic" kind="class"><name>MarmotStateLayoutDynamic</name>
-    <member refid="class_marmot_state_layout_dynamic_1a8540841c816171ba107c3d7f71f5e74f" kind="variable"><name>variables</name></member>
-    <member refid="class_marmot_state_layout_dynamic_1a2a95d842a8ffa41e6735505608b036de" kind="variable"><name>name_to_index</name></member>
-    <member refid="class_marmot_state_layout_dynamic_1ac33ab1f4bf3dc5fead2854089bdb35b3" kind="variable"><name>finalized</name></member>
-    <member refid="class_marmot_state_layout_dynamic_1aaf45130cc01c8f8f89028f1074430acf" kind="variable"><name>total_sz</name></member>
-    <member refid="class_marmot_state_layout_dynamic_1a6cabfe5343f86e2621d22d9ee8f313d3" kind="function"><name>add</name></member>
-    <member refid="class_marmot_state_layout_dynamic_1a1248d8cd857f4a9d24ed02f8a968769b" kind="function"><name>finalize</name></member>
-    <member refid="class_marmot_state_layout_dynamic_1a29c6892e8632aa9c56c03991a54df60c" kind="function"><name>getInfo</name></member>
-    <member refid="class_marmot_state_layout_dynamic_1a82f1724ee229a8368fa81b5ab08f57b4" kind="function"><name>get</name></member>
-    <member refid="class_marmot_state_layout_dynamic_1a980ade3bc3beeb6c9de41eb94ed5f4d4" kind="function"><name>getPtr</name></member>
-    <member refid="class_marmot_state_layout_dynamic_1ac4d142f1849b222578db4d87532eef16" kind="function"><name>getSpan</name></member>
-    <member refid="class_marmot_state_layout_dynamic_1a30cc5346313e03f634da5b95537b772a" kind="function"><name>getStateView</name></member>
-    <member refid="class_marmot_state_layout_dynamic_1a0d360e2c135d3db22f8bdc4da20590d5" kind="function"><name>getAs</name></member>
-    <member refid="class_marmot_state_layout_dynamic_1a705b766faa72e026db76fed3775c5437" kind="function"><name>getAs</name></member>
-    <member refid="class_marmot_state_layout_dynamic_1a1e7bbde01658788214531934e504fc53" kind="function"><name>totalSize</name></member>
-    <member refid="class_marmot_state_layout_dynamic_1a27717c6967398d2c0d8854b8f07592c0" kind="function"><name>isFinalized</name></member>
+  <compound refid="class_marmot_1_1_utilities_1_1_solver_convergence_failed" kind="class"><name>Marmot::Utilities::SolverConvergenceFailed</name>
+    <member refid="class_marmot_1_1_utilities_1_1_solver_convergence_failed_1adb5a09d5aa47d9ef4771f8e442c95775" kind="function"><name>SolverConvergenceFailed</name></member>
   </compound>
-  <compound refid="class_marmot_1_1_solver_convergence_failed" kind="class"><name>Marmot::SolverConvergenceFailed</name>
-    <member refid="class_marmot_1_1_solver_convergence_failed_1a6838faa19333f9516f932cc296767354" kind="function"><name>SolverConvergenceFailed</name></member>
+  <compound refid="class_marmot_1_1_utilities_1_1_solver_increments_exhausted" kind="class"><name>Marmot::Utilities::SolverIncrementsExhausted</name>
+    <member refid="class_marmot_1_1_utilities_1_1_solver_increments_exhausted_1a4932a6974ec1e9f744dec9dcd507e07d" kind="function"><name>SolverIncrementsExhausted</name></member>
   </compound>
-  <compound refid="class_marmot_1_1_solver_increments_exhausted" kind="class"><name>Marmot::SolverIncrementsExhausted</name>
-    <member refid="class_marmot_1_1_solver_increments_exhausted_1aebc3834ed20084c26025b5b73dac7c0c" kind="function"><name>SolverIncrementsExhausted</name></member>
+  <compound refid="class_marmot_1_1_utilities_1_1_solver_timestep_exhausted" kind="class"><name>Marmot::Utilities::SolverTimestepExhausted</name>
+    <member refid="class_marmot_1_1_utilities_1_1_solver_timestep_exhausted_1aba1eff7d4bd29f349f4f31255264144d" kind="function"><name>SolverTimestepExhausted</name></member>
   </compound>
-  <compound refid="class_marmot_1_1_solver_timestep_exhausted" kind="class"><name>Marmot::SolverTimestepExhausted</name>
-    <member refid="class_marmot_1_1_solver_timestep_exhausted_1a56d63c6e3e6829d2b6875c7f193e9719" kind="function"><name>SolverTimestepExhausted</name></member>
+  <compound refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic" kind="class"><name>Marmot::Utilities::StateLayoutDynamic</name>
+    <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1a9191099fa93d6daa7976394c363b9426" kind="variable"><name>variables</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1a16463715471a28e8477341df764c8772" kind="variable"><name>name_to_index</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1adacd7b99678988662ac782f984bd8896" kind="variable"><name>finalized</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1a1727e02e09d9fcd28fa8e97d362cc9e3" kind="variable"><name>total_sz</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1a6e32061b7fab4dff106fc06b691b19a0" kind="function"><name>add</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1a56fa3f8c6e2cb53496632ace4df3033f" kind="function"><name>finalize</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1a7ca29bf5525c02c4c4dba9f9142152dd" kind="function"><name>getInfo</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1af13f8adc7eab186e157820f322ae07a2" kind="function"><name>get</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1ac5250a0db2fc95859135ab6626693ff0" kind="function"><name>getPtr</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1aa63af9a85160fa219c6b20fc1a444384" kind="function"><name>getSpan</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1a0b96e33ff6e7ef52901779dba143f6c5" kind="function"><name>getStateView</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1ada6ef3ea26b28622a666002a25e1750d" kind="function"><name>getAs</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1abd2ba708a064b257b2ca811838c843cf" kind="function"><name>getAs</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1a4eff861005d00da6b21f6f033c740d83" kind="function"><name>totalSize</name></member>
+    <member refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic_1a74a4cd353336cadf663ddc2370cfa1ca" kind="function"><name>isFinalized</name></member>
   </compound>
-  <compound refid="struct_state_mapper" kind="struct"><name>StateMapper</name>
+  <compound refid="struct_marmot_1_1_utilities_1_1_state_mapper" kind="struct"><name>Marmot::Utilities::StateMapper</name>
   </compound>
-  <compound refid="struct_state_view" kind="struct"><name>StateView</name>
-    <member refid="struct_state_view_1a36a36a4b042dd08eae9bbdc1071f4abb" kind="variable"><name>stateLocation</name></member>
-    <member refid="struct_state_view_1aba92824616071cea7209bb5181cd55e0" kind="variable"><name>stateSize</name></member>
+  <compound refid="struct_marmot_1_1_utilities_1_1_state_view" kind="struct"><name>Marmot::Utilities::StateView</name>
+    <member refid="struct_marmot_1_1_utilities_1_1_state_view_1a9d72a4ba8478317fa3683eab16db179e" kind="variable"><name>stateLocation</name></member>
+    <member refid="struct_marmot_1_1_utilities_1_1_state_view_1a164473e1c6054bc10f693f33d66d854d" kind="variable"><name>stateSize</name></member>
   </compound>
-  <compound refid="class_marmot_1_1_stress_update_failed" kind="class"><name>Marmot::StressUpdateFailed</name>
-    <member refid="class_marmot_1_1_stress_update_failed_1ac065319ac460c0a48ebb3c881590aba1" kind="function"><name>StressUpdateFailed</name></member>
+  <compound refid="class_marmot_1_1_utilities_1_1_stress_update_failed" kind="class"><name>Marmot::Utilities::StressUpdateFailed</name>
+    <member refid="class_marmot_1_1_utilities_1_1_stress_update_failed_1ace987588af9c945e1974acdb64f33752" kind="function"><name>StressUpdateFailed</name></member>
   </compound>
-  <compound refid="struct_marmot_state_layout_dynamic_1_1_var_info" kind="struct"><name>MarmotStateLayoutDynamic::VarInfo</name>
-    <member refid="struct_marmot_state_layout_dynamic_1_1_var_info_1ad43a91f073dcb1d8d02b0c09f5713a7d" kind="variable"><name>name</name></member>
-    <member refid="struct_marmot_state_layout_dynamic_1_1_var_info_1a22647047c61b1c0d98b498ef8496b9ba" kind="variable"><name>size</name></member>
-    <member refid="struct_marmot_state_layout_dynamic_1_1_var_info_1ace6b2a7b789cd8b098eb7bb8646fc560" kind="variable"><name>offset</name></member>
+  <compound refid="struct_marmot_1_1_utilities_1_1_state_layout_dynamic_1_1_var_info" kind="struct"><name>Marmot::Utilities::StateLayoutDynamic::VarInfo</name>
+    <member refid="struct_marmot_1_1_utilities_1_1_state_layout_dynamic_1_1_var_info_1a239cd226c1cd6f1ceea41f5a12a61783" kind="variable"><name>name</name></member>
+    <member refid="struct_marmot_1_1_utilities_1_1_state_layout_dynamic_1_1_var_info_1a28f03b4e74156b5a69dff07aa2e37eaa" kind="variable"><name>size</name></member>
+    <member refid="struct_marmot_1_1_utilities_1_1_state_layout_dynamic_1_1_var_info_1a8869757d63074c0c307a5729302dd91e" kind="variable"><name>offset</name></member>
   </compound>
   <compound refid="namespace_marmot" kind="namespace"><name>Marmot</name>
   </compound>
-  <compound refid="namespace_marmot_1_1_testing" kind="namespace"><name>Marmot::Testing</name>
-    <member refid="_marmot_testing_8h_1a0fd6d75987f47297f37a92bdc698fb04" kind="function"><name>checkIfEqual</name></member>
-    <member refid="_marmot_testing_8h_1abc0bb108985d93862de52d8efb07d457" kind="function"><name>checkIfEqual</name></member>
-    <member refid="_marmot_testing_8h_1a536c090df341abb53026544c6ba29a80" kind="function"><name>checkIfEqual</name></member>
-    <member refid="_marmot_testing_8h_1a87715a3d2e074a8043020ceaffc9e82e" kind="function"><name>getString</name></member>
-    <member refid="_marmot_testing_8h_1a0483b94b58257122784697c6492627f8" kind="function"><name>getString</name></member>
-    <member refid="_marmot_testing_8h_1ae8532780a87a911bd99a477fe5e8c812" kind="function"><name>checkIfEqual</name></member>
-    <member refid="_marmot_testing_8h_1aa9631a49d5e76b29696611bf3ed21ceb" kind="function"><name>checkIfEqual</name></member>
-    <member refid="_marmot_testing_8h_1a2650f599f03fc8c503c969366b1b5812" kind="function"><name>checkIfEqual</name></member>
-    <member refid="_marmot_testing_8h_1af036d587586043fa17744b4d17a459db" kind="function"><name>throwExceptionOnFailure</name></member>
-    <member refid="_marmot_testing_8h_1a419cfd0357321b6165f13314560b904a" kind="function"><name>executeTestsAndCollectExceptions</name></member>
-    <member refid="_marmot_testing_8h_1a06f3f34b638c6c214635b15cb7e2b62f" kind="function"><name>fibonacciLatticeHemisphere</name></member>
-    <member refid="_marmot_testing_8h_1a7f83c06f97eb229ff703807161cedd33" kind="function"><name>spinTurbokreisel</name></member>
+  <compound refid="namespace_marmot_1_1_utilities" kind="namespace"><name>Marmot::Utilities</name>
+    <member refid="_marmot_utils_8h_1ae31bbc8743097f29a10609f4180f5574" kind="function"><name>checkedMaterialProperty</name></member>
   </compound>
   <compound refid="namespacestd" kind="namespace"><name>std</name>
   </compound>
@@ -77,9 +66,10 @@
   </compound>
   <compound refid="_marmot_journal_8h" kind="file"><name>MarmotJournal.h</name>
   </compound>
-  <compound refid="_marmot_state_helpers_8h" kind="file"><name>MarmotStateHelpers.h</name>
+  <compound refid="_marmot_portability_8h" kind="file"><name>MarmotPortability.h</name>
+    <member refid="_marmot_portability_8h_1a893a9fe7c68e7d615e4f6e333b0c9a6c" kind="define"><name>MARMOT_API</name></member>
   </compound>
-  <compound refid="_marmot_testing_8h" kind="file"><name>MarmotTesting.h</name>
+  <compound refid="_marmot_state_helpers_8h" kind="file"><name>MarmotStateHelpers.h</name>
   </compound>
   <compound refid="_marmot_utils_8h" kind="file"><name>MarmotUtils.h</name>
   </compound>

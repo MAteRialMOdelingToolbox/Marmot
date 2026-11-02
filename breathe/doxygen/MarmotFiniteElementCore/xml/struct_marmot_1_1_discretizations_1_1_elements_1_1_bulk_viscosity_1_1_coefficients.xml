@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_discretizations_1_1_elements_1_1_bulk_viscosity_1_1_coefficients" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Discretizations::Elements::BulkViscosity::Coefficients</compoundname>
+    <includes refid="_marmot_bulk_viscosity_8h" local="no">MarmotBulkViscosity.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_bulk_viscosity_1_1_coefficients_1a25e68ac6feea1dac6121546f15b01c4c" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Discretizations::Elements::BulkViscosity::Coefficients::linear</definition>
+        <argsstring></argsstring>
+        <name>linear</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BulkViscosity::Coefficients::linear</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Linear coefficient <formula id="45">$b_1$</formula>, active in compression and in expansion. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotBulkViscosity.h" line="43" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotBulkViscosity.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_bulk_viscosity_1_1_coefficients_1a543ae19e09c97dabed65710ae3e7126b" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Discretizations::Elements::BulkViscosity::Coefficients::quadratic</definition>
+        <argsstring></argsstring>
+        <name>quadratic</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BulkViscosity::Coefficients::quadratic</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Quadratic coefficient <formula id="69">$b_2$</formula>, active in compression only. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotBulkViscosity.h" line="45" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotBulkViscosity.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_bulk_viscosity_1_1_coefficients_1a3135450ba21a3655d1204ba0f5012a06" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Discretizations::Elements::BulkViscosity::Coefficients::degradation</definition>
+        <argsstring></argsstring>
+        <name>degradation</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BulkViscosity::Coefficients::degradation</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Exponent <formula id="46">$n$</formula> of the optional degradation with the material&apos;s loss of stiffness; see degradationFactor(). Zero <ndash/> the default <ndash/> disables it entirely, which is both the pre-existing behaviour and the cheap one. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotBulkViscosity.h" line="51" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotBulkViscosity.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_bulk_viscosity_1_1_coefficients_1aad996ac59dff1ccafe95baa8fa98bae7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::Discretizations::Elements::BulkViscosity::Coefficients::areActive</definition>
+        <argsstring>() const</argsstring>
+        <name>areActive</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BulkViscosity::Coefficients::areActive</qualifiedname>
+        <briefdescription>
+<para>Whether any bulk viscosity is active at all. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotBulkViscosity.h" line="54" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotBulkViscosity.h" bodystart="54" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_bulk_viscosity_1_1_coefficients_1a3f5eae25fc6d3831847c4fe3e2526fe5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::Discretizations::Elements::BulkViscosity::Coefficients::isDegraded</definition>
+        <argsstring>() const</argsstring>
+        <name>isDegraded</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BulkViscosity::Coefficients::isDegraded</qualifiedname>
+        <briefdescription>
+<para>Whether the viscous stress is to be degraded with the material&apos;s stiffness. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotBulkViscosity.h" line="57" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotBulkViscosity.h" bodystart="57" bodyend="57"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para><ref refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_bulk_viscosity_1_1_coefficients" kindref="compound">Coefficients</ref> of the artificial bulk viscosity. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Both are dimensionless and default to zero, i.e. inactive. <formula id="43">$b_1 = 0.06$</formula>, <formula id="44">$b_2 = 1.2$</formula> are the values Abaqus/Explicit applies <ndash/> a common choice, not the default, and a recommendation rather than a physical parameter: <formula id="45">$b_1$</formula> is sized to damp the mesh&apos;s highest resolvable frequency, not to model dissipation. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotBulkViscosity.h" line="41" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotBulkViscosity.h" bodystart="41" bodyend="58"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_bulk_viscosity_1_1_coefficients_1aad996ac59dff1ccafe95baa8fa98bae7" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BulkViscosity::Coefficients</scope><name>areActive</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_bulk_viscosity_1_1_coefficients_1a3135450ba21a3655d1204ba0f5012a06" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BulkViscosity::Coefficients</scope><name>degradation</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_bulk_viscosity_1_1_coefficients_1a3f5eae25fc6d3831847c4fe3e2526fe5" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BulkViscosity::Coefficients</scope><name>isDegraded</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_bulk_viscosity_1_1_coefficients_1a25e68ac6feea1dac6121546f15b01c4c" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BulkViscosity::Coefficients</scope><name>linear</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_bulk_viscosity_1_1_coefficients_1a543ae19e09c97dabed65710ae3e7126b" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BulkViscosity::Coefficients</scope><name>quadratic</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

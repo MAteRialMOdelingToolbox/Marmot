@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
   <compounddef id="todo" kind="page">
     <compoundname>todo</compoundname>
     <title>Todo List</title>
@@ -7,10 +7,10 @@
     </briefdescription>
     <detaileddescription>
 <para><variablelist>
-<varlistentry><term>Class <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity" kindref="compound">Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity&lt; nMatTangentSize &gt;</ref>  </term></varlistentry>
+<varlistentry><term>Class <ref refid="class_marmot_1_1_continuum_mechanics_1_1_viscoplasticity_1_1_duvaut_lions_viscosity" kindref="compound">Marmot::ContinuumMechanics::Viscoplasticity::DuvautLionsViscosity&lt; nMatTangentSize &gt;</ref>  </term></varlistentry>
 <listitem><para><anchor id="todo_1_todo000001"/>: Update member names to more descriptive ones  </para>
 </listitem>
-<varlistentry><term>Member <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1a616ad6bb6d38671744209ca9dd0435e9" kindref="member">Marmot::ContinuumMechanics::CommonConstitutiveModels::DuvautLionsViscosity&lt; nMatTangentSize &gt;::applyViscosityOnMatTangent</ref>  (const <ref refid="class_marmot_1_1_continuum_mechanics_1_1_common_constitutive_models_1_1_duvaut_lions_viscosity_1ae2af85711baa602eae4d1900f62a5332" kindref="member">TangentSizedMatrix</ref> &amp;matTangentInv, double dT)</term></varlistentry>
+<varlistentry><term>Member <ref refid="class_marmot_1_1_continuum_mechanics_1_1_viscoplasticity_1_1_duvaut_lions_viscosity_1a7959f732a33a3682e38468dc1eac3d40" kindref="member">Marmot::ContinuumMechanics::Viscoplasticity::DuvautLionsViscosity&lt; nMatTangentSize &gt;::applyViscosityOnMatTangent</ref>  (const <ref refid="class_marmot_1_1_continuum_mechanics_1_1_viscoplasticity_1_1_duvaut_lions_viscosity_1ae2ffe9e3a8cd75f53ef2f299886c301e" kindref="member">TangentSizedMatrix</ref> &amp;matTangentInv, double dT)</term></varlistentry>
 <listitem><para><anchor id="todo_1_todo000002"/>: Check if application to inverse can be replaced by application to non-inverse in general </para>
 </listitem>
 </variablelist>

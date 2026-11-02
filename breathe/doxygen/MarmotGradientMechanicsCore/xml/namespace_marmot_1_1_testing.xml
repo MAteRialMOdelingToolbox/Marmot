@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_testing" kind="namespace" language="C++">
+    <compoundname>Marmot::Testing</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_wave_speed_contract_8h_1a49bceb23dd40f34ac7ed9903695b11f7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nNonlocalVariables</declname>
+            <defname>nNonlocalVariables</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Marmot::Testing::checkMaximumWaveSpeedOverrideMatchesDefault</definition>
+        <argsstring>(const Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt; &amp;material, const typename Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::response &amp;currentResponse, const std::vector&lt; Eigen::Vector&lt; double, nNonlocalVariables &gt; &gt; &amp;fields, double relativeTolerance=0.0)</argsstring>
+        <name>checkMaximumWaveSpeedOverrideMatchesDefault</name>
+        <qualifiedname>Marmot::Testing::checkMaximumWaveSpeedOverrideMatchesDefault</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic" kindref="compound">Marmot::Materials::MaterialGradientEnhancedHypoElastic</ref>&lt; nNonlocalVariables &gt; &amp;</type>
+          <declname>material</declname>
+        </param>
+        <param>
+          <type>const typename <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic" kindref="compound">Marmot::Materials::MaterialGradientEnhancedHypoElastic</ref>&lt; nNonlocalVariables &gt;::response &amp;</type>
+          <declname>currentResponse</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; Eigen::Vector&lt; double, nNonlocalVariables &gt; &gt; &amp;</type>
+          <declname>fields</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>relativeTolerance</declname>
+          <defval>0.0</defval>
+        </param>
+        <briefdescription>
+<para>Check that an override of getMaximumWaveSpeed() keeps the contract of the base class&apos; default. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>A material overrides getMaximumWaveSpeed() with a closed form to avoid the default&apos;s full constitutive evaluation. The artificial bulk viscosity&apos;s damage degradation divides the wave speed at the current non-local field by the one at a zero field, so an override that ignores the field returns the same speed for both: the ratio is 1 and the degradation silently does nothing. This function compares the override to the default (called non-virtually on the same object) at every given field, and checks that neither touches the state. <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nNonlocalVariables</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of non-local variables of the material. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">material</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The material whose override is checked. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">currentResponse</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A response, including its state variables, at which to evaluate both. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">fields</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The non-local fields to evaluate at; they should include fields at which the material is damaged, at least one of them non-zero. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">relativeTolerance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>0, the default, demands the bits of the default. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::runtime_error</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if the override differs from the default or changes the state variables. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotWaveSpeedContract.h" line="54" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotWaveSpeedContract.h" bodystart="54" bodyend="81"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotWaveSpeedContract.h" line="36" column="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,201 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="_marmot_interface_material_hypo_elastic_8h" kind="file" language="C++">
+    <compoundname>MarmotInterfaceMaterialHypoElastic.h</compoundname>
+    <includes local="yes">Marmot/MarmotFastorTensorBasics.h</includes>
+    <includes refid="_marmot_material_hypo_elastic_8h" local="yes">Marmot/MarmotMaterialHypoElastic.h</includes>
+    <includes local="yes">Marmot/MarmotStateHelpers.h</includes>
+    <includes local="no">memory</includes>
+    <includes local="no">string</includes>
+    <includes local="no">vector</includes>
+    <incdepgraph>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h</label>
+        <link refid="_marmot_interface_material_hypo_elastic_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Marmot/MarmotMaterialHypoElastic.h</label>
+        <link refid="_marmot_material_hypo_elastic_8h_source"/>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot/MarmotFastorTensorBasics.h</label>
+      </node>
+      <node id="4">
+        <label>Marmot/MarmotPortability.h</label>
+      </node>
+      <node id="5">
+        <label>Marmot/MarmotStateHelpers.h</label>
+      </node>
+      <node id="6">
+        <label>Marmot/MarmotTypedefs.h</label>
+      </node>
+      <node id="7">
+        <label>algorithm</label>
+      </node>
+      <node id="8">
+        <label>cmath</label>
+      </node>
+      <node id="10">
+        <label>memory</label>
+      </node>
+      <node id="11">
+        <label>string</label>
+      </node>
+      <node id="9">
+        <label>vector</label>
+      </node>
+    </incdepgraph>
+    <innerclass refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic" prot="public">Marmot::Materials::InterfaceMaterialHypoElastic</innerclass>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state" prot="public">Marmot::Materials::InterfaceMaterialHypoElastic::State</innerclass>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents" prot="public">Marmot::Materials::InterfaceMaterialHypoElastic::Tangents</innerclass>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation" prot="public">Marmot::Materials::InterfaceMaterialHypoElastic::Deformation</innerclass>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_time_increment" prot="public">Marmot::Materials::InterfaceMaterialHypoElastic::TimeIncrement</innerclass>
+    <innernamespace refid="namespace_marmot">Marmot</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_materials">Marmot::Materials</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/><sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>__<sp/>_<sp/>_<sp/>__<sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>___<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_`<sp/>|<sp/>&apos;__|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_<sp/>\|<sp/>__|</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_|<sp/>|<sp/>|<sp/><sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_)<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>|_|<sp/>|_|<sp/>|_|\__,_|_|<sp/><sp/>|_|<sp/>|_|<sp/>|_|\___/<sp/>\__|</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Unit<sp/>of<sp/>Strength<sp/>of<sp/>Materials<sp/>and<sp/>Structural<sp/>Analysis</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>University<sp/>of<sp/>Innsbruck,</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>2020<sp/>-<sp/>today</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>festigkeitslehre@uibk.ac.at</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>Alexandros<sp/>Stathas<sp/>alexandros.stathas@boku.ac.at</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*<sp/>Matthias<sp/>Neuner<sp/>matthias.neuner@uibk.ac.at</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>the<sp/>MAteRialMOdellingToolbox<sp/>(marmot).</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>This<sp/>library<sp/>is<sp/>free<sp/>software;<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*<sp/>modify<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>License<sp/>as<sp/>published<sp/>by<sp/>the<sp/>Free<sp/>Software<sp/>Foundation;<sp/>either</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>version<sp/>2.1<sp/>of<sp/>the<sp/>License,<sp/>or<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*<sp/>The<sp/>full<sp/>text<sp/>of<sp/>the<sp/>license<sp/>can<sp/>be<sp/>found<sp/>in<sp/>the<sp/>file<sp/>LICENSE.md<sp/>at</highlight></codeline>
+<codeline lineno="25"><highlight class="comment"><sp/>*<sp/>the<sp/>top<sp/>level<sp/>directory<sp/>of<sp/>marmot.</highlight></codeline>
+<codeline lineno="26"><highlight class="comment"><sp/>*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="27"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotFastorTensorBasics.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotMaterialHypoElastic.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotStateHelpers.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="35"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;memory&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;string&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;vector&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::Materials<sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a1aabf93e8d5a72bc66307b40528d56e2" kindref="member">InterfaceMaterialHypoElastic</ref><sp/>{</highlight></codeline>
+<codeline lineno="49"><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">protected</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="51" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a27078f2795fb77da5670bea5ee605473" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a27078f2795fb77da5670bea5ee605473" kindref="member">materialProperties</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="52" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a9e4c9b0cc0e7b3344816c61a59462d59" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a9e4c9b0cc0e7b3344816c61a59462d59" kindref="member">nMaterialProperties</ref>;<sp/></highlight></codeline>
+<codeline lineno="53" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a106b4072d2728e2d9139f2236bd3ff39" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a106b4072d2728e2d9139f2236bd3ff39" kindref="member">h</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="54" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a65d34cfa5c362fff63ce9b16b6e21b7f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::vector&lt;<sp/>double<sp/>&gt;<sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a65d34cfa5c362fff63ce9b16b6e21b7f" kindref="member">baseMaterialProperties</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="55" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a48ff992c63683201c2f568b66203c145" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>std::unique_ptr&lt;<sp/>MaterialHypoElastic<sp/>&gt;<sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a48ff992c63683201c2f568b66203c145" kindref="member">baseMaterial</ref>;<sp/></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="58" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1afddbbba8effd91c8da1077774455603b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1afddbbba8effd91c8da1077774455603b" kindref="member">Tensor3d</ref><sp/><sp/><sp/><sp/>=<sp/>Marmot::Math::Tensors::FastorTensors::Tensor3d;<sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="59" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a053563d78e4d48c52d59b2af828137b3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a053563d78e4d48c52d59b2af828137b3" kindref="member">Tensor33d</ref><sp/><sp/><sp/>=<sp/>Marmot::Math::Tensors::FastorTensors::Tensor33d;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="60" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1aee86ca94b641b0368ee6bea9bbffebd1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1aee86ca94b641b0368ee6bea9bbffebd1" kindref="member">Tensor333d</ref><sp/><sp/>=<sp/>Marmot::Math::Tensors::FastorTensors::Tensor333d;<sp/><sp/></highlight></codeline>
+<codeline lineno="61" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a2e56ab744ffa60d3a47702d951dc9a67" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a2e56ab744ffa60d3a47702d951dc9a67" kindref="member">Tensor3333d</ref><sp/>=<sp/>Marmot::Math::Tensors::FastorTensors::Tensor3333d;<sp/></highlight></codeline>
+<codeline lineno="62" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1ac94fa407decc32f4b7ddca371d0c2eb8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1ac94fa407decc32f4b7ddca371d0c2eb8" kindref="member">Tensor6d</ref><sp/><sp/>=<sp/>Marmot::Math::Tensors::FastorTensors::Tensor6d;<sp/><sp/></highlight></codeline>
+<codeline lineno="63" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1aa23ac900b9e3c559bd2b03c12ae2a9a6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1aa23ac900b9e3c559bd2b03c12ae2a9a6" kindref="member">Tensor18d</ref><sp/>=<sp/>Marmot::Math::Tensors::FastorTensors::Tensor18d;<sp/></highlight></codeline>
+<codeline lineno="64"><highlight class="normal"></highlight></codeline>
+<codeline lineno="66" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1ab0b520ff001e99de5a4ac1727efe1a1b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1ab0b520ff001e99de5a4ac1727efe1a1b" kindref="member">materialNumber</ref>;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a1aabf93e8d5a72bc66307b40528d56e2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a1aabf93e8d5a72bc66307b40528d56e2" kindref="member">InterfaceMaterialHypoElastic</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>materialName,</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/><sp/><sp/><sp/><sp/><sp/>matProperties_,</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>nMaterialProperties_,</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>materialNumber_<sp/>);</highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight></codeline>
+<codeline lineno="87" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1aaf5707f7998e5c42351de5d5faf1fc62" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1aaf5707f7998e5c42351de5d5faf1fc62" kindref="member">~InterfaceMaterialHypoElastic</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"></highlight></codeline>
+<codeline lineno="90" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1abc695685169b91e3d008a7f08ca72582" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Utilities::StateLayoutDynamic<sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1abc695685169b91e3d008a7f08ca72582" kindref="member">stateLayout</ref>;</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a966de380024ecf13c8a7973b9e04198f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a966de380024ecf13c8a7973b9e04198f" kindref="member">characteristicElementLength</ref>;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a5856cb1d260014c6a3883cf2cfcf6705" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a5856cb1d260014c6a3883cf2cfcf6705" kindref="member">setCharacteristicElementLength</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>length<sp/>);</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="106" refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state" kindref="compound">State</ref><sp/>{</highlight></codeline>
+<codeline lineno="107" refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state_1a91747d8ea48e78f32aebf1897de774ba" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1afddbbba8effd91c8da1077774455603b" kindref="member">Tensor3d</ref><sp/><sp/><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state_1a91747d8ea48e78f32aebf1897de774ba" kindref="member">force</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="108" refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state_1a9fb076a93490374dd0fe948853f0b5b4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a053563d78e4d48c52d59b2af828137b3" kindref="member">Tensor33d</ref><sp/><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state_1a9fb076a93490374dd0fe948853f0b5b4" kindref="member">surfaceStress</ref>;<sp/></highlight></codeline>
+<codeline lineno="109" refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state_1a6dc7692fc302112d8248db7de62acd60" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/><sp/><sp/><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state_1a6dc7692fc302112d8248db7de62acd60" kindref="member">stateVars</ref>;<sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113" refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents" kindref="compound">Tangents</ref><sp/>{</highlight></codeline>
+<codeline lineno="114" refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1ae8675639b0746e8a500104892f4d8f85" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a053563d78e4d48c52d59b2af828137b3" kindref="member">Tensor33d</ref><sp/><sp/><sp/><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1ae8675639b0746e8a500104892f4d8f85" kindref="member">Q_ij</ref>;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="115" refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1a549e605ab6bc3ffe016616efaff11e98" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a2e56ab744ffa60d3a47702d951dc9a67" kindref="member">Tensor3333d</ref><sp/><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1a549e605ab6bc3ffe016616efaff11e98" kindref="member">Z_ijkl</ref>;<sp/></highlight></codeline>
+<codeline lineno="116" refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1a16c42eafee583361379139bf134b3994" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1aee86ca94b641b0368ee6bea9bbffebd1" kindref="member">Tensor333d</ref><sp/><sp/><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1a16c42eafee583361379139bf134b3994" kindref="member">H_ijk</ref>;<sp/><sp/></highlight></codeline>
+<codeline lineno="117" refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1acfcb979857c5410dcbec58a81c2506fb" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a2e56ab744ffa60d3a47702d951dc9a67" kindref="member">Tensor3333d</ref><sp/><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1acfcb979857c5410dcbec58a81c2506fb" kindref="member">Y_ijkl</ref>;<sp/></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121" refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation" kindref="compound">Deformation</ref><sp/>{</highlight></codeline>
+<codeline lineno="122" refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation_1a55af3155ccbcb453f31e750017945af3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1ac94fa407decc32f4b7ddca371d0c2eb8" kindref="member">Tensor6d</ref><sp/><sp/><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation_1a55af3155ccbcb453f31e750017945af3" kindref="member">dU</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="123" refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation_1ab582394da924d35f279a0cbf6ff6ee4a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1aa23ac900b9e3c559bd2b03c12ae2a9a6" kindref="member">Tensor18d</ref><sp/><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation_1ab582394da924d35f279a0cbf6ff6ee4a" kindref="member">dSurfaceStrain</ref>;<sp/></highlight></codeline>
+<codeline lineno="124" refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation_1a03ced0aef988f6238fb44e8a14b951b2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1afddbbba8effd91c8da1077774455603b" kindref="member">Tensor3d</ref><sp/><sp/><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation_1a03ced0aef988f6238fb44e8a14b951b2" kindref="member">normal</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128" refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_time_increment" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_time_increment" kindref="compound">TimeIncrement</ref><sp/>{</highlight></codeline>
+<codeline lineno="129" refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_time_increment_1a775eb81e6307c9784253a570e72342a0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_time_increment_1a775eb81e6307c9784253a570e72342a0" kindref="member">timeOld</ref>;<sp/></highlight></codeline>
+<codeline lineno="130" refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_time_increment_1a649a94f245e7fe80baea527285e0398d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_time_increment_1a649a94f245e7fe80baea527285e0398d" kindref="member">dT</ref>;<sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="131"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"></highlight></codeline>
+<codeline lineno="138" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a448ed0e8c582e512339fb1cb356c0a7a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a448ed0e8c582e512339fb1cb356c0a7a" kindref="member">computeStress</ref>(<sp/><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state" kindref="compound">State</ref>&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>state,</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents" kindref="compound">Tangents</ref>&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>tangents,</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation" kindref="compound">Deformation</ref>&amp;<sp/><sp/><sp/>deformation,</highlight></codeline>
+<codeline lineno="141"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_time_increment" kindref="compound">TimeIncrement</ref>&amp;<sp/>timeIncrement<sp/>);</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a2109bf1e5deaeffb84ce4c060946188a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Utilities::StateView<sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a2109bf1e5deaeffb84ce4c060946188a" kindref="member">getStateView</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>std::string&amp;<sp/>stateName,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>stateVars<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="151"><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="152"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1abc695685169b91e3d008a7f08ca72582" kindref="member">stateLayout</ref>.getStateView(<sp/>stateVars,<sp/>stateName<sp/>);</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"></highlight></codeline>
+<codeline lineno="160" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a3498421ee3b9a270dd16737eafdcc520" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a3498421ee3b9a270dd16737eafdcc520" kindref="member">getNumberOfRequiredStateVars</ref>()</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1abc695685169b91e3d008a7f08ca72582" kindref="member">stateLayout</ref>.totalSize();<sp/>}</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="167" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a2e2a5bf398f389949f8bc6d5125f7bcd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a2e2a5bf398f389949f8bc6d5125f7bcd" kindref="member">initializeYourself</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>stateVars,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nStateVars<sp/>);</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"></highlight></codeline>
+<codeline lineno="174" refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a065bd1b6c4d4a37c1323a700656df965" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a065bd1b6c4d4a37c1323a700656df965" kindref="member">getDensity</ref>();</highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="176"><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::Materials</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h"/>
+  </compounddef>
+</doxygen>

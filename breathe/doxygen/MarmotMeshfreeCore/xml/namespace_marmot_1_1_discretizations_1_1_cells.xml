@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_discretizations_1_1_cells" kind="namespace" language="C++">
+    <compoundname>Marmot::Discretizations::Cells</compoundname>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry" prot="public">Marmot::Discretizations::Cells::BSplineCellGeometry</innerclass>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell" prot="public">Marmot::Discretizations::Cells::Cell</innerclass>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_element" prot="public">Marmot::Discretizations::Cells::CellElement</innerclass>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry" prot="public">Marmot::Discretizations::Cells::CellGeometry</innerclass>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry" prot="public">Marmot::Discretizations::Cells::LagrangianCellGeometry</innerclass>
+    <innerconcept refid="concept_marmot_1_1_discretizations_1_1_cells_1_1_geometry_cell_policy">Marmot::Discretizations::Cells::GeometryCellPolicy</innerconcept>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotLagrangianCellGeometry.h" line="34" column="1"/>
+  </compounddef>
+</doxygen>

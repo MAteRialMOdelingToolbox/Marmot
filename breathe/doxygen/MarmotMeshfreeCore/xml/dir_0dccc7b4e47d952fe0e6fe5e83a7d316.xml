@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="dir_0dccc7b4e47d952fe0e6fe5e83a7d316" kind="dir">
+    <compoundname>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot</compoundname>
+    <innerfile refid="_generic_particle_8h">GenericParticle.h</innerfile>
+    <innerfile refid="_generic_s_d_i_particle_8h">GenericSDIParticle.h</innerfile>
+    <innerfile refid="_marmot_b_spline_8h">MarmotBSpline.h</innerfile>
+    <innerfile refid="_marmot_b_spline_cell_geometry_8h">MarmotBSplineCellGeometry.h</innerfile>
+    <innerfile refid="_marmot_b_spline_geometry_element_8h">MarmotBSplineGeometryElement.h</innerfile>
+    <innerfile refid="_marmot_cell_8h">MarmotCell.h</innerfile>
+    <innerfile refid="_marmot_cell_element_8h">MarmotCellElement.h</innerfile>
+    <innerfile refid="_marmot_cell_geometry_8h">MarmotCellGeometry.h</innerfile>
+    <innerfile refid="_marmot_lagrangian_cell_geometry_8h">MarmotLagrangianCellGeometry.h</innerfile>
+    <innerfile refid="_marmot_material_point_8h">MarmotMaterialPoint.h</innerfile>
+    <innerfile refid="_marmot_meshfree_approximation_8h">MarmotMeshfreeApproximation.h</innerfile>
+    <innerfile refid="_marmot_meshfree_kernel_function_8h">MarmotMeshfreeKernelFunction.h</innerfile>
+    <innerfile refid="_marmot_meshfree_kernel_function_b_spline2nd_order_boxed_8h">MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed.h</innerfile>
+    <innerfile refid="_marmot_meshfree_kernel_function_b_spline3rd_order_boxed_8h">MarmotMeshfreeKernelFunctionBSpline3rdOrderBoxed.h</innerfile>
+    <innerfile refid="_marmot_meshfree_quad_hex_cell_8h">MarmotMeshfreeQuadHexCell.h</innerfile>
+    <innerfile refid="_marmot_meshfree_reproducing_kernel_approximation_8h">MarmotMeshfreeReproducingKernelApproximation.h</innerfile>
+    <innerfile refid="_marmot_meshfree_reproducing_kernel_approximation_implicit_8h">MarmotMeshfreeReproducingKernelApproximationImplicit.h</innerfile>
+    <innerfile refid="_marmot_monomial_basis_functions_8h">MarmotMonomialBasisFunctions.h</innerfile>
+    <innerfile refid="_marmot_m_p_m_library_8h">MarmotMPMLibrary.h</innerfile>
+    <innerfile refid="_marmot_particle_8h">MarmotParticle.h</innerfile>
+    <innerfile refid="_marmot_particle_domain_8h">MarmotParticleDomain.h</innerfile>
+    <innerfile refid="_marmot_particle_library_8h">MarmotParticleLibrary.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/"/>
+  </compounddef>
+</doxygen>

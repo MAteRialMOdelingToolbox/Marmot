@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_discretizations_1_1_meshfree" kind="namespace" language="C++">
+    <compoundname>Marmot::Discretizations::Meshfree</compoundname>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation" prot="public">Marmot::Discretizations::Meshfree::Approximation</innerclass>
+    <innerclass refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule" prot="public">Marmot::Discretizations::Meshfree::GaussRule</innerclass>
+    <innerclass refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_012_01_4" prot="public">Marmot::Discretizations::Meshfree::GaussRule&lt; 2 &gt;</innerclass>
+    <innerclass refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_013_01_4" prot="public">Marmot::Discretizations::Meshfree::GaussRule&lt; 3 &gt;</innerclass>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle" prot="public">Marmot::Discretizations::Meshfree::GenericParticle</innerclass>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle" prot="public">Marmot::Discretizations::Meshfree::GenericSDIParticle</innerclass>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" prot="public">Marmot::Discretizations::Meshfree::KernelFunction</innerclass>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed" prot="public">Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed</innerclass>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed" prot="public">Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</innerclass>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell" prot="public">Marmot::Discretizations::Meshfree::LagrangeCell</innerclass>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle" prot="public">Marmot::Discretizations::Meshfree::Particle</innerclass>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain" prot="public">Marmot::Discretizations::Meshfree::ParticleDomain</innerclass>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" prot="public">Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</innerclass>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit" prot="public">Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</innerclass>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_marmot_meshfree_quad_hex_cell_8h_1af0f8e5e34e7d54b22012c2a7bdcecade" prot="public" static="no">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell" kindref="compound">LagrangeCell</ref>&lt; 2, 4 &gt;</type>
+        <definition>using Marmot::Discretizations::Meshfree::Quad4 = LagrangeCell&lt; 2, 4 &gt;</definition>
+        <argsstring></argsstring>
+        <name>Quad4</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Quad4</qualifiedname>
+        <briefdescription>
+<para>Alias for a 2D, 4-node quadrilateral element. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="1042" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="1042" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_meshfree_quad_hex_cell_8h_1ad371d933cee1560674f5c014f424e590" prot="public" static="no">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell" kindref="compound">LagrangeCell</ref>&lt; 3, 8 &gt;</type>
+        <definition>using Marmot::Discretizations::Meshfree::Hex8 = LagrangeCell&lt; 3, 8 &gt;</definition>
+        <argsstring></argsstring>
+        <name>Hex8</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Hex8</qualifiedname>
+        <briefdescription>
+<para>Alias for a 3D, 8-node hexahedral element. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="1047" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="1047" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="46" column="1"/>
+  </compounddef>
+</doxygen>

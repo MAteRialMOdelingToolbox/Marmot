@@ -1,0 +1,1465 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Discretizations::Meshfree::LagrangeCell</compoundname>
+    <includes refid="_marmot_meshfree_quad_hex_cell_8h" local="no">MarmotMeshfreeQuadHexCell.h</includes>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>nDim</declname>
+        <defname>nDim</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>nNodes</declname>
+        <defname>nNodes</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a205411c59efe7f02a4880453c2785a77" prot="public" static="no">
+        <type>double</type>
+        <definition>using Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::Scalar = double</definition>
+        <argsstring></argsstring>
+        <name>Scalar</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::Scalar</qualifiedname>
+        <briefdescription>
+<para>Type for scalar values. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="137" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="137" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" prot="public" static="no">
+        <type>Eigen::Matrix&lt; <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a205411c59efe7f02a4880453c2785a77" kindref="member">Scalar</ref>, nDim, 1 &gt;</type>
+        <definition>using Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::Vec = Eigen::Matrix&lt; Scalar, nDim, 1 &gt;</definition>
+        <argsstring></argsstring>
+        <name>Vec</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::Vec</qualifiedname>
+        <briefdescription>
+<para>Type for vectors in nDim. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="138" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="138" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ade7b63c550ac654e5b6ab171c775646f" prot="public" static="no">
+        <type>Eigen::Matrix&lt; <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a205411c59efe7f02a4880453c2785a77" kindref="member">Scalar</ref>, nDim, nNodes &gt;</type>
+        <definition>using Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::Mat = Eigen::Matrix&lt; Scalar, nDim, nNodes &gt;</definition>
+        <argsstring></argsstring>
+        <name>Mat</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::Mat</qualifiedname>
+        <briefdescription>
+<para>Type for node coordinate matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="139" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="139" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a7d9c58f4ef4065344a62ce62369afec5" prot="public" static="no">
+        <type>Eigen::Matrix&lt; <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a205411c59efe7f02a4880453c2785a77" kindref="member">Scalar</ref>, 1, nNodes &gt;</type>
+        <definition>using Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::RowN = Eigen::Matrix&lt; Scalar, 1, nNodes &gt;</definition>
+        <argsstring></argsstring>
+        <name>RowN</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::RowN</qualifiedname>
+        <briefdescription>
+<para>Type for shape function vector. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="140" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="140" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad1434e612f24aa48ef019001a17f34a9" prot="public" static="no">
+        <type>Eigen::Matrix&lt; <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a205411c59efe7f02a4880453c2785a77" kindref="member">Scalar</ref>, nDim, nNodes &gt;</type>
+        <definition>using Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::dNMat = Eigen::Matrix&lt; Scalar, nDim, nNodes &gt;</definition>
+        <argsstring></argsstring>
+        <name>dNMat</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::dNMat</qualifiedname>
+        <briefdescription>
+<para>Type for shape function derivative matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="141" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="141" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ac0d39c0e219dacaf6062c484c7e43b1e" prot="public" static="no">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad58643868bead009bf0bbb377d33ae2a" kindref="member">LagrangeCell</ref>&lt; nDim, nNodes &gt;</type>
+        <definition>using Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::Self = LagrangeCell&lt; nDim, nNodes &gt;</definition>
+        <argsstring></argsstring>
+        <name>Self</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::Self</qualifiedname>
+        <briefdescription>
+<para>Alias for the current class type. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="143" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="143" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a7a4de29f178b0b203bd22bc1d4c6fbc5" prot="private" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ade7b63c550ac654e5b6ab171c775646f" kindref="member">Mat</ref></type>
+        <definition>Mat Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::_nodes</definition>
+        <argsstring></argsstring>
+        <name>_nodes</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::_nodes</qualifiedname>
+        <briefdescription>
+<para>Matrix storing the physical coordinates of the element&apos;s nodes. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="485" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="485" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad58643868bead009bf0bbb377d33ae2a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::LagrangeCell</definition>
+        <argsstring>()=default</argsstring>
+        <name>LagrangeCell</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::LagrangeCell</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="148" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad51f39e94ece8d9edca4494e47e10a74" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::LagrangeCell</definition>
+        <argsstring>(const Mat &amp;nodes)</argsstring>
+        <name>LagrangeCell</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::LagrangeCell</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ade7b63c550ac654e5b6ab171c775646f" kindref="member">Mat</ref> &amp;</type>
+          <declname>nodes</declname>
+        </param>
+        <briefdescription>
+<para>Constructor that initializes the element with node coordinates. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>nodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>An Eigen matrix where each column represents a node&apos;s coordinates. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="154" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="154" bodyend="154"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a66022765303fbd702086757bf5aca6a9" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::LagrangeCell</definition>
+        <argsstring>(const Scalar *nodesData, int nNodesData)</argsstring>
+        <name>LagrangeCell</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::LagrangeCell</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a205411c59efe7f02a4880453c2785a77" kindref="member">Scalar</ref> *</type>
+          <declname>nodesData</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nNodesData</declname>
+        </param>
+        <briefdescription>
+<para>Constructor that initializes the element with raw node data. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>nodesData</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A pointer to a flat array of node coordinates (e.g., [x1,y1,z1, x2,y2,z2, ...]). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nNodesData</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The total number of scalar values in nodesData (nDim * nNodes). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if nNodesData does not match nDim * nNodes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="162" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="162" bodyend="171"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a8ddff1834982a14349ffa09533c2a8dc" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ade7b63c550ac654e5b6ab171c775646f" kindref="member">Mat</ref> &amp;</type>
+        <definition>const Mat &amp; Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::nodes</definition>
+        <argsstring>() const</argsstring>
+        <name>nodes</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::nodes</qualifiedname>
+        <briefdescription>
+<para>Returns a const reference to the node coordinate matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A const Eigen matrix of node coordinates. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="177" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="177" bodyend="177"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1af7e124d9667ebc29b5521570f6580938" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ade7b63c550ac654e5b6ab171c775646f" kindref="member">Mat</ref> &amp;</type>
+        <definition>Mat &amp; Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::nodes</definition>
+        <argsstring>()</argsstring>
+        <name>nodes</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::nodes</qualifiedname>
+        <briefdescription>
+<para>Returns a mutable reference to the node coordinate matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A mutable Eigen matrix of node coordinates. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="183" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="183" bodyend="183"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a41a85c5d93aee33d014532c0ea725d3e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" kindref="member">Vec</ref></type>
+        <definition>Vec Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::mapToPhysical</definition>
+        <argsstring>(const Vec &amp;s) const</argsstring>
+        <name>mapToPhysical</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::mapToPhysical</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" kindref="member">Vec</ref> &amp;</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+<para>Maps a natural coordinate to a physical coordinate. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The natural coordinate vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The physical coordinate vector. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="219" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="219" bodyend="219"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a5c09c03593c292bb37cf8e82fe02a35d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>Eigen::Matrix&lt; <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a205411c59efe7f02a4880453c2785a77" kindref="member">Scalar</ref>, nDim, nDim &gt;</type>
+        <definition>Eigen::Matrix&lt; Scalar, nDim, nDim &gt; Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::jacobian</definition>
+        <argsstring>(const Vec &amp;s) const</argsstring>
+        <name>jacobian</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::jacobian</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" kindref="member">Vec</ref> &amp;</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+<para>Computes the Jacobian matrix of the mapping from natural to physical coordinates. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The natural coordinate vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The Jacobian matrix (nDim x nDim). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="226" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="226" bodyend="230"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ab0e7d1f4e21ab93a3f308dc8b088a99e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" kindref="member">Vec</ref></type>
+        <definition>Vec Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::centroid</definition>
+        <argsstring>() const</argsstring>
+        <name>centroid</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::centroid</qualifiedname>
+        <briefdescription>
+<para>Computes the centroid of the element using Gauss integration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The physical coordinate vector of the centroid. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="239" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="239" bodyend="260"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1affe0c3f3b6da76a9557cad4b9fd9dc7e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a205411c59efe7f02a4880453c2785a77" kindref="member">Scalar</ref></type>
+        <definition>Scalar Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::volume</definition>
+        <argsstring>() const</argsstring>
+        <name>volume</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::volume</qualifiedname>
+        <briefdescription>
+<para>Computes the volume (or area in 2D) of the element using Gauss integration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The scalar volume/area. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="269" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="269" bodyend="285"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a2f929fccc1f3731f2cfcf4bc04918c72" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a205411c59efe7f02a4880453c2785a77" kindref="member">Scalar</ref></type>
+        <definition>Scalar Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::area</definition>
+        <argsstring>() const</argsstring>
+        <name>area</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::area</qualifiedname>
+        <briefdescription>
+<para>Computes the area of the element (only valid for 2D elements). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The scalar area. </para>
+</simplesect>
+<simplesect kind="note"><para>This method asserts that nDim is 2. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="292" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="292" bodyend="296"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1add17308e0c4193351b92ffee3cd79a8e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>Eigen::Matrix&lt; <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a205411c59efe7f02a4880453c2785a77" kindref="member">Scalar</ref>, nDim, nDim &gt;</type>
+        <definition>Eigen::Matrix&lt; Scalar, nDim, nDim &gt; Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::secondMoments</definition>
+        <argsstring>() const</argsstring>
+        <name>secondMoments</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::secondMoments</qualifiedname>
+        <briefdescription>
+<para>Computes the second moment matrix of the element about its centroid. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The second moment matrix I_kj is defined as ∫ (x_k - C_k)(x_j - C_j) dV, where C is the centroid and dV is the differential volume.</para>
+<para><simplesect kind="return"><para>An Eigen matrix representing the second moment matrix. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="310" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="310" bodyend="337"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a40d314513235188dfc047cfdf6264938" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::updateVertexCoordinates</definition>
+        <argsstring>(const Mat &amp;newNodes)</argsstring>
+        <name>updateVertexCoordinates</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::updateVertexCoordinates</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ade7b63c550ac654e5b6ab171c775646f" kindref="member">Mat</ref> &amp;</type>
+          <declname>newNodes</declname>
+        </param>
+        <briefdescription>
+<para>Updates the coordinates of the element&apos;s nodes. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>newNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The new Eigen matrix of node coordinates. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="346" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="346" bodyend="346"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad878ebc510f3de3c002d64d79a04bb64" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::applyDeformationGradient</definition>
+        <argsstring>(const Eigen::Matrix&lt; Scalar, nDim, nDim &gt; &amp;F)</argsstring>
+        <name>applyDeformationGradient</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::applyDeformationGradient</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a205411c59efe7f02a4880453c2785a77" kindref="member">Scalar</ref>, nDim, nDim &gt; &amp;</type>
+          <declname>F</declname>
+        </param>
+        <briefdescription>
+<para>Applies a deformation gradient relative to the element&apos;s centroid. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Each node&apos;s new position is calculated as: x_new = C + F * (x_old - C), where C is the current centroid and F is the deformation gradient.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The deformation gradient matrix. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="360" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="360" bodyend="363"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a98c0d06d69a7ca66c2a3c528022c7967" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::applyDeformationGradient</definition>
+        <argsstring>(const Eigen::Matrix&lt; Scalar, nDim, nDim &gt; &amp;F, const Vec &amp;C)</argsstring>
+        <name>applyDeformationGradient</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::applyDeformationGradient</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a205411c59efe7f02a4880453c2785a77" kindref="member">Scalar</ref>, nDim, nDim &gt; &amp;</type>
+          <declname>F</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" kindref="member">Vec</ref> &amp;</type>
+          <declname>C</declname>
+        </param>
+        <briefdescription>
+<para>Applies a deformation gradient relative to a given point: x_new = C + F * (x_old - C). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The deformation gradient matrix. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>C</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The fixed point of the map (e.g. the centroid of a parent cell, so that the subcells of a subdivision stay a tiling of the deformed parent). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="372" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="372" bodyend="378"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a8c37ac8752f947d2746696b37b71021d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::applyUniformDisplacement</definition>
+        <argsstring>(const Vec &amp;dX)</argsstring>
+        <name>applyUniformDisplacement</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::applyUniformDisplacement</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" kindref="member">Vec</ref> &amp;</type>
+          <declname>dX</declname>
+        </param>
+        <briefdescription>
+<para>Applies a uniform displacement to all nodes of the element. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dX</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The displacement vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="384" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="384" bodyend="389"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1aa26e24290a34c2495e9ec535037c4dad" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" kindref="member">Vec</ref></type>
+        <definition>Vec Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::getFaceCenterCoordinates</definition>
+        <argsstring>(int faceId) const</argsstring>
+        <name>getFaceCenterCoordinates</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::getFaceCenterCoordinates</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>faceId</declname>
+        </param>
+        <briefdescription>
+<para>Computes the center coordinates of a specified face. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>faceId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The ID of the face (1-based, typically Abaqus convention). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The physical coordinate vector of the face center. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::logic_error</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if not implemented for the specific element type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>This method must be specialized for each concrete element type. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="402" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="402" bodyend="405"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a4bc603c3140a1fd53d602a1e934f912e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" kindref="member">Vec</ref></type>
+        <definition>Vec Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::boundarySurfaceVector</definition>
+        <argsstring>(int faceId) const</argsstring>
+        <name>boundarySurfaceVector</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::boundarySurfaceVector</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>faceId</declname>
+        </param>
+        <briefdescription>
+<para>Computes the boundary surface vector (normal scaled by area/length) for a face. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>faceId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The ID of the face (1-based, typically Abaqus convention). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The boundary surface vector. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::logic_error</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if not implemented for the specific element type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>This method must be specialized for each concrete element type. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="414" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="414" bodyend="417"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a0c0cec2337b4e35c173d3ec6dbf87318" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ac0d39c0e219dacaf6062c484c7e43b1e" kindref="member">Self</ref> &gt;</type>
+        <definition>std::vector&lt; Self &gt; Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::uniformSubdivided</definition>
+        <argsstring>() const</argsstring>
+        <name>uniformSubdivided</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::uniformSubdivided</qualifiedname>
+        <briefdescription>
+<para>Subdivides the element uniformly into smaller elements. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A vector of new <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell" kindref="compound">LagrangeCell</ref> instances representing the subdivided elements. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::logic_error</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if not implemented for the specific element type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>This method must be specialized for each concrete element type. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="428" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="428" bodyend="432"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a2b63679f9a7c216ef033d4282040b3ef" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt; int &gt; Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::getSubCellIndicesOnParentFace</definition>
+        <argsstring>(int parentFaceId) const</argsstring>
+        <name>getSubCellIndicesOnParentFace</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::getSubCellIndicesOnParentFace</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>parentFaceId</declname>
+        </param>
+        <briefdescription>
+<para>Retrieves the indices of sub-cells that lie on a specified face of the parent cell after uniform subdivision. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>parentFaceId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The ID of the parent cell&apos;s face (1-based, Abaqus convention). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A vector of indices of the sub-cells in the flat list returned by <computeroutput><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a0c0cec2337b4e35c173d3ec6dbf87318" kindref="member">uniformSubdivided</ref></computeroutput>. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::out_of_range</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if parentFaceId is invalid. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>std::logic_error</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if not implemented for the specific element type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="442" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="442" bodyend="445"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a49d29c41695fcceb06582ec2c36cf616" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::getCellShape</definition>
+        <argsstring>() const</argsstring>
+        <name>getCellShape</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::getCellShape</qualifiedname>
+        <briefdescription>
+<para>Returns the Ensight Gold cell shape name for the element. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A string representing the Ensight Gold cell shape (e.g., &quot;quad4&quot;, &quot;hexa8&quot;). </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::logic_error</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if not implemented for the specific element type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>This method must be specialized for each concrete element type. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="456" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="456" bodyend="459"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a22e4df95236f72def750d1fcdb57e02f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::getNumberOfNodes</definition>
+        <argsstring>() const</argsstring>
+        <name>getNumberOfNodes</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::getNumberOfNodes</qualifiedname>
+        <briefdescription>
+<para>Returns the number of nodes in the element. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The integer number of nodes. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="465" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="465" bodyend="465"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a450b5401753bdfaeb66699bfb109cd6d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::getNumberOfDimensions</definition>
+        <argsstring>() const</argsstring>
+        <name>getNumberOfDimensions</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::getNumberOfDimensions</qualifiedname>
+        <briefdescription>
+<para>Returns the number of dimensions of the element. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The integer number of dimensions. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="471" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="471" bodyend="471"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad97662c611d91bbaac06ab509a3d3711" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::getNumberOfFaces</definition>
+        <argsstring>() const</argsstring>
+        <name>getNumberOfFaces</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::getNumberOfFaces</qualifiedname>
+        <briefdescription>
+<para>Returns the number of faces of the element. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The integer number of faces. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::logic_error</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if not implemented for the specific element type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>This method must be specialized for each concrete element type. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="479" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="479" bodyend="482"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a80287fa4ab076c6880a2a69d9518fcb2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad58643868bead009bf0bbb377d33ae2a" kindref="member">LagrangeCell</ref>&lt; 2, 4 &gt;<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a7d9c58f4ef4065344a62ce62369afec5" kindref="member">::RowN</ref></type>
+        <definition>LagrangeCell&lt; 2, 4 &gt;::RowN Marmot::Discretizations::Meshfree::LagrangeCell&lt; 2, 4 &gt;::shapeFunctions</definition>
+        <argsstring>(const Vec &amp;s)</argsstring>
+        <name>shapeFunctions</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::shapeFunctions</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" kindref="member">Vec</ref> &amp;</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+<para>Specialization of shapeFunctions for a 2D, 4-node quadrilateral (<ref refid="_marmot_meshfree_quad_hex_cell_8h_1af0f8e5e34e7d54b22012c2a7bdcecade" kindref="member">Quad4</ref>). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The natural coordinate vector (xi, eta). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A row vector of shape function values for <ref refid="_marmot_meshfree_quad_hex_cell_8h_1af0f8e5e34e7d54b22012c2a7bdcecade" kindref="member">Quad4</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="588" column="43" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="588" bodyend="597"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a76a2cb4378034de6e6f07dffe5409730" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad58643868bead009bf0bbb377d33ae2a" kindref="member">LagrangeCell</ref>&lt; 2, 4 &gt;<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad1434e612f24aa48ef019001a17f34a9" kindref="member">::dNMat</ref></type>
+        <definition>LagrangeCell&lt; 2, 4 &gt;::dNMat Marmot::Discretizations::Meshfree::LagrangeCell&lt; 2, 4 &gt;::dShapeFunctions</definition>
+        <argsstring>(const Vec &amp;s)</argsstring>
+        <name>dShapeFunctions</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::dShapeFunctions</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" kindref="member">Vec</ref> &amp;</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+<para>Specialization of dShapeFunctions for a 2D, 4-node quadrilateral (<ref refid="_marmot_meshfree_quad_hex_cell_8h_1af0f8e5e34e7d54b22012c2a7bdcecade" kindref="member">Quad4</ref>). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The natural coordinate vector (xi, eta). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A matrix of shape function derivatives for <ref refid="_marmot_meshfree_quad_hex_cell_8h_1af0f8e5e34e7d54b22012c2a7bdcecade" kindref="member">Quad4</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="605" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="605" bodyend="623"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ac7ca30d900625ea45ae749cd22b74a39" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad58643868bead009bf0bbb377d33ae2a" kindref="member">LagrangeCell</ref>&lt; 2, 4 &gt;<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" kindref="member">::Vec</ref></type>
+        <definition>LagrangeCell&lt; 2, 4 &gt;::Vec Marmot::Discretizations::Meshfree::LagrangeCell&lt; 2, 4 &gt;::getFaceCenterCoordinates</definition>
+        <argsstring>(int faceId) const</argsstring>
+        <name>getFaceCenterCoordinates</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::getFaceCenterCoordinates</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>faceId</declname>
+        </param>
+        <briefdescription>
+<para>Specialization of getFaceCenterCoordinates for <ref refid="_marmot_meshfree_quad_hex_cell_8h_1af0f8e5e34e7d54b22012c2a7bdcecade" kindref="member">Quad4</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>faceId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The ID of the face (1-4, Abaqus convention). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The physical coordinate vector of the face center. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::out_of_range</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if faceId is not between 1 and 4. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="632" column="42" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="632" bodyend="647"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ae502cfcaf1c649d8e5847b55ab1ed19f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad58643868bead009bf0bbb377d33ae2a" kindref="member">LagrangeCell</ref>&lt; 2, 4 &gt;<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" kindref="member">::Vec</ref></type>
+        <definition>LagrangeCell&lt; 2, 4 &gt;::Vec Marmot::Discretizations::Meshfree::LagrangeCell&lt; 2, 4 &gt;::boundarySurfaceVector</definition>
+        <argsstring>(int faceId) const</argsstring>
+        <name>boundarySurfaceVector</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::boundarySurfaceVector</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>faceId</declname>
+        </param>
+        <briefdescription>
+<para>Specialization of boundarySurfaceVector for <ref refid="_marmot_meshfree_quad_hex_cell_8h_1af0f8e5e34e7d54b22012c2a7bdcecade" kindref="member">Quad4</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes the outward normal vector scaled by the edge length for a given face. Assumes counter-clockwise node ordering for outward normal.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>faceId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The ID of the face (1-4, Abaqus convention). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The boundary surface vector. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::out_of_range</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if faceId is not between 1 and 4. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="660" column="42" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="660" bodyend="677"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ace5d8214bcd49300970b478378c91898" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad58643868bead009bf0bbb377d33ae2a" kindref="member">LagrangeCell</ref>&lt; 2, 4 &gt; &gt;</type>
+        <definition>std::vector&lt; LagrangeCell&lt; 2, 4 &gt; &gt; Marmot::Discretizations::Meshfree::LagrangeCell&lt; 2, 4 &gt;::uniformSubdivided</definition>
+        <argsstring>() const</argsstring>
+        <name>uniformSubdivided</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::uniformSubdivided</qualifiedname>
+        <briefdescription>
+<para>Specialization of uniformSubdivided for <ref refid="_marmot_meshfree_quad_hex_cell_8h_1af0f8e5e34e7d54b22012c2a7bdcecade" kindref="member">Quad4</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A vector of new <ref refid="_marmot_meshfree_quad_hex_cell_8h_1af0f8e5e34e7d54b22012c2a7bdcecade" kindref="member">Quad4</ref> elements. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="684" column="35" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="684" bodyend="714"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a90fe065879ecda038d78ec37bfb9c1de" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt; int &gt; Marmot::Discretizations::Meshfree::LagrangeCell&lt; 2, 4 &gt;::getSubCellIndicesOnParentFace</definition>
+        <argsstring>(int parentFaceId) const</argsstring>
+        <name>getSubCellIndicesOnParentFace</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::getSubCellIndicesOnParentFace</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>parentFaceId</declname>
+        </param>
+        <briefdescription>
+<para>Specialization of getSubCellIndicesOnParentFace for <ref refid="_marmot_meshfree_quad_hex_cell_8h_1af0f8e5e34e7d54b22012c2a7bdcecade" kindref="member">Quad4</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>parentFaceId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The ID of the parent cell&apos;s face (1-4, Abaqus convention). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A vector of indices of the sub-cells in the flat list returned by <computeroutput><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a0c0cec2337b4e35c173d3ec6dbf87318" kindref="member">uniformSubdivided</ref></computeroutput>. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::out_of_range</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if parentFaceId is not between 1 and 4. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="723" column="35" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="723" bodyend="748"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1adb4da3a113faa7ae0e0622a109b99ec4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Marmot::Discretizations::Meshfree::LagrangeCell&lt; 2, 4 &gt;::getCellShape</definition>
+        <argsstring>() const</argsstring>
+        <name>getCellShape</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::getCellShape</qualifiedname>
+        <briefdescription>
+<para>Specialization of getCellShape for <ref refid="_marmot_meshfree_quad_hex_cell_8h_1af0f8e5e34e7d54b22012c2a7bdcecade" kindref="member">Quad4</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The string &quot;quad4&quot; (Ensight Gold notation). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="755" column="35" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="755" bodyend="758"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ac89d8a4f2859e5c5bf9f235a35f4c614" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Meshfree::LagrangeCell&lt; 2, 4 &gt;::getNumberOfFaces</definition>
+        <argsstring>() const</argsstring>
+        <name>getNumberOfFaces</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::getNumberOfFaces</qualifiedname>
+        <briefdescription>
+<para>Specialization of getNumberOfFaces for <ref refid="_marmot_meshfree_quad_hex_cell_8h_1af0f8e5e34e7d54b22012c2a7bdcecade" kindref="member">Quad4</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The integer 4. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="765" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="765" bodyend="768"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1adc6b9658be5f4a06cf983fbee17a4f86" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad58643868bead009bf0bbb377d33ae2a" kindref="member">LagrangeCell</ref>&lt; 3, 8 &gt;<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a7d9c58f4ef4065344a62ce62369afec5" kindref="member">::RowN</ref></type>
+        <definition>LagrangeCell&lt; 3, 8 &gt;::RowN Marmot::Discretizations::Meshfree::LagrangeCell&lt; 3, 8 &gt;::shapeFunctions</definition>
+        <argsstring>(const Vec &amp;s)</argsstring>
+        <name>shapeFunctions</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::shapeFunctions</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" kindref="member">Vec</ref> &amp;</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+<para>Specialization of shapeFunctions for a 3D, 8-node hexahedron (<ref refid="_marmot_meshfree_quad_hex_cell_8h_1ad371d933cee1560674f5c014f424e590" kindref="member">Hex8</ref>). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The natural coordinate vector (xi, eta, zeta). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A row vector of shape function values for <ref refid="_marmot_meshfree_quad_hex_cell_8h_1ad371d933cee1560674f5c014f424e590" kindref="member">Hex8</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="780" column="43" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="780" bodyend="795"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a83fa138d527a765bc56752ce89f83095" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad58643868bead009bf0bbb377d33ae2a" kindref="member">LagrangeCell</ref>&lt; 3, 8 &gt;<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad1434e612f24aa48ef019001a17f34a9" kindref="member">::dNMat</ref></type>
+        <definition>LagrangeCell&lt; 3, 8 &gt;::dNMat Marmot::Discretizations::Meshfree::LagrangeCell&lt; 3, 8 &gt;::dShapeFunctions</definition>
+        <argsstring>(const Vec &amp;s)</argsstring>
+        <name>dShapeFunctions</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::dShapeFunctions</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" kindref="member">Vec</ref> &amp;</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+<para>Specialization of dShapeFunctions for a 3D, 8-node hexahedron (<ref refid="_marmot_meshfree_quad_hex_cell_8h_1ad371d933cee1560674f5c014f424e590" kindref="member">Hex8</ref>). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The natural coordinate vector (xi, eta, zeta). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A matrix of shape function derivatives for <ref refid="_marmot_meshfree_quad_hex_cell_8h_1ad371d933cee1560674f5c014f424e590" kindref="member">Hex8</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="803" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="803" bodyend="840"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1aaab2ce23780b34f4ace12ace76e1282d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad58643868bead009bf0bbb377d33ae2a" kindref="member">LagrangeCell</ref>&lt; 3, 8 &gt;<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" kindref="member">::Vec</ref></type>
+        <definition>LagrangeCell&lt; 3, 8 &gt;::Vec Marmot::Discretizations::Meshfree::LagrangeCell&lt; 3, 8 &gt;::getFaceCenterCoordinates</definition>
+        <argsstring>(int faceId) const</argsstring>
+        <name>getFaceCenterCoordinates</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::getFaceCenterCoordinates</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>faceId</declname>
+        </param>
+        <briefdescription>
+<para>Specialization of getFaceCenterCoordinates for <ref refid="_marmot_meshfree_quad_hex_cell_8h_1ad371d933cee1560674f5c014f424e590" kindref="member">Hex8</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>faceId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The ID of the face (1-6, Abaqus convention). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The physical coordinate vector of the face center. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::out_of_range</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if faceId is not between 1 and 6. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="849" column="42" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="849" bodyend="868"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a966b09b5131dbd0e2acc9bf1c93ed965" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad58643868bead009bf0bbb377d33ae2a" kindref="member">LagrangeCell</ref>&lt; 3, 8 &gt;<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" kindref="member">::Vec</ref></type>
+        <definition>LagrangeCell&lt; 3, 8 &gt;::Vec Marmot::Discretizations::Meshfree::LagrangeCell&lt; 3, 8 &gt;::boundarySurfaceVector</definition>
+        <argsstring>(int faceId) const</argsstring>
+        <name>boundarySurfaceVector</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::boundarySurfaceVector</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>faceId</declname>
+        </param>
+        <briefdescription>
+<para>Specialization of boundarySurfaceVector for <ref refid="_marmot_meshfree_quad_hex_cell_8h_1ad371d933cee1560674f5c014f424e590" kindref="member">Hex8</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes the outward normal vector scaled by the face area for a given face. Uses the cross product of the face diagonals for a robust normal estimation on potentially warped hexahedral faces.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>faceId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The ID of the face (1-6, Abaqus convention). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The boundary surface vector. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::out_of_range</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if faceId is not between 1 and 6. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="882" column="42" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="882" bodyend="913"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad6bad4b61ae4868b78e3ddbef6bdc77d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad58643868bead009bf0bbb377d33ae2a" kindref="member">LagrangeCell</ref>&lt; 3, 8 &gt; &gt;</type>
+        <definition>std::vector&lt; LagrangeCell&lt; 3, 8 &gt; &gt; Marmot::Discretizations::Meshfree::LagrangeCell&lt; 3, 8 &gt;::uniformSubdivided</definition>
+        <argsstring>() const</argsstring>
+        <name>uniformSubdivided</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::uniformSubdivided</qualifiedname>
+        <briefdescription>
+<para>Specialization of uniformSubdivided for <ref refid="_marmot_meshfree_quad_hex_cell_8h_1ad371d933cee1560674f5c014f424e590" kindref="member">Hex8</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A vector of new <ref refid="_marmot_meshfree_quad_hex_cell_8h_1ad371d933cee1560674f5c014f424e590" kindref="member">Hex8</ref> elements. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="920" column="35" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="920" bodyend="959"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a9b0f3e5a4bfa810ead6025b6d31cc46a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt; int &gt; Marmot::Discretizations::Meshfree::LagrangeCell&lt; 3, 8 &gt;::getSubCellIndicesOnParentFace</definition>
+        <argsstring>(int parentFaceId) const</argsstring>
+        <name>getSubCellIndicesOnParentFace</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::getSubCellIndicesOnParentFace</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>parentFaceId</declname>
+        </param>
+        <briefdescription>
+<para>Specialization of getSubCellIndicesOnParentFace for <ref refid="_marmot_meshfree_quad_hex_cell_8h_1ad371d933cee1560674f5c014f424e590" kindref="member">Hex8</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>parentFaceId</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The ID of the parent cell&apos;s face (1-6, Abaqus convention). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A vector of indices of the sub-cells in the flat list returned by <computeroutput><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a0c0cec2337b4e35c173d3ec6dbf87318" kindref="member">uniformSubdivided</ref></computeroutput>. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::out_of_range</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if parentFaceId is not between 1 and 6. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="968" column="35" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="968" bodyend="1013"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a630188a935f91e010b797c55bc34bc28" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Marmot::Discretizations::Meshfree::LagrangeCell&lt; 3, 8 &gt;::getCellShape</definition>
+        <argsstring>() const</argsstring>
+        <name>getCellShape</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::getCellShape</qualifiedname>
+        <briefdescription>
+<para>Specialization of getCellShape for <ref refid="_marmot_meshfree_quad_hex_cell_8h_1ad371d933cee1560674f5c014f424e590" kindref="member">Hex8</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The string &quot;hexa8&quot; (Ensight Gold notation). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="1020" column="35" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="1020" bodyend="1023"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a8e1cea624e90d103d6688205f504ce46" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Meshfree::LagrangeCell&lt; 3, 8 &gt;::getNumberOfFaces</definition>
+        <argsstring>() const</argsstring>
+        <name>getNumberOfFaces</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::getNumberOfFaces</qualifiedname>
+        <briefdescription>
+<para>Specialization of getNumberOfFaces for <ref refid="_marmot_meshfree_quad_hex_cell_8h_1ad371d933cee1560674f5c014f424e590" kindref="member">Hex8</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The integer 6. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="1030" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="1030" bodyend="1033"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a84f70db7109b3f3a7c5848d8476b932f" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a7d9c58f4ef4065344a62ce62369afec5" kindref="member">RowN</ref></type>
+        <definition>static RowN Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::shapeFunctions</definition>
+        <argsstring>(const Vec &amp;s)</argsstring>
+        <name>shapeFunctions</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::shapeFunctions</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" kindref="member">Vec</ref> &amp;</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+<para>Computes the shape functions at a given natural coordinate. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The natural coordinate vector (xi, eta, zeta). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A row vector of shape function values. </para>
+</simplesect>
+<simplesect kind="note"><para>This method must be specialized for each concrete element type. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="194" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a9df8856c238fa4e83df1fe71818d257a" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad1434e612f24aa48ef019001a17f34a9" kindref="member">dNMat</ref></type>
+        <definition>static dNMat Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::dShapeFunctions</definition>
+        <argsstring>(const Vec &amp;s)</argsstring>
+        <name>dShapeFunctions</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::dShapeFunctions</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" kindref="member">Vec</ref> &amp;</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+<para>Computes the derivatives of the shape functions with respect to natural coordinates. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The natural coordinate vector (xi, eta, zeta). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A matrix where rows are derivatives w.r.t. natural coordinates and columns are nodes. </para>
+</simplesect>
+<simplesect kind="note"><para>This method must be specialized for each concrete element type. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="202" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a8f4e9f8c1337cc028b4b8e2375533197" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a7d9c58f4ef4065344a62ce62369afec5" kindref="member">RowN</ref></type>
+        <definition>static RowN Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::interpolationOperator</definition>
+        <argsstring>(const Vec &amp;s)</argsstring>
+        <name>interpolationOperator</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::interpolationOperator</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" kindref="member">Vec</ref> &amp;</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+<para>Returns the interpolation operator (same as shape functions for Lagrange elements). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>s</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The natural coordinate vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A row vector of shape function values. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="209" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="209" bodyend="209"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a4dcd0610293d7e3c69f616ffec5056e4" prot="private" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::array&lt; int, nDim &gt;</type>
+        <definition>std::array&lt; int, nDim &gt; Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;::getGlobalGridCoords</definition>
+        <argsstring>(int cell_idx) const</argsstring>
+        <name>getGlobalGridCoords</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::LagrangeCell::getGlobalGridCoords</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>cell_idx</declname>
+        </param>
+        <briefdescription>
+<para>Grid position of a sub-cell of a single uniform subdivision. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Maps the flat index of a sub-cell in the vector returned by <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a0c0cec2337b4e35c173d3ec6dbf87318" kindref="member">uniformSubdivided()</ref> to its (i,j) or (i,j,k) position, each index 0 or 1 (one subdivision level). Currently not called.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>cell_idx</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Flat index of the sub-cell (0-3 in 2D, 0-7 in 3D). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The 0-based grid position of the sub-cell. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="496" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="496" bodyend="575"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Generic isoparametric Lagrange element. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The dimension of the element (e.g., 2 for <ref refid="_marmot_meshfree_quad_hex_cell_8h_1af0f8e5e34e7d54b22012c2a7bdcecade" kindref="member">Quad4</ref>, 3 for <ref refid="_marmot_meshfree_quad_hex_cell_8h_1ad371d933cee1560674f5c014f424e590" kindref="member">Hex8</ref>). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number of nodes in the element (e.g., 4 for <ref refid="_marmot_meshfree_quad_hex_cell_8h_1af0f8e5e34e7d54b22012c2a7bdcecade" kindref="member">Quad4</ref>, 8 for <ref refid="_marmot_meshfree_quad_hex_cell_8h_1ad371d933cee1560674f5c014f424e590" kindref="member">Hex8</ref>).</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This class provides common functionality for isoparametric elements, including mapping from natural to physical coordinates, Jacobian computation, and integration-based properties like centroid and volume.</para>
+<para>Specific shape functions and derivatives must be specialized for concrete topologies. Specializations exist for <ref refid="_marmot_meshfree_quad_hex_cell_8h_1af0f8e5e34e7d54b22012c2a7bdcecade" kindref="member">Quad4</ref> (2, 4) and <ref refid="_marmot_meshfree_quad_hex_cell_8h_1ad371d933cee1560674f5c014f424e590" kindref="member">Hex8</ref> (3, 8). The class owns a copy of the node coordinates (unlike the MPM cell geometries, which map an external array); it is used as the geometry of particle domains (see <ref refid="_marmot_particle_domain_8h_source" kindref="compound">MarmotParticleDomain.h</ref>). </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="135" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="135" bodyend="576"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a7a4de29f178b0b203bd22bc1d4c6fbc5" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>_nodes</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad878ebc510f3de3c002d64d79a04bb64" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>applyDeformationGradient</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a98c0d06d69a7ca66c2a3c528022c7967" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>applyDeformationGradient</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a8c37ac8752f947d2746696b37b71021d" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>applyUniformDisplacement</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a2f929fccc1f3731f2cfcf4bc04918c72" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>area</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a4bc603c3140a1fd53d602a1e934f912e" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>boundarySurfaceVector</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ae502cfcaf1c649d8e5847b55ab1ed19f" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>boundarySurfaceVector</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a966b09b5131dbd0e2acc9bf1c93ed965" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>boundarySurfaceVector</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ab0e7d1f4e21ab93a3f308dc8b088a99e" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>centroid</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad1434e612f24aa48ef019001a17f34a9" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>dNMat</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a9df8856c238fa4e83df1fe71818d257a" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>dShapeFunctions</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a76a2cb4378034de6e6f07dffe5409730" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>dShapeFunctions</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a83fa138d527a765bc56752ce89f83095" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>dShapeFunctions</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a49d29c41695fcceb06582ec2c36cf616" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>getCellShape</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1adb4da3a113faa7ae0e0622a109b99ec4" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>getCellShape</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a630188a935f91e010b797c55bc34bc28" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>getCellShape</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1aa26e24290a34c2495e9ec535037c4dad" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>getFaceCenterCoordinates</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ac7ca30d900625ea45ae749cd22b74a39" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>getFaceCenterCoordinates</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1aaab2ce23780b34f4ace12ace76e1282d" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>getFaceCenterCoordinates</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a4dcd0610293d7e3c69f616ffec5056e4" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>getGlobalGridCoords</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a450b5401753bdfaeb66699bfb109cd6d" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>getNumberOfDimensions</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad97662c611d91bbaac06ab509a3d3711" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>getNumberOfFaces</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ac89d8a4f2859e5c5bf9f235a35f4c614" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>getNumberOfFaces</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a8e1cea624e90d103d6688205f504ce46" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>getNumberOfFaces</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a22e4df95236f72def750d1fcdb57e02f" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>getNumberOfNodes</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a2b63679f9a7c216ef033d4282040b3ef" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>getSubCellIndicesOnParentFace</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a90fe065879ecda038d78ec37bfb9c1de" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>getSubCellIndicesOnParentFace</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a9b0f3e5a4bfa810ead6025b6d31cc46a" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>getSubCellIndicesOnParentFace</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a8f4e9f8c1337cc028b4b8e2375533197" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>interpolationOperator</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a5c09c03593c292bb37cf8e82fe02a35d" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>jacobian</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad58643868bead009bf0bbb377d33ae2a" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>LagrangeCell</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad51f39e94ece8d9edca4494e47e10a74" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>LagrangeCell</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a66022765303fbd702086757bf5aca6a9" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>LagrangeCell</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a41a85c5d93aee33d014532c0ea725d3e" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>mapToPhysical</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ade7b63c550ac654e5b6ab171c775646f" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>Mat</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a8ddff1834982a14349ffa09533c2a8dc" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>nodes</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1af7e124d9667ebc29b5521570f6580938" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>nodes</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a7d9c58f4ef4065344a62ce62369afec5" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>RowN</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a205411c59efe7f02a4880453c2785a77" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>Scalar</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1add17308e0c4193351b92ffee3cd79a8e" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>secondMoments</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ac0d39c0e219dacaf6062c484c7e43b1e" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>Self</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a84f70db7109b3f3a7c5848d8476b932f" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>shapeFunctions</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a80287fa4ab076c6880a2a69d9518fcb2" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>shapeFunctions</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1adc6b9658be5f4a06cf983fbee17a4f86" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>shapeFunctions</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a0c0cec2337b4e35c173d3ec6dbf87318" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>uniformSubdivided</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ace5d8214bcd49300970b478378c91898" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>uniformSubdivided</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad6bad4b61ae4868b78e3ddbef6bdc77d" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>uniformSubdivided</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1a40d314513235188dfc047cfdf6264938" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>updateVertexCoordinates</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1ad08508d86b21298f6baa9e11ca9c69e9" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>Vec</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_lagrange_cell_1affe0c3f3b6da76a9557cad4b9fd9dc7e" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::LagrangeCell</scope><name>volume</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

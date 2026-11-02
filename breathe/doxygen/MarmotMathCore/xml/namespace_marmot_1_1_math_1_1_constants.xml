@@ -1,0 +1,243 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_math_1_1_constants" kind="namespace" language="C++">
+    <compoundname>Marmot::Math::Constants</compoundname>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="_marmot_constants_8h_1a0c341b2a24f3821a0084c6f0613fcc7a" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Math::Constants::Pi</definition>
+        <argsstring></argsstring>
+        <name>Pi</name>
+        <qualifiedname>Marmot::Math::Constants::Pi</qualifiedname>
+        <initializer>= 3.141592653589793238463</initializer>
+        <briefdescription>
+<para>Constant expression for <formula id="53">$\pi$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" line="32" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_constants_8h_1a29e4094813cb4120b5389fdcf3ecea85" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Math::Constants::numZeroPos</definition>
+        <argsstring></argsstring>
+        <name>numZeroPos</name>
+        <qualifiedname>Marmot::Math::Constants::numZeroPos</qualifiedname>
+        <initializer>= 1e-16</initializer>
+        <briefdescription>
+<para>Constant expression for 1e-16. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" line="34" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_constants_8h_1aa93c2c896acd2f84166cec86f3295db5" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Math::Constants::GoldenRatio</definition>
+        <argsstring></argsstring>
+        <name>GoldenRatio</name>
+        <qualifiedname>Marmot::Math::Constants::GoldenRatio</qualifiedname>
+        <initializer>= 1.618033988749895</initializer>
+        <briefdescription>
+<para>The golden ratio, approximately 1.618033988749895. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" line="63" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_constants_8h_1a34394bde3737fee289fa3fad8fbd6d30" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Math::Constants::GoldenAngle</definition>
+        <argsstring></argsstring>
+        <name>GoldenAngle</name>
+        <qualifiedname>Marmot::Math::Constants::GoldenAngle</qualifiedname>
+        <initializer>= 2.399963229728653</initializer>
+        <briefdescription>
+<para>The golden angle in radians, approximately 2.399963229728653. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" line="65" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_constants_8h_1a441405b8101a4123b6f0638588d0a6bb" prot="public" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::Math::Constants::SquareRootEps</definition>
+        <argsstring></argsstring>
+        <name>SquareRootEps</name>
+        <qualifiedname>Marmot::Math::Constants::SquareRootEps</qualifiedname>
+        <initializer>= squareRootEps()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" line="67" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_constants_8h_1a408fbcdc257d956b7c3e7ad5573db1cf" prot="public" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::Math::Constants::CubicRootEps</definition>
+        <argsstring></argsstring>
+        <name>CubicRootEps</name>
+        <qualifiedname>Marmot::Math::Constants::CubicRootEps</qualifiedname>
+        <initializer>= cubicRootEps()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" line="68" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_constants_8h_1a1194db531e014a2187157710054de0bc" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Math::Constants::sqrt3_8</definition>
+        <argsstring></argsstring>
+        <name>sqrt3_8</name>
+        <qualifiedname>Marmot::Math::Constants::sqrt3_8</qualifiedname>
+        <initializer>= 0.61237243569579452454932101867647</initializer>
+        <briefdescription>
+<para>Constant expression for <formula id="54">$\sqrt{3/8}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" line="71" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_constants_8h_1acf98adc61ad47c9cb303edc76455d2ee" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Math::Constants::sqrt2_3</definition>
+        <argsstring></argsstring>
+        <name>sqrt2_3</name>
+        <qualifiedname>Marmot::Math::Constants::sqrt2_3</qualifiedname>
+        <initializer>= 0.8164965809277260327324280249019</initializer>
+        <briefdescription>
+<para>Constant expression for <formula id="55">$\sqrt{2/3}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" line="73" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_constants_8h_1a54699353fc4c577648c61764518e1e56" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Math::Constants::sqrt3_2</definition>
+        <argsstring></argsstring>
+        <name>sqrt3_2</name>
+        <qualifiedname>Marmot::Math::Constants::sqrt3_2</qualifiedname>
+        <initializer>= 1.2247448713915890490986420373529</initializer>
+        <briefdescription>
+<para>Constant expression for <formula id="56">$\sqrt{3/2}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" line="75" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_constants_8h_1a91cdccc50837dbb05fa5d58d76cb6fc8" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Math::Constants::sqrt2</definition>
+        <argsstring></argsstring>
+        <name>sqrt2</name>
+        <qualifiedname>Marmot::Math::Constants::sqrt2</qualifiedname>
+        <initializer>= 1.4142135623730950488016887242097</initializer>
+        <briefdescription>
+<para>Constant expression for <formula id="57">$\sqrt{2}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" line="77" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_constants_8h_1a098e4645a6e3f480afcf352137c752ca" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Math::Constants::sqrt3</definition>
+        <argsstring></argsstring>
+        <name>sqrt3</name>
+        <qualifiedname>Marmot::Math::Constants::sqrt3</qualifiedname>
+        <initializer>= 1.7320508075688772935274463415059</initializer>
+        <briefdescription>
+<para>Constant expression for <formula id="58">$\sqrt{3}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" line="79" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" bodystart="79" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_constants_8h_1a3f698a8ddd8d99ea036a94b161bbe444" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Math::Constants::sqrt6</definition>
+        <argsstring></argsstring>
+        <name>sqrt6</name>
+        <qualifiedname>Marmot::Math::Constants::sqrt6</qualifiedname>
+        <initializer>= 2.4494897427831780981972840747059</initializer>
+        <briefdescription>
+<para>Constant expression for <formula id="59">$\sqrt{6}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" line="81" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" bodystart="81" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_constants_8h_1a98c50a9c5e1fce711fe1d4171a3b0fe5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Constants::cubicRootEps</definition>
+        <argsstring>()</argsstring>
+        <name>cubicRootEps</name>
+        <qualifiedname>Marmot::Math::Constants::cubicRootEps</qualifiedname>
+        <briefdescription>
+<para>Inlined function to get the cubic root of machine epsilon for double precision. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This function computes and returns the cubic root of the machine epsilon for double precision floating-point numbers. Machine epsilon is the smallest positive number that, when added to 1.0, results in a value different from 1.0 due to rounding errors.</para>
+<para><simplesect kind="return"><para>The cubic root of machine epsilon for double precision. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" line="44" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" bodystart="44" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_constants_8h_1afc5fc878c7f272d493fa7877c86be74d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Constants::squareRootEps</definition>
+        <argsstring>()</argsstring>
+        <name>squareRootEps</name>
+        <qualifiedname>Marmot::Math::Constants::squareRootEps</qualifiedname>
+        <briefdescription>
+<para>Inlined function to get the square root of machine epsilon for double precision. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This function computes and returns the square root of the machine epsilon for double precision floating-point numbers. Machine epsilon is the smallest positive number that, when added to 1.0, results in a value different from 1.0 due to rounding errors.</para>
+<para><simplesect kind="return"><para>The square root of machine epsilon for double precision. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" line="57" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" bodystart="57" bodyend="60"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotConstants.h" line="30" column="1"/>
+  </compounddef>
+</doxygen>

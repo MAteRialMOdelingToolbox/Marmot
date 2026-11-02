@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_utilities_1_1_solver_increments_exhausted" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Utilities::SolverIncrementsExhausted</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::runtime_error</basecompoundref>
+    <includes refid="_marmot_exceptions_8h" local="no">MarmotExceptions.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_utilities_1_1_solver_increments_exhausted_1a4932a6974ec1e9f744dec9dcd507e07d" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Utilities::SolverIncrementsExhausted::SolverIncrementsExhausted</definition>
+        <argsstring>(const std::string &amp;message)</argsstring>
+        <name>SolverIncrementsExhausted</name>
+        <qualifiedname>Marmot::Utilities::SolverIncrementsExhausted::SolverIncrementsExhausted</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>message</declname>
+        </param>
+        <briefdescription>
+<para>Constructor for <ref refid="class_marmot_1_1_utilities_1_1_solver_increments_exhausted" kindref="compound">SolverIncrementsExhausted</ref> exception. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>message</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A descriptive error message explaining the reason for the exception. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotExceptions.h" line="82" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotExceptions.h" bodystart="82" bodyend="82"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Exception thrown when the material-point solver exhausts the maximum number of increments without completing the step. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Marmot::Utilities::SolverIncrementsExhausted</label>
+        <link refid="class_marmot_1_1_utilities_1_1_solver_increments_exhausted"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::runtime_error</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Marmot::Utilities::SolverIncrementsExhausted</label>
+        <link refid="class_marmot_1_1_utilities_1_1_solver_increments_exhausted"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::runtime_error</label>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotExceptions.h" line="76" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotExceptions.h" bodystart="76" bodyend="83"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_utilities_1_1_solver_increments_exhausted_1a4932a6974ec1e9f744dec9dcd507e07d" prot="public" virt="non-virtual"><scope>Marmot::Utilities::SolverIncrementsExhausted</scope><name>SolverIncrementsExhausted</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

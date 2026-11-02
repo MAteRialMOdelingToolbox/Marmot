@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_math_1_1_differentiation_1_1_numerical_1_1_complex_1_1_tensor_to_tensor" kind="namespace" language="C++">
+    <compoundname>Marmot::Math::Differentiation::Numerical::Complex::TensorToTensor</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_numerical_differentiation_for_fastor_8h_1aad201ff97aeb0a7e2220098961c0c367" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t...</type>
+            <declname>RestF</declname>
+            <defname>RestF</defname>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>RestT</declname>
+            <defname>RestT</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; double, RestF..., RestT... &gt;</type>
+        <definition>Fastor::Tensor&lt; double, RestF..., RestT... &gt; Marmot::Math::Differentiation::Numerical::Complex::TensorToTensor::forwardDifference</definition>
+        <argsstring>(std::function&lt; Fastor::Tensor&lt; Marmot::Math::complexDouble, RestF... &gt;(const Fastor::Tensor&lt; Marmot::Math::complexDouble, RestT... &gt; &amp;) &gt; &amp;F, const Fastor::Tensor&lt; double, RestT... &gt; &amp;T, bool isSymmetric=false)</argsstring>
+        <name>forwardDifference</name>
+        <qualifiedname>Marmot::Math::Differentiation::Numerical::Complex::TensorToTensor::forwardDifference</qualifiedname>
+        <param>
+          <type>std::function&lt; Fastor::Tensor&lt; <ref refid="_marmot_typedefs_8h_1ad5fb4f549c19fe266e14a6392117826f" kindref="member">Marmot::Math::complexDouble</ref>, RestF... &gt;(const Fastor::Tensor&lt; <ref refid="_marmot_typedefs_8h_1ad5fb4f549c19fe266e14a6392117826f" kindref="member">Marmot::Math::complexDouble</ref>, RestT... &gt; &amp;) &gt; &amp;</type>
+          <declname>F</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, RestT... &gt; &amp;</type>
+          <declname>T</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>isSymmetric</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+<para>Approximates the derivative of a function mapping a tensor to a tensor using the complex step method. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>RestF</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The dimensions of the output Tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>RestT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The dimensions of the input Tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function mapping a tensor to a tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The point at which the derivative is evaluated </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>isSymmetric</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If true, T is a square rank-2 tensor and F&apos;s output is also a square rank-2 tensor of the same dimension (e.g. the second Piola-Kirchhoff stress as a function of the right Cauchy-Green tensor), T is assumed to be symmetric and F is assumed to be transpose-equivariant (F(A^T) = F(A)^T for general, not necessarily symmetric, A), which holds for any tensor function built from tensor invariants/products. This reduces the number of function evaluations from dim^2 to dim*(dim+1)/2 <ndash/> a ~1.5x reduction for dim=3, approaching (but never reaching) a 2x reduction as dim grows <ndash/> by only perturbing the upper triangle of T and, for each function evaluation, filling both the direct entry and its transpose-mirrored counterpart  <formula id="52">$ \partial F_{ab}/\partial T_{kl} = \partial F_{ba}/\partial T_{lk}
+$</formula>. Ignored otherwise. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The derivative of the function F at the point T </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="553" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="553" bodyend="620"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="532" column="5"/>
+  </compounddef>
+</doxygen>

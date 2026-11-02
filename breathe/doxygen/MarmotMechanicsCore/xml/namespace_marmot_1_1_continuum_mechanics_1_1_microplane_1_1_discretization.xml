@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::Microplane::Discretization</compoundname>
+    <innerclass refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data" prot="public">Marmot::ContinuumMechanics::Microplane::Discretization::Data</innerclass>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_microplane_8h_1ac0b28ff62653957e29fe4d9204062ea5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data" kindref="compound">Data</ref></type>
+        <definition>Data Marmot::ContinuumMechanics::Microplane::Discretization::get</definition>
+        <argsstring>(QuadratureScheme scheme)</argsstring>
+        <name>get</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::Discretization::get</qualifiedname>
+        <param>
+          <type><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1" kindref="member">QuadratureScheme</ref></type>
+          <declname>scheme</declname>
+        </param>
+        <briefdescription>
+<para>Returns the hard-coded microplane orientations and integration weights for <computeroutput>scheme</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Single source for the discretization data shared by <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split" kindref="compound">VDSplit</ref> and <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split" kindref="compound">NTSplit</ref>, so both splits sample exactly the same set of microplane orientations for a given <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1" kindref="member">QuadratureScheme</ref>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>scheme</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The quadrature scheme. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The microplane normal vectors and integration weights; see <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data" kindref="compound">Data</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="92" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" declline="92" declcolumn="12"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="68" column="5"/>
+  </compounddef>
+</doxygen>

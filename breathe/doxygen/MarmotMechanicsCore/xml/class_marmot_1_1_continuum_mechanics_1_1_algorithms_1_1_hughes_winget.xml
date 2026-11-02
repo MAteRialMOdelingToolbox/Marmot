@@ -1,0 +1,346 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::ContinuumMechanics::Algorithms::HughesWinget</compoundname>
+    <includes refid="_hughes_winget_8h" local="no">HughesWinget.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="enum" id="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a0f102665f59a8de0b3f0fb3b7f8f386c" prot="public" static="no" strong="no">
+        <type></type>
+        <name>Formulation</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Algorithms::HughesWinget::Formulation</qualifiedname>
+        <enumvalue id="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a0f102665f59a8de0b3f0fb3b7f8f386cac934cd17769f2dd944d86984f9691502" prot="public">
+          <name>AbaqusLike</name>
+          <briefdescription>
+<para><ref refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a0f102665f59a8de0b3f0fb3b7f8f386c" kindref="member">Formulation</ref> consistent with the Abaqus UMAT conventions. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Available integration formulations. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="56" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" bodystart="56" bodyend="58"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a33639fa82ffd712f8928281c20bd061e" prot="private" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a0f102665f59a8de0b3f0fb3b7f8f386c" kindref="member">Formulation</ref></type>
+        <definition>Formulation Marmot::ContinuumMechanics::Algorithms::HughesWinget::theFormulation</definition>
+        <argsstring></argsstring>
+        <name>theFormulation</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Algorithms::HughesWinget::theFormulation</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="109" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" bodystart="109" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a610b77be2b98d846429ea1cff870ca7d" prot="private" static="no" mutable="no">
+        <type>Eigen::Matrix3d</type>
+        <definition>Eigen::Matrix3d Marmot::ContinuumMechanics::Algorithms::HughesWinget::l</definition>
+        <argsstring></argsstring>
+        <name>l</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Algorithms::HughesWinget::l</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="110" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" bodystart="110" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1af148999a4d345022908ce9ec137ebd18" prot="private" static="no" mutable="no">
+        <type>Eigen::Matrix3d</type>
+        <definition>Eigen::Matrix3d Marmot::ContinuumMechanics::Algorithms::HughesWinget::dOmega</definition>
+        <argsstring></argsstring>
+        <name>dOmega</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Algorithms::HughesWinget::dOmega</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="111" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a365ca6f10adad389b6f90891a2b755a7" prot="private" static="no" mutable="no">
+        <type>Eigen::Matrix3d</type>
+        <definition>Eigen::Matrix3d Marmot::ContinuumMechanics::Algorithms::HughesWinget::dR</definition>
+        <argsstring></argsstring>
+        <name>dR</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Algorithms::HughesWinget::dR</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="112" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" bodystart="112" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1af563084359d01bc8a203b85c8795029e" prot="private" static="no" mutable="no">
+        <type>Marmot::Math::Vector6d</type>
+        <definition>Marmot::Math::Vector6d Marmot::ContinuumMechanics::Algorithms::HughesWinget::dEps</definition>
+        <argsstring></argsstring>
+        <name>dEps</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Algorithms::HughesWinget::dEps</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="113" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" bodystart="113" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1aaca51624d7d22c2f01dbcc776de1e6f0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::ContinuumMechanics::Algorithms::HughesWinget::HughesWinget</definition>
+        <argsstring>(const Eigen::Matrix3d &amp;FOld, const Eigen::Matrix3d &amp;FNew, Formulation formulation)</argsstring>
+        <name>HughesWinget</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Algorithms::HughesWinget::HughesWinget</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix3d &amp;</type>
+          <declname>FOld</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix3d &amp;</type>
+          <declname>FNew</declname>
+        </param>
+        <param>
+          <type><ref refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a0f102665f59a8de0b3f0fb3b7f8f386c" kindref="member">Formulation</ref></type>
+          <declname>formulation</declname>
+        </param>
+        <briefdescription>
+<para>Constructs a <ref refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget" kindref="compound">HughesWinget</ref> integrator from two successive deformation gradients. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>FOld</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Deformation gradient at the start of the increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>FNew</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Deformation gradient at the end of the increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>formulation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Integration formulation to use. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="66" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1ad2f57d618dc8ad9475a8161dba7d16ab" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Marmot::Math::Vector6d</type>
+        <definition>Marmot::Math::Vector6d Marmot::ContinuumMechanics::Algorithms::HughesWinget::getStrainIncrement</definition>
+        <argsstring>()</argsstring>
+        <name>getStrainIncrement</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Algorithms::HughesWinget::getStrainIncrement</qualifiedname>
+        <briefdescription>
+<para>Returns the objective symmetric strain increment in Voigt notation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="69" column="28"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a04243ae1cddbb00d24231a914fb9d8a2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::Matrix3d</type>
+        <definition>Eigen::Matrix3d Marmot::ContinuumMechanics::Algorithms::HughesWinget::getRotationIncrement</definition>
+        <argsstring>()</argsstring>
+        <name>getRotationIncrement</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Algorithms::HughesWinget::getRotationIncrement</qualifiedname>
+        <briefdescription>
+<para>Returns the incremental rotation matrix <formula id="4">$\Delta\mathbf{R}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="71" column="21"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a6fa68dce8f6c8dbf8bdbb4eba2b52153" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Marmot::Math::Vector6d</type>
+        <definition>Marmot::Math::Vector6d Marmot::ContinuumMechanics::Algorithms::HughesWinget::rotateTensor</definition>
+        <argsstring>(const Marmot::Math::Vector6d &amp;tensor)</argsstring>
+        <name>rotateTensor</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Algorithms::HughesWinget::rotateTensor</qualifiedname>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>tensor</declname>
+        </param>
+        <briefdescription>
+<para>Rotates a Voigt stress (or strain) tensor with the incremental rotation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>tensor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Rotated tensor in Voigt notation. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="77" column="28"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a462f0ab824760c0cd51f52356c2643bd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Marmot::Math::Tensors::Tensor633d</type>
+        <definition>Marmot::Math::Tensors::Tensor633d Marmot::ContinuumMechanics::Algorithms::HughesWinget::compute_dS_dF</definition>
+        <argsstring>(const Marmot::Math::Vector6d &amp;stress, const Eigen::Matrix3d &amp;FInv, const Marmot::Math::Matrix6d &amp;dChauchyDEps)</argsstring>
+        <name>compute_dS_dF</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Algorithms::HughesWinget::compute_dS_dF</qualifiedname>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>stress</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix3d &amp;</type>
+          <declname>FInv</declname>
+        </param>
+        <param>
+          <type>const Marmot::Math::Matrix6d &amp;</type>
+          <declname>dChauchyDEps</declname>
+        </param>
+        <briefdescription>
+<para>Compute the consistent tangent contribution <formula id="5">$\frac{d\boldsymbol{S}}{d\mathbf{F}}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Given the current Cauchy stress, the inverse deformation gradient, and the Cauchy-stress/strain tangent, returns the third-order tensor mapping variations of the deformation gradient to variations of the Cauchy stress.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current Cauchy stress in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>FInv</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Inverse of the deformation gradient at the end of the increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dChauchyDEps</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Algorithmic Cauchy-stress/strain tangent (6×6). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The 6×3×3 tangent tensor <formula id="5">$\frac{d\boldsymbol{S}}{d\mathbf{F}}$</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="91" column="39"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1af0f9491f27f9c6f380c7355d0bbd25bd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::Matrix3d</type>
+        <definition>Eigen::Matrix3d Marmot::ContinuumMechanics::Algorithms::HughesWinget::compute_dScalar_dF</definition>
+        <argsstring>(const Eigen::Matrix3d &amp;FInv, const Marmot::Math::Vector6d &amp;dScalarDEps)</argsstring>
+        <name>compute_dScalar_dF</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Algorithms::HughesWinget::compute_dScalar_dF</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix3d &amp;</type>
+          <declname>FInv</declname>
+        </param>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>dScalarDEps</declname>
+        </param>
+        <briefdescription>
+<para>Compute the consistent tangent <formula id="6">$\frac{d\phi}{d\mathbf{F}}$</formula> for a scalar quantity. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Given the inverse deformation gradient and the derivative of a scalar (e.g., an internal variable) with respect to the strain in Voigt notation, returns the corresponding 3×3 matrix mapping variations of the deformation gradient.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>FInv</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Inverse of the deformation gradient at the end of the increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dScalarDEps</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Derivative of the scalar quantity with respect to the strain, in Voigt notation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The 3×3 sensitivity matrix <formula id="6">$\frac{d\phi}{d\mathbf{F}}$</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="106" column="21"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Hughes–Winget objective integration algorithm. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Given the deformation gradients at the beginning and end of an increment, this class computes:<itemizedlist>
+<listitem><para>the symmetric strain increment in Voigt notation,</para>
+</listitem><listitem><para>the incremental rotation matrix,</para>
+</listitem><listitem><para>a rotated stress tensor, and</para>
+</listitem><listitem><para>consistent tangent contributions for mixed deformation-gradient/stress quantities. </para>
+</listitem></itemizedlist>
+</para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" line="51" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h" bodystart="51" bodyend="114"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a0f102665f59a8de0b3f0fb3b7f8f386cac934cd17769f2dd944d86984f9691502" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Algorithms::HughesWinget</scope><name>AbaqusLike</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a462f0ab824760c0cd51f52356c2643bd" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Algorithms::HughesWinget</scope><name>compute_dS_dF</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1af0f9491f27f9c6f380c7355d0bbd25bd" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Algorithms::HughesWinget</scope><name>compute_dScalar_dF</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1af563084359d01bc8a203b85c8795029e" prot="private" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Algorithms::HughesWinget</scope><name>dEps</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1af148999a4d345022908ce9ec137ebd18" prot="private" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Algorithms::HughesWinget</scope><name>dOmega</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a365ca6f10adad389b6f90891a2b755a7" prot="private" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Algorithms::HughesWinget</scope><name>dR</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a0f102665f59a8de0b3f0fb3b7f8f386c" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Algorithms::HughesWinget</scope><name>Formulation</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a04243ae1cddbb00d24231a914fb9d8a2" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Algorithms::HughesWinget</scope><name>getRotationIncrement</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1ad2f57d618dc8ad9475a8161dba7d16ab" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Algorithms::HughesWinget</scope><name>getStrainIncrement</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1aaca51624d7d22c2f01dbcc776de1e6f0" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Algorithms::HughesWinget</scope><name>HughesWinget</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a610b77be2b98d846429ea1cff870ca7d" prot="private" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Algorithms::HughesWinget</scope><name>l</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a6fa68dce8f6c8dbf8bdbb4eba2b52153" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Algorithms::HughesWinget</scope><name>rotateTensor</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget_1a33639fa82ffd712f8928281c20bd061e" prot="private" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Algorithms::HughesWinget</scope><name>theFormulation</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

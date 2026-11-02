@@ -1,0 +1,652 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interface material (hypoelastic bulk material) &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Microplane model M7" href="microplanem7.html" />
+    <link rel="prev" title="Linear Viscoelastic Wiechert model" href="linearviscoelasticwiechert.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="materials.html">Material models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="at2phasefield.html">AT2 Phase Field Fracture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="b4.html">B4 model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressibleneohooke.html">Compressible Neo Hooke model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adcompressibleneohooke.html">Compressible Neo Hooke model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressiblefinitestrainlinearviscoelasticity.html">Compressible Finite-Strain Linear Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainisotropicbiotviscoelasticity.html">Finite-Strain Isotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainj2plasticity.html">Finite-strain J2 plasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainorthotropicbiotviscoelasticity.html">Finite-Strain Orthotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearelastic.html">Linear Elastic model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adlinearelastic.html">Linear Elastic model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticpowerlaw.html">Linear Viscoelastic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticorthotropicpowerlaw.html">Linear Viscoelastic Orthotropic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticwiechert.html">Linear Viscoelastic Wiechert model</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Interface material (hypoelastic bulk material)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#properties">Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="microplanem7.html">Microplane model M7</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gm7.html">Gradient-enhanced microplane model M7 (GM7)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vonmises.html">Von Mises model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advonmises.html">Von Mises model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hugheswinget.html">Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedhugheswinget.html">Gradient-enhanced Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedcompressibleneohookedamage.html">Gradient-enhanced compressible Neo-Hooke damage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedfinitestraindruckerprager.html">Gradient-enhanced finite-strain Drucker-Prager</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meshfree.html">Meshfree methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="materials.html">Material models</a></li>
+      <li class="breadcrumb-item active">Interface material (hypoelastic bulk material)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/interfacematerialhypoelastic.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="interface-material-hypoelastic-bulk-material">
+<span id="interfacematerialhypoelastic"></span><h1>Interface material (hypoelastic bulk material)<a class="headerlink" href="#interface-material-hypoelastic-bulk-material" title="Link to this heading"></a></h1>
+<section id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Marmot::Materials::InterfaceMaterialHypoElastic</span></code> turns <strong>any registered hypoelastic bulk material</strong> into the
+constitutive law of a thin interface layer of thickness <span class="math notranslate nohighlight">\(h\)</span>. It is the material counterpart of the
+<a class="reference internal" href="interfacefiniteelement.html#interfacefiniteelement"><span class="std std-ref">Interface Finite Element</span></a>: the element provides the displacement jump and the
+surface gradient, the material returns the conjugate interface quantities and their tangents.</p>
+<section id="kinematics-of-the-layer">
+<h3>Kinematics of the layer<a class="headerlink" href="#kinematics-of-the-layer" title="Link to this heading"></a></h3>
+<p>For an interface with unit normal <span class="math notranslate nohighlight">\(\mathbf{n}\)</span>, jump <span class="math notranslate nohighlight">\([\![\mathbf{u}]\!] = \mathbf{u}^{+} - \mathbf{u}^{-}\)</span>
+and average surface gradient <span class="math notranslate nohighlight">\(\bar{\nabla}_s \mathbf{u} = \tfrac{1}{2}(\nabla_s \mathbf{u}^{+} + \nabla_s \mathbf{u}^{-})\)</span>,
+the strain of the layer is approximated as</p>
+<div class="math notranslate nohighlight">
+\[\Delta\eps = \operatorname{sym}\Big( \tfrac{1}{h}\, [\![\Delta\mathbf{u}]\!] \otimes \mathbf{n}
+             + \Delta\bar{\nabla}_s \mathbf{u} \Big).\]</div>
+<p>This strain increment is passed to the bulk material together with the time increment.
+The bulk material returns the stress <span class="math notranslate nohighlight">\(\sig\)</span> and its tangent <span class="math notranslate nohighlight">\(\mathbb{C} = \partial\Delta\sig/\partial\Delta\eps\)</span>.</p>
+</section>
+<section id="conjugate-quantities">
+<h3>Conjugate quantities<a class="headerlink" href="#conjugate-quantities" title="Link to this heading"></a></h3>
+<p>The interface returns the traction-like <strong>force</strong> and the <strong>surface stress</strong>,</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{t} = \sig\, \mathbf{n}, \qquad \mathbf{s} = h\, \sig,\]</div>
+<p>where the surface stress is stored scaled by the thickness <span class="math notranslate nohighlight">\(h\)</span> and unscaled again when it is
+read back as the bulk stress at the start of the next increment.</p>
+</section>
+<section id="tangents">
+<h3>Tangents<a class="headerlink" href="#tangents" title="Link to this heading"></a></h3>
+<p>The bulk tangent <span class="math notranslate nohighlight">\(\mathbb{C}\)</span> is condensed with respect to the normal direction
+(<code class="docutils literal notranslate"><span class="pre">InterfaceMaterialHelperFunctions::calculateInterfaceMaterialParameters</span></code>). This yields the four operators
+<span class="math notranslate nohighlight">\(\hat{\mathbf{Q}}\)</span>, <span class="math notranslate nohighlight">\(\hat{\mathbb{Z}}\)</span>, <span class="math notranslate nohighlight">\(\hat{\mathbf{H}}\)</span> and <span class="math notranslate nohighlight">\(\hat{\mathbb{Y}}\)</span>,
+which couple the jump and the surface strain to the force and the surface stress. They are scaled with the
+thickness to the quantities handed to the element:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{Q} = \tfrac{1}{h}\, \hat{\mathbf{Q}}, \qquad
+\mathbb{Z} = h\, \hat{\mathbb{Z}}, \qquad
+\mathbf{H} = \hat{\mathbf{H}}, \qquad
+\mathbb{Y} = h\, \hat{\mathbb{Y}}.\]</div>
+<p>Their roles in the element tangent are described in the <a class="reference internal" href="interfacefiniteelement.html#interfacefiniteelement"><span class="std std-ref">Interface Finite Element</span></a>
+page.</p>
+</section>
+</section>
+<section id="properties">
+<h2>Properties<a class="headerlink" href="#properties" title="Link to this heading"></a></h2>
+<p>The interface material is created with the <strong>name of the bulk material</strong> and the property array</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[ E, nu, h, &lt;remaining properties of the bulk material&gt; ]
+</pre></div>
+</div>
+<p>that is, the thickness <span class="math notranslate nohighlight">\(h\)</span> is inserted as third entry after <span class="math notranslate nohighlight">\(E\)</span> and <span class="math notranslate nohighlight">\(\nu\)</span>, and removed again
+before the array is passed to the bulk material. For example, the
+<a class="reference internal" href="linearviscoelasticwiechert.html#linearviscoelasticwiechert"><span class="std std-ref">Linear Viscoelastic Wiechert model</span></a> is used as
+<code class="docutils literal notranslate"><span class="pre">[E,</span> <span class="pre">nu,</span> <span class="pre">h,</span> <span class="pre">m,</span> <span class="pre">n,</span> <span class="pre">nMaxwell,</span> <span class="pre">minTau,</span> <span class="pre">timeToDays]</span></code>. The state variables of the bulk material are
+stored in the state-variable block <code class="docutils literal notranslate"><span class="pre">baseMaterialStateVars</span></code>.</p>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElasticE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElasticE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElasticE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InterfaceMaterialHypoElastic</span></span></span><br /></dt>
+<dd><p>Collaboration diagram for Marmot::Materials::InterfaceMaterialHypoElastic:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-542d1064fd45e766e4530dd467024f828ea380c2.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::InterfaceMaterialHypoElastic&quot; tooltip=&quot;Marmot::Materials::InterfaceMaterialHypoElastic&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Utilities::StateLayoutDynamic&quot; tooltip=&quot;Marmot::Utilities::StateLayoutDynamic&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Abstract base class for hypoelastic interface materials.</p>
+<p>This class remains an independent interface-material base class because interface materials have their own stress-update signature. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic8Tensor3dE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic8Tensor3dE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic8Tensor3dE"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1afddbbba8effd91c8da1077774455603b"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Tensor3d</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors8Tensor3dE" title="Marmot::Math::Tensors::FastorTensors::Tensor3d"><span class="n"><span class="pre">Tensor3d</span></span></a><br /></dt>
+<dd><p>first order tensor in 3D </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic9Tensor33dE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic9Tensor33dE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic9Tensor33dE"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1a053563d78e4d48c52d59b2af828137b3"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Tensor33d</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors9Tensor33dE" title="Marmot::Math::Tensors::FastorTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><br /></dt>
+<dd><p>second order tensor in 3D </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic10Tensor333dE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic10Tensor333dE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic10Tensor333dE"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1aee86ca94b641b0368ee6bea9bbffebd1"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Tensor333d</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors10Tensor333dE" title="Marmot::Math::Tensors::FastorTensors::Tensor333d"><span class="n"><span class="pre">Tensor333d</span></span></a><br /></dt>
+<dd><p>third order tensor in 3D </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic11Tensor3333dE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic11Tensor3333dE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic11Tensor3333dE"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1a2e56ab744ffa60d3a47702d951dc9a67"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Tensor3333d</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors11Tensor3333dE" title="Marmot::Math::Tensors::FastorTensors::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><br /></dt>
+<dd><p>fourth order tensor in 3D </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic8Tensor6dE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic8Tensor6dE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic8Tensor6dE"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1ac94fa407decc32f4b7ddca371d0c2eb8"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Tensor6d</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors8Tensor6dE" title="Marmot::Math::Tensors::FastorTensors::Tensor6d"><span class="n"><span class="pre">Tensor6d</span></span></a><br /></dt>
+<dd><p>vector of six components, one block per side </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic9Tensor18dE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic9Tensor18dE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic9Tensor18dE"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1aa23ac900b9e3c559bd2b03c12ae2a9a6"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Tensor18d</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors9Tensor18dE" title="Marmot::Math::Tensors::FastorTensors::Tensor18d"><span class="n"><span class="pre">Tensor18d</span></span></a><br /></dt>
+<dd><p>vector of 18 components, one block per side </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic28InterfaceMaterialHypoElasticERKNSt6stringEPKdii">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic28InterfaceMaterialHypoElasticERKNSt6stringEPKdii"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic28InterfaceMaterialHypoElasticERKNSt6stringEPKdii"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::InterfaceMaterialHypoElastic__ssCR.doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1a1aabf93e8d5a72bc66307b40528d56e2"></span><span class="sig-name descname"><span class="n"><span class="pre">InterfaceMaterialHypoElastic</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">materialName</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">matProperties_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialNumber_</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Construct an interface material from a registered hypoelastic material. </p>
+<p>The material properties are [E, nu, h, properties of the base material…], where h is the thickness of the interface. The base material receives E, nu and the properties after h.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>materialName</strong> – <strong>[in]</strong> name of the base material, registered in the MarmotMaterialHypoElasticFactory </p></li>
+<li><p><strong>matProperties_</strong> – <strong>[in]</strong> material properties </p></li>
+<li><p><strong>nMaterialProperties_</strong> – <strong>[in]</strong> number of material properties, at least three </p></li>
+<li><p><strong>materialNumber_</strong> – <strong>[in]</strong> number of the material</p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – if fewer than three properties are given or the base material is not registered </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElasticD0Ev">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElasticD0Ev"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElasticD0Ev"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::~InterfaceMaterialHypoElastic"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1aaf5707f7998e5c42351de5d5faf1fc62"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~InterfaceMaterialHypoElastic</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><br /></dt>
+<dd><p>Default destructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic30setCharacteristicElementLengthEd">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic30setCharacteristicElementLengthEd"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic30setCharacteristicElementLengthEd"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::setCharacteristicElementLength__double"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1a5856cb1d260014c6a3883cf2cfcf6705"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setCharacteristicElementLength</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">length</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Set the characteristic element length at the considered quadrature point. It is needed for the regularization of materials with softening behavior based on the mesh-adjusted softening modulus.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>length</strong> – <strong>[in]</strong> characteristic length; will be assigned to <a class="reference internal" href="#classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1a966de380024ecf13c8a7973b9e04198f"><span class="std std-ref">characteristicElementLength</span></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic13computeStressER5StateR8TangentsRK11DeformationRK13TimeIncrement">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic13computeStressER5StateR8TangentsRK11DeformationRK13TimeIncrement"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic13computeStressER5StateR8TangentsRK11DeformationRK13TimeIncrement"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::computeStress__StateR.TangentsR.DeformationCR.TimeIncrementCR"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1af028e3596d67b1c751c9f74535d3c130"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic5StateE" title="Marmot::Materials::InterfaceMaterialHypoElastic::State"><span class="n"><span class="pre">State</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">state</span></span>, <a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic8TangentsE" title="Marmot::Materials::InterfaceMaterialHypoElastic::Tangents"><span class="n"><span class="pre">Tangents</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic11DeformationE" title="Marmot::Materials::InterfaceMaterialHypoElastic::Deformation"><span class="n"><span class="pre">Deformation</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic13TimeIncrementE" title="Marmot::Materials::InterfaceMaterialHypoElastic::TimeIncrement"><span class="n"><span class="pre">TimeIncrement</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>For a given interface displacement jump increment and surface strain increment, compute the conjugate interface quantities and algorithmic tangent terms. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials28InterfaceMaterialHypoElastic12getStateViewERKNSt6stringEPd">
+<span id="_CPPv3NK6Marmot9Materials28InterfaceMaterialHypoElastic12getStateViewERKNSt6stringEPd"></span><span id="_CPPv2NK6Marmot9Materials28InterfaceMaterialHypoElastic12getStateViewERKNSt6stringEPd"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::getStateView__ssCR.doublePC"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1a2109bf1e5deaeffb84ce4c060946188a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n"><span class="pre">Utilities</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/utilitiescore.html#_CPPv4N6Marmot9Utilities9StateViewE" title="Marmot::Utilities::StateView"><span class="n"><span class="pre">StateView</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateView</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stateName</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>Get a view to the state variables. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stateName</strong> – Name of the state variable. </p></li>
+<li><p><strong>stateVars</strong> – Pointer to the state variable array. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Marmot::Utilities::StateView to access the requested state variable. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials28InterfaceMaterialHypoElastic28getNumberOfRequiredStateVarsEv">
+<span id="_CPPv3NK6Marmot9Materials28InterfaceMaterialHypoElastic28getNumberOfRequiredStateVarsEv"></span><span id="_CPPv2NK6Marmot9Materials28InterfaceMaterialHypoElastic28getNumberOfRequiredStateVarsEv"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::getNumberOfRequiredStateVarsC"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1a3498421ee3b9a270dd16737eafdcc520"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfRequiredStateVars</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>Get the total number of required state variables. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Total number of required state variables. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic18initializeYourselfEPdi">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic18initializeYourselfEPdi"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic18initializeYourselfEPdi"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::initializeYourself__doubleP.i"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1aaeb3f957fa33986033e61881f01cdb23"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeYourself</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Initialize the state variables at a material point. </p>
+<p>The default implementation initializes all state variables to zero. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic10getDensityEv">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic10getDensityEv"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic10getDensityEv"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::getDensity"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1a99f05aa335693e038ee9fe394615aa52"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDensity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Get the density of the material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the density of the base material </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic14materialNumberE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic14materialNumberE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic14materialNumberE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::materialNumber__iC"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1ab0b520ff001e99de5a4ac1727efe1a1b"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">materialNumber</span></span></span><br /></dt>
+<dd><p>number of the material </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic11stateLayoutE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic11stateLayoutE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic11stateLayoutE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::stateLayout__Marmot::Utilities::StateLayoutDynamic"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1abc695685169b91e3d008a7f08ca72582"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n"><span class="pre">Utilities</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/utilitiescore.html#_CPPv4N6Marmot9Utilities18StateLayoutDynamicE" title="Marmot::Utilities::StateLayoutDynamic"><span class="n"><span class="pre">StateLayoutDynamic</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stateLayout</span></span></span><br /></dt>
+<dd><p>Layout of the state variables. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic27characteristicElementLengthE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic27characteristicElementLengthE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic27characteristicElementLengthE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::characteristicElementLength__double"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1a966de380024ecf13c8a7973b9e04198f"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">characteristicElementLength</span></span></span><br /></dt>
+<dd><p>Characteristic element length. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-attributes">Protected Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic18materialPropertiesE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic18materialPropertiesE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic18materialPropertiesE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::materialProperties__doubleCP"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1a27078f2795fb77da5670bea5ee605473"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">materialProperties</span></span></span><br /></dt>
+<dd><p>material properties [E, nu, h, properties of the base material…] </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic19nMaterialPropertiesE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic19nMaterialPropertiesE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic19nMaterialPropertiesE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::nMaterialProperties__iC"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1a9e4c9b0cc0e7b3344816c61a59462d59"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nMaterialProperties</span></span></span><br /></dt>
+<dd><p>number of material properties </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic1hE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic1hE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic1hE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::h__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1a106b4072d2728e2d9139f2236bd3ff39"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">h</span></span></span><br /></dt>
+<dd><p>thickness of the interface, the third material property </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic22baseMaterialPropertiesE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic22baseMaterialPropertiesE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic22baseMaterialPropertiesE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::baseMaterialProperties__std::vector:double:"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1a65d34cfa5c362fff63ce9b16b6e21b7f"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">baseMaterialProperties</span></span></span><br /></dt>
+<dd><p>properties handed to the base material </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic12baseMaterialE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic12baseMaterialE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic12baseMaterialE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::baseMaterial__std::unique_ptr:MaterialHypoElastic:"></span><span class="target" id="classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1a48ff992c63683201c2f568b66203c145"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials19MaterialHypoElasticE" title="Marmot::Materials::MaterialHypoElastic"><span class="n"><span class="pre">MaterialHypoElastic</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">baseMaterial</span></span></span><br /></dt>
+<dd><p>hypoelastic material of the bulk </p>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic5StateE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic5StateE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic5StateE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::State"></span><span class="target" id="structMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1_1State"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">State</span></span></span><br /></dt>
+<dd><p>Interface response: holds the previous values on entry and the updated ones on exit. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic5State5forceE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic5State5forceE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic5State5forceE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::State::force__Tensor3d"></span><span class="target" id="structMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1_1State_1a91747d8ea48e78f32aebf1897de774ba"></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic8Tensor3dE" title="Marmot::Materials::InterfaceMaterialHypoElastic::Tensor3d"><span class="n"><span class="pre">Tensor3d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">force</span></span></span><br /></dt>
+<dd><p>traction on the interface </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic5State13surfaceStressE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic5State13surfaceStressE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic5State13surfaceStressE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::State::surfaceStress__Tensor33d"></span><span class="target" id="structMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1_1State_1a9fb076a93490374dd0fe948853f0b5b4"></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic9Tensor33dE" title="Marmot::Materials::InterfaceMaterialHypoElastic::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">surfaceStress</span></span></span><br /></dt>
+<dd><p>surface stress </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic5State9stateVarsE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic5State9stateVarsE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic5State9stateVarsE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::State::stateVars__doubleP"></span><span class="target" id="structMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1_1State_1a6dc7692fc302112d8248db7de62acd60"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">stateVars</span></span></span><br /></dt>
+<dd><p>pointer to the state variables </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic8TangentsE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic8TangentsE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic8TangentsE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::Tangents"></span><span class="target" id="structMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1_1Tangents"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Tangents</span></span></span><br /></dt>
+<dd><p>Algorithmic tangent terms, set by <a class="reference internal" href="#classMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1af028e3596d67b1c751c9f74535d3c130"><span class="std std-ref">computeStress()</span></a>. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic8Tangents4Q_ijE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic8Tangents4Q_ijE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic8Tangents4Q_ijE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::Tangents::Q_ij__Tensor33d"></span><span class="target" id="structMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1_1Tangents_1ae8675639b0746e8a500104892f4d8f85"></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic9Tensor33dE" title="Marmot::Materials::InterfaceMaterialHypoElastic::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Q_ij</span></span></span><br /></dt>
+<dd><p>tangent term acting on the displacement jump </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic8Tangents6Z_ijklE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic8Tangents6Z_ijklE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic8Tangents6Z_ijklE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::Tangents::Z_ijkl__Tensor3333d"></span><span class="target" id="structMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1_1Tangents_1a549e605ab6bc3ffe016616efaff11e98"></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic11Tensor3333dE" title="Marmot::Materials::InterfaceMaterialHypoElastic::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Z_ijkl</span></span></span><br /></dt>
+<dd><p>tangent term acting on the average surface gradient </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic8Tangents5H_ijkE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic8Tangents5H_ijkE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic8Tangents5H_ijkE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::Tangents::H_ijk__Tensor333d"></span><span class="target" id="structMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1_1Tangents_1a16c42eafee583361379139bf134b3994"></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic10Tensor333dE" title="Marmot::Materials::InterfaceMaterialHypoElastic::Tensor333d"><span class="n"><span class="pre">Tensor333d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">H_ijk</span></span></span><br /></dt>
+<dd><p>coupling term between the displacement jump and the average surface gradient </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic8Tangents6Y_ijklE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic8Tangents6Y_ijklE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic8Tangents6Y_ijklE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::Tangents::Y_ijkl__Tensor3333d"></span><span class="target" id="structMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1_1Tangents_1acfcb979857c5410dcbec58a81c2506fb"></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic11Tensor3333dE" title="Marmot::Materials::InterfaceMaterialHypoElastic::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Y_ijkl</span></span></span><br /></dt>
+<dd><p>additional tangent term acting on the average surface gradient </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic11DeformationE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic11DeformationE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic11DeformationE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::Deformation"></span><span class="target" id="structMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1_1Deformation"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Deformation</span></span></span><br /></dt>
+<dd><p>Increment of the interface kinematics. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic11Deformation2dUE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic11Deformation2dUE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic11Deformation2dUE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::Deformation::dU__Tensor6d"></span><span class="target" id="structMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1_1Deformation_1a55af3155ccbcb453f31e750017945af3"></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic8Tensor6dE" title="Marmot::Materials::InterfaceMaterialHypoElastic::Tensor6d"><span class="n"><span class="pre">Tensor6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dU</span></span></span><br /></dt>
+<dd><p>displacement jump increment of the two interface sides </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic11Deformation14dSurfaceStrainE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic11Deformation14dSurfaceStrainE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic11Deformation14dSurfaceStrainE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::Deformation::dSurfaceStrain__Tensor18d"></span><span class="target" id="structMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1_1Deformation_1ab582394da924d35f279a0cbf6ff6ee4a"></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic9Tensor18dE" title="Marmot::Materials::InterfaceMaterialHypoElastic::Tensor18d"><span class="n"><span class="pre">Tensor18d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dSurfaceStrain</span></span></span><br /></dt>
+<dd><p>surface displacement gradient increment of the two interface sides </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic11Deformation6normalE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic11Deformation6normalE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic11Deformation6normalE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::Deformation::normal__Tensor3d"></span><span class="target" id="structMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1_1Deformation_1a03ced0aef988f6238fb44e8a14b951b2"></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic8Tensor3dE" title="Marmot::Materials::InterfaceMaterialHypoElastic::Tensor3d"><span class="n"><span class="pre">Tensor3d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">normal</span></span></span><br /></dt>
+<dd><p>interface normal </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic13TimeIncrementE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic13TimeIncrementE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic13TimeIncrementE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::TimeIncrement"></span><span class="target" id="structMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1_1TimeIncrement"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TimeIncrement</span></span></span><br /></dt>
+<dd><p>Time at the beginning of the increment and time increment. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic13TimeIncrement7timeOldE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic13TimeIncrement7timeOldE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic13TimeIncrement7timeOldE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::TimeIncrement::timeOld__double"></span><span class="target" id="structMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1_1TimeIncrement_1a775eb81e6307c9784253a570e72342a0"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">timeOld</span></span></span><br /></dt>
+<dd><p>time at the beginning of the increment </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials28InterfaceMaterialHypoElastic13TimeIncrement2dTE">
+<span id="_CPPv3N6Marmot9Materials28InterfaceMaterialHypoElastic13TimeIncrement2dTE"></span><span id="_CPPv2N6Marmot9Materials28InterfaceMaterialHypoElastic13TimeIncrement2dTE"></span><span id="Marmot::Materials::InterfaceMaterialHypoElastic::TimeIncrement::dT__double"></span><span class="target" id="structMarmot_1_1Materials_1_1InterfaceMaterialHypoElastic_1_1TimeIncrement_1a649a94f245e7fe80baea527285e0398d"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dT</span></span></span><br /></dt>
+<dd><p>time increment </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctionsE">
+<span id="_CPPv3N6Marmot9Materials32InterfaceMaterialHelperFunctionsE"></span><span id="_CPPv2N6Marmot9Materials32InterfaceMaterialHelperFunctionsE"></span><span id="Marmot::Materials::InterfaceMaterialHelperFunctions"></span><span class="target" id="namespaceMarmot_1_1Materials_1_1InterfaceMaterialHelperFunctions"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">InterfaceMaterialHelperFunctions</span></span></span><br /></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions11Tensor3333dE">
+<span id="_CPPv3N6Marmot9Materials32InterfaceMaterialHelperFunctions11Tensor3333dE"></span><span id="_CPPv2N6Marmot9Materials32InterfaceMaterialHelperFunctions11Tensor3333dE"></span><span class="target" id="namespaceMarmot_1_1Materials_1_1InterfaceMaterialHelperFunctions_1a4d7e903ca35cfe1851f75283b13830ce"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Tensor3333d</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors11Tensor3333dE" title="Marmot::Math::Tensors::FastorTensors::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions10Tensor333dE">
+<span id="_CPPv3N6Marmot9Materials32InterfaceMaterialHelperFunctions10Tensor333dE"></span><span id="_CPPv2N6Marmot9Materials32InterfaceMaterialHelperFunctions10Tensor333dE"></span><span class="target" id="namespaceMarmot_1_1Materials_1_1InterfaceMaterialHelperFunctions_1ae2a6b146d6e90dba72ce01952119ad1b"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Tensor333d</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors10Tensor333dE" title="Marmot::Math::Tensors::FastorTensors::Tensor333d"><span class="n"><span class="pre">Tensor333d</span></span></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions9Tensor33dE">
+<span id="_CPPv3N6Marmot9Materials32InterfaceMaterialHelperFunctions9Tensor33dE"></span><span id="_CPPv2N6Marmot9Materials32InterfaceMaterialHelperFunctions9Tensor33dE"></span><span class="target" id="namespaceMarmot_1_1Materials_1_1InterfaceMaterialHelperFunctions_1a715d673cb0a2201e7c6a71a5dc74a644"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Tensor33d</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors9Tensor33dE" title="Marmot::Math::Tensors::FastorTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions8Tensor3dE">
+<span id="_CPPv3N6Marmot9Materials32InterfaceMaterialHelperFunctions8Tensor3dE"></span><span id="_CPPv2N6Marmot9Materials32InterfaceMaterialHelperFunctions8Tensor3dE"></span><span class="target" id="namespaceMarmot_1_1Materials_1_1InterfaceMaterialHelperFunctions_1a6b0ad0130dc7c7ee4f89379cf3a35eda"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Tensor3d</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors8Tensor3dE" title="Marmot::Math::Tensors::FastorTensors::Tensor3d"><span class="n"><span class="pre">Tensor3d</span></span></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-functions">Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions32interfaceGeometrySystemCouplingsERK9Tensor33dRK11Tensor3333d">
+<span id="_CPPv3N6Marmot9Materials32InterfaceMaterialHelperFunctions32interfaceGeometrySystemCouplingsERK9Tensor33dRK11Tensor3333d"></span><span id="_CPPv2N6Marmot9Materials32InterfaceMaterialHelperFunctions32interfaceGeometrySystemCouplingsERK9Tensor33dRK11Tensor3333d"></span><span id="Marmot::Materials::InterfaceMaterialHelperFunctions::interfaceGeometrySystemCouplings__Tensor33dCR.Tensor3333dCR"></span><span class="target" id="namespaceMarmot_1_1Materials_1_1InterfaceMaterialHelperFunctions_1a3c598f2a90d529affb22bd076d5dc700"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions11Tensor3333dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions11Tensor3333dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions11Tensor3333dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions9Tensor33dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">interfaceGeometrySystemCouplings</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions9Tensor33dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">N</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions11Tensor3333dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">L</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Computes the geometry-system coupling tensors for an interface. </p>
+<p>Forms the contracted matrix <span class="math notranslate nohighlight">\(Q = L:N\)</span> and its inverse <span class="math notranslate nohighlight">\(G\)</span>, then computes the coupling tensor <span class="math notranslate nohighlight">\(A = G \otimes N\)</span> and the condensed constitutive tensor <span class="math notranslate nohighlight">\(B = L - L:A:L\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> – <strong>[in]</strong> Normal projector <span class="math notranslate nohighlight">\(\boldsymbol{n} \otimes \boldsymbol{n}\)</span>. </p></li>
+<li><p><strong>L</strong> – <strong>[in]</strong> Fourth-order constitutive tensor.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple containing, in order:<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(B\)</span>: condensed fourth-order constitutive tensor,</p></li>
+<li><p><span class="math notranslate nohighlight">\(L\)</span>: unchanged input constitutive tensor,</p></li>
+<li><p><span class="math notranslate nohighlight">\(A\)</span>: fourth-order geometry-system coupling tensor,</p></li>
+<li><p><span class="math notranslate nohighlight">\(G = Q^{-1}\)</span>: inverse contracted constitutive matrix. </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions25calculateMaterialMatricesERK8Tensor3dRK9Tensor33dRK11Tensor3333d">
+<span id="_CPPv3N6Marmot9Materials32InterfaceMaterialHelperFunctions25calculateMaterialMatricesERK8Tensor3dRK9Tensor33dRK11Tensor3333d"></span><span id="_CPPv2N6Marmot9Materials32InterfaceMaterialHelperFunctions25calculateMaterialMatricesERK8Tensor3dRK9Tensor33dRK11Tensor3333d"></span><span id="Marmot::Materials::InterfaceMaterialHelperFunctions::calculateMaterialMatrices__Tensor3dCR.Tensor33dCR.Tensor3333dCR"></span><span class="target" id="namespaceMarmot_1_1Materials_1_1InterfaceMaterialHelperFunctions_1a18b5f6da796e248890273b73cf0dc65f"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions11Tensor3333dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions9Tensor33dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions10Tensor333dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor333d"><span class="n"><span class="pre">Tensor333d</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions11Tensor3333dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">calculateMaterialMatrices</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions8Tensor3dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor3d"><span class="n"><span class="pre">Tensor3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">normal</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions9Tensor33dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">N</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions11Tensor3333dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">C_nu_aibj</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Computes the four constitutive operators used by an interface material. </p>
+<p>Condenses the bulk constitutive tensor with respect to the interface normal direction and derives the operators coupling displacement jumps, surface strains, interface forces, and surface stresses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>normal</strong> – <strong>[in]</strong> Unit normal vector of the interface. </p></li>
+<li><p><strong>N</strong> – <strong>[in]</strong> Normal projector <span class="math notranslate nohighlight">\(\boldsymbol{n} \otimes \boldsymbol{n}\)</span>. </p></li>
+<li><p><strong>C_nu_aibj</strong> – <strong>[in]</strong> Fourth-order constitutive tensor.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple containing, in order:<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Z\)</span>: condensed fourth-order surface-strain operator,</p></li>
+<li><p><span class="math notranslate nohighlight">\(H^{-1}\)</span>: second-order displacement-jump operator,</p></li>
+<li><p><span class="math notranslate nohighlight">\(H^{-1}nF\)</span>: third-order jump/surface-strain coupling operator,</p></li>
+<li><p><span class="math notranslate nohighlight">\(nYH^{-1}Fn\)</span>: fourth-order coupling correction. </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions36calculateInterfaceMaterialParametersERK8Tensor3dRKd">
+<span id="_CPPv3N6Marmot9Materials32InterfaceMaterialHelperFunctions36calculateInterfaceMaterialParametersERK8Tensor3dRKd"></span><span id="_CPPv2N6Marmot9Materials32InterfaceMaterialHelperFunctions36calculateInterfaceMaterialParametersERK8Tensor3dRKd"></span><span id="Marmot::Materials::InterfaceMaterialHelperFunctions::calculateInterfaceMaterialParameters__Tensor3dCR.doubleCR"></span><span class="target" id="namespaceMarmot_1_1Materials_1_1InterfaceMaterialHelperFunctions_1aa9ef94ca150f62d505cb25df51ae5d72"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions11Tensor3333dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions9Tensor33dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions10Tensor333dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor333d"><span class="n"><span class="pre">Tensor333d</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions11Tensor3333dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">calculateInterfaceMaterialParameters</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions8Tensor3dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor3d"><span class="n"><span class="pre">Tensor3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">normal</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">nu_0</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Calculates interface material parameters from a normal vector and Poisson’s ratio. </p>
+<p>This overload computes interface material matrices assuming an isotropic elastic material defined by a normal direction and Poisson’s ratio. The elastic properties are derived from these parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>normal</strong> – <strong>[in]</strong> 3-component unit normal vector to the interface </p></li>
+<li><p><strong>nu_0</strong> – <strong>[in]</strong> Poisson’s ratio of the interface material</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing four tensors:<ul class="simple">
+<li><p><a class="reference internal" href="#namespaceMarmot_1_1Materials_1_1InterfaceMaterialHelperFunctions_1a4d7e903ca35cfe1851f75283b13830ce"><span class="std std-ref">Tensor3333d</span></a>: 1st material matrix parameter (4th-order tensor)</p></li>
+<li><p><a class="reference internal" href="#namespaceMarmot_1_1Materials_1_1InterfaceMaterialHelperFunctions_1a715d673cb0a2201e7c6a71a5dc74a644"><span class="std std-ref">Tensor33d</span></a>: 2nd material matrix parameter (2nd-order tensor)</p></li>
+<li><p><a class="reference internal" href="#namespaceMarmot_1_1Materials_1_1InterfaceMaterialHelperFunctions_1ae2a6b146d6e90dba72ce01952119ad1b"><span class="std std-ref">Tensor333d</span></a>: 3rd material matrix parameter (3rd-order tensor)</p></li>
+<li><p><a class="reference internal" href="#namespaceMarmot_1_1Materials_1_1InterfaceMaterialHelperFunctions_1a4d7e903ca35cfe1851f75283b13830ce"><span class="std std-ref">Tensor3333d</span></a>: 4th material matrix parameter (4th-order tensor) </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions36calculateInterfaceMaterialParametersERK8Tensor3dRKN6Marmot4Math8Matrix6dE">
+<span id="_CPPv3N6Marmot9Materials32InterfaceMaterialHelperFunctions36calculateInterfaceMaterialParametersERK8Tensor3dRKN6Marmot4Math8Matrix6dE"></span><span id="_CPPv2N6Marmot9Materials32InterfaceMaterialHelperFunctions36calculateInterfaceMaterialParametersERK8Tensor3dRKN6Marmot4Math8Matrix6dE"></span><span id="Marmot::Materials::InterfaceMaterialHelperFunctions::calculateInterfaceMaterialParameters__Tensor3dCR.Marmot::Math::Matrix6dCR"></span><span class="target" id="namespaceMarmot_1_1Materials_1_1InterfaceMaterialHelperFunctions_1ab047314b82f46dbf9a4fa4c7fb43d90f"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions11Tensor3333dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions9Tensor33dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions10Tensor333dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor333d"><span class="n"><span class="pre">Tensor333d</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions11Tensor3333dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">calculateInterfaceMaterialParameters</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials32InterfaceMaterialHelperFunctions8Tensor3dE" title="Marmot::Materials::InterfaceMaterialHelperFunctions::Tensor3d"><span class="n"><span class="pre">Tensor3d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">normal</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Matrix6dE" title="Marmot::Math::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">C_ep_voigt</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Calculates interface material parameters from a normal vector and elastic stiffness matrix. </p>
+<p>This overload computes interface material matrices given a normal direction and a 6x6 Voigt representation of the elastic stiffness tensor. This allows specification of arbitrary (including anisotropic) elastic properties for the interface material.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>normal</strong> – <strong>[in]</strong> 3-component unit normal vector to the interface </p></li>
+<li><p><strong>C_ep_voigt</strong> – <strong>[in]</strong> 6x6 elastic stiffness matrix in Voigt notation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple containing four tensors:<ul class="simple">
+<li><p><a class="reference internal" href="#namespaceMarmot_1_1Materials_1_1InterfaceMaterialHelperFunctions_1a4d7e903ca35cfe1851f75283b13830ce"><span class="std std-ref">Tensor3333d</span></a>: 1st material matrix parameter (4th-order tensor)</p></li>
+<li><p><a class="reference internal" href="#namespaceMarmot_1_1Materials_1_1InterfaceMaterialHelperFunctions_1a715d673cb0a2201e7c6a71a5dc74a644"><span class="std std-ref">Tensor33d</span></a>: 2nd material matrix parameter (2nd-order tensor)</p></li>
+<li><p><a class="reference internal" href="#namespaceMarmot_1_1Materials_1_1InterfaceMaterialHelperFunctions_1ae2a6b146d6e90dba72ce01952119ad1b"><span class="std std-ref">Tensor333d</span></a>: 3rd material matrix parameter (3rd-order tensor)</p></li>
+<li><p><a class="reference internal" href="#namespaceMarmot_1_1Materials_1_1InterfaceMaterialHelperFunctions_1a4d7e903ca35cfe1851f75283b13830ce"><span class="std std-ref">Tensor3333d</span></a>: 4th material matrix parameter (4th-order tensor) </p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="linearviscoelasticwiechert.html" class="btn btn-neutral float-left" title="Linear Viscoelastic Wiechert model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="microplanem7.html" class="btn btn-neutral float-right" title="Microplane model M7" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

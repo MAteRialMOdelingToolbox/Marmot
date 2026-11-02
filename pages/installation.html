@@ -48,13 +48,19 @@
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#prebuilt-conda-package">Prebuilt conda package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#building-with-anaconda">Building with Anaconda</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#installation-steps">Installation steps</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#build-options">Build options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modules">Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-on-windows">Building on Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-with-python-bindings">Building with Python Bindings</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python_bindings.html">Python Bindings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="documentation.html">Code documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
@@ -92,6 +98,27 @@
 <a class="reference external" href="https://github.com/autodiff/autodiff">autodiff</a>,
 and <a class="reference external" href="https://github.com/romeric/Fastor">Fastor</a>.</p>
 <p>These are header-only libraries, so no compilation is required.</p>
+<p>Both Eigen 3.4 and Eigen 5 are supported.
+Eigen 5 requires an autodiff version with Eigen 5 support;
+autodiff 1.1.2 and older do not compile against Eigen 5 (see <a class="reference external" href="https://github.com/autodiff/autodiff/pull/397">autodiff#397</a>).</p>
+</section>
+<section id="prebuilt-conda-package">
+<h2>Prebuilt conda package<a class="headerlink" href="#prebuilt-conda-package" title="Link to this heading"></a></h2>
+<p>Released versions of Marmot are available as the conda package <code class="docutils literal notranslate"><span class="pre">marmot</span></code>
+(Linux x86-64, macOS arm64 and x86-64, Windows x86-64), together with its dependencies:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conda create -n marmot -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge marmot</span>
+</pre></div>
+</div>
+<p>The package contains the library, the headers and the CMake package files (<code class="docutils literal notranslate"><span class="pre">find_package(Marmot)</span></code>),
+built from the public modules of this repository with portable compiler flags.
+EdelweissFE’s conda package <code class="docutils literal notranslate"><span class="pre">edelweissfe</span></code> depends on it.</p>
+<p>Build Marmot yourself instead (see below) to develop it, to add modules
+(including private ones), or to optimize for your CPU (<code class="docutils literal notranslate"><span class="pre">-DMARMOT_MARCH_NATIVE=ON</span></code>).
+Do this in a separate environment, never in one with the <code class="docutils literal notranslate"><span class="pre">marmot</span></code> package installed:
+installing a self-built Marmot there overwrites files conda manages, and packages compiled against the
+packaged Marmot (such as <code class="docutils literal notranslate"><span class="pre">edelweissfe</span></code>) would then run against a library they were not compiled for.</p>
+<p>The package recipe is <code class="docutils literal notranslate"><span class="pre">conda/recipe.yaml</span></code>; the <code class="docutils literal notranslate"><span class="pre">conda</span></code> workflow builds and tests it on every pull request
+and uploads it for a release tag.</p>
 </section>
 <section id="building-with-anaconda">
 <h2>Building with Anaconda<a class="headerlink" href="#building-with-anaconda" title="Link to this heading"></a></h2>
@@ -105,8 +132,8 @@ environment:</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">Step 1</span><a class="headerlink" href="#id1" title="Link to this code"></a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> curl -L -O \</span>
-<span class="go">     &quot;https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh&quot;</span>
-<span class="go"> bash &quot;Miniforge3-$(uname)-$(uname -m).sh&quot; -b -p ./miniforge3</span>
+<span class="go">     "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"</span>
+<span class="go"> bash "Miniforge3-$(uname)-$(uname -m).sh" -b -p ./miniforge3</span>
 </pre></div>
 </div>
 </div>
@@ -187,6 +214,7 @@ environment:</p>
 <span class="go"> cd build</span>
 <span class="go"> cmake \</span>
 <span class="go">     -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX \</span>
+<span class="go">     -DMARMOT_BUILD_PYTHON_BINDINGS=ON \</span>
 <span class="go">     ..</span>
 <span class="go"> make install</span>
 <span class="go"> ctest --output-on-failure</span>
@@ -194,6 +222,102 @@ environment:</p>
 </div>
 </div>
 </section>
+</section>
+<section id="build-options">
+<h2>Build options<a class="headerlink" href="#build-options" title="Link to this heading"></a></h2>
+<p>The following CMake options adjust the build:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-DBUILD_TESTING=OFF</span></code> skips the test executables, e.g., for install-only builds.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-DMARMOT_MARCH_NATIVE=ON</span></code> compiles for the host CPU (<code class="docutils literal notranslate"><span class="pre">-march=native</span></code>, GCC/Clang only), which lets Fastor
+vectorize with AVX2/FMA. The resulting library does not run on older CPUs.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-DMARMOT_ENABLE_COVERAGE=ON</span></code> instruments the library and the tests for <code class="docutils literal notranslate"><span class="pre">gcov</span></code> (with <code class="docutils literal notranslate"><span class="pre">-DCMAKE_BUILD_TYPE=Debug</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-DMARMOT_BUILD_PYTHON_BINDINGS=ON</span></code> builds the Python bindings.</p></li>
+</ul>
+</section>
+<section id="modules">
+<h2>Modules<a class="headerlink" href="#modules" title="Link to this heading"></a></h2>
+<p>Marmot consists of modules, one directory <code class="docutils literal notranslate"><span class="pre">modules/&lt;category&gt;/&lt;Name&gt;/</span></code> each, with the categories
+<code class="docutils literal notranslate"><span class="pre">core</span></code>, <code class="docutils literal notranslate"><span class="pre">materials</span></code>, <code class="docutils literal notranslate"><span class="pre">elements</span></code>, <code class="docutils literal notranslate"><span class="pre">particles</span></code>, <code class="docutils literal notranslate"><span class="pre">materialpoints</span></code>, <code class="docutils literal notranslate"><span class="pre">cells</span></code> and <code class="docutils literal notranslate"><span class="pre">cellelements</span></code>.
+Every such directory containing a <code class="docutils literal notranslate"><span class="pre">module.cmake</span></code> is found automatically; a module of your own is added by placing
+its directory there. The variables <code class="docutils literal notranslate"><span class="pre">CORE_MODULES</span></code>, <code class="docutils literal notranslate"><span class="pre">MATERIAL_MODULES</span></code>, <code class="docutils literal notranslate"><span class="pre">ELEMENT_MODULES</span></code>, <code class="docutils literal notranslate"><span class="pre">PARTICLE_MODULES</span></code>,
+<code class="docutils literal notranslate"><span class="pre">MATERIALPOINT_MODULES</span></code>, <code class="docutils literal notranslate"><span class="pre">CELL_MODULES</span></code> and <code class="docutils literal notranslate"><span class="pre">CELLELEMENT_MODULES</span></code> (default <code class="docutils literal notranslate"><span class="pre">all</span></code>) select a subset, e.g.,
+<code class="docutils literal notranslate"><span class="pre">-DMATERIAL_MODULES=&quot;LinearElastic;VonMises&quot;</span></code>; a name matching no module, e.g., <code class="docutils literal notranslate"><span class="pre">none</span></code>, selects none of that category.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">module.cmake</span></code> declares the module and, with <code class="docutils literal notranslate"><span class="pre">REQUIRES</span></code>, the modules whose headers it includes, except modules
+already required by a listed one:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">marmot_add_module</span><span class="p">(</span><span class="s">MyMaterial</span>
+<span class="w">    </span><span class="s">REQUIRES</span><span class="w"> </span><span class="s">MarmotFiniteStrainMechanicsCore</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Without a filter, every module must be buildable: requiring a module that does not exist (e.g., a misspelled name, or
+a module whose repository is not checked out) fails configuring. With a filter, a module whose required module is
+filtered out or does not exist is skipped with a warning; if it was selected explicitly, configuring fails instead.
+A module sees only the headers of the modules it requires, so a missing <code class="docutils literal notranslate"><span class="pre">REQUIRES</span></code> shows as a compile error.
+All modules are compiled into the one library <code class="docutils literal notranslate"><span class="pre">libMarmot</span></code>.</p>
+<p>Installing copies the headers of every built module to <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/include/Marmot</span></code>.
+Other CMake projects use the installed library through <code class="docutils literal notranslate"><span class="pre">find_package</span></code>:</p>
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">find_package</span><span class="p">(</span><span class="s">Marmot</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">&lt;target&gt;</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">Marmot::Marmot</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Marmot::Marmot</span></code> brings along Eigen, autodiff and Fastor; autodiff and Fastor are found either through their
+CMake packages or, if they were installed as plain headers, through a header search.</p>
+</section>
+<section id="building-on-windows">
+<h2>Building on Windows<a class="headerlink" href="#building-on-windows" title="Link to this heading"></a></h2>
+<p>Marmot builds as a DLL with MSVC (Visual Studio 2022), in the <code class="docutils literal notranslate"><span class="pre">Release</span></code> configuration.
+Install Eigen, autodiff and Fastor into a common prefix as above (<code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--install</span></code> instead of <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code>),
+then build Marmot from a <em>Developer PowerShell for VS 2022</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake -S Marmot -B Marmot/build -DCMAKE_PREFIX_PATH=&lt;prefix&gt; -DCMAKE_INSTALL_PREFIX=&lt;prefix&gt;</span>
+<span class="go">cmake --build Marmot/build --config Release --parallel</span>
+<span class="go">ctest --test-dir Marmot/build -C Release --output-on-failure</span>
+<span class="go">cmake --install Marmot/build --config Release</span>
+</pre></div>
+</div>
+<p>This installs <code class="docutils literal notranslate"><span class="pre">Marmot.dll</span></code> into <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/bin</span></code> and its import library <code class="docutils literal notranslate"><span class="pre">Marmot.lib</span></code> into <code class="docutils literal notranslate"><span class="pre">&lt;prefix&gt;/lib</span></code>.
+Programs linking Marmot must find <code class="docutils literal notranslate"><span class="pre">Marmot.dll</span></code> at run time, e.g., through <code class="docutils literal notranslate"><span class="pre">PATH</span></code>.</p>
+<p>A Windows DLL exports only what is marked for export, which in Marmot is <code class="docutils literal notranslate"><span class="pre">MARMOT_API</span></code>
+(defined in <code class="docutils literal notranslate"><span class="pre">Marmot/MarmotPortability.h</span></code>).
+The rule for what is marked: the exported API is the interface layer through which a consumer drives Marmot,
+that is, the element and material factories, the interface classes they hand out (<code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Elements::Element</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::MaterialSection</span></code>, <code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::ElementProperties</span></code>), and the few non-virtual functions a consumer calls on them,
+marked at the smallest granularity that links (a single member rather than its class, where the class is otherwise
+reached through virtual functions only).
+Everything else is used through the virtual functions of the objects the factories create.
+Exporting everything instead is not an option: it exceeds the limit of 65535 exported symbols of a Windows DLL,
+since that would include every Eigen, Fastor and autodiff template instantiated in Marmot.
+Code that needs more of Marmot must mark it <code class="docutils literal notranslate"><span class="pre">MARMOT_API</span></code>, following the rule above.
+To check this without Windows, configure with <code class="docutils literal notranslate"><span class="pre">-DMARMOT_EXPORT_API_ONLY=ON</span></code>,
+which exports only the <code class="docutils literal notranslate"><span class="pre">MARMOT_API</span></code> symbols on Linux and macOS, too; the Ubuntu CI builds this way as well.
+The module tests link Marmot’s object files directly and are not affected.
+The one test that is, <code class="docutils literal notranslate"><span class="pre">TestExportedAPI</span></code> in <code class="docutils literal notranslate"><span class="pre">tests/consumer</span></code>, links the shared library only and uses Marmot
+as a consumer does; it is the test that fails when the exported API is incomplete.</p>
+<p>Marmot’s global constants are defined <code class="docutils literal notranslate"><span class="pre">inline</span> <span class="pre">const</span></code> in the headers, not <code class="docutils literal notranslate"><span class="pre">extern</span> <span class="pre">const</span></code> in a source file:
+exported data would have to be marked <code class="docutils literal notranslate"><span class="pre">MARMOT_API</span></code> as well, and could not be used in constant expressions
+across the DLL boundary.
+An <code class="docutils literal notranslate"><span class="pre">inline</span></code> variable is instantiated in every translation unit that includes its header, so everything its
+initializer calls must be defined in a header, too (or be marked <code class="docutils literal notranslate"><span class="pre">MARMOT_API</span></code>). New modules must follow this.
+Likewise, include <code class="docutils literal notranslate"><span class="pre">Marmot/MarmotPortability.h</span></code> (e.g., through <code class="docutils literal notranslate"><span class="pre">Marmot/MarmotJournal.h</span></code>) before using
+<code class="docutils literal notranslate"><span class="pre">__PRETTY_FUNCTION__</span></code>, which MSVC does not provide.
+The Python bindings are not yet supported on Windows, nor with <code class="docutils literal notranslate"><span class="pre">MARMOT_EXPORT_API_ONLY</span></code>;
+configuring with <code class="docutils literal notranslate"><span class="pre">-DMARMOT_BUILD_PYTHON_BINDINGS=ON</span></code> fails there.</p>
+</section>
+<section id="building-with-python-bindings">
+<h2>Building with Python Bindings<a class="headerlink" href="#building-with-python-bindings" title="Link to this heading"></a></h2>
+<p>Marmot optionally provides a Python interface using <a class="reference external" href="https://github.com/wjakob/nanobind">nanobind</a>.
+To enable the Python module, configure CMake with <cite>-DMARMOT_BUILD_PYTHON_BINDINGS=ON</cite>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cmake -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DMARMOT_BUILD_PYTHON_BINDINGS=ON ..</span>
+<span class="go">make install</span>
+<span class="go">ctest --output-on-failure</span>
+</pre></div>
+</div>
+<p>After installation, the <code class="docutils literal notranslate"><span class="pre">marmot</span></code> package is available directly in Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">marmot</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">props</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">20000.0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">])</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">marmot</span><span class="o">.</span><span class="n">solvers</span><span class="o">.</span><span class="n">HypoElasticSolver</span><span class="p">(</span><span class="s2">"LINEARELASTIC"</span><span class="p">,</span> <span class="n">props</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 </section>
 

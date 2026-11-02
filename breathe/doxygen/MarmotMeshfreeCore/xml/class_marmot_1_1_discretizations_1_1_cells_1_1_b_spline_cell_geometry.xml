@@ -1,0 +1,504 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Discretizations::Cells::BSplineCellGeometry</compoundname>
+    <basecompoundref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element" prot="public" virt="non-virtual">Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;</basecompoundref>
+    <includes refid="_marmot_b_spline_cell_geometry_8h" local="no">MarmotBSplineCellGeometry.h</includes>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>nDim</declname>
+        <defname>nDim</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>order</declname>
+        <defname>order</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="private-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a36c7c909a54e3b55d01e48b51cf6eade" prot="private" static="no">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element" kindref="compound">Marmot::Discretizations::Elements::BSplineGeometryElement</ref>&lt; nDim, order &gt;</type>
+        <definition>using Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt;::ParentBSplineGeometryElement = Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;</definition>
+        <argsstring></argsstring>
+        <name>ParentBSplineGeometryElement</name>
+        <qualifiedname>Marmot::Discretizations::Cells::BSplineCellGeometry::ParentBSplineGeometryElement</qualifiedname>
+        <briefdescription>
+<para>The underlying B-spline geometry element. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" line="54" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a75a740fc8e35418ee9d7b7c6ff2d56af" prot="private" static="no">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a0f690112b7437a2127ecdffed6a670d9" kindref="member">ParentBSplineGeometryElement::JacobianSized</ref></type>
+        <definition>using Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt;::JacobianSized = ParentBSplineGeometryElement::JacobianSized</definition>
+        <argsstring></argsstring>
+        <name>JacobianSized</name>
+        <qualifiedname>Marmot::Discretizations::Cells::BSplineCellGeometry::JacobianSized</qualifiedname>
+        <briefdescription>
+<para>Jacobian matrix type. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" line="55" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1acc512877efa09971353dd6eedcb21c96" prot="public" static="no">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a70c488ce9b02a66fed661a102d28aa1b" kindref="member">ParentBSplineGeometryElement::NSized</ref></type>
+        <definition>using Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt;::NSized = ParentBSplineGeometryElement::NSized</definition>
+        <argsstring></argsstring>
+        <name>NSized</name>
+        <qualifiedname>Marmot::Discretizations::Cells::BSplineCellGeometry::NSized</qualifiedname>
+        <briefdescription>
+<para>Row vector of shape function values. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" line="63" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9af6e53749169606e2125c97a3079b25" prot="public" static="no">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a038859cf1fbcb76fde5f3948b7646f71" kindref="member">ParentBSplineGeometryElement::dNdXSized</ref></type>
+        <definition>using Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt;::dNdXSized = ParentBSplineGeometryElement::dNdXSized</definition>
+        <argsstring></argsstring>
+        <name>dNdXSized</name>
+        <qualifiedname>Marmot::Discretizations::Cells::BSplineCellGeometry::dNdXSized</qualifiedname>
+        <briefdescription>
+<para>Shape function gradients. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" line="64" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a38c227cdad9142d18939ce9ea754618f" prot="public" static="no">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a7a916dbb28a9b541bf8b20d5ba7c9775" kindref="member">ParentBSplineGeometryElement::CoordinateVector</ref></type>
+        <definition>using Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt;::CoordinateVector = ParentBSplineGeometryElement::CoordinateVector</definition>
+        <argsstring></argsstring>
+        <name>CoordinateVector</name>
+        <qualifiedname>Marmot::Discretizations::Cells::BSplineCellGeometry::CoordinateVector</qualifiedname>
+        <briefdescription>
+<para>Flat control point coordinates. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" line="65" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9738de5a9b5c7c6e5788d9e0d6dafe3a" prot="public" static="no">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a27b73029f8eee1113c721927bfc7d58e" kindref="member">ParentBSplineGeometryElement::XiSized</ref></type>
+        <definition>using Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt;::XiSized = ParentBSplineGeometryElement::XiSized</definition>
+        <argsstring></argsstring>
+        <name>XiSized</name>
+        <qualifiedname>Marmot::Discretizations::Cells::BSplineCellGeometry::XiSized</qualifiedname>
+        <briefdescription>
+<para>Parametric (= physical) point. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" line="66" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a200a47d30a0ceb5e42dc1342f58ce8fc" prot="private" static="no" mutable="no">
+        <type>Eigen::Matrix&lt; double, nDim, 1 &gt;</type>
+        <definition>Eigen::Matrix&lt; double, nDim, 1 &gt; Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt;::_boundingBoxMin</definition>
+        <argsstring></argsstring>
+        <name>_boundingBoxMin</name>
+        <qualifiedname>Marmot::Discretizations::Cells::BSplineCellGeometry::_boundingBoxMin</qualifiedname>
+        <briefdescription>
+<para>Lower corner of the knot span, <formula id="219">$ u_p $</formula> per direction. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" line="57" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a077d16233633aac9ce6c81a3150c3359" prot="private" static="no" mutable="no">
+        <type>Eigen::Matrix&lt; double, nDim, 1 &gt;</type>
+        <definition>Eigen::Matrix&lt; double, nDim, 1 &gt; Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt;::_boundingBoxMax</definition>
+        <argsstring></argsstring>
+        <name>_boundingBoxMax</name>
+        <qualifiedname>Marmot::Discretizations::Cells::BSplineCellGeometry::_boundingBoxMax</qualifiedname>
+        <briefdescription>
+<para>Upper corner of the knot span, <formula id="220">$ u_{p+1} $</formula> per direction. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" line="58" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1abddff042234afcbb96a3763cdae65c9b" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt;::_boundingBoxMatchesGeometryExactly</definition>
+        <argsstring></argsstring>
+        <name>_boundingBoxMatchesGeometryExactly</name>
+        <qualifiedname>Marmot::Discretizations::Cells::BSplineCellGeometry::_boundingBoxMatchesGeometryExactly</qualifiedname>
+        <briefdescription>
+<para>Always <computeroutput>true</computeroutput>; currently not used. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" line="60" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a33862e6dbe08997e50b63134726d207f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt;::BSplineCellGeometry</definition>
+        <argsstring>(const double *nodeCoordinates, int sizeNodeCoordinates, const double *knotVectors, int sizeKnotVectors)</argsstring>
+        <name>BSplineCellGeometry</name>
+        <qualifiedname>Marmot::Discretizations::Cells::BSplineCellGeometry::BSplineCellGeometry</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>nodeCoordinates</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>sizeNodeCoordinates</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>knotVectors</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>sizeKnotVectors</declname>
+        </param>
+        <briefdescription>
+<para>Constructs the geometry and its bounding box (the knot span). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">nodeCoordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Control point coordinates, point by point; mapped, not copied. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">sizeNodeCoordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of <computeroutput>nodeCoordinates</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">knotVectors</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Knot vectors ( <formula id="82">$ 2p+2 $</formula> knots per direction, direction by direction), in physical coordinates. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">sizeKnotVectors</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of <computeroutput>knotVectors</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" line="76" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" bodystart="76" bodyend="86"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9a048a1cd670333056ebe8e54f6a3aa6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt;::isCoordinateInCell</definition>
+        <argsstring>(const double *coordinates) const</argsstring>
+        <name>isCoordinateInCell</name>
+        <qualifiedname>Marmot::Discretizations::Cells::BSplineCellGeometry::isCoordinateInCell</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>coordinates</declname>
+        </param>
+        <briefdescription>
+<para>Knot span test <formula id="221">$ u_{p,i} \le x_i &lt; u_{p+1,i} $</formula> (half-open). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">coordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Point coordinates (nDim values). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> if the point is inside the knot span. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" line="93" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" bodystart="140" bodyend="148"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1af59ada3c35ef8738df484534c56cf83d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, nNodes &gt;::getBoundingBox</definition>
+        <argsstring>(double *boundingBoxMin, double *boundingBoxMax) const</argsstring>
+        <name>getBoundingBox</name>
+        <qualifiedname>Marmot::Discretizations::Cells::BSplineCellGeometry::getBoundingBox</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>boundingBoxMin</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>boundingBoxMax</declname>
+        </param>
+        <briefdescription>
+<para>Bounding box of the cell, i.e. the knot span. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">boundingBoxMin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Lower corner (nDim values). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">boundingBoxMax</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Upper corner (nDim values). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" line="100" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" bodystart="151" bodyend="155"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1ab5a838f4a312e258e26375337822201f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9738de5a9b5c7c6e5788d9e0d6dafe3a" kindref="member">XiSized</ref></type>
+        <definition>BSplineCellGeometry&lt; nDim, order &gt;::XiSized Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt;::findReferenceCoordinate</definition>
+        <argsstring>(const XiSized &amp;coord) const</argsstring>
+        <name>findReferenceCoordinate</name>
+        <qualifiedname>Marmot::Discretizations::Cells::BSplineCellGeometry::findReferenceCoordinate</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9738de5a9b5c7c6e5788d9e0d6dafe3a" kindref="member">XiSized</ref> &amp;</type>
+          <declname>coord</declname>
+        </param>
+        <briefdescription>
+<para>Inverse geometry map; the identity, since the knots are physical coordinates. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">coord</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Physical coordinates. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>coord</computeroutput>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" line="107" column="13" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" bodystart="158" bodyend="192"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a2591c0f13dcf17f95a840fc0860aaee3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1acc512877efa09971353dd6eedcb21c96" kindref="member">NSized</ref></type>
+        <definition>NSized Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt;::N</definition>
+        <argsstring>(const XiSized &amp;xi) const</argsstring>
+        <name>N</name>
+        <qualifiedname>Marmot::Discretizations::Cells::BSplineCellGeometry::N</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9738de5a9b5c7c6e5788d9e0d6dafe3a" kindref="member">XiSized</ref> &amp;</type>
+          <declname>xi</declname>
+        </param>
+        <briefdescription>
+<para>Tensor-product B-spline shape functions. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">xi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Parametric (= physical) coordinates. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="144">$ N_a(\boldsymbol{\xi}) $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" line="114" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" bodystart="114" bodyend="114"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a25ea7919ab76d1b6553b2b40c515b891" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9af6e53749169606e2125c97a3079b25" kindref="member">dNdXSized</ref></type>
+        <definition>dNdXSized Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt;::dNdX</definition>
+        <argsstring>(const XiSized &amp;xi) const</argsstring>
+        <name>dNdX</name>
+        <qualifiedname>Marmot::Discretizations::Cells::BSplineCellGeometry::dNdX</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9738de5a9b5c7c6e5788d9e0d6dafe3a" kindref="member">XiSized</ref> &amp;</type>
+          <declname>xi</declname>
+        </param>
+        <briefdescription>
+<para>Shape function gradients; the parametric derivatives, no Jacobian transformation (identity map). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">xi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Parametric (= physical) coordinates. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="145">$ \partial N_a/\partial \xi_i $</formula> (row <formula id="65">$ i $</formula>, column <formula id="30">$ a $</formula>). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" line="121" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" bodystart="121" bodyend="125"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a524cf87de72ec96da9b120001e1ee868" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt;::detJ</definition>
+        <argsstring>(const XiSized &amp;xi) const</argsstring>
+        <name>detJ</name>
+        <qualifiedname>Marmot::Discretizations::Cells::BSplineCellGeometry::detJ</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9738de5a9b5c7c6e5788d9e0d6dafe3a" kindref="member">XiSized</ref> &amp;</type>
+          <declname>xi</declname>
+        </param>
+        <briefdescription>
+<para>Determinant of the Jacobian of the geometry map defined by the control points. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">xi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Parametric coordinates. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="66">$ \det \boldsymbol{J}(\boldsymbol{\xi}) $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" line="132" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" bodystart="132" bodyend="136"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>B-spline cell geometry (one knot span), a geometry policy for the MPM cells. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Wraps <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element" kindref="compound">Marmot::Discretizations::Elements::BSplineGeometryElement</ref> for use as the <computeroutput>GeometryCell</computeroutput> of a cell (see <ref refid="concept_marmot_1_1_discretizations_1_1_cells_1_1_geometry_cell_policy" kindref="compound">GeometryCellPolicy</ref>). The cell is the knot span <formula id="217">$ [u_{p}, u_{p+1}] $</formula> of each direction; the knot vectors are given in <bold>physical coordinates</bold>, so the parametric coordinate of a point is the point itself: <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1ab5a838f4a312e258e26375337822201f" kindref="member">findReferenceCoordinate()</ref> is the identity and <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a25ea7919ab76d1b6553b2b40c515b891" kindref="member">dNdX()</ref> returns the parametric derivatives unchanged. This is exact for a B-spline grid whose geometry map is the identity <formula id="218">$ \boldsymbol{X}(\boldsymbol{\xi}) = \boldsymbol{\xi} $</formula> (control points at the Greville abscissae, e.g. a uniform, axis-aligned background grid); the control point coordinates enter only <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a524cf87de72ec96da9b120001e1ee868" kindref="member">detJ()</ref>.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Spatial dimension (2 or 3). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>order</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Polynomial degree <formula id="135">$ p $</formula> (1, 2 or 3 are registered). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt;</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt;</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" line="49" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h" bodystart="51" bodyend="137"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1abddff042234afcbb96a3763cdae65c9b" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>_boundingBoxMatchesGeometryExactly</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a077d16233633aac9ce6c81a3150c3359" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>_boundingBoxMax</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a200a47d30a0ceb5e42dc1342f58ce8fc" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>_boundingBoxMin</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1acb44744622a5fbd9bb661b73cc335ddf" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>_knotVectors</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1aa27f6a8fb4c18ad6b94ad6a4cab28637" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>_knotVectorsNormalized</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a1b9c8da6b0ab70a84d93962cc2dfb8ab" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>_mapCoordinates</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a8188ba74eaddb763f4d7cf6269427991" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>_shape</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a33862e6dbe08997e50b63134726d207f" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>BSplineCellGeometry</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a82238f0ba3ac123daf6e5a3b444f3c1b" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>BSplineGeometryElement</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a38c227cdad9142d18939ce9ea754618f" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>CoordinateVector</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a524cf87de72ec96da9b120001e1ee868" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>detJ</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a25ea7919ab76d1b6553b2b40c515b891" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>dNdX</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1afc921ed5ae0aea803672eb76cd7c354c" prot="public" virt="non-virtual" ambiguityscope="Marmot::Discretizations::Elements::BSplineGeometryElement::"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>dNdX</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1ad1e0658864b8eaf141bacc21c2cfd678" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>dNdXi</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9af6e53749169606e2125c97a3079b25" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>dNdXSized</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1ab5a838f4a312e258e26375337822201f" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>findReferenceCoordinate</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1af59ada3c35ef8738df484534c56cf83d" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>getBoundingBox</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a1fdaee6cdb461a6fb5ea07ffd163202e" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>getElementShape</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9a048a1cd670333056ebe8e54f6a3aa6" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>isCoordinateInCell</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a0bf71a9872f27e54dddacab1d218a529" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>Jacobian</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a75a740fc8e35418ee9d7b7c6ff2d56af" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>JacobianSized</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a5d13194067775e6555c1f8b75c3de9eb" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>KnotVector</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1af1d68542423e3e3f83e95588955f272a" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>KnotVectors</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a2591c0f13dcf17f95a840fc0860aaee3" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>N</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1ab0015596caa9570471dc0ff7e5904b46" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>nKnotsPerDir</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a749f90215ab88d6a8c9d68630cc9dd56" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>nNodes</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1acc512877efa09971353dd6eedcb21c96" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>NSized</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a36c7c909a54e3b55d01e48b51cf6eade" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>ParentBSplineGeometryElement</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9738de5a9b5c7c6e5788d9e0d6dafe3a" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Cells::BSplineCellGeometry</scope><name>XiSized</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

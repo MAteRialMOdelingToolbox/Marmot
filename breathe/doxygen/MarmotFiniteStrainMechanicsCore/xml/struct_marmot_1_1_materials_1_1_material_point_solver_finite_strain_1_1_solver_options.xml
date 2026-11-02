@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_solver_options" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions</compoundname>
+    <includes refid="_marmot_material_point_solver_finite_strain_8h" local="no">MarmotMaterialPointSolverFiniteStrain.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_solver_options_1aa08196b435dc16f11f860337e6db2093" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions::maxIterations</definition>
+        <argsstring></argsstring>
+        <name>maxIterations</name>
+        <qualifiedname>Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions::maxIterations</qualifiedname>
+        <initializer>= 25</initializer>
+        <briefdescription>
+<para>Maximum number of iterations per increment (default: 25). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="177" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="177" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_solver_options_1aebec93a36d7a3b269819cdf0e107005d" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions::residualTolerance</definition>
+        <argsstring></argsstring>
+        <name>residualTolerance</name>
+        <qualifiedname>Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions::residualTolerance</qualifiedname>
+        <initializer>= 1e-10</initializer>
+        <briefdescription>
+<para>Convergence tolerance (default: 1e-10). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="178" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="178" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_solver_options_1a76eaf4edaa1868d4e94bfc3185fb4d0b" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions::correctionTolerance</definition>
+        <argsstring></argsstring>
+        <name>correctionTolerance</name>
+        <qualifiedname>Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions::correctionTolerance</qualifiedname>
+        <initializer>= 1e-10</initializer>
+        <briefdescription>
+<para>Correction tolerance (default: 1e-10). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="179" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="179" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Struct to define solver options. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Contains parameters for controlling the solver&apos;s behavior. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" line="176" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialPointSolverFiniteStrain.h" bodystart="176" bodyend="180"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_solver_options_1a76eaf4edaa1868d4e94bfc3185fb4d0b" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions</scope><name>correctionTolerance</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_solver_options_1aa08196b435dc16f11f860337e6db2093" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions</scope><name>maxIterations</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_solver_options_1aebec93a36d7a3b269819cdf0e107005d" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions</scope><name>residualTolerance</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

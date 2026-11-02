@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli</compoundname>
+    <includes refid="_marmot_material_gradient_enhanced_finite_strain_8h" local="no">MarmotMaterialGradientEnhancedFiniteStrain.h</includes>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>nDim</declname>
+        <defname>nDim</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli_1a6881a2445a750559f834a4c2a4535de9" prot="public" static="no" mutable="no">
+        <type>Fastor::Tensor&lt; double, nDim, nDim, nDim, nDim &gt;</type>
+        <definition>Fastor::Tensor&lt; double, nDim, nDim, nDim, nDim &gt; Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli&lt; nDim &gt;::dTau_dF</definition>
+        <argsstring></argsstring>
+        <name>dTau_dF</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli::dTau_dF</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+<para><formula id="50">$ \partial\boldsymbol{\tau}/\partial\boldsymbol{F} $</formula> </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="160" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="160" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli_1afac09e8668378b2c6f7ceda5f8b31efd" prot="public" static="no" mutable="no">
+        <type>Fastor::Tensor&lt; double, nDim, nDim &gt;</type>
+        <definition>Fastor::Tensor&lt; double, nDim, nDim &gt; Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli&lt; nDim &gt;::dTau_dN</definition>
+        <argsstring></argsstring>
+        <name>dTau_dN</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli::dTau_dN</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+<para><formula id="51">$ \partial\boldsymbol{\tau}/\partial\bar{N} $</formula> </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="162" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="162" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli_1a5bd9ab3b71e1b295ca19aa3413157b32" prot="public" static="no" mutable="no">
+        <type>Fastor::Tensor&lt; double, nDim, nDim &gt;</type>
+        <definition>Fastor::Tensor&lt; double, nDim, nDim &gt; Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli&lt; nDim &gt;::dL_dF</definition>
+        <argsstring></argsstring>
+        <name>dL_dF</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli::dL_dF</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+<para><formula id="52">$ \partial L/\partial\boldsymbol{F} $</formula> </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="164" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="164" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli_1ab76d2f2e014281d1c5063797b42c5d20" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli&lt; nDim &gt;::dL_dN</definition>
+        <argsstring></argsstring>
+        <name>dL_dN</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli::dL_dN</qualifiedname>
+        <initializer>= 0.0</initializer>
+        <briefdescription>
+<para><formula id="53">$ \partial L/\partial\bar{N} $</formula> </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="166" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="166" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Algorithmic tangent moduli of a gradient-enhanced material. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of spatial dimensions (2 or 3).</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The four blocks of the linearized two-field problem. They are zero-initialized, so a material that legitimately has no coupling in one block may simply leave it alone. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="158" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="158" bodyend="167"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli_1a5bd9ab3b71e1b295ca19aa3413157b32" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli</scope><name>dL_dF</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli_1ab76d2f2e014281d1c5063797b42c5d20" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli</scope><name>dL_dN</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli_1a6881a2445a750559f834a4c2a4535de9" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli</scope><name>dTau_dF</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli_1afac09e8668378b2c6f7ceda5f8b31efd" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli</scope><name>dTau_dN</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

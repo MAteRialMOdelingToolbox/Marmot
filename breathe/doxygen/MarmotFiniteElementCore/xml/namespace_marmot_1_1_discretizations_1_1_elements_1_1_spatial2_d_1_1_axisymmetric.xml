@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_discretizations_1_1_elements_1_1_spatial2_d_1_1_axisymmetric" kind="namespace" language="C++">
+    <compoundname>Marmot::Discretizations::Elements::Spatial2D::Axisymmetric</compoundname>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="_marmot_finite_element_8h_1a759a02da31864400f2363841d4816ba3" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Elements::Spatial2D::Axisymmetric::voigtSize</definition>
+        <argsstring></argsstring>
+        <name>voigtSize</name>
+        <qualifiedname>Marmot::Discretizations::Elements::Spatial2D::Axisymmetric::voigtSize</qualifiedname>
+        <initializer>= 4</initializer>
+        <briefdescription>
+<para>Voigt vector size for axisymmetric elements (σ_rr, σ_zz, σ_θθ, σ_rz). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="180" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="180" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_finite_element_8h_1af287147dc753792af664c2dbfc6cd880" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nNodes</declname>
+            <defname>nNodes</defname>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; double, <ref refid="_marmot_finite_element_8h_1a759a02da31864400f2363841d4816ba3" kindref="member">voigtSize</ref>, nNodes *<ref refid="_marmot_finite_element_8h_1a5cab07b434d5995c170ab1401609ccad" kindref="member">nDim</ref> &gt;</type>
+        <definition>Eigen::Matrix&lt; double, voigtSize, nNodes *nDim &gt; Marmot::Discretizations::Elements::Spatial2D::Axisymmetric::B</definition>
+        <argsstring>(const Eigen::Matrix&lt; double, nDim, nNodes &gt; &amp;dNdX, const Eigen::Matrix&lt; double, 1, nNodes &gt; &amp;N, const Eigen::Matrix&lt; double, nDim, 1 &gt; &amp;x_gauss)</argsstring>
+        <name>B</name>
+        <qualifiedname>Marmot::Discretizations::Elements::Spatial2D::Axisymmetric::B</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; double, <ref refid="_marmot_finite_element_8h_1a5cab07b434d5995c170ab1401609ccad" kindref="member">nDim</ref>, nNodes &gt; &amp;</type>
+          <declname>dNdX</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix&lt; double, 1, nNodes &gt; &amp;</type>
+          <declname>N</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix&lt; double, <ref refid="_marmot_finite_element_8h_1a5cab07b434d5995c170ab1401609ccad" kindref="member">nDim</ref>, 1 &gt; &amp;</type>
+          <declname>x_gauss</declname>
+        </param>
+        <briefdescription>
+<para>Compute the axisymmetric B-operator from physical derivatives. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of element nodes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dNdX</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Physical shape function derivatives (2 × nNodes). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">N</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shape function values (1 × nNodes). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">x_gauss</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Physical coordinates of the Gauss point (r, z). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>B-operator matrix of size 4 × (2 * nNodes). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="191" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="191" bodyend="205"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="179" column="5"/>
+  </compounddef>
+</doxygen>

@@ -21,7 +21,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Features" href="features.html" />
+    <link rel="next" title="Python Bindings" href="python_bindings.html" />
     <link rel="prev" title="Installation" href="installation.html" /> 
 </head>
 
@@ -55,6 +55,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#registering-a-material-or-finite-element">Registering a material or finite element</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="python_bindings.html">Python Bindings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="documentation.html">Code documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
@@ -111,22 +112,22 @@ A singularity container recipe is <a class="reference external" href="https://gi
 </section>
 <section id="create-your-custom-interface">
 <h2>Create your custom interface<a class="headerlink" href="#create-your-custom-interface" title="Link to this heading"></a></h2>
-<p>To create your custom interface to Marmot, you can leverage the <code class="docutils literal notranslate"><span class="pre">MarmotLibrary::MarmotMaterialHypoElasticFactory</span></code> and <code class="docutils literal notranslate"><span class="pre">MarmotLibrary::MarmotElementFactory</span></code> factories to create
+<p>To create your custom interface to Marmot, you can leverage the <code class="docutils literal notranslate"><span class="pre">Marmot::Registry::MaterialHypoElasticFactory</span></code> and <code class="docutils literal notranslate"><span class="pre">Marmot::Registry::ElementFactory</span></code> factories to create
 instances of registered material models and finite elements.
 Marmot provides two main base classes for materials:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">MarmotMaterialHypoElastic</span></code> — for small-strain materials formulated in rate form (hypoelastic constitutive relations).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">MarmotMaterialFiniteStrain</span></code> — for large-strain materials formulated in terms of the deformation gradient.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialHypoElastic</span></code> — for small-strain materials formulated in rate form (hypoelastic constitutive relations).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialFiniteStrain</span></code> — for large-strain materials formulated in terms of the deformation gradient.</p></li>
 </ul>
-<p>Finite elements are derived from the general parent class <code class="docutils literal notranslate"><span class="pre">MarmotElement</span></code>.</p>
+<p>Finite elements are derived from the general parent class <code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Elements::Element</span></code>.</p>
 <p>For instance, the following procedure may be employed to create an instance of a <code class="docutils literal notranslate"><span class="pre">Marmot::Materials::LinearElastic</span></code> material model,
-which belongs to the class of <code class="docutils literal notranslate"><span class="pre">MarmotMaterialHypoElastic</span></code> materials, and compute the current stress state:</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;Marmot/MarmotMaterialHypoElasticFactory.h&quot;</span>
+which belongs to the class of <code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialHypoElastic</span></code> materials, and compute the current stress state:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">"Marmot/MarmotMaterialHypoElasticFactory.h"</span>
 
 <span class="c1">// Create the instance by material name</span>
-<span class="k">auto</span><span class="w"> </span><span class="n">material</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">MarmotMaterialHypoElastic</span><span class="o">&gt;</span><span class="p">(</span>
-<span class="w">        </span><span class="n">MarmotLibrary</span><span class="o">::</span><span class="n">MarmotMaterialHypoElasticFactory</span><span class="o">::</span><span class="n">createMaterial</span><span class="p">(</span>
-<span class="w">            </span><span class="s">&quot;LINEARELASTIC&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">materialProperties</span><span class="p">,</span><span class="w"> </span><span class="n">nMaterialProperties</span><span class="p">,</span><span class="w"> </span><span class="n">anArbitraryIdentificationCode</span><span class="w"> </span><span class="p">));</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">material</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Marmot</span><span class="o">::</span><span class="n">Materials</span><span class="o">::</span><span class="n">MaterialHypoElastic</span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">        </span><span class="n">Marmot</span><span class="o">::</span><span class="n">Registry</span><span class="o">::</span><span class="n">MaterialHypoElasticFactory</span><span class="o">::</span><span class="n">createMaterial</span><span class="p">(</span>
+<span class="w">            </span><span class="s">"LINEARELASTIC"</span><span class="p">,</span><span class="w"> </span><span class="n">materialProperties</span><span class="p">,</span><span class="w"> </span><span class="n">nMaterialProperties</span><span class="p">,</span><span class="w"> </span><span class="n">anArbitraryIdentificationCode</span><span class="w"> </span><span class="p">));</span>
 
 <span class="c1">// assign a characteristic length parameter (specific to hypoelastic materials)</span>
 <span class="n">material</span><span class="o">-&gt;</span><span class="n">setCharacteristicElementLength</span><span class="p">(</span><span class="w"> </span><span class="n">theCharacteristicElementLength</span><span class="w"> </span><span class="p">);</span>
@@ -135,46 +136,46 @@ which belongs to the class of <code class="docutils literal notranslate"><span c
 <span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w">             </span><span class="n">nStateVars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">material</span><span class="o">-&gt;</span><span class="n">getNumberOfRequiredStateVars</span><span class="p">();</span>
 <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">stateVars</span><span class="p">(</span><span class="w"> </span><span class="n">nStateVars</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="p">);</span>
 
-<span class="n">MarmotMaterialHypoElastic</span><span class="o">::</span><span class="n">state3D</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MarmotMaterialHypoElastic</span><span class="o">::</span><span class="n">state3D</span><span class="p">()</span>
+<span class="n">Marmot</span><span class="o">::</span><span class="n">Materials</span><span class="o">::</span><span class="n">MaterialHypoElastic</span><span class="o">::</span><span class="n">state3D</span><span class="w"> </span><span class="n">state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Marmot</span><span class="o">::</span><span class="n">Materials</span><span class="o">::</span><span class="n">MaterialHypoElastic</span><span class="o">::</span><span class="n">state3D</span><span class="p">()</span>
 <span class="n">state</span><span class="p">.</span><span class="n">stateVars</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="n">stateVars</span><span class="p">.</span><span class="n">data</span><span class="p">();</span>
 
 <span class="c1">// compute stresses</span>
-<span class="n">Marmot</span><span class="o">::</span><span class="n">Matrix6d</span><span class="w">                          </span><span class="n">dStress_dStrain</span><span class="p">;</span>
-<span class="k">const</span><span class="w"> </span><span class="n">Marmot</span><span class="o">::</span><span class="n">Vector6d</span><span class="w">                    </span><span class="n">dStrain</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">Marmot</span><span class="o">::</span><span class="n">Vector6d</span><span class="o">::</span><span class="n">Zero</span><span class="p">();</span><span class="w"> </span><span class="c1">// strain increment</span>
+<span class="n">Marmot</span><span class="o">::</span><span class="n">Math</span><span class="o">::</span><span class="n">Matrix6d</span><span class="w">                          </span><span class="n">dStress_dStrain</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="n">Marmot</span><span class="o">::</span><span class="n">Math</span><span class="o">::</span><span class="n">Vector6d</span><span class="w">                    </span><span class="n">dStrain</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">Marmot</span><span class="o">::</span><span class="n">Math</span><span class="o">::</span><span class="n">Vector6d</span><span class="o">::</span><span class="n">Zero</span><span class="p">();</span><span class="w"> </span><span class="c1">// strain increment</span>
 <span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w">                              </span><span class="n">time</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span><span class="w">                      </span><span class="c1">// current time</span>
 <span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="w">                              </span><span class="n">dTime</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mf">0.01</span><span class="p">;</span><span class="w">                     </span><span class="c1">// time increment</span>
-<span class="k">const</span><span class="w"> </span><span class="n">MarmotMaterialHypoElastic</span><span class="o">::</span><span class="n">timeInfo</span><span class="w"> </span><span class="n">timeInfo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">dTime</span><span class="w"> </span><span class="p">};</span>
+<span class="k">const</span><span class="w"> </span><span class="n">Marmot</span><span class="o">::</span><span class="n">Materials</span><span class="o">::</span><span class="n">MaterialHypoElastic</span><span class="o">::</span><span class="n">timeInfo</span><span class="w"> </span><span class="n">timeInfo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">dTime</span><span class="w"> </span><span class="p">};</span>
 <span class="n">material</span><span class="o">-&gt;</span><span class="n">computeStress</span><span class="p">(</span><span class="w"> </span><span class="n">state</span><span class="p">,</span><span class="w"> </span><span class="n">dStress_dStrain</span><span class="p">,</span><span class="w"> </span><span class="n">dStrain</span><span class="p">,</span><span class="w"> </span><span class="n">timeInfo</span><span class="w"> </span><span class="p">);</span>
 </pre></div>
 </div>
 </section>
 <section id="registering-a-material-or-finite-element">
 <h2>Registering a material or finite element<a class="headerlink" href="#registering-a-material-or-finite-element" title="Link to this heading"></a></h2>
-<p>Materials are registered using the <code class="docutils literal notranslate"><span class="pre">MarmotMaterialHypoElasticFactory::registerMaterial</span></code> interface.
+<p>Materials are registered using the <code class="docutils literal notranslate"><span class="pre">Marmot::Registry::MaterialHypoElasticFactory::registerMaterial</span></code> interface.
 The function takes a unique name (a string chosen by the user) and the concrete material type as a template parameter.</p>
 <p>For instance, the <code class="docutils literal notranslate"><span class="pre">LinearElastic</span></code> material is registered as</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;Marmot/MarmotMaterialHypoElasticFactory.h&quot;</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">"Marmot/MarmotMaterialHypoElasticFactory.h"</span>
 
 <span class="k">const</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">LinearElasticIsRegistered</span><span class="w"> </span><span class="o">=</span>
-<span class="w">    </span><span class="n">MarmotLibrary</span><span class="o">::</span><span class="n">MarmotMaterialHypoElasticFactory</span><span class="o">::</span><span class="n">registerMaterial</span><span class="o">&lt;</span><span class="w"> </span><span class="n">Marmot</span><span class="o">::</span><span class="n">Materials</span><span class="o">::</span><span class="n">LinearElastic</span><span class="w"> </span><span class="o">&gt;</span><span class="p">(</span>
-<span class="w">        </span><span class="s">&quot;LINEARELASTIC&quot;</span><span class="w"> </span><span class="p">);</span>
+<span class="w">    </span><span class="n">Marmot</span><span class="o">::</span><span class="n">Registry</span><span class="o">::</span><span class="n">MaterialHypoElasticFactory</span><span class="o">::</span><span class="n">registerMaterial</span><span class="o">&lt;</span><span class="w"> </span><span class="n">Marmot</span><span class="o">::</span><span class="n">Materials</span><span class="o">::</span><span class="n">LinearElastic</span><span class="w"> </span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">        </span><span class="s">"LINEARELASTIC"</span><span class="w"> </span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Finite elements are registered using the <code class="docutils literal notranslate"><span class="pre">MarmotElementFactory::registerElement</span></code> interface.
+<p>Finite elements are registered using the <code class="docutils literal notranslate"><span class="pre">Marmot::Registry::ElementFactory::registerElement</span></code> interface.
 The function takes a unique name (a string chosen by the user) and a factory function.</p>
 <p>For instance, the 4-node plane strain displacement finite element “CPE4” is registered as</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;Marmot/MarmotElementFactory.h&quot;</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">"Marmot/MarmotElementFactory.h"</span>
 
 <span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="p">,</span>
-<span class="w">           </span><span class="n">Marmot</span><span class="o">::</span><span class="n">FiniteElement</span><span class="o">::</span><span class="n">Quadrature</span><span class="o">::</span><span class="n">IntegrationTypes</span><span class="w"> </span><span class="n">integrationType</span><span class="p">,</span>
+<span class="w">           </span><span class="n">Marmot</span><span class="o">::</span><span class="n">Discretizations</span><span class="o">::</span><span class="n">Elements</span><span class="o">::</span><span class="n">Quadrature</span><span class="o">::</span><span class="n">IntegrationTypes</span><span class="w"> </span><span class="n">integrationType</span><span class="p">,</span>
 <span class="w">           </span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">::</span><span class="n">SectionType</span><span class="w">                             </span><span class="n">sectionType</span><span class="w"> </span><span class="o">&gt;</span>
-<span class="n">MarmotLibrary</span><span class="o">::</span><span class="n">MarmotElementFactory</span><span class="o">::</span><span class="n">elementFactoryFunction</span><span class="w"> </span><span class="n">makeFactoryFunction</span><span class="p">()</span>
+<span class="n">Marmot</span><span class="o">::</span><span class="n">Registry</span><span class="o">::</span><span class="n">ElementFactory</span><span class="o">::</span><span class="n">elementFactoryFunction</span><span class="w"> </span><span class="n">makeFactoryFunction</span><span class="p">()</span>
 <span class="p">{</span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">[](</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">elementID</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">MarmotElement</span><span class="o">*</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">T</span><span class="p">(</span><span class="w"> </span><span class="n">elementID</span><span class="p">,</span><span class="w"> </span><span class="n">integrationType</span><span class="p">,</span><span class="w"> </span><span class="n">sectionType</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">[](</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">elementID</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Marmot</span><span class="o">::</span><span class="n">Discretizations</span><span class="o">::</span><span class="n">Elements</span><span class="o">::</span><span class="n">Element</span><span class="o">*</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">T</span><span class="p">(</span><span class="w"> </span><span class="n">elementID</span><span class="p">,</span><span class="w"> </span><span class="n">integrationType</span><span class="p">,</span><span class="w"> </span><span class="n">sectionType</span><span class="w"> </span><span class="p">);</span><span class="w"> </span><span class="p">};</span>
 <span class="p">}</span>
 
-<span class="k">const</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">CPE4_isRegistered</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MarmotLibrary</span><span class="o">::</span><span class="n">MarmotElementFactory</span><span class="o">::</span>
-<span class="w">    </span><span class="n">registerElement</span><span class="p">(</span><span class="w"> </span><span class="s">&quot;CPE4&quot;</span><span class="p">,</span>
+<span class="k">const</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">CPE4_isRegistered</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Marmot</span><span class="o">::</span><span class="n">Registry</span><span class="o">::</span><span class="n">ElementFactory</span><span class="o">::</span>
+<span class="w">    </span><span class="n">registerElement</span><span class="p">(</span><span class="w"> </span><span class="s">"CPE4"</span><span class="p">,</span>
 <span class="w">                     </span><span class="n">makeFactoryFunction</span><span class="o">&lt;</span><span class="w"> </span><span class="n">DisplacementFiniteElement</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">&gt;</span><span class="p">,</span>
 <span class="w">                                          </span><span class="n">FullIntegration</span><span class="p">,</span>
 <span class="w">                                          </span><span class="n">DisplacementFiniteElement</span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">&gt;::</span><span class="n">PlaneStrain</span><span class="w"> </span><span class="o">&gt;</span><span class="p">()</span><span class="w"> </span><span class="p">);</span>
@@ -182,27 +183,27 @@ The function takes a unique name (a string chosen by the user) and a factory fun
 </div>
 <p>making use of an auxiliary factory function generator.</p>
 <p>Creating a specific element instance and computing the kernel is straightforward:</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;Marmot/MarmotElementFactory.h&quot;</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;Marmot/MarmotElementProperty.h&quot;</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">"Marmot/MarmotElementFactory.h"</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">"Marmot/MarmotElementProperty.h"</span>
 
 <span class="kt">int</span><span class="w"> </span><span class="n">elementNumber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
 
 <span class="c1">// create the instance by element name</span>
-<span class="k">auto</span><span class="w"> </span><span class="n">theElement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">MarmotElement</span><span class="o">&gt;</span><span class="p">(</span>
-<span class="w">        </span><span class="n">MarmotLibrary</span><span class="o">::</span><span class="n">MarmotElementFactory</span><span class="o">::</span><span class="n">createElement</span><span class="p">(</span><span class="w"> </span><span class="s">&quot;CPE4&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">elementNumber</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">);</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">theElement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">Marmot</span><span class="o">::</span><span class="n">Discretizations</span><span class="o">::</span><span class="n">Elements</span><span class="o">::</span><span class="n">Element</span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">        </span><span class="n">Marmot</span><span class="o">::</span><span class="n">Registry</span><span class="o">::</span><span class="n">ElementFactory</span><span class="o">::</span><span class="n">createElement</span><span class="p">(</span><span class="w"> </span><span class="s">"CPE4"</span><span class="p">,</span><span class="w"> </span><span class="n">elementNumber</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">);</span>
 
 <span class="c1">// assign nodal coordinates</span>
 <span class="n">theElement</span><span class="o">-&gt;</span><span class="n">assignNodeCoordinates</span><span class="p">(</span><span class="w"> </span><span class="n">coordinates</span><span class="w"> </span><span class="p">);</span>
 
 <span class="c1">// assign properties (e.g., thickness)</span>
-<span class="n">theElement</span><span class="o">-&gt;</span><span class="n">assignProperty</span><span class="p">(</span><span class="w"> </span><span class="n">ElementProperties</span><span class="p">(</span><span class="w"> </span><span class="n">propertiesElement</span><span class="p">,</span><span class="w"> </span><span class="n">nPropertiesElement</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">);</span>
+<span class="n">theElement</span><span class="o">-&gt;</span><span class="n">assignProperty</span><span class="p">(</span><span class="w"> </span><span class="n">Marmot</span><span class="o">::</span><span class="n">Discretizations</span><span class="o">::</span><span class="n">ElementProperties</span><span class="p">(</span><span class="w"> </span><span class="n">propertiesElement</span><span class="p">,</span><span class="w"> </span><span class="n">nPropertiesElement</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">);</span>
 
 <span class="c1">// assign a material section by material name</span>
-<span class="c1">// MarmotElement takes care to create the required instances of MarmotMaterial</span>
-<span class="n">theElement</span><span class="o">-&gt;</span><span class="n">assignProperty</span><span class="p">(</span><span class="w"> </span><span class="n">MarmotMaterialSection</span><span class="p">(</span><span class="w"> </span><span class="s">&quot;LINEARELASTIC&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">propertiesMaterial</span><span class="p">,</span><span class="w"> </span><span class="n">nPropertiesMaterial</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">);</span>
+<span class="c1">// Marmot::Discretizations::Elements::Element takes care to create the required instances of MarmotMaterial</span>
+<span class="n">theElement</span><span class="o">-&gt;</span><span class="n">assignProperty</span><span class="p">(</span><span class="w"> </span><span class="n">Marmot</span><span class="o">::</span><span class="n">Discretizations</span><span class="o">::</span><span class="n">MaterialSection</span><span class="p">(</span><span class="w"> </span><span class="s">"LINEARELASTIC"</span><span class="p">,</span><span class="w"> </span><span class="n">propertiesMaterial</span><span class="p">,</span><span class="w"> </span><span class="n">nPropertiesMaterial</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">);</span>
 
 <span class="c1">// assign state vars to the element</span>
-<span class="c1">// MarmotElement automatically assigns the state vars also to MarmotMaterial instances</span>
+<span class="c1">// Marmot::Discretizations::Elements::Element automatically assigns the state vars also to MarmotMaterial instances</span>
 <span class="n">theElement</span><span class="o">-&gt;</span><span class="n">assignStateVars</span><span class="p">(</span><span class="w"> </span><span class="n">stateVars</span><span class="p">,</span><span class="w"> </span><span class="n">nStateVars</span><span class="w"> </span><span class="p">);</span>
 
 <span class="c1">// initialization</span>
@@ -220,7 +221,7 @@ The function takes a unique name (a string chosen by the user) and a factory fun
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="features.html" class="btn btn-neutral float-right" title="Features" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="python_bindings.html" class="btn btn-neutral float-right" title="Python Bindings" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

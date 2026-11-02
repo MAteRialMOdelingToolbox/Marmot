@@ -1,0 +1,225 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_math_1_1_differentiation_1_1_numerical" kind="namespace" language="C++">
+    <compoundname>Marmot::Math::Differentiation::Numerical</compoundname>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_numerical_1_1_scalar_to_tensor">Marmot::Math::Differentiation::Numerical::ScalarToTensor</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_numerical_1_1_tensor_to_scalar">Marmot::Math::Differentiation::Numerical::TensorToScalar</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_numerical_1_1_tensor_to_tensor">Marmot::Math::Differentiation::Numerical::TensorToTensor</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_numerical_1_1_complex">Marmot::Math::Differentiation::Numerical::Complex</innernamespace>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_marmot_numerical_differentiation_8h_1a0580e9e3573e6bccff6ca6293d1e8ffd" prot="public" static="no">
+        <type>std::function&lt; double(const double x) &gt;</type>
+        <definition>using Marmot::Math::Differentiation::Numerical::scalar_to_scalar_function_type = std::function&lt; double( const double x ) &gt;</definition>
+        <argsstring></argsstring>
+        <name>scalar_to_scalar_function_type</name>
+        <qualifiedname>Marmot::Math::Differentiation::Numerical::scalar_to_scalar_function_type</qualifiedname>
+        <briefdescription>
+<para>Type definition for a function that maps a double to another double. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="36" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_numerical_differentiation_8h_1a84d9a27d72dc2f3de272d0cd49ef5a23" prot="public" static="no">
+        <type>std::function&lt; Eigen::VectorXd(const Eigen::VectorXd &amp;X) &gt;</type>
+        <definition>using Marmot::Math::Differentiation::Numerical::vector_to_vector_function_type = std::function&lt; Eigen::VectorXd( const Eigen::VectorXd&amp; X ) &gt;</definition>
+        <argsstring></argsstring>
+        <name>vector_to_vector_function_type</name>
+        <qualifiedname>Marmot::Math::Differentiation::Numerical::vector_to_vector_function_type</qualifiedname>
+        <briefdescription>
+<para>Type definition for a function that maps an Eigen vector to another Eigen vector. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="41" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_numerical_differentiation_8h_1ab7710cd6148ca3f2ff00f155dd548d2a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Numerical::forwardDifference</definition>
+        <argsstring>(const scalar_to_scalar_function_type &amp;f, const double x)</argsstring>
+        <name>forwardDifference</name>
+        <qualifiedname>Marmot::Math::Differentiation::Numerical::forwardDifference</qualifiedname>
+        <param>
+          <type>const scalar_to_scalar_function_type &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+<para>Approximates the first derivative of a scalar function f at point x using the forward difference method. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>f</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The scalar function for which the derivative is to be approximated. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The point at which the derivative is to be approximated. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The approximated first derivative of f at point x.</para>
+</simplesect>
+It actually computes   <formula id="62">\[ f&apos;(x) \approx \frac{f(x + h) - f(x)}{h}
+\]</formula> with <formula id="63">$ h = \sqrt{\epsilon}\, \max(1,|x|) $</formula> and <formula id="64">$ \epsilon $</formula> being the machine precision. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="54" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" declline="54" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_numerical_differentiation_8h_1a8497f279c698725eafa1fca2d5a7bff1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Differentiation::Numerical::centralDifference</definition>
+        <argsstring>(const scalar_to_scalar_function_type &amp;f, const double x)</argsstring>
+        <name>centralDifference</name>
+        <qualifiedname>Marmot::Math::Differentiation::Numerical::centralDifference</qualifiedname>
+        <param>
+          <type>const scalar_to_scalar_function_type &amp;</type>
+          <declname>f</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+<para>Approximates the first derivative of a scalar function f at point x using the central difference method. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>f</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The scalar function for which the derivative is to be approximated. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The point at which the derivative is to be approximated. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The approximated first derivative of f at point x.</para>
+</simplesect>
+It actually approximates the first derivative by   <formula id="65">\[ f&apos;(x) \approx \frac{f(x + h) - f(x - h)}{2h}
+\]</formula> with <formula id="66">$ h = \sqrt[3]{\epsilon}\,\max( 1, |x|)$</formula> and <formula id="64">$ \epsilon $</formula> being the machine precision. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="67" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" declline="67" declcolumn="10"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_numerical_differentiation_8h_1a61d32ccf76c0c3b9f083b8db6c77b0dc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::MatrixXd</type>
+        <definition>Eigen::MatrixXd Marmot::Math::Differentiation::Numerical::forwardDifference</definition>
+        <argsstring>(const vector_to_vector_function_type &amp;F, const Eigen::VectorXd &amp;X)</argsstring>
+        <name>forwardDifference</name>
+        <qualifiedname>Marmot::Math::Differentiation::Numerical::forwardDifference</qualifiedname>
+        <param>
+          <type>const vector_to_vector_function_type &amp;</type>
+          <declname>F</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>X</declname>
+        </param>
+        <briefdescription>
+<para>Approximates the Jacobian matrix of a vector function F at point X using the forward difference method. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The vector function for which the Jacobian matrix is to be approximated. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>X</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The point at which the Jacobian matrix is to be approximated. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The approximated Jacobian matrix of F at point X.</para>
+</simplesect>
+It actually computes   <formula id="67">\[  J_{ij} \approx \frac{F_i(X + h e_j) - F_i(X)}{h}
+\]</formula> with <formula id="68">$ h = \sqrt{\epsilon} (1 + |X_j|) $</formula>, <formula id="69">$ e_j $</formula> being the unit vector in the j-th direction, and  <formula id="70">$\epsilon $</formula> being the machine precision. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="81" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" declline="81" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_numerical_differentiation_8h_1afbf7a18b877ae6105a8fab1043535caa" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::MatrixXd</type>
+        <definition>Eigen::MatrixXd Marmot::Math::Differentiation::Numerical::centralDifference</definition>
+        <argsstring>(const vector_to_vector_function_type &amp;F, const Eigen::VectorXd &amp;X)</argsstring>
+        <name>centralDifference</name>
+        <qualifiedname>Marmot::Math::Differentiation::Numerical::centralDifference</qualifiedname>
+        <param>
+          <type>const vector_to_vector_function_type &amp;</type>
+          <declname>F</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>X</declname>
+        </param>
+        <briefdescription>
+<para>Approximates the Jacobian matrix of a vector function F at point X using the central difference method. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The vector function for which the Jacobian matrix is to be approximated. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>X</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The point at which the Jacobian matrix is to be approximated. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The approximated Jacobian matrix of F at point X.</para>
+</simplesect>
+It actually approximates the Jacobian matrix by   <formula id="71">\[  J_{ij} \approx \frac{F_i(\boldsymbol{X} + h e_j) - F_i(\boldsymbol{X} - h e_j)}{2h}
+\]</formula> with <formula id="72">$ h = \sqrt[3]{\epsilon} \max(1, ||\boldsymbol{X}||) $</formula>, <formula id="69">$ e_j $</formula> being the unit vector in the j-th direction, and <formula id="64">$ \epsilon $</formula> being the machine precision. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" line="95" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h" declline="95" declcolumn="19"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="34" column="1"/>
+  </compounddef>
+</doxygen>

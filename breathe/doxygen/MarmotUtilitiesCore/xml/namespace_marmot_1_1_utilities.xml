@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_utilities" kind="namespace" language="C++">
+    <compoundname>Marmot::Utilities</compoundname>
+    <innerclass refid="class_marmot_1_1_utilities_1_1_journal" prot="public">Marmot::Utilities::Journal</innerclass>
+    <innerclass refid="class_marmot_1_1_utilities_1_1_make_string" prot="public">Marmot::Utilities::MakeString</innerclass>
+    <innerclass refid="class_marmot_1_1_utilities_1_1_solver_convergence_failed" prot="public">Marmot::Utilities::SolverConvergenceFailed</innerclass>
+    <innerclass refid="class_marmot_1_1_utilities_1_1_solver_increments_exhausted" prot="public">Marmot::Utilities::SolverIncrementsExhausted</innerclass>
+    <innerclass refid="class_marmot_1_1_utilities_1_1_solver_timestep_exhausted" prot="public">Marmot::Utilities::SolverTimestepExhausted</innerclass>
+    <innerclass refid="class_marmot_1_1_utilities_1_1_state_layout_dynamic" prot="public">Marmot::Utilities::StateLayoutDynamic</innerclass>
+    <innerclass refid="struct_marmot_1_1_utilities_1_1_state_mapper" prot="public">Marmot::Utilities::StateMapper</innerclass>
+    <innerclass refid="struct_marmot_1_1_utilities_1_1_state_view" prot="public">Marmot::Utilities::StateView</innerclass>
+    <innerclass refid="class_marmot_1_1_utilities_1_1_stress_update_failed" prot="public">Marmot::Utilities::StressUpdateFailed</innerclass>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_utils_8h_1ae31bbc8743097f29a10609f4180f5574" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>const double &amp;</type>
+        <definition>const double &amp; Marmot::Utilities::checkedMaterialProperty</definition>
+        <argsstring>(const double *materialProperties, int nMaterialProperties, int index)</argsstring>
+        <name>checkedMaterialProperty</name>
+        <qualifiedname>Marmot::Utilities::checkedMaterialProperty</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>materialProperties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaterialProperties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+<para>Access a material property after checking that it has been provided. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Materials that bind their properties to references in the member initializer list cannot validate the length of the property array in the constructor body first. Binding through this accessor turns a too short property array into an error instead of a read beyond its end. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">materialProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Array of the material properties. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nMaterialProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Length of <computeroutput>materialProperties</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of the requested property. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to the property. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if <computeroutput>index</computeroutput> is not a valid index of <computeroutput>materialProperties</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotUtils.h" line="54" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotUtils.h" bodystart="54" bodyend="60"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotUtils.h" line="30" column="1"/>
+  </compounddef>
+</doxygen>

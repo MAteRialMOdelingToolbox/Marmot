@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="_marmot_cell_geometry_8h" kind="file" language="C++">
+    <compoundname>MarmotCellGeometry.h</compoundname>
+    <includes local="yes">Marmot/MarmotFiniteElement.h</includes>
+    <includes local="yes">Marmot/MarmotGeometryElement.h</includes>
+    <includes local="yes">Marmot/MarmotJournal.h</includes>
+    <includes local="no">concepts</includes>
+    <includes local="no">stdexcept</includes>
+    <includedby refid="_marmot_b_spline_cell_geometry_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h</includedby>
+    <includedby refid="_marmot_lagrangian_cell_geometry_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotLagrangianCellGeometry.h</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCellGeometry.h</label>
+        <link refid="_marmot_cell_geometry_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot/MarmotFiniteElement.h</label>
+      </node>
+      <node id="3">
+        <label>Marmot/MarmotGeometryElement.h</label>
+      </node>
+      <node id="4">
+        <label>Marmot/MarmotJournal.h</label>
+      </node>
+      <node id="5">
+        <label>concepts</label>
+      </node>
+      <node id="6">
+        <label>stdexcept</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h</label>
+        <link refid="_marmot_b_spline_cell_geometry_8h_source"/>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCellGeometry.h</label>
+        <link refid="_marmot_cell_geometry_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotLagrangianCellGeometry.h</label>
+        <link refid="_marmot_lagrangian_cell_geometry_8h_source"/>
+      </node>
+    </invincdepgraph>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry" prot="public">Marmot::Discretizations::Cells::CellGeometry</innerclass>
+    <innerconcept refid="concept_marmot_1_1_discretizations_1_1_cells_1_1_geometry_cell_policy">Marmot::Discretizations::Cells::GeometryCellPolicy</innerconcept>
+    <innernamespace refid="namespace_marmot">Marmot</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations">Marmot::Discretizations</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_cells">Marmot::Discretizations::Cells</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/><sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>__<sp/>_<sp/>_<sp/>__<sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>___<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_`<sp/>|<sp/>&apos;__|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_<sp/>\|<sp/>__|</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_|<sp/>|<sp/>|<sp/><sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_)<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>|_|<sp/>|_|<sp/>|_|\__,_|_|<sp/><sp/>|_|<sp/>|_|<sp/>|_|\___/<sp/>\__|</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Unit<sp/>of<sp/>Strength<sp/>of<sp/>Materials<sp/>and<sp/>Structural<sp/>Analysis</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>University<sp/>of<sp/>Innsbruck</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>2020<sp/>-<sp/>today</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>festigkeitslehre@uibk.ac.at</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>the<sp/>MAteRialMOdellingToolbox<sp/>(marmot).</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>This<sp/>library<sp/>is<sp/>free<sp/>software;<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>modify<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>License<sp/>as<sp/>published<sp/>by<sp/>the<sp/>Free<sp/>Software<sp/>Foundation;<sp/>either</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>version<sp/>2.1<sp/>of<sp/>the<sp/>License,<sp/>or<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>The<sp/>full<sp/>text<sp/>of<sp/>the<sp/>license<sp/>can<sp/>be<sp/>found<sp/>in<sp/>the<sp/>file<sp/>LICENSE.md<sp/>at</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>the<sp/>top<sp/>level<sp/>directory<sp/>of<sp/>marmot.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotFiniteElement.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotGeometryElement.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotJournal.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;concepts&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;stdexcept&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="33"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::Discretizations::Cells<sp/>{</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"></highlight></codeline>
+<codeline lineno="46"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nDim,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nNodes<sp/>&gt;</highlight></codeline>
+<codeline lineno="47" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">[[deprecated(<sp/></highlight><highlight class="stringliteral">&quot;Currently<sp/>unused&quot;</highlight><highlight class="normal"><sp/>)]]<sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry" kindref="compound">CellGeometry</ref><sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="50" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1ac9ba9285eb2fd55a6176d5d49dafcb0f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nDim,<sp/>1<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1ac9ba9285eb2fd55a6176d5d49dafcb0f" kindref="member">XiSized</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="51" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a534a0b64a3326fbe6bbbc8dcbe86e843" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nDim<sp/>*<sp/>nNodes,<sp/>1<sp/>&gt;<sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a534a0b64a3326fbe6bbbc8dcbe86e843" kindref="member">CoordinateVector</ref>;<sp/></highlight></codeline>
+<codeline lineno="52" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a1faa1111811a7b8c7f5336ac5554dbe1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>1,<sp/>nNodes<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a1faa1111811a7b8c7f5336ac5554dbe1" kindref="member">NSized</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="53" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a5d57025902f5bf93842f98134ce73bd2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typedef</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nDim,<sp/>nNodes<sp/>&gt;<sp/><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a5d57025902f5bf93842f98134ce73bd2" kindref="member">dNdXSized</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a4878023ed744a582b2778bdc71ad0d18" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a4878023ed744a582b2778bdc71ad0d18" kindref="member">isCoordinateInCell</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>coordinates<sp/>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1ad80490564b31f58f7d8e3d9bef07d760" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1ac9ba9285eb2fd55a6176d5d49dafcb0f" kindref="member">XiSized</ref><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1ad80490564b31f58f7d8e3d9bef07d760" kindref="member">findReferenceCoordinate</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1ac9ba9285eb2fd55a6176d5d49dafcb0f" kindref="member">XiSized</ref>&amp;<sp/>coord<sp/>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="74" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a7cd06501dd93bf53003a2c50719b6d37" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a1faa1111811a7b8c7f5336ac5554dbe1" kindref="member">NSized</ref><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a7cd06501dd93bf53003a2c50719b6d37" kindref="member">N</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1ac9ba9285eb2fd55a6176d5d49dafcb0f" kindref="member">XiSized</ref>&amp;<sp/>xi<sp/>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a7856bf5cfd94b79d7e8c4ebc6962c9a1" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a5d57025902f5bf93842f98134ce73bd2" kindref="member">dNdXSized</ref><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a7856bf5cfd94b79d7e8c4ebc6962c9a1" kindref="member">dNdX</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1ac9ba9285eb2fd55a6176d5d49dafcb0f" kindref="member">XiSized</ref>&amp;<sp/>xi<sp/>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="88" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a1a7c91e2f0a4b673511a03b560347a32" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1a1a7c91e2f0a4b673511a03b560347a32" kindref="member">detJ</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry_1ac9ba9285eb2fd55a6176d5d49dafcb0f" kindref="member">XiSized</ref>&amp;<sp/>xi<sp/>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"></highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>GeometryCellImpl,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nDim,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nNodes<sp/>&gt;</highlight></codeline>
+<codeline lineno="106" refid="concept_marmot_1_1_discretizations_1_1_cells_1_1_geometry_cell_policy" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">concept<sp/></highlight><highlight class="normal"><ref refid="concept_marmot_1_1_discretizations_1_1_cells_1_1_geometry_cell_policy" kindref="compound">GeometryCellPolicy</ref><sp/>=<sp/></highlight><highlight class="keyword">requires</highlight><highlight class="normal">(<sp/>GeometryCellImpl<sp/>geom<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>GeometryCellImpl::XiSized;</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">requires</highlight><highlight class="normal"><sp/>std::same_as&lt;<sp/>typename<sp/>GeometryCellImpl::XiSized,<sp/>typename<sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nDim,<sp/>1<sp/>&gt;<sp/>&gt;;</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"></highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>GeometryCellImpl::NSized;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">requires</highlight><highlight class="normal"><sp/>std::same_as&lt;<sp/>typename<sp/>GeometryCellImpl::NSized,<sp/>typename<sp/>Eigen::Matrix&lt;<sp/>double,<sp/>1,<sp/>nNodes<sp/>&gt;<sp/>&gt;;</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"></highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>GeometryCellImpl::dNdXSized;</highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">requires</highlight><highlight class="normal"><sp/>std::same_as&lt;<sp/>typename<sp/>GeometryCellImpl::dNdXSized,<sp/>typename<sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nDim,<sp/>nNodes<sp/>&gt;<sp/>&gt;;</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>{<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/><sp/><sp/>geom.test(<sp/>typename<sp/>GeometryCellImpl::XiSized()<sp/>)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>}<sp/>-&gt;<sp/>std::same_as&lt;<sp/>bool<sp/>&gt;;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"></highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>{<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/><sp/><sp/>geom.isCoordinateInCell(<sp/>typename<sp/>GeometryCellImpl::XiSized()<sp/>)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="122"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>}<sp/>-&gt;<sp/>std::same_as&lt;<sp/>bool<sp/>&gt;;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="123"><highlight class="normal"></highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>geom.findReferenceCoordinate(<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>GeometryCellImpl::XiSized()<sp/>)</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/>-&gt;<sp/>std::same_as&lt;<sp/>typename<sp/>GeometryCellImpl::XiSized<sp/>&gt;;</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"></highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>geom.N(<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>GeometryCellImpl::XiSized()<sp/>)</highlight></codeline>
+<codeline lineno="130"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/>-&gt;<sp/>std::same_as&lt;<sp/>typename<sp/>GeometryCellImpl::NSized<sp/>&gt;;</highlight></codeline>
+<codeline lineno="131"><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="133"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>geom.dNdX(<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>GeometryCellImpl::XiSized()<sp/>)</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/>-&gt;<sp/>std::same_as&lt;<sp/>typename<sp/>GeometryCellImpl::dNdXSized<sp/>&gt;;</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>geom.detJ(<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>GeometryCellImpl::XiSized()<sp/>)</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/>-&gt;<sp/>std::same_as&lt;<sp/>double<sp/>&gt;;</highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="140"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::Discretizations::Cells</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCellGeometry.h"/>
+  </compounddef>
+</doxygen>

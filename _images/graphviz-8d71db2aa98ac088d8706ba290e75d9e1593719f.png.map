@@ -1,0 +1,11 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h" alt="" coords="5,5,1035,53"/>
+<area shape="rect" id="node2" title="Marmot/MarmotPortability.h" alt="" coords="86,101,380,149"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="451,53,319,99,318,94,446,54"/>
+<area shape="rect" id="node3" title="iostream" alt="" coords="405,101,510,149"/>
+<area shape="poly" id="edge2" title="include" alt="" coords="507,52,483,91,480,86,502,55"/>
+<area shape="rect" id="node4" title="sstream" alt="" coords="534,101,632,149"/>
+<area shape="poly" id="edge3" title="include" alt="" coords="537,51,561,90,556,88,534,56"/>
+<area shape="rect" id="node5" title="string" alt="" coords="656,101,734,149"/>
+<area shape="poly" id="edge4" title="include" alt="" coords="564,51,644,96,639,95,563,57"/>
+</map>

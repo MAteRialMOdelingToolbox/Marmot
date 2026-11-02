@@ -1,0 +1,250 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_registry_1_1_material_point_factory" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Registry::MaterialPointFactory</compoundname>
+    <includes refid="_marmot_m_p_m_library_8h" local="no">MarmotMPMLibrary.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_registry_1_1_material_point_factory_1a1ad11422e15e92e84a23a350a9afd9b4" prot="public" static="no">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point" kindref="compound">Marmot::Discretizations::MaterialPoints::MaterialPoint</ref> *(*)(int materialPointNumber, const double *vertexCoordinates, int sizeVertexCoordinates, double volume)</type>
+        <definition>using Marmot::Registry::MaterialPointFactory::materialPointFactoryFunction = 
+Marmot::Discretizations::MaterialPoints::MaterialPoint* (*)( int           materialPointNumber,
+                                                             const double* vertexCoordinates,
+                                                             int           sizeVertexCoordinates,
+                                                             double        volume
+                                                             
+)</definition>
+        <argsstring></argsstring>
+        <name>materialPointFactoryFunction</name>
+        <qualifiedname>Marmot::Registry::MaterialPointFactory::materialPointFactoryFunction</qualifiedname>
+        <briefdescription>
+<para>Signature of a material point factory function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Arguments: material point number, vertex coordinates (vertex by vertex), size of the vertex coordinate array, and the volume of the material point. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" line="58" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_material_point_factory_1acd069008357cce5c3af5b6c04681665b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Registry::MaterialPointFactory::MaterialPointFactory</definition>
+        <argsstring>()=delete</argsstring>
+        <name>MaterialPointFactory</name>
+        <qualifiedname>Marmot::Registry::MaterialPointFactory::MaterialPointFactory</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" line="66" column="5"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_material_point_factory_1aa5fb0dbc87b3d9bdaf17737b9d364274" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point" kindref="compound">Marmot::Discretizations::MaterialPoints::MaterialPoint</ref> *</type>
+        <definition>static Marmot::Discretizations::MaterialPoints::MaterialPoint * Marmot::Registry::MaterialPointFactory::createMaterialPoint</definition>
+        <argsstring>(const std::string &amp;materialPointName, int materialNumber, const double *vertexCoordinates, int sizeVertexCoordinates, double volume)</argsstring>
+        <name>createMaterialPoint</name>
+        <qualifiedname>Marmot::Registry::MaterialPointFactory::createMaterialPoint</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>materialPointName</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>materialNumber</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>vertexCoordinates</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>sizeVertexCoordinates</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>volume</declname>
+        </param>
+        <briefdescription>
+<para>Creates a material point of a registered type. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">materialPointName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Registered name (case-insensitive), e.g. <computeroutput>&quot;Displacement/PlaneStrain&quot;</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialNumber</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of the new material point. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">vertexCoordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vertex coordinates (vertex by vertex). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">sizeVertexCoordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of <computeroutput>vertexCoordinates</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">volume</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Volume of the material point. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Newly allocated material point; the caller takes ownership. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if no material point is registered under <computeroutput>materialPointName</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" line="78" column="67"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_material_point_factory_1ae7ab20142947ce63ea5d24074d42ab69" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool Marmot::Registry::MaterialPointFactory::registerMaterialPoint</definition>
+        <argsstring>(const std::string &amp;materialName, materialPointFactoryFunction factoryFunction)</argsstring>
+        <name>registerMaterialPoint</name>
+        <qualifiedname>Marmot::Registry::MaterialPointFactory::registerMaterialPoint</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>materialName</declname>
+        </param>
+        <param>
+          <type><ref refid="class_marmot_1_1_registry_1_1_material_point_factory_1a1ad11422e15e92e84a23a350a9afd9b4" kindref="member">materialPointFactoryFunction</ref></type>
+          <declname>factoryFunction</declname>
+        </param>
+        <briefdescription>
+<para>Registers a material point type. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">materialName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name (case-insensitive); registering a name twice fails an <computeroutput>assert</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">factoryFunction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Function creating an instance. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> (used to initialize a static flag). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" line="93" column="17"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_material_point_factory_1a8f27afbe8b1e75155524263368e45c12" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::Registry::MaterialPointFactory::checkIfMaterialPointIsRegistered</definition>
+        <argsstring>(const std::string &amp;materialPointName)</argsstring>
+        <name>checkIfMaterialPointIsRegistered</name>
+        <qualifiedname>Marmot::Registry::MaterialPointFactory::checkIfMaterialPointIsRegistered</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>materialPointName</declname>
+        </param>
+        <briefdescription>
+<para>Checks whether a name is registered (declared, but not implemented). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">materialPointName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the material point type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> if registered. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" line="101" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_material_point_factory_1a6e9e4fd9aea7b4ae362f26f4533911ca" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::unordered_map&lt; std::string, <ref refid="class_marmot_1_1_registry_1_1_material_point_factory_1a1ad11422e15e92e84a23a350a9afd9b4" kindref="member">materialPointFactoryFunction</ref> &gt; &amp;</type>
+        <definition>static std::unordered_map&lt; std::string, materialPointFactoryFunction &gt; &amp; Marmot::Registry::MaterialPointFactory::materialPointFactoryFunctionByName</definition>
+        <argsstring>()</argsstring>
+        <name>materialPointFactoryFunctionByName</name>
+        <qualifiedname>Marmot::Registry::MaterialPointFactory::materialPointFactoryFunctionByName</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Factory functions by upper-case name (a function-local static: registrations run during static initialization, possibly before a static data member of this translation unit would be constructed). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" line="105" column="31"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Registry of <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point" kindref="compound">Marmot::Discretizations::MaterialPoints::MaterialPoint</ref> types, created by name. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A material point module registers each of its types once, at static initialization time, with a factory function (typically a captureless lambda) in its <computeroutput>*Registration</computeroutput>.cpp: <programlisting><codeline><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>isRegistered<sp/>=<sp/><ref refid="class_marmot_1_1_registry_1_1_material_point_factory_1ae7ab20142947ce63ea5d24074d42ab69" kindref="member">Marmot::Registry::MaterialPointFactory::registerMaterialPoint</ref>(</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="stringliteral">&quot;Displacement/PlaneStrain&quot;</highlight><highlight class="normal">,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>[](<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>n,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>coords,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>sizeCoords,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>volume<sp/>)<sp/>-&gt;</highlight></codeline>
+<codeline><highlight class="normal">Marmot::Discretizations::MaterialPoints::MaterialPoint*<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">new</highlight><highlight class="normal"><sp/>DisplacementMaterialPoint2D(<sp/>n,<sp/>coords,</highlight></codeline>
+<codeline><highlight class="normal">sizeCoords,<sp/>volume<sp/>);<sp/>}<sp/>);</highlight></codeline>
+</programlisting> Names are case-insensitive (stored in upper case). The class is not instantiable; all members are static. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" line="51" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" bodystart="51" bodyend="106"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_registry_1_1_material_point_factory_1a8f27afbe8b1e75155524263368e45c12" prot="private" virt="non-virtual"><scope>Marmot::Registry::MaterialPointFactory</scope><name>checkIfMaterialPointIsRegistered</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_material_point_factory_1aa5fb0dbc87b3d9bdaf17737b9d364274" prot="public" virt="non-virtual"><scope>Marmot::Registry::MaterialPointFactory</scope><name>createMaterialPoint</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_material_point_factory_1acd069008357cce5c3af5b6c04681665b" prot="public" virt="non-virtual"><scope>Marmot::Registry::MaterialPointFactory</scope><name>MaterialPointFactory</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_material_point_factory_1a1ad11422e15e92e84a23a350a9afd9b4" prot="public" virt="non-virtual"><scope>Marmot::Registry::MaterialPointFactory</scope><name>materialPointFactoryFunction</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_material_point_factory_1a6e9e4fd9aea7b4ae362f26f4533911ca" prot="private" virt="non-virtual"><scope>Marmot::Registry::MaterialPointFactory</scope><name>materialPointFactoryFunctionByName</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_material_point_factory_1ae7ab20142947ce63ea5d24074d42ab69" prot="public" virt="non-virtual"><scope>Marmot::Registry::MaterialPointFactory</scope><name>registerMaterialPoint</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

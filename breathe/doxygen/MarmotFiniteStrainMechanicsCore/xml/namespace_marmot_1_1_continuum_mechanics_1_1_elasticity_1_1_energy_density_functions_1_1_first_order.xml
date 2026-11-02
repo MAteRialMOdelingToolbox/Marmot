@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_energy_density_functions_1_1_first_order" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_energy_density_functions_8h_1aeba84b8039eeda90a89e526508c1f65d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::tuple&lt; T, Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &gt;</type>
+        <definition>std::tuple&lt; T, Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &gt; Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB</definition>
+        <argsstring>(const Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;C, const double K, const double G)</argsstring>
+        <name>PenceGouPotentialB</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB</qualifiedname>
+        <param>
+          <type>const Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>C</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>K</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>G</declname>
+        </param>
+        <briefdescription>
+<para>Hyperelastic Energy Density Function Wb acc. Pence &amp; Gou (2015), Eq. (2.12) and its first derivative w.r.t. C. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The energy density function <formula id="73">$W_b$</formula> is given as   <formula id="74">\[   W_b = \frac{K}{8} \left(J - \frac{1}{J}\right)^2 + \frac{G}{2} \left(I_1 J^{-\frac{2}{3}} - 3\right)
+\]</formula> where <formula id="69">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="70">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="71">$ J = \sqrt{\det(\boldsymbol{C})} =
+\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="72">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
+<para>Additionally, the first derivative w.r.t. C is computed as   <formula id="89">\[   \frac{\partial W_b}{\partial \boldsymbol{C}} = \frac{\partial W_b}{\partial J} \frac{\partial J}{\partial
+\boldsymbol{C}} + \frac{\partial W_b}{\partial I_1} \frac{\partial I_1}{\partial \boldsymbol{C}} \]</formula> where   <formula id="90">\[   \frac{\partial J}{\partial \boldsymbol{C}} = \frac{1}{2} J \boldsymbol{C}^{-1}
+\]</formula> and   <formula id="91">\[   \frac{\partial I_1}{\partial \boldsymbol{C}} = \boldsymbol{I}
+\]</formula></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type, e.g. double, float, etc. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>C</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Right Cauchy-Green tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>K</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Bulk modulus </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>G</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shear modulus </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tuple containing energy density and its first derivative w.r.t. C </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="264" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" bodystart="264" bodyend="292"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotEnergyDensityFunctions.h" line="232" column="3"/>
+  </compounddef>
+</doxygen>

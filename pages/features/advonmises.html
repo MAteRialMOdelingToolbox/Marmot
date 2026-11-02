@@ -23,7 +23,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Finite elements" href="elements.html" />
+    <link rel="next" title="Hughes-Winget wrapper" href="hugheswinget.html" />
     <link rel="prev" title="Von Mises model" href="vonmises.html" /> 
 </head>
 
@@ -50,7 +50,9 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="materials.html">Material models</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="at2phasefield.html">AT2 Phase Field Fracture</a></li>
@@ -65,15 +67,24 @@
 <li class="toctree-l3"><a class="reference internal" href="adlinearelastic.html">Linear Elastic model (Automatic Differentiation)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="linearviscoelasticpowerlaw.html">Linear Viscoelastic Power Law model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="linearviscoelasticorthotropicpowerlaw.html">Linear Viscoelastic Orthotropic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticwiechert.html">Linear Viscoelastic Wiechert model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="interfacematerialhypoelastic.html">Interface material (hypoelastic bulk material)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="microplanem7.html">Microplane model M7</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gm7.html">Gradient-enhanced microplane model M7 (GM7)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="vonmises.html">Von Mises model</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Von Mises model (Automatic Differentiation)</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="hugheswinget.html">Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedhugheswinget.html">Gradient-enhanced Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedcompressibleneohookedamage.html">Gradient-enhanced compressible Neo-Hooke damage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedfinitestraindruckerprager.html">Gradient-enhanced finite-strain Drucker-Prager</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meshfree.html">Meshfree methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
@@ -173,16 +184,16 @@
 <p>Implementation follows the <a class="reference internal" href="vonmises.html#vonmisesmodel"><span class="std std-ref">Von Mises model</span></a>, however, automatic differentiation is used to compute the consistent algorithmic tangent operator.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials10ADVonMisesE">
-<span id="_CPPv3N6Marmot9Materials10ADVonMisesE"></span><span id="_CPPv2N6Marmot9Materials10ADVonMisesE"></span><span id="Marmot::Materials::ADVonMises"></span><span class="target" id="classMarmot_1_1Materials_1_1ADVonMises"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADVonMises</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv427MarmotMaterialHypoElasticAD" title="MarmotMaterialHypoElasticAD"><span class="n"><span class="pre">MarmotMaterialHypoElasticAD</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials10ADVonMisesE" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3N6Marmot9Materials10ADVonMisesE"></span><span id="_CPPv2N6Marmot9Materials10ADVonMisesE"></span><span id="Marmot::Materials::ADVonMises"></span><span class="target" id="classMarmot_1_1Materials_1_1ADVonMises"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADVonMises</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials21MaterialHypoElasticADE" title="Marmot::Materials::MaterialHypoElasticAD"><span class="n"><span class="pre">MaterialHypoElasticAD</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials10ADVonMisesE" title="Link to this definition"></a><br /></dt>
 <dd><p>Inheritance diagram for Marmot::Materials::ADVonMises:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-d1c4621b3976c84d10131e226d45f7d86471d5eb.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-e028589a6e772dc2c21545df900150f97b576ad8.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;1&quot; [label=&quot;Marmot::Materials::ADVonMises&quot; tooltip=&quot;Marmot::Materials::ADVonMises&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;3&quot; [label=&quot;MarmotMaterialHypoElastic&quot; tooltip=&quot;MarmotMaterialHypoElastic&quot;]
-    &quot;2&quot; [label=&quot;MarmotMaterialHypoElasticAD&quot; tooltip=&quot;MarmotMaterialHypoElasticAD&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Materials::MaterialHypoElastic&quot; tooltip=&quot;Marmot::Materials::MaterialHypoElastic&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialHypoElasticAD&quot; tooltip=&quot;Marmot::Materials::MaterialHypoElasticAD&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
     &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
 }" class="graphviz" /></div>
@@ -190,14 +201,14 @@
 </figure>
 <p>Collaboration diagram for Marmot::Materials::ADVonMises:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-f426bd5c9481ac7e5ebb4fff07b37daa9189716c.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-5cf03f19534ebcfe916d9a2db2b2464757ede4ff.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;1&quot; [label=&quot;Marmot::Materials::ADVonMises&quot; tooltip=&quot;Marmot::Materials::ADVonMises&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;3&quot; [label=&quot;MarmotMaterialHypoElastic&quot; tooltip=&quot;MarmotMaterialHypoElastic&quot;]
-    &quot;2&quot; [label=&quot;MarmotMaterialHypoElasticAD&quot; tooltip=&quot;MarmotMaterialHypoElasticAD&quot;]
-    &quot;4&quot; [label=&quot;MarmotStateLayoutDynamic&quot; tooltip=&quot;MarmotStateLayoutDynamic&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Materials::MaterialHypoElastic&quot; tooltip=&quot;Marmot::Materials::MaterialHypoElastic&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialHypoElasticAD&quot; tooltip=&quot;Marmot::Materials::MaterialHypoElasticAD&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Utilities::StateLayoutDynamic&quot; tooltip=&quot;Marmot::Utilities::StateLayoutDynamic&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
     &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
     &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
@@ -275,8 +286,8 @@
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials10ADVonMises15computeStressADER9state3DADRKN6Marmot11Vector6dualERK8timeInfo">
-<span id="_CPPv3NK6Marmot9Materials10ADVonMises15computeStressADER9state3DADRKN6Marmot11Vector6dualERK8timeInfo"></span><span id="_CPPv2NK6Marmot9Materials10ADVonMises15computeStressADER9state3DADRKN6Marmot11Vector6dualERK8timeInfo"></span><span id="Marmot::Materials::ADVonMises::computeStressAD__state3DADR.Marmot::Vector6dualCR.timeInfoCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1ADVonMises_1af835796cb2c94aa82503905501eb2ad2"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStressAD</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">state3DAD</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">state</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot11Vector6dualE" title="Marmot::Vector6dual"><span class="n"><span class="pre">Vector6dual</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4NK6Marmot9Materials10ADVonMises15computeStressADER9state3DADRKN6Marmot11Vector6dualERK8timeInfo" title="Marmot::Materials::ADVonMises::computeStressAD::timeInfo"><span class="n"><span class="pre">timeInfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeInfo</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials10ADVonMises15computeStressADER9state3DADRKN6Marmot11Vector6dualERK8timeInfo" title="Link to this definition"></a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials10ADVonMises15computeStressADER9state3DADRKN6Marmot4Math11Vector6dualERK8timeInfo">
+<span id="_CPPv3NK6Marmot9Materials10ADVonMises15computeStressADER9state3DADRKN6Marmot4Math11Vector6dualERK8timeInfo"></span><span id="_CPPv2NK6Marmot9Materials10ADVonMises15computeStressADER9state3DADRKN6Marmot4Math11Vector6dualERK8timeInfo"></span><span id="Marmot::Materials::ADVonMises::computeStressAD__state3DADR.Marmot::Math::Vector6dualCR.timeInfoCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1ADVonMises_1adeb979dc077cd34ac744329ccaa6bcbb"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStressAD</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">state3DAD</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">state</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math11Vector6dualE" title="Marmot::Math::Vector6dual"><span class="n"><span class="pre">Vector6dual</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4NK6Marmot9Materials10ADVonMises15computeStressADER9state3DADRKN6Marmot4Math11Vector6dualERK8timeInfo" title="Marmot::Materials::ADVonMises::computeStressAD::timeInfo"><span class="n"><span class="pre">timeInfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeInfo</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials10ADVonMises15computeStressADER9state3DADRKN6Marmot4Math11Vector6dualERK8timeInfo" title="Link to this definition"></a><br /></dt>
 <dd><p>Compute the Cauchy stress tensor <span class="math notranslate nohighlight">\(\boldsymbol{\sigma}\)</span> given an increment of the linearized strain tensor <span class="math notranslate nohighlight">\(\Delta\boldsymbol{\varepsilon}\)</span>. </p>
 <p>Dual numbers are used for both the Cauchy stress tensor and the linearized strain increment, such that the algorithmic tangent operator <span class="math notranslate nohighlight">\(\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}\)</span> can be obtained by means of automatic differentiation.</p>
 <dl class="field-list simple">
@@ -284,7 +295,7 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>state</strong> – <strong>[inout]</strong> State carrying the dual Cauchy stress, strain energy, and state variables </p></li>
 <li><p><strong>dStrain</strong> – <strong>[in]</strong> linearized strain increment </p></li>
-<li><p><strong>timeInfo</strong> – Old (pseudo-)time </p></li>
+<li><p><strong>timeInfo</strong> – <strong>[in]</strong> Old (pseudo-)time </p></li>
 </ul>
 </dd>
 </dl>
@@ -294,13 +305,15 @@
 <dt class="sig sig-object cpp" id="_CPPv4I0ENK6Marmot9Materials10ADVonMises2fyE1T1T">
 <span id="_CPPv3I0ENK6Marmot9Materials10ADVonMises2fyE1T"></span><span id="_CPPv2I0ENK6Marmot9Materials10ADVonMises2fyE1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1ADVonMises_1a3c8d17d48401effc06213f389dd93646"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials10ADVonMises2fyE1T1T" title="Marmot::Materials::ADVonMises::fy::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fy</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials10ADVonMises2fyE1T1T" title="Marmot::Materials::ADVonMises::fy::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">kappa_</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0ENK6Marmot9Materials10ADVonMises2fyE1T1T" title="Link to this definition"></a><br /></dt>
 <dd><p>Hardening function. </p>
-<p>
-in] kappa Hardening variable. </p>
 <dl class="field-list simple">
-<dt class="field-odd">Tparam <span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Current yield stress. </p>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type (double or an automatic differentiation type). </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>kappa_</strong> – <strong>[in]</strong> Hardening variable. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Current yield stress. </p>
 </dd>
 </dl>
 </dd></dl>
@@ -309,13 +322,15 @@ in] kappa Hardening variable. </p>
 <dt class="sig sig-object cpp" id="_CPPv4I0ENK6Marmot9Materials10ADVonMises1fE1TK1TKd">
 <span id="_CPPv3I0ENK6Marmot9Materials10ADVonMises1fEK1TKd"></span><span id="_CPPv2I0ENK6Marmot9Materials10ADVonMises1fEK1TKd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1ADVonMises_1a14bd9d752f0982c391679fb7b5e3e1a2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials10ADVonMises1fE1TK1TKd" title="Marmot::Materials::ADVonMises::f::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">f</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials10ADVonMises1fE1TK1TKd" title="Marmot::Materials::ADVonMises::f::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">rho_</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">kappa_</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0ENK6Marmot9Materials10ADVonMises1fE1TK1TKd" title="Link to this definition"></a><br /></dt>
 <dd><p>Yield function. </p>
-<p>
-in] rho Deviatoric radius ( <span class="math notranslate nohighlight">\(\rho = ||s||\)</span>). </p>
 <dl class="field-list simple">
-<dt class="field-odd">Tparam <span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type (double or an automatic differentiation type). </p>
+</dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>kappa</strong> – <strong>[in]</strong> Hardening variable. </p>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>rho_</strong> – <strong>[in]</strong> Deviatoric radius ( <span class="math notranslate nohighlight">\(\rho = ||s||\)</span>). </p></li>
+<li><p><strong>kappa_</strong> – <strong>[in]</strong> Hardening variable. </p></li>
+</ul>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Value of the yield function. </p>
@@ -327,24 +342,45 @@ in] rho Deviatoric radius ( <span class="math notranslate nohighlight">\(\rho = 
 <dt class="sig sig-object cpp" id="_CPPv4I0ENK6Marmot9Materials10ADVonMises1gE1TK1TKdK1T">
 <span id="_CPPv3I0ENK6Marmot9Materials10ADVonMises1gEK1TKdK1T"></span><span id="_CPPv2I0ENK6Marmot9Materials10ADVonMises1gEK1TKdK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1ADVonMises_1ad71ae56939e0045b347f0df90cecd01e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials10ADVonMises1gE1TK1TKdK1T" title="Marmot::Materials::ADVonMises::g::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">g</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials10ADVonMises1gE1TK1TKdK1T" title="Marmot::Materials::ADVonMises::g::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">rhoTrial</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">kappa</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials10ADVonMises1gE1TK1TKdK1T" title="Marmot::Materials::ADVonMises::g::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">deltaKappa</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0ENK6Marmot9Materials10ADVonMises1gE1TK1TKdK1T" title="Link to this definition"></a><br /></dt>
 <dd><p>Objective function for stress update algorithm. </p>
-<p><p>in] rhoTrial Deviatoric radius.</p>
-<p>in] deltaKappa Increment of the hardening variable.</p>
-</p>
 <dl class="field-list simple">
-<dt class="field-odd">Tparam <span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>kappa</strong> – <strong>[in]</strong> Current value of the hardening variable. </p>
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type (double or an automatic differentiation type). </p>
 </dd>
-<dt class="field-odd">Tparam <span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Value of the yield function. </p>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>rhoTrial</strong> – <strong>[in]</strong> Deviatoric radius. </p></li>
+<li><p><strong>kappa</strong> – <strong>[in]</strong> Current value of the hardening variable. </p></li>
+<li><p><strong>deltaKappa</strong> – <strong>[in]</strong> Increment of the hardening variable. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Value of the yield function. </p>
 </dd>
 </dl>
 </dd></dl>
 
 </div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials10ADVonMises9ConstantsE">
+<span id="_CPPv3N6Marmot9Materials10ADVonMises9ConstantsE"></span><span id="_CPPv2N6Marmot9Materials10ADVonMises9ConstantsE"></span><span id="Marmot::Materials::ADVonMises::Constants"></span><span class="target" id="structMarmot_1_1Materials_1_1ADVonMises_1_1Constants"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Constants</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials10ADVonMises9ConstantsE" title="Link to this definition"></a><br /></dt>
+<dd><p>Numerical constants for the <a class="reference internal" href="#classMarmot_1_1Materials_1_1ADVonMises"><span class="std std-ref">ADVonMises</span></a> return-mapping algorithm. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials10ADVonMises9Constants14innerNewtonTolE">
+<span id="_CPPv3N6Marmot9Materials10ADVonMises9Constants14innerNewtonTolE"></span><span id="_CPPv2N6Marmot9Materials10ADVonMises9Constants14innerNewtonTolE"></span><span id="Marmot::Materials::ADVonMises::Constants::innerNewtonTol__double"></span><span class="target" id="structMarmot_1_1Materials_1_1ADVonMises_1_1Constants_1ac6d65e651d62093c59fe572c1c194bdb"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">innerNewtonTol</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1e-10</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials10ADVonMises9Constants14innerNewtonTolE" title="Link to this definition"></a><br /></dt>
+<dd><p>Convergence tolerance for the inner Newton iteration. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials10ADVonMises9Constants21nMaxInnerNewtonCyclesE">
+<span id="_CPPv3N6Marmot9Materials10ADVonMises9Constants21nMaxInnerNewtonCyclesE"></span><span id="_CPPv2N6Marmot9Materials10ADVonMises9Constants21nMaxInnerNewtonCyclesE"></span><span id="Marmot::Materials::ADVonMises::Constants::nMaxInnerNewtonCycles__i"></span><span class="target" id="structMarmot_1_1Materials_1_1ADVonMises_1_1Constants_1a7277aaa6d6cf6f985a2250145bb6026e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nMaxInnerNewtonCycles</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">15</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials10ADVonMises9Constants21nMaxInnerNewtonCyclesE" title="Link to this definition"></a><br /></dt>
+<dd><p>Maximum number of inner Newton iterations. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -355,7 +391,7 @@ in] rho Deviatoric radius ( <span class="math notranslate nohighlight">\(\rho = 
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="vonmises.html" class="btn btn-neutral float-left" title="Von Mises model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="elements.html" class="btn btn-neutral float-right" title="Finite elements" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="hugheswinget.html" class="btn btn-neutral float-right" title="Hughes-Winget wrapper" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

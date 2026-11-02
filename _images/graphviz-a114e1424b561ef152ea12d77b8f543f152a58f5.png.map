@@ -1,0 +1,5 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt;" alt="" coords="48,5,736,53"/>
+<area shape="rect" id="node2" title="Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;" alt="" coords="5,101,779,149"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="394,52,394,88,390,84,390,56"/>
+</map>

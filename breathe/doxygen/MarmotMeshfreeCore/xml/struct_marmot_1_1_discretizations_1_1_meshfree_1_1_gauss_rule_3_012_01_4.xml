@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_012_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Discretizations::Meshfree::GaussRule&lt; 2 &gt;</compoundname>
+    <includes refid="_marmot_meshfree_quad_hex_cell_8h" local="no">MarmotMeshfreeQuadHexCell.h</includes>
+    <templateparamlist>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_012_01_4_1a50b50bcfcf04088bf409132866572ee1" prot="public" static="no">
+        <type>double</type>
+        <definition>using Marmot::Discretizations::Meshfree::GaussRule&lt; 2 &gt;::Scalar = double</definition>
+        <argsstring></argsstring>
+        <name>Scalar</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::GaussRule&lt; 2 &gt;::Scalar</qualifiedname>
+        <briefdescription>
+<para>Type for scalar values. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="65" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_012_01_4_1a8c18ec674b51dbc768065c5c6aad78d1" prot="public" static="no">
+        <type>Eigen::Matrix&lt; <ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_012_01_4_1a50b50bcfcf04088bf409132866572ee1" kindref="member">Scalar</ref>, 2, 1 &gt;</type>
+        <definition>using Marmot::Discretizations::Meshfree::GaussRule&lt; 2 &gt;::Vec = Eigen::Matrix&lt; Scalar, 2, 1 &gt;</definition>
+        <argsstring></argsstring>
+        <name>Vec</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::GaussRule&lt; 2 &gt;::Vec</qualifiedname>
+        <briefdescription>
+<para>Type for 2D vectors. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="66" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_012_01_4_1a90751a68ac91c942048410990692cd81" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::array&lt; <ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_012_01_4_1a8c18ec674b51dbc768065c5c6aad78d1" kindref="member">Vec</ref>, 4 &gt;</type>
+        <definition>static std::array&lt; Vec, 4 &gt; Marmot::Discretizations::Meshfree::GaussRule&lt; 2 &gt;::points</definition>
+        <argsstring>()</argsstring>
+        <name>points</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::GaussRule&lt; 2 &gt;::points</qualifiedname>
+        <briefdescription>
+<para>Returns the 2x2 Gauss points for a 2D element. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>An array of 4 Eigen::Vector2d representing the Gauss points. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="72" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="72" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_012_01_4_1ae2f81a55e2863914b44e8469f7dbd325" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::array&lt; <ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_012_01_4_1a50b50bcfcf04088bf409132866572ee1" kindref="member">Scalar</ref>, 4 &gt;</type>
+        <definition>static std::array&lt; Scalar, 4 &gt; Marmot::Discretizations::Meshfree::GaussRule&lt; 2 &gt;::weights</definition>
+        <argsstring>()</argsstring>
+        <name>weights</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::GaussRule&lt; 2 &gt;::weights</qualifiedname>
+        <briefdescription>
+<para>Returns the weights for the 2x2 Gauss points in 2D. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>An array of 4 doubles, all 1.0 for a 2x2 rule. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="82" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="82" bodyend="82"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Specialization of <ref refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule" kindref="compound">GaussRule</ref> for 2D (2x2 Gauss points). </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="64" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="64" bodyend="83"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_012_01_4_1a90751a68ac91c942048410990692cd81" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GaussRule&lt; 2 &gt;</scope><name>points</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_012_01_4_1a50b50bcfcf04088bf409132866572ee1" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GaussRule&lt; 2 &gt;</scope><name>Scalar</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_012_01_4_1a8c18ec674b51dbc768065c5c6aad78d1" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GaussRule&lt; 2 &gt;</scope><name>Vec</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule_3_012_01_4_1ae2f81a55e2863914b44e8469f7dbd325" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GaussRule&lt; 2 &gt;</scope><name>weights</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

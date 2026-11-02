@@ -1,0 +1,9 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot::Discretizations::Meshfree::LagrangeCell&lt; 2, 4 &gt;" alt="" coords="5,5,579,53"/>
+<area shape="rect" id="node3" title="Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nNodes &gt;" alt="" coords="553,101,1226,149"/>
+<area shape="poly" id="edge1" title="template&#45;instance" alt="" coords="441,51,728,98,723,99,441,57"/>
+<area shape="rect" id="node2" title="Marmot::Discretizations::Meshfree::LagrangeCell&lt; 3, 8 &gt;" alt="" coords="603,5,1176,53"/>
+<area shape="poly" id="edge2" title="template&#45;instance" alt="" coords="891,52,891,88,887,84,887,56"/>
+<area shape="rect" id="node4" title="Marmot::Discretizations::Meshfree::LagrangeCell&lt; nDim, nVertices &gt;" alt="" coords="1201,5,1890,53"/>
+<area shape="poly" id="edge3" title="template&#45;instance" alt="" coords="1384,54,1068,101,1067,96,1379,54"/>
+</map>

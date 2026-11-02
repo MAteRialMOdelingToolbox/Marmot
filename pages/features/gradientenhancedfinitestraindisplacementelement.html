@@ -1,0 +1,871 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gradient-Enhanced Finite-Strain Displacement Element &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Interface Finite Element" href="interfacefiniteelement.html" />
+    <link rel="prev" title="General Gradient-Enhanced Displacement Finite Element" href="generalgradientenhanceddisplacementfiniteelement.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="materials.html">Material models</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="elements.html">Finite elements</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="displacementfiniteelement.html">Displacement Finite Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="displacementfinitestrainelement.html">Displacement Finite Strain Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generalgradientenhanceddisplacementfiniteelement.html">General Gradient-Enhanced Displacement Finite Element</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Gradient-Enhanced Finite-Strain Displacement Element</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="interfacefiniteelement.html">Interface Finite Element</a></li>
+<li class="toctree-l3"><a class="reference internal" href="explicitdynamicsdevices.html">Explicit dynamics devices</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="meshfree.html">Meshfree methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="elements.html">Finite elements</a></li>
+      <li class="breadcrumb-item active">Gradient-Enhanced Finite-Strain Displacement Element</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/gradientenhancedfinitestraindisplacementelement.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gradient-enhanced-finite-strain-displacement-element">
+<h1>Gradient-Enhanced Finite-Strain Displacement Element<a class="headerlink" href="#gradient-enhanced-finite-strain-displacement-element" title="Link to this heading"></a></h1>
+<section id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p>This element couples the displacement field <span class="math notranslate nohighlight">\(\boldsymbol{u}\)</span> (<code class="docutils literal notranslate"><span class="pre">nDim</span></code> dofs per node) to a single scalar
+nonlocal field <span class="math notranslate nohighlight">\(\bar N\)</span> (1 dof per node) at finite strains. It is the finite-element consumer of
+<code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialGradientEnhancedFiniteStrain</span></code> (see <a class="reference internal" href="gradientenhancedhugheswinget.html"><span class="doc">Gradient-enhanced Hughes-Winget wrapper</span></a> and the material models that
+implement that interface).</p>
+<p>The momentum balance is written with the Kirchhoff stress and the spatial gradients of the shape functions,
+integrated over the reference volume,</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{r}_{U,A} = \int_{\Omega_0} \boldsymbol{\tau}\,\nabla_x N_A \,\mathrm{d}V,
+\qquad \nabla_x N_A = \boldsymbol{F}^{-\mathsf T}\nabla_X N_A,\]</div>
+<p>and the nonlocal balance <span class="math notranslate nohighlight">\(\bar N - c\,\nabla^2\bar N = L(\boldsymbol F,\bar N)\)</span> in the reference
+configuration, with the interaction <span class="math notranslate nohighlight">\(c = R^2\)</span> from the material’s nonlocal radius,</p>
+<div class="math notranslate nohighlight">
+\[r_{N,A} = \int_{\Omega_0} \left( N_A\,\bar N + c\,\nabla_X N_A\cdot\nabla_X\bar N - N_A\,L \right) \mathrm{d}V .\]</div>
+<p>The consistent tangent contains the material blocks <span class="math notranslate nohighlight">\(\partial\boldsymbol\tau/\partial\boldsymbol F\)</span>,
+<span class="math notranslate nohighlight">\(\partial\boldsymbol\tau/\partial\bar N\)</span>, <span class="math notranslate nohighlight">\(\partial L/\partial\boldsymbol F\)</span>,
+<span class="math notranslate nohighlight">\(\partial L/\partial\bar N\)</span> and the geometric stiffness of the momentum balance. Plane strain is evaluated as the
+3D response with <span class="math notranslate nohighlight">\(F_{33} = 1\)</span>; plane stress is not supported. The explicit kernel assembles the same residual
+with the same material update, without the tangents. Distributed loads: follower pressure (with its
+load stiffness) and surface traction; body forces; geostatic initial stresses through the material’s eigen
+deformation.</p>
+<p>Registered elements:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Shape</p></th>
+<th class="head"><p>Integration</p></th>
+<th class="head"><p>Section</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GCPE8UL</span></code> / <code class="docutils literal notranslate"><span class="pre">GCPE8RUL</span></code></p></td>
+<td><p>Quad8</p></td>
+<td><p>full / reduced</p></td>
+<td><p>plane strain</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GC3D8UL</span></code></p></td>
+<td><p>Hexa8</p></td>
+<td><p>full</p></td>
+<td><p>solid</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GC3D20UL</span></code> / <code class="docutils literal notranslate"><span class="pre">GC3D20RUL</span></code></p></td>
+<td><p>Hexa20</p></td>
+<td><p>full / reduced</p></td>
+<td><p>solid</p></td>
+</tr>
+</tbody>
+</table>
+<p>The nodal fields are <code class="docutils literal notranslate"><span class="pre">displacement</span></code> and <code class="docutils literal notranslate"><span class="pre">nonlocal</span> <span class="pre">damage</span></code>. A material that stores a plastic deformation gradient
+must be initialized (<code class="docutils literal notranslate"><span class="pre">MarmotMaterialInitialization</span></code>, in EdelweissFE <code class="docutils literal notranslate"><span class="pre">&gt;&gt;initializematerial</span></code>).</p>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I_i_iEN6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElementE">
+<span id="_CPPv3I_i_iEN6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElementE"></span><span id="_CPPv2I_i_iEN6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElementE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDim</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nNodes</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GradientEnhancedFiniteStrainDisplacementElement</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8ElementsE" title="Marmot::Discretizations::Elements"><span class="n"><span class="pre">Elements</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8Elements7ElementE" title="Marmot::Discretizations::Elements::Element"><span class="n"><span class="pre">Element</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8ElementsE" title="Marmot::Discretizations::Elements"><span class="n"><span class="pre">Elements</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Elements15GeometryElementE" title="Marmot::Discretizations::Elements::GeometryElement"><span class="n"><span class="pre">GeometryElement</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElementE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElementE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::nNodes"><span class="n"><span class="pre">nNodes</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_i_iEN6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElementE" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-05914b1cb6f8f52c36bca14ed95711e2c64c2183.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Discretizations::Elements::Element&quot; tooltip=&quot;Marmot::Discretizations::Elements::Element&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;&quot; tooltip=&quot;Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement&lt; nDim, nNodes &gt;&quot; tooltip=&quot;Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement&lt; nDim, nNodes &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-05914b1cb6f8f52c36bca14ed95711e2c64c2183.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Discretizations::Elements::Element&quot; tooltip=&quot;Marmot::Discretizations::Elements::Element&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;&quot; tooltip=&quot;Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement&lt; nDim, nNodes &gt;&quot; tooltip=&quot;Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement&lt; nDim, nNodes &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Gradient-enhanced (implicit-gradient, nonlocal) finite-strain displacement element. </p>
+<p>The displacement field <span class="math notranslate nohighlight">\( \boldsymbol{u} \)</span> (nDim dofs per node) is coupled to a scalar nonlocal field <span class="math notranslate nohighlight">\( \bar{N} \)</span> (one dof per node), which regularizes softening materials by the implicit-gradient balance in the reference configuration,     <div class="math notranslate nohighlight">
+\[  \int_{\Omega_0} \boldsymbol{\tau} : \nabla_x \delta\boldsymbol{u} \, dV = \text{external work}, \qquad
+  \int_{\Omega_0} \left( \bar{N}\,\delta\bar{N} + c\,\nabla_X\bar{N}\cdot\nabla_X\delta\bar{N}
+  - L\,\delta\bar{N} \right) dV = 0,
+\]</div>
+ with the Kirchhoff stress <span class="math notranslate nohighlight">\( \boldsymbol{\tau} \)</span>, the local driving force <span class="math notranslate nohighlight">\( L \)</span> and <span class="math notranslate nohighlight">\( c = l^2 \)</span> from the material. The kinematics are those of <a class="reference internal" href="displacementfinitestrainelement.html#classMarmot_1_1Discretizations_1_1Elements_1_1DisplacementFiniteStrainULElement"><span class="std std-ref">DisplacementFiniteStrainULElement</span></a>; the element is the non-micropolar sibling of GradientEnhancedMicropolarULFiniteElement. It consumes a Marmot::Materials::MaterialGradientEnhancedFiniteStrain.</p>
+<p>The residual is the internal force vector (the same sign convention as <a class="reference internal" href="displacementfinitestrainelement.html#classMarmot_1_1Discretizations_1_1Elements_1_1DisplacementFiniteStrainULElement"><span class="std std-ref">DisplacementFiniteStrainULElement</span></a>), the dofs are ordered node by node, <span class="math notranslate nohighlight">\( \{u_1, \dots, u_{nDim}, \bar{N}\} \)</span>, and internally field by field (see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1ac3f3c2f75035ea43a29d9df1eb2190cf"><span class="std std-ref">getDofIndicesPermutationPattern()</span></a>). Plane stress is not supported.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nDim</strong> – Number of spatial dimensions (2: plane strain, 3: solid). </p></li>
+<li><p><strong>nNodes</strong> – Number of nodes. </p></li>
+</ul>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11SectionTypeE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11SectionTypeE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11SectionTypeE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a7bf57991683eb118a7589be383f8080b"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SectionType</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11SectionTypeE" title="Link to this definition"></a><br /></dt>
+<dd><p>Section type of the element. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11SectionType11PlaneStressE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11SectionType11PlaneStressE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11SectionType11PlaneStressE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a7bf57991683eb118a7589be383f8080ba791f2e02ed15668766a568e958b18832"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PlaneStress</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11SectionType11PlaneStressE" title="Link to this definition"></a><br /></dt>
+<dd><p>plane stress (not supported) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11SectionType11PlaneStrainE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11SectionType11PlaneStrainE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11SectionType11PlaneStrainE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a7bf57991683eb118a7589be383f8080baec537aed71695ffdaa505dfbadcc6960"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PlaneStrain</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11SectionType11PlaneStrainE" title="Link to this definition"></a><br /></dt>
+<dd><p>plane strain (nDim = 2) </p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11SectionType5SolidE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11SectionType5SolidE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11SectionType5SolidE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a7bf57991683eb118a7589be383f8080ba2a0a5bd609a66c44baaabe5ad3a99aee"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Solid</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11SectionType5SolidE" title="Link to this definition"></a><br /></dt>
+<dd><p>three-dimensional solid (nDim = 3) </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement21ParentGeometryElementE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement21ParentGeometryElementE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement21ParentGeometryElementE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1ae9da8fcb205fecdb4edc6dae5b7c6a01"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ParentGeometryElement</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8ElementsE" title="Marmot::Discretizations::Elements"><span class="n"><span class="pre">Elements</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4I_i_iEN6Marmot15Discretizations8Elements15GeometryElementE" title="Marmot::Discretizations::Elements::GeometryElement"><span class="n"><span class="pre">GeometryElement</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElementE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElementE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::nNodes"><span class="n"><span class="pre">nNodes</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement21ParentGeometryElementE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement8MaterialE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement8MaterialE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement8MaterialE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1af1a9697ab46654356d24a48fa3254345"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Material</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials36MaterialGradientEnhancedFiniteStrainE" title="Marmot::Materials::MaterialGradientEnhancedFiniteStrain"><span class="n"><span class="pre">MaterialGradientEnhancedFiniteStrain</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement8MaterialE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement13JacobianSizedE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement13JacobianSizedE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement13JacobianSizedE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a57b552079eeb61e20d0057f9150fc2b6"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">JacobianSized</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement21ParentGeometryElementE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::ParentGeometryElement"><span class="n"><span class="pre">ParentGeometryElement</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">JacobianSized</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement13JacobianSizedE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement6NSizedE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement6NSizedE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement6NSizedE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a6a2071ff9f4882ea133c589a1bdde06a"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NSized</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement21ParentGeometryElementE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::ParentGeometryElement"><span class="n"><span class="pre">ParentGeometryElement</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">NSized</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement6NSizedE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement10dNdXiSizedE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement10dNdXiSizedE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement10dNdXiSizedE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a08bd1205db418d64c3b95a1313111e3b"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dNdXiSized</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement21ParentGeometryElementE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::ParentGeometryElement"><span class="n"><span class="pre">ParentGeometryElement</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">dNdXiSized</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement10dNdXiSizedE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement7XiSizedE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement7XiSizedE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement7XiSizedE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a0e7972f35b25c3a39a1ae6307306f5e6"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">XiSized</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement21ParentGeometryElementE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::ParentGeometryElement"><span class="n"><span class="pre">ParentGeometryElement</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">XiSized</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement7XiSizedE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement8RhsSizedE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement8RhsSizedE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement8RhsSizedE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a7aea209a7881356d16e8748872f45703"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RhsSized</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement14sizeLoadVectorE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::sizeLoadVector"><span class="n"><span class="pre">sizeLoadVector</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement8RhsSizedE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12KSizedMatrixE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12KSizedMatrixE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12KSizedMatrixE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a0fa54bb7697b868d8cd9d51361e6d492"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KSizedMatrix</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement14sizeLoadVectorE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::sizeLoadVector"><span class="n"><span class="pre">sizeLoadVector</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement14sizeLoadVectorE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::sizeLoadVector"><span class="n"><span class="pre">sizeLoadVector</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12KSizedMatrixE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12USizedVectorE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12USizedVectorE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12USizedVectorE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a8bf969141751efc2353fa1f01c5d39b5"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">USizedVector</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement3bsUE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::bsU"><span class="n"><span class="pre">bsU</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12USizedVectorE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement47GradientEnhancedFiniteStrainDisplacementElementEiN6Marmot15Discretizations8Elements10Quadrature16IntegrationTypesE11SectionType">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement47GradientEnhancedFiniteStrainDisplacementElementEiN6Marmot15Discretizations8Elements10Quadrature16IntegrationTypesE11SectionType"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement47GradientEnhancedFiniteStrainDisplacementElementEiN6Marmot15Discretizations8Elements10Quadrature16IntegrationTypesE11SectionType"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::GradientEnhancedFiniteStrainDisplacementElement__i.Marmot::Discretizations::Elements::Quadrature::IntegrationTypes.SectionType"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a7c5be245b8ccec504ed69bf43e872117"></span><span class="sig-name descname"><span class="n"><span class="pre">GradientEnhancedFiniteStrainDisplacementElement</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">elementID</span></span>, <a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8ElementsE" title="Marmot::Discretizations::Elements"><span class="n"><span class="pre">Elements</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8Elements10QuadratureE" title="Marmot::Discretizations::Elements::Quadrature"><span class="n"><span class="pre">Quadrature</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8Elements10Quadrature16IntegrationTypesE" title="Marmot::Discretizations::Elements::Quadrature::IntegrationTypes"><span class="n"><span class="pre">IntegrationTypes</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">integrationType</span></span>, <a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11SectionTypeE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::SectionType"><span class="n"><span class="pre">SectionType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">sectionType</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement47GradientEnhancedFiniteStrainDisplacementElementEiN6Marmot15Discretizations8Elements10Quadrature16IntegrationTypesE11SectionType" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct the element. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>elementID</strong> – <strong>[in]</strong> Element label. </p></li>
+<li><p><strong>integrationType</strong> – <strong>[in]</strong> Full or reduced integration. </p></li>
+<li><p><strong>sectionType</strong> – <strong>[in]</strong> Section type: PlaneStrain for nDim = 2, Solid for nDim = 3. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – for a section type that does not match nDim, e.g. plane stress. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement28getNumberOfRequiredStateVarsEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement28getNumberOfRequiredStateVarsEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement28getNumberOfRequiredStateVarsEv"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::getNumberOfRequiredStateVars"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a0a2c8fe4afe8e945038dee2527b51225"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfRequiredStateVars</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement28getNumberOfRequiredStateVarsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of state variables of the element (of all quadrature points). </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement13getNodeFieldsEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement13getNodeFieldsEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement13getNodeFieldsEv"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::getNodeFields"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1ae288da6322734b82a03054d00ef65d2f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNodeFields</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement13getNodeFieldsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Fields per node: “displacement” and “nonlocal damage”. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement31getDofIndicesPermutationPatternEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement31getDofIndicesPermutationPatternEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement31getDofIndicesPermutationPatternEv"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::getDofIndicesPermutationPattern"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1ac3f3c2f75035ea43a29d9df1eb2190cf"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDofIndicesPermutationPattern</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement31getDofIndicesPermutationPatternEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Permutation from the node-by-node dof order of the host to the field-by-field order of the element. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement9getNNodesEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement9getNNodesEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement9getNNodesEv"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::getNNodes"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a63a987890a245edb2911bada5711f95e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNNodes</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement9getNNodesEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of nodes. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement21getNSpatialDimensionsEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement21getNSpatialDimensionsEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement21getNSpatialDimensionsEv"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::getNSpatialDimensions"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a32095643078f313aa8c21eb12a19bb15"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNSpatialDimensions</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement21getNSpatialDimensionsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of spatial dimensions. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement17getNDofPerElementEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement17getNDofPerElementEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement17getNDofPerElementEv"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::getNDofPerElement"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a62e980596d3d95ea0e18354ea6440a79"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNDofPerElement</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement17getNDofPerElementEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of dofs of the element. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15getElementShapeEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15getElementShapeEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15getElementShapeEv"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::getElementShape"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1ad5834689bab13e294eb5fe1392160a17"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getElementShape</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15getElementShapeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Shape of the element. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15assignStateVarsEPdi">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15assignStateVarsEPdi"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15assignStateVarsEPdi"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::assignStateVars__doubleP.i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a59b9589e4ac6e31537b28acde3a3773d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignStateVars</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">managedStateVars</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15assignStateVarsEPdi" title="Link to this definition"></a><br /></dt>
+<dd><p>Assign the state variables, split evenly among the quadrature points. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>managedStateVars</strong> – <strong>[in]</strong> State variables of the element. </p></li>
+<li><p><strong>nStateVars</strong> – <strong>[in]</strong> Their number. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement14assignPropertyERKN6Marmot15Discretizations17ElementPropertiesE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement14assignPropertyERKN6Marmot15Discretizations17ElementPropertiesE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement14assignPropertyERKN6Marmot15Discretizations17ElementPropertiesE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::assignProperty__Marmot::Discretizations::ElementPropertiesCR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1ac3d694eb74df2f6d9a72b47cc16c9481"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignProperty</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations17ElementPropertiesE" title="Marmot::Discretizations::ElementProperties"><span class="n"><span class="pre">ElementProperties</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">MarmotElementProperty</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement14assignPropertyERKN6Marmot15Discretizations17ElementPropertiesE" title="Link to this definition"></a><br /></dt>
+<dd><p>Assign the element properties. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>MarmotElementProperty</strong> – <strong>[in]</strong> Element properties: the thickness in 2D. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement14assignPropertyERKN6Marmot15Discretizations15MaterialSectionE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement14assignPropertyERKN6Marmot15Discretizations15MaterialSectionE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement14assignPropertyERKN6Marmot15Discretizations15MaterialSectionE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::assignProperty__Marmot::Discretizations::MaterialSectionCR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a5a9ab57a82cca964ada0e78f9c087f5a"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignProperty</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations15MaterialSectionE" title="Marmot::Discretizations::MaterialSection"><span class="n"><span class="pre">MaterialSection</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">MarmotElementProperty</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement14assignPropertyERKN6Marmot15Discretizations15MaterialSectionE" title="Link to this definition"></a><br /></dt>
+<dd><p>Create the material of every quadrature point. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>MarmotElementProperty</strong> – <strong>[in]</strong> <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1af1a9697ab46654356d24a48fa3254345"><span class="std std-ref">Material</span></a> name and properties. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement21assignNodeCoordinatesEPKd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement21assignNodeCoordinatesEPKd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement21assignNodeCoordinatesEPKd"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::assignNodeCoordinates__doubleCP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a6c5257a83dfaeb351caeb6e7a1dd4f98"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignNodeCoordinates</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coordinates</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement21assignNodeCoordinatesEPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Assign the nodal coordinates in the reference configuration. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>coordinates</strong> – <strong>[in]</strong> Nodal coordinates, node by node. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement18initializeYourselfEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement18initializeYourselfEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement18initializeYourselfEv"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::initializeYourself"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1ac48cf6ab04df4f7724934d8c950a75c3"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeYourself</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement18initializeYourselfEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute the reference shape function derivatives and integration weights of the quadrature points. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement20setInitialConditionsE10StateTypesPKd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement20setInitialConditionsE10StateTypesPKd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement20setInitialConditionsE10StateTypesPKd"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::setInitialConditions__StateTypes.doubleCP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a6d809a9e4e392ca16d3f4b0ec267d0e0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setInitialConditions</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">StateTypes</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">state</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">values</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement20setInitialConditionsE10StateTypesPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Set initial conditions. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – <strong>[in]</strong> MarmotMaterialInitialization (initializes the material state) or GeostaticStress (finds the eigen deformation of a linearly distributed geostatic stress). </p></li>
+<li><p><strong>values</strong> – <strong>[in]</strong> Definition of the geostatic stress distribution. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – for another initial condition. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement22computeDistributedLoadEN6Marmot15Discretizations8Elements7Element20DistributedLoadTypesEPdPdiPKdPKddd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement22computeDistributedLoadEN6Marmot15Discretizations8Elements7Element20DistributedLoadTypesEPdPdiPKdPKddd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement22computeDistributedLoadEN6Marmot15Discretizations8Elements7Element20DistributedLoadTypesEPdPdiPKdPKddd"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::computeDistributedLoad__Marmot::Discretizations::Elements::Element::DistributedLoadTypes.doubleP.doubleP.i.doubleCP.doubleCP.double.double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a0e6b9bd3d5a0e3057adc018c78d70a68"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeDistributedLoad</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8ElementsE" title="Marmot::Discretizations::Elements"><span class="n"><span class="pre">Elements</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8Elements7ElementE" title="Marmot::Discretizations::Elements::Element"><span class="n"><span class="pre">Element</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations8Elements7Element20DistributedLoadTypesE" title="Marmot::Discretizations::Elements::Element::DistributedLoadTypes"><span class="n"><span class="pre">DistributedLoadTypes</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">loadType</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">P</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">K</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">elementFace</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">load</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">QTotal</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">time</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement22computeDistributedLoadEN6Marmot15Discretizations8Elements7Element20DistributedLoadTypesEPdPdiPKdPKddd" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute a distributed load on an element face. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>loadType</strong> – <strong>[in]</strong> Pressure (follower load, with its stiffness <span class="math notranslate nohighlight">\( K = -\partial P/\partial Q \)</span>) or SurfaceTraction (in the reference configuration). </p></li>
+<li><p><strong>P</strong> – <strong>[inout]</strong> Load vector, added to. </p></li>
+<li><p><strong>K</strong> – <strong>[inout]</strong> Stiffness matrix, added to. </p></li>
+<li><p><strong>elementFace</strong> – <strong>[in]</strong> Face of the element. </p></li>
+<li><p><strong>load</strong> – <strong>[in]</strong> Pressure, or traction vector. </p></li>
+<li><p><strong>QTotal</strong> – <strong>[in]</strong> Total dofs. </p></li>
+<li><p><strong>time</strong> – <strong>[in]</strong> Time. </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> Time increment. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – for another load type. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement16computeBodyForceEPdPdPKdPKddd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement16computeBodyForceEPdPdPKdPKddd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement16computeBodyForceEPdPdPKdPKddd"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::computeBodyForce__doubleP.doubleP.doubleCP.doubleCP.double.double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a7c3663a62e5aa2dfd3793d527903f7e1"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeBodyForce</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">P</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">K</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">load</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">QTotal</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">time</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement16computeBodyForceEPdPdPKdPKddd" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute a body force per reference volume. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>P</strong> – <strong>[inout]</strong> Load vector, added to. </p></li>
+<li><p><strong>K</strong> – <strong>[inout]</strong> Stiffness matrix (not changed, the load does not depend on the dofs). </p></li>
+<li><p><strong>load</strong> – <strong>[in]</strong> Body force vector. </p></li>
+<li><p><strong>QTotal</strong> – <strong>[in]</strong> Total dofs. </p></li>
+<li><p><strong>time</strong> – <strong>[in]</strong> Time. </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> Time increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement14computeKernelsEPKdPKdPdPddd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement14computeKernelsEPKdPKdPdPddd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement14computeKernelsEPKdPKdPdPddd"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::computeKernels__doubleCP.doubleCP.doubleP.doubleP.double.double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a6dd80b836a02b6129b00b45f583fea53"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeKernels</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">QTotal</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dQ</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Pe</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Ke</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">time</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement14computeKernelsEPKdPKdPdPddd" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute the residual (internal forces) and the stiffness matrix, and update the state. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>QTotal</strong> – <strong>[in]</strong> Total dofs at the end of the increment. </p></li>
+<li><p><strong>dQ</strong> – <strong>[in]</strong> Dof increment. </p></li>
+<li><p><strong>Pe</strong> – <strong>[inout]</strong> Residual, added to. </p></li>
+<li><p><strong>Ke</strong> – <strong>[inout]</strong> Stiffness matrix, added to. </p></li>
+<li><p><strong>time</strong> – <strong>[in]</strong> Time. </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> Time increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement22computeKernelsExplicitEPKdPKdPddd">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement22computeKernelsExplicitEPKdPKdPddd"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement22computeKernelsExplicitEPKdPKdPddd"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::computeKernelsExplicit__doubleCP.doubleCP.doubleP.double.double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a85e72cf313e69903ca644ae741bbc4e4"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeKernelsExplicit</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">QTotal</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dQ</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">Pe</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">time</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement22computeKernelsExplicitEPKdPKdPddd" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute the residual (internal forces) only, and update the state, for explicit time integration. </p>
+<p>The material is updated as in <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a6dd80b836a02b6129b00b45f583fea53"><span class="std std-ref">computeKernels()</span></a>; its tangents are discarded. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>QTotal</strong> – <strong>[in]</strong> Total dofs at the end of the increment. </p></li>
+<li><p><strong>dQ</strong> – <strong>[in]</strong> Dof increment. </p></li>
+<li><p><strong>Pe</strong> – <strong>[inout]</strong> Residual, added to. </p></li>
+<li><p><strong>time</strong> – <strong>[in]</strong> Time. </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> Time increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12getStateViewERKNSt6stringEi">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12getStateViewERKNSt6stringEi"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12getStateViewERKNSt6stringEi"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::getStateView__ssCR.i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a73849cbcd85a450eaa7032ed01b8630a"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n"><span class="pre">Utilities</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/utilitiescore.html#_CPPv4N6Marmot9Utilities9StateViewE" title="Marmot::Utilities::StateView"><span class="n"><span class="pre">StateView</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateView</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stateName</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">qpNumber</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12getStateViewERKNSt6stringEi" title="Link to this definition"></a><br /></dt>
+<dd><p>A view of a state of a quadrature point, of the element or of its material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stateName</strong> – <strong>[in]</strong> Name of the state. </p></li>
+<li><p><strong>qpNumber</strong> – <strong>[in]</strong> Number of the quadrature point. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The view. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement22getCoordinatesAtCenterEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement22getCoordinatesAtCenterEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement22getCoordinatesAtCenterEv"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::getCoordinatesAtCenter"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1accf2b71fd10f8fc05b5a1048686b19f8"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getCoordinatesAtCenter</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement22getCoordinatesAtCenterEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Coordinates of the element center in the reference configuration. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement32getCoordinatesAtQuadraturePointsEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement32getCoordinatesAtQuadraturePointsEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement32getCoordinatesAtQuadraturePointsEv"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::getCoordinatesAtQuadraturePoints"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a9d94c18f45c6e5d482d37b3666a56075"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getCoordinatesAtQuadraturePoints</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement32getCoordinatesAtQuadraturePointsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Coordinates of the quadrature points in the reference configuration. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement27getNumberOfQuadraturePointsEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement27getNumberOfQuadraturePointsEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement27getNumberOfQuadraturePointsEv"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::getNumberOfQuadraturePoints"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a4167a39e0cd530d9cd9f5f8d2b8ad8b9"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfQuadraturePoints</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement27getNumberOfQuadraturePointsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of quadrature points. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement17elementPropertiesE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement17elementPropertiesE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement17elementPropertiesE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::elementProperties__Eigen::Map:Eigen::VectorXdC:"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a07088c392c368d6bdea92013b6f6b74b"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Map</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">elementProperties</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement17elementPropertiesE" title="Link to this definition"></a><br /></dt>
+<dd><p>element properties: thickness (2D) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement7elLabelE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement7elLabelE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement7elLabelE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::elLabel__iC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1ab030aae529361d01862e2f03975a51de"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">elLabel</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement7elLabelE" title="Link to this definition"></a><br /></dt>
+<dd><p>element label </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11sectionTypeE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11sectionTypeE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11sectionTypeE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::sectionType__SectionTypeC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1aa3e1f16516fc11c83b7c0e5e33f2c8f9"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11SectionTypeE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::SectionType"><span class="n"><span class="pre">SectionType</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sectionType</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement11sectionTypeE" title="Link to this definition"></a><br /></dt>
+<dd><p>section type </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement19hasEigenDeformationE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement19hasEigenDeformationE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement19hasEigenDeformationE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::hasEigenDeformation__b"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a49f6a28826a575441ccd94312f27b019"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hasEigenDeformation</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement19hasEigenDeformationE" title="Link to this definition"></a><br /></dt>
+<dd><p>whether a geostatic eigen deformation is applied </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement3qpsE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement3qpsE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement3qpsE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::qps__std::vector:QuadraturePoint:"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1ac7cf7796c23a4c2bc79b84757a894e51"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePointE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint"><span class="n"><span class="pre">QuadraturePoint</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">qps</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement3qpsE" title="Link to this definition"></a><br /></dt>
+<dd><p>the quadrature points </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12nDofPerNodeUE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12nDofPerNodeUE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12nDofPerNodeUE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::nDofPerNodeU__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a9aac4347b31943ee5bce8e190014caa3"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDofPerNodeU</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElementE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::nDim"><span class="n"><span class="pre">nDim</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12nDofPerNodeUE" title="Link to this definition"></a><br /></dt>
+<dd><p>dofs per node of the displacement field </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12nDofPerNodeNE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12nDofPerNodeNE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12nDofPerNodeNE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::nDofPerNodeN__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1af3f0e06a65fca3d9edf5741cc2f1e9a5"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDofPerNodeN</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12nDofPerNodeNE" title="Link to this definition"></a><br /></dt>
+<dd><p>dofs per node of the nonlocal field </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12nCoordinatesE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12nCoordinatesE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12nCoordinatesE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::nCoordinates__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a08b3652eeb2a459439320bbb1f36f253"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nCoordinates</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElementE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::nNodes"><span class="n"><span class="pre">nNodes</span></span></a><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElementE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::nDim"><span class="n"><span class="pre">nDim</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12nCoordinatesE" title="Link to this definition"></a><br /></dt>
+<dd><p>number of nodal coordinates </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement3bsUE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement3bsUE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement3bsUE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::bsU__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a132e1dfcbf61d55d7cd523dcbb5ff7d3"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bsU</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElementE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::nNodes"><span class="n"><span class="pre">nNodes</span></span></a><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12nDofPerNodeUE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::nDofPerNodeU"><span class="n"><span class="pre">nDofPerNodeU</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement3bsUE" title="Link to this definition"></a><br /></dt>
+<dd><p>size of the displacement block </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement3bsNE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement3bsNE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement3bsNE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::bsN__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1af3e5f377d781ec82e2c0ac39a958745d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bsN</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElementE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::nNodes"><span class="n"><span class="pre">nNodes</span></span></a><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement12nDofPerNodeNE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::nDofPerNodeN"><span class="n"><span class="pre">nDofPerNodeN</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement3bsNE" title="Link to this definition"></a><br /></dt>
+<dd><p>size of the nonlocal block </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement14sizeLoadVectorE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement14sizeLoadVectorE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement14sizeLoadVectorE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::sizeLoadVector__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1acb6684019384d3e9818f2d92e8c06dfe"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sizeLoadVector</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement3bsUE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::bsU"><span class="n"><span class="pre">bsU</span></span></a><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement3bsNE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::bsN"><span class="n"><span class="pre">bsN</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement14sizeLoadVectorE" title="Link to this definition"></a><br /></dt>
+<dd><p>number of dofs of the element </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement4idxUE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement4idxUE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement4idxUE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::idxU__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1a4d1f3f72719f7fbc7c16157b37968fc9"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">idxU</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement4idxUE" title="Link to this definition"></a><br /></dt>
+<dd><p>first index of the displacement block </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement4idxNE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement4idxNE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement4idxNE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::idxN__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1aeb1190013631034441d7d53fbecb2a3c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">idxN</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement4idxUE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::idxU"><span class="n"><span class="pre">idxU</span></span></a><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement3bsUE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::bsU"><span class="n"><span class="pre">bsU</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement4idxNE" title="Link to this definition"></a><br /></dt>
+<dd><p>first index of the nonlocal block </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-functions">Private Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement23computeMaterialResponseER15QuadraturePointRKN6Fastor6TensorId4nDim4nDimEEdddRN8Material20ConstitutiveResponseI4nDimEERN8Material17AlgorithmicModuliI4nDimEE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement23computeMaterialResponseER15QuadraturePointRKN6Fastor6TensorId4nDim4nDimEEdddRN8Material20ConstitutiveResponseI4nDimEERN8Material17AlgorithmicModuliI4nDimEE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement23computeMaterialResponseER15QuadraturePointRKN6Fastor6TensorId4nDim4nDimEEdddRN8Material20ConstitutiveResponseI4nDimEERN8Material17AlgorithmicModuliI4nDimEE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::computeMaterialResponse__QuadraturePointR.Fastor::Tensor:double.nDim.nDim:CR.double.double.double.Material::ConstitutiveResponse:nDim:R.Material::AlgorithmicModuli:nDim:R"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1abcb4adb0376d7c1ad55e3ce6784984de"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeMaterialResponse</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePointE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint"><span class="n"><span class="pre">QuadraturePoint</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">qp</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Fastor</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElementE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElementE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">F</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nonlocalField</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">time</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span>, <span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement8MaterialE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::Material"><span class="n"><span class="pre">Material</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">ConstitutiveResponse</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElementE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement8MaterialE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::Material"><span class="n"><span class="pre">Material</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">AlgorithmicModuli</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElementE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement23computeMaterialResponseER15QuadraturePointRKN6Fastor6TensorId4nDim4nDimEEdddRN8Material20ConstitutiveResponseI4nDimEERN8Material17AlgorithmicModuliI4nDimEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Update the material of a quadrature point, in plane strain through its 3D response. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>qp</strong> – <strong>[inout]</strong> Quadrature point; its stress and energies are updated. </p></li>
+<li><p><strong>F</strong> – <strong>[in]</strong> Deformation gradient at the end of the increment. </p></li>
+<li><p><strong>nonlocalField</strong> – <strong>[in]</strong> Nonlocal field at the quadrature point. </p></li>
+<li><p><strong>time</strong> – <strong>[in]</strong> Time. </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> Time increment. </p></li>
+<li><p><strong>response</strong> – <strong>[out]</strong> Kirchhoff stress, local driving force, nonlocal radius and energies. </p></li>
+<li><p><strong>tangents</strong> – <strong>[out]</strong> Algorithmic tangents. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePointE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePointE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePointE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_1QuadraturePoint"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QuadraturePoint</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePointE" title="Link to this definition"></a><br /></dt>
+<dd><p>A quadrature point: its location, the cached shape functions and derivatives, state and material. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint47getNumberOfRequiredStateVarsQuadraturePointOnlyEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint47getNumberOfRequiredStateVarsQuadraturePointOnlyEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint47getNumberOfRequiredStateVarsQuadraturePointOnlyEv"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::getNumberOfRequiredStateVarsQuadraturePointOnly"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_1QuadraturePoint_1a0b8eff9680e78b64ff73bfd23bdd8dab"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfRequiredStateVarsQuadraturePointOnly</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint47getNumberOfRequiredStateVarsQuadraturePointOnlyEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of state variables of the quadrature point without those of the material. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint28getNumberOfRequiredStateVarsEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint28getNumberOfRequiredStateVarsEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint28getNumberOfRequiredStateVarsEv"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::getNumberOfRequiredStateVars"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_1QuadraturePoint_1ac82e45d0257723c096f8988f5cadee5d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfRequiredStateVars</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint28getNumberOfRequiredStateVarsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of state variables of the quadrature point, including those of the material. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint15assignStateVarsEPdi">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint15assignStateVarsEPdi"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint15assignStateVarsEPdi"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::assignStateVars__doubleP.i"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_1QuadraturePoint_1a2fdb6aa5488bb07a94a8f3defc1d0464"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignStateVars</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint15assignStateVarsEPdi" title="Link to this definition"></a><br /></dt>
+<dd><p>Assign the state variables of the quadrature point. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stateVars</strong> – <strong>[in]</strong> State variables of the quadrature point. </p></li>
+<li><p><strong>nStateVars</strong> – <strong>[in]</strong> Their number. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint15QuadraturePointE7XiSizeddRK6NSized">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint15QuadraturePointE7XiSizeddRK6NSized"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint15QuadraturePointE7XiSizeddRK6NSized"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::QuadraturePoint__XiSized.double.NSizedCR"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_1QuadraturePoint_1a623aa61f99b19eb163d7ec5bcaec5532"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QuadraturePoint</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement7XiSizedE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::XiSized"><span class="n"><span class="pre">XiSized</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">xi</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">weight</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement6NSizedE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::NSized"><span class="n"><span class="pre">NSized</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">N</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint15QuadraturePointE7XiSizeddRK6NSized" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a quadrature point. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xi</strong> – <strong>[in]</strong> Parametric coordinates. </p></li>
+<li><p><strong>weight</strong> – <strong>[in]</strong> Quadrature weight. </p></li>
+<li><p><strong>N</strong> – <strong>[in]</strong> Shape functions at <code class="docutils literal notranslate"><span class="pre">xi</span></code>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint2xiE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint2xiE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint2xiE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::xi__XiSizedC"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_1QuadraturePoint_1ab9586b75e3ca791a92a8582b789190be"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement7XiSizedE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::XiSized"><span class="n"><span class="pre">XiSized</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xi</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint2xiE" title="Link to this definition"></a><br /></dt>
+<dd><p>parametric coordinates </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint6weightE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint6weightE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint6weightE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::weight__doubleC"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_1QuadraturePoint_1a8b94ffc32d0d6c858b52baccf3c922b0"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">weight</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint6weightE" title="Link to this definition"></a><br /></dt>
+<dd><p>quadrature weight </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint1NE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint1NE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint1NE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::N__NSized"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_1QuadraturePoint_1ad9261d9f4d719b8ef27bac3ce7f37b87"></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement6NSizedE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::NSized"><span class="n"><span class="pre">NSized</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">N</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint1NE" title="Link to this definition"></a><br /></dt>
+<dd><p>shape functions at <code class="docutils literal notranslate"><span class="pre">xi</span></code></p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint4dNdXE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint4dNdXE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint4dNdXE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::dNdX__dNdXiSized"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_1QuadraturePoint_1a73389f913b20db1ddb58c77b1357b48c"></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement10dNdXiSizedE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::dNdXiSized"><span class="n"><span class="pre">dNdXiSized</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dNdX</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint4dNdXE" title="Link to this definition"></a><br /></dt>
+<dd><p>shape function derivatives in the reference configuration </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint4detJE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint4detJE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint4detJE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::detJ__double"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_1QuadraturePoint_1a879f76ad34336a56e9ba7d93df82bdfb"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">detJ</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint4detJE" title="Link to this definition"></a><br /></dt>
+<dd><p>determinant of the reference Jacobian </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint4J0xWE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint4J0xWE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint4J0xWE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::J0xW__double"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_1QuadraturePoint_1ad8944ac8f02017ddde9604f793a2b260"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">J0xW</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint4J0xWE" title="Link to this definition"></a><br /></dt>
+<dd><p>integration weight in the reference configuration (times the thickness in 2D) </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint16managedStateVarsE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint16managedStateVarsE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint16managedStateVarsE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::managedStateVars__std::unique_ptr:QPStateVarManager:"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_1QuadraturePoint_1a903ab391dea3b751cd4cdbdc376fe65f"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManagerE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::QPStateVarManager"><span class="n"><span class="pre">QPStateVarManager</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">managedStateVars</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint16managedStateVarsE" title="Link to this definition"></a><br /></dt>
+<dd><p>state of the quadrature point </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint8materialE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint8materialE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint8materialE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::material__std::unique_ptr:Material:"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_1QuadraturePoint_1a45e4e12ac6319d829b68639698ec4bf2"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement8MaterialE" title="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::Material"><span class="n"><span class="pre">Material</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">material</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint8materialE" title="Link to this definition"></a><br /></dt>
+<dd><p>material of the quadrature point </p>
+</dd></dl>
+
+</div>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManagerE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManagerE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManagerE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::QPStateVarManager"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_51e12683a22cb92b5612036277e1bdc9"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QPStateVarManager</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n"><span class="pre">Utilities</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Utilities21StateVarVectorManagerE" title="Marmot::Utilities::StateVarVectorManager"><span class="n"><span class="pre">StateVarVectorManager</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManagerE" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::QPStateVarManager:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-d44d2bf2e4d1f3d34a0d175398e51e7e94ce8b6c.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager&quot; tooltip=&quot;Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Utilities::StateVarVectorManager&quot; tooltip=&quot;Marmot::Utilities::StateVarVectorManager&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::QPStateVarManager:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-608adfcb632b9186ec8917acca396efc1404a4c0.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager&quot; tooltip=&quot;Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement&lt; nDim, nNodes &gt;::QuadraturePoint::QPStateVarManager&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Utilities::StateVarVectorManager&quot; tooltip=&quot;Marmot::Utilities::StateVarVectorManager&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Utilities::StateVarVectorManager::StateVarVectorLayout&quot; tooltip=&quot;Marmot::Utilities::StateVarVectorManager::StateVarVectorLayout&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>State of a quadrature point: stress, energies, eigen deformation, followed by the material state. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager17QPStateVarManagerEPdi">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager17QPStateVarManagerEPdi"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager17QPStateVarManagerEPdi"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::QPStateVarManager::QPStateVarManager__doubleP.i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_51e12683a22cb92b5612036277e1bdc9_1a800e473314be36bb4cb959ffdf1e228f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QPStateVarManager</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">theStateVarVector</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager17QPStateVarManagerEPdi" title="Link to this definition"></a><br /></dt>
+<dd><p>Map the state of a quadrature point. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theStateVarVector</strong> – <strong>[in]</strong> State variables of the quadrature point. </p></li>
+<li><p><strong>nStateVars</strong> – <strong>[in]</strong> Their number, including those of the material. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager6stressE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager6stressE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager6stressE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::QPStateVarManager::stress__Eigen::Map:Marmot::Math::Vector9d:"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_51e12683a22cb92b5612036277e1bdc9_1acc1eff9fab7812b4b458aefb56874a73"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector9dE" title="Marmot::Math::Vector9d"><span class="n"><span class="pre">Vector9d</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stress</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager6stressE" title="Link to this definition"></a><br /></dt>
+<dd><p>Kirchhoff stress (3D, also in plane strain). </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager20elasticEnergyDensityE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager20elasticEnergyDensityE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager20elasticEnergyDensityE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::QPStateVarManager::elasticEnergyDensity__doubleR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_51e12683a22cb92b5612036277e1bdc9_1a1a44129fbb5e91cb4c833f016588817f"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">elasticEnergyDensity</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager20elasticEnergyDensityE" title="Link to this definition"></a><br /></dt>
+<dd><p>elastic energy per undeformed volume, as returned by the material </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager18dissipationDensityE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager18dissipationDensityE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager18dissipationDensityE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::QPStateVarManager::dissipationDensity__doubleR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_51e12683a22cb92b5612036277e1bdc9_1aa905528c1ef7a91a8cbacfdcf324e194"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">dissipationDensity</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager18dissipationDensityE" title="Link to this definition"></a><br /></dt>
+<dd><p>dissipation per undeformed volume, accumulated by the material </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager5F0_XXE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager5F0_XXE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager5F0_XXE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::QPStateVarManager::F0_XX__doubleR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_51e12683a22cb92b5612036277e1bdc9_1a0ec38bcc15b6dbcf0c24690e6e4e6b4a"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">F0_XX</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager5F0_XXE" title="Link to this definition"></a><br /></dt>
+<dd><p>eigen deformation, XX component </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager5F0_YYE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager5F0_YYE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager5F0_YYE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::QPStateVarManager::F0_YY__doubleR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_51e12683a22cb92b5612036277e1bdc9_1ac987b3ff4ad8f2f7a65187556de7f684"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">F0_YY</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager5F0_YYE" title="Link to this definition"></a><br /></dt>
+<dd><p>eigen deformation, YY component </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager5F0_ZZE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager5F0_ZZE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager5F0_ZZE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::QPStateVarManager::F0_ZZ__doubleR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_51e12683a22cb92b5612036277e1bdc9_1acd21b9c0c12c6581cbb4046779118eab"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">F0_ZZ</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager5F0_ZZE" title="Link to this definition"></a><br /></dt>
+<dd><p>eigen deformation, ZZ component </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager17materialStateVarsE">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager17materialStateVarsE"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager17materialStateVarsE"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::QPStateVarManager::materialStateVars__Eigen::Map:Eigen::VectorXd:"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_51e12683a22cb92b5612036277e1bdc9_1a5e7485ed94c7f0792e40a587cad0af55"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">materialStateVars</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager17materialStateVarsE" title="Link to this definition"></a><br /></dt>
+<dd><p>state variables of the material </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager47getNumberOfRequiredStateVarsQuadraturePointOnlyEv">
+<span id="_CPPv3N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager47getNumberOfRequiredStateVarsQuadraturePointOnlyEv"></span><span id="_CPPv2N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager47getNumberOfRequiredStateVarsQuadraturePointOnlyEv"></span><span id="Marmot::Discretizations::Elements::GradientEnhancedFiniteStrainDisplacementElement::QuadraturePoint::QPStateVarManager::getNumberOfRequiredStateVarsQuadraturePointOnly"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Elements_1_1GradientEnhancedFiniteStrainDisplacementElement_1_51e12683a22cb92b5612036277e1bdc9_1a20e0937046cde059d0a9f16e7738983a"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfRequiredStateVarsQuadraturePointOnly</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations8Elements47GradientEnhancedFiniteStrainDisplacementElement15QuadraturePoint17QPStateVarManager47getNumberOfRequiredStateVarsQuadraturePointOnlyEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of state variables of the quadrature point without those of the material. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="generalgradientenhanceddisplacementfiniteelement.html" class="btn btn-neutral float-left" title="General Gradient-Enhanced Displacement Finite Element" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="interfacefiniteelement.html" class="btn btn-neutral float-right" title="Interface Finite Element" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

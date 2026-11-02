@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse</compoundname>
+    <includes refid="_marmot_material_finite_strain_8h" local="no">MarmotMaterialFiniteStrain.h</includes>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>nDim</declname>
+        <defname>nDim</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response_1ab828851f3d090b1a4f71be5cb7c88cd8" prot="public" static="no" mutable="no">
+        <type>Fastor::Tensor&lt; double, nDim, nDim &gt;</type>
+        <definition>Fastor::Tensor&lt; double, nDim, nDim &gt; Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse&lt; nDim &gt;::tau</definition>
+        <argsstring></argsstring>
+        <name>tau</name>
+        <qualifiedname>Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse::tau</qualifiedname>
+        <briefdescription>
+<para>Kirchhoff stress. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="78" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="78" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response_1a49d97eca88669096a71ebbcc0d6c4462" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse&lt; nDim &gt;::elasticEnergyDensity</definition>
+        <argsstring></argsstring>
+        <name>elasticEnergyDensity</name>
+        <qualifiedname>Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse::elasticEnergyDensity</qualifiedname>
+        <briefdescription>
+<para>elastic energy per unit volume </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="79" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="79" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response_1a587b1233f6ec69627628af4dd3edd15a" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse&lt; nDim &gt;::dissipation</definition>
+        <argsstring></argsstring>
+        <name>dissipation</name>
+        <qualifiedname>Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse::dissipation</qualifiedname>
+        <briefdescription>
+<para>dissipation per unit volume </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="80" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="80" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response_1a54e03e94122ddc9ebdff894e7e47e4ed" prot="public" static="no" mutable="no">
+        <type>double *</type>
+        <definition>double* Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse&lt; nDim &gt;::stateVars</definition>
+        <argsstring></argsstring>
+        <name>stateVars</name>
+        <qualifiedname>Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse::stateVars</qualifiedname>
+        <briefdescription>
+<para>pointer to state variables </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="81" column="43" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="81" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response_1aecab6b3baa99d4ffa5e76e8eab94086e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse&lt; nDim &gt;::ConstitutiveResponse</definition>
+        <argsstring>()</argsstring>
+        <name>ConstitutiveResponse</name>
+        <qualifiedname>Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse::ConstitutiveResponse</qualifiedname>
+        <briefdescription>
+<para>Default constructor. Initializes stress to zero, energy and dissipation to zero, and stateVars to nullptr. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="87" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="87" bodyend="93"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response_1a930461d6727c2dd0166e0a07071b9957" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse&lt; nDim &gt;::ConstitutiveResponse</definition>
+        <argsstring>(const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;tau_, double elasticEnergyDensity_, double dissipation_, double *stateVars_)</argsstring>
+        <name>ConstitutiveResponse</name>
+        <qualifiedname>Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse::ConstitutiveResponse</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;</type>
+          <declname>tau_</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>elasticEnergyDensity_</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dissipation_</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>stateVars_</declname>
+        </param>
+        <briefdescription>
+<para>Constructor for initializing the constitutive response. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>tau_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Kirchhoff stress tensor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>elasticEnergyDensity_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Elastic energy density. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dissipation_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Dissipation per unit volume. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stateVars_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to state variables. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="101" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="101" bodyend="110"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Constitutive response of a material at given state. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of spatial dimensions (2 or 3).</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Contains stress, density and elastic energy density. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="77" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="77" bodyend="111"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response_1aecab6b3baa99d4ffa5e76e8eab94086e" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse</scope><name>ConstitutiveResponse</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response_1a930461d6727c2dd0166e0a07071b9957" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse</scope><name>ConstitutiveResponse</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response_1a587b1233f6ec69627628af4dd3edd15a" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse</scope><name>dissipation</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response_1a49d97eca88669096a71ebbcc0d6c4462" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse</scope><name>elasticEnergyDensity</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response_1a54e03e94122ddc9ebdff894e7e47e4ed" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse</scope><name>stateVars</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response_1ab828851f3d090b1a4f71be5cb7c88cd8" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse</scope><name>tau</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

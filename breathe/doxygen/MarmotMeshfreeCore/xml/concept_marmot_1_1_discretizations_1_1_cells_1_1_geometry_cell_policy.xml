@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="concept_marmot_1_1_discretizations_1_1_cells_1_1_geometry_cell_policy" kind="concept">
+    <compoundname>Marmot::Discretizations::Cells::GeometryCellPolicy</compoundname>
+    <includes refid="_marmot_cell_geometry_8h" local="no">MarmotCellGeometry.h</includes>
+    <templateparamlist>
+      <param>
+        <type>class GeometryCellImpl</type>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>nDim</declname>
+        <defname>nDim</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>nNodes</declname>
+        <defname>nNodes</defname>
+      </param>
+    </templateparamlist>
+    <initializer>template&lt;class GeometryCellImpl, int nDim, int nNodes&gt;
+concept <ref refid="concept_marmot_1_1_discretizations_1_1_cells_1_1_geometry_cell_policy" kindref="compound">Marmot::Discretizations::Cells::GeometryCellPolicy</ref> =  requires( GeometryCellImpl geom ) {
+    typename GeometryCellImpl::XiSized;
+    requires std::same_as&lt; typename GeometryCellImpl::XiSized, typename Eigen::Matrix&lt; double, nDim, 1 &gt; &gt;;
+
+    typename GeometryCellImpl::NSized;
+    requires std::same_as&lt; typename GeometryCellImpl::NSized, typename Eigen::Matrix&lt; double, 1, nNodes &gt; &gt;;
+
+    typename GeometryCellImpl::dNdXSized;
+    requires std::same_as&lt; typename GeometryCellImpl::dNdXSized, typename Eigen::Matrix&lt; double, nDim, nNodes &gt; &gt;;
+
+    /* { */
+    /*   geom.test( typename GeometryCellImpl::XiSized() ) */
+    /* } -&gt; std::same_as&lt; bool &gt;; */
+
+    /* { */
+    /*   geom.isCoordinateInCell( typename GeometryCellImpl::XiSized() ) */
+    /* } -&gt; std::same_as&lt; bool &gt;; */
+
+    {
+      geom.findReferenceCoordinate( typename GeometryCellImpl::XiSized() )
+    } -&gt; std::same_as&lt; typename GeometryCellImpl::XiSized &gt;;
+
+    {
+      geom.N( typename GeometryCellImpl::XiSized() )
+    } -&gt; std::same_as&lt; typename GeometryCellImpl::NSized &gt;;
+
+    {
+      geom.dNdX( typename GeometryCellImpl::XiSized() )
+    } -&gt; std::same_as&lt; typename GeometryCellImpl::dNdXSized &gt;;
+
+    {
+      geom.detJ( typename GeometryCellImpl::XiSized() )
+    } -&gt; std::same_as&lt; double &gt;;
+  }</initializer>
+    <conceptparts>
+      <codepart line="106">    <programlisting>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal">&lt;<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>GeometryCellImpl,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nDim,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nNodes<sp/>&gt;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">concept<sp/></highlight><highlight class="normal">GeometryCellPolicy<sp/>=<sp/></highlight><highlight class="keyword">requires</highlight><highlight class="normal">(<sp/>GeometryCellImpl<sp/>geom<sp/>)<sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>GeometryCellImpl::XiSized;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">requires</highlight><highlight class="normal"><sp/>std::same_as&lt;<sp/>typename<sp/>GeometryCellImpl::XiSized,<sp/>typename<sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nDim,<sp/>1<sp/>&gt;<sp/>&gt;;</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>GeometryCellImpl::NSized;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">requires</highlight><highlight class="normal"><sp/>std::same_as&lt;<sp/>typename<sp/>GeometryCellImpl::NSized,<sp/>typename<sp/>Eigen::Matrix&lt;<sp/>double,<sp/>1,<sp/>nNodes<sp/>&gt;<sp/>&gt;;</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>GeometryCellImpl::dNdXSized;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">requires</highlight><highlight class="normal"><sp/>std::same_as&lt;<sp/>typename<sp/>GeometryCellImpl::dNdXSized,<sp/>typename<sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nDim,<sp/>nNodes<sp/>&gt;<sp/>&gt;;</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>{<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/><sp/><sp/>geom.test(<sp/>typename<sp/>GeometryCellImpl::XiSized()<sp/>)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>}<sp/>-&gt;<sp/>std::same_as&lt;<sp/>bool<sp/>&gt;;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>{<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/><sp/><sp/>geom.isCoordinateInCell(<sp/>typename<sp/>GeometryCellImpl::XiSized()<sp/>)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>}<sp/>-&gt;<sp/>std::same_as&lt;<sp/>bool<sp/>&gt;;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>geom.findReferenceCoordinate(<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>GeometryCellImpl::XiSized()<sp/>)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/>-&gt;<sp/>std::same_as&lt;<sp/>typename<sp/>GeometryCellImpl::XiSized<sp/>&gt;;</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>geom.N(<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>GeometryCellImpl::XiSized()<sp/>)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/>-&gt;<sp/>std::same_as&lt;<sp/>typename<sp/>GeometryCellImpl::NSized<sp/>&gt;;</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>geom.dNdX(<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>GeometryCellImpl::XiSized()<sp/>)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/>-&gt;<sp/>std::same_as&lt;<sp/>typename<sp/>GeometryCellImpl::dNdXSized<sp/>&gt;;</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>geom.detJ(<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>GeometryCellImpl::XiSized()<sp/>)</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/>-&gt;<sp/>std::same_as&lt;<sp/>double<sp/>&gt;;</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+    </programlisting>
+</codepart>
+    </conceptparts>
+    <briefdescription>
+<para>Requirements on the geometry policy of a cell (e.g. Marmot::Discretizations::Cells::DisplacementCell). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A geometry policy must provide the types <computeroutput>XiSized</computeroutput> ( <formula id="105">$ n_\mathrm{dim} $</formula> vector), <computeroutput>NSized</computeroutput> ( <formula id="106">$ 1\times n_\mathrm{nodes} $</formula>) and <computeroutput>dNdXSized</computeroutput> ( <formula id="107">$ n_\mathrm{dim}\times n_\mathrm{nodes} $</formula>) and the methods <computeroutput>findReferenceCoordinate</computeroutput>, <computeroutput>N</computeroutput>, <computeroutput>dNdX</computeroutput> and <computeroutput>detJ</computeroutput> with the signatures of CellGeometry. The cells additionally call <computeroutput>isCoordinateInCell</computeroutput>, <computeroutput>getBoundingBox</computeroutput> and <computeroutput>getElementShape</computeroutput>, which the concept does not check. Implementations: <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry" kindref="compound">Marmot::Discretizations::Cells::LagrangianCellGeometry</ref>, <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry" kindref="compound">Marmot::Discretizations::Cells::BSplineCellGeometry</ref>.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>GeometryCellImpl</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Candidate geometry class. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Spatial dimension. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of cell nodes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCellGeometry.h" line="106" column="3"/>
+  </compounddef>
+</doxygen>

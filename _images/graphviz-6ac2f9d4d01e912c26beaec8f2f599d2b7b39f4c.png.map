@@ -1,0 +1,5 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" alt="" coords="25,101,1106,149"/>
+<area shape="rect" id="node2" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleDomain.h" alt="" coords="5,5,1126,53"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="567,67,568,103,563,100,564,71"/>
+</map>

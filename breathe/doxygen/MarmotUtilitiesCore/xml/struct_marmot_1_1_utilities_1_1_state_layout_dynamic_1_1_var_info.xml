@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_utilities_1_1_state_layout_dynamic_1_1_var_info" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Utilities::StateLayoutDynamic::VarInfo</compoundname>
+    <includes refid="_marmot_state_helpers_8h" local="no">MarmotStateHelpers.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_utilities_1_1_state_layout_dynamic_1_1_var_info_1a239cd226c1cd6f1ceea41f5a12a61783" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Marmot::Utilities::StateLayoutDynamic::VarInfo::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>Marmot::Utilities::StateLayoutDynamic::VarInfo::name</qualifiedname>
+        <briefdescription>
+<para>Unique name of the state variable. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" line="157" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" bodystart="157" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_utilities_1_1_state_layout_dynamic_1_1_var_info_1a28f03b4e74156b5a69dff07aa2e37eaa" prot="public" static="no" mutable="no">
+        <type>std::size_t</type>
+        <definition>std::size_t Marmot::Utilities::StateLayoutDynamic::VarInfo::size</definition>
+        <argsstring></argsstring>
+        <name>size</name>
+        <qualifiedname>Marmot::Utilities::StateLayoutDynamic::VarInfo::size</qualifiedname>
+        <briefdescription>
+<para>Number of <computeroutput>double</computeroutput> values occupied by this variable. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" line="158" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" bodystart="158" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_utilities_1_1_state_layout_dynamic_1_1_var_info_1a8869757d63074c0c307a5729302dd91e" prot="public" static="no" mutable="no">
+        <type>std::size_t</type>
+        <definition>std::size_t Marmot::Utilities::StateLayoutDynamic::VarInfo::offset</definition>
+        <argsstring></argsstring>
+        <name>offset</name>
+        <qualifiedname>Marmot::Utilities::StateLayoutDynamic::VarInfo::offset</qualifiedname>
+        <briefdescription>
+<para>Byte-offset (in units of <computeroutput>double</computeroutput>) from the beginning of the state vector. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" line="159" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" bodystart="159" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Describes a single named state variable registered in the layout. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" line="156" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" bodystart="156" bodyend="160"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_utilities_1_1_state_layout_dynamic_1_1_var_info_1a239cd226c1cd6f1ceea41f5a12a61783" prot="public" virt="non-virtual"><scope>Marmot::Utilities::StateLayoutDynamic::VarInfo</scope><name>name</name></member>
+      <member refid="struct_marmot_1_1_utilities_1_1_state_layout_dynamic_1_1_var_info_1a8869757d63074c0c307a5729302dd91e" prot="public" virt="non-virtual"><scope>Marmot::Utilities::StateLayoutDynamic::VarInfo</scope><name>offset</name></member>
+      <member refid="struct_marmot_1_1_utilities_1_1_state_layout_dynamic_1_1_var_info_1a28f03b4e74156b5a69dff07aa2e37eaa" prot="public" virt="non-virtual"><scope>Marmot::Utilities::StateLayoutDynamic::VarInfo</scope><name>size</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_discretizations_1_1_element_properties" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Discretizations::ElementProperties</compoundname>
+    <includes refid="_marmot_element_property_8h" local="no">MarmotElementProperty.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_element_properties_1a0944e0f7d66b84e1ab13c367aba83da8" prot="public" static="no" mutable="no">
+        <type>const double *</type>
+        <definition>const double* Marmot::Discretizations::ElementProperties::elementProperties</definition>
+        <argsstring></argsstring>
+        <name>elementProperties</name>
+        <qualifiedname>Marmot::Discretizations::ElementProperties::elementProperties</qualifiedname>
+        <briefdescription>
+<para>Pointer to the array of element property values. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementProperty.h" line="74" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementProperty.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_element_properties_1a6e29d7516a32c99a8869d90cab57ce53" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::ElementProperties::nElementProperties</definition>
+        <argsstring></argsstring>
+        <name>nElementProperties</name>
+        <qualifiedname>Marmot::Discretizations::ElementProperties::nElementProperties</qualifiedname>
+        <briefdescription>
+<para>Number of element property values. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementProperty.h" line="75" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementProperty.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_element_properties_1a12c9efb5e9215dda6e7667c4e0b12393" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Discretizations::ElementProperties::ElementProperties</definition>
+        <argsstring>(const double *elementProperties, int nElementProperties)</argsstring>
+        <name>ElementProperties</name>
+        <qualifiedname>Marmot::Discretizations::ElementProperties::ElementProperties</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>elementProperties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nElementProperties</declname>
+        </param>
+        <briefdescription>
+<para>Construct an <ref refid="class_marmot_1_1_discretizations_1_1_element_properties" kindref="compound">ElementProperties</ref> object. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">elementProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the array of element property values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nElementProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of element property values. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementProperty.h" line="82" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementProperty.h" bodystart="82" bodyend="83"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Structure to hold element properties. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This structure is used to define properties of a finite element, allowing for flexible element definitions in finite element analysis. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementProperty.h" line="72" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementProperty.h" bodystart="72" bodyend="84"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_discretizations_1_1_element_properties_1a12c9efb5e9215dda6e7667c4e0b12393" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::ElementProperties</scope><name>ElementProperties</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_element_properties_1a0944e0f7d66b84e1ab13c367aba83da8" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::ElementProperties</scope><name>elementProperties</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_element_properties_1a6e29d7516a32c99a8869d90cab57ce53" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::ElementProperties</scope><name>nElementProperties</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,684 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Marmot::Materials::MaterialGradientEnhancedHypoElastic</compoundname>
+    <includes refid="_marmot_material_general_gradient_enhanced_hypo_elastic_8h" local="no">MarmotMaterialGeneralGradientEnhancedHypoElastic.h</includes>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1increment" prot="public">Marmot::Materials::MaterialGradientEnhancedHypoElastic::increment</innerclass>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1response" prot="public">Marmot::Materials::MaterialGradientEnhancedHypoElastic::response</innerclass>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1tangents" prot="public">Marmot::Materials::MaterialGradientEnhancedHypoElastic::tangents</innerclass>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>nNonlocalVariables</declname>
+        <defname>nNonlocalVariables</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1aa9b138ba6cbc1b5eac11ed9971a66519" prot="protected" static="no" mutable="no">
+        <type>const double *</type>
+        <definition>const double* Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::materialProperties</definition>
+        <argsstring></argsstring>
+        <name>materialProperties</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedHypoElastic::materialProperties</qualifiedname>
+        <briefdescription>
+<para>Pointer to the array of material properties. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="61" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a5956b1941e81c9d34e3bb5bad1af7d9c" prot="protected" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::nMaterialProperties</definition>
+        <argsstring></argsstring>
+        <name>nMaterialProperties</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedHypoElastic::nMaterialProperties</qualifiedname>
+        <briefdescription>
+<para>Number of material properties. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="63" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1ad3c6c463214c15f4ef5108b7dbd43916" prot="public" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::materialNumber</definition>
+        <argsstring></argsstring>
+        <name>materialNumber</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedHypoElastic::materialNumber</qualifiedname>
+        <briefdescription>
+<para>Material number (identifier for the material). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="67" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a292069e33c0dfd408d075467e17c0285" prot="public" static="no" mutable="no">
+        <type>Marmot::Utilities::StateLayoutDynamic</type>
+        <definition>Marmot::Utilities::StateLayoutDynamic Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::stateLayout</definition>
+        <argsstring></argsstring>
+        <name>stateLayout</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedHypoElastic::stateLayout</qualifiedname>
+        <briefdescription>
+<para>Layout of the state variables for the material model. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="note"><para>Must be defined in derived classes to specify the structure and organization of the state variables used in the material model. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="142" column="43" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="142" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1acd63729577df97b5a1d12e9b6d53fe5e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::MaterialGradientEnhancedHypoElastic</definition>
+        <argsstring>(const double *matProperties_, int nMaterialProperties_, int materialNumber_)</argsstring>
+        <name>MaterialGradientEnhancedHypoElastic</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedHypoElastic::MaterialGradientEnhancedHypoElastic</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>matProperties_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaterialProperties_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>materialNumber_</declname>
+        </param>
+        <briefdescription>
+<para>Constructor for the general gradient-enhanced hypoelastic material model. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>matProperties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the array of material properties. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nMaterialProperties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of material properties. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>materialNumber_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Material number (identifier for the material). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="75" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="75" bodyend="80"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a9dd22983c1ac2340a93bade95f6600cc" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::~MaterialGradientEnhancedHypoElastic</definition>
+        <argsstring>()=default</argsstring>
+        <name>~MaterialGradientEnhancedHypoElastic</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedHypoElastic::~MaterialGradientEnhancedHypoElastic</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This class is abstract and instances are owned through base-class pointers (e.g. the std::unique_ptr held by the gradient-enhanced elements), so the destructor must be virtual — destroying a derived object through a base pointer with a non-virtual destructor is undefined behaviour. libstdc++ silently invokes the wrong destructor, while libc++/clang diagnoses it (-Wdelete-abstract-non-virtual-dtor) and emits a trap instruction, which aborted every simulation using such a material on macOS/arm64. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="93" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a529b14adf84be4b6c03afbff4c9dae60" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::computeStress</definition>
+        <argsstring>(response &amp;res, tangents &amp;tan, const increment &amp;inc) const =0</argsstring>
+        <name>computeStress</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedHypoElastic::computeStress</qualifiedname>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1response" kindref="compound">response</ref> &amp;</type>
+          <declname>res</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1tangents" kindref="compound">tangents</ref> &amp;</type>
+          <declname>tan</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1increment" kindref="compound">increment</ref> &amp;</type>
+          <declname>inc</declname>
+        </param>
+        <briefdescription>
+<para>Compute the stress response of the material model including the algorithmic tangents. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">res</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to the response struct to be filled with the computed stress and other response variables. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">tan</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to the tangents struct to be filled with the computed algorithmic tangent matrices. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">inc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to the increment struct containing the strain increment, nonlocal variable increments, and time information.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This method must be implemented in derived classes to compute the stress response based on the specific material model. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="155" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a24808aff0f4185c6b79999cd6b7a0836" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::computeStressExplicit</definition>
+        <argsstring>(response &amp;res, const increment &amp;inc) const</argsstring>
+        <name>computeStressExplicit</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedHypoElastic::computeStressExplicit</qualifiedname>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1response" kindref="compound">response</ref> &amp;</type>
+          <declname>res</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1increment" kindref="compound">increment</ref> &amp;</type>
+          <declname>inc</declname>
+        </param>
+        <briefdescription>
+<para>Compute the stress response of the material model. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">res</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to the response struct to be filled with the computed stress and other response variables. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">inc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to the increment struct containing the strain increment, nonlocal variable increments, and time information.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This method can be used when only the stress response is needed without the tangents, e.g., for explicit dynamics. The default implementation calls the <computeroutput><ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a529b14adf84be4b6c03afbff4c9dae60" kindref="member">computeStress</ref></computeroutput> method and ignores the tangents, which can be computationally expensive to compute. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="168" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="168" bodyend="172"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1af143fe02e2bcf20c6d0d8e3d261ac1a2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::computePlaneStress</definition>
+        <argsstring>(response &amp;res, tangents &amp;tan, const increment &amp;inc) const</argsstring>
+        <name>computePlaneStress</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedHypoElastic::computePlaneStress</qualifiedname>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1response" kindref="compound">response</ref> &amp;</type>
+          <declname>res</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1tangents" kindref="compound">tangents</ref> &amp;</type>
+          <declname>tan</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1increment" kindref="compound">increment</ref> &amp;</type>
+          <declname>inc</declname>
+        </param>
+        <briefdescription>
+<para>Compute the plane stress response of the material model. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">res</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to the response struct to be filled with the computed plane stress and other response variables. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">tan</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to the tangents struct to be filled with the computed algorithmic tangent matrices for plane stress. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">inc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to the increment struct containing the strain increment, nonlocal variable increments, and time information.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This method provides a default implementation for computing the plane stress response using an iterative approach. It assumes an initial guess of isochoric deformation and iteratively corrects the out-of-plane strain until convergence is achieved. Derived classes can override this method if a different approach for plane stress computation is desired. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="188" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="188" bodyend="244"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a3c9143b9874b645876a50163f9b21de0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::computePlaneStressExplicit</definition>
+        <argsstring>(response &amp;res, const increment &amp;inc) const</argsstring>
+        <name>computePlaneStressExplicit</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedHypoElastic::computePlaneStressExplicit</qualifiedname>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1response" kindref="compound">response</ref> &amp;</type>
+          <declname>res</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1increment" kindref="compound">increment</ref> &amp;</type>
+          <declname>inc</declname>
+        </param>
+        <briefdescription>
+<para>Compute the plane stress response of the material model without computing tangents. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">res</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to the response struct to be filled with the computed plane stress and other response variables. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">inc</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Reference to the increment struct containing the strain increment, nonlocal variable increments, and time information.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This method can be used when only the plane stress response is needed without the tangents, e.g., for explicit dynamics. The default implementation calls the <computeroutput><ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1af143fe02e2bcf20c6d0d8e3d261ac1a2" kindref="member">computePlaneStress</ref></computeroutput> method ignoring the tangents. This method maybe overridden in derived classes if a different approach for plane stress computation is desired. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="257" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="257" bodyend="261"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a4db5989f7c86b10e028bf60b983c3864" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>Marmot::Utilities::StateView</type>
+        <definition>Marmot::Utilities::StateView Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::getStateView</definition>
+        <argsstring>(const std::string &amp;stateName, double *stateVars) const</argsstring>
+        <name>getStateView</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedHypoElastic::getStateView</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>stateName</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Get a view to the state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stateName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the state variable </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>StatView to access the state variable </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="269" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="269" bodyend="272"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a0aa6da1d5707c25bb2b9d7d2b7bf10c3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::getNumberOfRequiredStateVars</definition>
+        <argsstring>() const</argsstring>
+        <name>getNumberOfRequiredStateVars</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedHypoElastic::getNumberOfRequiredStateVars</qualifiedname>
+        <briefdescription>
+<para>Get the total number of required state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Total number of required state variables </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="278" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="278" bodyend="278"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a35cdb83ebb601b7b13deff91883da5c5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::initializeYourself</definition>
+        <argsstring>(double *stateVars, int nStateVars)</argsstring>
+        <name>initializeYourself</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedHypoElastic::initializeYourself</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nStateVars</declname>
+        </param>
+        <briefdescription>
+<para>Initialize the state variables at a material point. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nStateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of state variables</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>The default implementation initializes all state variables to zero. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="287" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="287" bodyend="292"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1ad0bf6c9492e4e21169d041e9edfd27f4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>double</type>
+        <definition>virtual double Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::getDensity</definition>
+        <argsstring>(const double *stateVars) const =0</argsstring>
+        <name>getDensity</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedHypoElastic::getDensity</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Get the density of the material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the array of state variables </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Density of the material</para>
+</simplesect>
+This method must be implemented in derived classes to return the density of the material, which is required for dynamic analyses. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="301" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a8445226619877e88c5585b8aeef68966" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>double</type>
+        <definition>virtual double Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::getMaximumWaveSpeed</definition>
+        <argsstring>(const response &amp;currentResponse, const Eigen::Vector&lt; double, nNonlocalVariables &gt; &amp;K=Eigen::Vector&lt; double, nNonlocalVariables &gt;::Zero()) const</argsstring>
+        <name>getMaximumWaveSpeed</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedHypoElastic::getMaximumWaveSpeed</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1response" kindref="compound">response</ref> &amp;</type>
+          <declname>currentResponse</declname>
+        </param>
+        <param>
+          <type>const Eigen::Vector&lt; double, nNonlocalVariables &gt; &amp;</type>
+          <declname>K</declname>
+          <defval>Eigen::Vector&lt; double, nNonlocalVariables &gt;::Zero()</defval>
+        </param>
+        <briefdescription>
+<para>Get the maximum wave speed for the current response state. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>currentResponse</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current response state </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>K</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The non-local field values the tangent is to be evaluated at; zero (the default) asks for the response of the material with its non-local field undamaged. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Maximum wave speed</para>
+</simplesect>
+The default implementation computes the 3D algorithmic tangent and returns <computeroutput>sqrt(max(C_ii) / rho)</computeroutput> with <computeroutput>C_ii</computeroutput> from the Voigt tangent diagonal entries.</para>
+<para><simplesect kind="note"><para>The field is passed in because it is an INPUT to the constitutive law, not a state the response carries. Leaving it at zero therefore means &quot;zero&quot;, not &quot;whatever it currently
+      is&quot; <ndash/> and where damage is driven by that field alone (<computeroutput>m = 1</computeroutput> in GCDP) that is the virgin tangent however damaged the point is. Pass the current field for the current wave speed; take the default for an undamaged reference or a conservative critical time step.</para>
+</simplesect>
+<simplesect kind="note"><para>The default is not cheap: it copies the state and runs the full stress update at a zero strain increment, which on a non-yielding point costs about as much as the stress update itself. That is fine for a critical time step, computed once per step, but the artificial bulk viscosity&apos;s damage degradation asks for the CURRENT wave speed on every quadrature point on every explicit increment, and there the default doubles the material cost. A material whose degraded tangent at a zero strain increment has a closed form <ndash/> the usual <formula id="22">$(1-\omega)\,\mathbb{C}^\mathrm{el}$</formula> of a damage model <ndash/> should override this with that closed form. The override must return what the default returns for it, must honour <computeroutput>K</computeroutput> as an input, and must not touch the state. Marmot::Testing::checkMaximumWaveSpeedOverrideMatchesDefault() checks all three against the default. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="329" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="329" bodyend="362"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a1fd4767d460a703a468874096bf84c68" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>virtual std::vector&lt; double &gt; Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::getNonlocalViscosity</definition>
+        <argsstring>(const double *stateVars) const =0</argsstring>
+        <name>getNonlocalViscosity</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedHypoElastic::getNonlocalViscosity</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Get the nonlocal viscosity of the material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the array of state variables </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Vector containing the nonlocal viscosity values for each nonlocal variable</para>
+</simplesect>
+This method must be implemented in derived classes to return the nonlocal viscosity values, which are required for dynamic analyses involving nonlocal variables. The returned vector should have a length equal to <computeroutput>nNonlocalVariables</computeroutput>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="373" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a1974ed923cec85c33bab176657715eca" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>virtual std::vector&lt; double &gt; Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::getNonlocalMicroInertia</definition>
+        <argsstring>(const double *stateVars) const</argsstring>
+        <name>getNonlocalMicroInertia</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedHypoElastic::getNonlocalMicroInertia</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Get the micro-inertia <formula id="23">$m_k$</formula> of each nonlocal variable. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the array of state variables </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Vector containing the micro-inertia of each nonlocal variable, in seconds squared</para>
+</simplesect>
+It multiplies the second time derivative of the nonlocal variable, turning its balance from the parabolic (viscous) equation <formula id="24">$ \eta\,\dot{\bar\varepsilon} + \bar\varepsilon - c\,\nabla^2\bar\varepsilon = \tilde\varepsilon $</formula> into the damped hyperbolic one  <formula id="25">$ m_k\,\ddot{\bar\varepsilon} + \eta\,\dot{\bar\varepsilon} + \bar\varepsilon -
+c\,\nabla^2\bar\varepsilon = \tilde\varepsilon $</formula>, whose stable increment falls off with <formula id="26">$h$</formula> rather than with <formula id="27">$h^2$</formula>. The nonlocal viscosity keeps its meaning exactly: what was the coefficient of the highest time derivative becomes the damping.</para>
+<para>It sits here, next to <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a1fd4767d460a703a468874096bf84c68" kindref="member">getNonlocalViscosity()</ref>, because the two are <bold>one parameter and not two</bold>: the zeroth-order reaction mode does not ring only while <formula id="28">$m_k \le \eta^2/4$</formula>, and the largest admissible value is the best one because the stable increment grows with <formula id="29">$\sqrt{m_k}$</formula>. Nothing could check that while the two lived at different levels of the stack, and the deck author computed <formula id="30">$\eta^2/4$</formula> by hand; see <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a02d4287128ff572100f81724263961d7" kindref="member">validatedNonlocalMicroInertia()</ref>, which derived classes should return through.</para>
+<para><simplesect kind="note"><para>The default is zero for every nonlocal variable, which is the quasi-static model and the behaviour of every material that predates this interface: the field is then first order in time and is integrated by its viscosity alone. A derived class opts in by overriding this, and a run opts in by giving the material the property the override reads <ndash/> so this is deliberately not pure virtual, unlike <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a1fd4767d460a703a468874096bf84c68" kindref="member">getNonlocalViscosity()</ref>, which a gradient-enhanced material must answer for any explicit path to exist at all. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="401" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="401" bodyend="404"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a02d4287128ff572100f81724263961d7" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;::validatedNonlocalMicroInertia</definition>
+        <argsstring>(std::vector&lt; double &gt; microInertia, const double *stateVars) const</argsstring>
+        <name>validatedNonlocalMicroInertia</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedHypoElastic::validatedNonlocalMicroInertia</qualifiedname>
+        <param>
+          <type>std::vector&lt; double &gt;</type>
+          <declname>microInertia</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Validate a micro-inertia against this material&apos;s own nonlocal viscosity. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>microInertia</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The micro-inertia of each nonlocal variable, as read from the material properties </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the array of state variables, to evaluate the nonlocal viscosity at </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>microInertia</computeroutput> unchanged, if every entry is admissible </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if an entry is non-finite, negative, or exceeds <formula id="30">$\eta^2/4$</formula></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Three failures, each of which is silent without this check:</para>
+<para><itemizedlist>
+<listitem><para>a <bold>non-finite</bold> micro-inertia passes every ordering test, so a NaN would propagate into the lumped inertia and from there into every increment;</para>
+</listitem><listitem><para>a <bold>negative</bold> one would make the nonlocal field integrate backwards in time;</para>
+</listitem><listitem><para>one **above <formula id="30">$\eta^2/4$</formula>** leaves the zeroth-order reaction mode underdamped, so the regularisation rings. That does not present as a failure but as noise on the nonlocal field, which is indistinguishable by eye from the mesh-scale oscillation the gradient enhancement exists to remove.</para>
+</listitem></itemizedlist>
+</para>
+<para>A viscosity of zero admits no micro-inertia at all: an undamped second-order field rings forever. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="425" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="425" bodyend="463"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Base class for general gradient-enhanced hypoelastic material models. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class defines the interface for general gradient-enhanced hypoelastic material models, including methods for computing stress, plane stress response, and managing state variables. The template parameter <computeroutput>nNonlocalVariables</computeroutput> specifies the number of nonlocal variables used in the material model.</para>
+<para>In addition to the standard balance of linear momentum each nonlocal variable introduces an additional balance equation, which is solved simultaneously with the balance of linear momentum. This balance equation is defined as: <formula id="18">\[ \knl_i - \nabla ( c( \knl_i )\, \nabla \knl_i ) = s_i (\boldsymbol \varepsilon,\, \knl_i ) \]</formula> where <formula id="19">$ \knl_i $</formula> is the nonlocal variable, <formula id="20">$ c( \knl_i ) $</formula> is the nonlocal interaction parameter, and <formula id="21">$ s_i $</formula> is the local driving variable for the nonlocal variable <formula id="19">$ \knl_i $</formula>. The interaction parameter <formula id="20">$ c( \knl_i ) $</formula> defines the influence of the nonlocal variable on its own gradient and can be used to model phenomena such as damage-dependent interactions. Also phase-field models can be implemented in this framework by defining the nonlocal variable as the phase-field variable and the local driving variable as a function of the strain tensor. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" line="57" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h" bodystart="57" bodyend="464"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1af143fe02e2bcf20c6d0d8e3d261ac1a2" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialGradientEnhancedHypoElastic</scope><name>computePlaneStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a3c9143b9874b645876a50163f9b21de0" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialGradientEnhancedHypoElastic</scope><name>computePlaneStressExplicit</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a529b14adf84be4b6c03afbff4c9dae60" prot="public" virt="pure-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedHypoElastic</scope><name>computeStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a24808aff0f4185c6b79999cd6b7a0836" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialGradientEnhancedHypoElastic</scope><name>computeStressExplicit</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1ad0bf6c9492e4e21169d041e9edfd27f4" prot="public" virt="pure-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedHypoElastic</scope><name>getDensity</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a8445226619877e88c5585b8aeef68966" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialGradientEnhancedHypoElastic</scope><name>getMaximumWaveSpeed</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a1974ed923cec85c33bab176657715eca" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialGradientEnhancedHypoElastic</scope><name>getNonlocalMicroInertia</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a1fd4767d460a703a468874096bf84c68" prot="public" virt="pure-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedHypoElastic</scope><name>getNonlocalViscosity</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a0aa6da1d5707c25bb2b9d7d2b7bf10c3" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedHypoElastic</scope><name>getNumberOfRequiredStateVars</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a4db5989f7c86b10e028bf60b983c3864" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedHypoElastic</scope><name>getStateView</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a35cdb83ebb601b7b13deff91883da5c5" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialGradientEnhancedHypoElastic</scope><name>initializeYourself</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1acd63729577df97b5a1d12e9b6d53fe5e" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedHypoElastic</scope><name>MaterialGradientEnhancedHypoElastic</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1ad3c6c463214c15f4ef5108b7dbd43916" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedHypoElastic</scope><name>materialNumber</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1aa9b138ba6cbc1b5eac11ed9971a66519" prot="protected" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedHypoElastic</scope><name>materialProperties</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a5956b1941e81c9d34e3bb5bad1af7d9c" prot="protected" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedHypoElastic</scope><name>nMaterialProperties</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a292069e33c0dfd408d075467e17c0285" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedHypoElastic</scope><name>stateLayout</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a02d4287128ff572100f81724263961d7" prot="protected" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedHypoElastic</scope><name>validatedNonlocalMicroInertia</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a9dd22983c1ac2340a93bade95f6600cc" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialGradientEnhancedHypoElastic</scope><name>~MaterialGradientEnhancedHypoElastic</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

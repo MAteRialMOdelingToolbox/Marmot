@@ -1,9 +1,19 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
   <compounddef id="_marmot_lower_dimensional_stress_8h" kind="file" language="C++">
     <compoundname>MarmotLowerDimensionalStress.h</compoundname>
     <includes refid="_marmot_voigt_8h" local="yes">Marmot/MarmotVoigt.h</includes>
     <incdepgraph>
+      <node id="11">
+        <label>Marmot/HaighWestergaard.h</label>
+        <link refid="_haigh_westergaard_8h"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="2" relation="include">
+        </childnode>
+      </node>
       <node id="1">
         <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h</label>
         <link refid="_marmot_lower_dimensional_stress_8h"/>
@@ -21,18 +31,40 @@
         </childnode>
         <childnode refid="6" relation="include">
         </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
       </node>
       <node id="3">
-        <label>Marmot/MarmotFastorTensorBasics.h</label>
+        <label>Fastor/Fastor.h</label>
       </node>
       <node id="4">
-        <label>Marmot/MarmotJournal.h</label>
+        <label>Marmot/MarmotFastorTensorBasics.h</label>
       </node>
       <node id="5">
-        <label>Marmot/MarmotMath.h</label>
+        <label>Marmot/MarmotJournal.h</label>
       </node>
       <node id="6">
+        <label>Marmot/MarmotMath.h</label>
+      </node>
+      <node id="7">
+        <label>Marmot/MarmotTensor.h</label>
+      </node>
+      <node id="8">
         <label>Marmot/MarmotTypedefs.h</label>
+      </node>
+      <node id="9">
+        <label>array</label>
+      </node>
+      <node id="10">
+        <label>utility</label>
       </node>
     </incdepgraph>
     <innernamespace refid="namespace_marmot">Marmot</innernamespace>
@@ -78,31 +110,31 @@
 <codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::ContinuumMechanics<sp/>{</highlight></codeline>
 <codeline lineno="32"><highlight class="normal"></highlight></codeline>
 <codeline lineno="33"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">UniaxialStress<sp/>{</highlight></codeline>
-<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>getUniaxialStressTangent(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Ref&lt;<sp/>const<sp/>Matrix6d<sp/>&gt;&amp;<sp/>C<sp/>);</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>getUniaxialStressTangent(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Ref&lt;<sp/>const<sp/>Marmot::Math::Matrix6d<sp/>&gt;&amp;<sp/>C<sp/>);</highlight></codeline>
 <codeline lineno="45"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>UniaxialStress</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="46"><highlight class="normal"></highlight></codeline>
 <codeline lineno="47"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">PlaneStrain<sp/>{</highlight></codeline>
 <codeline lineno="48"><highlight class="normal"></highlight></codeline>
-<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix3d<sp/>getPlaneStrainTangent(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Matrix6d&amp;<sp/>C<sp/>);</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix3d<sp/>getPlaneStrainTangent(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Matrix6d&amp;<sp/>C<sp/>);</highlight></codeline>
 <codeline lineno="59"><highlight class="normal"></highlight></codeline>
-<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>EigenTensors::Tensor322d<sp/>reduce3D_dStress_dDeformationGradient(</highlight></codeline>
-<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>EigenTensors::Tensor633d&amp;<sp/>dStressdDeformationGradient3D<sp/>);</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Math::Tensors::Tensor322d<sp/>reduce3D_dStress_dDeformationGradient(</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Tensors::Tensor633d&amp;<sp/>dStressdDeformationGradient3D<sp/>);</highlight></codeline>
 <codeline lineno="73"><highlight class="normal"></highlight></codeline>
 <codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>6,<sp/>3<sp/>&gt;<sp/>dStrainDStrainPlaneStrain();</highlight></codeline>
 <codeline lineno="81"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PlaneStrain</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="82"><highlight class="normal"></highlight></codeline>
 <codeline lineno="83"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">PlaneStress<sp/>{</highlight></codeline>
 <codeline lineno="84"><highlight class="normal"></highlight></codeline>
-<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix3d<sp/>getPlaneStressTangent(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Matrix6d&amp;<sp/>C<sp/>);</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix3d<sp/>getPlaneStressTangent(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Matrix6d&amp;<sp/>C<sp/>);</highlight></codeline>
 <codeline lineno="92"><highlight class="normal"></highlight></codeline>
-<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/>EigenTensors::Tensor322d<sp/>compute_dStress_dDeformationGradient(</highlight></codeline>
-<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>EigenTensors::Tensor633d&amp;<sp/>dStressdDeformationGradient3D<sp/>);</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Math::Tensors::Tensor322d<sp/>compute_dStress_dDeformationGradient(</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Tensors::Tensor633d&amp;<sp/>dStressdDeformationGradient3D<sp/>);</highlight></codeline>
 <codeline lineno="106"><highlight class="normal"></highlight></codeline>
-<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Vector6d<sp/>planeStressCompensationStrain(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Vector6d&amp;<sp/>elasticStrain,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>nu<sp/>);</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Math::Vector6d<sp/>planeStressCompensationStrain(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Vector6d&amp;<sp/>elasticStrain,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>nu<sp/>);</highlight></codeline>
 <codeline lineno="125"><highlight class="normal"></highlight></codeline>
-<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>Matrix6d<sp/>planeStressTangentTransformationMatrix(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Matrix6d&amp;<sp/>tangent<sp/>);</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/>Marmot::Math::Matrix6d<sp/>planeStressTangentTransformationMatrix(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Matrix6d&amp;<sp/>tangent<sp/>);</highlight></codeline>
 <codeline lineno="136"><highlight class="normal"></highlight></codeline>
-<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>6,<sp/>3<sp/>&gt;<sp/>dStrainDStrainPlaneStress(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Matrix6d&amp;<sp/>tangent<sp/>);</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>6,<sp/>3<sp/>&gt;<sp/>dStrainDStrainPlaneStress(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Matrix6d&amp;<sp/>tangent<sp/>);</highlight></codeline>
 <codeline lineno="144"><highlight class="normal"></highlight></codeline>
 <codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>3,<sp/>6<sp/>&gt;<sp/>dStressPlaneStressDStress();</highlight></codeline>
 <codeline lineno="151"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>PlaneStress</highlight><highlight class="normal"></highlight></codeline>

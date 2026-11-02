@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Materials::InterfaceMaterialHypoElastic::Tangents</compoundname>
+    <includes refid="_marmot_interface_material_hypo_elastic_8h" local="no">MarmotInterfaceMaterialHypoElastic.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1ae8675639b0746e8a500104892f4d8f85" prot="public" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a053563d78e4d48c52d59b2af828137b3" kindref="member">Tensor33d</ref></type>
+        <definition>Tensor33d Marmot::Materials::InterfaceMaterialHypoElastic::Tangents::Q_ij</definition>
+        <argsstring></argsstring>
+        <name>Q_ij</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::Tangents::Q_ij</qualifiedname>
+        <briefdescription>
+<para>tangent term acting on the displacement jump </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="114" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1a549e605ab6bc3ffe016616efaff11e98" prot="public" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a2e56ab744ffa60d3a47702d951dc9a67" kindref="member">Tensor3333d</ref></type>
+        <definition>Tensor3333d Marmot::Materials::InterfaceMaterialHypoElastic::Tangents::Z_ijkl</definition>
+        <argsstring></argsstring>
+        <name>Z_ijkl</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::Tangents::Z_ijkl</qualifiedname>
+        <briefdescription>
+<para>tangent term acting on the average surface gradient </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="115" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="115" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1a16c42eafee583361379139bf134b3994" prot="public" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1aee86ca94b641b0368ee6bea9bbffebd1" kindref="member">Tensor333d</ref></type>
+        <definition>Tensor333d Marmot::Materials::InterfaceMaterialHypoElastic::Tangents::H_ijk</definition>
+        <argsstring></argsstring>
+        <name>H_ijk</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::Tangents::H_ijk</qualifiedname>
+        <briefdescription>
+<para>coupling term between the displacement jump and the average surface gradient </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="116" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="116" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1acfcb979857c5410dcbec58a81c2506fb" prot="public" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a2e56ab744ffa60d3a47702d951dc9a67" kindref="member">Tensor3333d</ref></type>
+        <definition>Tensor3333d Marmot::Materials::InterfaceMaterialHypoElastic::Tangents::Y_ijkl</definition>
+        <argsstring></argsstring>
+        <name>Y_ijkl</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::Tangents::Y_ijkl</qualifiedname>
+        <briefdescription>
+<para>additional tangent term acting on the average surface gradient </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="117" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Algorithmic tangent terms, set by <ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a448ed0e8c582e512339fb1cb356c0a7a" kindref="member">computeStress()</ref>. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="113" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="113" bodyend="118"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1a16c42eafee583361379139bf134b3994" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic::Tangents</scope><name>H_ijk</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1ae8675639b0746e8a500104892f4d8f85" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic::Tangents</scope><name>Q_ij</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1acfcb979857c5410dcbec58a81c2506fb" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic::Tangents</scope><name>Y_ijkl</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_tangents_1a549e605ab6bc3ffe016616efaff11e98" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic::Tangents</scope><name>Z_ijkl</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

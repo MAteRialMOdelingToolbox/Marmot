@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
   <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_kinematics_1_1_strain" kind="namespace" language="C++">
     <compoundname>Marmot::ContinuumMechanics::Kinematics::Strain</compoundname>
     <sectiondef kind="func">
-      <memberdef kind="function" id="_marmot_kinematics_8h_1a87f54c1d86f7489b5cd21a4545ef4987" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>Marmot::Vector6d</type>
-        <definition>Marmot::Vector6d Marmot::ContinuumMechanics::Kinematics::Strain::GreenLagrange</definition>
+      <memberdef kind="function" id="_marmot_kinematics_8h_1aec8798daca96282ba72df855e4c21ef9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Marmot::Math::Vector6d</type>
+        <definition>Marmot::Math::Vector6d Marmot::ContinuumMechanics::Kinematics::Strain::GreenLagrange</definition>
         <argsstring>(const Eigen::Matrix3d &amp;F)</argsstring>
         <name>GreenLagrange</name>
         <qualifiedname>Marmot::ContinuumMechanics::Kinematics::Strain::GreenLagrange</qualifiedname>
@@ -32,11 +32,11 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" line="40" column="24" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" declline="40" declcolumn="24"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" line="40" column="28" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" declline="40" declcolumn="28"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_kinematics_8h_1a31b53509041aa50af0e80b41a3dd0edb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>Marmot::EigenTensors::Tensor633d</type>
-        <definition>Marmot::EigenTensors::Tensor633d Marmot::ContinuumMechanics::Kinematics::Strain::dGreenLagrangedDeformationGradient</definition>
+      <memberdef kind="function" id="_marmot_kinematics_8h_1a0bafac82fad7caa3cb8246a60ec59739" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Marmot::Math::Tensors::Tensor633d</type>
+        <definition>Marmot::Math::Tensors::Tensor633d Marmot::ContinuumMechanics::Kinematics::Strain::dGreenLagrangedDeformationGradient</definition>
         <argsstring>(const Eigen::Matrix3d &amp;F)</argsstring>
         <name>dGreenLagrangedDeformationGradient</name>
         <qualifiedname>Marmot::ContinuumMechanics::Kinematics::Strain::dGreenLagrangedDeformationGradient</qualifiedname>
@@ -57,19 +57,19 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>A <formula id="104">$6 \times 3 \times 3$</formula> tensor representing the derivative of the Green-Lagrange strain tensor. </para>
+<simplesect kind="return"><para>A <formula id="130">$6 \times 3 \times 3$</formula> tensor representing the derivative of the Green-Lagrange strain tensor. </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" line="47" column="40" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" declline="47" declcolumn="40"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" line="47" column="39" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" declline="47" declcolumn="39"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" line="33" column="5"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" line="33" column="3"/>
   </compounddef>
 </doxygen>

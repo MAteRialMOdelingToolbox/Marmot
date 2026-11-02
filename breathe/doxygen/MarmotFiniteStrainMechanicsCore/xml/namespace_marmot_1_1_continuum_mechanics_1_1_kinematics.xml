@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_kinematics" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::Kinematics</compoundname>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_kinematics_1_1_deformation_measures">Marmot::ContinuumMechanics::Kinematics::DeformationMeasures</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="30" column="1"/>
+  </compounddef>
+</doxygen>

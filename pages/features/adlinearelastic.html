@@ -50,7 +50,9 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="materials.html">Material models</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="at2phasefield.html">AT2 Phase Field Fracture</a></li>
@@ -69,11 +71,20 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="linearviscoelasticpowerlaw.html">Linear Viscoelastic Power Law model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="linearviscoelasticorthotropicpowerlaw.html">Linear Viscoelastic Orthotropic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticwiechert.html">Linear Viscoelastic Wiechert model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="interfacematerialhypoelastic.html">Interface material (hypoelastic bulk material)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="microplanem7.html">Microplane model M7</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gm7.html">Gradient-enhanced microplane model M7 (GM7)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="vonmises.html">Von Mises model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="advonmises.html">Von Mises model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hugheswinget.html">Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedhugheswinget.html">Gradient-enhanced Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedcompressibleneohookedamage.html">Gradient-enhanced compressible Neo-Hooke damage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedfinitestraindruckerprager.html">Gradient-enhanced finite-strain Drucker-Prager</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meshfree.html">Meshfree methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
@@ -140,16 +151,16 @@ The stiffness tensor can be specified for isotropic material behavior as follows
 <h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials15ADLinearElasticE">
-<span id="_CPPv3N6Marmot9Materials15ADLinearElasticE"></span><span id="_CPPv2N6Marmot9Materials15ADLinearElasticE"></span><span id="Marmot::Materials::ADLinearElastic"></span><span class="target" id="classMarmot_1_1Materials_1_1ADLinearElastic"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADLinearElastic</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv427MarmotMaterialHypoElasticAD" title="MarmotMaterialHypoElasticAD"><span class="n"><span class="pre">MarmotMaterialHypoElasticAD</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials15ADLinearElasticE" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3N6Marmot9Materials15ADLinearElasticE"></span><span id="_CPPv2N6Marmot9Materials15ADLinearElasticE"></span><span id="Marmot::Materials::ADLinearElastic"></span><span class="target" id="classMarmot_1_1Materials_1_1ADLinearElastic"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADLinearElastic</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials21MaterialHypoElasticADE" title="Marmot::Materials::MaterialHypoElasticAD"><span class="n"><span class="pre">MaterialHypoElasticAD</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials15ADLinearElasticE" title="Link to this definition"></a><br /></dt>
 <dd><p>Inheritance diagram for Marmot::Materials::ADLinearElastic:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-dbd66cd2655515c3e396af71a3291558843f60fb.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-1744cae02680c7bf778ba3fbd8b877682f5648ae.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;1&quot; [label=&quot;Marmot::Materials::ADLinearElastic&quot; tooltip=&quot;Marmot::Materials::ADLinearElastic&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;3&quot; [label=&quot;MarmotMaterialHypoElastic&quot; tooltip=&quot;MarmotMaterialHypoElastic&quot;]
-    &quot;2&quot; [label=&quot;MarmotMaterialHypoElasticAD&quot; tooltip=&quot;MarmotMaterialHypoElasticAD&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Materials::MaterialHypoElastic&quot; tooltip=&quot;Marmot::Materials::MaterialHypoElastic&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialHypoElasticAD&quot; tooltip=&quot;Marmot::Materials::MaterialHypoElasticAD&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
     &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
 }" class="graphviz" /></div>
@@ -157,14 +168,14 @@ The stiffness tensor can be specified for isotropic material behavior as follows
 </figure>
 <p>Collaboration diagram for Marmot::Materials::ADLinearElastic:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-9dc5341a8ea83c77d9e64c781a7190266fdf667f.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-f5112955f0156ca8f4484b4a5ccd0fb6bb427393.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;1&quot; [label=&quot;Marmot::Materials::ADLinearElastic&quot; tooltip=&quot;Marmot::Materials::ADLinearElastic&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;3&quot; [label=&quot;MarmotMaterialHypoElastic&quot; tooltip=&quot;MarmotMaterialHypoElastic&quot;]
-    &quot;2&quot; [label=&quot;MarmotMaterialHypoElasticAD&quot; tooltip=&quot;MarmotMaterialHypoElasticAD&quot;]
-    &quot;4&quot; [label=&quot;MarmotStateLayoutDynamic&quot; tooltip=&quot;MarmotStateLayoutDynamic&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Materials::MaterialHypoElastic&quot; tooltip=&quot;Marmot::Materials::MaterialHypoElastic&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialHypoElasticAD&quot; tooltip=&quot;Marmot::Materials::MaterialHypoElasticAD&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Utilities::StateLayoutDynamic&quot; tooltip=&quot;Marmot::Utilities::StateLayoutDynamic&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
     &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
     &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
@@ -206,8 +217,8 @@ The stiffness tensor can be specified for isotropic material behavior as follows
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials15ADLinearElastic15computeStressADER9state3DADRKN6Marmot11Vector6dualERK8timeInfo">
-<span id="_CPPv3NK6Marmot9Materials15ADLinearElastic15computeStressADER9state3DADRKN6Marmot11Vector6dualERK8timeInfo"></span><span id="_CPPv2NK6Marmot9Materials15ADLinearElastic15computeStressADER9state3DADRKN6Marmot11Vector6dualERK8timeInfo"></span><span id="Marmot::Materials::ADLinearElastic::computeStressAD__state3DADR.Marmot::Vector6dualCR.timeInfoCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1ADLinearElastic_1a393f6afefa82023e85ac8e3086932656"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStressAD</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">state3DAD</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">state</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot11Vector6dualE" title="Marmot::Vector6dual"><span class="n"><span class="pre">Vector6dual</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4NK6Marmot9Materials15ADLinearElastic15computeStressADER9state3DADRKN6Marmot11Vector6dualERK8timeInfo" title="Marmot::Materials::ADLinearElastic::computeStressAD::timeInfo"><span class="n"><span class="pre">timeInfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeInfo</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials15ADLinearElastic15computeStressADER9state3DADRKN6Marmot11Vector6dualERK8timeInfo" title="Link to this definition"></a><br /></dt>
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials15ADLinearElastic15computeStressADER9state3DADRKN6Marmot4Math11Vector6dualERK8timeInfo">
+<span id="_CPPv3NK6Marmot9Materials15ADLinearElastic15computeStressADER9state3DADRKN6Marmot4Math11Vector6dualERK8timeInfo"></span><span id="_CPPv2NK6Marmot9Materials15ADLinearElastic15computeStressADER9state3DADRKN6Marmot4Math11Vector6dualERK8timeInfo"></span><span id="Marmot::Materials::ADLinearElastic::computeStressAD__state3DADR.Marmot::Math::Vector6dualCR.timeInfoCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1ADLinearElastic_1a5b272314b77e405d8e735296ce6f46d5"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStressAD</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">state3DAD</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">state</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math11Vector6dualE" title="Marmot::Math::Vector6dual"><span class="n"><span class="pre">Vector6dual</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4NK6Marmot9Materials15ADLinearElastic15computeStressADER9state3DADRKN6Marmot4Math11Vector6dualERK8timeInfo" title="Marmot::Materials::ADLinearElastic::computeStressAD::timeInfo"><span class="n"><span class="pre">timeInfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeInfo</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials15ADLinearElastic15computeStressADER9state3DADRKN6Marmot4Math11Vector6dualERK8timeInfo" title="Link to this definition"></a><br /></dt>
 <dd><p>Compute the Cauchy stress tensor <span class="math notranslate nohighlight">\(\boldsymbol{\sigma}\)</span> given an increment of the linearized strain tensor <span class="math notranslate nohighlight">\(\Delta\boldsymbol{\varepsilon}\)</span>. </p>
 <p>Dual numbers are used for both the Cauchy stress tensor and the linearized strain increment, such that the algorithmic tangent operator <span class="math notranslate nohighlight">\(\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}\)</span> can be obtained by means of automatic differentiation.</p>
 <dl class="field-list simple">
@@ -215,7 +226,7 @@ The stiffness tensor can be specified for isotropic material behavior as follows
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>state</strong> – <strong>[inout]</strong> State carrying the dual Cauchy stress, strain energy, and state variables </p></li>
 <li><p><strong>dStrain</strong> – <strong>[in]</strong> linearized strain increment </p></li>
-<li><p><strong>timeInfo</strong> – Old (pseudo-)time </p></li>
+<li><p><strong>timeInfo</strong> – <strong>[in]</strong> Old (pseudo-)time </p></li>
 </ul>
 </dd>
 </dl>

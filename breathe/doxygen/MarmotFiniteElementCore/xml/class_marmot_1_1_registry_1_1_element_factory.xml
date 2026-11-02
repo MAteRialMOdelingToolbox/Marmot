@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_registry_1_1_element_factory" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Registry::ElementFactory</compoundname>
+    <includes refid="_marmot_element_factory_8h" local="no">MarmotElementFactory.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_registry_1_1_element_factory_1af0757f08b06762cbd64e7a371221ca6b" prot="public" static="no">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element" kindref="compound">Marmot::Discretizations::Elements::Element</ref> *(*)(int elementNumber)</type>
+        <definition>using Marmot::Registry::ElementFactory::elementFactoryFunction = Marmot::Discretizations::Elements::Element* (*)( int elementNumber )</definition>
+        <argsstring></argsstring>
+        <name>elementFactoryFunction</name>
+        <qualifiedname>Marmot::Registry::ElementFactory::elementFactoryFunction</qualifiedname>
+        <briefdescription>
+<para>Factory function pointer type: takes an element number and returns a new <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element" kindref="compound">Marmot::Discretizations::Elements::Element</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementFactory.h" line="43" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementFactory.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_registry_1_1_element_factory_1a44b0aa7e56e85cb44e8d381e0cf92180" prot="private" static="no">
+        <type>std::unordered_map&lt; std::string, <ref refid="class_marmot_1_1_registry_1_1_element_factory_1af0757f08b06762cbd64e7a371221ca6b" kindref="member">elementFactoryFunction</ref> &gt;</type>
+        <definition>using Marmot::Registry::ElementFactory::ElementFactoryMap = std::unordered_map&lt; std::string, elementFactoryFunction &gt;</definition>
+        <argsstring></argsstring>
+        <name>ElementFactoryMap</name>
+        <qualifiedname>Marmot::Registry::ElementFactory::ElementFactoryMap</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementFactory.h" line="83" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementFactory.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_element_factory_1a8c96062e7599166a88bfc744c0e2a244" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Registry::ElementFactory::ElementFactory</definition>
+        <argsstring>()=delete</argsstring>
+        <name>ElementFactory</name>
+        <qualifiedname>Marmot::Registry::ElementFactory::ElementFactory</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementFactory.h" line="44" column="5"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_element_factory_1af6face33f7b4ebeab8abc3f21f09f349" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element" kindref="compound">Marmot::Discretizations::Elements::Element</ref> *</type>
+        <definition>static Marmot::Discretizations::Elements::Element * Marmot::Registry::ElementFactory::createElement</definition>
+        <argsstring>(const std::string &amp;elementName, int elementNumber)</argsstring>
+        <name>createElement</name>
+        <qualifiedname>Marmot::Registry::ElementFactory::createElement</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>elementName</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>elementNumber</declname>
+        </param>
+        <briefdescription>
+<para>Create an element instance based on its name and number. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">elementName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Registered name of the element type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">elementNumber</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unique identifier for the element instance. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pointer to the created <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element" kindref="compound">Marmot::Discretizations::Elements::Element</ref> instance. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if <computeroutput>elementName</computeroutput> is not registered. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementFactory.h" line="53" column="55" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementFactory.h" bodystart="53" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_element_factory_1a1476af9890252b5766d0b4dff97d2073" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool Marmot::Registry::ElementFactory::registerElement</definition>
+        <argsstring>(const std::string &amp;elementName, elementFactoryFunction factoryFunction)</argsstring>
+        <name>registerElement</name>
+        <qualifiedname>Marmot::Registry::ElementFactory::registerElement</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>elementName</declname>
+        </param>
+        <param>
+          <type><ref refid="class_marmot_1_1_registry_1_1_element_factory_1af0757f08b06762cbd64e7a371221ca6b" kindref="member">elementFactoryFunction</ref></type>
+          <declname>factoryFunction</declname>
+        </param>
+        <briefdescription>
+<para>Register an element with its name. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">elementName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the element type to register. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">factoryFunction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Factory function pointer that creates the element. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if registration was successful. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementFactory.h" line="72" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementFactory.h" bodystart="72" bodyend="80"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_element_factory_1a01167e41bf91695ffeb4adc1425c4639" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>ElementFactoryMap &amp;</type>
+        <definition>static ElementFactoryMap &amp; Marmot::Registry::ElementFactory::elementFactoryFunctionByName</definition>
+        <argsstring>()</argsstring>
+        <name>elementFactoryFunctionByName</name>
+        <qualifiedname>Marmot::Registry::ElementFactory::elementFactoryFunctionByName</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementFactory.h" line="84" column="30"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Factory class for creating element instances. This class provides a mechanism to register elements by their code and name, and to create element instances based on their properties. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementFactory.h" line="39" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementFactory.h" bodystart="39" bodyend="85"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_registry_1_1_element_factory_1af6face33f7b4ebeab8abc3f21f09f349" prot="public" virt="non-virtual"><scope>Marmot::Registry::ElementFactory</scope><name>createElement</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_element_factory_1a8c96062e7599166a88bfc744c0e2a244" prot="public" virt="non-virtual"><scope>Marmot::Registry::ElementFactory</scope><name>ElementFactory</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_element_factory_1af0757f08b06762cbd64e7a371221ca6b" prot="public" virt="non-virtual"><scope>Marmot::Registry::ElementFactory</scope><name>elementFactoryFunction</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_element_factory_1a01167e41bf91695ffeb4adc1425c4639" prot="private" virt="non-virtual"><scope>Marmot::Registry::ElementFactory</scope><name>elementFactoryFunctionByName</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_element_factory_1a44b0aa7e56e85cb44e8d381e0cf92180" prot="private" virt="non-virtual"><scope>Marmot::Registry::ElementFactory</scope><name>ElementFactoryMap</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_element_factory_1a1476af9890252b5766d0b4dff97d2073" prot="public" virt="non-virtual"><scope>Marmot::Registry::ElementFactory</scope><name>registerElement</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

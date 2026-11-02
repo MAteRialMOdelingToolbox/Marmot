@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_time_increment" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Materials::MaterialFiniteStrain::TimeIncrement</compoundname>
+    <includes refid="_marmot_material_finite_strain_8h" local="no">MarmotMaterialFiniteStrain.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_time_increment_1aeb6664f69689e77b921803611c47511d" prot="public" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::Materials::MaterialFiniteStrain::TimeIncrement::time</definition>
+        <argsstring></argsstring>
+        <name>time</name>
+        <qualifiedname>Marmot::Materials::MaterialFiniteStrain::TimeIncrement::time</qualifiedname>
+        <briefdescription>
+<para>time at the beginning of the increment </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="146" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="146" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_time_increment_1a3104b7283e6a64a185cf71c0beef0e6f" prot="public" static="no" mutable="no">
+        <type>const double</type>
+        <definition>const double Marmot::Materials::MaterialFiniteStrain::TimeIncrement::dT</definition>
+        <argsstring></argsstring>
+        <name>dT</name>
+        <qualifiedname>Marmot::Materials::MaterialFiniteStrain::TimeIncrement::dT</qualifiedname>
+        <briefdescription>
+<para>size of the time increment </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="147" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="147" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Represents a time increment in a simulation. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This struct holds information about the current time and the time step size (dT). </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="145" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="145" bodyend="148"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_time_increment_1a3104b7283e6a64a185cf71c0beef0e6f" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrain::TimeIncrement</scope><name>dT</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_time_increment_1aeb6664f69689e77b921803611c47511d" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrain::TimeIncrement</scope><name>time</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

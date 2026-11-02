@@ -1,0 +1,602 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_kelvin_chain" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain</compoundname>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_marmot_kelvin_chain_8h_1a38757fbe6a2c906b4feba4365bbd7d9c" prot="public" static="no">
+        <type>Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::Properties</type>
+        <definition>using Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::Properties = Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::Properties</definition>
+        <argsstring></argsstring>
+        <name>Properties</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::Properties</qualifiedname>
+        <briefdescription>
+<para>Vector of material properties. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This namespace contains the functions that derive the equivalent Kelvin chain for a given compliance function</para>
+<para>Convenience typedef for an Eigen dynamic-size vector (<computeroutput>Eigen::VectorXd</computeroutput>) that holds the material or model parameters of the Kelvin chain. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="42" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_kelvin_chain_8h_1a794089f2b4817ba2183038c6b829b352" prot="public" static="no">
+        <type>Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::mapProperties</type>
+        <definition>using Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::mapProperties = Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::mapProperties</definition>
+        <argsstring></argsstring>
+        <name>mapProperties</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::mapProperties</qualifiedname>
+        <briefdescription>
+<para>Mapped view of material properties. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Alias for <computeroutput>Eigen::Map&lt;Properties&gt;</computeroutput>, which allows mapping an existing contiguous memory block as a <computeroutput>Properties</computeroutput> vector without copying. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="51" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_kelvin_chain_8h_1ab44cd50562a8d71e3b38ef5527349b1d" prot="public" static="no">
+        <type>Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::StateVarMatrix</type>
+        <definition>using Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::StateVarMatrix = Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::StateVarMatrix</definition>
+        <argsstring></argsstring>
+        <name>StateVarMatrix</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::StateVarMatrix</qualifiedname>
+        <briefdescription>
+<para>Matrix of state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Alias for an Eigen matrix of shape 6 × N (<computeroutput>Eigen::Matrix&lt;double, 6, Eigen::Dynamic&gt;</computeroutput>), storing viscoelastic strain variables for each Kelvin unit. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="59" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_kelvin_chain_8h_1ab7109dfd6553808e6af27c46429fbb65" prot="public" static="no">
+        <type>Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::mapStateVarMatrix</type>
+        <definition>using Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::mapStateVarMatrix = Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::mapStateVarMatrix</definition>
+        <argsstring></argsstring>
+        <name>mapStateVarMatrix</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::mapStateVarMatrix</qualifiedname>
+        <briefdescription>
+<para>Mapped view of the state variable matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Alias for <computeroutput>Eigen::Map&lt;StateVarMatrix&gt;</computeroutput>, allowing access to an existing state variable array as an Eigen matrix without copying. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="68" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_kelvin_chain_8h_1a721ba7e5f9564c4c3cbcadc0512f01c0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>k</declname>
+            <defname>k</defname>
+          </param>
+        </templateparamlist>
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::evaluatePostWidderFormula</definition>
+        <argsstring>(std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; phi, double tau)</argsstring>
+        <name>evaluatePostWidderFormula</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::evaluatePostWidderFormula</qualifiedname>
+        <param>
+          <type>std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt;</type>
+          <declname>phi</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>tau</declname>
+        </param>
+        <briefdescription>
+<para>Evaluates the Post–Widder inversion formula to approximate the discrete retardance function <formula id="380">$L_k(\tau)$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Evaluates the Post-Widder formula for deriving the equivalent retardance <formula id="381">$L_\kappa(\tau)$</formula> of the discrete Kelvin Chain model, given the continuous description of the compliance  <formula id="382">\[\Phi(t) = \int_{\tau=0}^\infty
+L(\tau)\left(1-e^{-\frac{t}{\tau}}\right)d(\ln\tau)\]</formula> according to the formula <formula id="383">\[L_k(\tau)=(-1)^{k-1}\frac{(-tk)^k\Phi^{(k)(t)}}{(k-1)!}\]</formula></para>
+<para>in the sense that <formula id="384">$L_k(\tau)=\lim_{\kappa\to\infty}L_\kappa(\tau)$</formula> in the frequency domain. <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>k</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><formula id="12">$k$</formula> integer defining the order of differentiation that corresponds to the <formula id="385">$L_k$</formula> term in the sequence of the retardance approximation </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">phi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>compliance function whose discrete approximation is sought </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">tau</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the continuous variable in the frequency domain </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>val the value of the <formula id="380">$L_k(\tau)$</formula> approximation. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="86" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="86" bodyend="92"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_kelvin_chain_8h_1a7f1993c99a33ecb172e5aa5c300d6534" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>k</declname>
+            <defname>k</defname>
+          </param>
+        </templateparamlist>
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::approximateZerothCompliance</definition>
+        <argsstring>(std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; phi, double tauMin, double spacing=10.)</argsstring>
+        <name>approximateZerothCompliance</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::approximateZerothCompliance</qualifiedname>
+        <param>
+          <type>std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt;</type>
+          <declname>phi</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>tauMin</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>spacing</declname>
+          <defval>10.</defval>
+        </param>
+        <briefdescription>
+<para>Computes the zeroth-order (instantaneous) elastic compliance by numerically integrating the retardance function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Approximates the instantaneous elastic compliance <formula id="386">$\Phi_0=\frac{1}{E_0}$</formula>, <formula id="387">\[\frac{1}{E_0}=\int_{\tau=0}^{\tau}L(\tau)d\ln(\tau)\]</formula> It is used in order to avoid integrating over the origin of the frequency domain where <formula id="388">$\int_0^{\tau_0}d\ln(\tau)$</formula> is singular.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>k</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><formula id="12">$k$</formula> integer defining the order of differentiation for the <formula id="389">$k-th$</formula> approximation of the retardance. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">phi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>compliance function whose discrete approximation is sought. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">tauMin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the minimum retardation time that is required to be of the same order or smaller than the total time of the analysis. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">spacing</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the increment between two sunsequent retardation times </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>val the value of the zeroth compliance term.</para>
+</simplesect>
+<simplesect kind="note"><para>The integral is evaluated numerically using Simpson’s rule via <computeroutput>Marmot::Math::Integration::integrateScalarFunction</computeroutput>. The integration range <formula id="390">$[\tau_{\min}/\sqrt{\text{spacing}},\,1\times10^{-14}]$</formula> is chosen to avoid the logarithmic singularity at <formula id="391">$\tau=0$</formula>. As Simpson&apos;s rule is sensitive to changes in the sign of the summands, integration should be handled with care. A Gauss quadrature approach involving Chebyshev polynomials could be implemented in the future. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="118" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="118" bodyend="134"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_kelvin_chain_8h_1ad99d730bb5bebbbb29b17a4b5e3b5594" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>k</declname>
+            <defname>k</defname>
+          </param>
+        </templateparamlist>
+        <type>Properties</type>
+        <definition>Properties Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::computeElasticModuli</definition>
+        <argsstring>(std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; phi, Properties retardationTimes, bool gaussQuadrature=false)</argsstring>
+        <name>computeElasticModuli</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::computeElasticModuli</qualifiedname>
+        <param>
+          <type>std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt;</type>
+          <declname>phi</declname>
+        </param>
+        <param>
+          <type>Properties</type>
+          <declname>retardationTimes</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>gaussQuadrature</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+<para>Computes the discrete elastic moduli of the equivalent Kelvin chain from the <formula id="385">$L_k$</formula> retardance approximation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Evaluates the elastic moduli based on the <formula id="385">$L_k$</formula> approximation of the retardance, <formula id="392">\[ \frac{1}{E_\mu}=(\ln 10)L_k(\tau_\mu),\;\mu=1,2,...,M\]</formula></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>k</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><formula id="12">$k$</formula> integer defining the order of differentiation for the <formula id="389">$k-th$</formula> approximation of the retardance. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">phi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>compliance function whose discrete approximation is sought </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">retardationTimes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the minimum retardation time that is required to be of the same order or smaller than the total time of the analysis </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">gaussQuadrature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>flag if on Gauss Quadrature is performed else the Post-Widder formula is applied. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>elasticModuli the discrete elastic moduli of the equivalt Kelvin chain. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="152" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" bodystart="152" bodyend="172"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_kelvin_chain_8h_1a346d4645273cbeca4695f8b94214ff9c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Properties</type>
+        <definition>Properties Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::generateRetardationTimes</definition>
+        <argsstring>(int n, double min, double spacing)</argsstring>
+        <name>generateRetardationTimes</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::generateRetardationTimes</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>min</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>spacing</declname>
+        </param>
+        <briefdescription>
+<para>Generates a sequence of logarithmically spaced retardation times for the Kelvin chain model. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This function evaluates the retardation times. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the number of kelvin units in the equivalent Kelvin chain. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">min</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the first retardation time. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">spacing</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the spacing between the retardation times. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>retardationTimes a vector containing the retardation time for each Kelvin unit in the Kelvin chain. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="183" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" declline="183" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_kelvin_chain_8h_1a2969c1a3f2a3e325717ef4e5962513ba" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::updateStateVarMatrix</definition>
+        <argsstring>(const double dT, Properties elasticModuli, Properties retardationTimes, Eigen::Ref&lt; StateVarMatrix &gt; stateVars, const Marmot::Math::Vector6d &amp;dStress, const Marmot::Math::Matrix6d &amp;unitComplianceMatrix)</argsstring>
+        <name>updateStateVarMatrix</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::updateStateVarMatrix</qualifiedname>
+        <param>
+          <type>const double</type>
+          <declname>dT</declname>
+        </param>
+        <param>
+          <type>Properties</type>
+          <declname>elasticModuli</declname>
+        </param>
+        <param>
+          <type>Properties</type>
+          <declname>retardationTimes</declname>
+        </param>
+        <param>
+          <type>Eigen::Ref&lt; StateVarMatrix &gt;</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>dStress</declname>
+        </param>
+        <param>
+          <type>const Marmot::Math::Matrix6d &amp;</type>
+          <declname>unitComplianceMatrix</declname>
+        </param>
+        <briefdescription>
+<para>Updates the viscoelastic strain state variables for each Kelvin unit over a given time increment. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>For the given time increment <formula id="393">$\Delta t_k$</formula> this function updates the visco-elastic state variables according to the update rule:  <formula id="394">\[\varepsilon^{ev,\mu,k+1}_{ij} = \frac{\lambda^{\mu
+k}}{E_\mu}C^\nu_{ijkl}\Delta\sigma_{kl}+\beta^{\mu ,k}\varepsilon^{ev,\mu, k}_{ij}\]</formula></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the time increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">elasticModuli</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>vector containing the elastic moduli of ech Kelvin unit in the Kelvin chain. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">retardationTimes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>vector containing the retardation time for each Kelvin unit in the Kelvin chain. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the <formula id="395">$[6\times \mu]$</formula> matrix that contains the viscoelastic strain update for each unit of the Kelvin chain. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dStress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the <formula id="396">$[6 \times 1]$</formula> vector of the total stress increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">unitComplianceMatrix</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the <formula id="397">$[6\times 6]$</formula> compliance matrix of the material with unit compliance and given Poisson coefficient. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="201" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" declline="201" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_kelvin_chain_8h_1ae3592e2410b7e002f60ecd0c6af5f338" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::evaluateKelvinChain</definition>
+        <argsstring>(const double dT, Properties elasticModuli, Properties retardationTimes, StateVarMatrix stateVars, double &amp;uniaxialCompliance, Marmot::Math::Vector6d &amp;dStrain, const double factor)</argsstring>
+        <name>evaluateKelvinChain</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::evaluateKelvinChain</qualifiedname>
+        <param>
+          <type>const double</type>
+          <declname>dT</declname>
+        </param>
+        <param>
+          <type>Properties</type>
+          <declname>elasticModuli</declname>
+        </param>
+        <param>
+          <type>Properties</type>
+          <declname>retardationTimes</declname>
+        </param>
+        <param>
+          <type>StateVarMatrix</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>uniaxialCompliance</declname>
+        </param>
+        <param>
+          <type>Marmot::Math::Vector6d &amp;</type>
+          <declname>dStrain</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>factor</declname>
+        </param>
+        <briefdescription>
+<para>Evaluates the viscoelastic response of the Kelvin chain over a time increment. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>For the given time increment <formula id="393">$\Delta t_k$</formula> this function updates the visco-elastic state variables according to the update rule: <formula id="398">\[\overline{J}^k=\sum_{\mu=1}^M\frac{1-\lambda^{\mu,k}}{E^\mu}\]</formula> <formula id="399">\[\Delta\varepsilon^{&apos;&apos;,k}_{ij} = \sum_{\mu=1}^M\left(1-\beta^{\mu,k}\right)\varepsilon^{ev,\kappa}_{ij}\]</formula></para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the time increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">elasticModuli</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>vector containing the elastic moduli of ech Kelvin unit in the Kelvin chain. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">retardationTimes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>vector containing the retardation time for each Kelvin unit in the Kelvin chain. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the <formula id="395">$[6\times \mu]$</formula> matrix that contains the viscoelastic strain update for each unit of the Kelvin chain. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">uniaxialCompliance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number containing the <formula id="400">$\sum^M_{\mu=1}\frac{\lambda^{\mu, k}}{E_\mu}$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">dStrain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the viscoelastic update of the strain based on the state variables of the Kelvin chain. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">factor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the solidification factor (in non aging viscoelasticity set to 1). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="224" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" declline="224" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_kelvin_chain_8h_1a5c50db5fbcf64c828c3ec9380773fba7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::computeLambdaAndBeta</definition>
+        <argsstring>(double dT, double tau, double &amp;lambda, double &amp;beta)</argsstring>
+        <name>computeLambdaAndBeta</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::KelvinChain::computeLambdaAndBeta</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>tau</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>lambda</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>beta</declname>
+        </param>
+        <briefdescription>
+<para>Computes the time-dependent relaxation factors <formula id="21">$\lambda$</formula> and <formula id="22">$\beta$</formula> for a given Kelvin unit. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This function evaluates the time parameters for each Kelvin chain. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the time increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">tau</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the retardation time for a given Kelvin unit. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">lambda</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>time dependent factor for each Kelvin unit. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">beta</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>time dependemnt factor for each Kelvin unit. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="241" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" declline="241" declcolumn="8"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h" line="33" column="1"/>
+  </compounddef>
+</doxygen>

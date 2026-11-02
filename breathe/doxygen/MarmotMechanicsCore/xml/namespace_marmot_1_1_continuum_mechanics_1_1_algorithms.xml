@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_algorithms" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::Algorithms</compoundname>
+    <innerclass refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper" prot="public">Marmot::ContinuumMechanics::Algorithms::AdaptiveSubstepper</innerclass>
+    <innerclass refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_adaptive_substepper_explicit" prot="public">Marmot::ContinuumMechanics::Algorithms::AdaptiveSubstepperExplicit</innerclass>
+    <innerclass refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_hughes_winget" prot="public">Marmot::ContinuumMechanics::Algorithms::HughesWinget</innerclass>
+    <innerclass refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper" prot="public">Marmot::ContinuumMechanics::Algorithms::PerezFougetSubstepper</innerclass>
+    <innerclass refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_perez_fouget_substepper_time" prot="public">Marmot::ContinuumMechanics::Algorithms::PerezFougetSubstepperTime</innerclass>
+    <innerclass refid="class_marmot_1_1_continuum_mechanics_1_1_algorithms_1_1_yield_surface_combination_manager" prot="public">Marmot::ContinuumMechanics::Algorithms::YieldSurfaceCombinationManager</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/AdaptiveSubstepper.h" line="35" column="1"/>
+  </compounddef>
+</doxygen>

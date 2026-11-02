@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_math_1_1_tensors_1_1_tensor_exponential" kind="namespace" language="C++">
+    <compoundname>Marmot::Math::Tensors::TensorExponential</compoundname>
+    <innerclass refid="struct_marmot_1_1_math_1_1_tensors_1_1_tensor_exponential_1_1_exponential_map_failed" prot="public">Marmot::Math::Tensors::TensorExponential::ExponentialMapFailed</innerclass>
+    <innerclass refid="struct_marmot_1_1_math_1_1_tensors_1_1_tensor_exponential_1_1_tensor_exponential_result" prot="public">Marmot::Math::Tensors::TensorExponential::TensorExponentialResult</innerclass>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_tensors_1_1_tensor_exponential_1_1_first_order">Marmot::Math::Tensors::TensorExponential::FirstOrder</innernamespace>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_tensor_exponential_8h_1ac771114e452180a11040653eadbd6dce" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>tensorSize</declname>
+            <defname>tensorSize</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; T, tensorSize, tensorSize &gt;</type>
+        <definition>Fastor::Tensor&lt; T, tensorSize, tensorSize &gt; Marmot::Math::Tensors::TensorExponential::computeTensorExponential</definition>
+        <argsstring>(const Fastor::Tensor&lt; T, tensorSize, tensorSize &gt; &amp;theTensor, int maxIterations, double tolerance, double alternativeTolerance)</argsstring>
+        <name>computeTensorExponential</name>
+        <qualifiedname>Marmot::Math::Tensors::TensorExponential::computeTensorExponential</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; T, tensorSize, tensorSize &gt; &amp;</type>
+          <declname>theTensor</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>maxIterations</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>tolerance</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>alternativeTolerance</declname>
+        </param>
+        <briefdescription>
+<para>Computes the exponential of a square second rank tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Evaluates exp(<computeroutput>theTensor</computeroutput>) using a series expansion up to <computeroutput>maxIterations</computeroutput> or until the terms converge below <computeroutput>tolerance</computeroutput>.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Element type of the tensor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tensorSize</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Dimension of the square tensor. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>theTensor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input tensor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>maxIterations</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Maximum number of series terms to compute. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tolerance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Convergence threshold for the series terms. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>alternativeTolerance</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Secondary threshold to detect failure. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Tensor representing the exponential of <computeroutput>theTensor</computeroutput>. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername><ref refid="struct_marmot_1_1_math_1_1_tensors_1_1_tensor_exponential_1_1_exponential_map_failed" kindref="compound">ExponentialMapFailed</ref></parametername>
+</parameternamelist>
+<parameterdescription>
+<para>If convergence is not achieved. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="57" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" bodystart="57" bodyend="104"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="38" column="1"/>
+  </compounddef>
+</doxygen>

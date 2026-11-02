@@ -50,7 +50,9 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="materials.html">Material models</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">AT2 Phase Field Fracture</a><ul>
@@ -69,11 +71,20 @@
 <li class="toctree-l3"><a class="reference internal" href="adlinearelastic.html">Linear Elastic model (Automatic Differentiation)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="linearviscoelasticpowerlaw.html">Linear Viscoelastic Power Law model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="linearviscoelasticorthotropicpowerlaw.html">Linear Viscoelastic Orthotropic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticwiechert.html">Linear Viscoelastic Wiechert model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="interfacematerialhypoelastic.html">Interface material (hypoelastic bulk material)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="microplanem7.html">Microplane model M7</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gm7.html">Gradient-enhanced microplane model M7 (GM7)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="vonmises.html">Von Mises model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="advonmises.html">Von Mises model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hugheswinget.html">Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedhugheswinget.html">Gradient-enhanced Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedcompressibleneohookedamage.html">Gradient-enhanced compressible Neo-Hooke damage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedfinitestraindruckerprager.html">Gradient-enhanced finite-strain Drucker-Prager</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meshfree.html">Meshfree methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
@@ -184,21 +195,21 @@ which ensures the phase field can only grow monotonically.</p>
 <section id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
 <p>The model is implemented within the general gradient-enhanced hypoelastic framework
-(<code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">MarmotMaterialGeneralGradientEnhancedHypoElastic</span></code>), treating the phase-field
+(<code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialGradientEnhancedHypoElastic</span></code>), treating the phase-field
 variable <span class="math notranslate nohighlight">\(d\)</span> as the single nonlocal variable (<span class="math notranslate nohighlight">\(\bar\kappa = d\)</span>).
 The gradient enhancement coefficient is constant: <span class="math notranslate nohighlight">\(c = l^2\)</span>.</p>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13AT2PhaseFieldE">
-<span id="_CPPv3N6Marmot9Materials13AT2PhaseFieldE"></span><span id="_CPPv2N6Marmot9Materials13AT2PhaseFieldE"></span><span id="Marmot::Materials::AT2PhaseField"></span><span class="target" id="classMarmot_1_1Materials_1_1AT2PhaseField"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AT2PhaseField</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="n"><span class="pre">MarmotMaterialGeneralGradientEnhancedHypoElastic</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13AT2PhaseFieldE" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3N6Marmot9Materials13AT2PhaseFieldE"></span><span id="_CPPv2N6Marmot9Materials13AT2PhaseFieldE"></span><span id="Marmot::Materials::AT2PhaseField"></span><span class="target" id="classMarmot_1_1Materials_1_1AT2PhaseField"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AT2PhaseField</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MaterialGradientEnhancedHypoElastic</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13AT2PhaseFieldE" title="Link to this definition"></a><br /></dt>
 <dd><p>Inheritance diagram for Marmot::Materials::AT2PhaseField:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-4209f81cbf83cf14fb57f32d2e89f219e5990591.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-c4e4786bf88f2351f488adddcf033265d692ebe6.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;1&quot; [label=&quot;Marmot::Materials::AT2PhaseField&quot; tooltip=&quot;Marmot::Materials::AT2PhaseField&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;3&quot; [label=&quot;MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;&quot; tooltip=&quot;MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;&quot;]
-    &quot;2&quot; [label=&quot;MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; 1 &gt;&quot; tooltip=&quot;MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; 1 &gt;&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; 1 &gt;&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; 1 &gt;&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
     &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;template-instance&quot;]
 }" class="graphviz" /></div>
@@ -206,18 +217,17 @@ The gradient enhancement coefficient is constant: <span class="math notranslate 
 </figure>
 <p>Collaboration diagram for Marmot::Materials::AT2PhaseField:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-a7dabfb0e276d5876727716ed839f4186d3cac3d.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-891da8a340597ebaf9c5b7d4e7edbbd4ed23c0f1.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;1&quot; [label=&quot;Marmot::Materials::AT2PhaseField&quot; tooltip=&quot;Marmot::Materials::AT2PhaseField&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;4&quot; [label=&quot;MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;&quot; tooltip=&quot;MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;&quot;]
-    &quot;2&quot; [label=&quot;MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; 1 &gt;&quot; tooltip=&quot;MarmotMaterialGeneralGradientEnhancedHypoElastic&lt; 1 &gt;&quot;]
-    &quot;3&quot; [label=&quot;MarmotStateLayoutDynamic&quot; tooltip=&quot;MarmotStateLayoutDynamic&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; 1 &gt;&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; 1 &gt;&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Utilities::StateLayoutDynamic&quot; tooltip=&quot;Marmot::Utilities::StateLayoutDynamic&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
-    &quot;4&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
-    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
-    &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+    &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;template-instance&quot;]
 }" class="graphviz" /></div>
 </div>
 </figure>
@@ -229,7 +239,8 @@ The gradient enhancement coefficient is constant: <span class="math notranslate 
 <li><p><span class="math notranslate nohighlight">\( G_c \)</span> : Critical fracture energy</p></li>
 <li><p><span class="math notranslate nohighlight">\( l \)</span> : Internal length scale</p></li>
 <li><p><span class="math notranslate nohighlight">\( \rho \)</span> : Mass density (optional, mandatory for dynamic simulations)</p></li>
-<li><p><span class="math notranslate nohighlight">\( \eta \)</span> : phase-field viscosity (optional, mandatory for dynamic simulations) </p></li>
+<li><p><span class="math notranslate nohighlight">\( \eta \)</span> : phase-field viscosity (optional, mandatory for dynamic simulations)</p></li>
+<li><p><span class="math notranslate nohighlight">\( m_k \)</span> : phase-field micro-inertia (optional; zero, i.e. a first-order phase field, unless given. Admissible up to <span class="math notranslate nohighlight">\( \eta^2/4 \)</span>, where it is best – see Marmot::Materials::MaterialGradientEnhancedHypoElastic::getNonlocalMicroInertia) </p></li>
 </ul>
 </p>
 <div class="breathe-sectiondef docutils container">
@@ -293,12 +304,34 @@ This method must be implemented in derived classes to return the nonlocal viscos
 </dl>
 </dd></dl>
 
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials13AT2PhaseField23getNonlocalMicroInertiaEPKd">
+<span id="_CPPv3NK6Marmot9Materials13AT2PhaseField23getNonlocalMicroInertiaEPKd"></span><span id="_CPPv2NK6Marmot9Materials13AT2PhaseField23getNonlocalMicroInertiaEPKd"></span><span id="Marmot::Materials::AT2PhaseField::getNonlocalMicroInertia__doubleCPC"></span><span class="target" id="classMarmot_1_1Materials_1_1AT2PhaseField_1afa1824b8a8d721604b0a40af30ff0493"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNonlocalMicroInertia</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials13AT2PhaseField23getNonlocalMicroInertiaEPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the micro-inertia <span class="math notranslate nohighlight">\(m_k\)</span> of each nonlocal variable. </p>
+<p>
+It multiplies the second time derivative of the nonlocal variable, turning its balance from the parabolic (viscous) equation <span class="math notranslate nohighlight">\( \eta\,\dot{\bar\varepsilon} + \bar\varepsilon - c\,\nabla^2\bar\varepsilon = \tilde\varepsilon \)</span> into the damped hyperbolic one  <span class="math notranslate nohighlight">\( m_k\,\ddot{\bar\varepsilon} + \eta\,\dot{\bar\varepsilon} + \bar\varepsilon -
+c\,\nabla^2\bar\varepsilon = \tilde\varepsilon \)</span>, whose stable increment falls off with <span class="math notranslate nohighlight">\(h\)</span> rather than with <span class="math notranslate nohighlight">\(h^2\)</span>. The nonlocal viscosity keeps its meaning exactly: what was the coefficient of the highest time derivative becomes the damping.</p>
+<p>It sits here, next to <a class="reference internal" href="#classMarmot_1_1Materials_1_1AT2PhaseField_1a324f9939436f37d385feea8553457ce5"><span class="std std-ref">getNonlocalViscosity()</span></a>, because the two are <strong>one parameter and not two</strong>: the zeroth-order reaction mode does not ring only while <span class="math notranslate nohighlight">\(m_k \le \eta^2/4\)</span>, and the largest admissible value is the best one because the stable increment grows with <span class="math notranslate nohighlight">\(\sqrt{m_k}\)</span>. Nothing could check that while the two lived at different levels of the stack, and the deck author computed <span class="math notranslate nohighlight">\(\eta^2/4\)</span> by hand; see validatedNonlocalMicroInertia(), which derived classes should return through.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The default is zero for every nonlocal variable, which is the quasi-static model and the behaviour of every material that predates this interface: the field is then first order in time and is integrated by its viscosity alone. A derived class opts in by overriding this, and a run opts in by giving the material the property the override reads – so this is deliberately not pure virtual, unlike <a class="reference internal" href="#classMarmot_1_1Materials_1_1AT2PhaseField_1a324f9939436f37d385feea8553457ce5"><span class="std std-ref">getNonlocalViscosity()</span></a>, which a gradient-enhanced material must answer for any explicit path to exist at all. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateVars</strong> – Pointer to the array of state variables </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Vector containing the micro-inertia of each nonlocal variable, in seconds squared</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials13AT2PhaseField1CE">
-<span id="_CPPv3N6Marmot9Materials13AT2PhaseField1CE"></span><span id="_CPPv2N6Marmot9Materials13AT2PhaseField1CE"></span><span id="Marmot::Materials::AT2PhaseField::C__Marmot::Matrix6dC"></span><span class="target" id="classMarmot_1_1Materials_1_1AT2PhaseField_1a40ed6b6e065937e91ba5d792c0447314"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot8Matrix6dE" title="Marmot::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">C</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13AT2PhaseField1CE" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3N6Marmot9Materials13AT2PhaseField1CE"></span><span id="_CPPv2N6Marmot9Materials13AT2PhaseField1CE"></span><span id="Marmot::Materials::AT2PhaseField::C__Marmot::Math::Matrix6dC"></span><span class="target" id="classMarmot_1_1Materials_1_1AT2PhaseField_1a05e6a0b76e007565e7c8b01f219ea2cc"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Matrix6dE" title="Marmot::Math::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">C</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials13AT2PhaseField1CE" title="Link to this definition"></a><br /></dt>
 <dd><p>Elastic stiffness tensor. </p>
 </dd></dl>
 

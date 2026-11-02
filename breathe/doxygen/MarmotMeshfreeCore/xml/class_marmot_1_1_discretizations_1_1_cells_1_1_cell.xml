@@ -1,0 +1,753 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Marmot::Discretizations::Cells::Cell</compoundname>
+    <derivedcompoundref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_element" prot="public" virt="non-virtual">Marmot::Discretizations::Cells::CellElement</derivedcompoundref>
+    <includes refid="_marmot_cell_8h" local="no">MarmotCell.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a3432bed6ee97a9f1936b18f7537f09ff" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Marmot::Discretizations::Cells::Cell::~Cell</definition>
+        <argsstring>()=default</argsstring>
+        <name>~Cell</name>
+        <qualifiedname>Marmot::Discretizations::Cells::Cell::~Cell</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor; cells are owned through <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell" kindref="compound">Cell</ref> pointers. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" line="75" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a81786b3fb9cc8a705e36babbba6d9d5a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp;</type>
+        <definition>virtual const std::vector&lt; std::vector&lt; std::string &gt; &gt; &amp; Marmot::Discretizations::Cells::Cell::getNodeFields</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getNodeFields</name>
+        <qualifiedname>Marmot::Discretizations::Cells::Cell::getNodeFields</qualifiedname>
+        <briefdescription>
+<para>Names of the fields carried by each node. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>One entry per node, each a list of field names (e.g. <computeroutput>&quot;displacement&quot;</computeroutput>). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" line="81" column="31"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1afab13e5aa59e03f9277c5b033174dda7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>const std::vector&lt; int &gt; &amp;</type>
+        <definition>virtual const std::vector&lt; int &gt; &amp; Marmot::Discretizations::Cells::Cell::getDofIndicesPermutationPattern</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getDofIndicesPermutationPattern</name>
+        <qualifiedname>Marmot::Discretizations::Cells::Cell::getDofIndicesPermutationPattern</qualifiedname>
+        <briefdescription>
+<para>Permutation from the host&apos;s node-major dof order to the cell-internal dof order. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Vector of length <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref>; entry <computeroutput>i</computeroutput> is the node-major index of cell dof <computeroutput>i</computeroutput>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" line="87" column="31"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a73fc590de9fad0c0cbfbaaebd1804ae5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>int</type>
+        <definition>virtual int Marmot::Discretizations::Cells::Cell::getNNodes</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getNNodes</name>
+        <qualifiedname>Marmot::Discretizations::Cells::Cell::getNNodes</qualifiedname>
+        <briefdescription>
+<para>Number of cell nodes. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><formula id="169">$ n_\mathrm{nodes} $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" line="93" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>int</type>
+        <definition>virtual int Marmot::Discretizations::Cells::Cell::getNDofPerCell</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getNDofPerCell</name>
+        <qualifiedname>Marmot::Discretizations::Cells::Cell::getNDofPerCell</qualifiedname>
+        <briefdescription>
+<para>Total number of dofs of the cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Size of the cell vectors (and number of rows/columns of the cell matrices). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" line="99" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1ac48b2c51099325cd8bfbda272d1c29f6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::string</type>
+        <definition>virtual std::string Marmot::Discretizations::Cells::Cell::getCellShape</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getCellShape</name>
+        <qualifiedname>Marmot::Discretizations::Cells::Cell::getCellShape</qualifiedname>
+        <briefdescription>
+<para>Shape of the cell for output. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Ensight Gold shape name, e.g. <computeroutput>&quot;quad4&quot;</computeroutput> or <computeroutput>&quot;hexa8&quot;</computeroutput>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" line="105" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a6440d3f1ac93875e0d64a53b82c9ec80" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool Marmot::Discretizations::Cells::Cell::isCoordinateInCell</definition>
+        <argsstring>(const double *coordinates) const =0</argsstring>
+        <name>isCoordinateInCell</name>
+        <qualifiedname>Marmot::Discretizations::Cells::Cell::isCoordinateInCell</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>coordinates</declname>
+        </param>
+        <briefdescription>
+<para>Checks whether a point lies inside the cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">coordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Point coordinates (nDim values). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> if the point is inside the cell. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" line="112" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1ae51f08eaf8a5420cba3c7b20e7acd113" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Cells::Cell::getBoundingBox</definition>
+        <argsstring>(double *boundingBoxMin, double *boundingBoxMax) const =0</argsstring>
+        <name>getBoundingBox</name>
+        <qualifiedname>Marmot::Discretizations::Cells::Cell::getBoundingBox</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>boundingBoxMin</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>boundingBoxMax</declname>
+        </param>
+        <briefdescription>
+<para>Axis-aligned bounding box of the cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">boundingBoxMin</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Lower corner (nDim values). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">boundingBoxMax</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Upper corner (nDim values). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" line="119" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a8b58710a1cd58fad5b96e5ab88be5d63" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Cells::Cell::assignMaterialPoints</definition>
+        <argsstring>(const std::vector&lt; Marmot::Discretizations::MaterialPoints::MaterialPoint * &gt; &amp;materialPoints)=0</argsstring>
+        <name>assignMaterialPoints</name>
+        <qualifiedname>Marmot::Discretizations::Cells::Cell::assignMaterialPoints</qualifiedname>
+        <param>
+          <type>const std::vector&lt; <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point" kindref="compound">Marmot::Discretizations::MaterialPoints::MaterialPoint</ref> * &gt; &amp;</type>
+          <declname>materialPoints</declname>
+        </param>
+        <briefdescription>
+<para>Assigns the material points that currently lie in the cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Replaces any previous assignment. Implementations typically evaluate and store the interpolation (and its gradient) at each material point here, so this must be called again whenever the material points have moved (connectivity update). <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">materialPoints</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Material points located in the cell (not owned by the cell). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(in the Marmot cells) if a material point is of the wrong type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" line="129" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a3a49fe2594d9dee24e95c12063b8aabb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Cells::Cell::computeMaterialPointKernels</definition>
+        <argsstring>(const double *Q, double *fInt, double *dFInt_dQ, double timeNew, double dT) const =0</argsstring>
+        <name>computeMaterialPointKernels</name>
+        <qualifiedname>Marmot::Discretizations::Cells::Cell::computeMaterialPointKernels</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>Q</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>fInt</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>dFInt_dQ</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>timeNew</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <briefdescription>
+<para>Integrates the internal force vector and its tangent over the assigned material points. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Uses the material point responses computed in the preceding <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a0d04a7c4c1cdb8b82bcdc1ad18e7745f" kindref="member">Marmot::Discretizations::MaterialPoints::MaterialPoint::computeYourself()</ref>. Results are added to the output arrays. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">Q</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell" kindref="compound">Cell</ref> dof vector (<ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref> values; the Marmot cells expect the increment of the current step). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">fInt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Internal force vector (<ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref> values), accumulated. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">dFInt_dQ</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Tangent <formula id="173">$ \partial \boldsymbol{f}^{\mathrm{int}}/\partial \boldsymbol{Q} $</formula>, <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref> <formula id="54">$ \times $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref>, accumulated. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeNew</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time at the end of the increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" line="145" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1ac179743ed4e2d1290fe3c3e9da2bdfd3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Cells::Cell::computeLumpedInertia</definition>
+        <argsstring>(double *I)</argsstring>
+        <name>computeLumpedInertia</name>
+        <qualifiedname>Marmot::Discretizations::Cells::Cell::computeLumpedInertia</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>I</declname>
+        </param>
+        <briefdescription>
+<para>Computes the lumped (diagonal) inertia of the cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">I</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Lumped mass vector (<ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref> values). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if not implemented by the concrete cell (default). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" line="156" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" bodystart="156" bodyend="159"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1aa5a9cc0b484a127f857c7a69b56c0c8d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Cells::Cell::computeConsistentInertia</definition>
+        <argsstring>(double *I)</argsstring>
+        <name>computeConsistentInertia</name>
+        <qualifiedname>Marmot::Discretizations::Cells::Cell::computeConsistentInertia</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>I</declname>
+        </param>
+        <briefdescription>
+<para>Computes the consistent inertia (mass) matrix of the cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">I</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Mass matrix, <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref> <formula id="54">$ \times $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if not implemented by the concrete cell (default). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" line="166" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" bodystart="166" bodyend="169"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a09c5672fdd820e690a2bb6ab191ab705" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Cells::Cell::computeBodyLoad</definition>
+        <argsstring>(int type, const double *load, double *fExt, double *dExt_dQ, double timeNew, double dT) const =0</argsstring>
+        <name>computeBodyLoad</name>
+        <qualifiedname>Marmot::Discretizations::Cells::Cell::computeBodyLoad</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>load</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>fExt</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>dExt_dQ</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>timeNew</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <briefdescription>
+<para>Integrates a body load over the assigned material points. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The Marmot cells add the load with a negative sign, i.e. as its contribution to the residual. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Load type id, from <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1adb4a455b55cb0033e79d12eb80acd5f9" kindref="member">getSupportedBodyLoadTypes()</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">load</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Load vector (e.g. force per unit volume, nDim values). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">fExt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>External load vector (<ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref> values), accumulated. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">dExt_dQ</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Tangent of <computeroutput>fExt</computeroutput> w.r.t. the cell dofs, accumulated. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeNew</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time at the end of the increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(in the Marmot cells) for an unsupported load type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" line="183" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a5a94bcc3124191f5b5cf5bc3b07ad4e8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Cells::Cell::computeDistributedLoad</definition>
+        <argsstring>(int type, int surfaceID, int materialPointNumber, const double *load, double *fExt, double *dExt_dQ, double timeNew, double dT) const =0</argsstring>
+        <name>computeDistributedLoad</name>
+        <qualifiedname>Marmot::Discretizations::Cells::Cell::computeDistributedLoad</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>surfaceID</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>materialPointNumber</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>load</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>fExt</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>dExt_dQ</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>timeNew</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <briefdescription>
+<para>Applies a distributed (surface) load carried by one assigned material point. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>In MPM, boundary loads are attached to material points: only the material point with number <computeroutput>materialPointNumber</computeroutput> contributes. The Marmot cells add the load with a negative sign, i.e. as its contribution to the residual. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Load type id, from <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a6d5f0e895b40bf0bbdcdbb2cb151cf25" kindref="member">getSupportedDistributedLoadTypes()</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">surfaceID</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Surface id of the load. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialPointNumber</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of the material point that carries the load. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">load</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Load vector (nDim values). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">fExt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>External load vector (<ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref> values), accumulated. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">dExt_dQ</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Tangent of <computeroutput>fExt</computeroutput> w.r.t. the cell dofs, accumulated. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeNew</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time at the end of the increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>(in the Marmot cells) for an unsupported load type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" line="205" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a440a5126e81ad74e37fdea6a643672b3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Cells::Cell::getInterpolationVector</definition>
+        <argsstring>(double *vec, const double *coordinates) const =0</argsstring>
+        <name>getInterpolationVector</name>
+        <qualifiedname>Marmot::Discretizations::Cells::Cell::getInterpolationVector</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>vec</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>coordinates</declname>
+        </param>
+        <briefdescription>
+<para>Evaluates the cell interpolation <formula id="7">$ N_A $</formula> at a point. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">vec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shape function values (<ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a73fc590de9fad0c0cbfbaaebd1804ae5" kindref="member">getNNodes()</ref> values). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">coordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Point coordinates (nDim values), inside the cell. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" line="219" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1adb4a455b55cb0033e79d12eb80acd5f9" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>const std::unordered_map&lt; std::string, int &gt; &amp;</type>
+        <definition>virtual const std::unordered_map&lt; std::string, int &gt; &amp; Marmot::Discretizations::Cells::Cell::getSupportedBodyLoadTypes</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getSupportedBodyLoadTypes</name>
+        <qualifiedname>Marmot::Discretizations::Cells::Cell::getSupportedBodyLoadTypes</qualifiedname>
+        <briefdescription>
+<para>Body load types supported by the cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Map from upper-case load type name (e.g. <computeroutput>&quot;BODYFORCE&quot;</computeroutput>) to the id passed to <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a09c5672fdd820e690a2bb6ab191ab705" kindref="member">computeBodyLoad()</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" line="225" column="38"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a6d5f0e895b40bf0bbdcdbb2cb151cf25" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>const std::unordered_map&lt; std::string, int &gt; &amp;</type>
+        <definition>virtual const std::unordered_map&lt; std::string, int &gt; &amp; Marmot::Discretizations::Cells::Cell::getSupportedDistributedLoadTypes</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getSupportedDistributedLoadTypes</name>
+        <qualifiedname>Marmot::Discretizations::Cells::Cell::getSupportedDistributedLoadTypes</qualifiedname>
+        <briefdescription>
+<para>Distributed load types supported by the cell. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Map from upper-case load type name (e.g. <computeroutput>&quot;PRESSURE&quot;</computeroutput>) to the id passed to <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a5a94bcc3124191f5b5cf5bc3b07ad4e8" kindref="member">computeDistributedLoad()</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" line="232" column="38"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a1ac5f5308dc52614dd36509bb7d09d7f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Cells::Cell::interpolateFieldsToMaterialPoints</definition>
+        <argsstring>(const double *Q) const =0</argsstring>
+        <name>interpolateFieldsToMaterialPoints</name>
+        <qualifiedname>Marmot::Discretizations::Cells::Cell::interpolateFieldsToMaterialPoints</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>Q</declname>
+        </param>
+        <briefdescription>
+<para>Interpolates the nodal fields to the assigned material points (grid-to-particle map). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The Marmot cells interpolate the dof increment and its gradient w.r.t. the reference position and add them to the kinematic state of each material point; this accumulated increment is reset in <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1aba8bfd46fbfa5400d155bf8f30cac84d" kindref="member">Marmot::Discretizations::MaterialPoints::MaterialPoint::prepareYourself()</ref>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">Q</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell" kindref="compound">Cell</ref> dof vector (<ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref> values; the Marmot cells expect the increment of the current step). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" line="242" column="18"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Abstract interface of a background cell of the material point method (MPM). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A cell is a fixed background element with <formula id="169">$ n_\mathrm{nodes} $</formula> nodes that carries the nodal fields (e.g. the displacement) and the interpolation <formula id="170">$ N_A(\boldsymbol{X}) $</formula>. It does not own any quadrature points: in every connectivity update, the host framework assigns to each cell the material points (<ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point" kindref="compound">Marmot::Discretizations::MaterialPoints::MaterialPoint</ref>) that currently lie inside it, and the cell integrates over those material points, e.g. for the internal force   <formula id="171">\[  \boldsymbol{f}^{\mathrm{int}}_A = \sum_{p \in \text{cell}} \boldsymbol{f}_{A}(\text{MP}_p)\,V_p ,
+\]</formula> with the material point volume <formula id="172">$ V_p $</formula>. The concrete kernel (which stress, which volume, which configuration) is defined by the implementing cell, see e.g. Marmot::Discretizations::Cells::DisplacementCell.</para>
+<para><bold>Dof layout.</bold> The cell vectors (Q, fInt, fExt) have <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref> entries, the matrices are dense with <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref> <formula id="54">$ \times $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref> entries. <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a81786b3fb9cc8a705e36babbba6d9d5a" kindref="member">getNodeFields()</ref> lists for each node the names of the fields it carries; <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1afab13e5aa59e03f9277c5b033174dda7" kindref="member">getDofIndicesPermutationPattern()</ref> is the permutation that maps the node-major dof order of the host framework to the cell-internal order (for the cells in Marmot: blocked, i.e. all dofs of the first field, then all dofs of the second field; within a field node-major, component fastest).</para>
+<para><bold>Call sequence of the host framework</bold> (e.g. EdelweissMeshfree), per time increment:<orderedlist>
+<listitem><para><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1aba8bfd46fbfa5400d155bf8f30cac84d" kindref="member">Marmot::Discretizations::MaterialPoints::MaterialPoint::prepareYourself()</ref> on all material points,</para>
+</listitem><listitem><para><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a6440d3f1ac93875e0d64a53b82c9ec80" kindref="member">isCoordinateInCell()</ref> / <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1ae51f08eaf8a5420cba3c7b20e7acd113" kindref="member">getBoundingBox()</ref> to find the cells hit by the material points, then <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a8b58710a1cd58fad5b96e5ab88be5d63" kindref="member">assignMaterialPoints()</ref> on every active cell (connectivity update),</para>
+</listitem><listitem><para>in every Newton iteration: <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1aba8bfd46fbfa5400d155bf8f30cac84d" kindref="member">Marmot::Discretizations::MaterialPoints::MaterialPoint::prepareYourself()</ref> (resets the accumulated increment), <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a1ac5f5308dc52614dd36509bb7d09d7f" kindref="member">interpolateFieldsToMaterialPoints()</ref> on all active cells, <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a0d04a7c4c1cdb8b82bcdc1ad18e7745f" kindref="member">Marmot::Discretizations::MaterialPoints::MaterialPoint::computeYourself()</ref> on all material points, then <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a3a49fe2594d9dee24e95c12063b8aabb" kindref="member">computeMaterialPointKernels()</ref>, <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a09c5672fdd820e690a2bb6ab191ab705" kindref="member">computeBodyLoad()</ref>, <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a5a94bcc3124191f5b5cf5bc3b07ad4e8" kindref="member">computeDistributedLoad()</ref> (and the inertia methods for dynamic analyses) on all active cells,</para>
+</listitem><listitem><para>after convergence, <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a6d6222a6d143adec6714096f890f06b3" kindref="member">Marmot::Discretizations::MaterialPoints::MaterialPoint::acceptStateAndPosition()</ref> on all material points.</para>
+</listitem></orderedlist>
+</para>
+<para>Instances are created by name via <ref refid="class_marmot_1_1_registry_1_1_cell_factory" kindref="compound">Marmot::Registry::CellFactory</ref>. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Marmot::Discretizations::Cells::Cell</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell"/>
+      </node>
+      <node id="2">
+        <label>Marmot::Discretizations::Cells::CellElement</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_element"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" line="71" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotCell.h" bodystart="71" bodyend="243"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a8b58710a1cd58fad5b96e5ab88be5d63" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Cells::Cell</scope><name>assignMaterialPoints</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a09c5672fdd820e690a2bb6ab191ab705" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Cells::Cell</scope><name>computeBodyLoad</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1aa5a9cc0b484a127f857c7a69b56c0c8d" prot="public" virt="virtual"><scope>Marmot::Discretizations::Cells::Cell</scope><name>computeConsistentInertia</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a5a94bcc3124191f5b5cf5bc3b07ad4e8" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Cells::Cell</scope><name>computeDistributedLoad</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1ac179743ed4e2d1290fe3c3e9da2bdfd3" prot="public" virt="virtual"><scope>Marmot::Discretizations::Cells::Cell</scope><name>computeLumpedInertia</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a3a49fe2594d9dee24e95c12063b8aabb" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Cells::Cell</scope><name>computeMaterialPointKernels</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1ae51f08eaf8a5420cba3c7b20e7acd113" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Cells::Cell</scope><name>getBoundingBox</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1ac48b2c51099325cd8bfbda272d1c29f6" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Cells::Cell</scope><name>getCellShape</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1afab13e5aa59e03f9277c5b033174dda7" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Cells::Cell</scope><name>getDofIndicesPermutationPattern</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a440a5126e81ad74e37fdea6a643672b3" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Cells::Cell</scope><name>getInterpolationVector</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Cells::Cell</scope><name>getNDofPerCell</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a73fc590de9fad0c0cbfbaaebd1804ae5" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Cells::Cell</scope><name>getNNodes</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a81786b3fb9cc8a705e36babbba6d9d5a" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Cells::Cell</scope><name>getNodeFields</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1adb4a455b55cb0033e79d12eb80acd5f9" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Cells::Cell</scope><name>getSupportedBodyLoadTypes</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a6d5f0e895b40bf0bbdcdbb2cb151cf25" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Cells::Cell</scope><name>getSupportedDistributedLoadTypes</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a1ac5f5308dc52614dd36509bb7d09d7f" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Cells::Cell</scope><name>interpolateFieldsToMaterialPoints</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a6440d3f1ac93875e0d64a53b82c9ec80" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Cells::Cell</scope><name>isCoordinateInCell</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a3432bed6ee97a9f1936b18f7537f09ff" prot="public" virt="virtual"><scope>Marmot::Discretizations::Cells::Cell</scope><name>~Cell</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

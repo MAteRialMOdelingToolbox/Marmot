@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_gauss_rule" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Discretizations::Meshfree::GaussRule</compoundname>
+    <includes refid="_marmot_meshfree_quad_hex_cell_8h" local="no">MarmotMeshfreeQuadHexCell.h</includes>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>nDim</declname>
+        <defname>nDim</defname>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+<para>Generic Gauss rule definition. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The dimension of the space (e.g., 2 for 2D, 3 for 3D).</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+This template struct provides static methods to retrieve Gauss points and weights for numerical integration. Specializations are provided for 2D and 3D. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="49" column="1" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" bodystart="57" bodyend="-1"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

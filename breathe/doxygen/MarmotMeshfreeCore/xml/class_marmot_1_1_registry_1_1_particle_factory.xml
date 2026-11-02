@@ -1,0 +1,305 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_registry_1_1_particle_factory" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Registry::ParticleFactory</compoundname>
+    <includes refid="_marmot_particle_library_8h" local="no">MarmotParticleLibrary.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_registry_1_1_particle_factory_1aa6a3ba9e7bc9bc56814ecf3bfd7d0014" prot="public" static="no">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle" kindref="compound">Marmot::Discretizations::Meshfree::Particle</ref> *(*)(int particleNumber, const double *vertexCoordinates, int sizeVertexCoordinates, double volume, const std::string &amp;materialName, const double * materialProperties, int nMaterialProperties, const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation" kindref="compound">Marmot::Discretizations::Meshfree::Approximation</ref> &amp; approximation)</type>
+        <definition>using Marmot::Registry::ParticleFactory::particleFactoryFunction = 
+Marmot::Discretizations::Meshfree::Particle* (*)( int           particleNumber,
+                                                  const double* vertexCoordinates,
+                                                  int           sizeVertexCoordinates,
+                                                  double        volume,
+                                                  
+                                                  
+                                                  const std::string&amp; materialName,
+                                                  const double*      materialProperties,
+                                                  int                nMaterialProperties,
+
+                                                  const Marmot::Discretizations::Meshfree::Approximation&amp;
+                                                    approximation )</definition>
+        <argsstring></argsstring>
+        <name>particleFactoryFunction</name>
+        <qualifiedname>Marmot::Registry::ParticleFactory::particleFactoryFunction</qualifiedname>
+        <briefdescription>
+<para>Signature of the factory function of a particle type. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Arguments: particle number, vertex coordinates (the center for point particles, the cell vertices otherwise) and their number, the volume (for cell-shaped particles zero, the volume follows from the vertices), the material name, the material properties and their number, and the meshfree approximation. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleLibrary.h" line="54" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleLibrary.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_particle_factory_1a07ab2a45302836ad1f8b2b3adbc6e167" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Registry::ParticleFactory::ParticleFactory</definition>
+        <argsstring>()=delete</argsstring>
+        <name>ParticleFactory</name>
+        <qualifiedname>Marmot::Registry::ParticleFactory::ParticleFactory</qualifiedname>
+        <briefdescription>
+<para>The factory is a static class and cannot be instantiated. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleLibrary.h" line="68" column="5"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_particle_factory_1a2d3fade456c7640eb56112869f4c5b30" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle" kindref="compound">Marmot::Discretizations::Meshfree::Particle</ref> *</type>
+        <definition>static Marmot::Discretizations::Meshfree::Particle * Marmot::Registry::ParticleFactory::createParticle</definition>
+        <argsstring>(const std::string &amp;particleName, int materialNumber, const double *vertexCoordinates, int sizeVertexCoordinates, double volume, const std::string &amp;materialName, const double *materialProperties, int nMaterialProperties, const Marmot::Discretizations::Meshfree::Approximation &amp;approximation)</argsstring>
+        <name>createParticle</name>
+        <qualifiedname>Marmot::Registry::ParticleFactory::createParticle</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>particleName</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>materialNumber</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>vertexCoordinates</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>sizeVertexCoordinates</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>volume</declname>
+        </param>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>materialName</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>materialProperties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaterialProperties</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation" kindref="compound">Marmot::Discretizations::Meshfree::Approximation</ref> &amp;</type>
+          <declname>approximation</declname>
+        </param>
+        <briefdescription>
+<para>Create a particle by its registered name. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">particleName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Registered name of the particle type (case-insensitive). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialNumber</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The number (label) of the particle, passed as the first argument of the factory function. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">vertexCoordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vertex coordinates (the center for point particles), vertex by vertex. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">sizeVertexCoordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of values in <computeroutput>vertexCoordinates</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">volume</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Volume of the particle (point particles), or zero for cell-shaped particles. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the material. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Material properties. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nMaterialProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of material properties. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">approximation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The meshfree approximation; it must outlive the particle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A new particle, owned by the caller. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if no particle is registered under <computeroutput>particleName</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleLibrary.h" line="85" column="56"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_particle_factory_1a4225a503922983e75785d8b5ab140947" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool Marmot::Registry::ParticleFactory::registerParticle</definition>
+        <argsstring>(const std::string &amp;particleName, particleFactoryFunction factoryFunction)</argsstring>
+        <name>registerParticle</name>
+        <qualifiedname>Marmot::Registry::ParticleFactory::registerParticle</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>particleName</declname>
+        </param>
+        <param>
+          <type><ref refid="class_marmot_1_1_registry_1_1_particle_factory_1aa6a3ba9e7bc9bc56814ecf3bfd7d0014" kindref="member">particleFactoryFunction</ref></type>
+          <declname>factoryFunction</declname>
+        </param>
+        <briefdescription>
+<para>Register a particle type under a name. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>A name must be registered only once (checked by an assertion in debug builds). <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">particleName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the particle type (stored in upper case). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">factoryFunction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Function creating an instance. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true, to allow the registration in the initializer of a static variable. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleLibrary.h" line="106" column="17"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_particle_factory_1add041efc5ad2a0fbb56a0e537b1eaae9" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::Registry::ParticleFactory::checkIfParticleIsRegistered</definition>
+        <argsstring>(const std::string &amp;particleName)</argsstring>
+        <name>checkIfParticleIsRegistered</name>
+        <qualifiedname>Marmot::Registry::ParticleFactory::checkIfParticleIsRegistered</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>particleName</declname>
+        </param>
+        <briefdescription>
+<para>Check whether a particle name is registered (declared only, not defined). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">particleName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the particle type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>true if registered. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleLibrary.h" line="114" column="10"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_particle_factory_1a30490dde37f25e4c8b264bda1dda39dd" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::unordered_map&lt; std::string, <ref refid="class_marmot_1_1_registry_1_1_particle_factory_1aa6a3ba9e7bc9bc56814ecf3bfd7d0014" kindref="member">particleFactoryFunction</ref> &gt; &amp;</type>
+        <definition>static std::unordered_map&lt; std::string, particleFactoryFunction &gt; &amp; Marmot::Registry::ParticleFactory::particleFactoryFunctionByName</definition>
+        <argsstring>()</argsstring>
+        <name>particleFactoryFunctionByName</name>
+        <qualifiedname>Marmot::Registry::ParticleFactory::particleFactoryFunctionByName</qualifiedname>
+        <briefdescription>
+<para>Registered factory functions by upper-case particle name (a function-local static: registrations run during static initialization, possibly before a static data member of this translation unit would be constructed). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleLibrary.h" line="119" column="31"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Registry and factory of the meshfree particles (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle" kindref="compound">Marmot::Discretizations::Meshfree::Particle</ref>). </para>
+    </briefdescription>
+    <detaileddescription>
+<para><itemizedlist>
+<listitem><para>Allows particles to register themselves with their name (see <ref refid="class_marmot_1_1_registry_1_1_particle_factory_1a4225a503922983e75785d8b5ab140947" kindref="member">registerParticle()</ref>; particle modules do this in their *Registration.cpp files at static initialization).</para>
+</listitem><listitem><para>Allows the user (the host framework) to create instances of particles by name (<ref refid="class_marmot_1_1_registry_1_1_particle_factory_1a2d3fade456c7640eb56112869f4c5b30" kindref="member">createParticle()</ref>).</para>
+</listitem></itemizedlist>
+</para>
+<para>Particle names are case-insensitive: they are converted to upper case both at registration and at creation. They follow the pattern <computeroutput>&lt;Physics&gt;&lt;IntegrationScheme&gt;/&lt;Dimension&gt;/&lt;Shape&gt;</computeroutput>, e.g., <computeroutput>DisplacementSQCNI/PlaneStrain/Quad</computeroutput> or <computeroutput>GradientEnhancedFiniteStrainSQCNIxNSNI/3D/Hexa</computeroutput>. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleLibrary.h" line="46" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticleLibrary.h" bodystart="46" bodyend="120"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_registry_1_1_particle_factory_1add041efc5ad2a0fbb56a0e537b1eaae9" prot="private" virt="non-virtual"><scope>Marmot::Registry::ParticleFactory</scope><name>checkIfParticleIsRegistered</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a2d3fade456c7640eb56112869f4c5b30" prot="public" virt="non-virtual"><scope>Marmot::Registry::ParticleFactory</scope><name>createParticle</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a07ab2a45302836ad1f8b2b3adbc6e167" prot="public" virt="non-virtual"><scope>Marmot::Registry::ParticleFactory</scope><name>ParticleFactory</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_particle_factory_1aa6a3ba9e7bc9bc56814ecf3bfd7d0014" prot="public" virt="non-virtual"><scope>Marmot::Registry::ParticleFactory</scope><name>particleFactoryFunction</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a30490dde37f25e4c8b264bda1dda39dd" prot="private" virt="non-virtual"><scope>Marmot::Registry::ParticleFactory</scope><name>particleFactoryFunctionByName</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_particle_factory_1a4225a503922983e75785d8b5ab140947" prot="public" virt="non-virtual"><scope>Marmot::Registry::ParticleFactory</scope><name>registerParticle</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

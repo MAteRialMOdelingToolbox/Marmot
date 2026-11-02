@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_registry" kind="namespace" language="C++">
+    <compoundname>Marmot::Registry</compoundname>
+    <innerclass refid="class_marmot_1_1_registry_1_1_cell_element_factory" prot="public">Marmot::Registry::CellElementFactory</innerclass>
+    <innerclass refid="class_marmot_1_1_registry_1_1_cell_factory" prot="public">Marmot::Registry::CellFactory</innerclass>
+    <innerclass refid="class_marmot_1_1_registry_1_1_material_point_factory" prot="public">Marmot::Registry::MaterialPointFactory</innerclass>
+    <innerclass refid="class_marmot_1_1_registry_1_1_particle_factory" prot="public">Marmot::Registry::ParticleFactory</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" line="34" column="1"/>
+  </compounddef>
+</doxygen>

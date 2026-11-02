@@ -1,0 +1,1173 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Discretizations::Elements::ElementSpatialWrapper</compoundname>
+    <basecompoundref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element" prot="public" virt="non-virtual">Marmot::Discretizations::Elements::Element</basecompoundref>
+    <includes refid="_marmot_finite_element_spatial_wrapper_8h" local="no">MarmotFiniteElementSpatialWrapper.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1ae0a06e9e9c06972846cbc9c98aa9b2c9" prot="public" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::Discretizations::Elements::ElementSpatialWrapper::nDim</definition>
+        <argsstring></argsstring>
+        <name>nDim</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::nDim</qualifiedname>
+        <briefdescription>
+<para>Number of spatial dimensions of the ambient space. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="46" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1ac91e8d472637d2f3eeef8c2f8f6b1312" prot="public" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::Discretizations::Elements::ElementSpatialWrapper::nDimChild</definition>
+        <argsstring></argsstring>
+        <name>nDimChild</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::nDimChild</qualifiedname>
+        <briefdescription>
+<para>Number of spatial dimensions of the child element. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="47" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a1abca1a6aad9d7bfad0dfa2cbd060bbb" prot="public" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::Discretizations::Elements::ElementSpatialWrapper::nNodes</definition>
+        <argsstring></argsstring>
+        <name>nNodes</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::nNodes</qualifiedname>
+        <briefdescription>
+<para>Number of nodes shared by parent and child element. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="48" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a5f7c4709883d5da117a6d76911677de2" prot="public" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::Discretizations::Elements::ElementSpatialWrapper::nRhsChild</definition>
+        <argsstring></argsstring>
+        <name>nRhsChild</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::nRhsChild</qualifiedname>
+        <briefdescription>
+<para>Size of the child element&apos;s right-hand-side vector. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="49" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a51d170fb0c2d2fd47e1a05721e5f5c16" prot="public" static="no" mutable="no">
+        <type>const Eigen::Map&lt; const Eigen::VectorXi &gt;</type>
+        <definition>const Eigen::Map&lt; const Eigen::VectorXi &gt; Marmot::Discretizations::Elements::ElementSpatialWrapper::rhsIndicesToBeProjected</definition>
+        <argsstring></argsstring>
+        <name>rhsIndicesToBeProjected</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::rhsIndicesToBeProjected</qualifiedname>
+        <briefdescription>
+<para>Indices in the child RHS vector that need projection. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="51" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a32cb7f5320f3a87040b12770b8ba3189" prot="public" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::Discretizations::Elements::ElementSpatialWrapper::projectedSize</definition>
+        <argsstring></argsstring>
+        <name>projectedSize</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::projectedSize</qualifiedname>
+        <briefdescription>
+<para>Number of projected DOFs (child-element dimension). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="52" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a462841a901e30455398c51dc85a647ea" prot="public" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::Discretizations::Elements::ElementSpatialWrapper::unprojectedSize</definition>
+        <argsstring></argsstring>
+        <name>unprojectedSize</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::unprojectedSize</qualifiedname>
+        <briefdescription>
+<para>Number of unprojected DOFs (ambient-space dimension). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="53" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a17d2f81af94c78f99b02e3d313d6f646" prot="public" static="no" mutable="no">
+        <type>std::unique_ptr&lt; <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element" kindref="compound">Element</ref> &gt;</type>
+        <definition>std::unique_ptr&lt; Element &gt; Marmot::Discretizations::Elements::ElementSpatialWrapper::childElement</definition>
+        <argsstring></argsstring>
+        <name>childElement</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::childElement</qualifiedname>
+        <briefdescription>
+<para>Owned child element instance. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="55" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a56bc368a9c5c35023804ead405550b77" prot="public" static="no" mutable="no">
+        <type>Eigen::MatrixXd</type>
+        <definition>Eigen::MatrixXd Marmot::Discretizations::Elements::ElementSpatialWrapper::T</definition>
+        <argsstring></argsstring>
+        <name>T</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::T</qualifiedname>
+        <briefdescription>
+<para>Coordinate transformation matrix from child to parent space. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="56" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a20c900e11b871086b3124e07c6a6a216" prot="public" static="no" mutable="no">
+        <type>Eigen::MatrixXd</type>
+        <definition>Eigen::MatrixXd Marmot::Discretizations::Elements::ElementSpatialWrapper::P</definition>
+        <argsstring></argsstring>
+        <name>P</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::P</qualifiedname>
+        <briefdescription>
+<para>Projection matrix mapping parent DOFs to child DOFs. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="57" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a04166d94a7c8da83d635640776024c4a" prot="public" static="no" mutable="no">
+        <type>Eigen::MatrixXd</type>
+        <definition>Eigen::MatrixXd Marmot::Discretizations::Elements::ElementSpatialWrapper::projectedCoordinates</definition>
+        <argsstring></argsstring>
+        <name>projectedCoordinates</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::projectedCoordinates</qualifiedname>
+        <briefdescription>
+<para>Nodal coordinates expressed in the child (local) frame. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="58" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a75b986c4867eb4088ca25f9ff203a05d" prot="public" static="no" mutable="no">
+        <type>Eigen::VectorXd</type>
+        <definition>Eigen::VectorXd Marmot::Discretizations::Elements::ElementSpatialWrapper::referenceCoordinates</definition>
+        <argsstring></argsstring>
+        <name>referenceCoordinates</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::referenceCoordinates</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Ambient-space coordinates of node 0, needed to recover the translation (T alone only encodes the rotation) when mapping a child-space point back into ambient space. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="59" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a0424f1b33c60602e23a925451c3fb24a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Discretizations::Elements::ElementSpatialWrapper::ElementSpatialWrapper</definition>
+        <argsstring>(int nDim, int nChildDim, int nNodes, int sizeRhsChild, const int rhsIndicesToBeWrapped_[], int nRhsIndicesToBeWrapped, std::unique_ptr&lt; Element &gt; childElement)</argsstring>
+        <name>ElementSpatialWrapper</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::ElementSpatialWrapper</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>nDim</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nChildDim</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nNodes</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>sizeRhsChild</declname>
+        </param>
+        <param>
+          <type>const int</type>
+          <declname>rhsIndicesToBeWrapped_</declname>
+          <array>[]</array>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nRhsIndicesToBeWrapped</declname>
+        </param>
+        <param>
+          <type>std::unique_ptr&lt; <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element" kindref="compound">Element</ref> &gt;</type>
+          <declname>childElement</declname>
+        </param>
+        <briefdescription>
+<para>Construct the spatial wrapper. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of spatial dimensions of the ambient space. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nChildDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of spatial dimensions of the child element. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of nodes. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">sizeRhsChild</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of the child element&apos;s right-hand-side vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">rhsIndicesToBeWrapped_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Array of child-RHS indices to be projected. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nRhsIndicesToBeWrapped</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Length of <computeroutput>rhsIndicesToBeWrapped_</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">childElement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Owning pointer to the child element instance. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="73" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a840d63fd8e949506b44b3f473ab868ce" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Elements::ElementSpatialWrapper::getNumberOfRequiredStateVars</definition>
+        <argsstring>() override</argsstring>
+        <name>getNumberOfRequiredStateVars</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::getNumberOfRequiredStateVars</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a07a2925b44c1cf5d164d712e9f49b274">getNumberOfRequiredStateVars</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Number of state variables required by the element.    </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="82" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1ae8364a7424e68c534db6782c0da071c0" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>std::vector&lt; std::vector&lt; std::string &gt; &gt;</type>
+        <definition>std::vector&lt; std::vector&lt; std::string &gt; &gt; Marmot::Discretizations::Elements::ElementSpatialWrapper::getNodeFields</definition>
+        <argsstring>() override</argsstring>
+        <name>getNodeFields</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::getNodeFields</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1ab5119c9d217cc4567c5e5fc0dd9d8b78">getNodeFields</reimplements>
+        <briefdescription>
+<para>Get the nodal field names (e.g. displacement, rotation).    </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A 2D vector of strings representing the fields per node.    </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="85" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1af877a0c80000c8b88f0a554e28ff02c4" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>std::vector&lt; int &gt;</type>
+        <definition>std::vector&lt; int &gt; Marmot::Discretizations::Elements::ElementSpatialWrapper::getDofIndicesPermutationPattern</definition>
+        <argsstring>() override</argsstring>
+        <name>getDofIndicesPermutationPattern</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::getDofIndicesPermutationPattern</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1aa625b1417209fb603b5324300290d8b9">getDofIndicesPermutationPattern</reimplements>
+        <briefdescription>
+<para>Get permutation pattern for degrees of freedom.    </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Vector of indices describing the permutation.    </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="88" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1af27cde38990a5c253b726a3ca7287050" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Elements::ElementSpatialWrapper::getNNodes</definition>
+        <argsstring>() override</argsstring>
+        <name>getNNodes</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::getNNodes</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a6e2b81bd1ec923e99b8984d0888aa2c9">getNNodes</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Number of nodes in the element.    </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="91" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a624a36d5e199af0d877e760f4c25653e" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Elements::ElementSpatialWrapper::getNSpatialDimensions</definition>
+        <argsstring>() override</argsstring>
+        <name>getNSpatialDimensions</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::getNSpatialDimensions</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1ab8d2de735ebbeafbbe186565d8df3b7f">getNSpatialDimensions</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Number of spatial dimensions (2D/3D).    </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="94" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a1bc2b6fccc2fbaedd909ea96fc65e204" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Elements::ElementSpatialWrapper::getNDofPerElement</definition>
+        <argsstring>() override</argsstring>
+        <name>getNDofPerElement</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::getNDofPerElement</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a049378a4baa4433392a7576d7ab4c7f6">getNDofPerElement</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Number of degrees of freedom per element.    </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="97" column="9"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1acd670b354064106369630c7dbe0aa522" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>std::string</type>
+        <definition>std::string Marmot::Discretizations::Elements::ElementSpatialWrapper::getElementShape</definition>
+        <argsstring>() override</argsstring>
+        <name>getElementShape</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::getElementShape</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a3b8fc552d45300d48e4c0df93f955574">getElementShape</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>String describing the element shape in Ensight Gold notation (e.g. &quot;quad4&quot;, &quot;hexa8&quot;).    </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="100" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a1be5f1c50ba6276b17a7676d7a4d4a9b" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Elements::ElementSpatialWrapper::assignStateVars</definition>
+        <argsstring>(double *stateVars, int nStateVars) override</argsstring>
+        <name>assignStateVars</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::assignStateVars</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a8c428c7e01d08a83268efa6b294460dd">assignStateVars</reimplements>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nStateVars</declname>
+        </param>
+        <briefdescription>
+<para>Assign state variable array to element.    </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to state variable array. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nStateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of state variables.    </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="103" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a591e56f952908b433ebb4120a47f8883" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Elements::ElementSpatialWrapper::assignProperty</definition>
+        <argsstring>(const Marmot::Discretizations::ElementProperties &amp;property) override</argsstring>
+        <name>assignProperty</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::assignProperty</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a19f4a8715f3b76d5024fa416876f038d">assignProperty</reimplements>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_element_properties" kindref="compound">Marmot::Discretizations::ElementProperties</ref> &amp;</type>
+          <declname>property</declname>
+        </param>
+        <briefdescription>
+<para>Assign element property set.    </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">property</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element" kindref="compound">Element</ref> property object containing material, geometry, etc.    </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="106" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a5f731795d696a1ff22acaf62527d6895" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Elements::ElementSpatialWrapper::assignProperty</definition>
+        <argsstring>(const Marmot::Discretizations::MaterialSection &amp;property) override</argsstring>
+        <name>assignProperty</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::assignProperty</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a56960c8718fddf051f1ce0f607bd857a">assignProperty</reimplements>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_material_section" kindref="compound">Marmot::Discretizations::MaterialSection</ref> &amp;</type>
+          <declname>property</declname>
+        </param>
+        <briefdescription>
+<para>Assign material section property.    </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">property</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Material section definition (e.g. cross-sectional data).    </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="109" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1afb2590a6fc93378c78a8c7a7c720d8fd" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Elements::ElementSpatialWrapper::assignProperty</definition>
+        <argsstring>(const std::string &amp;propertyName, const double *properties, int nProperties) override</argsstring>
+        <name>assignProperty</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::assignProperty</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1aadaf2d2054cf071fb278552bbf62f42f">assignProperty</reimplements>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>propertyName</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>properties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nProperties</declname>
+        </param>
+        <briefdescription>
+<para>Assign a single property of the element by name.    </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">propertyName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the property. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">properties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the array of property values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of values behind that pointer. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>Default implementation throws an exception, as an element not overriding this interface does not support any named properties. </para>
+</simplesect>
+<simplesect kind="note"><para>The count is part of the interface rather than implied by the name: the caller is typically a scripting layer handing over a user-supplied list, and an implementation reading a fixed number of values from an unchecked pointer would read past the end of it silently.    </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="112" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a243b7919d7e23c3c27efb43fdd63abc1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>std::vector&lt; std::string &gt; Marmot::Discretizations::Elements::ElementSpatialWrapper::getPropertyNames</definition>
+        <argsstring>() const override</argsstring>
+        <name>getPropertyNames</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::getPropertyNames</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a5d62201e058ad6df8f994c2a58a15e83">getPropertyNames</reimplements>
+        <briefdescription>
+<para>Get the names of all the valid properties of the element.    </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Vector of strings containing the property names. </para>
+</simplesect>
+<simplesect kind="note"><para>Default implementation returns an empty vector, as an element not overriding this interface does not expose any named properties.    </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="115" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a16e1959111fc52953d6835a5c6a3b334" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Elements::ElementSpatialWrapper::assignNodeCoordinates</definition>
+        <argsstring>(const double *coordinates) override</argsstring>
+        <name>assignNodeCoordinates</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::assignNodeCoordinates</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a58691593fbdc3f791d4d45472f454928">assignNodeCoordinates</reimplements>
+        <param>
+          <type>const double *</type>
+          <declname>coordinates</declname>
+        </param>
+        <briefdescription>
+<para>Assign nodal coordinates to element.    </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">coordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to array of nodal coordinates.    </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="118" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a0e0d3b7415db93b509465e7a550f2feb" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Elements::ElementSpatialWrapper::initializeYourself</definition>
+        <argsstring>() override</argsstring>
+        <name>initializeYourself</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::initializeYourself</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a10119ad937d8778cb58793dd1a1581f0">initializeYourself</reimplements>
+        <briefdescription>
+<para>Initialize element state and internal variables.    </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="121" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1affb32124a4f2caab7f2b086197d30242" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Elements::ElementSpatialWrapper::computeKernels</definition>
+        <argsstring>(const double *QTotal, const double *dQ, double *Pe, double *Ke, double time, double dT) override</argsstring>
+        <name>computeKernels</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::computeKernels</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1ab6a8d0c39c75ed93c360108fede435ec">computeKernels</reimplements>
+        <param>
+          <type>const double *</type>
+          <declname>QTotal</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>dQ</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>Pe</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>Ke</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>time</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <briefdescription>
+<para>Perform element computations with coordinate transformation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">QTotal</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Total dof vector in the ambient (parent) space. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dQ</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Incremental dof vector in the ambient space. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">Pe</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Internal force vector in the ambient space. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">Ke</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Stiffness matrix in the ambient space. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">time</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current time. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time step size. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="132" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a4126fe758e00375bf9ddb2a12cd32a7c" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Elements::ElementSpatialWrapper::setInitialConditions</definition>
+        <argsstring>(StateTypes state, const double *values) override</argsstring>
+        <name>setInitialConditions</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::setInitialConditions</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a7f67740e1fd8fcb1b345981f2d2e25e2">setInitialConditions</reimplements>
+        <param>
+          <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a960580b197315c588cd749c27d577451" kindref="member">StateTypes</ref></type>
+          <declname>state</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>values</declname>
+        </param>
+        <briefdescription>
+<para>Apply initial conditions to the element.    </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">state</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>State type to be set. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">values</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Array of initial values.    </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="136" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a094fa20776d6c155d75fb7c34e7bbe1d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Elements::ElementSpatialWrapper::computeDistributedLoad</definition>
+        <argsstring>(DistributedLoadTypes loadType, double *P, double *K, int elementFace, const double *load, const double *QTotal, double time, double dT) override</argsstring>
+        <name>computeDistributedLoad</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::computeDistributedLoad</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a39ed61f6618647ea241acbec2006ecc6">computeDistributedLoad</reimplements>
+        <param>
+          <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a7fb37496e1f3ed20eb957e3368ed75fa" kindref="member">DistributedLoadTypes</ref></type>
+          <declname>loadType</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>P</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>K</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>elementFace</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>load</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>QTotal</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>time</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <briefdescription>
+<para>Compute contribution from distributed surface loads with coordinate transformation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">loadType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of distributed load. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">P</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>External load vector in the ambient space. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">K</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Load stiffness matrix in the ambient space. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">elementFace</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of element face. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">load</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Applied load values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">QTotal</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Total dof vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">time</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current time. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time step size. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="149" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1ae1dc2869dff84e93a74d935961646513" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Elements::ElementSpatialWrapper::computeBodyForce</definition>
+        <argsstring>(double *P, double *K, const double *load, const double *QTotal, double time, double dT) override</argsstring>
+        <name>computeBodyForce</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::computeBodyForce</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a5663007eb8c360177133b7134475be03">computeBodyForce</reimplements>
+        <param>
+          <type>double *</type>
+          <declname>P</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>K</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>load</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>QTotal</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>time</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <briefdescription>
+<para>Compute body force contribution with coordinate transformation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">P</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>External load vector in the ambient space. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">K</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Load stiffness matrix in the ambient space. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">load</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Applied body force values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">QTotal</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Total dof vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">time</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current time. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time step size. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="167" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1aa0ec6f747dd5b7d964e158d1974910cd" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>Marmot::Utilities::StateView</type>
+        <definition>Marmot::Utilities::StateView Marmot::Discretizations::Elements::ElementSpatialWrapper::getStateView</definition>
+        <argsstring>(const std::string &amp;stateName, int quadraturePoint) override</argsstring>
+        <name>getStateView</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::getStateView</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1aa0d140252f5a10212ce7031cbcbf2eea">getStateView</reimplements>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>stateName</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>quadraturePoint</declname>
+        </param>
+        <briefdescription>
+<para>Access element state at a quadrature point.    </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">stateName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the state variable. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">quadraturePoint</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of quadrature point. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>View into state variable.    </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="171" column="34"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a8dd3b488be403d11e18743072917c394" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; Marmot::Discretizations::Elements::ElementSpatialWrapper::getCoordinatesAtCenter</definition>
+        <argsstring>() override</argsstring>
+        <name>getCoordinatesAtCenter</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::getCoordinatesAtCenter</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a3005393ec0463bac458b2e8df1cf784a">getCoordinatesAtCenter</reimplements>
+        <briefdescription>
+<para>Get coordinates of element center.    </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Vector of coordinates at element centroid.    </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="174" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a7f817819605f4de472872b14dd2b73bb" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>std::vector&lt; std::vector&lt; double &gt; &gt;</type>
+        <definition>std::vector&lt; std::vector&lt; double &gt; &gt; Marmot::Discretizations::Elements::ElementSpatialWrapper::getCoordinatesAtQuadraturePoints</definition>
+        <argsstring>() override</argsstring>
+        <name>getCoordinatesAtQuadraturePoints</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::getCoordinatesAtQuadraturePoints</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a6ed9e23e38098ed9ed5b8dd34ea1b62b">getCoordinatesAtQuadraturePoints</reimplements>
+        <briefdescription>
+<para>Get coordinates of quadrature points.    </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>2D vector of coordinates at quadrature points.    </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="177" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1af5b0ec987d1b18060c17bd0ef5d4633d" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Elements::ElementSpatialWrapper::getNumberOfQuadraturePoints</definition>
+        <argsstring>() override</argsstring>
+        <name>getNumberOfQuadraturePoints</name>
+        <qualifiedname>Marmot::Discretizations::Elements::ElementSpatialWrapper::getNumberOfQuadraturePoints</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1adf8e3df3922a0bc589b07379c2bc4383">getNumberOfQuadraturePoints</reimplements>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Number of quadrature points used by the element.    </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="180" column="9"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Wrapper that embeds a lower-dimensional child element (e.g. a truss) into a higher-dimensional ambient space (2-D or 3-D). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The projection transformation is constructed automatically from the supplied nodal coordinates. The child element is created via a user-provided factory functor so that the wrapper remains independent of the concrete child type. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Marmot::Discretizations::Elements::Element</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element"/>
+      </node>
+      <node id="1">
+        <label>Marmot::Discretizations::Elements::ElementSpatialWrapper</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Marmot::Discretizations::Elements::Element</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element"/>
+      </node>
+      <node id="1">
+        <label>Marmot::Discretizations::Elements::ElementSpatialWrapper</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" line="43" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElementSpatialWrapper.h" bodystart="43" bodyend="181"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a16e1959111fc52953d6835a5c6a3b334" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>assignNodeCoordinates</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a591e56f952908b433ebb4120a47f8883" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>assignProperty</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a5f731795d696a1ff22acaf62527d6895" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>assignProperty</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1afb2590a6fc93378c78a8c7a7c720d8fd" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>assignProperty</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a1be5f1c50ba6276b17a7676d7a4d4a9b" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>assignStateVars</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a17d2f81af94c78f99b02e3d313d6f646" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>childElement</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1ae1dc2869dff84e93a74d935961646513" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>computeBodyForce</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1ae84ee04baeb50229586f722aa504a7b7" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>computeConsistentInertia</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1ac40288c7385c42d103255fc8240de127" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>computeCriticalTimeStepForExplicitDynamics</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a094fa20776d6c155d75fb7c34e7bbe1d" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>computeDistributedLoad</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a61b2edabfd86134bf4b713aed93a181d" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>computeInternalEnergy</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1affb32124a4f2caab7f2b086197d30242" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>computeKernels</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1ac92306ee9f7568de4bc7f57456883414" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>computeKernelsExplicit</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a80dc7db8ea59796b187b752075019a0a" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>computeLumpedDamping</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a4d7af6c8b0d2adbb812f785d9ba2ab85" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>computeLumpedInertia</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a7fb37496e1f3ed20eb957e3368ed75fa" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>DistributedLoadTypes</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a0424f1b33c60602e23a925451c3fb24a" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>ElementSpatialWrapper</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a960580b197315c588cd749c27d577451a82ae57cfe5c3741b1fcdff7a0385b636" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>GeostaticStress</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a8dd3b488be403d11e18743072917c394" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>getCoordinatesAtCenter</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a7f817819605f4de472872b14dd2b73bb" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>getCoordinatesAtQuadraturePoints</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1af877a0c80000c8b88f0a554e28ff02c4" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>getDofIndicesPermutationPattern</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1acd670b354064106369630c7dbe0aa522" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>getElementShape</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a1bc2b6fccc2fbaedd909ea96fc65e204" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>getNDofPerElement</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1af27cde38990a5c253b726a3ca7287050" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>getNNodes</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1ae8364a7424e68c534db6782c0da071c0" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>getNodeFields</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a624a36d5e199af0d877e760f4c25653e" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>getNSpatialDimensions</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1af5b0ec987d1b18060c17bd0ef5d4633d" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>getNumberOfQuadraturePoints</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a840d63fd8e949506b44b3f473ab868ce" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>getNumberOfRequiredStateVars</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a243b7919d7e23c3c27efb43fdd63abc1" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>getPropertyNames</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1aa0ec6f747dd5b7d964e158d1974910cd" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>getStateView</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a960580b197315c588cd749c27d577451a9da2d46fa0fc7aab835895e604fa6125" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>HasEigenDeformation</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a960580b197315c588cd749c27d577451a36241e2982fcbeba6fb988034d59d480" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>HydrostaticStress</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a0e0d3b7415db93b509465e7a550f2feb" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>initializeYourself</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a960580b197315c588cd749c27d577451a1096b2bbdc3df830e119185086d3f397" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>MarmotMaterialInitialization</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a960580b197315c588cd749c27d577451a1f13cf6e759c77b985bedfec4ab4aef6" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>MarmotMaterialStateVars</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1ae0a06e9e9c06972846cbc9c98aa9b2c9" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>nDim</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1ac91e8d472637d2f3eeef8c2f8f6b1312" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>nDimChild</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a1abca1a6aad9d7bfad0dfa2cbd060bbb" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>nNodes</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a5f7c4709883d5da117a6d76911677de2" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>nRhsChild</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a20c900e11b871086b3124e07c6a6a216" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>P</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a7fb37496e1f3ed20eb957e3368ed75faa8a14b7949f9b56bd11c790176e657204" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>Pressure</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a04166d94a7c8da83d635640776024c4a" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>projectedCoordinates</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a32cb7f5320f3a87040b12770b8ba3189" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>projectedSize</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a75b986c4867eb4088ca25f9ff203a05d" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>referenceCoordinates</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a51d170fb0c2d2fd47e1a05721e5f5c16" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>rhsIndicesToBeProjected</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a4126fe758e00375bf9ddb2a12cd32a7c" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>setInitialConditions</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a960580b197315c588cd749c27d577451a262f194a5a0458cc3c48ab3c8a09b6df" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>Sigma11</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a960580b197315c588cd749c27d577451afa813f7040dbec49f1dd0cf6ffb8f7e7" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>Sigma22</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a960580b197315c588cd749c27d577451a72f9d267d34005c31f3649dd2d300753" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>Sigma33</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a960580b197315c588cd749c27d577451" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>StateTypes</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a7fb37496e1f3ed20eb957e3368ed75faa1bec408a27828ff9989811d49e2a39c3" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>SurfaceTorsion</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a7fb37496e1f3ed20eb957e3368ed75faa2bf845491316cc456238850e39fc831b" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>SurfaceTraction</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a56bc368a9c5c35023804ead405550b77" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>T</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_spatial_wrapper_1a462841a901e30455398c51dc85a647ea" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>unprojectedSize</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element_1a2779ed04727b13059805194acf951c7e" prot="public" virt="virtual"><scope>Marmot::Discretizations::Elements::ElementSpatialWrapper</scope><name>~Element</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

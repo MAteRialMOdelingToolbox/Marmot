@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::Deformation</compoundname>
+    <includes refid="_marmot_material_gradient_enhanced_finite_strain_8h" local="no">MarmotMaterialGradientEnhancedFiniteStrain.h</includes>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>nDim</declname>
+        <defname>nDim</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation_1a067f3daac1839466539588da051a14fa" prot="public" static="no" mutable="no">
+        <type>Fastor::Tensor&lt; double, nDim, nDim &gt;</type>
+        <definition>Fastor::Tensor&lt; double, nDim, nDim &gt; Marmot::Materials::MaterialGradientEnhancedFiniteStrain::Deformation&lt; nDim &gt;::F</definition>
+        <argsstring></argsstring>
+        <name>F</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::Deformation::F</qualifiedname>
+        <briefdescription>
+<para>deformation gradient </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="176" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="176" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation_1a81460edec1a63ab636a4c901c0636c74" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Materials::MaterialGradientEnhancedFiniteStrain::Deformation&lt; nDim &gt;::N</definition>
+        <argsstring></argsstring>
+        <name>N</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::Deformation::N</qualifiedname>
+        <briefdescription>
+<para>nonlocal field <formula id="37">$ \bar{N} $</formula>; a total, not an increment </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="177" column="44" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="177" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation" kindref="compound">Deformation</ref> state handed to a gradient-enhanced material. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of spatial dimensions (2 or 3). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="175" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="175" bodyend="178"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation_1a067f3daac1839466539588da051a14fa" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::Deformation</scope><name>F</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation_1a81460edec1a63ab636a4c901c0636c74" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::Deformation</scope><name>N</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

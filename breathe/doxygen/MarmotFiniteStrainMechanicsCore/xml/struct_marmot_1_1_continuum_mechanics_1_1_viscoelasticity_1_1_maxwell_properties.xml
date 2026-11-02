@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_maxwell_properties" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::ContinuumMechanics::Viscoelasticity::MaxwellProperties</compoundname>
+    <includes refid="_marmot_finite_strain_viscoelasticity_8h" local="no">MarmotFiniteStrainViscoelasticity.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_maxwell_properties_1a5dd2e037094fbda7bc13aac066f89d06" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::ContinuumMechanics::Viscoelasticity::MaxwellProperties::nMaxwell</definition>
+        <argsstring></argsstring>
+        <name>nMaxwell</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::MaxwellProperties::nMaxwell</qualifiedname>
+        <briefdescription>
+<para>Number of maxwell elements. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainViscoelasticity.h" line="35" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainViscoelasticity.h" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_maxwell_properties_1ae8d4410c2e541483e5bdaf4e2619720e" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; Marmot::ContinuumMechanics::Viscoelasticity::MaxwellProperties::gamma</definition>
+        <argsstring></argsstring>
+        <name>gamma</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::MaxwellProperties::gamma</qualifiedname>
+        <briefdescription>
+<para>Weighting factors of maxwell elements. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainViscoelasticity.h" line="36" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainViscoelasticity.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_maxwell_properties_1a364ea43e7d551d84754722cd97c6025d" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::Viscoelasticity::MaxwellProperties::sumGamma</definition>
+        <argsstring></argsstring>
+        <name>sumGamma</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::MaxwellProperties::sumGamma</qualifiedname>
+        <briefdescription>
+<para>Sum of weighting factors. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainViscoelasticity.h" line="37" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainViscoelasticity.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_maxwell_properties_1a58a7d2822bc0047e23199007803bdd0b" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; double &gt;</type>
+        <definition>std::vector&lt; double &gt; Marmot::ContinuumMechanics::Viscoelasticity::MaxwellProperties::tau</definition>
+        <argsstring></argsstring>
+        <name>tau</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::MaxwellProperties::tau</qualifiedname>
+        <briefdescription>
+<para>Relaxation times of maxwell elements. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainViscoelasticity.h" line="38" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainViscoelasticity.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Struct to hold properties of a generalized maxwell model. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainViscoelasticity.h" line="34" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainViscoelasticity.h" bodystart="34" bodyend="39"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_maxwell_properties_1ae8d4410c2e541483e5bdaf4e2619720e" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Viscoelasticity::MaxwellProperties</scope><name>gamma</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_maxwell_properties_1a5dd2e037094fbda7bc13aac066f89d06" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Viscoelasticity::MaxwellProperties</scope><name>nMaxwell</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_maxwell_properties_1a364ea43e7d551d84754722cd97c6025d" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Viscoelasticity::MaxwellProperties</scope><name>sumGamma</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_maxwell_properties_1a58a7d2822bc0047e23199007803bdd0b" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Viscoelasticity::MaxwellProperties</scope><name>tau</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

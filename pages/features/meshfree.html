@@ -1,0 +1,261 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meshfree methods &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Meshfree Approximation" href="meshfreeapproximation.html" />
+    <link rel="prev" title="Explicit dynamics devices" href="explicitdynamicsdevices.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="materials.html">Material models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Meshfree methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#architecture">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#registration-and-naming">Registration and naming</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-with-edelweissmeshfree">Usage with EdelweissMeshfree</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="meshfreeapproximation.html">Meshfree Approximation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="meshfreecells.html">MPM Cells and Material Points</a></li>
+<li class="toctree-l4"><a class="reference internal" href="meshfreeparticles.html">Meshfree Particles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="displacementmaterialpoint.html">Displacement Material Point</a></li>
+<li class="toctree-l4"><a class="reference internal" href="displacementcell.html">Displacement Cell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="displacementparticle.html">Displacement Particle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gradientenhancedfinitestrainmaterialpoint.html">Gradient-Enhanced Finite-Strain Material Point</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gradientenhancedfinitestraincell.html">Gradient-Enhanced Finite-Strain Cell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gradientenhancedfinitestrainparticle.html">Gradient-Enhanced Finite-Strain Particles</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+      <li class="breadcrumb-item active">Meshfree methods</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/meshfree.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="meshfree-methods">
+<h1>Meshfree methods<a class="headerlink" href="#meshfree-methods" title="Link to this heading"></a></h1>
+<p>Marmot provides the constitutive and discretization kernels for two meshfree methods, which a host framework
+(e.g. <a class="reference external" href="https://github.com/Edelweiss-Numerics/EdelweissMeshfree">EdelweissMeshfree</a>) combines into a simulation:</p>
+<ul class="simple">
+<li><p>the <strong>material point method (MPM)</strong>: <em>material points</em> carry the material state and move through a background grid
+of <em>cells</em>; each cell assembles the residual and the tangent of the material points it currently hosts;</p></li>
+<li><p>the <strong>reproducing kernel particle method (RKPM)</strong>: <em>particles</em> carry the material state and a domain of integration;
+their shape functions follow from a <em>reproducing kernel approximation</em> built on <em>kernel functions</em> attached to the
+nodes.</p></li>
+</ul>
+<p>Both methods reuse Marmot’s material interfaces (e.g. <code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialFiniteStrain</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialGradientEnhancedFiniteStrain</span></code>), so that every registered material of such an interface can be used in
+them.</p>
+<section id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h2>
+<p>The meshfree layer consists of a core module and of formulation modules in the dedicated module categories:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Module category</p></th>
+<th class="head"><p>Content</p></th>
+<th class="head"><p>Documentation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">core/MarmotMeshfreeCore</span></code></p></td>
+<td><p>interfaces (<code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Cells::Cell</span></code>, <code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::MaterialPoints::MaterialPoint</span></code>, <code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Meshfree::Particle</span></code>, <code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Cells::CellElement</span></code>), cell geometries,
+the reproducing kernel approximation, kernel functions, generic particle implementations and the factories</p></td>
+<td><p><a class="reference internal" href="meshfreeapproximation.html"><span class="doc">Meshfree Approximation</span></a>, <a class="reference internal" href="meshfreecells.html"><span class="doc">MPM Cells and Material Points</span></a>, <a class="reference internal" href="meshfreeparticles.html"><span class="doc">Meshfree Particles</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">materialpoints/</span></code></p></td>
+<td><p>MPM material points of a formulation</p></td>
+<td><p><a class="reference internal" href="displacementmaterialpoint.html"><span class="doc">Displacement Material Point</span></a>, <a class="reference internal" href="gradientenhancedfinitestrainmaterialpoint.html"><span class="doc">Gradient-Enhanced Finite-Strain Material Point</span></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cells/</span></code></p></td>
+<td><p>MPM cells of a formulation, which assemble the contributions of their material points</p></td>
+<td><p><a class="reference internal" href="displacementcell.html"><span class="doc">Displacement Cell</span></a>, <a class="reference internal" href="gradientenhancedfinitestraincell.html"><span class="doc">Gradient-Enhanced Finite-Strain Cell</span></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">particles/</span></code></p></td>
+<td><p>RKPM particles of a formulation, with their integration schemes</p></td>
+<td><p><a class="reference internal" href="displacementparticle.html"><span class="doc">Displacement Particle</span></a>, <a class="reference internal" href="gradientenhancedfinitestrainparticle.html"><span class="doc">Gradient-Enhanced Finite-Strain Particles</span></a></p></td>
+</tr>
+</tbody>
+</table>
+<p>Two formulations are available, each for MPM (material point and cell) and RKPM (particle):</p>
+<ul class="simple">
+<li><p><strong>Displacement</strong>: finite-strain displacement formulation, for materials of the <code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialFiniteStrain</span></code>
+interface;</p></li>
+<li><p><strong>GradientEnhancedFiniteStrain</strong>: finite-strain displacement formulation coupled to a scalar nonlocal field
+(implicit-gradient regularization), for materials of the <code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialGradientEnhancedFiniteStrain</span></code> interface,
+e.g. <a class="reference internal" href="gradientenhancedcompressibleneohookedamage.html"><span class="doc">Gradient-enhanced compressible Neo-Hooke damage</span></a> and <a class="reference internal" href="gradientenhancedfinitestraindruckerprager.html"><span class="doc">Gradient-enhanced finite-strain Drucker-Prager</span></a>. It is
+the meshfree counterpart of <a class="reference internal" href="gradientenhancedfinitestraindisplacementelement.html"><span class="doc">Gradient-Enhanced Finite-Strain Displacement Element</span></a>.</p></li>
+</ul>
+</section>
+<section id="registration-and-naming">
+<h2>Registration and naming<a class="headerlink" href="#registration-and-naming" title="Link to this heading"></a></h2>
+<p>As materials and elements, all meshfree types register themselves by name with a factory of
+<code class="docutils literal notranslate"><span class="pre">MarmotMeshfreeCore</span></code> (<code class="docutils literal notranslate"><span class="pre">Marmot::Registry::MaterialPointFactory</span></code>, <code class="docutils literal notranslate"><span class="pre">Marmot::Registry::CellFactory</span></code>, <code class="docutils literal notranslate"><span class="pre">Marmot::Registry::CellElementFactory</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Marmot::Registry::ParticleFactory</span></code>); the host creates them by that name. The names follow the pattern</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Pattern</p></th>
+<th class="head"><p>Examples</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>material point</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;Formulation&gt;/&lt;Dimension&gt;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Displacement/PlaneStrain</span></code>, <code class="docutils literal notranslate"><span class="pre">GradientEnhancedFiniteStrain/3D</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>cell (Lagrangian)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;Formulation&gt;/&lt;Shape&gt;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Displacement/Quad4</span></code>, <code class="docutils literal notranslate"><span class="pre">GradientEnhancedFiniteStrain/Hexa8</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>cell (B-spline)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;Formulation&gt;/BSpline[/3D]/&lt;Order&gt;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Displacement/BSpline/2</span></code>, <code class="docutils literal notranslate"><span class="pre">GradientEnhancedFiniteStrain/BSpline/3D/1</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>particle</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;Formulation&gt;&lt;IntegrationScheme&gt;/&lt;Dimension&gt;/&lt;Shape&gt;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">GradientEnhancedFiniteStrainSQCNIxNSNI/PlaneStrain/Quad</span></code>, <code class="docutils literal notranslate"><span class="pre">DisplacementSQCNI/3D/Hexa</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Displacement/PlaneStrain/Point</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>The integration schemes of the particles (SQCNI, SNNI, NSNI, SDI) and the corrections VCI and CWF are defined in
+<a class="reference internal" href="meshfreeparticles.html"><span class="doc">Meshfree Particles</span></a>; the registered names of each formulation are listed on its pages.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The displacement NSNI particles were formerly registered as <code class="docutils literal notranslate"><span class="pre">Displacement/SQCNIxNSNI/...</span></code> (with a slash after
+the formulation) and <code class="docutils literal notranslate"><span class="pre">Displacement/R-SNNIxNSNI/...</span></code>; these names remain as aliases, see
+<a class="reference internal" href="displacementparticle.html"><span class="doc">Displacement Particle</span></a>.</p>
+</div>
+</section>
+<section id="usage-with-edelweissmeshfree">
+<h2>Usage with EdelweissMeshfree<a class="headerlink" href="#usage-with-edelweissmeshfree" title="Link to this heading"></a></h2>
+<p>EdelweissMeshfree creates the Marmot types by their registered names:</p>
+<ul class="simple">
+<li><p><strong>MPM</strong>: the cells through the cell provider <code class="docutils literal notranslate"><span class="pre">LagrangianMarmotCell</span></code> (or <code class="docutils literal notranslate"><span class="pre">BSplineMarmotCell</span></code>) with, e.g.,
+<code class="docutils literal notranslate"><span class="pre">cellType=&quot;GradientEnhancedFiniteStrain/Quad4&quot;</span></code>, the material points through the provider <code class="docutils literal notranslate"><span class="pre">marmot</span></code> with, e.g.,
+<code class="docutils literal notranslate"><span class="pre">mpType=&quot;GradientEnhancedFiniteStrain/PlaneStrain&quot;</span></code>, and the material by its name and properties;</p></li>
+<li><p><strong>RKPM</strong>: the kernel functions through <code class="docutils literal notranslate"><span class="pre">MarmotMeshfreeKernelFunctionWrapper</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;BSplineBoxed&quot;</span></code> with a support
+radius; its <code class="docutils literal notranslate"><span class="pre">continuityOrder</span></code> argument selects the 2nd- or 3rd-order kernel, see <a class="reference internal" href="meshfreeapproximation.html"><span class="doc">Meshfree Approximation</span></a>), the approximation through <code class="docutils literal notranslate"><span class="pre">MarmotMeshfreeApproximationWrapper</span></code>, and the particles
+through <code class="docutils literal notranslate"><span class="pre">MarmotParticleWrapper</span></code> with the particle name, e.g.
+<code class="docutils literal notranslate"><span class="pre">&quot;GradientEnhancedFiniteStrainSQCNI/PlaneStrain/Quad&quot;</span></code>.</p></li>
+</ul>
+<p>The EdelweissMeshfree examples <code class="docutils literal notranslate"><span class="pre">160_gradient_enhanced_finite_strain_mpm_test</span></code> (MPM) and
+<code class="docutils literal notranslate"><span class="pre">161_gradient_enhanced_finite_strain_rkpm_test</span></code> (RKPM) are complete, verified input scripts for both methods.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="meshfreeapproximation.html">Meshfree Approximation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="meshfreecells.html">MPM Cells and Material Points</a></li>
+<li class="toctree-l1"><a class="reference internal" href="meshfreeparticles.html">Meshfree Particles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="displacementmaterialpoint.html">Displacement Material Point</a></li>
+<li class="toctree-l1"><a class="reference internal" href="displacementcell.html">Displacement Cell</a></li>
+<li class="toctree-l1"><a class="reference internal" href="displacementparticle.html">Displacement Particle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gradientenhancedfinitestrainmaterialpoint.html">Gradient-Enhanced Finite-Strain Material Point</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gradientenhancedfinitestraincell.html">Gradient-Enhanced Finite-Strain Cell</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gradientenhancedfinitestrainparticle.html">Gradient-Enhanced Finite-Strain Particles</a></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="explicitdynamicsdevices.html" class="btn btn-neutral float-left" title="Explicit dynamics devices" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="meshfreeapproximation.html" class="btn btn-neutral float-right" title="Meshfree Approximation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

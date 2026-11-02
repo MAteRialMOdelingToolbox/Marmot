@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_discretizations" kind="namespace" language="C++">
+    <compoundname>Marmot::Discretizations</compoundname>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_material_section" prot="public">Marmot::Discretizations::MaterialSection</innerclass>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_element_properties" prot="public">Marmot::Discretizations::ElementProperties</innerclass>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_elements">Marmot::Discretizations::Elements</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotConsistentMass.h" line="58" column="1"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,561 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Discretizations::Elements::BSplineGeometryElement</compoundname>
+    <derivedcompoundref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry" prot="public" virt="non-virtual">Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt;</derivedcompoundref>
+    <includes refid="_marmot_b_spline_geometry_element_8h" local="no">MarmotBSplineGeometryElement.h</includes>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>nDim</declname>
+        <defname>nDim</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>order</declname>
+        <defname>order</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a5d13194067775e6555c1f8b75c3de9eb" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1ab0015596caa9570471dc0ff7e5904b46" kindref="member">nKnotsPerDir</ref>, 1 &gt;</type>
+        <definition>using Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;::KnotVector = Eigen::Matrix&lt; double, nKnotsPerDir, 1 &gt;</definition>
+        <argsstring></argsstring>
+        <name>KnotVector</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::KnotVector</qualifiedname>
+        <briefdescription>
+<para>Knot vector of one direction. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="70" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1af1d68542423e3e3f83e95588955f272a" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1ab0015596caa9570471dc0ff7e5904b46" kindref="member">nKnotsPerDir</ref>, nDim &gt;</type>
+        <definition>using Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;::KnotVectors = Eigen::Matrix&lt; double, nKnotsPerDir, nDim &gt;</definition>
+        <argsstring></argsstring>
+        <name>KnotVectors</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::KnotVectors</qualifiedname>
+        <briefdescription>
+<para>Knot vectors, one column per direction. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="71" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a70c488ce9b02a66fed661a102d28aa1b" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 1, <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a749f90215ab88d6a8c9d68630cc9dd56" kindref="member">nNodes</ref> &gt;</type>
+        <definition>using Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;::NSized = Eigen::Matrix&lt; double, 1, nNodes &gt;</definition>
+        <argsstring></argsstring>
+        <name>NSized</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::NSized</qualifiedname>
+        <briefdescription>
+<para>Row vector of shape function values. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="74" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a7a916dbb28a9b541bf8b20d5ba7c9775" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, nDim *<ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a749f90215ab88d6a8c9d68630cc9dd56" kindref="member">nNodes</ref>, 1 &gt;</type>
+        <definition>using Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;::CoordinateVector = Eigen::Matrix&lt; double, nDim * nNodes, 1 &gt;</definition>
+        <argsstring></argsstring>
+        <name>CoordinateVector</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::CoordinateVector</qualifiedname>
+        <briefdescription>
+<para>Flat control point coordinates. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="75" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a0f690112b7437a2127ecdffed6a670d9" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, nDim, nDim &gt;</type>
+        <definition>using Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;::JacobianSized = Eigen::Matrix&lt; double, nDim, nDim &gt;</definition>
+        <argsstring></argsstring>
+        <name>JacobianSized</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::JacobianSized</qualifiedname>
+        <briefdescription>
+<para>Jacobian matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="76" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a038859cf1fbcb76fde5f3948b7646f71" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, nDim, <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a749f90215ab88d6a8c9d68630cc9dd56" kindref="member">nNodes</ref> &gt;</type>
+        <definition>using Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;::dNdXSized = Eigen::Matrix&lt; double, nDim, nNodes &gt;</definition>
+        <argsstring></argsstring>
+        <name>dNdXSized</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::dNdXSized</qualifiedname>
+        <briefdescription>
+<para>Shape function derivatives (nDim x nNodes). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="78" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" bodystart="78" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a27b73029f8eee1113c721927bfc7d58e" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, nDim, 1 &gt;</type>
+        <definition>using Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;::XiSized = Eigen::Matrix&lt; double, nDim, 1 &gt;</definition>
+        <argsstring></argsstring>
+        <name>XiSized</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::XiSized</qualifiedname>
+        <briefdescription>
+<para>Parametric point. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="79" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" bodystart="79" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1ab0015596caa9570471dc0ff7e5904b46" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;::nKnotsPerDir</definition>
+        <argsstring></argsstring>
+        <name>nKnotsPerDir</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::nKnotsPerDir</qualifiedname>
+        <initializer>= 2 * order + 2</initializer>
+        <briefdescription>
+<para>Knots per direction, <formula id="82">$ 2p+2 $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="69" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a749f90215ab88d6a8c9d68630cc9dd56" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;::nNodes</definition>
+        <argsstring></argsstring>
+        <name>nNodes</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::nNodes</qualifiedname>
+        <initializer>= pow( order + 1, nDim )</initializer>
+        <briefdescription>
+<para>Number of control points, <formula id="143">$ (p+1)^{n_\mathrm{dim}} $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="73" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a1b9c8da6b0ab70a84d93962cc2dfb8ab" prot="public" static="no" mutable="no">
+        <type>const Eigen::Map&lt; const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a7a916dbb28a9b541bf8b20d5ba7c9775" kindref="member">CoordinateVector</ref> &gt;</type>
+        <definition>const Eigen::Map&lt; const CoordinateVector &gt; Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;::_mapCoordinates</definition>
+        <argsstring></argsstring>
+        <name>_mapCoordinates</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::_mapCoordinates</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Map to the externally owned control point coordinates (point by point). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="81" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" bodystart="81" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a8188ba74eaddb763f4d7cf6269427991" prot="public" static="no" mutable="no">
+        <type>const Marmot::Discretizations::Elements::ElementShapes</type>
+        <definition>const Marmot::Discretizations::Elements::ElementShapes Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;::_shape</definition>
+        <argsstring></argsstring>
+        <name>_shape</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::_shape</qualifiedname>
+        <briefdescription>
+<para>Shape deduced from nDim and nNodes. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="83" column="60" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1acb44744622a5fbd9bb661b73cc335ddf" prot="public" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1af1d68542423e3e3f83e95588955f272a" kindref="member">KnotVectors</ref></type>
+        <definition>KnotVectors Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;::_knotVectors</definition>
+        <argsstring></argsstring>
+        <name>_knotVectors</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::_knotVectors</qualifiedname>
+        <briefdescription>
+<para>Knot vectors as passed to the constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="85" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1aa27f6a8fb4c18ad6b94ad6a4cab28637" prot="public" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1af1d68542423e3e3f83e95588955f272a" kindref="member">KnotVectors</ref></type>
+        <definition>KnotVectors Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;::_knotVectorsNormalized</definition>
+        <argsstring></argsstring>
+        <name>_knotVectorsNormalized</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::_knotVectorsNormalized</qualifiedname>
+        <briefdescription>
+<para>Knot vectors used for evaluation; currently a copy of <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1acb44744622a5fbd9bb661b73cc335ddf" kindref="member">_knotVectors</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="86" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1aea81ca5d21d3d1852f03c368d10b98dc" prot="private" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int constexpr</type>
+        <definition>static int constexpr Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;::pow</definition>
+        <argsstring>(int base, int exponent)</argsstring>
+        <name>pow</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::pow</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>base</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>exponent</declname>
+        </param>
+        <briefdescription>
+<para>Compile-time integer power. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">base</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Base. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">exponent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Non-negative exponent. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="142">$ \mathrm{base}^{\mathrm{exponent}} $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="66" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" bodystart="66" bodyend="66"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a82238f0ba3ac123daf6e5a3b444f3c1b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;::BSplineGeometryElement</definition>
+        <argsstring>(const double *nodeCoordinates_, int sizeNodeCoordinates, const double *knotVectors_, int sizeKnotVectors)</argsstring>
+        <name>BSplineGeometryElement</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::BSplineGeometryElement</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>nodeCoordinates_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>sizeNodeCoordinates</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>knotVectors_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>sizeKnotVectors</declname>
+        </param>
+        <briefdescription>
+<para>Constructs the geometry of one knot span. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">nodeCoordinates_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Control point coordinates, nNodes <formula id="54">$ \times $</formula> nDim values, point by point in the tensor-product order of <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a902a086088be3b2816af072ee017ea05" kindref="member">N()</ref>. Mapped, not copied; must outlive the object. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">sizeNodeCoordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of <computeroutput>nodeCoordinates_</computeroutput> (not checked). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">knotVectors_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Knot vectors, nKnotsPerDir values per direction, direction by direction. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">sizeKnotVectors</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of <computeroutput>knotVectors_</computeroutput> (not checked). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if no element shape exists for (nDim, nNodes). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="97" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" bodystart="97" bodyend="116"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a1fdaee6cdb461a6fb5ea07ffd163202e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;::getElementShape</definition>
+        <argsstring>() const</argsstring>
+        <name>getElementShape</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::getElementShape</qualifiedname>
+        <briefdescription>
+<para>Ensight Gold shape name used for output. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><computeroutput>&quot;quad4&quot;</computeroutput>, <computeroutput>&quot;quad9&quot;</computeroutput>, <computeroutput>&quot;hexa8&quot;</computeroutput> or <computeroutput>&quot;hexa27&quot;</computeroutput> for degree 1 and 2; an empty string for degree 3 (<computeroutput>Quad16</computeroutput> / <computeroutput>Hexa64</computeroutput> have no entry). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="123" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" bodystart="123" bodyend="137"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a902a086088be3b2816af072ee017ea05" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a70c488ce9b02a66fed661a102d28aa1b" kindref="member">NSized</ref></type>
+        <definition>NSized Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;::N</definition>
+        <argsstring>(const XiSized &amp;xi) const</argsstring>
+        <name>N</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::N</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a27b73029f8eee1113c721927bfc7d58e" kindref="member">XiSized</ref> &amp;</type>
+          <declname>xi</declname>
+        </param>
+        <briefdescription>
+<para>Tensor-product B-spline shape functions. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">xi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Parametric coordinates (knot values), inside the knot span. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="144">$ N_a(\boldsymbol{\xi}) $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="144" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" bodystart="144" bodyend="170"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1ad1e0658864b8eaf141bacc21c2cfd678" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a038859cf1fbcb76fde5f3948b7646f71" kindref="member">dNdXSized</ref></type>
+        <definition>dNdXSized Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;::dNdXi</definition>
+        <argsstring>(const XiSized &amp;xi) const</argsstring>
+        <name>dNdXi</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::dNdXi</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a27b73029f8eee1113c721927bfc7d58e" kindref="member">XiSized</ref> &amp;</type>
+          <declname>xi</declname>
+        </param>
+        <briefdescription>
+<para>Derivatives of the shape functions w.r.t. the parametric coordinates. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">xi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Parametric coordinates (knot values), inside the knot span. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="145">$ \partial N_a/\partial \xi_i $</formula> (row <formula id="65">$ i $</formula>, column <formula id="30">$ a $</formula>). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="177" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" bodystart="177" bodyend="234"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a0bf71a9872f27e54dddacab1d218a529" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a0f690112b7437a2127ecdffed6a670d9" kindref="member">JacobianSized</ref></type>
+        <definition>JacobianSized Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;::Jacobian</definition>
+        <argsstring>(const dNdXSized &amp;dNdXi) const</argsstring>
+        <name>Jacobian</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::Jacobian</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a038859cf1fbcb76fde5f3948b7646f71" kindref="member">dNdXSized</ref> &amp;</type>
+          <declname>dNdXi</declname>
+        </param>
+        <briefdescription>
+<para>Jacobian of the geometry map defined by the control points. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dNdXi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shape function derivatives from <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1ad1e0658864b8eaf141bacc21c2cfd678" kindref="member">dNdXi()</ref>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="146">$ J_{ij} = \sum_a \partial N_a/\partial \xi_j \, X_{a,i} $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="241" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" bodystart="241" bodyend="244"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1afc921ed5ae0aea803672eb76cd7c354c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a038859cf1fbcb76fde5f3948b7646f71" kindref="member">dNdXSized</ref></type>
+        <definition>dNdXSized Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;::dNdX</definition>
+        <argsstring>(const dNdXSized &amp;dNdXi, const JacobianSized &amp;JacobianInverse) const</argsstring>
+        <name>dNdX</name>
+        <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::dNdX</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a038859cf1fbcb76fde5f3948b7646f71" kindref="member">dNdXSized</ref> &amp;</type>
+          <declname>dNdXi</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a0f690112b7437a2127ecdffed6a670d9" kindref="member">JacobianSized</ref> &amp;</type>
+          <declname>JacobianInverse</declname>
+        </param>
+        <briefdescription>
+<para>Transforms parametric to physical shape function derivatives. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dNdXi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shape function derivatives from <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1ad1e0658864b8eaf141bacc21c2cfd678" kindref="member">dNdXi()</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">JacobianInverse</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Inverse of <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a0bf71a9872f27e54dddacab1d218a529" kindref="member">Jacobian()</ref>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="147">$ \partial N_a/\partial X_i = (\partial N_a/\partial \xi_j)\,J^{-1}_{ji} $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="252" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" bodystart="252" bodyend="255"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Geometry of a single knot span of a tensor-product B-spline of degree <computeroutput>order</computeroutput>. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The element is one knot span <formula id="134">$ [u_p, u_{p+1}] $</formula> per direction of a B-spline of degree <formula id="135">$ p $</formula> = <computeroutput>order</computeroutput>. The <formula id="136">$ p+1 $</formula> basis functions that are nonzero on that span depend on the <formula id="82">$ 2p+2 $</formula> knots <formula id="137">$ u_0,\dots,u_{2p+1} $</formula> of each direction, which are passed to the constructor. The shape functions are tensor products of the univariate B-splines <formula id="138">$ B_{i,p} $</formula> (Cox<ndash/>de Boor recursion, see <ref refid="_marmot_b_spline_8h" kindref="compound">MarmotBSpline.h</ref>),    <formula id="139">\[  N_{a}(\boldsymbol{\xi}) = B_{i,p}(\xi_1)\,B_{j,p}(\xi_2)\,B_{k,p}(\xi_3), \qquad
+  a = i + j\,(p+1) + k\,(p+1)^2 ,
+\]</formula> i.e. with the index of the first direction running fastest. The parametric coordinates <formula id="61">$ \boldsymbol{\xi} $</formula> are the knot values themselves (the normalization of the knot vectors to <formula id="140">$ [-1,1] $</formula> is disabled, so <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1aa27f6a8fb4c18ad6b94ad6a4cab28637" kindref="member">_knotVectorsNormalized</ref> is a copy of <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1acb44744622a5fbd9bb661b73cc335ddf" kindref="member">_knotVectors</ref>).</para>
+<para><simplesect kind="note"><para>Only 2D and 3D are usable: in 1D, the constructor throws for <computeroutput>order</computeroutput> &gt; 1 (no shape with <formula id="141">$ p+1 &gt; 2 $</formula> nodes in 1D), and <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1ad1e0658864b8eaf141bacc21c2cfd678" kindref="member">dNdXi()</ref> would not compile if instantiated.</para>
+</simplesect>
+<parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Spatial dimension (2 or 3). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>order</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Polynomial degree <formula id="135">$ p $</formula> of the B-spline. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt;</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element"/>
+      </node>
+    </inheritancegraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="58" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" bodystart="58" bodyend="256"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1acb44744622a5fbd9bb661b73cc335ddf" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BSplineGeometryElement</scope><name>_knotVectors</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1aa27f6a8fb4c18ad6b94ad6a4cab28637" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BSplineGeometryElement</scope><name>_knotVectorsNormalized</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a1b9c8da6b0ab70a84d93962cc2dfb8ab" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BSplineGeometryElement</scope><name>_mapCoordinates</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a8188ba74eaddb763f4d7cf6269427991" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BSplineGeometryElement</scope><name>_shape</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a82238f0ba3ac123daf6e5a3b444f3c1b" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BSplineGeometryElement</scope><name>BSplineGeometryElement</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a7a916dbb28a9b541bf8b20d5ba7c9775" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BSplineGeometryElement</scope><name>CoordinateVector</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1afc921ed5ae0aea803672eb76cd7c354c" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BSplineGeometryElement</scope><name>dNdX</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1ad1e0658864b8eaf141bacc21c2cfd678" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BSplineGeometryElement</scope><name>dNdXi</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a038859cf1fbcb76fde5f3948b7646f71" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BSplineGeometryElement</scope><name>dNdXSized</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a1fdaee6cdb461a6fb5ea07ffd163202e" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BSplineGeometryElement</scope><name>getElementShape</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a0bf71a9872f27e54dddacab1d218a529" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BSplineGeometryElement</scope><name>Jacobian</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a0f690112b7437a2127ecdffed6a670d9" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BSplineGeometryElement</scope><name>JacobianSized</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a5d13194067775e6555c1f8b75c3de9eb" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BSplineGeometryElement</scope><name>KnotVector</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1af1d68542423e3e3f83e95588955f272a" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BSplineGeometryElement</scope><name>KnotVectors</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a902a086088be3b2816af072ee017ea05" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BSplineGeometryElement</scope><name>N</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1ab0015596caa9570471dc0ff7e5904b46" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BSplineGeometryElement</scope><name>nKnotsPerDir</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a749f90215ab88d6a8c9d68630cc9dd56" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BSplineGeometryElement</scope><name>nNodes</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a70c488ce9b02a66fed661a102d28aa1b" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BSplineGeometryElement</scope><name>NSized</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1aea81ca5d21d3d1852f03c368d10b98dc" prot="private" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BSplineGeometryElement</scope><name>pow</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a27b73029f8eee1113c721927bfc7d58e" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::BSplineGeometryElement</scope><name>XiSized</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,11 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotMassLumping.h" alt="" coords="5,5,1160,53"/>
+<area shape="rect" id="node2" title="Eigen/Core" alt="" coords="314,101,441,149"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="534,53,443,97,441,92,529,55"/>
+<area shape="rect" id="node3" title="algorithm" alt="" coords="465,101,580,149"/>
+<area shape="poly" id="edge2" title="include" alt="" coords="570,52,547,91,544,86,565,55"/>
+<area shape="rect" id="node4" title="cmath" alt="" coords="604,101,684,149"/>
+<area shape="poly" id="edge3" title="include" alt="" coords="599,51,623,90,618,88,596,56"/>
+<area shape="rect" id="node5" title="limits" alt="" coords="708,101,783,149"/>
+<area shape="poly" id="edge4" title="include" alt="" coords="624,51,697,95,692,94,622,57"/>
+</map>

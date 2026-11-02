@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::ContinuumMechanics::Microplane::NTSplit::projectionTensors</compoundname>
+    <includes refid="_marmot_microplane_8h" local="no">MarmotMicroplane.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors_1a7c4d14f1ee614776e272d9a6339863ab" prot="public" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a7eb1f19d4137a551c44ef2bdc5f7c173" kindref="member">nmp6_sized</ref></type>
+        <definition>nmp6_sized Marmot::ContinuumMechanics::Microplane::NTSplit&lt; scheme &gt;::projectionTensors::N</definition>
+        <argsstring></argsstring>
+        <name>N</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::NTSplit::projectionTensors::N</qualifiedname>
+        <briefdescription>
+<para>Normal projection tensor <formula id="343">$ N_{ij}^{(m)} = n_i^{(m)} n_j^{(m)} $</formula> in Voigt notation, one column per microplane. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Projects the macroscopic strain tensor <formula id="344">$ \eps $</formula> onto the microplane normal strain <formula id="345">$ \varepsilon_N^{(m)} $</formula> of microplane <computeroutput>m:</computeroutput>   <formula id="346">\[  \varepsilon_N^{(m)} = N_{ij}^{(m)} \varepsilon_{ij}
+\]</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="138" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="138" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors_1ade9619c4b487939643fb9bc3fcdc0e63" prot="public" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a7eb1f19d4137a551c44ef2bdc5f7c173" kindref="member">nmp6_sized</ref></type>
+        <definition>nmp6_sized Marmot::ContinuumMechanics::Microplane::NTSplit&lt; scheme &gt;::projectionTensors::M</definition>
+        <argsstring></argsstring>
+        <name>M</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::NTSplit::projectionTensors::M</qualifiedname>
+        <briefdescription>
+<para>In-plane shear projection tensor  <formula id="347">$ M_{ij}^{(m)} = \tfrac{1}{2}(m_i^{(m)} n_j^{(m)} +
+m_j^{(m)} n_i^{(m)}) $</formula> in Voigt notation, one column per microplane. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Projects the macroscopic strain tensor <formula id="344">$ \eps $</formula> onto the microplane shear strain <formula id="348">$ \varepsilon_M^{(m)} $</formula> (direction <formula id="314">$ m^{(m)} $</formula>) of microplane <computeroutput>m:</computeroutput>   <formula id="349">\[  \varepsilon_M^{(m)} = M_{ij}^{(m)} \varepsilon_{ij}
+\]</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="148" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="148" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors_1a165f333282827fb6c0e1e253238711b4" prot="public" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a7eb1f19d4137a551c44ef2bdc5f7c173" kindref="member">nmp6_sized</ref></type>
+        <definition>nmp6_sized Marmot::ContinuumMechanics::Microplane::NTSplit&lt; scheme &gt;::projectionTensors::L</definition>
+        <argsstring></argsstring>
+        <name>L</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::NTSplit::projectionTensors::L</qualifiedname>
+        <briefdescription>
+<para>In-plane shear projection tensor  <formula id="350">$ L_{ij}^{(m)} = \tfrac{1}{2}(l_i^{(m)} n_j^{(m)} +
+l_j^{(m)} n_i^{(m)}) $</formula> in Voigt notation, one column per microplane. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Projects the macroscopic strain tensor <formula id="344">$ \eps $</formula> onto the microplane shear strain <formula id="351">$ \varepsilon_L^{(m)} $</formula> (direction <formula id="313">$ l^{(m)} $</formula>) of microplane <computeroutput>m:</computeroutput>   <formula id="352">\[  \varepsilon_L^{(m)} = L_{ij}^{(m)} \varepsilon_{ij}
+\]</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="158" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="158" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors_1a2e2fd7c62e070f2d931718c4808bf460" prot="public" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a38749740a479f66216c6a5baa94672f5" kindref="member">nmp_sized</ref></type>
+        <definition>nmp_sized Marmot::ContinuumMechanics::Microplane::NTSplit&lt; scheme &gt;::projectionTensors::w</definition>
+        <argsstring></argsstring>
+        <name>w</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::NTSplit::projectionTensors::w</qualifiedname>
+        <briefdescription>
+<para>Integration weights <formula id="323">$ w^{(m)} $</formula> for the chosen scheme; see <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data_1aa963a3c83eebe1da387c6f693c0636c7" kindref="member">Discretization::Data::weights</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="160" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="160" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Kinematic projection tensors (normal <formula id="326">$ N $</formula>, and in-plane shear <formula id="327">$ M $</formula>/ <formula id="328">$ L $</formula> directions) and integration weights <formula id="329">$ w $</formula> for all <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ac4c4bf30b23d1e109496ecd4328b7340" kindref="member">nqp</ref> microplanes, in Voigt notation. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="128" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="128" bodyend="161"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors_1a165f333282827fb6c0e1e253238711b4" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Microplane::NTSplit::projectionTensors</scope><name>L</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors_1ade9619c4b487939643fb9bc3fcdc0e63" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Microplane::NTSplit::projectionTensors</scope><name>M</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors_1a7c4d14f1ee614776e272d9a6339863ab" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Microplane::NTSplit::projectionTensors</scope><name>N</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1_1projection_tensors_1a2e2fd7c62e070f2d931718c4808bf460" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Microplane::NTSplit::projectionTensors</scope><name>w</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

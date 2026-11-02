@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_math_1_1_tensors_1_1_tensor_exponential_1_1_tensor_exponential_result" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Math::Tensors::TensorExponential::TensorExponentialResult</compoundname>
+    <includes refid="_marmot_tensor_exponential_8h" local="no">MarmotTensorExponential.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename T</type>
+      </param>
+      <param>
+        <type>std::size_t</type>
+        <declname>tensorSize</declname>
+        <defname>tensorSize</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_math_1_1_tensors_1_1_tensor_exponential_1_1_tensor_exponential_result_1ad8f511e3428520f59ef8736c0f483d0b" prot="public" static="no" mutable="no">
+        <type>Fastor::Tensor&lt; T, tensorSize, tensorSize &gt;</type>
+        <definition>Fastor::Tensor&lt; T, tensorSize, tensorSize &gt; Marmot::Math::Tensors::TensorExponential::TensorExponentialResult&lt; T, tensorSize &gt;::theExponential</definition>
+        <argsstring></argsstring>
+        <name>theExponential</name>
+        <qualifiedname>Marmot::Math::Tensors::TensorExponential::TensorExponentialResult::theExponential</qualifiedname>
+        <briefdescription>
+<para>The matrix exponential <formula id="23">$\exp(\mathbf{A})$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="109" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" bodystart="109" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_math_1_1_tensors_1_1_tensor_exponential_1_1_tensor_exponential_result_1ad45bf84d0f92cdef9686b99945175bfb" prot="public" static="no" mutable="no">
+        <type>Fastor::Tensor&lt; T, tensorSize, tensorSize, tensorSize, tensorSize &gt;</type>
+        <definition>Fastor::Tensor&lt; T, tensorSize, tensorSize, tensorSize, tensorSize &gt; Marmot::Math::Tensors::TensorExponential::TensorExponentialResult&lt; T, tensorSize &gt;::theExponentialDerivative</definition>
+        <argsstring></argsstring>
+        <name>theExponentialDerivative</name>
+        <qualifiedname>Marmot::Math::Tensors::TensorExponential::TensorExponentialResult::theExponentialDerivative</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>First-order derivative of the matrix exponential with respect to the input tensor </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="111" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" bodystart="111" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Result aggregate returned by the first-order-derived tensor exponential. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="108" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" bodystart="108" bodyend="113"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_math_1_1_tensors_1_1_tensor_exponential_1_1_tensor_exponential_result_1ad8f511e3428520f59ef8736c0f483d0b" prot="public" virt="non-virtual"><scope>Marmot::Math::Tensors::TensorExponential::TensorExponentialResult</scope><name>theExponential</name></member>
+      <member refid="struct_marmot_1_1_math_1_1_tensors_1_1_tensor_exponential_1_1_tensor_exponential_result_1ad45bf84d0f92cdef9686b99945175bfb" prot="public" virt="non-virtual"><scope>Marmot::Math::Tensors::TensorExponential::TensorExponentialResult</scope><name>theExponentialDerivative</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

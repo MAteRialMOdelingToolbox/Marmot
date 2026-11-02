@@ -1,0 +1,7 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot::Discretizations::Meshfree::Approximation" alt="" coords="133,197,640,245"/>
+<area shape="rect" id="node2" title="Marmot::Discretizations::Meshfree::ReproducingKernelApproximation" alt="" coords="42,101,731,149"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="388,148,389,184,384,180,385,152"/>
+<area shape="rect" id="node3" title="Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit" alt="" coords="5,5,768,53"/>
+<area shape="poly" id="edge2" title="public&#45;inheritance" alt="" coords="388,52,389,87,384,85,385,56"/>
+</map>

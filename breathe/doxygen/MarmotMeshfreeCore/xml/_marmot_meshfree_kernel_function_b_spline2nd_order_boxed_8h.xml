@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="_marmot_meshfree_kernel_function_b_spline2nd_order_boxed_8h" kind="file" language="C++">
+    <compoundname>MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed.h</compoundname>
+    <includes refid="_marmot_meshfree_kernel_function_8h" local="yes">Marmot/MarmotMeshfreeKernelFunction.h</includes>
+    <includes local="no">cmath</includes>
+    <incdepgraph>
+      <node id="2">
+        <label>Marmot/MarmotMeshfreeKernelFunction.h</label>
+        <link refid="_marmot_meshfree_kernel_function_8h_source"/>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed.h</label>
+        <link refid="_marmot_meshfree_kernel_function_b_spline2nd_order_boxed_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>cmath</label>
+      </node>
+    </incdepgraph>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed" prot="public">Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed</innerclass>
+    <innernamespace refid="namespace_marmot">Marmot</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations">Marmot::Discretizations</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_meshfree">Marmot::Discretizations::Meshfree</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/><sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>__<sp/>_<sp/>_<sp/>__<sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>___<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_`<sp/>|<sp/>&apos;__|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_<sp/>\|<sp/>__|</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_|<sp/>|<sp/>|<sp/><sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_)<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>|_|<sp/>|_|<sp/>|_|\__,_|_|<sp/><sp/>|_|<sp/>|_|<sp/>|_|\___/<sp/>\__|</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Unit<sp/>of<sp/>Strength<sp/>of<sp/>Materials<sp/>and<sp/>Structural<sp/>Analysis</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>University<sp/>of<sp/>Innsbruck</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>2020<sp/>-<sp/>today</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>festigkeitslehre@uibk.ac.at</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>the<sp/>MAteRialMOdellingToolbox<sp/>(marmot).</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>This<sp/>library<sp/>is<sp/>free<sp/>software;<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>modify<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>License<sp/>as<sp/>published<sp/>by<sp/>the<sp/>Free<sp/>Software<sp/>Foundation;<sp/>either</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>version<sp/>2.1<sp/>of<sp/>the<sp/>License,<sp/>or<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>The<sp/>full<sp/>text<sp/>of<sp/>the<sp/>license<sp/>can<sp/>be<sp/>found<sp/>in<sp/>the<sp/>file<sp/>LICENSE.md<sp/>at</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>the<sp/>top<sp/>level<sp/>directory<sp/>of<sp/>marmot.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotMeshfreeKernelFunction.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;cmath&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::Discretizations::Meshfree<sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="61" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a6601a9e74d2d69172d89f626c44aad45" kindref="member">KernelFunctionBSpline2ndOrderBoxed</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a209b18279daa73856c102af4e774dfe4" kindref="member">KernelFunction</ref><sp/>{</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"></highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">private</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/><sp/><sp/><sp/><sp/><sp/>_centerCoord;<sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>_supportRadius;<sp/></highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><sp/>_dim;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="76" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a6601a9e74d2d69172d89f626c44aad45" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a6601a9e74d2d69172d89f626c44aad45" kindref="member">KernelFunctionBSpline2ndOrderBoxed</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>centerCoord,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>dim,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>supportRadius<sp/>);</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a8877a8512eebfb0c056fa9976e3aba75" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">virtual</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a8877a8512eebfb0c056fa9976e3aba75" kindref="member">~KernelFunctionBSpline2ndOrderBoxed</ref>()<sp/>=<sp/></highlight><highlight class="keywordflow">default</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="86" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a25dac895f12bde15f1f6c50ba0a756c4" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a25dac895f12bde15f1f6c50ba0a756c4" kindref="member">computeKernelFunction</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>coord<sp/>)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="96" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a7e26183d8d3b7a31e939f98d478812a7" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a7e26183d8d3b7a31e939f98d478812a7" kindref="member">computeKernelFunctionGradient</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>coord,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>grad<sp/>)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"></highlight></codeline>
+<codeline lineno="103" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1affd83fc774166f49a9d541807f59dbb6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1affd83fc774166f49a9d541807f59dbb6" kindref="member">computeBSpline2ndOrder</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>coord_minus_center<sp/>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"></highlight></codeline>
+<codeline lineno="115" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a87a03d4cbf46bcfbd2e09e8ee1daaebd" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a87a03d4cbf46bcfbd2e09e8ee1daaebd" kindref="member">computeBSpline2ndOrderGradient</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>coord_minus_center<sp/>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a80b9fed0378d0713934c7ee04518d98a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a80b9fed0378d0713934c7ee04518d98a" kindref="member">getCenterCoordinates</ref>()<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="127" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a33aa45f04c0f1d38a74d101efb434bd0" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a33aa45f04c0f1d38a74d101efb434bd0" kindref="member">moveTo</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>coord<sp/>)<sp/></highlight><highlight class="keyword">override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a4294e2754f450e0ef2c1b2f75ac3c228" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a4294e2754f450e0ef2c1b2f75ac3c228" kindref="member">isInSupport</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>coord<sp/>)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"></highlight></codeline>
+<codeline lineno="141" refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1aaeaa53f273a2e0ea1997e6d13d5361e2" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1aaeaa53f273a2e0ea1997e6d13d5361e2" kindref="member">getBoundingBox</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>min,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>max<sp/>)<sp/></highlight><highlight class="keyword">const<sp/>override</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="143"><highlight class="normal"></highlight></codeline>
+<codeline lineno="144"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::Discretizations::Meshfree</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed.h"/>
+  </compounddef>
+</doxygen>

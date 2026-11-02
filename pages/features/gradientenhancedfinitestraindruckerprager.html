@@ -1,0 +1,890 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gradient-enhanced finite-strain Drucker-Prager &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Finite elements" href="elements.html" />
+    <link rel="prev" title="Gradient-enhanced compressible Neo-Hooke damage" href="gradientenhancedcompressibleneohookedamage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="materials.html">Material models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="at2phasefield.html">AT2 Phase Field Fracture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="b4.html">B4 model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressibleneohooke.html">Compressible Neo Hooke model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adcompressibleneohooke.html">Compressible Neo Hooke model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressiblefinitestrainlinearviscoelasticity.html">Compressible Finite-Strain Linear Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainisotropicbiotviscoelasticity.html">Finite-Strain Isotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainj2plasticity.html">Finite-strain J2 plasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainorthotropicbiotviscoelasticity.html">Finite-Strain Orthotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearelastic.html">Linear Elastic model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adlinearelastic.html">Linear Elastic model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticpowerlaw.html">Linear Viscoelastic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticorthotropicpowerlaw.html">Linear Viscoelastic Orthotropic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticwiechert.html">Linear Viscoelastic Wiechert model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="interfacematerialhypoelastic.html">Interface material (hypoelastic bulk material)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="microplanem7.html">Microplane model M7</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gm7.html">Gradient-enhanced microplane model M7 (GM7)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vonmises.html">Von Mises model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advonmises.html">Von Mises model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hugheswinget.html">Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedhugheswinget.html">Gradient-enhanced Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedcompressibleneohookedamage.html">Gradient-enhanced compressible Neo-Hooke damage</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Gradient-enhanced finite-strain Drucker-Prager</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#material-parameters">Material parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meshfree.html">Meshfree methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="materials.html">Material models</a></li>
+      <li class="breadcrumb-item active">Gradient-enhanced finite-strain Drucker-Prager</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/gradientenhancedfinitestraindruckerprager.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gradient-enhanced-finite-strain-drucker-prager">
+<h1>Gradient-enhanced finite-strain Drucker-Prager<a class="headerlink" href="#gradient-enhanced-finite-strain-drucker-prager" title="Link to this heading"></a></h1>
+<p>A finite-strain Drucker-Prager damage-plasticity model with implicit-gradient (nonlocal) damage, implementing
+<code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialGradientEnhancedFiniteStrain</span></code>. It can be used with every consumer of that interface, e.g. the
+gradient-enhanced finite-strain displacement element and the gradient-enhanced meshfree material point and particle.
+It is registered as <code class="docutils literal notranslate"><span class="pre">GRADIENTENHANCEDFINITESTRAINDRUCKERPRAGER</span></code>.</p>
+<section id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p><strong>Kinematics.</strong> The deformation gradient is split multiplicatively, <span class="math notranslate nohighlight">\(\boldsymbol{F} = \boldsymbol{F}^{\rm e}
+\boldsymbol{F}^{\rm p}\)</span>, with the plastic deformation gradient as state variable. The formulation follows
+<a class="reference internal" href="finitestrainj2plasticity.html"><span class="doc">Finite-strain J2 plasticity</span></a>: the yield function is evaluated on the Mandel stress
+<span class="math notranslate nohighlight">\(\boldsymbol{M} = \boldsymbol{C}^{\rm e}\boldsymbol{S}\)</span>, and the plastic flow is integrated with the exponential
+map,</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{F}^{\rm e,trial} = \boldsymbol{F}\,(\boldsymbol{F}^{\rm p}_n)^{-1}
+= \boldsymbol{F}^{\rm e}\exp\!\left(\Delta\lambda\,\frac{\partial g}{\partial\boldsymbol{M}}\right) .\]</div>
+<p><strong>Elasticity</strong> is that of <a class="reference internal" href="compressibleneohooke.html"><span class="doc">Compressible Neo Hooke model</span></a> (Pence-Gou, variant B) in the elastic stretch,</p>
+<div class="math notranslate nohighlight">
+\[\Psi = \frac{K}{8}\left(J^2 + J^{-2} - 2\right) + \frac{G}{2}\left(I_1 J^{-2/3} - 3\right),\]</div>
+<p>in <span class="math notranslate nohighlight">\(J = \det\boldsymbol{F}^{\rm e}\)</span> and <span class="math notranslate nohighlight">\(I_1 = \operatorname{tr}\boldsymbol{C}^{\rm e}\)</span>.</p>
+<p><strong>Plasticity.</strong> A Drucker-Prager yield function on the Mandel stress with linear hardening of the cohesion and a
+non-associated plastic potential,</p>
+<div class="math notranslate nohighlight">
+\[f = \sqrt{J_2} + \eta\,p - \xi\,(c_0 + H\alpha), \qquad g = \sqrt{J_2} + \bar\eta\,p,
+\qquad p = \tfrac13\operatorname{tr}\boldsymbol{M}\ \text{(tension positive)},\]</div>
+<p>where the cone passes through the outer edges of the Mohr-Coulomb pyramid (compressive meridian),</p>
+<div class="math notranslate nohighlight">
+\[\eta = \frac{6\sin\phi}{\sqrt3\,(3-\sin\phi)},\qquad \xi = \frac{6\cos\phi}{\sqrt3\,(3-\sin\phi)},\qquad
+\bar\eta = \frac{6\sin\psi}{\sqrt3\,(3-\sin\psi)} .\]</div>
+<p>The return to the cone solves the flow rule above, the hardening law <span class="math notranslate nohighlight">\(\alpha = \alpha_n + \xi\,\Delta\lambda\)</span>
+and the consistency condition <span class="math notranslate nohighlight">\(f = 0\)</span> for <span class="math notranslate nohighlight">\(\{\boldsymbol{F}^{\rm e}, \alpha, \Delta\lambda\}\)</span> with Newton’s
+method. Where no solution on the cone exists (a trial state beyond the apex), the state returns to the apex: by
+isotropy, <span class="math notranslate nohighlight">\(\boldsymbol{F}^{\rm p}\)</span> is determined up to a rotation only, so that
+<span class="math notranslate nohighlight">\(\boldsymbol{F}^{\rm e} = J_{\rm e}^{1/3}\boldsymbol{R}^{\rm trial}\)</span> (the elastic rotation of the trial state is
+kept, so that <span class="math notranslate nohighlight">\(\boldsymbol{F}^{\rm p}\)</span> is objective) with the unknowns <span class="math notranslate nohighlight">\(\{\ln J_{\rm e}, \alpha\}\)</span>,
+<span class="math notranslate nohighlight">\(\eta\,p = \xi\,(c_0 + H\alpha)\)</span> and <span class="math notranslate nohighlight">\(\alpha = \alpha_n + (\xi/\bar\eta)\,\Delta\varepsilon^{\rm p}_v\)</span>
+(de Souza Neto, Peric &amp; Owen, <em>Computational Methods for Plasticity</em>, Sec. 8.3).</p>
+<p><strong>Cone or apex.</strong> Near the vertex, the return to the cone is ill-conditioned, since
+<span class="math notranslate nohighlight">\(\partial(\partial g/\partial\boldsymbol{M})/\partial\boldsymbol{M} \sim 1/\sqrt{J_2}\)</span>. The decision between the
+cone and the apex, and the starting point of the cone return, therefore come from the same return posed in the
+principal elastic logarithmic strains <span class="math notranslate nohighlight">\(\varepsilon_a\)</span> (coaxial with the trial state, as for every isotropic
+model): the deviatoric part is written as
+<span class="math notranslate nohighlight">\(\boldsymbol{e} = \rho\,(\cos\varphi\,\boldsymbol{b}_1 + \sin\varphi\,\boldsymbol{b}_2)\)</span> with a <em>signed</em> radius
+<span class="math notranslate nohighlight">\(\rho\)</span> in the deviatoric plane, and the flow direction and <span class="math notranslate nohighlight">\(\sqrt{J_2}\)</span> are multiplied by
+<span class="math notranslate nohighlight">\(\operatorname{sign}\rho\)</span>. The four equations for <span class="math notranslate nohighlight">\(\{\rho, \varphi, \ln J_{\rm e}, \Delta\lambda\}\)</span> then
+continue smoothly through the vertex, as <span class="math notranslate nohighlight">\(\sqrt{J_2^{\rm trial}} - G\,\Delta\lambda\)</span> of the small-strain return
+does: <span class="math notranslate nohighlight">\(\rho &gt; 0\)</span> is a solution on the cone, <span class="math notranslate nohighlight">\(\rho &lt; 0\)</span> lies beyond the vertex and the state returns to the
+apex. Every trial state beyond the cone thus has a return, without a gap between the two (issue #111).</p>
+<p>The Jacobians of both return mappings are computed by the complex-step method, and the algorithmic tangents follow
+from the same Jacobians by the implicit function theorem. The exponential map is evaluated by scaling and squaring
+(<code class="docutils literal notranslate"><span class="pre">FlowIntegration::exponentialMapScalingAndSquaring</span></code>), which also represents the large plastic increments of
+intermediate Newton iterates.</p>
+<p><strong>Damage</strong> is an implicit-gradient damage driven by the dilatant plastic flow. The local variable is the accumulated
+volumetric plastic logarithmic strain,</p>
+<div class="math notranslate nohighlight">
+\[\Delta\alpha_{\rm local} = \langle\Delta\varepsilon^{\rm p}_v\rangle
+\qquad(\,= \bar\eta\,\Delta\lambda\ \text{on the cone}\,),\]</div>
+<p>and is the source <span class="math notranslate nohighlight">\(L\)</span> of the nonlocal balance <span class="math notranslate nohighlight">\(\bar N - l^2\nabla^2\bar N = L\)</span>. The damage follows from
+the over-nonlocal weighting of the local and the nonlocal measure, with a history maximum that makes it
+irreversible,</p>
+<div class="math notranslate nohighlight">
+\[\kappa = \max_t\left(m\,\bar N + (1-m)\,\alpha_{\rm local}\right),\qquad
+\omega = \min\left(1 - e^{-\kappa/\varepsilon_f},\ \omega_{\max}\right),\qquad
+\boldsymbol{\tau} = (1-\omega)\,\boldsymbol{\tau}_{\rm eff}.\]</div>
+<p>The dissipation is cumulative: the incoming value is incremented by
+<span class="math notranslate nohighlight">\((1-\omega)\,\boldsymbol{M}:\Delta\boldsymbol{\varepsilon}^{\rm p} + \Psi_{\rm eff}\,\Delta\omega\)</span>.</p>
+</section>
+<section id="material-parameters">
+<h2>Material parameters<a class="headerlink" href="#material-parameters" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Index</p></th>
+<th class="head"><p>Symbol</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p><span class="math notranslate nohighlight">\(K\)</span></p></td>
+<td><p>bulk modulus</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p><span class="math notranslate nohighlight">\(G\)</span></p></td>
+<td><p>shear modulus</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p><span class="math notranslate nohighlight">\(c_0\)</span></p></td>
+<td><p>cohesion</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p><span class="math notranslate nohighlight">\(\phi\)</span></p></td>
+<td><p>friction angle [deg]</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p><span class="math notranslate nohighlight">\(\psi\)</span></p></td>
+<td><p>dilatancy angle [deg], <span class="math notranslate nohighlight">\(0 \le \psi \le \phi\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p><span class="math notranslate nohighlight">\(H\)</span></p></td>
+<td><p>linear hardening modulus of the cohesion, <span class="math notranslate nohighlight">\(H \ge 0\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p><span class="math notranslate nohighlight">\(\varepsilon_f\)</span></p></td>
+<td><p>softening modulus of the damage</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p><span class="math notranslate nohighlight">\(\omega_{\max}\)</span></p></td>
+<td><p>maximum damage, <span class="math notranslate nohighlight">\(0 \le \omega_{\max} &lt; 1\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p><span class="math notranslate nohighlight">\(l\)</span></p></td>
+<td><p>nonlocal radius, <span class="math notranslate nohighlight">\(l &gt; 0\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p><span class="math notranslate nohighlight">\(m\)</span></p></td>
+<td><p>weighting of the nonlocal measure, <span class="math notranslate nohighlight">\(m \ge 0\)</span> (<span class="math notranslate nohighlight">\(m &gt; 1\)</span>: over-nonlocal)</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p><span class="math notranslate nohighlight">\(\rho\)</span></p></td>
+<td><p>density (optional)</p></td>
+</tr>
+</tbody>
+</table>
+<p>State variables: <code class="docutils literal notranslate"><span class="pre">Fp</span></code> (9), <code class="docutils literal notranslate"><span class="pre">alphaP</span></code>, <code class="docutils literal notranslate"><span class="pre">alphaD</span></code> (the local damage variable), <code class="docutils literal notranslate"><span class="pre">kappa</span></code>, <code class="docutils literal notranslate"><span class="pre">omega</span></code>. The plastic
+deformation gradient must be initialized to the identity by <code class="docutils literal notranslate"><span class="pre">initializeYourself</span></code> — in EdelweissFE with
+<code class="docutils literal notranslate"><span class="pre">&gt;&gt;initializematerial</span></code> in the step.</p>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPragerE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPragerE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPragerE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GradientEnhancedFiniteStrainDruckerPrager</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials36MaterialGradientEnhancedFiniteStrainE" title="Marmot::Materials::MaterialGradientEnhancedFiniteStrain"><span class="n"><span class="pre">MaterialGradientEnhancedFiniteStrain</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPragerE" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-7ab4881f2822f95314d8111a3e84e83252d44102.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager&quot; tooltip=&quot;Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-a83e8a54f4d23b5bb47ce075ed731dcdc3e47305.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager&quot; tooltip=&quot;Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Utilities::StateLayoutDynamic&quot; tooltip=&quot;Marmot::Utilities::StateLayoutDynamic&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Finite-strain Drucker-Prager plasticity with implicit-gradient (nonlocal) damage. </p>
+<p>The plasticity follows <a class="reference internal" href="finitestrainj2plasticity.html#classMarmot_1_1Materials_1_1FiniteStrainJ2Plasticity"><span class="std std-ref">FiniteStrainJ2Plasticity</span></a>: multiplicative split  <span class="math notranslate nohighlight">\( \boldsymbol{F} =
+\boldsymbol{F}^e\boldsymbol{F}^p \)</span> with the plastic deformation gradient as state, elasticity of <a class="reference internal" href="compressibleneohooke.html#classMarmot_1_1Materials_1_1CompressibleNeoHooke"><span class="std std-ref">CompressibleNeoHooke</span></a> (PenceGouPotentialB) in <span class="math notranslate nohighlight">\( \boldsymbol{C}^e \)</span>, a yield function on the Mandel stress <span class="math notranslate nohighlight">\( \boldsymbol{M} = \boldsymbol{C}^e\boldsymbol{S} \)</span>, and the flow integrated with the exponential map,  <span class="math notranslate nohighlight">\( \boldsymbol{F}^{e,\mathrm{trial}} = \boldsymbol{F}^e \exp( \Delta\lambda\,\partial g/\partial\boldsymbol{M} )
+\)</span>. The return mapping solves this equation together with the hardening law and the consistency condition for <span class="math notranslate nohighlight">\( \{\boldsymbol{F}^e, \alpha, \Delta\lambda\} \)</span> with Newton’s method; its Jacobian is computed by the complex step, and the algorithmic tangent follows from the same Jacobian by the implicit function theorem.</p>
+<p><strong>Plasticity.</strong> Drucker-Prager cone through the outer edges of the Mohr-Coulomb pyramid, with linear hardening of the cohesion and non-associated flow,    <div class="math notranslate nohighlight">
+\[  f = \sqrt{J_2} + \eta\,p - \xi\,(c_0 + H\alpha), \qquad g = \sqrt{J_2} + \bar\eta\,p, \qquad
+  \Delta\alpha = \xi\,\Delta\lambda,
+\]</div>
+ <span class="math notranslate nohighlight">\( \eta = \frac{6\sin\phi}{\sqrt3\,(3-\sin\phi)} \)</span>, <span class="math notranslate nohighlight">\( \xi = \frac{6\cos\phi}{\sqrt3\,(3-\sin\phi)} \)</span>, <span class="math notranslate nohighlight">\( \bar\eta \)</span> as <span class="math notranslate nohighlight">\( \eta \)</span> with the dilatancy angle. Where the cone return does not exist (a trial state beyond the apex), the state returns to the apex: by isotropy, <span class="math notranslate nohighlight">\( \boldsymbol{F}^p \)</span> is determined up to a rotation, so <span class="math notranslate nohighlight">\( \boldsymbol{F}^e = J_e^{1/3}\boldsymbol{R}^{\mathrm{trial}} \)</span> (the elastic rotation of the trial state is kept, so that <span class="math notranslate nohighlight">\( \boldsymbol{F}^p \)</span> is objective) with the unknowns <span class="math notranslate nohighlight">\( \{\ln J_e, \alpha\} \)</span> and <span class="math notranslate nohighlight">\( \Delta\alpha = (\xi/\bar\eta)\,\Delta\varepsilon^p_v \)</span>.</p>
+<p>The decision between the cone and the apex, and the starting point of the cone return, come from the return in the principal elastic log strains (<a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a50649d14db8d06bd2d3203024846007c"><span class="std std-ref">principalResidual()</span></a>), which is coaxial with the trial state and is posed with a signed deviatoric radius: its equations are smooth across the vertex, where those of the full return are singular, so that every trial state beyond the cone has a return, to the cone or to the apex.</p>
+<p><strong>Damage.</strong> The local variable is the accumulated dilatant (volumetric) plastic strain, <span class="math notranslate nohighlight">\( \Delta\alpha_\mathrm{local} = \langle\Delta\varepsilon^p_v\rangle \)</span> (on the cone <span class="math notranslate nohighlight">\( \bar\eta\,\Delta\lambda \)</span>). It is the source <span class="math notranslate nohighlight">\( L \)</span> of the nonlocal balance, the damage follows from <span class="math notranslate nohighlight">\( \kappa = \max_t( m\bar{N} + (1-m)\alpha_\mathrm{local} ) \)</span> with the exponential law <span class="math notranslate nohighlight">\( \omega = \min( 1 - e^{-\kappa/\varepsilon_f}, \omega_\max ) \)</span>, and <span class="math notranslate nohighlight">\( \boldsymbol{\tau} = (1-\omega)\,\boldsymbol{\tau}_\mathrm{eff} \)</span>.</p>
+<p>Material properties: <table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>idx  </p></th>
+<th class="head"><p>symbol  </p></th>
+<th class="head"><p>meaning  </p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0  </p></td>
+<td><p><span class="math notranslate nohighlight">\( K \)</span></p></td>
+<td><p>bulk modulus  </p></td>
+</tr>
+<tr class="row-odd"><td><p>1  </p></td>
+<td><p><span class="math notranslate nohighlight">\( G \)</span></p></td>
+<td><p>shear modulus  </p></td>
+</tr>
+<tr class="row-even"><td><p>2  </p></td>
+<td><p><span class="math notranslate nohighlight">\( c_0 \)</span></p></td>
+<td><p>cohesion  </p></td>
+</tr>
+<tr class="row-odd"><td><p>3  </p></td>
+<td><p><span class="math notranslate nohighlight">\( \phi \)</span></p></td>
+<td><p>friction angle [deg]  </p></td>
+</tr>
+<tr class="row-even"><td><p>4  </p></td>
+<td><p><span class="math notranslate nohighlight">\( \psi \)</span></p></td>
+<td><p>dilatancy angle [deg]  </p></td>
+</tr>
+<tr class="row-odd"><td><p>5  </p></td>
+<td><p><span class="math notranslate nohighlight">\( H \)</span></p></td>
+<td><p>linear hardening modulus of the cohesion  </p></td>
+</tr>
+<tr class="row-even"><td><p>6  </p></td>
+<td><p><span class="math notranslate nohighlight">\( \varepsilon_f \)</span></p></td>
+<td><p>softening modulus of the damage  </p></td>
+</tr>
+<tr class="row-odd"><td><p>7  </p></td>
+<td><p><span class="math notranslate nohighlight">\( \omega_\max \)</span></p></td>
+<td><p>maximum damage  </p></td>
+</tr>
+<tr class="row-even"><td><p>8  </p></td>
+<td><p><span class="math notranslate nohighlight">\( l \)</span></p></td>
+<td><p>nonlocal radius, <span class="math notranslate nohighlight">\( c = l^2 \)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>9  </p></td>
+<td><p><span class="math notranslate nohighlight">\( m \)</span></p></td>
+<td><p>weighting of the nonlocal measure in the damage  </p></td>
+</tr>
+<tr class="row-even"><td><p>10  </p></td>
+<td><p><span class="math notranslate nohighlight">\( \rho \)</span></p></td>
+<td><p>density in the reference configuration (optional)  </p></td>
+</tr>
+</tbody>
+</table>
+</p>
+<p>Constraints: <span class="math notranslate nohighlight">\( K, G, c_0, \varepsilon_f, l &gt; 0 \)</span>, <span class="math notranslate nohighlight">\( H \geq 0 \)</span>, <span class="math notranslate nohighlight">\( 0 \leq \psi \leq \phi &lt; 90^\circ \)</span>, <span class="math notranslate nohighlight">\( 0 \leq \omega_\max &lt; 1 \)</span> and <span class="math notranslate nohighlight">\( m \geq 0 \)</span> ( <span class="math notranslate nohighlight">\( m &gt; 1 \)</span>: over-nonlocal).</p>
+<p>State variables: <code class="docutils literal notranslate"><span class="pre">Fp</span></code> (9), <code class="docutils literal notranslate"><span class="pre">alphaP</span></code> (hardening variable), <code class="docutils literal notranslate"><span class="pre">alphaD</span></code> (local damage variable), <code class="docutils literal notranslate"><span class="pre">kappa</span></code> (damage history), <code class="docutils literal notranslate"><span class="pre">omega</span></code> (damage).</p>
+<p>The dissipation is cumulative: the incoming ConstitutiveResponse::dissipation is incremented by <span class="math notranslate nohighlight">\( (1-\omega)\,\boldsymbol{M}:\Delta\boldsymbol{\varepsilon}^p + \psi_\mathrm{eff}\,\Delta\omega \)</span>. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4I0EN6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33tE">
+<span id="_CPPv3I0EN6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33tE"></span><span id="_CPPv2I0EN6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33tE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1ab58bf569a0b92e9645b8120134649573"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Tensor33t</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4I0EN6Marmot4Math7Tensors13FastorTensors9Tensor33tE" title="Marmot::Math::Tensors::FastorTensors::Tensor33t"><span class="n"><span class="pre">Tensor33t</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33tE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::Tensor33t::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I0EN6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33tE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33dE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33dE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33dE"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a90d03091016f15f68e443f64adc1702b"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Tensor33d</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors9Tensor33dE" title="Marmot::Math::Tensors::FastorTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33dE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12TensorMap33dE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12TensorMap33dE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12TensorMap33dE"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1ac36a906ad22ab36c0979ff24637cae2b"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TensorMap33d</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors12TensorMap33dE" title="Marmot::Math::Tensors::FastorTensors::TensorMap33d"><span class="n"><span class="pre">TensorMap33d</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12TensorMap33dE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager41GradientEnhancedFiniteStrainDruckerPragerEPKdii">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager41GradientEnhancedFiniteStrainDruckerPragerEPKdii"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager41GradientEnhancedFiniteStrainDruckerPragerEPKdii"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::GradientEnhancedFiniteStrainDruckerPrager__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a3abab538464a569cc1c653698eedc68c"></span><span class="sig-name descname"><span class="n"><span class="pre">GradientEnhancedFiniteStrainDruckerPrager</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialNumber</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager41GradientEnhancedFiniteStrainDruckerPragerEPKdii" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct the material and validate its properties. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>materialProperties</strong> – <strong>[in]</strong> Array of the material properties, see the table above. </p></li>
+<li><p><strong>nMaterialProperties</strong> – <strong>[in]</strong> Length of <code class="docutils literal notranslate"><span class="pre">materialProperties</span></code> (at least 10; 11 with the density). </p></li>
+<li><p><strong>materialNumber</strong> – <strong>[in]</strong> Material label. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – for a too short property array or a property out of range. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">
+<span id="_CPPv3NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement"></span><span id="_CPPv2NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13computeStressER20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrement"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::computeStress__ConstitutiveResponse:3:R.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a36b9ad4343ce27fac14a2ed5c94ca1a6"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ConstitutiveResponse</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <span class="n"><span class="pre">AlgorithmicModuli</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Deformation</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TimeIncrement</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute the Kirchhoff stress, the local driving force and the algorithmic tangents. </p>
+<p>Performs the elastic trial; if it is not admissible, the return mapping to the cone or to the apex, then the damage update. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[inout]</strong> Kirchhoff stress, local driving force <span class="math notranslate nohighlight">\( L \)</span>, nonlocal radius, energy density, cumulative dissipation and the state variables, updated in place. </p></li>
+<li><p><strong>tangents</strong> – <strong>[out]</strong> <span class="math notranslate nohighlight">\( \partial\boldsymbol{\tau}/\partial\boldsymbol{F} \)</span>, <span class="math notranslate nohighlight">\( \partial\boldsymbol{\tau}/\partial\bar{N} \)</span>, <span class="math notranslate nohighlight">\( \partial L/\partial\boldsymbol{F} \)</span> and <span class="math notranslate nohighlight">\( \partial L/\partial\bar{N} \)</span>. </p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> Deformation gradient and nonlocal field at the end of the increment. </p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> Time and time increment (not used, the model is rate independent). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n">Marmot</span></a><span class="p">::</span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n">Utilities</span></a><span class="p">::</span><a class="reference internal" href="../codedocumentation/utilitiescore.html#_CPPv4N6Marmot9Utilities18StressUpdateFailedE" title="Marmot::Utilities::StressUpdateFailed"><span class="n">StressUpdateFailed</span></a></span></span> – if the elastic volume ratio is not positive or no admissible return exists. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager10getDensityEPKd">
+<span id="_CPPv3NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager10getDensityEPKd"></span><span id="_CPPv2NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager10getDensityEPKd"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::getDensity__doubleCPC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1ae000b1166a15b946b845234bcb234cc9"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDensity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager10getDensityEPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>The density in the reference configuration. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateVars</strong> – <strong>[in]</strong> State variables (not used). </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if the density is not given. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The density, property 10. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager18initializeYourselfEPdi">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager18initializeYourselfEPdi"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager18initializeYourselfEPdi"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::initializeYourself__doubleP.i"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a6562dbab110e6bcdb0acde31a3c6ea48"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeYourself</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager18initializeYourselfEPdi" title="Link to this definition"></a><br /></dt>
+<dd><p>Initialize the state variables: zero, except for <span class="math notranslate nohighlight">\( \boldsymbol{F}^p = \boldsymbol{I} \)</span> (the base default zero-fill would be singular). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stateVars</strong> – <strong>[out]</strong> State variables. </p></li>
+<li><p><strong>nStateVars</strong> – <strong>[in]</strong> Number of state variables. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager20secondPiolaKirchhoffE9Tensor33tI1TERK9Tensor33tI1TE">
+<span id="_CPPv3I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager20secondPiolaKirchhoffERK9Tensor33tI1TE"></span><span id="_CPPv2I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager20secondPiolaKirchhoffERK9Tensor33tI1TE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1ae9f96c43bed6d9344fb048b52b8af0ae"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33tE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::Tensor33t"><span class="n"><span class="pre">Tensor33t</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager20secondPiolaKirchhoffE9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::secondPiolaKirchhoff::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">secondPiolaKirchhoff</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33tE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::Tensor33t"><span class="n"><span class="pre">Tensor33t</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager20secondPiolaKirchhoffE9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::secondPiolaKirchhoff::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">Fe</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager20secondPiolaKirchhoffE9Tensor33tI1TERK9Tensor33tI1TE" title="Link to this definition"></a><br /></dt>
+<dd><p>Second Piola-Kirchhoff stress of the elastic deformation gradient. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type (real, or complex for the complex-step Jacobians). </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Fe</strong> – <strong>[in]</strong> Elastic deformation gradient. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\( \boldsymbol{S} = 2\,\partial\psi/\partial\boldsymbol{C}^e \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12mandelStressE9Tensor33tI1TERK9Tensor33tI1TE">
+<span id="_CPPv3I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12mandelStressERK9Tensor33tI1TE"></span><span id="_CPPv2I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12mandelStressERK9Tensor33tI1TE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a00f9d9eacf785a9e35ae55c267125ae2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33tE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::Tensor33t"><span class="n"><span class="pre">Tensor33t</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12mandelStressE9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::mandelStress::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mandelStress</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33tE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::Tensor33t"><span class="n"><span class="pre">Tensor33t</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12mandelStressE9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::mandelStress::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">Fe</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12mandelStressE9Tensor33tI1TERK9Tensor33tI1TE" title="Link to this definition"></a><br /></dt>
+<dd><p>Mandel stress of the elastic deformation gradient. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Fe</strong> – <strong>[in]</strong> Elastic deformation gradient. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\( \boldsymbol{M} = \boldsymbol{C}^e\boldsymbol{S} \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13yieldFunctionE1TRK9Tensor33tI1TEK1T">
+<span id="_CPPv3I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13yieldFunctionERK9Tensor33tI1TEK1T"></span><span id="_CPPv2I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13yieldFunctionERK9Tensor33tI1TEK1T"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a44bfee27200057e94f7b5f3a47b9c073"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13yieldFunctionE1TRK9Tensor33tI1TEK1T" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::yieldFunction::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">yieldFunction</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33tE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::Tensor33t"><span class="n"><span class="pre">Tensor33t</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13yieldFunctionE1TRK9Tensor33tI1TEK1T" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::yieldFunction::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">M</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13yieldFunctionE1TRK9Tensor33tI1TEK1T" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::yieldFunction::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">alphaP</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13yieldFunctionE1TRK9Tensor33tI1TEK1T" title="Link to this definition"></a><br /></dt>
+<dd><p>Yield function on the Mandel stress. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>M</strong> – <strong>[in]</strong> Mandel stress. </p></li>
+<li><p><strong>alphaP</strong> – <strong>[in]</strong> Hardening variable. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\( f = \sqrt{J_2} + \eta\,p - \xi\,(c_0 + H\alpha) \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13flowDirectionE9Tensor33tI1TERK9Tensor33tI1TE">
+<span id="_CPPv3I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13flowDirectionERK9Tensor33tI1TE"></span><span id="_CPPv2I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13flowDirectionERK9Tensor33tI1TE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a53960f385614307916930084d2b97010"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33tE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::Tensor33t"><span class="n"><span class="pre">Tensor33t</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13flowDirectionE9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::flowDirection::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">flowDirection</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0EN6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33tE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::Tensor33t"><span class="n"><span class="pre">Tensor33t</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13flowDirectionE9Tensor33tI1TERK9Tensor33tI1TE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::flowDirection::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">M</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13flowDirectionE9Tensor33tI1TERK9Tensor33tI1TE" title="Link to this definition"></a><br /></dt>
+<dd><p>Flow direction of the plastic potential. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>M</strong> – <strong>[in]</strong> Mandel stress, not at the apex, where the cone is singular. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\( \partial g/\partial\boldsymbol{M} \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12coneResidualEN6Marmot4Math8VectorXtI1TEERKN6Marmot4Math8VectorXtI1TEERK9Tensor33dKd">
+<span id="_CPPv3I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12coneResidualERKN6Marmot4Math8VectorXtI1TEERK9Tensor33dKd"></span><span id="_CPPv2I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12coneResidualERKN6Marmot4Math8VectorXtI1TEERK9Tensor33dKd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a8b97003ea8e03c421c46106f939e046c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4I0EN6Marmot4Math8VectorXtE" title="Marmot::Math::VectorXt"><span class="n"><span class="pre">VectorXt</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12coneResidualEN6Marmot4Math8VectorXtI1TEERKN6Marmot4Math8VectorXtI1TEERK9Tensor33dKd" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::coneResidual::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">coneResidual</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4I0EN6Marmot4Math8VectorXtE" title="Marmot::Math::VectorXt"><span class="n"><span class="pre">VectorXt</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12coneResidualEN6Marmot4Math8VectorXtI1TEERKN6Marmot4Math8VectorXtI1TEERK9Tensor33dKd" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::coneResidual::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">X</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33dE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">FeTrial</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alphaPOld</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12coneResidualEN6Marmot4Math8VectorXtI1TEERKN6Marmot4Math8VectorXtI1TEERK9Tensor33dKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Residual of the return to the cone. </p>
+<p>The flow rule  <span class="math notranslate nohighlight">\( \boldsymbol{F}^e\exp(\Delta\lambda\,\partial g/\partial\boldsymbol{M}) -
+\boldsymbol{F}^{e,\mathrm{trial}} \)</span> (with the exponential map by scaling and squaring, which also represents the large plastic increments of intermediate Newton iterates), the hardening law and the yield function scaled by <span class="math notranslate nohighlight">\( c_0 \)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>X</strong> – <strong>[in]</strong> Unknowns <span class="math notranslate nohighlight">\( \{\boldsymbol{F}^e \text{ (9, row major)}, \alpha, \Delta\lambda\} \)</span>. </p></li>
+<li><p><strong>FeTrial</strong> – <strong>[in]</strong> Trial elastic deformation gradient. </p></li>
+<li><p><strong>alphaPOld</strong> – <strong>[in]</strong> Hardening variable at the beginning of the increment. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The residual (11). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12apexResidualEN6Marmot4Math8VectorXtI1TEERKN6Marmot4Math8VectorXtI1TEEKdKd">
+<span id="_CPPv3I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12apexResidualERKN6Marmot4Math8VectorXtI1TEEKdKd"></span><span id="_CPPv2I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12apexResidualERKN6Marmot4Math8VectorXtI1TEEKdKd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1ac98ddbfe76564672f773a603017beb5c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4I0EN6Marmot4Math8VectorXtE" title="Marmot::Math::VectorXt"><span class="n"><span class="pre">VectorXt</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12apexResidualEN6Marmot4Math8VectorXtI1TEERKN6Marmot4Math8VectorXtI1TEEKdKd" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::apexResidual::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">apexResidual</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4I0EN6Marmot4Math8VectorXtE" title="Marmot::Math::VectorXt"><span class="n"><span class="pre">VectorXt</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12apexResidualEN6Marmot4Math8VectorXtI1TEERKN6Marmot4Math8VectorXtI1TEEKdKd" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::apexResidual::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">X</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">thetaTrial</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alphaPOld</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12apexResidualEN6Marmot4Math8VectorXtI1TEERKN6Marmot4Math8VectorXtI1TEEKdKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Residual of the return to the apex. </p>
+<p>With <span class="math notranslate nohighlight">\( \boldsymbol{F}^e = \exp(\theta/3)\,\boldsymbol{I} \)</span>: the yield function of the spherical state, scaled by <span class="math notranslate nohighlight">\( c_0 \)</span>, and the hardening law of the volumetric flow. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>X</strong> – <strong>[in]</strong> Unknowns <span class="math notranslate nohighlight">\( \{\theta = \ln J_e, \alpha\} \)</span>. </p></li>
+<li><p><strong>thetaTrial</strong> – <strong>[in]</strong> <span class="math notranslate nohighlight">\( \ln J_e \)</span> of the trial state. </p></li>
+<li><p><strong>alphaPOld</strong> – <strong>[in]</strong> Hardening variable at the beginning of the increment. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The residual (2). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager17principalResidualEN6Marmot4Math8VectorXtI1TEERKN6Marmot4Math8VectorXtI1TEERKN5Eigen8Vector3dEKd">
+<span id="_CPPv3I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager17principalResidualERKN6Marmot4Math8VectorXtI1TEERKN5Eigen8Vector3dEKd"></span><span id="_CPPv2I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager17principalResidualERKN6Marmot4Math8VectorXtI1TEERKN5Eigen8Vector3dEKd"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a50649d14db8d06bd2d3203024846007c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4I0EN6Marmot4Math8VectorXtE" title="Marmot::Math::VectorXt"><span class="n"><span class="pre">VectorXt</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager17principalResidualEN6Marmot4Math8VectorXtI1TEERKN6Marmot4Math8VectorXtI1TEERKN5Eigen8Vector3dEKd" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::principalResidual::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">principalResidual</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4I0EN6Marmot4Math8VectorXtE" title="Marmot::Math::VectorXt"><span class="n"><span class="pre">VectorXt</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager17principalResidualEN6Marmot4Math8VectorXtI1TEERKN6Marmot4Math8VectorXtI1TEERKN5Eigen8Vector3dEKd" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::principalResidual::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">X</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector3d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">epsTrial</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alphaPOld</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4I0ENK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager17principalResidualEN6Marmot4Math8VectorXtI1TEERKN6Marmot4Math8VectorXtI1TEERKN5Eigen8Vector3dEKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Residual of the return in the principal elastic logarithmic strains, smooth across the vertex. </p>
+<p>For isotropic elasticity and an isotropic yield function, the return is coaxial with the trial state: in the principal elastic log strains <span class="math notranslate nohighlight">\( \varepsilon_a \)</span> the flow rule reads <span class="math notranslate nohighlight">\( \varepsilon_a - \varepsilon^{\mathrm{trial}}_a + \Delta\lambda\,(\partial g/\partial M)_a = 0 \)</span>, with the principal Mandel stresses of <span class="math notranslate nohighlight">\( \boldsymbol{F}^e = \mathrm{diag}(e^{\varepsilon_a}) \)</span>. The deviatoric part <span class="math notranslate nohighlight">\( \boldsymbol{e} = \rho\,(\cos\varphi\,\boldsymbol{b}_1 + \sin\varphi\,\boldsymbol{b}_2) \)</span> has a signed radius <span class="math notranslate nohighlight">\( \rho \)</span>, and the flow direction and <span class="math notranslate nohighlight">\( \sqrt{J_2} \)</span> are multiplied by <span class="math notranslate nohighlight">\( \mathrm{sign}\,\rho \)</span>: the equations then continue smoothly through the vertex (as <span class="math notranslate nohighlight">\( \sqrt{J_2^{\mathrm{trial}}} - G\Delta\lambda \)</span> of the small-strain return), whose singularity  <span class="math notranslate nohighlight">\( \partial(\partial
+g/\partial\boldsymbol{M})/\partial\boldsymbol{M} \sim 1/\sqrt{J_2} \)</span> is removed. A solution with  <span class="math notranslate nohighlight">\( \rho &gt; 0
+\)</span> lies on the cone, one with <span class="math notranslate nohighlight">\( \rho &lt; 0 \)</span> beyond the vertex: the state returns to the apex. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> – Scalar type. </p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>X</strong> – <strong>[in]</strong> Unknowns <span class="math notranslate nohighlight">\( \{\rho, \varphi, \theta = \mathrm{tr}\,\boldsymbol{\varepsilon}, \Delta\lambda\} \)</span>. </p></li>
+<li><p><strong>epsTrial</strong> – <strong>[in]</strong> Principal elastic log strains of the trial state. </p></li>
+<li><p><strong>alphaPOld</strong> – <strong>[in]</strong> Hardening variable at the beginning of the increment. </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The residual (4): the two deviatoric components and the volumetric part of the flow rule, and the yield function (with the hardening law substituted) scaled by <span class="math notranslate nohighlight">\( c_0 \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrementRKNSt5tupleIdddEE">
+<span id="_CPPv3NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrementRKNSt5tupleIdddEE"></span><span id="_CPPv2NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13computeStressER20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrementRKNSt5tupleIdddEE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::computeStress__ConstitutiveResponse:3:R.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCR.std::tuple:double.double.double:CRC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a3ea1bc05a699f503f90bd7e35bb2ba74"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ConstitutiveResponse</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <span class="n"><span class="pre">AlgorithmicModuli</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Deformation</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TimeIncrement</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">eigenDeformation</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrementRKNSt5tupleIdddEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Update the material state, accounting for an eigen deformation (e.g. a geostatic stress state). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[inout]</strong> ConstitutiveResponse instance. </p></li>
+<li><p><strong>tangents</strong> – <strong>[out]</strong> AlgorithmicModuli instance; scaled to the eigen deformation. </p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> Deformation gradient and nonlocal field. </p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> Current time and time increment. </p></li>
+<li><p><strong>eigenDeformation</strong> – <strong>[in]</strong> Eigen deformation in each spatial direction. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager19outerConeParametersEd">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager19outerConeParametersEd"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager19outerConeParametersEd"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::outerConeParameters__double"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1aff68d6c43042206eeb3e0bf3173888f9"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">outerConeParameters</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">angleInDegrees</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager19outerConeParametersEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Drucker-Prager parameters of the cone through the outer edges of the Mohr-Coulomb pyramid. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>angleInDegrees</strong> – <strong>[in]</strong> Friction (or dilatancy) angle in degrees. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\( \{\eta, \xi\} \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager15deviatoricBasisEi">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager15deviatoricBasisEi"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager15deviatoricBasisEi"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::deviatoricBasis__i"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1af7559b8dbe4c7ac5833ada861c2bc995"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Vector3d</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">deviatoricBasis</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">i</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager15deviatoricBasisEi" title="Link to this definition"></a><br /></dt>
+<dd><p>An orthonormal basis of the deviatoric plane of the principal space. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>i</strong> – <strong>[in]</strong> 0 or 1. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\( (1,-1,0)/\sqrt2 \)</span> or <span class="math notranslate nohighlight">\( (1,1,-2)/\sqrt6 \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13returnMappingERK9Tensor33dRK12TensorMap33dd">
+<span id="_CPPv3NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13returnMappingERK9Tensor33dRK12TensorMap33dd"></span><span id="_CPPv2NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13returnMappingERK9Tensor33dRK12TensorMap33dd"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::returnMapping__Tensor33dCR.TensorMap33dCR.doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a64836645d3ab46f9fcbdf28f95f8ae9e"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMappingE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::ReturnMapping"><span class="n"><span class="pre">ReturnMapping</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">returnMapping</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33dE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">F</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12TensorMap33dE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::TensorMap33d"><span class="n"><span class="pre">TensorMap33d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">FpOld</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alphaPOld</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13returnMappingERK9Tensor33dRK12TensorMap33dd" title="Link to this definition"></a><br /></dt>
+<dd><p>The elastic trial and, if it is not admissible, the return to the apex or to the cone. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>F</strong> – <strong>[in]</strong> Deformation gradient at the end of the increment. </p></li>
+<li><p><strong>FpOld</strong> – <strong>[in]</strong> Plastic deformation gradient at the beginning of the increment, a view of the state. </p></li>
+<li><p><strong>alphaPOld</strong> – <strong>[in]</strong> Hardening variable at the beginning of the increment. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n">Marmot</span></a><span class="p">::</span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n">Utilities</span></a><span class="p">::</span><a class="reference internal" href="../codedocumentation/utilitiescore.html#_CPPv4N6Marmot9Utilities18StressUpdateFailedE" title="Marmot::Utilities::StressUpdateFailed"><span class="n">StressUpdateFailed</span></a></span></span> – if the elastic volume ratio is not positive or no admissible return exists. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The converged return mapping. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager15principalReturnERK9Tensor33ddR9Tensor33dRdRd">
+<span id="_CPPv3NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager15principalReturnERK9Tensor33ddR9Tensor33dRdRd"></span><span id="_CPPv2NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager15principalReturnERK9Tensor33ddR9Tensor33dRdRd"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::principalReturn__Tensor33dCR.double.Tensor33dR.doubleR.doubleRC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a48b4870a1a24b5c33f3eb9aeaa9851c3"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">principalReturn</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33dE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">FeTrial</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alphaPOld</span></span>, <a class="reference internal" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33dE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">Fe</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dLambda</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rho</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager15principalReturnERK9Tensor33ddR9Tensor33dRdRd" title="Link to this definition"></a><br /></dt>
+<dd><p>The return in the principal elastic log strains (see <a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a50649d14db8d06bd2d3203024846007c"><span class="std std-ref">principalResidual()</span></a>). </p>
+<p>Started from the radial return of the linearized (Hencky) problem, which is exact for small strains. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>FeTrial</strong> – <strong>[in]</strong> Trial elastic deformation gradient. </p></li>
+<li><p><strong>alphaPOld</strong> – <strong>[in]</strong> Hardening variable at the beginning of the increment. </p></li>
+<li><p><strong>Fe</strong> – <strong>[out]</strong> The elastic deformation gradient of the solution,  <span class="math notranslate nohighlight">\( \boldsymbol{F}^{e,\mathrm{trial}}\,\boldsymbol{Q}\,\mathrm{diag}(e^{\varepsilon_a -
+\varepsilon^{\mathrm{trial}}_a})\,\boldsymbol{Q}^T \)</span> with the principal directions <span class="math notranslate nohighlight">\( \boldsymbol{Q} \)</span> of <span class="math notranslate nohighlight">\( \boldsymbol{C}^{e,\mathrm{trial}} \)</span> (meaningful for <code class="docutils literal notranslate"><span class="pre">rho</span></code> &gt; 0). </p></li>
+<li><p><strong>dLambda</strong> – <strong>[out]</strong> The plastic multiplier of the solution. </p></li>
+<li><p><strong>rho</strong> – <strong>[out]</strong> The signed deviatoric radius of the solution: &gt; 0 on the cone, &lt; 0 beyond the vertex (apex). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Whether the return converged. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12returnToConeERK9Tensor33dRK12TensorMap33dRK9Tensor33ddRbPK9Tensor33ddb">
+<span id="_CPPv3NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12returnToConeERK9Tensor33dRK12TensorMap33dRK9Tensor33ddRbPK9Tensor33ddb"></span><span id="_CPPv2NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12returnToConeERK9Tensor33dRK12TensorMap33dRK9Tensor33ddRbPK9Tensor33ddb"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::returnToCone__Tensor33dCR.TensorMap33dCR.Tensor33dCR.double.bR.Tensor33dCP.double.bC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1aa6e694df8e4146e23839cb9304fb7729"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMappingE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::ReturnMapping"><span class="n"><span class="pre">ReturnMapping</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">returnToCone</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33dE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">FeTrial</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12TensorMap33dE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::TensorMap33d"><span class="n"><span class="pre">TensorMap33d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">FpOld</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33dE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">FpOldInv</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alphaPOld</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">converged</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33dE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">FeGuess</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dLambdaGuess</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.0</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">acceptVanishingDeviator</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12returnToConeERK9Tensor33dRK12TensorMap33dRK9Tensor33ddRbPK9Tensor33ddb" title="Link to this definition"></a><br /></dt>
+<dd><p>The return to the cone. </p>
+<p>Started from the principal-space return (<a class="reference internal" href="#classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a48b4870a1a24b5c33f3eb9aeaa9851c3"><span class="std std-ref">principalReturn()</span></a>), or from fractions of the linearized return. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>FeTrial</strong> – <strong>[in]</strong> Trial elastic deformation gradient <span class="math notranslate nohighlight">\( \boldsymbol{F}\boldsymbol{F}^{p,-1}_n \)</span>. </p></li>
+<li><p><strong>FpOld</strong> – <strong>[in]</strong> Plastic deformation gradient at the beginning of the increment. </p></li>
+<li><p><strong>FpOldInv</strong> – <strong>[in]</strong> Its inverse. </p></li>
+<li><p><strong>alphaPOld</strong> – <strong>[in]</strong> Hardening variable at the beginning of the increment. </p></li>
+<li><p><strong>converged</strong> – <strong>[out]</strong> Whether a solution on the cone was found. </p></li>
+<li><p><strong>FeGuess</strong> – <strong>[in]</strong> The solution of the principal-space return, if available (nullptr: the fractions of the linearized return are the initial guesses). </p></li>
+<li><p><strong>dLambdaGuess</strong> – <strong>[in]</strong> The plastic multiplier of <code class="docutils literal notranslate"><span class="pre">FeGuess</span></code>. </p></li>
+<li><p><strong>acceptVanishingDeviator</strong> – <strong>[in]</strong> Accept also a solution with a deviator below the apex threshold: the last resort if the apex is not admissible either (a trial state just below the apex pressure with a tiny deviator). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The converged return mapping (undefined if not <code class="docutils literal notranslate"><span class="pre">converged</span></code>). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12returnToApexERK9Tensor33dRK9Tensor33dRK9Tensor33ddRb">
+<span id="_CPPv3NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12returnToApexERK9Tensor33dRK9Tensor33dRK9Tensor33ddRb"></span><span id="_CPPv2NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12returnToApexERK9Tensor33dRK9Tensor33dRK9Tensor33ddRb"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::returnToApex__Tensor33dCR.Tensor33dCR.Tensor33dCR.double.bRC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1afb5802657ad92fbebc149dfaef057d0e"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMappingE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::ReturnMapping"><span class="n"><span class="pre">ReturnMapping</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">returnToApex</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33dE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">F</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33dE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">FeTrial</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33dE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">FpOldInv</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alphaPOld</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">admissible</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager12returnToApexERK9Tensor33dRK9Tensor33dRK9Tensor33ddRb" title="Link to this definition"></a><br /></dt>
+<dd><p>The return to the apex, if it is admissible (otherwise, the state belongs to the cone). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>F</strong> – <strong>[in]</strong> Deformation gradient at the end of the increment. </p></li>
+<li><p><strong>FeTrial</strong> – <strong>[in]</strong> Trial elastic deformation gradient <span class="math notranslate nohighlight">\( \boldsymbol{F}\boldsymbol{F}^{p,-1}_n \)</span>. </p></li>
+<li><p><strong>FpOldInv</strong> – <strong>[in]</strong> Inverse of the plastic deformation gradient at the beginning of the increment. </p></li>
+<li><p><strong>alphaPOld</strong> – <strong>[in]</strong> Hardening variable at the beginning of the increment. </p></li>
+<li><p><strong>admissible</strong> – <strong>[out]</strong> Whether the apex is the solution. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The converged return mapping (undefined if not <code class="docutils literal notranslate"><span class="pre">admissible</span></code>). </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-attributes">Protected Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager1KE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager1KE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager1KE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::K__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1aef5ed1b9fa1db17fbec4429d21823ffd"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">K</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager1KE" title="Link to this definition"></a><br /></dt>
+<dd><p>bulk modulus </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager1GE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager1GE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager1GE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::G__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a9c24ab9911cb33e568d08ce6707ae751"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">G</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager1GE" title="Link to this definition"></a><br /></dt>
+<dd><p>shear modulus </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager2c0E">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager2c0E"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager2c0E"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::c0__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a877cfe6bf9162063226bca046d87ead1"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">c0</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager2c0E" title="Link to this definition"></a><br /></dt>
+<dd><p>cohesion </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13frictionAngleE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13frictionAngleE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13frictionAngleE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::frictionAngle__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a41bfce872c46630a88b828e4c3c66a94"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">frictionAngle</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13frictionAngleE" title="Link to this definition"></a><br /></dt>
+<dd><p>friction angle in degrees </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager14dilatancyAngleE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager14dilatancyAngleE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager14dilatancyAngleE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::dilatancyAngle__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a449affd2f02d1c2f000f36f361556356"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">dilatancyAngle</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager14dilatancyAngleE" title="Link to this definition"></a><br /></dt>
+<dd><p>dilatancy angle in degrees </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager1HE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager1HE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager1HE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::H__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1afa231082581aeeca88dc8385b57ea0c8"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">H</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager1HE" title="Link to this definition"></a><br /></dt>
+<dd><p>linear hardening modulus of the cohesion </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager16softeningModulusE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager16softeningModulusE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager16softeningModulusE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::softeningModulus__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1acead9c9a456b39a05501b67c9ddf61fa"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">softeningModulus</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager16softeningModulusE" title="Link to this definition"></a><br /></dt>
+<dd><p>softening modulus <span class="math notranslate nohighlight">\( \varepsilon_f \)</span> of the damage </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9maxDamageE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9maxDamageE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9maxDamageE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::maxDamage__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1aacf6e62640050473eff6fae1d454fefe"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">maxDamage</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9maxDamageE" title="Link to this definition"></a><br /></dt>
+<dd><p>maximum damage </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager14nonLocalRadiusE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager14nonLocalRadiusE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager14nonLocalRadiusE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::nonLocalRadius__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a7a8d52f5d97bec387b69694846c3b8a2"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">nonLocalRadius</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager14nonLocalRadiusE" title="Link to this definition"></a><br /></dt>
+<dd><p>nonlocal radius <span class="math notranslate nohighlight">\( l \)</span></p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager18weightingParameterE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager18weightingParameterE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager18weightingParameterE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::weightingParameter__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a3d0432bfb8e751e4e17aa365bce2848f"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">weightingParameter</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager18weightingParameterE" title="Link to this definition"></a><br /></dt>
+<dd><p>weighting <span class="math notranslate nohighlight">\( m \)</span> of the nonlocal measure in the damage </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager3etaE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager3etaE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager3etaE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::eta__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a4bbdfcc925ded6fdb93111635a7f7dff"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">eta</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager3etaE" title="Link to this definition"></a><br /></dt>
+<dd><p>friction parameter <span class="math notranslate nohighlight">\( \eta \)</span> of the yield function </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager2xiE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager2xiE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager2xiE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::xi__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a6931fb6cda14dd96b3eddf776ad96c48"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xi</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager2xiE" title="Link to this definition"></a><br /></dt>
+<dd><p>cohesion parameter <span class="math notranslate nohighlight">\( \xi \)</span> of the yield function </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager6etaBarE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager6etaBarE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager6etaBarE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::etaBar__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1a5c5484919bc39950151bac10f38f893a"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">etaBar</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager6etaBarE" title="Link to this definition"></a><br /></dt>
+<dd><p>dilatancy parameter <span class="math notranslate nohighlight">\( \bar\eta \)</span> of the plastic potential </p>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMappingE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMappingE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMappingE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::ReturnMapping"></span><span class="target" id="structMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1_1ReturnMapping"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ReturnMapping</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMappingE" title="Link to this definition"></a><br /></dt>
+<dd><p>The converged return mapping: the new elastic state, and the sensitivities needed for the tangents. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping7plasticE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping7plasticE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping7plasticE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::ReturnMapping::plastic__b"></span><span class="target" id="structMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1_1ReturnMapping_1a37e221303b56e681644f2e86adff99db"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">plastic</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">false</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping7plasticE" title="Link to this definition"></a><br /></dt>
+<dd><p>the state has returned to the cone or the apex </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping2FeE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping2FeE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping2FeE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::ReturnMapping::Fe__Tensor33d"></span><span class="target" id="structMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1_1ReturnMapping_1af507469e4133da03d44bf196a7d10c52"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33dE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Fe</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping2FeE" title="Link to this definition"></a><br /></dt>
+<dd><p>elastic deformation gradient </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping5FpNewE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping5FpNewE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping5FpNewE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::ReturnMapping::FpNew__Tensor33d"></span><span class="target" id="structMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1_1ReturnMapping_1a2d5fe0ec9c66131e39edf96771bcae22"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33dE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FpNew</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping5FpNewE" title="Link to this definition"></a><br /></dt>
+<dd><p>plastic deformation gradient </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping6alphaPE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping6alphaPE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping6alphaPE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::ReturnMapping::alphaP__double"></span><span class="target" id="structMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1_1ReturnMapping_1a332cf36acce6da2405825719df30e952"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">alphaP</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping6alphaPE" title="Link to this definition"></a><br /></dt>
+<dd><p>hardening variable </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping6dEpVolE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping6dEpVolE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping6dEpVolE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::ReturnMapping::dEpVol__double"></span><span class="target" id="structMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1_1ReturnMapping_1a8ebbd383b0e7252e4aacfd25f5d44e30"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dEpVol</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping6dEpVolE" title="Link to this definition"></a><br /></dt>
+<dd><p>volumetric plastic log strain increment </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping11plasticWorkE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping11plasticWorkE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping11plasticWorkE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::ReturnMapping::plasticWork__double"></span><span class="target" id="structMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1_1ReturnMapping_1a7fc3bde3f892079e489310d6d400fed1"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">plasticWork</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping11plasticWorkE" title="Link to this definition"></a><br /></dt>
+<dd><p>M : dEp. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping6dFe_dFE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping6dFe_dFE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping6dFe_dFE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::ReturnMapping::dFe_dF__Marmot::Math::Tensors::FastorTensors::Tensor3333d"></span><span class="target" id="structMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1_1ReturnMapping_1a0e7f3122235448ba53c7e186ec55a2e8"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors11Tensor3333dE" title="Marmot::Math::Tensors::FastorTensors::Tensor3333d"><span class="n"><span class="pre">Tensor3333d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dFe_dF</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping6dFe_dFE" title="Link to this definition"></a><br /></dt>
+<dd><p>d Fe / d F </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping15dDeltaAlphaD_dFE">
+<span id="_CPPv3N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping15dDeltaAlphaD_dFE"></span><span id="_CPPv2N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping15dDeltaAlphaD_dFE"></span><span id="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::ReturnMapping::dDeltaAlphaD_dF__Tensor33d"></span><span class="target" id="structMarmot_1_1Materials_1_1GradientEnhancedFiniteStrainDruckerPrager_1_1ReturnMapping_1aecb58cdfe94a3c073c30236907120adb"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager9Tensor33dE" title="Marmot::Materials::GradientEnhancedFiniteStrainDruckerPrager::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dDeltaAlphaD_dF</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials41GradientEnhancedFiniteStrainDruckerPrager13ReturnMapping15dDeltaAlphaD_dFE" title="Link to this definition"></a><br /></dt>
+<dd><p>d dalpha_local / d F </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gradientenhancedcompressibleneohookedamage.html" class="btn btn-neutral float-left" title="Gradient-enhanced compressible Neo-Hooke damage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="elements.html" class="btn btn-neutral float-right" title="Finite elements" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_math_1_1_tensors_1_1_fastor_tensors_1_1_spatial3_d" kind="namespace" language="C++">
+    <compoundname>Marmot::Math::Tensors::FastorTensors::Spatial3D</compoundname>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="_marmot_fastor_tensor_basics_8h_1ae84b216bef540f688b5fafb01bf17b9f" prot="public" static="no" mutable="no">
+        <type>const Tensor33d</type>
+        <definition>const Tensor33d Marmot::Math::Tensors::FastorTensors::Spatial3D::I</definition>
+        <argsstring></argsstring>
+        <name>I</name>
+        <qualifiedname>Marmot::Math::Tensors::FastorTensors::Spatial3D::I</qualifiedname>
+        <initializer>= Tensor33d( ( Eigen::Matrix3d() &lt;&lt; Eigen::Matrix3d::Identity() ).finished().data(),
+             Fastor::ColumnMajor )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="124" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="124" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_fastor_tensor_basics_8h_1a295d0954acd1d9c26c2b8383c9406151" prot="public" static="no" mutable="no">
+        <type>const Tensor333d</type>
+        <definition>const Tensor333d Marmot::Math::Tensors::FastorTensors::Spatial3D::LeviCivita</definition>
+        <argsstring></argsstring>
+        <name>LeviCivita</name>
+        <qualifiedname>Marmot::Math::Tensors::FastorTensors::Spatial3D::LeviCivita</qualifiedname>
+        <initializer>= Tensor333d( Tensors::Initialize_LeviCivita3D().data(), Fastor::ColumnMajor )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="127" column="31" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="127" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_fastor_tensor_basics_8h_1a8ed57dfa2b34260591ed9a4d8609bd5d" prot="public" static="no" mutable="no">
+        <type>const Tensor3333d</type>
+        <definition>const Tensor3333d Marmot::Math::Tensors::FastorTensors::Spatial3D::IHyd</definition>
+        <argsstring></argsstring>
+        <name>IHyd</name>
+        <qualifiedname>Marmot::Math::Tensors::FastorTensors::Spatial3D::IHyd</qualifiedname>
+        <initializer>= Tensor3333d( Tensors::Initialize_I2xI2().data(), Fastor::ColumnMajor )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="129" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="129" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_fastor_tensor_basics_8h_1a0cd70f10d36904fa34018e2a323491aa" prot="public" static="no" mutable="no">
+        <type>const Tensor3333d</type>
+        <definition>const Tensor3333d Marmot::Math::Tensors::FastorTensors::Spatial3D::ISymm</definition>
+        <argsstring></argsstring>
+        <name>ISymm</name>
+        <qualifiedname>Marmot::Math::Tensors::FastorTensors::Spatial3D::ISymm</qualifiedname>
+        <initializer>= Tensor3333d( Tensors::Initialize_Isym().data(), Fastor::ColumnMajor )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="131" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="131" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_fastor_tensor_basics_8h_1a656c2c3f22f03568d5b436750101d713" prot="public" static="no" mutable="no">
+        <type>const Tensor3333d</type>
+        <definition>const Tensor3333d Marmot::Math::Tensors::FastorTensors::Spatial3D::ISkew</definition>
+        <argsstring></argsstring>
+        <name>ISkew</name>
+        <qualifiedname>Marmot::Math::Tensors::FastorTensors::Spatial3D::ISkew</qualifiedname>
+        <initializer>= Tensor3333d( Tensors::Initialize_Iskew().data(), Fastor::ColumnMajor )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="133" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="133" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_fastor_tensor_basics_8h_1aeb192027dc3fb1c1dfa7ace4d6635c89" prot="public" static="no" mutable="no">
+        <type>const Tensor3333d</type>
+        <definition>const Tensor3333d Marmot::Math::Tensors::FastorTensors::Spatial3D::I4</definition>
+        <argsstring></argsstring>
+        <name>I4</name>
+        <qualifiedname>Marmot::Math::Tensors::FastorTensors::Spatial3D::I4</qualifiedname>
+        <initializer>= Tensor3333d( Tensors::Initialize_IFourthOrder().data(), Fastor::ColumnMajor )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="135" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="135" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_fastor_tensor_basics_8h_1a9b3c5fef19a4c5f1440cc5a72a8de963" prot="public" static="no" mutable="no">
+        <type>const Tensor3333d</type>
+        <definition>const Tensor3333d Marmot::Math::Tensors::FastorTensors::Spatial3D::ITranspose</definition>
+        <argsstring></argsstring>
+        <name>ITranspose</name>
+        <qualifiedname>Marmot::Math::Tensors::FastorTensors::Spatial3D::ITranspose</qualifiedname>
+        <initializer>= Tensor3333d( Tensors::Initialize_IFourthOrderTranspose().data(),
+               Fastor::ColumnMajor )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="137" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="137" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_fastor_tensor_basics_8h_1a87ab5eb019135f079183d5842572188e" prot="public" static="no" mutable="no">
+        <type>const Tensor3333d</type>
+        <definition>const Tensor3333d Marmot::Math::Tensors::FastorTensors::Spatial3D::Deviatoric</definition>
+        <argsstring></argsstring>
+        <name>Deviatoric</name>
+        <qualifiedname>Marmot::Math::Tensors::FastorTensors::Spatial3D::Deviatoric</qualifiedname>
+        <initializer>= I4 - 1. / 3 * IHyd</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="140" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="140" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_fastor_tensor_basics_8h_1a947771d998628e1de9ff88718af22e3f" prot="public" static="no" mutable="no">
+        <type>const Tensor3333d</type>
+        <definition>const Tensor3333d Marmot::Math::Tensors::FastorTensors::Spatial3D::DeviatoricTranspose</definition>
+        <argsstring></argsstring>
+        <name>DeviatoricTranspose</name>
+        <qualifiedname>Marmot::Math::Tensors::FastorTensors::Spatial3D::DeviatoricTranspose</qualifiedname>
+        <initializer>= Fastor::transpose( Deviatoric )</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="142" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="142" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_fastor_tensor_basics_8h_1a94f603171feb134bf05b6c4ace5ff8b7" prot="public" static="no" mutable="no">
+        <type>const Tensor3333d</type>
+        <definition>const Tensor3333d Marmot::Math::Tensors::FastorTensors::Spatial3D::DeviatoricSymmetric</definition>
+        <argsstring></argsstring>
+        <name>DeviatoricSymmetric</name>
+        <qualifiedname>Marmot::Math::Tensors::FastorTensors::Spatial3D::DeviatoricSymmetric</qualifiedname>
+        <initializer>= ISymm - 1. / 3 * IHyd</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="144" column="32" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="144" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="123" column="5"/>
+  </compounddef>
+</doxygen>

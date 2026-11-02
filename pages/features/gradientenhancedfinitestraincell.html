@@ -1,0 +1,986 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gradient-Enhanced Finite-Strain Cell &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Gradient-Enhanced Finite-Strain Particles" href="gradientenhancedfinitestrainparticle.html" />
+    <link rel="prev" title="Gradient-Enhanced Finite-Strain Material Point" href="gradientenhancedfinitestrainmaterialpoint.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="materials.html">Material models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="meshfree.html">Meshfree methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="meshfree.html#architecture">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="meshfree.html#registration-and-naming">Registration and naming</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="meshfree.html#usage-with-edelweissmeshfree">Usage with EdelweissMeshfree</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="meshfreeapproximation.html">Meshfree Approximation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="meshfreecells.html">MPM Cells and Material Points</a></li>
+<li class="toctree-l4"><a class="reference internal" href="meshfreeparticles.html">Meshfree Particles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="displacementmaterialpoint.html">Displacement Material Point</a></li>
+<li class="toctree-l4"><a class="reference internal" href="displacementcell.html">Displacement Cell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="displacementparticle.html">Displacement Particle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gradientenhancedfinitestrainmaterialpoint.html">Gradient-Enhanced Finite-Strain Material Point</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Gradient-Enhanced Finite-Strain Cell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gradientenhancedfinitestrainparticle.html">Gradient-Enhanced Finite-Strain Particles</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="meshfree.html">Meshfree methods</a></li>
+      <li class="breadcrumb-item active">Gradient-Enhanced Finite-Strain Cell</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/gradientenhancedfinitestraincell.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gradient-enhanced-finite-strain-cell">
+<h1>Gradient-Enhanced Finite-Strain Cell<a class="headerlink" href="#gradient-enhanced-finite-strain-cell" title="Link to this heading"></a></h1>
+<section id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p>The gradient-enhanced finite-strain cell is the MPM background cell of the implicit-gradient finite-strain formulation.
+It carries the displacement field <span class="math notranslate nohighlight">\(\boldsymbol u\)</span> (<code class="docutils literal notranslate"><span class="pre">nDim</span></code> dofs per node) and a scalar nonlocal field
+<span class="math notranslate nohighlight">\(\bar N\)</span> (1 dof per node) and assembles the contributions of the
+<a class="reference internal" href="gradientenhancedfinitestrainmaterialpoint.html"><span class="doc">Gradient-Enhanced Finite-Strain Material Point</span></a> instances it currently hosts, which in turn drive a material of the
+interface <code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialGradientEnhancedFiniteStrain</span></code> (e.g. <a class="reference internal" href="gradientenhancedcompressibleneohookedamage.html"><span class="doc">Gradient-enhanced compressible Neo-Hooke damage</span></a>,
+<a class="reference internal" href="gradientenhancedfinitestraindruckerprager.html"><span class="doc">Gradient-enhanced finite-strain Drucker-Prager</span></a>). It is the MPM counterpart of
+<a class="reference internal" href="gradientenhancedfinitestraindisplacementelement.html"><span class="doc">Gradient-Enhanced Finite-Strain Displacement Element</span></a>; the cell geometries and the MPM workflow are described in
+<a class="reference internal" href="meshfreecells.html"><span class="doc">MPM Cells and Material Points</span></a>.</p>
+<section id="kinematics">
+<h3>Kinematics<a class="headerlink" href="#kinematics" title="Link to this heading"></a></h3>
+<p>As usual in MPM, the grid dofs are the <em>increments</em> <span class="math notranslate nohighlight">\(\Delta\boldsymbol q\)</span> of the current step, while the material
+points carry the accumulated state. When the material points are assigned, the cell evaluates its shape functions
+<span class="math notranslate nohighlight">\(N_A\)</span> and their gradients <span class="math notranslate nohighlight">\(\nabla_Y N_A\)</span> at the position of each material point in the intermediate
+reference configuration <span class="math notranslate nohighlight">\(\boldsymbol Y\)</span> (the last accepted configuration). The increment is interpolated to each
+point (<code class="docutils literal notranslate"><span class="pre">interpolateFieldsToMaterialPoints</span></code>),</p>
+<div class="math notranslate nohighlight">
+\[\Delta\boldsymbol u_p = N_A\,\Delta\boldsymbol q^U_A, \qquad
+\frac{\partial\Delta u_i}{\partial Y_j} = \Delta q^U_{Ai}\,\frac{\partial N_A}{\partial Y_j}, \qquad
+\Delta\bar N_p = N_A\,\Delta q^N_A,\]</div>
+<p>and the spatial and the undeformed gradients follow with the increment <span class="math notranslate nohighlight">\(\Delta\boldsymbol F\)</span> and the accepted
+deformation gradient <span class="math notranslate nohighlight">\(\boldsymbol F_n\)</span> of the material point,</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial N_A}{\partial x_i} = \frac{\partial N_A}{\partial Y_j}\,\Delta F^{-1}_{ji}, \qquad
+\frac{\partial N_A}{\partial X_i} = \frac{\partial N_A}{\partial Y_j}\,F_{n,ji} .\]</div>
+</section>
+<section id="weak-forms">
+<h3>Weak forms<a class="headerlink" href="#weak-forms" title="Link to this heading"></a></h3>
+<p>Summing over the material points <span class="math notranslate nohighlight">\(p\)</span> with their undeformed volumes <span class="math notranslate nohighlight">\(V^0_p\)</span>, the momentum balance is
+assembled with the Kirchhoff stress,</p>
+<div class="math notranslate nohighlight">
+\[r_{U,Aj} = \sum_p \frac{\partial N_A}{\partial x_i}\,\tau_{ij}\,V^0_p ,\]</div>
+<p>and the nonlocal balance <span class="math notranslate nohighlight">\(\bar N - c\,\nabla_X^2\bar N = L\)</span> in the undeformed configuration, in increment form,</p>
+<div class="math notranslate nohighlight">
+\[r_{N,A} = \sum_p \Bigl( N_A\,\Delta\bar N_p + c\,\nabla_X N_A\cdot\nabla_X\Delta\bar N_p - N_A\,\Delta L_p \Bigr)
+V^0_p ,\]</div>
+<p>with <span class="math notranslate nohighlight">\(\nabla_X\Delta\bar N_p = \nabla_X N_B\,\Delta q^N_B\)</span>, the change <span class="math notranslate nohighlight">\(\Delta L_p\)</span> of the local driving force
+reported by the material point and <span class="math notranslate nohighlight">\(c = R^2\)</span> from the material. The undeformed gradient <span class="math notranslate nohighlight">\(\nabla_X\)</span> does not
+depend on the current increment. The residual is the internal force vector; body forces and pressures are added with
+a negative sign.</p>
+</section>
+<section id="tangent">
+<h3>Tangent<a class="headerlink" href="#tangent" title="Link to this heading"></a></h3>
+<p>With the tangents of the material point with respect to <span class="math notranslate nohighlight">\(\Delta\boldsymbol F\)</span> and <span class="math notranslate nohighlight">\(\bar N\)</span>, the blocks of
+the consistent tangent are</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}K^{UU}_{jAkB} &amp;= \sum_p \Bigl( \frac{\partial N_A}{\partial x_i}\,\frac{\partial\tau_{ij}}{\partial\Delta F_{kL}}\,
+\frac{\partial N_B}{\partial Y_L} - \frac{\partial N_A}{\partial x_k}\,\tau_{ij}\,
+\frac{\partial N_B}{\partial x_i} \Bigr) V^0_p ,\\
+K^{UN}_{jAB} &amp;= \sum_p \frac{\partial N_A}{\partial x_i}\,\frac{\partial\tau_{ij}}{\partial\bar N}\,N_B\,V^0_p ,\\
+K^{NU}_{AkB} &amp;= -\sum_p N_A\,\frac{\partial L}{\partial\Delta F_{kL}}\,\frac{\partial N_B}{\partial Y_L}\,V^0_p ,\\
+K^{NN}_{AB} &amp;= \sum_p \Bigl( N_A N_B\,\bigl(1 - \tfrac{\partial L}{\partial\bar N}\bigr)
++ c\,\nabla_X N_A\cdot\nabla_X N_B \Bigr) V^0_p ,\end{split}\]</div>
+<p>where the second term of <span class="math notranslate nohighlight">\(K^{UU}\)</span> is the geometric stiffness from the dependence of <span class="math notranslate nohighlight">\(\nabla_x N_A\)</span> on
+<span class="math notranslate nohighlight">\(\Delta\boldsymbol F\)</span>. The interaction <span class="math notranslate nohighlight">\(c\)</span> is treated as constant.</p>
+</section>
+<section id="loads-and-inertia">
+<h3>Loads and inertia<a class="headerlink" href="#loads-and-inertia" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">BODYFORCE</span></code>: <span class="math notranslate nohighlight">\(f_{Ai} \mathrel{-}= \sum_p N_A\,b_i\,V^0_p\)</span> with the body force <span class="math notranslate nohighlight">\(\boldsymbol b\)</span> per unit
+undeformed volume, no load stiffness.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PRESSURE</span></code>: a follower load acting on a single material point (selected by its label). The undeformed load vector
+<span class="math notranslate nohighlight">\(\boldsymbol f_0 = p\,\boldsymbol N\,dA_0\)</span> is pushed forward by Nanson’s formula with the total deformation
+gradient <span class="math notranslate nohighlight">\(\boldsymbol F = \Delta\boldsymbol F\,\boldsymbol F_n\)</span>,
+<span class="math notranslate nohighlight">\(\boldsymbol f = J\,\boldsymbol F^{-\mathsf T}\boldsymbol f_0\)</span>, and applied as
+<span class="math notranslate nohighlight">\(f_{Ai} \mathrel{-}= N_A f_i\)</span>, with the consistent load stiffness.</p></li>
+<li><p>Inertia: the consistent mass <span class="math notranslate nohighlight">\(M_{AiBi} = \sum_p N_A N_B\,\rho_0 V^0_p\)</span> of the displacement field and its row-sum
+lumped version. The nonlocal field carries no inertia.</p></li>
+</ul>
+<p>The dofs are ordered field by field inside the cell (all displacements, then all nonlocal dofs);
+<code class="docutils literal notranslate"><span class="pre">getDofIndicesPermutationPattern</span></code> maps them to the node-by-node layout of the host.</p>
+</section>
+</section>
+<section id="registered-types">
+<h2>Registered types<a class="headerlink" href="#registered-types" title="Link to this heading"></a></h2>
+<p>The cells are registered in the <code class="docutils literal notranslate"><span class="pre">Marmot::Registry::CellFactory</span></code> (Lagrangian, <code class="docutils literal notranslate"><span class="pre">createCell</span></code>) and as B-spline cells
+(<code class="docutils literal notranslate"><span class="pre">createBSplineCell</span></code>). The nodal fields are <code class="docutils literal notranslate"><span class="pre">displacement</span></code> and <code class="docutils literal notranslate"><span class="pre">nonlocal</span> <span class="pre">damage</span></code>.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Geometry</p></th>
+<th class="head"><p>Dimension</p></th>
+<th class="head"><p>Nodes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GradientEnhancedFiniteStrain/Quad4</span></code></p></td>
+<td><p>Lagrangian, bilinear quadrilateral</p></td>
+<td><p>2 (plane strain)</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GradientEnhancedFiniteStrain/Hexa8</span></code></p></td>
+<td><p>Lagrangian, trilinear hexahedron</p></td>
+<td><p>3</p></td>
+<td><p>8</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GradientEnhancedFiniteStrain/BSpline/1</span></code></p></td>
+<td><p>B-spline, order 1</p></td>
+<td><p>2 (plane strain)</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GradientEnhancedFiniteStrain/BSpline/2</span></code></p></td>
+<td><p>B-spline, order 2</p></td>
+<td><p>2 (plane strain)</p></td>
+<td><p>9</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GradientEnhancedFiniteStrain/BSpline/3</span></code></p></td>
+<td><p>B-spline, order 3</p></td>
+<td><p>2 (plane strain)</p></td>
+<td><p>16</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GradientEnhancedFiniteStrain/BSpline/3D/1</span></code></p></td>
+<td><p>B-spline, order 1</p></td>
+<td><p>3</p></td>
+<td><p>8</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GradientEnhancedFiniteStrain/BSpline/3D/2</span></code></p></td>
+<td><p>B-spline, order 2</p></td>
+<td><p>3</p></td>
+<td><p>27</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GradientEnhancedFiniteStrain/BSpline/3D/3</span></code></p></td>
+<td><p>B-spline, order 3</p></td>
+<td><p>3</p></td>
+<td><p>64</p></td>
+</tr>
+</tbody>
+</table>
+<p>A cell accepts only material points of the matching dimension, <code class="docutils literal notranslate"><span class="pre">GradientEnhancedFiniteStrain/PlaneStrain</span></code> or
+<code class="docutils literal notranslate"><span class="pre">GradientEnhancedFiniteStrain/3D</span></code> (see <a class="reference internal" href="gradientenhancedfinitestrainmaterialpoint.html"><span class="doc">Gradient-Enhanced Finite-Strain Material Point</span></a>); any other material point
+is rejected by <code class="docutils literal notranslate"><span class="pre">assignMaterialPoints</span></code>.</p>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE">
+<span id="_CPPv3I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE"></span><span id="_CPPv2I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDim</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nNodes</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CellBase</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I0_i_iEN6Marmot15Discretizations5Cells18GeometryCellPolicyE" title="Marmot::Discretizations::Cells::GeometryCellPolicy"><span class="n"><span class="pre">GeometryCellPolicy</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::nNodes"><span class="n"><span class="pre">nNodes</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GeometryCell</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GradientEnhancedFiniteStrainCell</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::CellBase"><span class="n"><span class="pre">CellBase</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::GeometryCell"><span class="n"><span class="pre">GeometryCell</span></span></a><a class="headerlink" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-f5787c27e9dd77b387803baf1766c5cf10e39589.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;2&quot; [label=&quot;CellBase&quot; tooltip=&quot;CellBase&quot;]
+    &quot;3&quot; [label=&quot;GeometryCell&quot; tooltip=&quot;GeometryCell&quot;]
+    &quot;6&quot; [label=&quot;Marmot::Discretizations::Cells::BSplineGradientEnhancedFiniteStrainCell&lt; nDim, nNodes, order &gt;&quot; tooltip=&quot;Marmot::Discretizations::Cells::BSplineGradientEnhancedFiniteStrainCell&lt; nDim, nNodes, order &gt;&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, CellBase, GeometryCell &gt;&quot; tooltip=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, CellBase, GeometryCell &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, Marmot::Discretizations::Cells::Cell, Geometry &gt;&quot; tooltip=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, Marmot::Discretizations::Cells::Cell, Geometry &gt;&quot;]
+    &quot;5&quot; [label=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, Marmot::Discretizations::Cells::Cell, Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt; &gt;&quot; tooltip=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, Marmot::Discretizations::Cells::Cell, Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt; &gt;&quot;]
+    &quot;7&quot; [label=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, Marmot::Discretizations::Cells::Cell, Marmot::Discretizations::Cells::LagrangianCellGeometry&lt; nDim, nNodes &gt; &gt;&quot; tooltip=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, Marmot::Discretizations::Cells::Cell, Marmot::Discretizations::Cells::LagrangianCellGeometry&lt; nDim, nNodes &gt; &gt;&quot;]
+    &quot;8&quot; [label=&quot;Marmot::Discretizations::Cells::LagrangianGradientEnhancedFiniteStrainCell&lt; nDim, nNodes &gt;&quot; tooltip=&quot;Marmot::Discretizations::Cells::LagrangianGradientEnhancedFiniteStrainCell&lt; nDim, nNodes &gt;&quot;]
+    &quot;6&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;4&quot; -&gt; &quot;1&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+    &quot;5&quot; -&gt; &quot;1&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+    &quot;7&quot; -&gt; &quot;1&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+    &quot;8&quot; -&gt; &quot;7&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-94b8b1dab16aa50939af59d532ed2696e41aa571.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;2&quot; [label=&quot;CellBase&quot; tooltip=&quot;CellBase&quot;]
+    &quot;3&quot; [label=&quot;GeometryCell&quot; tooltip=&quot;GeometryCell&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, CellBase, GeometryCell &gt;&quot; tooltip=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, CellBase, GeometryCell &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>MPM background cell for gradient-enhanced (implicit-gradient) finite-strain materials. </p>
+<p>The cell carries the displacement field <span class="math notranslate nohighlight">\( \boldsymbol{u} \)</span> (nDim dofs per node) and one scalar nonlocal field <span class="math notranslate nohighlight">\( \bar{N} \)</span> (1 dof per node, field name <code class="docutils literal notranslate"><span class="pre">nonlocal</span> <span class="pre">damage</span></code>), and consumes <a class="reference internal" href="gradientenhancedfinitestrainmaterialpoint.html#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint"><span class="std std-ref">Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint</span></a> instances, which in turn drive a Marmot::Materials::MaterialGradientEnhancedFiniteStrain. It is the MPM counterpart of the finite element GradientEnhancedFiniteStrainDisplacementElement.</p>
+<p>As usual in MPM, the grid dofs are the INCREMENTS of the current step, <span class="math notranslate nohighlight">\( \Delta\boldsymbol{q} \)</span>; the material points carry the accumulated state. The cell shape functions <span class="math notranslate nohighlight">\( N_A \)</span> and their gradients <span class="math notranslate nohighlight">\( \nabla_Y N_A \)</span> are evaluated once, at the position of each material point in the intermediate reference configuration <span class="math notranslate nohighlight">\( \boldsymbol{Y} \)</span> (the last accepted configuration), when the material points are assigned. The spatial and the reference gradients follow from    <div class="math notranslate nohighlight">
+\[  \frac{\partial N_A}{\partial x_i} = \frac{\partial N_A}{\partial Y_j}\,\Delta F^{-1}_{ji}, \qquad
+  \frac{\partial N_A}{\partial X_i} = \frac{\partial N_A}{\partial Y_j}\,F_{n,ji} .
+\]</div>
+ The momentum balance is integrated with the Kirchhoff stress over the undeformed volume <span class="math notranslate nohighlight">\( V_p^0 \)</span> of each material point <span class="math notranslate nohighlight">\( p \)</span>,   <div class="math notranslate nohighlight">
+\[  r_{U,Aj} = \sum_p \frac{\partial N_A}{\partial x_i}\,\tau_{ij}\,V_p^0 ,
+\]</div>
+ and the nonlocal balance <span class="math notranslate nohighlight">\( \bar{N} - c\,\nabla_X^2\bar{N} = L \)</span> is assembled in increment form in the undeformed configuration,    <div class="math notranslate nohighlight">
+\[  r_{N,A} = \sum_p \Bigl( N_A\,\Delta\bar{N}_p + c\,\nabla_X N_A \cdot \nabla_X \Delta\bar{N}_p - N_A\,\Delta L_p
+  \Bigr) V_p^0 ,
+\]</div>
+ with <span class="math notranslate nohighlight">\( \Delta\bar{N}_p = N_B\,\Delta\bar{N}_B \)</span> interpolated from the grid increments, <span class="math notranslate nohighlight">\( \Delta L_p \)</span> the change of the local driving force reported by the material point, and <span class="math notranslate nohighlight">\( c = R^2 \)</span> from the material. The reference gradient <span class="math notranslate nohighlight">\( \nabla_X \)</span> does not depend on the current increment.</p>
+<p>The increment form is used because the grid is reset every increment, so its nodal values carry only the increment of the step; the total form of the element of the finite element method, <span class="math notranslate nohighlight">\( N_A(\bar{N} - L) + c\,\nabla_X N_A\cdot\nabla_X\bar{N} \)</span>, would need <span class="math notranslate nohighlight">\( \nabla_X\bar{N} \)</span> as an accumulated state of the material point. It thus assumes that the equation of the previous increment holds with the current grid and point positions; storing <span class="math notranslate nohighlight">\( \nabla_X\bar{N} \)</span> instead was tested and changed the nonlocal field by less than the step dependence of the kinematics, without bringing it closer to the result of a single increment.</p>
+<p>The consistent tangent consists of      <div class="math notranslate nohighlight">
+\[  K^{UU}_{jAkB} = \sum_p \Bigl( \frac{\partial N_A}{\partial x_i}\,
+    \frac{\partial\tau_{ij}}{\partial\Delta F_{kL}}\,\frac{\partial N_B}{\partial Y_L}
+    - \frac{\partial N_A}{\partial x_k}\,\tau_{ij}\,\frac{\partial N_B}{\partial x_i} \Bigr) V_p^0 ,\qquad
+  K^{UN}_{jAB} = \sum_p \frac{\partial N_A}{\partial x_i}\,\frac{\partial\tau_{ij}}{\partial\bar{N}}\,N_B\,V_p^0 ,
+\]</div>
+<div class="math notranslate nohighlight">
+\[  K^{NU}_{AkB} = -\sum_p N_A\,\frac{\partial L}{\partial\Delta F_{kL}}\,\frac{\partial N_B}{\partial Y_L}\,V_p^0 ,
+  \qquad
+  K^{NN}_{AB} = \sum_p \Bigl( N_A N_B \bigl( 1 - \frac{\partial L}{\partial\bar{N}} \bigr)
+    + c\,\nabla_X N_A\cdot\nabla_X N_B \Bigr) V_p^0 .
+\]</div>
+ The interaction <span class="math notranslate nohighlight">\( c \)</span> is treated as constant in the tangent.</p>
+<p>Dofs are ordered field by field internally (all displacements, then all nonlocal dofs); see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a9a6c28f87fc8b62cd16ea83df865de82"><span class="std std-ref">getDofIndicesPermutationPattern()</span></a> for the mapping to the node-by-node layout of the host.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nDim</strong> – Spatial dimension (2: plane strain, 3). </p></li>
+<li><p><strong>nNodes</strong> – Number of cell nodes. </p></li>
+<li><p><strong>CellBase</strong> – Base class, <a class="reference internal" href="meshfreecells.html#classMarmot_1_1Discretizations_1_1Cells_1_1Cell"><span class="std std-ref">Marmot::Discretizations::Cells::Cell</span></a>. </p></li>
+<li><p><strong>GeometryCell</strong> – Geometry policy, Lagrangian or B-spline. </p></li>
+</ul>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell32GradientEnhancedFiniteStrainCellEiRK12GeometryCell">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell32GradientEnhancedFiniteStrainCellEiRK12GeometryCell"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell32GradientEnhancedFiniteStrainCellEiRK12GeometryCell"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::GradientEnhancedFiniteStrainCell__i.GeometryCellCR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a8f2c77366a77032d6c785d6cc2dcdafd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GradientEnhancedFiniteStrainCell</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cellLabel</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::GeometryCell"><span class="n"><span class="pre">GeometryCell</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">geometry</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell32GradientEnhancedFiniteStrainCellEiRK12GeometryCell" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a cell. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cellLabel</strong> – <strong>[in]</strong> Label of the cell. </p></li>
+<li><p><strong>geometry</strong> – <strong>[in]</strong> Geometry of the cell. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13getNodeFieldsEv">
+<span id="_CPPv3NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13getNodeFieldsEv"></span><span id="_CPPv2NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13getNodeFieldsEv"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::getNodeFieldsC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a5bdf680166f48609512e0f93ea0a7b03"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getNodeFields</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13getNodeFieldsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Fields per node. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>For each node, <code class="docutils literal notranslate"><span class="pre">displacement</span></code> and <code class="docutils literal notranslate"><span class="pre">nonlocal</span> <span class="pre">damage</span></code>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell31getDofIndicesPermutationPatternEv">
+<span id="_CPPv3NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell31getDofIndicesPermutationPatternEv"></span><span id="_CPPv2NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell31getDofIndicesPermutationPatternEv"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::getDofIndicesPermutationPatternC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a9a6c28f87fc8b62cd16ea83df865de82"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getDofIndicesPermutationPattern</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell31getDofIndicesPermutationPatternEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Permutation from the node-by-node dof layout of the host to the field-by-field layout of the cell. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The permutation pattern. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell25getSupportedBodyLoadTypesEv">
+<span id="_CPPv3NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell25getSupportedBodyLoadTypesEv"></span><span id="_CPPv2NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell25getSupportedBodyLoadTypesEv"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::getSupportedBodyLoadTypesC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a57189c93cae4f67ba5618d3963f09f03"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getSupportedBodyLoadTypes</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell25getSupportedBodyLoadTypesEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Supported body loads. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">BODYFORCE</span></code>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell32getSupportedDistributedLoadTypesEv">
+<span id="_CPPv3NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell32getSupportedDistributedLoadTypesEv"></span><span id="_CPPv2NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell32getSupportedDistributedLoadTypesEv"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::getSupportedDistributedLoadTypesC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a07644f1c2cc70719e949eeaf7e478c23"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getSupportedDistributedLoadTypes</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell32getSupportedDistributedLoadTypesEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Supported distributed loads. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">PRESSURE</span></code>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell9getNNodesEv">
+<span id="_CPPv3NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell9getNNodesEv"></span><span id="_CPPv2NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell9getNNodesEv"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::getNNodesC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a48b191575fe4718d2fa99ded5fdd3d9c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNNodes</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell9getNNodesEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of nodes. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>nNodes. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell14getNDofPerCellEv">
+<span id="_CPPv3NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell14getNDofPerCellEv"></span><span id="_CPPv2NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell14getNDofPerCellEv"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::getNDofPerCellC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a062f06b86ac75dc1fe9905ad67b4dace"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNDofPerCell</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell14getNDofPerCellEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of dofs of the cell. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\( (n_\mathrm{dim}+1)\,n_\mathrm{nodes} \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell12getCellShapeEv">
+<span id="_CPPv3NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell12getCellShapeEv"></span><span id="_CPPv2NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell12getCellShapeEv"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::getCellShapeC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1ae2942cdf0b72f85af2512ed479745859"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getCellShape</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell12getCellShapeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Shape of the cell. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Shape name of the geometry. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell18isCoordinateInCellEPKd">
+<span id="_CPPv3NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell18isCoordinateInCellEPKd"></span><span id="_CPPv2NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell18isCoordinateInCellEPKd"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::isCoordinateInCell__doubleCPC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a22d1d7b5ce60cb7e0329788725fba700"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isCoordinateInCell</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coordinates</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell18isCoordinateInCellEPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Check whether a point lies in the cell. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>coordinates</strong> – <strong>[in]</strong> Coordinates of the point. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the point lies in the cell. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell14getBoundingBoxEPdPd">
+<span id="_CPPv3NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell14getBoundingBoxEPdPd"></span><span id="_CPPv2NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell14getBoundingBoxEPdPd"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::getBoundingBox__doubleP.doublePC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a51bf0f444931148d89440b733eed16fd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getBoundingBox</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">boundingBoxMin</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">boundingBoxMax</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell14getBoundingBoxEPdPd" title="Link to this definition"></a><br /></dt>
+<dd><p>Axis-aligned bounding box of the cell. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>boundingBoxMin</strong> – <strong>[out]</strong> Lower corner. </p></li>
+<li><p><strong>boundingBoxMax</strong> – <strong>[out]</strong> Upper corner. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell20assignMaterialPointsERKNSt6vectorIPN6Marmot15Discretizations14MaterialPoints13MaterialPointEEE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell20assignMaterialPointsERKNSt6vectorIPN6Marmot15Discretizations14MaterialPoints13MaterialPointEEE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell20assignMaterialPointsERKNSt6vectorIPN6Marmot15Discretizations14MaterialPoints13MaterialPointEEE"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::assignMaterialPoints__std::vector:Marmot::Discretizations::MaterialPoints::MaterialPointP:CR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1ab12a6d03196bc27cf76997cad20d6d02"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignMaterialPoints</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations14MaterialPointsE" title="Marmot::Discretizations::MaterialPoints"><span class="n"><span class="pre">MaterialPoints</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations14MaterialPoints13MaterialPointE" title="Marmot::Discretizations::MaterialPoints::MaterialPoint"><span class="n"><span class="pre">MaterialPoint</span></span></a><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">materialPoints</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell20assignMaterialPointsERKNSt6vectorIPN6Marmot15Discretizations14MaterialPoints13MaterialPointEEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Assign the material points currently in the cell and cache their shape functions. </p>
+<p>The shape functions and gradients are evaluated at getCoordinatesAtCenter() of each point, i.e. at its position <span class="math notranslate nohighlight">\( \boldsymbol{Y} \)</span> of the last accepted state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>materialPoints</strong> – <strong>[in]</strong> The material points. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – if a point is not a GradientEnhancedFiniteStrainMaterialPoint of this dimension. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell27computeMaterialPointKernelsEPKdPdPddd">
+<span id="_CPPv3NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell27computeMaterialPointKernelsEPKdPdPddd"></span><span id="_CPPv2NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell27computeMaterialPointKernelsEPKdPdPddd"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::computeMaterialPointKernels__doubleCP.doubleP.doubleP.double.doubleC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a7cd15b15117b091ffc7d985d2b449f51"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeMaterialPointKernels</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dQ</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">fInt</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dfInt_dQ</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeNew</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell27computeMaterialPointKernelsEPKdPdPddd" title="Link to this definition"></a><br /></dt>
+<dd><p>Assemble the internal force vector and its tangent from the material points. </p>
+<p>Requires that <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1aff21a87fb8b17776055430dd791c97eb"><span class="std std-ref">interpolateFieldsToMaterialPoints()</span></a> and the material points’ computeYourself() have been called for the same increment. The contributions are ADDED to <code class="docutils literal notranslate"><span class="pre">fInt</span></code> and <code class="docutils literal notranslate"><span class="pre">dfInt_dQ</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dQ</strong> – <strong>[in]</strong> Increment of the cell dofs (field-by-field layout). </p></li>
+<li><p><strong>fInt</strong> – <strong>[inout]</strong> Internal force vector. </p></li>
+<li><p><strong>dfInt_dQ</strong> – <strong>[inout]</strong> Tangent, column-major. </p></li>
+<li><p><strong>timeNew</strong> – <strong>[in]</strong> Time at the end of the increment (unused). </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> Time increment (unused). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell20computeLumpedInertiaEPd">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell20computeLumpedInertiaEPd"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell20computeLumpedInertiaEPd"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::computeLumpedInertia__doubleP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1afc055fb8dd90cc18541bb410754093e7"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeLumpedInertia</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">I</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell20computeLumpedInertiaEPd" title="Link to this definition"></a><br /></dt>
+<dd><p>Row-sum lumped mass of the displacement field. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>I</strong> – <strong>[out]</strong> Lumped mass vector (overwritten); zero on the nonlocal dofs. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell24computeConsistentInertiaEPd">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell24computeConsistentInertiaEPd"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell24computeConsistentInertiaEPd"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::computeConsistentInertia__doubleP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1ad2c762b5d7708b174c8f6f12f09f0447"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeConsistentInertia</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">I</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell24computeConsistentInertiaEPd" title="Link to this definition"></a><br /></dt>
+<dd><p>Consistent mass <span class="math notranslate nohighlight">\( M_{AiBi} = \sum_p N_A N_B\,\rho_0 V_p^0 \)</span> of the displacement field. </p>
+<p>The nonlocal field carries no inertia.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>I</strong> – <strong>[out]</strong> Mass matrix (overwritten), column-major. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell15computeBodyLoadEiPKdPdPddd">
+<span id="_CPPv3NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell15computeBodyLoadEiPKdPdPddd"></span><span id="_CPPv2NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell15computeBodyLoadEiPKdPdPddd"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::computeBodyLoad__i.doubleCP.doubleP.doubleP.double.doubleC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a18d8e77993af7e46f3b564865f9938fe"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeBodyLoad</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">type</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">load</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">fExt</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dfExt_dQ</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeNew</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell15computeBodyLoadEiPKdPdPddd" title="Link to this definition"></a><br /></dt>
+<dd><p>Body force load. </p>
+<p><code class="docutils literal notranslate"><span class="pre">BODYFORCE</span></code>: <span class="math notranslate nohighlight">\( f_{Ai} \mathrel{-}= \sum_p N_A\,b_i\,V_p^0 \)</span> (sign convention of the internal force); no tangent contribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type</strong> – <strong>[in]</strong> Load type (see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a57189c93cae4f67ba5618d3963f09f03"><span class="std std-ref">getSupportedBodyLoadTypes()</span></a>). </p></li>
+<li><p><strong>load</strong> – <strong>[in]</strong> Body force per unit undeformed volume (nDim values). </p></li>
+<li><p><strong>fExt</strong> – <strong>[inout]</strong> Load vector. </p></li>
+<li><p><strong>dfExt_dQ</strong> – <strong>[inout]</strong> Load tangent (untouched). </p></li>
+<li><p><strong>timeNew</strong> – <strong>[in]</strong> Time at the end of the increment (unused). </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> Time increment (unused). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – for an unknown load type. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell22computeDistributedLoadEiiiPKdPdPddd">
+<span id="_CPPv3NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell22computeDistributedLoadEiiiPKdPdPddd"></span><span id="_CPPv2NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell22computeDistributedLoadEiiiPKdPdPddd"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::computeDistributedLoad__i.i.i.doubleCP.doubleP.doubleP.double.doubleC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a5b5239b39c787a34fe18b7ce2c8251a0"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeDistributedLoad</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">type</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">surfaceID</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialPointNumber</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">load</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">fExt</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dExt_dQ</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeNew</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell22computeDistributedLoadEiiiPKdPdPddd" title="Link to this definition"></a><br /></dt>
+<dd><p>Follower pressure load at a single material point. </p>
+<p><code class="docutils literal notranslate"><span class="pre">PRESSURE</span></code>: the undeformed load vector <span class="math notranslate nohighlight">\( \boldsymbol{f}_0 = p\,\boldsymbol{N}\,dA_0 \)</span> is pushed forward by Nanson’s formula, <span class="math notranslate nohighlight">\( \boldsymbol{f} = J\,\boldsymbol{F}^{-\mathsf{T}}\boldsymbol{f}_0 \)</span> with the total <span class="math notranslate nohighlight">\( \boldsymbol{F} = \Delta\boldsymbol{F}\,\boldsymbol{F}_n \)</span>, and applied as <span class="math notranslate nohighlight">\( f_{Ai} \mathrel{-}= N_A f_i \)</span>, with the consistent load stiffness with respect to the displacement increment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type</strong> – <strong>[in]</strong> Load type (see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a07644f1c2cc70719e949eeaf7e478c23"><span class="std std-ref">getSupportedDistributedLoadTypes()</span></a>). </p></li>
+<li><p><strong>surfaceID</strong> – <strong>[in]</strong> Surface id (unused). </p></li>
+<li><p><strong>materialPointNumber</strong> – <strong>[in]</strong> Label of the loaded material point; other points are skipped. </p></li>
+<li><p><strong>load</strong> – <strong>[in]</strong> Undeformed load vector <span class="math notranslate nohighlight">\( \boldsymbol{f}_0 \)</span> (nDim values). </p></li>
+<li><p><strong>fExt</strong> – <strong>[inout]</strong> Load vector. </p></li>
+<li><p><strong>dExt_dQ</strong> – <strong>[inout]</strong> Load tangent, column-major. </p></li>
+<li><p><strong>timeNew</strong> – <strong>[in]</strong> Time at the end of the increment (unused). </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> Time increment (unused). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – for an unknown load type. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell33interpolateFieldsToMaterialPointsEPKd">
+<span id="_CPPv3NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell33interpolateFieldsToMaterialPointsEPKd"></span><span id="_CPPv2NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell33interpolateFieldsToMaterialPointsEPKd"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::interpolateFieldsToMaterialPoints__doubleCPC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1aff21a87fb8b17776055430dd791c97eb"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">interpolateFieldsToMaterialPoints</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">dQ</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell33interpolateFieldsToMaterialPointsEPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Interpolate the grid increment to the material points. </p>
+<p>For each hosted point: <span class="math notranslate nohighlight">\( \delta\boldsymbol{u} = N_A\,\Delta\boldsymbol{q}^U_A \)</span>, <span class="math notranslate nohighlight">\( \partial\delta u_i/\partial Y_j = \Delta q^U_{Ai}\,\partial N_A/\partial Y_j \)</span> and <span class="math notranslate nohighlight">\( \delta\bar{N} = N_A\,\Delta q^N_A \)</span> are passed to incrementDeformation() of the point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dQ</strong> – <strong>[in]</strong> Increment of the cell dofs (field-by-field layout). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell22getInterpolationVectorEPdPKd">
+<span id="_CPPv3NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell22getInterpolationVectorEPdPKd"></span><span id="_CPPv2NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell22getInterpolationVectorEPdPKd"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::getInterpolationVector__doubleP.doubleCPC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a198131ab1030e62634b2662615afbb22"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getInterpolationVector</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">vec</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coordinates</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell22getInterpolationVectorEPdPKd" title="Link to this definition"></a><br /></dt>
+<dd><p><a class="reference internal" href="meshfreecells.html#classMarmot_1_1Discretizations_1_1Cells_1_1Cell"><span class="std std-ref">Cell</span></a> shape functions at a point. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vec</strong> – <strong>[out]</strong> Shape functions <span class="math notranslate nohighlight">\( N_A \)</span> (nNodes values). </p></li>
+<li><p><strong>coordinates</strong> – <strong>[in]</strong> Coordinates of the point. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-types">Protected Types</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13BodyLoadTypesE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13BodyLoadTypesE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13BodyLoadTypesE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a948c3b03be068b80c856603a4a85a720"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BodyLoadTypes</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13BodyLoadTypesE" title="Link to this definition"></a><br /></dt>
+<dd><p>Supported body loads. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13BodyLoadTypes9BodyForceE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13BodyLoadTypes9BodyForceE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13BodyLoadTypes9BodyForceE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a948c3b03be068b80c856603a4a85a720a6948e33dbc763fced1a7c7053ffe8c9b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BodyForce</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13BodyLoadTypes9BodyForceE" title="Link to this definition"></a><br /></dt>
+<dd><p>body force per unit undeformed volume (<code class="docutils literal notranslate"><span class="pre">BODYFORCE</span></code>) </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell20DistributedLoadTypesE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell20DistributedLoadTypesE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell20DistributedLoadTypesE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a3d8e55d680c626d927122265d50f4868"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DistributedLoadTypes</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell20DistributedLoadTypesE" title="Link to this definition"></a><br /></dt>
+<dd><p>Supported distributed loads. </p>
+<p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell20DistributedLoadTypes8PressureE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell20DistributedLoadTypes8PressureE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell20DistributedLoadTypes8PressureE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a3d8e55d680c626d927122265d50f4868af3a518974f9b04f6c71117f45e6a4fcc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Pressure</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell20DistributedLoadTypes8PressureE" title="Link to this definition"></a><br /></dt>
+<dd><p>follower pressure acting on a material point (<code class="docutils literal notranslate"><span class="pre">PRESSURE</span></code>) </p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13MaterialPointE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13MaterialPointE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13MaterialPointE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1ad2eaf90f38560d6339607e38d8e2231b"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MaterialPoint</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations14MaterialPointsE" title="Marmot::Discretizations::MaterialPoints"><span class="n"><span class="pre">MaterialPoints</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="gradientenhancedfinitestrainmaterialpoint.html#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints41GradientEnhancedFiniteStrainMaterialPointE" title="Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint"><span class="n"><span class="pre">GradientEnhancedFiniteStrainMaterialPoint</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13MaterialPointE" title="Link to this definition"></a><br /></dt>
+<dd><p>consumed point type </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell6NSizedE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell6NSizedE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell6NSizedE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1aa3f4315aeacddd172174151fc7b55957"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NSized</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::GeometryCell"><span class="n"><span class="pre">GeometryCell</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">NSized</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell6NSizedE" title="Link to this definition"></a><br /></dt>
+<dd><p>shape function vector of the geometry </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell9dNdXSizedE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell9dNdXSizedE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell9dNdXSizedE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a9c89229bd740236b01cb071e549be96c"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dNdXSized</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::GeometryCell"><span class="n"><span class="pre">GeometryCell</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">dNdXSized</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell9dNdXSizedE" title="Link to this definition"></a><br /></dt>
+<dd><p>shape function gradients of the geometry </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell7XiSizedE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell7XiSizedE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell7XiSizedE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1ace4f7f25aaed84f1a72f8842b7e5e29e"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">XiSized</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::GeometryCell"><span class="n"><span class="pre">GeometryCell</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">XiSized</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell7XiSizedE" title="Link to this definition"></a><br /></dt>
+<dd><p>parametric coordinates of the geometry </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell8RhsSizedE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell8RhsSizedE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell8RhsSizedE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a91f3dba8537627af6c201710890deae2"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RhsSized</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell14sizeLoadVectorE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::sizeLoadVector"><span class="n"><span class="pre">sizeLoadVector</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell8RhsSizedE" title="Link to this definition"></a><br /></dt>
+<dd><p>cell residual vector </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13KeSizedMatrixE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13KeSizedMatrixE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13KeSizedMatrixE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a330c098ef8f66d7edebe2b2261cbfb70"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KeSizedMatrix</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell14sizeLoadVectorE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::sizeLoadVector"><span class="n"><span class="pre">sizeLoadVector</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell14sizeLoadVectorE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::sizeLoadVector"><span class="n"><span class="pre">sizeLoadVector</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13KeSizedMatrixE" title="Link to this definition"></a><br /></dt>
+<dd><p>cell tangent matrix </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-attributes">Protected Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell10_cellLabelE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell10_cellLabelE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell10_cellLabelE"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::_cellLabel__iC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a3281ad75bdc8c0bb1aea7b7214e95711"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_cellLabel</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell10_cellLabelE" title="Link to this definition"></a><br /></dt>
+<dd><p>label of the cell </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell23_materialPointLocationsE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell23_materialPointLocationsE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell23_materialPointLocationsE"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::_materialPointLocations__std::vector:MaterialPointLocation:"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1accb5769ccd0c09233ff224207e816d28"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell21MaterialPointLocationE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::MaterialPointLocation"><span class="n"><span class="pre">MaterialPointLocation</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_materialPointLocations</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell23_materialPointLocationsE" title="Link to this definition"></a><br /></dt>
+<dd><p>the material points currently in the cell </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-static-attributes">Protected Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell7_fieldsE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell7_fieldsE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell7_fieldsE"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::_fields__std::map:ss.std::pair:i.i::C"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1abb610324110de92ed8bf6cd62b7366ae"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_fields</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">{</span></span><span class="s"><span class="pre">&quot;displacement&quot;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::nNodes"><span class="n"><span class="pre">nNodes</span></span></a><span class="p"><span class="pre">}</span></span><span class="p"><span class="pre">}</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="s"><span class="pre">&quot;nonlocal</span> <span class="pre">damage&quot;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::nNodes"><span class="n"><span class="pre">nNodes</span></span></a><span class="p"><span class="pre">}</span></span><span class="p"><span class="pre">}</span></span><span class="p"><span class="pre">,</span></span><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell7_fieldsE" title="Link to this definition"></a><br /></dt>
+<dd><p>the nodal fields with their number of components and nodes </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell23_supportedBodyLoadTypesE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell23_supportedBodyLoadTypesE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell23_supportedBodyLoadTypesE"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::_supportedBodyLoadTypes__std::unordered_map:ss.i:C"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a26c77fc1344b2388b8cf93112dfe2995"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_supportedBodyLoadTypes</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">{</span></span><span class="s"><span class="pre">&quot;BODYFORCE&quot;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13BodyLoadTypes9BodyForceE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::BodyForce"><span class="n"><span class="pre">BodyForce</span></span></a><span class="p"><span class="pre">}</span></span><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell23_supportedBodyLoadTypesE" title="Link to this definition"></a><br /></dt>
+<dd><p>names of the supported body loads </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell30_supportedDistributedLoadTypesE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell30_supportedDistributedLoadTypesE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell30_supportedDistributedLoadTypesE"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::_supportedDistributedLoadTypes__std::unordered_map:ss.i:C"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a30564d97ea9e5469f5933ffd7c08a730"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_supportedDistributedLoadTypes</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="p"><span class="pre">{</span></span><span class="p"><span class="pre">{</span></span><span class="s"><span class="pre">&quot;PRESSURE&quot;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell20DistributedLoadTypes8PressureE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::Pressure"><span class="n"><span class="pre">Pressure</span></span></a><span class="p"><span class="pre">}</span></span><span class="p"><span class="pre">}</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell30_supportedDistributedLoadTypesE" title="Link to this definition"></a><br /></dt>
+<dd><p>names of the supported distributed loads </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell12nDofPerNodeUE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell12nDofPerNodeUE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell12nDofPerNodeUE"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::nDofPerNodeU__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1aa9aa3c1c39a4610c1719cd54111e67c0"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDofPerNodeU</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::nDim"><span class="n"><span class="pre">nDim</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell12nDofPerNodeUE" title="Link to this definition"></a><br /></dt>
+<dd><p>dofs per node of the displacement field U </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell12nDofPerNodeNE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell12nDofPerNodeNE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell12nDofPerNodeNE"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::nDofPerNodeN__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1ae8cd7cd02656460c1e5777091374ed0c"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDofPerNodeN</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell12nDofPerNodeNE" title="Link to this definition"></a><br /></dt>
+<dd><p>dofs per node of the nonlocal field N </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell3bsUE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell3bsUE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell3bsUE"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::bsU__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a069779ffe2224114a2d8ac44d5508a3b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bsU</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::nNodes"><span class="n"><span class="pre">nNodes</span></span></a><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell12nDofPerNodeUE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::nDofPerNodeU"><span class="n"><span class="pre">nDofPerNodeU</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell3bsUE" title="Link to this definition"></a><br /></dt>
+<dd><p>size of the displacement block </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell3bsNE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell3bsNE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell3bsNE"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::bsN__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1aa4657f2605b898eaf06dd85b71c2e029"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bsN</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::nNodes"><span class="n"><span class="pre">nNodes</span></span></a><span class="w"> </span><span class="o"><span class="pre">*</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell12nDofPerNodeNE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::nDofPerNodeN"><span class="n"><span class="pre">nDofPerNodeN</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell3bsNE" title="Link to this definition"></a><br /></dt>
+<dd><p>size of the nonlocal block </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell14sizeLoadVectorE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell14sizeLoadVectorE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell14sizeLoadVectorE"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::sizeLoadVector__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1ae0f0910f017a90eda8324f46cdf07084"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sizeLoadVector</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell3bsUE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::bsU"><span class="n"><span class="pre">bsU</span></span></a><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell3bsNE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::bsN"><span class="n"><span class="pre">bsN</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell14sizeLoadVectorE" title="Link to this definition"></a><br /></dt>
+<dd><p>number of dofs of the cell </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell4idxUE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell4idxUE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell4idxUE"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::idxU__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1ae6ef2697f9d7a0c9d97c9fb18d075da7"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">idxU</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell4idxUE" title="Link to this definition"></a><br /></dt>
+<dd><p>first index of the displacement block </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell4idxNE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell4idxNE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell4idxNE"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::idxN__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1a02e5492701f8f5a9898e7ce3d20d4fcb"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">idxN</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell4idxUE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::idxU"><span class="n"><span class="pre">idxU</span></span></a><span class="w"> </span><span class="o"><span class="pre">+</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell3bsUE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::bsU"><span class="n"><span class="pre">bsU</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell4idxNE" title="Link to this definition"></a><br /></dt>
+<dd><p>first index of the nonlocal block </p>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell21MaterialPointLocationE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell21MaterialPointLocationE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell21MaterialPointLocationE"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::MaterialPointLocation"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1_1MaterialPointLocation"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MaterialPointLocation</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell21MaterialPointLocationE" title="Link to this definition"></a><br /></dt>
+<dd><p>Collaboration diagram for Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::MaterialPointLocation:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-e7e343b8f7f714ec77b61a4bf8c341be37c6194f.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, CellBase, GeometryCell &gt;::MaterialPointLocation&quot; tooltip=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, CellBase, GeometryCell &gt;::MaterialPointLocation&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim &gt;&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim &gt;::Response&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim &gt;::Response&quot;]
+    &quot;5&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim &gt;::Tangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::GradientEnhancedFiniteStrainMaterialPoint&lt; nDim &gt;::Tangents&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;2&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>A hosted material point with its cached shape functions. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell21MaterialPointLocation13materialPointE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell21MaterialPointLocation13materialPointE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell21MaterialPointLocation13materialPointE"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::MaterialPointLocation::materialPoint__MaterialPointP"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1_1MaterialPointLocation_1ac4255a7c29acb26e0215466e6e5e560b"></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell13MaterialPointE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::MaterialPoint"><span class="n"><span class="pre">MaterialPoint</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">materialPoint</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell21MaterialPointLocation13materialPointE" title="Link to this definition"></a><br /></dt>
+<dd><p>the hosted material point </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell21MaterialPointLocation2xiE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell21MaterialPointLocation2xiE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell21MaterialPointLocation2xiE"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::MaterialPointLocation::xi__XiSized"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1_1MaterialPointLocation_1a73996744d3e27ce15425e5bf54c8c5c6"></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell7XiSizedE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::XiSized"><span class="n"><span class="pre">XiSized</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">xi</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell21MaterialPointLocation2xiE" title="Link to this definition"></a><br /></dt>
+<dd><p>its parametric coordinates in the cell </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell21MaterialPointLocation1NE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell21MaterialPointLocation1NE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell21MaterialPointLocation1NE"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::MaterialPointLocation::N__Fastor::Tensor:double.nNodes:"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1_1MaterialPointLocation_1a9da5202f6fac3a4f0ac44af462e36d8d"></span><span class="n"><span class="pre">Fastor</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::nNodes"><span class="n"><span class="pre">nNodes</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">N</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell21MaterialPointLocation1NE" title="Link to this definition"></a><br /></dt>
+<dd><p>shape functions <span class="math notranslate nohighlight">\( N_A \)</span> at <code class="docutils literal notranslate"><span class="pre">xi</span></code></p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell21MaterialPointLocation5dN_dYE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell21MaterialPointLocation5dN_dYE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell21MaterialPointLocation5dN_dYE"></span><span id="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::MaterialPointLocation::dN_dY__Fastor::Tensor:double.nDim.nNodes:"></span><span class="target" id="structMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell_1_1MaterialPointLocation_1a5736b4b7621a858ab71bd75438391723"></span><span class="n"><span class="pre">Fastor</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell::nNodes"><span class="n"><span class="pre">nNodes</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dN_dY</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCell21MaterialPointLocation5dN_dYE" title="Link to this definition"></a><br /></dt>
+<dd><p>gradients <span class="math notranslate nohighlight">\( \partial N_A/\partial Y_i \)</span></p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I_i_iEN6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCellE">
+<span id="_CPPv3I_i_iEN6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCellE"></span><span id="_CPPv2I_i_iEN6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCellE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDim</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nNodes</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1LagrangianGradientEnhancedFiniteStrainCell"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LagrangianGradientEnhancedFiniteStrainCell</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations5CellsE" title="Marmot::Discretizations::Cells"><span class="n"><span class="pre">Cells</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell"><span class="n"><span class="pre">GradientEnhancedFiniteStrainCell</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::LagrangianGradientEnhancedFiniteStrainCell::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::LagrangianGradientEnhancedFiniteStrainCell::nNodes"><span class="n"><span class="pre">nNodes</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations5CellsE" title="Marmot::Discretizations::Cells"><span class="n"><span class="pre">Cells</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations5Cells4CellE" title="Marmot::Discretizations::Cells::Cell"><span class="n"><span class="pre">Cell</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations5CellsE" title="Marmot::Discretizations::Cells"><span class="n"><span class="pre">Cells</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations5Cells22LagrangianCellGeometryE" title="Marmot::Discretizations::Cells::LagrangianCellGeometry"><span class="n"><span class="pre">LagrangianCellGeometry</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::LagrangianGradientEnhancedFiniteStrainCell::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::LagrangianGradientEnhancedFiniteStrainCell::nNodes"><span class="n"><span class="pre">nNodes</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_i_iEN6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCellE" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Discretizations::Cells::LagrangianGradientEnhancedFiniteStrainCell:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-47ad62407070ef0d7f0f32b239473d37285152f6.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;6&quot; [label=&quot;CellBase&quot; tooltip=&quot;CellBase&quot;]
+    &quot;4&quot; [label=&quot;GeometryCell&quot; tooltip=&quot;GeometryCell&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Discretizations::Cells::Cell&quot; tooltip=&quot;Marmot::Discretizations::Cells::Cell&quot;]
+    &quot;5&quot; [label=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, CellBase, GeometryCell &gt;&quot; tooltip=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, CellBase, GeometryCell &gt;&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, Marmot::Discretizations::Cells::Cell, Marmot::Discretizations::Cells::LagrangianCellGeometry&lt; nDim, nNodes &gt; &gt;&quot; tooltip=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, Marmot::Discretizations::Cells::Cell, Marmot::Discretizations::Cells::LagrangianCellGeometry&lt; nDim, nNodes &gt; &gt;&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::Cells::LagrangianGradientEnhancedFiniteStrainCell&lt; nDim, nNodes &gt;&quot; tooltip=&quot;Marmot::Discretizations::Cells::LagrangianGradientEnhancedFiniteStrainCell&lt; nDim, nNodes &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;5&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;5&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Discretizations::Cells::LagrangianGradientEnhancedFiniteStrainCell:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-47ad62407070ef0d7f0f32b239473d37285152f6.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;6&quot; [label=&quot;CellBase&quot; tooltip=&quot;CellBase&quot;]
+    &quot;4&quot; [label=&quot;GeometryCell&quot; tooltip=&quot;GeometryCell&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Discretizations::Cells::Cell&quot; tooltip=&quot;Marmot::Discretizations::Cells::Cell&quot;]
+    &quot;5&quot; [label=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, CellBase, GeometryCell &gt;&quot; tooltip=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, CellBase, GeometryCell &gt;&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, Marmot::Discretizations::Cells::Cell, Marmot::Discretizations::Cells::LagrangianCellGeometry&lt; nDim, nNodes &gt; &gt;&quot; tooltip=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, Marmot::Discretizations::Cells::Cell, Marmot::Discretizations::Cells::LagrangianCellGeometry&lt; nDim, nNodes &gt; &gt;&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::Cells::LagrangianGradientEnhancedFiniteStrainCell&lt; nDim, nNodes &gt;&quot; tooltip=&quot;Marmot::Discretizations::Cells::LagrangianGradientEnhancedFiniteStrainCell&lt; nDim, nNodes &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;5&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;5&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p><a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell"><span class="std std-ref">GradientEnhancedFiniteStrainCell</span></a> on a Lagrangian cell geometry (Quad4, Hexa8). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nDim</strong> – Spatial dimension. </p></li>
+<li><p><strong>nNodes</strong> – Number of cell nodes. </p></li>
+</ul>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCell42LagrangianGradientEnhancedFiniteStrainCellEiPKdi">
+<span id="_CPPv3N6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCell42LagrangianGradientEnhancedFiniteStrainCellEiPKdi"></span><span id="_CPPv2N6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCell42LagrangianGradientEnhancedFiniteStrainCellEiPKdi"></span><span id="Marmot::Discretizations::Cells::LagrangianGradientEnhancedFiniteStrainCell::LagrangianGradientEnhancedFiniteStrainCell__i.doubleCP.i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1LagrangianGradientEnhancedFiniteStrainCell_1a84ed7b435cc4d25a60c0a00492a58d51"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LagrangianGradientEnhancedFiniteStrainCell</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cellLabel</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">nodeCoordinates</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sizeNodeCoordinates</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCell42LagrangianGradientEnhancedFiniteStrainCellEiPKdi" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a Lagrangian cell. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cellLabel</strong> – <strong>[in]</strong> Label of the cell. </p></li>
+<li><p><strong>nodeCoordinates</strong> – <strong>[in]</strong> Node coordinates, node by node. </p></li>
+<li><p><strong>sizeNodeCoordinates</strong> – <strong>[in]</strong> Number of coordinates (unused). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-types">Private Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCell8GeometryE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCell8GeometryE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCell8GeometryE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1LagrangianGradientEnhancedFiniteStrainCell_1a8ed7a825c4df908aafb8fb39ca30fcfb"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Geometry</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations5CellsE" title="Marmot::Discretizations::Cells"><span class="n"><span class="pre">Cells</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations5Cells22LagrangianCellGeometryE" title="Marmot::Discretizations::Cells::LagrangianCellGeometry"><span class="n"><span class="pre">LagrangianCellGeometry</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::LagrangianGradientEnhancedFiniteStrainCell::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::LagrangianGradientEnhancedFiniteStrainCell::nNodes"><span class="n"><span class="pre">nNodes</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCell8GeometryE" title="Link to this definition"></a><br /></dt>
+<dd><p>cell geometry </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCell13PhysicsParentE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCell13PhysicsParentE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCell13PhysicsParentE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1LagrangianGradientEnhancedFiniteStrainCell_1ae10698ea0773305a6409123f15c436c8"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PhysicsParent</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell"><span class="n"><span class="pre">GradientEnhancedFiniteStrainCell</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::LagrangianGradientEnhancedFiniteStrainCell::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_iEN6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::LagrangianGradientEnhancedFiniteStrainCell::nNodes"><span class="n"><span class="pre">nNodes</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations5CellsE" title="Marmot::Discretizations::Cells"><span class="n"><span class="pre">Cells</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations5Cells4CellE" title="Marmot::Discretizations::Cells::Cell"><span class="n"><span class="pre">Cell</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCell8GeometryE" title="Marmot::Discretizations::Cells::LagrangianGradientEnhancedFiniteStrainCell::Geometry"><span class="n"><span class="pre">Geometry</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells42LagrangianGradientEnhancedFiniteStrainCell13PhysicsParentE" title="Link to this definition"></a><br /></dt>
+<dd><p>physics base class </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I_i_i_iEN6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCellE">
+<span id="_CPPv3I_i_i_iEN6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCellE"></span><span id="_CPPv2I_i_i_iEN6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCellE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDim</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nNodes</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">order</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1BSplineGradientEnhancedFiniteStrainCell"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BSplineGradientEnhancedFiniteStrainCell</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations5CellsE" title="Marmot::Discretizations::Cells"><span class="n"><span class="pre">Cells</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell"><span class="n"><span class="pre">GradientEnhancedFiniteStrainCell</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::BSplineGradientEnhancedFiniteStrainCell::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::BSplineGradientEnhancedFiniteStrainCell::nNodes"><span class="n"><span class="pre">nNodes</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations5CellsE" title="Marmot::Discretizations::Cells"><span class="n"><span class="pre">Cells</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations5Cells4CellE" title="Marmot::Discretizations::Cells::Cell"><span class="n"><span class="pre">Cell</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations5CellsE" title="Marmot::Discretizations::Cells"><span class="n"><span class="pre">Cells</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations5Cells19BSplineCellGeometryE" title="Marmot::Discretizations::Cells::BSplineCellGeometry"><span class="n"><span class="pre">BSplineCellGeometry</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::BSplineGradientEnhancedFiniteStrainCell::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::BSplineGradientEnhancedFiniteStrainCell::order"><span class="n"><span class="pre">order</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCellE" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Discretizations::Cells::BSplineGradientEnhancedFiniteStrainCell:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-92638b34c702d433533d2f7ed919cc48fb420a18.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;6&quot; [label=&quot;CellBase&quot; tooltip=&quot;CellBase&quot;]
+    &quot;4&quot; [label=&quot;GeometryCell&quot; tooltip=&quot;GeometryCell&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::Cells::BSplineGradientEnhancedFiniteStrainCell&lt; nDim, nNodes, order &gt;&quot; tooltip=&quot;Marmot::Discretizations::Cells::BSplineGradientEnhancedFiniteStrainCell&lt; nDim, nNodes, order &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Discretizations::Cells::Cell&quot; tooltip=&quot;Marmot::Discretizations::Cells::Cell&quot;]
+    &quot;5&quot; [label=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, CellBase, GeometryCell &gt;&quot; tooltip=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, CellBase, GeometryCell &gt;&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, Marmot::Discretizations::Cells::Cell, Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt; &gt;&quot; tooltip=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, Marmot::Discretizations::Cells::Cell, Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt; &gt;&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;5&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;5&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Discretizations::Cells::BSplineGradientEnhancedFiniteStrainCell:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-92638b34c702d433533d2f7ed919cc48fb420a18.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;6&quot; [label=&quot;CellBase&quot; tooltip=&quot;CellBase&quot;]
+    &quot;4&quot; [label=&quot;GeometryCell&quot; tooltip=&quot;GeometryCell&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::Cells::BSplineGradientEnhancedFiniteStrainCell&lt; nDim, nNodes, order &gt;&quot; tooltip=&quot;Marmot::Discretizations::Cells::BSplineGradientEnhancedFiniteStrainCell&lt; nDim, nNodes, order &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Discretizations::Cells::Cell&quot; tooltip=&quot;Marmot::Discretizations::Cells::Cell&quot;]
+    &quot;5&quot; [label=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, CellBase, GeometryCell &gt;&quot; tooltip=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, CellBase, GeometryCell &gt;&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, Marmot::Discretizations::Cells::Cell, Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt; &gt;&quot; tooltip=&quot;Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell&lt; nDim, nNodes, Marmot::Discretizations::Cells::Cell, Marmot::Discretizations::Cells::BSplineCellGeometry&lt; nDim, order &gt; &gt;&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;5&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;5&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p><a class="reference internal" href="#classMarmot_1_1Discretizations_1_1Cells_1_1GradientEnhancedFiniteStrainCell"><span class="std std-ref">GradientEnhancedFiniteStrainCell</span></a> on a B-spline cell geometry. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nDim</strong> – Spatial dimension. </p></li>
+<li><p><strong>nNodes</strong> – Number of control points of the cell, <span class="math notranslate nohighlight">\( (p+1)^{n_\mathrm{dim}} \)</span>. </p></li>
+<li><p><strong>order</strong> – Polynomial order <span class="math notranslate nohighlight">\( p \)</span> of the B-splines. </p></li>
+</ul>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCell39BSplineGradientEnhancedFiniteStrainCellEiPKdiPKdi">
+<span id="_CPPv3N6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCell39BSplineGradientEnhancedFiniteStrainCellEiPKdiPKdi"></span><span id="_CPPv2N6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCell39BSplineGradientEnhancedFiniteStrainCellEiPKdiPKdi"></span><span id="Marmot::Discretizations::Cells::BSplineGradientEnhancedFiniteStrainCell::BSplineGradientEnhancedFiniteStrainCell__i.doubleCP.i.doubleCP.i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1BSplineGradientEnhancedFiniteStrainCell_1ab4f19154ac8892c50ca0c1c2e1c7b175"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BSplineGradientEnhancedFiniteStrainCell</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cellLabel</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">nodeCoordinates</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sizeNodeCoordinates</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">knotVectors</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sizeKnotVectors</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCell39BSplineGradientEnhancedFiniteStrainCellEiPKdiPKdi" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a B-spline cell. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cellLabel</strong> – <strong>[in]</strong> Label of the cell. </p></li>
+<li><p><strong>nodeCoordinates</strong> – <strong>[in]</strong> Control point coordinates. </p></li>
+<li><p><strong>sizeNodeCoordinates</strong> – <strong>[in]</strong> Number of coordinates. </p></li>
+<li><p><strong>knotVectors</strong> – <strong>[in]</strong> Knot vectors of the cell. </p></li>
+<li><p><strong>sizeKnotVectors</strong> – <strong>[in]</strong> Number of knot values. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-types">Private Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCell8GeometryE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCell8GeometryE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCell8GeometryE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1BSplineGradientEnhancedFiniteStrainCell_1a519761c0bcd42e16db83d3bf8536283d"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Geometry</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations5CellsE" title="Marmot::Discretizations::Cells"><span class="n"><span class="pre">Cells</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4I_i_iEN6Marmot15Discretizations5Cells19BSplineCellGeometryE" title="Marmot::Discretizations::Cells::BSplineCellGeometry"><span class="n"><span class="pre">BSplineCellGeometry</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::BSplineGradientEnhancedFiniteStrainCell::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::BSplineGradientEnhancedFiniteStrainCell::order"><span class="n"><span class="pre">order</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCell8GeometryE" title="Link to this definition"></a><br /></dt>
+<dd><p>cell geometry </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCell13PhysicsParentE">
+<span id="_CPPv3N6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCell13PhysicsParentE"></span><span id="_CPPv2N6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCell13PhysicsParentE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1Cells_1_1BSplineGradientEnhancedFiniteStrainCell_1af7aad79962a1b32c474a02e75c764d13"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PhysicsParent</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i0_18GeometryCellPolicyI4nDim6nNodesEEN6Marmot15Discretizations5Cells32GradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::GradientEnhancedFiniteStrainCell"><span class="n"><span class="pre">GradientEnhancedFiniteStrainCell</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::BSplineGradientEnhancedFiniteStrainCell::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_i_i_iEN6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCellE" title="Marmot::Discretizations::Cells::BSplineGradientEnhancedFiniteStrainCell::nNodes"><span class="n"><span class="pre">nNodes</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations5CellsE" title="Marmot::Discretizations::Cells"><span class="n"><span class="pre">Cells</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations5Cells4CellE" title="Marmot::Discretizations::Cells::Cell"><span class="n"><span class="pre">Cell</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCell8GeometryE" title="Marmot::Discretizations::Cells::BSplineGradientEnhancedFiniteStrainCell::Geometry"><span class="n"><span class="pre">Geometry</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations5Cells39BSplineGradientEnhancedFiniteStrainCell13PhysicsParentE" title="Link to this definition"></a><br /></dt>
+<dd><p>physics base class </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gradientenhancedfinitestrainmaterialpoint.html" class="btn btn-neutral float-left" title="Gradient-Enhanced Finite-Strain Material Point" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gradientenhancedfinitestrainparticle.html" class="btn btn-neutral float-right" title="Gradient-Enhanced Finite-Strain Particles" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

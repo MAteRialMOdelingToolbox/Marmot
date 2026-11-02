@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_utilities_1_1_state_var_vector_manager_1_1_state_var_entry_definition" kind="struct" language="C++" prot="protected">
+    <compoundname>Marmot::Utilities::StateVarVectorManager::StateVarEntryDefinition</compoundname>
+    <includes refid="_marmot_state_var_vector_manager_8h" local="no">MarmotStateVarVectorManager.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_utilities_1_1_state_var_vector_manager_1_1_state_var_entry_definition_1adece4cf23b206825c2e6fe7ed88651a0" prot="public" static="no" mutable="no">
+        <type>std::string</type>
+        <definition>std::string Marmot::Utilities::StateVarVectorManager::StateVarEntryDefinition::name</definition>
+        <argsstring></argsstring>
+        <name>name</name>
+        <qualifiedname>Marmot::Utilities::StateVarVectorManager::StateVarEntryDefinition::name</qualifiedname>
+        <briefdescription>
+<para>Unique name identifying the state variable entry. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="56" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_utilities_1_1_state_var_vector_manager_1_1_state_var_entry_definition_1a7d348c278c64219cef406c5dc76e79f8" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Utilities::StateVarVectorManager::StateVarEntryDefinition::length</definition>
+        <argsstring></argsstring>
+        <name>length</name>
+        <qualifiedname>Marmot::Utilities::StateVarVectorManager::StateVarEntryDefinition::length</qualifiedname>
+        <briefdescription>
+<para>Number of consecutive doubles occupied by this entry. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="57" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>An entry in the statevar vector consists of the name and a certain length. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="55" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="55" bodyend="58"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_utilities_1_1_state_var_vector_manager_1_1_state_var_entry_definition_1a7d348c278c64219cef406c5dc76e79f8" prot="public" virt="non-virtual"><scope>Marmot::Utilities::StateVarVectorManager::StateVarEntryDefinition</scope><name>length</name></member>
+      <member refid="struct_marmot_1_1_utilities_1_1_state_var_vector_manager_1_1_state_var_entry_definition_1adece4cf23b206825c2e6fe7ed88651a0" prot="public" virt="non-virtual"><scope>Marmot::Utilities::StateVarVectorManager::StateVarEntryDefinition</scope><name>name</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

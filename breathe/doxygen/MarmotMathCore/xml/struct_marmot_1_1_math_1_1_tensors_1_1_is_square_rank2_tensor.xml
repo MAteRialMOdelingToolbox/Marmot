@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_math_1_1_tensors_1_1_is_square_rank2_tensor" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Math::Tensors::IsSquareRank2Tensor</compoundname>
+    <includes refid="_marmot_fastor_tensor_basics_8h" local="no">MarmotFastorTensorBasics.h</includes>
+    <templateparamlist>
+      <param>
+        <type>size_t...</type>
+        <declname>Rest</declname>
+        <defname>Rest</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_math_1_1_tensors_1_1_is_square_rank2_tensor_1a357ae7cfa81b24936703e73e397d997c" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>bool</type>
+        <definition>bool Marmot::Math::Tensors::IsSquareRank2Tensor&lt; Rest &gt;::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <qualifiedname>Marmot::Math::Tensors::IsSquareRank2Tensor::value</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+<para><computeroutput>true</computeroutput> if the pack describes a square rank-2 tensor (never, for the general case). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="52" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_math_1_1_tensors_1_1_is_square_rank2_tensor_1a27c5a286c2b86dac5b61a272c7c22003" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>size_t</type>
+        <definition>size_t Marmot::Math::Tensors::IsSquareRank2Tensor&lt; Rest &gt;::dim</definition>
+        <argsstring></argsstring>
+        <name>dim</name>
+        <qualifiedname>Marmot::Math::Tensors::IsSquareRank2Tensor::dim</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>Dimension of the square rank-2 tensor (0 for the general case). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="59" column="29" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Compile-time trait to detect whether a pack of tensor dimensions describes a square rank-2 tensor. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Rest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>the pack of tensor dimensions</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Used to gate symmetry-exploiting code paths in numerical/automatic differentiation routines, which are only meaningful for a rank-2 tensor argument with equal dimensions (e.g. the right Cauchy-Green tensor). </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="50" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="50" bodyend="60"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_math_1_1_tensors_1_1_is_square_rank2_tensor_1a27c5a286c2b86dac5b61a272c7c22003" prot="public" virt="non-virtual"><scope>Marmot::Math::Tensors::IsSquareRank2Tensor</scope><name>dim</name></member>
+      <member refid="struct_marmot_1_1_math_1_1_tensors_1_1_is_square_rank2_tensor_1a357ae7cfa81b24936703e73e397d997c" prot="public" virt="non-virtual"><scope>Marmot::Math::Tensors::IsSquareRank2Tensor</scope><name>value</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

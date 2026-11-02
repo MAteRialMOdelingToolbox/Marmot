@@ -1,0 +1,889 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</compoundname>
+    <derivedcompoundref refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper" prot="public" virt="non-virtual">Marmot::Materials::GradientEnhancedHughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;</derivedcompoundref>
+    <includes refid="_marmot_material_gradient_enhanced_finite_strain_8h" local="no">MarmotMaterialGradientEnhancedFiniteStrain.h</includes>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response" prot="public">Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse</innerclass>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli" prot="public">Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli</innerclass>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation" prot="public">Marmot::Materials::MaterialGradientEnhancedFiniteStrain::Deformation</innerclass>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment" prot="public">Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement</innerclass>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a095f07a58e87c74ffd626d0732294e1c" prot="protected" static="no" mutable="no">
+        <type>const double *</type>
+        <definition>const double* Marmot::Materials::MaterialGradientEnhancedFiniteStrain::materialProperties</definition>
+        <argsstring></argsstring>
+        <name>materialProperties</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::materialProperties</qualifiedname>
+        <briefdescription>
+<para>Pointer to the array of material property values. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="67" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a89c9f71f954ab6ba0013ff0a5ac69cad" prot="protected" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::Materials::MaterialGradientEnhancedFiniteStrain::nMaterialProperties</definition>
+        <argsstring></argsstring>
+        <name>nMaterialProperties</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::nMaterialProperties</qualifiedname>
+        <briefdescription>
+<para>Number of material property values. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="68" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1acdabeb84fc8d5b7730be4e28cf1c8d99" prot="public" static="no" mutable="no">
+        <type>const int</type>
+        <definition>const int Marmot::Materials::MaterialGradientEnhancedFiniteStrain::materialNumber</definition>
+        <argsstring></argsstring>
+        <name>materialNumber</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::materialNumber</qualifiedname>
+        <briefdescription>
+<para>Unique identifier for this material instance. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="71" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a561608dc98d88f02e52d1859740e419e" prot="public" static="no" mutable="no">
+        <type>Marmot::Utilities::StateLayoutDynamic</type>
+        <definition>Marmot::Utilities::StateLayoutDynamic Marmot::Materials::MaterialGradientEnhancedFiniteStrain::stateLayout</definition>
+        <argsstring></argsstring>
+        <name>stateLayout</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::stateLayout</qualifiedname>
+        <briefdescription>
+<para>Layout of the state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="96" column="43" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="96" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a8cc0121be163f6e2b72570b00724b50b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::MaterialGradientEnhancedFiniteStrain</definition>
+        <argsstring>(const double *matProperties_, int nMaterialProperties_, int materialNumber_)</argsstring>
+        <name>MaterialGradientEnhancedFiniteStrain</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::MaterialGradientEnhancedFiniteStrain</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>matProperties_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaterialProperties_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>materialNumber_</declname>
+        </param>
+        <briefdescription>
+<para>Construct a <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain" kindref="compound">MaterialGradientEnhancedFiniteStrain</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">matProperties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the array of material property values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nMaterialProperties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of material property values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialNumber_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unique identifier for this material instance. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="79" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="79" bodyend="84"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a5adeade2cb79589df1202309101da9fb" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Marmot::Materials::MaterialGradientEnhancedFiniteStrain::~MaterialGradientEnhancedFiniteStrain</definition>
+        <argsstring>()=default</argsstring>
+        <name>~MaterialGradientEnhancedFiniteStrain</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::~MaterialGradientEnhancedFiniteStrain</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Instances are owned through base-class pointers (the std::unique_ptr held by the gradient-enhanced elements and material points), so destroying a derived object through a base pointer with a non-virtual destructor would be undefined behaviour. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="93" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ada7d86063af4b725df799823973719c2" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computeStress</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, AlgorithmicModuli&lt; 3 &gt; &amp;tangents, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement) const =0</argsstring>
+        <name>computeStress</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computeStress</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a1f2f41007df08e89c39bdd745d2e79f0">computeStress</reimplementedby>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli" kindref="compound">AlgorithmicModuli</ref>&lt; 3 &gt; &amp;</type>
+          <declname>tangents</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation" kindref="compound">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+<para>Update the material state. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">response</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse</ref> instance; carries the state variables in and the Kirchhoff stress, local driving force and nonlocal radius out. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">tangents</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli" kindref="compound">AlgorithmicModuli</ref> instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">deformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation" kindref="compound">Deformation</ref> gradient and nonlocal field. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current time and time increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="197" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1aa9de1795520d1dbe3b60e686f7e4536d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computeStressExplicit</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement) const</argsstring>
+        <name>computeStressExplicit</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computeStressExplicit</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a3af7293ee72c03d31ef81d36d3bcfb04">computeStressExplicit</reimplementedby>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation" kindref="compound">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+<para>Explicit version of computeStress, for explicit time integration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">response</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse</ref> instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">deformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation" kindref="compound">Deformation</ref> gradient and nonlocal field. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current time and time increment.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>The default implementation calls <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ada7d86063af4b725df799823973719c2" kindref="member">computeStress()</ref> and discards the algorithmic tangent. Derived classes may override it for efficiency. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="211" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="211" bodyend="217"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a93d05216a532a38c0651341cd155bb57" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computeStress</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, AlgorithmicModuli&lt; 3 &gt; &amp;tangents, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement, const std::tuple&lt; double, double, double &gt; &amp;eigenDeformation) const</argsstring>
+        <name>computeStress</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computeStress</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a93d05216a532a38c0651341cd155bb57">computeStress</reimplementedby>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli" kindref="compound">AlgorithmicModuli</ref>&lt; 3 &gt; &amp;</type>
+          <declname>tangents</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation" kindref="compound">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <param>
+          <type>const std::tuple&lt; double, double, double &gt; &amp;</type>
+          <declname>eigenDeformation</declname>
+        </param>
+        <briefdescription>
+<para>Update the material state, accounting for an eigen deformation (e.g. a geostatic stress state). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">response</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse</ref> instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">tangents</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli" kindref="compound">AlgorithmicModuli</ref> instance; scaled to the eigen deformation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">deformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation" kindref="compound">Deformation</ref> gradient and nonlocal field. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current time and time increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">eigenDeformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Eigen deformation in each spatial direction. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="227" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a2586f5ecd2d47bebcbe2e98c10c71128" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, AlgorithmicModuli&lt; 3 &gt; &amp;algorithmicModuli, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement) const</argsstring>
+        <name>computePlaneStrain</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain</qualifiedname>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli" kindref="compound">AlgorithmicModuli</ref>&lt; 3 &gt; &amp;</type>
+          <declname>algorithmicModuli</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation" kindref="compound">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+<para>Compute the response under plane strain conditions. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">response</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse</ref> instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">algorithmicModuli</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli" kindref="compound">AlgorithmicModuli</ref> instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">deformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation" kindref="compound">Deformation</ref> gradient and nonlocal field. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current time and time increment.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>Plane strain is the 3D response of a deformation gradient whose out-of-plane entries are those of the identity, so the default implementation forwards to <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ada7d86063af4b725df799823973719c2" kindref="member">computeStress()</ref>. Materials that need to do more may override it. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="244" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a2e1248af0e1d3f4ea5707226b0af6786" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, AlgorithmicModuli&lt; 3 &gt; &amp;algorithmicModuli, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement, const std::tuple&lt; double, double, double &gt; &amp;eigenDeformation) const</argsstring>
+        <name>computePlaneStrain</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrain</qualifiedname>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli" kindref="compound">AlgorithmicModuli</ref>&lt; 3 &gt; &amp;</type>
+          <declname>algorithmicModuli</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation" kindref="compound">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <param>
+          <type>const std::tuple&lt; double, double, double &gt; &amp;</type>
+          <declname>eigenDeformation</declname>
+        </param>
+        <briefdescription>
+<para>Compute the response under plane strain conditions, accounting for an eigen deformation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">response</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse</ref> instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">algorithmicModuli</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli" kindref="compound">AlgorithmicModuli</ref> instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">deformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation" kindref="compound">Deformation</ref> gradient and nonlocal field. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current time and time increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">eigenDeformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Eigen deformation in each spatial direction. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="257" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a19be83d43104508436f6ed8f7d757201" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrainExplicit</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement) const</argsstring>
+        <name>computePlaneStrainExplicit</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computePlaneStrainExplicit</qualifiedname>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation" kindref="compound">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+<para>Explicit version of computePlaneStrain, for explicit time integration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">response</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse</ref> instance. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">deformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation" kindref="compound">Deformation</ref> gradient and nonlocal field. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current time and time increment.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>The default implementation calls <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a2586f5ecd2d47bebcbe2e98c10c71128" kindref="member">computePlaneStrain()</ref> and discards the algorithmic tangent. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="271" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="271" bodyend="277"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1af37d4ff0a7ffdf18e3730ff94ad6b6ae" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>std::tuple&lt; double, double, double &gt;</type>
+        <definition>std::tuple&lt; double, double, double &gt; Marmot::Materials::MaterialGradientEnhancedFiniteStrain::findEigenDeformationForEigenStress</definition>
+        <argsstring>(const std::tuple&lt; double, double, double &gt; &amp;initialGuess, const std::tuple&lt; double, double, double &gt; &amp;eigenStress, double *stateVars) const</argsstring>
+        <name>findEigenDeformationForEigenStress</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::findEigenDeformationForEigenStress</qualifiedname>
+        <param>
+          <type>const std::tuple&lt; double, double, double &gt; &amp;</type>
+          <declname>initialGuess</declname>
+        </param>
+        <param>
+          <type>const std::tuple&lt; double, double, double &gt; &amp;</type>
+          <declname>eigenStress</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Find the eigen deformation that corresponds to a given eigen stress. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">initialGuess</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Initial guess for the eigen deformation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">eigenStress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Target eigen normal stress components. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>State variable array used during the iteration; restored afterwards. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Eigen deformation corresponding to the given eigen stress.</para>
+</simplesect>
+Used for geostatic stress initialization. The nonlocal field is held at zero throughout, which is what an undamaged initial state means. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="289" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a42eaa5a0682ef65cb573b3f7bb511df7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>Marmot::Utilities::StateView</type>
+        <definition>virtual Marmot::Utilities::StateView Marmot::Materials::MaterialGradientEnhancedFiniteStrain::getStateView</definition>
+        <argsstring>(const std::string &amp;stateName, double *stateVars) const</argsstring>
+        <name>getStateView</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::getStateView</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1adf686e5ccfa934124bb24224f99adf53">getStateView</reimplementedby>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>stateName</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Get a view of a state variable. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">stateName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the state variable. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Marmot::Utilities::StateView giving access to the requested state variable. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="300" column="42" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="300" bodyend="303"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a5709f75fabfad0c5efe1e740ae97c6b7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>int</type>
+        <definition>virtual int Marmot::Materials::MaterialGradientEnhancedFiniteStrain::getNumberOfRequiredStateVars</definition>
+        <argsstring>() const</argsstring>
+        <name>getNumberOfRequiredStateVars</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::getNumberOfRequiredStateVars</qualifiedname>
+        <briefdescription>
+<para>Number of state variables this material requires. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Total size of the state layout. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="309" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="309" bodyend="309"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a7c70693345d5d7633e8d474424fd8067" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::MaterialGradientEnhancedFiniteStrain::initializeYourself</definition>
+        <argsstring>(double *stateVars, int nStateVars)</argsstring>
+        <name>initializeYourself</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::initializeYourself</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1af14aac8627c9fdfa808d2a1ddb36686d">initializeYourself</reimplementedby>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nStateVars</declname>
+        </param>
+        <briefdescription>
+<para>Initialize the state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nStateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of state variables.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>The default implementation zeroes them. A material whose pristine state is not all-zero (a stored deformation gradient, say) must override this. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="319" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="319" bodyend="323"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ac9d0f522e6fe382762642be915ae0bb0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>double</type>
+        <definition>virtual double Marmot::Materials::MaterialGradientEnhancedFiniteStrain::getDensity</definition>
+        <argsstring>(const double *stateVars) const =0</argsstring>
+        <name>getDensity</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::getDensity</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a408f702387d046f631ff8932da7b5b01">getDensity</reimplementedby>
+        <param>
+          <type>const double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Mass density in the reference configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Mass density. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="330" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ae454eee4e3524d003f8b80adf9218dd5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::MaterialGradientEnhancedFiniteStrain::setCharacteristicElementLength</definition>
+        <argsstring>(double length)</argsstring>
+        <name>setCharacteristicElementLength</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::setCharacteristicElementLength</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>length</declname>
+        </param>
+        <briefdescription>
+<para>Assign the characteristic element length. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">length</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Characteristic element length at the considered evaluation point.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="note"><para>A gradient-enhanced material regularises through its own nonlocal radius and normally has no use for a mesh-derived length, so this does nothing by default. It exists for materials that wrap a small-strain model which reads one. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="340" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="340" bodyend="340"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1af7001dc0458d90af2e84410a45e4330e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>double</type>
+        <definition>virtual double Marmot::Materials::MaterialGradientEnhancedFiniteStrain::getNonlocalViscosity</definition>
+        <argsstring>(const double *stateVars) const</argsstring>
+        <name>getNonlocalViscosity</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::getNonlocalViscosity</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a028bfe156fae6dcb619fff52c27426d6">getNonlocalViscosity</reimplementedby>
+        <param>
+          <type>const double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Nonlocal viscosity <formula id="46">$ \eta $</formula> of the nonlocal balance. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Nonlocal viscosity, the damping coefficient of the damped hyperbolic (or, with zero micro-inertia, parabolic) balance   <formula id="47">\[  m_k\,\ddot{\bar{N}} + \eta\,\dot{\bar{N}} + \bar{N} - c\,\nabla^2\bar{N} = L(\boldsymbol{F},\,\bar{N}) .
+\]</formula></para>
+</simplesect>
+<simplesect kind="note"><para>Zero by default, which is the quasi-static model. Unlike the small-strain Marmot::Materials::MaterialGradientEnhancedHypoElastic::getNonlocalViscosity, which is pure virtual, this default lets existing derived classes keep compiling without answering it. Appended at the very end of the class, after every other virtual, together with <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1abb62aebab0d8114c5075fe3ef88b2f4f" kindref="member">getNonlocalMicroInertia()</ref> below, so that a stale-library ABI mismatch is confined to callers of these two methods. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="357" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="357" bodyend="357"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1abb62aebab0d8114c5075fe3ef88b2f4f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>double</type>
+        <definition>virtual double Marmot::Materials::MaterialGradientEnhancedFiniteStrain::getNonlocalMicroInertia</definition>
+        <argsstring>(const double *stateVars) const</argsstring>
+        <name>getNonlocalMicroInertia</name>
+        <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::getNonlocalMicroInertia</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1ab3c24fa75abac26b59cb33a08213df6b">getNonlocalMicroInertia</reimplementedby>
+        <param>
+          <type>const double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Nonlocal micro-inertia <formula id="48">$ m_k $</formula> of the nonlocal balance. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Nonlocal micro-inertia, in units of [time]^2.</para>
+</simplesect>
+<simplesect kind="note"><para>The default is zero, the quasi-static model in which the nonlocal field is first order in time and integrated by its viscosity alone <ndash/> the behaviour of every material that predates this method. A derived class opts in to the damped hyperbolic balance by overriding this, mirroring Marmot::Materials::MaterialGradientEnhancedHypoElastic::getNonlocalMicroInertia. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="369" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="369" bodyend="369"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Abstract base class for gradient-enhanced (implicit-gradient) materials in the finite strain regime. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The finite-strain counterpart of Marmot::Materials::MaterialGradientEnhancedHypoElastic: the displacement field is coupled to a single scalar nonlocal field <formula id="37">$ \bar{N} $</formula> governed by the additional balance equation    <formula id="38">\[  \bar{N} - c\,\nabla^2\bar{N} = L(\boldsymbol{F},\,\bar{N}),
+  \qquad c = R^2,
+\]</formula> where <formula id="39">$ L $</formula> is the local driving force reported in <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a788bdf258fbbb72baff159576be54b9c" kindref="member">ConstitutiveResponse::L</ref> and <formula id="40">$ R $</formula> the nonlocal radius reported in <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1afecf7e095b79a965a0370dbf7e2f05bf" kindref="member">ConstitutiveResponse::nonLocalRadius</ref>.</para>
+<para><simplesect kind="note"><para><bold>The nonlocal balance is formulated in the material (reference) configuration.</bold> Consumers take the gradients with respect to <formula id="41">$ \boldsymbol{X} $</formula> and integrate over the reference volume, so <formula id="42">$ c $</formula> is a material constant and is neither pushed forward nor weighted by <formula id="43">$ J $</formula>. The stress, in contrast, is the Kirchhoff stress <formula id="44">$ \boldsymbol{\tau} = J\,\boldsymbol{\sigma} $</formula>, which is what integrating against the reference volume requires.</para>
+</simplesect>
+<simplesect kind="note"><para>The interface carries a <bold>single</bold> scalar nonlocal field, unlike the small-strain Marmot::Materials::MaterialGradientEnhancedHypoElastic, which is templated on the number of nonlocal variables. It also has **no slot for <formula id="45">$ \partial c/\partial\bar{N} $</formula>**: a material with damage-dependent interactions (see MarmotDecreasingInteractions) can report the current <formula id="42">$ c $</formula>, but not its derivative, so its consistent tangent would be incomplete.</para>
+</simplesect>
+<simplesect kind="note"><para>Member names, struct shapes and call signatures are fixed by the consumers of this interface (GradientEnhancedFiniteStrainMaterialPoint / ...Particle / ...DisplacementElement), including the six-argument <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse</ref> constructor. </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Marmot::Materials::GradientEnhancedHughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;</label>
+        <link refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</label>
+        <link refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain"/>
+      </node>
+    </inheritancegraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="64" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" bodystart="64" bodyend="370"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a2586f5ecd2d47bebcbe2e98c10c71128" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>computePlaneStrain</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a2e1248af0e1d3f4ea5707226b0af6786" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>computePlaneStrain</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a19be83d43104508436f6ed8f7d757201" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>computePlaneStrainExplicit</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ada7d86063af4b725df799823973719c2" prot="public" virt="pure-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>computeStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a93d05216a532a38c0651341cd155bb57" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>computeStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1aa9de1795520d1dbe3b60e686f7e4536d" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>computeStressExplicit</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1af37d4ff0a7ffdf18e3730ff94ad6b6ae" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>findEigenDeformationForEigenStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ac9d0f522e6fe382762642be915ae0bb0" prot="public" virt="pure-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>getDensity</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1abb62aebab0d8114c5075fe3ef88b2f4f" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>getNonlocalMicroInertia</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1af7001dc0458d90af2e84410a45e4330e" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>getNonlocalViscosity</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a5709f75fabfad0c5efe1e740ae97c6b7" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>getNumberOfRequiredStateVars</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a42eaa5a0682ef65cb573b3f7bb511df7" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>getStateView</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a7c70693345d5d7633e8d474424fd8067" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>initializeYourself</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a8cc0121be163f6e2b72570b00724b50b" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>MaterialGradientEnhancedFiniteStrain</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1acdabeb84fc8d5b7730be4e28cf1c8d99" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>materialNumber</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a095f07a58e87c74ffd626d0732294e1c" prot="protected" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>materialProperties</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a89c9f71f954ab6ba0013ff0a5ac69cad" prot="protected" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>nMaterialProperties</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ae454eee4e3524d003f8b80adf9218dd5" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>setCharacteristicElementLength</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a561608dc98d88f02e52d1859740e419e" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>stateLayout</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a5adeade2cb79589df1202309101da9fb" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</scope><name>~MaterialGradientEnhancedFiniteStrain</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

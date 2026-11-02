@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions" kind="struct" language="C++" prot="protected">
+    <compoundname>Marmot::Discretizations::Meshfree::GenericSDIParticle::SubDomainShapeFunctions</compoundname>
+    <includes refid="_generic_s_d_i_particle_8h" local="no">GenericSDIParticle.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions_1ac6cd4a721a95565d7036ea98e493ec0d" prot="public" static="no" mutable="no">
+        <type>Eigen::MatrixXd</type>
+        <definition>Eigen::MatrixXd Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;::SubDomainShapeFunctions::N</definition>
+        <argsstring></argsstring>
+        <name>N</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::GenericSDIParticle::SubDomainShapeFunctions::N</qualifiedname>
+        <briefdescription>
+<para>Shape function values at the subdomain center (1 x nNodes). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="117" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions_1a4db8963ea55b1d14b2b7f3d687d6ae1e" prot="public" static="no" mutable="no">
+        <type>Eigen::MatrixXd</type>
+        <definition>Eigen::MatrixXd Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;::SubDomainShapeFunctions::dN_dY</definition>
+        <argsstring></argsstring>
+        <name>dN_dY</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::GenericSDIParticle::SubDomainShapeFunctions::dN_dY</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Smoothed shape function gradients with respect to the reference intermediate coordinates (nDim x nNodes). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="118" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="118" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions_1a6078ac44241053e545849ae53b6555b9" prot="public" static="no" mutable="no">
+        <type>Eigen::MatrixXd</type>
+        <definition>Eigen::MatrixXd Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;::SubDomainShapeFunctions::T</definition>
+        <argsstring></argsstring>
+        <name>T</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::GenericSDIParticle::SubDomainShapeFunctions::T</qualifiedname>
+        <briefdescription>
+<para>Test function values (initially same as N). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="121" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="121" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions_1a8bbdcc38540858379e62dfa388189854" prot="public" static="no" mutable="no">
+        <type>Eigen::MatrixXd</type>
+        <definition>Eigen::MatrixXd Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;::SubDomainShapeFunctions::dT_dY</definition>
+        <argsstring></argsstring>
+        <name>dT_dY</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::GenericSDIParticle::SubDomainShapeFunctions::dT_dY</qualifiedname>
+        <briefdescription>
+<para>Test function gradients (dN_dY plus the VCI correction). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="122" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="122" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions_1ab11e67607fc861806e477b5914aa927d" prot="public" static="no" mutable="no">
+        <type>Eigen::VectorXd</type>
+        <definition>Eigen::VectorXd Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;::SubDomainShapeFunctions::P</definition>
+        <argsstring></argsstring>
+        <name>P</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::GenericSDIParticle::SubDomainShapeFunctions::P</qualifiedname>
+        <briefdescription>
+<para>VCI monomial basis at the subdomain center. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="124" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="124" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions_1ac9400063835e3e95718b5cce7f4de595" prot="public" static="no" mutable="no">
+        <type>Eigen::MatrixXd</type>
+        <definition>Eigen::MatrixXd Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;::SubDomainShapeFunctions::P_Gradient</definition>
+        <argsstring></argsstring>
+        <name>P_Gradient</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::GenericSDIParticle::SubDomainShapeFunctions::P_Gradient</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Gradient of the VCI monomial basis at the subdomain center (nConstraints x nDim). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="125" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="125" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Shape functions, test functions and VCI basis of one subdomain. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" line="116" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/GenericSDIParticle.h" bodystart="116" bodyend="127"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions_1a4db8963ea55b1d14b2b7f3d687d6ae1e" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle::SubDomainShapeFunctions</scope><name>dN_dY</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions_1a8bbdcc38540858379e62dfa388189854" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle::SubDomainShapeFunctions</scope><name>dT_dY</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions_1ac6cd4a721a95565d7036ea98e493ec0d" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle::SubDomainShapeFunctions</scope><name>N</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions_1ab11e67607fc861806e477b5914aa927d" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle::SubDomainShapeFunctions</scope><name>P</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions_1ac9400063835e3e95718b5cce7f4de595" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle::SubDomainShapeFunctions</scope><name>P_Gradient</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1_1_sub_domain_shape_functions_1a6078ac44241053e545849ae53b6555b9" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::GenericSDIParticle::SubDomainShapeFunctions</scope><name>T</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

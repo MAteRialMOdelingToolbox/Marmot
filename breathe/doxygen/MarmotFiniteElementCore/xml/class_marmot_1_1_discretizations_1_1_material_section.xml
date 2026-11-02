@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_discretizations_1_1_material_section" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Discretizations::MaterialSection</compoundname>
+    <includes refid="_marmot_element_property_8h" local="no">MarmotElementProperty.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_material_section_1ad76fce105997b5f27e784e5b9df435c4" prot="public" static="no" mutable="no">
+        <type>const std::string</type>
+        <definition>const std::string Marmot::Discretizations::MaterialSection::materialName</definition>
+        <argsstring></argsstring>
+        <name>materialName</name>
+        <qualifiedname>Marmot::Discretizations::MaterialSection::materialName</qualifiedname>
+        <briefdescription>
+<para>Name identifying the material model. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementProperty.h" line="46" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementProperty.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_material_section_1a7015aa4ccd63061a1c1018bc5888880a" prot="public" static="no" mutable="no">
+        <type>const double *</type>
+        <definition>const double* Marmot::Discretizations::MaterialSection::materialProperties</definition>
+        <argsstring></argsstring>
+        <name>materialProperties</name>
+        <qualifiedname>Marmot::Discretizations::MaterialSection::materialProperties</qualifiedname>
+        <briefdescription>
+<para>Pointer to the array of material property values. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementProperty.h" line="47" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementProperty.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_material_section_1a98a57b1ac61905943d2dfb136b46b4ba" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::MaterialSection::nMaterialProperties</definition>
+        <argsstring></argsstring>
+        <name>nMaterialProperties</name>
+        <qualifiedname>Marmot::Discretizations::MaterialSection::nMaterialProperties</qualifiedname>
+        <briefdescription>
+<para>Number of material property values. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementProperty.h" line="48" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementProperty.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_material_section_1ae939e35adb00d410cf7d49a3b2a5e48e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Discretizations::MaterialSection::MaterialSection</definition>
+        <argsstring>(const std::string materialName, const double *materialProperties, int nMaterialProperties)</argsstring>
+        <name>MaterialSection</name>
+        <qualifiedname>Marmot::Discretizations::MaterialSection::MaterialSection</qualifiedname>
+        <param>
+          <type>const std::string</type>
+          <declname>materialName</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>materialProperties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaterialProperties</declname>
+        </param>
+        <briefdescription>
+<para>Construct a <ref refid="class_marmot_1_1_discretizations_1_1_material_section" kindref="compound">MaterialSection</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">materialName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name identifying the material model. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the array of material property values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nMaterialProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of material property values. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementProperty.h" line="56" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementProperty.h" bodystart="56" bodyend="59"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Structure to hold material section properties. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This structure is used to define a material section with its code and properties, allowing for flexible material definitions in finite element analysis. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementProperty.h" line="44" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotElementProperty.h" bodystart="44" bodyend="60"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_section_1ad76fce105997b5f27e784e5b9df435c4" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::MaterialSection</scope><name>materialName</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_section_1a7015aa4ccd63061a1c1018bc5888880a" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::MaterialSection</scope><name>materialProperties</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_section_1ae939e35adb00d410cf7d49a3b2a5e48e" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::MaterialSection</scope><name>MaterialSection</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_section_1a98a57b1ac61905943d2dfb136b46b4ba" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::MaterialSection</scope><name>nMaterialProperties</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

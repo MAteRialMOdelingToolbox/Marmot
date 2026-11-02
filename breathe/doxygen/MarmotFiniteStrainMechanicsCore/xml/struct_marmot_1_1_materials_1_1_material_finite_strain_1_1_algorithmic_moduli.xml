@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_algorithmic_moduli" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Materials::MaterialFiniteStrain::AlgorithmicModuli</compoundname>
+    <includes refid="_marmot_material_finite_strain_8h" local="no">MarmotMaterialFiniteStrain.h</includes>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>nDim</declname>
+        <defname>nDim</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_algorithmic_moduli_1a90974cbb6db291743996dfc0a18b2803" prot="public" static="no" mutable="no">
+        <type>Fastor::Tensor&lt; double, nDim, nDim, nDim, nDim &gt;</type>
+        <definition>Fastor::Tensor&lt; double, nDim, nDim, nDim, nDim &gt; Marmot::Materials::MaterialFiniteStrain::AlgorithmicModuli&lt; nDim &gt;::dTau_dF</definition>
+        <argsstring></argsstring>
+        <name>dTau_dF</name>
+        <qualifiedname>Marmot::Materials::MaterialFiniteStrain::AlgorithmicModuli::dTau_dF</qualifiedname>
+        <briefdescription>
+<para>tangent operator w.r.t. deformation gradient </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="123" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="123" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Algorithmic tangent moduli of a material. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of spatial dimensions (2 or 3).</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Contains the algorithmic tangent moduli <formula id="0">$\frac{\partial \boldsymbol{\tau}}{\partial \boldsymbol{F}}$</formula> with respect to the deformation gradient <formula id="1">$\boldsymbol{F}$</formula>. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="122" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" bodystart="122" bodyend="124"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_algorithmic_moduli_1a90974cbb6db291743996dfc0a18b2803" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrain::AlgorithmicModuli</scope><name>dTau_dF</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

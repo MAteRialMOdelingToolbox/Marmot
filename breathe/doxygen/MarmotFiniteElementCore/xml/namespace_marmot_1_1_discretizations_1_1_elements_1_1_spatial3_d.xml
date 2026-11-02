@@ -1,0 +1,216 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_discretizations_1_1_elements_1_1_spatial3_d" kind="namespace" language="C++">
+    <compoundname>Marmot::Discretizations::Elements::Spatial3D</compoundname>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_spatial3_d_1_1_tetra4">Marmot::Discretizations::Elements::Spatial3D::Tetra4</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_spatial3_d_1_1_tetra10">Marmot::Discretizations::Elements::Spatial3D::Tetra10</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_spatial3_d_1_1_hexa8">Marmot::Discretizations::Elements::Spatial3D::Hexa8</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_spatial3_d_1_1_hexa20">Marmot::Discretizations::Elements::Spatial3D::Hexa20</innernamespace>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="_marmot_finite_element_8h_1acced8db72ef45a1a0f02f786879986fe" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Elements::Spatial3D::nDim</definition>
+        <argsstring></argsstring>
+        <name>nDim</name>
+        <qualifiedname>Marmot::Discretizations::Elements::Spatial3D::nDim</qualifiedname>
+        <initializer>= 3</initializer>
+        <briefdescription>
+<para>Number of spatial dimensions for 3-D elements. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="268" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="268" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_finite_element_8h_1a46f83e0a7b274d110993cfa6e56471ca" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Elements::Spatial3D::voigtSize</definition>
+        <argsstring></argsstring>
+        <name>voigtSize</name>
+        <qualifiedname>Marmot::Discretizations::Elements::Spatial3D::voigtSize</qualifiedname>
+        <initializer>= 6</initializer>
+        <briefdescription>
+<para>Voigt vector size for 3-D elements (σ₁₁, σ₂₂, σ₃₃, σ₁₂, σ₁₃, σ₂₃). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="269" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="269" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_finite_element_8h_1aa28158a1d9415be34717b1ba28da4fc9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nNodes</declname>
+            <defname>nNodes</defname>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; double, <ref refid="_marmot_finite_element_8h_1a46f83e0a7b274d110993cfa6e56471ca" kindref="member">voigtSize</ref>, nNodes *<ref refid="_marmot_finite_element_8h_1acced8db72ef45a1a0f02f786879986fe" kindref="member">nDim</ref> &gt;</type>
+        <definition>Eigen::Matrix&lt; double, voigtSize, nNodes *nDim &gt; Marmot::Discretizations::Elements::Spatial3D::B</definition>
+        <argsstring>(const Eigen::Matrix&lt; double, nDim, nNodes &gt; &amp;dNdX)</argsstring>
+        <name>B</name>
+        <qualifiedname>Marmot::Discretizations::Elements::Spatial3D::B</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; double, <ref refid="_marmot_finite_element_8h_1acced8db72ef45a1a0f02f786879986fe" kindref="member">nDim</ref>, nNodes &gt; &amp;</type>
+          <declname>dNdX</declname>
+        </param>
+        <briefdescription>
+<para>Compute the 3-D linear B-operator from physical derivatives. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of element nodes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dNdX</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Physical shape function derivatives (3 × nNodes). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>B-operator matrix of size 6 × (3 * nNodes). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="278" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="278" bodyend="304"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_finite_element_8h_1abd7034cfe51ca84c9ddaec4183b58157" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nNodes</declname>
+            <defname>nNodes</defname>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; double, <ref refid="_marmot_finite_element_8h_1a46f83e0a7b274d110993cfa6e56471ca" kindref="member">voigtSize</ref>, nNodes *<ref refid="_marmot_finite_element_8h_1acced8db72ef45a1a0f02f786879986fe" kindref="member">nDim</ref> &gt;</type>
+        <definition>Eigen::Matrix&lt; double, voigtSize, nNodes *nDim &gt; Marmot::Discretizations::Elements::Spatial3D::B_bar</definition>
+        <argsstring>(const Eigen::Matrix&lt; double, nDim, nNodes &gt; &amp;dNdX, const Eigen::Matrix&lt; double, nDim, nNodes &gt; &amp;dNdX0)</argsstring>
+        <name>B_bar</name>
+        <qualifiedname>Marmot::Discretizations::Elements::Spatial3D::B_bar</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; double, <ref refid="_marmot_finite_element_8h_1acced8db72ef45a1a0f02f786879986fe" kindref="member">nDim</ref>, nNodes &gt; &amp;</type>
+          <declname>dNdX</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix&lt; double, <ref refid="_marmot_finite_element_8h_1acced8db72ef45a1a0f02f786879986fe" kindref="member">nDim</ref>, nNodes &gt; &amp;</type>
+          <declname>dNdX0</declname>
+        </param>
+        <briefdescription>
+<para>Compute the 3-D B̄-operator using the B-bar method (Hughes, 1980). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of element nodes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dNdX</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Physical shape function derivatives at the integration point. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dNdX0</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Physical shape function derivatives at the element centre. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Modified B-operator matrix of size 6 × (3 * nNodes). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="314" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="314" bodyend="373"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_finite_element_8h_1a61adfd9c45c9e9dbc746af5574b7aeec" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nNodes</declname>
+            <defname>nNodes</defname>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; double, <ref refid="_marmot_finite_element_8h_1a46f83e0a7b274d110993cfa6e56471ca" kindref="member">voigtSize</ref>, nNodes *<ref refid="_marmot_finite_element_8h_1acced8db72ef45a1a0f02f786879986fe" kindref="member">nDim</ref> &gt;</type>
+        <definition>Eigen::Matrix&lt; double, voigtSize, nNodes *nDim &gt; Marmot::Discretizations::Elements::Spatial3D::BGreen</definition>
+        <argsstring>(const Eigen::Matrix&lt; double, nDim, nNodes &gt; &amp;dNdX, const Eigen::Matrix3d &amp;F)</argsstring>
+        <name>BGreen</name>
+        <qualifiedname>Marmot::Discretizations::Elements::Spatial3D::BGreen</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; double, <ref refid="_marmot_finite_element_8h_1acced8db72ef45a1a0f02f786879986fe" kindref="member">nDim</ref>, nNodes &gt; &amp;</type>
+          <declname>dNdX</declname>
+        </param>
+        <param>
+          <type>const Eigen::Matrix3d &amp;</type>
+          <declname>F</declname>
+        </param>
+        <briefdescription>
+<para>Compute the 3-D Green–Lagrange B-operator. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of element nodes. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dNdX</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Physical shape function derivatives (3 × nNodes). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>3×3 deformation gradient. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Green–Lagrange B-operator of size 6 × (3 * nNodes). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="383" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="383" bodyend="416"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="267" column="3"/>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,7 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot/MarmotMeshfreeKernelFunction.h" alt="" coords="366,101,800,149"/>
+<area shape="rect" id="node2" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunctionBSpline2ndOrderBoxed.h" alt="" coords="5,5,1441,53"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="691,53,631,95,629,90,685,55"/>
+<area shape="rect" id="node3" title="cmath" alt="" coords="824,101,904,149"/>
+<area shape="poly" id="edge2" title="include" alt="" coords="759,51,819,93,814,92,758,57"/>
+</map>

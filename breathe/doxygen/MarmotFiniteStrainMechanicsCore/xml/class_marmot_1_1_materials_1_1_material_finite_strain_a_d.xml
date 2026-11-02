@@ -1,0 +1,251 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_materials_1_1_material_finite_strain_a_d" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Marmot::Materials::MaterialFiniteStrainAD</compoundname>
+    <basecompoundref refid="class_marmot_1_1_materials_1_1_material_finite_strain" prot="public" virt="non-virtual">Marmot::Materials::MaterialFiniteStrain</basecompoundref>
+    <includes refid="_marmot_material_finite_strain_a_d_8h" local="no">MarmotMaterialFiniteStrainAD.h</includes>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d" prot="public">Marmot::Materials::MaterialFiniteStrainAD::ConstitutiveResponseAD</innerclass>
+    <innerclass refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_deformation_a_d" prot="public">Marmot::Materials::MaterialFiniteStrainAD::DeformationAD</innerclass>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a42e8d9177586bfd4453ab8b3cd8d4fbf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Materials::MaterialFiniteStrainAD::MaterialFiniteStrainAD</definition>
+        <argsstring>(const double *matProperties_, int nMaterialProperties_, int materialNumber_)</argsstring>
+        <name>MaterialFiniteStrainAD</name>
+        <qualifiedname>Marmot::Materials::MaterialFiniteStrainAD::MaterialFiniteStrainAD</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>matProperties_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaterialProperties_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>materialNumber_</declname>
+        </param>
+        <briefdescription>
+<para>Construct a <ref refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d" kindref="compound">MaterialFiniteStrainAD</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">matProperties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the array of material property values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nMaterialProperties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of material property values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialNumber_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unique identifier for this material instance. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="51" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="51" bodyend="54"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a37382eee90c677698043712cdde0aa3b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::MaterialFiniteStrainAD::computeStress</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, AlgorithmicModuli&lt; 3 &gt; &amp;tangents, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement) const override</argsstring>
+        <name>computeStress</name>
+        <qualifiedname>Marmot::Materials::MaterialFiniteStrainAD::computeStress</qualifiedname>
+        <reimplements refid="class_marmot_1_1_materials_1_1_material_finite_strain_1af123a7f01a7534862ec08e82fcc0a443">computeStress</reimplements>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_algorithmic_moduli" kindref="compound">AlgorithmicModuli</ref>&lt; 3 &gt; &amp;</type>
+          <declname>tangents</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_deformation" kindref="compound">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_time_increment" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+<para>Compute Kirchhoff stress and algorithmic tangent using automatic differentiation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This method overrides <ref refid="class_marmot_1_1_materials_1_1_material_finite_strain_1af123a7f01a7534862ec08e82fcc0a443" kindref="member">MaterialFiniteStrain::computeStress()</ref> and provides a generic AD-based implementation for finite strain material models.</para>
+<para>The child class must implement <ref refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a1f54b4133455a51f197dc3793866e082" kindref="member">computeStressAD()</ref>, which evaluates the constitutive response (Kirchhoff stress and any state updates) for a dual-valued deformation gradient. This base implementation then uses Marmot::Math::Differentiation::Automatic::dF_dT() to:<itemizedlist>
+<listitem><para>compute the Kirchhoff stress <formula id="2">$\boldsymbol{\tau}$</formula> for the given deformation, and</para>
+</listitem><listitem><para>compute the consistent algorithmic tangent <formula id="102">$\partial \boldsymbol{\tau} / \partial \boldsymbol{F}$</formula>.</para>
+</listitem></itemizedlist>
+</para>
+<para><simplesect kind="note"><para>Automatic differentiation requires multiple seeded evaluations of <ref refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a1f54b4133455a51f197dc3793866e082" kindref="member">computeStressAD()</ref>. Therefore, the state variables are reset to their &quot;old&quot; values before each seeded call. Implementations of <ref refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a1f54b4133455a51f197dc3793866e082" kindref="member">computeStressAD()</ref> must update state based only on primal values of the dual inputs and must not branch or accumulate history based on derivative components.</para>
+</simplesect>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">response</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Constitutive response container (stress, density, energy, state variables). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">tangents</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Algorithmic moduli container; filled with <formula id="103">$\partial \tau / \partial F$</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">deformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_deformation" kindref="compound">Deformation</ref> state (deformation gradient <formula id="1">$\boldsymbol{F}$</formula>). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time increment information for rate-/history-dependent models. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="128" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="128" bodyend="172"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a1f54b4133455a51f197dc3793866e082" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Materials::MaterialFiniteStrainAD::computeStressAD</definition>
+        <argsstring>(ConstitutiveResponseAD&lt; 3 &gt; &amp;response, const DeformationAD&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement) const =0</argsstring>
+        <name>computeStressAD</name>
+        <qualifiedname>Marmot::Materials::MaterialFiniteStrainAD::computeStressAD</qualifiedname>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d" kindref="compound">ConstitutiveResponseAD</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_deformation_a_d" kindref="compound">DeformationAD</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_time_increment" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+<para>Compute the constitutive response in automatic differentiation (AD) form. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>This pure virtual function must be implemented by derived material models to compute the Kirchhoff stress tensor in <computeroutput>response.tau</computeroutput> for a given deformation in dual number form. The base class uses this AD formulation together with Marmot::Math::Differentiation::Automatic utilities to obtain algorithmic tangents by differentiating the stress with respect to the deformation gradient.</para>
+<para>Implementations may update the provided state variables via <computeroutput>response.stateVars</computeroutput> according to the given time increment.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">response</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Constitutive response in AD form (3D), with <computeroutput>response.tau</computeroutput> to be filled with the computed Kirchhoff stress. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">deformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_deformation" kindref="compound">Deformation</ref> state in AD form (3D), providing the deformation gradient <formula id="1">$\boldsymbol{F}$</formula> as dual numbers. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current time increment information for the constitutive update. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="192" column="18"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Base class for finite strain materials using automatic differentiation. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class extends <ref refid="class_marmot_1_1_materials_1_1_material_finite_strain" kindref="compound">MaterialFiniteStrain</ref> by providing an interface for computing stresses and algorithmic tangent moduli using automatic differentiation. Derived material models implement <ref refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a1f54b4133455a51f197dc3793866e082" kindref="member">computeStressAD()</ref> to supply the AD-based constitutive response. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Marmot::Materials::MaterialFiniteStrain</label>
+        <link refid="class_marmot_1_1_materials_1_1_material_finite_strain"/>
+      </node>
+      <node id="1">
+        <label>Marmot::Materials::MaterialFiniteStrainAD</label>
+        <link refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Marmot::Materials::MaterialFiniteStrain</label>
+        <link refid="class_marmot_1_1_materials_1_1_material_finite_strain"/>
+      </node>
+      <node id="1">
+        <label>Marmot::Materials::MaterialFiniteStrainAD</label>
+        <link refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" line="42" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainAD.h" bodystart="42" bodyend="195"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a99c3482792aa78a09d730eef27da2e6f" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>computePlaneStrain</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a5a4e6bf35af6720e3f3b2c2b530f1ff5" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>computePlaneStrain</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a3bf3cf62925f7d455ec4c90174a45bd8" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>computePlaneStrainExplicit</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a04ae82bf6b55b7406402e244056d5c0e" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>computePlaneStrainExplicit</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a7b3edcf9103bce626425fbdfec9c019c" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>computePlaneStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1afb9af3285d55f00fb3983a9111ad1b7a" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>computePlaneStressExplicit</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a37382eee90c677698043712cdde0aa3b" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>computeStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1aa32851be167d4234e11182aeeb7a32e4" prot="public" virt="virtual" ambiguityscope="Marmot::Materials::MaterialFiniteStrain::"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>computeStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a1f54b4133455a51f197dc3793866e082" prot="public" virt="pure-virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>computeStressAD</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a6e355595e26df823bae850e03aeacd85" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>computeStressExplicit</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a1a44e61c30c6a18bf204a0375305ddfc" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>findEigenDeformationForEigenStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1ae4d2733228b5cacd8b39cb26c8914b8f" prot="public" virt="pure-virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>getDensity</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a85661aaa97a64688d360ac90b3042b4a" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>getMaximumWaveSpeed</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a7ad41a3c35aead0da007341ff2152ef4" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>getNumberOfRequiredStateVars</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1af07a0556b7f723dd0c1fc47fa33a128e" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>getStateView</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1ab63e79f271a977946637c538eb4bb1ae" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>initializeYourself</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a498833e4f8ad9e29a09f34f1a2a53491" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>MaterialFiniteStrain</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a42e8d9177586bfd4453ab8b3cd8d4fbf" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>MaterialFiniteStrainAD</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a635f47030436563d4f79acef59a6aeef" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>materialNumber</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a41f788bb3c393b08b579f708e4a6a187" prot="protected" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>materialProperties</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a8db69ec3edfc5f28c6cce88da5224eb7" prot="protected" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>nMaterialProperties</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a3985323a46813f83562a8e8980a6329a" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>setCharacteristicElementLength</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a9923b35e9bef5a429caadca4c3d3d74a" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>stateLayout</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a5fb9244be5f3982e58414b96667973f3" prot="public" virt="virtual"><scope>Marmot::Materials::MaterialFiniteStrainAD</scope><name>~MaterialFiniteStrain</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_discretizations_1_1_elements_1_1_e_a_s" kind="namespace" language="C++">
+    <compoundname>Marmot::Discretizations::Elements::EAS</compoundname>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="_marmot_enhanced_assumed_strain_8h_1aeb8c09af8fe44b119e8b83d3f0769899" prot="public" static="no" strong="no">
+        <type></type>
+        <name>EASType</name>
+        <qualifiedname>Marmot::Discretizations::Elements::EAS::EASType</qualifiedname>
+        <enumvalue id="_marmot_enhanced_assumed_strain_8h_1aeb8c09af8fe44b119e8b83d3f0769899a5c93f8759b6b03fe95f21fa9533e7b68" prot="public">
+          <name>DeBorstEAS2</name>
+          <briefdescription>
+<para>De Borst 2-parameter EAS. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_enhanced_assumed_strain_8h_1aeb8c09af8fe44b119e8b83d3f0769899a527445aebcf0ff3a37ad7d0813e218a2" prot="public">
+          <name>DeBorstEAS2_P2</name>
+          <briefdescription>
+<para>De Borst 2-parameter EAS, variant P2. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_enhanced_assumed_strain_8h_1aeb8c09af8fe44b119e8b83d3f0769899a61a7b2157f2c16aa2c4ef6619a58ac2b" prot="public">
+          <name>EAS3</name>
+          <briefdescription>
+<para>3-parameter EAS </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_enhanced_assumed_strain_8h_1aeb8c09af8fe44b119e8b83d3f0769899ad7da6f409e03c38e4a8bf8873ed2b3e4" prot="public">
+          <name>DeBorstEAS6b</name>
+          <briefdescription>
+<para>De Borst 6-parameter EAS, variant b. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_enhanced_assumed_strain_8h_1aeb8c09af8fe44b119e8b83d3f0769899a7730e8d73fa1ed43f91e8a6153c97f18" prot="public">
+          <name>DeBorstEAS9</name>
+          <briefdescription>
+<para>De Borst 9-parameter EAS. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_enhanced_assumed_strain_8h_1aeb8c09af8fe44b119e8b83d3f0769899a3c813af5b1296341685acf001434c246" prot="public">
+          <name>SimoRifaiEAS5</name>
+          <briefdescription>
+<para>Simo–Rifai 5-parameter EAS. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_enhanced_assumed_strain_8h_1aeb8c09af8fe44b119e8b83d3f0769899aea17b11092dfaf3882b2845bcdadf5fe" prot="public">
+          <name>SimoRifaiEAS4</name>
+          <briefdescription>
+<para>Simo–Rifai 4-parameter EAS. </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Enhanced Assumed Strain (EAS) element enrichment utilities. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Functions and enumerations for constructing the EAS interpolation matrices used in incompatible-mode and enhanced assumed strain finite element formulations (de Borst, Simo &amp; Rifai variants).</para>
+<para>Supported EAS enrichment types. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" line="40" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" bodystart="40" bodyend="48"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_enhanced_assumed_strain_8h_1ad75f2d610c4d50a5b73f4da94c7df125" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::MatrixXd</type>
+        <definition>Eigen::MatrixXd Marmot::Discretizations::Elements::EAS::F</definition>
+        <argsstring>(const Eigen::MatrixXd &amp;J)</argsstring>
+        <name>F</name>
+        <qualifiedname>Marmot::Discretizations::Elements::EAS::F</qualifiedname>
+        <param>
+          <type>const Eigen::MatrixXd &amp;</type>
+          <declname>J</declname>
+        </param>
+        <briefdescription>
+<para>Computes the EAS transformation matrix from the element Jacobian. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>J</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element" kindref="compound">Element</ref> Jacobian matrix at the reference point. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Transformation matrix <formula id="70">$\mathbf{F}$</formula> for mapping EAS modes. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" line="55" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" declline="55" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_enhanced_assumed_strain_8h_1a93500e70f7207800ac09455a70b2b54a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::MatrixXd</type>
+        <definition>Eigen::MatrixXd Marmot::Discretizations::Elements::EAS::EASInterpolation</definition>
+        <argsstring>(EASType type, const Eigen::VectorXd &amp;xi)</argsstring>
+        <name>EASInterpolation</name>
+        <qualifiedname>Marmot::Discretizations::Elements::EAS::EASInterpolation</qualifiedname>
+        <param>
+          <type>EASType</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>xi</declname>
+        </param>
+        <briefdescription>
+<para>Evaluates the EAS interpolation matrix at a given natural coordinate. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>EAS enrichment type. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>xi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Natural coordinates of the integration point. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>EAS interpolation matrix <formula id="71">$\mathbf{M}$</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" line="63" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" declline="63" declcolumn="19"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotEnhancedAssumedStrain.h" line="28" column="1"/>
+  </compounddef>
+</doxygen>

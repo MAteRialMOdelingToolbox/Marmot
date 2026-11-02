@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Materials::MaterialPointSolverHypoElastic::Increment</compoundname>
+    <includes refid="_marmot_material_point_solver_hypo_elastic_8h" local="no">MarmotMaterialPointSolverHypoElastic.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment_1a17cf50df16582a2162e92ea2fa36e007" prot="public" static="no" mutable="no">
+        <type>Marmot::Math::Vector6d</type>
+        <definition>Marmot::Math::Vector6d Marmot::Materials::MaterialPointSolverHypoElastic::Increment::strainIncrement</definition>
+        <argsstring></argsstring>
+        <name>strainIncrement</name>
+        <qualifiedname>Marmot::Materials::MaterialPointSolverHypoElastic::Increment::strainIncrement</qualifiedname>
+        <briefdescription>
+<para>Strain increment for the increment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="83" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment_1a3ef26a2051c1684315a8b7562565ec2e" prot="public" static="no" mutable="no">
+        <type>Marmot::Math::Vector6d</type>
+        <definition>Marmot::Math::Vector6d Marmot::Materials::MaterialPointSolverHypoElastic::Increment::stressIncrement</definition>
+        <argsstring></argsstring>
+        <name>stressIncrement</name>
+        <qualifiedname>Marmot::Materials::MaterialPointSolverHypoElastic::Increment::stressIncrement</qualifiedname>
+        <briefdescription>
+<para>Stress increment for the increment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="84" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="84" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment_1a4d75ae77aa87dd6e0218993ea1151765" prot="public" static="no" mutable="no">
+        <type>Eigen::Vector&lt; bool, 6 &gt;</type>
+        <definition>Eigen::Vector&lt; bool, 6 &gt; Marmot::Materials::MaterialPointSolverHypoElastic::Increment::isStrainComponentControlled</definition>
+        <argsstring></argsstring>
+        <name>isStrainComponentControlled</name>
+        <qualifiedname>Marmot::Materials::MaterialPointSolverHypoElastic::Increment::isStrainComponentControlled</qualifiedname>
+        <briefdescription>
+<para>Flags to indicate which strain components are controlled. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="86" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment_1a9f425602fa196410dbf574660b3587ef" prot="public" static="no" mutable="no">
+        <type>Eigen::Vector&lt; bool, 6 &gt;</type>
+        <definition>Eigen::Vector&lt; bool, 6 &gt; Marmot::Materials::MaterialPointSolverHypoElastic::Increment::isStressComponentControlled</definition>
+        <argsstring></argsstring>
+        <name>isStressComponentControlled</name>
+        <qualifiedname>Marmot::Materials::MaterialPointSolverHypoElastic::Increment::isStressComponentControlled</qualifiedname>
+        <briefdescription>
+<para>Flags to indicate which stress components are controlled. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="88" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="88" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment_1a6c6731f256cc6473460dd1f052a904fa" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Materials::MaterialPointSolverHypoElastic::Increment::timeOld</definition>
+        <argsstring></argsstring>
+        <name>timeOld</name>
+        <qualifiedname>Marmot::Materials::MaterialPointSolverHypoElastic::Increment::timeOld</qualifiedname>
+        <briefdescription>
+<para>Old time at the beginning of the increment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="89" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment_1a3f9a801620e616cfe80b2aab53fb1477" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Materials::MaterialPointSolverHypoElastic::Increment::dT</definition>
+        <argsstring></argsstring>
+        <name>dT</name>
+        <qualifiedname>Marmot::Materials::MaterialPointSolverHypoElastic::Increment::dT</qualifiedname>
+        <briefdescription>
+<para>Time step size for the increment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="90" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Struct to define a loading increment. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Each increment contains strain and stress increments, control flags, time information, and iteration limits. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" line="82" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialPointSolverHypoElastic.h" bodystart="82" bodyend="91"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment_1a3f9a801620e616cfe80b2aab53fb1477" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialPointSolverHypoElastic::Increment</scope><name>dT</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment_1a4d75ae77aa87dd6e0218993ea1151765" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialPointSolverHypoElastic::Increment</scope><name>isStrainComponentControlled</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment_1a9f425602fa196410dbf574660b3587ef" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialPointSolverHypoElastic::Increment</scope><name>isStressComponentControlled</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment_1a17cf50df16582a2162e92ea2fa36e007" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialPointSolverHypoElastic::Increment</scope><name>strainIncrement</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment_1a3ef26a2051c1684315a8b7562565ec2e" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialPointSolverHypoElastic::Increment</scope><name>stressIncrement</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_hypo_elastic_1_1_increment_1a6c6731f256cc6473460dd1f052a904fa" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialPointSolverHypoElastic::Increment</scope><name>timeOld</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
   <compounddef id="_marmot_geostatic_stress_8h" kind="file" language="C++">
     <compoundname>MarmotGeostaticStress.h</compoundname>
     <includes local="yes">Marmot/MarmotJournal.h</includes>
@@ -27,7 +27,8 @@
       </node>
     </incdepgraph>
     <innernamespace refid="namespace_marmot">Marmot</innernamespace>
-    <innernamespace refid="namespace_marmot_1_1_geostatic_stress">Marmot::GeostaticStress</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics">Marmot::ContinuumMechanics</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_geostatic_stress">Marmot::ContinuumMechanics::GeostaticStress</innernamespace>
     <briefdescription>
 <para>Utilities for evaluating geostatic (gravity-induced) initial stress states. </para>
     </briefdescription>
@@ -67,12 +68,12 @@
 <codeline lineno="30"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;functional&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="31"><highlight class="normal"></highlight></codeline>
 <codeline lineno="39"><highlight class="normal"></highlight></codeline>
-<codeline lineno="40"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::GeostaticStress<sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::ContinuumMechanics::GeostaticStress<sp/>{</highlight></codeline>
 <codeline lineno="41"><highlight class="normal"></highlight></codeline>
-<codeline lineno="52" refid="_marmot_geostatic_stress_8h_1a30a10dd2f8cea9d588fcf7dc4cefdf7e" refkind="member"><highlight class="normal"><sp/><sp/>std::tuple&lt;<sp/>double,<sp/>double,<sp/>double<sp/>&gt;<sp/><ref refid="_marmot_geostatic_stress_8h_1a30a10dd2f8cea9d588fcf7dc4cefdf7e" kindref="member">getGeostaticStressFromLinearDistribution</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>geostaticStressDefintion,</highlight></codeline>
+<codeline lineno="52" refid="_marmot_geostatic_stress_8h_1a4a6f17b3f38c65b54506b401d8dcdb93" refkind="member"><highlight class="normal"><sp/><sp/>std::tuple&lt;<sp/>double,<sp/>double,<sp/>double<sp/>&gt;<sp/><ref refid="_marmot_geostatic_stress_8h_1a4a6f17b3f38c65b54506b401d8dcdb93" kindref="member">getGeostaticStressFromLinearDistribution</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>geostaticStressDefintion,</highlight></codeline>
 <codeline lineno="53"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>coordinate_y<sp/>);</highlight></codeline>
 <codeline lineno="54"><highlight class="normal"></highlight></codeline>
-<codeline lineno="55"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::GeostaticStress</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::ContinuumMechanics::GeostaticStress</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotGeostaticStress.h"/>
   </compounddef>

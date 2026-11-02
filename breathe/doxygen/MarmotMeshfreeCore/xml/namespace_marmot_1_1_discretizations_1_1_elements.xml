@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_discretizations_1_1_elements" kind="namespace" language="C++">
+    <compoundname>Marmot::Discretizations::Elements</compoundname>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element" prot="public">Marmot::Discretizations::Elements::BSplineGeometryElement</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineGeometryElement.h" line="32" column="1"/>
+  </compounddef>
+</doxygen>

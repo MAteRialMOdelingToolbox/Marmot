@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_geostatic_stress" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::GeostaticStress</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_geostatic_stress_8h_1a4a6f17b3f38c65b54506b401d8dcdb93" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::tuple&lt; double, double, double &gt;</type>
+        <definition>std::tuple&lt; double, double, double &gt; Marmot::ContinuumMechanics::GeostaticStress::getGeostaticStressFromLinearDistribution</definition>
+        <argsstring>(const double *geostaticStressDefintion, double coordinate_y)</argsstring>
+        <name>getGeostaticStressFromLinearDistribution</name>
+        <qualifiedname>Marmot::ContinuumMechanics::GeostaticStress::getGeostaticStressFromLinearDistribution</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>geostaticStressDefintion</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>coordinate_y</declname>
+        </param>
+        <briefdescription>
+<para>Computes the three principal geostatic stress components at a given depth. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The stress distribution is assumed to vary linearly with the vertical coordinate <computeroutput>coordinate_y</computeroutput> as specified by <computeroutput>geostaticStressDefintion</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>geostaticStressDefintion</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the array defining the linear distribution. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>coordinate_y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Vertical coordinate of the evaluation point. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Tuple of three stress components (vertical, horizontal-1, horizontal-2). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotGeostaticStress.h" line="52" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotGeostaticStress.h" declline="52" declcolumn="14"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotGeostaticStress.h" line="40" column="1"/>
+  </compounddef>
+</doxygen>

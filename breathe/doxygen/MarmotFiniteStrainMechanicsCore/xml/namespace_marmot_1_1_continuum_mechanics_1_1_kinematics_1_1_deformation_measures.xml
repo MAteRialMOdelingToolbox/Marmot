@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_kinematics_1_1_deformation_measures" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::Kinematics::DeformationMeasures</compoundname>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_kinematics_1_1_deformation_measures_1_1_first_order">Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder</innernamespace>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_deformation_measures_8h_1ae088cc912993b82eeb403fe647cd464f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>Math::Tensors::FastorTensors::Tensor33t&lt; T &gt;</type>
+        <definition>Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen</definition>
+        <argsstring>(const Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;F)</argsstring>
+        <name>rightCauchyGreen</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen</qualifiedname>
+        <param>
+          <type>const Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>F</declname>
+        </param>
+        <briefdescription>
+<para>Computes the right Cauchy-Green tensor <formula id="5">$\boldsymbol{C}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type (e.g., float, double, autodiff::dual) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Deformation gradient tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The right Cauchy-Green tensor</para>
+</simplesect>
+The right Cauchy-Green deformation tensor is defined as:   <formula id="6">\[  \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F}
+\]</formula> or in index notation:   <formula id="7">\[  C_{IJ} = F_{iI} F_{iJ}
+\]</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="47" column="43" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="47" bodyend="53"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_deformation_measures_8h_1a80e7ab74d311a953ef2dbfef716db48f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>Math::Tensors::FastorTensors::Tensor33t&lt; T &gt;</type>
+        <definition>Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::leftCauchyGreen</definition>
+        <argsstring>(const Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;F)</argsstring>
+        <name>leftCauchyGreen</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::leftCauchyGreen</qualifiedname>
+        <param>
+          <type>const Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>F</declname>
+        </param>
+        <briefdescription>
+<para>Computes the left Cauchy-Green tensor <formula id="8">$\boldsymbol{b}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type (e.g., float, double, autodiff::dual) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Deformation gradient tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The left Cauchy-Green tensor b</para>
+</simplesect>
+The left Cauchy-Green deformation tensor is defined as:   <formula id="9">\[  \boldsymbol{b} = \boldsymbol{F} \boldsymbol{F}^T
+\]</formula> or in index notation:   <formula id="10">\[  b_{ij} = F_{iI} F_{jI}
+\]</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="70" column="43" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="70" bodyend="76"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="30" column="1"/>
+  </compounddef>
+</doxygen>

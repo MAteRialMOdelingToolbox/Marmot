@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_microplane" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::Microplane</compoundname>
+    <innerclass refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split" prot="public">Marmot::ContinuumMechanics::Microplane::NTSplit</innerclass>
+    <innerclass refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split" prot="public">Marmot::ContinuumMechanics::Microplane::VDSplit</innerclass>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization">Marmot::ContinuumMechanics::Microplane::Discretization</innernamespace>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>QuadratureScheme</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::QuadratureScheme</qualifiedname>
+        <enumvalue id="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1aa3ee44169c0b6e8abb8ac9dcf9e66387" prot="public">
+          <name>N21Symmetric</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1a2dbd8d9006476dc43f411faf9d7c5b5a" prot="public">
+          <name>N21Asymmetric</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1ad507ae69e2ed722564be87aefdd92200" prot="public">
+          <name>N28</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1a84d39f94cdd3846ac46307a3fec88124" prot="public">
+          <name>N37</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1ac29ddb0083b9eadb1a52772aebe779c7" prot="public">
+          <name>N61</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>The available hard-coded microplane quadrature schemes (integration point orientations and weights on the unit hemisphere) according to Bažant (1986). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>QuadratureScheme::N21Symmetric and QuadratureScheme::N21Asymmetric both discretize the hemisphere into 21 microplanes but differ in whether the orientations exhibit orthogonal symmetries (Bažant 1986, Table 1 vs. Table 4); QuadratureScheme::N28, QuadratureScheme::N37 and QuadratureScheme::N61 use 28, 37 and 61 microplanes, respectively. See <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1a2a7293ad18bb1ddbceaa8b6b8d345c61" kindref="member">nqpFromScheme</ref> for the corresponding number of microplanes and Discretization::get() for the hard-coded orientations/weights. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="52" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="52" bodyend="52"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1a2a7293ad18bb1ddbceaa8b6b8d345c61" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t Marmot::ContinuumMechanics::Microplane::nqpFromScheme</definition>
+        <argsstring>(QuadratureScheme scheme)</argsstring>
+        <name>nqpFromScheme</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::nqpFromScheme</qualifiedname>
+        <param>
+          <type><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1" kindref="member">QuadratureScheme</ref></type>
+          <declname>scheme</declname>
+        </param>
+        <briefdescription>
+<para>Returns the number of microplanes <formula id="310">$ n_{qp} $</formula> (integration points on the unit hemisphere) for a given <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1" kindref="member">QuadratureScheme</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>scheme</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The quadrature scheme. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Number of microplanes <formula id="311">$ n_{qp} \in \{21, 28, 37, 61\} $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="60" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="60" bodyend="66"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>This namespace provides the hard-coded microplane quadrature schemes (orientations and integration weights on the unit hemisphere) and the two kinematic constraints built on top of them: the volumetric-deviatoric (V-D) split (<ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split" kindref="compound">VDSplit</ref>) and the normal-tangential (N-T) split (<ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split" kindref="compound">NTSplit</ref>). Both classes construct their projection tensors from the same discretization (Discretization::get()) and provide the corresponding virtual-work homogenization back to the macroscopic stress/tangent. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="33" column="1"/>
+  </compounddef>
+</doxygen>

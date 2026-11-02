@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_math_1_1_differentiation" kind="namespace" language="C++">
+    <compoundname>Marmot::Math::Differentiation</compoundname>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_automatic">Marmot::Math::Differentiation::Automatic</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_numerical">Marmot::Math::Differentiation::Numerical</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotAutomaticDifferentiation.h" line="31" column="1"/>
+  </compounddef>
+</doxygen>

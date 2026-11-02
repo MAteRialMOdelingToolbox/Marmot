@@ -1,0 +1,9 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotExceptions.h" alt="" coords="5,5,1072,53"/>
+<area shape="rect" id="node2" title="Marmot/MarmotPortability.h" alt="" coords="163,101,458,149"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="484,53,382,98,380,93,479,55"/>
+<area shape="rect" id="node3" title="stdexcept" alt="" coords="481,101,596,149"/>
+<area shape="poly" id="edge2" title="include" alt="" coords="540,52,541,88,536,84,537,56"/>
+<area shape="rect" id="node4" title="string" alt="" coords="619,101,698,149"/>
+<area shape="poly" id="edge3" title="include" alt="" coords="569,51,620,92,614,91,567,56"/>
+</map>

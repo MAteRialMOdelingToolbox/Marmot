@@ -1,0 +1,24 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h" alt="" coords="605,5,1693,53"/>
+<area shape="rect" id="node2" title="Marmot/MarmotVoigt.h" alt="" coords="1026,101,1272,149"/>
+<area shape="poly" id="edge3" title="include" alt="" coords="1143,52,1142,88,1138,84,1139,56"/>
+<area shape="rect" id="node6" title="Marmot/MarmotMath.h" alt="" coords="5,197,253,245"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="1024,57,268,197,267,192,1023,51"/>
+<area shape="rect" id="node8" title="Marmot/MarmotTypedefs.h" alt="" coords="1646,197,1929,245"/>
+<area shape="poly" id="edge2" title="include" alt="" coords="1228,51,1697,192,1692,193,1227,57"/>
+<area shape="poly" id="edge12" title="include" alt="" coords="1155,99,1156,71,1160,67,1159,103"/>
+<area shape="rect" id="node3" title="Fastor/Fastor.h" alt="" coords="277,197,442,245"/>
+<area shape="poly" id="edge4" title="include" alt="" coords="1023,135,768,159,614,177,458,200,457,194,614,171,767,154,1028,134"/>
+<area shape="rect" id="node4" title="Marmot/MarmotFastorTensorBasics.h" alt="" coords="467,197,850,245"/>
+<area shape="poly" id="edge5" title="include" alt="" coords="1029,150,796,197,795,191,1024,150"/>
+<area shape="rect" id="node5" title="Marmot/MarmotJournal.h" alt="" coords="874,197,1139,245"/>
+<area shape="poly" id="edge6" title="include" alt="" coords="1116,149,1055,191,1053,186,1111,151"/>
+<area shape="poly" id="edge7" title="include" alt="" coords="1023,134,688,159,480,177,268,200,268,194,480,172,688,153,1028,133"/>
+<area shape="rect" id="node7" title="Marmot/MarmotTensor.h" alt="" coords="1163,197,1423,245"/>
+<area shape="poly" id="edge8" title="include" alt="" coords="1186,147,1248,190,1242,188,1184,153"/>
+<area shape="poly" id="edge9" title="include" alt="" coords="1273,142,1633,197,1628,197,1272,147"/>
+<area shape="rect" id="node9" title="array" alt="" coords="1446,197,1518,245"/>
+<area shape="poly" id="edge10" title="include" alt="" coords="1265,147,1345,167,1434,197,1429,197,1343,172,1265,153"/>
+<area shape="rect" id="node10" title="utility" alt="" coords="1543,197,1622,245"/>
+<area shape="poly" id="edge11" title="include" alt="" coords="1273,140,1394,161,1531,198,1526,197,1392,166,1272,145"/>
+</map>

@@ -1,81 +1,94 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.13.2" xml:lang="en-US">
-  <compound refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment" kind="struct"><name>MarmotMaterialGeneralGradientEnhancedHypoElastic::increment</name>
-    <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment_1a18e8b4e9484800fbd170785a010188a2" kind="variable"><name>dStrain</name></member>
-    <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment_1acdb2d6d26b8c0a6ccbf6bf574e199728" kind="variable"><name>K</name></member>
-    <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment_1a741c44d4b298033b331b34b6860b9f6a" kind="variable"><name>dK</name></member>
-    <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment_1acad6d61b954c7009a1e72a41dcc3625b" kind="variable"><name>time</name></member>
-    <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1increment_1a7003006f9ada450f558730d12585e4e5" kind="variable"><name>dT</name></member>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.18.0" xml:lang="en-US">
+  <compound refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1increment" kind="struct"><name>Marmot::Materials::MaterialGradientEnhancedHypoElastic::increment</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1increment_1ada1a84de55a5731da646fa4142d68611" kind="variable"><name>dStrain</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1increment_1ae68727dffdb025531b9e8e3adb7f8c51" kind="variable"><name>K</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1increment_1aa1d5459f3184f28444ba281dad3527a9" kind="variable"><name>dK</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1increment_1a48de293623cdcb998cb4e79f73a3ae0f" kind="variable"><name>time</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1increment_1a4e86a7c6e9ac03c8a2953127f9b8f293" kind="variable"><name>dT</name></member>
   </compound>
-  <compound refid="class_marmot_material_general_gradient_enhanced_hypo_elastic" kind="class"><name>MarmotMaterialGeneralGradientEnhancedHypoElastic</name>
-    <member refid="class_marmot_material_general_gradient_enhanced_hypo_elastic_1ad26551fda1395c4e8f53e538258cb47e" kind="variable"><name>materialProperties</name></member>
-    <member refid="class_marmot_material_general_gradient_enhanced_hypo_elastic_1ad2d41c7ec72a89d0f8a702703a82c1e0" kind="variable"><name>nMaterialProperties</name></member>
-    <member refid="class_marmot_material_general_gradient_enhanced_hypo_elastic_1a62983a18a691619438086b9c2d35470c" kind="variable"><name>materialNumber</name></member>
-    <member refid="class_marmot_material_general_gradient_enhanced_hypo_elastic_1a5c996337237851ae5024cb01e48a2ef3" kind="variable"><name>stateLayout</name></member>
-    <member refid="class_marmot_material_general_gradient_enhanced_hypo_elastic_1a1897789e048d5af75c613f7e40127ed1" kind="function"><name>MarmotMaterialGeneralGradientEnhancedHypoElastic</name></member>
-    <member refid="class_marmot_material_general_gradient_enhanced_hypo_elastic_1a9860f796ad26818200a0cd86b24be056" kind="function"><name>computeStress</name></member>
-    <member refid="class_marmot_material_general_gradient_enhanced_hypo_elastic_1afefe46fe7c052828dace64090184b879" kind="function"><name>computeStressExplicit</name></member>
-    <member refid="class_marmot_material_general_gradient_enhanced_hypo_elastic_1a71dbdef7e55e3bd6ae6528835340cdd0" kind="function"><name>computePlaneStress</name></member>
-    <member refid="class_marmot_material_general_gradient_enhanced_hypo_elastic_1ac260cf28dacd2955d9f460fb07c9ee95" kind="function"><name>computePlaneStressExplicit</name></member>
-    <member refid="class_marmot_material_general_gradient_enhanced_hypo_elastic_1a9e067dc3bdc7caa4dbcdb772c3c4ee8d" kind="function"><name>getStateView</name></member>
-    <member refid="class_marmot_material_general_gradient_enhanced_hypo_elastic_1ac0486ec1b5aca6c8fe49ea09d52d1321" kind="function"><name>getNumberOfRequiredStateVars</name></member>
-    <member refid="class_marmot_material_general_gradient_enhanced_hypo_elastic_1a67f5c938713e82005b738eb3b7db51c9" kind="function"><name>initializeYourself</name></member>
-    <member refid="class_marmot_material_general_gradient_enhanced_hypo_elastic_1a88fc70f64291d9d14728c71eb0f520c8" kind="function"><name>getDensity</name></member>
-    <member refid="class_marmot_material_general_gradient_enhanced_hypo_elastic_1af6693d84f5cc934a58bf2560699b6bf9" kind="function"><name>getMaximumWaveSpeed</name></member>
-    <member refid="class_marmot_material_general_gradient_enhanced_hypo_elastic_1a2579559cc7a0357a90f57ecb6f0e3fc0" kind="function"><name>getNonlocalViscosity</name></member>
+  <compound refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic" kind="class"><name>Marmot::Materials::MaterialGradientEnhancedHypoElastic</name>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1aa9b138ba6cbc1b5eac11ed9971a66519" kind="variable"><name>materialProperties</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a5956b1941e81c9d34e3bb5bad1af7d9c" kind="variable"><name>nMaterialProperties</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1ad3c6c463214c15f4ef5108b7dbd43916" kind="variable"><name>materialNumber</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a292069e33c0dfd408d075467e17c0285" kind="variable"><name>stateLayout</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1acd63729577df97b5a1d12e9b6d53fe5e" kind="function"><name>MaterialGradientEnhancedHypoElastic</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a9dd22983c1ac2340a93bade95f6600cc" kind="function"><name>~MaterialGradientEnhancedHypoElastic</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a529b14adf84be4b6c03afbff4c9dae60" kind="function"><name>computeStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a24808aff0f4185c6b79999cd6b7a0836" kind="function"><name>computeStressExplicit</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1af143fe02e2bcf20c6d0d8e3d261ac1a2" kind="function"><name>computePlaneStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a3c9143b9874b645876a50163f9b21de0" kind="function"><name>computePlaneStressExplicit</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a4db5989f7c86b10e028bf60b983c3864" kind="function"><name>getStateView</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a0aa6da1d5707c25bb2b9d7d2b7bf10c3" kind="function"><name>getNumberOfRequiredStateVars</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a35cdb83ebb601b7b13deff91883da5c5" kind="function"><name>initializeYourself</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1ad0bf6c9492e4e21169d041e9edfd27f4" kind="function"><name>getDensity</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a8445226619877e88c5585b8aeef68966" kind="function"><name>getMaximumWaveSpeed</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a1fd4767d460a703a468874096bf84c68" kind="function"><name>getNonlocalViscosity</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a1974ed923cec85c33bab176657715eca" kind="function"><name>getNonlocalMicroInertia</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1a02d4287128ff572100f81724263961d7" kind="function"><name>validatedNonlocalMicroInertia</name></member>
   </compound>
-  <compound refid="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory" kind="class"><name>MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory</name>
-    <member refid="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1a12a7b98a0b925293ea72fbff352a1415" kind="typedef"><name>materialFactoryFunction</name></member>
-    <member refid="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1a2e9adacedad3ecfb18bab8d248997b48" kind="typedef"><name>MaterialFactoryMap</name></member>
-    <member refid="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1a449a5bd49894cce208fadc5fb691f4db" kind="function"><name>MarmotMaterialGeneralGradientEnhancedHypoElasticFactory</name></member>
-    <member refid="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1ad94d5030b1ac48eb7937a27d97fe2eb2" kind="function"><name>createMaterial</name></member>
-    <member refid="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1ae6e949b3db0a092a3743fd000b50473d" kind="function"><name>registerMaterial</name></member>
-    <member refid="class_marmot_library_1_1_marmot_material_general_gradient_enhanced_hypo_elastic_factory_1ae0f67a6740b90cebb1de990dc04f1cc1" kind="function"><name>materialFactoryFunctionByName</name></member>
+  <compound refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_hypo_elastic_factory" kind="class"><name>Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory</name>
+    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_hypo_elastic_factory_1ae8f904ee71042c39fb25f342a76c3741" kind="typedef"><name>materialFactoryFunction</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_hypo_elastic_factory_1a30b904ab647f1194cc5dd0f4e1638601" kind="typedef"><name>MaterialFactoryMap</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_hypo_elastic_factory_1ae428a602376aeb870e8995fe52a37130" kind="function"><name>MaterialGradientEnhancedHypoElasticFactory</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_hypo_elastic_factory_1abcb4196137833b1c23f9ce08a4716fe5" kind="function"><name>createMaterial</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_hypo_elastic_factory_1af85214f852dd0f6cb7f6cc83fd932da6" kind="function"><name>createMaterial</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_hypo_elastic_factory_1ab2ec9500778f30987b6dd6ff9231336d" kind="function"><name>registerMaterial</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_hypo_elastic_factory_1ad92727f20f3ca61de3d77b53c7ade810" kind="function"><name>materialFactoryFunctionByName</name></member>
   </compound>
-  <compound refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response" kind="struct"><name>MarmotMaterialGeneralGradientEnhancedHypoElastic::response</name>
-    <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1a129f1fd4967a9a31d17bdfb13e9241f7" kind="variable"><name>stress</name></member>
-    <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1a82f03a5a5c04b0c2ba1ec53cc136607b" kind="variable"><name>KLocal</name></member>
-    <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1a3af01e5be1845f339e5da3c144865c21" kind="variable"><name>c</name></member>
-    <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1aad7ee9c805ecedead1bd0413adfb94ce" kind="variable"><name>stateVars</name></member>
-    <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1a8666aff52917f0f1d6b5f2fc6ef17f34" kind="variable"><name>elasticEnergyDensity</name></member>
-    <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1response_1a3c1978b89a94b7687f394a01bb27f4c7" kind="variable"><name>dissipation</name></member>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1response" kind="struct"><name>Marmot::Materials::MaterialGradientEnhancedHypoElastic::response</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1response_1a1d64dcb9ed0f618aaf3a3a7cd61c13bf" kind="variable"><name>stress</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1response_1a572cfbe88b711cdea952dd140e579eb5" kind="variable"><name>KLocal</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1response_1a18b15e770e1c5f11cd5b2fad6ff38ec8" kind="variable"><name>c</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1response_1ada16bb5ee284ca853b4c33a2f4a41530" kind="variable"><name>stateVars</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1response_1a6bc10349dc8081e414cd2da274d507eb" kind="variable"><name>elasticEnergyDensity</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1response_1ae6b03c87dac8d8999ba3280472fd36cd" kind="variable"><name>dissipation</name></member>
   </compound>
-  <compound refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents" kind="struct"><name>MarmotMaterialGeneralGradientEnhancedHypoElastic::tangents</name>
-    <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1a923dfbfb396acd9d9fac039a401ef644" kind="variable"><name>dStressddStrain</name></member>
-    <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1a59233ce22b9f7e9d759d176c7d2606c1" kind="variable"><name>dStressddK</name></member>
-    <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1a7f6694d4139d1bf35b82e3156abc598b" kind="variable"><name>dKLocalddStrain</name></member>
-    <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1a2d0d0744262a5fe478ba567468443a88" kind="variable"><name>dKLocalddK</name></member>
-    <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1a0b8294d74b17c1f2fc7acd79db29240d" kind="variable"><name>dcddK</name></member>
-    <member refid="struct_marmot_material_general_gradient_enhanced_hypo_elastic_1_1tangents_1ab581f90b67e24c86ace5b613c394ce45" kind="variable"><name>d2cddK2</name></member>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1tangents" kind="struct"><name>Marmot::Materials::MaterialGradientEnhancedHypoElastic::tangents</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1tangents_1a32912220c16bd0108749fe2978118019" kind="variable"><name>dStressddStrain</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1tangents_1a7fa47c7d0e0509d580d563f6691c36ef" kind="variable"><name>dStressddK</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1tangents_1ac48b9abd5a488a2fb014105cfa02edb2" kind="variable"><name>dKLocalddStrain</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1tangents_1afe29db2a45079cb38063042c72d9d77d" kind="variable"><name>dKLocalddK</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1tangents_1ad6c57f536b76582a52aa803ffb136f93" kind="variable"><name>dcddK</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_hypo_elastic_1_1tangents_1a3ac7659193f1bc51eff18a1cfaf36918" kind="variable"><name>d2cddK2</name></member>
   </compound>
   <compound refid="namespace_marmot" kind="namespace"><name>Marmot</name>
   </compound>
-  <compound refid="namespace_marmot_1_1_gradient_damage" kind="namespace"><name>Marmot::GradientDamage</name>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics" kind="namespace"><name>Marmot::ContinuumMechanics</name>
   </compound>
-  <compound refid="namespace_marmot_1_1_gradient_damage_1_1_decreasing_interactions" kind="namespace"><name>Marmot::GradientDamage::DecreasingInteractions</name>
-    <member refid="_marmot_decreasing_interactions_8h_1a62dbce5b28ca1d62043f765622de8b8b" kind="function"><name>poh</name></member>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_degradation" kind="namespace"><name>Marmot::ContinuumMechanics::Degradation</name>
   </compound>
-  <compound refid="namespace_marmot_1_1_gradient_damage_1_1_decreasing_interactions_1_1_first_order_derived" kind="namespace"><name>Marmot::GradientDamage::DecreasingInteractions::FirstOrderDerived</name>
-    <member refid="_marmot_decreasing_interactions_8h_1a4fd2824818a7a64325288e6fd0821e95" kind="function"><name>poh</name></member>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_degradation_1_1_gradient_damage" kind="namespace"><name>Marmot::ContinuumMechanics::Degradation::GradientDamage</name>
   </compound>
-  <compound refid="namespace_marmot_1_1_gradient_damage_1_1_decreasing_interactions_1_1_second_order_derived" kind="namespace"><name>Marmot::GradientDamage::DecreasingInteractions::SecondOrderDerived</name>
-    <member refid="_marmot_decreasing_interactions_8h_1a37743b8d23db68926adf2258a4a80777" kind="function"><name>poh</name></member>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_degradation_1_1_gradient_damage_1_1_decreasing_interactions" kind="namespace"><name>Marmot::ContinuumMechanics::Degradation::GradientDamage::DecreasingInteractions</name>
+    <member refid="_marmot_decreasing_interactions_8h_1ae88613f5c95ffd3c3fac2d294df07e93" kind="function"><name>poh</name></member>
   </compound>
-  <compound refid="namespace_marmot_1_1_phase_field" kind="namespace"><name>Marmot::PhaseField</name>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_degradation_1_1_gradient_damage_1_1_decreasing_interactions_1_1_first_order" kind="namespace"><name>Marmot::ContinuumMechanics::Degradation::GradientDamage::DecreasingInteractions::FirstOrder</name>
+    <member refid="_marmot_decreasing_interactions_8h_1a8c95c35e37f02ebe67c01e85142002b0" kind="function"><name>poh</name></member>
   </compound>
-  <compound refid="namespace_marmot_1_1_phase_field_1_1_energy_degradation_functions" kind="namespace"><name>Marmot::PhaseField::EnergyDegradationFunctions</name>
-    <member refid="_marmot_phase_field_energy_degradation_8h_1af84706f29a4e3eb2e720255f37c331f2" kind="function"><name>quadratic</name></member>
-    <member refid="_marmot_phase_field_energy_degradation_8h_1a66ea4932852404f201d1f85f7b10e9f0" kind="function"><name>cubic</name></member>
-    <member refid="_marmot_phase_field_energy_degradation_8h_1af31c2bef36e05bb707f5eb4ab9d8f8c1" kind="function"><name>quartic</name></member>
-    <member refid="_marmot_phase_field_energy_degradation_8h_1afca31c3ac980ff4ea58281229377f1cb" kind="function"><name>generic</name></member>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_degradation_1_1_gradient_damage_1_1_decreasing_interactions_1_1_second_order" kind="namespace"><name>Marmot::ContinuumMechanics::Degradation::GradientDamage::DecreasingInteractions::SecondOrder</name>
+    <member refid="_marmot_decreasing_interactions_8h_1a6828fce5088b089c2af4f726245792fe" kind="function"><name>poh</name></member>
   </compound>
-  <compound refid="namespace_marmot_1_1_phase_field_1_1_energy_degradation_functions_1_1_second_order_derived" kind="namespace"><name>Marmot::PhaseField::EnergyDegradationFunctions::SecondOrderDerived</name>
-    <member refid="_marmot_phase_field_energy_degradation_8h_1a96924090a4282e25c29ba93ec01a0386" kind="function"><name>quadratic</name></member>
-    <member refid="_marmot_phase_field_energy_degradation_8h_1a97193d6541870538c3de90139c155eb5" kind="function"><name>cubic</name></member>
-    <member refid="_marmot_phase_field_energy_degradation_8h_1a6e4f75b6e61a92bab810d47cfa4782dd" kind="function"><name>quartic</name></member>
-    <member refid="_marmot_phase_field_energy_degradation_8h_1ab4904b60f75e0bf8f8076b0de8cf834f" kind="function"><name>generic</name></member>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_degradation_1_1_phase_field" kind="namespace"><name>Marmot::ContinuumMechanics::Degradation::PhaseField</name>
   </compound>
-  <compound refid="namespace_marmot_library" kind="namespace"><name>MarmotLibrary</name>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_degradation_1_1_phase_field_1_1_energy_degradation_functions" kind="namespace"><name>Marmot::ContinuumMechanics::Degradation::PhaseField::EnergyDegradationFunctions</name>
+    <member refid="_marmot_phase_field_energy_degradation_8h_1ac5f76cd36cb5235d56951eeae2ab3f5a" kind="function"><name>quadratic</name></member>
+    <member refid="_marmot_phase_field_energy_degradation_8h_1a8395661e9abee56dadd92dab5c5ca4e5" kind="function"><name>cubic</name></member>
+    <member refid="_marmot_phase_field_energy_degradation_8h_1a8bf5a9e1a811e39b91352d82e63730ae" kind="function"><name>quartic</name></member>
+    <member refid="_marmot_phase_field_energy_degradation_8h_1a147f2591ebda58742a8560fe3b9fd63a" kind="function"><name>generic</name></member>
+  </compound>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_degradation_1_1_phase_field_1_1_energy_degradation_functions_1_1_second_order" kind="namespace"><name>Marmot::ContinuumMechanics::Degradation::PhaseField::EnergyDegradationFunctions::SecondOrder</name>
+    <member refid="_marmot_phase_field_energy_degradation_8h_1a2ef67e35f10e069f3065868a5397b94e" kind="function"><name>quadratic</name></member>
+    <member refid="_marmot_phase_field_energy_degradation_8h_1aca9bfc4fec8296ba609ca8bfa4ceb485" kind="function"><name>cubic</name></member>
+    <member refid="_marmot_phase_field_energy_degradation_8h_1a3fa78c1dd52bcc27c8df5981064dc9a2" kind="function"><name>quartic</name></member>
+    <member refid="_marmot_phase_field_energy_degradation_8h_1aef8323d1e5c27a5bca05f0b166eadd9d" kind="function"><name>generic</name></member>
+  </compound>
+  <compound refid="namespace_marmot_1_1_materials" kind="namespace"><name>Marmot::Materials</name>
+  </compound>
+  <compound refid="namespace_marmot_1_1_registry" kind="namespace"><name>Marmot::Registry</name>
+  </compound>
+  <compound refid="namespace_marmot_1_1_testing" kind="namespace"><name>Marmot::Testing</name>
+    <member refid="_marmot_wave_speed_contract_8h_1a49bceb23dd40f34ac7ed9903695b11f7" kind="function"><name>checkMaximumWaveSpeedOverrideMatchesDefault</name></member>
   </compound>
   <compound refid="_marmot_decreasing_interactions_8h" kind="file"><name>MarmotDecreasingInteractions.h</name>
   </compound>
@@ -84,6 +97,8 @@
   <compound refid="_marmot_material_general_gradient_enhanced_hypo_elastic_factory_8h" kind="file"><name>MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h</name>
   </compound>
   <compound refid="_marmot_phase_field_energy_degradation_8h" kind="file"><name>MarmotPhaseFieldEnergyDegradation.h</name>
+  </compound>
+  <compound refid="_marmot_wave_speed_contract_8h" kind="file"><name>MarmotWaveSpeedContract.h</name>
   </compound>
   <compound refid="dir_6d4da112a1331882b0b6514a341190a0" kind="dir"><name>/home/runner/work/Marmot/Marmot/modules/core</name>
   </compound>

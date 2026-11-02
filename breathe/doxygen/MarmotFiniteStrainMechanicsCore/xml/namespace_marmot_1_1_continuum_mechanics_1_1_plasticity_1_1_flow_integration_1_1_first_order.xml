@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_flow_integration_1_1_first_order" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::Plasticity::FlowIntegration::FirstOrder</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_finite_strain_plasticity_8h_1ab624e066fecbb5cd01aa715f58cdfe1c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::pair&lt; Math::Tensors::FastorTensors::Tensor33d, Math::Tensors::FastorTensors::Tensor3333d &gt;</type>
+        <definition>std::pair&lt; Math::Tensors::FastorTensors::Tensor33d, Math::Tensors::FastorTensors::Tensor3333d &gt; Marmot::ContinuumMechanics::Plasticity::FlowIntegration::FirstOrder::explicitIntegration</definition>
+        <argsstring>(const Math::Tensors::FastorTensors::Tensor33d &amp;deltaGp)</argsstring>
+        <name>explicitIntegration</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Plasticity::FlowIntegration::FirstOrder::explicitIntegration</qualifiedname>
+        <param>
+          <type>const Math::Tensors::FastorTensors::Tensor33d &amp;</type>
+          <declname>deltaGp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes the incremental plastic deformation gradient from the plastic velocity gradient using a first order approximation. The first order approximation is given by   <formula id="26">\[   \Delta F_{\bar I J} = \left( \delta_{\bar K L} + \Delta \lambda \frac{\partial f}{\partial M_{\bar K
+L}}\right)_{J \bar{I}} \]</formula> where <formula id="27">$ \Delta \lambda \frac{\partial f}{\partial M_{\bar K L}} $</formula> is the incremental plastic velocity gradient.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>deltaGp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Incremental plastic velocity gradient. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A pair of the incremental plastic deformation gradient and its derivative w.r.t. the plastic velocity gradient. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainPlasticity.h" line="116" column="15" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainPlasticity.h" declline="116" declcolumn="15"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_finite_strain_plasticity_8h_1aaeb535275339011709e5cc8da7f0098d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::pair&lt; Math::Tensors::FastorTensors::Tensor33d, Math::Tensors::FastorTensors::Tensor3333d &gt;</type>
+        <definition>std::pair&lt; Math::Tensors::FastorTensors::Tensor33d, Math::Tensors::FastorTensors::Tensor3333d &gt; Marmot::ContinuumMechanics::Plasticity::FlowIntegration::FirstOrder::exponentialMap</definition>
+        <argsstring>(const Math::Tensors::FastorTensors::Tensor33d &amp;deltaGp)</argsstring>
+        <name>exponentialMap</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Plasticity::FlowIntegration::FirstOrder::exponentialMap</qualifiedname>
+        <param>
+          <type>const Math::Tensors::FastorTensors::Tensor33d &amp;</type>
+          <declname>deltaGp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes the incremental plastic deformation gradient from the plastic velocity gradient using the exponential map. The exponential map is given by   <formula id="28">\[   \Delta F_{\bar I J} = \exp\left(\Delta \lambda \frac{\partial f}{\partial M_{\bar I J}}\right)_{J \bar{I}}
+\]</formula> where <formula id="29">$ \Delta \lambda \frac{\partial f}{\partial M_{\bar I J}} $</formula> is the incremental plastic velocity gradient.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>deltaGp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Incremental plastic velocity gradient. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A pair of the incremental plastic deformation gradient and its derivative w.r.t. the plastic velocity gradient. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainPlasticity.h" line="132" column="15" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainPlasticity.h" declline="132" declcolumn="15"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainPlasticity.h" line="102" column="3"/>
+  </compounddef>
+</doxygen>

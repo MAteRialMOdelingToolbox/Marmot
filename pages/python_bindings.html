@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Bindings &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Features" href="features.html" />
+    <link rel="prev" title="Interfaces" href="interfaces.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Marmot
+              <img src="../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interfaces.html">Interfaces</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Python Bindings</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation-setup">Installation &amp; Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-overview">Module Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quickstart-examples">Quickstart Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#small-strain-hypo-elastic-solver">1. Small-Strain Hypo-Elastic Solver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#finite-strain-solver">2. Finite-Strain Solver</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#api-reference">API Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#marmot-solvers-hypoelasticsolver"><code class="docutils literal notranslate"><span class="pre">marmot.solvers.HypoElasticSolver</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#constructor">Constructor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#methods">Methods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#nested-classes">Nested Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#marmot-solvers-finitestrainsolver"><code class="docutils literal notranslate"><span class="pre">marmot.solvers.FiniteStrainSolver</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Constructor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Nested Classes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-utilities-marmot-testing">Testing Utilities (<code class="docutils literal notranslate"><span class="pre">marmot.testing</span></code>)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
+<li class="toctree-l1"><a class="reference internal" href="documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Python Bindings</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/pages/python_bindings.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="python-bindings">
+<h1>Python Bindings<a class="headerlink" href="#python-bindings" title="Link to this heading"></a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">Marmot</span></code> provides high-performance Python bindings built with <a class="reference external" href="https://github.com/wjakob/nanobind">nanobind</a>.
+These bindings expose Marmot’s material point solvers directly in Python, enabling quick material testing, parameter studies, unit response verification, and interactive prototyping with NumPy arrays.</p>
+<hr class="docutils" />
+<section id="installation-setup">
+<h2>Installation &amp; Setup<a class="headerlink" href="#installation-setup" title="Link to this heading"></a></h2>
+<p>Building the Python bindings is optional and requires a Python 3.8+ development environment.
+Nanobind is automatically fetched at CMake configuration time.</p>
+<p>To build and install Marmot with Python bindings:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>build
+cmake<span class="w"> </span>-DMARMOT_BUILD_PYTHON_BINDINGS<span class="o">=</span>ON<span class="w"> </span>-DCMAKE_INSTALL_PREFIX<span class="o">=</span><span class="nv">$CONDA_PREFIX</span><span class="w"> </span>..
+make<span class="w"> </span>install
+</pre></div>
+</div>
+<p>When building inside a build tree without installing globally, make sure your <code class="docutils literal notranslate"><span class="pre">PYTHONPATH</span></code> includes the build’s python folder:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">PYTHONPATH</span><span class="o">=</span>/path/to/marmot/build/python:<span class="nv">$PYTHONPATH</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="module-overview">
+<h2>Module Overview<a class="headerlink" href="#module-overview" title="Link to this heading"></a></h2>
+<p>The Python package is imported as <code class="docutils literal notranslate"><span class="pre">marmot</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">marmot</span>
+</pre></div>
+</div>
+<p>The main solvers are available under the <code class="docutils literal notranslate"><span class="pre">marmot.solvers</span></code> submodule:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">marmot.solvers.HypoElasticSolver</span></code>: Material point solver for small-strain / hypo-elastic constitutive laws.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">marmot.solvers.FiniteStrainSolver</span></code>: Material point solver for finite-strain constitutive models formulated with the deformation gradient.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="quickstart-examples">
+<h2>Quickstart Examples<a class="headerlink" href="#quickstart-examples" title="Link to this heading"></a></h2>
+<section id="small-strain-hypo-elastic-solver">
+<h3>1. Small-Strain Hypo-Elastic Solver<a class="headerlink" href="#small-strain-hypo-elastic-solver" title="Link to this heading"></a></h3>
+<p>In small-strain problems, strains and stresses are represented in 6D Voigt notation:
+<code class="docutils literal notranslate"><span class="pre">[11,</span> <span class="pre">22,</span> <span class="pre">33,</span> <span class="pre">23,</span> <span class="pre">13,</span> <span class="pre">12]</span></code> (or <code class="docutils literal notranslate"><span class="pre">[xx,</span> <span class="pre">yy,</span> <span class="pre">zz,</span> <span class="pre">yz,</span> <span class="pre">xz,</span> <span class="pre">xy]</span></code>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">marmot</span>
+
+<span class="c1"># 1. Define material properties (e.g. Young's modulus E=20000, Poisson's ratio nu=0.25)</span>
+<span class="n">properties</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">20000.0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="c1"># 2. Instantiate solver with material model name and properties</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">marmot</span><span class="o">.</span><span class="n">solvers</span><span class="o">.</span><span class="n">HypoElasticSolver</span><span class="p">(</span><span class="s2">"LINEARELASTIC"</span><span class="p">,</span> <span class="n">properties</span><span class="p">)</span>
+
+<span class="c1"># 3. Create and configure a loading step</span>
+<span class="n">step</span> <span class="o">=</span> <span class="n">marmot</span><span class="o">.</span><span class="n">solvers</span><span class="o">.</span><span class="n">HypoElasticSolver</span><span class="o">.</span><span class="n">Step</span><span class="p">()</span>
+<span class="n">step</span><span class="o">.</span><span class="n">timeStart</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">step</span><span class="o">.</span><span class="n">timeEnd</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">step</span><span class="o">.</span><span class="n">dTStart</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+<span class="c1"># Strain-controlled uniaxial stretch in 11 direction</span>
+<span class="n">step</span><span class="o">.</span><span class="n">isStrainComponentControlled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">])</span>
+<span class="n">step</span><span class="o">.</span><span class="n">isStressComponentControlled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">isStrainComponentControlled</span><span class="p">)</span>
+<span class="n">step</span><span class="o">.</span><span class="n">strainIncrementTarget</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">step</span><span class="o">.</span><span class="n">stressIncrementTarget</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="c1"># 4. Add step and solve</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">addStep</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+
+<span class="c1"># 5. Extract results</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">getHistory</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">history</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Time: </span><span class="si">{</span><span class="n">entry</span><span class="o">.</span><span class="n">time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, Stress[0]: </span><span class="si">{</span><span class="n">entry</span><span class="o">.</span><span class="n">stress</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, Strain[0]: </span><span class="si">{</span><span class="n">entry</span><span class="o">.</span><span class="n">strain</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="finite-strain-solver">
+<h3>2. Finite-Strain Solver<a class="headerlink" href="#finite-strain-solver" title="Link to this heading"></a></h3>
+<p>In finite-strain problems, deformation measures (displacement gradient $\nabla \mathbf{u}$, deformation gradient $\mathbf{F}$) and stresses (Kirchhoff / Cauchy stresses) are 3x3 matrices:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">marmot</span>
+
+<span class="c1"># 1. Material properties (e.g. Compressible Neo-Hooke: mu=1.0, nu=0.3)</span>
+<span class="n">properties</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="c1"># 2. Instantiate FiniteStrainSolver</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">marmot</span><span class="o">.</span><span class="n">solvers</span><span class="o">.</span><span class="n">FiniteStrainSolver</span><span class="p">(</span><span class="s2">"COMPRESSIBLENEOHOOKE"</span><span class="p">,</span> <span class="n">properties</span><span class="p">)</span>
+
+<span class="c1"># 3. Define loading step</span>
+<span class="n">step</span> <span class="o">=</span> <span class="n">marmot</span><span class="o">.</span><span class="n">solvers</span><span class="o">.</span><span class="n">FiniteStrainSolver</span><span class="o">.</span><span class="n">Step</span><span class="p">()</span>
+<span class="n">step</span><span class="o">.</span><span class="n">timeStart</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">step</span><span class="o">.</span><span class="n">timeEnd</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">step</span><span class="o">.</span><span class="n">dTStart</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+<span class="c1"># Mixed control: prescribe displacement gradient component [0,0], stress free in transverse directions</span>
+<span class="n">step</span><span class="o">.</span><span class="n">isGradUComponentControlled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="kc">True</span><span class="p">,</span>  <span class="kc">True</span><span class="p">,</span>  <span class="kc">True</span> <span class="p">],</span>
+    <span class="p">[</span><span class="kc">True</span><span class="p">,</span>  <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span> <span class="p">],</span>
+    <span class="p">[</span><span class="kc">True</span><span class="p">,</span>  <span class="kc">True</span><span class="p">,</span>  <span class="kc">False</span><span class="p">]</span>
+<span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+<span class="n">step</span><span class="o">.</span><span class="n">isStressComponentControlled</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span>
+    <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span>  <span class="kc">False</span><span class="p">],</span>
+    <span class="p">[</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span> <span class="p">]</span>
+<span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+
+<span class="n">gradu_target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">gradu_target</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">step</span><span class="o">.</span><span class="n">gradUIncrementTarget</span> <span class="o">=</span> <span class="n">gradu_target</span>
+<span class="n">step</span><span class="o">.</span><span class="n">stressIncrementTarget</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+<span class="c1"># 4. Solve</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">addStep</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+
+<span class="c1"># 5. Inspect history</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">getHistory</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Recorded </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">history</span><span class="p">)</span><span class="si">}</span><span class="s2"> increments."</span><span class="p">)</span>
+<span class="n">last_entry</span> <span class="o">=</span> <span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Final Deformation Gradient F:</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="n">last_entry</span><span class="o">.</span><span class="n">F</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Final Stress:</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="n">last_entry</span><span class="o">.</span><span class="n">stress</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="api-reference">
+<h2>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h2>
+<section id="marmot-solvers-hypoelasticsolver">
+<h3><code class="docutils literal notranslate"><span class="pre">marmot.solvers.HypoElasticSolver</span></code><a class="headerlink" href="#marmot-solvers-hypoelasticsolver" title="Link to this heading"></a></h3>
+<section id="constructor">
+<h4>Constructor<a class="headerlink" href="#constructor" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">HypoElasticSolver</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">props</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">opts</span><span class="p">:</span> <span class="n">SolverOptions</span> <span class="o">=</span> <span class="n">SolverOptions</span><span class="p">())</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: String name of the registered hypo-elastic material model (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;LINEARELASTIC&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;VONMISES&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;B4&quot;</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">props</span></code>: 1D continuous NumPy array of material parameters.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">opts</span></code>: Optional <code class="docutils literal notranslate"><span class="pre">SolverOptions</span></code> configuration.</p></li>
+</ul>
+</section>
+<section id="methods">
+<h4>Methods<a class="headerlink" href="#methods" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">addStep(step:</span> <span class="pre">Step)</span></code>: Add a loading step.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getSteps()</span> <span class="pre">-&gt;</span> <span class="pre">list[Step]</span></code>: Return list of configured steps.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">clearSteps()</span></code>: Clear all configured steps.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">setInitialState(initialStress:</span> <span class="pre">np.ndarray,</span> <span class="pre">initialStateVars:</span> <span class="pre">np.ndarray)</span></code>: Set initial 6D stress vector and internal state variable vector.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resetToInitialState()</span></code>: Reset solver to initial state.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getNumberOfStateVariables()</span> <span class="pre">-&gt;</span> <span class="pre">int</span></code>: Get count of required internal state variables.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">solve()</span></code>: Execute simulation for all added steps.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">getHistory()</span> <span class="pre">-&gt;</span> <span class="pre">list[HistoryEntry]</span></code>: Retrieve output history sequence.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">clearHistory()</span></code>: Clear history buffer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">printHistory()</span></code>: Print recorded history to standard output.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">exportHistoryToCSV(filename:</span> <span class="pre">str)</span></code>: Export history records to a CSV file.</p></li>
+</ul>
+</section>
+<section id="nested-classes">
+<h4>Nested Classes<a class="headerlink" href="#nested-classes" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Step</span></code></strong>: Configures step duration and boundary conditions.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeStart</span></code>, <code class="docutils literal notranslate"><span class="pre">timeEnd</span></code>, <code class="docutils literal notranslate"><span class="pre">dTStart</span></code>, <code class="docutils literal notranslate"><span class="pre">dTMin</span></code>, <code class="docutils literal notranslate"><span class="pre">dTMax</span></code>: Time integration bounds.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">strainIncrementTarget</span></code>: Target 6D strain increment array.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stressIncrementTarget</span></code>: Target 6D stress increment array.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">isStrainComponentControlled</span></code>: 6-element boolean mask for strain-controlled components.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">isStressComponentControlled</span></code>: 6-element boolean mask for stress-controlled components.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">maxIncrements</span></code>: Increment count limit.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">checkControl()</span></code>: Validates that every component is uniquely controlled.</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">SolverOptions</span></code></strong>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">maxIterations</span></code>: Maximum Newton-Raphson iterations per increment (default: <code class="docutils literal notranslate"><span class="pre">25</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">residualTolerance</span></code>: Residual convergence tolerance (default: <code class="docutils literal notranslate"><span class="pre">1e-10</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">correctionTolerance</span></code>: Correction norm tolerance (default: <code class="docutils literal notranslate"><span class="pre">1e-10</span></code>).</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">HistoryEntry</span></code></strong>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">time</span></code>: Time value at increment end.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stress</span></code>: 6D stress vector.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">strain</span></code>: 6D strain vector.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dStressdStrain</span></code>: 6x6 material tangent matrix.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stateVars</span></code>: Internal state variables vector.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">print()</span></code>: Print entry details.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="marmot-solvers-finitestrainsolver">
+<h3><code class="docutils literal notranslate"><span class="pre">marmot.solvers.FiniteStrainSolver</span></code><a class="headerlink" href="#marmot-solvers-finitestrainsolver" title="Link to this heading"></a></h3>
+<section id="id1">
+<h4>Constructor<a class="headerlink" href="#id1" title="Link to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">FiniteStrainSolver</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">props</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">opts</span><span class="p">:</span> <span class="n">SolverOptions</span> <span class="o">=</span> <span class="n">SolverOptions</span><span class="p">())</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h4>Nested Classes<a class="headerlink" href="#id2" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">Step</span></code></strong>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeStart</span></code>, <code class="docutils literal notranslate"><span class="pre">timeEnd</span></code>, <code class="docutils literal notranslate"><span class="pre">dTStart</span></code>, <code class="docutils literal notranslate"><span class="pre">dTMin</span></code>, <code class="docutils literal notranslate"><span class="pre">dTMax</span></code>: Time stepping controls.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gradUIncrementTarget</span></code>: 3x3 displacement gradient increment matrix $\Delta \nabla \mathbf{u}$.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stressIncrementTarget</span></code>: 3x3 stress increment target matrix.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">isGradUComponentControlled</span></code>: 3x3 boolean mask.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">isStressComponentControlled</span></code>: 3x3 boolean mask.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">maxIncrements</span></code>: Max increment count.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">checkControl()</span></code>: Validates component control flags.</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">HistoryEntry</span></code></strong>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">time</span></code>: Increment timestamp.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stress</span></code>: 3x3 stress tensor.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">F</span></code>: 3x3 deformation gradient tensor $\mathbf{F}$.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dTau_dF</span></code>: 3x3x3x3 material tangent tensor $\partial \boldsymbol{\tau} / \partial \mathbf{F}$.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stateVars</span></code>: 1D internal state variable array.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section id="testing-utilities-marmot-testing">
+<h2>Testing Utilities (<code class="docutils literal notranslate"><span class="pre">marmot.testing</span></code>)<a class="headerlink" href="#testing-utilities-marmot-testing" title="Link to this heading"></a></h2>
+<p>For automated testing and continuous integration, <code class="docutils literal notranslate"><span class="pre">marmot.testing</span></code> provides helpers to compare and generate <code class="docutils literal notranslate"><span class="pre">.npz</span></code> reference outputs:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">marmot.testing</span>
+
+<span class="c1"># Automatically checks against &lt;script_name&gt;_reference.npz or writes reference with --writeReferenceSolution</span>
+<span class="n">marmot</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">run_test</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="vm">__file__</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="interfaces.html" class="btn btn-neutral float-left" title="Interfaces" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="features.html" class="btn btn-neutral float-right" title="Features" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

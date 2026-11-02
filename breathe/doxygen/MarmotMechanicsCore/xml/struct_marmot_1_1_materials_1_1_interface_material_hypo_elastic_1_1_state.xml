@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Materials::InterfaceMaterialHypoElastic::State</compoundname>
+    <includes refid="_marmot_interface_material_hypo_elastic_8h" local="no">MarmotInterfaceMaterialHypoElastic.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state_1a91747d8ea48e78f32aebf1897de774ba" prot="public" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1afddbbba8effd91c8da1077774455603b" kindref="member">Tensor3d</ref></type>
+        <definition>Tensor3d Marmot::Materials::InterfaceMaterialHypoElastic::State::force</definition>
+        <argsstring></argsstring>
+        <name>force</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::State::force</qualifiedname>
+        <briefdescription>
+<para>traction on the interface </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="107" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="107" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state_1a9fb076a93490374dd0fe948853f0b5b4" prot="public" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1a053563d78e4d48c52d59b2af828137b3" kindref="member">Tensor33d</ref></type>
+        <definition>Tensor33d Marmot::Materials::InterfaceMaterialHypoElastic::State::surfaceStress</definition>
+        <argsstring></argsstring>
+        <name>surfaceStress</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::State::surfaceStress</qualifiedname>
+        <briefdescription>
+<para>surface stress </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="108" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="108" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state_1a6dc7692fc302112d8248db7de62acd60" prot="public" static="no" mutable="no">
+        <type>double *</type>
+        <definition>double* Marmot::Materials::InterfaceMaterialHypoElastic::State::stateVars</definition>
+        <argsstring></argsstring>
+        <name>stateVars</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::State::stateVars</qualifiedname>
+        <briefdescription>
+<para>pointer to the state variables </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="109" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="109" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Interface response: holds the previous values on entry and the updated ones on exit. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="106" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="106" bodyend="110"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state_1a91747d8ea48e78f32aebf1897de774ba" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic::State</scope><name>force</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state_1a6dc7692fc302112d8248db7de62acd60" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic::State</scope><name>stateVars</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_state_1a9fb076a93490374dd0fe948853f0b5b4" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic::State</scope><name>surfaceStress</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

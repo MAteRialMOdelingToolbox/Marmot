@@ -1,0 +1,413 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Linear Viscoelastic Wiechert model &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Interface material (hypoelastic bulk material)" href="interfacematerialhypoelastic.html" />
+    <link rel="prev" title="Linear Viscoelastic Orthotropic Power Law model" href="linearviscoelasticorthotropicpowerlaw.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="materials.html">Material models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="at2phasefield.html">AT2 Phase Field Fracture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="b4.html">B4 model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressibleneohooke.html">Compressible Neo Hooke model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adcompressibleneohooke.html">Compressible Neo Hooke model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressiblefinitestrainlinearviscoelasticity.html">Compressible Finite-Strain Linear Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainisotropicbiotviscoelasticity.html">Finite-Strain Isotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainj2plasticity.html">Finite-strain J2 plasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainorthotropicbiotviscoelasticity.html">Finite-Strain Orthotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearelastic.html">Linear Elastic model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adlinearelastic.html">Linear Elastic model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticpowerlaw.html">Linear Viscoelastic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticorthotropicpowerlaw.html">Linear Viscoelastic Orthotropic Power Law model</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Linear Viscoelastic Wiechert model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#properties">Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="interfacematerialhypoelastic.html">Interface material (hypoelastic bulk material)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="microplanem7.html">Microplane model M7</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gm7.html">Gradient-enhanced microplane model M7 (GM7)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vonmises.html">Von Mises model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advonmises.html">Von Mises model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hugheswinget.html">Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedhugheswinget.html">Gradient-enhanced Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedcompressibleneohookedamage.html">Gradient-enhanced compressible Neo-Hooke damage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedfinitestraindruckerprager.html">Gradient-enhanced finite-strain Drucker-Prager</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meshfree.html">Meshfree methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="materials.html">Material models</a></li>
+      <li class="breadcrumb-item active">Linear Viscoelastic Wiechert model</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/linearviscoelasticwiechert.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="linear-viscoelastic-wiechert-model">
+<span id="linearviscoelasticwiechert"></span><h1>Linear Viscoelastic Wiechert model<a class="headerlink" href="#linear-viscoelastic-wiechert-model" title="Link to this heading"></a></h1>
+<section id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p>The model is an isotropic, linear viscoelastic material in the small-strain (hypoelastic) setting.
+Its relaxation behaviour is a <strong>power law</strong> that is represented by a generalized Maxwell chain
+(Wiechert model) with logarithmically spaced relaxation times.
+The stress is obtained from the strain history by the hereditary integral</p>
+<div class="math notranslate nohighlight">
+\[\sig(t) = \int_0^t \Psi(t - t')\, \DelNu : \dot{\eps}(t')\, \mathrm{d}t',
+\qquad
+\Psi(t) = E_\infty + m\, t^{-n},\]</div>
+<p>with the equilibrium Young’s modulus <span class="math notranslate nohighlight">\(E_\infty = E\)</span>, the power-law relaxation parameter <span class="math notranslate nohighlight">\(m\)</span>,
+the power-law exponent <span class="math notranslate nohighlight">\(n\)</span>, and the unit stiffness tensor</p>
+<div class="math notranslate nohighlight">
+\[\DelNu = \Cel(E=1, \nu),\]</div>
+<p>where <span class="math notranslate nohighlight">\(\nu\)</span> is the Poisson’s ratio. The Poisson’s ratio is constant in time.</p>
+<p>The decaying part <span class="math notranslate nohighlight">\(m\,t^{-n}\)</span> is replaced by a finite sum of exponentials,</p>
+<div class="math notranslate nohighlight">
+\[\Psi_N(t) = E + E_0 + \sum_{i=1}^{N} E_i\, e^{-t/\tau_i},\]</div>
+<p>with <span class="math notranslate nohighlight">\(N\)</span> Maxwell branches. The relaxation times are spaced logarithmically,</p>
+<div class="math notranslate nohighlight">
+\[\tau_i = \tau_{\min}\, s^{\,i-1}, \qquad s = \sqrt{10}, \qquad i = 1, \dots, N,\]</div>
+<p>with <span class="math notranslate nohighlight">\(\tau_{\min}\)</span> the smallest relaxation time. The branch moduli <span class="math notranslate nohighlight">\(E_i\)</span> follow from the
+<strong>Post-Widder inversion formula</strong> applied to <span class="math notranslate nohighlight">\(m\,t^{-n}\)</span> (order <span class="math notranslate nohighlight">\(k = 2\)</span>), multiplied by the
+logarithmic spacing <span class="math notranslate nohighlight">\(\ln s\)</span>; compare the
+<a class="reference internal" href="linearviscoelasticpowerlaw.html#linearviscoelasticpowerlaw"><span class="std std-ref">Linear Viscoelastic Power Law model</span></a>, which uses the same idea
+for the creep compliance and a Kelvin chain.
+The additional stiffness <span class="math notranslate nohighlight">\(E_0\)</span> accounts for the part of the spectrum slower than the slowest
+resolved branch, so that the tangent stays consistent with the power law beyond
+<span class="math notranslate nohighlight">\(\tau_N\)</span>.</p>
+<p>Each branch carries a 6-component stress-like state variable that is updated exponentially over the
+time increment <span class="math notranslate nohighlight">\(\Delta t\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{q}_i^{n+1} = \lambda_i\, E_i\, \DelNu : \Delta\eps + \beta_i\, \boldsymbol{q}_i^{n},
+\qquad \beta_i = e^{-\Delta t/\tau_i},\]</div>
+<p>with <span class="math notranslate nohighlight">\(\lambda_i\)</span> the standard exponential-integrator coefficient of branch <span class="math notranslate nohighlight">\(i\)</span>
+(see <code class="docutils literal notranslate"><span class="pre">computeLambdaAndBeta</span></code>). The stress increment and the consistent tangent are</p>
+<div class="math notranslate nohighlight">
+\[\Delta\sig = \mathbb{C}_{\mathrm{eff}} : \Delta\eps - \sum_i (1-\beta_i)\, \boldsymbol{q}_i^{n},
+\qquad
+\mathbb{C}_{\mathrm{eff}} = \Big(E + E_0 + \sum_i \lambda_i E_i\Big)\, \DelNu .\]</div>
+<p>Since the Poisson’s ratio is constant, <span class="math notranslate nohighlight">\(\DelNu\)</span> is computed once at construction and only
+scaled by the effective modulus in every stress update.</p>
+</section>
+<section id="properties">
+<h2>Properties<a class="headerlink" href="#properties" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 10.0%" />
+<col style="width: 20.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Index</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">E</span></code></p></td>
+<td><p>Equilibrium Young’s modulus <span class="math notranslate nohighlight">\(E\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nu</span></code></p></td>
+<td><p>Poisson’s ratio <span class="math notranslate nohighlight">\(\nu\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">m</span></code></p></td>
+<td><p>Power-law relaxation parameter <span class="math notranslate nohighlight">\(m \geq 0\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">n</span></code></p></td>
+<td><p>Power-law exponent <span class="math notranslate nohighlight">\(n &gt; 0\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nMaxwell</span></code></p></td>
+<td><p>Number of Maxwell branches <span class="math notranslate nohighlight">\(N \geq 1\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">minTau</span></code></p></td>
+<td><p>Smallest relaxation time <span class="math notranslate nohighlight">\(\tau_{\min} &gt; 0\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">timeToDays</span></code></p></td>
+<td><p>Factor converting the analysis time to days; the relaxation times are given in days</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">density</span></code></p></td>
+<td><p>Optional mass density</p></td>
+</tr>
+</tbody>
+</table>
+<p>The material is registered as <code class="docutils literal notranslate"><span class="pre">LINEARVISCOELASTICWIECHERT</span></code> in the hypoelastic material factory.
+Because it is a <code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialHypoElastic</span></code>, it can also serve as the bulk material of the
+<a class="reference internal" href="interfacematerialhypoelastic.html#interfacematerialhypoelastic"><span class="std std-ref">interface material</span></a>.
+The state variables are the <code class="docutils literal notranslate"><span class="pre">6</span> <span class="pre">*</span> <span class="pre">nMaxwell</span></code> branch stresses.</p>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoElasticWiechertE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoElasticWiechertE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoElasticWiechertE"></span><span id="Marmot::Materials::LinearViscoElasticWiechert"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoElasticWiechert"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LinearViscoElasticWiechert</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials19MaterialHypoElasticE" title="Marmot::Materials::MaterialHypoElastic"><span class="n"><span class="pre">MaterialHypoElastic</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoElasticWiechertE" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Materials::LinearViscoElasticWiechert:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-dfe7fcc3e376272d94a2a6355d34f4de6e712873.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::LinearViscoElasticWiechert&quot; tooltip=&quot;Marmot::Materials::LinearViscoElasticWiechert&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialHypoElastic&quot; tooltip=&quot;Marmot::Materials::MaterialHypoElastic&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Materials::LinearViscoElasticWiechert:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-5e015916b7f2c9adb92757a1013d3fb1af2ced87.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::LinearViscoElasticWiechert&quot; tooltip=&quot;Marmot::Materials::LinearViscoElasticWiechert&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialHypoElastic&quot; tooltip=&quot;Marmot::Materials::MaterialHypoElastic&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Utilities::StateLayoutDynamic&quot; tooltip=&quot;Marmot::Utilities::StateLayoutDynamic&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Isotropic linear viscoelastic material using a generalized Maxwell chain. </p>
+<p>A power-law relaxation function Psi(t)=m t^(-n) is approximated by logarithmically spaced Maxwell branches. <code class="docutils literal notranslate"><a class="reference internal" href="#classMarmot_1_1Materials_1_1LinearViscoElasticWiechert_1a4d3a879b7324a87b64fbc85be4447b21"><span class="std std-ref"><span class="pre">E</span></span></a></code> is the equilibrium Young’s modulus.</p>
+<p>Material properties are ordered as [E, nu, m, n, nMaxwell, minTau, timeToDays, optional density]. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert26LinearViscoElasticWiechertEPKdii">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoElasticWiechert26LinearViscoElasticWiechertEPKdii"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoElasticWiechert26LinearViscoElasticWiechertEPKdii"></span><span id="Marmot::Materials::LinearViscoElasticWiechert::LinearViscoElasticWiechert__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoElasticWiechert_1ab26f1cda83d3d7288cd7ad0202fbc9b0"></span><span class="sig-name descname"><span class="n"><span class="pre">LinearViscoElasticWiechert</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialNumber</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert26LinearViscoElasticWiechertEPKdii" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct the material and discretize the relaxation function. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>materialProperties</strong> – <strong>[in]</strong> properties [E, nu, m, n, nMaxwell, minTau, timeToDays, optional density] </p></li>
+<li><p><strong>nMaterialProperties</strong> – <strong>[in]</strong> number of properties, at least 7 </p></li>
+<li><p><strong>materialNumber</strong> – <strong>[in]</strong> number of the material</p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – if fewer than seven properties are given, if there is less than one Maxwell unit, if <code class="docutils literal notranslate"><span class="pre">minTau</span></code> is not positive, or if m &lt; 0 or n &lt;= 0 </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials26LinearViscoElasticWiechert13computeStressER7state3DRN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERK8timeInfo">
+<span id="_CPPv3NK6Marmot9Materials26LinearViscoElasticWiechert13computeStressER7state3DRN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERK8timeInfo"></span><span id="_CPPv2NK6Marmot9Materials26LinearViscoElasticWiechert13computeStressER7state3DRN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERK8timeInfo"></span><span id="Marmot::Materials::LinearViscoElasticWiechert::computeStress__state3DR.Marmot::Math::Matrix6dR.Marmot::Math::Vector6dCR.timeInfoCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoElasticWiechert_1a4a71289e86bc4465b0b52da90426db61"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">state3D</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">state</span></span>, <a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Matrix6dE" title="Marmot::Math::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStressDDStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4NK6Marmot9Materials26LinearViscoElasticWiechert13computeStressER7state3DRN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERK8timeInfo" title="Marmot::Materials::LinearViscoElasticWiechert::computeStress::timeInfo"><span class="n"><span class="pre">timeInfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeInfo</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials26LinearViscoElasticWiechert13computeStressER7state3DRN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERK8timeInfo" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute the stress and the algorithmic tangent for a strain increment. </p>
+<p>The stress increment is the elastic response with the current effective stiffness, reduced by the stress released by the relaxation of the Maxwell units. The stresses of the Maxwell units are updated afterwards.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – <strong>[inout]</strong> stress and state variables, which hold the stresses of the Maxwell units </p></li>
+<li><p><strong>dStressDDStrain</strong> – <strong>[out]</strong> algorithmic tangent </p></li>
+<li><p><strong>dStrain</strong> – <strong>[in]</strong> strain increment in Voigt notation </p></li>
+<li><p><strong>timeInfo</strong> – <strong>[in]</strong> time and time increment </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials26LinearViscoElasticWiechert10getDensityEPKd">
+<span id="_CPPv3NK6Marmot9Materials26LinearViscoElasticWiechert10getDensityEPKd"></span><span id="_CPPv2NK6Marmot9Materials26LinearViscoElasticWiechert10getDensityEPKd"></span><span id="Marmot::Materials::LinearViscoElasticWiechert::getDensity__doubleCPC"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoElasticWiechert_1aba6bb780246bd57c490910a7fa09c7e5"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDensity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials26LinearViscoElasticWiechert10getDensityEPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the density of the material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateVars</strong> – <strong>[in]</strong> state variables, not used </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if the density is not provided </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the density, which is the eighth material property</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert1EE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoElasticWiechert1EE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoElasticWiechert1EE"></span><span id="Marmot::Materials::LinearViscoElasticWiechert::E__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoElasticWiechert_1a4d3a879b7324a87b64fbc85be4447b21"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">E</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert1EE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert2nuE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoElasticWiechert2nuE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoElasticWiechert2nuE"></span><span id="Marmot::Materials::LinearViscoElasticWiechert::nu__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoElasticWiechert_1a6d6c4e2255e582826ff8bca82d74b79d"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">nu</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert2nuE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert1mE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoElasticWiechert1mE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoElasticWiechert1mE"></span><span id="Marmot::Materials::LinearViscoElasticWiechert::m__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoElasticWiechert_1aeaaa65fd3d9acd77c11d69a090bf23d1"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">m</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert1mE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert1nE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoElasticWiechert1nE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoElasticWiechert1nE"></span><span id="Marmot::Materials::LinearViscoElasticWiechert::n__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoElasticWiechert_1a7e5d16bbb744fe39bd28985f705e6d31"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">n</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert1nE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert8nMaxwellE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoElasticWiechert8nMaxwellE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoElasticWiechert8nMaxwellE"></span><span id="Marmot::Materials::LinearViscoElasticWiechert::nMaxwell__sC"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoElasticWiechert_1a0096f3ab85dd468e8166eae35fd330f0"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nMaxwell</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert8nMaxwellE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert6minTauE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoElasticWiechert6minTauE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoElasticWiechert6minTauE"></span><span id="Marmot::Materials::LinearViscoElasticWiechert::minTau__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoElasticWiechert_1a302b61f9de463129e63e6160278aa455"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">minTau</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert6minTauE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert10timeToDaysE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoElasticWiechert10timeToDaysE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoElasticWiechert10timeToDaysE"></span><span id="Marmot::Materials::LinearViscoElasticWiechert::timeToDays__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoElasticWiechert_1aff44b17ee042667156efc120e1436e8d"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">timeToDays</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert10timeToDaysE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert15relaxationTimesE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoElasticWiechert15relaxationTimesE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoElasticWiechert15relaxationTimesE"></span><span id="Marmot::Materials::LinearViscoElasticWiechert::relaxationTimes__ContinuumMechanics::Viscoelasticity::Wiechert::Properties"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoElasticWiechert_1a838650eb2e34b99755e5d19f2384da60"></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot18ContinuumMechanicsE" title="Marmot::ContinuumMechanics"><span class="n"><span class="pre">ContinuumMechanics</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics15ViscoelasticityE" title="Marmot::ContinuumMechanics::Viscoelasticity"><span class="n"><span class="pre">Viscoelasticity</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity8WiechertE" title="Marmot::ContinuumMechanics::Viscoelasticity::Wiechert"><span class="n"><span class="pre">Wiechert</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity8Wiechert10PropertiesE" title="Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::Properties"><span class="n"><span class="pre">Properties</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">relaxationTimes</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert15relaxationTimesE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert13elasticModuliE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoElasticWiechert13elasticModuliE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoElasticWiechert13elasticModuliE"></span><span id="Marmot::Materials::LinearViscoElasticWiechert::elasticModuli__ContinuumMechanics::Viscoelasticity::Wiechert::Properties"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoElasticWiechert_1ab26a5a135862e6dc65bf381f369a3476"></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot18ContinuumMechanicsE" title="Marmot::ContinuumMechanics"><span class="n"><span class="pre">ContinuumMechanics</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics15ViscoelasticityE" title="Marmot::ContinuumMechanics::Viscoelasticity"><span class="n"><span class="pre">Viscoelasticity</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity8WiechertE" title="Marmot::ContinuumMechanics::Viscoelasticity::Wiechert"><span class="n"><span class="pre">Wiechert</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics15Viscoelasticity8Wiechert10PropertiesE" title="Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::Properties"><span class="n"><span class="pre">Properties</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">elasticModuli</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert13elasticModuliE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert23zerothWiechertStiffnessE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoElasticWiechert23zerothWiechertStiffnessE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoElasticWiechert23zerothWiechertStiffnessE"></span><span id="Marmot::Materials::LinearViscoElasticWiechert::zerothWiechertStiffness__double"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoElasticWiechert_1aeed3a6c9323b7aa09a3e1d61ff497bbc"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">zerothWiechertStiffness</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert23zerothWiechertStiffnessE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert13unitStiffnessE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoElasticWiechert13unitStiffnessE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoElasticWiechert13unitStiffnessE"></span><span id="Marmot::Materials::LinearViscoElasticWiechert::unitStiffness__Marmot::Math::Matrix6d"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoElasticWiechert_1a2a68f5a1181b690acc13f2f29ee9a5bf"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Matrix6dE" title="Marmot::Math::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">unitStiffness</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert13unitStiffnessE" title="Link to this definition"></a><br /></dt>
+<dd><p>Isotropic stiffness tensor for a unit Young’s modulus, cached for the instance’s lifetime. </p>
+<p>It depends only on nu, which is fixed at construction, so it is built once here rather than on every computeStress call, as relaxationTimes and elasticModuli already are. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-static-attributes">Private Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert26powerLawApproximationOrderE">
+<span id="_CPPv3N6Marmot9Materials26LinearViscoElasticWiechert26powerLawApproximationOrderE"></span><span id="_CPPv2N6Marmot9Materials26LinearViscoElasticWiechert26powerLawApproximationOrderE"></span><span id="Marmot::Materials::LinearViscoElasticWiechert::powerLawApproximationOrder__i"></span><span class="target" id="classMarmot_1_1Materials_1_1LinearViscoElasticWiechert_1a101c5582fe18c268baffb7eed90cbfea"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">powerLawApproximationOrder</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials26LinearViscoElasticWiechert26powerLawApproximationOrderE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="linearviscoelasticorthotropicpowerlaw.html" class="btn btn-neutral float-left" title="Linear Viscoelastic Orthotropic Power Law model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="interfacematerialhypoelastic.html" class="btn btn-neutral float-right" title="Interface material (hypoelastic bulk material)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

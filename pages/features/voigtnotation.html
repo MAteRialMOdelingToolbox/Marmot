@@ -1,0 +1,326 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voigt Notation &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Solvers" href="solvers.html" />
+    <link rel="prev" title="Features" href="../features.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Voigt Notation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#component-ordering">Component ordering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stress-and-strain">Stress and strain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fourth-order-tensors">Fourth order tensors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#coordinate-transformations">Coordinate transformations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reduced-representations">Reduced representations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#strain-displacement-operators">Strain-displacement operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="materials.html">Material models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meshfree.html">Meshfree methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+      <li class="breadcrumb-item active">Voigt Notation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/voigtnotation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="voigt-notation">
+<span id="voigtnotation"></span><h1>Voigt Notation<a class="headerlink" href="#voigt-notation" title="Link to this heading"></a></h1>
+<p>Symmetric second order tensors, such as the stress tensor <span class="math notranslate nohighlight">\(\sig\)</span> and the linearized strain
+tensor <span class="math notranslate nohighlight">\(\eps\)</span>, are stored in Marmot as column vectors, and the fourth order tensors relating
+them as matrices. This page defines the component ordering and the scaling factors that are used
+consistently throughout the library.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Marmot orders the shear components as <strong>12, 13, 23</strong> (Abaqus convention). This differs from the
+ordering <strong>23, 13, 12</strong> found in much of the continuum mechanics literature and in several other
+finite element codes. When porting material parameters, stiffness matrices or state variable
+layouts from another code, check the shear ordering first — a mismatch swaps
+<span class="math notranslate nohighlight">\(G_{12}\)</span> and <span class="math notranslate nohighlight">\(G_{23}\)</span> and produces results that look plausible but are wrong.</p>
+</div>
+<section id="component-ordering">
+<h2>Component ordering<a class="headerlink" href="#component-ordering" title="Link to this heading"></a></h2>
+<p>The vector length follows from the spatial dimension as <span class="math notranslate nohighlight">\(n_\mathrm{Voigt} = (n^2 + n)/2\)</span>,
+provided by the macro <code class="docutils literal notranslate"><span class="pre">VOIGTFROMDIM</span></code>. The orderings are</p>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Representation</strong></p></th>
+<th class="head"><p><strong>Size</strong></p></th>
+<th class="head"><p><strong>Components</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1D</p></td>
+<td><p>1</p></td>
+<td><p><span class="math notranslate nohighlight">\(\sigma_{11}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>2D (plane strain / plane stress)</p></td>
+<td><p>3</p></td>
+<td><p><span class="math notranslate nohighlight">\(\sigma_{11},\ \sigma_{22},\ \sigma_{12}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>Axisymmetric</p></td>
+<td><p>4</p></td>
+<td><p><span class="math notranslate nohighlight">\(\sigma_{rr},\ \sigma_{zz},\ \sigma_{\theta\theta},\ \sigma_{rz}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>3D</p></td>
+<td><p>6</p></td>
+<td><p><span class="math notranslate nohighlight">\(\sigma_{11},\ \sigma_{22},\ \sigma_{33},\ \sigma_{12},\ \sigma_{13},\ \sigma_{23}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<p>For the 3D case the mapping between the tensor indices <span class="math notranslate nohighlight">\((i,j)\)</span> and the Voigt index is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{bmatrix}
+  0 &amp; 3 &amp; 4 \\
+  3 &amp; 1 &amp; 5 \\
+  4 &amp; 5 &amp; 2
+\end{bmatrix}\end{split}\]</div>
+<p>and is available in both directions as <code class="docutils literal notranslate"><span class="pre">toVoigt&lt;nDim&gt;(i,</span> <span class="pre">j)</span></code> and <code class="docutils literal notranslate"><span class="pre">fromVoigt&lt;nDim&gt;(ij)</span></code> in the
+namespace <code class="docutils literal notranslate"><span class="pre">Marmot::Math::Tensors::IndexNotation</span></code>. Prefer these helpers over
+hard-coded indices — code written against them stays correct if the ordering ever changes.</p>
+</section>
+<section id="stress-and-strain">
+<h2>Stress and strain<a class="headerlink" href="#stress-and-strain" title="Link to this heading"></a></h2>
+<p>Stress components are stored as they appear in the tensor, whereas the shear components of the
+strain are stored as <strong>engineering shear strains</strong>, i.e. twice the tensor components:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\sig^\mathrm{Voigt} &amp;= \begin{bmatrix}
+  \sigma_{11} &amp; \sigma_{22} &amp; \sigma_{33} &amp; \sigma_{12} &amp; \sigma_{13} &amp; \sigma_{23}
+\end{bmatrix}^\mathsf{T} \\[1ex]
+\eps^\mathrm{Voigt} &amp;= \begin{bmatrix}
+  \varepsilon_{11} &amp; \varepsilon_{22} &amp; \varepsilon_{33} &amp; \gamma_{12} &amp; \gamma_{13} &amp; \gamma_{23}
+\end{bmatrix}^\mathsf{T}
+= \begin{bmatrix}
+  \varepsilon_{11} &amp; \varepsilon_{22} &amp; \varepsilon_{33} &amp; 2\,\varepsilon_{12} &amp; 2\,\varepsilon_{13} &amp; 2\,\varepsilon_{23}
+\end{bmatrix}^\mathsf{T}\end{split}\]</div>
+<p>This asymmetry is what makes the inner product <span class="math notranslate nohighlight">\(\sig^\mathrm{Voigt} \cdot \eps^\mathrm{Voigt}\)</span>
+equal to the strain energy density <span class="math notranslate nohighlight">\(\sig : \eps\)</span>. It also means stress and strain vectors must
+never be converted with the same routine. The dedicated conversions are</p>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Function</strong></p></th>
+<th class="head"><p><strong>Purpose</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stressToVoigt</span></code>, <code class="docutils literal notranslate"><span class="pre">voigtToStress</span></code></p></td>
+<td><p>Tensor <span class="math notranslate nohighlight">\(\leftrightarrow\)</span> Voigt for stress-like quantities (shear copied directly)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">strainToVoigt</span></code>, <code class="docutils literal notranslate"><span class="pre">voigtToStrain</span></code></p></td>
+<td><p>Tensor <span class="math notranslate nohighlight">\(\leftrightarrow\)</span> Voigt for strain-like quantities (shear scaled by 2 resp. 1/2)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stressMatrixFromVoigt&lt;nDim&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">voigtFromStrainMatrix&lt;nDim&gt;</span></code></p></td>
+<td><p>Dimension-templated variants for the 1D, 2D and 3D representations</p></td>
+</tr>
+</tbody>
+</table>
+<p>The scaling vectors <span class="math notranslate nohighlight">\(\mathbf{P} = [1, 1, 1, 2, 2, 2]^\mathsf{T}\)</span> and
+<span class="math notranslate nohighlight">\(\mathbf{P}^{-1} = [1, 1, 1, \tfrac{1}{2}, \tfrac{1}{2}, \tfrac{1}{2}]^\mathsf{T}\)</span> are provided
+for converting between the two scalings. The constants
+<span class="math notranslate nohighlight">\(\mathbf{I} = [1, 1, 1, 0, 0, 0]^\mathsf{T}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{I}_\mathrm{hyd}\)</span> and the deviatoric
+projector <span class="math notranslate nohighlight">\(\mathbf{I}_\mathrm{dev}\)</span> are defined in the same namespace.</p>
+</section>
+<section id="fourth-order-tensors">
+<h2>Fourth order tensors<a class="headerlink" href="#fourth-order-tensors" title="Link to this heading"></a></h2>
+<p>A stiffness tensor in Voigt notation is a <span class="math notranslate nohighlight">\(6\times6\)</span> matrix that maps the <strong>engineering</strong> strain
+vector to the stress vector,</p>
+<div class="math notranslate nohighlight">
+\[\sig^\mathrm{Voigt} = \Cel^\mathrm{Voigt}\, \eps^\mathrm{Voigt},\]</div>
+<p>so that no additional factors of two appear when the tangent is used. As a consequence, the diagonal
+shear entries of an orthotropic stiffness matrix are the shear moduli themselves,</p>
+<div class="math notranslate nohighlight">
+\[\Cel^\mathrm{Voigt}_{44} = G_{12}, \qquad
+\Cel^\mathrm{Voigt}_{55} = G_{13}, \qquad
+\Cel^\mathrm{Voigt}_{66} = G_{23},\]</div>
+<p>using one-based matrix indices, i.e. entries <code class="docutils literal notranslate"><span class="pre">(3,3)</span></code>, <code class="docutils literal notranslate"><span class="pre">(4,4)</span></code> and <code class="docutils literal notranslate"><span class="pre">(5,5)</span></code> in the zero-based C++
+code. The corresponding compliance matrix holds <span class="math notranslate nohighlight">\(1/G_{12}\)</span>, <span class="math notranslate nohighlight">\(1/G_{13}\)</span> and
+<span class="math notranslate nohighlight">\(1/G_{23}\)</span> in the same positions.</p>
+<p>Conversion to and from the full fourth order tensor is available as <code class="docutils literal notranslate"><span class="pre">voigtToStiffness</span></code> and
+<code class="docutils literal notranslate"><span class="pre">stiffnessToVoigt</span></code>. These populate</p>
+<div class="math notranslate nohighlight">
+\[\Cel_{ijkl} = \Cel^\mathrm{Voigt}_{\,\mathrm{toVoigt}(i,j)\,,\,\mathrm{toVoigt}(k,l)},\]</div>
+<p>without halving the shear entries: summing over both <span class="math notranslate nohighlight">\(kl\)</span> and <span class="math notranslate nohighlight">\(lk\)</span> reproduces the factor
+of two that the engineering shear strain carries in the Voigt product.</p>
+</section>
+<section id="coordinate-transformations">
+<h2>Coordinate transformations<a class="headerlink" href="#coordinate-transformations" title="Link to this heading"></a></h2>
+<p>Because stress and strain use different shear scalings, they also require different transformation
+matrices under a change of basis. Both are built from a local coordinate system in
+<code class="docutils literal notranslate"><span class="pre">Marmot::ContinuumMechanics::Voigt::Transformations</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">transformationMatrixStressVoigt</span></code> — for stress-like Voigt vectors</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">transformationMatrixStrainVoigt</span></code> — for strain-like Voigt vectors; identical to the stress
+variant except that the upper right <span class="math notranslate nohighlight">\(3\times3\)</span> block is halved and the lower left block
+doubled</p></li>
+</ul>
+<p>A stiffness matrix is rotated from a local material frame into the global frame as</p>
+<div class="math notranslate nohighlight">
+\[\Cel^\mathrm{global} = \mathbf{T}_\sigma^{-1}\; \Cel^\mathrm{local}\; \mathbf{T}_\varepsilon,\]</div>
+<p>which is how the transversely isotropic and orthotropic variants of the
+<a class="reference internal" href="linearelastic.html"><span class="doc">Linear Elastic model</span></a> model are assembled.</p>
+</section>
+<section id="reduced-representations">
+<h2>Reduced representations<a class="headerlink" href="#reduced-representations" title="Link to this heading"></a></h2>
+<p>Plane and axisymmetric states are stored in shortened vectors, and the conversions to and from the
+full 3D vector are position-based rather than value-based:</p>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Function</strong></p></th>
+<th class="head"><p><strong>Mapping</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">voigtToPlaneVoigt</span></code></p></td>
+<td><p>takes entries 0, 1 and 3 of the 3D vector (<span class="math notranslate nohighlight">\(11\)</span>, <span class="math notranslate nohighlight">\(22\)</span>, <span class="math notranslate nohighlight">\(12\)</span>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">planeVoigtToVoigt</span></code></p></td>
+<td><p>writes them back; the remaining entries are set to zero</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">voigtToAxisymmetricVoigt</span></code></p></td>
+<td><p>takes entries 0 to 3 (<span class="math notranslate nohighlight">\(rr\)</span>, <span class="math notranslate nohighlight">\(zz\)</span>, <span class="math notranslate nohighlight">\(\theta\theta\)</span>, <span class="math notranslate nohighlight">\(rz\)</span>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">axisymmetricVoigtToVoigt</span></code></p></td>
+<td><p>writes them back; the two out-of-plane shear entries are set to zero</p></td>
+</tr>
+</tbody>
+</table>
+<p>Note that the in-plane shear sits at index 3 of the 3D vector but at index 2 of the plane vector,
+which is why the plane-strain and plane-stress tangent reductions in
+<code class="docutils literal notranslate"><span class="pre">Marmot::ContinuumMechanics::PlaneStrain</span></code> and <code class="docutils literal notranslate"><span class="pre">Marmot::ContinuumMechanics::PlaneStress</span></code> pick row
+and column 3 of the <span class="math notranslate nohighlight">\(6\times6\)</span> tangent.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">planeVoigtToVoigt</span></code> assumes that the out-of-plane components are zero. It must not be used to
+restore a state in which <span class="math notranslate nohighlight">\(\sigma_{33}\)</span> is non-zero, such as a plane strain stress state.</p>
+</div>
+</section>
+<section id="strain-displacement-operators">
+<h2>Strain-displacement operators<a class="headerlink" href="#strain-displacement-operators" title="Link to this heading"></a></h2>
+<p>The B-operators in <code class="docutils literal notranslate"><span class="pre">Marmot::Discretizations::Elements</span></code> produce strain vectors in exactly this ordering. For the
+3D case,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{B}_a = \begin{bmatrix}
+  \partial N_a / \partial x_1 &amp; 0 &amp; 0 \\
+  0 &amp; \partial N_a / \partial x_2 &amp; 0 \\
+  0 &amp; 0 &amp; \partial N_a / \partial x_3 \\
+  \partial N_a / \partial x_2 &amp; \partial N_a / \partial x_1 &amp; 0 \\
+  \partial N_a / \partial x_3 &amp; 0 &amp; \partial N_a / \partial x_1 \\
+  0 &amp; \partial N_a / \partial x_3 &amp; \partial N_a / \partial x_2
+\end{bmatrix}\end{split}\]</div>
+<p>where the last three rows again correspond to <span class="math notranslate nohighlight">\(\gamma_{12}\)</span>, <span class="math notranslate nohighlight">\(\gamma_{13}\)</span> and
+<span class="math notranslate nohighlight">\(\gamma_{23}\)</span>. The same ordering is used by the B-bar operator, the Green-Lagrange operator
+and the enhanced assumed strain interpolations.</p>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<p>The definitions above live in <code class="docutils literal notranslate"><span class="pre">MarmotVoigt.h</span></code> and <code class="docutils literal notranslate"><span class="pre">MarmotTensor.h</span></code>; see
+<a class="reference internal" href="../codedocumentation/mechanicscore.html"><span class="doc">MarmotMechanicsCore</span></a> and <a class="reference internal" href="../codedocumentation/mathcore.html"><span class="doc">MarmotMathCore</span></a> for the full
+interface.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../features.html" class="btn btn-neutral float-left" title="Features" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="solvers.html" class="btn btn-neutral float-right" title="Solvers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

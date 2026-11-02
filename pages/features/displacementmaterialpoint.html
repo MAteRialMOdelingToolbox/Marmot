@@ -1,0 +1,1085 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Displacement Material Point &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Displacement Cell" href="displacementcell.html" />
+    <link rel="prev" title="Meshfree Particles" href="meshfreeparticles.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="materials.html">Material models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="meshfree.html">Meshfree methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="meshfree.html#architecture">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="meshfree.html#registration-and-naming">Registration and naming</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="meshfree.html#usage-with-edelweissmeshfree">Usage with EdelweissMeshfree</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="meshfreeapproximation.html">Meshfree Approximation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="meshfreecells.html">MPM Cells and Material Points</a></li>
+<li class="toctree-l4"><a class="reference internal" href="meshfreeparticles.html">Meshfree Particles</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Displacement Material Point</a></li>
+<li class="toctree-l4"><a class="reference internal" href="displacementcell.html">Displacement Cell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="displacementparticle.html">Displacement Particle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gradientenhancedfinitestrainmaterialpoint.html">Gradient-Enhanced Finite-Strain Material Point</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gradientenhancedfinitestraincell.html">Gradient-Enhanced Finite-Strain Cell</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gradientenhancedfinitestrainparticle.html">Gradient-Enhanced Finite-Strain Particles</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="meshfree.html">Meshfree methods</a></li>
+      <li class="breadcrumb-item active">Displacement Material Point</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/displacementmaterialpoint.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="displacement-material-point">
+<h1>Displacement Material Point<a class="headerlink" href="#displacement-material-point" title="Link to this heading"></a></h1>
+<section id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p>The displacement material point is the carrier of the material state in the finite-strain displacement formulation of
+the material point method (MPM). It consumes any material of the <code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialFiniteStrain</span></code> interface and is
+hosted by a <a class="reference internal" href="displacementcell.html"><span class="doc">Displacement Cell</span></a> (MPM) or owned by a <a class="reference internal" href="displacementparticle.html"><span class="doc">Displacement Particle</span></a> (RKPM). The general interfaces of
+material points and cells are described in <a class="reference internal" href="meshfreecells.html"><span class="doc">MPM Cells and Material Points</span></a>, those of the particles in <a class="reference internal" href="meshfreeparticles.html"><span class="doc">Meshfree Particles</span></a>.</p>
+<p>Three configurations are distinguished: the undeformed configuration <span class="math notranslate nohighlight">\(\boldsymbol{X}\)</span>, the intermediate
+configuration <span class="math notranslate nohighlight">\(\boldsymbol{Y}\)</span> (the last accepted state, i.e., the configuration at the beginning of the current
+increment) and the current configuration <span class="math notranslate nohighlight">\(\boldsymbol{x}\)</span>. The deformation gradient is updated
+multiplicatively,</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{F} = \frac{\partial \boldsymbol{x}}{\partial \boldsymbol{X}} = \Delta\boldsymbol{F}\,\boldsymbol{F}_n,
+\qquad
+\Delta\boldsymbol{F} = \frac{\partial \boldsymbol{x}}{\partial \boldsymbol{Y}}
+   = \boldsymbol{I} + \frac{\partial \Delta\boldsymbol{u}}{\partial \boldsymbol{Y}},
+\qquad
+\boldsymbol{F}_n = \frac{\partial \boldsymbol{Y}}{\partial \boldsymbol{X}},\]</div>
+<p>where the host supplies the displacement increment <span class="math notranslate nohighlight">\(\Delta\boldsymbol{u}\)</span> and its gradient with respect to
+<span class="math notranslate nohighlight">\(\boldsymbol{Y}\)</span> (<code class="docutils literal notranslate"><span class="pre">incrementDeformation</span></code>; the contributions are accumulated after <code class="docutils literal notranslate"><span class="pre">prepareYourself</span></code> has reset
+<span class="math notranslate nohighlight">\(\Delta\boldsymbol{u} = \boldsymbol{0}\)</span>, <span class="math notranslate nohighlight">\(\Delta\boldsymbol{F} = \boldsymbol{I}\)</span>). <code class="docutils literal notranslate"><span class="pre">computeYourself</span></code>
+evaluates the material with <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span> and provides</p>
+<ul>
+<li><p>the Kirchhoff stress <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span> (<code class="docutils literal notranslate"><span class="pre">response.S</span></code>),</p></li>
+<li><p>its derivative with respect to the increment (<code class="docutils literal notranslate"><span class="pre">tangents.dS_dDeltaF</span></code>),</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial \tau_{ij}}{\partial \Delta F_{kL}} = \frac{\partial \tau_{ij}}{\partial F_{kN}}\,F_{n,LN} ,\]</div>
+<p>which the hosts contract with the gradients <span class="math notranslate nohighlight">\(\partial N_B/\partial Y_L\)</span> of their shape functions.</p>
+</li>
+</ul>
+<p>On acceptance of the increment, <span class="math notranslate nohighlight">\(\boldsymbol{u} \leftarrow \boldsymbol{u} + \Delta\boldsymbol{u}\)</span> and
+<span class="math notranslate nohighlight">\(\boldsymbol{F}_n \leftarrow \Delta\boldsymbol{F}\,\boldsymbol{F}_n\)</span>. The position reported to the host
+(<code class="docutils literal notranslate"><span class="pre">getCoordinatesAtCenter</span></code>) is <span class="math notranslate nohighlight">\(\boldsymbol{Y} = \boldsymbol{X} + \boldsymbol{u}\)</span>, the volume
+(<code class="docutils literal notranslate"><span class="pre">getVolumeUndeformed</span></code>) and the density (<code class="docutils literal notranslate"><span class="pre">getDensityUndeformed</span></code>, from the material) refer to the undeformed
+configuration. Velocity and acceleration are stored, but set by the host (e.g. by a Newmark-beta scheme in the
+particles).</p>
+<p>In plane strain, the in-plane increment is expanded to 3D (the out-of-plane components of <span class="math notranslate nohighlight">\(\Delta\boldsymbol{F}\)</span>
+and <span class="math notranslate nohighlight">\(\boldsymbol{F}_n\)</span> remain those of the identity), the material is evaluated by <code class="docutils literal notranslate"><span class="pre">computePlaneStrain</span></code> with the
+3D deformation gradient, and the in-plane parts of <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span> and of its tangent are passed to the host.
+The 3D material point evaluates the material with the 3D deformation gradient; the call also goes through
+<code class="docutils literal notranslate"><span class="pre">computePlaneStrain</span></code>, whose default implementation in <code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialFiniteStrain</span></code> forwards to <code class="docutils literal notranslate"><span class="pre">computeStress</span></code>.</p>
+</section>
+<section id="registered-material-points">
+<h2>Registered material points<a class="headerlink" href="#registered-material-points" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Class</p></th>
+<th class="head"><p>Dimension</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Displacement/PlaneStrain</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DisplacementMaterialPoint2D</span></code></p></td>
+<td><p>2D, plane strain</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Displacement/3D</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">DisplacementMaterialPoint3D</span></code></p></td>
+<td><p>3D</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="state-variables">
+<h2>State variables<a class="headerlink" href="#state-variables" title="Link to this heading"></a></h2>
+<p>All kinematic states are stored in 3D, regardless of the dimension. They are followed by the state variables of the
+material; <code class="docutils literal notranslate"><span class="pre">getStateView</span></code> looks up the material point’s states first and those of the material otherwise.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Length</p></th>
+<th class="head"><p>Content</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">displacement</span></code></p></td>
+<td><p>3</p></td>
+<td><p>total displacement <span class="math notranslate nohighlight">\(\boldsymbol{u}\)</span> of the last accepted state</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">velocity</span></code></p></td>
+<td><p>3</p></td>
+<td><p>velocity</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">acceleration</span></code></p></td>
+<td><p>3</p></td>
+<td><p>acceleration</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">delta</span> <span class="pre">displacement</span></code></p></td>
+<td><p>3</p></td>
+<td><p>displacement increment <span class="math notranslate nohighlight">\(\Delta\boldsymbol{u}\)</span> of the current increment</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">delta</span> <span class="pre">deformation</span> <span class="pre">gradient</span></code></p></td>
+<td><p>9</p></td>
+<td><p>incremental deformation gradient <span class="math notranslate nohighlight">\(\Delta\boldsymbol{F}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">deformation</span> <span class="pre">gradient</span></code></p></td>
+<td><p>9</p></td>
+<td><p>deformation gradient <span class="math notranslate nohighlight">\(\boldsymbol{F}_n\)</span> of the last accepted state</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stress</span></code></p></td>
+<td><p>9</p></td>
+<td><p>Kirchhoff stress <span class="math notranslate nohighlight">\(\boldsymbol{\tau}\)</span> (written by the plane-strain material point only)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">begin</span> <span class="pre">of</span> <span class="pre">material</span> <span class="pre">state</span></code></p></td>
+<td><p>–</p></td>
+<td><p>state variables of the material</p></td>
+</tr>
+</tbody>
+</table>
+<p>The material point has no properties of its own; the material is assigned by name and properties
+(<code class="docutils literal notranslate"><span class="pre">assignMaterial</span></code>). Initial conditions are not supported (<code class="docutils literal notranslate"><span class="pre">setInitialCondition</span></code> has no effect).</p>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE">
+<span id="_CPPv3I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE"></span><span id="_CPPv2I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nDim</span></span></span><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DisplacementMaterialPoint</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations14MaterialPointsE" title="Marmot::Discretizations::MaterialPoints"><span class="n"><span class="pre">MaterialPoints</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations14MaterialPoints13MaterialPointE" title="Marmot::Discretizations::MaterialPoints::MaterialPoint"><span class="n"><span class="pre">MaterialPoint</span></span></a><a class="headerlink" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-eebc5e0c17fc539e8fa0077593b322f590be03f8.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D&quot;]
+    &quot;6&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; 2 &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; 2 &gt;&quot;]
+    &quot;5&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; 3 &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; 3 &gt;&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot;]
+    &quot;4&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;6&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;3&quot; -&gt; &quot;1&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+    &quot;5&quot; -&gt; &quot;1&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-6281bcc1b02612b645492a77edf34d3a0edea27e.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;1&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;1&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>MPM material point of the finite-strain displacement formulation. </p>
+<p>The material point carries the state of a Marmot::Materials::MaterialFiniteStrain and the kinematics of a total deformation gradient that is updated multiplicatively, increment by increment. Three configurations are distinguished: the undeformed configuration <span class="math notranslate nohighlight">\( \boldsymbol{X} \)</span>, the intermediate configuration <span class="math notranslate nohighlight">\( \boldsymbol{Y} \)</span> (the last accepted state, i.e., the configuration at the beginning of the current increment) and the current configuration <span class="math notranslate nohighlight">\( \boldsymbol{x} \)</span>. The deformation gradient is       <div class="math notranslate nohighlight">
+\[  \boldsymbol{F} = \frac{\partial \boldsymbol{x}}{\partial \boldsymbol{X}}
+    = \Delta\boldsymbol{F}\,\boldsymbol{F}_n, \qquad
+  \Delta\boldsymbol{F} = \frac{\partial \boldsymbol{x}}{\partial \boldsymbol{Y}}
+    = \boldsymbol{I} + \frac{\partial \Delta\boldsymbol{u}}{\partial \boldsymbol{Y}}, \qquad
+  \boldsymbol{F}_n = \frac{\partial \boldsymbol{Y}}{\partial \boldsymbol{X}},
+\]</div>
+ where the host (a cell or a particle) supplies the displacement increment <span class="math notranslate nohighlight">\( \Delta\boldsymbol{u} \)</span> and its gradient with respect to <span class="math notranslate nohighlight">\( \boldsymbol{Y} \)</span> through <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a024a8f015400d1868719ccf37c7fb5a3"><span class="std std-ref">incrementDeformation()</span></a>. <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a191618319fd7d050281551119874c1cd"><span class="std std-ref">computeYourself()</span></a> evaluates the material with <span class="math notranslate nohighlight">\( \boldsymbol{F} \)</span> and provides the Kirchhoff stress <span class="math notranslate nohighlight">\( \boldsymbol{\tau} \)</span> (response.S) and its derivative with respect to the increment <span class="math notranslate nohighlight">\( \Delta\boldsymbol{F} \)</span> (tangents.dS_dDeltaF),    <div class="math notranslate nohighlight">
+\[  \frac{\partial \tau_{ij}}{\partial \Delta F_{kL}}
+    = \frac{\partial \tau_{ij}}{\partial F_{kN}}\,F_{n,LN}.
+\]</div>
+ <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a8995911ee733b1344b72c0a9e00f6363"><span class="std std-ref">acceptStateAndPosition()</span></a> then sets <span class="math notranslate nohighlight">\( \boldsymbol{u} \leftarrow \boldsymbol{u} + \Delta\boldsymbol{u} \)</span> and <span class="math notranslate nohighlight">\( \boldsymbol{F}_n \leftarrow \Delta\boldsymbol{F}\,\boldsymbol{F}_n \)</span>.</p>
+<p>Internally, all kinematic quantities are stored in 3D; in 2D (plane strain) the out-of-plane components of <span class="math notranslate nohighlight">\( \Delta\boldsymbol{F} \)</span> and <span class="math notranslate nohighlight">\( \boldsymbol{F}_n \)</span> remain those of the identity. The volume and the density are those of the undeformed configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nDim</strong> – Spatial dimension (2: plane strain, 3: 3D). </p>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint25DisplacementMaterialPointEiPKdid">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint25DisplacementMaterialPointEiPKdid"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint25DisplacementMaterialPointEiPKdid"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::DisplacementMaterialPoint__i.doubleCP.i.double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a24fa29ac2f3fe6d221448acd6ece631b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DisplacementMaterialPoint</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">mpNumber</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">vertexCoordinates</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nVertexCoordinates</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">volume</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint25DisplacementMaterialPointEiPKdid" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructs a material point. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mpNumber</strong> – <strong>[in]</strong> Label of the material point. </p></li>
+<li><p><strong>vertexCoordinates</strong> – <strong>[in]</strong> Coordinates of the material point in the undeformed configuration (nDim values). </p></li>
+<li><p><strong>nVertexCoordinates</strong> – <strong>[in]</strong> Number of coordinates (not used). </p></li>
+<li><p><strong>volume</strong> – <strong>[in]</strong> Volume in the undeformed configuration. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint15assignStateVarsEPdi">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint15assignStateVarsEPdi"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint15assignStateVarsEPdi"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::assignStateVars__doubleP.i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1ac7a111e1a40946885445620c2c3aae95"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignStateVars</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint15assignStateVarsEPdi" title="Link to this definition"></a><br /></dt>
+<dd><p>Assigns the state vector (see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1_1MPStateVarManager"><span class="std std-ref">MPStateVarManager</span></a> for its layout). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stateVars</strong> – <strong>[in]</strong> State vector, owned by the host. </p></li>
+<li><p><strong>nStateVars</strong> – <strong>[in]</strong> Length of the state vector, see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1acc52acd68a0e4a48922bfda4633e7698"><span class="std std-ref">getNumberOfRequiredStateVars()</span></a>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint12getStateViewERKNSt6stringE">
+<span id="_CPPv3NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint12getStateViewERKNSt6stringE"></span><span id="_CPPv2NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint12getStateViewERKNSt6stringE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::getStateView__ssCRC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a6fb400e8cdc389c5edc837eee87e199b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n"><span class="pre">Utilities</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/utilitiescore.html#_CPPv4N6Marmot9Utilities9StateViewE" title="Marmot::Utilities::StateView"><span class="n"><span class="pre">StateView</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateView</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stateName</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint12getStateViewERKNSt6stringE" title="Link to this definition"></a><br /></dt>
+<dd><p>Returns a view on a state of the material point or, if not found, of the material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateName</strong> – <strong>[in]</strong> Name of the state, e.g. “deformation gradient”, “stress” or a material state. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The view on the state. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint21getMaterialPointShapeEv">
+<span id="_CPPv3NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint21getMaterialPointShapeEv"></span><span id="_CPPv2NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint21getMaterialPointShapeEv"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::getMaterialPointShapeC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a22728db0b1054a3db7a1fbef98cc9cee"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getMaterialPointShape</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint21getMaterialPointShapeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Shape of the material point. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Always “point”. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint14assignMaterialERKN6Marmot15Discretizations15MaterialSectionE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint14assignMaterialERKN6Marmot15Discretizations15MaterialSectionE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint14assignMaterialERKN6Marmot15Discretizations15MaterialSectionE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::assignMaterial__Marmot::Discretizations::MaterialSectionCR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a7999d38d602cfa86e49e0f6acc020859"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignMaterial</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15Discretizations15MaterialSectionE" title="Marmot::Discretizations::MaterialSection"><span class="n"><span class="pre">MaterialSection</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">property</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint14assignMaterialERKN6Marmot15Discretizations15MaterialSectionE" title="Link to this definition"></a><br /></dt>
+<dd><p>Creates the material through the Marmot::Registry::MaterialFiniteStrainFactory. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>property</strong> – <strong>[in]</strong> Section with the material name and properties. </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – if no finite-strain material of that name exists. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint18initializeYourselfEv">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint18initializeYourselfEv"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint18initializeYourselfEv"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::initializeYourself"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1af8649e019e763252a226d24e62b65156"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeYourself</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint18initializeYourselfEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Initializes the state: <span class="math notranslate nohighlight">\( \boldsymbol{F}_n = \boldsymbol{I} \)</span>, a zero increment, the material state and the density (so that the inertia can be assembled before the first computation). </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint22getMaterialPointNumberEv">
+<span id="_CPPv3NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint22getMaterialPointNumberEv"></span><span id="_CPPv2NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint22getMaterialPointNumberEv"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::getMaterialPointNumberC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a4aa58af56dddeb09c12669474ccc65c4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getMaterialPointNumber</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint22getMaterialPointNumberEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Label of the material point. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The label. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint12getDimensionEv">
+<span id="_CPPv3NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint12getDimensionEv"></span><span id="_CPPv2NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint12getDimensionEv"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::getDimensionC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1aca4351196d7554b786dae04ab2aeaf73"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDimension</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint12getDimensionEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Spatial dimension. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>nDim. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint19getNumberOfVerticesEv">
+<span id="_CPPv3NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint19getNumberOfVerticesEv"></span><span id="_CPPv2NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint19getNumberOfVerticesEv"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::getNumberOfVerticesC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a8f846188d22cbcd6b8f4d8d9154fa266"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfVertices</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint19getNumberOfVerticesEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of vertices. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>1. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint28getNumberOfRequiredStateVarsEv">
+<span id="_CPPv3NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint28getNumberOfRequiredStateVarsEv"></span><span id="_CPPv2NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint28getNumberOfRequiredStateVarsEv"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::getNumberOfRequiredStateVarsC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1acc52acd68a0e4a48922bfda4633e7698"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfRequiredStateVars</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint28getNumberOfRequiredStateVarsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of state variables required by the material point, including those of the material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of state variables. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint12assignVolumeEd">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint12assignVolumeEd"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint12assignVolumeEd"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::assignVolume__double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a8f7fa47b7a6aa68bf04926de52232082"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignVolume</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">volume</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint12assignVolumeEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the volume in the undeformed configuration. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>volume</strong> – <strong>[in]</strong> The volume <span class="math notranslate nohighlight">\( V_0 \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint19getVolumeUndeformedEv">
+<span id="_CPPv3NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint19getVolumeUndeformedEv"></span><span id="_CPPv2NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint19getVolumeUndeformedEv"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::getVolumeUndeformedC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1af497c2b0dfefae524fbda6b203595878"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getVolumeUndeformed</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint19getVolumeUndeformedEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Volume in the undeformed configuration. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\( V_0 \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint23assignVertexCoordinatesEPKd">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint23assignVertexCoordinatesEPKd"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint23assignVertexCoordinatesEPKd"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::assignVertexCoordinates__doubleCP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a3a6dc45d6c214d1721e85d8eed940dd7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">assignVertexCoordinates</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coordinates</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint23assignVertexCoordinatesEPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the coordinates in the undeformed configuration. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>coordinates</strong> – <strong>[in]</strong> The coordinates <span class="math notranslate nohighlight">\( \boldsymbol{X} \)</span> (nDim values). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint20getVertexCoordinatesEPd">
+<span id="_CPPv3NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint20getVertexCoordinatesEPd"></span><span id="_CPPv2NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint20getVertexCoordinatesEPd"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::getVertexCoordinates__doublePC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1aa7a88e5d1ce29381bb179e82bc2cdb27"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getVertexCoordinates</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coordinates</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint20getVertexCoordinatesEPd" title="Link to this definition"></a><br /></dt>
+<dd><p>Coordinates of the single vertex, identical to <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a2d9b5995262b3825544fd241a58b0358"><span class="std std-ref">getCoordinatesAtCenter()</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>coordinates</strong> – <strong>[out]</strong> The coordinates (nDim values). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint22getCoordinatesAtCenterEPd">
+<span id="_CPPv3NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint22getCoordinatesAtCenterEPd"></span><span id="_CPPv2NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint22getCoordinatesAtCenterEPd"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::getCoordinatesAtCenter__doublePC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a2d9b5995262b3825544fd241a58b0358"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getCoordinatesAtCenter</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">coordinates</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint22getCoordinatesAtCenterEPd" title="Link to this definition"></a><br /></dt>
+<dd><p>Coordinates in the intermediate configuration, <span class="math notranslate nohighlight">\( \boldsymbol{Y} = \boldsymbol{X} + \boldsymbol{u} \)</span>, with the displacement of the last accepted state (the increment of the current step is not included). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>coordinates</strong> – <strong>[out]</strong> The coordinates (nDim values). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint21getCenterDisplacementEPd">
+<span id="_CPPv3NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint21getCenterDisplacementEPd"></span><span id="_CPPv2NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint21getCenterDisplacementEPd"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::getCenterDisplacement__doublePC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a6644f6d296f999991411339f03223aac"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getCenterDisplacement</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">displacement</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint21getCenterDisplacementEPd" title="Link to this definition"></a><br /></dt>
+<dd><p>Total displacement of the last accepted state. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>displacement</strong> – <strong>[out]</strong> The displacement <span class="math notranslate nohighlight">\( \boldsymbol{u} \)</span> (nDim values). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint20getDensityUndeformedEv">
+<span id="_CPPv3NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint20getDensityUndeformedEv"></span><span id="_CPPv2NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint20getDensityUndeformedEv"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::getDensityUndeformedC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a2961c8e62cca70a4d13a96ce92b9c12d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDensityUndeformed</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint20getDensityUndeformedEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Mass density in the undeformed configuration, as provided by the material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The density. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint24getCoordinatesUndeformedEv">
+<span id="_CPPv3NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint24getCoordinatesUndeformedEv"></span><span id="_CPPv2NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint24getCoordinatesUndeformedEv"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::getCoordinatesUndeformedC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1aec7ab92b94ade77908de5accb17c7c73"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint7TensorDE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::TensorD"><span class="n"><span class="pre">TensorD</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getCoordinatesUndeformed</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint24getCoordinatesUndeformedEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Coordinates in the undeformed configuration. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\( \boldsymbol{X} \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint15prepareYourselfEdd">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint15prepareYourselfEdd"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint15prepareYourselfEdd"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::prepareYourself__double.double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a119741f4e08e806c1c74bb81a9caf2c8"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">prepareYourself</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeNew</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint15prepareYourselfEdd" title="Link to this definition"></a><br /></dt>
+<dd><p>Starts a new evaluation of the increment: resets <span class="math notranslate nohighlight">\( \Delta\boldsymbol{u} = \boldsymbol{0} \)</span> and <span class="math notranslate nohighlight">\( \Delta\boldsymbol{F} = \boldsymbol{I} \)</span>, so that <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a024a8f015400d1868719ccf37c7fb5a3"><span class="std std-ref">incrementDeformation()</span></a> can accumulate the full increment again. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeNew</strong> – <strong>[in]</strong> Time at the end of the increment (not used). </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> Time increment (not used). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint15computeYourselfEdd">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint15computeYourselfEdd"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint15computeYourselfEdd"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::computeYourself__double.double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a191618319fd7d050281551119874c1cd"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeYourself</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeNew</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint15computeYourselfEdd" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluates the material with <span class="math notranslate nohighlight">\( \boldsymbol{F} = \Delta\boldsymbol{F}\,\boldsymbol{F}_n \)</span> and fills response and tangents. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeNew</strong> – <strong>[in]</strong> Time at the end of the increment. </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> Time increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint22acceptStateAndPositionEv">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint22acceptStateAndPositionEv"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint22acceptStateAndPositionEv"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::acceptStateAndPosition"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a8995911ee733b1344b72c0a9e00f6363"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">acceptStateAndPosition</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint22acceptStateAndPositionEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Accepts the increment: <span class="math notranslate nohighlight">\( \boldsymbol{u} \leftarrow \boldsymbol{u} + \Delta\boldsymbol{u} \)</span> and <span class="math notranslate nohighlight">\( \boldsymbol{F}_n \leftarrow \Delta\boldsymbol{F}\,\boldsymbol{F}_n \)</span>. The increment itself is reset by the next <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a119741f4e08e806c1c74bb81a9caf2c8"><span class="std std-ref">prepareYourself()</span></a>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint20incrementDeformationERK7TensorDRK8TensorDD">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint20incrementDeformationERK7TensorDRK8TensorDD"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint20incrementDeformationERK7TensorDRK8TensorDD"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::incrementDeformation__TensorDCR.TensorDDCR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a024a8f015400d1868719ccf37c7fb5a3"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">incrementDeformation</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint7TensorDE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::TensorD"><span class="n"><span class="pre">TensorD</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">displacementIncrement</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8TensorDDE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::TensorDD"><span class="n"><span class="pre">TensorDD</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">displacementGradientIncrement</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint20incrementDeformationERK7TensorDRK8TensorDD" title="Link to this definition"></a><br /></dt>
+<dd><p>Adds a contribution to the displacement increment and to its gradient, <span class="math notranslate nohighlight">\( \Delta\boldsymbol{u} \mathrel{+}= \delta\boldsymbol{u} \)</span> and <span class="math notranslate nohighlight">\( \Delta\boldsymbol{F} \mathrel{+}= \partial\,\delta\boldsymbol{u}/\partial\boldsymbol{Y} \)</span>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>displacementIncrement</strong> – <strong>[in]</strong> Contribution <span class="math notranslate nohighlight">\( \delta\boldsymbol{u} \)</span> to the displacement increment. </p></li>
+<li><p><strong>displacementGradientIncrement</strong> – <strong>[in]</strong> Its gradient with respect to the intermediate configuration <span class="math notranslate nohighlight">\( \boldsymbol{Y} \)</span>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint5dx_dYEv">
+<span id="_CPPv3NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint5dx_dYEv"></span><span id="_CPPv2NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint5dx_dYEv"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::dx_dYC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1aa5761a2292b37cc0f563d35acedb2eee"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8TensorDDE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::TensorDD"><span class="n"><span class="pre">TensorDD</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dx_dY</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint5dx_dYEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Incremental deformation gradient. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\( \Delta\boldsymbol{F} = \partial\boldsymbol{x}/\partial\boldsymbol{Y} \)</span> (nDim x nDim). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint5dY_dXEv">
+<span id="_CPPv3NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint5dY_dXEv"></span><span id="_CPPv2NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint5dY_dXEv"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::dY_dXC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a9f1d9d31aefcd755c246feb878ae05b6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8TensorDDE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::TensorDD"><span class="n"><span class="pre">TensorDD</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dY_dX</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint5dY_dXEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Deformation gradient of the last accepted state. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="math notranslate nohighlight">\( \boldsymbol{F}_n = \partial\boldsymbol{Y}/\partial\boldsymbol{X} \)</span> (nDim x nDim). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint11getVelocityEv">
+<span id="_CPPv3NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint11getVelocityEv"></span><span id="_CPPv2NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint11getVelocityEv"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::getVelocityC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1aa806ca1ee8f18f822731861d1c4a23ef"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint7TensorDE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::TensorD"><span class="n"><span class="pre">TensorD</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getVelocity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint11getVelocityEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Velocity. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The velocity (nDim values). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint15getAccelerationEv">
+<span id="_CPPv3NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint15getAccelerationEv"></span><span id="_CPPv2NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint15getAccelerationEv"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::getAccelerationC"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a7ce563ffc7a96624521d598ad9eaefb7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint7TensorDE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::TensorD"><span class="n"><span class="pre">TensorD</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getAcceleration</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint15getAccelerationEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Acceleration. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The acceleration (nDim values). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint11setVelocityERK7TensorD">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint11setVelocityERK7TensorD"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint11setVelocityERK7TensorD"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::setVelocity__TensorDCR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1ab8f85e1071c53a7c48f26e399aca84a0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setVelocity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint7TensorDE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::TensorD"><span class="n"><span class="pre">TensorD</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">velocity</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint11setVelocityERK7TensorD" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the velocity (typically after a time integration in the host). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>velocity</strong> – <strong>[in]</strong> The velocity (nDim values). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint15setAccelerationERK7TensorD">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint15setAccelerationERK7TensorD"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint15setAccelerationERK7TensorD"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::setAcceleration__TensorDCR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1ae87459a074ad8a53dc74391565148a99"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setAcceleration</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint7TensorDE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::TensorD"><span class="n"><span class="pre">TensorD</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">acceleration</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint15setAccelerationERK7TensorD" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the acceleration (typically after a time integration in the host). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>acceleration</strong> – <strong>[in]</strong> The acceleration (nDim values). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint19setInitialConditionERKNSt6stringEPKd">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint19setInitialConditionERKNSt6stringEPKd"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint19setInitialConditionERKNSt6stringEPKd"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::setInitialCondition__ssCR.doubleCP"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a1cb7b6b557408a13aa195644848ddf3c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setInitialCondition</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">conditionName</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">value</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint19setInitialConditionERKNSt6stringEPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Initial conditions are not supported (in particular not <code class="docutils literal notranslate"><span class="pre">geostaticstress</span></code>, which would need an eigen deformation as in <a class="reference internal" href="gradientenhancedfinitestrainmaterialpoint.html#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1GradientEnhancedFiniteStrainMaterialPoint"><span class="std std-ref">GradientEnhancedFiniteStrainMaterialPoint</span></a>). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>conditionName</strong> – <strong>[in]</strong> Name of the initial condition. </p></li>
+<li><p><strong>value</strong> – <strong>[in]</strong> Values of the initial condition (unused). </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – always, so that an input with an initial condition does not silently start from the unloaded state. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8responseE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8responseE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8responseE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::response__Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::Response"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1ae5fa4638c5873a21f21d5f4465776dbe"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations14MaterialPointsE" title="Marmot::Discretizations::MaterialPoints"><span class="n"><span class="pre">MaterialPoints</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint"><span class="n"><span class="pre">DisplacementMaterialPoint</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8ResponseE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::Response"><span class="n"><span class="pre">Response</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">response</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8responseE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8tangentsE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8tangentsE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8tangentsE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::tangents__Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::Tangents"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1aba68c397be74fa59cf3299efee1789b0"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations14MaterialPointsE" title="Marmot::Discretizations::MaterialPoints"><span class="n"><span class="pre">MaterialPoints</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint"><span class="n"><span class="pre">DisplacementMaterialPoint</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8TangentsE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::Tangents"><span class="n"><span class="pre">Tangents</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tangents</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8tangentsE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-types">Protected Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint7TensorDE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint7TensorDE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint7TensorDE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a31dd27f86c332341c4d22e4f321e3207"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TensorD</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">Fastor</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint7TensorDE" title="Link to this definition"></a><br /></dt>
+<dd><p>vector of size nDim </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8TensorDDE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8TensorDDE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8TensorDDE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a4553eb50103d1147bb5212e236b5c3ce"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TensorDD</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">Fastor</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8TensorDDE" title="Link to this definition"></a><br /></dt>
+<dd><p>second-order tensor of size nDim </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint10TensorDDDDE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint10TensorDDDDE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint10TensorDDDDE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a331c0c663cfc5757feab732486f0cafd"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TensorDDDD</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="n"><span class="pre">Fastor</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint10TensorDDDDE" title="Link to this definition"></a><br /></dt>
+<dd><p>fourth-order tensor of size nDim </p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8MaterialE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8MaterialE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8MaterialE"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a8e40db2a3105cf0106ddb8a4830a9c26"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Material</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials20MaterialFiniteStrainE" title="Marmot::Materials::MaterialFiniteStrain"><span class="n"><span class="pre">MaterialFiniteStrain</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8MaterialE" title="Link to this definition"></a><br /></dt>
+<dd><p>material interface consumed by the material point </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-attributes">Protected Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint9_mpNumberE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint9_mpNumberE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint9_mpNumberE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::_mpNumber__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1af054e17b003ee5ae058bcabd2451a709"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_mpNumber</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint9_mpNumberE" title="Link to this definition"></a><br /></dt>
+<dd><p>label of the material point, also passed to the material </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint3_x0E">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint3_x0E"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint3_x0E"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::_x0__TensorD"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a00c97c1894b536c6c8c4bf66b551abab"></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint7TensorDE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::TensorD"><span class="n"><span class="pre">TensorD</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_x0</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint3_x0E" title="Link to this definition"></a><br /></dt>
+<dd><p>coordinates in the undeformed configuration <span class="math notranslate nohighlight">\( \boldsymbol{X} \)</span></p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint5_vol0E">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint5_vol0E"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint5_vol0E"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::_vol0__double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1aeaf7b18e3e310deb3978ed38e73bfaa9"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_vol0</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint5_vol0E" title="Link to this definition"></a><br /></dt>
+<dd><p>volume in the undeformed configuration <span class="math notranslate nohighlight">\( V_0 \)</span></p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8_densityE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8_densityE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8_densityE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::_density__double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1afd88f6d3b0af7d1ba89f526da3f68efd"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_density</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8_densityE" title="Link to this definition"></a><br /></dt>
+<dd><p>mass density in the undeformed configuration, as provided by the material </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8materialE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8materialE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8materialE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::material__std::unique_ptr:Material:"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1aabac63b1b360130afaa61cbfd282d370"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8MaterialE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::Material"><span class="n"><span class="pre">Material</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">material</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8materialE" title="Link to this definition"></a><br /></dt>
+<dd><p>the finite-strain material </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint5stateE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint5stateE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint5stateE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::state__std::unique_ptr:MPStateVarManager:"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1adcbefe78db7a3f3fbcc3bf2af9ebe985"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManagerE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::MPStateVarManager"><span class="n"><span class="pre">MPStateVarManager</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">state</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint5stateE" title="Link to this definition"></a><br /></dt>
+<dd><p>view on the state vector, set by <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1ac7a111e1a40946885445620c2c3aae95"><span class="std std-ref">assignStateVars()</span></a></p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-static-attributes">Protected Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint10_nVerticesE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint10_nVerticesE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint10_nVerticesE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::_nVertices__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1ae3128d69a6d21992ef963665cfa86fc8"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_nVertices</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint10_nVerticesE" title="Link to this definition"></a><br /></dt>
+<dd><p>a material point has a single vertex, its center </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint4nRotE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint4nRotE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint4nRotE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::nRot__i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a205d31771786d3aa43dd10102592d2e5"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nRot</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors25getNumberOfDofForRotationEi" title="Marmot::Math::Tensors::getNumberOfDofForRotation"><span class="n"><span class="pre">getNumberOfDofForRotation</span></span></a><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint4nRotE" title="Link to this definition"></a><br /></dt>
+<dd><p>number of rotational dofs in nDim dimensions (not used by this class) </p>
+</dd></dl>
+
+</div>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManagerE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManagerE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManagerE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::MPStateVarManager"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1_1MPStateVarManager"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MPStateVarManager</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n"><span class="pre">Utilities</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Utilities21StateVarVectorManagerE" title="Marmot::Utilities::StateVarVectorManager"><span class="n"><span class="pre">StateVarVectorManager</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManagerE" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::MPStateVarManager:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-448c8616f659c087b990aec33de36b0728141be5.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::MPStateVarManager&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::MPStateVarManager&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Utilities::StateVarVectorManager&quot; tooltip=&quot;Marmot::Utilities::StateVarVectorManager&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::MPStateVarManager:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-fac443877351bea98d84e16f1967fcb69990b191.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::MPStateVarManager&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::MPStateVarManager&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Utilities::StateVarVectorManager&quot; tooltip=&quot;Marmot::Utilities::StateVarVectorManager&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Utilities::StateVarVectorManager::StateVarVectorLayout&quot; tooltip=&quot;Marmot::Utilities::StateVarVectorManager::StateVarVectorLayout&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>State of the material point in the state vector provided by the host. </p>
+<p>Layout (all quantities 3D, regardless of nDim): total displacement <span class="math notranslate nohighlight">\( \boldsymbol{u} \)</span> (“displacement”), velocity, acceleration, the displacement increment of the current increment <span class="math notranslate nohighlight">\( \Delta\boldsymbol{u} \)</span> (“delta displacement”), the incremental deformation gradient <span class="math notranslate nohighlight">\( \Delta\boldsymbol{F} \)</span> (“delta deformation gradient”), the deformation gradient of the last accepted state <span class="math notranslate nohighlight">\( \boldsymbol{F}_n \)</span> (“deformation gradient”), the Kirchhoff stress (“stress”), followed by the state of the material (“begin of material state”). </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager17MPStateVarManagerEPdi">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager17MPStateVarManagerEPdi"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager17MPStateVarManagerEPdi"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::MPStateVarManager::MPStateVarManager__doubleP.i"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1_1MPStateVarManager_1a9bdadebd97c31342a41baf4323b405a7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MPStateVarManager</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">theStateVarVector</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager17MPStateVarManagerEPdi" title="Link to this definition"></a><br /></dt>
+<dd><p>Maps the state layout onto a state vector. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theStateVarVector</strong> – <strong>[in]</strong> State vector of the material point (owned by the host). </p></li>
+<li><p><strong>nStateVars</strong> – <strong>[in]</strong> Total length of the state vector, including the material state. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager1uE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager1uE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager1uE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::MPStateVarManager::u__Marmot::Math::Tensors::FastorTensors::TensorMap3d"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1_1MPStateVarManager_1a686fd6ce843de4e39fe17d1b979d8359"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors11TensorMap3dE" title="Marmot::Math::Tensors::FastorTensors::TensorMap3d"><span class="n"><span class="pre">TensorMap3d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">u</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager1uE" title="Link to this definition"></a><br /></dt>
+<dd><p>total displacement of the last accepted state </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager1vE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager1vE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager1vE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::MPStateVarManager::v__Marmot::Math::Tensors::FastorTensors::TensorMap3d"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1_1MPStateVarManager_1aab23632b85a3f166db0edda293fe67b6"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors11TensorMap3dE" title="Marmot::Math::Tensors::FastorTensors::TensorMap3d"><span class="n"><span class="pre">TensorMap3d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">v</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager1vE" title="Link to this definition"></a><br /></dt>
+<dd><p>velocity </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager1aE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager1aE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager1aE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::MPStateVarManager::a__Marmot::Math::Tensors::FastorTensors::TensorMap3d"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1_1MPStateVarManager_1a9b7397ec242e7a3885babd6eaf72863f"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors11TensorMap3dE" title="Marmot::Math::Tensors::FastorTensors::TensorMap3d"><span class="n"><span class="pre">TensorMap3d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">a</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager1aE" title="Link to this definition"></a><br /></dt>
+<dd><p>acceleration </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager2duE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager2duE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager2duE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::MPStateVarManager::du__Marmot::Math::Tensors::FastorTensors::TensorMap3d"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1_1MPStateVarManager_1abd693af82087e3639f9f91cb45b7fbd9"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors11TensorMap3dE" title="Marmot::Math::Tensors::FastorTensors::TensorMap3d"><span class="n"><span class="pre">TensorMap3d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">du</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager2duE" title="Link to this definition"></a><br /></dt>
+<dd><p>displacement increment <span class="math notranslate nohighlight">\( \Delta\boldsymbol{u} \)</span></p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager5dx_dYE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager5dx_dYE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager5dx_dYE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::MPStateVarManager::dx_dY__Marmot::Math::Tensors::FastorTensors::TensorMap33d"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1_1MPStateVarManager_1a857fa51bbebbed77c1ed8c7c3447863c"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors12TensorMap33dE" title="Marmot::Math::Tensors::FastorTensors::TensorMap33d"><span class="n"><span class="pre">TensorMap33d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dx_dY</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager5dx_dYE" title="Link to this definition"></a><br /></dt>
+<dd><p>incremental deformation gradient <span class="math notranslate nohighlight">\( \Delta\boldsymbol{F} \)</span></p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager5dY_dXE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager5dY_dXE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager5dY_dXE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::MPStateVarManager::dY_dX__Marmot::Math::Tensors::FastorTensors::TensorMap33d"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1_1MPStateVarManager_1a5e12a9db0a987b179fe4fa66618eee70"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors12TensorMap33dE" title="Marmot::Math::Tensors::FastorTensors::TensorMap33d"><span class="n"><span class="pre">TensorMap33d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dY_dX</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager5dY_dXE" title="Link to this definition"></a><br /></dt>
+<dd><p>deformation gradient of the last accepted state <span class="math notranslate nohighlight">\( \boldsymbol{F}_n \)</span></p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager6stressE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager6stressE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager6stressE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::MPStateVarManager::stress__Marmot::Math::Tensors::FastorTensors::TensorMap33d"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1_1MPStateVarManager_1a62c8b32acd14081015815753010c6768"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors12TensorMap33dE" title="Marmot::Math::Tensors::FastorTensors::TensorMap33d"><span class="n"><span class="pre">TensorMap33d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stress</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager6stressE" title="Link to this definition"></a><br /></dt>
+<dd><p>Kirchhoff stress (see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a191618319fd7d050281551119874c1cd"><span class="std std-ref">computeYourself()</span></a>). </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager13materialStateE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager13materialStateE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager13materialStateE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::MPStateVarManager::materialState__Eigen::Map:Eigen::VectorXd:"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1_1MPStateVarManager_1a6ee8f135b79baf5bda2b60b198199d32"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">VectorXd</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">materialState</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager13materialStateE" title="Link to this definition"></a><br /></dt>
+<dd><p>state variables of the material </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager28getNumberOfRequiredStateVarsEv">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager28getNumberOfRequiredStateVarsEv"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager28getNumberOfRequiredStateVarsEv"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::MPStateVarManager::getNumberOfRequiredStateVars"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1_1MPStateVarManager_1abde59e2ae670167fb85169f820259be8"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNumberOfRequiredStateVars</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint17MPStateVarManager28getNumberOfRequiredStateVarsEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of state variables required by the material point itself, without the material state. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The length of the layout. </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8ResponseE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8ResponseE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8ResponseE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::Response"></span><span class="target" id="structMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1_1Response"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Response</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8ResponseE" title="Link to this definition"></a><br /></dt>
+<dd><p>response of the last <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a191618319fd7d050281551119874c1cd"><span class="std std-ref">computeYourself()</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8Response1SE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8Response1SE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8Response1SE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::Response::S__Fastor::Tensor:double.nDim.nDim:"></span><span class="target" id="structMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1_1Response_1ad316a662256114b4749201dbb16d13e9"></span><span class="n"><span class="pre">Fastor</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">S</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8Response1SE" title="Link to this definition"></a><br /></dt>
+<dd><p>Kirchhoff stress <span class="math notranslate nohighlight">\( \boldsymbol{\tau} \)</span> (in-plane part in 2D). </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8TangentsE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8TangentsE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8TangentsE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::Tangents"></span><span class="target" id="structMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1_1Tangents"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Tangents</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8TangentsE" title="Link to this definition"></a><br /></dt>
+<dd><p>algorithmic tangents of the last <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a191618319fd7d050281551119874c1cd"><span class="std std-ref">computeYourself()</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8Tangents10dS_dDeltaFE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8Tangents10dS_dDeltaFE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8Tangents10dS_dDeltaFE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::Tangents::dS_dDeltaF__Fastor::Tensor:double.nDim.nDim.nDim.nDim:"></span><span class="target" id="structMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1_1Tangents_1acb522aab6b804e0f24ea7854d8f30d21"></span><span class="n"><span class="pre">Fastor</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Tensor</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint::nDim"><span class="n"><span class="pre">nDim</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dS_dDeltaF</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPoint8Tangents10dS_dDeltaFE" title="Link to this definition"></a><br /></dt>
+<dd><p><span class="math notranslate nohighlight">\( \partial \tau_{ij} / \partial \Delta F_{kL} \)</span> (in-plane part in 2D) </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2DE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2DE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2DE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint2D"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DisplacementMaterialPoint2D</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations14MaterialPointsE" title="Marmot::Discretizations::MaterialPoints"><span class="n"><span class="pre">MaterialPoints</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint"><span class="n"><span class="pre">DisplacementMaterialPoint</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2DE" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-88a946a9031e9ed61f914d60d4cd8ac0196d1681.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; 2 &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; 2 &gt;&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot;]
+    &quot;4&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-fa2d4dd3142e7ecc2ce51a4865d864103a05ca17.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;6&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot;]
+    &quot;5&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; 2 &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; 2 &gt;&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot;]
+    &quot;6&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;6&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;6&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;2&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;2&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Plane-strain displacement material point (registered as “Displacement/PlaneStrain”). </p>
+<p>The in-plane increment is expanded to 3D (out-of-plane components of the identity), the material is evaluated by Marmot::Materials::MaterialFiniteStrain::computePlaneStrain() with the 3D deformation gradient, and the in-plane parts of <span class="math notranslate nohighlight">\( \boldsymbol{\tau} \)</span> and <span class="math notranslate nohighlight">\( \partial\boldsymbol{\tau}/\partial\Delta\boldsymbol{F} \)</span> are kept. The full 3D Kirchhoff stress is also written to the state “stress”. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2D15computeYourselfEdd">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2D15computeYourselfEdd"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2D15computeYourselfEdd"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D::computeYourself__double.double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint2D_1afeaa97b44767b31d880388cf8cfca5da"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeYourself</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeNew</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2D15computeYourselfEdd" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluates the material in plane strain, see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a191618319fd7d050281551119874c1cd"><span class="std std-ref">DisplacementMaterialPoint::computeYourself()</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeNew</strong> – <strong>[in]</strong> Time at the end of the increment. </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> Time increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2D20incrementDeformationERK7TensorDRK8TensorDD">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2D20incrementDeformationERK7TensorDRK8TensorDD"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2D20incrementDeformationERK7TensorDRK8TensorDD"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D::incrementDeformation__TensorDCR.TensorDDCR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint2D_1ac7ad5b6a9b672ddbf9940b4137b44d82"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">incrementDeformation</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TensorD</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">displacementIncrement</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TensorDD</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">displacementGradientIncrement</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2D20incrementDeformationERK7TensorDRK8TensorDD" title="Link to this definition"></a><br /></dt>
+<dd><p>Adds an in-plane contribution to the increment, see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a024a8f015400d1868719ccf37c7fb5a3"><span class="std std-ref">DisplacementMaterialPoint::incrementDeformation()</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>displacementIncrement</strong> – <strong>[in]</strong> In-plane contribution to the displacement increment. </p></li>
+<li><p><strong>displacementGradientIncrement</strong> – <strong>[in]</strong> Its in-plane gradient with respect to <span class="math notranslate nohighlight">\( \boldsymbol{Y} \)</span>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2D25DisplacementMaterialPointEiPKdid">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2D25DisplacementMaterialPointEiPKdid"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2D25DisplacementMaterialPointEiPKdid"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint2D::DisplacementMaterialPoint__i.doubleCP.i.double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint2D_1a24fa29ac2f3fe6d221448acd6ece631b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DisplacementMaterialPoint</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">mpNumber</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">vertexCoordinates</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nVertexCoordinates</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">volume</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint2D25DisplacementMaterialPointEiPKdid" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructs a material point. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mpNumber</strong> – <strong>[in]</strong> Label of the material point. </p></li>
+<li><p><strong>vertexCoordinates</strong> – <strong>[in]</strong> Coordinates of the material point in the undeformed configuration (nDim values). </p></li>
+<li><p><strong>nVertexCoordinates</strong> – <strong>[in]</strong> Number of coordinates (not used). </p></li>
+<li><p><strong>volume</strong> – <strong>[in]</strong> Volume in the undeformed configuration. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint3DE">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint3DE"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint3DE"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint3D"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DisplacementMaterialPoint3D</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv4N6Marmot15DiscretizationsE" title="Marmot::Discretizations"><span class="n"><span class="pre">Discretizations</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/meshfreecore.html#_CPPv4N6Marmot15Discretizations14MaterialPointsE" title="Marmot::Discretizations::MaterialPoints"><span class="n"><span class="pre">MaterialPoints</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4I_iEN6Marmot15Discretizations14MaterialPoints25DisplacementMaterialPointE" title="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint"><span class="n"><span class="pre">DisplacementMaterialPoint</span></span></a><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint3DE" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-0d030c7362be5f59ae175470fcc53555b6ca84c0.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; 3 &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; 3 &gt;&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot;]
+    &quot;4&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-452dc937645a8c9a6fdc3e0ec6c536d440ce7552.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;6&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Response&quot;]
+    &quot;5&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; nDim &gt;::Tangents&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; 3 &gt;&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint&lt; 3 &gt;&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot; tooltip=&quot;Marmot::Discretizations::MaterialPoints::MaterialPoint&quot;]
+    &quot;6&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;6&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;6&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;2&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;2&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>3D displacement material point (registered as “Displacement/3D”). </p>
+<p>The material is evaluated with the 3D deformation gradient by Marmot::Materials::MaterialFiniteStrain::computeStress(); the Kirchhoff stress is written to the state “stress”. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint3D15computeYourselfEdd">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint3D15computeYourselfEdd"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint3D15computeYourselfEdd"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D::computeYourself__double.double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint3D_1a8d465a5ab0a2e91b1a7e426c1806c1b7"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeYourself</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">timeNew</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dT</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint3D15computeYourselfEdd" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluates the material in 3D, see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a191618319fd7d050281551119874c1cd"><span class="std std-ref">DisplacementMaterialPoint::computeYourself()</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timeNew</strong> – <strong>[in]</strong> Time at the end of the increment. </p></li>
+<li><p><strong>dT</strong> – <strong>[in]</strong> Time increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint3D20incrementDeformationERK7TensorDRK8TensorDD">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint3D20incrementDeformationERK7TensorDRK8TensorDD"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint3D20incrementDeformationERK7TensorDRK8TensorDD"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D::incrementDeformation__TensorDCR.TensorDDCR"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint3D_1a2cb6cb3f83cd9b23a3a6ef513e52af42"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">incrementDeformation</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TensorD</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">displacementIncrement</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TensorDD</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">displacementGradientIncrement</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint3D20incrementDeformationERK7TensorDRK8TensorDD" title="Link to this definition"></a><br /></dt>
+<dd><p>Adds a contribution to the increment, see <a class="reference internal" href="#classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint_1a024a8f015400d1868719ccf37c7fb5a3"><span class="std std-ref">DisplacementMaterialPoint::incrementDeformation()</span></a>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>displacementIncrement</strong> – <strong>[in]</strong> Contribution to the displacement increment. </p></li>
+<li><p><strong>displacementGradientIncrement</strong> – <strong>[in]</strong> Its gradient with respect to <span class="math notranslate nohighlight">\( \boldsymbol{Y} \)</span>. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint3D25DisplacementMaterialPointEiPKdid">
+<span id="_CPPv3N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint3D25DisplacementMaterialPointEiPKdid"></span><span id="_CPPv2N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint3D25DisplacementMaterialPointEiPKdid"></span><span id="Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint3D::DisplacementMaterialPoint__i.doubleCP.i.double"></span><span class="target" id="classMarmot_1_1Discretizations_1_1MaterialPoints_1_1DisplacementMaterialPoint3D_1a24fa29ac2f3fe6d221448acd6ece631b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DisplacementMaterialPoint</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">mpNumber</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">vertexCoordinates</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nVertexCoordinates</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">volume</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot15Discretizations14MaterialPoints27DisplacementMaterialPoint3D25DisplacementMaterialPointEiPKdid" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructs a material point. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mpNumber</strong> – <strong>[in]</strong> Label of the material point. </p></li>
+<li><p><strong>vertexCoordinates</strong> – <strong>[in]</strong> Coordinates of the material point in the undeformed configuration (nDim values). </p></li>
+<li><p><strong>nVertexCoordinates</strong> – <strong>[in]</strong> Number of coordinates (not used). </p></li>
+<li><p><strong>volume</strong> – <strong>[in]</strong> Volume in the undeformed configuration. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="meshfreeparticles.html" class="btn btn-neutral float-left" title="Meshfree Particles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="displacementcell.html" class="btn btn-neutral float-right" title="Displacement Cell" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

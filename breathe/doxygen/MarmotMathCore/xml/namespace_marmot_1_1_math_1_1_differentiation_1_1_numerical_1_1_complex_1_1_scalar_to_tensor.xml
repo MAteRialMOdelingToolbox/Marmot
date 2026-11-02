@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_math_1_1_differentiation_1_1_numerical_1_1_complex_1_1_scalar_to_tensor" kind="namespace" language="C++">
+    <compoundname>Marmot::Math::Differentiation::Numerical::Complex::ScalarToTensor</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_numerical_differentiation_for_fastor_8h_1a8fe09b6a8252eadd2c2783ff3857f609" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>std::tuple&lt; Fastor::Tensor&lt; double, Rest... &gt;, Fastor::Tensor&lt; double, Rest... &gt; &gt;</type>
+        <definition>std::tuple&lt; Fastor::Tensor&lt; double, Rest... &gt;, Fastor::Tensor&lt; double, Rest... &gt; &gt; Marmot::Math::Differentiation::Numerical::Complex::ScalarToTensor::forwardDifference</definition>
+        <argsstring>(const std::function&lt; Fastor::Tensor&lt; Marmot::Math::complexDouble, Rest... &gt;(const Marmot::Math::complexDouble) &gt; &amp;F, const double x)</argsstring>
+        <name>forwardDifference</name>
+        <qualifiedname>Marmot::Math::Differentiation::Numerical::Complex::ScalarToTensor::forwardDifference</qualifiedname>
+        <param>
+          <type>const std::function&lt; Fastor::Tensor&lt; <ref refid="_marmot_typedefs_8h_1ad5fb4f549c19fe266e14a6392117826f" kindref="member">Marmot::Math::complexDouble</ref>, Rest... &gt;(const <ref refid="_marmot_typedefs_8h_1ad5fb4f549c19fe266e14a6392117826f" kindref="member">Marmot::Math::complexDouble</ref>) &gt; &amp;</type>
+          <declname>F</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+<para>Approximates the derivative of a function mapping a scalar to a tensor using the complex step method. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Rest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The dimensions of the output Tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The function mapping a scalar to a tensor with complex numbers </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The point at which the derivative is evaluated </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tuple containing the real part of F(x) and the derivative of F at the point x </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="447" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" bodystart="447" bodyend="466"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiationForFastor.h" line="436" column="5"/>
+  </compounddef>
+</doxygen>

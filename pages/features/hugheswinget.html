@@ -1,0 +1,577 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hughes-Winget wrapper &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Gradient-enhanced Hughes-Winget wrapper" href="gradientenhancedhugheswinget.html" />
+    <link rel="prev" title="Von Mises model (Automatic Differentiation)" href="advonmises.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="materials.html">Material models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="at2phasefield.html">AT2 Phase Field Fracture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="b4.html">B4 model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressibleneohooke.html">Compressible Neo Hooke model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adcompressibleneohooke.html">Compressible Neo Hooke model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressiblefinitestrainlinearviscoelasticity.html">Compressible Finite-Strain Linear Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainisotropicbiotviscoelasticity.html">Finite-Strain Isotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainj2plasticity.html">Finite-strain J2 plasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainorthotropicbiotviscoelasticity.html">Finite-Strain Orthotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearelastic.html">Linear Elastic model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adlinearelastic.html">Linear Elastic model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticpowerlaw.html">Linear Viscoelastic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticorthotropicpowerlaw.html">Linear Viscoelastic Orthotropic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticwiechert.html">Linear Viscoelastic Wiechert model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="interfacematerialhypoelastic.html">Interface material (hypoelastic bulk material)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="microplanem7.html">Microplane model M7</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gm7.html">Gradient-enhanced microplane model M7 (GM7)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vonmises.html">Von Mises model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advonmises.html">Von Mises model (Automatic Differentiation)</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Hughes-Winget wrapper</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#characteristic-element-length">Characteristic element length</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedhugheswinget.html">Gradient-enhanced Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedcompressibleneohookedamage.html">Gradient-enhanced compressible Neo-Hooke damage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedfinitestraindruckerprager.html">Gradient-enhanced finite-strain Drucker-Prager</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meshfree.html">Meshfree methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="materials.html">Material models</a></li>
+      <li class="breadcrumb-item active">Hughes-Winget wrapper</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/hugheswinget.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="hughes-winget-wrapper">
+<span id="hugheswingetwrapper"></span><h1>Hughes-Winget wrapper<a class="headerlink" href="#hughes-winget-wrapper" title="Link to this heading"></a></h1>
+<p>A decorator that makes any small-strain (hypoelastic) material usable wherever a finite-strain
+material is expected – updated-Lagrangian elements such as <code class="docutils literal notranslate"><span class="pre">C3D8UL</span></code>, and the meshfree
+<code class="docutils literal notranslate"><span class="pre">Displacement/...</span></code> particles and material points.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialHypoElastic</span></code> and <code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialFiniteStrain</span></code> are unrelated interfaces: the former
+returns the Cauchy stress and <span class="math notranslate nohighlight">\(\partial\boldsymbol{\sigma}/\partial\boldsymbol{\varepsilon}\)</span>
+for a linearized strain increment, the latter the Kirchhoff stress and
+<span class="math notranslate nohighlight">\(\partial\boldsymbol{\tau}/\partial\boldsymbol{F}\)</span>. <code class="docutils literal notranslate"><span class="pre">HughesWingetWrapper</span></code> bridges the two by
+integrating the small-strain model along an objective, co-rotational path.</p>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
+<p>The wrapper is registered per material under the name of the wrapped model, suffixed with
+<code class="docutils literal notranslate"><span class="pre">/HUGHES-WINGET</span></code>. In an EdelweissFE input file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">*</span><span class="n">material</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">VONMISES</span><span class="o">/</span><span class="n">HUGHES</span><span class="o">-</span><span class="n">WINGET</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">myMaterial</span>
+<span class="mi">210000</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">550</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">1400</span>
+</pre></div>
+</div>
+<p>and in EdelweissMeshfree:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">material</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"material"</span><span class="p">:</span> <span class="s2">"VONMISES/HUGHES-WINGET"</span><span class="p">,</span> <span class="s2">"properties"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">...</span><span class="p">])}</span>
+</pre></div>
+</div>
+<p>All material properties are forwarded to the wrapped model unchanged; the wrapper consumes none of
+them.</p>
+<section id="registering-a-further-material">
+<h3>Registering a further material<a class="headerlink" href="#registering-a-further-material" title="Link to this heading"></a></h3>
+<p>Add one line to that material’s own <code class="docutils literal notranslate"><span class="pre">&lt;Name&gt;Registration.cpp</span></code>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">"Marmot/MarmotMaterialHughesWinget.h"</span>
+<span class="p">...</span>
+<span class="k">const</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">VonMisesHughesWingetIsRegistered</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Marmot</span><span class="o">::</span><span class="n">Registry</span><span class="o">::</span><span class="n">MaterialFiniteStrainFactory</span><span class="o">::</span><span class="n">registerMaterial</span><span class="o">&lt;</span>
+<span class="w">  </span><span class="n">HughesWingetWrapper</span><span class="o">&lt;</span><span class="w"> </span><span class="n">VonMisesModel</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="o">&gt;</span><span class="p">(</span><span class="w"> </span><span class="s">"VONMISES/HUGHES-WINGET"</span><span class="w"> </span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p>Let <span class="math notranslate nohighlight">\(\boldsymbol{F}^{(n)}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{F}^{(n+1)}\)</span> be the deformation gradients at
+the beginning and the end of the increment. The velocity gradient increment is evaluated on the
+mid-step configuration,</p>
+<div class="math notranslate nohighlight">
+\[\Delta\boldsymbol{l}
+= \left(\boldsymbol{F}^{(n+1)}-\boldsymbol{F}^{(n)}\right)\boldsymbol{F}_\mathrm{mid}^{-1},
+\qquad
+\boldsymbol{F}_\mathrm{mid} = \tfrac{1}{2}\left(\boldsymbol{F}^{(n)}+\boldsymbol{F}^{(n+1)}\right),\]</div>
+<p>and split into its symmetric and skew parts</p>
+<div class="math notranslate nohighlight">
+\[\Delta\boldsymbol{\varepsilon} = \tfrac{1}{2}\left(\Delta\boldsymbol{l}+\Delta\boldsymbol{l}^{T}\right),
+\qquad
+\Delta\boldsymbol{\Omega} = \tfrac{1}{2}\left(\Delta\boldsymbol{l}-\Delta\boldsymbol{l}^{T}\right).\]</div>
+<p>The incremental rotation follows from the Cayley transform</p>
+<div class="math notranslate nohighlight">
+\[\Delta\boldsymbol{R}
+= \left(\boldsymbol{I}-\tfrac{1}{2}\Delta\boldsymbol{\Omega}\right)^{-1}
+  \left(\boldsymbol{I}+\tfrac{1}{2}\Delta\boldsymbol{\Omega}\right),\]</div>
+<p>which is orthogonal to machine precision. The stress carried over from the previous increment is
+rotated forward,</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{\sigma}_\mathrm{rot}
+= \Delta\boldsymbol{R}\,\boldsymbol{\sigma}^{(n)}\,\Delta\boldsymbol{R}^{T},\]</div>
+<p>the wrapped material is evaluated with <span class="math notranslate nohighlight">\(\left(\boldsymbol{\sigma}_\mathrm{rot},
+\Delta\boldsymbol{\varepsilon}\right)\)</span>, and its updated Cauchy stress is pushed forward to the
+Kirchhoff stress expected by the consumers,</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{\tau} = J\,\boldsymbol{\sigma}^{(n+1)}, \qquad J = \det\boldsymbol{F}^{(n+1)}.\]</div>
+<p>Superimposed rigid rotation is reproduced <em>exactly</em>, in a single increment and for any rotation
+angle below <span class="math notranslate nohighlight">\(180^\circ\)</span>: for <span class="math notranslate nohighlight">\(\boldsymbol{F}^{(n+1)}=\boldsymbol{Q}\boldsymbol{F}^{(n)}\)</span>
+the increment <span class="math notranslate nohighlight">\(\Delta\boldsymbol{l}\)</span> is exactly skew, hence
+<span class="math notranslate nohighlight">\(\Delta\boldsymbol{\varepsilon}=\boldsymbol{0}\)</span> and
+<span class="math notranslate nohighlight">\(\Delta\boldsymbol{R}=\boldsymbol{Q}\)</span>.</p>
+<section id="algorithmic-tangent">
+<h3>Algorithmic tangent<a class="headerlink" href="#algorithmic-tangent" title="Link to this heading"></a></h3>
+<p>With <span class="math notranslate nohighlight">\(\boldsymbol{M}=\boldsymbol{F}_\mathrm{mid}^{-1}\)</span>,
+<span class="math notranslate nohighlight">\(\boldsymbol{P}=\boldsymbol{I}-\tfrac{1}{2}\Delta\boldsymbol{l}\)</span>,
+<span class="math notranslate nohighlight">\(\boldsymbol{A}=\boldsymbol{I}-\tfrac{1}{2}\Delta\boldsymbol{\Omega}\)</span> and
+<span class="math notranslate nohighlight">\(\boldsymbol{G}=\left(\boldsymbol{I}+\Delta\boldsymbol{R}\right)\boldsymbol{\sigma}^{(n)}\Delta\boldsymbol{R}^{T}\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial\Delta l_{ij}}{\partial F_{kl}} = P_{ik}M_{lj},
+\qquad
+\frac{\partial\sigma_{\mathrm{rot},ij}}{\partial\Delta\Omega_{kl}}
+= \tfrac{1}{2}\left(A^{-1}_{ik}G_{lj}+A^{-1}_{jk}G_{li}\right),\]</div>
+<p>from which, with <span class="math notranslate nohighlight">\(\mathbf{C}\)</span> the tangent reported by the wrapped material,</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial\tau_{ij}}{\partial F_{kl}}
+= \sigma^{(n+1)}_{ij}\,J\,F^{-1}_{lk}
++ J\left(\frac{\partial\sigma_{\mathrm{rot},ij}}{\partial\Delta\Omega_{mn}}
+         \frac{\partial\Delta\Omega_{mn}}{\partial F_{kl}}
+       + C_{ijmn}\frac{\partial\Delta\varepsilon_{mn}}{\partial F_{kl}}\right).\]</div>
+</section>
+<section id="tangent-modes">
+<h3>Tangent modes<a class="headerlink" href="#tangent-modes" title="Link to this heading"></a></h3>
+<p>The second template parameter selects how the tangent is obtained.</p>
+<table class="docutils align-left">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Mode</strong></p></th>
+<th class="head"><p><strong>Wrapped-material evaluations</strong></p></th>
+<th class="head"><p><strong>Consistency</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Analytic</span></code> (default)</p></td>
+<td><p>1</p></td>
+<td><p>Exact while the wrapped model responds elastically. The expression above implicitly assumes
+<span class="math notranslate nohighlight">\(\partial\boldsymbol{\sigma}^{(n+1)}/\partial\boldsymbol{\sigma}_\mathrm{rot}=\boldsymbol{I}\)</span>,
+so during plastic flow the relative tangent error is bounded by roughly
+<span class="math notranslate nohighlight">\(\|\boldsymbol{\sigma}\|/\|\mathbf{C}^\mathrm{e}\|\)</span>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Exact</span></code></p></td>
+<td><p>7</p></td>
+<td><p>Recovers <span class="math notranslate nohighlight">\(\boldsymbol{S}=\partial\boldsymbol{\sigma}^{(n+1)}/\partial\boldsymbol{\sigma}_\mathrm{rot}\)</span>
+by forward-differencing the six incoming stress components. Fully consistent. Worth the cost
+for softening models under large incremental rotation.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Numerical</span></code></p></td>
+<td><p>11</p></td>
+<td><p>Forward-differences the complete update with respect to <span class="math notranslate nohighlight">\(\boldsymbol{F}\)</span>. Fully
+consistent and model-agnostic; intended for verification and debugging.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="characteristic-element-length">
+<h2>Characteristic element length<a class="headerlink" href="#characteristic-element-length" title="Link to this heading"></a></h2>
+<p>The wrapper forwards <code class="docutils literal notranslate"><span class="pre">setCharacteristicElementLength</span></code> to the wrapped model, but derives <strong>no</strong>
+length from geometry. Until one is assigned the wrapped model sees <code class="docutils literal notranslate"><span class="pre">NaN</span></code>, so a model that actually
+depends on it (for a mesh-adjusted softening modulus) fails loudly rather than silently regularising
+against a wrong length. Models that never read it are unaffected.</p>
+<p>In EdelweissMeshfree, assign one per particle – particles carry no mesh, so nothing else can:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">particle</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">particles</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+    <span class="n">particle</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">"characteristic element length"</span><span class="p">,</span>
+                         <span class="n">particle</span><span class="o">.</span><span class="n">getVolumeUndeformed</span><span class="p">()</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">dimension</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>Only the stress is rotated.</strong> Tensor-valued internal variables of the wrapped model –
+kinematic-hardening back stresses, plastic strain tensors, anisotropic damage tensors – are
+passed through untouched and are therefore <em>not</em> objective under large incremental rotation.
+Models whose internal state is scalar or isotropic-invariant (isotropic hardening, scalar damage)
+are unaffected.</p>
+</div>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0_19HughesWingetTangentEN6Marmot9Materials19HughesWingetWrapperE">
+<span id="_CPPv3I0_19HughesWingetTangentEN6Marmot9Materials19HughesWingetWrapperE"></span><span id="_CPPv2I0_19HughesWingetTangentEN6Marmot9Materials19HughesWingetWrapperE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BaseMaterialType</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials19HughesWingetTangentE" title="Marmot::Materials::HughesWingetTangent"><span class="n"><span class="pre">HughesWingetTangent</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tangentMode</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials19HughesWingetTangentE" title="Marmot::Materials::HughesWingetTangent"><span class="n"><span class="pre">HughesWingetTangent</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials19HughesWingetTangent8AnalyticE" title="Marmot::Materials::HughesWingetTangent::Analytic"><span class="n"><span class="pre">Analytic</span></span></a><span class="p"><span class="pre">&gt;</span></span><br /><span class="target" id="classMarmot_1_1Materials_1_1HughesWingetWrapper"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HughesWingetWrapper</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials20MaterialFiniteStrainE" title="Marmot::Materials::MaterialFiniteStrain"><span class="n"><span class="pre">MaterialFiniteStrain</span></span></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Materials::HughesWingetWrapper:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-b6de0dca3ba95813890d28cbe24e3f3fcd063511.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;&quot; tooltip=&quot;Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialFiniteStrain&quot; tooltip=&quot;Marmot::Materials::MaterialFiniteStrain&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Materials::HughesWingetWrapper:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-7c009f8dfea9ea842cba95a9c2d576af28616da6.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;&quot; tooltip=&quot;Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialFiniteStrain&quot; tooltip=&quot;Marmot::Materials::MaterialFiniteStrain&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Utilities::StateLayoutDynamic&quot; tooltip=&quot;Marmot::Utilities::StateLayoutDynamic&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Decorator presenting a small-strain (hypoelastic) material as a finite-strain material. </p>
+<p>
+The wrapped material is driven by the objective strain increment of the Hughes-Winget algorithm, evaluated on the mid-step configuration,     <div class="math notranslate nohighlight">
+\[  \Delta\boldsymbol{l} = \left(\boldsymbol{F}^{(n+1)} - \boldsymbol{F}^{(n)}\right)
+                         \boldsymbol{F}_{\text{mid}}^{-1}, \qquad
+  \boldsymbol{F}_{\text{mid}} = \tfrac{1}{2}\left(\boldsymbol{F}^{(n)} + \boldsymbol{F}^{(n+1)}\right),
+\]</div>
+ split into its symmetric and skew parts <span class="math notranslate nohighlight">\( \Delta\boldsymbol{\varepsilon} \)</span> and <span class="math notranslate nohighlight">\( \Delta\boldsymbol{\Omega} \)</span>. The incremental rotation follows from the Cayley transform    <div class="math notranslate nohighlight">
+\[  \Delta\boldsymbol{R} = \left(\boldsymbol{I} - \tfrac{1}{2}\Delta\boldsymbol{\Omega}\right)^{-1}
+                         \left(\boldsymbol{I} + \tfrac{1}{2}\Delta\boldsymbol{\Omega}\right),
+\]</div>
+ which is orthogonal to machine precision. The stress carried over from the previous increment is rotated forward,  <span class="math notranslate nohighlight">\( \boldsymbol{\sigma}_{\text{rot}} = \Delta\boldsymbol{R}\,\boldsymbol{\sigma}^{(n)}
+\Delta\boldsymbol{R}^{T} \)</span>, the wrapped material is evaluated, and the resulting Cauchy stress is pushed to the Kirchhoff stress <span class="math notranslate nohighlight">\( \boldsymbol{\tau} = J\,\boldsymbol{\sigma}^{(n+1)} \)</span> expected by the finite-strain consumers.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Only the stress is rotated.</strong> Tensor-valued internal variables of the wrapped material (kinematic hardening back stresses, plastic strain tensors, anisotropic damage tensors) are passed through untouched and are therefore <em>not</em> objective under large incremental rotations. Models whose internal state is scalar or isotropic-invariant are unaffected.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The characteristic element length is <strong>not</strong> derived from any geometry here. It must be assigned explicitly via <a class="reference internal" href="#classMarmot_1_1Materials_1_1HughesWingetWrapper_1a2b6d91f95a9a5df4f43c134bf8022748"><span class="std std-ref">setCharacteristicElementLength</span></a>; until then it is NaN, so a wrapped material that relies on it fails loudly instead of silently regularising incorrectly. </p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>BaseMaterialType</strong> – A concrete class derived from Marmot::Materials::MaterialHypoElastic. </p></li>
+<li><p><strong>tangentMode</strong> – How the algorithmic tangent is evaluated, see Marmot::Materials::HughesWingetTangent.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials19HughesWingetWrapper19HughesWingetWrapperEPKdii">
+<span id="_CPPv3N6Marmot9Materials19HughesWingetWrapper19HughesWingetWrapperEPKdii"></span><span id="_CPPv2N6Marmot9Materials19HughesWingetWrapper19HughesWingetWrapperEPKdii"></span><span id="Marmot::Materials::HughesWingetWrapper::HughesWingetWrapper__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1HughesWingetWrapper_1a5e42a8e1a1dd0be26d00901aa0825d96"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HughesWingetWrapper</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">matProperties_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialNumber_</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Construct the wrapper and the wrapped material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>matProperties_</strong> – <strong>[in]</strong> Material property values; forwarded <strong>unchanged</strong> to the wrapped material. </p></li>
+<li><p><strong>nMaterialProperties_</strong> – <strong>[in]</strong> Number of material property values. </p></li>
+<li><p><strong>materialNumber_</strong> – <strong>[in]</strong> Unique identifier for this material instance. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials19HughesWingetWrapperD0Ev">
+<span id="_CPPv3N6Marmot9Materials19HughesWingetWrapperD0Ev"></span><span id="_CPPv2N6Marmot9Materials19HughesWingetWrapperD0Ev"></span><span id="Marmot::Materials::HughesWingetWrapper::~HughesWingetWrapper"></span><span class="target" id="classMarmot_1_1Materials_1_1HughesWingetWrapper_1a8d9516a7ca350e8321c7f5a3044f4bf7"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~HughesWingetWrapper</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials19HughesWingetWrapper21initializeStateLayoutEv">
+<span id="_CPPv3N6Marmot9Materials19HughesWingetWrapper21initializeStateLayoutEv"></span><span id="_CPPv2N6Marmot9Materials19HughesWingetWrapper21initializeStateLayoutEv"></span><span id="Marmot::Materials::HughesWingetWrapper::initializeStateLayout"></span><span class="target" id="classMarmot_1_1Materials_1_1HughesWingetWrapper_1a0dd9a4032f02422fbde15ecf100b0ac1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeStateLayout</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Register the state layout: the carried-over deformation gradient and Cauchy stress, followed by the state variables of the wrapped material. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials19HughesWingetWrapper30setCharacteristicElementLengthEd">
+<span id="_CPPv3N6Marmot9Materials19HughesWingetWrapper30setCharacteristicElementLengthEd"></span><span id="_CPPv2N6Marmot9Materials19HughesWingetWrapper30setCharacteristicElementLengthEd"></span><span id="Marmot::Materials::HughesWingetWrapper::setCharacteristicElementLength__double"></span><span class="target" id="classMarmot_1_1Materials_1_1HughesWingetWrapper_1a2b6d91f95a9a5df4f43c134bf8022748"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setCharacteristicElementLength</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">length</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Forward the characteristic element length to the wrapped material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>length</strong> – <strong>[in]</strong> Characteristic element length at the considered evaluation point. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials19HughesWingetWrapper12getStateViewERKNSt6stringEPd">
+<span id="_CPPv3NK6Marmot9Materials19HughesWingetWrapper12getStateViewERKNSt6stringEPd"></span><span id="_CPPv2NK6Marmot9Materials19HughesWingetWrapper12getStateViewERKNSt6stringEPd"></span><span id="Marmot::Materials::HughesWingetWrapper::getStateView__ssCR.doublePC"></span><span class="target" id="classMarmot_1_1Materials_1_1HughesWingetWrapper_1a418c29a12d2818cb156382e5b32c02b3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9UtilitiesE" title="Marmot::Utilities"><span class="n"><span class="pre">Utilities</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/utilitiescore.html#_CPPv4N6Marmot9Utilities9StateViewE" title="Marmot::Utilities::StateView"><span class="n"><span class="pre">StateView</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getStateView</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">stateName</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Resolve a state variable by name, falling back to the wrapped material. </p>
+<p>Without this, the wrapped material’s own state – CDP’s <code class="docutils literal notranslate"><span class="pre">omega</span></code>, a plasticity model’s hardening variable – would be unreachable through the wrapper, since the wrapper’s layout only knows its own three slots.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stateName</strong> – <strong>[in]</strong> Name of the state variable. </p></li>
+<li><p><strong>stateVars</strong> – <strong>[in]</strong> Pointer to the state variable array of this wrapper. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A view of the requested state variable. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials19HughesWingetWrapper10getDensityEPKd">
+<span id="_CPPv3NK6Marmot9Materials19HughesWingetWrapper10getDensityEPKd"></span><span id="_CPPv2NK6Marmot9Materials19HughesWingetWrapper10getDensityEPKd"></span><span id="Marmot::Materials::HughesWingetWrapper::getDensity__doubleCPC"></span><span class="target" id="classMarmot_1_1Materials_1_1HughesWingetWrapper_1a3f28011f30a855bde0a7e589cc496678"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDensity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Mass density of the wrapped material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateVars</strong> – <strong>[in]</strong> Pointer to the state variable array of this wrapper. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Mass density. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials19HughesWingetWrapper18initializeYourselfEPdi">
+<span id="_CPPv3N6Marmot9Materials19HughesWingetWrapper18initializeYourselfEPdi"></span><span id="_CPPv2N6Marmot9Materials19HughesWingetWrapper18initializeYourselfEPdi"></span><span id="Marmot::Materials::HughesWingetWrapper::initializeYourself__doubleP.i"></span><span class="target" id="classMarmot_1_1Materials_1_1HughesWingetWrapper_1ab57e2464e27eed7ad1ddae6441ee6e07"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeYourself</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nStateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Initialise the state: <span class="math notranslate nohighlight">\( \boldsymbol{F}^{(n)} = \boldsymbol{I} \)</span>, <span class="math notranslate nohighlight">\( \boldsymbol{\sigma}^{(n)} = \boldsymbol{0} \)</span>, plus the wrapped material’s own state. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stateVars</strong> – <strong>[inout]</strong> Pointer to the state variable array. </p></li>
+<li><p><strong>nStateVars</strong> – <strong>[in]</strong> Number of state variables. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials19HughesWingetWrapper13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">
+<span id="_CPPv3NK6Marmot9Materials19HughesWingetWrapper13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement"></span><span id="_CPPv2NK6Marmot9Materials19HughesWingetWrapper13computeStressER20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrement"></span><span id="Marmot::Materials::HughesWingetWrapper::computeStress__ConstitutiveResponse:3:R.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1HughesWingetWrapper_1a1f5a38cac1c30b07ac8ee5c14d12cef8"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ConstitutiveResponse</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <span class="n"><span class="pre">AlgorithmicModuli</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Deformation</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TimeIncrement</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Objective stress update of the wrapped small-strain material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[inout]</strong> Constitutive response; carries the Kirchhoff stress and state variables. </p></li>
+<li><p><strong>tangents</strong> – <strong>[out]</strong> Algorithmic moduli <span class="math notranslate nohighlight">\( \partial\tau_{ij}/\partial F_{kl} \)</span>. </p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> Current deformation gradient. </p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> Current (pseudo-)time and (pseudo-)time increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials19HughesWingetWrapper21computeStressExplicitER20ConstitutiveResponseIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">
+<span id="_CPPv3NK6Marmot9Materials19HughesWingetWrapper21computeStressExplicitER20ConstitutiveResponseIXL3EEERK11DeformationIXL3EEERK13TimeIncrement"></span><span id="_CPPv2NK6Marmot9Materials19HughesWingetWrapper21computeStressExplicitER20ConstitutiveResponseIX3EERK11DeformationIX3EERK13TimeIncrement"></span><span id="Marmot::Materials::HughesWingetWrapper::computeStressExplicit__ConstitutiveResponse:3:R.Deformation:3:CR.TimeIncrementCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1HughesWingetWrapper_1a39a2f0828d634962474f5063169ca37d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStressExplicit</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ConstitutiveResponse</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Deformation</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TimeIncrement</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><br /></dt>
+<dd><p>Explicit variant of <a class="reference internal" href="#classMarmot_1_1Materials_1_1HughesWingetWrapper_1a1f5a38cac1c30b07ac8ee5c14d12cef8"><span class="std std-ref">computeStress</span></a>; no algorithmic tangent is evaluated. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[inout]</strong> Constitutive response. </p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> Current deformation gradient. </p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> Current (pseudo-)time and (pseudo-)time increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials19HughesWingetWrapper24computeStressSensitivityERKN6Marmot4Math8Vector6dERKN6Marmot4Math8Vector6dERKNSt6vectorIdEERKN6Marmot4Math8Vector6dERKN6Marmot9Materials19MaterialHypoElastic8timeInfoE">
+<span id="_CPPv3NK6Marmot9Materials19HughesWingetWrapper24computeStressSensitivityERKN6Marmot4Math8Vector6dERKN6Marmot4Math8Vector6dERKNSt6vectorIdEERKN6Marmot4Math8Vector6dERKN6Marmot9Materials19MaterialHypoElastic8timeInfoE"></span><span id="_CPPv2NK6Marmot9Materials19HughesWingetWrapper24computeStressSensitivityERKN6Marmot4Math8Vector6dERKN6Marmot4Math8Vector6dERKNSt6vectorIdEERKN6Marmot4Math8Vector6dERKN6Marmot9Materials19MaterialHypoElastic8timeInfoE"></span><span id="Marmot::Materials::HughesWingetWrapper::computeStressSensitivity__Marmot::Math::Vector6dCR.Marmot::Math::Vector6dCR.std::vector:double:CR.Marmot::Math::Vector6dCR.Marmot::Materials::MaterialHypoElastic::timeInfoCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1HughesWingetWrapper_1acfa9e669290a6dce3d181dd03a11ec12"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Matrix6dE" title="Marmot::Math::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStressSensitivity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sigmaRotVoigt</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sigmaNp1Voigt</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">baseStateOld</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials19MaterialHypoElasticE" title="Marmot::Materials::MaterialHypoElastic"><span class="n"><span class="pre">MaterialHypoElastic</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials19MaterialHypoElastic8timeInfoE" title="Marmot::Materials::MaterialHypoElastic::timeInfo"><span class="n"><span class="pre">timeInfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeInfo</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>Recover  <span class="math notranslate nohighlight">\( \boldsymbol{S} = \partial\boldsymbol{\sigma}^{(n+1)} /
+       \partial\boldsymbol{\sigma}_{\text{rot}} \)</span> by forward differences. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sigmaRotVoigt</strong> – <strong>[in]</strong> Rotated stress that was handed to the wrapped material. </p></li>
+<li><p><strong>sigmaNp1Voigt</strong> – <strong>[in]</strong> Unperturbed updated stress returned by the wrapped material. </p></li>
+<li><p><strong>baseStateOld</strong> – <strong>[in]</strong> Wrapped material state <em>before</em> the unperturbed evaluation. </p></li>
+<li><p><strong>dStrain</strong> – <strong>[in]</strong> Strain increment handed to the wrapped material. </p></li>
+<li><p><strong>timeInfo</strong> – <strong>[in]</strong> Time information handed to the wrapped material. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The sensitivity in Voigt form, with its three shear <strong>columns</strong> halved so that the result may be contracted as a full fourth-order tensor without double counting the off-diagonal stress components. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials19HughesWingetWrapper17computeStressCoreER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrementb">
+<span id="_CPPv3NK6Marmot9Materials19HughesWingetWrapper17computeStressCoreER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrementb"></span><span id="_CPPv2NK6Marmot9Materials19HughesWingetWrapper17computeStressCoreER20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrementb"></span><span id="Marmot::Materials::HughesWingetWrapper::computeStressCore__ConstitutiveResponse:3:R.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCR.bC"></span><span class="target" id="classMarmot_1_1Materials_1_1HughesWingetWrapper_1a478178de3d2d038cb27c1bde0de03910"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStressCore</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ConstitutiveResponse</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <span class="n"><span class="pre">AlgorithmicModuli</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Deformation</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TimeIncrement</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">computeTangent</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>The Hughes-Winget update proper, optionally including the analytic algorithmic tangent. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[inout]</strong> Constitutive response. </p></li>
+<li><p><strong>tangents</strong> – <strong>[out]</strong> Algorithmic moduli; only written when <code class="docutils literal notranslate"><span class="pre">computeTangent</span></code> is true. </p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> Current deformation gradient. </p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> Current (pseudo-)time and (pseudo-)time increment. </p></li>
+<li><p><strong>computeTangent</strong> – <strong>[in]</strong> Whether the analytic tangent is to be evaluated. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials19HughesWingetWrapper23computeNumericalTangentERK20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">
+<span id="_CPPv3NK6Marmot9Materials19HughesWingetWrapper23computeNumericalTangentERK20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement"></span><span id="_CPPv2NK6Marmot9Materials19HughesWingetWrapper23computeNumericalTangentERK20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrement"></span><span id="Marmot::Materials::HughesWingetWrapper::computeNumericalTangent__ConstitutiveResponse:3:CR.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1HughesWingetWrapper_1a1951406512092a967b11806d7a8d92ac"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeNumericalTangent</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">ConstitutiveResponse</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <span class="n"><span class="pre">AlgorithmicModuli</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Deformation</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TimeIncrement</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><br /></dt>
+<dd><p>Forward-difference the complete update with respect to the nine components of <span class="math notranslate nohighlight">\( F \)</span>. </p>
+<p>Every evaluation starts from a pristine copy of the incoming state, and none of them is allowed to commit: the caller runs the unperturbed update afterwards.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[in]</strong> Constitutive response, read for its state pointer only. </p></li>
+<li><p><strong>tangents</strong> – <strong>[out]</strong> Algorithmic moduli. </p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> Current deformation gradient. </p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> Current (pseudo-)time and (pseudo-)time increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-attributes">Protected Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials19HughesWingetWrapper12baseMaterialE">
+<span id="_CPPv3N6Marmot9Materials19HughesWingetWrapper12baseMaterialE"></span><span id="_CPPv2N6Marmot9Materials19HughesWingetWrapper12baseMaterialE"></span><span id="Marmot::Materials::HughesWingetWrapper::baseMaterial__std::unique_ptr:Marmot::Materials::MaterialHypoElastic:"></span><span class="target" id="classMarmot_1_1Materials_1_1HughesWingetWrapper_1a1c431001f9637cd5ecadfe4dee924e59"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unique_ptr</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials19MaterialHypoElasticE" title="Marmot::Materials::MaterialHypoElastic"><span class="n"><span class="pre">MaterialHypoElastic</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">baseMaterial</span></span></span><br /></dt>
+<dd><p>The wrapped small-strain material. Held as the base interface: concrete materials are free to re-declare their overrides as protected, which would make them unreachable via BaseMaterialType. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-static-functions">Protected Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials19HughesWingetWrapper9fromEigenERKN5Eigen8Matrix3dE">
+<span id="_CPPv3N6Marmot9Materials19HughesWingetWrapper9fromEigenERKN5Eigen8Matrix3dE"></span><span id="_CPPv2N6Marmot9Materials19HughesWingetWrapper9fromEigenERKN5Eigen8Matrix3dE"></span><span id="Marmot::Materials::HughesWingetWrapper::fromEigen__Eigen::Matrix3dCR"></span><span class="target" id="classMarmot_1_1Materials_1_1HughesWingetWrapper_1ab4fea4e4b068462c8beaf891c538ba7b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors9Tensor33dE" title="Marmot::Math::Tensors::FastorTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fromEigen</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix3d</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">m</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Convert an Eigen 3x3 matrix into a Fastor tensor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials19HughesWingetWrapper7toEigenERKN6Marmot4Math7Tensors13FastorTensors9Tensor33dE">
+<span id="_CPPv3N6Marmot9Materials19HughesWingetWrapper7toEigenERKN6Marmot4Math7Tensors13FastorTensors9Tensor33dE"></span><span id="_CPPv2N6Marmot9Materials19HughesWingetWrapper7toEigenERKN6Marmot4Math7Tensors13FastorTensors9Tensor33dE"></span><span id="Marmot::Materials::HughesWingetWrapper::toEigen__Marmot::Math::Tensors::FastorTensors::Tensor33dCR"></span><span class="target" id="classMarmot_1_1Materials_1_1HughesWingetWrapper_1af7456ca9d679077a167cdb26ecb7a9db"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix3d</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">toEigen</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7TensorsE" title="Marmot::Math::Tensors"><span class="n"><span class="pre">Tensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensorsE" title="Marmot::Math::Tensors::FastorTensors"><span class="n"><span class="pre">FastorTensors</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math7Tensors13FastorTensors9Tensor33dE" title="Marmot::Math::Tensors::FastorTensors::Tensor33d"><span class="n"><span class="pre">Tensor33d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><br /></dt>
+<dd><p>Convert a Fastor 3x3 tensor into an Eigen matrix. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-static-attributes">Protected Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials19HughesWingetWrapper23deformationGradientSlotE">
+<span id="_CPPv3N6Marmot9Materials19HughesWingetWrapper23deformationGradientSlotE"></span><span id="_CPPv2N6Marmot9Materials19HughesWingetWrapper23deformationGradientSlotE"></span><span id="Marmot::Materials::HughesWingetWrapper::deformationGradientSlot__cCP"></span><span class="target" id="classMarmot_1_1Materials_1_1HughesWingetWrapper_1a7834e853be57f624c0f38967c85503e8"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">deformationGradientSlot</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;HughesWinget_F_n&quot;</span></span><br /></dt>
+<dd><p>Name of the state layout slot holding the deformation gradient of the last accepted increment. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials19HughesWingetWrapper10stressSlotE">
+<span id="_CPPv3N6Marmot9Materials19HughesWingetWrapper10stressSlotE"></span><span id="_CPPv2N6Marmot9Materials19HughesWingetWrapper10stressSlotE"></span><span id="Marmot::Materials::HughesWingetWrapper::stressSlot__cCP"></span><span class="target" id="classMarmot_1_1Materials_1_1HughesWingetWrapper_1a9beeb9262492c82bfd2b53697cf64551"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">stressSlot</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;HughesWinget_sigma_n&quot;</span></span><br /></dt>
+<dd><p>Name of the state layout slot holding the Cauchy stress of the last accepted increment. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials19HughesWingetWrapper16baseMaterialSlotE">
+<span id="_CPPv3N6Marmot9Materials19HughesWingetWrapper16baseMaterialSlotE"></span><span id="_CPPv2N6Marmot9Materials19HughesWingetWrapper16baseMaterialSlotE"></span><span id="Marmot::Materials::HughesWingetWrapper::baseMaterialSlot__cCP"></span><span class="target" id="classMarmot_1_1Materials_1_1HughesWingetWrapper_1a04d8628a9fd2cc5d7654a3a952d6d98f"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">baseMaterialSlot</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="s"><span class="pre">&quot;materialstate&quot;</span></span><br /></dt>
+<dd><p>Name of the state layout slot holding the state variables of the wrapped material. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="advonmises.html" class="btn btn-neutral float-left" title="Von Mises model (Automatic Differentiation)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gradientenhancedhugheswinget.html" class="btn btn-neutral float-right" title="Gradient-enhanced Hughes-Winget wrapper" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

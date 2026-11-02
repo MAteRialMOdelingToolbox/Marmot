@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_utilities" kind="namespace" language="C++">
+    <compoundname>Marmot::Utilities</compoundname>
+    <innerclass refid="class_marmot_1_1_utilities_1_1_state_var_vector_manager" prot="public">Marmot::Utilities::StateVarVectorManager</innerclass>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="33" column="1"/>
+  </compounddef>
+</doxygen>

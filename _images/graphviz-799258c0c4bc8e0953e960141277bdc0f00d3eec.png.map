@@ -1,0 +1,31 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot/MarmotConstants.h" alt="" coords="5,101,299,149"/>
+<area shape="rect" id="node11" title="cmath" alt="" coords="10,197,91,245"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="125,152,89,188,85,185,128,148"/>
+<area shape="rect" id="node12" title="limits" alt="" coords="114,197,190,245"/>
+<area shape="poly" id="edge2" title="include" alt="" coords="153,147,155,183,149,181,151,152"/>
+<area shape="rect" id="node2" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" alt="" coords="334,5,1455,53"/>
+<area shape="poly" id="edge5" title="include" alt="" coords="708,56,315,106,314,101,710,52"/>
+<area shape="rect" id="node3" title="Marmot/MarmotTensor.h" alt="" coords="548,101,807,149"/>
+<area shape="poly" id="edge6" title="include" alt="" coords="843,53,746,97,744,92,838,55"/>
+<area shape="rect" id="node5" title="Eigen/Core" alt="" coords="831,101,958,149"/>
+<area shape="poly" id="edge3" title="include" alt="" coords="896,52,897,87,892,84,893,56"/>
+<area shape="rect" id="node7" title="Fastor/Fastor.h" alt="" coords="913,197,1079,245"/>
+<area shape="poly" id="edge4" title="include" alt="" coords="928,51,953,73,973,100,989,141,996,183,991,180,984,142,968,103,949,77,927,56"/>
+<area shape="rect" id="node9" title="autodiff/forward/dual/dual.hpp" alt="" coords="935,293,1246,341"/>
+<area shape="poly" id="edge7" title="include" alt="" coords="943,51,984,76,1026,108,1065,149,1081,172,1093,196,1102,238,1100,280,1096,276,1096,238,1088,198,1076,174,1061,152,1023,112,981,80,942,57"/>
+<area shape="rect" id="node4" title="Marmot/MarmotTypedefs.h" alt="" coords="214,197,498,245"/>
+<area shape="poly" id="edge10" title="include" alt="" coords="595,151,451,195,449,190,600,149"/>
+<area shape="poly" id="edge8" title="include" alt="" coords="757,147,905,192,900,193,757,153"/>
+<area shape="rect" id="node8" title="Marmot/MarmotJournal.h" alt="" coords="522,197,787,245"/>
+<area shape="poly" id="edge9" title="include" alt="" coords="674,148,666,184,662,181,670,152"/>
+<area shape="rect" id="node14" title="utility" alt="" coords="812,197,890,245"/>
+<area shape="poly" id="edge11" title="include" alt="" coords="721,147,800,192,795,191,720,153"/>
+<area shape="rect" id="node6" title="Eigen/Dense" alt="" coords="29,293,171,341"/>
+<area shape="poly" id="edge12" title="include" alt="" coords="295,245,179,290,177,285,289,247"/>
+<area shape="poly" id="edge13" title="include" alt="" coords="498,241,511,243,922,295,917,297,510,248,498,246"/>
+<area shape="rect" id="node10" title="autodiff/forward/dual/eigen.hpp" alt="" coords="195,293,517,341"/>
+<area shape="poly" id="edge14" title="include" alt="" coords="358,244,358,279,354,276,354,248"/>
+<area shape="rect" id="node13" title="unsupported/Eigen/CXX11/Tensor" alt="" coords="542,293,885,341"/>
+<area shape="poly" id="edge15" title="include" alt="" coords="446,243,613,289,607,289,445,249"/>
+</map>

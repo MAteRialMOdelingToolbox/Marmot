@@ -50,7 +50,9 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="materials.html">Material models</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="at2phasefield.html">AT2 Phase Field Fracture</a></li>
@@ -69,11 +71,20 @@
 <li class="toctree-l3"><a class="reference internal" href="adlinearelastic.html">Linear Elastic model (Automatic Differentiation)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="linearviscoelasticpowerlaw.html">Linear Viscoelastic Power Law model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="linearviscoelasticorthotropicpowerlaw.html">Linear Viscoelastic Orthotropic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticwiechert.html">Linear Viscoelastic Wiechert model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="interfacematerialhypoelastic.html">Interface material (hypoelastic bulk material)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="microplanem7.html">Microplane model M7</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gm7.html">Gradient-enhanced microplane model M7 (GM7)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="vonmises.html">Von Mises model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="advonmises.html">Von Mises model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hugheswinget.html">Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedhugheswinget.html">Gradient-enhanced Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedcompressibleneohookedamage.html">Gradient-enhanced compressible Neo-Hooke damage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedfinitestraindruckerprager.html">Gradient-enhanced finite-strain Drucker-Prager</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meshfree.html">Meshfree methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
@@ -153,16 +164,16 @@ automatic differentiation is used to compute the consistent algorithmic tangent 
 </table>
 <dl class="cpp class">
 <dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials22ADCompressibleNeoHookeE">
-<span id="_CPPv3N6Marmot9Materials22ADCompressibleNeoHookeE"></span><span id="_CPPv2N6Marmot9Materials22ADCompressibleNeoHookeE"></span><span id="Marmot::Materials::ADCompressibleNeoHooke"></span><span class="target" id="classMarmot_1_1Materials_1_1ADCompressibleNeoHooke"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADCompressibleNeoHooke</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials22ADCompressibleNeoHooke28MarmotMaterialFiniteStrainADEPKdii" title="Marmot::Materials::ADCompressibleNeoHooke::MarmotMaterialFiniteStrainAD"><span class="n"><span class="pre">MarmotMaterialFiniteStrainAD</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials22ADCompressibleNeoHookeE" title="Link to this definition"></a><br /></dt>
+<span id="_CPPv3N6Marmot9Materials22ADCompressibleNeoHookeE"></span><span id="_CPPv2N6Marmot9Materials22ADCompressibleNeoHookeE"></span><span id="Marmot::Materials::ADCompressibleNeoHooke"></span><span class="target" id="classMarmot_1_1Materials_1_1ADCompressibleNeoHooke"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ADCompressibleNeoHooke</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials22MaterialFiniteStrainADE" title="Marmot::Materials::MaterialFiniteStrainAD"><span class="n"><span class="pre">MaterialFiniteStrainAD</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials22ADCompressibleNeoHookeE" title="Link to this definition"></a><br /></dt>
 <dd><p>Inheritance diagram for Marmot::Materials::ADCompressibleNeoHooke:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-1b8b9bdca4ea3fc9a17287ea722f551111acaafe.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-7eadb050383e221013afd07c0bd5936d919b5032.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;1&quot; [label=&quot;Marmot::Materials::ADCompressibleNeoHooke&quot; tooltip=&quot;Marmot::Materials::ADCompressibleNeoHooke&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;3&quot; [label=&quot;MarmotMaterialFiniteStrain&quot; tooltip=&quot;MarmotMaterialFiniteStrain&quot;]
-    &quot;2&quot; [label=&quot;MarmotMaterialFiniteStrainAD&quot; tooltip=&quot;MarmotMaterialFiniteStrainAD&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Materials::MaterialFiniteStrain&quot; tooltip=&quot;Marmot::Materials::MaterialFiniteStrain&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialFiniteStrainAD&quot; tooltip=&quot;Marmot::Materials::MaterialFiniteStrainAD&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
     &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
 }" class="graphviz" /></div>
@@ -170,14 +181,14 @@ automatic differentiation is used to compute the consistent algorithmic tangent 
 </figure>
 <p>Collaboration diagram for Marmot::Materials::ADCompressibleNeoHooke:</p>
 <figure class="align-default">
-<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-bb2f3e3fbacb271580180711192a9227ebaae250.png" alt="digraph {
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-29c530c4f557afb92c25cc38257256db289b129f.png" alt="digraph {
     graph [bgcolor=&quot;#00000000&quot;]
     node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
     edge [color=&quot;#1414CE&quot;]
     &quot;1&quot; [label=&quot;Marmot::Materials::ADCompressibleNeoHooke&quot; tooltip=&quot;Marmot::Materials::ADCompressibleNeoHooke&quot; fillcolor=&quot;#BFBFBF&quot;]
-    &quot;3&quot; [label=&quot;MarmotMaterialFiniteStrain&quot; tooltip=&quot;MarmotMaterialFiniteStrain&quot;]
-    &quot;2&quot; [label=&quot;MarmotMaterialFiniteStrainAD&quot; tooltip=&quot;MarmotMaterialFiniteStrainAD&quot;]
-    &quot;4&quot; [label=&quot;MarmotStateLayoutDynamic&quot; tooltip=&quot;MarmotStateLayoutDynamic&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Materials::MaterialFiniteStrain&quot; tooltip=&quot;Marmot::Materials::MaterialFiniteStrain&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialFiniteStrainAD&quot; tooltip=&quot;Marmot::Materials::MaterialFiniteStrainAD&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Utilities::StateLayoutDynamic&quot; tooltip=&quot;Marmot::Utilities::StateLayoutDynamic&quot;]
     &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
     &quot;3&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
     &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
@@ -260,9 +271,9 @@ Template parameter <code class="docutils literal notranslate"><span class="pre">
 </dd></dl>
 
 <dl class="cpp function">
-<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials22ADCompressibleNeoHooke28MarmotMaterialFiniteStrainADEPKdii">
-<span id="_CPPv3N6Marmot9Materials22ADCompressibleNeoHooke28MarmotMaterialFiniteStrainADEPKdii"></span><span id="_CPPv2N6Marmot9Materials22ADCompressibleNeoHooke28MarmotMaterialFiniteStrainADEPKdii"></span><span id="Marmot::Materials::ADCompressibleNeoHooke::MarmotMaterialFiniteStrainAD__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1ADCompressibleNeoHooke_1a3d9018980cf02b50141828446b73c1ba"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MarmotMaterialFiniteStrainAD</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">matProperties_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialNumber_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials22ADCompressibleNeoHooke28MarmotMaterialFiniteStrainADEPKdii" title="Link to this definition"></a><br /></dt>
-<dd><p>Construct a MarmotMaterialFiniteStrainAD. </p>
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials22ADCompressibleNeoHooke22MaterialFiniteStrainADEPKdii">
+<span id="_CPPv3N6Marmot9Materials22ADCompressibleNeoHooke22MaterialFiniteStrainADEPKdii"></span><span id="_CPPv2N6Marmot9Materials22ADCompressibleNeoHooke22MaterialFiniteStrainADEPKdii"></span><span id="Marmot::Materials::ADCompressibleNeoHooke::MaterialFiniteStrainAD__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1ADCompressibleNeoHooke_1a42e8d9177586bfd4453ab8b3cd8d4fbf"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MaterialFiniteStrainAD</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">matProperties_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties_</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialNumber_</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials22ADCompressibleNeoHooke22MaterialFiniteStrainADEPKdii" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct a MaterialFiniteStrainAD. </p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_discretizations" kind="namespace" language="C++">
+    <compoundname>Marmot::Discretizations</compoundname>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_cells">Marmot::Discretizations::Cells</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_elements">Marmot::Discretizations::Elements</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_material_points">Marmot::Discretizations::MaterialPoints</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_meshfree">Marmot::Discretizations::Meshfree</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeQuadHexCell.h" line="46" column="1"/>
+  </compounddef>
+</doxygen>

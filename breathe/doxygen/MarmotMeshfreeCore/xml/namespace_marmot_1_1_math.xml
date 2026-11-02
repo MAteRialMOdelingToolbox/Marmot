@@ -1,0 +1,587 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_math" kind="namespace" language="C++">
+    <compoundname>Marmot::Math</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_monomial_basis_functions_8h_1ad1defbf9b7b712fe1dc097ba48edc70b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Math::computeSizeOfMonomialBasisVector</definition>
+        <argsstring>(int order, int dim)</argsstring>
+        <name>computeSizeOfMonomialBasisVector</name>
+        <qualifiedname>Marmot::Math::computeSizeOfMonomialBasisVector</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>order</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dim</declname>
+        </param>
+        <briefdescription>
+<para>Compute the size of the complete monomial basis of a given order. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes the size of the H vector based on the completeness order and the dimension, cf. Eq. (3.67) in the book by Belytschko, Chen, Hillman, i.e., the number of monomials <formula id="83">$ \boldsymbol{x}^{\boldsymbol{\alpha}} $</formula> with <formula id="84">$ |\boldsymbol{\alpha}| \le n $</formula> in <formula id="4">$ d $</formula> dimensions, <formula id="85">$ \binom{d + n}{d} $</formula>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">order</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Completeness order <formula id="77">$ n $</formula> (zero for a negative order). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Spatial dimension <formula id="86">$ d \ge 1 $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The number of monomials. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="44" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="44" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_monomial_basis_functions_8h_1aa2a829ce5fd1acd3352fded2e3dfa747" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Math::_computeMonomialBasisRecursion</definition>
+        <argsstring>(int order, const Eigen::VectorXd &amp;x, Eigen::VectorXd &amp;res, int idxEnd, int dim)</argsstring>
+        <name>_computeMonomialBasisRecursion</name>
+        <qualifiedname>Marmot::Math::_computeMonomialBasisRecursion</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>order</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>Eigen::VectorXd &amp;</type>
+          <declname>res</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>idxEnd</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dim</declname>
+        </param>
+        <briefdescription>
+<para>Recursive kernel of computeMonomialBasis(). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Multiplies the entries starting at <computeroutput>idxEnd</computeroutput> by the powers <formula id="87">$ x_k^i $</formula> of the coordinates <formula id="88">$ k \le $</formula> <computeroutput>dim</computeroutput>, for all exponent combinations of total degree <formula id="89">$ \le $</formula> <computeroutput>order</computeroutput>. The loop over the exponent of coordinate <computeroutput>dim</computeroutput> is the outermost one, the recursion handles the lower coordinates.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">order</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Remaining total degree. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coordinates. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">res</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Basis vector, initialized with ones by the caller. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">idxEnd</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>First entry of <computeroutput>res</computeroutput> treated by this call. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of (leading) coordinates treated by this call. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>One past the last entry of <computeroutput>res</computeroutput> treated by this call. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="73" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="73" bodyend="92"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_monomial_basis_functions_8h_1ad5da4f8abb2edab40ace025974aae3b5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Math::_computeMonomialBasisGradientRecursion</definition>
+        <argsstring>(int order, const Eigen::VectorXd &amp;x, Eigen::MatrixXd &amp;res, int idxEnd, int dim)</argsstring>
+        <name>_computeMonomialBasisGradientRecursion</name>
+        <qualifiedname>Marmot::Math::_computeMonomialBasisGradientRecursion</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>order</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>Eigen::MatrixXd &amp;</type>
+          <declname>res</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>idxEnd</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>dim</declname>
+        </param>
+        <briefdescription>
+<para>Recursive kernel of computeMonomialBasisGradient(). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Same traversal as _computeMonomialBasisRecursion(). By the product rule, column <formula id="90">$ k $</formula> of an entry is multiplied by <formula id="91">$ \partial x_k^i / \partial x_k = i\, x_k^{i-1} $</formula> for its own coordinate and by <formula id="92">$ x_j^i $</formula> for all other coordinates <formula id="93">$ j \neq k $</formula>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">order</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Remaining total degree. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coordinates. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">res</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Gradient matrix (basis size <formula id="94">$ \times d $</formula>), initialized with ones by the caller. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">idxEnd</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>First row of <computeroutput>res</computeroutput> treated by this call. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of (leading) coordinates treated by this call. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>One past the last row of <computeroutput>res</computeroutput> treated by this call. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="108" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="108" bodyend="134"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_monomial_basis_functions_8h_1af9d593a9f0e207edd06fcbad8c93d3ba" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Math::computeMonomialBasis</definition>
+        <argsstring>(int order, const Eigen::VectorXd &amp;x, Eigen::VectorXd &amp;res)</argsstring>
+        <name>computeMonomialBasis</name>
+        <qualifiedname>Marmot::Math::computeMonomialBasis</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>order</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>Eigen::VectorXd &amp;</type>
+          <declname>res</declname>
+        </param>
+        <briefdescription>
+<para>Evaluate the complete monomial basis <formula id="95">$ \boldsymbol{H}(\boldsymbol{x}) $</formula> of order <formula id="77">$ n $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The entries are all monomials <formula id="96">$ x_1^{\alpha_1} \cdots x_d^{\alpha_d} $</formula> with <formula id="97">$ \alpha_1 + \dots + \alpha_d \le n $</formula>, ordered with the exponent of the last coordinate varying slowest and that of the first coordinate fastest. For example, in 2D with <formula id="98">$ n = 2 $</formula>: <formula id="99">$ \boldsymbol{H} = [1,\ x_1,\ x_1^2,\ x_2,\ x_1 x_2,\ x_2^2]^T $</formula>; in 3D with <formula id="100">$ n = 1 $</formula>: <formula id="101">$ \boldsymbol{H} = [1,\ x_1,\ x_2,\ x_3]^T $</formula>. The first entry is always <formula id="102">$ 1 $</formula>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">order</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Completeness order <formula id="77">$ n $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coordinates <formula id="5">$ \boldsymbol{x} $</formula> (the dimension <formula id="4">$ d $</formula> is taken from its size). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">res</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Basis vector; must already have the size computeSizeOfMonomialBasisVector( order, d ). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="149" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="149" bodyend="153"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_monomial_basis_functions_8h_1abd4311e21ed9530de146ac55d62237ae" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Math::computeMonomialBasisGradient</definition>
+        <argsstring>(int order, const Eigen::VectorXd &amp;x, Eigen::MatrixXd &amp;res)</argsstring>
+        <name>computeMonomialBasisGradient</name>
+        <qualifiedname>Marmot::Math::computeMonomialBasisGradient</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>order</declname>
+        </param>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>Eigen::MatrixXd &amp;</type>
+          <declname>res</declname>
+        </param>
+        <briefdescription>
+<para>Evaluate the gradient <formula id="103">$ \partial \boldsymbol{H} / \partial \boldsymbol{x} $</formula> of the monomial basis. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Row <formula id="90">$ k $</formula> corresponds to entry <formula id="90">$ k $</formula> of computeMonomialBasis() (same ordering), column <formula id="65">$ i $</formula> to <formula id="104">$ \partial / \partial x_i $</formula>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">order</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Completeness order <formula id="77">$ n $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coordinates <formula id="5">$ \boldsymbol{x} $</formula> (the dimension <formula id="4">$ d $</formula> is taken from its size). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">res</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Gradient matrix; must already have the size computeSizeOfMonomialBasisVector( order, d ) <formula id="94">$ \times d $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="166" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" bodystart="166" bodyend="170"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>p</declname>
+            <defname>p</defname>
+          </param>
+        </templateparamlist>
+        <type>double</type>
+        <definition>double Marmot::Math::B</definition>
+        <argsstring>(double u, const double *knotVec, int i)</argsstring>
+        <name>B</name>
+        <qualifiedname>Marmot::Math::B</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>u</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>knotVec</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+<para>Evaluate the B-spline basis function <formula id="148">$ N_{i,p}(u) $</formula> by the Cox<ndash/>de Boor recursion. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><formula id="151">\[  N_{i,p}(u) = \frac{u - z_i}{z_{i+p} - z_i} N_{i,p-1}(u)
+             + \frac{z_{i+p+1} - u}{z_{i+p+1} - z_{i+1}} N_{i+1,p-1}(u),
+\]</formula> where a term is omitted ( <formula id="152">$ 0/0 := 0 $</formula>) if its knot difference is below <formula id="153">$ 10^{-14} $</formula> (repeated knots). The recursion ends at B&lt; 0 &gt;.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>p</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Degree <formula id="135">$ p $</formula> of the B-spline (order <formula id="154">$ p + 1 $</formula>). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">u</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Parameter value <formula id="155">$ u $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">knotVec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Knot vector <formula id="156">$ z $</formula>; entries <formula id="157">$ z_i, \dots, z_{i+p+1} $</formula> are accessed. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">i</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index <formula id="65">$ i $</formula> of the basis function. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="148">$ N_{i,p}(u) $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSpline.h" line="57" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSpline.h" bodystart="57" bodyend="67"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_b_spline_8h_1a8ae98f20896dadb847accf4691459301" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>p</declname>
+            <defname>p</defname>
+          </param>
+        </templateparamlist>
+        <type>double</type>
+        <definition>double Marmot::Math::dB_dU</definition>
+        <argsstring>(double u, const double *knotVec, int i)</argsstring>
+        <name>dB_dU</name>
+        <qualifiedname>Marmot::Math::dB_dU</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>u</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>knotVec</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+<para>Evaluate the derivative <formula id="150">$ \mathrm{d}N_{i,p}/\mathrm{d}u $</formula> of a B-spline basis function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Differentiates the Cox<ndash/>de Boor recursion of <ref refid="_marmot_b_spline_8h_1a2058ccd3b3618e8485c0786f6a330e11" kindref="member">B()</ref> term by term,    <formula id="158">\[  \frac{\mathrm{d}N_{i,p}}{\mathrm{d}u} = \frac{N_{i,p-1} + (u - z_i)\, N&apos;_{i,p-1}}{z_{i+p} - z_i}
+  + \frac{-N_{i+1,p-1} + (z_{i+p+1} - u)\, N&apos;_{i+1,p-1}}{z_{i+p+1} - z_{i+1}},
+\]</formula> omitting terms with a knot difference below <formula id="153">$ 10^{-14} $</formula>. The recursion ends at dB_dU&lt; 0 &gt; <formula id="159">$ = 0 $</formula>.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>p</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Degree <formula id="135">$ p $</formula> of the B-spline. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">u</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Parameter value <formula id="155">$ u $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">knotVec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Knot vector <formula id="156">$ z $</formula>; entries <formula id="157">$ z_i, \dots, z_{i+p+1} $</formula> are accessed. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">i</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index <formula id="65">$ i $</formula> of the basis function. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="150">$ \mathrm{d}N_{i,p}/\mathrm{d}u $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSpline.h" line="86" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSpline.h" bodystart="86" bodyend="103"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_b_spline_8h_1a4c515efa9f27ec2cd0f31ec9f46e3b47" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+        </templateparamlist>
+        <type>double</type>
+        <definition>double Marmot::Math::B&lt; 0 &gt;</definition>
+        <argsstring>(double u, const double *knotVec, int i)</argsstring>
+        <name>B&lt; 0 &gt;</name>
+        <qualifiedname>Marmot::Math::B&lt; 0 &gt;</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>u</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>knotVec</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+<para>Degree-0 B-spline, the indicator function of the half-open knot span <formula id="160">$ [z_i, z_{i+1}) $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">u</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Parameter value <formula id="155">$ u $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">knotVec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Knot vector <formula id="156">$ z $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">i</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index <formula id="65">$ i $</formula> of the basis function. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="102">$ 1 $</formula> if <formula id="161">$ z_i \le u &lt; z_{i+1} $</formula>, else <formula id="162">$ 0 $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSpline.h" line="113" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSpline.h" bodystart="113" bodyend="118"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_b_spline_8h_1a1e9cf90c4718ce8557be798a2b13533d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+        </templateparamlist>
+        <type>double</type>
+        <definition>double Marmot::Math::dB_dU&lt; 0 &gt;</definition>
+        <argsstring>(double u, const double *knotVec, int i)</argsstring>
+        <name>dB_dU&lt; 0 &gt;</name>
+        <qualifiedname>Marmot::Math::dB_dU&lt; 0 &gt;</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>u</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>knotVec</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+<para>Derivative of the degree-0 B-spline, which is zero (almost everywhere). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">u</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Parameter value <formula id="155">$ u $</formula> (unused). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">knotVec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Knot vector (unused). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">i</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of the basis function (unused). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="162">$ 0 $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSpline.h" line="128" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSpline.h" bodystart="128" bodyend="131"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMonomialBasisFunctions.h" line="31" column="1"/>
+  </compounddef>
+</doxygen>

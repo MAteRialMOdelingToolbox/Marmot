@@ -1,0 +1,5 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot::Discretizations::Meshfree::KernelFunction" alt="" coords="118,101,630,149"/>
+<area shape="rect" id="node2" title="Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed" alt="" coords="5,5,743,53"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="376,52,376,87,372,84,372,56"/>
+</map>

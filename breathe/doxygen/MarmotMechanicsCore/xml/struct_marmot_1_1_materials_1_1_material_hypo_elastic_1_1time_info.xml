@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1time_info" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Materials::MaterialHypoElastic::timeInfo</compoundname>
+    <includes refid="_marmot_material_hypo_elastic_8h" local="no">MarmotMaterialHypoElastic.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1time_info_1a847999971034de98b4d03593b9673137" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Materials::MaterialHypoElastic::timeInfo::time</definition>
+        <argsstring></argsstring>
+        <name>time</name>
+        <qualifiedname>Marmot::Materials::MaterialHypoElastic::timeInfo::time</qualifiedname>
+        <briefdescription>
+<para>Current (pseudo-)time. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="149" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="149" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1time_info_1a743874e695bc7143b657c355ea51e345" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Materials::MaterialHypoElastic::timeInfo::dT</definition>
+        <argsstring></argsstring>
+        <name>dT</name>
+        <qualifiedname>Marmot::Materials::MaterialHypoElastic::timeInfo::dT</qualifiedname>
+        <briefdescription>
+<para>(Pseudo-)time increment from the old (pseudo-)time to the current (pseudo-)time </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="150" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="150" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Structure carrying (pseudo-)time information passed to the material routines. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="148" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="148" bodyend="151"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1time_info_1a743874e695bc7143b657c355ea51e345" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialHypoElastic::timeInfo</scope><name>dT</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1time_info_1a847999971034de98b4d03593b9673137" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialHypoElastic::timeInfo</scope><name>time</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

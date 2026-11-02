@@ -1,0 +1,294 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_discrete_spectrum" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum</compoundname>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="_marmot_viscoelasticity_8h_1acf8639fd7f712d6f9f5ad87ca771682a" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>PostWidderCoefficientSign</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::PostWidderCoefficientSign</qualifiedname>
+        <enumvalue id="_marmot_viscoelasticity_8h_1acf8639fd7f712d6f9f5ad87ca771682aa3289297424e01eda5b788c083bbf3147" prot="public">
+          <name>Positive</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_viscoelasticity_8h_1acf8639fd7f712d6f9f5ad87ca771682aaffb9356ff2b7da85c75c92fa7ea03b8b" prot="public">
+          <name>Negative</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Sign of the coefficient of the Post-Widder formula: positive for relaxation, negative for retardation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="120" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" bodystart="120" bodyend="120"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_marmot_viscoelasticity_8h_1a76b5929c0f0a54cb769ea4b00eac078b" prot="public" static="no">
+        <type>Eigen::VectorXd</type>
+        <definition>using Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::Properties = Eigen::VectorXd</definition>
+        <argsstring></argsstring>
+        <name>Properties</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::Properties</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="114" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" bodystart="114" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_viscoelasticity_8h_1a44e738c723040f03137a8b9bab35cf24" prot="public" static="no">
+        <type>Eigen::Map&lt; Properties &gt;</type>
+        <definition>using Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::mapProperties = Eigen::Map&lt; Properties &gt;</definition>
+        <argsstring></argsstring>
+        <name>mapProperties</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::mapProperties</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="115" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" bodystart="115" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_viscoelasticity_8h_1adecf74d34611f67b1f1770a209a687c9" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 6, Eigen::Dynamic &gt;</type>
+        <definition>using Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::StateVarMatrix = Eigen::Matrix&lt; double, 6, Eigen::Dynamic &gt;</definition>
+        <argsstring></argsstring>
+        <name>StateVarMatrix</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::StateVarMatrix</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="116" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" bodystart="116" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_viscoelasticity_8h_1a29cb9fe18c33d998f80fc1a785390f18" prot="public" static="no">
+        <type>Eigen::Map&lt; StateVarMatrix &gt;</type>
+        <definition>using Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::mapStateVarMatrix = Eigen::Map&lt; StateVarMatrix &gt;</definition>
+        <argsstring></argsstring>
+        <name>mapStateVarMatrix</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::mapStateVarMatrix</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="117" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_viscoelasticity_8h_1a92ca5c272f82c3911db3843ee2c5f104" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>k</declname>
+            <defname>k</defname>
+          </param>
+        </templateparamlist>
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::evaluatePostWidderFormula</definition>
+        <argsstring>(std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; function, double tau, PostWidderCoefficientSign coefficientSign)</argsstring>
+        <name>evaluatePostWidderFormula</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::evaluatePostWidderFormula</qualifiedname>
+        <param>
+          <type>std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt;</type>
+          <declname>function</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>tau</declname>
+        </param>
+        <param>
+          <type>PostWidderCoefficientSign</type>
+          <declname>coefficientSign</declname>
+        </param>
+        <briefdescription>
+<para>Evaluate the Post-Widder formula of order <formula id="12">$k$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes <formula id="13">$\pm \frac{(-k\tau)^k}{(k-1)!} \, f^{(k)}(k\tau)$</formula>, with the derivative of order <formula id="12">$k$</formula> obtained by automatic differentiation.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>k</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>order of the approximation </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">function</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>function to be inverted, e.g. a relaxation or retardation function </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">tau</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>relaxation or retardation time at which the spectrum is evaluated </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">coefficientSign</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>sign of the coefficient </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the value of the approximated spectrum at <formula id="14">$\tau$</formula> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="135" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" bodystart="135" bodyend="145"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_viscoelasticity_8h_1a288ca90884213792bf5b9ee8d8638144" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Properties</type>
+        <definition>Properties Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::generateLogarithmicTimes</definition>
+        <argsstring>(int n, double min, double spacing)</argsstring>
+        <name>generateLogarithmicTimes</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::generateLogarithmicTimes</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>min</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>spacing</declname>
+        </param>
+        <briefdescription>
+<para>Generate logarithmically spaced relaxation or retardation times. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The times are <formula id="15">$\tau_i = \mathrm{min} \cdot \mathrm{spacing}^i$</formula> for <formula id="16">$i = 0, \dots, n-1$</formula>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of times </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">min</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>smallest time </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">spacing</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ratio of two consecutive times </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the times </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="157" column="16" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" declline="157" declcolumn="16"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_viscoelasticity_8h_1a879d3133826c713bc22bec565f21ae72" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::computeLambdaAndBeta</definition>
+        <argsstring>(double dT, double tau, double &amp;lambda, double &amp;beta)</argsstring>
+        <name>computeLambdaAndBeta</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::computeLambdaAndBeta</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>tau</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>lambda</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>beta</declname>
+        </param>
+        <briefdescription>
+<para>Compute the integration factors of the exponential algorithm for a Maxwell or Kelvin unit. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>With <formula id="17">$x = \Delta t / \tau$</formula> the factors are <formula id="18">$\beta = e^{-x}$</formula> and <formula id="19">$\lambda = (1 - \beta) / x$</formula>. For very small and very large <formula id="20">$x$</formula> the limiting expressions are used (Jirasek and Bazant).</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>time increment </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">tau</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>relaxation or retardation time of the unit </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">lambda</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>factor <formula id="21">$\lambda$</formula> </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">beta</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>factor <formula id="22">$\beta$</formula> </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="171" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" declline="171" declcolumn="10"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="112" column="3"/>
+  </compounddef>
+</doxygen>

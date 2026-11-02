@@ -1,0 +1,983 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Microplane model M7 &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Gradient-enhanced microplane model M7 (GM7)" href="gm7.html" />
+    <link rel="prev" title="Interface material (hypoelastic bulk material)" href="interfacematerialhypoelastic.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="materials.html">Material models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="at2phasefield.html">AT2 Phase Field Fracture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="b4.html">B4 model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressibleneohooke.html">Compressible Neo Hooke model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adcompressibleneohooke.html">Compressible Neo Hooke model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressiblefinitestrainlinearviscoelasticity.html">Compressible Finite-Strain Linear Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainisotropicbiotviscoelasticity.html">Finite-Strain Isotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainj2plasticity.html">Finite-strain J2 plasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainorthotropicbiotviscoelasticity.html">Finite-Strain Orthotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearelastic.html">Linear Elastic model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adlinearelastic.html">Linear Elastic model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticpowerlaw.html">Linear Viscoelastic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticorthotropicpowerlaw.html">Linear Viscoelastic Orthotropic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticwiechert.html">Linear Viscoelastic Wiechert model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="interfacematerialhypoelastic.html">Interface material (hypoelastic bulk material)</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Microplane model M7</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#properties">Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gm7.html">Gradient-enhanced microplane model M7 (GM7)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vonmises.html">Von Mises model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advonmises.html">Von Mises model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hugheswinget.html">Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedhugheswinget.html">Gradient-enhanced Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedcompressibleneohookedamage.html">Gradient-enhanced compressible Neo-Hooke damage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedfinitestraindruckerprager.html">Gradient-enhanced finite-strain Drucker-Prager</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meshfree.html">Meshfree methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="materials.html">Material models</a></li>
+      <li class="breadcrumb-item active">Microplane model M7</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/microplanem7.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="microplane-model-m7">
+<span id="microplanem7"></span><h1>Microplane model M7<a class="headerlink" href="#microplane-model-m7" title="Link to this heading"></a></h1>
+<section id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p>The model implements the microplane model M7 for plain concrete of Caner and Bažant (2013), <em>Microplane model M7
+for plain concrete. I: Formulation</em> and <em>II: Calibration and verification</em>, Journal of Engineering Mechanics,
+139(12). The macroscopic strain increment is projected kinematically onto a set of microplanes (normal component
+<span class="math notranslate nohighlight">\(\varepsilon_N\)</span> and the two tangential components <span class="math notranslate nohighlight">\(\varepsilon_M\)</span>, <span class="math notranslate nohighlight">\(\varepsilon_L\)</span>), on which an
+incremental elastic predictor is limited by the tensile, deviatoric, volumetric and frictional (shear) stress-strain
+boundaries of M7. The macroscopic stress follows from the principle of virtual work by homogenization over the
+microplanes.</p>
+<p>The microplane discretization (normal vectors, weights and the normal-tangential projection tensors) is taken from
+the shared <code class="docutils literal notranslate"><span class="pre">Marmot::ContinuumMechanics::Microplane</span></code> module of <code class="docutils literal notranslate"><span class="pre">MarmotMechanicsCore</span></code>; the quadrature scheme is fixed at compile time
+to the 37-microplane scheme <code class="docutils literal notranslate"><span class="pre">N37</span></code>.</p>
+<p>In addition to the original formulation, a closed-form transition function for the elastic unloading stiffness on
+the microplanes is used, which improves the convergence behavior in implicit simulations
+(Basche et al., 2026). The consistent tangent is computed analytically.</p>
+<p>The constitutive laws are implemented in <code class="docutils literal notranslate"><span class="pre">MicroplaneM7Formulation</span></code>, which the
+<a class="reference internal" href="gm7.html#gm7"><span class="std std-ref">gradient-enhanced extension GM7</span></a> reuses.</p>
+<p>The fixed parameters <span class="math notranslate nohighlight">\(c_1, \ldots, c_{21}\)</span> (except <span class="math notranslate nohighlight">\(c_3\)</span>) take the values given by Caner and Bažant
+(2013).</p>
+</section>
+<section id="properties">
+<h2>Properties<a class="headerlink" href="#properties" title="Link to this heading"></a></h2>
+<p>The fixed parameters of Caner and Bažant (2013) are calibrated in N and mm. Therefore <span class="math notranslate nohighlight">\(E\)</span>, <span class="math notranslate nohighlight">\(f_c\)</span> and
+<code class="docutils literal notranslate"><span class="pre">transitionWidth</span></code> have to be given in N/mm² (MPa); the M7 parameters <span class="math notranslate nohighlight">\(\nu\)</span>, <span class="math notranslate nohighlight">\(k_1, \ldots, k_5\)</span>,
+<span class="math notranslate nohighlight">\(c_3\)</span> and <code class="docutils literal notranslate"><span class="pre">transitionExponent</span></code> are dimensionless.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 10.0%" />
+<col style="width: 20.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Index</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">E</span></code></p></td>
+<td><p>Young’s modulus <span class="math notranslate nohighlight">\(E\)</span> in N/mm²</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nu</span></code></p></td>
+<td><p>Poisson’s ratio <span class="math notranslate nohighlight">\(\nu\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">k1</span></code></p></td>
+<td><p>Radial scaling parameter <span class="math notranslate nohighlight">\(k_1\)</span> (typical value 1.5e-4)</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">k2</span></code></p></td>
+<td><p>Horizontal asymptote of the frictional boundary <span class="math notranslate nohighlight">\(k_2\)</span> (typical value 110)</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">k3</span></code></p></td>
+<td><p>Shape of the volumetric boundary <span class="math notranslate nohighlight">\(k_3\)</span> (typical value 30)</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">k4</span></code></p></td>
+<td><p>Shape of the volumetric boundary <span class="math notranslate nohighlight">\(k_4\)</span> (typical value 100)</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">k5</span></code></p></td>
+<td><p>Volumetric-deviatoric coupling at low pressures <span class="math notranslate nohighlight">\(k_5\)</span> (typical value 1e-4)</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">c3</span></code></p></td>
+<td><p>Optional, slope of the postpeak in uniaxial tension <span class="math notranslate nohighlight">\(c_3\)</span> (default 4.0)</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">fc</span></code></p></td>
+<td><p>Optional, compressive strength <span class="math notranslate nohighlight">\(f_c\)</span> in N/mm², used by the deviatoric boundary (default 36.0)</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">transitionWidth</span></code></p></td>
+<td><p>Optional, stress offset in N/mm² from the virtual elastic loading path at which the unloading transition
+starts (default 4.0)</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">transitionExponent</span></code></p></td>
+<td><p>Optional, exponent of the unloading transition function (default 0.4)</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">density</span></code></p></td>
+<td><p>Optional mass density (requires all preceding properties)</p></td>
+</tr>
+</tbody>
+</table>
+<p>The material is registered as <code class="docutils literal notranslate"><span class="pre">MICROPLANEM7</span></code> in the hypoelastic material factory. The state variables are the
+volumetric stress <code class="docutils literal notranslate"><span class="pre">sig_v0</span></code>, <code class="docutils literal notranslate"><span class="pre">zeta</span></code>, the microplane stresses <code class="docutils literal notranslate"><span class="pre">sig_N0</span></code>, <code class="docutils literal notranslate"><span class="pre">sig_M0</span></code>, <code class="docutils literal notranslate"><span class="pre">sig_L0</span></code>, the extremal
+normal strains <code class="docutils literal notranslate"><span class="pre">eps_N0pos</span></code>, <code class="docutils literal notranslate"><span class="pre">eps_N0neg</span></code> and the macroscopic strain <code class="docutils literal notranslate"><span class="pre">strain_macro0</span></code>. For postprocessing,
+<code class="docutils literal notranslate"><span class="pre">activeTensileBoundary</span></code>, <code class="docutils literal notranslate"><span class="pre">activeCompressiveBoundary</span></code> and <code class="docutils literal notranslate"><span class="pre">activeShearBoundary</span></code> hold the fractions of the
+microplanes on the tensile, compressive and shear boundary in the last increment.</p>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials12MicroplaneM7E">
+<span id="_CPPv3N6Marmot9Materials12MicroplaneM7E"></span><span id="_CPPv2N6Marmot9Materials12MicroplaneM7E"></span><span id="Marmot::Materials::MicroplaneM7"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MicroplaneM7</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot9Materials19MaterialHypoElasticE" title="Marmot::Materials::MaterialHypoElastic"><span class="n"><span class="pre">MaterialHypoElastic</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials12MicroplaneM7E" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Materials::MicroplaneM7:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-34867d046066bf9f11a9de08e2bd325fc27dd482.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialHypoElastic&quot; tooltip=&quot;Marmot::Materials::MaterialHypoElastic&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::MicroplaneM7&quot; tooltip=&quot;Marmot::Materials::MicroplaneM7&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Materials::MicroplaneM7:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-5ca87965fdd6b22a8c101cea17e364a0e00573a7.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialHypoElastic&quot; tooltip=&quot;Marmot::Materials::MaterialHypoElastic&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::MicroplaneM7&quot; tooltip=&quot;Marmot::Materials::MicroplaneM7&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Materials::MicroplaneM7Formulation&quot; tooltip=&quot;Marmot::Materials::MicroplaneM7Formulation&quot;]
+    &quot;5&quot; [label=&quot;Marmot::Materials::MicroplaneM7Formulation::Parameters&quot; tooltip=&quot;Marmot::Materials::MicroplaneM7Formulation::Parameters&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Utilities::StateLayoutDynamic&quot; tooltip=&quot;Marmot::Utilities::StateLayoutDynamic&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;1&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;4&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Implementation of the microplane model M7 for 3D stress states. </p>
+<p><p>The base formulation follows Caner &amp; Bažant (2013), “Microplane model M7 for</p>
+<p>plain concrete. I: Formulation” and “II: Calibration and verification”, Journal of Engineering Mechanics, 139(12). The closed-form transition function of the elastic unloading stiffness (see</p>
+<a class="reference internal" href="#classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1adc0c2b77f0ac8aa95e934bc9c66c9814"><span class="std std-ref">MicroplaneM7Formulation::transitionFunctionClosedForm</span></a>), improving convergence behavior in implicit simulations, is introduced in Basche et al. (2026). The constitutive laws are implemented in <a class="reference internal" href="#classMarmot_1_1Materials_1_1MicroplaneM7Formulation"><span class="std std-ref">MicroplaneM7Formulation</span></a>, which is shared with the gradient-enhanced extension <a class="reference internal" href="gm7.html#classMarmot_1_1Materials_1_1GM7"><span class="std std-ref">GM7</span></a>. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials12MicroplaneM79nmp_sizedE">
+<span id="_CPPv3N6Marmot9Materials12MicroplaneM79nmp_sizedE"></span><span id="_CPPv2N6Marmot9Materials12MicroplaneM79nmp_sizedE"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7_1a1ec44f0f06b301bed1c50738d11ae489"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nmp_sized</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7FormulationE" title="Marmot::Materials::MicroplaneM7Formulation"><span class="n"><span class="pre">MicroplaneM7Formulation</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation9nmp_sizedE" title="Marmot::Materials::MicroplaneM7Formulation::nmp_sized"><span class="n"><span class="pre">nmp_sized</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials12MicroplaneM79nmp_sizedE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials12MicroplaneM710mnmp_sizedE">
+<span id="_CPPv3N6Marmot9Materials12MicroplaneM710mnmp_sizedE"></span><span id="_CPPv2N6Marmot9Materials12MicroplaneM710mnmp_sizedE"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7_1a542f854880ef43a1c4ac1b8a6026d821"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mnmp_sized</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7FormulationE" title="Marmot::Materials::MicroplaneM7Formulation"><span class="n"><span class="pre">MicroplaneM7Formulation</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10mnmp_sizedE" title="Marmot::Materials::MicroplaneM7Formulation::mnmp_sized"><span class="n"><span class="pre">mnmp_sized</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials12MicroplaneM710mnmp_sizedE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials12MicroplaneM710nmp6_sizedE">
+<span id="_CPPv3N6Marmot9Materials12MicroplaneM710nmp6_sizedE"></span><span id="_CPPv2N6Marmot9Materials12MicroplaneM710nmp6_sizedE"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7_1ad95b11b7edbd6175956090049a27c5b6"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nmp6_sized</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7FormulationE" title="Marmot::Materials::MicroplaneM7Formulation"><span class="n"><span class="pre">MicroplaneM7Formulation</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10nmp6_sizedE" title="Marmot::Materials::MicroplaneM7Formulation::nmp6_sized"><span class="n"><span class="pre">nmp6_sized</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials12MicroplaneM710nmp6_sizedE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials12MicroplaneM712MicroplaneM7EPKdii">
+<span id="_CPPv3N6Marmot9Materials12MicroplaneM712MicroplaneM7EPKdii"></span><span id="_CPPv2N6Marmot9Materials12MicroplaneM712MicroplaneM7EPKdii"></span><span id="Marmot::Materials::MicroplaneM7::MicroplaneM7__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7_1aaad06735b2d348b082c8c46f7b1f1acf"></span><span class="sig-name descname"><span class="n"><span class="pre">MicroplaneM7</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialNumber</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials12MicroplaneM712MicroplaneM7EPKdii" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials12MicroplaneM721initializeStateLayoutEv">
+<span id="_CPPv3N6Marmot9Materials12MicroplaneM721initializeStateLayoutEv"></span><span id="_CPPv2N6Marmot9Materials12MicroplaneM721initializeStateLayoutEv"></span><span id="Marmot::Materials::MicroplaneM7::initializeStateLayout"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7_1a5994f5787d26e2da9e5f6be245dfeb4b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeStateLayout</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials12MicroplaneM721initializeStateLayoutEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Declares the per-microplane and scalar state variables managed by stateLayout. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials12MicroplaneM710getDensityEPKd">
+<span id="_CPPv3NK6Marmot9Materials12MicroplaneM710getDensityEPKd"></span><span id="_CPPv2NK6Marmot9Materials12MicroplaneM710getDensityEPKd"></span><span id="Marmot::Materials::MicroplaneM7::getDensity__doubleCPC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7_1a6a1f1a786bdb2e073174c2e1eca47087"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDensity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials12MicroplaneM710getDensityEPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the mass density of the material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateVars</strong> – Pointer to the state variable array </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Mass density of the material </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials12MicroplaneM73nqpE">
+<span id="_CPPv3N6Marmot9Materials12MicroplaneM73nqpE"></span><span id="_CPPv2N6Marmot9Materials12MicroplaneM73nqpE"></span><span id="Marmot::Materials::MicroplaneM7::nqp__s"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7_1abd7a24b1d7c3b36f2c788042463cf335"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nqp</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7FormulationE" title="Marmot::Materials::MicroplaneM7Formulation"><span class="n"><span class="pre">MicroplaneM7Formulation</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3nqpE" title="Marmot::Materials::MicroplaneM7Formulation::nqp"><span class="n"><span class="pre">nqp</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials12MicroplaneM73nqpE" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of microplanes; see <a class="reference internal" href="#classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a2712202f8bebe2cecb39ca004b82726d"><span class="std std-ref">MicroplaneM7Formulation::nqp</span></a>. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-types">Protected Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials12MicroplaneM714NormalResponseE">
+<span id="_CPPv3N6Marmot9Materials12MicroplaneM714NormalResponseE"></span><span id="_CPPv2N6Marmot9Materials12MicroplaneM714NormalResponseE"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7_1aceae76daa29e917f104c2e93c76c6c63"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NormalResponse</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7FormulationE" title="Marmot::Materials::MicroplaneM7Formulation"><span class="n"><span class="pre">MicroplaneM7Formulation</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation14NormalResponseE" title="Marmot::Materials::MicroplaneM7Formulation::NormalResponse"><span class="n"><span class="pre">NormalResponse</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials12MicroplaneM714NormalResponseE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials12MicroplaneM713computeStressER7state3DRN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERK8timeInfo">
+<span id="_CPPv3NK6Marmot9Materials12MicroplaneM713computeStressER7state3DRN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERK8timeInfo"></span><span id="_CPPv2NK6Marmot9Materials12MicroplaneM713computeStressER7state3DRN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERK8timeInfo"></span><span id="Marmot::Materials::MicroplaneM7::computeStress__state3DR.Marmot::Math::Matrix6dR.Marmot::Math::Vector6dCR.timeInfoCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7_1a7d50ced4a8ab86b43487dcb0255d6f81"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">state3D</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">state</span></span>, <a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Matrix6dE" title="Marmot::Math::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStressDDStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dStrain</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4NK6Marmot9Materials12MicroplaneM713computeStressER7state3DRN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERK8timeInfo" title="Marmot::Materials::MicroplaneM7::computeStress::timeInfo"><span class="n"><span class="pre">timeInfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeInfo</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials12MicroplaneM713computeStressER7state3DRN6Marmot4Math8Matrix6dERKN6Marmot4Math8Vector6dERK8timeInfo" title="Link to this definition"></a><br /></dt>
+<dd><p>For a given linearized strain increment <span class="math notranslate nohighlight">\(\Delta\boldsymbol{\varepsilon}\)</span> at the old and the current time, compute the Cauchy stress and the algorithmic tangent <span class="math notranslate nohighlight">\(\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}\)</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – <strong>[inout]</strong> A state3D instance carrying stress, strain energy, and state variables </p></li>
+<li><p><strong>dStress_dStrain</strong> – <strong>[inout]</strong> Algorithmic tangent representing the derivative of the Cauchy stress tensor with respect to the linearized strain </p></li>
+<li><p><strong>dStrain</strong> – <strong>[in]</strong> linearized strain increment </p></li>
+<li><p><strong>timeInfo</strong> – <strong>[in]</strong> Structure carrying the current (pseudo-)time and the (pseudo-)time increment </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials12MicroplaneM713stress_updateERKN6Marmot4Math8Vector6dEPd">
+<span id="_CPPv3NK6Marmot9Materials12MicroplaneM713stress_updateERKN6Marmot4Math8Vector6dEPd"></span><span id="_CPPv2NK6Marmot9Materials12MicroplaneM713stress_updateERKN6Marmot4Math8Vector6dEPd"></span><span id="Marmot::Materials::MicroplaneM7::stress_update__Marmot::Math::Vector6dCR.doublePC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7_1aa2e0f0f87eab15ef8a147bc1f8e3eece"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Matrix6dE" title="Marmot::Math::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stress_update</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dE_macro</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials12MicroplaneM713stress_updateERKN6Marmot4Math8Vector6dEPd" title="Link to this definition"></a><br /></dt>
+<dd><p>Performs the full microplane stress update (kinematic projection, per-microplane normal/shear boundary evaluation, and homogenization back to macroscopic stress/tangent) for one strain increment, committing the resulting state variables into <code class="docutils literal notranslate"><span class="pre">stateVars</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{macroscopic stress, analytical tangent}. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials12MicroplaneM731computeMicroplaneNormalResponseEK6size_tKdKdKdKdKdKdKdRK14NormalResponseRdRdRiRi">
+<span id="_CPPv3NK6Marmot9Materials12MicroplaneM731computeMicroplaneNormalResponseEK6size_tKdKdKdKdKdKdKdRK14NormalResponseRdRdRiRi"></span><span id="_CPPv2NK6Marmot9Materials12MicroplaneM731computeMicroplaneNormalResponseEK6size_tKdKdKdKdKdKdKdRK14NormalResponseRdRdRiRi"></span><span id="Marmot::Materials::MicroplaneM7::computeMicroplaneNormalResponse__sC.doubleC.doubleC.doubleC.doubleC.doubleC.doubleC.doubleC.NormalResponseCR.doubleR.doubleR.iR.iRC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7_1a891c14c3e33b719682b7b072083c8a2c"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials12MicroplaneM714NormalResponseE" title="Marmot::Materials::MicroplaneM7::NormalResponse"><span class="n"><span class="pre">NormalResponse</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeMicroplaneNormalResponse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">qp_i</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sig_N0</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">deps_N</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eps_N</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sig_v0</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">zeta</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eps_d</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eps_v</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials12MicroplaneM714NormalResponseE" title="Marmot::Materials::MicroplaneM7::NormalResponse"><span class="n"><span class="pre">NormalResponse</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">volumetric_law</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">eps_N0pos</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">eps_N0neg</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tensileB_flag</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">compB_flag</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials12MicroplaneM731computeMicroplaneNormalResponseEK6size_tKdKdKdKdKdKdKdRK14NormalResponseRdRdRiRi" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluates the normal-direction response of a single microplane: compares the elastic prediction (<a class="reference internal" href="#classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a497b6cdf56bfa8054f73092ee805feaf"><span class="std std-ref">MicroplaneM7Formulation::normal_elasticLaw</span></a>) against the tensile (<a class="reference internal" href="#classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1abfb8aa6129a0ef140688a26dd77162e8"><span class="std std-ref">MicroplaneM7Formulation::tensile_boundary</span></a>) and compressive (<a class="reference internal" href="#classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a3858b7a2264941c64a0dee0c7e589a22"><span class="std std-ref">MicroplaneM7Formulation::deviatoric_boundary</span></a> + <a class="reference internal" href="#classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a32227d781e8dd285c5f4d578ae498e9f"><span class="std std-ref">MicroplaneM7Formulation::volumetric_boundary</span></a>) boundaries and returns whichever governs, updating the corresponding state variables and boundary counters in place. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-attributes">Protected Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials12MicroplaneM73m7_E">
+<span id="_CPPv3N6Marmot9Materials12MicroplaneM73m7_E"></span><span id="_CPPv2N6Marmot9Materials12MicroplaneM73m7_E"></span><span id="Marmot::Materials::MicroplaneM7::m7___MicroplaneM7FormulationC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7_1a5faef0a5f0bdbeddf5aef2090a065c2e"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7FormulationE" title="Marmot::Materials::MicroplaneM7Formulation"><span class="n"><span class="pre">MicroplaneM7Formulation</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">m7_</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials12MicroplaneM73m7_E" title="Link to this definition"></a><br /></dt>
+<dd><p>The constitutive laws of M7, evaluated with the local strain. </p>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials12MicroplaneM714allmp_responseE">
+<span id="_CPPv3N6Marmot9Materials12MicroplaneM714allmp_responseE"></span><span id="_CPPv2N6Marmot9Materials12MicroplaneM714allmp_responseE"></span><span id="Marmot::Materials::MicroplaneM7::allmp_response"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7_1_1allmp__response"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">allmp_response</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials12MicroplaneM714allmp_responseE" title="Link to this definition"></a><br /></dt>
+<dd><p>Per-microplane stress and macroscopically-projected tangent, stacked over all <a class="reference internal" href="#classMarmot_1_1Materials_1_1MicroplaneM7_1abd7a24b1d7c3b36f2c788042463cf335"><span class="std std-ref">nqp</span></a> microplanes. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials12MicroplaneM714allmp_response6stressE">
+<span id="_CPPv3N6Marmot9Materials12MicroplaneM714allmp_response6stressE"></span><span id="_CPPv2N6Marmot9Materials12MicroplaneM714allmp_response6stressE"></span><span id="Marmot::Materials::MicroplaneM7::allmp_response::stress__nmp_sized"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7_1_1allmp__response_1a4783542f2a431196db13c29cbe142142"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials12MicroplaneM79nmp_sizedE" title="Marmot::Materials::MicroplaneM7::nmp_sized"><span class="n"><span class="pre">nmp_sized</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stress</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials12MicroplaneM79nmp_sizedE" title="Marmot::Materials::MicroplaneM7::nmp_sized"><span class="n"><span class="pre">nmp_sized</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials12MicroplaneM714allmp_response6stressE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials12MicroplaneM714allmp_response7tangentE">
+<span id="_CPPv3N6Marmot9Materials12MicroplaneM714allmp_response7tangentE"></span><span id="_CPPv2N6Marmot9Materials12MicroplaneM714allmp_response7tangentE"></span><span id="Marmot::Materials::MicroplaneM7::allmp_response::tangent__nmp6_sized"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7_1_1allmp__response_1a5a75a6c2685726981f3b5ecb7973d1e9"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials12MicroplaneM710nmp6_sizedE" title="Marmot::Materials::MicroplaneM7::nmp6_sized"><span class="n"><span class="pre">nmp6_sized</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tangent</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials12MicroplaneM710nmp6_sizedE" title="Marmot::Materials::MicroplaneM7::nmp6_sized"><span class="n"><span class="pre">nmp6_sized</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials12MicroplaneM714allmp_response7tangentE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7FormulationE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7FormulationE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7FormulationE"></span><span id="Marmot::Materials::MicroplaneM7Formulation"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MicroplaneM7Formulation</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7FormulationE" title="Link to this definition"></a><br /></dt>
+<dd><p>Collaboration diagram for Marmot::Materials::MicroplaneM7Formulation:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-cf29f82a0984e49f250f9b08e766cab432711199.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::MicroplaneM7Formulation&quot; tooltip=&quot;Marmot::Materials::MicroplaneM7Formulation&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MicroplaneM7Formulation::Parameters&quot; tooltip=&quot;Marmot::Materials::MicroplaneM7Formulation::Parameters&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>The constitutive laws of the microplane model M7, shared by <a class="reference internal" href="#classMarmot_1_1Materials_1_1MicroplaneM7"><span class="std std-ref">MicroplaneM7</span></a> and its gradient-enhanced extension <a class="reference internal" href="gm7.html#classMarmot_1_1Materials_1_1GM7"><span class="std std-ref">GM7</span></a>, which both hold an instance. </p>
+<p><p>The base formulation follows Caner &amp; Bažant (2013), “Microplane model M7 for</p>
+<p>plain concrete. I: Formulation” and “II: Calibration and verification”, Journal of Engineering Mechanics, 139(12). The closed-form transition function of the unloading stiffness (see</p>
+<a class="reference internal" href="#classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1adc0c2b77f0ac8aa95e934bc9c66c9814"><span class="std std-ref">transitionFunctionClosedForm</span></a>) is introduced in Basche et al. (2026).</p>
+<p>All functions are pure: they neither read nor write state variables. The normal laws and boundaries return the stress and its derivative w.r.t. the macroscopic strain they are evaluated with. The shear law splits its tangents by the strain they are derivatives with respect to: suffix <code class="docutils literal notranslate"><span class="pre">_elastic</span></code> for the strain of the elastic predictions (normal and shear), suffix <code class="docutils literal notranslate"><span class="pre">_boundary</span></code> for the strain the boundaries are evaluated with. For <a class="reference internal" href="#classMarmot_1_1Materials_1_1MicroplaneM7"><span class="std std-ref">MicroplaneM7</span></a> both are the same strain, and the full tangent is the sum of the two parts, as all expressions are linear in the tangents passed in. <a class="reference internal" href="gm7.html#classMarmot_1_1Materials_1_1GM7"><span class="std std-ref">GM7</span></a> evaluates the elastic predictions with the local and the boundaries with the over-nonlocal strain, so the two parts are its tangents w.r.t. the local and the over-nonlocal strain. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation16QuadratureSchemeE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation16QuadratureSchemeE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation16QuadratureSchemeE"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a2f46dec5232bbd6b3d87c7f81f5d197b"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QuadratureScheme</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot18ContinuumMechanicsE" title="Marmot::ContinuumMechanics"><span class="n"><span class="pre">ContinuumMechanics</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics10MicroplaneE" title="Marmot::ContinuumMechanics::Microplane"><span class="n"><span class="pre">Microplane</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics10Microplane16QuadratureSchemeE" title="Marmot::ContinuumMechanics::Microplane::QuadratureScheme"><span class="n"><span class="pre">QuadratureScheme</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation16QuadratureSchemeE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation9nmp_sizedE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation9nmp_sizedE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation9nmp_sizedE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::nmp_sized"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a6221ad34b15577ea96bf799325f4d4e9"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3nqpE" title="Marmot::Materials::MicroplaneM7Formulation::nqp"><span class="n"><span class="pre">nqp</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nmp_sized</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation9nmp_sizedE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10mnmp_sizedE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation10mnmp_sizedE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation10mnmp_sizedE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::mnmp_sized"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1af3b5484c6d96ec7f0cd0b7baeb7687cb"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Map</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3nqpE" title="Marmot::Materials::MicroplaneM7Formulation::nqp"><span class="n"><span class="pre">nqp</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mnmp_sized</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10mnmp_sizedE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10nmp6_sizedE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation10nmp6_sizedE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation10nmp6_sizedE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::nmp6_sized"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a3370d6ee8a120b63a4f711fd99b5e7eb"></span><span class="k"><span class="pre">typedef</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv45Eigen" title="Eigen"><span class="n"><span class="pre">Eigen</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Matrix</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3nqpE" title="Marmot::Materials::MicroplaneM7Formulation::nqp"><span class="n"><span class="pre">nqp</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nmp6_sized</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10nmp6_sizedE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation23MicroplaneM7FormulationERK10Parameters">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation23MicroplaneM7FormulationERK10Parameters"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation23MicroplaneM7FormulationERK10Parameters"></span><span id="Marmot::Materials::MicroplaneM7Formulation::MicroplaneM7Formulation__ParametersCR"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a33880c470af29d61458399b07958ef6e"></span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MicroplaneM7Formulation</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10ParametersE" title="Marmot::Materials::MicroplaneM7Formulation::Parameters"><span class="n"><span class="pre">Parameters</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">parameters</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation23MicroplaneM7FormulationERK10Parameters" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation15normalStiffnessEv">
+<span id="_CPPv3NK6Marmot9Materials23MicroplaneM7Formulation15normalStiffnessEv"></span><span id="_CPPv2NK6Marmot9Materials23MicroplaneM7Formulation15normalStiffnessEv"></span><span id="Marmot::Materials::MicroplaneM7Formulation::normalStiffnessC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a47b1cfe38cc9fee072ee0b4c7f4d1817"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">normalStiffness</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation15normalStiffnessEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Undamaged microplane normal stiffness E / (1 - 2 nu). </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation14shearStiffnessEv">
+<span id="_CPPv3NK6Marmot9Materials23MicroplaneM7Formulation14shearStiffnessEv"></span><span id="_CPPv2NK6Marmot9Materials23MicroplaneM7Formulation14shearStiffnessEv"></span><span id="Marmot::Materials::MicroplaneM7Formulation::shearStiffnessC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1ab277eb78b12a365fc9c8ca093a60c147"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">shearStiffness</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation14shearStiffnessEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Undamaged microplane tangential stiffness; there is no damage of the shear stiffness. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation17normal_elasticLawEKdKdKdKdKdKdKdK6size_t">
+<span id="_CPPv3NK6Marmot9Materials23MicroplaneM7Formulation17normal_elasticLawEKdKdKdKdKdKdKdK6size_t"></span><span id="_CPPv2NK6Marmot9Materials23MicroplaneM7Formulation17normal_elasticLawEKdKdKdKdKdKdKdK6size_t"></span><span id="Marmot::Materials::MicroplaneM7Formulation::normal_elasticLaw__doubleC.doubleC.doubleC.doubleC.doubleC.doubleC.doubleC.sCC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a497b6cdf56bfa8054f73092ee805feaf"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation14NormalResponseE" title="Marmot::Materials::MicroplaneM7Formulation::NormalResponse"><span class="n"><span class="pre">NormalResponse</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">normal_elasticLaw</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sig_N0</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">deps_N</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eps_N</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eps_N0pos</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eps_N0neg</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sig_v0</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">zeta</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">qp_i</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation17normal_elasticLawEKdKdKdKdKdKdKdK6size_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Normal-direction elastic/damage law (tension and compression branches), including the transition of the elastic unloading stiffness to the undamaged stiffness in tension via <a class="reference internal" href="#classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1adc0c2b77f0ac8aa95e934bc9c66c9814"><span class="std std-ref">transitionFunctionClosedForm</span></a>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation28transitionFunctionClosedFormEKdKdKdKdKd">
+<span id="_CPPv3NK6Marmot9Materials23MicroplaneM7Formulation28transitionFunctionClosedFormEKdKdKdKdKd"></span><span id="_CPPv2NK6Marmot9Materials23MicroplaneM7Formulation28transitionFunctionClosedFormEKdKdKdKdKd"></span><span id="Marmot::Materials::MicroplaneM7Formulation::transitionFunctionClosedForm__doubleC.doubleC.doubleC.doubleC.doubleCC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1adc0c2b77f0ac8aa95e934bc9c66c9814"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">transitionFunctionClosedForm</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eps_N0</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">deps_N</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sig_N0</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">E_N</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">E_N0</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation28transitionFunctionClosedFormEKdKdKdKdKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Closed-form integration of the unloading transition from damaged to undamaged stiffness, used by <a class="reference internal" href="#classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a497b6cdf56bfa8054f73092ee805feaf"><span class="std std-ref">normal_elasticLaw</span></a>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation28unloadingTransitionStiffnessEKdKdKd">
+<span id="_CPPv3NK6Marmot9Materials23MicroplaneM7Formulation28unloadingTransitionStiffnessEKdKdKd"></span><span id="_CPPv2NK6Marmot9Materials23MicroplaneM7Formulation28unloadingTransitionStiffnessEKdKdKd"></span><span id="Marmot::Materials::MicroplaneM7Formulation::unloadingTransitionStiffness__doubleC.doubleC.doubleCC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a978374f47544574e2ab7dd8f47550092"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">unloadingTransitionStiffness</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">s_gap</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">E_N</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">E_N0</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation28unloadingTransitionStiffnessEKdKdKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Blends the damaged stiffness E_N and the undamaged stiffness E_N0 over the unloading transition, returning the regularized stiffness. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation19volumetric_boundaryEKdRKN6Marmot4Math8Vector6dE">
+<span id="_CPPv3NK6Marmot9Materials23MicroplaneM7Formulation19volumetric_boundaryEKdRKN6Marmot4Math8Vector6dE"></span><span id="_CPPv2NK6Marmot9Materials23MicroplaneM7Formulation19volumetric_boundaryEKdRKN6Marmot4Math8Vector6dE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::volumetric_boundary__doubleC.Marmot::Math::Vector6dCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a32227d781e8dd285c5f4d578ae498e9f"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation14NormalResponseE" title="Marmot::Materials::MicroplaneM7Formulation::NormalResponse"><span class="n"><span class="pre">NormalResponse</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">volumetric_boundary</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sig_v0</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">strain_macro</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation19volumetric_boundaryEKdRKN6Marmot4Math8Vector6dE" title="Link to this definition"></a><br /></dt>
+<dd><p>Volumetric compressive boundary (same for all microplanes) for the macroscopic strain <code class="docutils literal notranslate"><span class="pre">strain_macro</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation19deviatoric_boundaryEKdKdK6size_t">
+<span id="_CPPv3NK6Marmot9Materials23MicroplaneM7Formulation19deviatoric_boundaryEKdKdK6size_t"></span><span id="_CPPv2NK6Marmot9Materials23MicroplaneM7Formulation19deviatoric_boundaryEKdKdK6size_t"></span><span id="Marmot::Materials::MicroplaneM7Formulation::deviatoric_boundary__doubleC.doubleC.sCC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a3858b7a2264941c64a0dee0c7e589a22"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation14NormalResponseE" title="Marmot::Materials::MicroplaneM7Formulation::NormalResponse"><span class="n"><span class="pre">NormalResponse</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">deviatoric_boundary</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eps_d</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eps_v</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">qp_i</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation19deviatoric_boundaryEKdKdK6size_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Deviatoric compressive boundary for microplane <code class="docutils literal notranslate"><span class="pre">qp_i</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation16tensile_boundaryEKdKdK6size_t">
+<span id="_CPPv3NK6Marmot9Materials23MicroplaneM7Formulation16tensile_boundaryEKdKdK6size_t"></span><span id="_CPPv2NK6Marmot9Materials23MicroplaneM7Formulation16tensile_boundaryEKdKdK6size_t"></span><span id="Marmot::Materials::MicroplaneM7Formulation::tensile_boundary__doubleC.doubleC.sCC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1abfb8aa6129a0ef140688a26dd77162e8"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation14NormalResponseE" title="Marmot::Materials::MicroplaneM7Formulation::NormalResponse"><span class="n"><span class="pre">NormalResponse</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tensile_boundary</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sig_v0</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eps_N</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">qp_i</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation16tensile_boundaryEKdKdK6size_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Tensile boundary for microplane <code class="docutils literal notranslate"><span class="pre">qp_i</span></code>. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation9shear_lawEKdKdKdKdKdKdRKN6Marmot4Math8Vector6dERKN6Marmot4Math8Vector6dEK6size_t">
+<span id="_CPPv3NK6Marmot9Materials23MicroplaneM7Formulation9shear_lawEKdKdKdKdKdKdRKN6Marmot4Math8Vector6dERKN6Marmot4Math8Vector6dEK6size_t"></span><span id="_CPPv2NK6Marmot9Materials23MicroplaneM7Formulation9shear_lawEKdKdKdKdKdKdRKN6Marmot4Math8Vector6dERKN6Marmot4Math8Vector6dEK6size_t"></span><span id="Marmot::Materials::MicroplaneM7Formulation::shear_law__doubleC.doubleC.doubleC.doubleC.doubleC.doubleC.Marmot::Math::Vector6dCR.Marmot::Math::Vector6dCR.sCC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a006a480b02dc03c6b3aaf55991a2b5ba"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13ShearResponseE" title="Marmot::Materials::MicroplaneM7Formulation::ShearResponse"><span class="n"><span class="pre">ShearResponse</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">shear_law</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eps_v</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sig_N</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sig_M0</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sig_L0</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">deps_M</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">deps_L</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sig_N_tangent_elastic</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sig_N_tangent_boundary</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">qp_i</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation9shear_lawEKdKdKdKdKdKdRKN6Marmot4Math8Vector6dERKN6Marmot4Math8Vector6dEK6size_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Shear law according to Caner and Bazant (2013): the elastic shear prediction is limited by the frictional boundary, switching between its R27/R28 branches on the sign of the normal stress. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eps_v</strong> – Volumetric strain the shear boundary is evaluated with. </p></li>
+<li><p><strong>sig_N</strong> – Microplane normal stress. </p></li>
+<li><p><strong>sig_M0</strong> – Shear stress in M direction at the start of the increment. </p></li>
+<li><p><strong>sig_L0</strong> – Shear stress in L direction at the start of the increment. </p></li>
+<li><p><strong>deps_M</strong> – Shear strain increment in M direction. </p></li>
+<li><p><strong>deps_L</strong> – Shear strain increment in L direction. </p></li>
+<li><p><strong>sig_N_tangent_elastic</strong> – Derivative of <code class="docutils literal notranslate"><span class="pre">sig_N</span></code> w.r.t. the strain of the elastic prediction. </p></li>
+<li><p><strong>sig_N_tangent_boundary</strong> – Derivative of <code class="docutils literal notranslate"><span class="pre">sig_N</span></code> w.r.t. the strain the boundaries are evaluated with. </p></li>
+<li><p><strong>qp_i</strong> – Index of the microplane. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation16shear_elasticLawEKdKd">
+<span id="_CPPv3NK6Marmot9Materials23MicroplaneM7Formulation16shear_elasticLawEKdKd"></span><span id="_CPPv2NK6Marmot9Materials23MicroplaneM7Formulation16shear_elasticLawEKdKd"></span><span id="Marmot::Materials::MicroplaneM7Formulation::shear_elasticLaw__doubleC.doubleCC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a589af0d903c1644750728bc1ca971314"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation17ElasticPredictionE" title="Marmot::Materials::MicroplaneM7Formulation::ElasticPrediction"><span class="n"><span class="pre">ElasticPrediction</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">shear_elasticLaw</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sig_S0</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">deps_S</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation16shear_elasticLawEKdKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Elastic (undamaged) shear law for one in-plane direction (M or L). </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation1pE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation1pE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation1pE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::p__ParametersC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1abaa1d61f023c6e79e42e2fd3a0407ef1"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10ParametersE" title="Marmot::Materials::MicroplaneM7Formulation::Parameters"><span class="n"><span class="pre">Parameters</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">p</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation1pE" title="Link to this definition"></a><br /></dt>
+<dd><p>The free material parameters. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13fc0_referenceE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation13fc0_referenceE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation13fc0_referenceE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::fc0_reference__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a13d70b0a1fe70131b34103b1e9f45ab3"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fc0_reference</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">15.08</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13fc0_referenceE" title="Link to this definition"></a><br /></dt>
+<dd><p>Reference compressive strength in MPa. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation12E0_referenceE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation12E0_referenceE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation12E0_referenceE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::E0_reference__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a5cf897cd82fd27c22bef8da05a39b2f4"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">E0_reference</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">20.0e3</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation12E0_referenceE" title="Link to this definition"></a><br /></dt>
+<dd><p>Reference Young’s modulus in MPa. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation2c1E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation2c1E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation2c1E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c1__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a4e324a3361b453948adaf6acd74e87de"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c1</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">8.9e-2</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation2c1E" title="Link to this definition"></a><br /></dt>
+<dd><p>Controls the uniaxial tensile strength. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation2c2E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation2c2E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation2c2E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c2__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1ac432fe6cf14de465c2334365e7fb9cae"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c2</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">17.6e-2</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation2c2E" title="Link to this definition"></a><br /></dt>
+<dd><p>Controls the roundness of the peak in uniaxial tension. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation2c4E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation2c4E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation2c4E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c4__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a92b4ca6acdea02a6adfc15b5f2c1c9fa"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c4</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">50.0</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation2c4E" title="Link to this definition"></a><br /></dt>
+<dd><p>Controls the slope of the postpeak tail in uniaxial compression. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation2c5E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation2c5E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation2c5E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c5__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1accfeaeaa9cd2795a8cada1fcf2269cf1"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c5</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">3500.0</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation2c5E" title="Link to this definition"></a><br /></dt>
+<dd><p>Controls the volumetric expansion under compression. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation2c6E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation2c6E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation2c6E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c6__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a82ca239b083f5c4eeea5f224939d8ca5"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c6</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">20.0</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation2c6E" title="Link to this definition"></a><br /></dt>
+<dd><p>Controls the roundness of the peak in volumetric expansion under compression. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation2c7E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation2c7E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation2c7E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c7__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1ab595eaf6b3eb371b3a55618671e8eca5"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c7</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1.0</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation2c7E" title="Link to this definition"></a><br /></dt>
+<dd><p>Controls the slope of the initial postpeak in uniaxial compression. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation2c8E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation2c8E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation2c8E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c8__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a95f8a43bf5be5d84a842f16569c115f2"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c8</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">8.0</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation2c8E" title="Link to this definition"></a><br /></dt>
+<dd><p>Controls the peak strength in uniaxial compression. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation2c9E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation2c9E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation2c9E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c9__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a939618da65eae595b2f5de7c974889b5"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c9</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1.2e-2</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation2c9E" title="Link to this definition"></a><br /></dt>
+<dd><p>Controls the peak roundness in uniaxial compression. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c10E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation3c10E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation3c10E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c10__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a8bc71cdd949145595b2dc88bf2f4c864"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c10</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.33</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c10E" title="Link to this definition"></a><br /></dt>
+<dd><p>Controls the effective friction coefficient. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c11E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation3c11E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation3c11E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c11__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a7d02508fae14b944ad1d8ef6982a5081"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c11</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0.5</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c11E" title="Link to this definition"></a><br /></dt>
+<dd><p>Initial cohesion in frictional response. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c12E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation3c12E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation3c12E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c12__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a0e5367e534b3a847242e6b5611bc5c16"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c12</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">2.36</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c12E" title="Link to this definition"></a><br /></dt>
+<dd><p>Controls the change of cohesion with tensile volumetric strains. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c13E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation3c13E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation3c13E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c13__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a1d221315845764aadc43bba848520560"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c13</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4500.0</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c13E" title="Link to this definition"></a><br /></dt>
+<dd><p>Controls the unloading slope in tension. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c14E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation3c14E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation3c14E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c14__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a811cbbf31e30bd56e4e2545e54c6e693"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c14</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">300.0</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c14E" title="Link to this definition"></a><br /></dt>
+<dd><p>Controls the unloading slope at low hydrostatic compression. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c15E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation3c15E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation3c15E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c15__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a575d852d4dbc035c51e0715e5becd098"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c15</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">4000.0</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c15E" title="Link to this definition"></a><br /></dt>
+<dd><p>Controls the transition from the unloading slope at high confinement to that at low confinement. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c16E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation3c16E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation3c16E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c16__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1af7b638d0117b2b5dd93a2f6273fbdbf2"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c16</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">60.0</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c16E" title="Link to this definition"></a><br /></dt>
+<dd><p>Controls the unloading slope at high hydrostatic compression. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c17E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation3c17E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation3c17E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c17__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a314967bf0975e8e5f0c7cf239dce76b5"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c17</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1.4</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c17E" title="Link to this definition"></a><br /></dt>
+<dd><p>Controls the tensile strength. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c18E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation3c18E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation3c18E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c18__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1acd7900e1410fb872d6536ecff4330ee9"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c18</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">62.5</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c18E" title="Link to this definition"></a><br /></dt>
+<dd><p>[MPa] Controls the tensile cracking under compression; value per the correction in Caner and Bazant (2013). </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c19E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation3c19E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation3c19E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c19__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1ac527883cfa7b8bf6a9a22a57bce6cfea"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c19</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1000.0</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c19E" title="Link to this definition"></a><br /></dt>
+<dd><p>Controls the tensile softening rate induced by compression. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c20E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation3c20E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation3c20E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c20__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a3d1c06f71c53b816275d3ae1f9d94ca8"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c20</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">1.8</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c20E" title="Link to this definition"></a><br /></dt>
+<dd><p>Controls the volumetric-deviatoric coupling at high pressures. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c21E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation3c21E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation3c21E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::c21__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a5ebe217f634d0e28dbce072feed13657"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c21</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">250.0</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3c21E" title="Link to this definition"></a><br /></dt>
+<dd><p>[MPa] </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation14readParametersEPKdii">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation14readParametersEPKdii"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation14readParametersEPKdii"></span><span id="Marmot::Materials::MicroplaneM7Formulation::readParameters__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a3384f4600c842981468f3b3ae1693aa2"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10ParametersE" title="Marmot::Materials::MicroplaneM7Formulation::Parameters"><span class="n"><span class="pre">Parameters</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">readParameters</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">firstOptional</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation14readParametersEPKdii" title="Link to this definition"></a><br /></dt>
+<dd><p>Reads E, nu, k1 … k5 from the material properties 0 to 6, and the optional c3, fc, transitionWidth and transitionExponent from the properties <code class="docutils literal notranslate"><span class="pre">firstOptional</span></code> to <code class="docutils literal notranslate"><span class="pre">firstOptional</span></code> + 3, using their default values for the ones not given. All properties in front of <code class="docutils literal notranslate"><span class="pre">firstOptional</span></code> are required. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Throws<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – if fewer than <code class="docutils literal notranslate"><span class="pre">firstOptional</span></code> material properties are given. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation7ntSplitEv">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation7ntSplitEv"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation7ntSplitEv"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ntSplit"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a93b8d2162b78669ba18f619600e3e7de"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot18ContinuumMechanicsE" title="Marmot::ContinuumMechanics"><span class="n"><span class="pre">ContinuumMechanics</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics10MicroplaneE" title="Marmot::ContinuumMechanics::Microplane"><span class="n"><span class="pre">Microplane</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4I_16QuadratureSchemeEN6Marmot18ContinuumMechanics10Microplane7NTSplitE" title="Marmot::ContinuumMechanics::Microplane::NTSplit"><span class="n"><span class="pre">NTSplit</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation6schemeE" title="Marmot::Materials::MicroplaneM7Formulation::scheme"><span class="n"><span class="pre">scheme</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">ntSplit</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation7ntSplitEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Kinematic (N-T split) projection tensors and integration weights for all <a class="reference internal" href="#classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a2712202f8bebe2cecb39ca004b82726d"><span class="std std-ref">nqp</span></a> microplanes; see Marmot::ContinuumMechanics::Microplane::NTSplit. Depends only on <a class="reference internal" href="#classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1aa8c59a4f5c00d6215ec1d307f8d7a5bf"><span class="std std-ref">scheme</span></a>, so it is built once and shared by all instances. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation6schemeE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation6schemeE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation6schemeE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::scheme__QuadratureScheme"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1aa8c59a4f5c00d6215ec1d307f8d7a5bf"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation16QuadratureSchemeE" title="Marmot::Materials::MicroplaneM7Formulation::QuadratureScheme"><span class="n"><span class="pre">QuadratureScheme</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">scheme</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation16QuadratureSchemeE" title="Marmot::Materials::MicroplaneM7Formulation::QuadratureScheme"><span class="n"><span class="pre">QuadratureScheme</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">N37</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation6schemeE" title="Link to this definition"></a><br /></dt>
+<dd><p>The quadrature scheme this compile-time instance is built with. Fixed at compile time - changing it requires editing this value and recompiling, there is no runtime selection between schemes. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3nqpE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation3nqpE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation3nqpE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::nqp__s"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a2712202f8bebe2cecb39ca004b82726d"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nqp</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot18ContinuumMechanicsE" title="Marmot::ContinuumMechanics"><span class="n"><span class="pre">ContinuumMechanics</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics10MicroplaneE" title="Marmot::ContinuumMechanics::Microplane"><span class="n"><span class="pre">Microplane</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mechanicscore.html#_CPPv4N6Marmot18ContinuumMechanics10Microplane13nqpFromSchemeE16QuadratureScheme" title="Marmot::ContinuumMechanics::Microplane::nqpFromScheme"><span class="n"><span class="pre">nqpFromScheme</span></span></a><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation6schemeE" title="Marmot::Materials::MicroplaneM7Formulation::scheme"><span class="n"><span class="pre">scheme</span></span></a><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3nqpE" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of microplanes (integration points on the unit hemisphere) for <a class="reference internal" href="#classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1aa8c59a4f5c00d6215ec1d307f8d7a5bf"><span class="std std-ref">scheme</span></a>. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-functions">Private Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation26computeShearBoundaryInputsEKdKdKdKdKdKdRKN6Marmot4Math8Vector6dERKN6Marmot4Math8Vector6dE">
+<span id="_CPPv3NK6Marmot9Materials23MicroplaneM7Formulation26computeShearBoundaryInputsEKdKdKdKdKdKdRKN6Marmot4Math8Vector6dERKN6Marmot4Math8Vector6dE"></span><span id="_CPPv2NK6Marmot9Materials23MicroplaneM7Formulation26computeShearBoundaryInputsEKdKdKdKdKdKdRKN6Marmot4Math8Vector6dERKN6Marmot4Math8Vector6dE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::computeShearBoundaryInputs__doubleC.doubleC.doubleC.doubleC.doubleC.doubleC.Marmot::Math::Vector6dCR.Marmot::Math::Vector6dCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a07745c268f397c1c8a7a3b65459e1e91"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputsE" title="Marmot::Materials::MicroplaneM7Formulation::ShearBoundaryInputs"><span class="n"><span class="pre">ShearBoundaryInputs</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeShearBoundaryInputs</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eps_v</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sig_N</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sig_M0</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sig_L0</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">deps_M</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">deps_L</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sig_N_tangent_elastic</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sig_N_tangent_boundary</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation26computeShearBoundaryInputsEKdKdKdKdKdKdRKN6Marmot4Math8Vector6dERKN6Marmot4Math8Vector6dE" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes the quantities of <a class="reference internal" href="#classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a006a480b02dc03c6b3aaf55991a2b5ba"><span class="std std-ref">shear_law</span></a> before the R27/R28 branches are combined. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation32computeShearResponseFromBoundaryERK19ShearBoundaryInputsKdRKN6Marmot4Math8Vector6dERKN6Marmot4Math8Vector6dEK6size_t">
+<span id="_CPPv3NK6Marmot9Materials23MicroplaneM7Formulation32computeShearResponseFromBoundaryERK19ShearBoundaryInputsKdRKN6Marmot4Math8Vector6dERKN6Marmot4Math8Vector6dEK6size_t"></span><span id="_CPPv2NK6Marmot9Materials23MicroplaneM7Formulation32computeShearResponseFromBoundaryERK19ShearBoundaryInputsKdRKN6Marmot4Math8Vector6dERKN6Marmot4Math8Vector6dEK6size_t"></span><span id="Marmot::Materials::MicroplaneM7Formulation::computeShearResponseFromBoundary__ShearBoundaryInputsCR.doubleC.Marmot::Math::Vector6dCR.Marmot::Math::Vector6dCR.sCC"></span><span class="target" id="classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a9f4938ce1c2bad147ed60640e29efd87"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13ShearResponseE" title="Marmot::Materials::MicroplaneM7Formulation::ShearResponse"><span class="n"><span class="pre">ShearResponse</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeShearResponseFromBoundary</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputsE" title="Marmot::Materials::MicroplaneM7Formulation::ShearBoundaryInputs"><span class="n"><span class="pre">ShearBoundaryInputs</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">in</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">shear_boundary</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">shearBoundaryTangent_elastic</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">shearBoundaryTangent_boundary</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">qp_i</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials23MicroplaneM7Formulation32computeShearResponseFromBoundaryERK19ShearBoundaryInputsKdRKN6Marmot4Math8Vector6dERKN6Marmot4Math8Vector6dEK6size_t" title="Link to this definition"></a><br /></dt>
+<dd><p>Given the combined shear boundary and its tangents, returns the microplane shear stresses and tangents for both in-plane directions. </p>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10ParametersE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation10ParametersE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation10ParametersE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::Parameters"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1Parameters"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Parameters</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10ParametersE" title="Link to this definition"></a><br /></dt>
+<dd><p>The free (calibratable) material parameters. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters1EE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation10Parameters1EE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation10Parameters1EE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::Parameters::E__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1Parameters_1a46c10bea68b6ad130a989965e5898e00"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">E</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters1EE" title="Link to this definition"></a><br /></dt>
+<dd><p>Young’s modulus. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters2nuE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation10Parameters2nuE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation10Parameters2nuE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::Parameters::nu__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1Parameters_1a984602fb4ef9f35003d80874edd7df09"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nu</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters2nuE" title="Link to this definition"></a><br /></dt>
+<dd><p>Poisson’s ratio. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters2k1E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation10Parameters2k1E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation10Parameters2k1E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::Parameters::k1__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1Parameters_1a19bbef1640d8768f0354c2bae5a3959e"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k1</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters2k1E" title="Link to this definition"></a><br /></dt>
+<dd><p>Radial scaling parameter (typical value 1.5e-4). </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters2k2E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation10Parameters2k2E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation10Parameters2k2E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::Parameters::k2__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1Parameters_1a3c654c248ad71798ad418ed7745902c4"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k2</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters2k2E" title="Link to this definition"></a><br /></dt>
+<dd><p>Horizontal asymptote of the frictional boundary (typical value 110). </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters2k3E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation10Parameters2k3E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation10Parameters2k3E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::Parameters::k3__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1Parameters_1a873be1f4cc60f0bed44865fbfb401609"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k3</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters2k3E" title="Link to this definition"></a><br /></dt>
+<dd><p>Shape of the volumetric boundary (typical value 30). </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters2k4E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation10Parameters2k4E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation10Parameters2k4E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::Parameters::k4__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1Parameters_1a614b2ba6bfe0a9b94c06229d6295f481"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k4</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters2k4E" title="Link to this definition"></a><br /></dt>
+<dd><p>Shape of the volumetric boundary (typical value 100). </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters2k5E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation10Parameters2k5E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation10Parameters2k5E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::Parameters::k5__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1Parameters_1af56f029ab169df14530b8b7520737570"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">k5</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters2k5E" title="Link to this definition"></a><br /></dt>
+<dd><p>Volumetric-deviatoric coupling at low pressures (typical value 1e-4). </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters2c3E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation10Parameters2c3E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation10Parameters2c3E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::Parameters::c3__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1Parameters_1a5f7bae449563dfa662bd278172586820"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c3</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters2c3E" title="Link to this definition"></a><br /></dt>
+<dd><p>Slope of the postpeak in uniaxial tension (default 4.0). </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters2fcE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation10Parameters2fcE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation10Parameters2fcE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::Parameters::fc__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1Parameters_1aa9e129f113a5960cb2e09cee74ae03ef"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fc</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters2fcE" title="Link to this definition"></a><br /></dt>
+<dd><p>Compressive strength in MPa, for the deviatoric boundary (default 36.0). </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters15transitionWidthE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation10Parameters15transitionWidthE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation10Parameters15transitionWidthE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::Parameters::transitionWidth__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1Parameters_1a472a2e21f63dd2d6f9449bec148ba059"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">transitionWidth</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters15transitionWidthE" title="Link to this definition"></a><br /></dt>
+<dd><p>Stress offset from the virtual elastic loading path where the unloading transition starts (default 4.0). </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters18transitionExponentE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation10Parameters18transitionExponentE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation10Parameters18transitionExponentE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::Parameters::transitionExponent__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1Parameters_1add97b40bef220b0c9cf8f38a3b9b36ee"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">transitionExponent</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10Parameters18transitionExponentE" title="Link to this definition"></a><br /></dt>
+<dd><p>Exponent of the unloading transition function (default 0.4). </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation14NormalResponseE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation14NormalResponseE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation14NormalResponseE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::NormalResponse"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1NormalResponse"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NormalResponse</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation14NormalResponseE" title="Link to this definition"></a><br /></dt>
+<dd><p>Microplane normal stress and its derivative w.r.t. the macroscopic strain, i.e. <code class="docutils literal notranslate"><a class="reference internal" href="#structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1NormalResponse_1a483fdfde3e23fde40ecc3ac673170627"><span class="std std-ref"><span class="pre">tangent</span></span></a> <span class="pre">=</span> <span class="pre">d(stress)/d(microplane</span> <span class="pre">strain)</span> <span class="pre">*</span> <span class="pre">projection.N.col(qp_i)</span></code>. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation14NormalResponse6stressE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation14NormalResponse6stressE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation14NormalResponse6stressE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::NormalResponse::stress__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1NormalResponse_1a7542d30ba8c098edc65216922320c4da"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stress</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation14NormalResponse6stressE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation14NormalResponse7tangentE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation14NormalResponse7tangentE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation14NormalResponse7tangentE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::NormalResponse::tangent__Marmot::Math::Vector6d"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1NormalResponse_1a483fdfde3e23fde40ecc3ac673170627"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tangent</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation14NormalResponse7tangentE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation17ElasticPredictionE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation17ElasticPredictionE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation17ElasticPredictionE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ElasticPrediction"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ElasticPrediction"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ElasticPrediction</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation17ElasticPredictionE" title="Link to this definition"></a><br /></dt>
+<dd><p>Elastic (undamaged) stress prediction for one shear direction; see <a class="reference internal" href="#classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a589af0d903c1644750728bc1ca971314"><span class="std std-ref">shear_elasticLaw</span></a>. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation17ElasticPrediction6stressE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation17ElasticPrediction6stressE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation17ElasticPrediction6stressE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ElasticPrediction::stress__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ElasticPrediction_1a148ac4bc28c62cfffdde631d08c0dc31"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stress</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation17ElasticPrediction6stressE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation17ElasticPrediction7tangentE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation17ElasticPrediction7tangentE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation17ElasticPrediction7tangentE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ElasticPrediction::tangent__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ElasticPrediction_1a2d10c1e0a34370bbaaeda445f5a0de73"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tangent</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation17ElasticPrediction7tangentE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputsE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputsE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputsE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearBoundaryInputs"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearBoundaryInputs"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ShearBoundaryInputs</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputsE" title="Link to this definition"></a><br /></dt>
+<dd><p>Collaboration diagram for Marmot::Materials::MicroplaneM7Formulation::ShearBoundaryInputs:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-9d4d2b0fc531761debbf0359943500f2cb76aab0.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MicroplaneM7Formulation::ElasticPrediction&quot; tooltip=&quot;Marmot::Materials::MicroplaneM7Formulation::ElasticPrediction&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::MicroplaneM7Formulation::ShearBoundaryInputs&quot; tooltip=&quot;Marmot::Materials::MicroplaneM7Formulation::ShearBoundaryInputs&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Quantities of the shear law up to the point where the R27/R28 frictional-boundary branches are combined into a single shear boundary. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs3E_TE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs3E_TE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs3E_TE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearBoundaryInputs::E_T__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearBoundaryInputs_1a4ee868566be7dd7437923dc8ce9ac03a"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">E_T</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs3E_TE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs8sig_dachE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs8sig_dachE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs8sig_dachE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearBoundaryInputs::sig_dach__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearBoundaryInputs_1ad1f8243aec1c53285dc52440c1bd748f"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">sig_dach</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs8sig_dachE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs19elasticL_predictionE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs19elasticL_predictionE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs19elasticL_predictionE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearBoundaryInputs::elasticL_prediction__ElasticPrediction"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearBoundaryInputs_1a9d0c226d46a35d3b879b81ec3defd244"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation17ElasticPredictionE" title="Marmot::Materials::MicroplaneM7Formulation::ElasticPrediction"><span class="n"><span class="pre">ElasticPrediction</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">elasticL_prediction</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs19elasticL_predictionE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs19elasticM_predictionE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs19elasticM_predictionE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs19elasticM_predictionE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearBoundaryInputs::elasticM_prediction__ElasticPrediction"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearBoundaryInputs_1a07d3b688497bc03932828105ac4901b9"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation17ElasticPredictionE" title="Marmot::Materials::MicroplaneM7Formulation::ElasticPrediction"><span class="n"><span class="pre">ElasticPrediction</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">elasticM_prediction</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs19elasticM_predictionE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs20shear_stress_elasticE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs20shear_stress_elasticE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs20shear_stress_elasticE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearBoundaryInputs::shear_stress_elastic__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearBoundaryInputs_1ae6c9c760a39f44169cfb3d175fc039df"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">shear_stress_elastic</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs20shear_stress_elasticE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs9R27_denomE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs9R27_denomE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs9R27_denomE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearBoundaryInputs::R27_denom__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearBoundaryInputs_1a8a1df4f5a4d7127f3d9bb5f748bea0a6"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">R27_denom</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs9R27_denomE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs3R27E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs3R27E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs3R27E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearBoundaryInputs::R27__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearBoundaryInputs_1a3b003dd4cc365395c382f5319ae32b58"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">R27</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs3R27E" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs9R28_denomE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs9R28_denomE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs9R28_denomE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearBoundaryInputs::R28_denom__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearBoundaryInputs_1a5d186a59aa8e5eb6eb65babe6d656012"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">R28_denom</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs9R28_denomE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs3R28E">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs3R28E"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs3R28E"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearBoundaryInputs::R28__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearBoundaryInputs_1a54b3c68fc3168d2145b768aac3cd28da"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">R28</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs3R28E" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs25dsigDachddStrain_boundaryE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs25dsigDachddStrain_boundaryE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs25dsigDachddStrain_boundaryE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearBoundaryInputs::dsigDachddStrain_boundary__Marmot::Math::Vector6d"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearBoundaryInputs_1a0c81f0af25f5b65db60301f2a439c301"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dsigDachddStrain_boundary</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs25dsigDachddStrain_boundaryE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs20dR27ddStrain_elasticE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs20dR27ddStrain_elasticE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs20dR27ddStrain_elasticE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearBoundaryInputs::dR27ddStrain_elastic__Marmot::Math::Vector6d"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearBoundaryInputs_1adad299647f1408fc6537922ce6021804"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dR27ddStrain_elastic</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs20dR27ddStrain_elasticE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs21dR27ddStrain_boundaryE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs21dR27ddStrain_boundaryE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs21dR27ddStrain_boundaryE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearBoundaryInputs::dR27ddStrain_boundary__Marmot::Math::Vector6d"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearBoundaryInputs_1a96a4fae634203755dcb19c8cd9a2492e"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dR27ddStrain_boundary</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs21dR27ddStrain_boundaryE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs21dR28ddStrain_boundaryE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs21dR28ddStrain_boundaryE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs21dR28ddStrain_boundaryE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearBoundaryInputs::dR28ddStrain_boundary__Marmot::Math::Vector6d"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearBoundaryInputs_1abf31d4cb8dab3787b69204d63ee5a3b1"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dR28ddStrain_boundary</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation19ShearBoundaryInputs21dR28ddStrain_boundaryE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13ShearResponseE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation13ShearResponseE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation13ShearResponseE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearResponse"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearResponse"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ShearResponse</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13ShearResponseE" title="Link to this definition"></a><br /></dt>
+<dd><p>Microplane shear response (both in-plane directions L and M), with the tangent of each direction split into the derivatives w.r.t. the strain of the elastic predictions (<code class="docutils literal notranslate"><span class="pre">_elastic</span></code>) and w.r.t. the strain the boundaries are evaluated with (<code class="docutils literal notranslate"><span class="pre">_boundary</span></code>). </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse7stressLE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse7stressLE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse7stressLE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearResponse::stressL__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearResponse_1a6a1606503efda601488241486fc46688"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stressL</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse7stressLE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse7stressME">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse7stressME"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse7stressME"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearResponse::stressM__double"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearResponse_1ae15c823ce695dcca3f8a02a64a465bf5"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stressM</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse7stressME" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse16tangentL_elasticE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse16tangentL_elasticE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse16tangentL_elasticE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearResponse::tangentL_elastic__Marmot::Math::Vector6d"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearResponse_1a5e0b2bb2188cfe596104bff8f63aa4b6"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tangentL_elastic</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse16tangentL_elasticE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse17tangentL_boundaryE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse17tangentL_boundaryE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse17tangentL_boundaryE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearResponse::tangentL_boundary__Marmot::Math::Vector6d"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearResponse_1a1fba40cbb82532ded6a2e7f8860a32cd"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tangentL_boundary</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse17tangentL_boundaryE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse16tangentM_elasticE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse16tangentM_elasticE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse16tangentM_elasticE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearResponse::tangentM_elastic__Marmot::Math::Vector6d"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearResponse_1a95004d3f43ceec5240e98b44c1a88c0b"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tangentM_elastic</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse16tangentM_elasticE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse17tangentM_boundaryE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse17tangentM_boundaryE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse17tangentM_boundaryE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearResponse::tangentM_boundary__Marmot::Math::Vector6d"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearResponse_1a1f9ec03932374b11bcd8053cb2f2c6ae"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tangentM_boundary</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse17tangentM_boundaryE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse16boundaryExceededE">
+<span id="_CPPv3N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse16boundaryExceededE"></span><span id="_CPPv2N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse16boundaryExceededE"></span><span id="Marmot::Materials::MicroplaneM7Formulation::ShearResponse::boundaryExceeded__b"></span><span class="target" id="structMarmot_1_1Materials_1_1MicroplaneM7Formulation_1_1ShearResponse_1ab79843d7c392105d2b1d1ac65422559e"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">boundaryExceeded</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation13ShearResponse16boundaryExceededE" title="Link to this definition"></a><br /></dt>
+<dd><p>True if the shear boundary governs. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="interfacematerialhypoelastic.html" class="btn btn-neutral float-left" title="Interface material (hypoelastic bulk material)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gm7.html" class="btn btn-neutral float-right" title="Gradient-enhanced microplane model M7 (GM7)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

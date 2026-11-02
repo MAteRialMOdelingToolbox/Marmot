@@ -1,10 +1,11 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
   <compounddef id="_haigh_westergaard_8h" kind="file" language="C++">
     <compoundname>HaighWestergaard.h</compoundname>
     <includes local="yes">Marmot/MarmotMath.h</includes>
     <includes local="yes">Marmot/MarmotTypedefs.h</includes>
     <includes refid="_marmot_voigt_8h" local="yes">Marmot/MarmotVoigt.h</includes>
+    <includedby refid="_marmot_voigt_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h</includedby>
     <includedby refid="_menetrey_willam_8h" local="yes">/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h</includedby>
     <incdepgraph>
       <node id="1">
@@ -24,22 +25,44 @@
         </childnode>
         <childnode refid="6" relation="include">
         </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
         <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
         </childnode>
         <childnode refid="3" relation="include">
         </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="1" relation="include">
+        </childnode>
       </node>
       <node id="5">
-        <label>Marmot/MarmotFastorTensorBasics.h</label>
+        <label>Fastor/Fastor.h</label>
       </node>
       <node id="6">
+        <label>Marmot/MarmotFastorTensorBasics.h</label>
+      </node>
+      <node id="7">
         <label>Marmot/MarmotJournal.h</label>
       </node>
       <node id="2">
         <label>Marmot/MarmotMath.h</label>
       </node>
+      <node id="8">
+        <label>Marmot/MarmotTensor.h</label>
+      </node>
       <node id="3">
         <label>Marmot/MarmotTypedefs.h</label>
+      </node>
+      <node id="9">
+        <label>array</label>
+      </node>
+      <node id="10">
+        <label>utility</label>
       </node>
     </incdepgraph>
     <invincdepgraph>
@@ -48,21 +71,72 @@
         <link refid="_haigh_westergaard_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HughesWinget.h</label>
+        <link refid="_hughes_winget_8h"/>
+      </node>
+      <node id="4">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotElasticity.h</label>
+        <link refid="_marmot_elasticity_8h_source"/>
+      </node>
+      <node id="8">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKelvinChain.h</label>
+        <link refid="_marmot_kelvin_chain_8h_source"/>
+      </node>
+      <node id="5">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h</label>
+        <link refid="_marmot_kinematics_8h_source"/>
+      </node>
+      <node id="6">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h</label>
+        <link refid="_marmot_lower_dimensional_stress_8h_source"/>
+      </node>
+      <node id="7">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h</label>
+        <link refid="_marmot_viscoelasticity_8h_source"/>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
       </node>
       <node id="2">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotVoigt.h</label>
+        <link refid="_marmot_voigt_8h_source"/>
+        <childnode refid="1" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h</label>
+        <link refid="_marmot_wiechert_8h_source"/>
+      </node>
+      <node id="10">
         <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h</label>
         <link refid="_menetrey_willam_8h_source"/>
       </node>
     </invincdepgraph>
-    <innerclass refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates" prot="public">Marmot::ContinuumMechanics::HaighWestergaard::HaighWestergaardCoordinates</innerclass>
+    <innerclass refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates" prot="public">Marmot::ContinuumMechanics::Invariants::HaighWestergaard::HaighWestergaardCoordinates</innerclass>
     <innernamespace refid="namespace_marmot">Marmot</innernamespace>
     <innernamespace refid="namespace_marmot_1_1_continuum_mechanics">Marmot::ContinuumMechanics</innernamespace>
-    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard">Marmot::ContinuumMechanics::HaighWestergaard</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_invariants">Marmot::ContinuumMechanics::Invariants</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard">Marmot::ContinuumMechanics::Invariants::HaighWestergaard</innernamespace>
     <briefdescription>
 <para>Haigh–Westergaard stress and strain invariant coordinates. </para>
     </briefdescription>
     <detaileddescription>
-<para>Provides the <computeroutput>HaighWestergaardCoordinates</computeroutput> aggregate and functions for computing the hydrostatic component <formula id="27">$\xi$</formula>, deviatoric radius <formula id="28">$\rho$</formula>, and Lode angle <formula id="29">$\theta$</formula> from stress or strain tensors in Voigt notation. </para>
+<para>Provides the <computeroutput>HaighWestergaardCoordinates</computeroutput> aggregate and functions for computing the hydrostatic component <formula id="110">$\xi$</formula>, deviatoric radius <formula id="109">$\rho$</formula>, and Lode angle <formula id="101">$\theta$</formula> from stress or strain tensors in Voigt notation. </para>
     </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>
@@ -93,51 +167,64 @@
 <codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotMath.h&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotTypedefs.h&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotVoigt.h&quot;</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="30"><highlight class="normal"></highlight></codeline>
-<codeline lineno="39"><highlight class="normal"></highlight></codeline>
-<codeline lineno="40"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot<sp/>{</highlight></codeline>
-<codeline lineno="41"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">ContinuumMechanics::HaighWestergaard<sp/>{</highlight></codeline>
-<codeline lineno="42"><highlight class="normal"></highlight></codeline>
-<codeline lineno="47"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T<sp/>=<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>&gt;</highlight></codeline>
-<codeline lineno="48" refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates" refkind="compound"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates" kindref="compound">HaighWestergaardCoordinates</ref><sp/>{</highlight></codeline>
-<codeline lineno="49"><highlight class="normal"></highlight></codeline>
-<codeline lineno="51" refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a2245136a4cde603f80c3289529b5ac76" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>T<sp/><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a2245136a4cde603f80c3289529b5ac76" kindref="member">xi</ref>;</highlight></codeline>
-<codeline lineno="53" refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a5817a1a0513fc95b11943afe2c51c32a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>T<sp/><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a5817a1a0513fc95b11943afe2c51c32a" kindref="member">rho</ref>;</highlight></codeline>
-<codeline lineno="55" refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a479e94338e0892442f3864812d85165b" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>T<sp/><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a479e94338e0892442f3864812d85165b" kindref="member">theta</ref>;</highlight></codeline>
-<codeline lineno="56"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
-<codeline lineno="57"><highlight class="normal"></highlight></codeline>
-<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T<sp/>=<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>&gt;</highlight></codeline>
-<codeline lineno="71" refid="_haigh_westergaard_8h_1a3fbea908311f240aaaf3e552357f5fc8" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates" kindref="compound">HaighWestergaardCoordinates&lt; T &gt;</ref><sp/><ref refid="_haigh_westergaard_8h_1a3fbea908311f240aaaf3e552357f5fc8" kindref="member">haighWestergaard</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>T,<sp/>6,<sp/>1<sp/>&gt;&amp;<sp/>stress<sp/>)</highlight></codeline>
-<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
-<codeline lineno="73"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">Constants;</highlight></codeline>
-<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">Marmot::ContinuumMechanics::VoigtNotation::Invariants;</highlight></codeline>
-<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates" kindref="compound">HaighWestergaardCoordinates&lt; T &gt;</ref><sp/>hw;</highlight></codeline>
-<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>J2_<sp/>=<sp/>J2(<sp/>stress<sp/>);</highlight></codeline>
-<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>hw.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a2245136a4cde603f80c3289529b5ac76" kindref="member">xi</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>I1(<sp/>stress<sp/>)<sp/>/<sp/>sqrt3;</highlight></codeline>
-<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>hw.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a5817a1a0513fc95b11943afe2c51c32a" kindref="member">rho</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>sqrt(<sp/>2.<sp/>*<sp/>J2_<sp/>);</highlight></codeline>
-<codeline lineno="79"><highlight class="normal"></highlight></codeline>
-<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>Marmot::Math::makeReal(<sp/>hw.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a5817a1a0513fc95b11943afe2c51c32a" kindref="member">rho</ref><sp/>)<sp/>!=<sp/>0<sp/>)<sp/>{</highlight></codeline>
-<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T<sp/>J3_<sp/>=<sp/>J3(<sp/>stress<sp/>);</highlight></codeline>
-<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T<sp/>x<sp/><sp/><sp/>=<sp/>3.<sp/>*<sp/>(<sp/>sqrt3<sp/>/<sp/>2.<sp/>)<sp/>*<sp/>J3_<sp/>/<sp/>(<sp/>pow(<sp/>J2_,<sp/>3.<sp/>/<sp/>2<sp/>)<sp/>);</highlight></codeline>
-<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>Marmot::Math::makeReal(<sp/>x<sp/>)<sp/>&lt;=<sp/>-1<sp/>)</highlight></codeline>
-<codeline lineno="84"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hw.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a479e94338e0892442f3864812d85165b" kindref="member">theta</ref><sp/>=<sp/>1.<sp/>/<sp/>3<sp/>*<sp/>Pi;</highlight></codeline>
-<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>Marmot::Math::makeReal(<sp/>x<sp/>)<sp/>&gt;=<sp/>1<sp/>)</highlight></codeline>
-<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hw.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a479e94338e0892442f3864812d85165b" kindref="member">theta</ref><sp/>=<sp/>0.;</highlight></codeline>
-<codeline lineno="87"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>x<sp/>!=<sp/>x<sp/>)</highlight></codeline>
-<codeline lineno="88"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hw.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a479e94338e0892442f3864812d85165b" kindref="member">theta</ref><sp/>=<sp/>1.<sp/>/<sp/>3<sp/>*<sp/>Marmot::Constants::Pi;</highlight></codeline>
-<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hw.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a479e94338e0892442f3864812d85165b" kindref="member">theta</ref><sp/>=<sp/>1.<sp/>/<sp/>3<sp/>*<sp/>acos(<sp/>x<sp/>);</highlight></codeline>
-<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hw.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a479e94338e0892442f3864812d85165b" kindref="member">theta</ref><sp/>=<sp/>0.;</highlight></codeline>
-<codeline lineno="94"><highlight class="normal"></highlight></codeline>
-<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>hw;</highlight></codeline>
-<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
-<codeline lineno="105" refid="_haigh_westergaard_8h_1aba76e1eed469a8f4fd743397df312257" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates" kindref="compound">HaighWestergaardCoordinates&lt; double &gt;</ref><sp/><ref refid="_haigh_westergaard_8h_1aba76e1eed469a8f4fd743397df312257" kindref="member">haighWestergaardFromStrain</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Vector6d&amp;<sp/>strain<sp/>);</highlight></codeline>
-<codeline lineno="106"><highlight class="normal"></highlight></codeline>
-<codeline lineno="107"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>ContinuumMechanics::HaighWestergaard</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="108"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight></codeline>
+<codeline lineno="38"><highlight class="normal"></highlight></codeline>
+<codeline lineno="39"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::ContinuumMechanics::Invariants::HaighWestergaard<sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"></highlight></codeline>
+<codeline lineno="45"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T<sp/>=<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>&gt;</highlight></codeline>
+<codeline lineno="46" refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">struct<sp/></highlight><highlight class="normal"><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates" kindref="compound">HaighWestergaardCoordinates</ref><sp/>{</highlight></codeline>
+<codeline lineno="47"><highlight class="normal"></highlight></codeline>
+<codeline lineno="49" refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a7a3a59d03cf15effeb0d4487026bab37" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>T<sp/><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a7a3a59d03cf15effeb0d4487026bab37" kindref="member">xi</ref>;</highlight></codeline>
+<codeline lineno="51" refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1ab81e7aadabe403f133041c06e876ea4d" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>T<sp/><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1ab81e7aadabe403f133041c06e876ea4d" kindref="member">rho</ref>;</highlight></codeline>
+<codeline lineno="53" refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a36f88d2b5a48e39889c5d22742577bb6" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/>T<sp/><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a36f88d2b5a48e39889c5d22742577bb6" kindref="member">theta</ref>;</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T<sp/>=<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>&gt;</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates" kindref="compound">HaighWestergaardCoordinates&lt; T &gt;</ref><sp/><ref refid="_haigh_westergaard_8h_1a8e3a33d0666da4cd489a8db6e7aac6e6" kindref="member">haighWestergaard</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>T,<sp/>6,<sp/>1<sp/>&gt;&amp;<sp/>stress<sp/>);</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"></highlight></codeline>
+<codeline lineno="79" refid="_haigh_westergaard_8h_1a49746efe94532b2c42a72c35fa0617f2" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates" kindref="compound">HaighWestergaardCoordinates&lt; double &gt;</ref><sp/><ref refid="_haigh_westergaard_8h_1a49746efe94532b2c42a72c35fa0617f2" kindref="member">haighWestergaardFromStrain</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::Vector6d&amp;<sp/>strain<sp/>);</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::ContinuumMechanics::Invariants::HaighWestergaard</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="83"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotVoigt.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::ContinuumMechanics::Invariants::HaighWestergaard<sp/>{</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keyword">typename</highlight><highlight class="normal"><sp/>T<sp/>&gt;</highlight></codeline>
+<codeline lineno="87" refid="_haigh_westergaard_8h_1a8e3a33d0666da4cd489a8db6e7aac6e6" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates" kindref="compound">HaighWestergaardCoordinates&lt; T &gt;</ref><sp/><ref refid="_haigh_westergaard_8h_1a8e3a33d0666da4cd489a8db6e7aac6e6" kindref="member">haighWestergaard</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::Matrix&lt;<sp/>T,<sp/>6,<sp/>1<sp/>&gt;&amp;<sp/>stress<sp/>)</highlight></codeline>
+<codeline lineno="88"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="89"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">Marmot::Math::Constants;</highlight></codeline>
+<codeline lineno="90"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/>namespace<sp/></highlight><highlight class="normal">Marmot::ContinuumMechanics::Invariants;</highlight></codeline>
+<codeline lineno="91"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates" kindref="compound">HaighWestergaardCoordinates&lt; T &gt;</ref><sp/>hw;</highlight></codeline>
+<codeline lineno="92"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>J2_<sp/>=<sp/>J2(<sp/>stress<sp/>);</highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/>hw.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a7a3a59d03cf15effeb0d4487026bab37" kindref="member">xi</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/>I1(<sp/>stress<sp/>)<sp/>/<sp/>sqrt3;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>sqrt()&apos;s<sp/>derivative<sp/>is<sp/>singular<sp/>at<sp/>J2=0<sp/>(the<sp/>hydrostatic<sp/>axis,<sp/>e.g.<sp/>a<sp/>virgin<sp/>stress</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>state<sp/>of<sp/>exactly<sp/>zero):<sp/>autodiff/complex-step<sp/>differentiation<sp/>propagates<sp/>that<sp/>as<sp/>a<sp/>NaN</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>*derivative*<sp/>even<sp/>though<sp/>rho&apos;s<sp/>*value*<sp/>(0)<sp/>is<sp/>perfectly<sp/>well<sp/>defined<sp/>there.<sp/>Below<sp/>a<sp/>tiny</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>threshold,<sp/>skip<sp/>sqrt()<sp/>entirely<sp/>and<sp/>construct<sp/>an<sp/>exact<sp/>zero<sp/>of<sp/>the<sp/>correct<sp/>type<sp/>instead</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>--<sp/>mirroring<sp/>dRho_dStress()&apos;s<sp/>existing<sp/>&quot;rho<sp/>&lt;=<sp/>1e-16&quot;<sp/>near-origin<sp/>convention<sp/>exactly</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>(rho<sp/>=<sp/>sqrt(2*J2)<sp/>&lt;=<sp/>1e-16<sp/><sp/>&lt;=&gt;<sp/><sp/>J2<sp/>&lt;=<sp/>5e-33)<sp/>--<sp/>rather<sp/>than<sp/>letting<sp/>sqrt()<sp/>propagate<sp/>a</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>NaN<sp/>derivative.<sp/>This<sp/>also<sp/>absorbs<sp/>J2<sp/>rounding<sp/>to<sp/>a<sp/>tiny<sp/>negative<sp/>value<sp/>for</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>near-hydrostatic<sp/>states.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/>hw.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1ab81e7aadabe403f133041c06e876ea4d" kindref="member">rho</ref><sp/>=<sp/>Marmot::Math::Tensors::makeReal(<sp/>J2_<sp/>)<sp/>&lt;=<sp/>5e-33<sp/>?<sp/>T(<sp/>0.<sp/>)<sp/>:<sp/>sqrt(<sp/>2.<sp/>*<sp/>J2_<sp/>);</highlight></codeline>
+<codeline lineno="103"><highlight class="normal"></highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>Marmot::Math::Tensors::makeReal(<sp/>hw.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1ab81e7aadabe403f133041c06e876ea4d" kindref="member">rho</ref><sp/>)<sp/>!=<sp/>0<sp/>)<sp/>{</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T<sp/>J3_<sp/>=<sp/>J3(<sp/>stress<sp/>);</highlight></codeline>
+<codeline lineno="106"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>T<sp/>x<sp/><sp/><sp/>=<sp/>3.<sp/>*<sp/>(<sp/>sqrt3<sp/>/<sp/>2.<sp/>)<sp/>*<sp/>J3_<sp/>/<sp/>(<sp/>pow(<sp/>J2_,<sp/>3.<sp/>/<sp/>2<sp/>)<sp/>);</highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>Marmot::Math::Tensors::makeReal(<sp/>x<sp/>)<sp/>&lt;=<sp/>-1<sp/>)</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hw.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a36f88d2b5a48e39889c5d22742577bb6" kindref="member">theta</ref><sp/>=<sp/>1.<sp/>/<sp/>3<sp/>*<sp/>Pi;</highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>Marmot::Math::Tensors::makeReal(<sp/>x<sp/>)<sp/>&gt;=<sp/>1<sp/>)</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hw.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a36f88d2b5a48e39889c5d22742577bb6" kindref="member">theta</ref><sp/>=<sp/>0.;</highlight></codeline>
+<codeline lineno="111"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>x<sp/>!=<sp/>x<sp/>)</highlight></codeline>
+<codeline lineno="112"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hw.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a36f88d2b5a48e39889c5d22742577bb6" kindref="member">theta</ref><sp/>=<sp/>1.<sp/>/<sp/>3<sp/>*<sp/>Marmot::Math::Constants::Pi;</highlight></codeline>
+<codeline lineno="113"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="114"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>hw.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a36f88d2b5a48e39889c5d22742577bb6" kindref="member">theta</ref><sp/>=<sp/>1.<sp/>/<sp/>3<sp/>*<sp/>acos(<sp/>x<sp/>);</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="116"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>hw.<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_invariants_1_1_haigh_westergaard_1_1_haigh_westergaard_coordinates_1a36f88d2b5a48e39889c5d22742577bb6" kindref="member">theta</ref><sp/>=<sp/>0.;</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"></highlight></codeline>
+<codeline lineno="119"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>hw;</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="121"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::ContinuumMechanics::Invariants::HaighWestergaard</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/HaighWestergaard.h"/>
   </compounddef>

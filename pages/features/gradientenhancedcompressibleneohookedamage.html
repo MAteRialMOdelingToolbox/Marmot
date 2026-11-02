@@ -1,0 +1,414 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gradient-enhanced compressible Neo-Hooke damage &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Gradient-enhanced finite-strain Drucker-Prager" href="gradientenhancedfinitestraindruckerprager.html" />
+    <link rel="prev" title="Gradient-enhanced Hughes-Winget wrapper" href="gradientenhancedhugheswinget.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="materials.html">Material models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="at2phasefield.html">AT2 Phase Field Fracture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="b4.html">B4 model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressibleneohooke.html">Compressible Neo Hooke model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adcompressibleneohooke.html">Compressible Neo Hooke model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressiblefinitestrainlinearviscoelasticity.html">Compressible Finite-Strain Linear Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainisotropicbiotviscoelasticity.html">Finite-Strain Isotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainj2plasticity.html">Finite-strain J2 plasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainorthotropicbiotviscoelasticity.html">Finite-Strain Orthotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearelastic.html">Linear Elastic model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adlinearelastic.html">Linear Elastic model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticpowerlaw.html">Linear Viscoelastic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticorthotropicpowerlaw.html">Linear Viscoelastic Orthotropic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticwiechert.html">Linear Viscoelastic Wiechert model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="interfacematerialhypoelastic.html">Interface material (hypoelastic bulk material)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="microplanem7.html">Microplane model M7</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gm7.html">Gradient-enhanced microplane model M7 (GM7)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vonmises.html">Von Mises model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advonmises.html">Von Mises model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hugheswinget.html">Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedhugheswinget.html">Gradient-enhanced Hughes-Winget wrapper</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Gradient-enhanced compressible Neo-Hooke damage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#material-parameters">Material parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedfinitestraindruckerprager.html">Gradient-enhanced finite-strain Drucker-Prager</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meshfree.html">Meshfree methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="materials.html">Material models</a></li>
+      <li class="breadcrumb-item active">Gradient-enhanced compressible Neo-Hooke damage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/gradientenhancedcompressibleneohookedamage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gradient-enhanced-compressible-neo-hooke-damage">
+<h1>Gradient-enhanced compressible Neo-Hooke damage<a class="headerlink" href="#gradient-enhanced-compressible-neo-hooke-damage" title="Link to this heading"></a></h1>
+<p>A minimal, fully consistent reference model for <code class="docutils literal notranslate"><span class="pre">Marmot::Materials::MaterialGradientEnhancedFiniteStrain</span></code>: the compressible
+Neo-Hookean solid of <a class="reference internal" href="compressibleneohooke.html"><span class="doc">Compressible Neo Hooke model</span></a> with isotropic damage driven by the nonlocal field, in the spirit of
+the implicit-gradient damage model of Peerlings et al. (1996). It is registered as
+<code class="docutils literal notranslate"><span class="pre">GRADIENTENHANCEDCOMPRESSIBLENEOHOOKEDAMAGE</span></code>.</p>
+<section id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{\tau} = (1 - D(\kappa))\,\boldsymbol{\tau}_0(\boldsymbol{F}),\qquad
+\kappa = \max_t\left(\kappa_0,\ \bar N\right),\qquad
+L = \sqrt{2\,\psi_0(\boldsymbol F)/E},\qquad E = \frac{9KG}{3K+G},\]</div>
+<p>where <span class="math notranslate nohighlight">\(\psi_0\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol\tau_0\)</span> are the energy density and Kirchhoff stress of the Pence-Gou
+potential (variant B). <span class="math notranslate nohighlight">\(L\)</span> is an energy-equivalent strain, which reduces to the axial strain in small-strain
+uniaxial stress, and <span class="math notranslate nohighlight">\(\bar N\)</span> solves <span class="math notranslate nohighlight">\(\bar N - l^2\nabla^2\bar N = L\)</span>. The damage law is</p>
+<div class="math notranslate nohighlight">
+\[D(\kappa) = 1 - \frac{\kappa_0}{\kappa}\exp\left(-\frac{\kappa-\kappa_0}{\kappa_f-\kappa_0}\right)
+\quad\text{for}\quad \kappa &gt; \kappa_0,\qquad D = 0\ \text{otherwise}.\]</div>
+<p>All four tangents are analytic. The dissipation is cumulative: the incoming value is incremented by the energy
+released by the damage increment, <span class="math notranslate nohighlight">\(\psi_0\,\Delta D\)</span>.</p>
+</section>
+<section id="material-parameters">
+<h2>Material parameters<a class="headerlink" href="#material-parameters" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Index</p></th>
+<th class="head"><p>Symbol</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p><span class="math notranslate nohighlight">\(K\)</span></p></td>
+<td><p>bulk modulus</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p><span class="math notranslate nohighlight">\(G\)</span></p></td>
+<td><p>shear modulus</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p><span class="math notranslate nohighlight">\(\kappa_0\)</span></p></td>
+<td><p>damage threshold (equivalent strain), <span class="math notranslate nohighlight">\(\kappa_0 &gt; 0\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p><span class="math notranslate nohighlight">\(\kappa_f\)</span></p></td>
+<td><p>softening parameter, <span class="math notranslate nohighlight">\(\kappa_f &gt; \kappa_0\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p><span class="math notranslate nohighlight">\(l\)</span></p></td>
+<td><p>nonlocal radius, <span class="math notranslate nohighlight">\(l &gt; 0\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p><span class="math notranslate nohighlight">\(\rho\)</span></p></td>
+<td><p>density (optional)</p></td>
+</tr>
+</tbody>
+</table>
+<p>State variable: <code class="docutils literal notranslate"><span class="pre">kappa</span></code>, the history maximum of the nonlocal field.</p>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamageE">
+<span id="_CPPv3N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamageE"></span><span id="_CPPv2N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamageE"></span><span id="Marmot::Materials::GradientEnhancedCompressibleNeoHookeDamage"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCompressibleNeoHookeDamage"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GradientEnhancedCompressibleNeoHookeDamage</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9Materials36MaterialGradientEnhancedFiniteStrainE" title="Marmot::Materials::MaterialGradientEnhancedFiniteStrain"><span class="n"><span class="pre">MaterialGradientEnhancedFiniteStrain</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamageE" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Materials::GradientEnhancedCompressibleNeoHookeDamage:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-b2c6e2320cdb51773f2fb4abfac16dff793d5b2e.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::GradientEnhancedCompressibleNeoHookeDamage&quot; tooltip=&quot;Marmot::Materials::GradientEnhancedCompressibleNeoHookeDamage&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Materials::GradientEnhancedCompressibleNeoHookeDamage:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-39ace297b1053b21972ec21b0284c0432c767b7c.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::GradientEnhancedCompressibleNeoHookeDamage&quot; tooltip=&quot;Marmot::Materials::GradientEnhancedCompressibleNeoHookeDamage&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedFiniteStrain&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Utilities::StateLayoutDynamic&quot; tooltip=&quot;Marmot::Utilities::StateLayoutDynamic&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Compressible neo-Hookean solid with isotropic, nonlocal-field driven damage. </p>
+<p>A minimal, fully consistent reference model for the Marmot::Materials::MaterialGradientEnhancedFiniteStrain interface, in the spirit of the implicit-gradient damage model of Peerlings et al. (1996), carried over to finite strains:     <div class="math notranslate nohighlight">
+\[  \boldsymbol{\tau} = (1 - D(\kappa))\,\boldsymbol{\tau}_0(\boldsymbol{F}), \qquad
+  \kappa = \max_{t}\bigl(\kappa_0,\,\bar{N}\bigr), \qquad
+  L = \sqrt{2\,\psi_0(\boldsymbol{F}) / E},
+\]</div>
+ where <span class="math notranslate nohighlight">\( \psi_0 \)</span> and <span class="math notranslate nohighlight">\( \boldsymbol{\tau}_0 \)</span> are the energy density and Kirchhoff stress of the compressible neo-Hookean potential (PenceGouPotentialB, as in <a class="reference internal" href="compressibleneohooke.html#classMarmot_1_1Materials_1_1CompressibleNeoHooke"><span class="std std-ref">CompressibleNeoHooke</span></a>), <span class="math notranslate nohighlight">\( E = 9KG/(3K+G) \)</span>, so that <span class="math notranslate nohighlight">\( L \)</span> is an energy-equivalent strain which reduces to the axial strain in small-strain uniaxial stress. The nonlocal field <span class="math notranslate nohighlight">\( \bar{N} \)</span> solves <span class="math notranslate nohighlight">\( \bar{N} - l^2\nabla^2\bar{N} = L \)</span>, and    <div class="math notranslate nohighlight">
+\[  D(\kappa) = 1 - \frac{\kappa_0}{\kappa}\exp\!\left(-\frac{\kappa - \kappa_0}{\kappa_f - \kappa_0}\right)
+  \quad \text{for} \quad \kappa &gt; \kappa_0, \qquad D = 0 \quad \text{otherwise}.
+\]</div>
+</p>
+<p>Material properties: <table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>idx  </p></th>
+<th class="head"><p>symbol  </p></th>
+<th class="head"><p>meaning  </p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0  </p></td>
+<td><p><span class="math notranslate nohighlight">\( K \)</span></p></td>
+<td><p>bulk modulus  </p></td>
+</tr>
+<tr class="row-odd"><td><p>1  </p></td>
+<td><p><span class="math notranslate nohighlight">\( G \)</span></p></td>
+<td><p>shear modulus  </p></td>
+</tr>
+<tr class="row-even"><td><p>2  </p></td>
+<td><p><span class="math notranslate nohighlight">\( \kappa_0 \)</span></p></td>
+<td><p>damage threshold (equivalent strain)  </p></td>
+</tr>
+<tr class="row-odd"><td><p>3  </p></td>
+<td><p><span class="math notranslate nohighlight">\( \kappa_f \)</span></p></td>
+<td><p>softening parameter, <span class="math notranslate nohighlight">\( \kappa_f &gt; \kappa_0 \)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>4  </p></td>
+<td><p><span class="math notranslate nohighlight">\( l \)</span></p></td>
+<td><p>nonlocal radius, <span class="math notranslate nohighlight">\( c = l^2 \)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>5  </p></td>
+<td><p><span class="math notranslate nohighlight">\( \rho \)</span></p></td>
+<td><p>density in the reference configuration  </p></td>
+</tr>
+</tbody>
+</table>
+</p>
+<p>Constraints: <span class="math notranslate nohighlight">\( K, G, \kappa_0, l &gt; 0 \)</span> and <span class="math notranslate nohighlight">\( \kappa_f &gt; \kappa_0 \)</span>.</p>
+<p>State variables: <code class="docutils literal notranslate"><span class="pre">kappa</span></code>, the history maximum of the nonlocal field.</p>
+<p>The dissipation is cumulative: the incoming ConstitutiveResponse::dissipation is incremented by the energy released by the damage increment, <span class="math notranslate nohighlight">\( \psi_0\,\Delta D \)</span>. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage42GradientEnhancedCompressibleNeoHookeDamageEPKdii">
+<span id="_CPPv3N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage42GradientEnhancedCompressibleNeoHookeDamageEPKdii"></span><span id="_CPPv2N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage42GradientEnhancedCompressibleNeoHookeDamageEPKdii"></span><span id="Marmot::Materials::GradientEnhancedCompressibleNeoHookeDamage::GradientEnhancedCompressibleNeoHookeDamage__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCompressibleNeoHookeDamage_1a198e8bd0457778f6ea38f803fefd9cb2"></span><span class="sig-name descname"><span class="n"><span class="pre">GradientEnhancedCompressibleNeoHookeDamage</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialNumber</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage42GradientEnhancedCompressibleNeoHookeDamageEPKdii" title="Link to this definition"></a><br /></dt>
+<dd><p>Construct the material and validate its properties. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>materialProperties</strong> – <strong>[in]</strong> Array of the material properties, see the table above. </p></li>
+<li><p><strong>nMaterialProperties</strong> – <strong>[in]</strong> Length of <code class="docutils literal notranslate"><span class="pre">materialProperties</span></code> (at least 5; 6 with the density). </p></li>
+<li><p><strong>materialNumber</strong> – <strong>[in]</strong> Material label. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">invalid_argument</span></span></span> – for a too short property array or a property out of range. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement">
+<span id="_CPPv3NK6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement"></span><span id="_CPPv2NK6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage13computeStressER20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrement"></span><span id="Marmot::Materials::GradientEnhancedCompressibleNeoHookeDamage::computeStress__ConstitutiveResponse:3:R.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCompressibleNeoHookeDamage_1a59ddfe3580a3038219697f237d198c9f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ConstitutiveResponse</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <span class="n"><span class="pre">AlgorithmicModuli</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Deformation</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TimeIncrement</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrement" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute the Kirchhoff stress, the local driving force and the algorithmic tangents. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[inout]</strong> Kirchhoff stress, local driving force <span class="math notranslate nohighlight">\( L \)</span>, nonlocal radius, energy density, cumulative dissipation and the state variables, updated in place. </p></li>
+<li><p><strong>tangents</strong> – <strong>[out]</strong> <span class="math notranslate nohighlight">\( \partial\boldsymbol{\tau}/\partial\boldsymbol{F} \)</span>, <span class="math notranslate nohighlight">\( \partial\boldsymbol{\tau}/\partial\bar{N} \)</span>, <span class="math notranslate nohighlight">\( \partial L/\partial\boldsymbol{F} \)</span> and <span class="math notranslate nohighlight">\( \partial L/\partial\bar{N} \)</span>. </p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> Deformation gradient and nonlocal field at the end of the increment. </p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> Time and time increment (not used, the model is rate independent). </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage10getDensityEPKd">
+<span id="_CPPv3NK6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage10getDensityEPKd"></span><span id="_CPPv2NK6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage10getDensityEPKd"></span><span id="Marmot::Materials::GradientEnhancedCompressibleNeoHookeDamage::getDensity__doubleCPC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCompressibleNeoHookeDamage_1aea077b0e281e0d2e11518c10f221322f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDensity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage10getDensityEPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>The density in the reference configuration. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateVars</strong> – <strong>[in]</strong> State variables (not used). </p>
+</dd>
+<dt class="field-even">Throws<span class="colon">:</span></dt>
+<dd class="field-even"><p><span><span class="cpp-expr sig sig-inline cpp"><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n">std</span></a><span class="p">::</span><span class="n">runtime_error</span></span></span> – if the density is not given. </p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The density, property 5. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage6damageEd">
+<span id="_CPPv3NK6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage6damageEd"></span><span id="_CPPv2NK6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage6damageEd"></span><span id="Marmot::Materials::GradientEnhancedCompressibleNeoHookeDamage::damage__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCompressibleNeoHookeDamage_1a472c85307c7e293decd3d7d344b46ef9"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">pair</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">damage</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">kappa</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage6damageEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Damage and its derivative for a given history variable. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>kappa</strong> – <strong>[in]</strong> History maximum of the nonlocal field. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="math notranslate nohighlight">\( \{D,\ \partial D/\partial\kappa\} \)</span>. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrementRKNSt5tupleIdddEE">
+<span id="_CPPv3NK6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrementRKNSt5tupleIdddEE"></span><span id="_CPPv2NK6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage13computeStressER20ConstitutiveResponseIX3EER17AlgorithmicModuliIX3EERK11DeformationIX3EERK13TimeIncrementRKNSt5tupleIdddEE"></span><span id="Marmot::Materials::GradientEnhancedCompressibleNeoHookeDamage::computeStress__ConstitutiveResponse:3:R.AlgorithmicModuli:3:R.Deformation:3:CR.TimeIncrementCR.std::tuple:double.double.double:CRC"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCompressibleNeoHookeDamage_1a3ea1bc05a699f503f90bd7e35bb2ba74"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ConstitutiveResponse</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">response</span></span>, <span class="n"><span class="pre">AlgorithmicModuli</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tangents</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">Deformation</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">deformation</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">TimeIncrement</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">timeIncrement</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">eigenDeformation</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage13computeStressER20ConstitutiveResponseIXL3EEER17AlgorithmicModuliIXL3EEERK11DeformationIXL3EEERK13TimeIncrementRKNSt5tupleIdddEE" title="Link to this definition"></a><br /></dt>
+<dd><p>Update the material state, accounting for an eigen deformation (e.g. a geostatic stress state). </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>response</strong> – <strong>[inout]</strong> ConstitutiveResponse instance. </p></li>
+<li><p><strong>tangents</strong> – <strong>[out]</strong> AlgorithmicModuli instance; scaled to the eigen deformation. </p></li>
+<li><p><strong>deformation</strong> – <strong>[in]</strong> Deformation gradient and nonlocal field. </p></li>
+<li><p><strong>timeIncrement</strong> – <strong>[in]</strong> Current time and time increment. </p></li>
+<li><p><strong>eigenDeformation</strong> – <strong>[in]</strong> Eigen deformation in each spatial direction. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage1KE">
+<span id="_CPPv3N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage1KE"></span><span id="_CPPv2N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage1KE"></span><span id="Marmot::Materials::GradientEnhancedCompressibleNeoHookeDamage::K__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCompressibleNeoHookeDamage_1a8e0f94c745a4e0858c2a9f56890341f9"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">K</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage1KE" title="Link to this definition"></a><br /></dt>
+<dd><p>bulk modulus </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage1GE">
+<span id="_CPPv3N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage1GE"></span><span id="_CPPv2N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage1GE"></span><span id="Marmot::Materials::GradientEnhancedCompressibleNeoHookeDamage::G__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCompressibleNeoHookeDamage_1a26cee3162cbf7db9149b1f71328be797"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">G</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage1GE" title="Link to this definition"></a><br /></dt>
+<dd><p>shear modulus </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage6kappa0E">
+<span id="_CPPv3N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage6kappa0E"></span><span id="_CPPv2N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage6kappa0E"></span><span id="Marmot::Materials::GradientEnhancedCompressibleNeoHookeDamage::kappa0__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCompressibleNeoHookeDamage_1a3e545bda8d009b254159d9d299fe4ebb"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">kappa0</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage6kappa0E" title="Link to this definition"></a><br /></dt>
+<dd><p>damage threshold </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage6kappaFE">
+<span id="_CPPv3N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage6kappaFE"></span><span id="_CPPv2N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage6kappaFE"></span><span id="Marmot::Materials::GradientEnhancedCompressibleNeoHookeDamage::kappaF__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCompressibleNeoHookeDamage_1a5be2de446207e88d727b7e919f848e85"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">kappaF</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage6kappaFE" title="Link to this definition"></a><br /></dt>
+<dd><p>softening parameter </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage14nonLocalRadiusE">
+<span id="_CPPv3N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage14nonLocalRadiusE"></span><span id="_CPPv2N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage14nonLocalRadiusE"></span><span id="Marmot::Materials::GradientEnhancedCompressibleNeoHookeDamage::nonLocalRadius__doubleCR"></span><span class="target" id="classMarmot_1_1Materials_1_1GradientEnhancedCompressibleNeoHookeDamage_1aa008312767dd5cd0f7aae6258a7843d6"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">nonLocalRadius</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials42GradientEnhancedCompressibleNeoHookeDamage14nonLocalRadiusE" title="Link to this definition"></a><br /></dt>
+<dd><p>nonlocal radius <span class="math notranslate nohighlight">\( l \)</span></p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gradientenhancedhugheswinget.html" class="btn btn-neutral float-left" title="Gradient-enhanced Hughes-Winget wrapper" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gradientenhancedfinitestraindruckerprager.html" class="btn btn-neutral float-right" title="Gradient-enhanced finite-strain Drucker-Prager" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

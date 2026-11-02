@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_math_1_1_tensors_1_1_index_notation" kind="namespace" language="C++">
+    <compoundname>Marmot::Math::Tensors::IndexNotation</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_tensor_8h_1a0d99bb5b873e4ecd98aad8440ea203ec" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+        </templateparamlist>
+        <type>std::pair&lt; int, int &gt;</type>
+        <definition>std::pair&lt; int, int &gt; Marmot::Math::Tensors::IndexNotation::fromVoigt</definition>
+        <argsstring>(int ij)</argsstring>
+        <name>fromVoigt</name>
+        <qualifiedname>Marmot::Math::Tensors::IndexNotation::fromVoigt</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>ij</declname>
+        </param>
+        <briefdescription>
+<para>Convert a Voigt index to tensor indices. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Maps a Voigt notation index <computeroutput>ij</computeroutput> to the corresponding <computeroutput>(i, j)</computeroutput> tensor indices for a given dimension <computeroutput>nDim</computeroutput>.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Problem dimension (1, 2, or 3). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>ij</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Voigt index. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pair of tensor indices (i, j). </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if <computeroutput>nDim</computeroutput> or <computeroutput>ij</computeroutput> is invalid. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="372" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="372" bodyend="396"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1a2fa400f7856818e9c7722294df2b3ce0" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+        </templateparamlist>
+        <type>int</type>
+        <definition>int Marmot::Math::Tensors::IndexNotation::toVoigt</definition>
+        <argsstring>(int i, int j)</argsstring>
+        <name>toVoigt</name>
+        <qualifiedname>Marmot::Math::Tensors::IndexNotation::toVoigt</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>i</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>j</declname>
+        </param>
+        <briefdescription>
+<para>Maps tensor indices (i, j) to the corresponding Voigt notation index for a given dimension <computeroutput>nDim</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Problem dimension (1, 2, or 3). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>i</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Row index of the tensor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>j</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Column index of the tensor. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Voigt index corresponding to (i, j). </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if <computeroutput>nDim</computeroutput> is invalid. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="409" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="409" bodyend="423"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1a9e0f921feb5bd0a6506912ccdc26159f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+        </templateparamlist>
+        <type>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; <ref refid="_marmot_typedefs_8h_1ab05a2676268f62bf9214105a0fe8e614" kindref="member">VOIGTFROMDIM</ref>(nDim), nDim, nDim &gt; &gt;</type>
+        <definition>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; VOIGTFROMDIM(nDim), nDim, nDim &gt; &gt; Marmot::Math::Tensors::IndexNotation::voigtMap</definition>
+        <argsstring>()</argsstring>
+        <name>voigtMap</name>
+        <qualifiedname>Marmot::Math::Tensors::IndexNotation::voigtMap</qualifiedname>
+        <briefdescription>
+<para>Construct the Voigt mapping tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates a 3rd-order tensor that maps tensor indices (i, j) to their corresponding Voigt index. Each entry is 1 at <computeroutput>(toVoigt&lt;nDim&gt;(i, j), i, j)</computeroutput> and 0 elsewhere.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Problem dimension (1, 2, or 3). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A tensor of shape (VoigtSize, nDim, nDim) encoding the Voigt mapping. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="437" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="437" bodyend="446"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="359" column="3"/>
+  </compounddef>
+</doxygen>

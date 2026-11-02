@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Materials::InterfaceMaterialHypoElastic::Deformation</compoundname>
+    <includes refid="_marmot_interface_material_hypo_elastic_8h" local="no">MarmotInterfaceMaterialHypoElastic.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation_1a55af3155ccbcb453f31e750017945af3" prot="public" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1ac94fa407decc32f4b7ddca371d0c2eb8" kindref="member">Tensor6d</ref></type>
+        <definition>Tensor6d Marmot::Materials::InterfaceMaterialHypoElastic::Deformation::dU</definition>
+        <argsstring></argsstring>
+        <name>dU</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::Deformation::dU</qualifiedname>
+        <briefdescription>
+<para>displacement jump increment of the two interface sides </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="122" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="122" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation_1ab582394da924d35f279a0cbf6ff6ee4a" prot="public" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1aa23ac900b9e3c559bd2b03c12ae2a9a6" kindref="member">Tensor18d</ref></type>
+        <definition>Tensor18d Marmot::Materials::InterfaceMaterialHypoElastic::Deformation::dSurfaceStrain</definition>
+        <argsstring></argsstring>
+        <name>dSurfaceStrain</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::Deformation::dSurfaceStrain</qualifiedname>
+        <briefdescription>
+<para>surface displacement gradient increment of the two interface sides </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="123" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="123" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation_1a03ced0aef988f6238fb44e8a14b951b2" prot="public" static="no" mutable="no">
+        <type><ref refid="class_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1afddbbba8effd91c8da1077774455603b" kindref="member">Tensor3d</ref></type>
+        <definition>Tensor3d Marmot::Materials::InterfaceMaterialHypoElastic::Deformation::normal</definition>
+        <argsstring></argsstring>
+        <name>normal</name>
+        <qualifiedname>Marmot::Materials::InterfaceMaterialHypoElastic::Deformation::normal</qualifiedname>
+        <briefdescription>
+<para>interface normal </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="124" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="124" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Increment of the interface kinematics. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" line="121" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotInterfaceMaterialHypoElastic.h" bodystart="121" bodyend="125"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation_1ab582394da924d35f279a0cbf6ff6ee4a" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic::Deformation</scope><name>dSurfaceStrain</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation_1a55af3155ccbcb453f31e750017945af3" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic::Deformation</scope><name>dU</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_interface_material_hypo_elastic_1_1_deformation_1a03ced0aef988f6238fb44e8a14b951b2" prot="public" virt="non-virtual"><scope>Marmot::Materials::InterfaceMaterialHypoElastic::Deformation</scope><name>normal</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,5 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot::Utilities::StateVarVectorManager" alt="" coords="116,5,543,53"/>
+<area shape="rect" id="node2" title="Marmot::Utilities::StateVarVectorManager::StateVarVectorLayout" alt="" coords="5,101,654,149"/>
+<area shape="poly" id="edge1" title="usage" alt="" coords="331,52,332,87,327,84,328,56"/>
+</map>

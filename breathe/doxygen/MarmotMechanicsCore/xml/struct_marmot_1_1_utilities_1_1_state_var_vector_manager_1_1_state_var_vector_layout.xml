@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_utilities_1_1_state_var_vector_manager_1_1_state_var_vector_layout" kind="struct" language="C++" prot="protected">
+    <compoundname>Marmot::Utilities::StateVarVectorManager::StateVarVectorLayout</compoundname>
+    <includes refid="_marmot_state_var_vector_manager_8h" local="no">MarmotStateVarVectorManager.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_utilities_1_1_state_var_vector_manager_1_1_state_var_vector_layout_1a4a5cdf886c3545d8670445f757dac4d8" prot="public" static="no" mutable="no">
+        <type>std::unordered_map&lt; std::string, <ref refid="struct_marmot_1_1_utilities_1_1_state_var_vector_manager_1_1_state_var_entry_location" kindref="compound">StateVarEntryLocation</ref> &gt;</type>
+        <definition>std::unordered_map&lt; std::string, StateVarEntryLocation &gt; Marmot::Utilities::StateVarVectorManager::StateVarVectorLayout::entries</definition>
+        <argsstring></argsstring>
+        <name>entries</name>
+        <qualifiedname>Marmot::Utilities::StateVarVectorManager::StateVarVectorLayout::entries</qualifiedname>
+        <briefdescription>
+<para>Map from entry name to its location. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="69" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_utilities_1_1_state_var_vector_manager_1_1_state_var_vector_layout_1a786987128c3726120aa6d2652a6714b5" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Utilities::StateVarVectorManager::StateVarVectorLayout::nRequiredStateVars</definition>
+        <argsstring></argsstring>
+        <name>nRequiredStateVars</name>
+        <qualifiedname>Marmot::Utilities::StateVarVectorManager::StateVarVectorLayout::nRequiredStateVars</qualifiedname>
+        <briefdescription>
+<para>Total number of doubles required. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="70" column="64" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>The layout is defined by a map of names to Locations, and the resulting required total length of the statevar vector </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" line="68" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotStateVarVectorManager.h" bodystart="68" bodyend="71"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_utilities_1_1_state_var_vector_manager_1_1_state_var_vector_layout_1a4a5cdf886c3545d8670445f757dac4d8" prot="public" virt="non-virtual"><scope>Marmot::Utilities::StateVarVectorManager::StateVarVectorLayout</scope><name>entries</name></member>
+      <member refid="struct_marmot_1_1_utilities_1_1_state_var_vector_manager_1_1_state_var_vector_layout_1a786987128c3726120aa6d2652a6714b5" prot="public" virt="non-virtual"><scope>Marmot::Utilities::StateVarVectorManager::StateVarVectorLayout</scope><name>nRequiredStateVars</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

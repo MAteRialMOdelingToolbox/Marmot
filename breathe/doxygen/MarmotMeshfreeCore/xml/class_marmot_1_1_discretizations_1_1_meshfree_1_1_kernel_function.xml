@@ -1,0 +1,280 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Marmot::Discretizations::Meshfree::KernelFunction</compoundname>
+    <derivedcompoundref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed" prot="public" virt="non-virtual">Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed</derivedcompoundref>
+    <derivedcompoundref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed" prot="public" virt="non-virtual">Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</derivedcompoundref>
+    <includes refid="_marmot_meshfree_kernel_function_8h" local="no">MarmotMeshfreeKernelFunction.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a209b18279daa73856c102af4e774dfe4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Discretizations::Meshfree::KernelFunction::KernelFunction</definition>
+        <argsstring>()=default</argsstring>
+        <name>KernelFunction</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::KernelFunction::KernelFunction</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="47" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a40ecf2d4ed0cca32231a8265dfb1a9fc" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Marmot::Discretizations::Meshfree::KernelFunction::~KernelFunction</definition>
+        <argsstring>()=default</argsstring>
+        <name>~KernelFunction</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::KernelFunction::~KernelFunction</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor; kernels are used through base-class pointers. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="50" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1ae50a4ffcb17eae676c53d7b5ae0cf54d" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>double</type>
+        <definition>virtual double Marmot::Discretizations::Meshfree::KernelFunction::computeKernelFunction</definition>
+        <argsstring>(const double *coord) const =0</argsstring>
+        <name>computeKernelFunction</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::KernelFunction::computeKernelFunction</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a25dac895f12bde15f1f6c50ba0a756c4">computeKernelFunction</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1afac6dc6a0fa3b73849e75aee5ee457fc">computeKernelFunction</reimplementedby>
+        <param>
+          <type>const double *</type>
+          <declname>coord</declname>
+        </param>
+        <briefdescription>
+<para>Evaluate the kernel function <formula id="0">$ \phi_A(\boldsymbol{x}) $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">coord</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coordinates <formula id="5">$ \boldsymbol{x} $</formula> of the evaluation point (length <formula id="4">$ d $</formula>). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The kernel value; zero outside the support. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="57" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a778a09880c6bceab2b131ce77c273682" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::KernelFunction::computeKernelFunctionGradient</definition>
+        <argsstring>(const double *coord, double *grad) const =0</argsstring>
+        <name>computeKernelFunctionGradient</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::KernelFunction::computeKernelFunctionGradient</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a7e26183d8d3b7a31e939f98d478812a7">computeKernelFunctionGradient</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1ac57ff8dedb6e456febd9c86454d0c5ac">computeKernelFunctionGradient</reimplementedby>
+        <param>
+          <type>const double *</type>
+          <declname>coord</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>grad</declname>
+        </param>
+        <briefdescription>
+<para>Evaluate the gradient <formula id="6">$ \partial \phi_A / \partial x_i $</formula> of the kernel function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">coord</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coordinates <formula id="5">$ \boldsymbol{x} $</formula> of the evaluation point (length <formula id="4">$ d $</formula>). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">grad</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Gradient of the kernel with respect to <formula id="5">$ \boldsymbol{x} $</formula> (length <formula id="4">$ d $</formula>). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="64" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a9f4792990bae39afc63d74e6388fbbd0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::KernelFunction::getBoundingBox</definition>
+        <argsstring>(double *lower, double *upper) const =0</argsstring>
+        <name>getBoundingBox</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::KernelFunction::getBoundingBox</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1aaeaa53f273a2e0ea1997e6d13d5361e2">getBoundingBox</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1acf1020d1bcd2b2df2a5c231c3e9ce7cd">getBoundingBox</reimplementedby>
+        <param>
+          <type>double *</type>
+          <declname>lower</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>upper</declname>
+        </param>
+        <briefdescription>
+<para>Get the axis-aligned bounding box of the support. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">lower</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Lower corner of the bounding box (length <formula id="4">$ d $</formula>). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">upper</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Upper corner of the bounding box (length <formula id="4">$ d $</formula>). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="71" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a24a6624cb71c4213e5df546be25cc827" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>bool</type>
+        <definition>virtual bool Marmot::Discretizations::Meshfree::KernelFunction::isInSupport</definition>
+        <argsstring>(const double *coord) const =0</argsstring>
+        <name>isInSupport</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::KernelFunction::isInSupport</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a4294e2754f450e0ef2c1b2f75ac3c228">isInSupport</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a579e742a86fc79fb6452e26dc9d9a7c2">isInSupport</reimplementedby>
+        <param>
+          <type>const double *</type>
+          <declname>coord</declname>
+        </param>
+        <briefdescription>
+<para>Check whether a point lies within the support of the kernel. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">coord</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Coordinates of the point (length <formula id="4">$ d $</formula>). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the point lies within the support. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="78" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a5e591e8f215f7819d1f257f683787d73" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>const double *</type>
+        <definition>virtual const double * Marmot::Discretizations::Meshfree::KernelFunction::getCenterCoordinates</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getCenterCoordinates</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::KernelFunction::getCenterCoordinates</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a80b9fed0378d0713934c7ee04518d98a">getCenterCoordinates</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a50c867fc0fe24af6a125b57fb8275168">getCenterCoordinates</reimplementedby>
+        <briefdescription>
+<para>Get the center coordinates <formula id="2">$ \boldsymbol{x}_A $</formula> of the kernel. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Pointer to the center coordinates (length <formula id="4">$ d $</formula>). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="84" column="26"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a210e3c2eb15d0619033d1c33c189a813" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::KernelFunction::moveTo</definition>
+        <argsstring>(const double *coord)=0</argsstring>
+        <name>moveTo</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::KernelFunction::moveTo</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a33aa45f04c0f1d38a74d101efb434bd0">moveTo</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a2754f9384bb9eeecea4f94628b08739a">moveTo</reimplementedby>
+        <param>
+          <type>const double *</type>
+          <declname>coord</declname>
+        </param>
+        <briefdescription>
+<para>Move the center of the kernel to a new position. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">coord</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>New center coordinates (length <formula id="4">$ d $</formula>). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="90" column="18"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Abstract interface of a meshfree kernel (window) function <formula id="0">$ \phi_A(\boldsymbol{x}) $</formula>. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A kernel function is attached to a node (particle) <formula id="1">$ A $</formula> with center <formula id="2">$ \boldsymbol{x}_A $</formula> and has compact support. The reproducing kernel approximation (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kindref="compound">ReproducingKernelApproximation</ref>) builds its shape functions <formula id="3">$ \Psi_A $</formula> by correcting these kernels such that polynomials up to a given order are reproduced exactly; the continuity of <formula id="3">$ \Psi_A $</formula> is inherited from the kernel.</para>
+<para>All coordinates are passed as raw arrays of length <formula id="4">$ d $</formula> (the spatial dimension of the kernel). The configuration in which the coordinates are given (reference or current) is decided by the caller; the kernel only compares them with its center coordinates. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Marmot::Discretizations::Meshfree::KernelFunction</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function"/>
+      </node>
+      <node id="2">
+        <label>Marmot::Discretizations::Meshfree::KernelFunctionBSpline2ndOrderBoxed</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Marmot::Discretizations::Meshfree::KernelFunctionBSpline3rdOrderBoxed</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" line="43" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeKernelFunction.h" bodystart="43" bodyend="91"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1ae50a4ffcb17eae676c53d7b5ae0cf54d" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunction</scope><name>computeKernelFunction</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a778a09880c6bceab2b131ce77c273682" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunction</scope><name>computeKernelFunctionGradient</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a9f4792990bae39afc63d74e6388fbbd0" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunction</scope><name>getBoundingBox</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a5e591e8f215f7819d1f257f683787d73" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunction</scope><name>getCenterCoordinates</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a24a6624cb71c4213e5df546be25cc827" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunction</scope><name>isInSupport</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a209b18279daa73856c102af4e774dfe4" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunction</scope><name>KernelFunction</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a210e3c2eb15d0619033d1c33c189a813" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunction</scope><name>moveTo</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_1a40ecf2d4ed0cca32231a8265dfb1a9fc" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::KernelFunction</scope><name>~KernelFunction</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

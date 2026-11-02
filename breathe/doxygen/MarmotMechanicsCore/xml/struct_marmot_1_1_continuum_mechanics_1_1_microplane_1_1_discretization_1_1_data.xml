@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::ContinuumMechanics::Microplane::Discretization::Data</compoundname>
+    <includes refid="_marmot_microplane_8h" local="no">MarmotMicroplane.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data_1ab834b6ee4f3d30429e025c3c3275446a" prot="public" static="no" mutable="no">
+        <type>Eigen::MatrixXd</type>
+        <definition>Eigen::MatrixXd Marmot::ContinuumMechanics::Microplane::Discretization::Data::normals</definition>
+        <argsstring></argsstring>
+        <name>normals</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::Discretization::Data::normals</qualifiedname>
+        <briefdescription>
+<para><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane" kindref="compound">Microplane</ref> unit normal vectors <formula id="312">$ n^{(m)} $</formula>, one per row ( <formula id="322">$ n_{qp} \times 3 $</formula>). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="77" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data_1aa963a3c83eebe1da387c6f693c0636c7" prot="public" static="no" mutable="no">
+        <type>Eigen::VectorXd</type>
+        <definition>Eigen::VectorXd Marmot::ContinuumMechanics::Microplane::Discretization::Data::weights</definition>
+        <argsstring></argsstring>
+        <name>weights</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::Discretization::Data::weights</qualifiedname>
+        <briefdescription>
+<para>Integration weights <formula id="323">$ w^{(m)} $</formula>, one per microplane ( <formula id="324">$ n_{qp} \times 1 $</formula>), normalized such that <formula id="325">$ \sum_m w^{(m)} = 3 $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="80" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="80" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Hard-coded microplane orientations and integration weights for one <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1" kindref="member">QuadratureScheme</ref>, as returned by get(). Dynamically sized since it is shared by <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split" kindref="compound">VDSplit</ref> and <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split" kindref="compound">NTSplit</ref> instantiations for different quadrature schemes; the number of rows is given by <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1a2a7293ad18bb1ddbceaa8b6b8d345c61" kindref="member">nqpFromScheme</ref>. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="75" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="75" bodyend="81"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data_1ab834b6ee4f3d30429e025c3c3275446a" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Microplane::Discretization::Data</scope><name>normals</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data_1aa963a3c83eebe1da387c6f693c0636c7" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Microplane::Discretization::Data</scope><name>weights</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

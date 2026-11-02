@@ -1,0 +1,233 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="_marmot_b_spline_cell_geometry_8h" kind="file" language="C++">
+    <compoundname>MarmotBSplineCellGeometry.h</compoundname>
+    <includes refid="_marmot_b_spline_geometry_element_8h" local="yes">Marmot/MarmotBSplineGeometryElement.h</includes>
+    <includes refid="_marmot_cell_geometry_8h" local="yes">Marmot/MarmotCellGeometry.h</includes>
+    <includes local="no">iostream</includes>
+    <incdepgraph>
+      <node id="4">
+        <label>Marmot/MarmotBSpline.h</label>
+        <link refid="_marmot_b_spline_8h"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h</label>
+        <link refid="_marmot_b_spline_cell_geometry_8h"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot/MarmotBSplineGeometryElement.h</label>
+        <link refid="_marmot_b_spline_geometry_element_8h_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="9">
+        <label>Marmot/MarmotCellGeometry.h</label>
+        <link refid="_marmot_cell_geometry_8h_source"/>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Eigen/Core</label>
+      </node>
+      <node id="6">
+        <label>Marmot/MarmotFiniteElement.h</label>
+      </node>
+      <node id="10">
+        <label>Marmot/MarmotGeometryElement.h</label>
+      </node>
+      <node id="11">
+        <label>Marmot/MarmotJournal.h</label>
+      </node>
+      <node id="5">
+        <label>cmath</label>
+      </node>
+      <node id="12">
+        <label>concepts</label>
+      </node>
+      <node id="7">
+        <label>iostream</label>
+      </node>
+      <node id="8">
+        <label>map</label>
+      </node>
+      <node id="13">
+        <label>stdexcept</label>
+      </node>
+    </incdepgraph>
+    <innerclass refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry" prot="public">Marmot::Discretizations::Cells::BSplineCellGeometry</innerclass>
+    <innernamespace refid="namespace_marmot">Marmot</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations">Marmot::Discretizations</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_cells">Marmot::Discretizations::Cells</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/>*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>_</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/>*<sp/><sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>__<sp/>_<sp/>_<sp/>__<sp/>_<sp/>__<sp/>___<sp/><sp/><sp/>___<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"><sp/>*<sp/>|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_`<sp/>|<sp/>&apos;__|<sp/>&apos;_<sp/>`<sp/>_<sp/>\<sp/>/<sp/>_<sp/>\|<sp/>__|</highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/>*<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_|<sp/>|<sp/>|<sp/><sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>|<sp/>(_)<sp/>|<sp/>|_</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"><sp/>*<sp/>|_|<sp/>|_|<sp/>|_|\__,_|_|<sp/><sp/>|_|<sp/>|_|<sp/>|_|\___/<sp/>\__|</highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/>*<sp/>Unit<sp/>of<sp/>Strength<sp/>of<sp/>Materials<sp/>and<sp/>Structural<sp/>Analysis</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"><sp/>*<sp/>University<sp/>of<sp/>Innsbruck</highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/>*<sp/>2020<sp/>-<sp/>today</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="12"><highlight class="comment"><sp/>*<sp/>festigkeitslehre@uibk.ac.at</highlight></codeline>
+<codeline lineno="13"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="14"><highlight class="comment"><sp/>*<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>the<sp/>MAteRialMOdellingToolbox<sp/>(marmot).</highlight></codeline>
+<codeline lineno="15"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="16"><highlight class="comment"><sp/>*<sp/>This<sp/>library<sp/>is<sp/>free<sp/>software;<sp/>you<sp/>can<sp/>redistribute<sp/>it<sp/>and/or</highlight></codeline>
+<codeline lineno="17"><highlight class="comment"><sp/>*<sp/>modify<sp/>it<sp/>under<sp/>the<sp/>terms<sp/>of<sp/>the<sp/>GNU<sp/>Lesser<sp/>General<sp/>Public</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>License<sp/>as<sp/>published<sp/>by<sp/>the<sp/>Free<sp/>Software<sp/>Foundation;<sp/>either</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>version<sp/>2.1<sp/>of<sp/>the<sp/>License,<sp/>or<sp/>(at<sp/>your<sp/>option)<sp/>any<sp/>later<sp/>version.</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*</highlight></codeline>
+<codeline lineno="21"><highlight class="comment"><sp/>*<sp/>The<sp/>full<sp/>text<sp/>of<sp/>the<sp/>license<sp/>can<sp/>be<sp/>found<sp/>in<sp/>the<sp/>file<sp/>LICENSE.md<sp/>at</highlight></codeline>
+<codeline lineno="22"><highlight class="comment"><sp/>*<sp/>the<sp/>top<sp/>level<sp/>directory<sp/>of<sp/>marmot.</highlight></codeline>
+<codeline lineno="23"><highlight class="comment"><sp/>*<sp/>---------------------------------------------------------------------</highlight></codeline>
+<codeline lineno="24"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="preprocessor">#pragma<sp/>once</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotBSplineGeometryElement.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;Marmot/MarmotCellGeometry.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;iostream&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="30"><highlight class="normal"></highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::Discretizations::Cells<sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nDim,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>order<sp/>&gt;</highlight></codeline>
+<codeline lineno="49" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry" refkind="compound"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a33862e6dbe08997e50b63134726d207f" kindref="member">BSplineCellGeometry</ref><sp/>:<sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element" kindref="compound">Marmot::Discretizations::Elements::BSplineGeometryElement</ref>&lt;<sp/>nDim,<sp/>order<sp/>&gt;</highlight></codeline>
+<codeline lineno="50"><highlight class="normal"></highlight></codeline>
+<codeline lineno="51"><highlight class="normal"><sp/><sp/>{</highlight></codeline>
+<codeline lineno="52"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">ParentBSplineGeometryElement<sp/>=<sp/><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element" kindref="compound">Marmot::Discretizations::Elements::BSplineGeometryElement&lt; nDim, order &gt;</ref>;</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">JacobianSized<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a0f690112b7437a2127ecdffed6a670d9" kindref="member">ParentBSplineGeometryElement::JacobianSized</ref>;<sp/></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nDim,<sp/>1<sp/>&gt;<sp/>_boundingBoxMin;<sp/></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::Matrix&lt;<sp/>double,<sp/>nDim,<sp/>1<sp/>&gt;<sp/>_boundingBoxMax;<sp/></highlight></codeline>
+<codeline lineno="59"><highlight class="normal"></highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/>_boundingBoxMatchesGeometryExactly;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="61"><highlight class="normal"></highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">public</highlight><highlight class="normal">:</highlight></codeline>
+<codeline lineno="63" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1acc512877efa09971353dd6eedcb21c96" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1acc512877efa09971353dd6eedcb21c96" kindref="member">NSized</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a70c488ce9b02a66fed661a102d28aa1b" kindref="member">ParentBSplineGeometryElement::NSized</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="64" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9af6e53749169606e2125c97a3079b25" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9af6e53749169606e2125c97a3079b25" kindref="member">dNdXSized</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a038859cf1fbcb76fde5f3948b7646f71" kindref="member">ParentBSplineGeometryElement::dNdXSized</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="65" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a38c227cdad9142d18939ce9ea754618f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a38c227cdad9142d18939ce9ea754618f" kindref="member">CoordinateVector</ref><sp/>=<sp/><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a7a916dbb28a9b541bf8b20d5ba7c9775" kindref="member">ParentBSplineGeometryElement::CoordinateVector</ref>;<sp/></highlight></codeline>
+<codeline lineno="66" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9738de5a9b5c7c6e5788d9e0d6dafe3a" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal"><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9738de5a9b5c7c6e5788d9e0d6dafe3a" kindref="member">XiSized</ref><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>=<sp/><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a27b73029f8eee1113c721927bfc7d58e" kindref="member">ParentBSplineGeometryElement::XiSized</ref>;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"></highlight></codeline>
+<codeline lineno="76" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a33862e6dbe08997e50b63134726d207f" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a33862e6dbe08997e50b63134726d207f" kindref="member">BSplineCellGeometry</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>nodeCoordinates,</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sizeNodeCoordinates,</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>knotVectors,</highlight></codeline>
+<codeline lineno="79"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>sizeKnotVectors<sp/>)</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>:<sp/>ParentBSplineGeometryElement(<sp/>nodeCoordinates,<sp/>sizeNodeCoordinates,<sp/>knotVectors,<sp/>sizeKnotVectors<sp/>)</highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/><sp/><sp/>{</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_boundingBoxMin<sp/>=<sp/>this-&gt;<ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1acb44744622a5fbd9bb661b73cc335ddf" kindref="member">_knotVectors</ref>.row(<sp/>order<sp/>);</highlight></codeline>
+<codeline lineno="83"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_boundingBoxMax<sp/>=<sp/>this-&gt;<ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1acb44744622a5fbd9bb661b73cc335ddf" kindref="member">_knotVectors</ref>.row(<sp/>this-&gt;<ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1ab0015596caa9570471dc0ff7e5904b46" kindref="member">nKnotsPerDir</ref><sp/>-<sp/>order<sp/>-<sp/>1<sp/>);</highlight></codeline>
+<codeline lineno="84"><highlight class="normal"></highlight></codeline>
+<codeline lineno="85"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>_boundingBoxMatchesGeometryExactly<sp/>=<sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="86"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="87"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9a048a1cd670333056ebe8e54f6a3aa6" kindref="member">isCoordinateInCell</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>coordinates<sp/>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1af59ada3c35ef8738df484534c56cf83d" kindref="member">getBoundingBox</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>boundingBoxMin,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>boundingBoxMax<sp/>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="101"><highlight class="normal"></highlight></codeline>
+<codeline lineno="107"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9738de5a9b5c7c6e5788d9e0d6dafe3a" kindref="member">XiSized</ref><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1ab5a838f4a312e258e26375337822201f" kindref="member">findReferenceCoordinate</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9738de5a9b5c7c6e5788d9e0d6dafe3a" kindref="member">XiSized</ref>&amp;<sp/>coord<sp/>)<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="108"><highlight class="normal"></highlight></codeline>
+<codeline lineno="114" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a2591c0f13dcf17f95a840fc0860aaee3" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1acc512877efa09971353dd6eedcb21c96" kindref="member">NSized</ref><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a2591c0f13dcf17f95a840fc0860aaee3" kindref="member">N</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9738de5a9b5c7c6e5788d9e0d6dafe3a" kindref="member">XiSized</ref>&amp;<sp/>xi<sp/>)</highlight><highlight class="keyword"><sp/>const<sp/></highlight><highlight class="normal">{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a902a086088be3b2816af072ee017ea05" kindref="member">ParentBSplineGeometryElement::N</ref>(<sp/>xi<sp/>);<sp/>}</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a25ea7919ab76d1b6553b2b40c515b891" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9af6e53749169606e2125c97a3079b25" kindref="member">dNdXSized</ref><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a25ea7919ab76d1b6553b2b40c515b891" kindref="member">dNdX</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9738de5a9b5c7c6e5788d9e0d6dafe3a" kindref="member">XiSized</ref>&amp;<sp/>xi<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="122"><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>dN_dXi<sp/>=<sp/><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1ad1e0658864b8eaf141bacc21c2cfd678" kindref="member">ParentBSplineGeometryElement::dNdXi</ref>(<sp/>xi<sp/>);</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>dN_dXi;</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"></highlight></codeline>
+<codeline lineno="132" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a524cf87de72ec96da9b120001e1ee868" refkind="member"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a524cf87de72ec96da9b120001e1ee868" kindref="member">detJ</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9738de5a9b5c7c6e5788d9e0d6dafe3a" kindref="member">XiSized</ref>&amp;<sp/>xi<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="133"><highlight class="keyword"><sp/><sp/><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="134"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>dN_dXi<sp/>=<sp/><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1ad1e0658864b8eaf141bacc21c2cfd678" kindref="member">ParentBSplineGeometryElement::dNdXi</ref>(<sp/>xi<sp/>);</highlight></codeline>
+<codeline lineno="135"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a0bf71a9872f27e54dddacab1d218a529" kindref="member">ParentBSplineGeometryElement::Jacobian</ref>(<sp/>dN_dXi<sp/>).determinant();</highlight></codeline>
+<codeline lineno="136"><highlight class="normal"><sp/><sp/><sp/><sp/>};</highlight></codeline>
+<codeline lineno="137"><highlight class="normal"><sp/><sp/>};</highlight></codeline>
+<codeline lineno="138"><highlight class="normal"></highlight></codeline>
+<codeline lineno="139"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nDim,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>order<sp/>&gt;</highlight></codeline>
+<codeline lineno="140" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9a048a1cd670333056ebe8e54f6a3aa6" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">bool</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9a048a1cd670333056ebe8e54f6a3aa6" kindref="member">BSplineCellGeometry&lt; nDim, order &gt;::isCoordinateInCell</ref>(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>coordinates<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="141"><highlight class="keyword"><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"></highlight></codeline>
+<codeline lineno="143"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(<sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>i<sp/>=<sp/>0;<sp/>i<sp/>&lt;<sp/>nDim;<sp/>i++<sp/>)</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(<sp/>coordinates[i]<sp/>&lt;<sp/>_boundingBoxMin(<sp/>i<sp/>)<sp/>||<sp/>coordinates[i]<sp/>&gt;=<sp/>_boundingBoxMax(<sp/>i<sp/>)<sp/>)</highlight></codeline>
+<codeline lineno="145"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">false</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="146"><highlight class="normal"></highlight></codeline>
+<codeline lineno="147"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">true</highlight><highlight class="normal">;</highlight></codeline>
+<codeline lineno="148"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"></highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nDim,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nNodes<sp/>&gt;</highlight></codeline>
+<codeline lineno="151" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1af59ada3c35ef8738df484534c56cf83d" refkind="member"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1af59ada3c35ef8738df484534c56cf83d" kindref="member">BSplineCellGeometry&lt; nDim, nNodes &gt;::getBoundingBox</ref>(<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>boundingBoxMin,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal">*<sp/>boundingBoxMax<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="152"><highlight class="keyword"><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="153"><highlight class="normal"><sp/><sp/><sp/><sp/>(<sp/>Eigen::Map&lt;<sp/>XiSized<sp/>&gt;(<sp/>boundingBoxMin<sp/>)<sp/>)<sp/>=<sp/>_boundingBoxMin;</highlight></codeline>
+<codeline lineno="154"><highlight class="normal"><sp/><sp/><sp/><sp/>(<sp/>Eigen::Map&lt;<sp/>XiSized<sp/>&gt;(<sp/>boundingBoxMax<sp/>)<sp/>)<sp/>=<sp/>_boundingBoxMax;</highlight></codeline>
+<codeline lineno="155"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="156"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>nDim,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>order<sp/>&gt;</highlight></codeline>
+<codeline lineno="158" refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1ab5a838f4a312e258e26375337822201f" refkind="member"><highlight class="normal"><sp/><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9738de5a9b5c7c6e5788d9e0d6dafe3a" kindref="member">BSplineCellGeometry&lt; nDim, order &gt;::XiSized</ref><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1ab5a838f4a312e258e26375337822201f" kindref="member">BSplineCellGeometry&lt; nDim, order &gt;::findReferenceCoordinate</ref>(</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_b_spline_cell_geometry_1a9738de5a9b5c7c6e5788d9e0d6dafe3a" kindref="member">XiSized</ref>&amp;<sp/>coord<sp/>)</highlight><highlight class="keyword"><sp/>const</highlight></codeline>
+<codeline lineno="160"><highlight class="keyword"><sp/><sp/></highlight><highlight class="normal">{</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>initial<sp/>guess:</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="162"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>XiSized<sp/>xi<sp/>=<sp/>2<sp/>*<sp/>(<sp/>coord<sp/>-<sp/>(<sp/>_boundingBoxMax<sp/>+<sp/>_boundingBoxMin<sp/>)<sp/>/<sp/>2<sp/>)<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="163"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>.cwiseProduct(<sp/>(<sp/>_boundingBoxMax<sp/>-<sp/>_boundingBoxMin<sp/>).cwiseInverse()<sp/>);<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="164"><highlight class="normal"></highlight></codeline>
+<codeline lineno="165"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>coord;</highlight></codeline>
+<codeline lineno="166"><highlight class="normal"></highlight></codeline>
+<codeline lineno="167"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/><sp/><sp/><sp/><sp/>std::cout<sp/>&lt;&lt;<sp/>&quot;coord<sp/>&quot;<sp/>&lt;&lt;<sp/>coord.transpose()<sp/>&lt;&lt;<sp/>std::endl;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/><sp/><sp/><sp/><sp/>std::cout<sp/>&lt;&lt;<sp/>&quot;initial<sp/>guess<sp/>&quot;<sp/>&lt;&lt;<sp/>xi.transpose()<sp/>&lt;&lt;<sp/>std::endl;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="169"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/><sp/><sp/><sp/><sp/>std::cout<sp/>&lt;&lt;<sp/>&quot;bb<sp/>&quot;<sp/>&lt;&lt;<sp/>_boundingBoxMin.transpose()<sp/>&lt;&lt;<sp/>std::endl;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="170"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/><sp/><sp/><sp/><sp/>std::cout<sp/>&lt;&lt;<sp/>&quot;bb<sp/>&quot;<sp/>&lt;&lt;<sp/>_boundingBoxMax.transpose()<sp/>&lt;&lt;<sp/>std::endl;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="171"><highlight class="normal"></highlight></codeline>
+<codeline lineno="172"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>XiSized<sp/>r<sp/>=<sp/>coord<sp/>-<sp/>ParentBSplineGeometryElement::_mapCoordinates.reshaped(nDim,<sp/>this-&gt;nNodes)<sp/>*<sp/>N(<sp/>xi</highlight></codeline>
+<codeline lineno="173"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*<sp/>).transpose();<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="174"><highlight class="normal"></highlight></codeline>
+<codeline lineno="175"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>int<sp/>nCounter<sp/>=<sp/>0;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="176"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>while<sp/>(<sp/>r.norm()<sp/>/<sp/>coord.norm()<sp/>&gt;=<sp/>1e-12<sp/>)<sp/>{<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="177"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/><sp/><sp/>//<sp/>TODO<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="179"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/><sp/><sp/>/1*<sp/>xi<sp/>+=<sp/>*1/<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="180"><highlight class="normal"></highlight></codeline>
+<codeline lineno="181"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/><sp/><sp/>r<sp/>=<sp/>coord<sp/>-<sp/>ParentBSplineGeometryElement::_mapCoordinates.reshaped(nDim,<sp/>this-&gt;nNodes)<sp/>*<sp/>N(<sp/>xi<sp/>).transpose();</highlight></codeline>
+<codeline lineno="182"><highlight class="comment"><sp/><sp/><sp/><sp/><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/><sp/><sp/>nCounter++;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/><sp/><sp/>if<sp/>(<sp/>nCounter<sp/>&gt;=<sp/>5<sp/>)<sp/>{<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/><sp/><sp/><sp/><sp/>throw<sp/>std::runtime_error(<sp/>Marmot::Utilities::MakeString()<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="186"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/>__PRETTY_FUNCTION__<sp/>&lt;&lt;<sp/>&quot;:<sp/>failed<sp/>to<sp/>determine<sp/>inverse<sp/>map<sp/>for<sp/>coordinate<sp/>&quot;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="187"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>&lt;&lt;<sp/>coord.transpose()<sp/>);<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="188"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/><sp/><sp/>}<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="189"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>}<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"></highlight></codeline>
+<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="comment">/*<sp/>return<sp/>xi;<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="193"><highlight class="normal"></highlight></codeline>
+<codeline lineno="194"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::Discretizations::Cells</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotBSplineCellGeometry.h"/>
+  </compounddef>
+</doxygen>

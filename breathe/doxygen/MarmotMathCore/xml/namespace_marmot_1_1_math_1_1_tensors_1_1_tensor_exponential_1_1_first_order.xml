@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_math_1_1_tensors_1_1_tensor_exponential_1_1_first_order" kind="namespace" language="C++">
+    <compoundname>Marmot::Math::Tensors::TensorExponential::FirstOrder</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_tensor_exponential_8h_1a5581e3e72f9a13823efc35a753ab4d88" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>tensorSize</declname>
+            <defname>tensorSize</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="struct_marmot_1_1_math_1_1_tensors_1_1_tensor_exponential_1_1_tensor_exponential_result" kindref="compound">TensorExponentialResult</ref>&lt; T, tensorSize &gt;</type>
+        <definition>TensorExponentialResult&lt; T, tensorSize &gt; Marmot::Math::Tensors::TensorExponential::FirstOrder::computeTensorExponential</definition>
+        <argsstring>(const Fastor::Tensor&lt; T, tensorSize, tensorSize &gt; &amp;theTensor, int maxIterations, double tolerance)</argsstring>
+        <name>computeTensorExponential</name>
+        <qualifiedname>Marmot::Math::Tensors::TensorExponential::FirstOrder::computeTensorExponential</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; T, tensorSize, tensorSize &gt; &amp;</type>
+          <declname>theTensor</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>maxIterations</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>tolerance</declname>
+        </param>
+        <briefdescription>
+<para>Computes the exponential of a square second rank tensor and its first-order derivative. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>See the documentation of <computeroutput>computeTensorExponential</computeroutput> without derivative for additional details. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="121" column="29" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" bodystart="121" bodyend="175"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensorExponential.h" line="115" column="3"/>
+  </compounddef>
+</doxygen>

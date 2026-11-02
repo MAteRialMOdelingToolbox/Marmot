@@ -1,0 +1,252 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_kinematics_1_1_deformation_measures_1_1_first_order" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_deformation_measures_8h_1a797c1a220c156eec6a533fe91f7ee98e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::pair&lt; Math::Tensors::FastorTensors::Tensor33t&lt; T &gt;, Math::Tensors::FastorTensors::Tensor3333t&lt; T &gt; &gt;</type>
+        <definition>std::pair&lt; Math::Tensors::FastorTensors::Tensor33t&lt; T &gt;, Math::Tensors::FastorTensors::Tensor3333t&lt; T &gt; &gt; Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder::rightCauchyGreen</definition>
+        <argsstring>(const Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;F)</argsstring>
+        <name>rightCauchyGreen</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder::rightCauchyGreen</qualifiedname>
+        <param>
+          <type>const Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>F</declname>
+        </param>
+        <briefdescription>
+<para>Computes the right Cauchy-Green tensor <formula id="5">$\boldsymbol{C}$</formula> and its derivative with respect to <formula id="1">$\boldsymbol{F}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type (e.g., float, double, autodiff::dual) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Deformation gradient tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A pair containing the right Cauchy-Green tensor C and its derivative with respect to F</para>
+</simplesect>
+The right Cauchy-Green deformation tensor is defined as:   <formula id="6">\[  \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F}
+\]</formula> or in index notation:   <formula id="7">\[  C_{IJ} = F_{iI} F_{iJ}
+\]</formula> The derivative of <formula id="5">$\boldsymbol{C}$</formula> with respect to <formula id="1">$\boldsymbol{F}$</formula> is given by:   <formula id="11">\[ \frac{\partial C_{IJ}}{\partial F_{kK}} = \delta_{IK} F_{kJ} + F_{kI} \delta_{JK}
+\]</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="100" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="100" bodyend="113"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_deformation_measures_8h_1a15f0601ab952826c73a54b0c8efed063" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>std::pair&lt; Math::Tensors::FastorTensors::Tensor33t&lt; T &gt;, Math::Tensors::FastorTensors::Tensor3333t&lt; T &gt; &gt;</type>
+        <definition>std::pair&lt; Math::Tensors::FastorTensors::Tensor33t&lt; T &gt;, Math::Tensors::FastorTensors::Tensor3333t&lt; T &gt; &gt; Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder::leftCauchyGreen</definition>
+        <argsstring>(const Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;F)</argsstring>
+        <name>leftCauchyGreen</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder::leftCauchyGreen</qualifiedname>
+        <param>
+          <type>const Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>F</declname>
+        </param>
+        <briefdescription>
+<para>Computes the left Cauchy-Green tensor <formula id="8">$\boldsymbol{b}$</formula> and its derivative with respect to <formula id="1">$\boldsymbol{F}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type (e.g., float, double, autodiff::dual) </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Deformation gradient tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A pair containing the left Cauchy-Green tensor b and its derivative with respect to F</para>
+</simplesect>
+The left Cauchy-Green deformation tensor is defined as:   <formula id="9">\[  \boldsymbol{b} = \boldsymbol{F} \boldsymbol{F}^T
+\]</formula> or in index notation:   <formula id="10">\[  b_{ij} = F_{iI} F_{jI}
+\]</formula> The derivative of <formula id="8">$\boldsymbol{b}$</formula> with respect to <formula id="1">$\boldsymbol{F}$</formula> is given by:   <formula id="12">\[ \frac{\partial b_{ij}}{\partial F_{kK}} = \delta_{ik} F_{jK} + F_{iK} \delta_{jk}
+\]</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="135" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="135" bodyend="148"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_deformation_measures_8h_1a0ab0a4b47bcdad6a597d153d1397b6d8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+        </templateparamlist>
+        <type>std::pair&lt; Fastor::Tensor&lt; double, nDim &gt;, Fastor::Tensor&lt; double, nDim, nDim, nDim &gt; &gt;</type>
+        <definition>std::pair&lt; Fastor::Tensor&lt; double, nDim &gt;, Fastor::Tensor&lt; double, nDim, nDim, nDim &gt; &gt; Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder::deformedNormalVectorFromUndeformedSurfaceVector</definition>
+        <argsstring>(const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;FInv, const Fastor::Tensor&lt; double, nDim &gt; &amp;N_x_dA0)</argsstring>
+        <name>deformedNormalVectorFromUndeformedSurfaceVector</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder::deformedNormalVectorFromUndeformedSurfaceVector</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;</type>
+          <declname>FInv</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, nDim &gt; &amp;</type>
+          <declname>N_x_dA0</declname>
+        </param>
+        <briefdescription>
+<para>Computes the deformed normal vector and its derivative with respect to the inverse deformation gradient. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>FInv</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Inverse of the deformation gradient tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>N_x_dA0</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Undeformed normal vector scaled by undeformed area </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A pair containing the deformed normal vector and its derivative with respect to FInv</para>
+</simplesect>
+The deformed normal vector is defined as:   <formula id="13">\[  n_i = \frac{ F^{-1}_{Ii} N_{I} J dA_0 } { \| F^{-1}_{Ki} N_{K} J dA_0 \| }
+\]</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="163" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="163" bodyend="201"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_deformation_measures_8h_1acd956b14144659eb4b104cc453f1de8e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+        </templateparamlist>
+        <type>std::pair&lt; Fastor::Tensor&lt; double, nDim, nDim &gt;, Fastor::Tensor&lt; double, nDim, nDim, nDim, nDim &gt; &gt;</type>
+        <definition>std::pair&lt; Fastor::Tensor&lt; double, nDim, nDim &gt;, Fastor::Tensor&lt; double, nDim, nDim, nDim, nDim &gt; &gt; Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder::deformedNormalProjectionTensor</definition>
+        <argsstring>(const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;FInv, const Fastor::Tensor&lt; double, nDim &gt; &amp;N_x_dA0)</argsstring>
+        <name>deformedNormalProjectionTensor</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder::deformedNormalProjectionTensor</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;</type>
+          <declname>FInv</declname>
+        </param>
+        <param>
+          <type>const Fastor::Tensor&lt; double, nDim &gt; &amp;</type>
+          <declname>N_x_dA0</declname>
+        </param>
+        <briefdescription>
+<para>Computes the deformed normal projection tensor and its derivative with respect to the inverse deformation gradient. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>FInv</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Inverse of the deformation gradient tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>N_x_dA0</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Undeformed normal vector scaled by undeformed area </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A pair containing the deformed normal projection tensor and its derivative with respect to FInv</para>
+</simplesect>
+The deformed normal projection tensor is defined as:    <formula id="14">\[  N_{ij} = n_i n_j = \frac{ F^{-1}_{Ii} N_{I} J dA_0 \times F^{-1}_{Jj} N_{J} J dA_0} { \| F^{-1}_{Ki} N_{K} J
+dA_0 \|^2 }
+\]</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="216" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="216" bodyend="233"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_deformation_measures_8h_1a5fc1fcf4a4421976b1523766c7568c0b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+        </templateparamlist>
+        <type>std::pair&lt; Fastor::Tensor&lt; double, nDim, nDim &gt;, Fastor::Tensor&lt; double, nDim, nDim, nDim, nDim &gt; &gt;</type>
+        <definition>std::pair&lt; Fastor::Tensor&lt; double, nDim, nDim &gt;, Fastor::Tensor&lt; double, nDim, nDim, nDim, nDim &gt; &gt; Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder::inverseDeformationGradient</definition>
+        <argsstring>(const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;F)</argsstring>
+        <name>inverseDeformationGradient</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder::inverseDeformationGradient</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; double, nDim, nDim &gt; &amp;</type>
+          <declname>F</declname>
+        </param>
+        <briefdescription>
+<para>Computes the inverse of the deformation gradient and its derivative with respect to the deformation gradient. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>F</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Deformation gradient tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A pair containing the inverse of the deformation gradient and its derivative with respect to F</para>
+</simplesect>
+The inverse of the deformation gradient is defined as:   <formula id="15">\[ \boldsymbol{F}^{-1}
+\]</formula> The derivative of <formula id="16">$\boldsymbol{F}^{-1}$</formula> with respect to <formula id="1">$\boldsymbol{F}$</formula> is given by:   <formula id="17">\[ \frac{\partial F^{-1}_{iK}}{\partial F_{jL}} = - F^{-1}_{iL} F^{-1}_{jK}
+\]</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="251" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" bodystart="251" bodyend="264"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotDeformationMeasures.h" line="78" column="3"/>
+  </compounddef>
+</doxygen>

@@ -57,7 +57,7 @@ Example Usage
    #include <iostream>
 
    int main() {
-     using Vec6 = Marmot::Vector6d;
+     using Vec6 = Marmot::Math::Vector6d;
 
      // 1) Define the material model (must be registered in Marmot)
      std::string materialName = "LINEARELASTIC";
@@ -65,13 +65,13 @@ Example Usage
      int nProps = 2;
 
      // 2) Configure solver options
-     MarmotMaterialPointSolverHypoElastic::SolverOptions options;
+     Marmot::Materials::MaterialPointSolverHypoElastic::SolverOptions options;
      options.maxIterations       = 25;
      options.residualTolerance   = 1e-10;
      options.correctionTolerance = 1e-10;
 
      // 3) Create solver instance
-     MarmotMaterialPointSolverHypoElastic solver(materialName, properties, nProps, options);
+     Marmot::Materials::MaterialPointSolverHypoElastic solver(materialName, properties, nProps, options);
 
      // 4) Set the initial state
      int nSV = 0;
@@ -80,7 +80,7 @@ Example Usage
      solver.setInitialState(Vec6::Zero(), initialSV);
 
      // 5) Define a loading step (uniaxial strain-controlled on ε_11)
-     MarmotMaterialPointSolverHypoElastic::Step step;
+     Marmot::Materials::MaterialPointSolverHypoElastic::Step step;
      step.timeStart = 0.0;
      step.timeEnd   = 1.0;
      step.dTStart   = 0.2;
@@ -131,6 +131,36 @@ Running the above example will print information about each load step and increm
 
 The history can be exported as a CSV file (``mp_history.csv``) for visualization or analysis.
 
+Python Example
+______________
+
+When built with ``-DMARMOT_BUILD_PYTHON_BINDINGS=ON``, the solver can be driven directly from Python:
+
+.. code-block:: python
+
+   import marmot
+   import numpy as np
+
+   # Define material and properties
+   properties = np.array([210e9, 0.3])
+   solver = marmot.solvers.HypoElasticSolver("LINEARELASTIC", properties)
+
+   # Define loading step
+   step = marmot.solvers.HypoElasticSolver.Step()
+   step.timeStart = 0.0
+   step.timeEnd = 1.0
+   step.dTStart = 0.1
+   step.strainIncrementTarget = np.array([0.001, 0.0, 0.0, 0.0, 0.0, 0.0])
+   step.isStrainComponentControlled = np.array([True, True, True, True, True, True])
+   step.isStressComponentControlled = np.logical_not(step.isStrainComponentControlled)
+
+   solver.addStep(step)
+   solver.solve()
+
+   for entry in solver.getHistory():
+       print(f"Time: {entry.time:.2f}, Stress XX: {entry.stress[0]:.4e}")
+
+
 Guidelines and Notes
 --------------------
 
@@ -150,5 +180,5 @@ Practical Applications
 - Educational demonstrations of hypo-elastic material response
 
 
-.. doxygenclass:: Marmot::Solvers::MarmotMaterialPointSolverHypoElastic
+.. doxygenclass:: Marmot::Materials::MaterialPointSolverHypoElastic
    :allow-dot-graphs:

@@ -1,0 +1,841 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</compoundname>
+    <basecompoundref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation" prot="public" virt="non-virtual">Marmot::Discretizations::Meshfree::Approximation</basecompoundref>
+    <derivedcompoundref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit" prot="public" virt="non-virtual">Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</derivedcompoundref>
+    <includes refid="_marmot_meshfree_reproducing_kernel_approximation_8h" local="no">MarmotMeshfreeReproducingKernelApproximation.h</includes>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a7f8b8bad3cf448ff5c15859d61825fc2" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::_dim</definition>
+        <argsstring></argsstring>
+        <name>_dim</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::_dim</qualifiedname>
+        <briefdescription>
+<para>spatial dimension <formula id="4">$ d $</formula> </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" line="85" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1af683fb5ef82e8ed68d85c77be72bf92b" prot="protected" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::_desiredCompletenessOrder</definition>
+        <argsstring></argsstring>
+        <name>_desiredCompletenessOrder</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::_desiredCompletenessOrder</qualifiedname>
+        <briefdescription>
+<para>requested completeness order <formula id="77">$ n $</formula> (may be reduced per point) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" line="86" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ae13c28d4dac93ef676bf2972add81183" prot="protected" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::VectorXd</type>
+        <definition>static Eigen::VectorXd Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeHVector</definition>
+        <argsstring>(const Eigen::VectorXd &amp;globalCoord, const std::vector&lt; const KernelFunction * &gt; &amp;coveringShapeFunctions, int completenessOrder)</argsstring>
+        <name>computeHVector</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeHVector</qualifiedname>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>globalCoord</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref> * &gt; &amp;</type>
+          <declname>coveringShapeFunctions</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>completenessOrder</declname>
+        </param>
+        <briefdescription>
+<para>Compute the monomial basis vector <formula id="73">$ \boldsymbol{H} $</formula> at shifted coordinates. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Wraps Math::computeMonomialBasis(); callers pass <formula id="223">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">globalCoord</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shifted coordinates <formula id="223">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula> at which the basis is evaluated (despite the name, not the global coordinates). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">coveringShapeFunctions</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Covering kernel functions (unused). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">completenessOrder</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Completeness order <formula id="77">$ n $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="231">$ \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_A) $</formula>, of size <formula id="85">$ \binom{d + n}{d} $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" line="114" column="28"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ab682ccd70a9b0b95c576f12f7ba37213" prot="protected" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::MatrixXd</type>
+        <definition>static Eigen::MatrixXd Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeHVectorGradient</definition>
+        <argsstring>(const Eigen::VectorXd &amp;globalCoord, const std::vector&lt; const KernelFunction * &gt; &amp;coveringShapeFunctions, int completenessOrder)</argsstring>
+        <name>computeHVectorGradient</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeHVectorGradient</qualifiedname>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>globalCoord</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref> * &gt; &amp;</type>
+          <declname>coveringShapeFunctions</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>completenessOrder</declname>
+        </param>
+        <briefdescription>
+<para>Compute the gradient <formula id="232">$ \partial \boldsymbol{H} / \partial x_i $</formula> of the monomial basis vector. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Wraps Math::computeMonomialBasisGradient(); callers pass <formula id="223">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula>. Since <formula id="2">$ \boldsymbol{x}_A $</formula> is fixed, the derivative with respect to the shifted coordinates equals that with respect to <formula id="5">$ \boldsymbol{x} $</formula>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">globalCoord</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shifted coordinates <formula id="223">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula> (despite the name, not the global coordinates). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">coveringShapeFunctions</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Covering kernel functions (unused). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">completenessOrder</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Completeness order <formula id="77">$ n $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Matrix of size <formula id="233">$ \binom{d + n}{d} \times d $</formula>; column <formula id="65">$ i $</formula> holds <formula id="232">$ \partial \boldsymbol{H} / \partial x_i $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" line="132" column="28"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a9795dcb299ef20e175a525e5ab6eb159" prot="protected" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::MatrixXd</type>
+        <definition>static Eigen::MatrixXd Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeMMatrix</definition>
+        <argsstring>(const Eigen::VectorXd &amp;globalCoord, const std::vector&lt; const KernelFunction * &gt; &amp;coveringShapeFunctions, int completenessOrder)</argsstring>
+        <name>computeMMatrix</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeMMatrix</qualifiedname>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>globalCoord</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref> * &gt; &amp;</type>
+          <declname>coveringShapeFunctions</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>completenessOrder</declname>
+        </param>
+        <briefdescription>
+<para>Compute the moment matrix  <formula id="234">$ \boldsymbol{M}(\boldsymbol{x}) = \sum_B \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_B)
+\boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_B) \phi_B(\boldsymbol{x}) $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">globalCoord</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Evaluation point <formula id="5">$ \boldsymbol{x} $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">coveringShapeFunctions</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Kernel functions <formula id="235">$ \phi_B $</formula> summed over (kernels that do not cover <formula id="5">$ \boldsymbol{x} $</formula> contribute zero). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">completenessOrder</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Completeness order <formula id="77">$ n $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The symmetric moment matrix, of size <formula id="236">$ \binom{d + n}{d} \times \binom{d + n}{d} $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" line="146" column="28"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a60e4bc73d9d6e32d0d74f43141d7048f" prot="protected" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::pair&lt; Eigen::MatrixXd, std::vector&lt; Eigen::MatrixXd &gt; &gt;</type>
+        <definition>static std::pair&lt; Eigen::MatrixXd, std::vector&lt; Eigen::MatrixXd &gt; &gt; Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeMMatrixAndGradient</definition>
+        <argsstring>(const Eigen::VectorXd &amp;globalCoord, const std::vector&lt; const KernelFunction * &gt; &amp;coveringShapeFunctions, int completenessOrder)</argsstring>
+        <name>computeMMatrixAndGradient</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeMMatrixAndGradient</qualifiedname>
+        <param>
+          <type>const Eigen::VectorXd &amp;</type>
+          <declname>globalCoord</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref> * &gt; &amp;</type>
+          <declname>coveringShapeFunctions</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>completenessOrder</declname>
+        </param>
+        <briefdescription>
+<para>Compute the moment matrix <formula id="68">$ \boldsymbol{M} $</formula> and its gradients <formula id="75">$ \boldsymbol{M}_{,i} $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><formula id="237">$ \boldsymbol{M}_{,i} = \sum_B ( \boldsymbol{H}_{,i} \boldsymbol{H}^T + \boldsymbol{H}
+\boldsymbol{H}_{,i}^T ) \phi_B + \boldsymbol{H} \boldsymbol{H}^T \phi_{B,i} $</formula>, with <formula id="73">$ \boldsymbol{H} $</formula> evaluated at <formula id="230">$ \boldsymbol{x} - \boldsymbol{x}_B $</formula>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">globalCoord</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Evaluation point <formula id="5">$ \boldsymbol{x} $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">coveringShapeFunctions</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Kernel functions <formula id="235">$ \phi_B $</formula> summed over. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">completenessOrder</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Completeness order <formula id="77">$ n $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Pair of <formula id="68">$ \boldsymbol{M} $</formula> and the <formula id="4">$ d $</formula> matrices <formula id="75">$ \boldsymbol{M}_{,i} $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" line="162" column="22"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a496cdc07e9e2bf86d6a303e0a44dcf9e" prot="protected" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::VectorXd</type>
+        <definition>static Eigen::VectorXd Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::H0Vector</definition>
+        <argsstring>(int sizeHVector)</argsstring>
+        <name>H0Vector</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::H0Vector</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>sizeHVector</declname>
+        </param>
+        <briefdescription>
+<para>Get <formula id="238">$ \boldsymbol{H}_0 = \boldsymbol{H}(\boldsymbol{0}) = [1, 0, \dots, 0]^T $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">sizeHVector</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of the monomial basis vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The first unit vector of the given size. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" line="172" column="28"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1aecb715dd20e218e5d92b903bd994a37e" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::ColPivHouseholderQR&lt; Eigen::MatrixXd &gt;</type>
+        <definition>Eigen::ColPivHouseholderQR&lt; Eigen::MatrixXd &gt; Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::factorizeMomentMatrix</definition>
+        <argsstring>(const Eigen::MatrixXd &amp;M, const double *coord, int nCoveringKernels) const</argsstring>
+        <name>factorizeMomentMatrix</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::factorizeMomentMatrix</qualifiedname>
+        <param>
+          <type>const Eigen::MatrixXd &amp;</type>
+          <declname>M</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>coord</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nCoveringKernels</declname>
+        </param>
+        <briefdescription>
+<para>Factorize the moment matrix <formula id="239">$ \boldsymbol{M}(\boldsymbol{x}) $</formula> and check that it is regular. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a99ec2b38ff8ef27c53faad3d7c88baba" kindref="member">checkNonSingularity()</ref> only compares the number of covering kernels with the size of the basis, which is necessary but not sufficient: for nodes in a degenerate arrangement (e.g. collinear nodes in 2D at order 1), or for a point covered by no kernel at all, <formula id="68">$ \boldsymbol{M} $</formula> is singular, and solving it would silently give shape functions without partition of unity. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">M</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Moment matrix. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">coord</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Evaluation point (for the error message). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nCoveringKernels</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of kernels covering the point (for the error message). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The column-pivoting Householder QR factorization of <computeroutput>M</computeroutput>. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::runtime_error</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if <computeroutput>M</computeroutput> is rank deficient. A common cause in 3D is a single layer of particles through the thickness: all kernel centres are coplanar, so a linear basis cannot be reproduced; use at least two layers of kernels, larger supports, or a lower completeness order. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" line="188" column="32"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a4aeb663d099a242946411c54c1a777b6" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::factorial</definition>
+        <argsstring>(int n) const</argsstring>
+        <name>factorial</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::factorial</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+<para>Compute the factorial <formula id="240">$ n! $</formula> recursively. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Non-negative integer. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><formula id="240">$ n! $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" line="197" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" bodystart="197" bodyend="203"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a99ec2b38ff8ef27c53faad3d7c88baba" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::checkNonSingularity</definition>
+        <argsstring>(int nNodes, int completenessOrder) const</argsstring>
+        <name>checkNonSingularity</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::checkNonSingularity</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>nNodes</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>completenessOrder</declname>
+        </param>
+        <briefdescription>
+<para>Check if the completeness order leads to a non-singular equation system. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Checks the necessary condition that at least as many kernels cover the point as the basis has entries, <formula id="241">$ n_\mathrm{nodes} \ge \binom{d + n}{d} $</formula>. It is not sufficient, e.g., for nodes in a degenerate (collinear, coplanar) arrangement. Always true for <formula id="242">$ n \le 0 $</formula>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">nNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of kernels covering the evaluation point. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">completenessOrder</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Completeness order <formula id="77">$ n $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>True if the condition is met. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" line="216" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" bodystart="216" bodyend="223"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a44468b35c200ffd35e24f0f0e5c34329" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::getCorrectedCompletenessOrder</definition>
+        <argsstring>(int nNodes) const</argsstring>
+        <name>getCorrectedCompletenessOrder</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::getCorrectedCompletenessOrder</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>nNodes</declname>
+        </param>
+        <briefdescription>
+<para>Compute the corrected completeness order. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Depending on the actual number of covering kernel functions, the desired completeness order might not be possible. Starting from the desired order, the order is decreased until <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a99ec2b38ff8ef27c53faad3d7c88baba" kindref="member">checkNonSingularity()</ref> holds.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">nNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of kernels covering the evaluation point. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The highest order <formula id="89">$ \le $</formula> the desired one for which <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a99ec2b38ff8ef27c53faad3d7c88baba" kindref="member">checkNonSingularity()</ref> holds. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" line="234" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" bodystart="234" bodyend="240"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1abe54a98e7215e69a0c164107740713bd" prot="protected" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>const std::vector&lt; int &gt;</type>
+        <definition>const std::vector&lt; int &gt; Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::findCoveringKernelFunctionIndices</definition>
+        <argsstring>(const double *coord, const std::vector&lt; const KernelFunction * &gt; &amp;kernelFunctions) const</argsstring>
+        <name>findCoveringKernelFunctionIndices</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::findCoveringKernelFunctionIndices</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>coord</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref> * &gt; &amp;</type>
+          <declname>kernelFunctions</declname>
+        </param>
+        <briefdescription>
+<para>Find the kernels covering a point. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">coord</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Evaluation point <formula id="5">$ \boldsymbol{x} $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">kernelFunctions</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Candidate kernel functions. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Indices (into <computeroutput>kernelFunctions</computeroutput>) of the kernels with <formula id="243">$ |\phi_A(\boldsymbol{x})| &gt; 10^{-14} $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" line="248" column="23"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a28e26acee1cb28eae12e18e618cf19ef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::ReproducingKernelApproximation</definition>
+        <argsstring>(int dim, int completenessOrder)</argsstring>
+        <name>ReproducingKernelApproximation</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::ReproducingKernelApproximation</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>dim</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>completenessOrder</declname>
+        </param>
+        <briefdescription>
+<para>Construct the approximation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Spatial dimension <formula id="4">$ d $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">completenessOrder</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Desired completeness order <formula id="77">$ n $</formula> (order of the reproduced polynomials). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" line="258" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ac593575e8f665c04c43386608c205326" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::~ReproducingKernelApproximation</definition>
+        <argsstring>()=default</argsstring>
+        <name>~ReproducingKernelApproximation</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::~ReproducingKernelApproximation</qualifiedname>
+        <briefdescription>
+<para>Default destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" line="261" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1aada5d6fc85de09ef69eca8839acc6f5a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeShapeFunctions</definition>
+        <argsstring>(const double *coord, const std::vector&lt; const KernelFunction * &gt; &amp;kernelFunctions, double *shapeFunctionValues) const override</argsstring>
+        <name>computeShapeFunctions</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeShapeFunctions</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a71c2229ec0a53a64d5374b87238a80e4">computeShapeFunctions</reimplements>
+        <param>
+          <type>const double *</type>
+          <declname>coord</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref> * &gt; &amp;</type>
+          <declname>kernelFunctions</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>shapeFunctionValues</declname>
+        </param>
+        <briefdescription>
+<para>Compute the RK shape function values <formula id="244">$ \Psi_A = \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_A) \boldsymbol{b} \phi_A $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">coord</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Evaluation point <formula id="5">$ \boldsymbol{x} $</formula> (length <formula id="4">$ d $</formula>). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">kernelFunctions</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <formula id="79">$ n_\mathrm{c} $</formula> candidate kernel functions. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">shapeFunctionValues</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shape function values (length <formula id="79">$ n_\mathrm{c} $</formula>); zero for candidates that do not cover <formula id="5">$ \boldsymbol{x} $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" line="271" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a9eaafffc7beceb343a869bd5e6ffaaf6" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeShapeFunctionGradients</definition>
+        <argsstring>(const double *coord, const std::vector&lt; const KernelFunction * &gt; &amp;kernelFunctions, double *shapeFunctionValueGradients) const override</argsstring>
+        <name>computeShapeFunctionGradients</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeShapeFunctionGradients</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1ac7f184812fc3d613e890e7ee8fed44c3">computeShapeFunctionGradients</reimplements>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1af43334dd01f396da72483f6e2a308eb8">computeShapeFunctionGradients</reimplementedby>
+        <param>
+          <type>const double *</type>
+          <declname>coord</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref> * &gt; &amp;</type>
+          <declname>kernelFunctions</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>shapeFunctionValueGradients</declname>
+        </param>
+        <briefdescription>
+<para>Not implemented; use <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a39ef3534db694f1919fbbdabfad54fef" kindref="member">computeShapeFunctionsAndGradients()</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">coord</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Evaluation point. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">kernelFunctions</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Candidate kernel functions. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">shapeFunctionValueGradients</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Not written. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::runtime_error</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>always. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" line="282" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a39ef3534db694f1919fbbdabfad54fef" prot="public" static="no" const="yes" explicit="no" inline="no" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeShapeFunctionsAndGradients</definition>
+        <argsstring>(const double *coord, const std::vector&lt; const KernelFunction * &gt; &amp;kernelFunctions, double *shapeFunctionValues, double *shapeFunctionValueGradients_ColMajor) const override</argsstring>
+        <name>computeShapeFunctionsAndGradients</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation::computeShapeFunctionsAndGradients</qualifiedname>
+        <reimplements refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a5cd259cfef7eb185547a38b2e09cdfc6">computeShapeFunctionsAndGradients</reimplements>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit_1ac284e440e26218f9a9f89c2385148662">computeShapeFunctionsAndGradients</reimplementedby>
+        <param>
+          <type>const double *</type>
+          <declname>coord</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref> * &gt; &amp;</type>
+          <declname>kernelFunctions</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>shapeFunctionValues</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>shapeFunctionValueGradients_ColMajor</declname>
+        </param>
+        <briefdescription>
+<para>Compute the RK shape function values and their explicit (exact) gradients <formula id="245">$ \Psi_{A,i} $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">coord</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Evaluation point <formula id="5">$ \boldsymbol{x} $</formula> (length <formula id="4">$ d $</formula>). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">kernelFunctions</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <formula id="79">$ n_\mathrm{c} $</formula> candidate kernel functions. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">shapeFunctionValues</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Shape function values (length <formula id="79">$ n_\mathrm{c} $</formula>); zero for candidates that do not cover <formula id="5">$ \boldsymbol{x} $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">shapeFunctionValueGradients_ColMajor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Gradients, column-major <formula id="80">$ d \times n_\mathrm{c} $</formula> (entry <formula id="81">$ i + d A $</formula> is <formula id="245">$ \Psi_{A,i} $</formula>); zero for non-covering candidates. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::runtime_error</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if the basis is empty (negative completeness order). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" line="296" column="18"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Reproducing kernel (RK) approximation with explicit (direct) shape function gradients. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The shape function of node <formula id="1">$ A $</formula> is the kernel <formula id="163">$ \phi_A $</formula> (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref>) multiplied by a correction function,    <formula id="222">\[  \Psi_A(\boldsymbol{x}) = \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_A)\, \boldsymbol{b}(\boldsymbol{x})\,
+  \phi_A(\boldsymbol{x}),
+\]</formula> where <formula id="73">$ \boldsymbol{H} $</formula> is the vector of all monomials up to the completeness order <formula id="77">$ n $</formula> (Math::computeMonomialBasis(), first entry <formula id="102">$ 1 $</formula>) evaluated at the shifted coordinates <formula id="223">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula>. The coefficient vector <formula id="224">$ \boldsymbol{b} $</formula> solves      <formula id="225">\[  \boldsymbol{M}(\boldsymbol{x})\, \boldsymbol{b}(\boldsymbol{x}) = \boldsymbol{H}_0,
+  \qquad \boldsymbol{M}(\boldsymbol{x}) = \sum_{B} \boldsymbol{H}(\boldsymbol{x} - \boldsymbol{x}_B)\,
+  \boldsymbol{H}^T(\boldsymbol{x} - \boldsymbol{x}_B)\, \phi_B(\boldsymbol{x}),
+  \qquad \boldsymbol{H}_0 = \boldsymbol{H}(\boldsymbol{0}) = [1, 0, \dots, 0]^T,
+\]</formula> with the moment matrix <formula id="68">$ \boldsymbol{M} $</formula> summed over the kernels covering <formula id="5">$ \boldsymbol{x} $</formula>. This enforces the reproducing conditions  <formula id="226">$ \sum_A \Psi_A(\boldsymbol{x})\, (\boldsymbol{x} - \boldsymbol{x}_A)^{\boldsymbol{\alpha}} =
+\delta_{\boldsymbol{\alpha}\boldsymbol{0}} $</formula>, or equivalently  <formula id="227">$ \sum_A \Psi_A(\boldsymbol{x})\, \boldsymbol{x}_A^{\boldsymbol{\alpha}} = \boldsymbol{x}^{\boldsymbol{\alpha}}
+$</formula>, for all multi-indices <formula id="84">$ |\boldsymbol{\alpha}| \le n $</formula>; in particular, the shape functions form a partition of unity. The continuity of <formula id="3">$ \Psi_A $</formula> is that of the kernels.</para>
+<para>The gradients are the exact derivatives of <formula id="3">$ \Psi_A $</formula> (product rule),       <formula id="228">\[  \Psi_{A,i} = \left( \boldsymbol{b}_{,i}^T \boldsymbol{H} + \boldsymbol{b}^T \boldsymbol{H}_{,i} \right)
+  \phi_A + \boldsymbol{b}^T \boldsymbol{H}\, \phi_{A,i},
+  \qquad \boldsymbol{b}_{,i} = -\boldsymbol{M}^{-1} \boldsymbol{M}_{,i}\, \boldsymbol{b},
+  \qquad \boldsymbol{M}_{,i} = \sum_B \left( \boldsymbol{H}_{,i} \boldsymbol{H}^T + \boldsymbol{H}
+  \boldsymbol{H}_{,i}^T \right) \phi_B + \boldsymbol{H} \boldsymbol{H}^T \phi_{B,i},
+\]</formula> with <formula id="229">$ (\bullet)_{,i} = \partial (\bullet) / \partial x_i $</formula> and <formula id="73">$ \boldsymbol{H} $</formula> evaluated at <formula id="223">$ \boldsymbol{x} - \boldsymbol{x}_A $</formula> (resp. <formula id="230">$ \boldsymbol{x} - \boldsymbol{x}_B $</formula>). The linear systems are solved with a column-pivoting Householder QR decomposition of <formula id="68">$ \boldsymbol{M} $</formula>, which is computed once per evaluation point.</para>
+<para>If fewer kernels cover <formula id="5">$ \boldsymbol{x} $</formula> than the basis has entries, <formula id="68">$ \boldsymbol{M} $</formula> is singular; the completeness order is then reduced for this evaluation point (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a44468b35c200ffd35e24f0f0e5c34329" kindref="member">getCorrectedCompletenessOrder()</ref>).</para>
+<para>See <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit" kindref="compound">ReproducingKernelApproximationImplicit</ref> for the variant with implicit gradients. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Marmot::Discretizations::Meshfree::Approximation</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation"/>
+      </node>
+      <node id="1">
+        <label>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Marmot::Discretizations::Meshfree::ReproducingKernelApproximationImplicit</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_implicit"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Marmot::Discretizations::Meshfree::Approximation</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation"/>
+      </node>
+      <node id="1">
+        <label>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" line="82" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMeshfreeReproducingKernelApproximation.h" bodystart="82" bodyend="300"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1af683fb5ef82e8ed68d85c77be72bf92b" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</scope><name>_desiredCompletenessOrder</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a7f8b8bad3cf448ff5c15859d61825fc2" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</scope><name>_dim</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a39b7eaccea5612f607fcfdb13e9dc8ac" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</scope><name>Approximation</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a99ec2b38ff8ef27c53faad3d7c88baba" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</scope><name>checkNonSingularity</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ae13c28d4dac93ef676bf2972add81183" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</scope><name>computeHVector</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ab682ccd70a9b0b95c576f12f7ba37213" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</scope><name>computeHVectorGradient</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a9795dcb299ef20e175a525e5ab6eb159" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</scope><name>computeMMatrix</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a60e4bc73d9d6e32d0d74f43141d7048f" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</scope><name>computeMMatrixAndGradient</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a9eaafffc7beceb343a869bd5e6ffaaf6" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</scope><name>computeShapeFunctionGradients</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1aada5d6fc85de09ef69eca8839acc6f5a" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</scope><name>computeShapeFunctions</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a39ef3534db694f1919fbbdabfad54fef" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</scope><name>computeShapeFunctionsAndGradients</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a4aeb663d099a242946411c54c1a777b6" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</scope><name>factorial</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1aecb715dd20e218e5d92b903bd994a37e" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</scope><name>factorizeMomentMatrix</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1abe54a98e7215e69a0c164107740713bd" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</scope><name>findCoveringKernelFunctionIndices</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a44468b35c200ffd35e24f0f0e5c34329" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</scope><name>getCorrectedCompletenessOrder</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a496cdc07e9e2bf86d6a303e0a44dcf9e" prot="protected" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</scope><name>H0Vector</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1a28e26acee1cb28eae12e18e618cf19ef" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</scope><name>ReproducingKernelApproximation</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation_1a391fe96951678125219c61e07b51d0d0" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</scope><name>~Approximation</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation_1ac593575e8f665c04c43386608c205326" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::ReproducingKernelApproximation</scope><name>~ReproducingKernelApproximation</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

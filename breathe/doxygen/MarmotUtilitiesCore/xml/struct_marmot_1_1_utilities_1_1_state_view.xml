@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_utilities_1_1_state_view" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Utilities::StateView</compoundname>
+    <includes refid="_marmot_utils_8h" local="no">MarmotUtils.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_utilities_1_1_state_view_1a9d72a4ba8478317fa3683eab16db179e" prot="public" static="no" mutable="no">
+        <type>double *</type>
+        <definition>double* Marmot::Utilities::StateView::stateLocation</definition>
+        <argsstring></argsstring>
+        <name>stateLocation</name>
+        <qualifiedname>Marmot::Utilities::StateView::stateLocation</qualifiedname>
+        <briefdescription>
+<para>Pointer to the first element of the state variable block. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotUtils.h" line="39" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotUtils.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_utilities_1_1_state_view_1a164473e1c6054bc10f693f33d66d854d" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int Marmot::Utilities::StateView::stateSize</definition>
+        <argsstring></argsstring>
+        <name>stateSize</name>
+        <qualifiedname>Marmot::Utilities::StateView::stateSize</qualifiedname>
+        <briefdescription>
+<para>Number of <computeroutput>double</computeroutput> values in the state variable block. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotUtils.h" line="40" column="13" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotUtils.h" bodystart="40" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Structure to hold a pointer to the state location and its size. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This structure is used to provide a view of the state variables in a finite element or material, allowing access to the state data without copying it. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotUtils.h" line="38" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotUtils.h" bodystart="38" bodyend="41"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_utilities_1_1_state_view_1a9d72a4ba8478317fa3683eab16db179e" prot="public" virt="non-virtual"><scope>Marmot::Utilities::StateView</scope><name>stateLocation</name></member>
+      <member refid="struct_marmot_1_1_utilities_1_1_state_view_1a164473e1c6054bc10f693f33d66d854d" prot="public" virt="non-virtual"><scope>Marmot::Utilities::StateView</scope><name>stateSize</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

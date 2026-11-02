@@ -1,29 +1,31 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
   <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_kinematics_1_1_velocity_gradient" kind="namespace" language="C++">
     <compoundname>Marmot::ContinuumMechanics::Kinematics::VelocityGradient</compoundname>
     <sectiondef kind="var">
-      <memberdef kind="variable" id="_marmot_kinematics_8h_1a531f6b3c1d92095864941b0c3d5133ff" prot="public" static="no" extern="yes" mutable="no">
+      <memberdef kind="variable" id="_marmot_kinematics_8h_1a531f6b3c1d92095864941b0c3d5133ff" prot="public" static="no" mutable="no">
         <type>const Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 3, 3, 3, 3 &gt; &gt;</type>
         <definition>const Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 3, 3, 3, 3 &gt; &gt; Marmot::ContinuumMechanics::Kinematics::VelocityGradient::dOmega_dVelocityGradient</definition>
         <argsstring></argsstring>
         <name>dOmega_dVelocityGradient</name>
         <qualifiedname>Marmot::ContinuumMechanics::Kinematics::VelocityGradient::dOmega_dVelocityGradient</qualifiedname>
+        <initializer>= initializeDOmega_dVelocityGradient()</initializer>
         <briefdescription>
-<para>A 4th-order tensor representing the derivative of the spin tensor <formula id="105">$ \Omega $</formula> with respect to the velocity gradient tensor. </para>
+<para>A 4th-order tensor representing the derivative of the spin tensor <formula id="303">$ \Omega $</formula> with respect to the velocity gradient tensor. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" line="55" column="43" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" declline="55" declcolumn="43"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" line="96" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" bodystart="96" bodyend="-1"/>
       </memberdef>
-      <memberdef kind="variable" id="_marmot_kinematics_8h_1ae337551640a03a2ea5bd5ed15f63961c" prot="public" static="no" extern="yes" mutable="no">
+      <memberdef kind="variable" id="_marmot_kinematics_8h_1ae337551640a03a2ea5bd5ed15f63961c" prot="public" static="no" mutable="no">
         <type>const Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 6, 3, 3 &gt; &gt;</type>
         <definition>const Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 6, 3, 3 &gt; &gt; Marmot::ContinuumMechanics::Kinematics::VelocityGradient::dStretchingRate_dVelocityGradient</definition>
         <argsstring></argsstring>
         <name>dStretchingRate_dVelocityGradient</name>
         <qualifiedname>Marmot::ContinuumMechanics::Kinematics::VelocityGradient::dStretchingRate_dVelocityGradient</qualifiedname>
+        <initializer>= initializeDStretchingRate_dVelocityGradient()</initializer>
         <briefdescription>
 <para>Tensor representing the derivative of the stretching rate with respect to the velocity gradient. </para>
         </briefdescription>
@@ -31,13 +33,51 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" line="58" column="43" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" declline="58" declcolumn="43"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" line="100" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" bodystart="100" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_kinematics_8h_1aabbf2ec0f43908c47d6b61b4b464c365" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 3, 3, 3, 3 &gt; &gt;</type>
+        <definition>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 3, 3, 3, 3 &gt; &gt; Marmot::ContinuumMechanics::Kinematics::VelocityGradient::initializeDOmega_dVelocityGradient</definition>
+        <argsstring>()</argsstring>
+        <name>initializeDOmega_dVelocityGradient</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Kinematics::VelocityGradient::initializeDOmega_dVelocityGradient</qualifiedname>
+        <briefdescription>
+<para>Computes <formula id="301">$ \frac{\partial \Omega}{\partial l} $</formula> once, for initializing dOmega_dVelocityGradient. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Defined in the header: dOmega_dVelocityGradient is an inline variable, which every translation unit including this header instantiates, so its initializer must be available there, too (see MarmotPortability.h). <simplesect kind="return"><para>The 4th-order derivative of the spin tensor with respect to the velocity gradient. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" line="56" column="35" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" bodystart="56" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_kinematics_8h_1a03a16760f68f9df64d3caa6924b12233" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 6, 3, 3 &gt; &gt;</type>
+        <definition>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 6, 3, 3 &gt; &gt; Marmot::ContinuumMechanics::Kinematics::VelocityGradient::initializeDStretchingRate_dVelocityGradient</definition>
+        <argsstring>()</argsstring>
+        <name>initializeDStretchingRate_dVelocityGradient</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Kinematics::VelocityGradient::initializeDStretchingRate_dVelocityGradient</qualifiedname>
+        <briefdescription>
+<para>Computes the derivative of the stretching rate with respect to the velocity gradient once, for initializing dStretchingRate_dVelocityGradient. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Defined in the header, for the same reason as initializeDOmega_dVelocityGradient. <simplesect kind="return"><para>The <formula id="302">$ 6 \times 3 \times 3 $</formula> derivative, stretching rate in engineering Voigt notation. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" line="75" column="35" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" bodystart="75" bodyend="89"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" line="50" column="5"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotKinematics.h" line="50" column="3"/>
   </compounddef>
 </doxygen>

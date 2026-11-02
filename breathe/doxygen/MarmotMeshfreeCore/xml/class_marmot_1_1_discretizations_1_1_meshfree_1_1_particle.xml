@@ -1,0 +1,1615 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Marmot::Discretizations::Meshfree::Particle</compoundname>
+    <derivedcompoundref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle" prot="public" virt="non-virtual">Marmot::Discretizations::Meshfree::GenericParticle&lt; nDim &gt;</derivedcompoundref>
+    <derivedcompoundref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle" prot="public" virt="non-virtual">Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;</derivedcompoundref>
+    <includes refid="_marmot_particle_8h" local="no">MarmotParticle.h</includes>
+    <sectiondef kind="user-defined">
+      <header>Variationally consistent integration (VCI)</header>
+      <description><para>The VCI method of Chen, Hillman and Rüter (2013) corrects the gradients of the test functions, <formula id="13">$ \partial T_A / \partial Y_i = \partial N_A / \partial Y_i + \chi_A \sum_C \eta_{AiC}\, P_C $</formula>, such that the integration by parts is exact under the numerical integration for a polynomial basis <formula id="14">$ P_C(Y) $</formula> (the complete monomials up to the VCI order); <formula id="15">$ \chi_A $</formula> is the indicator of the support of kernel function <formula id="1">$ A $</formula>,    <formula id="16">\[  \int_\Omega \frac{\partial T_A}{\partial Y_i} P_C \, dV + \int_\Omega T_A \frac{\partial P_C}{\partial Y_i} \,
+dV = \int_{\partial\Omega} T_A P_C n_i \, dA .
+\]</formula> The particles provide their local contributions to these integrals, all arrays are row-major, sized <formula id="17">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula> (index <formula id="18">$ AiC $</formula>) or <formula id="19">$ n_{\text{nodes}} \times n_C \times n_C $</formula> (index <formula id="20">$ ACD $</formula>), and contributions are accumulated (+=). The host framework assembles them over all particles per node <formula id="1">$ A $</formula> and solves <formula id="21">$ \sum_D M_{ACD}\, \eta_{AiD} = R_{AiC} $</formula> with the residual  <formula id="22">$ R_{AiC} = \int_{\partial\Omega} T_A P_C n_i\,dA - \int_\Omega \partial_i T_A\, P_C\,dV
+- \int_\Omega T_A\, \partial_i P_C\,dV $</formula>. </para>
+</description>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ac61ea90a6244b476833957aca2604685" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>int</type>
+        <definition>virtual int Marmot::Discretizations::Meshfree::Particle::vci_getNumberOfConstraints</definition>
+        <argsstring>()=0</argsstring>
+        <name>vci_getNumberOfConstraints</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::vci_getNumberOfConstraints</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a3f917f365fd52aae1e84384d91fb9774">vci_getNumberOfConstraints</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a5ad7e00f0a5438457d5d924de567b29e">vci_getNumberOfConstraints</reimplementedby>
+        <briefdescription>
+<para>Get the number of VCI constraints <formula id="23">$ n_C $</formula> (the size of the polynomial basis). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The number of VCI constraints. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="370" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a8473a2bb44dcfc477ea5e1b5b43f1bf1" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::vci_compute_Test_P_BoundaryIntegral</definition>
+        <argsstring>(double *R_AiC_RowMajor, const double *boundarySurfaceVector, int boundaryFaceID)=0</argsstring>
+        <name>vci_compute_Test_P_BoundaryIntegral</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::vci_compute_Test_P_BoundaryIntegral</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a4849737164c12f16c82d3351aaf12d12">vci_compute_Test_P_BoundaryIntegral</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a0b7dd7a486a66db04bb3344db8cc7633">vci_compute_Test_P_BoundaryIntegral</reimplementedby>
+        <param>
+          <type>double *</type>
+          <declname>R_AiC_RowMajor</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>boundarySurfaceVector</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>boundaryFaceID</declname>
+        </param>
+        <briefdescription>
+<para>Accumulate the boundary integral <formula id="24">$ \int_{\partial\Omega} T_A P_C n_i \, dA $</formula> of a boundary face. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">R_AiC_RowMajor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Row-major array <formula id="17">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">boundarySurfaceVector</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Outward boundary surface vector <formula id="25">$ n\,dA $</formula> given by the host. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">boundaryFaceID</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of the particle face on the boundary (1-based). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="378" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ab3a36559ef36ab4c6450503006396da6" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::vci_compute_TestGradient_P_Integral</definition>
+        <argsstring>(double *R_AiC_RowMajow)=0</argsstring>
+        <name>vci_compute_TestGradient_P_Integral</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::vci_compute_TestGradient_P_Integral</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a8150f44feb4d2160f1d87ac4600710b6">vci_compute_TestGradient_P_Integral</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a99bee7eecce18ead023d8b8605b8dbaf">vci_compute_TestGradient_P_Integral</reimplementedby>
+        <param>
+          <type>double *</type>
+          <declname>R_AiC_RowMajow</declname>
+        </param>
+        <briefdescription>
+<para>Accumulate the volume integral <formula id="26">$ \int_\Omega \partial T_A / \partial Y_i \, P_C \, dV $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">R_AiC_RowMajow</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Row-major array <formula id="17">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="386" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a8d50e229b42e2c88d072fad3fd9296d9" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::vci_compute_Test_PGradient_Integral</definition>
+        <argsstring>(double *R_AiC_RowMajor)=0</argsstring>
+        <name>vci_compute_Test_PGradient_Integral</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::vci_compute_Test_PGradient_Integral</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ac791911a6e9d21b9d30dcc40baef21c2">vci_compute_Test_PGradient_Integral</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a4603204624e60dc670790c7d6469cd3c">vci_compute_Test_PGradient_Integral</reimplementedby>
+        <param>
+          <type>double *</type>
+          <declname>R_AiC_RowMajor</declname>
+        </param>
+        <briefdescription>
+<para>Accumulate the volume integral <formula id="27">$ \int_\Omega T_A \, \partial P_C / \partial Y_i \, dV $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">R_AiC_RowMajor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Row-major array <formula id="17">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="392" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ad08bba752f036670caa1b9d23e28c15a" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::vci_compute_MMatrix</definition>
+        <argsstring>(double *M_ACD_RowMajor)=0</argsstring>
+        <name>vci_compute_MMatrix</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::vci_compute_MMatrix</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ab3589dd2ec5a93ebe4f73bde53b4963d">vci_compute_MMatrix</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1afaecc5e69b0d02884e7952eee96e4a8e">vci_compute_MMatrix</reimplementedby>
+        <param>
+          <type>double *</type>
+          <declname>M_ACD_RowMajor</declname>
+        </param>
+        <briefdescription>
+<para>Accumulate the moment matrix <formula id="28">$ M_{ACD} = \int_\Omega \chi_A P_C P_D \, dV $</formula> of the correction. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">M_ACD_RowMajor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Row-major array <formula id="19">$ n_{\text{nodes}} \times n_C \times n_C $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="398" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ad3dd12ee8f542b0a0130dd9a243c8d31" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::vci_assignTestFunctionCorrectionTerms</definition>
+        <argsstring>(const double *eta_AiC_RowMajor)=0</argsstring>
+        <name>vci_assignTestFunctionCorrectionTerms</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::vci_assignTestFunctionCorrectionTerms</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ad83d3ce1b30df998ca5561f638d7604b">vci_assignTestFunctionCorrectionTerms</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1af6703ceb8e3267430add331f237c5edc">vci_assignTestFunctionCorrectionTerms</reimplementedby>
+        <param>
+          <type>const double *</type>
+          <declname>eta_AiC_RowMajor</declname>
+        </param>
+        <briefdescription>
+<para>Assign the correction terms to the gradients of the test functions. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">eta_AiC_RowMajor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Row-major array <formula id="17">$ n_{\text{nodes}} \times n_{\text{dim}} \times n_C $</formula> of the coefficients <formula id="29">$ \eta_{AiC} $</formula> for the nodes of this particle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="405" column="18"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a3e0a311f869ebad9df640e91a74c88a8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Discretizations::Meshfree::Particle::Particle</definition>
+        <argsstring>()=default</argsstring>
+        <name>Particle</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::Particle</qualifiedname>
+        <briefdescription>
+<para>Default constructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="92" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aca1f817c1a3d7ac8e66afe6f0310e8dc" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Marmot::Discretizations::Meshfree::Particle::~Particle</definition>
+        <argsstring>()=default</argsstring>
+        <name>~Particle</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::~Particle</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="95" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a054d08b1ecbb992b83a65d0cb0fa1986" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::setProperties</definition>
+        <argsstring>(const double *properties, int nProperties)=0</argsstring>
+        <name>setProperties</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::setProperties</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a373cd53965f7ccdce967e07094732867">setProperties</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a8155719104a1fd943d126d82804b65d3">setProperties</reimplementedby>
+        <param>
+          <type>const double *</type>
+          <declname>properties</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nProperties</declname>
+        </param>
+        <briefdescription>
+<para>Assign all the properties of the particle. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The properties need to follow the order of the property names returned by <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6185a880ed7156aa4b2e8cd2584fea72" kindref="member">getPropertyNames()</ref>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">properties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Array of property values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nProperties</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of values in <computeroutput>properties</computeroutput>; must equal the number of property names. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="103" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aa96fbc7b18e0e211a93a8494cdd21978" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::setProperty</definition>
+        <argsstring>(const std::string &amp;propertyName, const double *property)=0</argsstring>
+        <name>setProperty</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::setProperty</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a834578ad98e8767909b63be9a2ef323f">setProperty</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a4bd33f1e93ff3dff4dc14520c2c48dc6">setProperty</reimplementedby>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>propertyName</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>property</declname>
+        </param>
+        <briefdescription>
+<para>Assign a single property of the particle by its name. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">propertyName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the property, one of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6185a880ed7156aa4b2e8cd2584fea72" kindref="member">getPropertyNames()</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">property</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the value of the property. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="110" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6185a880ed7156aa4b2e8cd2584fea72" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::vector&lt; std::string &gt;</type>
+        <definition>virtual std::vector&lt; std::string &gt; Marmot::Discretizations::Meshfree::Particle::getPropertyNames</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getPropertyNames</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::getPropertyNames</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a3218b9b223ea1c67b0ecfd0076ca244f">getPropertyNames</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1aefa30271b0d75afc9fca47d8da24f6d6">getPropertyNames</reimplementedby>
+        <briefdescription>
+<para>Get the names of all the valid properties of the particle. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The order of the names is the order expected by <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a054d08b1ecbb992b83a65d0cb0fa1986" kindref="member">setProperties()</ref>. <simplesect kind="return"><para>The property names. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="117" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6cc5735e24f3c305aa6a85219908527a" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::assignMeshfreeKernelFunctions</definition>
+        <argsstring>(const std::vector&lt; const KernelFunction * &gt; &amp;kernelFunctions)=0</argsstring>
+        <name>assignMeshfreeKernelFunctions</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::assignMeshfreeKernelFunctions</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a1527cfdf1ae129c90cf9b634ea95cab6">assignMeshfreeKernelFunctions</reimplementedby>
+        <param>
+          <type>const std::vector&lt; const <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref> * &gt; &amp;</type>
+          <declname>kernelFunctions</declname>
+        </param>
+        <briefdescription>
+<para>Assign the meshfree kernel functions (the nodes) that interact with this particle. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Implementations store the kernel functions and evaluate the shape functions and their gradients (trial and test functions) for the current configuration of the particle. The order of <computeroutput>kernelFunctions</computeroutput> defines the node order of the residual vector and the stiffness matrix. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">kernelFunctions</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Kernel functions whose support covers the particle. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="126" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a695b0ec37ec3e51e766bb9b12dd38813" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::assignStateVars</definition>
+        <argsstring>(double *stateVars, int nStateVars)=0</argsstring>
+        <name>assignStateVars</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::assignStateVars</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ac755a40084f1934d535d31e1b3bdc868">assignStateVars</reimplementedby>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nStateVars</declname>
+        </param>
+        <briefdescription>
+<para>Assign the memory block that holds the state variables of the particle. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to a block of (at least) <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1afee420ce02ef298b0baee0e7c94d2c3e" kindref="member">getNumberOfRequiredStateVars()</ref> doubles, owned by the host framework. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nStateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of the block. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="134" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a13850f7f8c70e4bf1472164a059c6732" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::initializeYourself</definition>
+        <argsstring>()=0</argsstring>
+        <name>initializeYourself</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::initializeYourself</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a299cdd706ba8efa374d8da87d749265a">initializeYourself</reimplementedby>
+        <briefdescription>
+<para>Initialize the state variables (e.g., the deformation gradient to identity) and the material. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="137" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::acceptStateAndPosition</definition>
+        <argsstring>()=0</argsstring>
+        <name>acceptStateAndPosition</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::acceptStateAndPosition</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a5634dfba8f4d884f283b61dd7cb54858">acceptStateAndPosition</reimplementedby>
+        <briefdescription>
+<para>Accept the current state after a converged increment and move the particle to the new configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The configuration reached becomes the reference intermediate configuration <formula id="10">$ Y $</formula> of the next increment (updated position, volume, geometry and, for VCI, the monomial basis). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="144" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a2d270d98f07b9888e1aa7cd29f0262a5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>Marmot::Utilities::StateView</type>
+        <definition>virtual Marmot::Utilities::StateView Marmot::Discretizations::Meshfree::Particle::getStateView</definition>
+        <argsstring>(const std::string &amp;stateName, int qp) const =0</argsstring>
+        <name>getStateView</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::getStateView</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1ab411ab07b9238c4e6b672f03d4d05fa9">getStateView</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a6639cd17cee346754bff1970010e0144">getStateView</reimplementedby>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>stateName</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>qp</declname>
+        </param>
+        <briefdescription>
+<para>Get a view on a named state (e.g., a state variable of the material point). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">stateName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the state. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">qp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of the evaluation point or subdomain; ignored by particles with a single material point. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A Marmot::Utilities::StateView (pointer and size) into the state storage. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="152" column="42"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1afee420ce02ef298b0baee0e7c94d2c3e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>int</type>
+        <definition>virtual int Marmot::Discretizations::Meshfree::Particle::getNumberOfRequiredStateVars</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getNumberOfRequiredStateVars</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::getNumberOfRequiredStateVars</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a24d00d4c19dd6c03da3ff8c819d689a3">getNumberOfRequiredStateVars</reimplementedby>
+        <briefdescription>
+<para>Get the number of state variables (doubles) required by the particle. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The size of the block to be passed to <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a695b0ec37ec3e51e766bb9b12dd38813" kindref="member">assignStateVars()</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="156" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a70b36abd0a63c5f7b18ad01ccc96c6c7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>int</type>
+        <definition>virtual int Marmot::Discretizations::Meshfree::Particle::getDimension</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getDimension</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::getDimension</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1aa3ed7cf4af833f966615ccda4a8c303d">getDimension</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a22c3e2a15f5b660ba54d9bb9b21c91c3">getDimension</reimplementedby>
+        <briefdescription>
+<para>Get the spatial dimension of the particle. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>2 or 3. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="160" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1acb5a8ce239ee26bf79158c31d77068a7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>int</type>
+        <definition>virtual int Marmot::Discretizations::Meshfree::Particle::getNumberOfVertices</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getNumberOfVertices</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::getNumberOfVertices</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1aa981aea7009898cda963c186462e6b10">getNumberOfVertices</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a24f2feaa08e0ae7443cf26f94afbf86a">getNumberOfVertices</reimplementedby>
+        <briefdescription>
+<para>Get the number of vertices of the particle domain (1 for a point particle). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The number of vertices. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="164" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a079069bee25014d8ffbc1a533c563bab" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>double</type>
+        <definition>virtual double Marmot::Discretizations::Meshfree::Particle::getVolumeUndeformed</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getVolumeUndeformed</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::getVolumeUndeformed</qualifiedname>
+        <briefdescription>
+<para>Get the volume of the particle in the undeformed (initial) configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The undeformed volume. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="168" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a1258440ecb02c95a4e980b554c2c4da4" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::string</type>
+        <definition>virtual std::string Marmot::Discretizations::Meshfree::Particle::getParticleShape</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getParticleShape</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::getParticleShape</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1aeec7464e8d87a2f925eebfd9b6bfbec2">getParticleShape</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a1a8686f24076310d00e85207fa9a6e9e">getParticleShape</reimplementedby>
+        <briefdescription>
+<para>Get the shape of the particle (e.g., point, quad, hexa) in Ensight Gold notation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The shape name. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="172" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a750a36251603e02b97cf15bf06a3cba1" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::getVisualizationVertexCoordinates</definition>
+        <argsstring>(double *coordinates) const =0</argsstring>
+        <name>getVisualizationVertexCoordinates</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::getVisualizationVertexCoordinates</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a1778204a3ee3ea3512506ddfcbdd043e">getVisualizationVertexCoordinates</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a564c9b52e297c301f8021bca8f81096c">getVisualizationVertexCoordinates</reimplementedby>
+        <param>
+          <type>double *</type>
+          <declname>coordinates</declname>
+        </param>
+        <briefdescription>
+<para>Get the coordinates of the vertices of the particle (e.g., the nodes of a quadrilateral) for visualization. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">coordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Array of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a70b36abd0a63c5f7b18ad01ccc96c6c7" kindref="member">getDimension()</ref> * <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1acb5a8ce239ee26bf79158c31d77068a7" kindref="member">getNumberOfVertices()</ref> values, vertex by vertex. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="177" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a09ac7d6f8b5b73438dfd75f5dae59504" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::getVertexCoordinates</definition>
+        <argsstring>(double *coordinates) const =0</argsstring>
+        <name>getVertexCoordinates</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::getVertexCoordinates</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a70d9aec64aee65cff563850a7f0480e9">getVertexCoordinates</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a0962f3e0aed0181887db0a86092740a6">getVertexCoordinates</reimplementedby>
+        <param>
+          <type>double *</type>
+          <declname>coordinates</declname>
+        </param>
+        <briefdescription>
+<para>Get the coordinates of the vertices of the particle (e.g., the nodes of a quadrilateral), e.g., for testing the coverage of the particle by shape functions. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">coordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Array of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a70b36abd0a63c5f7b18ad01ccc96c6c7" kindref="member">getDimension()</ref> * <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1acb5a8ce239ee26bf79158c31d77068a7" kindref="member">getNumberOfVertices()</ref> values, vertex by vertex. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="182" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a73f6ee2bf83f162d11fc1d795fef103f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::getFaceCoordinates</definition>
+        <argsstring>(int faceID, double *coordinates) const =0</argsstring>
+        <name>getFaceCoordinates</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::getFaceCoordinates</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1aebb1f6f8f428bc423725742eb7c06279">getFaceCoordinates</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ae8d5357fb52b23591d524a0c4b734d69">getFaceCoordinates</reimplementedby>
+        <param>
+          <type>int</type>
+          <declname>faceID</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>coordinates</declname>
+        </param>
+        <briefdescription>
+<para>Get the coordinates of the center of a face of the particle, e.g., for boundary loads. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">faceID</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of the face (1-based). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">coordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Array of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a70b36abd0a63c5f7b18ad01ccc96c6c7" kindref="member">getDimension()</ref> values. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="187" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ac394d0c39f485a832e4ef801f0477f5b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::getCenterCoordinates</definition>
+        <argsstring>(double *coordinates) const =0</argsstring>
+        <name>getCenterCoordinates</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::getCenterCoordinates</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1abd48d31d107de4ea2bddfc21f40b83f9">getCenterCoordinates</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a58a9cb2416a29fef54e74dd63c2e7e58">getCenterCoordinates</reimplementedby>
+        <param>
+          <type>double *</type>
+          <declname>coordinates</declname>
+        </param>
+        <briefdescription>
+<para>Get the coordinates of the center of the particle. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">coordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Array of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a70b36abd0a63c5f7b18ad01ccc96c6c7" kindref="member">getDimension()</ref> values. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="191" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a5b7d8e653f4401f8958656bc737c92ed" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>int</type>
+        <definition>virtual int Marmot::Discretizations::Meshfree::Particle::getNBaseDof</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getNBaseDof</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::getNBaseDof</qualifiedname>
+        <briefdescription>
+<para>Get the number of dofs per attached node (e.g., 3 for displacement, 1 for temperature, = 4 in total). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The actual number of dofs results from the number of attached nodes and the number of dofs per node. <simplesect kind="return"><para>The number of dofs per node. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="196" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a9173eea5b80fa7f5ef3b8ae0db4f7688" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>const std::vector&lt; std::string &gt; &amp;</type>
+        <definition>virtual const std::vector&lt; std::string &gt; &amp; Marmot::Discretizations::Meshfree::Particle::getFields</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getFields</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::getFields</qualifiedname>
+        <briefdescription>
+<para>Get the fields on which the particle lives (e.g., displacement, temperature, ...). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>For a particle, the fields are the same for each attached node. <simplesect kind="return"><para>The field names. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="201" column="31"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::computePhysicsKernels</definition>
+        <argsstring>(const double *dQ, double *fInt, double *dFInt_ddQ, double timeNew, double dT)=0</argsstring>
+        <name>computePhysicsKernels</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::computePhysicsKernels</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ad8040a3eddfb94aa12cd33fd429272ec">computePhysicsKernels</reimplementedby>
+        <param>
+          <type>const double *</type>
+          <declname>dQ</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>fInt</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>dFInt_ddQ</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>timeNew</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <briefdescription>
+<para>Compute the internal force vector and its derivative with respect to the dof increment. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Both are accumulated (+=) in the node-wise layout described in the class documentation. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dQ</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Increment of the nodal dofs since the last accepted state, node-wise (the state variables are restored to the accepted state before each call, see the state contract in the class documentation). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">fInt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Internal force vector of size <formula id="11">$ n_{\text{nodes}} \cdot $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a5b7d8e653f4401f8958656bc737c92ed" kindref="member">getNBaseDof()</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">dFInt_ddQ</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Stiffness matrix, column-major, square of the same size. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeNew</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time at the end of the increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="213" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1abf6cf34751b3791f91a25d592ee9cc95" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::computeBodyLoad</definition>
+        <argsstring>(int type, const double *load, double *fExt, double *dExt_dQ, double timeNew, double dT) const =0</argsstring>
+        <name>computeBodyLoad</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::computeBodyLoad</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>load</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>fExt</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>dExt_dQ</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>timeNew</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <briefdescription>
+<para>Compute a body load and its derivative with respect to the dof increment. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Load type, a value of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1adab3a066c7c7626d1280387058670df8" kindref="member">getSupportedBodyLoadTypes()</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">load</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Load values (e.g., the body force vector). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">fExt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>External force vector (node-wise). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">dExt_dQ</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Its derivative (column-major). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeNew</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time at the end of the increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="228" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7d46e721a71cf53a8f00b08b0e2724a5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::computeDistributedLoad</definition>
+        <argsstring>(int type, int boundaryFaceID, const double *load, double *fExt, double *dExt_dQ, double timeNew, double dT) const =0</argsstring>
+        <name>computeDistributedLoad</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::computeDistributedLoad</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>boundaryFaceID</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>load</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>fExt</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>dExt_dQ</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>timeNew</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <briefdescription>
+<para>Compute a distributed (surface) load on a face of the particle and its derivative. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Load type, a value of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a88db026738f285d51971182af48d994f" kindref="member">getSupportedDistributedLoadTypes()</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">boundaryFaceID</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of the loaded face (1-based). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">load</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Load values (e.g., the pressure). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">fExt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>External force vector (node-wise). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">dExt_dQ</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Its derivative (column-major). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeNew</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time at the end of the increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="245" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a8a04e0e7f26751788e4f9132bc97cdaf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::updatePhysicsExplicit</definition>
+        <argsstring>(const double *dQ, double timeNew, double dT)</argsstring>
+        <name>updatePhysicsExplicit</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::updatePhysicsExplicit</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>dQ</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>timeNew</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <briefdescription>
+<para>Explicit dynamics: update the kinematics and the material state for the dof increment. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The default implementation does nothing. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dQ</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Increment of the nodal dofs, node-wise. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeNew</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time at the end of the increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="260" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="260" bodyend="262"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6a23907b325ea1016f0190d158e00ec8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::computePhysicsKernelsExplicit</definition>
+        <argsstring>(double *fInt)</argsstring>
+        <name>computePhysicsKernelsExplicit</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::computePhysicsKernelsExplicit</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>fInt</declname>
+        </param>
+        <briefdescription>
+<para>Explicit dynamics: compute the internal force vector for the state set by <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a8a04e0e7f26751788e4f9132bc97cdaf" kindref="member">updatePhysicsExplicit()</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The default implementation does nothing. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">fInt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Internal force vector (node-wise). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="269" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="269" bodyend="269"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a99516fb62c45b198a972e061d4c40227" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::computeBodyLoadExplicit</definition>
+        <argsstring>(int type, const double *load, double *fExt, double timeNew, double dT) const</argsstring>
+        <name>computeBodyLoadExplicit</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::computeBodyLoadExplicit</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>load</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>fExt</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>timeNew</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <briefdescription>
+<para>Explicit dynamics: compute a body load (no tangent). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The default implementation does nothing. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Load type, a value of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1adab3a066c7c7626d1280387058670df8" kindref="member">getSupportedBodyLoadTypes()</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">load</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Load values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">fExt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>External force vector (node-wise). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeNew</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time at the end of the increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="280" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="280" bodyend="284"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a14e0a4159b73753989a01bc02c1b5896" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::computeDistributedLoadExplicit</definition>
+        <argsstring>(int type, int boundaryFaceID, const double *load, double *fExt, double timeNew, double dT) const</argsstring>
+        <name>computeDistributedLoadExplicit</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::computeDistributedLoadExplicit</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>type</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>boundaryFaceID</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>load</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>fExt</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>timeNew</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <briefdescription>
+<para>Explicit dynamics: compute a distributed load (no tangent). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The default implementation does nothing. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">type</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Load type, a value of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a88db026738f285d51971182af48d994f" kindref="member">getSupportedDistributedLoadTypes()</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">boundaryFaceID</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ID of the loaded face (1-based). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">load</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Load values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">fExt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>External force vector (node-wise). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeNew</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time at the end of the increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="296" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="296" bodyend="301"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a74371407f7597a403fc0def9d5b62573" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::computeLumpedInertia</definition>
+        <argsstring>(double *mLumped) const</argsstring>
+        <name>computeLumpedInertia</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::computeLumpedInertia</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>mLumped</declname>
+        </param>
+        <briefdescription>
+<para>Compute the lumped (row-sum) inertia contribution of the particle. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">mLumped</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Lumped mass vector (node-wise). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::runtime_error</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>in the default implementation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="308" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="308" bodyend="311"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ae631e6c29145a031f9a4b2b8602abe0b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::computeLumpedMomentum</definition>
+        <argsstring>(double *mLumped) const</argsstring>
+        <name>computeLumpedMomentum</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::computeLumpedMomentum</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>mLumped</declname>
+        </param>
+        <briefdescription>
+<para>Compute the lumped momentum contribution of the particle. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">mLumped</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Lumped momentum vector (node-wise). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::runtime_error</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>in the default implementation. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="318" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="318" bodyend="321"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aff90338cf5e44ce344b9262920c25e1c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::getInterpolationVector</definition>
+        <argsstring>(double *vec, const double *coordinates) const =0</argsstring>
+        <name>getInterpolationVector</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::getInterpolationVector</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a66d1fabf95051bff30c3595cc2e0aecc">getInterpolationVector</reimplementedby>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a6c6c4031f3b3d47942639fd8e03db290">getInterpolationVector</reimplementedby>
+        <param>
+          <type>double *</type>
+          <declname>vec</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>coordinates</declname>
+        </param>
+        <briefdescription>
+<para>Evaluate the shape functions of the assigned kernel functions at arbitrary coordinates. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">vec</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Array of <formula id="12">$ n_{\text{nodes}} $</formula> shape function values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">coordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Evaluation point (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a70b36abd0a63c5f7b18ad01ccc96c6c7" kindref="member">getDimension()</ref> values). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="328" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1adab3a066c7c7626d1280387058670df8" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>const std::unordered_map&lt; std::string, int &gt; &amp;</type>
+        <definition>virtual const std::unordered_map&lt; std::string, int &gt; &amp; Marmot::Discretizations::Meshfree::Particle::getSupportedBodyLoadTypes</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getSupportedBodyLoadTypes</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::getSupportedBodyLoadTypes</qualifiedname>
+        <briefdescription>
+<para>Get the supported body load types. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A map from the (upper case) load type name to the <computeroutput>type</computeroutput> integer of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1abf6cf34751b3791f91a25d592ee9cc95" kindref="member">computeBodyLoad()</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="332" column="38"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a88db026738f285d51971182af48d994f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>const std::unordered_map&lt; std::string, int &gt; &amp;</type>
+        <definition>virtual const std::unordered_map&lt; std::string, int &gt; &amp; Marmot::Discretizations::Meshfree::Particle::getSupportedDistributedLoadTypes</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getSupportedDistributedLoadTypes</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::getSupportedDistributedLoadTypes</qualifiedname>
+        <briefdescription>
+<para>Get the supported distributed load types. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>A map from the (upper case) load type name to the <computeroutput>type</computeroutput> integer of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7d46e721a71cf53a8f00b08b0e2724a5" kindref="member">computeDistributedLoad()</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="336" column="38"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aa75023186f4b616cbef770a2582bcf3f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::getEvaluationCoordinates</definition>
+        <argsstring>(double *coordinates) const =0</argsstring>
+        <name>getEvaluationCoordinates</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::getEvaluationCoordinates</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a1b6a63e40fcbbec2b64deb7d5f0eda92">getEvaluationCoordinates</reimplementedby>
+        <param>
+          <type>double *</type>
+          <declname>coordinates</declname>
+        </param>
+        <briefdescription>
+<para>Get the coordinates of the evaluation points of the particle (where the shape functions are evaluated), e.g., for testing the coverage of the particle by shape functions. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">coordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Array of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a70b36abd0a63c5f7b18ad01ccc96c6c7" kindref="member">getDimension()</ref> * <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a96c6331a1f66f2256df0e71d7fe0f3eb" kindref="member">getNumberOfEvaluationPoints()</ref> values, point by point. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="341" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a96c6331a1f66f2256df0e71d7fe0f3eb" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>int</type>
+        <definition>virtual int Marmot::Discretizations::Meshfree::Particle::getNumberOfEvaluationPoints</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getNumberOfEvaluationPoints</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::getNumberOfEvaluationPoints</qualifiedname>
+        <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1a2fcab76d899065e56dacdf579636457b">getNumberOfEvaluationPoints</reimplementedby>
+        <briefdescription>
+<para>Get the number of evaluation points of the particle. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>The number of evaluation points. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="345" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a2f273397ca5e3019269f9dae06dd95d8" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::Meshfree::Particle::setInitialCondition</definition>
+        <argsstring>(const std::string &amp;conditionName, const double *value)=0</argsstring>
+        <name>setInitialCondition</name>
+        <qualifiedname>Marmot::Discretizations::Meshfree::Particle::setInitialCondition</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>conditionName</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Set an initial condition (e.g., &quot;geostaticstress&quot;). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">conditionName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the initial condition. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Values of the initial condition. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="414" column="18"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Abstract interface of a particle of the reproducing kernel particle method (RKPM). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A particle is the integration entity of the meshfree layer: it represents a piece of the body (its domain, commonly a point, a quadrilateral or a hexahedron) and it evaluates the weak form on that piece. Unlike a finite element, a particle has no fixed nodes. It interacts with the degrees of freedom, which live on the nodes of the meshfree kernel functions (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function" kindref="compound">KernelFunction</ref>), via the shape functions of a meshfree approximation (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_approximation" kindref="compound">Approximation</ref>). The host framework (e.g., EdelweissMeshfree) finds the kernel functions whose support covers the particle and hands them over with <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6cc5735e24f3c305aa6a85219908527a" kindref="member">assignMeshfreeKernelFunctions()</ref>; the particle then evaluates the shape functions <formula id="7">$ N_A $</formula> and (possibly smoothed) gradients <formula id="8">$ \partial N_A / \partial Y $</formula> of these <formula id="9">$ A = 1 \dots n_{\text{nodes}} $</formula> nodes.</para>
+<para>Similar to finite elements, a particle computes the internal forces and their derivatives (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" kindref="member">computePhysicsKernels()</ref>), body loads (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1abf6cf34751b3791f91a25d592ee9cc95" kindref="member">computeBodyLoad()</ref>) and distributed loads (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7d46e721a71cf53a8f00b08b0e2724a5" kindref="member">computeDistributedLoad()</ref>). Concrete particles work in an updated Lagrangian setting: gradients are taken with respect to the coordinates <formula id="10">$ Y $</formula> of the last accepted (reference intermediate) configuration, and <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref> moves the particle to the new configuration at the end of a converged increment.</para>
+<para>A typical life cycle driven by the host framework is<orderedlist>
+<listitem><para>creation via <ref refid="class_marmot_1_1_registry_1_1_particle_factory_1a2d3fade456c7640eb56112869f4c5b30" kindref="member">Marmot::Registry::ParticleFactory::createParticle()</ref>,</para>
+</listitem><listitem><para><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a054d08b1ecbb992b83a65d0cb0fa1986" kindref="member">setProperties()</ref> (e.g., the order of the variationally consistent integration and time integration parameters),</para>
+</listitem><listitem><para><ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a695b0ec37ec3e51e766bb9b12dd38813" kindref="member">assignStateVars()</ref> with a block of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1afee420ce02ef298b0baee0e7c94d2c3e" kindref="member">getNumberOfRequiredStateVars()</ref> doubles, <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a13850f7f8c70e4bf1472164a059c6732" kindref="member">initializeYourself()</ref>,</para>
+</listitem><listitem><para>per increment: <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6cc5735e24f3c305aa6a85219908527a" kindref="member">assignMeshfreeKernelFunctions()</ref>, optionally the VCI methods (vci_...), then repeatedly <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" kindref="member">computePhysicsKernels()</ref> and the load methods, and after convergence <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref>.</para>
+</listitem></orderedlist>
+</para>
+<para><bold>State contract:</bold> the state variable block is a <emphasis>trial</emphasis> copy. Before every call of <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" kindref="member">computePhysicsKernels()</ref>, the host restores it to the values committed by the last <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref>, and <computeroutput>dQ</computeroutput> is the total increment since that state (not the Newton correction). Implementations may therefore update their state in place during <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" kindref="member">computePhysicsKernels()</ref> (e.g. add the increment of the center displacement or of a nonlocal field to its committed value, or integrate velocities and accelerations), since every call starts again from the committed state; a cutback is simply a restore. EdelweissMeshfree implements this by copying the committed block into the trial block before each <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" kindref="member">computePhysicsKernels()</ref> and back in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" kindref="member">acceptStateAndPosition()</ref>.</para>
+<para>For the residual vector and the stiffness matrix, unlike elements and cells, no (field-)blocked layout is possible. This is due to the fact that the number of nodes per particle is not fixed and may vary, and accordingly, the dofIndicesPermutationPattern used to designate the structure of a blocked storage may vary. Accordingly, for performance reasons, no dofIndicesPermutationPattern is provided, and the residual vector and the stiffness matrix are computed in a non-blocked, node-wise layout. Example: [node_1_displacement, node_1_temperature, node_2_displacement, node_2_temperature, ...], in which nodes designate the nodes of the kernel functions attached to the particle, in the order in which they were assigned. The size of both is thus <formula id="11">$ n_{\text{nodes}} \cdot $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a5b7d8e653f4401f8958656bc737c92ed" kindref="member">getNBaseDof()</ref>.</para>
+<para>For the stiffness matrix, a column-major layout is used.</para>
+<para>The particle also offers the local contributions to the variationally consistent integration (VCI) of Chen, Hillman and Rüter (2013), see the vci_... methods. The global assembly and solution of the VCI correction is done by the host framework. </para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Marmot::Discretizations::Meshfree::GenericParticle&lt; nDim &gt;</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>Marmot::Discretizations::Meshfree::GenericSDIParticle&lt; nDim, nVertices &gt;</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle"/>
+        <childnode refid="1" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="1">
+        <label>Marmot::Discretizations::Meshfree::Particle</label>
+        <link refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle"/>
+      </node>
+    </inheritancegraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" line="88" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotParticle.h" bodystart="88" bodyend="415"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7a9a889fbae0e7b252333e5b9736243d" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>acceptStateAndPosition</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6cc5735e24f3c305aa6a85219908527a" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>assignMeshfreeKernelFunctions</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a695b0ec37ec3e51e766bb9b12dd38813" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>assignStateVars</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1abf6cf34751b3791f91a25d592ee9cc95" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>computeBodyLoad</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a99516fb62c45b198a972e061d4c40227" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>computeBodyLoadExplicit</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a7d46e721a71cf53a8f00b08b0e2724a5" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>computeDistributedLoad</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a14e0a4159b73753989a01bc02c1b5896" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>computeDistributedLoadExplicit</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a74371407f7597a403fc0def9d5b62573" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>computeLumpedInertia</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ae631e6c29145a031f9a4b2b8602abe0b" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>computeLumpedMomentum</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a153da1e94e222703cfe32025067e320b" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>computePhysicsKernels</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6a23907b325ea1016f0190d158e00ec8" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>computePhysicsKernelsExplicit</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ac394d0c39f485a832e4ef801f0477f5b" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>getCenterCoordinates</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a70b36abd0a63c5f7b18ad01ccc96c6c7" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>getDimension</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aa75023186f4b616cbef770a2582bcf3f" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>getEvaluationCoordinates</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a73f6ee2bf83f162d11fc1d795fef103f" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>getFaceCoordinates</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a9173eea5b80fa7f5ef3b8ae0db4f7688" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>getFields</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aff90338cf5e44ce344b9262920c25e1c" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>getInterpolationVector</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a5b7d8e653f4401f8958656bc737c92ed" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>getNBaseDof</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a96c6331a1f66f2256df0e71d7fe0f3eb" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>getNumberOfEvaluationPoints</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1afee420ce02ef298b0baee0e7c94d2c3e" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>getNumberOfRequiredStateVars</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1acb5a8ce239ee26bf79158c31d77068a7" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>getNumberOfVertices</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a1258440ecb02c95a4e980b554c2c4da4" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>getParticleShape</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a6185a880ed7156aa4b2e8cd2584fea72" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>getPropertyNames</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a2d270d98f07b9888e1aa7cd29f0262a5" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>getStateView</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1adab3a066c7c7626d1280387058670df8" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>getSupportedBodyLoadTypes</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a88db026738f285d51971182af48d994f" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>getSupportedDistributedLoadTypes</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a09ac7d6f8b5b73438dfd75f5dae59504" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>getVertexCoordinates</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a750a36251603e02b97cf15bf06a3cba1" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>getVisualizationVertexCoordinates</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a079069bee25014d8ffbc1a533c563bab" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>getVolumeUndeformed</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a13850f7f8c70e4bf1472164a059c6732" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>initializeYourself</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a3e0a311f869ebad9df640e91a74c88a8" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>Particle</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a2f273397ca5e3019269f9dae06dd95d8" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>setInitialCondition</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a054d08b1ecbb992b83a65d0cb0fa1986" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>setProperties</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aa96fbc7b18e0e211a93a8494cdd21978" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>setProperty</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a8a04e0e7f26751788e4f9132bc97cdaf" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>updatePhysicsExplicit</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ad3dd12ee8f542b0a0130dd9a243c8d31" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>vci_assignTestFunctionCorrectionTerms</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ad08bba752f036670caa1b9d23e28c15a" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>vci_compute_MMatrix</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a8473a2bb44dcfc477ea5e1b5b43f1bf1" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>vci_compute_Test_P_BoundaryIntegral</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1a8d50e229b42e2c88d072fad3fd9296d9" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>vci_compute_Test_PGradient_Integral</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ab3a36559ef36ab4c6450503006396da6" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>vci_compute_TestGradient_P_Integral</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1ac61ea90a6244b476833957aca2604685" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>vci_getNumberOfConstraints</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_1aca1f817c1a3d7ac8e66afe6f0310e8dc" prot="public" virt="virtual"><scope>Marmot::Discretizations::Meshfree::Particle</scope><name>~Particle</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

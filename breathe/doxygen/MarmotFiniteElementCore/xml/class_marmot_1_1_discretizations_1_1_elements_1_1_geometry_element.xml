@@ -1,0 +1,553 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Discretizations::Elements::GeometryElement</compoundname>
+    <includes refid="_marmot_geometry_element_8h" local="no">MarmotGeometryElement.h</includes>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>nDim</declname>
+        <defname>nDim</defname>
+      </param>
+      <param>
+        <type>int</type>
+        <declname>nNodes</declname>
+        <defname>nNodes</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1ae8e5c54a1b64c814bd2be9a09e9222c8" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, nDim, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, nDim, 1 &gt; Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::XiSized</definition>
+        <argsstring></argsstring>
+        <name>XiSized</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::XiSized</qualifiedname>
+        <briefdescription>
+<para>Natural-coordinate vector. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="58" column="39" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1af6db4302d18e995c1d332e65a634d0eb" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, nDim *nNodes, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, nDim * nNodes, 1 &gt; Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::CoordinateVector</definition>
+        <argsstring></argsstring>
+        <name>CoordinateVector</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::CoordinateVector</qualifiedname>
+        <briefdescription>
+<para>Flat nodal-coordinate vector. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="59" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a026b4fe63b2bc12dbaea70e5723ac30f" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, nDim, nDim &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, nDim, nDim &gt; Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::JacobianSized</definition>
+        <argsstring></argsstring>
+        <name>JacobianSized</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::JacobianSized</qualifiedname>
+        <briefdescription>
+<para>Square Jacobian matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="60" column="36" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1aef748bc3680ac788da04203342f2d302" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 1, nNodes &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 1, nNodes &gt; Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::NSized</definition>
+        <argsstring></argsstring>
+        <name>NSized</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::NSized</qualifiedname>
+        <briefdescription>
+<para>Row vector of shape function values. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="61" column="37" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a42a5b086a83890d4b684f48e641a67f5" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, nDim, nNodes *nDim &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, nDim, nNodes * nDim &gt; Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::NBSized</definition>
+        <argsstring></argsstring>
+        <name>NBSized</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::NBSized</qualifiedname>
+        <briefdescription>
+<para>Expanded interpolation operator N_B. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="62" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a604fab2ec9875b70f276c38da5484a83" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, nDim, nNodes &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, nDim, nNodes &gt; Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::dNdXiSized</definition>
+        <argsstring></argsstring>
+        <name>dNdXiSized</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::dNdXiSized</qualifiedname>
+        <briefdescription>
+<para>Matrix of shape function natural derivatives. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="63" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a113fb932e7b1451b34aa699e10b73105" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a93ce1a92bd93b1db390364cbe6a720fa" kindref="member">voigtSize</ref>, nNodes *nDim &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, voigtSize, nNodes * nDim &gt; Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::BSized</definition>
+        <argsstring></argsstring>
+        <name>BSized</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::BSized</qualifiedname>
+        <briefdescription>
+<para>Standard B-operator matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="64" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a3033c18e1c32696112a04a1fb7f8494f" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 4, nNodes *nDim &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 4, nNodes * nDim &gt; Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::BSizedAxisymmetric</definition>
+        <argsstring></argsstring>
+        <name>BSizedAxisymmetric</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::BSizedAxisymmetric</qualifiedname>
+        <briefdescription>
+<para>Axisymmetric B-operator matrix (4 Voigt components). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="66" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a93ce1a92bd93b1db390364cbe6a720fa" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>Marmot::ContinuumMechanics::Voigt::VoigtSize</type>
+        <definition>Marmot::ContinuumMechanics::Voigt::VoigtSize Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::voigtSize</definition>
+        <argsstring></argsstring>
+        <name>voigtSize</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::voigtSize</qualifiedname>
+        <initializer>= Marmot::ContinuumMechanics::Voigt::voigtSizeFromDimension( nDim )</initializer>
+        <briefdescription>
+<para>Voigt notation size for <computeroutput>nDim</computeroutput> spatial dimensions. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="56" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1adba7c9e6cc02bb1127417c1f5d6ac1af" prot="public" static="no" mutable="no">
+        <type>Eigen::Map&lt; const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1af6db4302d18e995c1d332e65a634d0eb" kindref="member">CoordinateVector</ref> &gt;</type>
+        <definition>Eigen::Map&lt; const CoordinateVector &gt; Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::coordinates</definition>
+        <argsstring></argsstring>
+        <name>coordinates</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::coordinates</qualifiedname>
+        <briefdescription>
+<para>Map into the externally-owned nodal-coordinate array. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="69" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a60fc68567572de9e6d88d6bc310cb994" prot="public" static="no" mutable="no">
+        <type>const <ref refid="_marmot_finite_element_8h_1afc3a3457c25a0bbd01d1a5d2d07fb78d" kindref="member">Marmot::Discretizations::Elements::ElementShapes</ref></type>
+        <definition>const Marmot::Discretizations::Elements::ElementShapes Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::shape</definition>
+        <argsstring></argsstring>
+        <name>shape</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::shape</qualifiedname>
+        <briefdescription>
+<para><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element" kindref="compound">Element</ref> shape determined from <computeroutput>nDim</computeroutput> and <computeroutput>nNodes</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="71" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1acd62cb4576b16aa8a77951e5c64cd478" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::GeometryElement</definition>
+        <argsstring>()</argsstring>
+        <name>GeometryElement</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::GeometryElement</qualifiedname>
+        <briefdescription>
+<para>Default constructor. Initialises the coordinate map to <computeroutput>nullptr</computeroutput> and deduces the element shape. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="75" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" bodystart="75" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a1428c3008b70890ee1e4534201ecbff1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::string</type>
+        <definition>std::string Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::getElementShape</definition>
+        <argsstring>() const</argsstring>
+        <name>getElementShape</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::getElementShape</qualifiedname>
+        <briefdescription>
+<para>Returns an Ensight Gold shape string (e.g. <computeroutput>quad4</computeroutput>, <computeroutput>hexa8</computeroutput>) for this element. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="79" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" bodystart="79" bodyend="91"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1abf439f8610a089a827f1d9ef4e529140" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::assignNodeCoordinates</definition>
+        <argsstring>(const double *coords)</argsstring>
+        <name>assignNodeCoordinates</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::assignNodeCoordinates</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>coords</declname>
+        </param>
+        <briefdescription>
+<para>Maps the externally-owned coordinate array into the <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1adba7c9e6cc02bb1127417c1f5d6ac1af" kindref="member">coordinates</ref> member. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">coords</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the flat nodal-coordinate array. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="95" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" bodystart="95" bodyend="98"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a7a3dd9712d65c485aa03649aea38f8d3" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1aef748bc3680ac788da04203342f2d302" kindref="member">NSized</ref></type>
+        <definition>NSized Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::N</definition>
+        <argsstring>(const XiSized &amp;xi) const</argsstring>
+        <name>N</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::N</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1ae8e5c54a1b64c814bd2be9a09e9222c8" kindref="member">XiSized</ref> &amp;</type>
+          <declname>xi</declname>
+        </param>
+        <briefdescription>
+<para>Evaluate the shape function row vector at natural coordinates <computeroutput>xi</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="106" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a6d6e2e5669381d0b0a807ce48c322e0f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a604fab2ec9875b70f276c38da5484a83" kindref="member">dNdXiSized</ref></type>
+        <definition>dNdXiSized Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::dNdXi</definition>
+        <argsstring>(const XiSized &amp;xi) const</argsstring>
+        <name>dNdXi</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::dNdXi</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1ae8e5c54a1b64c814bd2be9a09e9222c8" kindref="member">XiSized</ref> &amp;</type>
+          <declname>xi</declname>
+        </param>
+        <briefdescription>
+<para>Evaluate the matrix of shape function natural derivatives at <computeroutput>xi</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="108" column="16"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a779d72c82bc0baad30b834348cc3a4cd" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a113fb932e7b1451b34aa699e10b73105" kindref="member">BSized</ref></type>
+        <definition>BSized Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::B</definition>
+        <argsstring>(const dNdXiSized &amp;dNdX) const</argsstring>
+        <name>B</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::B</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a604fab2ec9875b70f276c38da5484a83" kindref="member">dNdXiSized</ref> &amp;</type>
+          <declname>dNdX</declname>
+        </param>
+        <briefdescription>
+<para>Compute the standard B-operator from physical derivatives <computeroutput>dNdX</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="110" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1adefbd744da0cd095be604229ff09754c" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a3033c18e1c32696112a04a1fb7f8494f" kindref="member">BSizedAxisymmetric</ref></type>
+        <definition>BSizedAxisymmetric Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::B_axisymmetric</definition>
+        <argsstring>(const dNdXiSized &amp;dNdX, const NSized &amp;N, const XiSized &amp;x_gauss) const</argsstring>
+        <name>B_axisymmetric</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::B_axisymmetric</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a604fab2ec9875b70f276c38da5484a83" kindref="member">dNdXiSized</ref> &amp;</type>
+          <declname>dNdX</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1aef748bc3680ac788da04203342f2d302" kindref="member">NSized</ref> &amp;</type>
+          <declname>N</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1ae8e5c54a1b64c814bd2be9a09e9222c8" kindref="member">XiSized</ref> &amp;</type>
+          <declname>x_gauss</declname>
+        </param>
+        <briefdescription>
+<para>Compute the axisymmetric B-operator (4 components). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="112" column="24"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a5bb00b0fb348dd43e6a4f7d5e7605c62" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a113fb932e7b1451b34aa699e10b73105" kindref="member">BSized</ref></type>
+        <definition>BSized Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::B_bar</definition>
+        <argsstring>(const dNdXiSized &amp;dNdX, const dNdXiSized &amp;dNdX0) const</argsstring>
+        <name>B_bar</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::B_bar</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a604fab2ec9875b70f276c38da5484a83" kindref="member">dNdXiSized</ref> &amp;</type>
+          <declname>dNdX</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a604fab2ec9875b70f276c38da5484a83" kindref="member">dNdXiSized</ref> &amp;</type>
+          <declname>dNdX0</declname>
+        </param>
+        <briefdescription>
+<para>Compute the B̄-operator using the B-bar selective-reduced-integration method. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="114" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a4c26a273faf1707820e9b9279a5adc0e" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a113fb932e7b1451b34aa699e10b73105" kindref="member">BSized</ref></type>
+        <definition>BSized Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::BGreen</definition>
+        <argsstring>(const dNdXiSized &amp;dNdX, const JacobianSized &amp;F) const</argsstring>
+        <name>BGreen</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::BGreen</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a604fab2ec9875b70f276c38da5484a83" kindref="member">dNdXiSized</ref> &amp;</type>
+          <declname>dNdX</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a026b4fe63b2bc12dbaea70e5723ac30f" kindref="member">JacobianSized</ref> &amp;</type>
+          <declname>F</declname>
+        </param>
+        <briefdescription>
+<para>Compute the Green–Lagrange strain operator for deformation gradient <computeroutput>F</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="116" column="12"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a17d36ed83c3b98970add7f43541901ae" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a42a5b086a83890d4b684f48e641a67f5" kindref="member">NBSized</ref></type>
+        <definition>NBSized Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::NB</definition>
+        <argsstring>(const NSized &amp;N) const</argsstring>
+        <name>NB</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::NB</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1aef748bc3680ac788da04203342f2d302" kindref="member">NSized</ref> &amp;</type>
+          <declname>N</declname>
+        </param>
+        <briefdescription>
+<para>Compute the expanded interpolation operator N_B from shape function values <computeroutput>N</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="120" column="13" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" bodystart="120" bodyend="120"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a3f4f327b53b87f4f33e6a2335c4e9245" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a026b4fe63b2bc12dbaea70e5723ac30f" kindref="member">JacobianSized</ref></type>
+        <definition>JacobianSized Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::Jacobian</definition>
+        <argsstring>(const dNdXiSized &amp;dNdXi) const</argsstring>
+        <name>Jacobian</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::Jacobian</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a604fab2ec9875b70f276c38da5484a83" kindref="member">dNdXiSized</ref> &amp;</type>
+          <declname>dNdXi</declname>
+        </param>
+        <briefdescription>
+<para>Compute the element Jacobian from natural derivatives <computeroutput>dNdXi</computeroutput> and the stored nodal coordinates. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="123" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" bodystart="123" bodyend="126"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a584da728cca924b5907555a8751c5ce3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a604fab2ec9875b70f276c38da5484a83" kindref="member">dNdXiSized</ref></type>
+        <definition>dNdXiSized Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::dNdX</definition>
+        <argsstring>(const dNdXiSized &amp;dNdXi, const JacobianSized &amp;JacobianInverse) const</argsstring>
+        <name>dNdX</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::dNdX</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a604fab2ec9875b70f276c38da5484a83" kindref="member">dNdXiSized</ref> &amp;</type>
+          <declname>dNdXi</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a026b4fe63b2bc12dbaea70e5723ac30f" kindref="member">JacobianSized</ref> &amp;</type>
+          <declname>JacobianInverse</declname>
+        </param>
+        <briefdescription>
+<para>Compute physical derivatives <computeroutput>dN/dX</computeroutput> from natural derivatives and the inverse Jacobian. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dNdXi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Natural-coordinate derivatives. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">JacobianInverse</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Inverse of the element Jacobian. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="131" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" bodystart="131" bodyend="134"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1aa36b52874889427e3a51e6a152bf49af" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a026b4fe63b2bc12dbaea70e5723ac30f" kindref="member">JacobianSized</ref></type>
+        <definition>JacobianSized Marmot::Discretizations::Elements::GeometryElement&lt; nDim, nNodes &gt;::F</definition>
+        <argsstring>(const dNdXiSized &amp;dNdX, const CoordinateVector &amp;Q) const</argsstring>
+        <name>F</name>
+        <qualifiedname>Marmot::Discretizations::Elements::GeometryElement::F</qualifiedname>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a604fab2ec9875b70f276c38da5484a83" kindref="member">dNdXiSized</ref> &amp;</type>
+          <declname>dNdX</declname>
+        </param>
+        <param>
+          <type>const <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1af6db4302d18e995c1d332e65a634d0eb" kindref="member">CoordinateVector</ref> &amp;</type>
+          <declname>Q</declname>
+        </param>
+        <briefdescription>
+<para>Compute the deformation gradient <formula id="70">$\mathbf{F}$</formula> from physical derivatives and displacements <computeroutput>Q</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dNdX</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Physical shape function derivatives. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">Q</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element" kindref="compound">Element</ref> displacement vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="139" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" bodystart="139" bodyend="142"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Statically-sized geometry base class for all isoparametric Marmot elements. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of spatial dimensions (1, 2 or 3). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nNodes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of element nodes.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+Provides shape functions <computeroutput>N</computeroutput>, their natural-coordinate derivatives <computeroutput>dNdXi</computeroutput>, the B-operator <computeroutput>B</computeroutput>, and the element Jacobian. The element shape is determined automatically from the template parameters.</para>
+<para>Concrete <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_element" kindref="compound">Marmot::Discretizations::Elements::Element</ref> classes inherit from this class to access the geometric infrastructure without code duplication. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" line="49" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryElement.h" bodystart="49" bodyend="143"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1abf439f8610a089a827f1d9ef4e529140" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>assignNodeCoordinates</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a779d72c82bc0baad30b834348cc3a4cd" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>B</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1adefbd744da0cd095be604229ff09754c" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>B_axisymmetric</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a5bb00b0fb348dd43e6a4f7d5e7605c62" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>B_bar</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a4c26a273faf1707820e9b9279a5adc0e" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>BGreen</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a113fb932e7b1451b34aa699e10b73105" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>BSized</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a3033c18e1c32696112a04a1fb7f8494f" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>BSizedAxisymmetric</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1adba7c9e6cc02bb1127417c1f5d6ac1af" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>coordinates</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1af6db4302d18e995c1d332e65a634d0eb" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>CoordinateVector</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a584da728cca924b5907555a8751c5ce3" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>dNdX</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a6d6e2e5669381d0b0a807ce48c322e0f" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>dNdXi</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a604fab2ec9875b70f276c38da5484a83" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>dNdXiSized</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1aa36b52874889427e3a51e6a152bf49af" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>F</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1acd62cb4576b16aa8a77951e5c64cd478" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>GeometryElement</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a1428c3008b70890ee1e4534201ecbff1" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>getElementShape</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a3f4f327b53b87f4f33e6a2335c4e9245" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>Jacobian</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a026b4fe63b2bc12dbaea70e5723ac30f" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>JacobianSized</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a7a3dd9712d65c485aa03649aea38f8d3" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>N</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a17d36ed83c3b98970add7f43541901ae" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>NB</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a42a5b086a83890d4b684f48e641a67f5" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>NBSized</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1aef748bc3680ac788da04203342f2d302" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>NSized</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a60fc68567572de9e6d88d6bc310cb994" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>shape</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1a93ce1a92bd93b1db390364cbe6a720fa" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>voigtSize</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_elements_1_1_geometry_element_1ae8e5c54a1b64c814bd2be9a09e9222c8" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::GeometryElement</scope><name>XiSized</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

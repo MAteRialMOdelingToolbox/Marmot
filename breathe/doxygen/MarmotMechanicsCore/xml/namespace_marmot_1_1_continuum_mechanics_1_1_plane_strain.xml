@@ -1,33 +1,33 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
   <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_plane_strain" kind="namespace" language="C++">
     <compoundname>Marmot::ContinuumMechanics::PlaneStrain</compoundname>
     <sectiondef kind="func">
-      <memberdef kind="function" id="_marmot_lower_dimensional_stress_8h_1a24cb34f9ef9ee8bd805f42470545c55d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_lower_dimensional_stress_8h_1a4a15b89206eeb2a02d86fee2edbfc8fb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Eigen::Matrix3d</type>
         <definition>Eigen::Matrix3d Marmot::ContinuumMechanics::PlaneStrain::getPlaneStrainTangent</definition>
-        <argsstring>(const Matrix6d &amp;C)</argsstring>
+        <argsstring>(const Marmot::Math::Matrix6d &amp;C)</argsstring>
         <name>getPlaneStrainTangent</name>
         <qualifiedname>Marmot::ContinuumMechanics::PlaneStrain::getPlaneStrainTangent</qualifiedname>
         <param>
-          <type>const Matrix6d &amp;</type>
+          <type>const Marmot::Math::Matrix6d &amp;</type>
           <declname>C</declname>
         </param>
         <briefdescription>
 <para>Extracts the plane strain stiffness matrix from a 3D stiffness matrix. </para>
         </briefdescription>
         <detaileddescription>
-<para>Reduces the full 3D stiffness matrix <formula id="79">$\mathbb{C}$</formula> to the plane strain stiffness matrix corresponding to the in-plane components.</para>
+<para>Reduces the full 3D stiffness matrix <formula id="46">$\mathbb{C}$</formula> to the plane strain stiffness matrix corresponding to the in-plane components.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>C</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>3D stiffness matrix ( <formula id="292">$6\times6$</formula>) in Voigt notation. </para>
+<para>3D stiffness matrix ( <formula id="122">$6\times6$</formula>) in Voigt notation. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Plane strain stiffness matrix ( <formula id="293">$3\times3$</formula>) in Voigt notation. </para>
+<simplesect kind="return"><para>Plane strain stiffness matrix ( <formula id="123">$3\times3$</formula>) in Voigt notation. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -35,37 +35,37 @@
         </inbodydescription>
         <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="58" column="21" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" declline="58" declcolumn="21"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_lower_dimensional_stress_8h_1a31a218d96f461226858199aec4406197" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>EigenTensors::Tensor322d</type>
-        <definition>EigenTensors::Tensor322d Marmot::ContinuumMechanics::PlaneStrain::reduce3D_dStress_dDeformationGradient</definition>
-        <argsstring>(const EigenTensors::Tensor633d &amp;dStressdDeformationGradient3D)</argsstring>
+      <memberdef kind="function" id="_marmot_lower_dimensional_stress_8h_1afc9fe0ce3426335e5b113f0bb7ce496f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Marmot::Math::Tensors::Tensor322d</type>
+        <definition>Marmot::Math::Tensors::Tensor322d Marmot::ContinuumMechanics::PlaneStrain::reduce3D_dStress_dDeformationGradient</definition>
+        <argsstring>(const Marmot::Math::Tensors::Tensor633d &amp;dStressdDeformationGradient3D)</argsstring>
         <name>reduce3D_dStress_dDeformationGradient</name>
         <qualifiedname>Marmot::ContinuumMechanics::PlaneStrain::reduce3D_dStress_dDeformationGradient</qualifiedname>
         <param>
-          <type>const EigenTensors::Tensor633d &amp;</type>
+          <type>const Marmot::Math::Tensors::Tensor633d &amp;</type>
           <declname>dStressdDeformationGradient3D</declname>
         </param>
         <briefdescription>
 <para>Extracts the plane strain derivative of the stress with respect to the deformation gradient. </para>
         </briefdescription>
         <detaileddescription>
-<para>Reduces the derivative of the 3D stress tensor in Voigt notation with respect to the deformation gradient <formula id="294">$F_{ij}$</formula> to the plane strain setting.</para>
+<para>Reduces the derivative of the 3D stress tensor in Voigt notation with respect to the deformation gradient <formula id="124">$F_{ij}$</formula> to the plane strain setting.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername>dStressdDeformationGradient3D</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Derivative of 3D stress with respect to the deformation gradient ( <formula id="295">$6\times3\times3$</formula> tensor). </para>
+<para>Derivative of 3D stress with respect to the deformation gradient ( <formula id="125">$6\times3\times3$</formula> tensor). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Reduced derivative of stress with respect to deformation gradient ( <formula id="296">$3\times2\times2$</formula> tensor) in the plane strain setting. </para>
+<simplesect kind="return"><para>Reduced derivative of stress with respect to deformation gradient ( <formula id="126">$3\times2\times2$</formula> tensor) in the plane strain setting. </para>
 </simplesect>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="71" column="30" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" declline="71" declcolumn="30"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" line="71" column="39" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotLowerDimensionalStress.h" declline="71" declcolumn="39"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_lower_dimensional_stress_8h_1aa73b81d393dd2a741e4c9fbbb1ffe564" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>Eigen::Matrix&lt; double, 6, 3 &gt;</type>
@@ -77,7 +77,7 @@
 <para>Computes the derivative of the 3D strain tensor with respect to the plane strain tensor. </para>
         </briefdescription>
         <detaileddescription>
-<para><simplesect kind="return"><para>Matrix ( <formula id="297">$6\times3$</formula>) representing  <formula id="298">$\frac{\partial \varepsilon_{3D}}{\partial
+<para><simplesect kind="return"><para>Matrix ( <formula id="127">$6\times3$</formula>) representing  <formula id="128">$\frac{\partial \varepsilon_{3D}}{\partial
 \varepsilon_{plane}}$</formula>. </para>
 </simplesect>
 </para>

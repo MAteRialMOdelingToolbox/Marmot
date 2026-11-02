@@ -1,0 +1,502 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gradient-enhanced microplane model M7 (GM7) &mdash; Marmot  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=6bdb3f50" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/configmacros"]}, "tex": {"packages": {"[+]": ["configmacros"]}, "macros": {"sig": "\\boldsymbol{\\sigma}", "sigRate": "\\dot{\\sig}", "eps": "\\boldsymbol{\\varepsilon}", "epsE": "\\eps^{\\mathrm{el}}", "epsERate": "\\dot{\\eps}^{\\mathrm{el}}", "epsVE": "\\eps^{\\mathrm{ve}}", "epsVERate": "\\dot{\\eps}^{\\mathrm{ve}}", "epsF": "\\eps^{\\mathrm{f}}", "epsFRate": "\\dot{\\eps}^{\\mathrm{f}}", "epsDC": "\\eps^{\\mathrm{dc}}", "epsDCRate": "\\dot{\\eps}^{\\mathrm{dc}}", "epsSHR": "\\eps^{\\mathrm{shr}}", "epsRate": "\\dot{\\eps}", "Cel": "\\mathbb{C}", "CelInv": "\\mathbb{C}^{-1}", "DelNu": "\\mathbb{D}_\\nu", "PhiRate": "\\dot{\\Phi}", "JRate": "\\dot{J}", "kl": "\\kappa", "knl": "\\bar{\\kl}", "Nk": "\\mathbf{N}^{\\mathrm{\\knl}}", "fuint": "f^{\\mathrm{u}}_\\mathrm{int,e}", "fext": "f_\\mathrm{ext,e}", "fextb": "f_\\mathrm{ext,e}^\\mathrm{b}", "fextp": "f_\\mathrm{ext,e}^\\mathrm{p}", "fk": "f^{\\mathrm{\\knl}}_\\mathrm{e}", "qu": "q^{\\mathrm{u}}", "qk": "q^{\\mathrm{\\knl}}", "ru": "r^{\\mathrm{u}}", "rk": "r^{\\mathrm{\\knl}}"}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Von Mises model" href="vonmises.html" />
+    <link rel="prev" title="Microplane model M7" href="microplanem7.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Marmot
+              <img src="../../_static/marmot_transparent.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../interfaces.html">Interfaces</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../python_bindings.html">Python Bindings</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../features.html">Features</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="voigtnotation.html">Voigt Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">Solvers</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="materials.html">Material models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="at2phasefield.html">AT2 Phase Field Fracture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="b4.html">B4 model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressibleneohooke.html">Compressible Neo Hooke model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adcompressibleneohooke.html">Compressible Neo Hooke model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressiblefinitestrainlinearviscoelasticity.html">Compressible Finite-Strain Linear Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainisotropicbiotviscoelasticity.html">Finite-Strain Isotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainj2plasticity.html">Finite-strain J2 plasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="finitestrainorthotropicbiotviscoelasticity.html">Finite-Strain Orthotropic Biot Viscoelasticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearelastic.html">Linear Elastic model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adlinearelastic.html">Linear Elastic model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticpowerlaw.html">Linear Viscoelastic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticorthotropicpowerlaw.html">Linear Viscoelastic Orthotropic Power Law model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="linearviscoelasticwiechert.html">Linear Viscoelastic Wiechert model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="interfacematerialhypoelastic.html">Interface material (hypoelastic bulk material)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="microplanem7.html">Microplane model M7</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Gradient-enhanced microplane model M7 (GM7)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#properties">Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="vonmises.html">Von Mises model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advonmises.html">Von Mises model (Automatic Differentiation)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hugheswinget.html">Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedhugheswinget.html">Gradient-enhanced Hughes-Winget wrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedcompressibleneohookedamage.html">Gradient-enhanced compressible Neo-Hooke damage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gradientenhancedfinitestraindruckerprager.html">Gradient-enhanced finite-strain Drucker-Prager</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="elements.html">Finite elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meshfree.html">Meshfree methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Code documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Marmot</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../features.html">Features</a></li>
+          <li class="breadcrumb-item"><a href="materials.html">Material models</a></li>
+      <li class="breadcrumb-item active">Gradient-enhanced microplane model M7 (GM7)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/features/gm7.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gradient-enhanced-microplane-model-m7-gm7">
+<span id="gm7"></span><h1>Gradient-enhanced microplane model M7 (GM7)<a class="headerlink" href="#gradient-enhanced-microplane-model-m7-gm7" title="Link to this heading"></a></h1>
+<section id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h2>
+<p>GM7 is a nonlocal, gradient-enhanced extension of the <a class="reference internal" href="microplanem7.html#microplanem7"><span class="std std-ref">microplane model M7</span></a> (Caner and Bažant,
+2013) for regularized, mesh-independent softening. It is a <code class="docutils literal notranslate"><span class="pre">MarmotMaterialGeneralGradientEnhancedHypoElastic</span></code>
+with six nonlocal fields: the nonlocal macroscopic strain <span class="math notranslate nohighlight">\(\bar{\eps}\)</span>, which is the solution of the
+implicit gradient equation driven by the local strain <span class="math notranslate nohighlight">\(\eps\)</span> with the interaction parameter <span class="math notranslate nohighlight">\(c\)</span>.</p>
+<p>The elastic predictor on the microplanes is evaluated with the local strain, while the tensile, deviatoric,
+volumetric and shear boundaries are evaluated with the <em>over-nonlocal</em> strain increment</p>
+<div class="math notranslate nohighlight">
+\[\Delta \hat{\eps} = m \, \Delta \bar{\eps} + \left( 1 - m \right) \Delta \eps,\]</div>
+<p>in which <span class="math notranslate nohighlight">\(m\)</span> weights the nonlocal against the local strain. The consistent tangents with respect to the local
+and the nonlocal strain follow accordingly.</p>
+<p>The microplane discretization is taken from the shared <code class="docutils literal notranslate"><span class="pre">Marmot::ContinuumMechanics::Microplane</span></code> module (37-microplane scheme <code class="docutils literal notranslate"><span class="pre">N37</span></code>,
+fixed at compile time). The closed-form transition function for the elastic unloading stiffness and the gradient
+enhancement of the boundaries are introduced in Basche et al. (2026). The constitutive laws of M7 are
+implemented once in <code class="docutils literal notranslate"><span class="pre">MicroplaneM7Formulation</span></code> and shared with <a class="reference internal" href="microplanem7.html#microplanem7"><span class="std std-ref">MicroplaneM7</span></a>; GM7 therefore
+requires the <code class="docutils literal notranslate"><span class="pre">MicroplaneM7</span></code> module.</p>
+</section>
+<section id="properties">
+<h2>Properties<a class="headerlink" href="#properties" title="Link to this heading"></a></h2>
+<p>The fixed parameters of Caner and Bažant (2013) are calibrated in N and mm. Therefore <span class="math notranslate nohighlight">\(E\)</span>, <span class="math notranslate nohighlight">\(f_c\)</span> and
+<code class="docutils literal notranslate"><span class="pre">transitionWidth</span></code> have to be given in N/mm² (MPa); the M7 parameters <span class="math notranslate nohighlight">\(\nu\)</span>, <span class="math notranslate nohighlight">\(k_1, \ldots, k_5\)</span>,
+<span class="math notranslate nohighlight">\(c_3\)</span> and <code class="docutils literal notranslate"><span class="pre">transitionExponent</span></code> are dimensionless.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 10.0%" />
+<col style="width: 20.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Index</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">E</span></code></p></td>
+<td><p>Young’s modulus <span class="math notranslate nohighlight">\(E\)</span> in N/mm²</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nu</span></code></p></td>
+<td><p>Poisson’s ratio <span class="math notranslate nohighlight">\(\nu\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">k1</span></code></p></td>
+<td><p>Radial scaling parameter <span class="math notranslate nohighlight">\(k_1\)</span> (typical value 1.5e-4)</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">k2</span></code></p></td>
+<td><p>Horizontal asymptote of the frictional boundary <span class="math notranslate nohighlight">\(k_2\)</span> (typical value 110)</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">k3</span></code></p></td>
+<td><p>Shape of the volumetric boundary <span class="math notranslate nohighlight">\(k_3\)</span> (typical value 30)</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">k4</span></code></p></td>
+<td><p>Shape of the volumetric boundary <span class="math notranslate nohighlight">\(k_4\)</span> (typical value 100)</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">k5</span></code></p></td>
+<td><p>Volumetric-deviatoric coupling at low pressures <span class="math notranslate nohighlight">\(k_5\)</span> (typical value 1e-4)</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">c</span></code></p></td>
+<td><p>Nonlocal interaction parameter <span class="math notranslate nohighlight">\(c\)</span> (length squared, e.g. mm²)</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">m</span></code></p></td>
+<td><p>Weighting of the nonlocal strain <span class="math notranslate nohighlight">\(m\)</span> (0 = local, 1 = nonlocal, <span class="math notranslate nohighlight">\(m &gt; 1\)</span>: over-nonlocal)</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">c3</span></code></p></td>
+<td><p>Optional, slope of the postpeak in uniaxial tension <span class="math notranslate nohighlight">\(c_3\)</span> (default 4.0)</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">fc</span></code></p></td>
+<td><p>Optional, compressive strength <span class="math notranslate nohighlight">\(f_c\)</span> in N/mm², used by the deviatoric boundary (default 36.0)</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">transitionWidth</span></code></p></td>
+<td><p>Optional, stress offset in N/mm² from the virtual elastic loading path at which the unloading transition
+starts (default 4.0)</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">transitionExponent</span></code></p></td>
+<td><p>Optional, exponent of the unloading transition function (default 0.4)</p></td>
+</tr>
+<tr class="row-odd"><td><p>13</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">density</span></code></p></td>
+<td><p>Optional mass density (requires all preceding properties)</p></td>
+</tr>
+<tr class="row-even"><td><p>14</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nonlocalViscosity</span></code></p></td>
+<td><p>Optional viscosity of the nonlocal fields, applied to all six components (requires all preceding
+properties)</p></td>
+</tr>
+</tbody>
+</table>
+<p>The material is registered as <code class="docutils literal notranslate"><span class="pre">GM7</span></code> in the general gradient-enhanced hypoelastic material factory (six nonlocal
+fields), and is used with the six-field <code class="docutils literal notranslate"><span class="pre">GeneralGradientEnhancedDisplacementFiniteElement</span></code> elements (<code class="docutils literal notranslate"><span class="pre">G6GCPS8</span></code>,
+<code class="docutils literal notranslate"><span class="pre">G6GC3D8</span></code>, <code class="docutils literal notranslate"><span class="pre">G6GC3D20</span></code>, …).</p>
+<p>The state variables are the volumetric stress <code class="docutils literal notranslate"><span class="pre">sig_v0</span></code>, <code class="docutils literal notranslate"><span class="pre">zeta</span></code>, the microplane stresses <code class="docutils literal notranslate"><span class="pre">sig_N0</span></code>, <code class="docutils literal notranslate"><span class="pre">sig_M0</span></code>,
+<code class="docutils literal notranslate"><span class="pre">sig_L0</span></code>, the extremal over-nonlocal normal strains <code class="docutils literal notranslate"><span class="pre">eps_N0pos</span></code>, <code class="docutils literal notranslate"><span class="pre">eps_N0neg</span></code>, the macroscopic over-nonlocal
+strain <code class="docutils literal notranslate"><span class="pre">strain_macro0OverNonLocal</span></code> and the macroscopic local strain <code class="docutils literal notranslate"><span class="pre">strain_macro0Local</span></code>, which is returned as
+the local driving variable of the nonlocal fields. For postprocessing, <code class="docutils literal notranslate"><span class="pre">activeTensileBoundary</span></code>,
+<code class="docutils literal notranslate"><span class="pre">activeCompressiveBoundary</span></code> and <code class="docutils literal notranslate"><span class="pre">activeShearBoundary</span></code> hold the fractions of the microplanes on the tensile,
+compressive and shear boundary in the last increment.</p>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials3GM7E">
+<span id="_CPPv3N6Marmot9Materials3GM7E"></span><span id="_CPPv2N6Marmot9Materials3GM7E"></span><span id="Marmot::Materials::GM7"></span><span class="target" id="classMarmot_1_1Materials_1_1GM7"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GM7</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/finitestrainmechanicscore.html#_CPPv4N6Marmot9MaterialsE" title="Marmot::Materials"><span class="n"><span class="pre">Materials</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">MaterialGradientEnhancedHypoElastic</span></span><span class="p"><span class="pre">&lt;</span></span><span class="m"><span class="pre">6</span></span><span class="p"><span class="pre">&gt;</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials3GM7E" title="Link to this definition"></a><br /></dt>
+<dd><p>Inheritance diagram for Marmot::Materials::GM7:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-09180beebffcdafc1436a794b5560296331b6695.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::GM7&quot; tooltip=&quot;Marmot::Materials::GM7&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; 6 &gt;&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; 6 &gt;&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Collaboration diagram for Marmot::Materials::GM7:</p>
+<figure class="align-default">
+<div align="center" class="align-center"><div class="graphviz"><img src="../../_images/graphviz-414da76937ba7dc44485d8d06e9122b78558676a.png" alt="digraph {
+    graph [bgcolor=&quot;#00000000&quot;]
+    node [shape=rectangle style=filled fillcolor=&quot;#FFFFFF&quot; font=Helvetica padding=2]
+    edge [color=&quot;#1414CE&quot;]
+    &quot;1&quot; [label=&quot;Marmot::Materials::GM7&quot; tooltip=&quot;Marmot::Materials::GM7&quot; fillcolor=&quot;#BFBFBF&quot;]
+    &quot;4&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; nNonlocalVariables &gt;&quot;]
+    &quot;2&quot; [label=&quot;Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; 6 &gt;&quot; tooltip=&quot;Marmot::Materials::MaterialGradientEnhancedHypoElastic&lt; 6 &gt;&quot;]
+    &quot;5&quot; [label=&quot;Marmot::Materials::MicroplaneM7Formulation&quot; tooltip=&quot;Marmot::Materials::MicroplaneM7Formulation&quot;]
+    &quot;6&quot; [label=&quot;Marmot::Materials::MicroplaneM7Formulation::Parameters&quot; tooltip=&quot;Marmot::Materials::MicroplaneM7Formulation::Parameters&quot;]
+    &quot;3&quot; [label=&quot;Marmot::Utilities::StateLayoutDynamic&quot; tooltip=&quot;Marmot::Utilities::StateLayoutDynamic&quot;]
+    &quot;1&quot; -&gt; &quot;2&quot; [dir=forward tooltip=&quot;public-inheritance&quot;]
+    &quot;1&quot; -&gt; &quot;5&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;4&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;2&quot; -&gt; &quot;3&quot; [dir=forward tooltip=&quot;usage&quot;]
+    &quot;2&quot; -&gt; &quot;4&quot; [dir=forward tooltip=&quot;template-instance&quot;]
+    &quot;5&quot; -&gt; &quot;6&quot; [dir=forward tooltip=&quot;usage&quot;]
+}" class="graphviz" /></div>
+</div>
+</figure>
+<p>Nonlocal gradient-enhanced extension of the microplane model M7 for 3D stress states. </p>
+<p><p>The base formulation follows Caner &amp; Bažant (2013), “Microplane model M7 for</p>
+<p>plain concrete. I: Formulation” and “II: Calibration and verification”, Journal of Engineering Mechanics, 139(12). The tensile, deviatoric, volumetric and shear boundaries are evaluated on an “over-nonlocal” strain (see</p>
+<a class="reference internal" href="#classMarmot_1_1Materials_1_1GM7_1a871ff13abc793c678ddb553948642f70"><span class="std std-ref">stress_update</span></a>) that blends the local strain with a nonlocally-averaged strain via the weighting parameter <a class="reference internal" href="#classMarmot_1_1Materials_1_1GM7_1a299d4c63eee182e504284834b4a9b855"><span class="std std-ref">m</span></a>, with the nonlocal interaction parameter <a class="reference internal" href="#classMarmot_1_1Materials_1_1GM7_1a711f809a3ba47cb01eefeec64a5609ef"><span class="std std-ref">c</span></a>, for regularized (mesh-independent) softening. Both the closed-form transition function of the elastic unloading stiffness (see <a class="reference internal" href="microplanem7.html#classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1adc0c2b77f0ac8aa95e934bc9c66c9814"><span class="std std-ref">MicroplaneM7Formulation::transitionFunctionClosedForm</span></a>), improving convergence behavior in implicit simulations, and the nonlocal gradient-enhancement of the boundaries, are introduced in Basche et al. (2026). The constitutive laws of M7 are shared with <a class="reference internal" href="microplanem7.html#classMarmot_1_1Materials_1_1MicroplaneM7"><span class="std std-ref">MicroplaneM7</span></a> through <a class="reference internal" href="microplanem7.html#classMarmot_1_1Materials_1_1MicroplaneM7Formulation"><span class="std std-ref">MicroplaneM7Formulation</span></a>. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials3GM79nmp_sizedE">
+<span id="_CPPv3N6Marmot9Materials3GM79nmp_sizedE"></span><span id="_CPPv2N6Marmot9Materials3GM79nmp_sizedE"></span><span class="target" id="classMarmot_1_1Materials_1_1GM7_1a5844e152a02e0e08b87fff185209959a"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nmp_sized</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="microplanem7.html#_CPPv4N6Marmot9Materials23MicroplaneM7FormulationE" title="Marmot::Materials::MicroplaneM7Formulation"><span class="n"><span class="pre">MicroplaneM7Formulation</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="microplanem7.html#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation9nmp_sizedE" title="Marmot::Materials::MicroplaneM7Formulation::nmp_sized"><span class="n"><span class="pre">nmp_sized</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials3GM79nmp_sizedE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials3GM710mnmp_sizedE">
+<span id="_CPPv3N6Marmot9Materials3GM710mnmp_sizedE"></span><span id="_CPPv2N6Marmot9Materials3GM710mnmp_sizedE"></span><span class="target" id="classMarmot_1_1Materials_1_1GM7_1ac03ad0b1ce382d334f35e24ab784a94d"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mnmp_sized</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="microplanem7.html#_CPPv4N6Marmot9Materials23MicroplaneM7FormulationE" title="Marmot::Materials::MicroplaneM7Formulation"><span class="n"><span class="pre">MicroplaneM7Formulation</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="microplanem7.html#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10mnmp_sizedE" title="Marmot::Materials::MicroplaneM7Formulation::mnmp_sized"><span class="n"><span class="pre">mnmp_sized</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials3GM710mnmp_sizedE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials3GM710nmp6_sizedE">
+<span id="_CPPv3N6Marmot9Materials3GM710nmp6_sizedE"></span><span id="_CPPv2N6Marmot9Materials3GM710nmp6_sizedE"></span><span class="target" id="classMarmot_1_1Materials_1_1GM7_1ac4146ef23473d510ecf890ad4b614679"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nmp6_sized</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="microplanem7.html#_CPPv4N6Marmot9Materials23MicroplaneM7FormulationE" title="Marmot::Materials::MicroplaneM7Formulation"><span class="n"><span class="pre">MicroplaneM7Formulation</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="microplanem7.html#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation10nmp6_sizedE" title="Marmot::Materials::MicroplaneM7Formulation::nmp6_sized"><span class="n"><span class="pre">nmp6_sized</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials3GM710nmp6_sizedE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials3GM73GM7EPKdii">
+<span id="_CPPv3N6Marmot9Materials3GM73GM7EPKdii"></span><span id="_CPPv2N6Marmot9Materials3GM73GM7EPKdii"></span><span id="Marmot::Materials::GM7::GM7__doubleCP.i.i"></span><span class="target" id="classMarmot_1_1Materials_1_1GM7_1ac3d3bb348cbec386c4c434523e010e2e"></span><span class="sig-name descname"><span class="n"><span class="pre">GM7</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">materialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">nMaterialProperties</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">materialNumber</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials3GM73GM7EPKdii" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials3GM721initializeStateLayoutEv">
+<span id="_CPPv3N6Marmot9Materials3GM721initializeStateLayoutEv"></span><span id="_CPPv2N6Marmot9Materials3GM721initializeStateLayoutEv"></span><span id="Marmot::Materials::GM7::initializeStateLayout"></span><span class="target" id="classMarmot_1_1Materials_1_1GM7_1a6e869097d5be65769d40718e5b396646"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeStateLayout</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Marmot9Materials3GM721initializeStateLayoutEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Declares the per-microplane and scalar state variables managed by stateLayout. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials3GM710getDensityEPKd">
+<span id="_CPPv3NK6Marmot9Materials3GM710getDensityEPKd"></span><span id="_CPPv2NK6Marmot9Materials3GM710getDensityEPKd"></span><span id="Marmot::Materials::GM7::getDensity__doubleCPC"></span><span class="target" id="classMarmot_1_1Materials_1_1GM7_1a402f198be6c75470983fe2414ef94a88"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getDensity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials3GM710getDensityEPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the density of the material. </p>
+<p>
+This method must be implemented in derived classes to return the density of the material, which is required for dynamic analyses. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateVars</strong> – Pointer to the array of state variables </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Density of the material</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials3GM720getNonlocalViscosityEPKd">
+<span id="_CPPv3NK6Marmot9Materials3GM720getNonlocalViscosityEPKd"></span><span id="_CPPv2NK6Marmot9Materials3GM720getNonlocalViscosityEPKd"></span><span id="Marmot::Materials::GM7::getNonlocalViscosity__doubleCPC"></span><span class="target" id="classMarmot_1_1Materials_1_1GM7_1a763ed4db86d7fd9a60a35b1423d6effb"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNonlocalViscosity</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials3GM720getNonlocalViscosityEPKd" title="Link to this definition"></a><br /></dt>
+<dd><p>Get the nonlocal viscosity of the material. </p>
+<p>
+This method must be implemented in derived classes to return the nonlocal viscosity values, which are required for dynamic analyses involving nonlocal variables. The returned vector should have a length equal to <code class="docutils literal notranslate"><span class="pre">nNonlocalVariables</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>stateVars</strong> – Pointer to the array of state variables </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Vector containing the nonlocal viscosity values for each nonlocal variable</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-attributes">Public Static Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials3GM73nqpE">
+<span id="_CPPv3N6Marmot9Materials3GM73nqpE"></span><span id="_CPPv2N6Marmot9Materials3GM73nqpE"></span><span id="Marmot::Materials::GM7::nqp__s"></span><span class="target" id="classMarmot_1_1Materials_1_1GM7_1a9252c1aaae5b413014c00687e710141b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">constexpr</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nqp</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="microplanem7.html#_CPPv4N6Marmot9Materials23MicroplaneM7FormulationE" title="Marmot::Materials::MicroplaneM7Formulation"><span class="n"><span class="pre">MicroplaneM7Formulation</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="microplanem7.html#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation3nqpE" title="Marmot::Materials::MicroplaneM7Formulation::nqp"><span class="n"><span class="pre">nqp</span></span></a><a class="headerlink" href="#_CPPv4N6Marmot9Materials3GM73nqpE" title="Link to this definition"></a><br /></dt>
+<dd><p>Number of microplanes; see <a class="reference internal" href="microplanem7.html#classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a2712202f8bebe2cecb39ca004b82726d"><span class="std std-ref">MicroplaneM7Formulation::nqp</span></a>. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-functions">Protected Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials3GM713computeStressER8responseR8tangentsRK9increment">
+<span id="_CPPv3NK6Marmot9Materials3GM713computeStressER8responseR8tangentsRK9increment"></span><span id="_CPPv2NK6Marmot9Materials3GM713computeStressER8responseR8tangentsRK9increment"></span><span id="Marmot::Materials::GM7::computeStress__responseR.tangentsR.incrementCRC"></span><span class="target" id="classMarmot_1_1Materials_1_1GM7_1a0a697639b577972ce9c5e8ed46742741"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeStress</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">response</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">res</span></span>, <span class="n"><span class="pre">tangents</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tan</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">increment</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">inc</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials3GM713computeStressER8responseR8tangentsRK9increment" title="Link to this definition"></a><br /></dt>
+<dd><p>Compute the stress response of the material model including the algorithmic tangents. </p>
+<p>
+This method must be implemented in derived classes to compute the stress response based on the specific material model. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>res</strong> – <strong>[inout]</strong> Reference to the response struct to be filled with the computed stress and other response variables. </p></li>
+<li><p><strong>tan</strong> – <strong>[inout]</strong> Reference to the tangents struct to be filled with the computed algorithmic tangent matrices. </p></li>
+<li><p><strong>inc</strong> – <strong>[in]</strong> Reference to the increment struct containing the strain increment, nonlocal variable increments, and time information.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials3GM713stress_updateERKN6Marmot4Math8Vector6dERKN6Marmot4Math8Vector6dEPd">
+<span id="_CPPv3NK6Marmot9Materials3GM713stress_updateERKN6Marmot4Math8Vector6dERKN6Marmot4Math8Vector6dEPd"></span><span id="_CPPv2NK6Marmot9Materials3GM713stress_updateERKN6Marmot4Math8Vector6dERKN6Marmot4Math8Vector6dEPd"></span><span id="Marmot::Materials::GM7::stress_update__Marmot::Math::Vector6dCR.Marmot::Math::Vector6dCR.doublePC"></span><span class="target" id="classMarmot_1_1Materials_1_1GM7_1a871ff13abc793c678ddb553948642f70"></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tuple</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Matrix6dE" title="Marmot::Math::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Matrix6dE" title="Marmot::Math::Matrix6d"><span class="n"><span class="pre">Matrix6d</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stress_update</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dE_macroLocal</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">dE_macroOverNonLocal</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">stateVars</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials3GM713stress_updateERKN6Marmot4Math8Vector6dERKN6Marmot4Math8Vector6dEPd" title="Link to this definition"></a><br /></dt>
+<dd><p>Performs the full microplane stress update (kinematic projection, per-microplane normal/shear boundary evaluation, and homogenization back to macroscopic stress and tangents) for one strain increment, always committing the resulting per-microplane state variables into <code class="docutils literal notranslate"><span class="pre">stateVars</span></code>. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dE_macroLocal</strong> – Local macroscopic strain increment. </p></li>
+<li><p><strong>dE_macroOverNonLocal</strong> – Over-nonlocal macroscopic strain increment, <code class="docutils literal notranslate"><a class="reference internal" href="#classMarmot_1_1Materials_1_1GM7_1a299d4c63eee182e504284834b4a9b855"><span class="std std-ref"><span class="pre">m</span></span></a> <span class="pre">*</span> <span class="pre">dE_macroNonLocal</span><ul>
+<li><p><span class="pre">(1</span> <span class="pre">-</span> <a class="reference internal" href="#classMarmot_1_1Materials_1_1GM7_1a299d4c63eee182e504284834b4a9b855"><span class="std std-ref"><span class="pre">m</span></span></a><span class="pre">)</span> <span class="pre">*</span> <span class="pre">dE_macroLocal</span></p></li>
+</ul>
+</code>; used to evaluate the tensile, deviatoric, volumetric and shear boundaries. </p></li>
+<li><p><strong>stateVars</strong> – State variables at the start of the increment; overwritten with the updated per-microplane state. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>{macroscopic stress, tangent w.r.t. local strain, tangent w.r.t. over-nonlocal strain}. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK6Marmot9Materials3GM731computeMicroplaneNormalResponseEK6size_tKdKdKdKdKdKdKdKdRKN23MicroplaneM7Formulation14NormalResponseERdRdRiRi">
+<span id="_CPPv3NK6Marmot9Materials3GM731computeMicroplaneNormalResponseEK6size_tKdKdKdKdKdKdKdKdRKN23MicroplaneM7Formulation14NormalResponseERdRdRiRi"></span><span id="_CPPv2NK6Marmot9Materials3GM731computeMicroplaneNormalResponseEK6size_tKdKdKdKdKdKdKdKdRKN23MicroplaneM7Formulation14NormalResponseERdRdRiRi"></span><span id="Marmot::Materials::GM7::computeMicroplaneNormalResponse__sC.doubleC.doubleC.doubleC.doubleC.doubleC.doubleC.doubleC.doubleC.MicroplaneM7Formulation::NormalResponseCR.doubleR.doubleR.iR.iRC"></span><span class="target" id="classMarmot_1_1Materials_1_1GM7_1aa65b0c7b4cc7c6c797f7d5b69a213b87"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials3GM714NormalResponseE" title="Marmot::Materials::GM7::NormalResponse"><span class="n"><span class="pre">NormalResponse</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">computeMicroplaneNormalResponse</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">size_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">qp_i</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sig_N0</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">deps_N_l</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eps_N_l</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eps_N_onl</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eps_d_onl</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">eps_v_onl</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sig_v0</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">zeta</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="microplanem7.html#_CPPv4N6Marmot9Materials23MicroplaneM7FormulationE" title="Marmot::Materials::MicroplaneM7Formulation"><span class="n"><span class="pre">MicroplaneM7Formulation</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="microplanem7.html#_CPPv4N6Marmot9Materials23MicroplaneM7Formulation14NormalResponseE" title="Marmot::Materials::MicroplaneM7Formulation::NormalResponse"><span class="n"><span class="pre">NormalResponse</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">volumetric_law</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">eps_N0pos</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">eps_N0neg</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">tensileB_flag</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">compB_flag</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK6Marmot9Materials3GM731computeMicroplaneNormalResponseEK6size_tKdKdKdKdKdKdKdKdRKN23MicroplaneM7Formulation14NormalResponseERdRdRiRi" title="Link to this definition"></a><br /></dt>
+<dd><p>Evaluates the normal-direction response of a single microplane: compares the (local-strain) elastic prediction (<a class="reference internal" href="microplanem7.html#classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a497b6cdf56bfa8054f73092ee805feaf"><span class="std std-ref">MicroplaneM7Formulation::normal_elasticLaw</span></a>) against the tensile (<a class="reference internal" href="microplanem7.html#classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1abfb8aa6129a0ef140688a26dd77162e8"><span class="std std-ref">MicroplaneM7Formulation::tensile_boundary</span></a>) and compressive (<a class="reference internal" href="microplanem7.html#classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a3858b7a2264941c64a0dee0c7e589a22"><span class="std std-ref">MicroplaneM7Formulation::deviatoric_boundary</span></a> + <a class="reference internal" href="microplanem7.html#classMarmot_1_1Materials_1_1MicroplaneM7Formulation_1a32227d781e8dd285c5f4d578ae498e9f"><span class="std std-ref">MicroplaneM7Formulation::volumetric_boundary</span></a>, evaluated on the over-nonlocal strain) boundaries and returns whichever governs, updating the corresponding state variables and boundary-exceeded counters in place. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-attributes">Protected Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials3GM73m7_E">
+<span id="_CPPv3N6Marmot9Materials3GM73m7_E"></span><span id="_CPPv2N6Marmot9Materials3GM73m7_E"></span><span id="Marmot::Materials::GM7::m7___MicroplaneM7FormulationC"></span><span class="target" id="classMarmot_1_1Materials_1_1GM7_1aa051f38a180b185467ca0736c8b94237"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="microplanem7.html#_CPPv4N6Marmot9Materials23MicroplaneM7FormulationE" title="Marmot::Materials::MicroplaneM7Formulation"><span class="n"><span class="pre">MicroplaneM7Formulation</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">m7_</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials3GM73m7_E" title="Link to this definition"></a><br /></dt>
+<dd><p>The constitutive laws of M7; the elastic prediction is evaluated with the local, the boundaries with the over-nonlocal strain. </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials3GM71cE">
+<span id="_CPPv3N6Marmot9Materials3GM71cE"></span><span id="_CPPv2N6Marmot9Materials3GM71cE"></span><span id="Marmot::Materials::GM7::c__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1GM7_1a711f809a3ba47cb01eefeec64a5609ef"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">c</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials3GM71cE" title="Link to this definition"></a><br /></dt>
+<dd><p>Nonlocal interaction parameter (length squared, e.g. mm²). </p>
+</dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials3GM71mE">
+<span id="_CPPv3N6Marmot9Materials3GM71mE"></span><span id="_CPPv2N6Marmot9Materials3GM71mE"></span><span id="Marmot::Materials::GM7::m__doubleC"></span><span class="target" id="classMarmot_1_1Materials_1_1GM7_1a299d4c63eee182e504284834b4a9b855"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">m</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials3GM71mE" title="Link to this definition"></a><br /></dt>
+<dd><p>Local/nonlocal weighting parameter for the “over-nonlocal” strain used to evaluate the boundaries (1.0 = purely nonlocal, 0.0 = purely local); see <a class="reference internal" href="#classMarmot_1_1Materials_1_1GM7_1a871ff13abc793c678ddb553948642f70"><span class="std std-ref">stress_update</span></a>. </p>
+</dd></dl>
+
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials3GM714NormalResponseE">
+<span id="_CPPv3N6Marmot9Materials3GM714NormalResponseE"></span><span id="_CPPv2N6Marmot9Materials3GM714NormalResponseE"></span><span id="Marmot::Materials::GM7::NormalResponse"></span><span class="target" id="structMarmot_1_1Materials_1_1GM7_1_1NormalResponse"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NormalResponse</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials3GM714NormalResponseE" title="Link to this definition"></a><br /></dt>
+<dd><p>Per-microplane normal-direction response with the tangent already projected to macroscopic (Voigt) space, split into the tangent w.r.t. the local strain increment (<a class="reference internal" href="#structMarmot_1_1Materials_1_1GM7_1_1NormalResponse_1a0b8a7627835ae76f6c0bd07e747f3f92"><span class="std std-ref">tangent_l</span></a>) and w.r.t. the over-nonlocal strain increment (<a class="reference internal" href="#structMarmot_1_1Materials_1_1GM7_1_1NormalResponse_1abd0bb4760008312a720761ac927e1003"><span class="std std-ref">tangent_onl</span></a>). </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials3GM714NormalResponse6stressE">
+<span id="_CPPv3N6Marmot9Materials3GM714NormalResponse6stressE"></span><span id="_CPPv2N6Marmot9Materials3GM714NormalResponse6stressE"></span><span id="Marmot::Materials::GM7::NormalResponse::stress__double"></span><span class="target" id="structMarmot_1_1Materials_1_1GM7_1_1NormalResponse_1ada2c9b6e16afeb46deb067b31e0696fc"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stress</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials3GM714NormalResponse6stressE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials3GM714NormalResponse9tangent_lE">
+<span id="_CPPv3N6Marmot9Materials3GM714NormalResponse9tangent_lE"></span><span id="_CPPv2N6Marmot9Materials3GM714NormalResponse9tangent_lE"></span><span id="Marmot::Materials::GM7::NormalResponse::tangent_l__Marmot::Math::Vector6d"></span><span class="target" id="structMarmot_1_1Materials_1_1GM7_1_1NormalResponse_1a0b8a7627835ae76f6c0bd07e747f3f92"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tangent_l</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials3GM714NormalResponse9tangent_lE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials3GM714NormalResponse11tangent_onlE">
+<span id="_CPPv3N6Marmot9Materials3GM714NormalResponse11tangent_onlE"></span><span id="_CPPv2N6Marmot9Materials3GM714NormalResponse11tangent_onlE"></span><span id="Marmot::Materials::GM7::NormalResponse::tangent_onl__Marmot::Math::Vector6d"></span><span class="target" id="structMarmot_1_1Materials_1_1GM7_1_1NormalResponse_1abd0bb4760008312a720761ac927e1003"></span><a class="reference internal" href="../codedocumentation/finiteelementcore.html#_CPPv46Marmot" title="Marmot"><span class="n"><span class="pre">Marmot</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4MathE" title="Marmot::Math"><span class="n"><span class="pre">Math</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="../codedocumentation/mathcore.html#_CPPv4N6Marmot4Math8Vector6dE" title="Marmot::Math::Vector6d"><span class="n"><span class="pre">Vector6d</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tangent_onl</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials3GM714NormalResponse11tangent_onlE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials3GM714allmp_responseE">
+<span id="_CPPv3N6Marmot9Materials3GM714allmp_responseE"></span><span id="_CPPv2N6Marmot9Materials3GM714allmp_responseE"></span><span id="Marmot::Materials::GM7::allmp_response"></span><span class="target" id="structMarmot_1_1Materials_1_1GM7_1_1allmp__response"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">allmp_response</span></span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials3GM714allmp_responseE" title="Link to this definition"></a><br /></dt>
+<dd><p>Per-microplane stress and macroscopically-projected local/over-nonlocal tangents, stacked over all <a class="reference internal" href="#classMarmot_1_1Materials_1_1GM7_1a9252c1aaae5b413014c00687e710141b"><span class="std std-ref">nqp</span></a> microplanes. </p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials3GM714allmp_response6stressE">
+<span id="_CPPv3N6Marmot9Materials3GM714allmp_response6stressE"></span><span id="_CPPv2N6Marmot9Materials3GM714allmp_response6stressE"></span><span id="Marmot::Materials::GM7::allmp_response::stress__nmp_sized"></span><span class="target" id="structMarmot_1_1Materials_1_1GM7_1_1allmp__response_1a47164003885212d94320a0d81cfa3401"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials3GM79nmp_sizedE" title="Marmot::Materials::GM7::nmp_sized"><span class="n"><span class="pre">nmp_sized</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stress</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials3GM79nmp_sizedE" title="Marmot::Materials::GM7::nmp_sized"><span class="n"><span class="pre">nmp_sized</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials3GM714allmp_response6stressE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials3GM714allmp_response9tangent_lE">
+<span id="_CPPv3N6Marmot9Materials3GM714allmp_response9tangent_lE"></span><span id="_CPPv2N6Marmot9Materials3GM714allmp_response9tangent_lE"></span><span id="Marmot::Materials::GM7::allmp_response::tangent_l__nmp6_sized"></span><span class="target" id="structMarmot_1_1Materials_1_1GM7_1_1allmp__response_1aefaa0500c3ab6a0f8e63c70a83f49700"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials3GM710nmp6_sizedE" title="Marmot::Materials::GM7::nmp6_sized"><span class="n"><span class="pre">nmp6_sized</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tangent_l</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials3GM710nmp6_sizedE" title="Marmot::Materials::GM7::nmp6_sized"><span class="n"><span class="pre">nmp6_sized</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials3GM714allmp_response9tangent_lE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Marmot9Materials3GM714allmp_response11tangent_onlE">
+<span id="_CPPv3N6Marmot9Materials3GM714allmp_response11tangent_onlE"></span><span id="_CPPv2N6Marmot9Materials3GM714allmp_response11tangent_onlE"></span><span id="Marmot::Materials::GM7::allmp_response::tangent_onl__nmp6_sized"></span><span class="target" id="structMarmot_1_1Materials_1_1GM7_1_1allmp__response_1afc56dfbf5f23f6c24dc9b09c96f3274c"></span><a class="reference internal" href="#_CPPv4N6Marmot9Materials3GM710nmp6_sizedE" title="Marmot::Materials::GM7::nmp6_sized"><span class="n"><span class="pre">nmp6_sized</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">tangent_onl</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N6Marmot9Materials3GM710nmp6_sizedE" title="Marmot::Materials::GM7::nmp6_sized"><span class="n"><span class="pre">nmp6_sized</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">Zero</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N6Marmot9Materials3GM714allmp_response11tangent_onlE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="microplanem7.html" class="btn btn-neutral float-left" title="Microplane model M7" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="vonmises.html" class="btn btn-neutral float-right" title="Von Mises model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, University of Innsbruck, BOKU Vienna and other authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

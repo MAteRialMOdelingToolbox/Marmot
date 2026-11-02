@@ -1,0 +1,2939 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_math_1_1_tensors" kind="namespace" language="C++">
+    <compoundname>Marmot::Math::Tensors</compoundname>
+    <innerclass refid="struct_marmot_1_1_math_1_1_tensors_1_1_is_square_rank2_tensor" prot="public">Marmot::Math::Tensors::IsSquareRank2Tensor</innerclass>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_tensors_1_1_fastor_indices">Marmot::Math::Tensors::FastorIndices</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_tensors_1_1_fastor_tensors">Marmot::Math::Tensors::FastorTensors</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_tensors_1_1_index_notation">Marmot::Math::Tensors::IndexNotation</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_tensors_1_1_tensor_exponential">Marmot::Math::Tensors::TensorExponential</innernamespace>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="_marmot_fastor_tensor_basics_8h_1ac62d5a33dfa0ac2b4c7c1a6bdeea2d52" prot="public" static="no" strong="no">
+        <type></type>
+        <name>DimensionType</name>
+        <qualifiedname>Marmot::Math::Tensors::DimensionType</qualifiedname>
+        <enumvalue id="_marmot_fastor_tensor_basics_8h_1ac62d5a33dfa0ac2b4c7c1a6bdeea2d52a96d5e747a6f2f237d8bec0dbfe01bb94" prot="public">
+          <name>U</name>
+          <briefdescription>
+<para>displacement dimension </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_fastor_tensor_basics_8h_1ac62d5a33dfa0ac2b4c7c1a6bdeea2d52a8eda9924301f53fd583ea89dd4b9faae" prot="public">
+          <name>W</name>
+          <briefdescription>
+<para>rotation dimension </para>
+          </briefdescription>
+          <detaileddescription>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Dimension types for reduceTo2D and expandTo3D. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="513" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="513" bodyend="516"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a96081f7ac510e85d13bc0e01111dc478" prot="public" static="no">
+        <type>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 6, 3, 3 &gt; &gt;</type>
+        <definition>typedef Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 6, 3, 3 &gt; &gt; Marmot::Math::Tensors::Tensor633d</definition>
+        <argsstring></argsstring>
+        <name>Tensor633d</name>
+        <qualifiedname>Marmot::Math::Tensors::Tensor633d</qualifiedname>
+        <briefdescription>
+<para>Fixed-size 6×3×3 double tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="89" column="36" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a0a5fa4c4d5137a570edde81c67b0df56" prot="public" static="no">
+        <type>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 3, 2, 2 &gt; &gt;</type>
+        <definition>typedef Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 3, 2, 2 &gt; &gt; Marmot::Math::Tensors::Tensor322d</definition>
+        <argsstring></argsstring>
+        <name>Tensor322d</name>
+        <qualifiedname>Marmot::Math::Tensors::Tensor322d</qualifiedname>
+        <briefdescription>
+<para>Fixed-size 3×2×2 double tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="90" column="36" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a9b15d9009f033e1b1093c4470e08b16c" prot="public" static="no">
+        <type>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 3, 3, 3, 3 &gt; &gt;</type>
+        <definition>typedef Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 3, 3, 3, 3 &gt; &gt; Marmot::Math::Tensors::Tensor3333d</definition>
+        <argsstring></argsstring>
+        <name>Tensor3333d</name>
+        <qualifiedname>Marmot::Math::Tensors::Tensor3333d</qualifiedname>
+        <briefdescription>
+<para>Fixed-size 3×3×3×3 double tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="92" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="92" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1ae4aafad8ad1ccac9e688993ba110bd4d" prot="public" static="no">
+        <type>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 3, 3, 3 &gt; &gt;</type>
+        <definition>typedef Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 3, 3, 3 &gt; &gt; Marmot::Math::Tensors::Tensor333d</definition>
+        <argsstring></argsstring>
+        <name>Tensor333d</name>
+        <qualifiedname>Marmot::Math::Tensors::Tensor333d</qualifiedname>
+        <briefdescription>
+<para>Fixed-size 3×3×3 double tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="93" column="36" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="93" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a15d4f06e49614d1f14d122701868453c" prot="public" static="no">
+        <type>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 1, 2, 2 &gt; &gt;</type>
+        <definition>typedef Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 1, 2, 2 &gt; &gt; Marmot::Math::Tensors::Tensor122d</definition>
+        <argsstring></argsstring>
+        <name>Tensor122d</name>
+        <qualifiedname>Marmot::Math::Tensors::Tensor122d</qualifiedname>
+        <briefdescription>
+<para>Fixed-size 1×2×2 double tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="94" column="36" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="94" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1ad4c97296854ea17ecb377958852924d4" prot="public" static="no">
+        <type>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 2, 2, 2, 2 &gt; &gt;</type>
+        <definition>typedef Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 2, 2, 2, 2 &gt; &gt; Marmot::Math::Tensors::Tensor2222d</definition>
+        <argsstring></argsstring>
+        <name>Tensor2222d</name>
+        <qualifiedname>Marmot::Math::Tensors::Tensor2222d</qualifiedname>
+        <briefdescription>
+<para>Fixed-size 2×2×2×2 double tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="96" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="96" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a62de752342367f35f499b5ef723db399" prot="public" static="no">
+        <type>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 2, 2, 1, 2 &gt; &gt;</type>
+        <definition>typedef Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 2, 2, 1, 2 &gt; &gt; Marmot::Math::Tensors::Tensor2212d</definition>
+        <argsstring></argsstring>
+        <name>Tensor2212d</name>
+        <qualifiedname>Marmot::Math::Tensors::Tensor2212d</qualifiedname>
+        <briefdescription>
+<para>Fixed-size 2×2×1×2 double tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="98" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="98" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a488c35e2e52c5d4cf622ca165cd5d1ca" prot="public" static="no">
+        <type>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 2, 1, 2, 2 &gt; &gt;</type>
+        <definition>typedef Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 2, 1, 2, 2 &gt; &gt; Marmot::Math::Tensors::Tensor2122d</definition>
+        <argsstring></argsstring>
+        <name>Tensor2122d</name>
+        <qualifiedname>Marmot::Math::Tensors::Tensor2122d</qualifiedname>
+        <briefdescription>
+<para>Fixed-size 2×1×2×2 double tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="100" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="100" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1aff5e3d32707914f55bbb77dc2344e91e" prot="public" static="no">
+        <type>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 2, 1, 1, 2 &gt; &gt;</type>
+        <definition>typedef Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 2, 1, 1, 2 &gt; &gt; Marmot::Math::Tensors::Tensor2112d</definition>
+        <argsstring></argsstring>
+        <name>Tensor2112d</name>
+        <qualifiedname>Marmot::Math::Tensors::Tensor2112d</qualifiedname>
+        <briefdescription>
+<para>Fixed-size 2×1×1×2 double tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="102" column="68" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1abe6980ce47cbacb276d348433224c7bf" prot="public" static="no">
+        <type>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 3, 3 &gt; &gt;</type>
+        <definition>typedef Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; 3, 3 &gt; &gt; Marmot::Math::Tensors::Tensor33d</definition>
+        <argsstring></argsstring>
+        <name>Tensor33d</name>
+        <qualifiedname>Marmot::Math::Tensors::Tensor33d</qualifiedname>
+        <briefdescription>
+<para>Fixed-size 3×3 double tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="103" column="36" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="103" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="var">
+      <memberdef kind="variable" id="_marmot_tensor_8h_1a541453094e2a563dc35c2b5002adf75f" prot="public" static="no" mutable="no">
+        <type>const <ref refid="_marmot_typedefs_8h_1a9b15d9009f033e1b1093c4470e08b16c" kindref="member">Tensor3333d</ref></type>
+        <definition>const Tensor3333d Marmot::Math::Tensors::I2xI2</definition>
+        <argsstring></argsstring>
+        <name>I2xI2</name>
+        <qualifiedname>Marmot::Math::Tensors::I2xI2</qualifiedname>
+        <initializer>= Initialize_I2xI2()</initializer>
+        <briefdescription>
+<para>Fourth-order tensor <formula id="5">$I_{ijkl} = \delta_{ij}\delta_{kl}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="49" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_tensor_8h_1a70d6b4620515093464eceaa9f10ba17c" prot="public" static="no" mutable="no">
+        <type>const <ref refid="_marmot_typedefs_8h_1a9b15d9009f033e1b1093c4470e08b16c" kindref="member">Tensor3333d</ref></type>
+        <definition>const Tensor3333d Marmot::Math::Tensors::Isym</definition>
+        <argsstring></argsstring>
+        <name>Isym</name>
+        <qualifiedname>Marmot::Math::Tensors::Isym</qualifiedname>
+        <initializer>= Initialize_Isym()</initializer>
+        <briefdescription>
+<para>Symmetric fourth-order identity tensor <formula id="7">$ I_{ijkl}^{sym}=\frac{1}{2}(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}) $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="61" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_tensor_8h_1ab7af9a659f0dcc376a5ba99ddef74d6b" prot="public" static="no" mutable="no">
+        <type>const <ref refid="_marmot_typedefs_8h_1a9b15d9009f033e1b1093c4470e08b16c" kindref="member">Tensor3333d</ref></type>
+        <definition>const Tensor3333d Marmot::Math::Tensors::Iskew</definition>
+        <argsstring></argsstring>
+        <name>Iskew</name>
+        <qualifiedname>Marmot::Math::Tensors::Iskew</qualifiedname>
+        <initializer>= Initialize_Iskew()</initializer>
+        <briefdescription>
+<para>Skew-symmetric part of the fourth-order identity tensor  <formula id="9">$I_{ijkl}^{skew}=\frac{1}{2}(\delta_{ik}\delta_{jl}-\delta_{il}\delta_{jk}) $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="72" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_tensor_8h_1a4fa9aa6ba34908ccbd66b48753b92fbf" prot="public" static="no" mutable="no">
+        <type>const <ref refid="_marmot_typedefs_8h_1a9b15d9009f033e1b1093c4470e08b16c" kindref="member">Tensor3333d</ref></type>
+        <definition>const Tensor3333d Marmot::Math::Tensors::IFourthOrder</definition>
+        <argsstring></argsstring>
+        <name>IFourthOrder</name>
+        <qualifiedname>Marmot::Math::Tensors::IFourthOrder</qualifiedname>
+        <initializer>= Initialize_IFourthOrder()</initializer>
+        <briefdescription>
+<para>Fourth-order identity tensor <formula id="10">$ I_{ijkl} = \delta_{ik}\delta_{jl} $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="82" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="82" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_tensor_8h_1a10716d935cdf89d37b0e9b89efd18948" prot="public" static="no" mutable="no">
+        <type>const <ref refid="_marmot_typedefs_8h_1a9b15d9009f033e1b1093c4470e08b16c" kindref="member">Tensor3333d</ref></type>
+        <definition>const Tensor3333d Marmot::Math::Tensors::IFourthOrderTranspose</definition>
+        <argsstring></argsstring>
+        <name>IFourthOrderTranspose</name>
+        <qualifiedname>Marmot::Math::Tensors::IFourthOrderTranspose</qualifiedname>
+        <initializer>= Initialize_IFourthOrderTranspose()</initializer>
+        <briefdescription>
+<para>Transposed fourth-order identity tensor <formula id="11">$ I_{ijkl}^{T} = \delta_{il}\delta_{jk} $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="90" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_tensor_8h_1a43e000bb9570d6cb27a75bb63c8414e2" prot="public" static="no" mutable="no">
+        <type>const <ref refid="_marmot_typedefs_8h_1a9b15d9009f033e1b1093c4470e08b16c" kindref="member">Tensor3333d</ref></type>
+        <definition>const Tensor3333d Marmot::Math::Tensors::dDeviatoricStress_dStress</definition>
+        <argsstring></argsstring>
+        <name>dDeviatoricStress_dStress</name>
+        <qualifiedname>Marmot::Math::Tensors::dDeviatoricStress_dStress</qualifiedname>
+        <initializer>= Initialize_dDeviatoricStress_dStress()</initializer>
+        <briefdescription>
+<para>Derivative of the deviatoric stress with respect to stress   <formula id="13">$ \frac{\partial
+s_{ij}}{\partial\sigma_{kl}} =
+\delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\delta_{kl} $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="102" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="102" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_tensor_8h_1a2df7561bac3e966ceb27a51dda465d49" prot="public" static="no" mutable="no">
+        <type>const <ref refid="_marmot_typedefs_8h_1ae4aafad8ad1ccac9e688993ba110bd4d" kindref="member">Tensor333d</ref></type>
+        <definition>const Tensor333d Marmot::Math::Tensors::LeviCivita3D</definition>
+        <argsstring></argsstring>
+        <name>LeviCivita3D</name>
+        <qualifiedname>Marmot::Math::Tensors::LeviCivita3D</qualifiedname>
+        <initializer>= Initialize_LeviCivita3D()</initializer>
+        <briefdescription>
+<para>3D Levi-Civita permutation tensor <formula id="14">$E_{ijk}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>A fully antisymmetric third-order tensor defined as        <formula id="15">\[  E_{ijk} =
+  \begin{cases}
+    +1 &amp; \text{if } (i,j,k) \text{ is an even permutation of } (1,2,3), \\
+    -1 &amp; \text{if } (i,j,k) \text{ is an odd permutation of } (1,2,3), \\
+     0 &amp; \text{if any two indices are equal.}
+  \end{cases}
+\]</formula>    </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="122" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="122" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_tensor_8h_1a725e6f60df1b84a8a9c390feca6df233" prot="public" static="no" mutable="no">
+        <type>const <ref refid="_marmot_typedefs_8h_1a15d4f06e49614d1f14d122701868453c" kindref="member">Tensor122d</ref></type>
+        <definition>const Tensor122d Marmot::Math::Tensors::LeviCivita2D</definition>
+        <argsstring></argsstring>
+        <name>LeviCivita2D</name>
+        <qualifiedname>Marmot::Math::Tensors::LeviCivita2D</qualifiedname>
+        <initializer>= Initialize_LeviCivita2D()</initializer>
+        <briefdescription>
+<para>2D Levi-Civita permutation tensor <formula id="18">$\varepsilon_{ij}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>A fully antisymmetric second-order tensor defined as        <formula id="17">\[  E_{ij} =
+  \begin{cases}
+    +1 &amp; \text{if } (i,j) = (1,2), \\
+    -1 &amp; \text{if } (i,j) = (2,1), \\
+     0 &amp; \text{if } i=j.
+  \end{cases}
+\]</formula> Commonly used to represent 2D cross products and rotations in tensor notation.    </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="143" column="27" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="143" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="_marmot_tensor_8h_1add2f9db4d78b6dae8038a7b20efe786c" prot="public" static="no" mutable="no">
+        <type>const <ref refid="_marmot_typedefs_8h_1abe6980ce47cbacb276d348433224c7bf" kindref="member">Tensor33d</ref></type>
+        <definition>const Tensor33d Marmot::Math::Tensors::I2</definition>
+        <argsstring></argsstring>
+        <name>I2</name>
+        <qualifiedname>Marmot::Math::Tensors::I2</qualifiedname>
+        <initializer>= Initialize_I2()</initializer>
+        <briefdescription>
+<para>Second-order identity tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><formula id="19">$ I_{ij} = \delta_{ij} $</formula>.    </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="154" column="26" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="154" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_tensor_8h_1ac02a8d7d36016510aa285200b45377e2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="_marmot_typedefs_8h_1a9b15d9009f033e1b1093c4470e08b16c" kindref="member">Tensor3333d</ref></type>
+        <definition>Tensor3333d Marmot::Math::Tensors::Initialize_I2xI2</definition>
+        <argsstring>()</argsstring>
+        <name>Initialize_I2xI2</name>
+        <qualifiedname>Marmot::Math::Tensors::Initialize_I2xI2</qualifiedname>
+        <briefdescription>
+<para>Initializes the fourth-order tensor <formula id="5">$I_{ijkl} = \delta_{ij}\delta_{kl}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="483" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="483" bodyend="494" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="44" declcolumn="22"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1a1c30cdd0117f0e2200e5efefd60c37ea" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="_marmot_typedefs_8h_1a9b15d9009f033e1b1093c4470e08b16c" kindref="member">Tensor3333d</ref></type>
+        <definition>Tensor3333d Marmot::Math::Tensors::Initialize_Isym</definition>
+        <argsstring>()</argsstring>
+        <name>Initialize_Isym</name>
+        <qualifiedname>Marmot::Math::Tensors::Initialize_Isym</qualifiedname>
+        <briefdescription>
+<para>Initializes the symmetric fourth-order identity tensor  <formula id="6">$I_{ijkl}^{sym}=\frac{1}{2}(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}) $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="507" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="507" bodyend="519" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="55" declcolumn="22"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1a6f4037a7b4286b1ac0442213c89eaf6b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="_marmot_typedefs_8h_1a9b15d9009f033e1b1093c4470e08b16c" kindref="member">Tensor3333d</ref></type>
+        <definition>Tensor3333d Marmot::Math::Tensors::Initialize_Iskew</definition>
+        <argsstring>()</argsstring>
+        <name>Initialize_Iskew</name>
+        <qualifiedname>Marmot::Math::Tensors::Initialize_Iskew</qualifiedname>
+        <briefdescription>
+<para>Initializes the skew-symmetric fourth-order identity tensor <formula id="8">$ I_{ijkl}^{skew}=\frac{1}{2}(\delta_{ik}\delta_{jl}-\delta_{il}\delta_{jk}) $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="521" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="521" bodyend="533" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="67" declcolumn="22"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1a481afc775bb8a7a111a4a9c09e4ca1fb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="_marmot_typedefs_8h_1a9b15d9009f033e1b1093c4470e08b16c" kindref="member">Tensor3333d</ref></type>
+        <definition>Tensor3333d Marmot::Math::Tensors::Initialize_IFourthOrder</definition>
+        <argsstring>()</argsstring>
+        <name>Initialize_IFourthOrder</name>
+        <qualifiedname>Marmot::Math::Tensors::Initialize_IFourthOrder</qualifiedname>
+        <briefdescription>
+<para>Initializes the fourth-order identity tensor <formula id="10">$ I_{ijkl} = \delta_{ik}\delta_{jl} $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="457" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="457" bodyend="468" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="77" declcolumn="22"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1a9d0efd747c365bc14889f9a304d4caf4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="_marmot_typedefs_8h_1a9b15d9009f033e1b1093c4470e08b16c" kindref="member">Tensor3333d</ref></type>
+        <definition>Tensor3333d Marmot::Math::Tensors::Initialize_IFourthOrderTranspose</definition>
+        <argsstring>()</argsstring>
+        <name>Initialize_IFourthOrderTranspose</name>
+        <qualifiedname>Marmot::Math::Tensors::Initialize_IFourthOrderTranspose</qualifiedname>
+        <briefdescription>
+<para>Initializes the transposed fourth-order identity tensor <formula id="11">$ I_{ijkl}^{T} = \delta_{il}\delta_{jk} $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="470" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="470" bodyend="481" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="87" declcolumn="22"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1a528953649f10063bf92a0e4782d8a4c7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="_marmot_typedefs_8h_1a9b15d9009f033e1b1093c4470e08b16c" kindref="member">Tensor3333d</ref></type>
+        <definition>Tensor3333d Marmot::Math::Tensors::Initialize_dDeviatoricStress_dStress</definition>
+        <argsstring>()</argsstring>
+        <name>Initialize_dDeviatoricStress_dStress</name>
+        <qualifiedname>Marmot::Math::Tensors::Initialize_dDeviatoricStress_dStress</qualifiedname>
+        <briefdescription>
+<para>Initializes the derivative tensor of deviatoric stress w.r.t. stress  <formula id="12">$ \frac{\partial
+s_{ij}}{\partial\sigma_{kl}} = \delta_{ik}\delta_{jl} - \frac{1}{3} \delta_{ij}\delta_{kl} $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="535" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="535" bodyend="547" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="96" declcolumn="22"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1a8de4202763890e0e63bc345ba67bd83f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="_marmot_typedefs_8h_1ae4aafad8ad1ccac9e688993ba110bd4d" kindref="member">Tensor333d</ref></type>
+        <definition>Tensor333d Marmot::Math::Tensors::Initialize_LeviCivita3D</definition>
+        <argsstring>()</argsstring>
+        <name>Initialize_LeviCivita3D</name>
+        <qualifiedname>Marmot::Math::Tensors::Initialize_LeviCivita3D</qualifiedname>
+        <briefdescription>
+<para>Initializes the 3D Levi-Civita permutation tensor <formula id="14">$E_{ijk}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>A fully antisymmetric third-order tensor defined as        <formula id="15">\[  E_{ijk} =
+  \begin{cases}
+    +1 &amp; \text{if } (i,j,k) \text{ is an even permutation of } (1,2,3), \\
+    -1 &amp; \text{if } (i,j,k) \text{ is an odd permutation of } (1,2,3), \\
+     0 &amp; \text{if any two indices are equal.}
+  \end{cases}
+\]</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="549" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="549" bodyend="563" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="116" declcolumn="21"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1ab15098885cb955b0bcf39205335b112e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="_marmot_typedefs_8h_1a15d4f06e49614d1f14d122701868453c" kindref="member">Tensor122d</ref></type>
+        <definition>Tensor122d Marmot::Math::Tensors::Initialize_LeviCivita2D</definition>
+        <argsstring>()</argsstring>
+        <name>Initialize_LeviCivita2D</name>
+        <qualifiedname>Marmot::Math::Tensors::Initialize_LeviCivita2D</qualifiedname>
+        <briefdescription>
+<para>2D Levi-Civita permutation tensor <formula id="16">$E_{ij}$</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>A fully antisymmetric second-order tensor defined as        <formula id="17">\[  E_{ij} =
+  \begin{cases}
+    +1 &amp; \text{if } (i,j) = (1,2), \\
+    -1 &amp; \text{if } (i,j) = (2,1), \\
+     0 &amp; \text{if } i=j.
+  \end{cases}
+\]</formula> Commonly used to represent 2D cross products and rotations in tensor notation. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="565" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="565" bodyend="574" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="137" declcolumn="21"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1a0ac0c21c3152b5a26c77e43d32151dd5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="_marmot_typedefs_8h_1abe6980ce47cbacb276d348433224c7bf" kindref="member">Tensor33d</ref></type>
+        <definition>Tensor33d Marmot::Math::Tensors::Initialize_I2</definition>
+        <argsstring>()</argsstring>
+        <name>Initialize_I2</name>
+        <qualifiedname>Marmot::Math::Tensors::Initialize_I2</qualifiedname>
+        <briefdescription>
+<para>Initializes the second-order identity tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><formula id="19">$ I_{ij} = \delta_{ij} $</formula>. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="496" column="13" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="496" bodyend="505" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="149" declcolumn="20"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1aef9ee8080072c2e05fe4f7aeb14f4ac2" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Math::Tensors::getNumberOfDofForRotation</definition>
+        <argsstring>(int nDim)</argsstring>
+        <name>getNumberOfDofForRotation</name>
+        <qualifiedname>Marmot::Math::Tensors::getNumberOfDofForRotation</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>nDim</declname>
+        </param>
+        <briefdescription>
+<para>Returns the number of rotational DOFs for the given dimension. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Problem dimension (2 or 3). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>1 in 2D, 3 in 3D. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="161" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="161" bodyend="167"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1a839b33c3da2408805264a698671500cb" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>sizeI</declname>
+            <defname>sizeI</defname>
+          </param>
+          <param>
+            <type>int</type>
+            <declname>sizeJ</declname>
+            <defname>sizeJ</defname>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; double, sizeI *sizeJ, sizeI *sizeJ &gt;</type>
+        <definition>Eigen::Matrix&lt; double, sizeI *sizeJ, sizeI *sizeJ &gt; Marmot::Math::Tensors::makeIndexSwapTensor</definition>
+        <argsstring>()</argsstring>
+        <name>makeIndexSwapTensor</name>
+        <qualifiedname>Marmot::Math::Tensors::makeIndexSwapTensor</qualifiedname>
+        <briefdescription>
+<para>Constructs an aux. matrix, which helps to swap indices in Eigen::Matrices abused as higher order Tensors by multiplication. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The transformation is defined as:   <formula id="20">\[  T_{(ij)(kl)} \cdot P_{(kl)(lk)} = T_{(ij)(lk)}
+\]</formula></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>sizeI</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of rows in the tensor index block. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>sizeJ</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of columns in the tensor index block. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Eigen::Matrix&lt;double, sizeI * sizeJ, sizeI * sizeJ&gt; The index swap tensor.</para>
+</simplesect>
+<programlisting><codeline><highlight class="normal">Eigen::Matrix3d<sp/>t;</highlight></codeline>
+<codeline><highlight class="normal">t<sp/>&lt;&lt;<sp/>1,2,3,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>4,5,6,</highlight></codeline>
+<codeline><highlight class="normal"><sp/><sp/><sp/><sp/><sp/>7,8,9;</highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>P<sp/>=<sp/>makeIndexSwapTensor&lt;3,3&gt;();</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>t.reshaped().transpose()<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+<codeline><highlight class="normal">std::cout<sp/>&lt;&lt;<sp/>t.reshaped().transpose()<sp/>*<sp/>P<sp/>&lt;&lt;<sp/>std::endl;</highlight></codeline>
+<codeline><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>Output:</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>1,4,7,2,5,8,3,6,9</highlight><highlight class="normal"></highlight></codeline>
+<codeline><highlight class="normal"></highlight><highlight class="comment">//<sp/>1,2,3,4,5,6,7,8,9</highlight></codeline>
+</programlisting> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="198" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="198" bodyend="211"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1aceeb4045cb65282b742abb7b509b0e47" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>nDim</declname>
+            <defname>nDim</defname>
+          </param>
+        </templateparamlist>
+        <type>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; getNumberOfDofForRotation(nDim), nDim, nDim &gt; &gt;</type>
+        <definition>Eigen::TensorFixedSize&lt; double, Eigen::Sizes&lt; getNumberOfDofForRotation(nDim), nDim, nDim &gt; &gt; Marmot::Math::Tensors::getReferenceToCorrectLeviCivita</definition>
+        <argsstring>()</argsstring>
+        <name>getReferenceToCorrectLeviCivita</name>
+        <qualifiedname>Marmot::Math::Tensors::getReferenceToCorrectLeviCivita</qualifiedname>
+        <briefdescription>
+<para>Provides the reference Levi-Civita permutation tensor for the given spatial dimension. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>nDim</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Spatial dimension (2 or 3). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The Levi-Civita tensor:<itemizedlist>
+<listitem><para>In 2D: <formula id="16">$E_{ij}$</formula>, a second-order antisymmetric tensor with components   A fully antisymmetric second-order tensor defined as        <formula id="17">\[  E_{ij} =
+  \begin{cases}
+    +1 &amp; \text{if } (i,j) = (1,2), \\
+    -1 &amp; \text{if } (i,j) = (2,1), \\
+     0 &amp; \text{if } i=j.
+  \end{cases}
+\]</formula> Commonly used to represent 2D cross products and rotations in tensor notation.   </para>
+</listitem><listitem><para>In 3D: <formula id="14">$E_{ijk}$</formula>, a third-order antisymmetric tensor with components   A fully antisymmetric third-order tensor defined as        <formula id="15">\[  E_{ijk} =
+  \begin{cases}
+    +1 &amp; \text{if } (i,j,k) \text{ is an even permutation of } (1,2,3), \\
+    -1 &amp; \text{if } (i,j,k) \text{ is an odd permutation of } (1,2,3), \\
+     0 &amp; \text{if any two indices are equal.}
+  \end{cases}
+\]</formula>    </para>
+</listitem></itemizedlist>
+</para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="224" column="36" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="224" bodyend="234"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1af3a385356e480215d0679c4fab3814bd" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Math::Tensors::d</definition>
+        <argsstring>(int a, int b)</argsstring>
+        <name>d</name>
+        <qualifiedname>Marmot::Math::Tensors::d</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+<para>Kronecker delta function <formula id="21">$ \delta_{ab} $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>1 if a == b, otherwise 0. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="239" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="239" bodyend="242"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1ab0c107f8bb64ac003228be7a32f1b09a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>x</declname>
+            <defname>x</defname>
+          </param>
+          <param>
+            <type>int</type>
+            <declname>y</declname>
+            <defname>y</defname>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename</type>
+            <defval>std::enable_if&lt; !std::is_const&lt; std::remove_reference&lt; T &gt; &gt;::value &gt;</defval>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::Math::Tensors::as</definition>
+        <argsstring>(T &amp;t)</argsstring>
+        <name>as</name>
+        <qualifiedname>Marmot::Math::Tensors::as</qualifiedname>
+        <param>
+          <type>T &amp;</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+<para>Map an object&apos;s raw data as a fixed-size Eigen matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates an <computeroutput>Eigen::Map</computeroutput> view of <computeroutput>t</computeroutput> reinterpreted as an <computeroutput>x</computeroutput>-by-<computeroutput>y</computeroutput> matrix. No data is copied; the map directly references the storage returned by <computeroutput>t.data()</computeroutput>.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of rows (compile-time). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of columns (compile-time). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Object type, must define <computeroutput>Scalar</computeroutput> and provide <computeroutput>data()</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input object. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Eigen::Map&lt;Eigen::Matrix&lt;typename T::Scalar, x, y&gt;&gt;</computeroutput>.</para>
+</simplesect>
+<simplesect kind="note"><para>Caller must ensure <computeroutput>t.data()</computeroutput> has at least <computeroutput>x*y</computeroutput> elements and matches Eigen’s default (column-major) layout. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="263" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="263" bodyend="266"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1a1e176dcd74b0cc7cc0ade33793b79751" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>x</declname>
+            <defname>x</defname>
+          </param>
+          <param>
+            <type>int</type>
+            <declname>y</declname>
+            <defname>y</defname>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename</type>
+            <defval>void</defval>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::Math::Tensors::as</definition>
+        <argsstring>(const T &amp;t)</argsstring>
+        <name>as</name>
+        <qualifiedname>Marmot::Math::Tensors::as</qualifiedname>
+        <param>
+          <type>const T &amp;</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+<para>Map an object&apos;s raw data as a fixed-size Eigen matrix (const version). </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates an <computeroutput>Eigen::Map</computeroutput> view of <computeroutput>t</computeroutput> reinterpreted as an <computeroutput>x</computeroutput>-by-<computeroutput>y</computeroutput> matrix. No data is copied; the map directly references the storage returned by <computeroutput>t.data()</computeroutput>.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of rows (compile-time). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>y</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of columns (compile-time). </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Object type, must define <computeroutput>Scalar</computeroutput> and provide <computeroutput>data()</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input object. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Eigen::Map&lt;const Eigen::Matrix&lt;typename T::Scalar, x, y&gt;&gt;</computeroutput>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="281" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="281" bodyend="284"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1ac18189c00945652d031ff87c4dc714c7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Derived</type>
+          </param>
+          <param>
+            <type>typename</type>
+            <defval>std::enable_if&lt; !std::is_const&lt; std::remove_reference&lt; Derived &gt; &gt;::value &gt;</defval>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::Math::Tensors::flatten</definition>
+        <argsstring>(Derived &amp;t)</argsstring>
+        <name>flatten</name>
+        <qualifiedname>Marmot::Math::Tensors::flatten</qualifiedname>
+        <param>
+          <type>Derived &amp;</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+<para>Flattens an Eigen object into a 1D column vector map. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Creates an <computeroutput>Eigen::Map</computeroutput> that reinterprets the data of <computeroutput>t</computeroutput> as a column vector of size <computeroutput>RowsAtCompileTime * ColsAtCompileTime</computeroutput>. No copy is made; modifications through the map affect <computeroutput>t</computeroutput>.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Derived</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Eigen matrix/array type (non-const). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Eigen object to be flattened. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>Eigen::Map&lt;Eigen::Matrix&lt;Scalar, Rows*Cols, 1&gt;&gt;</computeroutput> referencing the data of <computeroutput>t</computeroutput>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="299" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="299" bodyend="304"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1a260cc89a6abebf8cabbf79a66175a935" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Derived</type>
+          </param>
+          <param>
+            <type>typename</type>
+            <defval>void</defval>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::Math::Tensors::flatten</definition>
+        <argsstring>(const Derived &amp;t)</argsstring>
+        <name>flatten</name>
+        <qualifiedname>Marmot::Math::Tensors::flatten</qualifiedname>
+        <param>
+          <type>const Derived &amp;</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+<para>Flattens an Eigen object into a 1D column vector map (const version). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="310" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="310" bodyend="315"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1a3533c009eec60defc76174258f46fc0c" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int...</type>
+            <declname>Pairs</declname>
+            <defname>Pairs</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::Math::Tensors::contractionDims</definition>
+        <argsstring>()</argsstring>
+        <name>contractionDims</name>
+        <qualifiedname>Marmot::Math::Tensors::contractionDims</qualifiedname>
+        <briefdescription>
+<para>Build contraction dimension pairs for Eigen tensor operations. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Generates an <computeroutput>Eigen::array&lt;Eigen::IndexPair&lt;int&gt;, N&gt;</computeroutput> from the compile-time parameter pack <computeroutput>Pairs</computeroutput>, where each consecutive pair defines a contraction index mapping. Evaluated entirely at compile time.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Pairs</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Sequence of integers; must contain an even number of values forming index pairs. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Array of index pairs usable in Eigen tensor contraction. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="329" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" bodystart="329" bodyend="346"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_tensor_8h_1a06a8d4268486247fb010fe77c04d48f9" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::Matrix3d</type>
+        <definition>Eigen::Matrix3d Marmot::Math::Tensors::dyadicProduct</definition>
+        <argsstring>(const Eigen::Vector3d &amp;vector1, const Eigen::Vector3d &amp;vector2)</argsstring>
+        <name>dyadicProduct</name>
+        <qualifiedname>Marmot::Math::Tensors::dyadicProduct</qualifiedname>
+        <param>
+          <type>const Eigen::Vector3d &amp;</type>
+          <declname>vector1</declname>
+        </param>
+        <param>
+          <type>const Eigen::Vector3d &amp;</type>
+          <declname>vector2</declname>
+        </param>
+        <briefdescription>
+<para>Compute the dyadic (outer) product of two 3D vectors. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Forms a 3x3 matrix where each entry is given by <formula id="22">$ a_{ij} = b_i c_j $</formula>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>vector1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>First 3D vector. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>vector2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Second 3D vector. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>3x3 matrix representing the dyadic product. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="357" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" declline="357" declcolumn="19"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a9b770ce8de913d0b9edf18670d93f684" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>nRows</declname>
+            <defname>nRows</defname>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>nCols</declname>
+            <defname>nCols</defname>
+          </param>
+          <param>
+            <type>typename</type>
+            <defval>std::enable_if&lt; !std::is_const&lt; std::remove_reference&lt; T &gt; &gt;::value &gt;</defval>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::Math::Tensors::mapEigenToFastor</definition>
+        <argsstring>(const Fastor::Tensor&lt; T, nRows, nCols &gt; &amp;fastor)</argsstring>
+        <name>mapEigenToFastor</name>
+        <qualifiedname>Marmot::Math::Tensors::mapEigenToFastor</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; T, nRows, nCols &gt; &amp;</type>
+          <declname>fastor</declname>
+        </param>
+        <briefdescription>
+<para>Map a Fastor Tensor (const) to an Eigen Map (row-major, const). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nRows</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of rows </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nCols</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of columns </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fastor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor Tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>an Eigen Map </para>
+</simplesect>
+<simplesect kind="note"><para>This function works for second rank tensors (matrices) of size nRows x nCols. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="361" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="361" bodyend="364"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1acd430f186d90c7a20afd6f81c6b6884f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>nRows</declname>
+            <defname>nRows</defname>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>nCols</declname>
+            <defname>nCols</defname>
+          </param>
+          <param>
+            <type>typename</type>
+            <defval>void</defval>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::Math::Tensors::mapEigenToFastor</definition>
+        <argsstring>(Fastor::Tensor&lt; T, nRows, nCols &gt; &amp;fastor)</argsstring>
+        <name>mapEigenToFastor</name>
+        <qualifiedname>Marmot::Math::Tensors::mapEigenToFastor</qualifiedname>
+        <param>
+          <type>Fastor::Tensor&lt; T, nRows, nCols &gt; &amp;</type>
+          <declname>fastor</declname>
+        </param>
+        <briefdescription>
+<para>Map a Fastor Tensor to an Eigen Map (row-major). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nRows</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of rows </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nCols</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of columns </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fastor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor Tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>an Eigen Map </para>
+</simplesect>
+<simplesect kind="note"><para>This function works for second rank tensors (matrices) of size nRows x nCols. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="376" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="376" bodyend="379"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a036f7c4a03ff896c1e64ed93be0bc943" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>nRows</declname>
+            <defname>nRows</defname>
+          </param>
+          <param>
+            <type>typename</type>
+            <defval>void</defval>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::Math::Tensors::mapEigenToFastor</definition>
+        <argsstring>(const Fastor::Tensor&lt; T, nRows &gt; &amp;fastor)</argsstring>
+        <name>mapEigenToFastor</name>
+        <qualifiedname>Marmot::Math::Tensors::mapEigenToFastor</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; T, nRows &gt; &amp;</type>
+          <declname>fastor</declname>
+        </param>
+        <briefdescription>
+<para>Map a Fastor Tensor to an Eigen Map (column vector). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nRows</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of rows </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fastor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor Tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>an Eigen Map </para>
+</simplesect>
+<simplesect kind="note"><para>This function works for first rank tensors (vectors) of size nRows. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="390" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="390" bodyend="393"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a5a0efd7a5134ac9f7276706dd0729abc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>nRows</declname>
+            <defname>nRows</defname>
+          </param>
+          <param>
+            <type>typename</type>
+            <defval>void</defval>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::Math::Tensors::mapEigenToFastor</definition>
+        <argsstring>(const Fastor::TensorMap&lt; T, nRows &gt; &amp;fastor)</argsstring>
+        <name>mapEigenToFastor</name>
+        <qualifiedname>Marmot::Math::Tensors::mapEigenToFastor</qualifiedname>
+        <param>
+          <type>const Fastor::TensorMap&lt; T, nRows &gt; &amp;</type>
+          <declname>fastor</declname>
+        </param>
+        <briefdescription>
+<para>Map a Fastor TensorMap to an Eigen Map (column vector). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nRows</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of rows </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fastor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor TensorMap </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>an Eigen Map </para>
+</simplesect>
+<simplesect kind="note"><para>This function works only for first rank tensors (vectors) of size nRows. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="404" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="404" bodyend="407"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a847e2adadc826212d58d730275452fe4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>nRows</declname>
+            <defname>nRows</defname>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>nCols</declname>
+            <defname>nCols</defname>
+          </param>
+          <param>
+            <type>typename</type>
+            <defval>void</defval>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::Math::Tensors::mapEigenToFastor</definition>
+        <argsstring>(const Fastor::TensorMap&lt; T, nRows, nCols &gt; &amp;fastor)</argsstring>
+        <name>mapEigenToFastor</name>
+        <qualifiedname>Marmot::Math::Tensors::mapEigenToFastor</qualifiedname>
+        <param>
+          <type>const Fastor::TensorMap&lt; T, nRows, nCols &gt; &amp;</type>
+          <declname>fastor</declname>
+        </param>
+        <briefdescription>
+<para>Map a Fastor TensorMap to an Eigen Map (row-major). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nRows</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of rows </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>nCols</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of columns </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fastor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor TensorMap </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>an Eigen Map</para>
+</simplesect>
+<simplesect kind="note"><para>This function works only for second rank tensors (matrices) of size nRows x nCols. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="421" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="421" bodyend="424"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a02f48fb4eb89b3b0b36ed9a7403757e9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>n1</declname>
+            <defname>n1</defname>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>n2</declname>
+            <defname>n2</defname>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>n3</declname>
+            <defname>n3</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::Math::Tensors::mapEigenToFastor</definition>
+        <argsstring>(const Fastor::Tensor&lt; T, n1, n2, n3 &gt; &amp;fastor)</argsstring>
+        <name>mapEigenToFastor</name>
+        <qualifiedname>Marmot::Math::Tensors::mapEigenToFastor</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; T, n1, n2, n3 &gt; &amp;</type>
+          <declname>fastor</declname>
+        </param>
+        <briefdescription>
+<para>Map a Fastor Tensor (const) to an Eigen Map (row-major, const). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>n1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>size of the first dimension </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>n2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>size of the second dimension </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>n3</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>size of the third dimension </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fastor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor Tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>an Eigen Map </para>
+</simplesect>
+<simplesect kind="note"><para>This function works for third rank tensors of size n1 x n2 x n3. The map has n1 rows and n2 * n3 columns, i.e. fastor(i, j, k) = map(i, j * n3 + k). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="438" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="438" bodyend="441"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1ad87a631c6f82111db26c57f7f56ee2ca" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>n1</declname>
+            <defname>n1</defname>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>n2</declname>
+            <defname>n2</defname>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>n3</declname>
+            <defname>n3</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::Math::Tensors::mapEigenToFastor</definition>
+        <argsstring>(Fastor::Tensor&lt; T, n1, n2, n3 &gt; &amp;fastor)</argsstring>
+        <name>mapEigenToFastor</name>
+        <qualifiedname>Marmot::Math::Tensors::mapEigenToFastor</qualifiedname>
+        <param>
+          <type>Fastor::Tensor&lt; T, n1, n2, n3 &gt; &amp;</type>
+          <declname>fastor</declname>
+        </param>
+        <briefdescription>
+<para>Map a Fastor Tensor to an Eigen Map (row-major). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>n1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>size of the first dimension </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>n2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>size of the second dimension </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>n3</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>size of the third dimension </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fastor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor Tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>an Eigen Map </para>
+</simplesect>
+<simplesect kind="note"><para>This function works for third rank tensors of size n1 x n2 x n3. The map has n1 rows and n2 * n3 columns, i.e. fastor(i, j, k) = map(i, j * n3 + k). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="455" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="455" bodyend="458"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1ab6e60a747a084136ed42bea26d9a9211" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>n1</declname>
+            <defname>n1</defname>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>n2</declname>
+            <defname>n2</defname>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>n3</declname>
+            <defname>n3</defname>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>n4</declname>
+            <defname>n4</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::Math::Tensors::mapEigenToFastor</definition>
+        <argsstring>(const Fastor::Tensor&lt; T, n1, n2, n3, n4 &gt; &amp;fastor)</argsstring>
+        <name>mapEigenToFastor</name>
+        <qualifiedname>Marmot::Math::Tensors::mapEigenToFastor</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; T, n1, n2, n3, n4 &gt; &amp;</type>
+          <declname>fastor</declname>
+        </param>
+        <briefdescription>
+<para>Map a Fastor Tensor (const) to an Eigen Map (row-major, const). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>n1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>size of the first dimension </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>n2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>size of the second dimension </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>n3</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>size of the third dimension </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>n4</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>size of the fourth dimension </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fastor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor Tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>an Eigen Map </para>
+</simplesect>
+<simplesect kind="note"><para>This function works for fourth rank tensors of size n1 x n2 x n3 x n4. The map has n1 * n2 rows and n3 * n4 columns, i.e. fastor(i, j, k, l) = map(i * n2 + j, k * n4 + l). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="473" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="473" bodyend="476"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a6a305c4d10ec1b6c6aa11244a2f809b5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>n1</declname>
+            <defname>n1</defname>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>n2</declname>
+            <defname>n2</defname>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>n3</declname>
+            <defname>n3</defname>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>n4</declname>
+            <defname>n4</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::Math::Tensors::mapEigenToFastor</definition>
+        <argsstring>(Fastor::Tensor&lt; T, n1, n2, n3, n4 &gt; &amp;fastor)</argsstring>
+        <name>mapEigenToFastor</name>
+        <qualifiedname>Marmot::Math::Tensors::mapEigenToFastor</qualifiedname>
+        <param>
+          <type>Fastor::Tensor&lt; T, n1, n2, n3, n4 &gt; &amp;</type>
+          <declname>fastor</declname>
+        </param>
+        <briefdescription>
+<para>Map a Fastor Tensor to an Eigen Map (row-major). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>n1</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>size of the first dimension </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>n2</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>size of the second dimension </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>n3</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>size of the third dimension </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>n4</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>size of the fourth dimension </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>fastor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor Tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>an Eigen Map </para>
+</simplesect>
+<simplesect kind="note"><para>This function works for fourth rank tensors of size n1 x n2 x n3 x n4. The map has n1 * n2 rows and n3 * n4 columns, i.e. fastor(i, j, k, l) = map(i * n2 + j, k * n4 + l). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="491" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="491" bodyend="494"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a914a49f213be85f3c60f5ec1f7390f46" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>template&lt; typename, size_t... &gt; class</type>
+            <declname>TensorType</declname>
+            <defname>TensorType</defname>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void Marmot::Math::Tensors::copyFastorToColumnMajor</definition>
+        <argsstring>(T *target, const TensorType&lt; T, Rest... &gt; &amp;source)</argsstring>
+        <name>copyFastorToColumnMajor</name>
+        <qualifiedname>Marmot::Math::Tensors::copyFastorToColumnMajor</qualifiedname>
+        <param>
+          <type>T *</type>
+          <declname>target</declname>
+        </param>
+        <param>
+          <type>const TensorType&lt; T, Rest... &gt; &amp;</type>
+          <declname>source</declname>
+        </param>
+        <briefdescription>
+<para>Copy a Fastor tensor to a column-major array. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>TensorType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor tensor type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Rest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of sizes specifying the dimensions of the tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>target</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pointer to the target array </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>source</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="505" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="505" bodyend="508"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1acb5e2f167e09f8a32b0f5a70c2e183ed" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>DimensionType...</type>
+            <declname>dims</declname>
+            <defname>dims</defname>
+          </param>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>dims3D</declname>
+            <defname>dims3D</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::Math::Tensors::reduceTo2D</definition>
+        <argsstring>(const Fastor::Tensor&lt; T, dims3D... &gt; &amp;theTensor3D)</argsstring>
+        <name>reduceTo2D</name>
+        <qualifiedname>Marmot::Math::Tensors::reduceTo2D</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; T, dims3D... &gt; &amp;</type>
+          <declname>theTensor3D</declname>
+        </param>
+        <briefdescription>
+<para>Reduce a 3D Fastor tensor to a 2D Fastor tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>dims</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of DimensionType specifying the conversion from 3D to 2D </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dims3D</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of sizes specifying the dimensions of the 3D tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>theTensor3D</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a 3D input tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the reduced 2D tensor</para>
+</simplesect>
+This function is used to reduce a displacement and/or rotation tensor in 3D to a displacement and/or rotation tensor in 2D. The conversion is specified by the pack of DimensionType. For displacements (DimensionType U) the dimension is reduced from 3 to 2, for rotations (DimensionType W) the dimension is reduced from 3 to 1. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="532" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="532" bodyend="539"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a47639f58b1857e11b6c6795e3825a0d8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Derived</type>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::Math::Tensors::reduceTo2D</definition>
+        <argsstring>(const Fastor::AbstractTensor&lt; Derived, order &gt; &amp;theTensor3D)</argsstring>
+        <name>reduceTo2D</name>
+        <qualifiedname>Marmot::Math::Tensors::reduceTo2D</qualifiedname>
+        <param>
+          <type>const Fastor::AbstractTensor&lt; Derived, order &gt; &amp;</type>
+          <declname>theTensor3D</declname>
+        </param>
+        <briefdescription>
+<para>Overload of reduceTo2d for AbstractTensor inputs. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Derived</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>derived scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>order</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>order of the tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>theTensor3D</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a 3D input tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the reduced 2D tensor </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="549" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="549" bodyend="553"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a9e525daf78cc59a9641c92c42d1f4522" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int Marmot::Math::Tensors::const3</definition>
+        <argsstring>(size_t x)</argsstring>
+        <name>const3</name>
+        <qualifiedname>Marmot::Math::Tensors::const3</qualifiedname>
+        <param>
+          <type>size_t</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+<para>Helper function to return 3 for any input size_t. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>x</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>input size_t </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>always returns 3 </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="560" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="560" bodyend="563"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1ac03f7135fc38f149e3210e1e21cadf29" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>dims2D</declname>
+            <defname>dims2D</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::Math::Tensors::expandTo3D</definition>
+        <argsstring>(const Fastor::Tensor&lt; T, dims2D... &gt; &amp;theTensor2D)</argsstring>
+        <name>expandTo3D</name>
+        <qualifiedname>Marmot::Math::Tensors::expandTo3D</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; T, dims2D... &gt; &amp;</type>
+          <declname>theTensor2D</declname>
+        </param>
+        <briefdescription>
+<para>Expand a 2D Fastor tensor to a 3D Fastor tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>dims</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of DimensionType specifying the conversion from 2D to 3D </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dims2D</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of sizes specifying the dimensions of the 2D Tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>theTensor2D</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a 2D input tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the expanded 3D tensor</para>
+</simplesect>
+This function is used to expand a displacement and/or rotation tensor in 2D to a displacement and/or rotation tensor in 3D. The conversion is specified by the pack of DimensionType. For displacements (DimensionType U) the dimension is expanded from 2 to 3, for rotations (DimensionType W) the dimension is expanded from 1 to 3. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="579" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="579" bodyend="589"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1aefd997e2eedb9ef0c2f16cc91fa81198" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Derived</type>
+          </param>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto Marmot::Math::Tensors::expandTo3D</definition>
+        <argsstring>(const Fastor::AbstractTensor&lt; Derived, order &gt; &amp;theTensor2D)</argsstring>
+        <name>expandTo3D</name>
+        <qualifiedname>Marmot::Math::Tensors::expandTo3D</qualifiedname>
+        <param>
+          <type>const Fastor::AbstractTensor&lt; Derived, order &gt; &amp;</type>
+          <declname>theTensor2D</declname>
+        </param>
+        <briefdescription>
+<para>Overload of expandTo3D for AbstractTensor inputs. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>Derived</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>derived scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>order</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>order of the tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>theTensor2D</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a 2D input tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the expanded 3D tensor </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="599" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="599" bodyend="603"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a968f464c4a38339255c7cd1b87a6fd98" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; T, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; T, Rest... &gt; Marmot::Math::Tensors::multiplyFastorTensorWithScalar</definition>
+        <argsstring>(Fastor::Tensor&lt; T, Rest... &gt; tensor, T scalar)</argsstring>
+        <name>multiplyFastorTensorWithScalar</name>
+        <qualifiedname>Marmot::Math::Tensors::multiplyFastorTensorWithScalar</qualifiedname>
+        <param>
+          <type>Fastor::Tensor&lt; T, Rest... &gt;</type>
+          <declname>tensor</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>scalar</declname>
+        </param>
+        <briefdescription>
+<para>Multiply a Fastor tensor with a scalar. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Rest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of sizes specifying the dimensions of the tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>tensor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>scalar</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a scalar </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the resulting Fastor tensor</para>
+</simplesect>
+<simplesect kind="note"><para>This function is a workaround for a bug in Fastor (issue #149). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="616" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="616" bodyend="627"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1ac1eefd1b2b6cbb5f0406b20f8e40fe84" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>T</type>
+        <definition>T Marmot::Math::Tensors::einsum_ij_ij_hardcoded</definition>
+        <argsstring>(const FastorTensors::Tensor33t&lt; T &gt; &amp;A, const FastorTensors::Tensor33t&lt; T &gt; &amp;B)</argsstring>
+        <name>einsum_ij_ij_hardcoded</name>
+        <qualifiedname>Marmot::Math::Tensors::einsum_ij_ij_hardcoded</qualifiedname>
+        <param>
+          <type>const FastorTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>A</declname>
+        </param>
+        <param>
+          <type>const FastorTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>B</declname>
+        </param>
+        <briefdescription>
+<para>Hardcoded implementation of the Einstein summation for two second order tensors. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>A</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>first second order tensor </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>B</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>second second order tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the resulting scalar</para>
+</simplesect>
+This function computes the Einstein summation for two second order tensors A and B: <formula id="24">$ C = A_{ij} B_{ij} $</formula></para>
+<para><simplesect kind="note"><para>This function is a workaround for cases in which Fastor::to_scalar does not work. This is the case for example when T is autodiff::dual. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="642" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="642" bodyend="653"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1aeb74b3a80ccf94aa06016178a0a97bdf" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; T, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; T, Rest... &gt; Marmot::Math::Tensors::fastorTensorFromDoubleTensor</definition>
+        <argsstring>(const Fastor::Tensor&lt; double, Rest... &gt; &amp;in)</argsstring>
+        <name>fastorTensorFromDoubleTensor</name>
+        <qualifiedname>Marmot::Math::Tensors::fastorTensorFromDoubleTensor</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; double, Rest... &gt; &amp;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+<para>Construct a arbitrary type Fastor tensor from a Fastor double tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>target scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Rest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of sizes specifying the dimensions of the tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor tensor of type double </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a Fastor tensor of type T</para>
+</simplesect>
+<simplesect kind="note"><para>This function is a workaround for lack of casting of pointer types e.g. no cast available for autodiff::dual* and double* </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="666" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="666" bodyend="676"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a3b61516fecf79c3871cac43aaa6e31ef" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; T, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; T, Rest... &gt; Marmot::Math::Tensors::fastorTensorFromDoubleTensorMap</definition>
+        <argsstring>(const Fastor::TensorMap&lt; double, Rest... &gt; &amp;in)</argsstring>
+        <name>fastorTensorFromDoubleTensorMap</name>
+        <qualifiedname>Marmot::Math::Tensors::fastorTensorFromDoubleTensorMap</qualifiedname>
+        <param>
+          <type>const Fastor::TensorMap&lt; double, Rest... &gt; &amp;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+<para>Construct a arbitrary type Fastor tensor from a Fastor double tensor map. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>target scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Rest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of sizes specifying the dimensions of the tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor tensor map of type double </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a Fastor tensor of type T</para>
+</simplesect>
+<simplesect kind="note"><para>This function is a workaround for lack of casting of pointer types e.g. no cast available for autodiff::dual* and double* </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="689" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="689" bodyend="699"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a8e926f1ee161c26d1a0ea4bd5faa69ac" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; double, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; double, Rest... &gt; Marmot::Math::Tensors::makeReal</definition>
+        <argsstring>(const Fastor::Tensor&lt; T, Rest... &gt; &amp;in)</argsstring>
+        <name>makeReal</name>
+        <qualifiedname>Marmot::Math::Tensors::makeReal</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; T, Rest... &gt; &amp;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+<para>Extract the real part of a Fastor tensor of arbitrary type. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Rest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of sizes specifying the dimensions of the tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor tensor of type T </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a Fastor tensor of type double </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="710" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="710" bodyend="721"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a85958476c084e4c643ddffcdf9e3fcf8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; autodiff::dual, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; autodiff::dual, Rest... &gt; Marmot::Math::Tensors::makeDual</definition>
+        <argsstring>(const Fastor::Tensor&lt; T, Rest... &gt; &amp;in)</argsstring>
+        <name>makeDual</name>
+        <qualifiedname>Marmot::Math::Tensors::makeDual</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; T, Rest... &gt; &amp;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+<para>Construct a Fastor tensor of autodiff::dual from a Fastor tensor of arbitrary type. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>source scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Rest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of sizes specifying the dimensions of the tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor tensor of type T </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a Fastor tensor of type autodiff::dual </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="732" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="732" bodyend="743"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a71e98104955083f1e33ed600b38a7598" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>size_t</type>
+            <declname>order</declname>
+            <defname>order</defname>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; autodiff::HigherOrderDual&lt; order, double &gt;, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; autodiff::HigherOrderDual&lt; order, double &gt;, Rest... &gt; Marmot::Math::Tensors::makeHigherOrderDual</definition>
+        <argsstring>(const Fastor::Tensor&lt; double, Rest... &gt; &amp;in)</argsstring>
+        <name>makeHigherOrderDual</name>
+        <qualifiedname>Marmot::Math::Tensors::makeHigherOrderDual</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; double, Rest... &gt; &amp;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+<para>Construct a Fastor tensor of autodiff::HigherOrderDual from a Fastor double tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>order</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>order of the HigherOrderDual </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Rest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of sizes specifying the dimensions of the tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor tensor of type double </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a Fastor tensor of type autodiff::HigherOrderDual </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="754" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="754" bodyend="766"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a336021d42a2218433f4c54eb7784273b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>size_t...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Fastor::Tensor&lt; T, Rest... &gt;</type>
+        <definition>Fastor::Tensor&lt; T, Rest... &gt; Marmot::Math::Tensors::makeOtherScalarType</definition>
+        <argsstring>(const Fastor::Tensor&lt; double, Rest... &gt; &amp;in)</argsstring>
+        <name>makeOtherScalarType</name>
+        <qualifiedname>Marmot::Math::Tensors::makeOtherScalarType</qualifiedname>
+        <param>
+          <type>const Fastor::Tensor&lt; double, Rest... &gt; &amp;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+<para>Construct a Fastor tensor of arbitrary type from a Fastor double tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>target scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Rest</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a pack of sizes specifying the dimensions of the tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a Fastor tensor of type double </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>a Fastor tensor of type T </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="776" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="776" bodyend="786"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1ad481a326ac492a4923c090a871580cff" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>FastorTensors::Tensor33t&lt; T &gt;</type>
+        <definition>FastorTensors::Tensor33t&lt; T &gt; Marmot::Math::Tensors::symmetric</definition>
+        <argsstring>(const FastorTensors::Tensor33t&lt; T &gt; &amp;t)</argsstring>
+        <name>symmetric</name>
+        <qualifiedname>Marmot::Math::Tensors::symmetric</qualifiedname>
+        <param>
+          <type>const FastorTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+<para>Compute the symmetric part of a second order 3D Fastor tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a second order Fastor tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the symmetric part of the tensor</para>
+</simplesect>
+It actually computes <formula id="25">$ \text{sym}\, t_ij = 0.5 ( t_{ij} + t_{ji} ) $</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="797" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="797" bodyend="801"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1a0b055002ee2240568230db2522117125" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>FastorTensors::Tensor33t&lt; T &gt;</type>
+        <definition>FastorTensors::Tensor33t&lt; T &gt; Marmot::Math::Tensors::deviatoric</definition>
+        <argsstring>(const FastorTensors::Tensor33t&lt; T &gt; &amp;t)</argsstring>
+        <name>deviatoric</name>
+        <qualifiedname>Marmot::Math::Tensors::deviatoric</qualifiedname>
+        <param>
+          <type>const FastorTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+<para>Compute the deviatoric part of a second order 3D Fastor tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>t</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a second order Fastor tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the deviatoric part of the tensor</para>
+</simplesect>
+It actually computes <formula id="26">$ \text{dev} \, t_{ij} = t_{ij} - \frac{1}{3}t_{kk}\delta_{ij}$</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="812" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" bodystart="812" bodyend="818"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_fastor_tensor_basics_8h_1aa48706fff547530cdd813bf00af43821" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>FastorTensors::Tensor3333d</type>
+        <definition>FastorTensors::Tensor3333d Marmot::Math::Tensors::invertMinorSymmetricFourthOrderTensor</definition>
+        <argsstring>(const FastorTensors::Tensor3333d &amp;C)</argsstring>
+        <name>invertMinorSymmetricFourthOrderTensor</name>
+        <qualifiedname>Marmot::Math::Tensors::invertMinorSymmetricFourthOrderTensor</qualifiedname>
+        <param>
+          <type>const FastorTensors::Tensor3333d &amp;</type>
+          <declname>C</declname>
+        </param>
+        <briefdescription>
+<para>Compute the inverse of a minor symmetric fourth order 3D Fastor tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>C</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>a minor symmetric fourth order Fastor tensor </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the inverse of the input tensor </para>
+</simplesect>
+<simplesect kind="note"><para>A minor symmetric fourth order tensor is a fourth order tensor that is symmetric with respect to the first and second pair of indices, i.e. <formula id="27">$ C_{ijkl} = C_{jikl} = C_{ijlk} $</formula>. It actually computes <formula id="28">$ C^{-1}_{ijkl} $</formula> such that <formula id="29">$ C^{-1}_{ijmn} C_{mnkl} = \delta_{ik}\delta_{jl} $</formula> using Mandel notation and Fastor&apos;s inverse function for second order tensors. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" line="830" column="30" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotFastorTensorBasics.h" declline="830" declcolumn="30"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_math_8h_1afa2db36fbdc16a1a58380b4857428bc7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Tensors::makeReal</definition>
+        <argsstring>(const double &amp;value)</argsstring>
+        <name>makeReal</name>
+        <qualifiedname>Marmot::Math::Tensors::makeReal</qualifiedname>
+        <param>
+          <type>const double &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Converts various scalar types to double precision floating point numbers. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input value of various numeric types </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Converted value as double</para>
+</simplesect>
+This function converts input values of different numeric types, including:<itemizedlist>
+<listitem><para>double</para>
+</listitem><listitem><para>std::complex&lt;double&gt;</para>
+</listitem><listitem><para>autodiff::real</para>
+</listitem><listitem><para>autodiff::dual</para>
+</listitem><listitem><para>Eigen::Matrix with elements of any type convertible to double</para>
+</listitem></itemizedlist>
+</para>
+<para>The function is overloaded and templated to handle these different types appropriately. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="199" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="199" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_math_8h_1aef1b47c7411971ea7c0fa7c6cfbd47d8" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Tensors::makeReal</definition>
+        <argsstring>(const std::complex&lt; double &gt; &amp;value)</argsstring>
+        <name>makeReal</name>
+        <qualifiedname>Marmot::Math::Tensors::makeReal</qualifiedname>
+        <param>
+          <type>const std::complex&lt; double &gt; &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="200" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="200" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_math_8h_1aa80794dc2a2e38ef0eca9a90803e91d2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double Marmot::Math::Tensors::makeReal</definition>
+        <argsstring>(const autodiff::real &amp;value)</argsstring>
+        <name>makeReal</name>
+        <qualifiedname>Marmot::Math::Tensors::makeReal</qualifiedname>
+        <param>
+          <type>const autodiff::real &amp;</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="201" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="201" declcolumn="12"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_math_8h_1a4da29578574e6350ceeca4e5b42763e5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>typename G</type>
+          </param>
+        </templateparamlist>
+        <type>double</type>
+        <definition>double Marmot::Math::Tensors::makeReal</definition>
+        <argsstring>(const autodiff::detail::Dual&lt; T, G &gt; &amp;number)</argsstring>
+        <name>makeReal</name>
+        <qualifiedname>Marmot::Math::Tensors::makeReal</qualifiedname>
+        <param>
+          <type>const autodiff::detail::Dual&lt; T, G &gt; &amp;</type>
+          <declname>number</declname>
+        </param>
+        <briefdescription>
+<para>Converts autodiff::dual numbers to double precision floating point numbers. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Underlying type of the autodiff::dual number </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>G</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Gradient type of the autodiff::dual number </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>number</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Input autodiff::dual number </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Converted value as double</para>
+</simplesect>
+This function converts an autodiff::dual number to a double precision floating point number. It is templated to handle dual numbers with different underlying types. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="213" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="213" bodyend="216"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_math_8h_1a60ba0283b78d3cbfc4cdedb97e5bcf97" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+          <param>
+            <type>int...</type>
+            <declname>Rest</declname>
+            <defname>Rest</defname>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; double, Rest... &gt;</type>
+        <definition>Eigen::Matrix&lt; double, Rest... &gt; Marmot::Math::Tensors::makeReal</definition>
+        <argsstring>(const Eigen::Matrix&lt; T, Rest... &gt; mat)</argsstring>
+        <name>makeReal</name>
+        <qualifiedname>Marmot::Math::Tensors::makeReal</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix&lt; T, Rest... &gt;</type>
+          <declname>mat</declname>
+        </param>
+        <briefdescription>
+<para>Extracts the real part of a arbitrary scalartype-valued Matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>Rest...</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>parameter pack for additional matrix information, e.g, dimensions </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>mat</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>T-valued matrix </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>double-valued matrix </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="225" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="225" bodyend="237"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_math_8h_1a3242077a65351ba12d46a33e30a44147" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>Eigen::VectorXd</type>
+        <definition>Eigen::VectorXd Marmot::Math::Tensors::makeReal</definition>
+        <argsstring>(Eigen::Vector&lt; T, Eigen::Dynamic &gt; in)</argsstring>
+        <name>makeReal</name>
+        <qualifiedname>Marmot::Math::Tensors::makeReal</qualifiedname>
+        <param>
+          <type>Eigen::Vector&lt; T, Eigen::Dynamic &gt;</type>
+          <declname>in</declname>
+        </param>
+        <briefdescription>
+<para>Extracts the real part of a arbitrary scalartype-valued Vector. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar type </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>in</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>T-valued vector </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>double-valued vector </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="245" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="245" bodyend="254"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTensor.h" line="40" column="1"/>
+  </compounddef>
+</doxygen>

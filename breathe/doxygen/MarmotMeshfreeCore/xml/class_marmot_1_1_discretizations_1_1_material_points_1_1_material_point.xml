@@ -1,0 +1,528 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point" kind="class" language="C++" prot="public" abstract="yes">
+    <compoundname>Marmot::Discretizations::MaterialPoints::MaterialPoint</compoundname>
+    <includes refid="_marmot_material_point_8h" local="no">MarmotMaterialPoint.h</includes>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1ad3e6d46b5ddf460dea6aec4bb8e1eab6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type></type>
+        <definition>virtual Marmot::Discretizations::MaterialPoints::MaterialPoint::~MaterialPoint</definition>
+        <argsstring>()</argsstring>
+        <name>~MaterialPoint</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::MaterialPoint::~MaterialPoint</qualifiedname>
+        <briefdescription>
+<para>Virtual destructor; material points are owned through <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point" kindref="compound">MaterialPoint</ref> pointers. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" line="70" column="13" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" bodystart="70" bodyend="70"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a0e1436d59382f9bf28c7c0fe94e265f5" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::MaterialPoints::MaterialPoint::assignStateVars</definition>
+        <argsstring>(double *stateVars, int nStateVars)=0</argsstring>
+        <name>assignStateVars</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::MaterialPoint::assignStateVars</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nStateVars</declname>
+        </param>
+        <briefdescription>
+<para>Assigns the (externally owned) state variable array. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>State variable array of size <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1ae1298d991c2ed04786dc8b96710a80a5" kindref="member">getNumberOfRequiredStateVars()</ref>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nStateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of <computeroutput>stateVars</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" line="77" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a47338654c1fd44ad3d9a43f6fa38a7c3" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::MaterialPoints::MaterialPoint::assignMaterial</definition>
+        <argsstring>(const Marmot::Discretizations::MaterialSection &amp;material)=0</argsstring>
+        <name>assignMaterial</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::MaterialPoint::assignMaterial</qualifiedname>
+        <param>
+          <type>const Marmot::Discretizations::MaterialSection &amp;</type>
+          <declname>material</declname>
+        </param>
+        <briefdescription>
+<para>Creates and assigns the constitutive model. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">material</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Material section (material name and properties). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" line="83" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1aa2a58c0b16c0ff611715c80ae6d39250" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::MaterialPoints::MaterialPoint::initializeYourself</definition>
+        <argsstring>()=0</argsstring>
+        <name>initializeYourself</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::MaterialPoint::initializeYourself</qualifiedname>
+        <briefdescription>
+<para>Initializes the state (e.g. deformation gradient and material state) before the first increment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" line="88" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1aba8bfd46fbfa5400d155bf8f30cac84d" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::MaterialPoints::MaterialPoint::prepareYourself</definition>
+        <argsstring>(double timeNew, double dT)=0</argsstring>
+        <name>prepareYourself</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::MaterialPoint::prepareYourself</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>timeNew</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <briefdescription>
+<para>Prepares a new iteration: resets the kinematic increment that the cells accumulate. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">timeNew</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time at the end of the increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" line="95" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a0d04a7c4c1cdb8b82bcdc1ad18e7745f" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::MaterialPoints::MaterialPoint::computeYourself</definition>
+        <argsstring>(double timeNew, double dT)=0</argsstring>
+        <name>computeYourself</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::MaterialPoint::computeYourself</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>timeNew</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dT</declname>
+        </param>
+        <briefdescription>
+<para>Evaluates the constitutive response for the current kinematic increment. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">timeNew</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time at the end of the increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" line="102" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a6d6222a6d143adec6714096f890f06b3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::MaterialPoints::MaterialPoint::acceptStateAndPosition</definition>
+        <argsstring>()</argsstring>
+        <name>acceptStateAndPosition</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::MaterialPoint::acceptStateAndPosition</qualifiedname>
+        <briefdescription>
+<para>Commits the converged increment (position, deformation). Does nothing by default. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" line="105" column="18" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" bodystart="105" bodyend="105"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a51f4d4a25db0d9f16b3a55f799c407d0" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>Marmot::Utilities::StateView</type>
+        <definition>virtual Marmot::Utilities::StateView Marmot::Discretizations::MaterialPoints::MaterialPoint::getStateView</definition>
+        <argsstring>(const std::string &amp;stateName) const =0</argsstring>
+        <name>getStateView</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::MaterialPoint::getStateView</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>stateName</declname>
+        </param>
+        <briefdescription>
+<para>Access to a named state (e.g. <computeroutput>&quot;stress&quot;</computeroutput> or a material state variable). </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">stateName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the state. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>View (location and size) into the state variable array. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" line="112" column="42"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1ae1298d991c2ed04786dc8b96710a80a5" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>int</type>
+        <definition>virtual int Marmot::Discretizations::MaterialPoints::MaterialPoint::getNumberOfRequiredStateVars</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getNumberOfRequiredStateVars</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::MaterialPoint::getNumberOfRequiredStateVars</qualifiedname>
+        <briefdescription>
+<para>Number of state variables required by the material point and its material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Number of state variables; valid after <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a47338654c1fd44ad3d9a43f6fa38a7c3" kindref="member">assignMaterial()</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" line="118" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a25478d8f0426db5c8a720f11e90bd139" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::MaterialPoints::MaterialPoint::getCoordinatesAtCenter</definition>
+        <argsstring>(double *coordinates) const =0</argsstring>
+        <name>getCoordinatesAtCenter</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::MaterialPoint::getCoordinatesAtCenter</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>coordinates</declname>
+        </param>
+        <briefdescription>
+<para>Coordinates of the material point center in the last accepted state. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The increment of the current step is not included (it is committed in <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a6d6222a6d143adec6714096f890f06b3" kindref="member">acceptStateAndPosition()</ref>), so the cells locate the material point in the configuration at the beginning of the increment. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">coordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a33a0c15f32300da943f9041b62375078" kindref="member">getDimension()</ref> values. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" line="126" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a3eb83961c1aa0540edfdf29f540f2046" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>int</type>
+        <definition>virtual int Marmot::Discretizations::MaterialPoints::MaterialPoint::getMaterialPointNumber</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getMaterialPointNumber</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::MaterialPoint::getMaterialPointNumber</qualifiedname>
+        <briefdescription>
+<para>Unique number of the material point. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Material point number. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" line="132" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a33a0c15f32300da943f9041b62375078" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>int</type>
+        <definition>virtual int Marmot::Discretizations::MaterialPoints::MaterialPoint::getDimension</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getDimension</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::MaterialPoint::getDimension</qualifiedname>
+        <briefdescription>
+<para>Spatial dimension of the material point. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>2 or 3. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" line="138" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a36443327a53c7a2ef93dcf32d257db95" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>int</type>
+        <definition>virtual int Marmot::Discretizations::MaterialPoints::MaterialPoint::getNumberOfVertices</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getNumberOfVertices</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::MaterialPoint::getNumberOfVertices</qualifiedname>
+        <briefdescription>
+<para>Number of vertices describing the material point domain. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Number of vertices (1 for a point). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" line="144" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1ad7acd8d98b8ee3f11297eb99e3c2b570" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>std::string</type>
+        <definition>virtual std::string Marmot::Discretizations::MaterialPoints::MaterialPoint::getMaterialPointShape</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getMaterialPointShape</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::MaterialPoint::getMaterialPointShape</qualifiedname>
+        <briefdescription>
+<para>Shape of the material point for output. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para>Ensight Gold shape name, e.g. <computeroutput>&quot;point&quot;</computeroutput>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" line="150" column="25"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a5d5df6cab080042483a5eda6500d1c22" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::MaterialPoints::MaterialPoint::getVertexCoordinates</definition>
+        <argsstring>(double *coordinates) const =0</argsstring>
+        <name>getVertexCoordinates</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::MaterialPoint::getVertexCoordinates</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>coordinates</declname>
+        </param>
+        <briefdescription>
+<para>Coordinates of the vertices in the last accepted state. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">coordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a36443327a53c7a2ef93dcf32d257db95" kindref="member">getNumberOfVertices()</ref> <formula id="54">$ \times $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a33a0c15f32300da943f9041b62375078" kindref="member">getDimension()</ref> values, vertex by vertex. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" line="156" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1af8a51713a33c3728be2846f274f9757b" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::MaterialPoints::MaterialPoint::getCenterDisplacement</definition>
+        <argsstring>(double *displacement) const =0</argsstring>
+        <name>getCenterDisplacement</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::MaterialPoint::getCenterDisplacement</qualifiedname>
+        <param>
+          <type>double *</type>
+          <declname>displacement</declname>
+        </param>
+        <briefdescription>
+<para>Displacement of the material point center in the last accepted state. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="out">displacement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a33a0c15f32300da943f9041b62375078" kindref="member">getDimension()</ref> values. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" line="162" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a93d7cee75a9feded4e96c1017efc8882" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>double</type>
+        <definition>virtual double Marmot::Discretizations::MaterialPoints::MaterialPoint::getVolumeUndeformed</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getVolumeUndeformed</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::MaterialPoint::getVolumeUndeformed</qualifiedname>
+        <briefdescription>
+<para>Volume in the reference configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><formula id="110">$ V_0 $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" line="168" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a1c389527410508cbc75798a9b607d08f" prot="public" static="no" const="yes" explicit="no" inline="no" virt="pure-virtual">
+        <type>double</type>
+        <definition>virtual double Marmot::Discretizations::MaterialPoints::MaterialPoint::getDensityUndeformed</definition>
+        <argsstring>() const =0</argsstring>
+        <name>getDensityUndeformed</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::MaterialPoint::getDensityUndeformed</qualifiedname>
+        <briefdescription>
+<para>Density in the reference configuration. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><simplesect kind="return"><para><formula id="111">$ \rho_0 $</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" line="174" column="20"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a74a5d8b8927bb898b2ae6df40e35fa47" prot="public" static="no" const="no" explicit="no" inline="no" virt="pure-virtual">
+        <type>void</type>
+        <definition>virtual void Marmot::Discretizations::MaterialPoints::MaterialPoint::setInitialCondition</definition>
+        <argsstring>(const std::string &amp;conditionName, const double *value)=0</argsstring>
+        <name>setInitialCondition</name>
+        <qualifiedname>Marmot::Discretizations::MaterialPoints::MaterialPoint::setInitialCondition</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>conditionName</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>value</declname>
+        </param>
+        <briefdescription>
+<para>Sets an initial condition. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">conditionName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the initial condition. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">value</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Values of the initial condition. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" line="181" column="18"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Abstract interface of a material point of the material point method (MPM). </para>
+    </briefdescription>
+    <detaileddescription>
+<para>A material point is a Lagrangian integration point that carries mass (volume and density), position and the complete history (deformation, stress, material state variables) through the simulation, while the background cells (<ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell" kindref="compound">Marmot::Discretizations::Cells::Cell</ref>) carry the nodal fields and are reset every increment. A material point owns its constitutive model (assigned with <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a47338654c1fd44ad3d9a43f6fa38a7c3" kindref="member">assignMaterial()</ref>); its state variables live in an externally owned array (assigned with <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a0e1436d59382f9bf28c7c0fe94e265f5" kindref="member">assignStateVars()</ref>).</para>
+<para><bold>Life cycle</bold> (as called by the host framework, e.g. EdelweissMeshfree):<orderedlist>
+<listitem><para>creation by name via <ref refid="class_marmot_1_1_registry_1_1_material_point_factory" kindref="compound">Marmot::Registry::MaterialPointFactory</ref>, then <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a47338654c1fd44ad3d9a43f6fa38a7c3" kindref="member">assignMaterial()</ref>, <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1ae1298d991c2ed04786dc8b96710a80a5" kindref="member">getNumberOfRequiredStateVars()</ref> and <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a0e1436d59382f9bf28c7c0fe94e265f5" kindref="member">assignStateVars()</ref>,</para>
+</listitem><listitem><para><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1aa2a58c0b16c0ff611715c80ae6d39250" kindref="member">initializeYourself()</ref> once, before the first increment,</para>
+</listitem><listitem><para>per iteration: <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1aba8bfd46fbfa5400d155bf8f30cac84d" kindref="member">prepareYourself()</ref>, then the cells interpolate the nodal increments to the material point (<ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a1ac5f5308dc52614dd36509bb7d09d7f" kindref="member">Marmot::Discretizations::Cells::Cell::interpolateFieldsToMaterialPoints()</ref>), then <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a0d04a7c4c1cdb8b82bcdc1ad18e7745f" kindref="member">computeYourself()</ref>, which evaluates the constitutive response that the cells integrate in <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a3a49fe2594d9dee24e95c12063b8aabb" kindref="member">Marmot::Discretizations::Cells::Cell::computeMaterialPointKernels()</ref>,</para>
+</listitem><listitem><para><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a6d6222a6d143adec6714096f890f06b3" kindref="member">acceptStateAndPosition()</ref> after convergence of the increment, which commits the increment (e.g. updates position and deformation gradient).</para>
+</listitem></orderedlist>
+</para>
+<para><bold>State contract:</bold> the state variable array is a <emphasis>trial</emphasis> copy. Before every iteration (i.e. before <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1aba8bfd46fbfa5400d155bf8f30cac84d" kindref="member">prepareYourself()</ref>), the host restores it to the values committed by the last <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a6d6222a6d143adec6714096f890f06b3" kindref="member">acceptStateAndPosition()</ref>, and the cells interpolate the total increment since that state (not the Newton correction). Implementations may therefore update their state in place during an iteration (e.g. add the interpolated increment of a field to its committed value), since each iteration starts again from the committed state; a cutback is simply a restore. EdelweissMeshfree implements this by copying the committed array into the trial array in <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1aba8bfd46fbfa5400d155bf8f30cac84d" kindref="member">prepareYourself()</ref> and back in <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a6d6222a6d143adec6714096f890f06b3" kindref="member">acceptStateAndPosition()</ref>.</para>
+<para>The kinematic update from the cell (e.g. <computeroutput>incrementDeformation</computeroutput>) and the response/tangent quantities read by the cell are not part of this interface: they are specific to each pair of concrete cell and material point (see e.g. Marmot::Discretizations::MaterialPoints::DisplacementMaterialPoint), and the cell obtains them by a <computeroutput>dynamic_cast</computeroutput>. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" line="66" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMaterialPoint.h" bodystart="66" bodyend="182"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a6d6222a6d143adec6714096f890f06b3" prot="public" virt="virtual"><scope>Marmot::Discretizations::MaterialPoints::MaterialPoint</scope><name>acceptStateAndPosition</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a47338654c1fd44ad3d9a43f6fa38a7c3" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::MaterialPoints::MaterialPoint</scope><name>assignMaterial</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a0e1436d59382f9bf28c7c0fe94e265f5" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::MaterialPoints::MaterialPoint</scope><name>assignStateVars</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a0d04a7c4c1cdb8b82bcdc1ad18e7745f" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::MaterialPoints::MaterialPoint</scope><name>computeYourself</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1af8a51713a33c3728be2846f274f9757b" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::MaterialPoints::MaterialPoint</scope><name>getCenterDisplacement</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a25478d8f0426db5c8a720f11e90bd139" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::MaterialPoints::MaterialPoint</scope><name>getCoordinatesAtCenter</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a1c389527410508cbc75798a9b607d08f" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::MaterialPoints::MaterialPoint</scope><name>getDensityUndeformed</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a33a0c15f32300da943f9041b62375078" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::MaterialPoints::MaterialPoint</scope><name>getDimension</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a3eb83961c1aa0540edfdf29f540f2046" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::MaterialPoints::MaterialPoint</scope><name>getMaterialPointNumber</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1ad7acd8d98b8ee3f11297eb99e3c2b570" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::MaterialPoints::MaterialPoint</scope><name>getMaterialPointShape</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1ae1298d991c2ed04786dc8b96710a80a5" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::MaterialPoints::MaterialPoint</scope><name>getNumberOfRequiredStateVars</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a36443327a53c7a2ef93dcf32d257db95" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::MaterialPoints::MaterialPoint</scope><name>getNumberOfVertices</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a51f4d4a25db0d9f16b3a55f799c407d0" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::MaterialPoints::MaterialPoint</scope><name>getStateView</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a5d5df6cab080042483a5eda6500d1c22" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::MaterialPoints::MaterialPoint</scope><name>getVertexCoordinates</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a93d7cee75a9feded4e96c1017efc8882" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::MaterialPoints::MaterialPoint</scope><name>getVolumeUndeformed</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1aa2a58c0b16c0ff611715c80ae6d39250" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::MaterialPoints::MaterialPoint</scope><name>initializeYourself</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1aba8bfd46fbfa5400d155bf8f30cac84d" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::MaterialPoints::MaterialPoint</scope><name>prepareYourself</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a74a5d8b8927bb898b2ae6df40e35fa47" prot="public" virt="pure-virtual"><scope>Marmot::Discretizations::MaterialPoints::MaterialPoint</scope><name>setInitialCondition</name></member>
+      <member refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1ad3e6d46b5ddf460dea6aec4bb8e1eab6" prot="public" virt="virtual"><scope>Marmot::Discretizations::MaterialPoints::MaterialPoint</scope><name>~MaterialPoint</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

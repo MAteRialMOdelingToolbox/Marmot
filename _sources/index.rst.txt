@@ -38,6 +38,7 @@ Please find the details in the LICENSE.md file.
 
    pages/installation
    pages/interfaces
+   pages/python_bindings
    pages/features
    pages/documentation
    pages/publications

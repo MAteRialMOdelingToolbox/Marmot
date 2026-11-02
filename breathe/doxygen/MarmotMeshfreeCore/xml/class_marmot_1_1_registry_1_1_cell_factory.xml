@@ -1,0 +1,377 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_registry_1_1_cell_factory" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Registry::CellFactory</compoundname>
+    <includes refid="_marmot_m_p_m_library_8h" local="no">MarmotMPMLibrary.h</includes>
+    <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="class_marmot_1_1_registry_1_1_cell_factory_1a259b6fcaf9f21ac74c71d2b0c3599b3f" prot="public" static="no">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell" kindref="compound">Marmot::Discretizations::Cells::Cell</ref> *(*)(int cellNumber, const double *vertexCoordinates, int sizeVertexCoordinates)</type>
+        <definition>using Marmot::Registry::CellFactory::cellFactoryFunction = Marmot::Discretizations::Cells::Cell* (*)( int           cellNumber,
+                                                                          const double* vertexCoordinates,
+                                                                          int           sizeVertexCoordinates )</definition>
+        <argsstring></argsstring>
+        <name>cellFactoryFunction</name>
+        <qualifiedname>Marmot::Registry::CellFactory::cellFactoryFunction</qualifiedname>
+        <briefdescription>
+<para>Signature of a (Lagrangian) cell factory function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Arguments: cell number, node coordinates (node by node), size of the coordinate array. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" line="123" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" bodystart="123" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="class_marmot_1_1_registry_1_1_cell_factory_1a76115dd6a94eb660163b05f9e1572452" prot="public" static="no">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell" kindref="compound">Marmot::Discretizations::Cells::Cell</ref> *(*)(int cellNumber, const double *vertexCoordinates, int sizeVertexCoordinates, const double *knotVectors, int sizeKnotVectors)</type>
+        <definition>using Marmot::Registry::CellFactory::bSplineCellFactoryFunction = Marmot::Discretizations::Cells::Cell* (*)( int           cellNumber,
+                                                                                 const double* vertexCoordinates,
+                                                                                 int           sizeVertexCoordinates,
+                                                                                 const double* knotVectors,
+                                                                                 int           sizeKnotVectors )</definition>
+        <argsstring></argsstring>
+        <name>bSplineCellFactoryFunction</name>
+        <qualifiedname>Marmot::Registry::CellFactory::bSplineCellFactoryFunction</qualifiedname>
+        <briefdescription>
+<para>Signature of a B-spline cell factory function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Arguments: cell number, control point coordinates (point by point), size of the coordinate array, knot vectors (direction by direction), size of the knot vector array. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" line="132" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" bodystart="132" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_cell_factory_1abaa9edc278c0acbdd2eaafcb7f0d43e0" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Registry::CellFactory::CellFactory</definition>
+        <argsstring>()=delete</argsstring>
+        <name>CellFactory</name>
+        <qualifiedname>Marmot::Registry::CellFactory::CellFactory</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" line="138" column="5"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_cell_factory_1a9a5214743ead01fa21508d8d2f46af05" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell" kindref="compound">Marmot::Discretizations::Cells::Cell</ref> *</type>
+        <definition>static Marmot::Discretizations::Cells::Cell * Marmot::Registry::CellFactory::createCell</definition>
+        <argsstring>(const std::string &amp;cellName, int cellNumber, const double *nodeCoordinates, int sizeNodeCoordinates)</argsstring>
+        <name>createCell</name>
+        <qualifiedname>Marmot::Registry::CellFactory::createCell</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>cellName</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cellNumber</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>nodeCoordinates</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>sizeNodeCoordinates</declname>
+        </param>
+        <briefdescription>
+<para>Creates a Lagrangian cell of a registered type. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">cellName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Registered name (case-insensitive), e.g. <computeroutput>&quot;Displacement/Quad4&quot;</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">cellNumber</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of the new cell. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nodeCoordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Node coordinates (node by node); the cells map this array, so it must outlive the cell. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">sizeNodeCoordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of <computeroutput>nodeCoordinates</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Newly allocated cell; the caller takes ownership. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if no cell is registered under <computeroutput>cellName</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" line="150" column="49"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_cell_factory_1af86522ba5e428befdef4ecef7f69c08f" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell" kindref="compound">Marmot::Discretizations::Cells::Cell</ref> *</type>
+        <definition>static Marmot::Discretizations::Cells::Cell * Marmot::Registry::CellFactory::createBSplineCell</definition>
+        <argsstring>(const std::string &amp;cellName, int cellNumber, const double *nodeCoordinates, int sizeNodeCoordinates, const double *knotVectors, int sizeKnotVectors)</argsstring>
+        <name>createBSplineCell</name>
+        <qualifiedname>Marmot::Registry::CellFactory::createBSplineCell</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>cellName</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>cellNumber</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>nodeCoordinates</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>sizeNodeCoordinates</declname>
+        </param>
+        <param>
+          <type>const double *</type>
+          <declname>knotVectors</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>sizeKnotVectors</declname>
+        </param>
+        <briefdescription>
+<para>Creates a B-spline cell of a registered type. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">cellName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Registered name (case-insensitive), e.g. <computeroutput>&quot;Displacement/BSpline/2&quot;</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">cellNumber</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of the new cell. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nodeCoordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Control point coordinates (point by point); mapped by the cell, so it must outlive the cell. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">sizeNodeCoordinates</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of <computeroutput>nodeCoordinates</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">knotVectors</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Knot vectors of the cell, <formula id="82">$ 2p+2 $</formula> knots per direction, direction by direction. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">sizeKnotVectors</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Size of <computeroutput>knotVectors</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Newly allocated cell; the caller takes ownership. </para>
+</simplesect>
+<parameterlist kind="exception"><parameteritem>
+<parameternamelist>
+<parametername>std::invalid_argument</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>if no B-spline cell is registered under <computeroutput>cellName</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" line="168" column="49"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_cell_factory_1a8aae2870a8313f0fe6f513ba70b1559d" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool Marmot::Registry::CellFactory::registerCell</definition>
+        <argsstring>(const std::string &amp;cellName, cellFactoryFunction factoryFunction)</argsstring>
+        <name>registerCell</name>
+        <qualifiedname>Marmot::Registry::CellFactory::registerCell</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>cellName</declname>
+        </param>
+        <param>
+          <type><ref refid="class_marmot_1_1_registry_1_1_cell_factory_1a259b6fcaf9f21ac74c71d2b0c3599b3f" kindref="member">cellFactoryFunction</ref></type>
+          <declname>factoryFunction</declname>
+        </param>
+        <briefdescription>
+<para>Registers a Lagrangian cell type. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">cellName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name (case-insensitive); registering a name twice fails an <computeroutput>assert</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">factoryFunction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Function creating an instance. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> (used to initialize a static flag). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" line="181" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_cell_factory_1a0b628d90299f9ebc529a80e52fb07671" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool Marmot::Registry::CellFactory::registerBSplineCell</definition>
+        <argsstring>(const std::string &amp;cellName, bSplineCellFactoryFunction factoryFunction)</argsstring>
+        <name>registerBSplineCell</name>
+        <qualifiedname>Marmot::Registry::CellFactory::registerBSplineCell</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>cellName</declname>
+        </param>
+        <param>
+          <type><ref refid="class_marmot_1_1_registry_1_1_cell_factory_1a76115dd6a94eb660163b05f9e1572452" kindref="member">bSplineCellFactoryFunction</ref></type>
+          <declname>factoryFunction</declname>
+        </param>
+        <briefdescription>
+<para>Registers a B-spline cell type. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">cellName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name (case-insensitive); registering a B-spline name twice fails an <computeroutput>assert</computeroutput>, a Lagrangian cell of the same name is independent. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">factoryFunction</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Function creating an instance. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para><computeroutput>true</computeroutput> (used to initialize a static flag). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" line="189" column="17"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_cell_factory_1a4c4889d993d8fc6a370329496c8884e8" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::unordered_map&lt; std::string, <ref refid="class_marmot_1_1_registry_1_1_cell_factory_1a259b6fcaf9f21ac74c71d2b0c3599b3f" kindref="member">cellFactoryFunction</ref> &gt; &amp;</type>
+        <definition>static std::unordered_map&lt; std::string, cellFactoryFunction &gt; &amp; Marmot::Registry::CellFactory::cellFactoryFunctionByName</definition>
+        <argsstring>()</argsstring>
+        <name>cellFactoryFunctionByName</name>
+        <qualifiedname>Marmot::Registry::CellFactory::cellFactoryFunctionByName</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Lagrangian cell factory functions by upper-case name (a function-local static: registrations run during static initialization, possibly before a static data member of this translation unit would be constructed). </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" line="194" column="31"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_registry_1_1_cell_factory_1aa9b2376afd6b41bda6864c3a1e82d85f" prot="private" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::unordered_map&lt; std::string, <ref refid="class_marmot_1_1_registry_1_1_cell_factory_1a76115dd6a94eb660163b05f9e1572452" kindref="member">bSplineCellFactoryFunction</ref> &gt; &amp;</type>
+        <definition>static std::unordered_map&lt; std::string, bSplineCellFactoryFunction &gt; &amp; Marmot::Registry::CellFactory::bSplineCellFactoryFunctionByName</definition>
+        <argsstring>()</argsstring>
+        <name>bSplineCellFactoryFunctionByName</name>
+        <qualifiedname>Marmot::Registry::CellFactory::bSplineCellFactoryFunctionByName</qualifiedname>
+        <briefdescription>
+<para>B-spline cell factory functions by upper-case name (a function-local static, see above). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" line="196" column="31"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Registry of <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell" kindref="compound">Marmot::Discretizations::Cells::Cell</ref> types, created by name. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>Keeps two separate registries: Lagrangian cells, created from their node coordinates (<ref refid="class_marmot_1_1_registry_1_1_cell_factory_1a8aae2870a8313f0fe6f513ba70b1559d" kindref="member">registerCell()</ref> / <ref refid="class_marmot_1_1_registry_1_1_cell_factory_1a9a5214743ead01fa21508d8d2f46af05" kindref="member">createCell()</ref>, e.g. <computeroutput>&quot;Displacement/Quad4&quot;</computeroutput>), and B-spline cells, which additionally need the knot vectors of the cell (<ref refid="class_marmot_1_1_registry_1_1_cell_factory_1a0b628d90299f9ebc529a80e52fb07671" kindref="member">registerBSplineCell()</ref> / <ref refid="class_marmot_1_1_registry_1_1_cell_factory_1af86522ba5e428befdef4ecef7f69c08f" kindref="member">createBSplineCell()</ref>, e.g. <computeroutput>&quot;Displacement/BSpline/2&quot;</computeroutput>). Registration works as for <ref refid="class_marmot_1_1_registry_1_1_material_point_factory" kindref="compound">MaterialPointFactory</ref>. Names are case-insensitive (stored in upper case). </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" line="117" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMeshfreeCore/include/Marmot/MarmotMPMLibrary.h" bodystart="117" bodyend="197"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_registry_1_1_cell_factory_1a76115dd6a94eb660163b05f9e1572452" prot="public" virt="non-virtual"><scope>Marmot::Registry::CellFactory</scope><name>bSplineCellFactoryFunction</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_cell_factory_1aa9b2376afd6b41bda6864c3a1e82d85f" prot="private" virt="non-virtual"><scope>Marmot::Registry::CellFactory</scope><name>bSplineCellFactoryFunctionByName</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_cell_factory_1abaa9edc278c0acbdd2eaafcb7f0d43e0" prot="public" virt="non-virtual"><scope>Marmot::Registry::CellFactory</scope><name>CellFactory</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_cell_factory_1a259b6fcaf9f21ac74c71d2b0c3599b3f" prot="public" virt="non-virtual"><scope>Marmot::Registry::CellFactory</scope><name>cellFactoryFunction</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_cell_factory_1a4c4889d993d8fc6a370329496c8884e8" prot="private" virt="non-virtual"><scope>Marmot::Registry::CellFactory</scope><name>cellFactoryFunctionByName</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_cell_factory_1af86522ba5e428befdef4ecef7f69c08f" prot="public" virt="non-virtual"><scope>Marmot::Registry::CellFactory</scope><name>createBSplineCell</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_cell_factory_1a9a5214743ead01fa21508d8d2f46af05" prot="public" virt="non-virtual"><scope>Marmot::Registry::CellFactory</scope><name>createCell</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_cell_factory_1a0b628d90299f9ebc529a80e52fb07671" prot="public" virt="non-virtual"><scope>Marmot::Registry::CellFactory</scope><name>registerBSplineCell</name></member>
+      <member refid="class_marmot_1_1_registry_1_1_cell_factory_1a8aae2870a8313f0fe6f513ba70b1559d" prot="public" virt="non-virtual"><scope>Marmot::Registry::CellFactory</scope><name>registerCell</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

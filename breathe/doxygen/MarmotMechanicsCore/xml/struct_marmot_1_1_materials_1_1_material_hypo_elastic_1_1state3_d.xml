@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Materials::MaterialHypoElastic::state3D</compoundname>
+    <includes refid="_marmot_material_hypo_elastic_8h" local="no">MarmotMaterialHypoElastic.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d_1a27f4570c8c2c369dba269c0e5f3826de" prot="public" static="no" mutable="no">
+        <type>Marmot::Math::Vector6d</type>
+        <definition>Marmot::Math::Vector6d Marmot::Materials::MaterialHypoElastic::state3D::stress</definition>
+        <argsstring></argsstring>
+        <name>stress</name>
+        <qualifiedname>Marmot::Materials::MaterialHypoElastic::state3D::stress</qualifiedname>
+        <briefdescription>
+<para>Cauchy stress tensor in Voigt notation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="88" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="88" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d_1a0add81b4c0d2444d82a05cfd01165384" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Materials::MaterialHypoElastic::state3D::elasticEnergyDensity</definition>
+        <argsstring></argsstring>
+        <name>elasticEnergyDensity</name>
+        <qualifiedname>Marmot::Materials::MaterialHypoElastic::state3D::elasticEnergyDensity</qualifiedname>
+        <briefdescription>
+<para>Elastic strain energy density. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="89" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="89" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d_1a7b03a27d38cbc11920654bcd3253fe4a" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Materials::MaterialHypoElastic::state3D::dissipation</definition>
+        <argsstring></argsstring>
+        <name>dissipation</name>
+        <qualifiedname>Marmot::Materials::MaterialHypoElastic::state3D::dissipation</qualifiedname>
+        <briefdescription>
+<para>Dissipation. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="90" column="30" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="90" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d_1a01bc27894fc06f55adee3617435beb72" prot="public" static="no" mutable="no">
+        <type>double *</type>
+        <definition>double* Marmot::Materials::MaterialHypoElastic::state3D::stateVars</definition>
+        <argsstring></argsstring>
+        <name>stateVars</name>
+        <qualifiedname>Marmot::Materials::MaterialHypoElastic::state3D::stateVars</qualifiedname>
+        <briefdescription>
+<para>Pointer to array of state variables. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="91" column="29" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="91" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d_1adeb83c4ce4c00abd2f956fe122a709d3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Materials::MaterialHypoElastic::state3D::state3D</definition>
+        <argsstring>()</argsstring>
+        <name>state3D</name>
+        <qualifiedname>Marmot::Materials::MaterialHypoElastic::state3D::state3D</qualifiedname>
+        <briefdescription>
+<para>Default constructor for <ref refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d" kindref="compound">state3D</ref> Initializes stress to zero, energy and dissipation to zero, and stateVars to nullptr. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="96" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="96" bodyend="102"/>
+      </memberdef>
+      <memberdef kind="function" id="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d_1af3dd17130acdb2cd2f967390e0e929ee" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Materials::MaterialHypoElastic::state3D::state3D</definition>
+        <argsstring>(Marmot::Math::Vector6d stress_, double elasticEnergyDensity_, double dissipation_, double *stateVars_)</argsstring>
+        <name>state3D</name>
+        <qualifiedname>Marmot::Materials::MaterialHypoElastic::state3D::state3D</qualifiedname>
+        <param>
+          <type>Marmot::Math::Vector6d</type>
+          <declname>stress_</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>elasticEnergyDensity_</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dissipation_</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>stateVars_</declname>
+        </param>
+        <briefdescription>
+<para>Constructor for initializing <ref refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d" kindref="compound">state3D</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>stress_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Cauchy stress tensor in Voigt notation </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>elasticEnergyDensity_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Elastic strain energy density </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>dissipation_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Dissipation </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>stateVars_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to array of state variables </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="110" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="110" bodyend="116"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Structure to hold the material state at a material point in 3D. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" line="87" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMaterialHypoElastic.h" bodystart="87" bodyend="117"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d_1a7b03a27d38cbc11920654bcd3253fe4a" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialHypoElastic::state3D</scope><name>dissipation</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d_1a0add81b4c0d2444d82a05cfd01165384" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialHypoElastic::state3D</scope><name>elasticEnergyDensity</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d_1adeb83c4ce4c00abd2f956fe122a709d3" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialHypoElastic::state3D</scope><name>state3D</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d_1af3dd17130acdb2cd2f967390e0e929ee" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialHypoElastic::state3D</scope><name>state3D</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d_1a01bc27894fc06f55adee3617435beb72" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialHypoElastic::state3D</scope><name>stateVars</name></member>
+      <member refid="struct_marmot_1_1_materials_1_1_material_hypo_elastic_1_1state3_d_1a27f4570c8c2c369dba269c0e5f3826de" prot="public" virt="non-virtual"><scope>Marmot::Materials::MaterialHypoElastic::state3D</scope><name>stress</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

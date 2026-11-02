@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_relaxation_functions" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::Viscoelasticity::RelaxationFunctions</compoundname>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_viscoelasticity_8h_1a00dc9ad8b4cb63f389f5c1038a6d8bd7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T_</type>
+          </param>
+        </templateparamlist>
+        <type>T_</type>
+        <definition>T_ Marmot::ContinuumMechanics::Viscoelasticity::RelaxationFunctions::powerLaw</definition>
+        <argsstring>(T_ tau, double m, double n)</argsstring>
+        <name>powerLaw</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::RelaxationFunctions::powerLaw</qualifiedname>
+        <param>
+          <type>T_</type>
+          <declname>tau</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>m</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+<para>Power-law relaxation function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes the relaxation function   <formula id="10">\[  \Psi(\tau) = m \, \tau^{-n}.
+\]</formula></para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar or autodiff type of the argument. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">tau</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Relaxation time or evaluation point. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scaling factor. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Positive exponent controlling the relaxation rate. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The relaxation-function value <formula id="11">$\Psi(\tau)$</formula>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="105" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" bodystart="105" bodyend="108"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotViscoelasticity.h" line="88" column="3"/>
+  </compounddef>
+</doxygen>

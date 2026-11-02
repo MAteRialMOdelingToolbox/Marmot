@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="deprecated" kind="page">
+    <compoundname>deprecated</compoundname>
+    <title>Deprecated List</title>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para><variablelist>
+<varlistentry><term>Class <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_geometry" kindref="compound">Marmot::Discretizations::Cells::CellGeometry&lt; nDim, nNodes &gt;</ref>  </term></varlistentry>
+<listitem><para><anchor id="deprecated_1_deprecated000001"/>Currently unused</para>
+</listitem>
+</variablelist>
+</para>
+    </detaileddescription>
+    <location file="deprecated"/>
+  </compounddef>
+</doxygen>

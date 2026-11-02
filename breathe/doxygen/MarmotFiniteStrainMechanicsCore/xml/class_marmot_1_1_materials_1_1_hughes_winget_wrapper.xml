@@ -1,0 +1,799 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Materials::HughesWingetWrapper</compoundname>
+    <basecompoundref refid="class_marmot_1_1_materials_1_1_material_finite_strain" prot="public" virt="non-virtual">Marmot::Materials::MaterialFiniteStrain</basecompoundref>
+    <includes refid="_marmot_material_hughes_winget_8h" local="no">MarmotMaterialHughesWinget.h</includes>
+    <templateparamlist>
+      <param>
+        <type>typename BaseMaterialType</type>
+      </param>
+      <param>
+        <type>HughesWingetTangent</type>
+        <declname>tangentMode</declname>
+        <defname>tangentMode</defname>
+        <defval>HughesWingetTangent::Analytic</defval>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a1c431001f9637cd5ecadfe4dee924e59" prot="protected" static="no" mutable="no">
+        <type>std::unique_ptr&lt; Marmot::Materials::MaterialHypoElastic &gt;</type>
+        <definition>std::unique_ptr&lt; Marmot::Materials::MaterialHypoElastic &gt; Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;::baseMaterial</definition>
+        <argsstring></argsstring>
+        <name>baseMaterial</name>
+        <qualifiedname>Marmot::Materials::HughesWingetWrapper::baseMaterial</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>The wrapped small-strain material. Held as the base interface: concrete materials are free to re-declare their overrides as protected, which would make them unreachable via BaseMaterialType. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="112" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="112" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-static-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a7834e853be57f624c0f38967c85503e8" prot="protected" static="yes" constexpr="yes" mutable="no">
+        <type>const char *</type>
+        <definition>const char* Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;::deformationGradientSlot</definition>
+        <argsstring></argsstring>
+        <name>deformationGradientSlot</name>
+        <qualifiedname>Marmot::Materials::HughesWingetWrapper::deformationGradientSlot</qualifiedname>
+        <initializer>= &quot;HughesWinget_F_n&quot;</initializer>
+        <briefdescription>
+<para>Name of the state layout slot holding the deformation gradient of the last accepted increment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="115" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="115" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a9beeb9262492c82bfd2b53697cf64551" prot="protected" static="yes" constexpr="yes" mutable="no">
+        <type>const char *</type>
+        <definition>const char* Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;::stressSlot</definition>
+        <argsstring></argsstring>
+        <name>stressSlot</name>
+        <qualifiedname>Marmot::Materials::HughesWingetWrapper::stressSlot</qualifiedname>
+        <initializer>= &quot;HughesWinget_sigma_n&quot;</initializer>
+        <briefdescription>
+<para>Name of the state layout slot holding the Cauchy stress of the last accepted increment. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="117" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="117" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a04d8628a9fd2cc5d7654a3a952d6d98f" prot="protected" static="yes" constexpr="yes" mutable="no">
+        <type>const char *</type>
+        <definition>const char* Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;::baseMaterialSlot</definition>
+        <argsstring></argsstring>
+        <name>baseMaterialSlot</name>
+        <qualifiedname>Marmot::Materials::HughesWingetWrapper::baseMaterialSlot</qualifiedname>
+        <initializer>= &quot;materialstate&quot;</initializer>
+        <briefdescription>
+<para>Name of the state layout slot holding the state variables of the wrapped material. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="119" column="33" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="119" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a5e42a8e1a1dd0be26d00901aa0825d96" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;::HughesWingetWrapper</definition>
+        <argsstring>(const double *matProperties_, int nMaterialProperties_, int materialNumber_)</argsstring>
+        <name>HughesWingetWrapper</name>
+        <qualifiedname>Marmot::Materials::HughesWingetWrapper::HughesWingetWrapper</qualifiedname>
+        <param>
+          <type>const double *</type>
+          <declname>matProperties_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nMaterialProperties_</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>materialNumber_</declname>
+        </param>
+        <briefdescription>
+<para>Construct the wrapper and the wrapped material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">matProperties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Material property values; forwarded <bold>unchanged</bold> to the wrapped material. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nMaterialProperties_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of material property values. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">materialNumber_</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unique identifier for this material instance. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="128" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="128" bodyend="137"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a8d9516a7ca350e8321c7f5a3044f4bf7" prot="public" static="no" const="no" explicit="no" inline="no" virt="virtual">
+        <type></type>
+        <definition>virtual Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;::~HughesWingetWrapper</definition>
+        <argsstring>()=default</argsstring>
+        <name>~HughesWingetWrapper</name>
+        <qualifiedname>Marmot::Materials::HughesWingetWrapper::~HughesWingetWrapper</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="139" column="13"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a0dd9a4032f02422fbde15ecf100b0ac1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;::initializeStateLayout</definition>
+        <argsstring>()</argsstring>
+        <name>initializeStateLayout</name>
+        <qualifiedname>Marmot::Materials::HughesWingetWrapper::initializeStateLayout</qualifiedname>
+        <briefdescription>
+<para>Register the state layout: the carried-over deformation gradient and Cauchy stress, followed by the state variables of the wrapped material. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="145" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="145" bodyend="151"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a2b6d91f95a9a5df4f43c134bf8022748" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;::setCharacteristicElementLength</definition>
+        <argsstring>(double length) override</argsstring>
+        <name>setCharacteristicElementLength</name>
+        <qualifiedname>Marmot::Materials::HughesWingetWrapper::setCharacteristicElementLength</qualifiedname>
+        <reimplements refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a3985323a46813f83562a8e8980a6329a">setCharacteristicElementLength</reimplements>
+        <param>
+          <type>double</type>
+          <declname>length</declname>
+        </param>
+        <briefdescription>
+<para>Forward the characteristic element length to the wrapped material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">length</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Characteristic element length at the considered evaluation point. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="157" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="157" bodyend="160"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a418c29a12d2818cb156382e5b32c02b3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>Marmot::Utilities::StateView</type>
+        <definition>Marmot::Utilities::StateView Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;::getStateView</definition>
+        <argsstring>(const std::string &amp;stateName, double *stateVars) const override</argsstring>
+        <name>getStateView</name>
+        <qualifiedname>Marmot::Materials::HughesWingetWrapper::getStateView</qualifiedname>
+        <reimplements refid="class_marmot_1_1_materials_1_1_material_finite_strain_1af07a0556b7f723dd0c1fc47fa33a128e">getStateView</reimplements>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>stateName</declname>
+        </param>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Resolve a state variable by name, falling back to the wrapped material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Without this, the wrapped material&apos;s own state <ndash/> CDP&apos;s <computeroutput>omega</computeroutput>, a plasticity model&apos;s hardening variable <ndash/> would be unreachable through the wrapper, since the wrapper&apos;s layout only knows its own three slots.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">stateName</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Name of the state variable. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array of this wrapper. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>A view of the requested state variable. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="173" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="173" bodyend="179"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a3f28011f30a855bde0a7e589cc496678" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>double</type>
+        <definition>double Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;::getDensity</definition>
+        <argsstring>(const double *stateVars) const override</argsstring>
+        <name>getDensity</name>
+        <qualifiedname>Marmot::Materials::HughesWingetWrapper::getDensity</qualifiedname>
+        <reimplements refid="class_marmot_1_1_materials_1_1_material_finite_strain_1ae4d2733228b5cacd8b39cb26c8914b8f">getDensity</reimplements>
+        <param>
+          <type>const double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <briefdescription>
+<para>Mass density of the wrapped material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array of this wrapper. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Mass density. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="186" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="186" bodyend="190"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1ab57e2464e27eed7ad1ddae6441ee6e07" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;::initializeYourself</definition>
+        <argsstring>(double *stateVars, int nStateVars) override</argsstring>
+        <name>initializeYourself</name>
+        <qualifiedname>Marmot::Materials::HughesWingetWrapper::initializeYourself</qualifiedname>
+        <reimplements refid="class_marmot_1_1_materials_1_1_material_finite_strain_1ab63e79f271a977946637c538eb4bb1ae">initializeYourself</reimplements>
+        <param>
+          <type>double *</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>nStateVars</declname>
+        </param>
+        <briefdescription>
+<para>Initialise the state: <formula id="62">$ \boldsymbol{F}^{(n)} = \boldsymbol{I} $</formula>, <formula id="63">$ \boldsymbol{\sigma}^{(n)} = \boldsymbol{0} $</formula>, plus the wrapped material&apos;s own state. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Pointer to the state variable array. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">nStateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Number of state variables. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="198" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="198" bodyend="210"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a1f5a38cac1c30b07ac8ee5c14d12cef8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;::computeStress</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, AlgorithmicModuli&lt; 3 &gt; &amp;tangents, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement) const override</argsstring>
+        <name>computeStress</name>
+        <qualifiedname>Marmot::Materials::HughesWingetWrapper::computeStress</qualifiedname>
+        <reimplements refid="class_marmot_1_1_materials_1_1_material_finite_strain_1af123a7f01a7534862ec08e82fcc0a443">computeStress</reimplements>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_algorithmic_moduli" kindref="compound">AlgorithmicModuli</ref>&lt; 3 &gt; &amp;</type>
+          <declname>tangents</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_deformation" kindref="compound">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_time_increment" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+<para>Objective stress update of the wrapped small-strain material. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">response</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Constitutive response; carries the Kirchhoff stress and state variables. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">tangents</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Algorithmic moduli <formula id="101">$ \partial\tau_{ij}/\partial F_{kl} $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">deformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current deformation gradient. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current (pseudo-)time and (pseudo-)time increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="219" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="219" bodyend="232"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a39a2f0828d634962474f5063169ca37d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;::computeStressExplicit</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement) const override</argsstring>
+        <name>computeStressExplicit</name>
+        <qualifiedname>Marmot::Materials::HughesWingetWrapper::computeStressExplicit</qualifiedname>
+        <reimplements refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a6e355595e26df823bae850e03aeacd85">computeStressExplicit</reimplements>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_deformation" kindref="compound">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_time_increment" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+<para>Explicit variant of <ref refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a1f5a38cac1c30b07ac8ee5c14d12cef8" kindref="member">computeStress</ref>; no algorithmic tangent is evaluated. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">response</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Constitutive response. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">deformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current deformation gradient. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current (pseudo-)time and (pseudo-)time increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="240" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="240" bodyend="246"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-static-func">
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1ab4fea4e4b068462c8beaf891c538ba7b" prot="protected" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Marmot::Math::Tensors::FastorTensors::Tensor33d</type>
+        <definition>static Marmot::Math::Tensors::FastorTensors::Tensor33d Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;::fromEigen</definition>
+        <argsstring>(const Eigen::Matrix3d &amp;m)</argsstring>
+        <name>fromEigen</name>
+        <qualifiedname>Marmot::Materials::HughesWingetWrapper::fromEigen</qualifiedname>
+        <param>
+          <type>const Eigen::Matrix3d &amp;</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+<para>Convert an Eigen 3x3 matrix into a Fastor tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="250" column="60" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="250" bodyend="255"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1af7456ca9d679077a167cdb26ecb7a9db" prot="protected" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>Eigen::Matrix3d</type>
+        <definition>static Eigen::Matrix3d Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;::toEigen</definition>
+        <argsstring>(const Marmot::Math::Tensors::FastorTensors::Tensor33d &amp;t)</argsstring>
+        <name>toEigen</name>
+        <qualifiedname>Marmot::Materials::HughesWingetWrapper::toEigen</qualifiedname>
+        <param>
+          <type>const Marmot::Math::Tensors::FastorTensors::Tensor33d &amp;</type>
+          <declname>t</declname>
+        </param>
+        <briefdescription>
+<para>Convert a Fastor 3x3 tensor into an Eigen matrix. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="258" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="258" bodyend="261"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1acfa9e669290a6dce3d181dd03a11ec12" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>Marmot::Math::Matrix6d</type>
+        <definition>Marmot::Math::Matrix6d Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;::computeStressSensitivity</definition>
+        <argsstring>(const Marmot::Math::Vector6d &amp;sigmaRotVoigt, const Marmot::Math::Vector6d &amp;sigmaNp1Voigt, const std::vector&lt; double &gt; &amp;baseStateOld, const Marmot::Math::Vector6d &amp;dStrain, const Marmot::Materials::MaterialHypoElastic::timeInfo &amp;timeInfo) const</argsstring>
+        <name>computeStressSensitivity</name>
+        <qualifiedname>Marmot::Materials::HughesWingetWrapper::computeStressSensitivity</qualifiedname>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>sigmaRotVoigt</declname>
+        </param>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>sigmaNp1Voigt</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; double &gt; &amp;</type>
+          <declname>baseStateOld</declname>
+        </param>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>dStrain</declname>
+        </param>
+        <param>
+          <type>const Marmot::Materials::MaterialHypoElastic::timeInfo &amp;</type>
+          <declname>timeInfo</declname>
+        </param>
+        <briefdescription>
+<para>Recover  <formula id="65">$ \boldsymbol{S} = \partial\boldsymbol{\sigma}^{(n+1)} /
+       \partial\boldsymbol{\sigma}_{\text{rot}} $</formula> by forward differences. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">sigmaRotVoigt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Rotated stress that was handed to the wrapped material. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">sigmaNp1Voigt</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Unperturbed updated stress returned by the wrapped material. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">baseStateOld</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Wrapped material state <emphasis>before</emphasis> the unperturbed evaluation. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dStrain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Strain increment handed to the wrapped material. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeInfo</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Time information handed to the wrapped material. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The sensitivity in Voigt form, with its three shear <bold>columns</bold> halved so that the result may be contracted as a full fourth-order tensor without double counting the off-diagonal stress components. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="276" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="276" bodyend="311"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a478178de3d2d038cb27c1bde0de03910" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;::computeStressCore</definition>
+        <argsstring>(ConstitutiveResponse&lt; 3 &gt; &amp;response, AlgorithmicModuli&lt; 3 &gt; &amp;tangents, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement, bool computeTangent) const</argsstring>
+        <name>computeStressCore</name>
+        <qualifiedname>Marmot::Materials::HughesWingetWrapper::computeStressCore</qualifiedname>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_algorithmic_moduli" kindref="compound">AlgorithmicModuli</ref>&lt; 3 &gt; &amp;</type>
+          <declname>tangents</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_deformation" kindref="compound">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_time_increment" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>computeTangent</declname>
+        </param>
+        <briefdescription>
+<para>The Hughes-Winget update proper, optionally including the analytic algorithmic tangent. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="inout">response</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Constitutive response. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">tangents</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Algorithmic moduli; only written when <computeroutput>computeTangent</computeroutput> is true. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">deformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current deformation gradient. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current (pseudo-)time and (pseudo-)time increment. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">computeTangent</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Whether the analytic tangent is to be evaluated. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="321" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="321" bodyend="440"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a1951406512092a967b11806d7a8d92ac" prot="protected" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;::computeNumericalTangent</definition>
+        <argsstring>(const ConstitutiveResponse&lt; 3 &gt; &amp;response, AlgorithmicModuli&lt; 3 &gt; &amp;tangents, const Deformation&lt; 3 &gt; &amp;deformation, const TimeIncrement &amp;timeIncrement) const</argsstring>
+        <name>computeNumericalTangent</name>
+        <qualifiedname>Marmot::Materials::HughesWingetWrapper::computeNumericalTangent</qualifiedname>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse</ref>&lt; 3 &gt; &amp;</type>
+          <declname>response</declname>
+        </param>
+        <param>
+          <type><ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_algorithmic_moduli" kindref="compound">AlgorithmicModuli</ref>&lt; 3 &gt; &amp;</type>
+          <declname>tangents</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_deformation" kindref="compound">Deformation</ref>&lt; 3 &gt; &amp;</type>
+          <declname>deformation</declname>
+        </param>
+        <param>
+          <type>const <ref refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_time_increment" kindref="compound">TimeIncrement</ref> &amp;</type>
+          <declname>timeIncrement</declname>
+        </param>
+        <briefdescription>
+<para>Forward-difference the complete update with respect to the nine components of <formula id="66">$ F $</formula>. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Every evaluation starts from a pristine copy of the incoming state, and none of them is allowed to commit: the caller runs the unperturbed update afterwards.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">response</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Constitutive response, read for its state pointer only. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="out">tangents</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Algorithmic moduli. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">deformation</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current deformation gradient. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">timeIncrement</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Current (pseudo-)time and (pseudo-)time increment. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="453" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="453" bodyend="496"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Decorator presenting a small-strain (hypoelastic) material as a finite-strain material. </para>
+    </briefdescription>
+    <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>BaseMaterialType</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>A concrete class derived from Marmot::Materials::MaterialHypoElastic. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>tangentMode</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>How the algorithmic tangent is evaluated, see Marmot::Materials::HughesWingetTangent.</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+The wrapped material is driven by the objective strain increment of the Hughes-Winget algorithm, evaluated on the mid-step configuration,     <formula id="54">\[  \Delta\boldsymbol{l} = \left(\boldsymbol{F}^{(n+1)} - \boldsymbol{F}^{(n)}\right)
+                         \boldsymbol{F}_{\text{mid}}^{-1}, \qquad
+  \boldsymbol{F}_{\text{mid}} = \tfrac{1}{2}\left(\boldsymbol{F}^{(n)} + \boldsymbol{F}^{(n+1)}\right),
+\]</formula> split into its symmetric and skew parts <formula id="55">$ \Delta\boldsymbol{\varepsilon} $</formula> and <formula id="56">$ \Delta\boldsymbol{\Omega} $</formula>. The incremental rotation follows from the Cayley transform    <formula id="96">\[  \Delta\boldsymbol{R} = \left(\boldsymbol{I} - \tfrac{1}{2}\Delta\boldsymbol{\Omega}\right)^{-1}
+                         \left(\boldsymbol{I} + \tfrac{1}{2}\Delta\boldsymbol{\Omega}\right),
+\]</formula> which is orthogonal to machine precision. The stress carried over from the previous increment is rotated forward,  <formula id="97">$ \boldsymbol{\sigma}_{\text{rot}} = \Delta\boldsymbol{R}\,\boldsymbol{\sigma}^{(n)}
+\Delta\boldsymbol{R}^{T} $</formula>, the wrapped material is evaluated, and the resulting Cauchy stress is pushed to the Kirchhoff stress <formula id="98">$ \boldsymbol{\tau} = J\,\boldsymbol{\sigma}^{(n+1)} $</formula> expected by the finite-strain consumers.</para>
+<para><simplesect kind="note"><para><bold>Only the stress is rotated.</bold> Tensor-valued internal variables of the wrapped material (kinematic hardening back stresses, plastic strain tensors, anisotropic damage tensors) are passed through untouched and are therefore <emphasis>not</emphasis> objective under large incremental rotations. Models whose internal state is scalar or isotropic-invariant are unaffected.</para>
+</simplesect>
+<simplesect kind="note"><para>The characteristic element length is <bold>not</bold> derived from any geometry here. It must be assigned explicitly via <ref refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a2b6d91f95a9a5df4f43c134bf8022748" kindref="member">setCharacteristicElementLength</ref>; until then it is NaN, so a wrapped material that relies on it fails loudly instead of silently regularising incorrectly. </para>
+</simplesect>
+</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;</label>
+        <link refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot::Materials::MaterialFiniteStrain</label>
+        <link refid="class_marmot_1_1_materials_1_1_material_finite_strain"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>Marmot::Materials::HughesWingetWrapper&lt; BaseMaterialType, tangentMode &gt;</label>
+        <link refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>Marmot::Materials::MaterialFiniteStrain</label>
+        <link refid="class_marmot_1_1_materials_1_1_material_finite_strain"/>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="104" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="104" bodyend="497"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a1c431001f9637cd5ecadfe4dee924e59" prot="protected" virt="non-virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>baseMaterial</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a04d8628a9fd2cc5d7654a3a952d6d98f" prot="protected" virt="non-virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>baseMaterialSlot</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a1951406512092a967b11806d7a8d92ac" prot="protected" virt="non-virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>computeNumericalTangent</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a99c3482792aa78a09d730eef27da2e6f" prot="public" virt="virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>computePlaneStrain</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a5a4e6bf35af6720e3f3b2c2b530f1ff5" prot="public" virt="virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>computePlaneStrain</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a3bf3cf62925f7d455ec4c90174a45bd8" prot="public" virt="virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>computePlaneStrainExplicit</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a04ae82bf6b55b7406402e244056d5c0e" prot="public" virt="virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>computePlaneStrainExplicit</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a7b3edcf9103bce626425fbdfec9c019c" prot="public" virt="virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>computePlaneStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1afb9af3285d55f00fb3983a9111ad1b7a" prot="public" virt="virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>computePlaneStressExplicit</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a1f5a38cac1c30b07ac8ee5c14d12cef8" prot="public" virt="virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>computeStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1aa32851be167d4234e11182aeeb7a32e4" prot="public" virt="virtual" ambiguityscope="Marmot::Materials::MaterialFiniteStrain::"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>computeStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a478178de3d2d038cb27c1bde0de03910" prot="protected" virt="non-virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>computeStressCore</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a39a2f0828d634962474f5063169ca37d" prot="public" virt="virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>computeStressExplicit</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1acfa9e669290a6dce3d181dd03a11ec12" prot="protected" virt="non-virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>computeStressSensitivity</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a7834e853be57f624c0f38967c85503e8" prot="protected" virt="non-virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>deformationGradientSlot</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a1a44e61c30c6a18bf204a0375305ddfc" prot="public" virt="non-virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>findEigenDeformationForEigenStress</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1ab4fea4e4b068462c8beaf891c538ba7b" prot="protected" virt="non-virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>fromEigen</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a3f28011f30a855bde0a7e589cc496678" prot="public" virt="virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>getDensity</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a85661aaa97a64688d360ac90b3042b4a" prot="public" virt="virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>getMaximumWaveSpeed</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a7ad41a3c35aead0da007341ff2152ef4" prot="public" virt="non-virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>getNumberOfRequiredStateVars</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a418c29a12d2818cb156382e5b32c02b3" prot="public" virt="virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>getStateView</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a5e42a8e1a1dd0be26d00901aa0825d96" prot="public" virt="non-virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>HughesWingetWrapper</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a0dd9a4032f02422fbde15ecf100b0ac1" prot="public" virt="non-virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>initializeStateLayout</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1ab57e2464e27eed7ad1ddae6441ee6e07" prot="public" virt="virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>initializeYourself</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a498833e4f8ad9e29a09f34f1a2a53491" prot="public" virt="non-virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>MaterialFiniteStrain</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a635f47030436563d4f79acef59a6aeef" prot="public" virt="non-virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>materialNumber</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a41f788bb3c393b08b579f708e4a6a187" prot="protected" virt="non-virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>materialProperties</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a8db69ec3edfc5f28c6cce88da5224eb7" prot="protected" virt="non-virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>nMaterialProperties</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a2b6d91f95a9a5df4f43c134bf8022748" prot="public" virt="virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>setCharacteristicElementLength</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a9923b35e9bef5a429caadca4c3d3d74a" prot="public" virt="non-virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>stateLayout</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a9beeb9262492c82bfd2b53697cf64551" prot="protected" virt="non-virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>stressSlot</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1af7456ca9d679077a167cdb26ecb7a9db" prot="protected" virt="non-virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>toEigen</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a8d9516a7ca350e8321c7f5a3044f4bf7" prot="public" virt="virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>~HughesWingetWrapper</name></member>
+      <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a5fb9244be5f3982e58414b96667973f3" prot="public" virt="virtual"><scope>Marmot::Materials::HughesWingetWrapper</scope><name>~MaterialFiniteStrain</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

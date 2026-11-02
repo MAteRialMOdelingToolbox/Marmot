@@ -1,22 +1,489 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
   <compounddef id="namespace_marmot_1_1_math" kind="namespace" language="C++">
     <compoundname>Marmot::Math</compoundname>
+    <innerclass refid="class_marmot_1_1_math_1_1_newton_convergence_checker" prot="public">Marmot::Math::NewtonConvergenceChecker</innerclass>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_constants">Marmot::Math::Constants</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_differentiation">Marmot::Math::Differentiation</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_integration">Marmot::Math::Integration</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_tensors">Marmot::Math::Tensors</innernamespace>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a1ec50536507c169ba7ee4223ede5819d" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 6, 6 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 6, 6 &gt; Marmot::Math::Matrix6d</definition>
+        <argsstring></argsstring>
+        <name>Matrix6d</name>
+        <qualifiedname>Marmot::Math::Matrix6d</qualifiedname>
+        <briefdescription>
+<para>6×6 double matrix (Voigt tangent) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="45" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1aa0da05b8a4e17d7ea6ae46af8a99309b" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 6, 9 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 6, 9 &gt; Marmot::Math::Matrix69d</definition>
+        <argsstring></argsstring>
+        <name>Matrix69d</name>
+        <qualifiedname>Marmot::Math::Matrix69d</qualifiedname>
+        <briefdescription>
+<para>6×9 double matrix </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="46" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1ae5c31057badd1a4c8f935f2bdddc6f97" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 9, 9 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 9, 9 &gt; Marmot::Math::Matrix99d</definition>
+        <argsstring></argsstring>
+        <name>Matrix99d</name>
+        <qualifiedname>Marmot::Math::Matrix99d</qualifiedname>
+        <briefdescription>
+<para>9×9 double matrix </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="47" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a58f93bad204fbdb327edf2293130b1a8" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 3, 4 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 3, 4 &gt; Marmot::Math::Matrix34d</definition>
+        <argsstring></argsstring>
+        <name>Matrix34d</name>
+        <qualifiedname>Marmot::Math::Matrix34d</qualifiedname>
+        <briefdescription>
+<para>3×4 double matrix </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="48" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1aa954e2846f191ba50fb2a3bb4a398a4c" prot="public" static="no">
+        <type>Eigen::Map&lt; <ref refid="_marmot_typedefs_8h_1a1ec50536507c169ba7ee4223ede5819d" kindref="member">Matrix6d</ref> &gt;</type>
+        <definition>typedef Eigen::Map&lt; Matrix6d &gt; Marmot::Math::mMatrix6d</definition>
+        <argsstring></argsstring>
+        <name>mMatrix6d</name>
+        <qualifiedname>Marmot::Math::mMatrix6d</qualifiedname>
+        <briefdescription>
+<para>Non-owning map over a <ref refid="_marmot_typedefs_8h_1a1ec50536507c169ba7ee4223ede5819d" kindref="member">Matrix6d</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="49" column="29" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a182d047cb088cfa1dfa13ea27785622d" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 3, 3 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 3, 3 &gt; Marmot::Math::Matrix3d</definition>
+        <argsstring></argsstring>
+        <name>Matrix3d</name>
+        <qualifiedname>Marmot::Math::Matrix3d</qualifiedname>
+        <briefdescription>
+<para>3×3 double matrix </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="50" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a2731c86d77af9209053b95240e89aec4" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 3, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 3, 1 &gt; Marmot::Math::Vector3d</definition>
+        <argsstring></argsstring>
+        <name>Vector3d</name>
+        <qualifiedname>Marmot::Math::Vector3d</qualifiedname>
+        <briefdescription>
+<para>3-component double column vector </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="52" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a25301c27923b9a826866690d4e2dba31" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 4, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 4, 1 &gt; Marmot::Math::Vector4d</definition>
+        <argsstring></argsstring>
+        <name>Vector4d</name>
+        <qualifiedname>Marmot::Math::Vector4d</qualifiedname>
+        <briefdescription>
+<para>4-component double column vector </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="53" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a1441866a876b9eb42533ef19f5075ce1" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 6, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 6, 1 &gt; Marmot::Math::Vector6d</definition>
+        <argsstring></argsstring>
+        <name>Vector6d</name>
+        <qualifiedname>Marmot::Math::Vector6d</qualifiedname>
+        <briefdescription>
+<para>6-component double column vector (Voigt notation) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="54" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1abbab86d1810ed0047849bc4f78acbc61" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 7, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 7, 1 &gt; Marmot::Math::Vector7d</definition>
+        <argsstring></argsstring>
+        <name>Vector7d</name>
+        <qualifiedname>Marmot::Math::Vector7d</qualifiedname>
+        <briefdescription>
+<para>7-component double column vector </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="55" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1ae333fe9560ef6422fc12a1b97dbbe31f" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 8, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 8, 1 &gt; Marmot::Math::Vector8d</definition>
+        <argsstring></argsstring>
+        <name>Vector8d</name>
+        <qualifiedname>Marmot::Math::Vector8d</qualifiedname>
+        <briefdescription>
+<para>8-component double column vector </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="56" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1aa2500529a6cddabb9caf58e8b723aa26" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 9, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 9, 1 &gt; Marmot::Math::Vector9d</definition>
+        <argsstring></argsstring>
+        <name>Vector9d</name>
+        <qualifiedname>Marmot::Math::Vector9d</qualifiedname>
+        <briefdescription>
+<para>9-component double column vector </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="57" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1ae5ff5554bd2ed633eb88b2c971562571" prot="public" static="no">
+        <type>Eigen::Matrix&lt; int, 8, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; int, 8, 1 &gt; Marmot::Math::Vector8i</definition>
+        <argsstring></argsstring>
+        <name>Vector8i</name>
+        <qualifiedname>Marmot::Math::Vector8i</qualifiedname>
+        <briefdescription>
+<para>8-component integer column vector </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="58" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1af2556c8af3038393cd0aa4d1c0425ba8" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 1, 6 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 1, 6 &gt; Marmot::Math::RowVector6d</definition>
+        <argsstring></argsstring>
+        <name>RowVector6d</name>
+        <qualifiedname>Marmot::Math::RowVector6d</qualifiedname>
+        <briefdescription>
+<para>6-component double row vector </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="59" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1aafb0a0de59e2b95e30b6dce50115400d" prot="public" static="no">
+        <type>Eigen::Map&lt; <ref refid="_marmot_typedefs_8h_1a1441866a876b9eb42533ef19f5075ce1" kindref="member">Vector6d</ref> &gt;</type>
+        <definition>typedef Eigen::Map&lt; Vector6d &gt; Marmot::Math::mVector6d</definition>
+        <argsstring></argsstring>
+        <name>mVector6d</name>
+        <qualifiedname>Marmot::Math::mVector6d</qualifiedname>
+        <briefdescription>
+<para>Non-owning map over a <ref refid="_marmot_typedefs_8h_1a1441866a876b9eb42533ef19f5075ce1" kindref="member">Vector6d</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="60" column="29" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1afd664a8e540e422bb2b3ef46f4b97ab1" prot="public" static="no">
+        <type>Eigen::Map&lt; Eigen::VectorXd &gt;</type>
+        <definition>typedef Eigen::Map&lt; Eigen::VectorXd &gt; Marmot::Math::mVectorXd</definition>
+        <argsstring></argsstring>
+        <name>mVectorXd</name>
+        <qualifiedname>Marmot::Math::mVectorXd</qualifiedname>
+        <briefdescription>
+<para>Non-owning map over a dynamic double vector. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="61" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a00af37f17d63d977f349424567cce0ed" prot="public" static="no">
+        <type>Eigen::Map&lt; const <ref refid="_marmot_typedefs_8h_1a1441866a876b9eb42533ef19f5075ce1" kindref="member">Vector6d</ref> &gt;</type>
+        <definition>typedef Eigen::Map&lt; const Vector6d &gt; Marmot::Math::mConstVector6d</definition>
+        <argsstring></argsstring>
+        <name>mConstVector6d</name>
+        <qualifiedname>Marmot::Math::mConstVector6d</qualifiedname>
+        <briefdescription>
+<para>Non-owning const map over a <ref refid="_marmot_typedefs_8h_1a1441866a876b9eb42533ef19f5075ce1" kindref="member">Vector6d</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="62" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1afe958d47daca2cf19feabbc4ba0e6ccd" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 3, 6 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 3, 6 &gt; Marmot::Math::Matrix36d</definition>
+        <argsstring></argsstring>
+        <name>Matrix36d</name>
+        <qualifiedname>Marmot::Math::Matrix36d</qualifiedname>
+        <briefdescription>
+<para>3×6 double matrix </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="64" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1ad84ddba47d5e06d6b530648cefcd2625" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 3, 6 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 3, 6 &gt; Marmot::Math::Matrix36</definition>
+        <argsstring></argsstring>
+        <name>Matrix36</name>
+        <qualifiedname>Marmot::Math::Matrix36</qualifiedname>
+        <briefdescription>
+<para>3×6 double matrix (alias for <ref refid="_marmot_typedefs_8h_1afe958d47daca2cf19feabbc4ba0e6ccd" kindref="member">Matrix36d</ref>) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="65" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a368c50368448d4c2da1955e006e7ed1f" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 6, 3 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 6, 3 &gt; Marmot::Math::Matrix63d</definition>
+        <argsstring></argsstring>
+        <name>Matrix63d</name>
+        <qualifiedname>Marmot::Math::Matrix63d</qualifiedname>
+        <briefdescription>
+<para>6×3 double matrix </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="66" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a24c36a13826ab818dc0649e9e73534cc" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 9, 3 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 9, 3 &gt; Marmot::Math::Matrix93d</definition>
+        <argsstring></argsstring>
+        <name>Matrix93d</name>
+        <qualifiedname>Marmot::Math::Matrix93d</qualifiedname>
+        <briefdescription>
+<para>9×3 double matrix </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="67" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a6a53e934721f486b3329c228cf4cf0c4" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 3, 9 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 3, 9 &gt; Marmot::Math::Matrix39d</definition>
+        <argsstring></argsstring>
+        <name>Matrix39d</name>
+        <qualifiedname>Marmot::Math::Matrix39d</qualifiedname>
+        <briefdescription>
+<para>3×9 double matrix </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="68" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a80e67af3b5ac335a569ab08a83ec099d" prot="public" static="no">
+        <type>Eigen::Matrix&lt; double, 9, 9 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; double, 9, 9 &gt; Marmot::Math::Matrix9d</definition>
+        <argsstring></argsstring>
+        <name>Matrix9d</name>
+        <qualifiedname>Marmot::Math::Matrix9d</qualifiedname>
+        <briefdescription>
+<para>9×9 double matrix (alias for <ref refid="_marmot_typedefs_8h_1ae5c31057badd1a4c8f935f2bdddc6f97" kindref="member">Matrix99d</ref>) </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="69" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1ad5fb4f549c19fe266e14a6392117826f" prot="public" static="no">
+        <type>std::complex&lt; double &gt;</type>
+        <definition>typedef std::complex&lt; double &gt; Marmot::Math::complexDouble</definition>
+        <argsstring></argsstring>
+        <name>complexDouble</name>
+        <qualifiedname>Marmot::Math::complexDouble</qualifiedname>
+        <briefdescription>
+<para>Standard complex double scalar. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="72" column="38" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1ae835c08a159859cfd2c950e12c37841b" prot="public" static="no">
+        <type>Eigen::Matrix&lt; <ref refid="_marmot_typedefs_8h_1ad5fb4f549c19fe266e14a6392117826f" kindref="member">complexDouble</ref>, 6, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; complexDouble, 6, 1 &gt; Marmot::Math::Vector6cd</definition>
+        <argsstring></argsstring>
+        <name>Vector6cd</name>
+        <qualifiedname>Marmot::Math::Vector6cd</qualifiedname>
+        <briefdescription>
+<para>6-component complex double column vector </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="73" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a61ec7e93ce0dcd9b3052b60c40b7e62d" prot="public" static="no">
+        <type>Eigen::Matrix&lt; autodiff::dual, 6, 1 &gt;</type>
+        <definition>typedef Eigen::Matrix&lt; autodiff::dual, 6, 1 &gt; Marmot::Math::Vector6dual</definition>
+        <argsstring></argsstring>
+        <name>Vector6dual</name>
+        <qualifiedname>Marmot::Math::Vector6dual</qualifiedname>
+        <briefdescription>
+<para>6-component autodiff::dual column vector </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="76" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a0a0c0d5d40b344bd0624d89f59567e5e" prot="public" static="no">
+        <type>Eigen::Map&lt; <ref refid="_marmot_typedefs_8h_1a61ec7e93ce0dcd9b3052b60c40b7e62d" kindref="member">Vector6dual</ref> &gt;</type>
+        <definition>typedef Eigen::Map&lt; Vector6dual &gt; Marmot::Math::mVector6dual</definition>
+        <argsstring></argsstring>
+        <name>mVector6dual</name>
+        <qualifiedname>Marmot::Math::mVector6dual</qualifiedname>
+        <briefdescription>
+<para>Non-owning map over a <ref refid="_marmot_typedefs_8h_1a61ec7e93ce0dcd9b3052b60c40b7e62d" kindref="member">Vector6dual</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="77" column="34" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1ac10c6e6fcb9f24a6e745411a0442e881" prot="public" static="no">
+        <type>Eigen::Map&lt; const <ref refid="_marmot_typedefs_8h_1a61ec7e93ce0dcd9b3052b60c40b7e62d" kindref="member">Vector6dual</ref> &gt;</type>
+        <definition>typedef Eigen::Map&lt; const Vector6dual &gt; Marmot::Math::mVector6dualConst</definition>
+        <argsstring></argsstring>
+        <name>mVector6dualConst</name>
+        <qualifiedname>Marmot::Math::mVector6dualConst</qualifiedname>
+        <briefdescription>
+<para>Non-owning const map over a <ref refid="_marmot_typedefs_8h_1a61ec7e93ce0dcd9b3052b60c40b7e62d" kindref="member">Vector6dual</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="78" column="28" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="78" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1ae192ab789425faed28e987da5b0387d5" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; T, 6, 1 &gt;</type>
+        <definition>using Marmot::Math::Vector6t = Eigen::Matrix&lt; T, 6, 1 &gt;</definition>
+        <argsstring></argsstring>
+        <name>Vector6t</name>
+        <qualifiedname>Marmot::Math::Vector6t</qualifiedname>
+        <briefdescription>
+<para>6-component column vector with scalar type <computeroutput>T</computeroutput> </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="82" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="82" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_typedefs_8h_1a9668f248233504e273c6c369a01dd073" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>Eigen::Matrix&lt; T, -1, 1 &gt;</type>
+        <definition>using Marmot::Math::VectorXt = Eigen::Matrix&lt; T, -1, 1 &gt;</definition>
+        <argsstring></argsstring>
+        <name>VectorXt</name>
+        <qualifiedname>Marmot::Math::VectorXt</qualifiedname>
+        <briefdescription>
+<para>Dynamic column vector with scalar type <computeroutput>T</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" line="85" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotTypedefs.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
     <sectiondef kind="func">
-      <memberdef kind="function" id="_marmot_eigen_systems_8h_1afd25eadadd905d54b987ea03b923d11d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_eigen_systems_8h_1a6875b17c5951047ce4a1196823a15083" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>typename T</type>
             <defval>double</defval>
           </param>
         </templateparamlist>
-        <type>std::pair&lt; FastorStandardTensors::Tensor3t&lt; T &gt;, FastorStandardTensors::Tensor33t&lt; T &gt; &gt;</type>
-        <definition>std::pair&lt; FastorStandardTensors::Tensor3t&lt; T &gt;, FastorStandardTensors::Tensor33t&lt; T &gt; &gt; Marmot::Math::computeEigenSystemJacobi</definition>
-        <argsstring>(const FastorStandardTensors::Tensor33t&lt; T &gt; &amp;A_in)</argsstring>
+        <type>std::pair&lt; Marmot::Math::Tensors::FastorTensors::Tensor3t&lt; T &gt;, Marmot::Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &gt;</type>
+        <definition>std::pair&lt; Marmot::Math::Tensors::FastorTensors::Tensor3t&lt; T &gt;, Marmot::Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &gt; Marmot::Math::computeEigenSystemJacobi</definition>
+        <argsstring>(const Marmot::Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;A_in)</argsstring>
         <name>computeEigenSystemJacobi</name>
         <qualifiedname>Marmot::Math::computeEigenSystemJacobi</qualifiedname>
         <param>
-          <type>const FastorStandardTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <type>const Marmot::Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;</type>
           <declname>A_in</declname>
         </param>
         <briefdescription>
@@ -25,22 +492,22 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotEigenSystems.h" line="37" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotEigenSystems.h" bodystart="37" bodyend="146"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotEigenSystems.h" line="36" column="13" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotEigenSystems.h" bodystart="36" bodyend="145"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_eigen_systems_8h_1ae93db1c7551070b12b45fc18c94539a3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+      <memberdef kind="function" id="_marmot_eigen_systems_8h_1abc9ef5f4db091f0ac8fd68222ab51b72" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
           <param>
             <type>typename T</type>
             <defval>double</defval>
           </param>
         </templateparamlist>
-        <type>std::pair&lt; FastorStandardTensors::Tensor3t&lt; T &gt;, FastorStandardTensors::Tensor33t&lt; T &gt; &gt;</type>
-        <definition>std::pair&lt; FastorStandardTensors::Tensor3t&lt; T &gt;, FastorStandardTensors::Tensor33t&lt; T &gt; &gt; Marmot::Math::computeEigenSystemWithCardano</definition>
-        <argsstring>(const FastorStandardTensors::Tensor33t&lt; T &gt; &amp;A)</argsstring>
+        <type>std::pair&lt; Marmot::Math::Tensors::FastorTensors::Tensor3t&lt; T &gt;, Marmot::Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &gt;</type>
+        <definition>std::pair&lt; Marmot::Math::Tensors::FastorTensors::Tensor3t&lt; T &gt;, Marmot::Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &gt; Marmot::Math::computeEigenSystemWithCardano</definition>
+        <argsstring>(const Marmot::Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;A)</argsstring>
         <name>computeEigenSystemWithCardano</name>
         <qualifiedname>Marmot::Math::computeEigenSystemWithCardano</qualifiedname>
         <param>
-          <type>const FastorStandardTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <type>const Marmot::Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;</type>
           <declname>A</declname>
         </param>
         <briefdescription>
@@ -49,7 +516,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotEigenSystems.h" line="149" column="15" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotEigenSystems.h" bodystart="149" bodyend="341"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotEigenSystems.h" line="148" column="13" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotEigenSystems.h" bodystart="148" bodyend="342"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1ad3a65166e9b849eb54ccef942368b6e6" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -85,7 +552,7 @@ Checks if value x is NaN (not a number). This is done by checking if x is unequa
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="45" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="45" bodyend="48"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="44" column="8" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="44" bodyend="47"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1aa14a646adfd201e379c86f6bd85d942a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -164,7 +631,7 @@ Performs linear interpolation to find the value at point x given two known point
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="61" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="61" declcolumn="12"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="60" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="60" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a20088570076b71e5f4f0bb08fa7ba44d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -195,7 +662,7 @@ If x is larger than the maximum limit of double precision floating point numbers
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="70" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="70" declcolumn="12"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="69" column="10" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="69" declcolumn="10"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1aaafa5eacbbe8796046e2c9bf0202f510" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>unsigned long</type>
@@ -226,7 +693,7 @@ If x is larger than the maximum limit of double precision floating point numbers
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="77" column="19" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="77" declcolumn="19"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="76" column="17" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="76" declcolumn="17"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1ae070a2cdcdf4ae5cb71899ba67edc62e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -257,7 +724,7 @@ This function extracts the exponent to the power of ten from a given floating po
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="87" column="9" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="87" declcolumn="9"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="86" column="7" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="86" declcolumn="7"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a5a688bedd924217d02e9c1773907ee82" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -288,7 +755,7 @@ Converts angle alpha given in radiant to degree. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="95" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="95" bodyend="98"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="94" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="94" bodyend="97"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1aabc6dcb6af42136caacd1b79a1750b54" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -319,7 +786,7 @@ Converts angle alpha given in degree to radiant. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="106" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="106" bodyend="109"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="105" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="105" bodyend="108"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a6df59eeb030f379b61b830c7bd115fe7" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>double</type>
@@ -346,7 +813,7 @@ Converts angle alpha given in degree to radiant. </para>
 </parameterlist>
 <simplesect kind="return"><para>Positive part of scalar</para>
 </simplesect>
-The Macaulay function, also as positive part operator, is defined as:       <formula id="40">\[\langle x \rangle =
+The Macaulay function, also as positive part operator, is defined as:       <formula id="30">\[\langle x \rangle =
 \begin{cases}
 x, &amp; x \geq 0 \\
 0, &amp; x &lt; 0
@@ -355,7 +822,7 @@ x, &amp; x \geq 0 \\
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="124" column="22" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="124" bodyend="127"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="123" column="20" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="123" bodyend="126"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a057c092d86779e08ca193ccc04f41901" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -382,7 +849,7 @@ x, &amp; x \geq 0 \\
 </parameterlist>
 <simplesect kind="return"><para>1 if scalar &gt;= 0, 0 otherwise</para>
 </simplesect>
-The Heaviside step function is defined as:       <formula id="41">\[H(x) =
+The Heaviside step function is defined as:       <formula id="31">\[H(x) =
 \begin{cases}
 1, &amp; x \geq 0 \\
 0, &amp; x &lt; 0
@@ -391,7 +858,7 @@ The Heaviside step function is defined as:       <formula id="41">\[H(x) =
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="142" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="142" bodyend="145"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="141" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="141" bodyend="144"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a986ba8aa6ef55e38d21228170220325b" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -418,7 +885,7 @@ The Heaviside step function is defined as:       <formula id="41">\[H(x) =
 </parameterlist>
 <simplesect kind="return"><para>1 if scalar &gt; 0, 0 otherwise</para>
 </simplesect>
-The Heaviside step function excluding zero is defined as:       <formula id="42">\[H(x) =
+The Heaviside step function excluding zero is defined as:       <formula id="32">\[H(x) =
 \begin{cases}
 1, &amp; x &gt; 0 \\
 0, &amp; x \leq 0
@@ -427,7 +894,7 @@ The Heaviside step function excluding zero is defined as:       <formula id="42"
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="160" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="160" bodyend="163"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="159" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="159" bodyend="162"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1aeab5c0a8ec2b02dccbcabcec543f2765" prot="public" static="no" constexpr="yes" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
         <templateparamlist>
@@ -459,7 +926,7 @@ The Heaviside step function excluding zero is defined as:       <formula id="42"
 </parameterlist>
 <simplesect kind="return"><para>1 if val &gt; 0, -1 if val &lt; 0, 0 if val == 0</para>
 </simplesect>
-The sign function is defined as:        <formula id="43">\[ \text{sign}(x) =
+The sign function is defined as:        <formula id="33">\[ \text{sign}(x) =
  \begin{cases}
  1, &amp; x &gt; 0 \\
  0, &amp; x = 0 \\
@@ -469,241 +936,7 @@ The sign function is defined as:        <formula id="43">\[ \text{sign}(x) =
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="180" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="180" bodyend="183"/>
-      </memberdef>
-      <memberdef kind="function" id="_marmot_math_8h_1a335a5f714ab10341744d8fea021e08dd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>double</type>
-        <definition>double Marmot::Math::makeReal</definition>
-        <argsstring>(const double &amp;value)</argsstring>
-        <name>makeReal</name>
-        <qualifiedname>Marmot::Math::makeReal</qualifiedname>
-        <param>
-          <type>const double &amp;</type>
-          <declname>value</declname>
-        </param>
-        <briefdescription>
-<para>Converts various scalar types to double precision floating point numbers. </para>
-        </briefdescription>
-        <detaileddescription>
-<para><parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername>value</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Input value of various numeric types </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<simplesect kind="return"><para>Converted value as double</para>
-</simplesect>
-This function converts input values of different numeric types, including:<itemizedlist>
-<listitem><para>double</para>
-</listitem><listitem><para>std::complex&lt;double&gt;</para>
-</listitem><listitem><para>autodiff::real</para>
-</listitem><listitem><para>autodiff::dual</para>
-</listitem><listitem><para>Eigen::Matrix with elements of any type convertible to double</para>
-</listitem></itemizedlist>
-</para>
-<para>The function is overloaded and templated to handle these different types appropriately. </para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="198" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="198" declcolumn="12"/>
-      </memberdef>
-      <memberdef kind="function" id="_marmot_math_8h_1addb82ef87d972fcdc7123c0896eee245" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>double</type>
-        <definition>double Marmot::Math::makeReal</definition>
-        <argsstring>(const std::complex&lt; double &gt; &amp;value)</argsstring>
-        <name>makeReal</name>
-        <qualifiedname>Marmot::Math::makeReal</qualifiedname>
-        <param>
-          <type>const std::complex&lt; double &gt; &amp;</type>
-          <declname>value</declname>
-        </param>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="199" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="199" declcolumn="12"/>
-      </memberdef>
-      <memberdef kind="function" id="_marmot_math_8h_1affe40f6c8efff9f4b45aa107d84f035a" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type>double</type>
-        <definition>double Marmot::Math::makeReal</definition>
-        <argsstring>(const autodiff::real &amp;value)</argsstring>
-        <name>makeReal</name>
-        <qualifiedname>Marmot::Math::makeReal</qualifiedname>
-        <param>
-          <type>const autodiff::real &amp;</type>
-          <declname>value</declname>
-        </param>
-        <briefdescription>
-        </briefdescription>
-        <detaileddescription>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="200" column="12" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="200" declcolumn="12"/>
-      </memberdef>
-      <memberdef kind="function" id="_marmot_math_8h_1a69172724abb6467891288c900d513c41" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <templateparamlist>
-          <param>
-            <type>typename T</type>
-          </param>
-          <param>
-            <type>typename G</type>
-          </param>
-        </templateparamlist>
-        <type>double</type>
-        <definition>double Marmot::Math::makeReal</definition>
-        <argsstring>(const autodiff::detail::Dual&lt; T, G &gt; &amp;number)</argsstring>
-        <name>makeReal</name>
-        <qualifiedname>Marmot::Math::makeReal</qualifiedname>
-        <param>
-          <type>const autodiff::detail::Dual&lt; T, G &gt; &amp;</type>
-          <declname>number</declname>
-        </param>
-        <briefdescription>
-<para>Converts autodiff::dual numbers to double precision floating point numbers. </para>
-        </briefdescription>
-        <detaileddescription>
-<para><parameterlist kind="templateparam"><parameteritem>
-<parameternamelist>
-<parametername>T</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Underlying type of the autodiff::dual number </para>
-</parameterdescription>
-</parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername>G</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Gradient type of the autodiff::dual number </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername>number</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>Input autodiff::dual number </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<simplesect kind="return"><para>Converted value as double</para>
-</simplesect>
-This function converts an autodiff::dual number to a double precision floating point number. It is templated to handle dual numbers with different underlying types. </para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="212" column="12" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="212" bodyend="215"/>
-      </memberdef>
-      <memberdef kind="function" id="_marmot_math_8h_1a92d6268751bba3290bce9671666ae6fc" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <templateparamlist>
-          <param>
-            <type>typename T</type>
-          </param>
-          <param>
-            <type>int...</type>
-            <declname>Rest</declname>
-            <defname>Rest</defname>
-          </param>
-        </templateparamlist>
-        <type>Eigen::Matrix&lt; double, Rest... &gt;</type>
-        <definition>Eigen::Matrix&lt; double, Rest... &gt; Marmot::Math::makeReal</definition>
-        <argsstring>(const Eigen::Matrix&lt; T, Rest... &gt; mat)</argsstring>
-        <name>makeReal</name>
-        <qualifiedname>Marmot::Math::makeReal</qualifiedname>
-        <param>
-          <type>const Eigen::Matrix&lt; T, Rest... &gt;</type>
-          <declname>mat</declname>
-        </param>
-        <briefdescription>
-<para>Extracts the real part of a arbitrary scalartype-valued Matrix. </para>
-        </briefdescription>
-        <detaileddescription>
-<para><parameterlist kind="templateparam"><parameteritem>
-<parameternamelist>
-<parametername>T</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>scalar type </para>
-</parameterdescription>
-</parameteritem>
-<parameteritem>
-<parameternamelist>
-<parametername>Rest...</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>parameter pack for additional matrix information, e.g, dimensions </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername>mat</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>T-valued matrix </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<simplesect kind="return"><para>double-valued matrix </para>
-</simplesect>
-</para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="224" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="224" bodyend="236"/>
-      </memberdef>
-      <memberdef kind="function" id="_marmot_math_8h_1ab39bca6f7dd1d9f60631cf267ec05847" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <templateparamlist>
-          <param>
-            <type>typename T</type>
-          </param>
-        </templateparamlist>
-        <type>Eigen::VectorXd</type>
-        <definition>Eigen::VectorXd Marmot::Math::makeReal</definition>
-        <argsstring>(Eigen::Vector&lt; T, Eigen::Dynamic &gt; in)</argsstring>
-        <name>makeReal</name>
-        <qualifiedname>Marmot::Math::makeReal</qualifiedname>
-        <param>
-          <type>Eigen::Vector&lt; T, Eigen::Dynamic &gt;</type>
-          <declname>in</declname>
-        </param>
-        <briefdescription>
-<para>Extracts the real part of a arbitrary scalartype-valued Vector. </para>
-        </briefdescription>
-        <detaileddescription>
-<para><parameterlist kind="templateparam"><parameteritem>
-<parameternamelist>
-<parametername>T</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>scalar type </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<parameterlist kind="param"><parameteritem>
-<parameternamelist>
-<parametername>in</parametername>
-</parameternamelist>
-<parameterdescription>
-<para>T-valued vector </para>
-</parameterdescription>
-</parameteritem>
-</parameterlist>
-<simplesect kind="return"><para>double-valued vector </para>
-</simplesect>
-</para>
-        </detaileddescription>
-        <inbodydescription>
-        </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="244" column="21" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="244" bodyend="253"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="179" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="179" bodyend="182"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a17783b288ece1a97c5a43490744c98c2" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -765,7 +998,7 @@ Applies the Macaulay function element-wise to the input matrix.</para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="267" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="267" bodyend="276"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="270" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="270" bodyend="279"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a459bb7440ffa3c6e0af2dc7069973663" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -841,11 +1074,11 @@ Applies the Macaulay function element-wise to the input matrix.</para>
 </parameterlist>
 <simplesect kind="return"><para>Updated value after time step</para>
 </simplesect>
-This function computes one single time step using the explicit Euler method: <formula id="44">\[ \boldsymbol{y}_{n+1} = \boldsymbol{y}_n + f(\boldsymbol{y}_n) * \Delta t \]</formula> where <formula id="45">$ \boldsymbol{y}_n $</formula> is the current value, <formula id="46">$ \Delta t $</formula> is the time step size, and <formula id="47">$ f(\boldsymbol{y}_n) $</formula> is the rate of change. </para>
+This function computes one single time step using the explicit Euler method: <formula id="34">\[ \boldsymbol{y}_{n+1} = \boldsymbol{y}_n + f(\boldsymbol{y}_n) * \Delta t \]</formula> where <formula id="35">$ \boldsymbol{y}_n $</formula> is the current value, <formula id="36">$ \Delta t $</formula> is the time step size, and <formula id="37">$ f(\boldsymbol{y}_n) $</formula> is the rate of change. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="292" column="11" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="292" bodyend="295"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="295" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="295" bodyend="298"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1aa70f058118d023378595a10df1872291" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -923,14 +1156,14 @@ This function computes one single time step using the explicit Euler method: <fo
 </parameterlist>
 <simplesect kind="return"><para>Updated value after time step</para>
 </simplesect>
-This function computes one single time step using the implicit Euler method for a linear vector-valued rate equation: <formula id="48">\[ \boldsymbol{y}_{n+1} = \boldsymbol{y}_n + f(\boldsymbol{y}_{n+1}) \Delta t \]</formula> where  <formula id="49">$\boldsymbol{y}_n $</formula> is the current value, <formula id="46">$ \Delta t $</formula> is the time step size, and <formula id="50">$ f(\boldsymbol{y}) $</formula> is the linear rate of change evaluated at the next time step.</para>
+This function computes one single time step using the implicit Euler method for a linear vector-valued rate equation: <formula id="38">\[ \boldsymbol{y}_{n+1} = \boldsymbol{y}_n + f(\boldsymbol{y}_{n+1}) \Delta t \]</formula> where  <formula id="39">$\boldsymbol{y}_n $</formula> is the current value, <formula id="36">$ \Delta t $</formula> is the time step size, and <formula id="40">$ f(\boldsymbol{y}) $</formula> is the linear rate of change evaluated at the next time step.</para>
 <para><xrefsect id="todo_1_todo000002"><xreftitle>Todo</xreftitle><xrefdescription><para>: Is this really semi-implicit? It looks like a fully implicit Euler step for linear systems. </para>
 <para>: Use external central difference function?</para>
 </xrefdescription></xrefsect></para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="316" column="19" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="316" bodyend="346"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="319" column="17" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="319" bodyend="349"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1a50eb2b47c8a8215c8edd2b67a3939183" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -1031,13 +1264,13 @@ This function computes one single time step using the implicit Euler method for 
 </parameterlist>
 <simplesect kind="return"><para>Updated value after time step</para>
 </simplesect>
-This function computes one single time step using the explicit Euler method with Richardson extrapolation for error estimation:   <formula id="51">\[ \boldsymbol{y}_{n+1} = 2 \left( \boldsymbol{y}_n + f\left(\boldsymbol{y}_n
+This function computes one single time step using the explicit Euler method with Richardson extrapolation for error estimation:   <formula id="41">\[ \boldsymbol{y}_{n+1} = 2 \left( \boldsymbol{y}_n + f\left(\boldsymbol{y}_n
 + \frac{f(\boldsymbol{y}_n) \Delta t}{2}\right) \frac{\Delta t}{2} \right) - \left( \boldsymbol{y}_n +
-f(\boldsymbol{y}_n) \Delta t \right) \]</formula> where <formula id="45">$ \boldsymbol{y}_n $</formula> is the current value, <formula id="46">$ \Delta t $</formula> is the time step size, and <formula id="50">$ f(\boldsymbol{y}) $</formula> is the rate of change. </para>
+f(\boldsymbol{y}_n) \Delta t \right) \]</formula> where <formula id="35">$ \boldsymbol{y}_n $</formula> is the current value, <formula id="36">$ \Delta t $</formula> is the time step size, and <formula id="40">$ f(\boldsymbol{y}) $</formula> is the rate of change. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="367" column="11" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="367" bodyend="375"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="370" column="9" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="370" bodyend="378"/>
       </memberdef>
       <memberdef kind="function" id="_marmot_math_8h_1ae0bc2ac83263a20489572132640c80e5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <templateparamlist>
@@ -1152,27 +1385,27 @@ f(\boldsymbol{y}_n) \Delta t \right) \]</formula> where <formula id="45">$ \bold
 </parameterlist>
 <simplesect kind="return"><para>Tuple containing the updated value after time step and the new time step size</para>
 </simplesect>
-This function computes one single time step using the explicit Euler method with Richardson extrapolation for error estimation and adaptive time stepping:    <formula id="52">\[ \boldsymbol{y}_{n+1} = 2 \left( \boldsymbol{y}_n +
+This function computes one single time step using the explicit Euler method with Richardson extrapolation for error estimation and adaptive time stepping:    <formula id="42">\[ \boldsymbol{y}_{n+1} = 2 \left( \boldsymbol{y}_n +
 f\left(\boldsymbol{y}_n
 + \frac{f(\boldsymbol{y}_n) \Delta t}{2}\right) \frac{\Delta t}{2} \right) - \left( \boldsymbol{y}_n +
-f(\boldsymbol{y}_n) \Delta t \right) \]</formula> where <formula id="45">$ \boldsymbol{y}_n $</formula> is the current value, <formula id="46">$ \Delta t $</formula> is the current time step size, and <formula id="50">$ f(\boldsymbol{y}) $</formula> is the rate of change.</para>
-<para>The function also estimates the error of the time step and adjusts the time step size for the next iteration based on the desired tolerance <computeroutput>TOL</computeroutput>. The new time step size is computed as:  <formula id="53">\[ \Delta t_{\text{new}} =
-\Delta t \cdot \min\left(2, \max\left(0.2, 0.9 \sqrt{\frac{TOL}{EST}}\right)\right) \]</formula> where <formula id="54">$ EST $</formula> is the estimated error.</para>
+f(\boldsymbol{y}_n) \Delta t \right) \]</formula> where <formula id="35">$ \boldsymbol{y}_n $</formula> is the current value, <formula id="36">$ \Delta t $</formula> is the current time step size, and <formula id="40">$ f(\boldsymbol{y}) $</formula> is the rate of change.</para>
+<para>The function also estimates the error of the time step and adjusts the time step size for the next iteration based on the desired tolerance <computeroutput>TOL</computeroutput>. The new time step size is computed as:  <formula id="43">\[ \Delta t_{\text{new}} =
+\Delta t \cdot \min\left(2, \max\left(0.2, 0.9 \sqrt{\frac{TOL}{EST}}\right)\right) \]</formula> where <formula id="44">$ EST $</formula> is the estimated error.</para>
 <para><xrefsect id="todo_1_todo000003"><xreftitle>Todo</xreftitle><xrefdescription><para>: reuse explicitEulerRichardson function? </para>
 </xrefdescription></xrefsect></para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="405" column="16" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="405" bodyend="436"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="408" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" bodystart="408" bodyend="439"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_math_8h_1ad3ad1d152a8910ba18d583323a662a9c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type><ref refid="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref></type>
-        <definition>Matrix3d Marmot::Math::directionCosines</definition>
-        <argsstring>(const Matrix3d &amp;transformedCoordinateSystem)</argsstring>
+      <memberdef kind="function" id="_marmot_math_8h_1a456780870f78a31af50f759172ce8d2b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="_marmot_typedefs_8h_1a182d047cb088cfa1dfa13ea27785622d" kindref="member">Marmot::Math::Matrix3d</ref></type>
+        <definition>Marmot::Math::Matrix3d Marmot::Math::directionCosines</definition>
+        <argsstring>(const Marmot::Math::Matrix3d &amp;transformedCoordinateSystem)</argsstring>
         <name>directionCosines</name>
         <qualifiedname>Marmot::Math::directionCosines</qualifiedname>
         <param>
-          <type>const <ref refid="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref> &amp;</type>
+          <type>const <ref refid="_marmot_typedefs_8h_1a182d047cb088cfa1dfa13ea27785622d" kindref="member">Marmot::Math::Matrix3d</ref> &amp;</type>
           <declname>transformedCoordinateSystem</declname>
         </param>
         <briefdescription>
@@ -1194,20 +1427,20 @@ The direction cosines are computed as the dot products between the basis vectors
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="446" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="446" declcolumn="14"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="449" column="26" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="449" declcolumn="26"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_math_8h_1af414d1d24c08314c9d16d36bc5a33ed4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type><ref refid="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref></type>
-        <definition>Matrix3d Marmot::Math::orthonormalCoordinateSystem</definition>
-        <argsstring>(Vector3d &amp;normalVector)</argsstring>
+      <memberdef kind="function" id="_marmot_math_8h_1a2411fcd98637f5b6ae0cfed2cd3ee71c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="_marmot_typedefs_8h_1a182d047cb088cfa1dfa13ea27785622d" kindref="member">Marmot::Math::Matrix3d</ref></type>
+        <definition>Marmot::Math::Matrix3d Marmot::Math::orthonormalCoordinateSystem</definition>
+        <argsstring>(Marmot::Math::Vector3d &amp;normalVector)</argsstring>
         <name>orthonormalCoordinateSystem</name>
         <qualifiedname>Marmot::Math::orthonormalCoordinateSystem</qualifiedname>
         <param>
-          <type><ref refid="_marmot_typedefs_8h_1a0ca8adc515d73860f9edd2004e064f97" kindref="member">Vector3d</ref> &amp;</type>
+          <type><ref refid="_marmot_typedefs_8h_1a2731c86d77af9209053b95240e89aec4" kindref="member">Marmot::Math::Vector3d</ref> &amp;</type>
           <declname>normalVector</declname>
         </param>
         <briefdescription>
-<para>Constructs a orthonormal coordinate system with a given normal vector as <formula id="55">$x_1$</formula>-axis. </para>
+<para>Constructs a orthonormal coordinate system with a given normal vector as <formula id="45">$x_1$</formula>-axis. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -1215,39 +1448,39 @@ The direction cosines are computed as the dot products between the basis vectors
 <parametername>normalVector</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Input normal vector, which will be normalized and used as <formula id="55">$x_1$</formula>-axis. </para>
+<para>Input normal vector, which will be normalized and used as <formula id="45">$x_1$</formula>-axis. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
 <simplesect kind="return"><para>Orthonormal coordinate system as a 3x3 matrix.</para>
 </simplesect>
 The orthonormal coordinate system is constructed such that:<itemizedlist>
-<listitem><para>The first column corresponds to the normalized input normal vector ( <formula id="55">$x_1$</formula>-axis).</para>
-</listitem><listitem><para>The second column is a unit vector orthogonal to the first ( <formula id="56">$x_2$</formula>-axis).</para>
-</listitem><listitem><para>The third column is the cross product of the first two columns ( <formula id="57">$x_3$</formula>-axis).</para>
+<listitem><para>The first column corresponds to the normalized input normal vector ( <formula id="45">$x_1$</formula>-axis).</para>
+</listitem><listitem><para>The second column is a unit vector orthogonal to the first ( <formula id="46">$x_2$</formula>-axis).</para>
+</listitem><listitem><para>The third column is the cross product of the first two columns ( <formula id="47">$x_3$</formula>-axis).</para>
 </listitem></itemizedlist>
 </para>
-<para><simplesect kind="note"><para>Do not use this function if you want to control the direction of the axes in the plane orthogonal to the normal vector. </para>
+<para><simplesect kind="note"><para>Do not use this function if you want to control the direction of the axes in the plane orthogonal to the normal vector.</para>
 </simplesect>
 <xrefsect id="todo_1_todo000004"><xreftitle>Todo</xreftitle><xrefdescription><para>: Maybe remove this function completely to avoid mistakes? </para>
 </xrefdescription></xrefsect></para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="462" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="462" declcolumn="14"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="465" column="26" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="465" declcolumn="26"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_math_8h_1ac4c04c61c51f99273d455957b84675e3" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type><ref refid="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref></type>
-        <definition>Matrix3d Marmot::Math::orthonormalCoordinateSystem</definition>
-        <argsstring>(const Vector3d &amp;n1, const Vector3d &amp;n2)</argsstring>
+      <memberdef kind="function" id="_marmot_math_8h_1a963f6ddfedacd4c9afb3a13bcd1e705b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="_marmot_typedefs_8h_1a182d047cb088cfa1dfa13ea27785622d" kindref="member">Marmot::Math::Matrix3d</ref></type>
+        <definition>Marmot::Math::Matrix3d Marmot::Math::orthonormalCoordinateSystem</definition>
+        <argsstring>(const Marmot::Math::Vector3d &amp;n1, const Marmot::Math::Vector3d &amp;n2)</argsstring>
         <name>orthonormalCoordinateSystem</name>
         <qualifiedname>Marmot::Math::orthonormalCoordinateSystem</qualifiedname>
         <param>
-          <type>const <ref refid="_marmot_typedefs_8h_1a0ca8adc515d73860f9edd2004e064f97" kindref="member">Vector3d</ref> &amp;</type>
+          <type>const <ref refid="_marmot_typedefs_8h_1a2731c86d77af9209053b95240e89aec4" kindref="member">Marmot::Math::Vector3d</ref> &amp;</type>
           <declname>n1</declname>
         </param>
         <param>
-          <type>const <ref refid="_marmot_typedefs_8h_1a0ca8adc515d73860f9edd2004e064f97" kindref="member">Vector3d</ref> &amp;</type>
+          <type>const <ref refid="_marmot_typedefs_8h_1a2731c86d77af9209053b95240e89aec4" kindref="member">Marmot::Math::Vector3d</ref> &amp;</type>
           <declname>n2</declname>
         </param>
         <briefdescription>
@@ -1283,28 +1516,28 @@ The orthonormal coordinate system is constructed such that:<itemizedlist>
 </parameteritem>
 </parameterlist>
 The orthonormal coordinate system is constructed such that:<itemizedlist>
-<listitem><para>The first column corresponds to the normalized first input normal vector ( <formula id="55">$x_1$</formula>-axis).</para>
-</listitem><listitem><para>The second colum corresponds to the normalized second input normal vector ( <formula id="56">$x_2$</formula>-axis).</para>
-</listitem><listitem><para>The third column is the normalized cross product of the first two columns ( <formula id="57">$x_3$</formula>-axis). </para>
+<listitem><para>The first column corresponds to the normalized first input normal vector ( <formula id="45">$x_1$</formula>-axis).</para>
+</listitem><listitem><para>The second colum corresponds to the normalized second input normal vector ( <formula id="46">$x_2$</formula>-axis).</para>
+</listitem><listitem><para>The third column is the normalized cross product of the first two columns ( <formula id="47">$x_3$</formula>-axis). </para>
 </listitem></itemizedlist>
 </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="477" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="477" declcolumn="14"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="480" column="26" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="480" declcolumn="26"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_math_8h_1a18f8a3d44ea78c43dbcc054549f149de" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type><ref refid="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref></type>
-        <definition>Matrix3d Marmot::Math::transformToLocalSystem</definition>
-        <argsstring>(const Matrix3d &amp;T, const Matrix3d &amp;transformedCoordinateSystem)</argsstring>
+      <memberdef kind="function" id="_marmot_math_8h_1adebc2432366832f97c34c377d24d4261" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="_marmot_typedefs_8h_1a182d047cb088cfa1dfa13ea27785622d" kindref="member">Marmot::Math::Matrix3d</ref></type>
+        <definition>Marmot::Math::Matrix3d Marmot::Math::transformToLocalSystem</definition>
+        <argsstring>(const Marmot::Math::Matrix3d &amp;T, const Marmot::Math::Matrix3d &amp;transformedCoordinateSystem)</argsstring>
         <name>transformToLocalSystem</name>
         <qualifiedname>Marmot::Math::transformToLocalSystem</qualifiedname>
         <param>
-          <type>const <ref refid="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref> &amp;</type>
+          <type>const <ref refid="_marmot_typedefs_8h_1a182d047cb088cfa1dfa13ea27785622d" kindref="member">Marmot::Math::Matrix3d</ref> &amp;</type>
           <declname>T</declname>
         </param>
         <param>
-          <type>const <ref refid="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref> &amp;</type>
+          <type>const <ref refid="_marmot_typedefs_8h_1a182d047cb088cfa1dfa13ea27785622d" kindref="member">Marmot::Math::Matrix3d</ref> &amp;</type>
           <declname>transformedCoordinateSystem</declname>
         </param>
         <briefdescription>
@@ -1330,24 +1563,24 @@ The orthonormal coordinate system is constructed such that:<itemizedlist>
 </parameterlist>
 <simplesect kind="return"><para>The tensor represented in the local coordinate system as a 3x3 matrix.</para>
 </simplesect>
-The transformation is performed as: <formula id="58">$ T_{local} = Q^T \, T_{global} \, Q $</formula>, where <formula id="59">$ Q $</formula> is the transformation matrix. </para>
+The transformation is performed as: <formula id="48">$ T_{local} = Q^T \, T_{global} \, Q $</formula>, where <formula id="49">$ Q $</formula> is the transformation matrix. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="489" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="489" declcolumn="14"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="493" column="26" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="493" declcolumn="26"/>
       </memberdef>
-      <memberdef kind="function" id="_marmot_math_8h_1a55041eeea5a7c3aebca15ebecc5d393e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
-        <type><ref refid="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref></type>
-        <definition>Matrix3d Marmot::Math::transformToGlobalSystem</definition>
-        <argsstring>(const Matrix3d &amp;T, const Matrix3d &amp;transformedCoordinateSystem)</argsstring>
+      <memberdef kind="function" id="_marmot_math_8h_1abbe32fe2bc90fcd454c73e7703756ef4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="_marmot_typedefs_8h_1a182d047cb088cfa1dfa13ea27785622d" kindref="member">Marmot::Math::Matrix3d</ref></type>
+        <definition>Marmot::Math::Matrix3d Marmot::Math::transformToGlobalSystem</definition>
+        <argsstring>(const Marmot::Math::Matrix3d &amp;T, const Marmot::Math::Matrix3d &amp;transformedCoordinateSystem)</argsstring>
         <name>transformToGlobalSystem</name>
         <qualifiedname>Marmot::Math::transformToGlobalSystem</qualifiedname>
         <param>
-          <type>const <ref refid="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref> &amp;</type>
+          <type>const <ref refid="_marmot_typedefs_8h_1a182d047cb088cfa1dfa13ea27785622d" kindref="member">Marmot::Math::Matrix3d</ref> &amp;</type>
           <declname>T</declname>
         </param>
         <param>
-          <type>const <ref refid="_marmot_typedefs_8h_1a13408696fbca14d8a266da5a7648c4d3" kindref="member">Matrix3d</ref> &amp;</type>
+          <type>const <ref refid="_marmot_typedefs_8h_1a182d047cb088cfa1dfa13ea27785622d" kindref="member">Marmot::Math::Matrix3d</ref> &amp;</type>
           <declname>transformedCoordinateSystem</declname>
         </param>
         <briefdescription>
@@ -1373,17 +1606,17 @@ The transformation is performed as: <formula id="58">$ T_{local} = Q^T \, T_{glo
 </parameterlist>
 <simplesect kind="return"><para>The tensor represented in the global coordinate system as a 3x3 matrix.</para>
 </simplesect>
-The transformation is performed as: <formula id="60">$ T_{global} = Q \, T_{local} \, Q^T $</formula>, where <formula id="59">$ Q $</formula> is the transformation matrix. </para>
+The transformation is performed as: <formula id="50">$ T_{global} = Q \, T_{local} \, Q^T $</formula>, where <formula id="49">$ Q $</formula> is the transformation matrix. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="501" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="501" declcolumn="14"/>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" line="506" column="26" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotMath.h" declline="506" declcolumn="26"/>
       </memberdef>
     </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotEigenSystems.h" line="34" column="3"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotEigenSystems.h" line="33" column="1"/>
   </compounddef>
 </doxygen>

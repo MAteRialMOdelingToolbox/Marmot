@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_flow_integration" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::Plasticity::FlowIntegration</compoundname>
+    <innernamespace refid="namespace_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_flow_integration_1_1_first_order">Marmot::ContinuumMechanics::Plasticity::FlowIntegration::FirstOrder</innernamespace>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_finite_strain_plasticity_8h_1a9381b95ec8a254156bf56ae7d21e11cd" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>Math::Tensors::FastorTensors::Tensor33t&lt; T &gt;</type>
+        <definition>Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; Marmot::ContinuumMechanics::Plasticity::FlowIntegration::exponentialMap</definition>
+        <argsstring>(const Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;dGp)</argsstring>
+        <name>exponentialMap</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Plasticity::FlowIntegration::exponentialMap</qualifiedname>
+        <param>
+          <type>const Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>dGp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes the incremental plastic deformation gradient from the plastic velocity gradient using the exponential map.</para>
+<para>The exponential map is given by   <formula id="18">\[   \Delta F_{\bar I J} = \exp\left(\Delta \lambda \frac{\partial g}{\partial M_{\bar K L}}\right)_{J \bar{I}}
+\]</formula> where <formula id="19">$ \Delta \lambda \frac{\partial g}{\partial M_{\bar K L}} $</formula> is the incremental plastic velocity gradient.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dGp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Incremental plastic velocity gradient. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Incremental plastic deformation gradient. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainPlasticity.h" line="58" column="43" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainPlasticity.h" bodystart="58" bodyend="66"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_finite_strain_plasticity_8h_1a7aeeea95f1da92f59ae663791fe7fc9d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>Math::Tensors::FastorTensors::Tensor33t&lt; T &gt;</type>
+        <definition>Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; Marmot::ContinuumMechanics::Plasticity::FlowIntegration::exponentialMapScalingAndSquaring</definition>
+        <argsstring>(const Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;dGp)</argsstring>
+        <name>exponentialMapScalingAndSquaring</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Plasticity::FlowIntegration::exponentialMapScalingAndSquaring</qualifiedname>
+        <param>
+          <type>const Math::Tensors::FastorTensors::Tensor33t&lt; T &gt; &amp;</type>
+          <declname>dGp</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes the incremental plastic deformation gradient from the plastic velocity gradient using the exponential map, evaluated by scaling and squaring.</para>
+<para>The result is that of <ref refid="_marmot_finite_strain_plasticity_8h_1a9381b95ec8a254156bf56ae7d21e11cd" kindref="member">exponentialMap()</ref>, but the series is only evaluated for <formula id="20">$ \Delta\boldsymbol{G}^p / 2^s $</formula> with <formula id="21">$ |\Delta\boldsymbol{G}^p| / 2^s \leq 1/2 $</formula>, and then squared <formula id="22">$ s $</formula> times,   <formula id="23">\[  \exp( \Delta\boldsymbol{G}^p ) = \left( \exp( \Delta\boldsymbol{G}^p / 2^s ) \right)^{2^s}.
+\]</formula> For <formula id="24">$ |\Delta\boldsymbol{G}^p| \leq 1/2 $</formula>, <formula id="25">$ s = 0 $</formula> and the result is identical to that of <ref refid="_marmot_finite_strain_plasticity_8h_1a9381b95ec8a254156bf56ae7d21e11cd" kindref="member">exponentialMap()</ref>. Larger increments, e.g. those of the intermediate iterates of a return mapping, are represented as well, where the truncated series of <ref refid="_marmot_finite_strain_plasticity_8h_1a9381b95ec8a254156bf56ae7d21e11cd" kindref="member">exponentialMap()</ref> fails.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Scalar type, real or complex (the scaling is chosen from the real part). </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>dGp</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Incremental plastic velocity gradient. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Incremental plastic deformation gradient. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainPlasticity.h" line="86" column="43" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainPlasticity.h" bodystart="86" bodyend="100"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotFiniteStrainPlasticity.h" line="41" column="1"/>
+  </compounddef>
+</doxygen>

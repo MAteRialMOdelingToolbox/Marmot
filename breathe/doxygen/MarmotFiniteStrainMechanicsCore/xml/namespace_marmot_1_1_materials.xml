@@ -1,12 +1,57 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
   <compounddef id="namespace_marmot_1_1_materials" kind="namespace" language="C++">
     <compoundname>Marmot::Materials</compoundname>
-    <innerclass refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped" prot="public">Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</innerclass>
+    <innerclass refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper" prot="public">Marmot::Materials::GradientEnhancedHughesWingetWrapper</innerclass>
+    <innerclass refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper" prot="public">Marmot::Materials::HughesWingetWrapper</innerclass>
+    <innerclass refid="class_marmot_1_1_materials_1_1_material_finite_strain" prot="public">Marmot::Materials::MaterialFiniteStrain</innerclass>
+    <innerclass refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d" prot="public">Marmot::Materials::MaterialFiniteStrainAD</innerclass>
+    <innerclass refid="class_marmot_1_1_materials_1_1_material_finite_strain_substepped" prot="public">Marmot::Materials::MaterialFiniteStrainSubstepped</innerclass>
+    <innerclass refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain" prot="public">Marmot::Materials::MaterialGradientEnhancedFiniteStrain</innerclass>
+    <innerclass refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain" prot="public">Marmot::Materials::MaterialPointSolverFiniteStrain</innerclass>
+    <sectiondef kind="enum">
+      <memberdef kind="enum" id="_marmot_material_hughes_winget_8h_1aae3da5caf189b7df4924e17c1ac99260" prot="public" static="no" strong="yes">
+        <type></type>
+        <name>HughesWingetTangent</name>
+        <qualifiedname>Marmot::Materials::HughesWingetTangent</qualifiedname>
+        <enumvalue id="_marmot_material_hughes_winget_8h_1aae3da5caf189b7df4924e17c1ac99260a8503d71dcafbdc254c2bbea2599e5791" prot="public">
+          <name>Analytic</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>Closed-form linearisation of the Hughes-Winget update, assuming <formula id="99">$ \partial\boldsymbol{\sigma}^{(n+1)}/\partial\boldsymbol{\sigma}_{\text{rot}} = \boldsymbol{I} $</formula>. Exact while the wrapped material responds elastically. One wrapped-material evaluation. </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_material_hughes_winget_8h_1aae3da5caf189b7df4924e17c1ac99260a1649aed298f99d587e2eb30c1db5946b" prot="public">
+          <name>Exact</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>As HughesWingetTangent::Analytic, but the operator <formula id="100">$ \boldsymbol{S} = \partial\boldsymbol{\sigma}^{(n+1)}/\partial\boldsymbol{\sigma}_{\text{rot}} $</formula> is recovered by forward-differencing the wrapped material with respect to its six incoming stress components. Fully consistent. Seven wrapped-material evaluations. </para>
+          </detaileddescription>
+        </enumvalue>
+        <enumvalue id="_marmot_material_hughes_winget_8h_1aae3da5caf189b7df4924e17c1ac99260a5225763efc97aebd39e5a303fceb57ac" prot="public">
+          <name>Numerical</name>
+          <briefdescription>
+          </briefdescription>
+          <detaileddescription>
+<para>The complete update is forward-differenced with respect to the nine components of <formula id="33">$ \boldsymbol{F} $</formula>. Fully consistent and model-agnostic, but the most expensive option (eleven wrapped-material evaluations). Intended for verification and debugging. </para>
+          </detaileddescription>
+        </enumvalue>
+        <briefdescription>
+<para>Selects how the algorithmic tangent <formula id="50">$ \partial\boldsymbol{\tau}/\partial\boldsymbol{F} $</formula> of <ref refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper" kindref="compound">Marmot::Materials::HughesWingetWrapper</ref> is evaluated. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" line="46" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialHughesWinget.h" bodystart="46" bodyend="66"/>
+      </memberdef>
+    </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrainSubstepped.h" line="36" column="1"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="32" column="1"/>
   </compounddef>
 </doxygen>

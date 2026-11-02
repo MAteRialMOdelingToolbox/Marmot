@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.13.2" xml:lang="en-US">
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
   <compounddef id="_marmot_numerical_differentiation_8h" kind="file" language="C++">
     <compoundname>MarmotNumericalDifferentiation.h</compoundname>
     <includes refid="_marmot_math_8h" local="yes">Marmot/MarmotMath.h</includes>
@@ -12,21 +12,23 @@
         <link refid="_marmot_constants_8h_source"/>
         <childnode refid="4" relation="include">
         </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
       </node>
       <node id="2">
         <label>Marmot/MarmotMath.h</label>
         <link refid="_marmot_math_8h_source"/>
         <childnode refid="3" relation="include">
         </childnode>
-        <childnode refid="5" relation="include">
-        </childnode>
-        <childnode refid="10" relation="include">
-        </childnode>
-        <childnode refid="7" relation="include">
+        <childnode refid="6" relation="include">
         </childnode>
         <childnode refid="11" relation="include">
         </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
         <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
         </childnode>
       </node>
       <node id="1">
@@ -34,48 +36,51 @@
         <link refid="_marmot_numerical_differentiation_8h"/>
         <childnode refid="2" relation="include">
         </childnode>
-        <childnode refid="5" relation="include">
-        </childnode>
-        <childnode refid="13" relation="include">
-        </childnode>
-      </node>
-      <node id="5">
-        <label>Marmot/MarmotTypedefs.h</label>
-        <link refid="_marmot_typedefs_8h"/>
         <childnode refid="6" relation="include">
         </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>Marmot/MarmotTypedefs.h</label>
+        <link refid="_marmot_typedefs_8h"/>
         <childnode refid="7" relation="include">
         </childnode>
         <childnode refid="8" relation="include">
         </childnode>
         <childnode refid="9" relation="include">
         </childnode>
-      </node>
-      <node id="6">
-        <label>Eigen/Dense</label>
-      </node>
-      <node id="10">
-        <label>algorithm</label>
+        <childnode refid="10" relation="include">
+        </childnode>
       </node>
       <node id="7">
-        <label>autodiff/forward/dual/dual.hpp</label>
-      </node>
-      <node id="8">
-        <label>autodiff/forward/dual/eigen.hpp</label>
+        <label>Eigen/Dense</label>
       </node>
       <node id="11">
+        <label>algorithm</label>
+      </node>
+      <node id="8">
+        <label>autodiff/forward/dual/dual.hpp</label>
+      </node>
+      <node id="9">
+        <label>autodiff/forward/dual/eigen.hpp</label>
+      </node>
+      <node id="12">
         <label>autodiff/forward/real/real.hpp</label>
       </node>
       <node id="4">
         <label>cmath</label>
       </node>
-      <node id="12">
+      <node id="13">
         <label>complex</label>
       </node>
-      <node id="13">
+      <node id="14">
         <label>functional</label>
       </node>
-      <node id="9">
+      <node id="5">
+        <label>limits</label>
+      </node>
+      <node id="10">
         <label>unsupported/Eigen/CXX11/Tensor</label>
       </node>
     </incdepgraph>
@@ -92,9 +97,10 @@
       </node>
     </invincdepgraph>
     <innernamespace refid="namespace_marmot">Marmot</innernamespace>
-    <innernamespace refid="namespace_marmot_1_1_numerical_algorithms">Marmot::NumericalAlgorithms</innernamespace>
-    <innernamespace refid="namespace_marmot_1_1_numerical_algorithms_1_1_differentiation">Marmot::NumericalAlgorithms::Differentiation</innernamespace>
-    <innernamespace refid="namespace_marmot_1_1_numerical_algorithms_1_1_differentiation_1_1_complex">Marmot::NumericalAlgorithms::Differentiation::Complex</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_math">Marmot::Math</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_differentiation">Marmot::Math::Differentiation</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_numerical">Marmot::Math::Differentiation::Numerical</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_numerical_1_1_complex">Marmot::Math::Differentiation::Numerical::Complex</innernamespace>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
@@ -130,44 +136,42 @@
 <codeline lineno="28"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;<ref refid="_marmot_typedefs_8h" kindref="compound">Marmot/MarmotTypedefs.h</ref>&quot;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="29"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;functional&gt;</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="30"><highlight class="normal"></highlight></codeline>
-<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot<sp/>{</highlight></codeline>
-<codeline lineno="32"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">NumericalAlgorithms::Differentiation<sp/>{</highlight></codeline>
-<codeline lineno="33"><highlight class="normal"></highlight></codeline>
-<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">scalar_to_scalar_function_type<sp/>=<sp/>std::function&lt;<sp/>double(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>x<sp/>)<sp/>&gt;;</highlight></codeline>
-<codeline lineno="38"><highlight class="normal"></highlight></codeline>
-<codeline lineno="42"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">vector_to_vector_function_type<sp/>=<sp/>std::function&lt;<sp/>Eigen::VectorXd(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/>X<sp/>)<sp/>&gt;;</highlight></codeline>
-<codeline lineno="43"><highlight class="normal"></highlight></codeline>
-<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>forwardDifference(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>scalar_to_scalar_function_type&amp;<sp/>f,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>x<sp/>);</highlight></codeline>
-<codeline lineno="56"><highlight class="normal"></highlight></codeline>
-<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>centralDifference(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>scalar_to_scalar_function_type&amp;<sp/>f,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>x<sp/>);</highlight></codeline>
-<codeline lineno="69"><highlight class="normal"></highlight></codeline>
-<codeline lineno="82"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::MatrixXd<sp/>forwardDifference(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>vector_to_vector_function_type&amp;<sp/>F,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/>X<sp/>);</highlight></codeline>
-<codeline lineno="83"><highlight class="normal"></highlight></codeline>
-<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::MatrixXd<sp/>centralDifference(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>vector_to_vector_function_type&amp;<sp/>F,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/>X<sp/>);</highlight></codeline>
-<codeline lineno="97"><highlight class="normal"></highlight></codeline>
-<codeline lineno="98"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Complex<sp/>{</highlight></codeline>
-<codeline lineno="99"><highlight class="normal"></highlight></codeline>
-<codeline lineno="101"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::complex&lt;<sp/>double<sp/>&gt;<sp/>imaginaryUnit<sp/>=<sp/>{<sp/>0,<sp/>1<sp/>};</highlight></codeline>
-<codeline lineno="103"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::complex&lt;<sp/>double<sp/>&gt;<sp/>complexUnit<sp/>=<sp/>{<sp/>1,<sp/>1<sp/>};</highlight></codeline>
-<codeline lineno="105"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::complex&lt;<sp/>double<sp/>&gt;<sp/>i_<sp/>=<sp/>Marmot::Constants::sqrt2<sp/>/<sp/>2.<sp/>*<sp/>complexUnit;</highlight></codeline>
-<codeline lineno="106"><highlight class="normal"></highlight></codeline>
-<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">scalar_to_scalar_function_type<sp/>=<sp/>std::function&lt;<sp/>complexDouble(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>complexDouble<sp/>x<sp/>)<sp/>&gt;;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Marmot::Math::Differentiation::Numerical<sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"></highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">scalar_to_scalar_function_type<sp/>=<sp/>std::function&lt;<sp/>double(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>x<sp/>)<sp/>&gt;;</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"></highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">vector_to_vector_function_type<sp/>=<sp/>std::function&lt;<sp/>Eigen::VectorXd(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/>X<sp/>)<sp/>&gt;;</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>forwardDifference(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>scalar_to_scalar_function_type&amp;<sp/>f,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>x<sp/>);</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"></highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>centralDifference(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>scalar_to_scalar_function_type&amp;<sp/>f,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>x<sp/>);</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"></highlight></codeline>
+<codeline lineno="81"><highlight class="normal"><sp/><sp/>Eigen::MatrixXd<sp/>forwardDifference(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>vector_to_vector_function_type&amp;<sp/>F,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/>X<sp/>);</highlight></codeline>
+<codeline lineno="82"><highlight class="normal"></highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/>Eigen::MatrixXd<sp/>centralDifference(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>vector_to_vector_function_type&amp;<sp/>F,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/>X<sp/>);</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"></highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">Complex<sp/>{</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"></highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::complex&lt;<sp/>double<sp/>&gt;<sp/>imaginaryUnit<sp/>=<sp/>{<sp/>0,<sp/>1<sp/>};</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::complex&lt;<sp/>double<sp/>&gt;<sp/>complexUnit<sp/>=<sp/>{<sp/>1,<sp/>1<sp/>};</highlight></codeline>
+<codeline lineno="104"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/>std::complex&lt;<sp/>double<sp/>&gt;<sp/>i_<sp/>=<sp/>Marmot::Math::Constants::sqrt2<sp/>/<sp/>2.<sp/>*<sp/>complexUnit;</highlight></codeline>
+<codeline lineno="105"><highlight class="normal"></highlight></codeline>
+<codeline lineno="109"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">scalar_to_scalar_function_type<sp/>=<sp/>std::function&lt;<sp/><ref refid="_marmot_typedefs_8h_1ad5fb4f549c19fe266e14a6392117826f" kindref="member">Marmot::Math::complexDouble</ref>(</highlight></codeline>
+<codeline lineno="110"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Marmot::Math::complexDouble<sp/>x<sp/>)<sp/>&gt;;</highlight></codeline>
 <codeline lineno="111"><highlight class="normal"></highlight></codeline>
-<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">vector_to_vector_function_type<sp/>=<sp/>std::function&lt;<sp/>Eigen::VectorXcd(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXcd&amp;<sp/>X<sp/>)<sp/>&gt;;</highlight></codeline>
+<codeline lineno="115"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">using<sp/></highlight><highlight class="normal">vector_to_vector_function_type<sp/>=<sp/>std::function&lt;<sp/>Eigen::VectorXcd(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXcd&amp;<sp/>X<sp/>)<sp/>&gt;;</highlight></codeline>
 <codeline lineno="116"><highlight class="normal"></highlight></codeline>
-<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>forwardDifference(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>scalar_to_scalar_function_type&amp;<sp/>f,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>x<sp/>);</highlight></codeline>
+<codeline lineno="132"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>forwardDifference(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>scalar_to_scalar_function_type&amp;<sp/>f,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>x<sp/>);</highlight></codeline>
 <codeline lineno="133"><highlight class="normal"></highlight></codeline>
-<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>std::tuple&lt;<sp/>Eigen::VectorXd,<sp/>Eigen::MatrixXd<sp/>&gt;<sp/>forwardDifference(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>vector_to_vector_function_type&amp;<sp/>F,</highlight></codeline>
-<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>X<sp/>);</highlight></codeline>
+<codeline lineno="149"><highlight class="normal"><sp/><sp/><sp/><sp/>std::tuple&lt;<sp/>Eigen::VectorXd,<sp/>Eigen::MatrixXd<sp/>&gt;<sp/>forwardDifference(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>vector_to_vector_function_type&amp;<sp/>F,</highlight></codeline>
+<codeline lineno="150"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>X<sp/>);</highlight></codeline>
 <codeline lineno="151"><highlight class="normal"></highlight></codeline>
-<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Eigen::MatrixXd<sp/>centralDifference(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>vector_to_vector_function_type&amp;<sp/>F,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/>X<sp/>);</highlight></codeline>
+<codeline lineno="168"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::MatrixXd<sp/>centralDifference(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>vector_to_vector_function_type&amp;<sp/>F,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/>X<sp/>);</highlight></codeline>
 <codeline lineno="169"><highlight class="normal"></highlight></codeline>
-<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>Eigen::MatrixXd<sp/>fourthOrderAccurateDerivative(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>vector_to_vector_function_type&amp;<sp/>F,</highlight></codeline>
-<codeline lineno="191"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>X<sp/>);</highlight></codeline>
-<codeline lineno="192"><highlight class="normal"></highlight></codeline>
-<codeline lineno="193"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Complex</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="194"><highlight class="normal"><sp/><sp/>}<sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>NumericalAlgorithms::Differentiation</highlight><highlight class="normal"></highlight></codeline>
-<codeline lineno="195"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="190"><highlight class="normal"><sp/><sp/><sp/><sp/>Eigen::MatrixXd<sp/>fourthOrderAccurateDerivative(<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>vector_to_vector_function_type&amp;<sp/>F,<sp/></highlight><highlight class="keyword">const</highlight><highlight class="normal"><sp/>Eigen::VectorXd&amp;<sp/>X<sp/>);</highlight></codeline>
+<codeline lineno="191"><highlight class="normal"></highlight></codeline>
+<codeline lineno="192"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Complex</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="193"><highlight class="normal">}<sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>Marmot::Math::Differentiation::Numerical</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
     <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMathCore/include/Marmot/MarmotNumericalDifferentiation.h"/>
   </compounddef>

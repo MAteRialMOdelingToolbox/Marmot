@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_utilities_1_1_make_string" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::Utilities::MakeString</compoundname>
+    <includes refid="_marmot_journal_8h" local="no">MarmotJournal.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_utilities_1_1_make_string_1ab9ca881efb011066a9f068e9a8c30e3f" prot="public" static="no" mutable="no">
+        <type>std::stringstream</type>
+        <definition>std::stringstream Marmot::Utilities::MakeString::stream</definition>
+        <argsstring></argsstring>
+        <name>stream</name>
+        <qualifiedname>Marmot::Utilities::MakeString::stream</qualifiedname>
+        <briefdescription>
+<para>Internal string stream used for building the output string. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h" line="41" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h" bodystart="41" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_utilities_1_1_make_string_1a7c37cca0e86b56652f0cc978560e9efc" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::Utilities::MakeString::operator std::string</definition>
+        <argsstring>() const</argsstring>
+        <name>operator std::string</name>
+        <qualifiedname>Marmot::Utilities::MakeString::string</qualifiedname>
+        <briefdescription>
+<para>Convert the accumulated stream content to a <computeroutput>std::string</computeroutput>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h" line="44" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h" bodystart="44" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_utilities_1_1_make_string_1a3afdaadc3a4774594f3029c083a7c8cd" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type><ref refid="class_marmot_1_1_utilities_1_1_make_string" kindref="compound">MakeString</ref> &amp;</type>
+        <definition>MakeString &amp; Marmot::Utilities::MakeString::operator&lt;&lt;</definition>
+        <argsstring>(T const &amp;VAR)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <qualifiedname>Marmot::Utilities::MakeString::operator&lt;&lt;</qualifiedname>
+        <param>
+          <type>T const &amp;</type>
+          <declname>VAR</declname>
+        </param>
+        <briefdescription>
+<para>Append a value to the internal stream. </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>T</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Type of the value to append. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>VAR</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Value to insert into the stream. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Reference to <computeroutput>*this</computeroutput> for chaining. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h" line="53" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h" bodystart="53" bodyend="57"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Utility class for constructing strings with stream-like syntax. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>This class allows for easy string construction using the stream insertion operator. It can be used to build complex strings in a readable manner. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h" line="39" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h" bodystart="39" bodyend="58"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_utilities_1_1_make_string_1a7c37cca0e86b56652f0cc978560e9efc" prot="public" virt="non-virtual"><scope>Marmot::Utilities::MakeString</scope><name>operator std::string</name></member>
+      <member refid="class_marmot_1_1_utilities_1_1_make_string_1a3afdaadc3a4774594f3029c083a7c8cd" prot="public" virt="non-virtual"><scope>Marmot::Utilities::MakeString</scope><name>operator&lt;&lt;</name></member>
+      <member refid="class_marmot_1_1_utilities_1_1_make_string_1ab9ca881efb011066a9f068e9a8c30e3f" prot="public" virt="non-virtual"><scope>Marmot::Utilities::MakeString</scope><name>stream</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

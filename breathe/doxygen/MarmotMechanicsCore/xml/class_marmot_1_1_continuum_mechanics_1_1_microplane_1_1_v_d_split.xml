@@ -1,0 +1,222 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split" kind="class" language="C++" prot="public">
+    <compoundname>Marmot::ContinuumMechanics::Microplane::VDSplit</compoundname>
+    <includes refid="_marmot_microplane_8h" local="no">MarmotMicroplane.h</includes>
+    <innerclass refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors" prot="public">Marmot::ContinuumMechanics::Microplane::VDSplit::projectionTensors</innerclass>
+    <templateparamlist>
+      <param>
+        <type><ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1" kindref="member">QuadratureScheme</ref></type>
+        <declname>scheme</declname>
+        <defname>scheme</defname>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1a327036017ea8910dc16ab96b6472ea6c" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>size_t</type>
+        <definition>size_t Marmot::ContinuumMechanics::Microplane::VDSplit&lt; scheme &gt;::nqp</definition>
+        <argsstring></argsstring>
+        <name>nqp</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::VDSplit::nqp</qualifiedname>
+        <initializer>= <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1a2a7293ad18bb1ddbceaa8b6b8d345c61" kindref="member">nqpFromScheme</ref>( scheme )</initializer>
+        <briefdescription>
+<para>Number of microplanes for scheme; see <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1a2a7293ad18bb1ddbceaa8b6b8d345c61" kindref="member">nqpFromScheme</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="316" column="31" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="316" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1adbb2263b6b70c4eddc969cf930438bb7" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors" kindref="compound">projectionTensors</ref></type>
+        <definition>projectionTensors Marmot::ContinuumMechanics::Microplane::VDSplit&lt; scheme &gt;::pTensors</definition>
+        <argsstring></argsstring>
+        <name>pTensors</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::VDSplit::pTensors</qualifiedname>
+        <briefdescription>
+<para>The volumetric/deviatoric projection tensors and integration weights for this instance; see <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors" kindref="compound">projectionTensors</ref>. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="359" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="359" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1a3024508b82e379e88e6be2dbd4b135d7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>Marmot::ContinuumMechanics::Microplane::VDSplit&lt; scheme &gt;::VDSplit</definition>
+        <argsstring>()</argsstring>
+        <name>VDSplit</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::VDSplit::VDSplit</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="318" column="7" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="318" bodyend="318"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1a30a992bd3d958b6406006406c6371e30" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::Matrix3d</type>
+        <definition>Eigen::Matrix3d Marmot::ContinuumMechanics::Microplane::VDSplit&lt; scheme &gt;::homogenize</definition>
+        <argsstring>(const auto &amp;volValue, const auto &amp;devValue) const</argsstring>
+        <name>homogenize</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::VDSplit::homogenize</qualifiedname>
+        <param>
+          <type>const auto &amp;</type>
+          <declname>volValue</declname>
+        </param>
+        <param>
+          <type>const auto &amp;</type>
+          <declname>devValue</declname>
+        </param>
+        <briefdescription>
+<para>Homogenizes per-microplane volumetric and deviatoric values to the macroscopic tensor. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Evaluates the discrete virtual-work homogenization:    <formula id="353">\[  X_{jk} = \left( \sum_{m=1}^{n_{qp}} w^{(m)} X_V^{(m)} \right) \frac{\delta_{jk}}{3}
+    + \sum_{m=1}^{n_{qp}} w^{(m)}\, Dev_{ijk}^{(m)}\, \big( X_D^{(m)} \big)_i
+\]</formula> Denoting the <formula id="354">$ i $</formula>-th component of <formula id="355">$ X_D^{(m)} $</formula> by <formula id="356">$ \big( X_D^{(m)} \big)_i $</formula> (same index convention as the kinematic projection <formula id="357">$ (\varepsilon_D^{(m)})_i = Dev_{ijk}^{(m)} \varepsilon_{jk} $</formula> documented at <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a23d8ec887f3ed5f5d65ea8ca838a28a7" kindref="member">Marmot::ContinuumMechanics::Microplane::VDSplit::projectionTensors::Dev</ref>, contracted here on  <formula id="358">$i $</formula> instead of <formula id="359">$ j,k $</formula>). <formula id="360">$ Dev^{(m)} $</formula> is <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a23d8ec887f3ed5f5d65ea8ca838a28a7" kindref="member">Marmot::ContinuumMechanics::Microplane::VDSplit::projectionTensors::Dev</ref> for microplane <formula id="361">$ m $</formula>. This is used both to homogenize stress ( <formula id="362">$ \boldsymbol{X} = \sig $</formula>) and to homogenize strain (  <formula id="363">$ \boldsymbol{X} = \eps
+$</formula>) - the method itself is agnostic to the physical meaning of <computeroutput>volValue</computeroutput> / <computeroutput>devValue</computeroutput>. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>volValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Per-microplane volumetric value <formula id="364">$ X_V^{(m)} $</formula>, size <formula id="324">$ n_{qp} \times 1 $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>devValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Per-microplane deviatoric value <formula id="355">$ X_D^{(m)} $</formula>, size <formula id="322">$ n_{qp} \times 3 $</formula>. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Homogenized macroscopic tensor <formula id="365">$ X_{jk} $</formula> (3x3). </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="380" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="410" bodyend="421"/>
+      </memberdef>
+      <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1a1f6dcfbe1940306431789e39af8c9c81" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>Eigen::Matrix3d</type>
+        <definition>Eigen::Matrix3d Marmot::ContinuumMechanics::Microplane::VDSplit&lt; scheme &gt;::applyProjectionTensors</definition>
+        <argsstring>(const double volValue, const Eigen::Vector3d &amp;devValue, const int m) const</argsstring>
+        <name>applyProjectionTensors</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::VDSplit::applyProjectionTensors</qualifiedname>
+        <param>
+          <type>const double</type>
+          <declname>volValue</declname>
+        </param>
+        <param>
+          <type>const Eigen::Vector3d &amp;</type>
+          <declname>devValue</declname>
+        </param>
+        <param>
+          <type>const int</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+<para>Applies the projection tensors of a single microplane <computeroutput>m</computeroutput> to a volumetric/deviatoric value pair, without homogenizing over all microplanes. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Computes, the (unweighted) macroscopic-space contribution of microplane <computeroutput>m</computeroutput> alone:   <formula id="366">\[  X_{jk} = X_V^{(m)} \, V_{jk} + Dev_{ijk}^{(m)}\, \big( X_D^{(m)} \big)_i
+\]</formula> denoting the <formula id="354">$ i $</formula>-th component of <formula id="355">$ X_D^{(m)} $</formula> by <formula id="356">$ \big( X_D^{(m)} \big)_i $</formula> (same index convention as <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1a30a992bd3d958b6406006406c6371e30" kindref="member">homogenize</ref> and the kinematic projection documented at <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a23d8ec887f3ed5f5d65ea8ca838a28a7" kindref="member">Marmot::ContinuumMechanics::Microplane::VDSplit::projectionTensors::Dev</ref>). <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>volValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Volumetric value <formula id="364">$ X_V^{(m)} $</formula> of microplane <computeroutput>m</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>devValue</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Deviatoric value <formula id="355">$ X_D^{(m)} $</formula> of microplane <computeroutput>m</computeroutput>. </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>m</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Index of the microplane. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>The 3x3 tensor contribution <formula id="365">$ X_{jk} $</formula> of microplane <computeroutput>m</computeroutput>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="397" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="424" bodyend="438"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1ab3fbc5c693075c8213d4f28e8f1eed15" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors" kindref="compound">projectionTensors</ref></type>
+        <definition>VDSplit&lt; scheme &gt;::projectionTensors Marmot::ContinuumMechanics::Microplane::VDSplit&lt; scheme &gt;::initiateSystem</definition>
+        <argsstring>()</argsstring>
+        <name>initiateSystem</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Microplane::VDSplit::initiateSystem</qualifiedname>
+        <briefdescription>
+<para>Builds the microplane normal vectors, integration weights, and volumetric/deviatoric projection tensors (<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors" kindref="compound">projectionTensors</ref>) from Discretization::get(scheme). </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="406" column="25" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="441" bodyend="478"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Volumetric-deviatoric (V-D) split and projection tensors of the microplane theory, as used e.g. by damage-plasticity constitutive microplane models. </para>
+    </briefdescription>
+    <detaileddescription>
+<para>The macroscopic strain is decomposed on each microplane into a volumetric part <formula id="320">$ \varepsilon_V = \tfrac{1}{3}\operatorname{tr}(\eps) $</formula>, identical for every microplane, and a deviatoric microplane strain vector <formula id="321">$ \eps_D $</formula>. <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1adbb2263b6b70c4eddc969cf930438bb7" kindref="member">pTensors</ref> holds the corresponding projection tensors (<ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a3dd8120ac7e5d892b7532e18d90adf0f" kindref="member">Marmot::ContinuumMechanics::Microplane::VDSplit::projectionTensors::Vol</ref>, <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors_1a23d8ec887f3ed5f5d65ea8ca838a28a7" kindref="member">Marmot::ContinuumMechanics::Microplane::VDSplit::projectionTensors::Dev</ref>) built from the hard-coded discretization (Discretization::get()), and the <computeroutput>homogenize*</computeroutput> methods perform the virtual-work homogenization of per-microplane volumetric/deviatoric quantities back to macroscopic 3x3 tensors. <parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>scheme</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>The <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1" kindref="member">QuadratureScheme</ref> (and thus the number of microplanes <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1a327036017ea8910dc16ab96b6472ea6c" kindref="member">nqp</ref>) this instantiation is built for. </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="2">
+        <label>Marmot::ContinuumMechanics::Microplane::VDSplit&lt; scheme &gt;::projectionTensors</label>
+        <link refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1_1projection_tensors"/>
+      </node>
+      <node id="1">
+        <label>Marmot::ContinuumMechanics::Microplane::VDSplit&lt; scheme &gt;</label>
+        <link refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>pTensors</edgelabel>
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" line="313" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotMicroplane.h" bodystart="313" bodyend="407"/>
+    <listofallmembers>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1a1f6dcfbe1940306431789e39af8c9c81" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Microplane::VDSplit</scope><name>applyProjectionTensors</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1a30a992bd3d958b6406006406c6371e30" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Microplane::VDSplit</scope><name>homogenize</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1ab3fbc5c693075c8213d4f28e8f1eed15" prot="private" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Microplane::VDSplit</scope><name>initiateSystem</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1a327036017ea8910dc16ab96b6472ea6c" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Microplane::VDSplit</scope><name>nqp</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1adbb2263b6b70c4eddc969cf930438bb7" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Microplane::VDSplit</scope><name>pTensors</name></member>
+      <member refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_v_d_split_1a3024508b82e379e88e6be2dbd4b135d7" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Microplane::VDSplit</scope><name>VDSplit</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

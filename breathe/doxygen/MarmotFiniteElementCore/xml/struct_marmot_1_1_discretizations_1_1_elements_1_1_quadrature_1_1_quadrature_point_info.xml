@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_point_info" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::Discretizations::Elements::Quadrature::QuadraturePointInfo</compoundname>
+    <includes refid="_marmot_finite_element_8h" local="no">MarmotFiniteElement.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_point_info_1ae709f3a67d6a6f355ddfb299f571ed3e" prot="public" static="no" mutable="no">
+        <type>Eigen::VectorXd</type>
+        <definition>Eigen::VectorXd Marmot::Discretizations::Elements::Quadrature::QuadraturePointInfo::xi</definition>
+        <argsstring></argsstring>
+        <name>xi</name>
+        <qualifiedname>Marmot::Discretizations::Elements::Quadrature::QuadraturePointInfo::xi</qualifiedname>
+        <briefdescription>
+<para>Natural coordinates of the quadrature point. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="579" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="579" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_point_info_1ab451d32e0131afbf5048fa3ecc9a9742" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::Discretizations::Elements::Quadrature::QuadraturePointInfo::weight</definition>
+        <argsstring></argsstring>
+        <name>weight</name>
+        <qualifiedname>Marmot::Discretizations::Elements::Quadrature::QuadraturePointInfo::weight</qualifiedname>
+        <briefdescription>
+<para>Quadrature weight. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="580" column="23" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="580" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+<para>Natural coordinates and weight for one Gauss quadrature point. </para>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="578" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" bodystart="578" bodyend="581"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_point_info_1ab451d32e0131afbf5048fa3ecc9a9742" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::Quadrature::QuadraturePointInfo</scope><name>weight</name></member>
+      <member refid="struct_marmot_1_1_discretizations_1_1_elements_1_1_quadrature_1_1_quadrature_point_info_1ae709f3a67d6a6f355ddfb299f571ed3e" prot="public" virt="non-virtual"><scope>Marmot::Discretizations::Elements::Quadrature::QuadraturePointInfo</scope><name>xi</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,464 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_wiechert" kind="namespace" language="C++">
+    <compoundname>Marmot::ContinuumMechanics::Viscoelasticity::Wiechert</compoundname>
+    <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="_marmot_wiechert_8h_1a8466d655f5e91e02bb5e5efc97d6364b" prot="public" static="no">
+        <type>Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::Properties</type>
+        <definition>using Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::Properties = Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::Properties</definition>
+        <argsstring></argsstring>
+        <name>Properties</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::Properties</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" line="36" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_wiechert_8h_1a476fa861d663094d5486fd3bbf920e68" prot="public" static="no">
+        <type>Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::mapProperties</type>
+        <definition>using Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::mapProperties = Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::mapProperties</definition>
+        <argsstring></argsstring>
+        <name>mapProperties</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::mapProperties</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" line="37" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_wiechert_8h_1a85bb8d29b93776c133601e9456e15031" prot="public" static="no">
+        <type>Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::StateVarMatrix</type>
+        <definition>using Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::StateVarMatrix = Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::StateVarMatrix</definition>
+        <argsstring></argsstring>
+        <name>StateVarMatrix</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::StateVarMatrix</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" line="38" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="_marmot_wiechert_8h_1aa4c2b136bba3307fe535cb01d387b324" prot="public" static="no">
+        <type>Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::mapStateVarMatrix</type>
+        <definition>using Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::mapStateVarMatrix = Marmot::ContinuumMechanics::Viscoelasticity::DiscreteSpectrum::mapStateVarMatrix</definition>
+        <argsstring></argsstring>
+        <name>mapStateVarMatrix</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::mapStateVarMatrix</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" line="39" column="3" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" bodystart="39" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="func">
+      <memberdef kind="function" id="_marmot_wiechert_8h_1aac135485ad2879bdc4c1da97fba5cd2b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>k</declname>
+            <defname>k</defname>
+          </param>
+        </templateparamlist>
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::evaluatePostWidderFormula</definition>
+        <argsstring>(std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; psi, double tau)</argsstring>
+        <name>evaluatePostWidderFormula</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::evaluatePostWidderFormula</qualifiedname>
+        <param>
+          <type>std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt;</type>
+          <declname>psi</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>tau</declname>
+        </param>
+        <briefdescription>
+<para>Evaluate the Post-Widder formula of order <formula id="12">$k$</formula> for a relaxation function. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Approximates the relaxation spectrum of the relaxation function <formula id="401">$\psi$</formula> at the relaxation time <formula id="14">$\tau$</formula>. The derivative of order <formula id="12">$k$</formula> is obtained by automatic differentiation.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>k</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>order of the Post-Widder approximation </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">psi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>relaxation function </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">tau</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>relaxation time at which the spectrum is evaluated </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the relaxation spectrum at <formula id="14">$\tau$</formula> </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" line="53" column="10" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" bodystart="53" bodyend="59"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_wiechert_8h_1a31e07d2c5576be3efa1ed7a4233b4f9c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>int</type>
+            <declname>k</declname>
+            <defname>k</defname>
+          </param>
+        </templateparamlist>
+        <type>Properties</type>
+        <definition>Properties Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::computeElasticModuli</definition>
+        <argsstring>(std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt; psi, const Properties &amp;relaxationTimes, double spacing, bool gaussQuadrature=false)</argsstring>
+        <name>computeElasticModuli</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::computeElasticModuli</qualifiedname>
+        <param>
+          <type>std::function&lt; autodiff::Real&lt; k, double &gt;(autodiff::Real&lt; k, double &gt;) &gt;</type>
+          <declname>psi</declname>
+        </param>
+        <param>
+          <type>const Properties &amp;</type>
+          <declname>relaxationTimes</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>spacing</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>gaussQuadrature</declname>
+          <defval>false</defval>
+        </param>
+        <briefdescription>
+<para>Compute the elastic moduli of the Maxwell units of a Wiechert chain. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The relaxation spectrum is integrated over the logarithmic relaxation-time axis, which is discretized by the relaxation times with the given spacing. By default a one-point rule is used, i.e. the modulus of the unit with relaxation time <formula id="402">$\tau_i$</formula> is <formula id="403">$\ln(\mathrm{spacing}) \, S(\tau_i)$</formula>, where <formula id="404">$S$</formula> is the relaxation spectrum. With Gauss quadrature the two-point Gauss rule over the logarithmic interval of the unit is used.</para>
+<para><parameterlist kind="templateparam"><parameteritem>
+<parameternamelist>
+<parametername>k</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>order of the Post-Widder approximation of the relaxation spectrum </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">psi</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>relaxation function </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">relaxationTimes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>relaxation times of the Maxwell units </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">spacing</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ratio of two consecutive relaxation times </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">gaussQuadrature</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>use the two-point Gauss rule instead of the one-point rule </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the elastic moduli, one per Maxwell unit </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" line="77" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" bodystart="77" bodyend="95"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_wiechert_8h_1a4b0ac5c4236dcf66bf761a55bd2a2023" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>Properties</type>
+        <definition>Properties Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::generateRelaxationTimes</definition>
+        <argsstring>(int n, double min, double spacing)</argsstring>
+        <name>generateRelaxationTimes</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::generateRelaxationTimes</qualifiedname>
+        <param>
+          <type>int</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>min</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>spacing</declname>
+        </param>
+        <briefdescription>
+<para>Generate logarithmically spaced relaxation times. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>The relaxation times are <formula id="15">$\tau_i = \mathrm{min} \cdot \mathrm{spacing}^i$</formula> for <formula id="16">$i = 0, \dots, n-1$</formula>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">n</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>number of relaxation times </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">min</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>smallest relaxation time </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">spacing</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>ratio of two consecutive relaxation times </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the relaxation times </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" line="107" column="14" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" declline="107" declcolumn="14"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_wiechert_8h_1a4c1b978973063aaa7658911f5dcd7b87" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::updateStateVarMatrix</definition>
+        <argsstring>(const double dT, const Properties &amp;elasticModuli, const Properties &amp;relaxationTimes, Eigen::Ref&lt; StateVarMatrix &gt; stateVars, const Marmot::Math::Vector6d &amp;dStrain, const Marmot::Math::Matrix6d &amp;unitD_ijkl)</argsstring>
+        <name>updateStateVarMatrix</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::updateStateVarMatrix</qualifiedname>
+        <param>
+          <type>const double</type>
+          <declname>dT</declname>
+        </param>
+        <param>
+          <type>const Properties &amp;</type>
+          <declname>elasticModuli</declname>
+        </param>
+        <param>
+          <type>const Properties &amp;</type>
+          <declname>relaxationTimes</declname>
+        </param>
+        <param>
+          <type>Eigen::Ref&lt; StateVarMatrix &gt;</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>const Marmot::Math::Vector6d &amp;</type>
+          <declname>dStrain</declname>
+        </param>
+        <param>
+          <type>const Marmot::Math::Matrix6d &amp;</type>
+          <declname>unitD_ijkl</declname>
+        </param>
+        <briefdescription>
+<para>Update the stresses of the Maxwell units for a strain increment. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>For every unit <formula id="405">$i$</formula> the stress is updated with the exponential algorithm, <formula id="406">$\sigma_i \leftarrow \lambda_i D_i \, \mathbb{C}_1 \, \Delta\varepsilon + \beta_i \sigma_i$</formula>, where <formula id="407">$\lambda_i$</formula> and <formula id="408">$\beta_i$</formula> follow from the time increment and the relaxation time of the unit. Nothing is updated for a vanishing time increment.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>time increment </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">elasticModuli</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>elastic moduli <formula id="409">$D_i$</formula> of the Maxwell units </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">relaxationTimes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>relaxation times of the Maxwell units </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>stresses of the Maxwell units in Voigt notation, one column per unit </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">dStrain</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>strain increment in Voigt notation </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">unitD_ijkl</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>stiffness tensor <formula id="410">$\mathbb{C}_1$</formula> for a unit Young&apos;s modulus in Voigt notation </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" line="124" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" declline="124" declcolumn="8"/>
+      </memberdef>
+      <memberdef kind="function" id="_marmot_wiechert_8h_1a4091dc204de492104c927d30402ea717" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::evaluateWiechert</definition>
+        <argsstring>(const double dT, const Properties &amp;elasticModuli, const Properties &amp;relaxationTimes, Eigen::Ref&lt; StateVarMatrix &gt; stateVars, double &amp;uniaxialStiffness, Marmot::Math::Vector6d &amp;dStress, const double factor)</argsstring>
+        <name>evaluateWiechert</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Viscoelasticity::Wiechert::evaluateWiechert</qualifiedname>
+        <param>
+          <type>const double</type>
+          <declname>dT</declname>
+        </param>
+        <param>
+          <type>const Properties &amp;</type>
+          <declname>elasticModuli</declname>
+        </param>
+        <param>
+          <type>const Properties &amp;</type>
+          <declname>relaxationTimes</declname>
+        </param>
+        <param>
+          <type>Eigen::Ref&lt; StateVarMatrix &gt;</type>
+          <declname>stateVars</declname>
+        </param>
+        <param>
+          <type>double &amp;</type>
+          <declname>uniaxialStiffness</declname>
+        </param>
+        <param>
+          <type>Marmot::Math::Vector6d &amp;</type>
+          <declname>dStress</declname>
+        </param>
+        <param>
+          <type>const double</type>
+          <declname>factor</declname>
+        </param>
+        <briefdescription>
+<para>Accumulate the contribution of the Maxwell units to the stiffness and to the stress relaxation. </para>
+        </briefdescription>
+        <detaileddescription>
+<para>For every unit <formula id="405">$i$</formula> the algorithmic stiffness <formula id="411">$\lambda_i D_i$</formula> is added to <computeroutput>uniaxialStiffness</computeroutput> and the stress <formula id="412">$(1 - \beta_i) \sigma_i$</formula> released by relaxation during the increment is added to <computeroutput>dStress</computeroutput>, both multiplied by <computeroutput>factor</computeroutput>.</para>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">dT</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>time increment </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">elasticModuli</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>elastic moduli <formula id="409">$D_i$</formula> of the Maxwell units </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">relaxationTimes</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>relaxation times of the Maxwell units </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">stateVars</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>stresses <formula id="413">$\sigma_i$</formula> of the Maxwell units at the beginning of the increment </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">uniaxialStiffness</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>accumulated algorithmic stiffness of the Maxwell units </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="inout">dStress</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>accumulated stress released by relaxation, in Voigt notation </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">factor</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>scalar weight of the contribution </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" line="146" column="8" declfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" declline="146" declcolumn="8"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MarmotWiechert.h" line="34" column="1"/>
+  </compounddef>
+</doxygen>

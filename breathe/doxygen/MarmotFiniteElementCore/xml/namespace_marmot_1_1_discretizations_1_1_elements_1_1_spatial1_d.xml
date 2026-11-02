@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="namespace_marmot_1_1_discretizations_1_1_elements_1_1_spatial1_d" kind="namespace" language="C++">
+    <compoundname>Marmot::Discretizations::Elements::Spatial1D</compoundname>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_spatial1_d_1_1_bar2">Marmot::Discretizations::Elements::Spatial1D::Bar2</innernamespace>
+    <innernamespace refid="namespace_marmot_1_1_discretizations_1_1_elements_1_1_spatial1_d_1_1_bar3">Marmot::Discretizations::Elements::Spatial1D::Bar3</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotFiniteElement.h" line="130" column="3"/>
+  </compounddef>
+</doxygen>

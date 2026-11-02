@@ -1,227 +1,325 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.13.2" xml:lang="en-US">
-  <compound refid="struct_marmot_material_finite_strain_1_1_algorithmic_moduli" kind="struct"><name>MarmotMaterialFiniteStrain::AlgorithmicModuli</name>
-    <member refid="struct_marmot_material_finite_strain_1_1_algorithmic_moduli_1ac80dc43e863ef0a9350f7eb73a723e82" kind="variable"><name>dTau_dF</name></member>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.18.0" xml:lang="en-US">
+  <compound refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_algorithmic_moduli" kind="struct"><name>Marmot::Materials::MaterialFiniteStrain::AlgorithmicModuli</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_algorithmic_moduli_1a90974cbb6db291743996dfc0a18b2803" kind="variable"><name>dTau_dF</name></member>
   </compound>
-  <compound refid="struct_marmot_material_finite_strain_1_1_constitutive_response" kind="struct"><name>MarmotMaterialFiniteStrain::ConstitutiveResponse</name>
-    <member refid="struct_marmot_material_finite_strain_1_1_constitutive_response_1afc80cf951dad4ead53c18c985c39544d" kind="variable"><name>tau</name></member>
-    <member refid="struct_marmot_material_finite_strain_1_1_constitutive_response_1a915ecdf4a28c399d1c1c56e6386f404a" kind="variable"><name>elasticEnergyDensity</name></member>
-    <member refid="struct_marmot_material_finite_strain_1_1_constitutive_response_1a24d39c119eb072fdb2d041a596facdfe" kind="variable"><name>dissipation</name></member>
-    <member refid="struct_marmot_material_finite_strain_1_1_constitutive_response_1ab0862a1ac3498d95348f4f97191c1126" kind="variable"><name>stateVars</name></member>
-    <member refid="struct_marmot_material_finite_strain_1_1_constitutive_response_1ab06d6a9ddd6386ebe037b26440d9b863" kind="function"><name>ConstitutiveResponse</name></member>
-    <member refid="struct_marmot_material_finite_strain_1_1_constitutive_response_1a82e8b46ee56e619a2362d6f9c3aec3bc" kind="function"><name>ConstitutiveResponse</name></member>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli" kind="struct"><name>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::AlgorithmicModuli</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli_1a6881a2445a750559f834a4c2a4535de9" kind="variable"><name>dTau_dF</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli_1afac09e8668378b2c6f7ceda5f8b31efd" kind="variable"><name>dTau_dN</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli_1a5bd9ab3b71e1b295ca19aa3413157b32" kind="variable"><name>dL_dF</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_algorithmic_moduli_1ab76d2f2e014281d1c5063797b42c5d20" kind="variable"><name>dL_dN</name></member>
   </compound>
-  <compound refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d" kind="struct"><name>MarmotMaterialFiniteStrainAD::ConstitutiveResponseAD</name>
-    <member refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a3c0e763a0227764b7bd60b9a0d664d47" kind="variable"><name>tau</name></member>
-    <member refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a02df5378ff83d562a902855297d02b0b" kind="variable"><name>elasticEnergyDensity</name></member>
-    <member refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a3901cb6ff01ee49b3443cfdfe3eb18b4" kind="variable"><name>dissipation</name></member>
-    <member refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1ab907c14726da7de72da020100175592a" kind="variable"><name>stateVars</name></member>
-    <member refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a95dd152f7ba59a92990e97621d26cfdd" kind="function"><name>ConstitutiveResponseAD</name></member>
-    <member refid="struct_marmot_material_finite_strain_a_d_1_1_constitutive_response_a_d_1ab276e43a752f2708d3dbb29da80e8c19" kind="function"><name>ConstitutiveResponseAD</name></member>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response" kind="struct"><name>Marmot::Materials::MaterialFiniteStrain::ConstitutiveResponse</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response_1ab828851f3d090b1a4f71be5cb7c88cd8" kind="variable"><name>tau</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response_1a49d97eca88669096a71ebbcc0d6c4462" kind="variable"><name>elasticEnergyDensity</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response_1a587b1233f6ec69627628af4dd3edd15a" kind="variable"><name>dissipation</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response_1a54e03e94122ddc9ebdff894e7e47e4ed" kind="variable"><name>stateVars</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response_1aecab6b3baa99d4ffa5e76e8eab94086e" kind="function"><name>ConstitutiveResponse</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_constitutive_response_1a930461d6727c2dd0166e0a07071b9957" kind="function"><name>ConstitutiveResponse</name></member>
   </compound>
-  <compound refid="struct_marmot_material_finite_strain_1_1_deformation" kind="struct"><name>MarmotMaterialFiniteStrain::Deformation</name>
-    <member refid="struct_marmot_material_finite_strain_1_1_deformation_1ae25c16182615666f73ba70264cf18fe1" kind="variable"><name>F</name></member>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response" kind="struct"><name>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1aeb041511ea4cecfbec8b307093bc82ef" kind="variable"><name>tau</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a788bdf258fbbb72baff159576be54b9c" kind="variable"><name>L</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1afecf7e095b79a965a0370dbf7e2f05bf" kind="variable"><name>nonLocalRadius</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a4c7172e9b69c725c0cdc5de402567d54" kind="variable"><name>elasticEnergyDensity</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1abadfe1bce441e0303389e264cf5d4c8a" kind="variable"><name>dissipation</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a0f1a0e0d6145f58de90990cf53d070ac" kind="variable"><name>stateVars</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a3d20f429effb45b20bc89572936b95aa" kind="function"><name>ConstitutiveResponse</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1ad1fa069e5ee353ed1507d00e602b10a5" kind="function"><name>ConstitutiveResponse</name></member>
   </compound>
-  <compound refid="struct_marmot_material_finite_strain_a_d_1_1_deformation_a_d" kind="struct"><name>MarmotMaterialFiniteStrainAD::DeformationAD</name>
-    <member refid="struct_marmot_material_finite_strain_a_d_1_1_deformation_a_d_1a37bd5e6db50a2fbfb743422bbee57601" kind="variable"><name>F</name></member>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d" kind="struct"><name>Marmot::Materials::MaterialFiniteStrainAD::ConstitutiveResponseAD</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a08d36c326bb2482fc2c78aef6d657222" kind="variable"><name>tau</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a93eb875c9edea875ae9d20ef0ca7a9b9" kind="variable"><name>elasticEnergyDensity</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a93a557cb161401b9438740132cf90d8d" kind="variable"><name>dissipation</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1ada9bfba397748911f0bce64dd27b61fd" kind="variable"><name>stateVars</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a1109f1d80d5f03eb4d279d3cebc34212" kind="function"><name>ConstitutiveResponseAD</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_constitutive_response_a_d_1a38da0fd7020bbfe5859a77aa8f340db7" kind="function"><name>ConstitutiveResponseAD</name></member>
   </compound>
-  <compound refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry" kind="struct"><name>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::HistoryEntry</name>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1aad1456473c7dc95674e65cb79dac729c" kind="variable"><name>time</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1ab0f5d978943ef2bd5fd03d3c28b9ab9b" kind="variable"><name>stress</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1a488d704f4e400ff603e5b52048364e9e" kind="variable"><name>F</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1a20f93a97a746771aa6f1de6b56c7090f" kind="variable"><name>dTau_dF</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1a846067b2ecf9bee16e58caaaff6f4235" kind="variable"><name>stateVars</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1a33fe670b05aa9641fd0173e643b9d7ec" kind="function"><name>print</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1a55c20c2585d2c729fb2fa63f25240ee1" kind="function"><name>HistoryEntry</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_history_entry_1a1f93cfc5a4af4f3dd76c8aea34031674" kind="function"><name>HistoryEntry</name></member>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_deformation" kind="struct"><name>Marmot::Materials::MaterialFiniteStrain::Deformation</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_deformation_1a6fa0724e540fa02758f5e4adff520950" kind="variable"><name>F</name></member>
   </compound>
-  <compound refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment" kind="struct"><name>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Increment</name>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment_1a8e6e64567d21822c98cb9696edcd20e8" kind="variable"><name>gradUIncrement</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment_1a2ae5c57d382f4e3b87d0550c5a8fe18d" kind="variable"><name>stressIncrement</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment_1a327ae9daa7e4222140d67e7ebc432d49" kind="variable"><name>isGradUComponentControlled</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment_1a34d8d0d1a9b8f367145df9644998cae9" kind="variable"><name>isStressComponentControlled</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment_1ab99ba150fb203bd08ec627a5c881f735" kind="variable"><name>timeOld</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_increment_1a9e5670d0b6dab1610b24ba7dac8ff74a" kind="variable"><name>dT</name></member>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation" kind="struct"><name>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::Deformation</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation_1a067f3daac1839466539588da051a14fa" kind="variable"><name>F</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_deformation_1a81460edec1a63ab636a4c901c0636c74" kind="variable"><name>N</name></member>
   </compound>
-  <compound refid="class_marmot_material_finite_strain" kind="class"><name>MarmotMaterialFiniteStrain</name>
-    <member refid="class_marmot_material_finite_strain_1adadfd1c68a90429237bf01f17c1492a4" kind="variable"><name>materialProperties</name></member>
-    <member refid="class_marmot_material_finite_strain_1af2c2b36c75e1109b723f50f9cf1e6db8" kind="variable"><name>nMaterialProperties</name></member>
-    <member refid="class_marmot_material_finite_strain_1a6660b8aaa6e786198f43548d55ba01db" kind="variable"><name>materialNumber</name></member>
-    <member refid="class_marmot_material_finite_strain_1a4323a79f3c76c032bb451131ef5a0700" kind="variable"><name>stateLayout</name></member>
-    <member refid="class_marmot_material_finite_strain_1afbc11d3b83d7555858475007d28ebe0c" kind="function"><name>MarmotMaterialFiniteStrain</name></member>
-    <member refid="class_marmot_material_finite_strain_1ae137c8535072fd84da855b7fc9efbf5c" kind="function"><name>~MarmotMaterialFiniteStrain</name></member>
-    <member refid="class_marmot_material_finite_strain_1a88a61a579f908cd61a0bf9a7c5394fbd" kind="function"><name>computeStress</name></member>
-    <member refid="class_marmot_material_finite_strain_1ab7174369076150bfc116d2e404d9eb53" kind="function"><name>computeStressExplicit</name></member>
-    <member refid="class_marmot_material_finite_strain_1ac9b86677188301ae56779fa9327f275c" kind="function"><name>computeStress</name></member>
-    <member refid="class_marmot_material_finite_strain_1a41df4452f395f5125fec2680480e2e19" kind="function"><name>computePlaneStrain</name></member>
-    <member refid="class_marmot_material_finite_strain_1a3b79fcdf7e45f65076c94a2cc464712b" kind="function"><name>computePlaneStrainExplicit</name></member>
-    <member refid="class_marmot_material_finite_strain_1a5beaba701eac2a493704fe015a09e447" kind="function"><name>computePlaneStrain</name></member>
-    <member refid="class_marmot_material_finite_strain_1aebea5001278b5103858e6c40a04cc940" kind="function"><name>computePlaneStrainExplicit</name></member>
-    <member refid="class_marmot_material_finite_strain_1a5a4a539cbba5a51c7a4f97f5efca07ee" kind="function"><name>computePlaneStress</name></member>
-    <member refid="class_marmot_material_finite_strain_1af4452edf7ce6bcf738d4801a4968a7ed" kind="function"><name>computePlaneStressExplicit</name></member>
-    <member refid="class_marmot_material_finite_strain_1ac96dc146dc87a26160e91c8f239f2882" kind="function"><name>findEigenDeformationForEigenStress</name></member>
-    <member refid="class_marmot_material_finite_strain_1a5c7e383c872566fee41f6f12d863ed4c" kind="function"><name>getStateView</name></member>
-    <member refid="class_marmot_material_finite_strain_1aeab6c2985e19de95a2ed851225d97e0e" kind="function"><name>getNumberOfRequiredStateVars</name></member>
-    <member refid="class_marmot_material_finite_strain_1a73823bcf3cc55df7ffc2847c91317b1a" kind="function"><name>initializeYourself</name></member>
-    <member refid="class_marmot_material_finite_strain_1aac695d1b8c9d639387e633b0d0aa71fe" kind="function"><name>getMaximumWaveSpeed</name></member>
-    <member refid="class_marmot_material_finite_strain_1a813742e2a66f7dfd8fdebb7122b1b955" kind="function"><name>getDensity</name></member>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_deformation_a_d" kind="struct"><name>Marmot::Materials::MaterialFiniteStrainAD::DeformationAD</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_a_d_1_1_deformation_a_d_1a5c43469893437a5400791ce555f08965" kind="variable"><name>F</name></member>
   </compound>
-  <compound refid="class_marmot_material_finite_strain_a_d" kind="class"><name>MarmotMaterialFiniteStrainAD</name>
-    <member refid="class_marmot_material_finite_strain_a_d_1a3d9018980cf02b50141828446b73c1ba" kind="function"><name>MarmotMaterialFiniteStrainAD</name></member>
-    <member refid="class_marmot_material_finite_strain_a_d_1a9790fdf5d31af4b389c57e48b48f89bc" kind="function"><name>computeStress</name></member>
-    <member refid="class_marmot_material_finite_strain_a_d_1a66c6fec0d170786c0f258b7993f46db2" kind="function"><name>computeStressAD</name></member>
+  <compound refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper" kind="class"><name>Marmot::Materials::GradientEnhancedHughesWingetWrapper</name>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a4f71bd0bd704412372b69f8622067be1" kind="typedef"><name>BaseMaterial</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a82fb58fe003ead6442aa5e2b14ed56bb" kind="variable"><name>baseMaterial</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a8d7ba53ddf1d21fae887fc43dfcfa78c" kind="variable"><name>deformationGradientSlot</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a434e2d7e79ca0376c88f129319079d1e" kind="variable"><name>stressSlot</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a6d5adae2fba09e31b44e426caaf63ccd" kind="variable"><name>nonlocalFieldSlot</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a6f73fb83439c86b0a732416f7c9aa8b7" kind="variable"><name>baseMaterialSlot</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1abf0bfac1bf66a883f77d755dbf204710" kind="function"><name>GradientEnhancedHughesWingetWrapper</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1af772b5aebe2ff7ddfa713d36e5cfa5be" kind="function"><name>~GradientEnhancedHughesWingetWrapper</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a76f885dcc4beac3f9df622632733a00d" kind="function"><name>initializeStateLayout</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1adf686e5ccfa934124bb24224f99adf53" kind="function"><name>getStateView</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a408f702387d046f631ff8932da7b5b01" kind="function"><name>getDensity</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a028bfe156fae6dcb619fff52c27426d6" kind="function"><name>getNonlocalViscosity</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1ab3c24fa75abac26b59cb33a08213df6b" kind="function"><name>getNonlocalMicroInertia</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1af14aac8627c9fdfa808d2a1ddb36686d" kind="function"><name>initializeYourself</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a1f2f41007df08e89c39bdd745d2e79f0" kind="function"><name>computeStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a3af7293ee72c03d31ef81d36d3bcfb04" kind="function"><name>computeStressExplicit</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a93d05216a532a38c0651341cd155bb57" kind="function"><name>computeStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a110b60522d434da3d3fe771241e7e2a2" kind="function"><name>fromEigen</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a02bd619f92f1c0f051803418e6b3cf63" kind="function"><name>toEigen</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1ad80f697577bacd165d2aa116a224129f" kind="function"><name>computeStressSensitivity</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1aaf51bc7c90ed437614453209297f3f10" kind="function"><name>computeStressCore</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_gradient_enhanced_hughes_winget_wrapper_1a6a20868e32b6076876a0da3c9eac141a" kind="function"><name>computeNumericalTangent</name></member>
   </compound>
-  <compound refid="class_marmot_library_1_1_marmot_material_finite_strain_factory" kind="class"><name>MarmotLibrary::MarmotMaterialFiniteStrainFactory</name>
-    <member refid="class_marmot_library_1_1_marmot_material_finite_strain_factory_1aa6660bdf86fb078d88a4419f844447a5" kind="typedef"><name>materialFactoryFunction</name></member>
-    <member refid="class_marmot_library_1_1_marmot_material_finite_strain_factory_1a721bdc7c85d74cc79d7b24fc0d1d7293" kind="typedef"><name>MaterialFactoryMap</name></member>
-    <member refid="class_marmot_library_1_1_marmot_material_finite_strain_factory_1a10da5120ed919036bb65cfca0fd7363d" kind="function"><name>MarmotMaterialFiniteStrainFactory</name></member>
-    <member refid="class_marmot_library_1_1_marmot_material_finite_strain_factory_1aa820a5e2fd7e0b380105ad0aaf7fb9ef" kind="function"><name>createMaterial</name></member>
-    <member refid="class_marmot_library_1_1_marmot_material_finite_strain_factory_1a5c3b2fc57d7ac2c00134f10d14b5e2b9" kind="function"><name>registerMaterial</name></member>
-    <member refid="class_marmot_library_1_1_marmot_material_finite_strain_factory_1a551a8aaffa18d6d8084bf1e0cc6f0b0f" kind="function"><name>materialFactoryFunctionByName</name></member>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_history_entry" kind="struct"><name>Marmot::Materials::MaterialPointSolverFiniteStrain::HistoryEntry</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_history_entry_1a71c0e095ea1f492b53d9f5b6d85e2099" kind="variable"><name>time</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_history_entry_1af1d7bfa18da36cd873c38e0f4fb437db" kind="variable"><name>stress</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_history_entry_1af441e340e5d66c337c7ec68f9c2af533" kind="variable"><name>F</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_history_entry_1a77df4f27d5d6a13004ece0193f623eb3" kind="variable"><name>dTau_dF</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_history_entry_1ae05cb4a165260157cf3bac3ed20660f2" kind="variable"><name>stateVars</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_history_entry_1abc774e22670b7aa6537f1b0382b65e1f" kind="function"><name>print</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_history_entry_1afcc0f69c2b6c58edd058e40f12261034" kind="function"><name>HistoryEntry</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_history_entry_1a289854e05261c7f4d6016314ba385c66" kind="function"><name>HistoryEntry</name></member>
   </compound>
-  <compound refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped" kind="class"><name>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped</name>
-    <member refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1af21787af3d7360b530d46884978f8523" kind="variable"><name>baseMaterial</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1a08bb5c063481f9b5b1fa415688fbb331" kind="variable"><name>nSubsteps</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1a800216fb31d086b7854887bc716289f3" kind="function"><name>MarmotMaterialFiniteStrainSubstepped</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1afe7beb365d523e37a4ce831b886da939" kind="function"><name>~MarmotMaterialFiniteStrainSubstepped</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1a73bb326f6c4aa780c9784bb4a6456923" kind="function"><name>getDensity</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1ac006ab71889faa741505f74e994ff0cf" kind="function"><name>initializeStateLayout</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1a4e6ad8ed7f24a6c9d5e5761c96505868" kind="function"><name>initializeYourself</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1a65087185617630145ec21a7601ebee86" kind="function"><name>computeStressWithSensitivities</name></member>
-    <member refid="class_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1a71ee0360f837cbcd654ffa945fcfe31f" kind="function"><name>computeStress</name></member>
+  <compound refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper" kind="class"><name>Marmot::Materials::HughesWingetWrapper</name>
+    <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a1c431001f9637cd5ecadfe4dee924e59" kind="variable"><name>baseMaterial</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a7834e853be57f624c0f38967c85503e8" kind="variable"><name>deformationGradientSlot</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a9beeb9262492c82bfd2b53697cf64551" kind="variable"><name>stressSlot</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a04d8628a9fd2cc5d7654a3a952d6d98f" kind="variable"><name>baseMaterialSlot</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a5e42a8e1a1dd0be26d00901aa0825d96" kind="function"><name>HughesWingetWrapper</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a8d9516a7ca350e8321c7f5a3044f4bf7" kind="function"><name>~HughesWingetWrapper</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a0dd9a4032f02422fbde15ecf100b0ac1" kind="function"><name>initializeStateLayout</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a2b6d91f95a9a5df4f43c134bf8022748" kind="function"><name>setCharacteristicElementLength</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a418c29a12d2818cb156382e5b32c02b3" kind="function"><name>getStateView</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a3f28011f30a855bde0a7e589cc496678" kind="function"><name>getDensity</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1ab57e2464e27eed7ad1ddae6441ee6e07" kind="function"><name>initializeYourself</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a1f5a38cac1c30b07ac8ee5c14d12cef8" kind="function"><name>computeStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a39a2f0828d634962474f5063169ca37d" kind="function"><name>computeStressExplicit</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1ab4fea4e4b068462c8beaf891c538ba7b" kind="function"><name>fromEigen</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1af7456ca9d679077a167cdb26ecb7a9db" kind="function"><name>toEigen</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1acfa9e669290a6dce3d181dd03a11ec12" kind="function"><name>computeStressSensitivity</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a478178de3d2d038cb27c1bde0de03910" kind="function"><name>computeStressCore</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a1951406512092a967b11806d7a8d92ac" kind="function"><name>computeNumericalTangent</name></member>
   </compound>
-  <compound refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain" kind="class"><name>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain</name>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ab0e4862d6c7f0792b2b750655ed317ce" kind="variable"><name>material</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a060c1895709d246cdd0af7a558ea5937" kind="variable"><name>nStateVars</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a7f6731e2a9af21c9c742c1d2d446c71c" kind="variable"><name>stateVars</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a36861b8b06712b8fa84203e3d0672a52" kind="variable"><name>_initialStateVars</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1af74a4072f5f3716c77c5d837d0262377" kind="variable"><name>stateVarsTemp</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ac99993dbf80832c5f970a9c05f2e4b67" kind="variable"><name>stress</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a9345f16373cefc6156e1b6f0a0e8fa84" kind="variable"><name>_initialStress</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a3cdf71f50cff8032b571f9a19f7a5153" kind="variable"><name>gradU</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ad84d9f433fc9940cd40467cb124570ee" kind="variable"><name>dTau_dF</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1aafb49c5b3f4412a6c0dc1d332035adbb" kind="variable"><name>steps</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a3844aaa4c9133150648d30d4116dc3ee" kind="variable"><name>history</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ab16cd25b6b64f3987929fb2c8379efd4" kind="variable"><name>options</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a1795eddc0ae6a711af0bbaceead2bff2" kind="function"><name>MarmotMaterialPointSolverFiniteStrain</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a92eaaad62bfe81c8e6efbf427dcfe507" kind="function"><name>addStep</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ad8e272dc0fdeba6d0f3713c97c911c5c" kind="function"><name>getSteps</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1aaf9c2d3afe013d5a4283a311e4564b6c" kind="function"><name>clearSteps</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ab298b252101c9a5ae4723a6a238e2071" kind="function"><name>setInitialState</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1aa199d4abb0eb00f2c040c845f63dbc5f" kind="function"><name>getNumberOfStateVariables</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a04147554138c145592592b02251ddc0e" kind="function"><name>resetToInitialState</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a45110dbb641c78c3ccc1ccf3d2899f18" kind="function"><name>solve</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ad5da0c147346dabde5faba5d619da5df" kind="function"><name>getHistory</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a0e2a5a36158c0716e0a7cd3decc047c2" kind="function"><name>clearHistory</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a11838c92ee97bc5c15033e1be8736390" kind="function"><name>printHistory</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a4b8ec5c0e10c83e963c7e62f7854a4b3" kind="function"><name>exportHistoryToCSV</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ab55c12b1d7f63fea3fd757c7b7f36a89" kind="function"><name>solveStep</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a42a6708f2d72e257776c6ec6349ee201" kind="function"><name>solveIncrement</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1a522ca653bb455453aa434f8e7fc50aab" kind="function"><name>computeResidual</name></member>
-    <member refid="class_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1ab5175c300da76e16284b989d35dccc1e" kind="function"><name>modifyTangent</name></member>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_increment" kind="struct"><name>Marmot::Materials::MaterialPointSolverFiniteStrain::Increment</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_increment_1afb048752d6ec60903745f5eb35357df9" kind="variable"><name>gradUIncrement</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_increment_1ae380a1cec302c64634999e2b5d428515" kind="variable"><name>stressIncrement</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_increment_1afc81994005c36d9a6b7ea3cc6d253072" kind="variable"><name>isGradUComponentControlled</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_increment_1a0265b361dd4d8ae596fe4274715af8f5" kind="variable"><name>isStressComponentControlled</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_increment_1ad542db1362b9f1fb5033aaf08b753c2d" kind="variable"><name>timeOld</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_increment_1ab4175e918aa8b9c4d36149dc7820ca5a" kind="variable"><name>dT</name></member>
   </compound>
-  <compound refid="struct_marmot_1_1_continuum_mechanics_1_1_finite_strain_1_1_viscoelasticity_1_1_maxwell_properties" kind="struct"><name>Marmot::ContinuumMechanics::FiniteStrain::Viscoelasticity::MaxwellProperties</name>
-    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_finite_strain_1_1_viscoelasticity_1_1_maxwell_properties_1a60fc49df4476724ae570748a3cbae357" kind="variable"><name>nMaxwell</name></member>
-    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_finite_strain_1_1_viscoelasticity_1_1_maxwell_properties_1a7ed93db95de7c38177379ecf1836dbb0" kind="variable"><name>gamma</name></member>
-    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_finite_strain_1_1_viscoelasticity_1_1_maxwell_properties_1ac15fb0a9d5a51bfa98a5994a27d86ba8" kind="variable"><name>sumGamma</name></member>
-    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_finite_strain_1_1_viscoelasticity_1_1_maxwell_properties_1a5cde08f4a608edf5a250e786ba745b4d" kind="variable"><name>tau</name></member>
+  <compound refid="class_marmot_1_1_materials_1_1_material_finite_strain" kind="class"><name>Marmot::Materials::MaterialFiniteStrain</name>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a41f788bb3c393b08b579f708e4a6a187" kind="variable"><name>materialProperties</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a8db69ec3edfc5f28c6cce88da5224eb7" kind="variable"><name>nMaterialProperties</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a635f47030436563d4f79acef59a6aeef" kind="variable"><name>materialNumber</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a9923b35e9bef5a429caadca4c3d3d74a" kind="variable"><name>stateLayout</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a498833e4f8ad9e29a09f34f1a2a53491" kind="function"><name>MaterialFiniteStrain</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a5fb9244be5f3982e58414b96667973f3" kind="function"><name>~MaterialFiniteStrain</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1af123a7f01a7534862ec08e82fcc0a443" kind="function"><name>computeStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a6e355595e26df823bae850e03aeacd85" kind="function"><name>computeStressExplicit</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1aa32851be167d4234e11182aeeb7a32e4" kind="function"><name>computeStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a99c3482792aa78a09d730eef27da2e6f" kind="function"><name>computePlaneStrain</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a3bf3cf62925f7d455ec4c90174a45bd8" kind="function"><name>computePlaneStrainExplicit</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a5a4e6bf35af6720e3f3b2c2b530f1ff5" kind="function"><name>computePlaneStrain</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a04ae82bf6b55b7406402e244056d5c0e" kind="function"><name>computePlaneStrainExplicit</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a7b3edcf9103bce626425fbdfec9c019c" kind="function"><name>computePlaneStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1afb9af3285d55f00fb3983a9111ad1b7a" kind="function"><name>computePlaneStressExplicit</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a1a44e61c30c6a18bf204a0375305ddfc" kind="function"><name>findEigenDeformationForEigenStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1af07a0556b7f723dd0c1fc47fa33a128e" kind="function"><name>getStateView</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a7ad41a3c35aead0da007341ff2152ef4" kind="function"><name>getNumberOfRequiredStateVars</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1ab63e79f271a977946637c538eb4bb1ae" kind="function"><name>initializeYourself</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a85661aaa97a64688d360ac90b3042b4a" kind="function"><name>getMaximumWaveSpeed</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1a3985323a46813f83562a8e8980a6329a" kind="function"><name>setCharacteristicElementLength</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_1ae4d2733228b5cacd8b39cb26c8914b8f" kind="function"><name>getDensity</name></member>
   </compound>
-  <compound refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_solver_options" kind="struct"><name>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::SolverOptions</name>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_solver_options_1a535e324b59956fd041f90cfdafac483a" kind="variable"><name>maxIterations</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_solver_options_1adb474eb471187a03ddab9616b77125ba" kind="variable"><name>residualTolerance</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_solver_options_1a8dbda2872f21ea8fef615a12ef82ac03" kind="variable"><name>correctionTolerance</name></member>
+  <compound refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d" kind="class"><name>Marmot::Materials::MaterialFiniteStrainAD</name>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a42e8d9177586bfd4453ab8b3cd8d4fbf" kind="function"><name>MaterialFiniteStrainAD</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a37382eee90c677698043712cdde0aa3b" kind="function"><name>computeStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_a_d_1a1f54b4133455a51f197dc3793866e082" kind="function"><name>computeStressAD</name></member>
   </compound>
-  <compound refid="struct_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1_1_state_sensitivities" kind="struct"><name>Marmot::Materials::MarmotMaterialFiniteStrainSubstepped::StateSensitivities</name>
-    <member refid="struct_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1_1_state_sensitivities_1a084b5599356632ff5bfcf715cba20bfd" kind="variable"><name>dState_dF</name></member>
-    <member refid="struct_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1_1_state_sensitivities_1ac9689f00e644a34da3fc3b21c0318e5a" kind="variable"><name>dState_dStateOld</name></member>
-    <member refid="struct_marmot_1_1_materials_1_1_marmot_material_finite_strain_substepped_1_1_state_sensitivities_1a0e771d0de67831cf884359509a115687" kind="variable"><name>dStress_dStateOld</name></member>
+  <compound refid="class_marmot_1_1_registry_1_1_material_finite_strain_factory" kind="class"><name>Marmot::Registry::MaterialFiniteStrainFactory</name>
+    <member refid="class_marmot_1_1_registry_1_1_material_finite_strain_factory_1a578466cdc038ac01b696f9557e3837cd" kind="typedef"><name>materialFactoryFunction</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_finite_strain_factory_1aafb071572c93a4a816a80422ee03e9ff" kind="typedef"><name>MaterialFactoryMap</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_finite_strain_factory_1afeac294a127981fe2bf3fd6ada9bae9b" kind="function"><name>MaterialFiniteStrainFactory</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_finite_strain_factory_1a17320e12d3f6cab6abd34414197d9ec2" kind="function"><name>createMaterial</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_finite_strain_factory_1abe9f168ee597324762f35643bb6c4f32" kind="function"><name>registerMaterial</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_finite_strain_factory_1af320fff24e14396da900e2ed69a1d277" kind="function"><name>materialFactoryFunctionByName</name></member>
   </compound>
-  <compound refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_step" kind="struct"><name>Marmot::Solvers::MarmotMaterialPointSolverFiniteStrain::Step</name>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_step_1a968938e8c8756455c3472789ac7c9735" kind="variable"><name>gradUIncrementTarget</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_step_1afb3a3a222c67764bd758081c87b8cea0" kind="variable"><name>stressIncrementTarget</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_step_1a2262dfbdb20579ccc3609b1c08d816cf" kind="variable"><name>isGradUComponentControlled</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_step_1a1d63cc4b254b167ff234e511dd88079f" kind="variable"><name>isStressComponentControlled</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_step_1a70a3c53b81ee75f732aa95d3302f9b48" kind="variable"><name>timeStart</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_step_1a2f9e82242e0f75c7f3359ce25aab29b0" kind="variable"><name>timeEnd</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_step_1ad1bd94af79d8c7abd41db319da77cbe3" kind="variable"><name>dTStart</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_step_1a30df026a96e7407824a72d2e7cf650e3" kind="variable"><name>dTMin</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_step_1ab43c9aa152e7e56732275d6071440ba1" kind="variable"><name>dTMax</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_step_1a71c9159afcb7ba9112b6f7b43eac4fce" kind="variable"><name>maxIncrements</name></member>
-    <member refid="struct_marmot_1_1_solvers_1_1_marmot_material_point_solver_finite_strain_1_1_step_1a0c8b4008ca3a75cb7be6a94c22750886" kind="function"><name>checkControl</name></member>
+  <compound refid="class_marmot_1_1_materials_1_1_material_finite_strain_substepped" kind="class"><name>Marmot::Materials::MaterialFiniteStrainSubstepped</name>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_substepped_1aa1b49a9cc222b69135b6a33fdbdcd834" kind="variable"><name>baseMaterial</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_substepped_1af8326a6442131669d4c638416d798fdf" kind="variable"><name>nSubsteps</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_substepped_1a08bbfe1e90ce527b0c2a310cbd2c8b6b" kind="function"><name>MaterialFiniteStrainSubstepped</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_substepped_1add05906e00648a51fb4e9c23ad1d0015" kind="function"><name>~MaterialFiniteStrainSubstepped</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_substepped_1a2810202627ff3ebd4d010910fbcde658" kind="function"><name>getDensity</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_substepped_1a210a8d834b12ef5938ac94c406ef61a3" kind="function"><name>initializeStateLayout</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_substepped_1ae01912b1679ff05136ca7902eeb90ebe" kind="function"><name>initializeYourself</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_substepped_1af5baf4f9ad3b03ddcca78a308441d219" kind="function"><name>computeStressWithSensitivities</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_finite_strain_substepped_1abb5be23b6acc28e67e160c82a8898d09" kind="function"><name>computeStress</name></member>
   </compound>
-  <compound refid="struct_marmot_material_finite_strain_1_1_time_increment" kind="struct"><name>MarmotMaterialFiniteStrain::TimeIncrement</name>
-    <member refid="struct_marmot_material_finite_strain_1_1_time_increment_1ab2aa35cc6462ad388f7998839f3040a6" kind="variable"><name>time</name></member>
-    <member refid="struct_marmot_material_finite_strain_1_1_time_increment_1a44d07ea5334257c3765c75ad641ac059" kind="variable"><name>dT</name></member>
+  <compound refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain" kind="class"><name>Marmot::Materials::MaterialGradientEnhancedFiniteStrain</name>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a095f07a58e87c74ffd626d0732294e1c" kind="variable"><name>materialProperties</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a89c9f71f954ab6ba0013ff0a5ac69cad" kind="variable"><name>nMaterialProperties</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1acdabeb84fc8d5b7730be4e28cf1c8d99" kind="variable"><name>materialNumber</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a561608dc98d88f02e52d1859740e419e" kind="variable"><name>stateLayout</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a8cc0121be163f6e2b72570b00724b50b" kind="function"><name>MaterialGradientEnhancedFiniteStrain</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a5adeade2cb79589df1202309101da9fb" kind="function"><name>~MaterialGradientEnhancedFiniteStrain</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ada7d86063af4b725df799823973719c2" kind="function"><name>computeStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1aa9de1795520d1dbe3b60e686f7e4536d" kind="function"><name>computeStressExplicit</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a93d05216a532a38c0651341cd155bb57" kind="function"><name>computeStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a2586f5ecd2d47bebcbe2e98c10c71128" kind="function"><name>computePlaneStrain</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a2e1248af0e1d3f4ea5707226b0af6786" kind="function"><name>computePlaneStrain</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a19be83d43104508436f6ed8f7d757201" kind="function"><name>computePlaneStrainExplicit</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1af37d4ff0a7ffdf18e3730ff94ad6b6ae" kind="function"><name>findEigenDeformationForEigenStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a42eaa5a0682ef65cb573b3f7bb511df7" kind="function"><name>getStateView</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a5709f75fabfad0c5efe1e740ae97c6b7" kind="function"><name>getNumberOfRequiredStateVars</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1a7c70693345d5d7633e8d474424fd8067" kind="function"><name>initializeYourself</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ac9d0f522e6fe382762642be915ae0bb0" kind="function"><name>getDensity</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1ae454eee4e3524d003f8b80adf9218dd5" kind="function"><name>setCharacteristicElementLength</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1af7001dc0458d90af2e84410a45e4330e" kind="function"><name>getNonlocalViscosity</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1abb62aebab0d8114c5075fe3ef88b2f4f" kind="function"><name>getNonlocalMicroInertia</name></member>
   </compound>
-  <compound refid="namespace_fastor" kind="namespace"><name>Fastor</name>
+  <compound refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_finite_strain_factory" kind="class"><name>Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory</name>
+    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_finite_strain_factory_1afeefcba42c5c05418fad1815f783f8ca" kind="typedef"><name>materialFactoryFunction</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_finite_strain_factory_1a08a1214d69965ac68377bf85ea2e620a" kind="typedef"><name>MaterialFactoryMap</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_finite_strain_factory_1a3e95e1129dd74c2c4ff6e3170098ad3b" kind="function"><name>MaterialGradientEnhancedFiniteStrainFactory</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_finite_strain_factory_1a45480c8b1a77b1c08322ab8ca89df3b7" kind="function"><name>createMaterial</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_finite_strain_factory_1addd2bbfd51fd892b15fe02f784d3d57e" kind="function"><name>registerMaterial</name></member>
+    <member refid="class_marmot_1_1_registry_1_1_material_gradient_enhanced_finite_strain_factory_1ad225a5025973d688dfb8c6521b6b3702" kind="function"><name>materialFactoryFunctionByName</name></member>
   </compound>
-  <compound refid="namespace_fastor_indices" kind="namespace"><name>FastorIndices</name>
+  <compound refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain" kind="class"><name>Marmot::Materials::MaterialPointSolverFiniteStrain</name>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1a93a7ee962b36b0106aa623f2a5088fc2" kind="variable"><name>material</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1a0810c9c37a134ea7deab00f95bde75db" kind="variable"><name>nStateVars</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1a7de6f1100aff60e5c5c7c527ed865166" kind="variable"><name>stateVars</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1a9f2f94b0a7a7f1518259068de568e1de" kind="variable"><name>_initialStateVars</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1a15b3eb52ddb1ed7e1191371d6ddea1d5" kind="variable"><name>stateVarsTemp</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1a0b498af1238186618a8950827e017d52" kind="variable"><name>stress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1a00f0226cfde7527ef82860632aae85c1" kind="variable"><name>_initialStress</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1ac4db48857e2ec045724a5e6206e02fc4" kind="variable"><name>gradU</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1a421122d4c597d54695a8a2e5e82838d3" kind="variable"><name>dTau_dF</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1af7acc9d4a9d7fdc018e15197fe706e6d" kind="variable"><name>steps</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1aab344152f321fbaefb03246886dd61b4" kind="variable"><name>history</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1af01f6e013840ca171cd642df638b7ceb" kind="variable"><name>options</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1a3b5597b3947f1909ed5d45ed6b8dae7a" kind="function"><name>MaterialPointSolverFiniteStrain</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1a4a0d46bdd2fb50b5b1eb70b51bfd3b6a" kind="function"><name>addStep</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1ab342cdd64397f4f262e12f133ac4271b" kind="function"><name>getSteps</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1ae486c33fb0aeb51a6e2a16f3743560a2" kind="function"><name>clearSteps</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1a2eb130bb20e5994b71b2809ff21717a7" kind="function"><name>setInitialState</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1a85d0bbe0878fc1a1c99b44301e3de182" kind="function"><name>getNumberOfStateVariables</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1a14e1da8ec91c5404b22c435ee6c492d8" kind="function"><name>resetToInitialState</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1a184e84b32ad4218d3d9f16c1ebc488a4" kind="function"><name>solve</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1aa0554d3d986e8db61ef8dce589ba525b" kind="function"><name>getHistory</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1aba21e338348ef02708d9299882d656af" kind="function"><name>clearHistory</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1a4d31256a0fe98f8c0cd53738f06fad5c" kind="function"><name>printHistory</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1a5bac3dcc53a9b834b5cbb8fbfa6784c1" kind="function"><name>exportHistoryToCSV</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1ada90e4625959b8039b5438ec3f215876" kind="function"><name>solveStep</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1aa7f3a82d4cfd4e18784fcb383a1a9c68" kind="function"><name>solveIncrement</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1a96eb71a7c75f8260d766fdb6d5713436" kind="function"><name>computeResidual</name></member>
+    <member refid="class_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1a562ef7c2f03c0eb27d7b07250fab5298" kind="function"><name>modifyTangent</name></member>
   </compound>
-  <compound refid="namespace_fastor_standard_tensors" kind="namespace"><name>FastorStandardTensors</name>
+  <compound refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_maxwell_properties" kind="struct"><name>Marmot::ContinuumMechanics::Viscoelasticity::MaxwellProperties</name>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_maxwell_properties_1a5dd2e037094fbda7bc13aac066f89d06" kind="variable"><name>nMaxwell</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_maxwell_properties_1ae8d4410c2e541483e5bdaf4e2619720e" kind="variable"><name>gamma</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_maxwell_properties_1a364ea43e7d551d84754722cd97c6025d" kind="variable"><name>sumGamma</name></member>
+    <member refid="struct_marmot_1_1_continuum_mechanics_1_1_viscoelasticity_1_1_maxwell_properties_1a58a7d2822bc0047e23199007803bdd0b" kind="variable"><name>tau</name></member>
+  </compound>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_solver_options" kind="struct"><name>Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_solver_options_1aa08196b435dc16f11f860337e6db2093" kind="variable"><name>maxIterations</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_solver_options_1aebec93a36d7a3b269819cdf0e107005d" kind="variable"><name>residualTolerance</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_solver_options_1a76eaf4edaa1868d4e94bfc3185fb4d0b" kind="variable"><name>correctionTolerance</name></member>
+  </compound>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_finite_strain_substepped_1_1_state_sensitivities" kind="struct"><name>Marmot::Materials::MaterialFiniteStrainSubstepped::StateSensitivities</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_substepped_1_1_state_sensitivities_1a1c3394ceb8d4c728000b8ae3a2eaabb3" kind="variable"><name>dState_dF</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_substepped_1_1_state_sensitivities_1a55d4b4a3c2e67a71794e7d9ccaf42c0c" kind="variable"><name>dState_dStateOld</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_substepped_1_1_state_sensitivities_1a823facb05b1fc921cf2cc8dc36be0f99" kind="variable"><name>dStress_dStateOld</name></member>
+  </compound>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_step" kind="struct"><name>Marmot::Materials::MaterialPointSolverFiniteStrain::Step</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_step_1af77b67b302a9d36110431f0cdb37b5b5" kind="variable"><name>gradUIncrementTarget</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_step_1adcb3630b288c7560f5702cb7b79a249c" kind="variable"><name>stressIncrementTarget</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_step_1a2f746966d59da8719da287ea6d4b7c51" kind="variable"><name>isGradUComponentControlled</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_step_1ac41382ae25e2fb0a0d696e90bf8503db" kind="variable"><name>isStressComponentControlled</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_step_1a64280d918abb08307d1ef66ae4dc757e" kind="variable"><name>timeStart</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_step_1aeafbc130786a07cf8276adb67e9ee909" kind="variable"><name>timeEnd</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_step_1a61ca3e09aeee0c514f6d167d03f86963" kind="variable"><name>dTStart</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_step_1a1982753eee89965fa2d20e1e169c465a" kind="variable"><name>dTMin</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_step_1aed31ead699122f6425d636f7e12be218" kind="variable"><name>dTMax</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_step_1ac765a3c91d43143928bc9589b45be9c8" kind="variable"><name>maxIncrements</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_point_solver_finite_strain_1_1_step_1a143f450b3b4d05fecc040676033f4baf" kind="function"><name>checkControl</name></member>
+  </compound>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_time_increment" kind="struct"><name>Marmot::Materials::MaterialFiniteStrain::TimeIncrement</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_time_increment_1aeb6664f69689e77b921803611c47511d" kind="variable"><name>time</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_finite_strain_1_1_time_increment_1a3104b7283e6a64a185cf71c0beef0e6f" kind="variable"><name>dT</name></member>
+  </compound>
+  <compound refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment" kind="struct"><name>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::TimeIncrement</name>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment_1a1882c11cf1955e4d0de1b804c6c42af0" kind="variable"><name>time</name></member>
+    <member refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_time_increment_1ae962da1dac7f7e677ac2fb688a488988" kind="variable"><name>dT</name></member>
   </compound>
   <compound refid="namespace_marmot" kind="namespace"><name>Marmot</name>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics" kind="namespace"><name>Marmot::ContinuumMechanics</name>
   </compound>
-  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_deformation_measures" kind="namespace"><name>Marmot::ContinuumMechanics::DeformationMeasures</name>
-    <member refid="_marmot_deformation_measures_8h_1a0080300fe5519b00e72e1a4552b2d21e" kind="function"><name>rightCauchyGreen</name></member>
-    <member refid="_marmot_deformation_measures_8h_1a4d845ae8668dfc80fdb1bca26aa360f4" kind="function"><name>leftCauchyGreen</name></member>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity" kind="namespace"><name>Marmot::ContinuumMechanics::Elasticity</name>
   </compound>
-  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_deformation_measures_1_1_first_order_derived" kind="namespace"><name>Marmot::ContinuumMechanics::DeformationMeasures::FirstOrderDerived</name>
-    <member refid="_marmot_deformation_measures_8h_1ae1be86d55b263215e0b5d58763f5ac22" kind="function"><name>rightCauchyGreen</name></member>
-    <member refid="_marmot_deformation_measures_8h_1a5baf88c57ed2c9d2f5688a8470664095" kind="function"><name>leftCauchyGreen</name></member>
-    <member refid="_marmot_deformation_measures_8h_1afe1cee55a65c7dff42c2954d04424fa4" kind="function"><name>deformedNormalVectorFromUndeformedSurfaceVector</name></member>
-    <member refid="_marmot_deformation_measures_8h_1a7e97b96c5884554fe236227ca8ee2bb1" kind="function"><name>deformedNormalProjectionTensor</name></member>
-    <member refid="_marmot_deformation_measures_8h_1a20525108a8feabca3515588000a1a391" kind="function"><name>inverseDeformationGradient</name></member>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_energy_density_functions" kind="namespace"><name>Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions</name>
+    <member refid="_marmot_energy_density_functions_8h_1afd05a3a9a618e69a6ed4c6a6a352404d" kind="function"><name>PenceGouPotentialA</name></member>
+    <member refid="_marmot_energy_density_functions_8h_1a532f5a3f260d0ce73fc46705bf55dede" kind="function"><name>PenceGouPotentialB</name></member>
+    <member refid="_marmot_energy_density_functions_8h_1a9d2c2026437f85a2da3a2a1f639edb5b" kind="function"><name>PenceGouPotentialC</name></member>
+    <member refid="_marmot_energy_density_functions_8h_1a61c103a23bd6e428c0d6627ea2877512" kind="function"><name>MooneyRivlinPotential</name></member>
+    <member refid="_marmot_energy_density_functions_8h_1a8c8d79dda849d507cb90ced349b70761" kind="function"><name>YeohPotential</name></member>
+    <member refid="_marmot_energy_density_functions_8h_1ab1e6116efcce0fbb779cb9d9da8479e7" kind="function"><name>standardNeoHooke</name></member>
   </compound>
-  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_energy_density_functions" kind="namespace"><name>Marmot::ContinuumMechanics::EnergyDensityFunctions</name>
-    <member refid="_marmot_energy_density_functions_8h_1ae0b66415bffd35bd37caede28c980e0e" kind="function"><name>PenceGouPotentialA</name></member>
-    <member refid="_marmot_energy_density_functions_8h_1aadee8fcdff08e16df791b8eb4d1de3f9" kind="function"><name>PenceGouPotentialB</name></member>
-    <member refid="_marmot_energy_density_functions_8h_1ae55ac9c598341eca3f2982d5387830a1" kind="function"><name>PenceGouPotentialC</name></member>
-    <member refid="_marmot_energy_density_functions_8h_1a362a5ce1e260e69d5193306b0f8feeeb" kind="function"><name>MooneyRivlinPotential</name></member>
-    <member refid="_marmot_energy_density_functions_8h_1afbb8bd9c1229e40cddbf27517b8a3d9e" kind="function"><name>YeohPotential</name></member>
-    <member refid="_marmot_energy_density_functions_8h_1a32d7b2d5886a5b40d551af3de29b2b9b" kind="function"><name>standardNeoHooke</name></member>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_energy_density_functions_1_1_first_order" kind="namespace"><name>Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder</name>
+    <member refid="_marmot_energy_density_functions_8h_1aeba84b8039eeda90a89e526508c1f65d" kind="function"><name>PenceGouPotentialB</name></member>
   </compound>
-  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_energy_density_functions_1_1_first_order_derived" kind="namespace"><name>Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived</name>
-    <member refid="_marmot_energy_density_functions_8h_1ad90fe082770de30a11d0af8f1d301105" kind="function"><name>PenceGouPotentialB</name></member>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_energy_density_functions_1_1_second_order" kind="namespace"><name>Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::SecondOrder</name>
+    <member refid="_marmot_energy_density_functions_8h_1a18dc4656e3e60225ea5d56deb2080c64" kind="function"><name>PenceGouPotentialB</name></member>
+    <member refid="_marmot_energy_density_functions_8h_1acd6a86346fd2a8017a30c5a2ad3cbd26" kind="function"><name>standardNeoHooke</name></member>
+    <member refid="_marmot_energy_density_functions_8h_1aec28d6877a681d5e60eea59566269cad" kind="function"><name>BiotNeoHooke</name></member>
   </compound>
-  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_energy_density_functions_1_1_second_order_derived" kind="namespace"><name>Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrderDerived</name>
-    <member refid="_marmot_energy_density_functions_8h_1aad1774c5d8d6e561b83fcad98982a4d7" kind="function"><name>PenceGouPotentialB</name></member>
-    <member refid="_marmot_energy_density_functions_8h_1ac1cbfd4afe386e41ecf496f1da07b9b3" kind="function"><name>standardNeoHooke</name></member>
-    <member refid="_marmot_energy_density_functions_8h_1a004c9a5d6302ca5bccf5b2474cd71211" kind="function"><name>BiotNeoHooke</name></member>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_elasticity_1_1_energy_density_functions_1_1_third_order" kind="namespace"><name>Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder</name>
+    <member refid="_marmot_energy_density_functions_8h_1a608e6ac7a7b100f29754c0dccd9412f5" kind="function"><name>standardNeoHooke</name></member>
   </compound>
-  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_energy_density_functions_1_1_third_order_derived" kind="namespace"><name>Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrderDerived</name>
-    <member refid="_marmot_energy_density_functions_8h_1aa433182a38a9d065c2f3fc070f7f2534" kind="function"><name>standardNeoHooke</name></member>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_kinematics" kind="namespace"><name>Marmot::ContinuumMechanics::Kinematics</name>
   </compound>
-  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_finite_strain" kind="namespace"><name>Marmot::ContinuumMechanics::FiniteStrain</name>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_kinematics_1_1_deformation_measures" kind="namespace"><name>Marmot::ContinuumMechanics::Kinematics::DeformationMeasures</name>
+    <member refid="_marmot_deformation_measures_8h_1ae088cc912993b82eeb403fe647cd464f" kind="function"><name>rightCauchyGreen</name></member>
+    <member refid="_marmot_deformation_measures_8h_1a80e7ab74d311a953ef2dbfef716db48f" kind="function"><name>leftCauchyGreen</name></member>
   </compound>
-  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_finite_strain_1_1_plasticity" kind="namespace"><name>Marmot::ContinuumMechanics::FiniteStrain::Plasticity</name>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_kinematics_1_1_deformation_measures_1_1_first_order" kind="namespace"><name>Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder</name>
+    <member refid="_marmot_deformation_measures_8h_1a797c1a220c156eec6a533fe91f7ee98e" kind="function"><name>rightCauchyGreen</name></member>
+    <member refid="_marmot_deformation_measures_8h_1a15f0601ab952826c73a54b0c8efed063" kind="function"><name>leftCauchyGreen</name></member>
+    <member refid="_marmot_deformation_measures_8h_1a0ab0a4b47bcdad6a597d153d1397b6d8" kind="function"><name>deformedNormalVectorFromUndeformedSurfaceVector</name></member>
+    <member refid="_marmot_deformation_measures_8h_1acd956b14144659eb4b104cc453f1de8e" kind="function"><name>deformedNormalProjectionTensor</name></member>
+    <member refid="_marmot_deformation_measures_8h_1a5fc1fcf4a4421976b1523766c7568c0b" kind="function"><name>inverseDeformationGradient</name></member>
   </compound>
-  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_finite_strain_1_1_plasticity_1_1_flow_integration" kind="namespace"><name>Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration</name>
-    <member refid="_marmot_finite_strain_plasticity_8h_1ad35ebc36e298a4bf78bcbb7c92d7310e" kind="function"><name>exponentialMap</name></member>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_plasticity" kind="namespace"><name>Marmot::ContinuumMechanics::Plasticity</name>
   </compound>
-  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_finite_strain_1_1_plasticity_1_1_flow_integration_1_1_first_order_derived" kind="namespace"><name>Marmot::ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::FirstOrderDerived</name>
-    <member refid="_marmot_finite_strain_plasticity_8h_1a61717d69b0655cad279856dae694d847" kind="function"><name>explicitIntegration</name></member>
-    <member refid="_marmot_finite_strain_plasticity_8h_1ac5090d6bd5c231cd5a3c780492eb8e04" kind="function"><name>exponentialMap</name></member>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_flow_integration" kind="namespace"><name>Marmot::ContinuumMechanics::Plasticity::FlowIntegration</name>
+    <member refid="_marmot_finite_strain_plasticity_8h_1a9381b95ec8a254156bf56ae7d21e11cd" kind="function"><name>exponentialMap</name></member>
+    <member refid="_marmot_finite_strain_plasticity_8h_1a7aeeea95f1da92f59ae663791fe7fc9d" kind="function"><name>exponentialMapScalingAndSquaring</name></member>
   </compound>
-  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_finite_strain_1_1_viscoelasticity" kind="namespace"><name>Marmot::ContinuumMechanics::FiniteStrain::Viscoelasticity</name>
-    <member refid="_marmot_finite_strain_viscoelasticity_8h_1ac40d5eac52259243a1c89ea28f34ae83" kind="function"><name>createMaxwellProperties</name></member>
-    <member refid="_marmot_finite_strain_viscoelasticity_8h_1ad9e31c3d4991f4148dba6e5dbf42c7bb" kind="function"><name>evaluateGeneralizedMaxwellModel</name></member>
-    <member refid="_marmot_finite_strain_viscoelasticity_8h_1a1262858919e165bf3893c42b9ea100ef" kind="function"><name>evaluateGeneralizedMaxwellModel</name></member>
-    <member refid="_marmot_finite_strain_viscoelasticity_8h_1ac703c7187051223723dba00a8fd27939" kind="function"><name>evaluateGeneralizedMaxwellModel</name></member>
-    <member refid="_marmot_finite_strain_viscoelasticity_8h_1a2a5ae6654a4e6ee547d8ac27bc6f27b5" kind="function"><name>evaluateGeneralizedMaxwellModel</name></member>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_flow_integration_1_1_first_order" kind="namespace"><name>Marmot::ContinuumMechanics::Plasticity::FlowIntegration::FirstOrder</name>
+    <member refid="_marmot_finite_strain_plasticity_8h_1ab624e066fecbb5cd01aa715f58cdfe1c" kind="function"><name>explicitIntegration</name></member>
+    <member refid="_marmot_finite_strain_plasticity_8h_1aaeb535275339011709e5cc8da7f0098d" kind="function"><name>exponentialMap</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_stress_measures" kind="namespace"><name>Marmot::ContinuumMechanics::StressMeasures</name>
-    <member refid="_marmot_stress_measures_8h_1aaa9b15a4bdd9fe167f4d595ea9b3ffdb" kind="function"><name>KirchhoffStressFromPK2</name></member>
+    <member refid="_marmot_stress_measures_8h_1a8849beac147c1a8ada8101d6717f118b" kind="function"><name>KirchhoffStressFromPK2</name></member>
   </compound>
-  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_stress_measures_1_1_first_order_derived" kind="namespace"><name>Marmot::ContinuumMechanics::StressMeasures::FirstOrderDerived</name>
-    <member refid="_marmot_stress_measures_8h_1af13ff0905773a2e71214f5c0deba67c4" kind="function"><name>KirchhoffStressFromPK2</name></member>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_stress_measures_1_1_first_order" kind="namespace"><name>Marmot::ContinuumMechanics::StressMeasures::FirstOrder</name>
+    <member refid="_marmot_stress_measures_8h_1abec6518a47100cf5ffa448529dc9f1d1" kind="function"><name>KirchhoffStressFromPK2</name></member>
+  </compound>
+  <compound refid="namespace_marmot_1_1_continuum_mechanics_1_1_viscoelasticity" kind="namespace"><name>Marmot::ContinuumMechanics::Viscoelasticity</name>
+    <member refid="_marmot_finite_strain_viscoelasticity_8h_1a6a2510997f95038f40965cee89eabe2c" kind="function"><name>createMaxwellProperties</name></member>
+    <member refid="_marmot_finite_strain_viscoelasticity_8h_1a31c4f91fdbdd4ce7a72772639f1488bc" kind="function"><name>evaluateGeneralizedMaxwellModel</name></member>
+    <member refid="_marmot_finite_strain_viscoelasticity_8h_1aae9bd682e79ea093e2bfe7d2bb627c01" kind="function"><name>evaluateGeneralizedMaxwellModel</name></member>
+    <member refid="_marmot_finite_strain_viscoelasticity_8h_1a8b2d41fd5c63e3ca3b5b7da95447c550" kind="function"><name>evaluateGeneralizedMaxwellModel</name></member>
+    <member refid="_marmot_finite_strain_viscoelasticity_8h_1a2fecab850cc6d736420906d463c64c99" kind="function"><name>evaluateGeneralizedMaxwellModel</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_materials" kind="namespace"><name>Marmot::Materials</name>
+    <member refid="_marmot_material_hughes_winget_8h_1aae3da5caf189b7df4924e17c1ac99260" kind="enum"><name>HughesWingetTangent</name></member>
+    <member refid="_marmot_material_hughes_winget_8h_1aae3da5caf189b7df4924e17c1ac99260a8503d71dcafbdc254c2bbea2599e5791" kind="enumvalue"><name>Analytic</name></member>
+    <member refid="_marmot_material_hughes_winget_8h_1aae3da5caf189b7df4924e17c1ac99260a1649aed298f99d587e2eb30c1db5946b" kind="enumvalue"><name>Exact</name></member>
+    <member refid="_marmot_material_hughes_winget_8h_1aae3da5caf189b7df4924e17c1ac99260a5225763efc97aebd39e5a303fceb57ac" kind="enumvalue"><name>Numerical</name></member>
   </compound>
-  <compound refid="namespace_marmot_1_1_solvers" kind="namespace"><name>Marmot::Solvers</name>
-  </compound>
-  <compound refid="namespace_marmot_library" kind="namespace"><name>MarmotLibrary</name>
+  <compound refid="namespace_marmot_1_1_registry" kind="namespace"><name>Marmot::Registry</name>
   </compound>
   <compound refid="_marmot_deformation_measures_8h" kind="file"><name>MarmotDeformationMeasures.h</name>
   </compound>
@@ -238,6 +336,14 @@
   <compound refid="_marmot_material_finite_strain_factory_8h" kind="file"><name>MarmotMaterialFiniteStrainFactory.h</name>
   </compound>
   <compound refid="_marmot_material_finite_strain_substepped_8h" kind="file"><name>MarmotMaterialFiniteStrainSubstepped.h</name>
+  </compound>
+  <compound refid="_marmot_material_gradient_enhanced_finite_strain_8h" kind="file"><name>MarmotMaterialGradientEnhancedFiniteStrain.h</name>
+  </compound>
+  <compound refid="_marmot_material_gradient_enhanced_finite_strain_factory_8h" kind="file"><name>MarmotMaterialGradientEnhancedFiniteStrainFactory.h</name>
+  </compound>
+  <compound refid="_marmot_material_gradient_enhanced_hughes_winget_8h" kind="file"><name>MarmotMaterialGradientEnhancedHughesWinget.h</name>
+  </compound>
+  <compound refid="_marmot_material_hughes_winget_8h" kind="file"><name>MarmotMaterialHughesWinget.h</name>
   </compound>
   <compound refid="_marmot_material_point_solver_finite_strain_8h" kind="file"><name>MarmotMaterialPointSolverFiniteStrain.h</name>
   </compound>

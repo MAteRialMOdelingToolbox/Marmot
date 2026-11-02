@@ -1,0 +1,5 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="Marmot::Discretizations::Elements::Element" alt="" coords="80,101,526,149"/>
+<area shape="rect" id="node2" title="Marmot::Discretizations::Elements::ElementSpatialWrapper" alt="" coords="5,5,601,53"/>
+<area shape="poly" id="edge1" title="public&#45;inheritance" alt="" coords="305,52,305,87,301,84,301,56"/>
+</map>

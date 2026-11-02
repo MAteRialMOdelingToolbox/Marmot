@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.18.0" xml:lang="en-US">
+  <compounddef id="struct_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1_1_menetrey_willam_parameters" kind="struct" language="C++" prot="public">
+    <compoundname>Marmot::ContinuumMechanics::Plasticity::MenetreyWillam::MenetreyWillamParameters</compoundname>
+    <includes refid="_menetrey_willam_8h" local="no">MenetreyWillam.h</includes>
+    <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1a60166ddc6ecd65d4b18f16c22ef0bda1" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::Plasticity::MenetreyWillam::MenetreyWillamParameters::Af</definition>
+        <argsstring></argsstring>
+        <name>Af</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Plasticity::MenetreyWillam::MenetreyWillamParameters::Af</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>additional parameter to capture the influence of the deviatoric stress invariant <formula id="109">$\rho$</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="79" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="79" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1aa00a8c65d8f8e249db2e3345a92033a4" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::Plasticity::MenetreyWillam::MenetreyWillamParameters::Bf</definition>
+        <argsstring></argsstring>
+        <name>Bf</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Plasticity::MenetreyWillam::MenetreyWillamParameters::Bf</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>addditional parameter to capture the influence of the deviatoric stress invariant <formula id="109">$\rho$</formula> and the lode angle </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="81" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="81" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1a565d88d8ea1a3d0c0f2beca5b914c106" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::Plasticity::MenetreyWillam::MenetreyWillamParameters::Cf</definition>
+        <argsstring></argsstring>
+        <name>Cf</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Plasticity::MenetreyWillam::MenetreyWillamParameters::Cf</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>addditional parameter to capture the influence of the hydrostatic stress invariant <formula id="110">$\xi$</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="83" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="83" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1ab871335d1bea1a92fe2a55daee0033b6" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::Plasticity::MenetreyWillam::MenetreyWillamParameters::m</definition>
+        <argsstring></argsstring>
+        <name>m</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Plasticity::MenetreyWillam::MenetreyWillamParameters::m</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Friction parameter <formula id="111">$m$</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="85" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1a865ea7beb1e3b70d767060bff0101b8e" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double Marmot::ContinuumMechanics::Plasticity::MenetreyWillam::MenetreyWillamParameters::e</definition>
+        <argsstring></argsstring>
+        <name>e</name>
+        <qualifiedname>Marmot::ContinuumMechanics::Plasticity::MenetreyWillam::MenetreyWillamParameters::e</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Eccentricity parameter <formula id="102">$e$</formula>; to obtain a smooth and convex surface $e$ has to be in the range of  <formula id="112">$0.5\leq e
+\leq 1$</formula> </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="86" column="14" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="86" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Aggregate of the parameters for the generalized strength criterion proposed by Menétrey and Willam. </para>
+    </detaileddescription>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" line="78" column="5" bodyfile="/home/runner/work/Marmot/Marmot/modules/core/MarmotMechanicsCore/include/Marmot/MenetreyWillam.h" bodystart="78" bodyend="89"/>
+    <listofallmembers>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1a60166ddc6ecd65d4b18f16c22ef0bda1" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Plasticity::MenetreyWillam::MenetreyWillamParameters</scope><name>Af</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1aa00a8c65d8f8e249db2e3345a92033a4" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Plasticity::MenetreyWillam::MenetreyWillamParameters</scope><name>Bf</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1a565d88d8ea1a3d0c0f2beca5b914c106" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Plasticity::MenetreyWillam::MenetreyWillamParameters</scope><name>Cf</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1a865ea7beb1e3b70d767060bff0101b8e" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Plasticity::MenetreyWillam::MenetreyWillamParameters</scope><name>e</name></member>
+      <member refid="struct_marmot_1_1_continuum_mechanics_1_1_plasticity_1_1_menetrey_willam_1_1_menetrey_willam_parameters_1ab871335d1bea1a92fe2a55daee0033b6" prot="public" virt="non-virtual"><scope>Marmot::ContinuumMechanics::Plasticity::MenetreyWillam::MenetreyWillamParameters</scope><name>m</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

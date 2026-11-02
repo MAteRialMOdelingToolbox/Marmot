@@ -1,0 +1,11 @@
+<map id="%1" name="%1">
+<area shape="rect" id="node1" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotExceptions.h" alt="" coords="5,101,1072,149"/>
+<area shape="rect" id="node2" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotJournal.h" alt="" coords="1096,101,2125,149"/>
+<area shape="rect" id="node3" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotPortability.h" alt="" coords="1081,5,2140,53"/>
+<area shape="poly" id="edge1" title="include" alt="" coords="1325,56,806,103,806,98,1330,55"/>
+<area shape="poly" id="edge2" title="include" alt="" coords="1612,67,1613,103,1608,99,1609,71"/>
+<area shape="rect" id="node5" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotUtils.h" alt="" coords="2150,101,3157,149"/>
+<area shape="poly" id="edge3" title="include" alt="" coords="1886,53,2396,101,2390,101,1886,58"/>
+<area shape="rect" id="node4" title="/home/runner/work/Marmot/Marmot/modules/core/MarmotUtilitiesCore/include/Marmot/MarmotStateHelpers.h" alt="" coords="2110,197,3197,245"/>
+<area shape="poly" id="edge4" title="include" alt="" coords="2655,163,2655,199,2651,195,2651,167"/>
+</map>
