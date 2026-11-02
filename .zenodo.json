@@ -2,7 +2,7 @@
   "title": "Marmot: MAteRialMOdellingToolbox",
   "description": "`Marmot` (MAteRialMOdellingToolbox) is a C++ library for robust and efficient finite elements and state-of-the-art constitutive models (especially for quasi-brittle materials such as concrete, rock, and soils). It uses modern, object-oriented programming and provides generic interfaces for solvers including Abaqus, Plaxis, MOOSE, OpenSees, and EdelweissFE. Documentation: https://materialmodelingtoolbox.github.io/Marmot/.",
   "upload_type": "software",
-  "version": "v25.11",
+  "version": "v26.11",
   "publication_date": "2025-11-02",
   "language": "eng",
   "access_right": "open",
@@ -36,7 +36,7 @@
   ],
   "related_identifiers": [
     {
-      "identifier": "https://github.com/MAteRialMOdelingToolbox/Marmot/releases/tag/v25.11",
+      "identifier": "https://github.com/MAteRialMOdelingToolbox/Marmot/releases/tag/v26.11",
       "relation": "isSupplementTo"
     },
     {
