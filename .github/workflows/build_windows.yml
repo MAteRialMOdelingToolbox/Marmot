@@ -23,7 +23,7 @@ jobs:
       # The dependencies are pinned to tags, so their install prefix is cached, keyed on those tags.
       - name: Cache dependencies
         id: deps-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ${{ env.DEPS_PREFIX }}
           key: deps-windows-2022-eigen-3.4.0-autodiff-v1.1.0-fastor-V0.6.4
@@ -52,7 +52,7 @@ jobs:
           cmake --install Fastor/_build
 
       - name: Check out Marmot
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: Marmot
 
@@ -75,7 +75,7 @@ jobs:
           cmake --install Marmot/_build --config Release
 
       - name: Upload Marmot
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Marmot-windows-x64-Release
           path: marmot-install
