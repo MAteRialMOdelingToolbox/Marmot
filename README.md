@@ -1,10 +1,12 @@
-![build](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/build_ubuntu.yml/badge.svg)
-[![codecov](https://codecov.io/gh/MAteRialMOdelingToolbox/Marmot/branch/master/graph/badge.svg)](https://codecov.io/gh/MAteRialMOdelingToolbox/Marmot)
+[![build (Ubuntu)](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/build_ubuntu.yml/badge.svg?branch=master)](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/build_ubuntu.yml)
+[![build (macOS)](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/build_macos.yml/badge.svg?branch=master)](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/build_macos.yml)
+[![build (Windows)](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/build_windows.yml/badge.svg?branch=master)](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/build_windows.yml)
+[![conda](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/conda.yml/badge.svg?branch=master)](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/conda.yml)
 [![codecov](https://codecov.io/gh/MAteRialMOdelingToolbox/Marmot/branch/master/graph/badge.svg)](https://codecov.io/gh/MAteRialMOdelingToolbox/Marmot/branch/master)
-![clang-format](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/indent.yml/badge.svg)
-[![documentation](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/sphinx.yml/badge.svg)](https://materialmodelingtoolbox.github.io/Marmot/)
-[![license](https://img.shields.io/badge/license-LGPLv2-blue.svg)](LICENSE.md)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17509328.svg)](https://doi.org/10.5281/zenodo.17509328)
+[![clang-format](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/indent.yml/badge.svg?branch=master)](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/indent.yml)
+[![documentation](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/sphinx.yml/badge.svg?branch=master)](https://materialmodelingtoolbox.github.io/Marmot/)
+[![license](https://img.shields.io/badge/license-LGPL--2.1--or--later-blue.svg)](LICENSE.md)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17509327.svg)](https://doi.org/10.5281/zenodo.17509327)
 
 # Marmot
 
@@ -29,18 +31,21 @@ conda create -n marmot -c https://repo.prefix.dev/matthiasneuner/edelweiss -c co
 
 To develop Marmot or add modules, build it yourself as described below, in a separate environment.
 
+**Upgrading from v25.11?** Release v26.11 reorganized all namespaces (e.g., `MarmotLibrary::MarmotElementFactory` is
+now `Marmot::Registry::ElementFactory`) without compatibility aliases. The
+[changelog](CHANGELOG.md) lists every renamed class and namespace.
+
 `Marmot` requires the
 [Eigen](https://gitlab.com/libeigen/eigen) (>3.3.8, including Eigen 5),
 [autodiff](https://github.com/autodiff/autodiff) (>0.6.0)
-and [Fastor](https://github.com/romeric/Fastor) (>6.4.0) libraries to be installed.
+and [Fastor](https://github.com/romeric/Fastor) (≥0.6.4) libraries to be installed.
 Detailed instructions on how to install these dependencies can be found [here](https://materialmodelingtoolbox.github.io/Marmot/pages/installation.html).
-For anaconda users both `autodiff` and `Eigen` can be installed via conda-forge.
 
-For a quick start we recommend to use anaconda.
-A conda environment including all needed dependencies (excluding Fastor) can be created by running
+For a quick start we recommend to use conda.
+A conda environment including all needed dependencies can be created by running
 
 ```bash
-conda create -n marmot-env -c conda-forge cmake compilers eigen autodiff
+conda create -n marmot-env -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge cmake compilers eigen autodiff fastor
 ```
 To activate the environment use
 
@@ -48,19 +53,19 @@ To activate the environment use
 conda activate marmot-env
 ```
 
-Fastor needs to be installed manually by executing
+Alternatively, Fastor can be installed manually by executing
 ```bash
-git clone https://github.com/romeric/Fastor.git
+git clone --branch V0.6.4 https://github.com/romeric/Fastor.git
 cd Fastor
 mkdir build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX ..
+cmake -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX ..
 make install
 ```
 
 To finally build and install `Marmot` execute
 ```bash
-git clone https:\\github.com/MAteRialMOdelingToolbox/Marmot.git
+git clone https://github.com/MAteRialMOdelingToolbox/Marmot.git
 cd Marmot
 mkdir build
 cd build
@@ -98,18 +103,20 @@ Each example compares its results against a stored reference solution. Pass
 `--writeReferenceSolution` to regenerate that reference instead of checking against it.
 
 ## How to use Marmot with EdelweissFE
-The [EdelweissFE](https://github.com/EdelweissFE/EdelweissFE) finite element code is designed to work seamlessly with `Marmot`.
-After the installation of `Marmot`, EdelweissFE can be built with `Marmot` support by executing
+The [EdelweissFE](https://github.com/Edelweiss-Numerics/EdelweissFE) finite element code is designed to work seamlessly with `Marmot`.
+A released EdelweissFE including `Marmot` can be installed with
 
 ```bash
-git clone https://github.com/Edelweiss-FE/EdelweissFE.git
-cd EdelweissFE
-conda install --file requirements.txt
-pip install .
+conda create -n edelweissfe -c https://repo.prefix.dev/matthiasneuner/edelweiss -c conda-forge edelweissfe
 ```
-The build can be tested by running
+
+To build EdelweissFE against your own `Marmot` build, e.g., to develop `Marmot` modules, follow the development
+installation in the [EdelweissFE README](https://github.com/Edelweiss-Numerics/EdelweissFE#installation).
+EdelweissFE looks for `Marmot` in the active conda environment, or in the directory given by the environment variable
+`MARMOT_INSTALL_DIR`. The `Marmot` test cases can then be run with
+
 ```bash
-run_tests_edelweissfe testfiles
+run_tests_edelweissfe testfiles/marmot
 ```
 
 ## How to use Marmot with Abaqus
@@ -136,24 +143,29 @@ You can also built the documentation locally using Doxygen and Sphinx/Breathe fo
 
 ## How to cite
 
-If you use Marmot in your research, please cite it as
+If you use Marmot in your research, please cite the version you used. For v26.11:
 
 ```bibtex
-@software{neuner_marmot_2025,
-  author       = {Neuner, Matthias and Dummer, Alexander and Schreter-Fleischhacker, Magdalena and Hofer, Paul and Alkmim, Nasser and Basche, Konstantin and Mader, Thomas},
+@software{marmot_v26_11,
+  author       = {Dummer, Alexander and Mader, Thomas and Basche, Konstantin and Stathas, Alexandros and Hofer, Paul and Neuner, Matthias},
   title        = {Marmot: MAteRialMOdellingToolbox},
-  version      = {v25.11},
+  version      = {v26.11},
   month        = nov,
-  year         = 2025,
+  year         = 2026,
   publisher    = {Zenodo},
-  doi          = {10.5281/zenodo.17509328},
-  url          = {https://doi.org/10.5281/zenodo.17509328}
+  doi          = {10.5281/zenodo.23895565},
+  url          = {https://doi.org/10.5281/zenodo.23895565}
 }
 ```
 
+To cite Marmot independently of a version, use the concept DOI
+[10.5281/zenodo.17509327](https://doi.org/10.5281/zenodo.17509327), which always resolves to the latest release.
+GitHub's *Cite this repository* button provides the same information in other formats.
+
 ## License
 
-This library is freely available under the LGPLV2 license. Please find the details in the ```LICENSE.md``` file.
+This library is freely available under the GNU Lesser General Public License, version 2.1 or later
+(LGPL-2.1-or-later). Please find the details in the ```LICENSE.md``` file.
 
 ## Contributing
 
