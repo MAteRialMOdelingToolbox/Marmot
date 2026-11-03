@@ -68,10 +68,10 @@ namespace Marmot::Materials {
    * Material properties: \f$ E, \nu, f_\mathrm{t}, \varepsilon_\mathrm{f}, l, m \f$, optionally the density and the
    * nonlocal viscosity (default zero, for explicit dynamics only).
    */
-  class RankineGradientDamagePlasticity : public MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 > {
+  class RankineGradientDamagePlasticity : public MaterialGradientEnhancedHypoElastic< 1 > {
 
   public:
-    using Base = MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 >;
+    using Base = MaterialGradientEnhancedHypoElastic< 1 >;
     using typename Base::increment;
     using typename Base::response;
     using typename Base::tangents;

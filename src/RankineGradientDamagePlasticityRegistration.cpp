@@ -1,16 +1,11 @@
 #include "Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h"
 #include "Marmot/RankineGradientDamagePlasticity.h"
 
-namespace Marmot::Materials {
+namespace {
+  using namespace Marmot::Materials;
 
-  namespace Registration {
+  const static bool RankineGradientDamagePlasticityIsRegistered = Marmot::Registry::
+    MaterialGradientEnhancedHypoElasticFactory< 1 >::registerMaterial< RankineGradientDamagePlasticity >(
+      "RANKINEGRADIENTDAMAGEPLASTICITY" );
 
-    using namespace MarmotLibrary;
-
-    const static bool
-      RankineGradientDamagePlasticityIsRegistered = MarmotMaterialGeneralGradientEnhancedHypoElasticFactory<
-        1 >::registerMaterial< RankineGradientDamagePlasticity >( "RANKINEGRADIENTDAMAGEPLASTICITY" );
-
-  } // namespace Registration
-
-} // namespace Marmot::Materials
+} // namespace

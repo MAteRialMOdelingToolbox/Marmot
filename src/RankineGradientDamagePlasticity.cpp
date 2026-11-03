@@ -24,11 +24,14 @@ namespace Marmot::Materials {
     : Base( materialProperties, nMaterialProperties, materialLabel ),
       effectiveProperties( [&] {
         if ( nMaterialProperties < nRequiredProperties )
-          throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": Insufficient material properties." );
+          throw std::runtime_error( Utilities::MakeString()
+                                    << __PRETTY_FUNCTION__ << ": Insufficient material properties." );
         if ( !( materialProperties[3] > 0. ) )
-          throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": epsilonF must be positive." );
+          throw std::invalid_argument( Utilities::MakeString()
+                                       << __PRETTY_FUNCTION__ << ": epsilonF must be positive." );
         if ( !( materialProperties[4] >= 0. ) )
-          throw std::invalid_argument( MakeString() << __PRETTY_FUNCTION__ << ": nonlocal length must be >= 0." );
+          throw std::invalid_argument( Utilities::MakeString()
+                                       << __PRETTY_FUNCTION__ << ": nonlocal length must be >= 0." );
         // E, nu, ft, no hardening
         return std::array< double, 6 >{ materialProperties[0],
                                         materialProperties[1],
@@ -50,7 +53,8 @@ namespace Marmot::Materials {
   double RankineGradientDamagePlasticity::getDensity( const double* ) const
   {
     if ( nMaterialProperties <= idxDensity )
-      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 7." );
+      throw std::runtime_error( Utilities::MakeString()
+                                << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < 7." );
     return materialProperties[idxDensity];
   }
 
@@ -68,8 +72,8 @@ namespace Marmot::Materials {
     if ( !( res.stress.allFinite() && res.KLocal.allFinite() && std::isfinite( res.elasticEnergyDensity ) &&
             std::isfinite( res.dissipation ) && tan.dStressddStrain.allFinite() && tan.dStressddK.allFinite() &&
             tan.dKLocalddStrain.allFinite() ) )
-      throw StressUpdateFailed( MakeString()
-                                << __PRETTY_FUNCTION__ << ": non-finite results, e.g., from a diverging iterate" );
+      throw Utilities::StressUpdateFailed(
+        Utilities::MakeString() << __PRETTY_FUNCTION__ << ": non-finite results, e.g., from a diverging iterate" );
   }
 
   void RankineGradientDamagePlasticity::updateStress( response& res, tangents& tan, const increment& inc ) const
@@ -80,9 +84,9 @@ namespace Marmot::Materials {
     const double& nonlocalLength = materialProperties[4];
     const double& m              = materialProperties[5];
 
-    mVector6d    S( res.stress.data() );
-    const auto   dE = Map< const Vector6d >( inc.dStrain.data() );
-    const double K  = inc.K( 0 );
+    Math::mVector6d S( res.stress.data() );
+    const auto      dE = Map< const Math::Vector6d >( inc.dStrain.data() );
+    const double    K  = inc.K( 0 );
 
     double& kappaD            = stateLayout.getAs< double& >( res.stateVars, "kappaD" );
     double& acYield           = stateLayout.getAs< double& >( res.stateVars, "acYield" );
@@ -95,26 +99,26 @@ namespace Marmot::Materials {
     tan.d2cddK2.setZero();
     tan.dKLocalddK.setZero();
 
-    const Matrix6d Cel    = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
-    const Matrix6d CelInv = ContinuumMechanics::Elasticity::Isotropic::complianceTensor( E, nu );
+    const Math::Matrix6d Cel    = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
+    const Math::Matrix6d CelInv = ContinuumMechanics::Elasticity::Isotropic::complianceTensor( E, nu );
 
     // integrity 1 - omega, evaluated from the history variable to retain its relative accuracy for omega -> 1
     const double integrityOld = std::exp( -kappaDWeightedMax / epsilonF );
     if ( !( integrityOld > 0. ) )
-      throw StressUpdateFailed( MakeString()
-                                << __PRETTY_FUNCTION__ << ": complete damage, effective stress undefined" );
+      throw Utilities::StressUpdateFailed( Utilities::MakeString()
+                                           << __PRETTY_FUNCTION__ << ": complete damage, effective stress undefined" );
 
-    const Vector6d effStressOld = S / integrityOld;
-    const double   psiEffOld    = 0.5 * effStressOld.dot( CelInv * effStressOld );
+    const Math::Vector6d effStressOld = S / integrityOld;
+    const double         psiEffOld    = 0.5 * effStressOld.dot( CelInv * effStressOld );
 
     // perfectly plastic Rankine return mapping of the effective stress (independent of the damage); its hardening
     // variable is kappaD
-    Vector6d effStress     = effStressOld;
-    Matrix6d dEffStress_dE = Cel;
-    bool     plastic       = false;
+    Math::Vector6d effStress     = effStressOld;
+    Math::Matrix6d dEffStress_dE = Cel;
+    bool           plastic       = false;
     if ( !dE.isZero( 1e-14 ) ) {
-      Vector2d                           effectiveStateVars( kappaD, acYield );
-      MarmotMaterialHypoElastic::state3D effectiveState( effStressOld, 0., 0., effectiveStateVars.data() );
+      Vector2d                     effectiveStateVars( kappaD, acYield );
+      MaterialHypoElastic::state3D effectiveState( effStressOld, 0., 0., effectiveStateVars.data() );
       effectiveMaterial.computeStress( effectiveState, dEffStress_dE, dE, { .time = inc.time, .dT = inc.dT } );
       effStress = effectiveState.stress;
       plastic   = effectiveStateVars( 1 ) == 1.;
@@ -123,8 +127,9 @@ namespace Marmot::Materials {
     }
 
     // dKappaD = tr( dE - Cel^-1 dEffStress ), which vanishes for elastic steps
-    const Vector6d I          = ( Vector6d() << 1., 1., 1., 0., 0., 0. ).finished();
-    const Vector6d dKappaD_dE = plastic ? Vector6d( I - dEffStress_dE.transpose() * ( CelInv * I ) ) : Vector6d::Zero();
+    const Math::Vector6d I          = ( Math::Vector6d() << 1., 1., 1., 0., 0., 0. ).finished();
+    const Math::Vector6d dKappaD_dE = plastic ? Math::Vector6d( I - dEffStress_dE.transpose() * ( CelInv * I ) )
+                                              : Math::Vector6d::Zero();
 
     // over-nonlocal damage driving variable and its history maximum
     const double kappaDWeighted     = m * K + ( 1. - m ) * kappaD;
@@ -136,11 +141,11 @@ namespace Marmot::Materials {
     omega                           = 1. - integrity;
     // complete damage only from a diverging iterate (e.g., at a snap-through): request a cutback
     if ( !( integrity > 0. ) )
-      throw StressUpdateFailed( MakeString()
-                                << __PRETTY_FUNCTION__ << ": complete damage, kappaDWeighted = " << kappaDWeighted );
+      throw Utilities::StressUpdateFailed(
+        Utilities::MakeString() << __PRETTY_FUNCTION__ << ": complete damage, kappaDWeighted = " << kappaDWeighted );
 
-    const Vector6d dOmega_dE = dOmega_dKappaDWeig * ( 1. - m ) * dKappaD_dE;
-    const double   dOmega_dK = dOmega_dKappaDWeig * m;
+    const Math::Vector6d dOmega_dE = dOmega_dKappaDWeig * ( 1. - m ) * dKappaD_dE;
+    const double         dOmega_dK = dOmega_dKappaDWeig * m;
 
     S                   = integrity * effStress;
     tan.dStressddStrain = integrity * dEffStress_dE - effStress * dOmega_dE.transpose();
@@ -154,7 +159,7 @@ namespace Marmot::Materials {
     res.elasticEnergyDensity += integrity * psiEff - integrityOld * psiEffOld;
     res.dissipation += psiEff * ( integrityOld - integrity );
     if ( plastic ) {
-      const Vector6d dStrainPlastic = dE - CelInv * ( effStress - effStressOld );
+      const Math::Vector6d dStrainPlastic = dE - CelInv * ( effStress - effStressOld );
       res.dissipation += integrity * effStress.dot( dStrainPlastic );
     }
   }

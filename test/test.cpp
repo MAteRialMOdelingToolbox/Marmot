@@ -12,8 +12,8 @@
 #include <memory>
 
 using namespace Marmot;
-using namespace Marmot::Testing;
-using namespace Marmot::Materials;
+using namespace Testing;
+using namespace Materials;
 
 namespace {
 
@@ -35,7 +35,7 @@ namespace {
   using Material = RankineGradientDamagePlasticity;
 
   struct MaterialPointState {
-    Vector6d                      stress    = Vector6d::Zero();
+    Math::Vector6d                stress    = Math::Vector6d::Zero();
     Eigen::Matrix< double, 5, 1 > stateVars = Eigen::Matrix< double, 5, 1 >::Zero();
 
     double kappaD() const { return stateVars( 0 ); }
@@ -50,7 +50,10 @@ namespace {
     double             KLocal, c, dPsi, dDissipation;
   };
 
-  UpdateResult update( const Material& material, const MaterialPointState& stateOld, const Vector6d& dE, double K )
+  UpdateResult update( const Material&           material,
+                       const MaterialPointState& stateOld,
+                       const Math::Vector6d&     dE,
+                       double                    K )
   {
     UpdateResult       result{ .state = stateOld, .tan = {}, .KLocal = 0., .c = 0., .dPsi = 0., .dDissipation = 0. };
     Material::response res{ .stress               = stateOld.stress,
@@ -74,19 +77,19 @@ namespace {
   }
 
   struct LocalResult {
-    Vector6d        stress;
+    Math::Vector6d  stress;
     Eigen::Vector3d stateVars;
-    Matrix6d        tangent;
+    Math::Matrix6d  tangent;
     double          dPsi, dDissipation;
   };
 
   LocalResult updateLocal( const RankineDamagePlasticity& material,
-                           const Vector6d&                stressOld,
+                           const Math::Vector6d&          stressOld,
                            const Eigen::Vector3d&         stateVarsOld,
-                           const Vector6d&                dE )
+                           const Math::Vector6d&          dE )
   {
-    LocalResult                        r{ stressOld, stateVarsOld, Matrix6d::Zero(), 0., 0. };
-    MarmotMaterialHypoElastic::state3D state( stressOld, 0., 0., r.stateVars.data() );
+    LocalResult                  r{ stressOld, stateVarsOld, Math::Matrix6d::Zero(), 0., 0. };
+    MaterialHypoElastic::state3D state( stressOld, 0., 0., r.stateVars.data() );
     material.computeStress( state, r.tangent, dE, { 0.0, 1.0 } );
     r.stress       = state.stress;
     r.dPsi         = state.elasticEnergyDensity;
@@ -95,9 +98,9 @@ namespace {
   }
 
   // compare all tangent blocks [dS/dE dS/dK; dKLocal/dE dKLocal/dK] against central differences
-  void checkTangent( const Material& material, const MaterialPointState& stateOld, const Vector6d& dE, double K )
+  void checkTangent( const Material& material, const MaterialPointState& stateOld, const Math::Vector6d& dE, double K )
   {
-    using namespace NumericalAlgorithms::Differentiation;
+    using namespace Math::Differentiation::Numerical;
     const auto r = update( material, stateOld, dE, K );
 
     Eigen::Matrix< double, 7, 7 > tangent;
@@ -120,14 +123,16 @@ namespace {
                                                  error.topRightCorner( 6, 1 ).cwiseAbs().maxCoeff() /
                                                    std::max( tangent.topRightCorner( 6, 1 ).norm(), ft / epsilonF ),
                                                  error.bottomRows( 1 ).cwiseAbs().maxCoeff() } );
-    throwExceptionOnFailure( relError < 1e-6, MakeString() << "tangent check failed, relative error " << relError );
+    throwExceptionOnFailure( relError < 1e-6,
+                             Utilities::MakeString() << "tangent check failed, relative error " << relError );
   }
 
-  const std::vector< Vector6d > increments = { ( Vector6d() << 1e-4, 0, 0, 0, 0, 0 ).finished(),
-                                               ( Vector6d() << 6e-5, 6e-5, 0, 0, 0, 0 ).finished(),
-                                               ( Vector6d() << 5e-5, 5e-5, 5e-5, 0, 0, 0 ).finished(),
-                                               ( Vector6d() << 6e-5, 5e-5, -1e-5, 0, 0, 0 ).finished(),
-                                               ( Vector6d() << 4e-5, 2e-5, -1e-5, 3e-5, -2e-5, 1e-5 ).finished() };
+  const std::vector< Math::Vector6d > increments =
+    { ( Math::Vector6d() << 1e-4, 0, 0, 0, 0, 0 ).finished(),
+      ( Math::Vector6d() << 6e-5, 6e-5, 0, 0, 0, 0 ).finished(),
+      ( Math::Vector6d() << 5e-5, 5e-5, 5e-5, 0, 0, 0 ).finished(),
+      ( Math::Vector6d() << 6e-5, 5e-5, -1e-5, 0, 0, 0 ).finished(),
+      ( Math::Vector6d() << 4e-5, 2e-5, -1e-5, 3e-5, -2e-5, 1e-5 ).finished() };
 
 } // namespace
 
@@ -143,7 +148,7 @@ void testLocalLimit()
 
     for ( const auto& dE : increments ) {
       MaterialPointState state;
-      Vector6d           stressLocal    = Vector6d::Zero();
+      Math::Vector6d     stressLocal    = Math::Vector6d::Zero();
       Eigen::Vector3d    stateVarsLocal = Eigen::Vector3d::Zero();
 
       for ( int i = 0; i < 6; i++ ) {
@@ -154,19 +159,19 @@ void testLocalLimit()
         const auto r = update( material, state, dE, rl.stateVars( 0 ) );
         state        = r.state;
 
-        const Matrix6d totalTangent = r.tan.dStressddStrain + r.tan.dStressddK * r.tan.dKLocalddStrain;
+        const Math::Matrix6d totalTangent = r.tan.dStressddStrain + r.tan.dStressddK * r.tan.dKLocalddStrain;
         throwExceptionOnFailure( checkIfEqual< double >( state.stress, rl.stress, 1e-12 ),
-                                 MakeString() << "local limit (m = " << m << "): stress differs" );
+                                 Utilities::MakeString() << "local limit (m = " << m << "): stress differs" );
         throwExceptionOnFailure( checkIfEqual< double >( totalTangent, rl.tangent, 1e-9 ),
-                                 MakeString() << "local limit (m = " << m << "): tangent differs" );
+                                 Utilities::MakeString() << "local limit (m = " << m << "): tangent differs" );
         throwExceptionOnFailure( checkIfEqual( state.kappaD(), rl.stateVars( 0 ), 1e-15 ) &&
                                    checkIfEqual( r.KLocal, rl.stateVars( 0 ), 1e-15 ) &&
                                    checkIfEqual( state.omega(), rl.stateVars( 2 ), 1e-14 ) &&
                                    state.acYield() == rl.stateVars( 1 ),
-                                 MakeString() << "local limit (m = " << m << "): state differs" );
+                                 Utilities::MakeString() << "local limit (m = " << m << "): state differs" );
         throwExceptionOnFailure( checkIfEqual( r.dPsi, rl.dPsi, 1e-10 ) &&
                                    checkIfEqual( r.dDissipation, rl.dDissipation, 1e-10 ),
-                                 MakeString() << "local limit (m = " << m << "): energies differ" );
+                                 Utilities::MakeString() << "local limit (m = " << m << "): energies differ" );
         throwExceptionOnFailure( checkIfEqual( r.c, l * l, 1e-15 ), "local limit: c != l^2" );
       }
       throwExceptionOnFailure( state.omega() > 0.1, "local limit: no damage occurred" );
@@ -176,7 +181,7 @@ void testLocalLimit()
   // m = 0: purely local damage for any nonlocal field, no coupling
   const auto     props = propertiesWith( 0. );
   const Material material( props.data(), props.size(), 1 );
-  const auto     rl = updateLocal( local, Vector6d::Zero(), Eigen::Vector3d::Zero(), increments[0] * 5 );
+  const auto     rl = updateLocal( local, Math::Vector6d::Zero(), Eigen::Vector3d::Zero(), increments[0] * 5 );
   const auto     r  = update( material, MaterialPointState(), increments[0] * 5, 123. );
   throwExceptionOnFailure( checkIfEqual< double >( r.state.stress, rl.stress, 1e-12 ) && r.tan.dStressddK.isZero(),
                            "m = 0: not the local model" );
@@ -189,14 +194,14 @@ void testUniaxialStrain()
     const auto     props = propertiesWith( m );
     const Material material( props.data(), props.size(), 1 );
 
-    const double   eps = 4e-4;
-    const double   K   = 2e-4;
-    const auto     r   = update( material, MaterialPointState(), ( Vector6d() << eps, 0, 0, 0, 0, 0 ).finished(), K );
-    const double   dLambda = eps - ft / ( lambda + 2. * G );
-    const double   omega   = 1. - std::exp( -( m * K + ( 1. - m ) * dLambda ) / epsilonF );
-    const Vector6d target  = ( 1. - omega ) *
-                             ( Vector6d() << ft, lambda * ( eps - dLambda ), lambda * ( eps - dLambda ), 0, 0, 0 )
-                               .finished();
+    const double eps = 4e-4;
+    const double K   = 2e-4;
+    const auto   r = update( material, MaterialPointState(), ( Math::Vector6d() << eps, 0, 0, 0, 0, 0 ).finished(), K );
+    const double dLambda = eps - ft / ( lambda + 2. * G );
+    const double omega   = 1. - std::exp( -( m * K + ( 1. - m ) * dLambda ) / epsilonF );
+    const Math::Vector6d
+      target = ( 1. - omega ) *
+               ( Math::Vector6d() << ft, lambda * ( eps - dLambda ), lambda * ( eps - dLambda ), 0, 0, 0 ).finished();
     throwExceptionOnFailure( checkIfEqual( r.KLocal, dLambda, 1e-15 ) && checkIfEqual( r.state.omega(), omega, 1e-14 ),
                              "uniaxial strain: damage mismatch" );
     throwExceptionOnFailure( checkIfEqual< double >( r.state.stress, target, 1e-11 ),
@@ -241,13 +246,16 @@ void testTangents()
       const auto u = update( material, state, -0.05 * dE, 0.5 * K );
       throwExceptionOnFailure( u.state.omega() == state.omega() && u.tan.dStressddK.isZero(),
                                "tangents: damage changed while unloading" );
-      const Matrix6d Cel = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
+      const Math::Matrix6d Cel = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
       throwExceptionOnFailure( checkIfEqual< double >( u.tan.dStressddStrain, ( 1. - state.omega() ) * Cel, 1e-12 ),
                                "tangents: unloading tangent is not the damaged elastic stiffness" );
     }
 
     // active set correction: both trial stresses exceed ft, only surface 1 is active at the solution
-    checkTangent( material, MaterialPointState(), ( Vector6d() << 1.036e-4, 0.656e-4, 0, 0, 0, 0 ).finished(), 3e-5 );
+    checkTangent( material,
+                  MaterialPointState(),
+                  ( Math::Vector6d() << 1.036e-4, 0.656e-4, 0, 0, 0, 0 ).finished(),
+                  3e-5 );
   }
 }
 
@@ -259,8 +267,8 @@ void testZeroStrainIncrement()
   // plastic loading, then elastic unloading of the effective stress, so that the tangent is smooth at dE = 0
   auto state = update( material, MaterialPointState(), increments[0] * 3, 1e-4 ).state;
   state      = update( material, state, -0.1 * increments[0], 1e-4 ).state;
-  checkTangent( material, state, Vector6d::Zero(), 3e-4 );
-  const auto r = update( material, state, Vector6d::Zero(), 3e-4 );
+  checkTangent( material, state, Math::Vector6d::Zero(), 3e-4 );
+  const auto r = update( material, state, Math::Vector6d::Zero(), 3e-4 );
   throwExceptionOnFailure( checkIfEqual( r.state.omega(), 1. - std::exp( -3e-4 / epsilonF ), 1e-14 ),
                            "zero increment: damage not driven by the nonlocal field" );
   throwExceptionOnFailure( checkIfEqual< double >( r.state.stress,
@@ -271,10 +279,12 @@ void testZeroStrainIncrement()
 
 void testPropertiesAndFactory()
 {
-  const auto                                                               props = propertiesWith( 2. );
-  std::unique_ptr< MarmotMaterialGeneralGradientEnhancedHypoElastic< 1 > > material(
-    MarmotLibrary::MarmotMaterialGeneralGradientEnhancedHypoElasticFactory<
-      1 >::createMaterial( "RANKINEGRADIENTDAMAGEPLASTICITY", props.data(), props.size(), 1 ) );
+  const auto                                                  props = propertiesWith( 2. );
+  std::unique_ptr< MaterialGradientEnhancedHypoElastic< 1 > > material(
+    Registry::MaterialGradientEnhancedHypoElasticFactory< 1 >::createMaterial( "RANKINEGRADIENTDAMAGEPLASTICITY",
+                                                                               props.data(),
+                                                                               props.size(),
+                                                                               1 ) );
   throwExceptionOnFailure( material->getNumberOfRequiredStateVars() == 5, "factory: wrong number of state variables" );
   throwExceptionOnFailure( material->getDensity( nullptr ) == props[6], "factory: wrong density" );
   throwExceptionOnFailure( material->getNonlocalViscosity( nullptr )[0] == props[7], "factory: wrong viscosity" );
@@ -289,9 +299,9 @@ void testPropertiesAndFactory()
 template < int nNodes >
 void checkElementStiffness( double m )
 {
-  using Element      = Marmot::Elements::GeneralGradientEnhancedDisplacementFiniteElement< 3, nNodes >;
-  const auto intType = nNodes == 20 ? FiniteElement::Quadrature::IntegrationTypes::ReducedIntegration
-                                    : FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  using Element      = Discretizations::Elements::GeneralGradientEnhancedDisplacementFiniteElement< 3, nNodes >;
+  const auto intType = nNodes == 20 ? Discretizations::Elements::Quadrature::IntegrationTypes::ReducedIntegration
+                                    : Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   Element    element( 1, intType, Element::SectionType::Solid );
 
   const std::vector< Eigen::Vector3d > corners = { { 0, 0, 0 },
@@ -325,7 +335,8 @@ void checkElementStiffness( double m )
 
   const auto props = propertiesWith( m );
   element.assignNodeCoordinates( coordinates.data() );
-  element.assignProperty( MarmotMaterialSection( "RANKINEGRADIENTDAMAGEPLASTICITY", props.data(), props.size() ) );
+  element.assignProperty(
+    Discretizations::MaterialSection( "RANKINEGRADIENTDAMAGEPLASTICITY", props.data(), props.size() ) );
   std::vector< double > stateVars( element.getNumberOfRequiredStateVars(), 0. );
   element.assignStateVars( stateVars.data(), stateVars.size() );
   element.initializeYourself();
@@ -369,8 +380,8 @@ void checkElementStiffness( double m )
                                    blockError( nU, 0, nNodes, nU ),
                                    blockError( nU, nU, nNodes, nNodes ) } );
   throwExceptionOnFailure( error < 1e-5,
-                           MakeString() << "element stiffness differs from central differences, m = " << m
-                                        << ", relative error " << error );
+                           Utilities::MakeString() << "element stiffness differs from central differences, m = " << m
+                                                   << ", relative error " << error );
   double omegaMax = 0.;
   for ( int q = 0; q < element.getNumberOfQuadraturePoints(); q++ )
     omegaMax = std::max( omegaMax, element.getStateView( "omega", q ).stateLocation[0] );
@@ -394,7 +405,7 @@ void testCompleteDamageThrows()
   try {
     update( material, MaterialPointState(), increments[0], 1e6 );
   }
-  catch ( const StressUpdateFailed& ) {
+  catch ( const Utilities::StressUpdateFailed& ) {
     threw = true;
   }
   throwExceptionOnFailure( threw, "complete damage did not throw" );
@@ -408,24 +419,24 @@ void testDivergedIterateRequestsCutback()
   const auto     props = propertiesWith( 1. );
   const Material material( props.data(), props.size(), 1 );
 
-  const Vector6d           dStrainDiverged = ( Vector6d() << -2.1304181664190551e+287,
-                                               -1.0379772584363431e+287,
-                                               1.1922728518060270e+045,
-                                               -2.9804698180504283e+287,
-                                               -3.2636090085991650e+287,
-                                               -2.4320172494955940e+287 )
-                                               .finished();
+  const Math::Vector6d dStrainDiverged = ( Math::Vector6d() << -2.1304181664190551e+287,
+                                           -1.0379772584363431e+287,
+                                           1.1922728518060270e+045,
+                                           -2.9804698180504283e+287,
+                                           -3.2636090085991650e+287,
+                                           -2.4320172494955940e+287 )
+                                           .finished();
   const MaterialPointState stateOld;
   bool                     cutback = false;
   try {
     update( material, stateOld, dStrainDiverged, 0. );
   }
-  catch ( const StressUpdateFailed& ) {
+  catch ( const Utilities::StressUpdateFailed& ) {
     cutback = true;
   }
   throwExceptionOnFailure( cutback, "diverged iterate did not request a cutback" );
 
-  const auto r = update( material, stateOld, Vector6d::Constant( 1e-5 ), 0. );
+  const auto r = update( material, stateOld, Math::Vector6d::Constant( 1e-5 ), 0. );
   throwExceptionOnFailure( r.state.stress.allFinite(), "regular increment gave non-finite results" );
 }
 
