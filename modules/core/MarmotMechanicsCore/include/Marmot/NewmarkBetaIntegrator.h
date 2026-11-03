@@ -25,26 +25,41 @@
 
 #pragma once
 
-#include <algorithm>
 namespace Marmot::ContinuumMechanics::TimeIntegration {
 
-  //! \brief Newmark-Beta time integration
-  //! \details
-  //! This function implements the Newmark-Beta time integration method for
-  //! linear dynamic problems. It updates the velocity and acceleration
-  //! vectors based on the displacement increment and the time step.
-  //! \tparam nDim Number of dimensions (2D or 3D)
-  //! \param du Displacement increment vector
-  //! \param v Velocity vector
-  //! \param a Acceleration vector
-  //! \param dT Time step
-  //! \param newmarkBeta Newmark-Beta parameter (0.25 for linear problems)
-  //! \param newmarkGamma Newmark-Gamma parameter (0.5 for linear problems)
-  //! \param da_ddu Derivative of acceleration with respect to displacement
-  //! \note The function assumes that the input vectors are of size nDim.
-  //! \note The function also assumes that the time step is positive and
-  //!       that the Newmark-Beta parameter is not zero.
-  //! \note The function uses a small value (1e-16) to avoid division by zero
+  /**
+   * @brief Newmark-beta time integration at one point: the acceleration and the velocity at the end of an increment
+   * from the displacement increment.
+   * @details Solves the Newmark relations
+   * @f[
+   *   \Delta u = \Delta t\, v_n + \tfrac{\Delta t^2}{2} \left[ (1 - 2\beta)\, a_n + 2\beta\, a_{n+1} \right],
+   *   \qquad
+   *   v_{n+1} = v_n + \Delta t \left[ (1 - \gamma)\, a_n + \gamma\, a_{n+1} \right]
+   * @f]
+   * for @f$ a_{n+1} @f$ and @f$ v_{n+1} @f$, component by component, and returns the derivative
+   * @f$ \partial a_{n+1} / \partial \Delta u = 1 / (\beta \Delta t^2) @f$, which the host's tangent needs for the
+   * inertia term.
+   *
+   * Two cases add no inertia:
+   * - @f$ \beta = 0 @f$: no time integration (a quasi-static analysis). The acceleration is zero, the velocity
+   *   @f$ v_n + \Delta t (1 - \gamma) a_n @f$, and the derivative zero.
+   * - A zero-length increment, @f$ \Delta t = 0 @f$: nothing moves in zero time, so the velocity and the acceleration
+   *   are left as they are (@f$ v_{n+1} = v_n @f$, @f$ a_{n+1} = a_n @f$), whatever @f$ \Delta u @f$ is, and the
+   *   derivative is zero. The inertial force of the unchanged acceleration remains in the host's residual. A host
+   *   that integrates in time skips such an increment, or evaluates at it only to compute a state at rest in time
+   *   (e.g. the acceleration of its own nodes from equilibrium).
+   *
+   * @tparam nDim Number of components.
+   * @param[in] du Displacement increment @f$ \Delta u @f$, nDim components.
+   * @param[in,out] v Velocity: @f$ v_n @f$ on entry, @f$ v_{n+1} @f$ on return.
+   * @param[in,out] a Acceleration: @f$ a_n @f$ on entry, @f$ a_{n+1} @f$ on return.
+   * @param[in] dT Time increment @f$ \Delta t \geq 0 @f$.
+   * @param[in] newmarkBeta Newmark parameter @f$ \beta @f$ (1/4 with @f$ \gamma = 1/2 @f$: the average acceleration
+   * rule; 0: no time integration).
+   * @param[in] newmarkGamma Newmark parameter @f$ \gamma @f$.
+   * @param[out] da_ddu Derivative @f$ \partial a_{n+1} / \partial \Delta u @f$, an nDim x nDim matrix (column
+   * major); only its diagonal is written.
+   */
   template < int nDim >
   void newmarkBetaIntegration( const double* du,
                                double*       v,
@@ -54,8 +69,13 @@ namespace Marmot::ContinuumMechanics::TimeIntegration {
                                double        newmarkGamma,
                                double*       da_ddu )
   {
+    if ( dT == 0.0 ) {
+      for ( int i = 0; i < nDim; i++ )
+        da_ddu[i + i * nDim] = 0.0;
+      return;
+    }
+
     for ( int i = 0; i < nDim; i++ ) {
-      dT                    = std::max( dT, 1e-16 );
       const double du_tilde = dT * v[i] + 0.5 * dT * dT * ( ( 1 - 2 * newmarkBeta ) * a[i] );
       const double v_tilde  = v[i] + dT * ( 1 - newmarkGamma ) * a[i];
 

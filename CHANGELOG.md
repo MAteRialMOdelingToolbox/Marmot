@@ -74,6 +74,10 @@ All notable changes to Marmot are documented in this file. The format follows
 - Consistent mass of `Tetra4` elements (`C3D4`). Its Gauss rule has one point for every integration type, which gave
   a mass of rank 3 out of 12. `ConsistentMass::integrationRule()` now takes the 4-point rule, which is exact for the
   quadratic integrand.
+- **Results:** `newmarkBetaIntegration` (`MarmotMechanicsCore`, used by all particles with the Newmark properties):
+  a zero-length increment adds no inertia; velocity and acceleration are left as they are and the inertia tangent
+  is zero. The time increment used to be clamped to 1e-16, which made a zero-length increment with a nonzero
+  velocity produce an acceleration of order -v/(beta 1e-16). Increments of at least 1e-16 are unchanged.
 
 ## [v26.11] - 2026-11-02
 
