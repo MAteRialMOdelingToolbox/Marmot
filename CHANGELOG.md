@@ -6,6 +6,28 @@ All notable changes to Marmot are documented in this file. The format follows
 
 ## [Unreleased]
 
+## [v26.11] - 2026-11-02
+
+This changelog was started late in the v26.11 cycle. The entries below cover October 2026 onwards; the main
+changes from earlier in the cycle, since v25.11, were:
+
+- Refactored material interfaces (#25) and a new element internal-force sign convention without `pNewDT` and
+  `stepTime` (#50). **Breaking**
+- Finite-strain materials: a material point solver (#30), automatic-differentiation materials (#36), a substepper
+  (#32), linear viscoelasticity (#35), the Hughes-Winget co-rotational wrapper (#64) and the gradient-enhanced
+  finite-strain interface (#98).
+- Explicit dynamics: artificial bulk viscosity, nonlocal micro-inertia, mass lumping and the critical time step (#45,
+  #81, #84).
+- The general gradient-enhanced displacement element with multiple nonlocal fields, and the AT2 phase-field model.
+- Interface elements and materials (#40).
+- A Python interface to the material point solvers (#53), an element named-property interface (#54) and custom
+  material and solver exceptions (#43).
+- Builds: one CMake target per module with package export (#47, #113, #114), Windows DLLs with MSVC (#110),
+  macOS/arm64 (#57), Eigen 5 (#107), free-threading-safe statics (#55), a conda package (#121), and a coverage
+  pipeline (#83).
+- Fixes that change results: `projectVoigtStressToPlane` shear column (#90), the Hughes-Winget rotation (#89), the
+  consistent mass integration (#101) and Hexa20 lumped corner masses (#74). **Results**
+
 ### Added
 - The meshfree layer in-tree, imported from the BOKU-CMP-MEC-MAT repositories with their full history
   (`git subtree`): `core/MarmotMeshfreeCore` (reproducing kernel approximations, kernel functions, cells, particle
@@ -114,3 +136,6 @@ All notable changes to Marmot are documented in this file. The format follows
 - Uninitialized intermediate second moments of the SQCNIxNSNI particles in the first increment.
 - The inverse isoparametric map of distorted Lagrangian cells (it threw) and their point location test.
 - Stack overflows of the 64-node B-spline cells on Windows (1 MB default stack).
+
+[Unreleased]: https://github.com/MAteRialMOdelingToolbox/Marmot/compare/v26.11...HEAD
+[v26.11]: https://github.com/MAteRialMOdelingToolbox/Marmot/compare/v25.11...v26.11

@@ -1,0 +1,55 @@
+cff-version: 1.2.0
+message: "If you use Marmot in your research, please cite the version you used."
+type: software
+title: "Marmot: MAteRialMOdellingToolbox"
+abstract: >-
+  Marmot (MAteRialMOdellingToolbox) is a C++ library for robust and efficient finite elements and
+  state-of-the-art constitutive models, especially for quasi-brittle materials such as concrete, rock and soils.
+  It provides generic interfaces for solvers including Abaqus, Plaxis, MOOSE, OpenSees and EdelweissFE.
+authors:
+  - family-names: Dummer
+    given-names: Alexander
+    affiliation: "University of Innsbruck; University of Colorado Boulder"
+    orcid: "https://orcid.org/0000-0002-1998-1705"
+  - family-names: Mader
+    given-names: Thomas
+    affiliation: "University of Innsbruck; BOKU University"
+    orcid: "https://orcid.org/0000-0003-1780-4227"
+  - family-names: Basche
+    given-names: Konstantin
+    affiliation: "University of Innsbruck"
+    orcid: "https://orcid.org/0009-0006-5624-9771"
+  - family-names: Stathas
+    given-names: Alexandros
+    affiliation: "BOKU University"
+    orcid: "https://orcid.org/0000-0001-8468-9842"
+  - family-names: Hofer
+    given-names: Paul
+    affiliation: "University of Innsbruck; BOKU University"
+    orcid: "https://orcid.org/0009-0001-6589-7993"
+  - family-names: Neuner
+    given-names: Matthias
+    affiliation: "University of Innsbruck; Stanford University; BOKU University"
+    orcid: "https://orcid.org/0000-0003-2221-8089"
+version: v26.11
+date-released: "2026-11-02"
+doi: 10.5281/zenodo.23895565
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23895565
+    description: "Marmot v26.11"
+  - type: doi
+    value: 10.5281/zenodo.17509327
+    description: "All versions of Marmot (concept DOI, resolves to the latest release)"
+license: LGPL-2.1-or-later
+repository-code: "https://github.com/MAteRialMOdelingToolbox/Marmot"
+url: "https://materialmodelingtoolbox.github.io/Marmot/"
+keywords:
+  - finite-elements
+  - constitutive-model
+  - plasticity
+  - damage
+  - damage-plasticity
+  - gradient-enhancement
+  - micropolar
+  - cosserat
