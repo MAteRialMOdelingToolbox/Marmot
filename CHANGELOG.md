@@ -26,6 +26,10 @@ All notable changes to Marmot are documented in this file. The format follows
 - Result-file keyword of 2D interface elements (`ILINE2`): `GeometryInterfaceElement` named the four-node
   element `bar2`, a two-node cell, so the EnSight geometry was invalid; it is now `quad4`, the cell spanning both
   faces, as `hexa8` for the 3D interfaces.
+- **Results:** `newmarkBetaIntegration` (`MarmotMechanicsCore`, used by all particles with the Newmark properties):
+  a zero-length increment adds no inertia; velocity and acceleration are left as they are and the inertia tangent
+  is zero. The time increment used to be clamped to 1e-16, which made a zero-length increment with a nonzero
+  velocity produce an acceleration of order -v/(beta 1e-16). Increments of at least 1e-16 are unchanged.
 
 ## [v26.11] - 2026-11-02
 

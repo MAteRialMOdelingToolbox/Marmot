@@ -50,7 +50,11 @@ and its tangent consists of the material part, the geometric stiffness and the i
 The acceleration :math:`\boldsymbol{a}` follows from a Newmark-beta integration of the displacement increment
 :math:`\Delta\boldsymbol{u}` of the integration point, with the properties ``newmark-beta beta`` and
 ``newmark-beta gamma``; for :math:`\beta = 0` (the default) the scheme returns :math:`\boldsymbol{a} = \boldsymbol{0}`,
-i.e., a quasi-static analysis. The particles also provide a lumped mass :math:`\rho_0\,T_A\,V_0` and a lumped momentum
+i.e., a quasi-static analysis. A zero-length increment (:math:`\Delta t = 0`) adds no inertia: nothing moves in zero
+time, so :math:`\boldsymbol{v}` and :math:`\boldsymbol{a}` are left as they are, whatever :math:`\Delta\boldsymbol{u}`
+is, and :math:`\partial \boldsymbol{a} / \partial \Delta\boldsymbol{u} = \boldsymbol{0}`; the inertial force of the
+unchanged acceleration stays in the residual. A host that integrates in time therefore does not solve a zero-length
+increment for a displacement (EdelweissFE's implicit dynamic solver skips it). The particles also provide a lumped mass :math:`\rho_0\,T_A\,V_0` and a lumped momentum
 :math:`\rho_0\,T_A\,V_0\,\boldsymbol{v}` for explicit schemes.
 
 Integration schemes
