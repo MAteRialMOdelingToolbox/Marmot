@@ -12,9 +12,9 @@
 #include <limits>
 
 using namespace Marmot;
-using namespace Marmot::Testing;
-using namespace Marmot::Solvers;
-using namespace Marmot::Materials;
+using namespace Testing;
+using namespace Materials;
+using namespace Materials;
 
 namespace {
 
@@ -33,7 +33,7 @@ namespace {
   std::vector< double > perfectlyPlasticProperties = { E, nu, ft, 0., 0., 0. };
 
   struct MaterialPointState {
-    Vector6d        stress    = Vector6d::Zero();
+    Math::Vector6d  stress    = Math::Vector6d::Zero();
     Eigen::Vector3d stateVars = Eigen::Vector3d::Zero(); // kappaD, acYield, omega
 
     double kappaD() const { return stateVars( 0 ); }
@@ -43,25 +43,25 @@ namespace {
 
   struct UpdateResult {
     MaterialPointState state;
-    Matrix6d           tangent;
+    Math::Matrix6d     tangent;
     // increments of elastic energy density and dissipation, and their derivatives wrt the strain increment
-    double   dPsi, dDissipation;
-    Vector6d dPsi_dE, dDissipation_dE;
+    double         dPsi, dDissipation;
+    Math::Vector6d dPsi_dE, dDissipation_dE;
   };
 
   // single stress update from a given state
-  UpdateResult update( const MarmotMaterialHypoElastic& material,
-                       const MaterialPointState&        stateOld,
-                       const Vector6d&                  dStrain )
+  UpdateResult update( const MaterialHypoElastic& material,
+                       const MaterialPointState&  stateOld,
+                       const Math::Vector6d&      dStrain )
   {
-    UpdateResult                              result{ .state           = stateOld,
-                                                      .tangent         = Matrix6d::Zero(),
-                                                      .dPsi            = 0.,
-                                                      .dDissipation    = 0.,
-                                                      .dPsi_dE         = Vector6d::Zero(),
-                                                      .dDissipation_dE = Vector6d::Zero() };
-    MarmotMaterialHypoElastic::state3D        state( stateOld.stress, 0., 0., result.state.stateVars.data() );
-    const MarmotMaterialHypoElastic::timeInfo tInfo{ 0.0, 1.0 };
+    UpdateResult                        result{ .state           = stateOld,
+                                                .tangent         = Math::Matrix6d::Zero(),
+                                                .dPsi            = 0.,
+                                                .dDissipation    = 0.,
+                                                .dPsi_dE         = Math::Vector6d::Zero(),
+                                                .dDissipation_dE = Math::Vector6d::Zero() };
+    MaterialHypoElastic::state3D        state( stateOld.stress, 0., 0., result.state.stateVars.data() );
+    const MaterialHypoElastic::timeInfo tInfo{ 0.0, 1.0 };
     material.computeStress( state, result.tangent, dStrain, tInfo );
     result.state.stress    = state.stress;
     result.dPsi            = state.elasticEnergyDensity;
@@ -74,9 +74,9 @@ namespace {
   // compare the algorithmic tangent and the energy tangents against central difference approximations
   void checkTangent( const RankineDamagePlasticity& material,
                      const MaterialPointState&      stateOld,
-                     const Vector6d&                dStrain )
+                     const Math::Vector6d&          dStrain )
   {
-    using namespace NumericalAlgorithms::Differentiation;
+    using namespace Math::Differentiation::Numerical;
     const auto result = update( material, stateOld, dStrain );
 
     Eigen::Matrix< double, 8, 6 > tangent;
@@ -97,25 +97,26 @@ namespace {
     const Eigen::MatrixXd error    = tangent - numericalTangent;
     const double          relError = std::max(
       { error.topRows( 6 ).cwiseAbs().maxCoeff() / std::max( tangent.topRows( 6 ).cwiseAbs().maxCoeff(), 1e-3 * E ),
-        error.row( 6 ).cwiseAbs().maxCoeff() / std::max( tangent.row( 6 ).cwiseAbs().maxCoeff(), 1e-3 * ft ),
-        error.row( 7 ).cwiseAbs().maxCoeff() / std::max( tangent.row( 7 ).cwiseAbs().maxCoeff(), 1e-3 * ft ) } );
-    throwExceptionOnFailure( relError < 1e-6, MakeString() << "tangent check failed, relative error " << relError );
+                 error.row( 6 ).cwiseAbs().maxCoeff() / std::max( tangent.row( 6 ).cwiseAbs().maxCoeff(), 1e-3 * ft ),
+                 error.row( 7 ).cwiseAbs().maxCoeff() / std::max( tangent.row( 7 ).cwiseAbs().maxCoeff(), 1e-3 * ft ) } );
+    throwExceptionOnFailure( relError < 1e-6,
+                             Utilities::MakeString() << "tangent check failed, relative error " << relError );
   }
 
   // check that the effective stress satisfies all three Rankine yield conditions
   void checkAdmissibility( const MaterialPointState& state )
   {
     const Eigen::SelfAdjointEigenSolver< Eigen::Matrix3d > eigenSolver(
-      ContinuumMechanics::VoigtNotation::voigtToStress( state.stress ) );
+      Marmot::ContinuumMechanics::Voigt::voigtToStress( state.stress ) );
     throwExceptionOnFailure( eigenSolver.eigenvalues().maxCoeff() <= ( 1. - state.omega() ) * ft * ( 1. + 1e-10 ),
                              "returned stress is not admissible" );
     throwExceptionOnFailure( checkIfEqual( state.omega(), 1. - std::exp( -state.kappaD() / epsilonF ), 1e-15 ),
                              "damage inconsistent with kappaD" );
   }
 
-  MarmotMaterialPointSolverHypoElastic::Step uniaxialStressStep( double dEps, double timeStart )
+  MaterialPointSolverHypoElastic::Step uniaxialStressStep( double dEps, double timeStart )
   {
-    MarmotMaterialPointSolverHypoElastic::Step step;
+    MaterialPointSolverHypoElastic::Step step;
     step.timeStart                   = timeStart;
     step.timeEnd                     = timeStart + 1.;
     step.isStrainComponentControlled = { true, false, false, false, false, false };
@@ -132,10 +133,10 @@ namespace {
 void testUniaxialStress()
 {
   std::string matName = "RANKINEDAMAGEPLASTICITY";
-  auto        solver  = MarmotMaterialPointSolverHypoElastic( matName,
-                                                              properties.data(),
-                                                              properties.size(),
-                                                              MarmotMaterialPointSolverHypoElastic::SolverOptions() );
+  auto        solver  = Materials::MaterialPointSolverHypoElastic( matName,
+                                                           properties.data(),
+                                                           properties.size(),
+                                                           MaterialPointSolverHypoElastic::SolverOptions() );
 
   // loading far into the softening regime, unloading, reloading
   const double epsLoad = 2e-3, epsUnload = -1e-3;
@@ -176,8 +177,8 @@ void testUniaxialStress()
   const RankineDamagePlasticity material( properties.data(), properties.size(), 1 );
   const auto [_, tangent, dPsi, dD, dPsi_dE, dD_dE] = update( material,
                                                               state,
-                                                              ( Vector6d() << -1e-5, 0, 0, 0, 0, 0 ).finished() );
-  const Matrix6d Cel = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
+                                                              ( Math::Vector6d() << -1e-5, 0, 0, 0, 0, 0 ).finished() );
+  const Math::Matrix6d Cel = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu );
   throwExceptionOnFailure( checkIfEqual< double >( tangent, ( 1. - state.omega() ) * Cel, 1e-12 ),
                            "uniaxial stress: unloading tangent mismatch" );
 }
@@ -187,14 +188,18 @@ void testUniaxialStrain()
   const RankineDamagePlasticity material( properties.data(), properties.size(), 1 );
 
   // single plastic increment from the virgin state: the effective stress is the perfectly plastic solution
-  const double   eps          = 4e-4;
-  const Vector6d dE           = ( Vector6d() << eps, 0, 0, 0, 0, 0 ).finished();
-  const auto     result       = update( material, MaterialPointState(), dE );
-  const double   dLambda      = eps - ft / ( lambda + 2. * G );
-  const double   omega        = 1. - std::exp( -dLambda / epsilonF );
-  const Vector6d stressTarget = ( 1. - omega ) *
-                                ( Vector6d() << ft, lambda * ( eps - dLambda ), lambda * ( eps - dLambda ), 0, 0, 0 )
-                                  .finished();
+  const double         eps          = 4e-4;
+  const Math::Vector6d dE           = ( Math::Vector6d() << eps, 0, 0, 0, 0, 0 ).finished();
+  const auto           result       = update( material, MaterialPointState(), dE );
+  const double         dLambda      = eps - ft / ( lambda + 2. * G );
+  const double         omega        = 1. - std::exp( -dLambda / epsilonF );
+  const Math::Vector6d stressTarget = ( 1. - omega ) * ( Math::Vector6d() << ft,
+                                                         lambda * ( eps - dLambda ),
+                                                         lambda * ( eps - dLambda ),
+                                                         0,
+                                                         0,
+                                                         0 )
+                                                         .finished();
 
   throwExceptionOnFailure( checkIfEqual( result.state.kappaD(), dLambda, 1e-15 ), "uniaxial strain: kappaD mismatch" );
   throwExceptionOnFailure( checkIfEqual( result.state.omega(), omega, 1e-15 ), "uniaxial strain: omega mismatch" );
@@ -209,22 +214,23 @@ void testNoDamageLimit()
   const RankineDamagePlasticity    material( noDamageProperties.data(), noDamageProperties.size(), 1 );
   const RankineSofteningPlasticity reference( perfectlyPlasticProperties.data(), 6, 1 );
 
-  const std::vector< Vector6d > increments = { ( Vector6d() << 1e-4, 0, 0, 0, 0, 0 ).finished(),
-                                               ( Vector6d() << 5e-5, 5e-5, 0, 0, 0, 0 ).finished(),
-                                               ( Vector6d() << 4e-5, 4e-5, 4e-5, 0, 0, 0 ).finished(),
-                                               ( Vector6d() << 4e-5, 2e-5, -1e-5, 3e-5, -2e-5, 1e-5 ).finished() };
+  const std::vector< Math::Vector6d > increments =
+    { ( Math::Vector6d() << 1e-4, 0, 0, 0, 0, 0 ).finished(),
+      ( Math::Vector6d() << 5e-5, 5e-5, 0, 0, 0, 0 ).finished(),
+      ( Math::Vector6d() << 4e-5, 4e-5, 4e-5, 0, 0, 0 ).finished(),
+      ( Math::Vector6d() << 4e-5, 2e-5, -1e-5, 3e-5, -2e-5, 1e-5 ).finished() };
 
   for ( const auto& dE : increments ) {
     MaterialPointState state;
-    Vector6d           stressReference = Vector6d::Zero();
+    Math::Vector6d     stressReference = Math::Vector6d::Zero();
     Eigen::Vector2d    stateVarsReference( 0., 0. );
 
     for ( int i = 0; i < 5; i++ ) {
       const auto result = update( material, state, dE );
       state             = result.state;
 
-      MarmotMaterialHypoElastic::state3D stateReference( stressReference, 0., 0., stateVarsReference.data() );
-      Matrix6d                           tangentReference;
+      MaterialHypoElastic::state3D stateReference( stressReference, 0., 0., stateVarsReference.data() );
+      Math::Matrix6d               tangentReference;
       reference.computeStress( stateReference, tangentReference, dE, { 0.0, 1.0 } );
       stressReference = stateReference.stress;
 
@@ -243,10 +249,10 @@ void testTangentSingleAndMultiSurface()
   const RankineDamagePlasticity material( properties.data(), properties.size(), 1 );
 
   // one (uniaxial), two (biaxial) and three (isotropic, apex) active surfaces, continued over several increments
-  for ( const auto& dE : { ( Vector6d() << 1e-4, 0, 0, 0, 0, 0 ).finished(),
-                           ( Vector6d() << 6e-5, 6e-5, 0, 0, 0, 0 ).finished(),
-                           ( Vector6d() << 5e-5, 5e-5, 5e-5, 0, 0, 0 ).finished(),
-                           ( Vector6d() << 6e-5, 5e-5, -1e-5, 0, 0, 0 ).finished() } ) {
+  for ( const auto& dE : { ( Math::Vector6d() << 1e-4, 0, 0, 0, 0, 0 ).finished(),
+                           ( Math::Vector6d() << 6e-5, 6e-5, 0, 0, 0, 0 ).finished(),
+                           ( Math::Vector6d() << 5e-5, 5e-5, 5e-5, 0, 0, 0 ).finished(),
+                           ( Math::Vector6d() << 6e-5, 5e-5, -1e-5, 0, 0, 0 ).finished() } ) {
     MaterialPointState state;
     for ( int i = 0; i < 4; i++ ) {
       checkTangent( material, state, dE );
@@ -257,8 +263,8 @@ void testTangentSingleAndMultiSurface()
   }
 
   // active set correction: both trial stresses exceed ft, only surface 1 is active at the solution
-  const Vector6d dE    = ( Vector6d() << 1.036e-4, 0.656e-4, 0, 0, 0, 0 ).finished();
-  const auto     state = update( material, MaterialPointState(), dE ).state;
+  const Math::Vector6d dE    = ( Math::Vector6d() << 1.036e-4, 0.656e-4, 0, 0, 0, 0 ).finished();
+  const auto           state = update( material, MaterialPointState(), dE ).state;
   checkAdmissibility( state );
   checkTangent( material, MaterialPointState(), dE );
 }
@@ -268,11 +274,11 @@ void testTangentGeneralLoadingPath()
   const RankineDamagePlasticity material( properties.data(), properties.size(), 1 );
 
   // rotated, multiaxial loading with shear, followed by unloading and reloading in a different direction
-  const Vector6d dE         = ( Vector6d() << 4e-5, 2e-5, -1e-5, 3e-5, -2e-5, 1e-5 ).finished();
-  const Vector6d dEReloaded = ( Vector6d() << 1e-5, 5e-5, 1e-5, -2e-5, 0, 2e-5 ).finished();
+  const Math::Vector6d dE         = ( Math::Vector6d() << 4e-5, 2e-5, -1e-5, 3e-5, -2e-5, 1e-5 ).finished();
+  const Math::Vector6d dEReloaded = ( Math::Vector6d() << 1e-5, 5e-5, 1e-5, -2e-5, 0, 2e-5 ).finished();
 
   MaterialPointState state;
-  for ( const Vector6d& increment : std::vector< Vector6d >( 8, dE ) ) {
+  for ( const Math::Vector6d& increment : std::vector< Math::Vector6d >( 8, dE ) ) {
     checkTangent( material, state, increment );
     state = update( material, state, increment ).state;
     checkAdmissibility( state );
@@ -298,10 +304,10 @@ void testEnergyBalance()
 
   // uniaxial strain from first yield: the effective stress is constant, so the backward Euler update satisfies the
   // energy balance sigma_n+1 : dE = dPsi + dDissipation exactly
-  const double   epsYield = ft / ( lambda + 2. * G );
-  const Vector6d dE       = ( Vector6d() << 1e-4, 0, 0, 0, 0, 0 ).finished();
+  const double         epsYield = ft / ( lambda + 2. * G );
+  const Math::Vector6d dE       = ( Math::Vector6d() << 1e-4, 0, 0, 0, 0, 0 ).finished();
 
-  auto result = update( material, MaterialPointState(), ( Vector6d() << epsYield, 0, 0, 0, 0, 0 ).finished() );
+  auto result = update( material, MaterialPointState(), ( Math::Vector6d() << epsYield, 0, 0, 0, 0, 0 ).finished() );
   MaterialPointState state = result.state;
   double             work = 0, psi = result.dPsi, dissipation = 0;
   for ( int i = 0; i < 30; i++ ) {
@@ -322,12 +328,12 @@ void testEnergyBalance()
 void testCoordinateInvariance()
 {
   std::string matName = "RANKINEDAMAGEPLASTICITY";
-  auto        solver  = MarmotMaterialPointSolverHypoElastic( matName,
-                                                              properties.data(),
-                                                              properties.size(),
-                                                              MarmotMaterialPointSolverHypoElastic::SolverOptions() );
+  auto        solver  = Materials::MaterialPointSolverHypoElastic( matName,
+                                                           properties.data(),
+                                                           properties.size(),
+                                                           MaterialPointSolverHypoElastic::SolverOptions() );
 
-  MarmotMaterialPointSolverHypoElastic::Step step;
+  MaterialPointSolverHypoElastic::Step step;
   step.isStrainComponentControlled = { true, true, true, true, true, true };
   step.isStressComponentControlled = { false, false, false, false, false, false };
   step.stressIncrementTarget       = { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -348,7 +354,7 @@ void testDivergedIterateRequestsCutback()
 
   struct Case {
     MaterialPointState state;
-    Vector6d           dStrain;
+    Math::Vector6d     dStrain;
   };
   std::vector< Case > cases( 3 );
   // elastic quadrature point
@@ -373,7 +379,7 @@ void testDivergedIterateRequestsCutback()
     try {
       update( material, c.state, c.dStrain );
     }
-    catch ( const StressUpdateFailed& ) {
+    catch ( const Utilities::StressUpdateFailed& ) {
       cutback = true;
     }
     throwExceptionOnFailure( cutback, "diverged iterate did not request a cutback" );
@@ -381,7 +387,7 @@ void testDivergedIterateRequestsCutback()
 
   // the converged states themselves with a regular increment remain valid
   for ( const auto& c : cases ) {
-    const auto result = update( material, c.state, Vector6d::Constant( 1e-4 ) );
+    const auto result = update( material, c.state, Math::Vector6d::Constant( 1e-4 ) );
     throwExceptionOnFailure( result.state.stress.allFinite() && result.dPsi_dE.allFinite() &&
                                result.dDissipation_dE.allFinite(),
                              "regular increment gave non-finite results" );

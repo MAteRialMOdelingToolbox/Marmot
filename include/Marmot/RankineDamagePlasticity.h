@@ -58,7 +58,7 @@ namespace Marmot::Materials {
    * \f$ \varepsilon_\mathrm{f} \f$ is a material parameter (no regularization by the element size);
    * \f$ \varepsilon_\mathrm{f} = \infty \f$ recovers perfect Rankine plasticity.
    */
-  class RankineDamagePlasticity : public MarmotMaterialHypoElastic {
+  class RankineDamagePlasticity : public MaterialHypoElastic {
 
   public:
     RankineDamagePlasticity( const double* materialProperties, const int nMaterialProperties, const int materialLabel );
@@ -66,19 +66,19 @@ namespace Marmot::Materials {
     RankineDamagePlasticity( const RankineDamagePlasticity& )            = delete;
     RankineDamagePlasticity& operator=( const RankineDamagePlasticity& ) = delete;
 
-    void computeStress( state3D&                state,
-                        Marmot::Matrix6d&       dStressDDStrain,
-                        const Marmot::Vector6d& dStrain,
-                        const timeInfo&         timeInfo ) const override;
+    void computeStress( state3D&              state,
+                        Math::Matrix6d&       dStressDDStrain,
+                        const Math::Vector6d& dStrain,
+                        const timeInfo&       timeInfo ) const override;
 
     double getDensity( const double* stateVars ) const override;
 
   private:
     /// the stress update of computeStress, without the check of its results
-    void updateStress( state3D&                state,
-                       Marmot::Matrix6d&       dStressDDStrain,
-                       const Marmot::Vector6d& dStrain,
-                       const timeInfo&         timeInfo ) const;
+    void updateStress( state3D&              state,
+                       Math::Matrix6d&       dStressDDStrain,
+                       const Math::Vector6d& dStrain,
+                       const timeInfo&       timeInfo ) const;
 
     /// properties of the perfectly plastic RankineSofteningPlasticity for the effective stress
     const std::array< double, 6 >    effectiveProperties;
