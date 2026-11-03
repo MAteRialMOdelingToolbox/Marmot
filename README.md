@@ -59,7 +59,7 @@ git clone --branch V0.6.4 https://github.com/romeric/Fastor.git
 cd Fastor
 mkdir build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX ..
+cmake -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX ..
 make install
 ```
 
