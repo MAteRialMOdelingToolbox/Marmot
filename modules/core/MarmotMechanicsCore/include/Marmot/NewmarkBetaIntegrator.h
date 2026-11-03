@@ -41,8 +41,8 @@ namespace Marmot::ContinuumMechanics::TimeIntegration {
    * inertia term.
    *
    * Two cases add no inertia:
-   * - @f$ \beta = 0 @f$: no time integration (a quasi-static analysis). The acceleration is zero, the velocity
-   *   @f$ v_n + \Delta t (1 - \gamma) a_n @f$, and the derivative zero.
+   * - @f$ \beta = 0 @f$: no time integration (a quasi-static analysis), which is at rest: the velocity and the
+   *   acceleration are zero, whatever they were before (e.g. after a dynamic step), and so is the derivative.
    * - A zero-length increment, @f$ \Delta t = 0 @f$: nothing moves in zero time, so the velocity and the acceleration
    *   are left as they are (@f$ v_{n+1} = v_n @f$, @f$ a_{n+1} = a_n @f$), whatever @f$ \Delta u @f$ is, and the
    *   derivative is zero. The inertial force of the unchanged acceleration remains in the host's residual. A host
@@ -69,6 +69,15 @@ namespace Marmot::ContinuumMechanics::TimeIntegration {
                                double        newmarkGamma,
                                double*       da_ddu )
   {
+    if ( newmarkBeta == 0.0 ) {
+      for ( int i = 0; i < nDim; i++ ) {
+        v[i]                 = 0.0;
+        a[i]                 = 0.0;
+        da_ddu[i + i * nDim] = 0.0;
+      }
+      return;
+    }
+
     if ( dT == 0.0 ) {
       for ( int i = 0; i < nDim; i++ )
         da_ddu[i + i * nDim] = 0.0;
@@ -79,8 +88,8 @@ namespace Marmot::ContinuumMechanics::TimeIntegration {
       const double du_tilde = dT * v[i] + 0.5 * dT * dT * ( ( 1 - 2 * newmarkBeta ) * a[i] );
       const double v_tilde  = v[i] + dT * ( 1 - newmarkGamma ) * a[i];
 
-      a[i]                 = newmarkBeta != 0 ? ( du[i] - du_tilde ) / ( newmarkBeta * dT * dT ) : 0;
-      da_ddu[i + i * nDim] = newmarkBeta != 0 ? 1. / ( newmarkBeta * dT * dT ) : 0.0;
+      a[i]                 = ( du[i] - du_tilde ) / ( newmarkBeta * dT * dT );
+      da_ddu[i + i * nDim] = 1. / ( newmarkBeta * dT * dT );
       v[i]                 = v_tilde + newmarkGamma * dT * a[i];
     }
   }

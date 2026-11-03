@@ -77,21 +77,24 @@ void test_NewmarkBetaIntegratorZeroIncrement()
 }
 
 /**
- * @brief beta = 0 switches the time integration off: zero acceleration and derivative, and the velocity
- * v_n + dT (1 - gamma) a_n.
+ * @brief beta = 0 switches the time integration off, and a quasi-static analysis is at rest: zero velocity,
+ * acceleration and derivative, also after a dynamic step left a nonzero velocity and acceleration, and also for a
+ * zero-length increment.
  */
 void test_NewmarkBetaIntegratorQuasiStatic()
 {
-  double du    = 0.5;
-  double v     = 1.0;
-  double a     = 2.0;
-  double da_du = -1.0;
+  for ( const double dT : { 0.5, 0.0 } ) {
+    double du    = 0.5;
+    double v     = 1.0;
+    double a     = 2.0;
+    double da_du = -1.0;
 
-  newmarkBetaIntegration< 1 >( &du, &v, &a, 0.5, 0.0, 0.0, &da_du );
+    newmarkBetaIntegration< 1 >( &du, &v, &a, dT, 0.0, 0.0, &da_du );
 
-  checkValue( "a", a, 0.0, __PRETTY_FUNCTION__ );
-  checkValue( "v", v, 2.0, __PRETTY_FUNCTION__ );
-  checkValue( "da/ddu", da_du, 0.0, __PRETTY_FUNCTION__ );
+    checkValue( "a", a, 0.0, __PRETTY_FUNCTION__ );
+    checkValue( "v", v, 0.0, __PRETTY_FUNCTION__ );
+    checkValue( "da/ddu", da_du, 0.0, __PRETTY_FUNCTION__ );
+  }
 }
 
 int main()
