@@ -2,7 +2,7 @@
 [![build (macOS)](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/build_macos.yml/badge.svg?branch=master)](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/build_macos.yml)
 [![build (Windows)](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/build_windows.yml/badge.svg?branch=master)](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/build_windows.yml)
 [![conda](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/conda.yml/badge.svg?branch=master)](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/conda.yml)
-[![codecov](https://codecov.io/gh/MAteRialMOdelingToolbox/Marmot/branch/master/graph/badge.svg)](https://codecov.io/gh/MAteRialMOdelingToolbox/Marmot)
+[![codecov](https://codecov.io/gh/MAteRialMOdelingToolbox/Marmot/branch/master/graph/badge.svg)](https://codecov.io/gh/MAteRialMOdelingToolbox/Marmot/branch/master)
 [![clang-format](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/indent.yml/badge.svg?branch=master)](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/indent.yml)
 [![documentation](https://github.com/MAteRialMOdelingToolbox/Marmot/actions/workflows/sphinx.yml/badge.svg?branch=master)](https://materialmodelingtoolbox.github.io/Marmot/)
 [![license](https://img.shields.io/badge/license-LGPL--2.1--or--later-blue.svg)](LICENSE.md)
