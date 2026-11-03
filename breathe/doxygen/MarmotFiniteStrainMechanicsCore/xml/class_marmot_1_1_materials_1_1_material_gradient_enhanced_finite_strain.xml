@@ -777,7 +777,7 @@ Used for geostatic stress initialization. The nonlocal field is held at zero thr
           <declname>stateVars</declname>
         </param>
         <briefdescription>
-<para>Nonlocal viscosity <formula id="46">$ \eta $</formula> of the nonlocal balance. </para>
+<para>Nonlocal viscosity <formula id="9">$ \eta $</formula> of the nonlocal balance. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -789,7 +789,7 @@ Used for geostatic stress initialization. The nonlocal field is held at zero thr
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Nonlocal viscosity, the damping coefficient of the damped hyperbolic (or, with zero micro-inertia, parabolic) balance   <formula id="47">\[  m_k\,\ddot{\bar{N}} + \eta\,\dot{\bar{N}} + \bar{N} - c\,\nabla^2\bar{N} = L(\boldsymbol{F},\,\bar{N}) .
+<simplesect kind="return"><para>Nonlocal viscosity, the damping coefficient of the damped hyperbolic (or, with zero micro-inertia, parabolic) balance   <formula id="10">\[  m_k\,\ddot{\bar{N}} + \eta\,\dot{\bar{N}} + \bar{N} - c\,\nabla^2\bar{N} = L(\boldsymbol{F},\,\bar{N}) .
 \]</formula></para>
 </simplesect>
 <simplesect kind="note"><para>Zero by default, which is the quasi-static model. Unlike the small-strain Marmot::Materials::MaterialGradientEnhancedHypoElastic::getNonlocalViscosity, which is pure virtual, this default lets existing derived classes keep compiling without answering it. Appended at the very end of the class, after every other virtual, together with <ref refid="class_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1abb62aebab0d8114c5075fe3ef88b2f4f" kindref="member">getNonlocalMicroInertia()</ref> below, so that a stale-library ABI mismatch is confined to callers of these two methods. </para>
@@ -812,7 +812,7 @@ Used for geostatic stress initialization. The nonlocal field is held at zero thr
           <declname>stateVars</declname>
         </param>
         <briefdescription>
-<para>Nonlocal micro-inertia <formula id="48">$ m_k $</formula> of the nonlocal balance. </para>
+<para>Nonlocal micro-inertia <formula id="11">$ m_k $</formula> of the nonlocal balance. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -839,12 +839,12 @@ Used for geostatic stress initialization. The nonlocal field is held at zero thr
 <para>Abstract base class for gradient-enhanced (implicit-gradient) materials in the finite strain regime. </para>
     </briefdescription>
     <detaileddescription>
-<para>The finite-strain counterpart of Marmot::Materials::MaterialGradientEnhancedHypoElastic: the displacement field is coupled to a single scalar nonlocal field <formula id="37">$ \bar{N} $</formula> governed by the additional balance equation    <formula id="38">\[  \bar{N} - c\,\nabla^2\bar{N} = L(\boldsymbol{F},\,\bar{N}),
+<para>The finite-strain counterpart of Marmot::Materials::MaterialGradientEnhancedHypoElastic: the displacement field is coupled to a single scalar nonlocal field <formula id="0">$ \bar{N} $</formula> governed by the additional balance equation    <formula id="1">\[  \bar{N} - c\,\nabla^2\bar{N} = L(\boldsymbol{F},\,\bar{N}),
   \qquad c = R^2,
-\]</formula> where <formula id="39">$ L $</formula> is the local driving force reported in <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a788bdf258fbbb72baff159576be54b9c" kindref="member">ConstitutiveResponse::L</ref> and <formula id="40">$ R $</formula> the nonlocal radius reported in <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1afecf7e095b79a965a0370dbf7e2f05bf" kindref="member">ConstitutiveResponse::nonLocalRadius</ref>.</para>
-<para><simplesect kind="note"><para><bold>The nonlocal balance is formulated in the material (reference) configuration.</bold> Consumers take the gradients with respect to <formula id="41">$ \boldsymbol{X} $</formula> and integrate over the reference volume, so <formula id="42">$ c $</formula> is a material constant and is neither pushed forward nor weighted by <formula id="43">$ J $</formula>. The stress, in contrast, is the Kirchhoff stress <formula id="44">$ \boldsymbol{\tau} = J\,\boldsymbol{\sigma} $</formula>, which is what integrating against the reference volume requires.</para>
+\]</formula> where <formula id="2">$ L $</formula> is the local driving force reported in <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1a788bdf258fbbb72baff159576be54b9c" kindref="member">ConstitutiveResponse::L</ref> and <formula id="3">$ R $</formula> the nonlocal radius reported in <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response_1afecf7e095b79a965a0370dbf7e2f05bf" kindref="member">ConstitutiveResponse::nonLocalRadius</ref>.</para>
+<para><simplesect kind="note"><para><bold>The nonlocal balance is formulated in the material (reference) configuration.</bold> Consumers take the gradients with respect to <formula id="4">$ \boldsymbol{X} $</formula> and integrate over the reference volume, so <formula id="5">$ c $</formula> is a material constant and is neither pushed forward nor weighted by <formula id="6">$ J $</formula>. The stress, in contrast, is the Kirchhoff stress <formula id="7">$ \boldsymbol{\tau} = J\,\boldsymbol{\sigma} $</formula>, which is what integrating against the reference volume requires.</para>
 </simplesect>
-<simplesect kind="note"><para>The interface carries a <bold>single</bold> scalar nonlocal field, unlike the small-strain Marmot::Materials::MaterialGradientEnhancedHypoElastic, which is templated on the number of nonlocal variables. It also has **no slot for <formula id="45">$ \partial c/\partial\bar{N} $</formula>**: a material with damage-dependent interactions (see MarmotDecreasingInteractions) can report the current <formula id="42">$ c $</formula>, but not its derivative, so its consistent tangent would be incomplete.</para>
+<simplesect kind="note"><para>The interface carries a <bold>single</bold> scalar nonlocal field, unlike the small-strain Marmot::Materials::MaterialGradientEnhancedHypoElastic, which is templated on the number of nonlocal variables. It also has **no slot for <formula id="8">$ \partial c/\partial\bar{N} $</formula>**: a material with damage-dependent interactions (see MarmotDecreasingInteractions) can report the current <formula id="5">$ c $</formula>, but not its derivative, so its consistent tangent would be incomplete.</para>
 </simplesect>
 <simplesect kind="note"><para>Member names, struct shapes and call signatures are fixed by the consumers of this interface (GradientEnhancedFiniteStrainMaterialPoint / ...Particle / ...DisplacementElement), including the six-argument <ref refid="struct_marmot_1_1_materials_1_1_material_gradient_enhanced_finite_strain_1_1_constitutive_response" kindref="compound">ConstitutiveResponse</ref> constructor. </para>
 </simplesect>

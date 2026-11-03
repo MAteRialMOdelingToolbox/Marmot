@@ -11,7 +11,7 @@
         <qualifiedname>Marmot::ContinuumMechanics::Kinematics::VelocityGradient::dOmega_dVelocityGradient</qualifiedname>
         <initializer>= initializeDOmega_dVelocityGradient()</initializer>
         <briefdescription>
-<para>A 4th-order tensor representing the derivative of the spin tensor <formula id="303">$ \Omega $</formula> with respect to the velocity gradient tensor. </para>
+<para>A 4th-order tensor representing the derivative of the spin tensor <formula id="129">$ \Omega $</formula> with respect to the velocity gradient tensor. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -44,7 +44,7 @@
         <name>initializeDOmega_dVelocityGradient</name>
         <qualifiedname>Marmot::ContinuumMechanics::Kinematics::VelocityGradient::initializeDOmega_dVelocityGradient</qualifiedname>
         <briefdescription>
-<para>Computes <formula id="301">$ \frac{\partial \Omega}{\partial l} $</formula> once, for initializing dOmega_dVelocityGradient. </para>
+<para>Computes <formula id="127">$ \frac{\partial \Omega}{\partial l} $</formula> once, for initializing dOmega_dVelocityGradient. </para>
         </briefdescription>
         <detaileddescription>
 <para>Defined in the header: dOmega_dVelocityGradient is an inline variable, which every translation unit including this header instantiates, so its initializer must be available there, too (see MarmotPortability.h). <simplesect kind="return"><para>The 4th-order derivative of the spin tensor with respect to the velocity gradient. </para>
@@ -65,7 +65,7 @@
 <para>Computes the derivative of the stretching rate with respect to the velocity gradient once, for initializing dStretchingRate_dVelocityGradient. </para>
         </briefdescription>
         <detaileddescription>
-<para>Defined in the header, for the same reason as initializeDOmega_dVelocityGradient. <simplesect kind="return"><para>The <formula id="302">$ 6 \times 3 \times 3 $</formula> derivative, stretching rate in engineering Voigt notation. </para>
+<para>Defined in the header, for the same reason as initializeDOmega_dVelocityGradient. <simplesect kind="return"><para>The <formula id="128">$ 6 \times 3 \times 3 $</formula> derivative, stretching rate in engineering Voigt notation. </para>
 </simplesect>
 </para>
         </detaileddescription>

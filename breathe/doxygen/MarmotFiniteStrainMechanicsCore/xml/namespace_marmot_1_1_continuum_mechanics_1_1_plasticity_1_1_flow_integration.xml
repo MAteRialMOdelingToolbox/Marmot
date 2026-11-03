@@ -23,8 +23,8 @@
         </briefdescription>
         <detaileddescription>
 <para>Computes the incremental plastic deformation gradient from the plastic velocity gradient using the exponential map.</para>
-<para>The exponential map is given by   <formula id="18">\[   \Delta F_{\bar I J} = \exp\left(\Delta \lambda \frac{\partial g}{\partial M_{\bar K L}}\right)_{J \bar{I}}
-\]</formula> where <formula id="19">$ \Delta \lambda \frac{\partial g}{\partial M_{\bar K L}} $</formula> is the incremental plastic velocity gradient.</para>
+<para>The exponential map is given by   <formula id="51">\[   \Delta F_{\bar I J} = \exp\left(\Delta \lambda \frac{\partial g}{\partial M_{\bar K L}}\right)_{J \bar{I}}
+\]</formula> where <formula id="52">$ \Delta \lambda \frac{\partial g}{\partial M_{\bar K L}} $</formula> is the incremental plastic velocity gradient.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>T</parametername>
@@ -70,8 +70,8 @@
         </briefdescription>
         <detaileddescription>
 <para>Computes the incremental plastic deformation gradient from the plastic velocity gradient using the exponential map, evaluated by scaling and squaring.</para>
-<para>The result is that of <ref refid="_marmot_finite_strain_plasticity_8h_1a9381b95ec8a254156bf56ae7d21e11cd" kindref="member">exponentialMap()</ref>, but the series is only evaluated for <formula id="20">$ \Delta\boldsymbol{G}^p / 2^s $</formula> with <formula id="21">$ |\Delta\boldsymbol{G}^p| / 2^s \leq 1/2 $</formula>, and then squared <formula id="22">$ s $</formula> times,   <formula id="23">\[  \exp( \Delta\boldsymbol{G}^p ) = \left( \exp( \Delta\boldsymbol{G}^p / 2^s ) \right)^{2^s}.
-\]</formula> For <formula id="24">$ |\Delta\boldsymbol{G}^p| \leq 1/2 $</formula>, <formula id="25">$ s = 0 $</formula> and the result is identical to that of <ref refid="_marmot_finite_strain_plasticity_8h_1a9381b95ec8a254156bf56ae7d21e11cd" kindref="member">exponentialMap()</ref>. Larger increments, e.g. those of the intermediate iterates of a return mapping, are represented as well, where the truncated series of <ref refid="_marmot_finite_strain_plasticity_8h_1a9381b95ec8a254156bf56ae7d21e11cd" kindref="member">exponentialMap()</ref> fails.</para>
+<para>The result is that of <ref refid="_marmot_finite_strain_plasticity_8h_1a9381b95ec8a254156bf56ae7d21e11cd" kindref="member">exponentialMap()</ref>, but the series is only evaluated for <formula id="53">$ \Delta\boldsymbol{G}^p / 2^s $</formula> with <formula id="54">$ |\Delta\boldsymbol{G}^p| / 2^s \leq 1/2 $</formula>, and then squared <formula id="55">$ s $</formula> times,   <formula id="56">\[  \exp( \Delta\boldsymbol{G}^p ) = \left( \exp( \Delta\boldsymbol{G}^p / 2^s ) \right)^{2^s}.
+\]</formula> For <formula id="57">$ |\Delta\boldsymbol{G}^p| \leq 1/2 $</formula>, <formula id="58">$ s = 0 $</formula> and the result is identical to that of <ref refid="_marmot_finite_strain_plasticity_8h_1a9381b95ec8a254156bf56ae7d21e11cd" kindref="member">exponentialMap()</ref>. Larger increments, e.g. those of the intermediate iterates of a return mapping, are represented as well, where the truncated series of <ref refid="_marmot_finite_strain_plasticity_8h_1a9381b95ec8a254156bf56ae7d21e11cd" kindref="member">exponentialMap()</ref> fails.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>T</parametername>

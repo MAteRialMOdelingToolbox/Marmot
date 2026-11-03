@@ -288,7 +288,7 @@
           <declname>nStateVars</declname>
         </param>
         <briefdescription>
-<para>Initialise the state: <formula id="62">$ \boldsymbol{F}^{(n)} = \boldsymbol{I} $</formula>, <formula id="63">$ \boldsymbol{\sigma}^{(n)} = \boldsymbol{0} $</formula>, plus the wrapped material&apos;s own state. </para>
+<para>Initialise the state: <formula id="46">$ \boldsymbol{F}^{(n)} = \boldsymbol{I} $</formula>, <formula id="47">$ \boldsymbol{\sigma}^{(n)} = \boldsymbol{0} $</formula>, plus the wrapped material&apos;s own state. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -354,7 +354,7 @@
 <parametername direction="out">tangents</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Algorithmic moduli <formula id="101">$ \partial\tau_{ij}/\partial F_{kl} $</formula>. </para>
+<para>Algorithmic moduli <formula id="48">$ \partial\tau_{ij}/\partial F_{kl} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -503,7 +503,7 @@
           <declname>timeInfo</declname>
         </param>
         <briefdescription>
-<para>Recover  <formula id="65">$ \boldsymbol{S} = \partial\boldsymbol{\sigma}^{(n+1)} /
+<para>Recover  <formula id="49">$ \boldsymbol{S} = \partial\boldsymbol{\sigma}^{(n+1)} /
        \partial\boldsymbol{\sigma}_{\text{rot}} $</formula> by forward differences. </para>
         </briefdescription>
         <detaileddescription>
@@ -656,7 +656,7 @@
           <declname>timeIncrement</declname>
         </param>
         <briefdescription>
-<para>Forward-difference the complete update with respect to the nine components of <formula id="66">$ F $</formula>. </para>
+<para>Forward-difference the complete update with respect to the nine components of <formula id="50">$ F $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para>Every evaluation starts from a pristine copy of the incoming state, and none of them is allowed to commit: the caller runs the unperturbed update afterwards.</para>
@@ -721,13 +721,13 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-The wrapped material is driven by the objective strain increment of the Hughes-Winget algorithm, evaluated on the mid-step configuration,     <formula id="54">\[  \Delta\boldsymbol{l} = \left(\boldsymbol{F}^{(n+1)} - \boldsymbol{F}^{(n)}\right)
+The wrapped material is driven by the objective strain increment of the Hughes-Winget algorithm, evaluated on the mid-step configuration,     <formula id="37">\[  \Delta\boldsymbol{l} = \left(\boldsymbol{F}^{(n+1)} - \boldsymbol{F}^{(n)}\right)
                          \boldsymbol{F}_{\text{mid}}^{-1}, \qquad
   \boldsymbol{F}_{\text{mid}} = \tfrac{1}{2}\left(\boldsymbol{F}^{(n)} + \boldsymbol{F}^{(n+1)}\right),
-\]</formula> split into its symmetric and skew parts <formula id="55">$ \Delta\boldsymbol{\varepsilon} $</formula> and <formula id="56">$ \Delta\boldsymbol{\Omega} $</formula>. The incremental rotation follows from the Cayley transform    <formula id="96">\[  \Delta\boldsymbol{R} = \left(\boldsymbol{I} - \tfrac{1}{2}\Delta\boldsymbol{\Omega}\right)^{-1}
+\]</formula> split into its symmetric and skew parts <formula id="38">$ \Delta\boldsymbol{\varepsilon} $</formula> and <formula id="39">$ \Delta\boldsymbol{\Omega} $</formula>. The incremental rotation follows from the Cayley transform    <formula id="40">\[  \Delta\boldsymbol{R} = \left(\boldsymbol{I} - \tfrac{1}{2}\Delta\boldsymbol{\Omega}\right)^{-1}
                          \left(\boldsymbol{I} + \tfrac{1}{2}\Delta\boldsymbol{\Omega}\right),
-\]</formula> which is orthogonal to machine precision. The stress carried over from the previous increment is rotated forward,  <formula id="97">$ \boldsymbol{\sigma}_{\text{rot}} = \Delta\boldsymbol{R}\,\boldsymbol{\sigma}^{(n)}
-\Delta\boldsymbol{R}^{T} $</formula>, the wrapped material is evaluated, and the resulting Cauchy stress is pushed to the Kirchhoff stress <formula id="98">$ \boldsymbol{\tau} = J\,\boldsymbol{\sigma}^{(n+1)} $</formula> expected by the finite-strain consumers.</para>
+\]</formula> which is orthogonal to machine precision. The stress carried over from the previous increment is rotated forward,  <formula id="41">$ \boldsymbol{\sigma}_{\text{rot}} = \Delta\boldsymbol{R}\,\boldsymbol{\sigma}^{(n)}
+\Delta\boldsymbol{R}^{T} $</formula>, the wrapped material is evaluated, and the resulting Cauchy stress is pushed to the Kirchhoff stress <formula id="42">$ \boldsymbol{\tau} = J\,\boldsymbol{\sigma}^{(n+1)} $</formula> expected by the finite-strain consumers.</para>
 <para><simplesect kind="note"><para><bold>Only the stress is rotated.</bold> Tensor-valued internal variables of the wrapped material (kinematic hardening back stresses, plastic strain tensors, anisotropic damage tensors) are passed through untouched and are therefore <emphasis>not</emphasis> objective under large incremental rotations. Models whose internal state is scalar or isotropic-invariant are unaffected.</para>
 </simplesect>
 <simplesect kind="note"><para>The characteristic element length is <bold>not</bold> derived from any geometry here. It must be assigned explicitly via <ref refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper_1a2b6d91f95a9a5df4f43c134bf8022748" kindref="member">setCharacteristicElementLength</ref>; until then it is NaN, so a wrapped material that relies on it fails loudly instead of silently regularising incorrectly. </para>

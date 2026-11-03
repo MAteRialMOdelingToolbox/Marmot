@@ -66,7 +66,7 @@
 <para>Number of cell nodes. </para>
         </briefdescription>
         <detaileddescription>
-<para><simplesect kind="return"><para><formula id="169">$ n_\mathrm{nodes} $</formula>. </para>
+<para><simplesect kind="return"><para><formula id="186">$ n_\mathrm{nodes} $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -271,7 +271,7 @@
 <parametername direction="inout">dFInt_dQ</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Tangent <formula id="173">$ \partial \boldsymbol{f}^{\mathrm{int}}/\partial \boldsymbol{Q} $</formula>, <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref> <formula id="54">$ \times $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref>, accumulated. </para>
+<para>Tangent <formula id="190">$ \partial \boldsymbol{f}^{\mathrm{int}}/\partial \boldsymbol{Q} $</formula>, <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref> <formula id="63">$ \times $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref>, accumulated. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -354,7 +354,7 @@
 <parametername direction="out">I</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Mass matrix, <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref> <formula id="54">$ \times $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref>. </para>
+<para>Mass matrix, <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref> <formula id="63">$ \times $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -608,7 +608,7 @@
           <declname>coordinates</declname>
         </param>
         <briefdescription>
-<para>Evaluates the cell interpolation <formula id="7">$ N_A $</formula> at a point. </para>
+<para>Evaluates the cell interpolation <formula id="0">$ N_A $</formula> at a point. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -704,9 +704,9 @@
 <para>Abstract interface of a background cell of the material point method (MPM). </para>
     </briefdescription>
     <detaileddescription>
-<para>A cell is a fixed background element with <formula id="169">$ n_\mathrm{nodes} $</formula> nodes that carries the nodal fields (e.g. the displacement) and the interpolation <formula id="170">$ N_A(\boldsymbol{X}) $</formula>. It does not own any quadrature points: in every connectivity update, the host framework assigns to each cell the material points (<ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point" kindref="compound">Marmot::Discretizations::MaterialPoints::MaterialPoint</ref>) that currently lie inside it, and the cell integrates over those material points, e.g. for the internal force   <formula id="171">\[  \boldsymbol{f}^{\mathrm{int}}_A = \sum_{p \in \text{cell}} \boldsymbol{f}_{A}(\text{MP}_p)\,V_p ,
-\]</formula> with the material point volume <formula id="172">$ V_p $</formula>. The concrete kernel (which stress, which volume, which configuration) is defined by the implementing cell, see e.g. Marmot::Discretizations::Cells::DisplacementCell.</para>
-<para><bold>Dof layout.</bold> The cell vectors (Q, fInt, fExt) have <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref> entries, the matrices are dense with <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref> <formula id="54">$ \times $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref> entries. <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a81786b3fb9cc8a705e36babbba6d9d5a" kindref="member">getNodeFields()</ref> lists for each node the names of the fields it carries; <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1afab13e5aa59e03f9277c5b033174dda7" kindref="member">getDofIndicesPermutationPattern()</ref> is the permutation that maps the node-major dof order of the host framework to the cell-internal order (for the cells in Marmot: blocked, i.e. all dofs of the first field, then all dofs of the second field; within a field node-major, component fastest).</para>
+<para>A cell is a fixed background element with <formula id="186">$ n_\mathrm{nodes} $</formula> nodes that carries the nodal fields (e.g. the displacement) and the interpolation <formula id="187">$ N_A(\boldsymbol{X}) $</formula>. It does not own any quadrature points: in every connectivity update, the host framework assigns to each cell the material points (<ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point" kindref="compound">Marmot::Discretizations::MaterialPoints::MaterialPoint</ref>) that currently lie inside it, and the cell integrates over those material points, e.g. for the internal force   <formula id="188">\[  \boldsymbol{f}^{\mathrm{int}}_A = \sum_{p \in \text{cell}} \boldsymbol{f}_{A}(\text{MP}_p)\,V_p ,
+\]</formula> with the material point volume <formula id="189">$ V_p $</formula>. The concrete kernel (which stress, which volume, which configuration) is defined by the implementing cell, see e.g. Marmot::Discretizations::Cells::DisplacementCell.</para>
+<para><bold>Dof layout.</bold> The cell vectors (Q, fInt, fExt) have <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref> entries, the matrices are dense with <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref> <formula id="63">$ \times $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a514a96d1ac682d9dd4fc19e112fa61de" kindref="member">getNDofPerCell()</ref> entries. <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a81786b3fb9cc8a705e36babbba6d9d5a" kindref="member">getNodeFields()</ref> lists for each node the names of the fields it carries; <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1afab13e5aa59e03f9277c5b033174dda7" kindref="member">getDofIndicesPermutationPattern()</ref> is the permutation that maps the node-major dof order of the host framework to the cell-internal order (for the cells in Marmot: blocked, i.e. all dofs of the first field, then all dofs of the second field; within a field node-major, component fastest).</para>
 <para><bold>Call sequence of the host framework</bold> (e.g. EdelweissMeshfree), per time increment:<orderedlist>
 <listitem><para><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1aba8bfd46fbfa5400d155bf8f30cac84d" kindref="member">Marmot::Discretizations::MaterialPoints::MaterialPoint::prepareYourself()</ref> on all material points,</para>
 </listitem><listitem><para><ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a6440d3f1ac93875e0d64a53b82c9ec80" kindref="member">isCoordinateInCell()</ref> / <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1ae51f08eaf8a5420cba3c7b20e7acd113" kindref="member">getBoundingBox()</ref> to find the cells hit by the material points, then <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_cell_1a8b58710a1cd58fad5b96e5ab88be5d63" kindref="member">assignMaterialPoints()</ref> on every active cell (connectivity update),</para>

@@ -30,10 +30,10 @@
 <para>Hyperelastic Energy Density Function Wb acc. Pence &amp; Gou (2015), Eq. (2.12) and its first and second derivative w.r.t. C. </para>
         </briefdescription>
         <detaileddescription>
-<para>The energy density function <formula id="73">$W_b$</formula> is given as   <formula id="92">\[  W_b = \frac{K}{8} \left(J - \frac{1}{J}\right)^2 + \frac{G}{2} \left(I_1 J^{-\frac{2}{3}} - 3\right)
-\]</formula> where <formula id="69">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="70">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="71">$ J = \sqrt{\det(\boldsymbol{C})} =
-\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="72">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
-<para>Additionally, the first and second derivative w.r.t. <formula id="5">$\boldsymbol{C}$</formula>, i.e.,    <formula id="93">\[\frac{\partial W_b}{\partial \boldsymbol{C}} \quad \text{and} \quad
+<para>The energy density function <formula id="75">$W_b$</formula> is given as   <formula id="94">\[  W_b = \frac{K}{8} \left(J - \frac{1}{J}\right)^2 + \frac{G}{2} \left(I_1 J^{-\frac{2}{3}} - 3\right)
+\]</formula> where <formula id="71">$ I_1 = \text{tr}(\boldsymbol{C}) $</formula> is the first invariant of the right Cauchy-Green tensor <formula id="72">$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} $</formula>,  <formula id="73">$ J = \sqrt{\det(\boldsymbol{C})} =
+\det(\boldsymbol{F}) $</formula> is the determinant of the deformation gradient, and <formula id="74">$ K, G $</formula> are the bulk and shear modulus, respectively.</para>
+<para>Additionally, the first and second derivative w.r.t. <formula id="17">$\boldsymbol{C}$</formula>, i.e.,    <formula id="95">\[\frac{\partial W_b}{\partial \boldsymbol{C}} \quad \text{and} \quad
 \frac{\partial^2 W_b}{\partial \boldsymbol{C} \partial \boldsymbol{C}}
 \]</formula> are computed.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -102,7 +102,7 @@
           <declname>G</declname>
         </param>
         <briefdescription>
-<para>Standard compressible Neo-Hooke energy density and first/second derivatives w.r.t. <formula id="5">$\boldsymbol{C}$</formula>. </para>
+<para>Standard compressible Neo-Hooke energy density and first/second derivatives w.r.t. <formula id="17">$\boldsymbol{C}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="templateparam"><parameteritem>
@@ -139,7 +139,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Tuple of energy density, first derivative and second derivative w.r.t. <formula id="5">$\boldsymbol{C}$</formula>. </para>
+<simplesect kind="return"><para>Tuple of energy density, first derivative and second derivative w.r.t. <formula id="17">$\boldsymbol{C}$</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -171,10 +171,10 @@
           <declname>G</declname>
         </param>
         <briefdescription>
-<para>Isotropic Biot-Neo-Hooke energy density and derivatives w.r.t. right stretch <formula id="94">$\boldsymbol{U}$</formula>. </para>
+<para>Isotropic Biot-Neo-Hooke energy density and derivatives w.r.t. right stretch <formula id="96">$\boldsymbol{U}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>Internally evaluates the standard Neo-Hooke potential in terms of <formula id="95">$\boldsymbol{C}=\boldsymbol{U}\boldsymbol{U}$</formula> and applies chain-rule transformations.</para>
+<para>Internally evaluates the standard Neo-Hooke potential in terms of <formula id="97">$\boldsymbol{C}=\boldsymbol{U}\boldsymbol{U}$</formula> and applies chain-rule transformations.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>T</parametername>
@@ -209,7 +209,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Tuple of energy density, first derivative and second derivative w.r.t. <formula id="94">$\boldsymbol{U}$</formula>. </para>
+<simplesect kind="return"><para>Tuple of energy density, first derivative and second derivative w.r.t. <formula id="96">$\boldsymbol{U}$</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>

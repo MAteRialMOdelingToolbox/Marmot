@@ -19,7 +19,7 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para>Closed-form linearisation of the Hughes-Winget update, assuming <formula id="99">$ \partial\boldsymbol{\sigma}^{(n+1)}/\partial\boldsymbol{\sigma}_{\text{rot}} = \boldsymbol{I} $</formula>. Exact while the wrapped material responds elastically. One wrapped-material evaluation. </para>
+<para>Closed-form linearisation of the Hughes-Winget update, assuming <formula id="43">$ \partial\boldsymbol{\sigma}^{(n+1)}/\partial\boldsymbol{\sigma}_{\text{rot}} = \boldsymbol{I} $</formula>. Exact while the wrapped material responds elastically. One wrapped-material evaluation. </para>
           </detaileddescription>
         </enumvalue>
         <enumvalue id="_marmot_material_hughes_winget_8h_1aae3da5caf189b7df4924e17c1ac99260a1649aed298f99d587e2eb30c1db5946b" prot="public">
@@ -27,7 +27,7 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para>As HughesWingetTangent::Analytic, but the operator <formula id="100">$ \boldsymbol{S} = \partial\boldsymbol{\sigma}^{(n+1)}/\partial\boldsymbol{\sigma}_{\text{rot}} $</formula> is recovered by forward-differencing the wrapped material with respect to its six incoming stress components. Fully consistent. Seven wrapped-material evaluations. </para>
+<para>As HughesWingetTangent::Analytic, but the operator <formula id="44">$ \boldsymbol{S} = \partial\boldsymbol{\sigma}^{(n+1)}/\partial\boldsymbol{\sigma}_{\text{rot}} $</formula> is recovered by forward-differencing the wrapped material with respect to its six incoming stress components. Fully consistent. Seven wrapped-material evaluations. </para>
           </detaileddescription>
         </enumvalue>
         <enumvalue id="_marmot_material_hughes_winget_8h_1aae3da5caf189b7df4924e17c1ac99260a5225763efc97aebd39e5a303fceb57ac" prot="public">
@@ -35,11 +35,11 @@
           <briefdescription>
           </briefdescription>
           <detaileddescription>
-<para>The complete update is forward-differenced with respect to the nine components of <formula id="33">$ \boldsymbol{F} $</formula>. Fully consistent and model-agnostic, but the most expensive option (eleven wrapped-material evaluations). Intended for verification and debugging. </para>
+<para>The complete update is forward-differenced with respect to the nine components of <formula id="45">$ \boldsymbol{F} $</formula>. Fully consistent and model-agnostic, but the most expensive option (eleven wrapped-material evaluations). Intended for verification and debugging. </para>
           </detaileddescription>
         </enumvalue>
         <briefdescription>
-<para>Selects how the algorithmic tangent <formula id="50">$ \partial\boldsymbol{\tau}/\partial\boldsymbol{F} $</formula> of <ref refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper" kindref="compound">Marmot::Materials::HughesWingetWrapper</ref> is evaluated. </para>
+<para>Selects how the algorithmic tangent <formula id="13">$ \partial\boldsymbol{\tau}/\partial\boldsymbol{F} $</formula> of <ref refid="class_marmot_1_1_materials_1_1_hughes_winget_wrapper" kindref="compound">Marmot::Materials::HughesWingetWrapper</ref> is evaluated. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -52,6 +52,6 @@
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialFiniteStrain.h" line="32" column="1"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteStrainMechanicsCore/include/Marmot/MarmotMaterialGradientEnhancedFiniteStrain.h" line="32" column="1"/>
   </compounddef>
 </doxygen>

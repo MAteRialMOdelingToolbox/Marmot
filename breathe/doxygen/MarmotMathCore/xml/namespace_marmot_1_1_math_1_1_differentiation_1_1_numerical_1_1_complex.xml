@@ -110,7 +110,7 @@
         <qualifiedname>Marmot::Math::Differentiation::Numerical::Complex::imaginaryUnit</qualifiedname>
         <initializer>= { 0, 1 }</initializer>
         <briefdescription>
-<para>A variable representing <formula id="73">$ 0 + 1i $</formula>. </para>
+<para>A variable representing <formula id="20">$ 0 + 1i $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -126,7 +126,7 @@
         <qualifiedname>Marmot::Math::Differentiation::Numerical::Complex::complexUnit</qualifiedname>
         <initializer>= { 1, 1 }</initializer>
         <briefdescription>
-<para>A variable representing <formula id="74">$ 1 + 1i $</formula>. </para>
+<para>A variable representing <formula id="21">$ 1 + 1i $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -142,7 +142,7 @@
         <qualifiedname>Marmot::Math::Differentiation::Numerical::Complex::i_</qualifiedname>
         <initializer>= Marmot::Math::Constants::sqrt2 / 2. * complexUnit</initializer>
         <briefdescription>
-<para>A variable representing <formula id="75">$ \frac{\sqrt{2}}{2} (1+1i) $</formula>. </para>
+<para>A variable representing <formula id="22">$ \frac{\sqrt{2}}{2} (1+1i) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -261,8 +261,8 @@
 </parameterlist>
 <simplesect kind="return"><para>The approximated first derivative of f at point x.</para>
 </simplesect>
-It actually computes   <formula id="76">\[ f&apos;(x) \approx \frac{\text{Im}(f(x + ih))}{h}
-\]</formula> with <formula id="77">$ h = 10^{-20} $</formula>.</para>
+It actually computes   <formula id="23">\[ f&apos;(x) \approx \frac{\text{Im}(f(x + ih))}{h}
+\]</formula> with <formula id="24">$ h = 10^{-20} $</formula>.</para>
 <para><simplesect kind="note"><para>This method is highly accurate and does not suffer from subtractive cancellation errors, making it suitable for functions where high precision is required. </para>
 </simplesect>
 </para>
@@ -308,8 +308,8 @@ It actually computes   <formula id="76">\[ f&apos;(x) \approx \frac{\text{Im}(f(
 </parameterlist>
 <simplesect kind="return"><para>A tuple containing the function value at X and the approximated Jacobian matrix of F at point X.</para>
 </simplesect>
-It actually computes   <formula id="78">\[ J_{ij} \approx \frac{\text{Im}(F_i(X + ih e_j))}{h}
-\]</formula> with <formula id="77">$ h = 10^{-20} $</formula>, and <formula id="69">$ e_j $</formula> being the unit vector in the j-th direction.</para>
+It actually computes   <formula id="25">\[ J_{ij} \approx \frac{\text{Im}(F_i(X + ih e_j))}{h}
+\]</formula> with <formula id="24">$ h = 10^{-20} $</formula>, and <formula id="16">$ e_j $</formula> being the unit vector in the j-th direction.</para>
 <para><simplesect kind="note"><para>This method is highly accurate and does not suffer from subtractive cancellation errors, making it suitable for functions where high precision is required. </para>
 </simplesect>
 </para>
@@ -355,8 +355,8 @@ It actually computes   <formula id="78">\[ J_{ij} \approx \frac{\text{Im}(F_i(X 
 </parameterlist>
 <simplesect kind="return"><para>The approximated Jacobian matrix of F at point X.</para>
 </simplesect>
-It actually approximates the Jacobian matrix by   <formula id="79">\[ J_{ij} \approx \frac{\text{Im}(F_i(\boldsymbol{X} + Ih e_j) - F_i(\boldsymbol{X} - Ih e_j))}{2h}
-\]</formula> with <formula id="80">$ I = \sqrt{2}/2( 1+1i )$</formula>, <formula id="72">$ h = \sqrt[3]{\epsilon} \max(1, ||\boldsymbol{X}||) $</formula>, and <formula id="69">$ e_j $</formula> being the unit vector in the j-th direction.</para>
+It actually approximates the Jacobian matrix by   <formula id="26">\[ J_{ij} \approx \frac{\text{Im}(F_i(\boldsymbol{X} + Ih e_j) - F_i(\boldsymbol{X} - Ih e_j))}{2h}
+\]</formula> with <formula id="27">$ I = \sqrt{2}/2( 1+1i )$</formula>, <formula id="19">$ h = \sqrt[3]{\epsilon} \max(1, ||\boldsymbol{X}||) $</formula>, and <formula id="16">$ e_j $</formula> being the unit vector in the j-th direction.</para>
 <para><simplesect kind="note"><para>The formula can be found in Lai et al. (2005) Equ. 19. </para>
 </simplesect>
 </para>
@@ -402,12 +402,12 @@ It actually approximates the Jacobian matrix by   <formula id="79">\[ J_{ij} \ap
 </parameterlist>
 <simplesect kind="return"><para>The approximated Jacobian matrix of F at point X.</para>
 </simplesect>
-It actually approximates the Jacobian matrix by       <formula id="81">\[J_{ij} \approx \frac{\text{Im}(8 [
+It actually approximates the Jacobian matrix by       <formula id="28">\[J_{ij} \approx \frac{\text{Im}(8 [
 F_i(\boldsymbol{X} + I/2h e_j) -
 F_i(\boldsymbol{X} - I/2h e_j)] -
 [F_i(\boldsymbol{X} + Ih e_j) +
 F_i(\boldsymbol{X} - Ih e_j)])}{3\sqrt{2}h}
-\]</formula> with <formula id="80">$ I = \sqrt{2}/2( 1+1i )$</formula>, <formula id="82">$ h = \sqrt{\epsilon} \max(1, ||\boldsymbol{X}||) $</formula>, and <formula id="69">$ e_j $</formula> being the unit vector in the j-th direction.</para>
+\]</formula> with <formula id="27">$ I = \sqrt{2}/2( 1+1i )$</formula>, <formula id="29">$ h = \sqrt{\epsilon} \max(1, ||\boldsymbol{X}||) $</formula>, and <formula id="16">$ e_j $</formula> being the unit vector in the j-th direction.</para>
 <para><simplesect kind="note"><para>The formula can be found in Lai et al. (2005) Equ. 24. </para>
 </simplesect>
 </para>

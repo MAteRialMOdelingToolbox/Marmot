@@ -49,7 +49,7 @@
           <declname>coord</declname>
         </param>
         <briefdescription>
-<para>Evaluate the kernel function <formula id="0">$ \phi_A(\boldsymbol{x}) $</formula>. </para>
+<para>Evaluate the kernel function <formula id="46">$ \phi_A(\boldsymbol{x}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -57,7 +57,7 @@
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Coordinates <formula id="5">$ \boldsymbol{x} $</formula> of the evaluation point (length <formula id="4">$ d $</formula>). </para>
+<para>Coordinates <formula id="50">$ \boldsymbol{x} $</formula> of the evaluation point (length <formula id="49">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -86,7 +86,7 @@
           <declname>grad</declname>
         </param>
         <briefdescription>
-<para>Evaluate the gradient <formula id="6">$ \partial \phi_A / \partial x_i $</formula> of the kernel function. </para>
+<para>Evaluate the gradient <formula id="51">$ \partial \phi_A / \partial x_i $</formula> of the kernel function. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -94,7 +94,7 @@
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Coordinates <formula id="5">$ \boldsymbol{x} $</formula> of the evaluation point (length <formula id="4">$ d $</formula>). </para>
+<para>Coordinates <formula id="50">$ \boldsymbol{x} $</formula> of the evaluation point (length <formula id="49">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -102,7 +102,7 @@
 <parametername direction="out">grad</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Gradient of the kernel with respect to <formula id="5">$ \boldsymbol{x} $</formula> (length <formula id="4">$ d $</formula>). </para>
+<para>Gradient of the kernel with respect to <formula id="50">$ \boldsymbol{x} $</formula> (length <formula id="49">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -137,7 +137,7 @@
 <parametername direction="out">lower</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Lower corner of the bounding box (length <formula id="4">$ d $</formula>). </para>
+<para>Lower corner of the bounding box (length <formula id="49">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -145,7 +145,7 @@
 <parametername direction="out">upper</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Upper corner of the bounding box (length <formula id="4">$ d $</formula>). </para>
+<para>Upper corner of the bounding box (length <formula id="49">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -176,7 +176,7 @@
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Coordinates of the point (length <formula id="4">$ d $</formula>). </para>
+<para>Coordinates of the point (length <formula id="49">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -197,10 +197,10 @@
         <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline2nd_order_boxed_1a80b9fed0378d0713934c7ee04518d98a">getCenterCoordinates</reimplementedby>
         <reimplementedby refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_kernel_function_b_spline3rd_order_boxed_1a50c867fc0fe24af6a125b57fb8275168">getCenterCoordinates</reimplementedby>
         <briefdescription>
-<para>Get the center coordinates <formula id="2">$ \boldsymbol{x}_A $</formula> of the kernel. </para>
+<para>Get the center coordinates <formula id="47">$ \boldsymbol{x}_A $</formula> of the kernel. </para>
         </briefdescription>
         <detaileddescription>
-<para><simplesect kind="return"><para>Pointer to the center coordinates (length <formula id="4">$ d $</formula>). </para>
+<para><simplesect kind="return"><para>Pointer to the center coordinates (length <formula id="49">$ d $</formula>). </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -229,7 +229,7 @@
 <parametername direction="in">coord</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>New center coordinates (length <formula id="4">$ d $</formula>). </para>
+<para>New center coordinates (length <formula id="49">$ d $</formula>). </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -241,11 +241,11 @@
       </memberdef>
     </sectiondef>
     <briefdescription>
-<para>Abstract interface of a meshfree kernel (window) function <formula id="0">$ \phi_A(\boldsymbol{x}) $</formula>. </para>
+<para>Abstract interface of a meshfree kernel (window) function <formula id="46">$ \phi_A(\boldsymbol{x}) $</formula>. </para>
     </briefdescription>
     <detaileddescription>
-<para>A kernel function is attached to a node (particle) <formula id="1">$ A $</formula> with center <formula id="2">$ \boldsymbol{x}_A $</formula> and has compact support. The reproducing kernel approximation (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kindref="compound">ReproducingKernelApproximation</ref>) builds its shape functions <formula id="3">$ \Psi_A $</formula> by correcting these kernels such that polynomials up to a given order are reproduced exactly; the continuity of <formula id="3">$ \Psi_A $</formula> is inherited from the kernel.</para>
-<para>All coordinates are passed as raw arrays of length <formula id="4">$ d $</formula> (the spatial dimension of the kernel). The configuration in which the coordinates are given (reference or current) is decided by the caller; the kernel only compares them with its center coordinates. </para>
+<para>A kernel function is attached to a node (particle) <formula id="9">$ A $</formula> with center <formula id="47">$ \boldsymbol{x}_A $</formula> and has compact support. The reproducing kernel approximation (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_reproducing_kernel_approximation" kindref="compound">ReproducingKernelApproximation</ref>) builds its shape functions <formula id="48">$ \Psi_A $</formula> by correcting these kernels such that polynomials up to a given order are reproduced exactly; the continuity of <formula id="48">$ \Psi_A $</formula> is inherited from the kernel.</para>
+<para>All coordinates are passed as raw arrays of length <formula id="49">$ d $</formula> (the spatial dimension of the kernel). The configuration in which the coordinates are given (reference or current) is decided by the caller; the kernel only compares them with its center coordinates. </para>
     </detaileddescription>
     <inheritancegraph>
       <node id="1">

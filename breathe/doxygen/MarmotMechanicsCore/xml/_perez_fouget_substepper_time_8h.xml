@@ -28,7 +28,7 @@
 <para>Time-variant variant of the Pérez–Fouget sub-stepper. </para>
     </briefdescription>
     <detaileddescription>
-<para>A modified version of the Pérez–Fouget sub-stepper that accounts for a time-variant elastic stiffness tensor <formula id="309">$ \mathbb{C}^\mathrm{el}(t_{n+1}) $</formula>. The algorithmic formulation is unchanged; the only difference is that the current elastic tangent must be supplied when extending the consistent tangent. </para>
+<para>A modified version of the Pérez–Fouget sub-stepper that accounts for a time-variant elastic stiffness tensor <formula id="51">$ \mathbb{C}^\mathrm{el}(t_{n+1}) $</formula>. The algorithmic formulation is unchanged; the only difference is that the current elastic tangent must be supplied when extending the consistent tangent. </para>
     </detaileddescription>
     <programlisting>
 <codeline lineno="1"><highlight class="comment">/*<sp/>---------------------------------------------------------------------</highlight></codeline>

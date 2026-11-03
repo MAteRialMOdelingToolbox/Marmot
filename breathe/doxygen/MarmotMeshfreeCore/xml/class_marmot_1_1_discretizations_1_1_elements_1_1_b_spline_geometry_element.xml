@@ -132,7 +132,7 @@
         <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::nKnotsPerDir</qualifiedname>
         <initializer>= 2 * order + 2</initializer>
         <briefdescription>
-<para>Knots per direction, <formula id="82">$ 2p+2 $</formula>. </para>
+<para>Knots per direction, <formula id="57">$ 2p+2 $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -148,7 +148,7 @@
         <qualifiedname>Marmot::Discretizations::Elements::BSplineGeometryElement::nNodes</qualifiedname>
         <initializer>= pow( order + 1, nDim )</initializer>
         <briefdescription>
-<para>Number of control points, <formula id="143">$ (p+1)^{n_\mathrm{dim}} $</formula>. </para>
+<para>Number of control points, <formula id="243">$ (p+1)^{n_\mathrm{dim}} $</formula>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -255,7 +255,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="142">$ \mathrm{base}^{\mathrm{exponent}} $</formula>. </para>
+<simplesect kind="return"><para><formula id="242">$ \mathrm{base}^{\mathrm{exponent}} $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -296,7 +296,7 @@
 <parametername direction="in">nodeCoordinates_</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Control point coordinates, nNodes <formula id="54">$ \times $</formula> nDim values, point by point in the tensor-product order of <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a902a086088be3b2816af072ee017ea05" kindref="member">N()</ref>. Mapped, not copied; must outlive the object. </para>
+<para>Control point coordinates, nNodes <formula id="63">$ \times $</formula> nDim values, point by point in the tensor-product order of <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1a902a086088be3b2816af072ee017ea05" kindref="member">N()</ref>. Mapped, not copied; must outlive the object. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -380,7 +380,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="144">$ N_a(\boldsymbol{\xi}) $</formula>. </para>
+<simplesect kind="return"><para><formula id="59">$ N_a(\boldsymbol{\xi}) $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -411,7 +411,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="145">$ \partial N_a/\partial \xi_i $</formula> (row <formula id="65">$ i $</formula>, column <formula id="30">$ a $</formula>). </para>
+<simplesect kind="return"><para><formula id="60">$ \partial N_a/\partial \xi_i $</formula> (row <formula id="44">$ i $</formula>, column <formula id="61">$ a $</formula>). </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -442,7 +442,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="146">$ J_{ij} = \sum_a \partial N_a/\partial \xi_j \, X_{a,i} $</formula>. </para>
+<simplesect kind="return"><para><formula id="244">$ J_{ij} = \sum_a \partial N_a/\partial \xi_j \, X_{a,i} $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -485,7 +485,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="147">$ \partial N_a/\partial X_i = (\partial N_a/\partial \xi_j)\,J^{-1}_{ji} $</formula>. </para>
+<simplesect kind="return"><para><formula id="245">$ \partial N_a/\partial X_i = (\partial N_a/\partial \xi_j)\,J^{-1}_{ji} $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -498,10 +498,10 @@
 <para>Geometry of a single knot span of a tensor-product B-spline of degree <computeroutput>order</computeroutput>. </para>
     </briefdescription>
     <detaileddescription>
-<para>The element is one knot span <formula id="134">$ [u_p, u_{p+1}] $</formula> per direction of a B-spline of degree <formula id="135">$ p $</formula> = <computeroutput>order</computeroutput>. The <formula id="136">$ p+1 $</formula> basis functions that are nonzero on that span depend on the <formula id="82">$ 2p+2 $</formula> knots <formula id="137">$ u_0,\dots,u_{2p+1} $</formula> of each direction, which are passed to the constructor. The shape functions are tensor products of the univariate B-splines <formula id="138">$ B_{i,p} $</formula> (Cox<ndash/>de Boor recursion, see <ref refid="_marmot_b_spline_8h" kindref="compound">MarmotBSpline.h</ref>),    <formula id="139">\[  N_{a}(\boldsymbol{\xi}) = B_{i,p}(\xi_1)\,B_{j,p}(\xi_2)\,B_{k,p}(\xi_3), \qquad
+<para>The element is one knot span <formula id="235">$ [u_p, u_{p+1}] $</formula> per direction of a B-spline of degree <formula id="54">$ p $</formula> = <computeroutput>order</computeroutput>. The <formula id="236">$ p+1 $</formula> basis functions that are nonzero on that span depend on the <formula id="57">$ 2p+2 $</formula> knots <formula id="237">$ u_0,\dots,u_{2p+1} $</formula> of each direction, which are passed to the constructor. The shape functions are tensor products of the univariate B-splines <formula id="238">$ B_{i,p} $</formula> (Cox<ndash/>de Boor recursion, see <ref refid="_marmot_b_spline_8h" kindref="compound">MarmotBSpline.h</ref>),    <formula id="239">\[  N_{a}(\boldsymbol{\xi}) = B_{i,p}(\xi_1)\,B_{j,p}(\xi_2)\,B_{k,p}(\xi_3), \qquad
   a = i + j\,(p+1) + k\,(p+1)^2 ,
-\]</formula> i.e. with the index of the first direction running fastest. The parametric coordinates <formula id="61">$ \boldsymbol{\xi} $</formula> are the knot values themselves (the normalization of the knot vectors to <formula id="140">$ [-1,1] $</formula> is disabled, so <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1aa27f6a8fb4c18ad6b94ad6a4cab28637" kindref="member">_knotVectorsNormalized</ref> is a copy of <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1acb44744622a5fbd9bb661b73cc335ddf" kindref="member">_knotVectors</ref>).</para>
-<para><simplesect kind="note"><para>Only 2D and 3D are usable: in 1D, the constructor throws for <computeroutput>order</computeroutput> &gt; 1 (no shape with <formula id="141">$ p+1 &gt; 2 $</formula> nodes in 1D), and <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1ad1e0658864b8eaf141bacc21c2cfd678" kindref="member">dNdXi()</ref> would not compile if instantiated.</para>
+\]</formula> i.e. with the index of the first direction running fastest. The parametric coordinates <formula id="41">$ \boldsymbol{\xi} $</formula> are the knot values themselves (the normalization of the knot vectors to <formula id="240">$ [-1,1] $</formula> is disabled, so <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1aa27f6a8fb4c18ad6b94ad6a4cab28637" kindref="member">_knotVectorsNormalized</ref> is a copy of <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1acb44744622a5fbd9bb661b73cc335ddf" kindref="member">_knotVectors</ref>).</para>
+<para><simplesect kind="note"><para>Only 2D and 3D are usable: in 1D, the constructor throws for <computeroutput>order</computeroutput> &gt; 1 (no shape with <formula id="241">$ p+1 &gt; 2 $</formula> nodes in 1D), and <ref refid="class_marmot_1_1_discretizations_1_1_elements_1_1_b_spline_geometry_element_1ad1e0658864b8eaf141bacc21c2cfd678" kindref="member">dNdXi()</ref> would not compile if instantiated.</para>
 </simplesect>
 <parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
@@ -516,7 +516,7 @@
 <parametername>order</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Polynomial degree <formula id="135">$ p $</formula> of the B-spline. </para>
+<para>Polynomial degree <formula id="54">$ p $</formula> of the B-spline. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>

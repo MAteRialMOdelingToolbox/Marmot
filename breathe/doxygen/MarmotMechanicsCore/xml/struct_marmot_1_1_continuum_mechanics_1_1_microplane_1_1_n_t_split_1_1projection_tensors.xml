@@ -11,10 +11,10 @@
         <name>N</name>
         <qualifiedname>Marmot::ContinuumMechanics::Microplane::NTSplit::projectionTensors::N</qualifiedname>
         <briefdescription>
-<para>Normal projection tensor <formula id="343">$ N_{ij}^{(m)} = n_i^{(m)} n_j^{(m)} $</formula> in Voigt notation, one column per microplane. </para>
+<para>Normal projection tensor <formula id="368">$ N_{ij}^{(m)} = n_i^{(m)} n_j^{(m)} $</formula> in Voigt notation, one column per microplane. </para>
         </briefdescription>
         <detaileddescription>
-<para>Projects the macroscopic strain tensor <formula id="344">$ \eps $</formula> onto the microplane normal strain <formula id="345">$ \varepsilon_N^{(m)} $</formula> of microplane <computeroutput>m:</computeroutput>   <formula id="346">\[  \varepsilon_N^{(m)} = N_{ij}^{(m)} \varepsilon_{ij}
+<para>Projects the macroscopic strain tensor <formula id="369">$ \eps $</formula> onto the microplane normal strain <formula id="370">$ \varepsilon_N^{(m)} $</formula> of microplane <computeroutput>m:</computeroutput>   <formula id="371">\[  \varepsilon_N^{(m)} = N_{ij}^{(m)} \varepsilon_{ij}
 \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
@@ -28,11 +28,11 @@
         <name>M</name>
         <qualifiedname>Marmot::ContinuumMechanics::Microplane::NTSplit::projectionTensors::M</qualifiedname>
         <briefdescription>
-<para>In-plane shear projection tensor  <formula id="347">$ M_{ij}^{(m)} = \tfrac{1}{2}(m_i^{(m)} n_j^{(m)} +
+<para>In-plane shear projection tensor  <formula id="372">$ M_{ij}^{(m)} = \tfrac{1}{2}(m_i^{(m)} n_j^{(m)} +
 m_j^{(m)} n_i^{(m)}) $</formula> in Voigt notation, one column per microplane. </para>
         </briefdescription>
         <detaileddescription>
-<para>Projects the macroscopic strain tensor <formula id="344">$ \eps $</formula> onto the microplane shear strain <formula id="348">$ \varepsilon_M^{(m)} $</formula> (direction <formula id="314">$ m^{(m)} $</formula>) of microplane <computeroutput>m:</computeroutput>   <formula id="349">\[  \varepsilon_M^{(m)} = M_{ij}^{(m)} \varepsilon_{ij}
+<para>Projects the macroscopic strain tensor <formula id="369">$ \eps $</formula> onto the microplane shear strain <formula id="373">$ \varepsilon_M^{(m)} $</formula> (direction <formula id="339">$ m^{(m)} $</formula>) of microplane <computeroutput>m:</computeroutput>   <formula id="374">\[  \varepsilon_M^{(m)} = M_{ij}^{(m)} \varepsilon_{ij}
 \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
@@ -46,11 +46,11 @@ m_j^{(m)} n_i^{(m)}) $</formula> in Voigt notation, one column per microplane. <
         <name>L</name>
         <qualifiedname>Marmot::ContinuumMechanics::Microplane::NTSplit::projectionTensors::L</qualifiedname>
         <briefdescription>
-<para>In-plane shear projection tensor  <formula id="350">$ L_{ij}^{(m)} = \tfrac{1}{2}(l_i^{(m)} n_j^{(m)} +
+<para>In-plane shear projection tensor  <formula id="375">$ L_{ij}^{(m)} = \tfrac{1}{2}(l_i^{(m)} n_j^{(m)} +
 l_j^{(m)} n_i^{(m)}) $</formula> in Voigt notation, one column per microplane. </para>
         </briefdescription>
         <detaileddescription>
-<para>Projects the macroscopic strain tensor <formula id="344">$ \eps $</formula> onto the microplane shear strain <formula id="351">$ \varepsilon_L^{(m)} $</formula> (direction <formula id="313">$ l^{(m)} $</formula>) of microplane <computeroutput>m:</computeroutput>   <formula id="352">\[  \varepsilon_L^{(m)} = L_{ij}^{(m)} \varepsilon_{ij}
+<para>Projects the macroscopic strain tensor <formula id="369">$ \eps $</formula> onto the microplane shear strain <formula id="376">$ \varepsilon_L^{(m)} $</formula> (direction <formula id="338">$ l^{(m)} $</formula>) of microplane <computeroutput>m:</computeroutput>   <formula id="377">\[  \varepsilon_L^{(m)} = L_{ij}^{(m)} \varepsilon_{ij}
 \]</formula> </para>
         </detaileddescription>
         <inbodydescription>
@@ -64,7 +64,7 @@ l_j^{(m)} n_i^{(m)}) $</formula> in Voigt notation, one column per microplane. <
         <name>w</name>
         <qualifiedname>Marmot::ContinuumMechanics::Microplane::NTSplit::projectionTensors::w</qualifiedname>
         <briefdescription>
-<para>Integration weights <formula id="323">$ w^{(m)} $</formula> for the chosen scheme; see <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data_1aa963a3c83eebe1da387c6f693c0636c7" kindref="member">Discretization::Data::weights</ref>. </para>
+<para>Integration weights <formula id="348">$ w^{(m)} $</formula> for the chosen scheme; see <ref refid="struct_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_discretization_1_1_data_1aa963a3c83eebe1da387c6f693c0636c7" kindref="member">Discretization::Data::weights</ref>. </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -74,7 +74,7 @@ l_j^{(m)} n_i^{(m)}) $</formula> in Voigt notation, one column per microplane. <
       </memberdef>
     </sectiondef>
     <briefdescription>
-<para>Kinematic projection tensors (normal <formula id="326">$ N $</formula>, and in-plane shear <formula id="327">$ M $</formula>/ <formula id="328">$ L $</formula> directions) and integration weights <formula id="329">$ w $</formula> for all <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ac4c4bf30b23d1e109496ecd4328b7340" kindref="member">nqp</ref> microplanes, in Voigt notation. </para>
+<para>Kinematic projection tensors (normal <formula id="351">$ N $</formula>, and in-plane shear <formula id="352">$ M $</formula>/ <formula id="353">$ L $</formula> directions) and integration weights <formula id="354">$ w $</formula> for all <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ac4c4bf30b23d1e109496ecd4328b7340" kindref="member">nqp</ref> microplanes, in Voigt notation. </para>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>

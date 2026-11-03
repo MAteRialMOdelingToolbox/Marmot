@@ -163,7 +163,7 @@
 <parametername direction="in">nodeCoordinates</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Nodal coordinates, nNodes <formula id="54">$ \times $</formula> nDim values, node by node (Abaqus node order). The array is mapped, not copied, and must outlive the geometry. </para>
+<para>Nodal coordinates, nNodes <formula id="63">$ \times $</formula> nDim values, node by node (Abaqus node order). The array is mapped, not copied, and must outlive the geometry. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -184,7 +184,7 @@
           <declname>coordinates</declname>
         </param>
         <briefdescription>
-<para>Point location test: bounding box test <formula id="55">$ X_{\min,i} \le x_i &lt; X_{\max,i} $</formula>, and for a distorted cell additionally <formula id="56">$ -1 \le \xi_i &lt; 1 $</formula> for the parametric coordinates of <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1ab8d88cbe9f44623e41d085b21affb8fa" kindref="member">findReferenceCoordinate()</ref>. </para>
+<para>Point location test: bounding box test <formula id="194">$ X_{\min,i} \le x_i &lt; X_{\max,i} $</formula>, and for a distorted cell additionally <formula id="195">$ -1 \le \xi_i &lt; 1 $</formula> for the parametric coordinates of <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1ab8d88cbe9f44623e41d085b21affb8fa" kindref="member">findReferenceCoordinate()</ref>. </para>
         </briefdescription>
         <detaileddescription>
 <para>Both tests are half-open, so that a point on a face shared by two cells belongs to exactly one of them; consequently, a point exactly on the upper boundary of the whole mesh belongs to no cell. <parameterlist kind="param"><parameteritem>
@@ -256,11 +256,11 @@
           <declname>coord</declname>
         </param>
         <briefdescription>
-<para>Inverse isoparametric map <formula id="57">$ \boldsymbol{\xi}(\boldsymbol{X}) $</formula>. </para>
+<para>Inverse isoparametric map <formula id="196">$ \boldsymbol{\xi}(\boldsymbol{X}) $</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>Starts from the affine map of the bounding box, <formula id="58">$ \xi_i = 2\,(X_i - \tfrac12(X_{\max,i}+X_{\min,i}))/(X_{\max,i}-X_{\min,i}) $</formula>, which is exact for an axis-aligned box-shaped cell, and applies Newton&apos;s method,  <formula id="59">$ \boldsymbol{\xi} \leftarrow \boldsymbol{\xi} + \boldsymbol{J}^{-1}(\boldsymbol{X} - \sum_A
-N_A(\boldsymbol{\xi})\boldsymbol{X}_A) $</formula>, until the residual is below <formula id="60">$ 10^{-12} $</formula> times the diagonal of the bounding box. <parameterlist kind="param"><parameteritem>
+<para>Starts from the affine map of the bounding box, <formula id="197">$ \xi_i = 2\,(X_i - \tfrac12(X_{\max,i}+X_{\min,i}))/(X_{\max,i}-X_{\min,i}) $</formula>, which is exact for an axis-aligned box-shaped cell, and applies Newton&apos;s method,  <formula id="198">$ \boldsymbol{\xi} \leftarrow \boldsymbol{\xi} + \boldsymbol{J}^{-1}(\boldsymbol{X} - \sum_A
+N_A(\boldsymbol{\xi})\boldsymbol{X}_A) $</formula>, until the residual is below <formula id="199">$ 10^{-12} $</formula> times the diagonal of the bounding box. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">coord</parametername>
 </parameternamelist>
@@ -269,7 +269,7 @@ N_A(\boldsymbol{\xi})\boldsymbol{X}_A) $</formula>, until the residual is below 
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Parametric coordinates <formula id="61">$ \boldsymbol{\xi} $</formula>. </para>
+<simplesect kind="return"><para>Parametric coordinates <formula id="41">$ \boldsymbol{\xi} $</formula>. </para>
 </simplesect>
 <parameterlist kind="exception"><parameteritem>
 <parameternamelist>
@@ -309,7 +309,7 @@ N_A(\boldsymbol{\xi})\boldsymbol{X}_A) $</formula>, until the residual is below 
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="50">$ N_A(\boldsymbol{\xi}) $</formula>. </para>
+<simplesect kind="return"><para><formula id="42">$ N_A(\boldsymbol{\xi}) $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -328,7 +328,7 @@ N_A(\boldsymbol{\xi})\boldsymbol{X}_A) $</formula>, until the residual is below 
           <declname>xi</declname>
         </param>
         <briefdescription>
-<para>Shape function gradients w.r.t. the physical coordinates, <formula id="62">$ \partial N_A/\partial X_i = (\partial N_A/\partial \xi_j)\,J^{-1}_{ji} $</formula>, <formula id="63">$ J_{ij} = \partial X_i/\partial \xi_j $</formula>. </para>
+<para>Shape function gradients w.r.t. the physical coordinates, <formula id="200">$ \partial N_A/\partial X_i = (\partial N_A/\partial \xi_j)\,J^{-1}_{ji} $</formula>, <formula id="201">$ J_{ij} = \partial X_i/\partial \xi_j $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -340,7 +340,7 @@ N_A(\boldsymbol{\xi})\boldsymbol{X}_A) $</formula>, until the residual is below 
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="64">$ \partial N_A/\partial X_i $</formula> (row <formula id="65">$ i $</formula>, column <formula id="1">$ A $</formula>). </para>
+<simplesect kind="return"><para><formula id="202">$ \partial N_A/\partial X_i $</formula> (row <formula id="44">$ i $</formula>, column <formula id="9">$ A $</formula>). </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -371,7 +371,7 @@ N_A(\boldsymbol{\xi})\boldsymbol{X}_A) $</formula>, until the residual is below 
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para><formula id="66">$ \det \boldsymbol{J}(\boldsymbol{\xi}) $</formula>. </para>
+<simplesect kind="return"><para><formula id="62">$ \det \boldsymbol{J}(\boldsymbol{\xi}) $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -415,8 +415,8 @@ N_A(\boldsymbol{\xi})\boldsymbol{X}_A) $</formula>, until the residual is below 
 <para>Isoparametric Lagrangian cell geometry (Quad4, Hexa8), a geometry policy for the MPM cells. </para>
     </briefdescription>
     <detaileddescription>
-<para>Uses the shape functions <formula id="50">$ N_A(\boldsymbol{\xi}) $</formula>,  <formula id="51">$ \boldsymbol{\xi}\in[-1,1]^{n_\mathrm{dim}}
-$</formula>, of Marmot::Discretizations::Elements::GeometryElement and the isoparametric map <formula id="52">$ \boldsymbol{X}(\boldsymbol{\xi}) = \sum_A N_A(\boldsymbol{\xi})\,\boldsymbol{X}_A $</formula> with the nodal coordinates <formula id="53">$ \boldsymbol{X}_A $</formula>, and provides the inverse map, the physical gradients and the point location test required by <ref refid="concept_marmot_1_1_discretizations_1_1_cells_1_1_geometry_cell_policy" kindref="compound">GeometryCellPolicy</ref>.</para>
+<para>Uses the shape functions <formula id="42">$ N_A(\boldsymbol{\xi}) $</formula>,  <formula id="191">$ \boldsymbol{\xi}\in[-1,1]^{n_\mathrm{dim}}
+$</formula>, of Marmot::Discretizations::Elements::GeometryElement and the isoparametric map <formula id="192">$ \boldsymbol{X}(\boldsymbol{\xi}) = \sum_A N_A(\boldsymbol{\xi})\,\boldsymbol{X}_A $</formula> with the nodal coordinates <formula id="193">$ \boldsymbol{X}_A $</formula>, and provides the inverse map, the physical gradients and the point location test required by <ref refid="concept_marmot_1_1_discretizations_1_1_cells_1_1_geometry_cell_policy" kindref="compound">GeometryCellPolicy</ref>.</para>
 <para>For axis-aligned rectangular (box-shaped) cells, the inverse map <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1ab8d88cbe9f44623e41d085b21affb8fa" kindref="member">findReferenceCoordinate()</ref> and the point location test <ref refid="class_marmot_1_1_discretizations_1_1_cells_1_1_lagrangian_cell_geometry_1ab9538339aae84bbca7e51b7be05ea33c" kindref="member">isCoordinateInCell()</ref> are exact and cheap (affine map of the bounding box); for distorted cells, the inverse map is computed by Newton&apos;s method, and the point location test uses it.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>

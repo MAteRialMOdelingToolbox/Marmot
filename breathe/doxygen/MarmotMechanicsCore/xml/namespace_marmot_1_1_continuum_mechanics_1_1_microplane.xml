@@ -68,7 +68,7 @@
           <declname>scheme</declname>
         </param>
         <briefdescription>
-<para>Returns the number of microplanes <formula id="310">$ n_{qp} $</formula> (integration points on the unit hemisphere) for a given <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1" kindref="member">QuadratureScheme</ref>. </para>
+<para>Returns the number of microplanes <formula id="335">$ n_{qp} $</formula> (integration points on the unit hemisphere) for a given <ref refid="namespace_marmot_1_1_continuum_mechanics_1_1_microplane_1af92b719bb2e032a4645d5e37f808cbd1" kindref="member">QuadratureScheme</ref>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -80,7 +80,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Number of microplanes <formula id="311">$ n_{qp} \in \{21, 28, 37, 61\} $</formula>. </para>
+<simplesect kind="return"><para>Number of microplanes <formula id="336">$ n_{qp} \in \{21, 28, 37, 61\} $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>

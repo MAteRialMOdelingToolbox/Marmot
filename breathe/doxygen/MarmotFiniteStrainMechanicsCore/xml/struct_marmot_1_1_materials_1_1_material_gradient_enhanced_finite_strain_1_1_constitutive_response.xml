@@ -48,7 +48,7 @@
         <name>nonLocalRadius</name>
         <qualifiedname>Marmot::Materials::MaterialGradientEnhancedFiniteStrain::ConstitutiveResponse::nonLocalRadius</qualifiedname>
         <briefdescription>
-<para>nonlocal radius <formula id="40">$ R $</formula>; <formula id="49">$ c = R^2 $</formula> </para>
+<para>nonlocal radius <formula id="3">$ R $</formula>; <formula id="12">$ c = R^2 $</formula> </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>

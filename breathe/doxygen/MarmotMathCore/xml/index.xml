@@ -104,12 +104,16 @@
   <compound refid="namespace_marmot_1_1_math_1_1_differentiation" kind="namespace"><name>Marmot::Math::Differentiation</name>
   </compound>
   <compound refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_automatic" kind="namespace"><name>Marmot::Math::Differentiation::Automatic</name>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1af53908cb042a2905729a36a94756e398" kind="typedef"><name>tensor_to_scalar_function_type</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1ad8affd525668214d827b0b41c0b62541" kind="typedef"><name>tensor_to_scalar_function_type_arbitrary_dual_order</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a245828095f0e5ee2429d48564dd8f705" kind="typedef"><name>scalar_to_scalar_function_type</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a75be42631adeb3731094f799dde28866" kind="typedef"><name>scalar_to_scalar_function_type_2nd</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a7a447d8635245248d44e3e24d80b7491" kind="typedef"><name>vector_to_vector_function_type_dual</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a4c15d8657165879acd21f35a5461cf39" kind="typedef"><name>vector_to_vector_function_type_dual2nd</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1af53908cb042a2905729a36a94756e398" kind="typedef"><name>tensor_to_scalar_function_type</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1ad8affd525668214d827b0b41c0b62541" kind="typedef"><name>tensor_to_scalar_function_type_arbitrary_dual_order</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1ad5e27f8452d04e8b3ad6e3ce96f496d1" kind="function"><name>increaseDualOrderWithShift</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a28d13daa06b63d30a885cbe6a8f3937d" kind="function"><name>df_dT</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a239eaab9d62012d8f086fb27617cfaca" kind="function"><name>df_dT</name></member>
+    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a7869bf205b9207ef623f95829265c28d" kind="function"><name>dF_dT</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1a2afdde05e6788d8b8cca4803bb8706d6" kind="function"><name>shiftTo2ndOrderDual</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1ab58699cec7336eaad3c324323f0e20f9" kind="function"><name>shiftTo2ndOrderDual</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1af462ba5c9fdc269359785fc5869d6bb1" kind="function"><name>valnode</name></member>
@@ -122,10 +126,6 @@
     <member refid="_marmot_automatic_differentiation_8h_1a629ecc6fc9564cc5c84dee59f52c0dca" kind="function"><name>df_dx</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1ae4311162cf38b03781d4c6d29aa0cb95" kind="function"><name>dF_dX</name></member>
     <member refid="_marmot_automatic_differentiation_8h_1ad7e747ac5d288bb95b5340d86d9458e0" kind="function"><name>dF_dX_2nd</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1ad5e27f8452d04e8b3ad6e3ce96f496d1" kind="function"><name>increaseDualOrderWithShift</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a28d13daa06b63d30a885cbe6a8f3937d" kind="function"><name>df_dT</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a239eaab9d62012d8f086fb27617cfaca" kind="function"><name>df_dT</name></member>
-    <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a7869bf205b9207ef623f95829265c28d" kind="function"><name>dF_dT</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_math_1_1_differentiation_1_1_automatic_1_1_second_order" kind="namespace"><name>Marmot::Math::Differentiation::Automatic::SecondOrder</name>
     <member refid="_marmot_automatic_differentiation_for_fastor_8h_1a8ceb3ccbc5c389be12b6481ac5735d18" kind="typedef"><name>tensor_to_scalar_function_type</name></member>
@@ -233,6 +233,12 @@
     <member refid="_marmot_tensor_8h_1a260cc89a6abebf8cabbf79a66175a935" kind="function"><name>flatten</name></member>
     <member refid="_marmot_tensor_8h_1a3533c009eec60defc76174258f46fc0c" kind="function"><name>contractionDims</name></member>
     <member refid="_marmot_tensor_8h_1a06a8d4268486247fb010fe77c04d48f9" kind="function"><name>dyadicProduct</name></member>
+    <member refid="_marmot_math_8h_1afa2db36fbdc16a1a58380b4857428bc7" kind="function"><name>makeReal</name></member>
+    <member refid="_marmot_math_8h_1aef1b47c7411971ea7c0fa7c6cfbd47d8" kind="function"><name>makeReal</name></member>
+    <member refid="_marmot_math_8h_1aa80794dc2a2e38ef0eca9a90803e91d2" kind="function"><name>makeReal</name></member>
+    <member refid="_marmot_math_8h_1a4da29578574e6350ceeca4e5b42763e5" kind="function"><name>makeReal</name></member>
+    <member refid="_marmot_math_8h_1a60ba0283b78d3cbfc4cdedb97e5bcf97" kind="function"><name>makeReal</name></member>
+    <member refid="_marmot_math_8h_1a3242077a65351ba12d46a33e30a44147" kind="function"><name>makeReal</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a9b770ce8de913d0b9edf18670d93f684" kind="function"><name>mapEigenToFastor</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1acd430f186d90c7a20afd6f81c6b6884f" kind="function"><name>mapEigenToFastor</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a036f7c4a03ff896c1e64ed93be0bc943" kind="function"><name>mapEigenToFastor</name></member>
@@ -259,12 +265,6 @@
     <member refid="_marmot_fastor_tensor_basics_8h_1ad481a326ac492a4923c090a871580cff" kind="function"><name>symmetric</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1a0b055002ee2240568230db2522117125" kind="function"><name>deviatoric</name></member>
     <member refid="_marmot_fastor_tensor_basics_8h_1aa48706fff547530cdd813bf00af43821" kind="function"><name>invertMinorSymmetricFourthOrderTensor</name></member>
-    <member refid="_marmot_math_8h_1afa2db36fbdc16a1a58380b4857428bc7" kind="function"><name>makeReal</name></member>
-    <member refid="_marmot_math_8h_1aef1b47c7411971ea7c0fa7c6cfbd47d8" kind="function"><name>makeReal</name></member>
-    <member refid="_marmot_math_8h_1aa80794dc2a2e38ef0eca9a90803e91d2" kind="function"><name>makeReal</name></member>
-    <member refid="_marmot_math_8h_1a4da29578574e6350ceeca4e5b42763e5" kind="function"><name>makeReal</name></member>
-    <member refid="_marmot_math_8h_1a60ba0283b78d3cbfc4cdedb97e5bcf97" kind="function"><name>makeReal</name></member>
-    <member refid="_marmot_math_8h_1a3242077a65351ba12d46a33e30a44147" kind="function"><name>makeReal</name></member>
   </compound>
   <compound refid="namespace_marmot_1_1_math_1_1_tensors_1_1_fastor_indices" kind="namespace"><name>Marmot::Math::Tensors::FastorIndices</name>
     <member refid="_marmot_fastor_tensor_basics_8h_1ab192e3927843dc5f0cd214e7c959c50a" kind="enum"><name>IndexTag</name></member>

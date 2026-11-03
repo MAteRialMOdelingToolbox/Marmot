@@ -120,9 +120,9 @@
 <para>Homogenizes per-microplane normal and in-plane shear stresses to the macroscopic stress, in Voigt notation. </para>
         </briefdescription>
         <detaileddescription>
-<para>Approximates the continuum microplane virtual-work homogenization over the unit hemisphere:    <formula id="330">\[  \sigma_{ij} = \frac{3}{2\pi} \int_\Omega \left( \sigma_N N_{ij} + \sigma_L L_{ij} + \sigma_M M_{ij} \right)
+<para>Approximates the continuum microplane virtual-work homogenization over the unit hemisphere:    <formula id="355">\[  \sigma_{ij} = \frac{3}{2\pi} \int_\Omega \left( \sigma_N N_{ij} + \sigma_L L_{ij} + \sigma_M M_{ij} \right)
 \, d\Omega
-\]</formula> by the quadrature sum actually evaluated here, in which the hemisphere-integral normalization constant is already absorbed into the integration weights <formula id="323">$ w^{(m)} $</formula> (see Discretization::get(), where <formula id="325">$ \sum_m w^{(m)} = 3 $</formula>):    <formula id="331">\[  \sigma_{ij} \approx \sum_{m=1}^{n_{qp}} w^{(m)} \left( \sigma_N^{(m)} N_{ij}^{(m)}
+\]</formula> by the quadrature sum actually evaluated here, in which the hemisphere-integral normalization constant is already absorbed into the integration weights <formula id="348">$ w^{(m)} $</formula> (see Discretization::get(), where <formula id="350">$ \sum_m w^{(m)} = 3 $</formula>):    <formula id="356">\[  \sigma_{ij} \approx \sum_{m=1}^{n_{qp}} w^{(m)} \left( \sigma_N^{(m)} N_{ij}^{(m)}
     + \sigma_M^{(m)} M_{ij}^{(m)} + \sigma_L^{(m)} L_{ij}^{(m)} \right)
 \]</formula> <parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
@@ -138,7 +138,7 @@
 <parametername>stressN</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Per-microplane normal stress <formula id="332">$ \sigma_N^{(m)} $</formula>, size <formula id="333">$ 1 \times n_{qp} $</formula>. </para>
+<para>Per-microplane normal stress <formula id="357">$ \sigma_N^{(m)} $</formula>, size <formula id="358">$ 1 \times n_{qp} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -146,7 +146,7 @@
 <parametername>stressM</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Per-microplane shear stress <formula id="334">$ \sigma_M^{(m)} $</formula> (direction <formula id="327">$ M $</formula>), size  <formula id="335">$ 1 \times
+<para>Per-microplane shear stress <formula id="359">$ \sigma_M^{(m)} $</formula> (direction <formula id="352">$ M $</formula>), size  <formula id="360">$ 1 \times
 n_{qp} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
@@ -155,7 +155,7 @@ n_{qp} $</formula>. </para>
 <parametername>stressL</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Per-microplane shear stress <formula id="336">$ \sigma_L^{(m)} $</formula> (direction <formula id="328">$ L $</formula>), size  <formula id="335">$ 1 \times
+<para>Per-microplane shear stress <formula id="361">$ \sigma_L^{(m)} $</formula> (direction <formula id="353">$ L $</formula>), size  <formula id="360">$ 1 \times
 n_{qp} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
@@ -195,11 +195,11 @@ n_{qp} $</formula>. </para>
 <para>Homogenizes per-microplane normal and in-plane shear tangents to the macroscopic tangent, in Voigt notation. </para>
         </briefdescription>
         <detaileddescription>
-<para>Approximates the continuum microplane virtual-work homogenization over the unit hemisphere <formula id="303">$ \Omega $</formula> of the macroscopic tangent, in tensor (index) notation:      <formula id="337">\[  \frac{\partial \sigma_{ij}}{\partial \varepsilon_{kl}} = \frac{3}{2\pi} \int_\Omega \left(
+<para>Approximates the continuum microplane virtual-work homogenization over the unit hemisphere <formula id="129">$ \Omega $</formula> of the macroscopic tangent, in tensor (index) notation:      <formula id="362">\[  \frac{\partial \sigma_{ij}}{\partial \varepsilon_{kl}} = \frac{3}{2\pi} \int_\Omega \left(
       N_{ij} \frac{\partial \sigma_N}{\partial \varepsilon_{kl}}
     + M_{ij} \frac{\partial \sigma_M}{\partial \varepsilon_{kl}}
     + L_{ij} \frac{\partial \sigma_L}{\partial \varepsilon_{kl}} \right) \, d\Omega
-\]</formula> approximated by the quadrature sum actually evaluated here (see <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ae32dc8189cbfce09adcf8dec27c140ef" kindref="member">homogenizeStress</ref> for how the hemisphere-integral normalization is absorbed into the weights <formula id="323">$ w^{(m)} $</formula>). <parameterlist kind="templateparam"><parameteritem>
+\]</formula> approximated by the quadrature sum actually evaluated here (see <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ae32dc8189cbfce09adcf8dec27c140ef" kindref="member">homogenizeStress</ref> for how the hemisphere-integral normalization is absorbed into the weights <formula id="348">$ w^{(m)} $</formula>). <parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>T</parametername>
 </parameternamelist>
@@ -213,8 +213,8 @@ n_{qp} $</formula>. </para>
 <parametername>dSigNddStrain</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Per-microplane normal-direction tangent  <formula id="338">$ \partial \sigma_N^{(m)} /
-\partial \boldsymbol{\varepsilon} $</formula>, size <formula id="339">$ 6 \times n_{qp} $</formula>; taken by value since each row is scaled in place by the integration weight before contraction. </para>
+<para>Per-microplane normal-direction tangent  <formula id="363">$ \partial \sigma_N^{(m)} /
+\partial \boldsymbol{\varepsilon} $</formula>, size <formula id="364">$ 6 \times n_{qp} $</formula>; taken by value since each row is scaled in place by the integration weight before contraction. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -222,8 +222,8 @@ n_{qp} $</formula>. </para>
 <parametername>dSigMddStrain</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Per-microplane <formula id="327">$ M $</formula>-direction tangent  <formula id="340">$ \partial \sigma_M^{(m)}
-/ \partial \boldsymbol{\varepsilon} $</formula>, size <formula id="339">$ 6 \times n_{qp} $</formula>. </para>
+<para>Per-microplane <formula id="352">$ M $</formula>-direction tangent  <formula id="365">$ \partial \sigma_M^{(m)}
+/ \partial \boldsymbol{\varepsilon} $</formula>, size <formula id="364">$ 6 \times n_{qp} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -231,12 +231,12 @@ n_{qp} $</formula>. </para>
 <parametername>dSigLddStrain</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>Per-microplane <formula id="328">$ L $</formula>-direction tangent  <formula id="341">$ \partial \sigma_L^{(m)}
-/ \partial \boldsymbol{\varepsilon} $</formula>, size <formula id="339">$ 6 \times n_{qp} $</formula>. </para>
+<para>Per-microplane <formula id="353">$ L $</formula>-direction tangent  <formula id="366">$ \partial \sigma_L^{(m)}
+/ \partial \boldsymbol{\varepsilon} $</formula>, size <formula id="364">$ 6 \times n_{qp} $</formula>. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>Homogenized macroscopic tangent  <formula id="342">$ \partial \sigma_{ij} / \partial
+<simplesect kind="return"><para>Homogenized macroscopic tangent  <formula id="367">$ \partial \sigma_{ij} / \partial
 \varepsilon_{kl} $</formula> in Voigt notation. </para>
 </simplesect>
 </para>
@@ -267,7 +267,7 @@ n_{qp} $</formula>. </para>
 <para>Normal-tangential (N-T) split and projection tensors of the microplane theory, as used by the M7-family models (MicroplaneM7, GM7). </para>
     </briefdescription>
     <detaileddescription>
-<para>On each microplane, the macroscopic strain is projected onto the normal direction <formula id="312">$ n^{(m)} $</formula> and the two in-plane orthogonal shear directions <formula id="313">$ l^{(m)} $</formula>, <formula id="314">$ m^{(m)} $</formula> (spanning the plane orthogonal to <formula id="312">$ n^{(m)} $</formula>), giving a normal strain <formula id="315">$ \varepsilon_N $</formula> and two shear strains <formula id="316">$ \varepsilon_M, \varepsilon_L $</formula>. <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a47ec82902b03ef84633f1b19ef9f19d0" kindref="member">pTensors</ref> holds the corresponding Voigt-notation projection tensors <formula id="317">$ N_{ij} = n_i n_j $</formula>, <formula id="318">$ M_{ij} = \tfrac{1}{2}(m_i n_j + m_j n_i) $</formula>, <formula id="319">$ L_{ij} = \tfrac{1}{2}(l_i n_j + l_j n_i) $</formula>, built from the hard-coded discretization (Discretization::get()), and <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ae32dc8189cbfce09adcf8dec27c140ef" kindref="member">homogenizeStress</ref> / <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a8b54f86df9f3296595e3a0ccf1983508" kindref="member">homogenizeTangent</ref> perform the virtual-work homogenization of per-microplane normal/shear stresses and tangents back to the macroscopic stress and tangent. <parameterlist kind="templateparam"><parameteritem>
+<para>On each microplane, the macroscopic strain is projected onto the normal direction <formula id="337">$ n^{(m)} $</formula> and the two in-plane orthogonal shear directions <formula id="338">$ l^{(m)} $</formula>, <formula id="339">$ m^{(m)} $</formula> (spanning the plane orthogonal to <formula id="337">$ n^{(m)} $</formula>), giving a normal strain <formula id="340">$ \varepsilon_N $</formula> and two shear strains <formula id="341">$ \varepsilon_M, \varepsilon_L $</formula>. <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a47ec82902b03ef84633f1b19ef9f19d0" kindref="member">pTensors</ref> holds the corresponding Voigt-notation projection tensors <formula id="342">$ N_{ij} = n_i n_j $</formula>, <formula id="343">$ M_{ij} = \tfrac{1}{2}(m_i n_j + m_j n_i) $</formula>, <formula id="344">$ L_{ij} = \tfrac{1}{2}(l_i n_j + l_j n_i) $</formula>, built from the hard-coded discretization (Discretization::get()), and <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1ae32dc8189cbfce09adcf8dec27c140ef" kindref="member">homogenizeStress</ref> / <ref refid="class_marmot_1_1_continuum_mechanics_1_1_microplane_1_1_n_t_split_1a8b54f86df9f3296595e3a0ccf1983508" kindref="member">homogenizeTangent</ref> perform the virtual-work homogenization of per-microplane normal/shear stresses and tangents back to the macroscopic stress and tangent. <parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>scheme</parametername>
 </parameternamelist>

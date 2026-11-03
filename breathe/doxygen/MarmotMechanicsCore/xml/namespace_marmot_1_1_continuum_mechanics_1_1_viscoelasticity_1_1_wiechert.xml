@@ -83,10 +83,10 @@
           <declname>tau</declname>
         </param>
         <briefdescription>
-<para>Evaluate the Post-Widder formula of order <formula id="12">$k$</formula> for a relaxation function. </para>
+<para>Evaluate the Post-Widder formula of order <formula id="0">$k$</formula> for a relaxation function. </para>
         </briefdescription>
         <detaileddescription>
-<para>Approximates the relaxation spectrum of the relaxation function <formula id="401">$\psi$</formula> at the relaxation time <formula id="14">$\tau$</formula>. The derivative of order <formula id="12">$k$</formula> is obtained by automatic differentiation.</para>
+<para>Approximates the relaxation spectrum of the relaxation function <formula id="1">$\psi$</formula> at the relaxation time <formula id="2">$\tau$</formula>. The derivative of order <formula id="0">$k$</formula> is obtained by automatic differentiation.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>k</parametername>
@@ -113,7 +113,7 @@
 </parameterdescription>
 </parameteritem>
 </parameterlist>
-<simplesect kind="return"><para>the relaxation spectrum at <formula id="14">$\tau$</formula> </para>
+<simplesect kind="return"><para>the relaxation spectrum at <formula id="2">$\tau$</formula> </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -155,7 +155,7 @@
 <para>Compute the elastic moduli of the Maxwell units of a Wiechert chain. </para>
         </briefdescription>
         <detaileddescription>
-<para>The relaxation spectrum is integrated over the logarithmic relaxation-time axis, which is discretized by the relaxation times with the given spacing. By default a one-point rule is used, i.e. the modulus of the unit with relaxation time <formula id="402">$\tau_i$</formula> is <formula id="403">$\ln(\mathrm{spacing}) \, S(\tau_i)$</formula>, where <formula id="404">$S$</formula> is the relaxation spectrum. With Gauss quadrature the two-point Gauss rule over the logarithmic interval of the unit is used.</para>
+<para>The relaxation spectrum is integrated over the logarithmic relaxation-time axis, which is discretized by the relaxation times with the given spacing. By default a one-point rule is used, i.e. the modulus of the unit with relaxation time <formula id="3">$\tau_i$</formula> is <formula id="4">$\ln(\mathrm{spacing}) \, S(\tau_i)$</formula>, where <formula id="5">$S$</formula> is the relaxation spectrum. With Gauss quadrature the two-point Gauss rule over the logarithmic interval of the unit is used.</para>
 <para><parameterlist kind="templateparam"><parameteritem>
 <parameternamelist>
 <parametername>k</parametername>
@@ -228,7 +228,7 @@
 <para>Generate logarithmically spaced relaxation times. </para>
         </briefdescription>
         <detaileddescription>
-<para>The relaxation times are <formula id="15">$\tau_i = \mathrm{min} \cdot \mathrm{spacing}^i$</formula> for <formula id="16">$i = 0, \dots, n-1$</formula>.</para>
+<para>The relaxation times are <formula id="6">$\tau_i = \mathrm{min} \cdot \mathrm{spacing}^i$</formula> for <formula id="7">$i = 0, \dots, n-1$</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">n</parametername>
@@ -296,7 +296,7 @@
 <para>Update the stresses of the Maxwell units for a strain increment. </para>
         </briefdescription>
         <detaileddescription>
-<para>For every unit <formula id="405">$i$</formula> the stress is updated with the exponential algorithm, <formula id="406">$\sigma_i \leftarrow \lambda_i D_i \, \mathbb{C}_1 \, \Delta\varepsilon + \beta_i \sigma_i$</formula>, where <formula id="407">$\lambda_i$</formula> and <formula id="408">$\beta_i$</formula> follow from the time increment and the relaxation time of the unit. Nothing is updated for a vanishing time increment.</para>
+<para>For every unit <formula id="8">$i$</formula> the stress is updated with the exponential algorithm, <formula id="9">$\sigma_i \leftarrow \lambda_i D_i \, \mathbb{C}_1 \, \Delta\varepsilon + \beta_i \sigma_i$</formula>, where <formula id="10">$\lambda_i$</formula> and <formula id="11">$\beta_i$</formula> follow from the time increment and the relaxation time of the unit. Nothing is updated for a vanishing time increment.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">dT</parametername>
@@ -310,7 +310,7 @@
 <parametername direction="in">elasticModuli</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>elastic moduli <formula id="409">$D_i$</formula> of the Maxwell units </para>
+<para>elastic moduli <formula id="12">$D_i$</formula> of the Maxwell units </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -342,7 +342,7 @@
 <parametername direction="in">unitD_ijkl</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>stiffness tensor <formula id="410">$\mathbb{C}_1$</formula> for a unit Young&apos;s modulus in Voigt notation </para>
+<para>stiffness tensor <formula id="13">$\mathbb{C}_1$</formula> for a unit Young&apos;s modulus in Voigt notation </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -390,7 +390,7 @@
 <para>Accumulate the contribution of the Maxwell units to the stiffness and to the stress relaxation. </para>
         </briefdescription>
         <detaileddescription>
-<para>For every unit <formula id="405">$i$</formula> the algorithmic stiffness <formula id="411">$\lambda_i D_i$</formula> is added to <computeroutput>uniaxialStiffness</computeroutput> and the stress <formula id="412">$(1 - \beta_i) \sigma_i$</formula> released by relaxation during the increment is added to <computeroutput>dStress</computeroutput>, both multiplied by <computeroutput>factor</computeroutput>.</para>
+<para>For every unit <formula id="8">$i$</formula> the algorithmic stiffness <formula id="14">$\lambda_i D_i$</formula> is added to <computeroutput>uniaxialStiffness</computeroutput> and the stress <formula id="15">$(1 - \beta_i) \sigma_i$</formula> released by relaxation during the increment is added to <computeroutput>dStress</computeroutput>, both multiplied by <computeroutput>factor</computeroutput>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">dT</parametername>
@@ -404,7 +404,7 @@
 <parametername direction="in">elasticModuli</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>elastic moduli <formula id="409">$D_i$</formula> of the Maxwell units </para>
+<para>elastic moduli <formula id="12">$D_i$</formula> of the Maxwell units </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>
@@ -420,7 +420,7 @@
 <parametername direction="in">stateVars</parametername>
 </parameternamelist>
 <parameterdescription>
-<para>stresses <formula id="413">$\sigma_i$</formula> of the Maxwell units at the beginning of the increment </para>
+<para>stresses <formula id="16">$\sigma_i$</formula> of the Maxwell units at the beginning of the increment </para>
 </parameterdescription>
 </parameteritem>
 <parameteritem>

@@ -25,10 +25,10 @@
           <declname>timeInfo</declname>
         </param>
         <briefdescription>
-<para>Compute the Cauchy stress tensor <formula id="0">$\boldsymbol{\sigma}$</formula> given an increment of the linearized strain tensor <formula id="1">$\Delta\boldsymbol{\varepsilon}$</formula>. </para>
+<para>Compute the Cauchy stress tensor <formula id="105">$\boldsymbol{\sigma}$</formula> given an increment of the linearized strain tensor <formula id="81">$\Delta\boldsymbol{\varepsilon}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para>Dual numbers are used for both the Cauchy stress tensor and the linearized strain increment, such that the algorithmic tangent operator <formula id="2">$\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}$</formula> can be obtained by means of automatic differentiation.</para>
+<para>Dual numbers are used for both the Cauchy stress tensor and the linearized strain increment, such that the algorithmic tangent operator <formula id="82">$\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}$</formula> can be obtained by means of automatic differentiation.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="inout">state</parametername>
@@ -86,7 +86,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>For a given linearized strain increment <formula id="1">$\Delta\boldsymbol{\varepsilon}$</formula> at the old and the current time, compute the Cauchy stress and the algorithmic tangent <formula id="2">$\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}$</formula>.</para>
+<para>For a given linearized strain increment <formula id="81">$\Delta\boldsymbol{\varepsilon}$</formula> at the old and the current time, compute the Cauchy stress and the algorithmic tangent <formula id="82">$\frac{\partial\boldsymbol{\sigma}^{(n+1)}}{\partial\boldsymbol{\varepsilon}^{(n+1)}}$</formula>.</para>
 <para><parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="inout">state</parametername>

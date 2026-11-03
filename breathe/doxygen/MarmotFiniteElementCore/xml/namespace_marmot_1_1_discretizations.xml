@@ -9,6 +9,6 @@
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotConsistentMass.h" line="58" column="1"/>
+    <location file="/home/runner/work/Marmot/Marmot/modules/core/MarmotFiniteElementCore/include/Marmot/MarmotGeometryInterfaceElement.h" line="39" column="1"/>
   </compounddef>
 </doxygen>

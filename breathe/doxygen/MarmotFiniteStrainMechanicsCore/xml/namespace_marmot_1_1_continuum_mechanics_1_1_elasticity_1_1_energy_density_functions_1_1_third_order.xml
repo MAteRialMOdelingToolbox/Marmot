@@ -22,7 +22,7 @@
           <declname>G</declname>
         </param>
         <briefdescription>
-<para>Standard compressible Neo-Hooke energy density and first/second/third derivatives w.r.t. <formula id="5">$\boldsymbol{C}$</formula>. </para>
+<para>Standard compressible Neo-Hooke energy density and first/second/third derivatives w.r.t. <formula id="17">$\boldsymbol{C}$</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>

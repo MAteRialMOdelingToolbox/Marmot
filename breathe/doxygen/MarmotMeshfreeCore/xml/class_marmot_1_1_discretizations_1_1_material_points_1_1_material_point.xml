@@ -370,7 +370,7 @@
 <parametername direction="out">coordinates</parametername>
 </parameternamelist>
 <parameterdescription>
-<para><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a36443327a53c7a2ef93dcf32d257db95" kindref="member">getNumberOfVertices()</ref> <formula id="54">$ \times $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a33a0c15f32300da943f9041b62375078" kindref="member">getDimension()</ref> values, vertex by vertex. </para>
+<para><ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a36443327a53c7a2ef93dcf32d257db95" kindref="member">getNumberOfVertices()</ref> <formula id="63">$ \times $</formula> <ref refid="class_marmot_1_1_discretizations_1_1_material_points_1_1_material_point_1a33a0c15f32300da943f9041b62375078" kindref="member">getDimension()</ref> values, vertex by vertex. </para>
 </parameterdescription>
 </parameteritem>
 </parameterlist>
@@ -419,7 +419,7 @@
 <para>Volume in the reference configuration. </para>
         </briefdescription>
         <detaileddescription>
-<para><simplesect kind="return"><para><formula id="110">$ V_0 $</formula>. </para>
+<para><simplesect kind="return"><para><formula id="64">$ V_0 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>
@@ -437,7 +437,7 @@
 <para>Density in the reference configuration. </para>
         </briefdescription>
         <detaileddescription>
-<para><simplesect kind="return"><para><formula id="111">$ \rho_0 $</formula>. </para>
+<para><simplesect kind="return"><para><formula id="65">$ \rho_0 $</formula>. </para>
 </simplesect>
 </para>
         </detaileddescription>

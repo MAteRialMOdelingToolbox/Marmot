@@ -471,7 +471,7 @@
           <declname>Q</declname>
         </param>
         <briefdescription>
-<para>Compute the deformation gradient <formula id="70">$\mathbf{F}$</formula> from physical derivatives and displacements <computeroutput>Q</computeroutput>. </para>
+<para>Compute the deformation gradient <formula id="37">$\mathbf{F}$</formula> from physical derivatives and displacements <computeroutput>Q</computeroutput>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>

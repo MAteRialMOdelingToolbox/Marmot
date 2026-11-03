@@ -196,9 +196,9 @@ environment:</p>
 <div class="literal-block-wrapper docutils container" id="id6">
 <div class="code-block-caption"><span class="caption-text">Step 6</span><a class="headerlink" href="#id6" title="Link to this code"></a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> cd $MARMOTROOT</span>
-<span class="go"> git clone https://github.com/romeric/Fastor.git</span>
+<span class="go"> git clone --branch V0.6.4 https://github.com/romeric/Fastor.git</span>
 <span class="go"> cd Fastor</span>
-<span class="go"> cmake -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX .</span>
+<span class="go"> cmake -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX .</span>
 <span class="go"> make install</span>
 <span class="go"> cd ../</span>
 </pre></div>

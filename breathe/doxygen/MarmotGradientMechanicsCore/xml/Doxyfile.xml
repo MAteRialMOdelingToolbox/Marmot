@@ -134,11 +134,11 @@
   <option  id='WARN_LINE_FORMAT' default='yes' type='string'><value><![CDATA["at line $line of file $file"]]></value></option>
   <option  id='WARN_LOGFILE' default='yes' type='string'><value><![CDATA[]]></value></option>
   <option  id='INPUT' default='no' type='stringlist'>
+    <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotWaveSpeedContract.h]]></value>
     <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotDecreasingInteractions.h]]></value>
-    <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h]]></value>
     <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElastic.h]]></value>
     <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h]]></value>
-    <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotWaveSpeedContract.h]]></value>
+    <value><![CDATA[/home/runner/work/Marmot/Marmot/modules/core/MarmotGradientMechanicsCore/include/Marmot/MarmotPhaseFieldEnergyDegradation.h]]></value>
   </option>
   <option  id='INPUT_ENCODING' default='yes' type='string'><value><![CDATA[UTF-8]]></value></option>
   <option  id='INPUT_FILE_ENCODING' default='yes' type='stringlist'>

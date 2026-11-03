@@ -321,7 +321,7 @@
         <name>_centerDisplacement</name>
         <qualifiedname>Marmot::Discretizations::Meshfree::GenericSDIParticle::_centerDisplacement</qualifiedname>
         <briefdescription>
-<para>Total center displacement <formula id="188">$ \boldsymbol{u}_c $</formula> (mapped state variables). </para>
+<para>Total center displacement <formula id="144">$ \boldsymbol{u}_c $</formula> (mapped state variables). </para>
         </briefdescription>
         <detaileddescription>
         </detaileddescription>
@@ -338,7 +338,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Total central deformation gradient <formula id="189">$ \boldsymbol{F}_c $</formula> of the last accepted state (mapped state variables). </para>
+<para>Total central deformation gradient <formula id="145">$ \boldsymbol{F}_c $</formula> of the last accepted state (mapped state variables). </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -353,7 +353,7 @@
         <briefdescription>
         </briefdescription>
         <detaileddescription>
-<para>Central deformation gradient increment <formula id="190">$ \Delta\boldsymbol{F}_c $</formula> with respect to the last accepted state (mapped state variables). </para>
+<para>Central deformation gradient increment <formula id="146">$ \Delta\boldsymbol{F}_c $</formula> with respect to the last accepted state (mapped state variables). </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -908,7 +908,7 @@
 <para>Accepts the current incremental state and updates the particle&apos;s position and deformation. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="191">$ \boldsymbol{F}_c \leftarrow \Delta\boldsymbol{F}_c \boldsymbol{F}_c $</formula>, the increment is reset to identity, the main domain and all subdomains are moved with <formula id="189">$ \boldsymbol{F}_c $</formula> and the center displacement, and finally <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ab36edd9e0e08302d3df33ff1204b424a" kindref="member">acceptStateAndPositionOnSubdomains()</ref> is called. </para>
+<para><formula id="147">$ \boldsymbol{F}_c \leftarrow \Delta\boldsymbol{F}_c \boldsymbol{F}_c $</formula>, the increment is reset to identity, the main domain and all subdomains are moved with <formula id="145">$ \boldsymbol{F}_c $</formula> and the center displacement, and finally <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ab36edd9e0e08302d3df33ff1204b424a" kindref="member">acceptStateAndPositionOnSubdomains()</ref> is called. </para>
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
@@ -1176,7 +1176,7 @@
 <para>Computes the physics kernels (internal forces and their derivatives) for the particle. </para>
         </briefdescription>
         <detaileddescription>
-<para>Updates the center kinematics from the main domain (the center displacement is incremented by <formula id="192">$ \sum_B N_B \Delta\boldsymbol{q}_B $</formula> and <formula id="190">$ \Delta\boldsymbol{F}_c $</formula> is set, see the class documentation), then calls <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a50ebf39451528cd1267f7c02d86178dc" kindref="member">computePhysicsKernelsOnSubdomains()</ref>. As for all Marmot entities, the state variables are updated in place, and the host restores them to the last accepted state before each evaluation (EdelweissMeshfree does so in every computePhysicsKernels call): the center displacement thus stays the total one, which <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a5634dfba8f4d884f283b61dd7cb54858" kindref="member">acceptStateAndPosition()</ref> applies to the undeformed domain. <parameterlist kind="param"><parameteritem>
+<para>Updates the center kinematics from the main domain (the center displacement is incremented by <formula id="148">$ \sum_B N_B \Delta\boldsymbol{q}_B $</formula> and <formula id="146">$ \Delta\boldsymbol{F}_c $</formula> is set, see the class documentation), then calls <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a50ebf39451528cd1267f7c02d86178dc" kindref="member">computePhysicsKernelsOnSubdomains()</ref>. As for all Marmot entities, the state variables are updated in place, and the host restores them to the last accepted state before each evaluation (EdelweissMeshfree does so in every computePhysicsKernels call): the center displacement thus stays the total one, which <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a5634dfba8f4d884f283b61dd7cb54858" kindref="member">acceptStateAndPosition()</ref> applies to the undeformed domain. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">dQ</parametername>
 </parameternamelist>
@@ -1318,7 +1318,7 @@
 <para>Retrieves the intermediate configuration boundary vector and evaluation point for a given face. </para>
         </briefdescription>
         <detaileddescription>
-<para>Both are taken from the deformed geometry of <computeroutput>particleDomain:</computeroutput> the boundary surface vector <formula id="193">$ \boldsymbol{N}\,dA_Y $</formula> and the face center. <parameterlist kind="param"><parameteritem>
+<para>Both are taken from the deformed geometry of <computeroutput>particleDomain:</computeroutput> the boundary surface vector <formula id="149">$ \boldsymbol{N}\,dA_Y $</formula> and the face center. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">boundaryFaceID</parametername>
 </parameternamelist>
@@ -1443,7 +1443,7 @@
           <declname>boundaryFaceID</declname>
         </param>
         <briefdescription>
-<para>Not available here: the VCI boundary integral <formula id="194">$ \int T_A P_C n_i\,dA $</formula> is physics-specific. </para>
+<para>Not available here: the VCI boundary integral <formula id="150">$ \int T_A P_C n_i\,dA $</formula> is physics-specific. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -1498,7 +1498,7 @@
           <declname>R_AiC_RowMajor</declname>
         </param>
         <briefdescription>
-<para>Accumulates the VCI integral of the test function gradient times the basis over the subdomains, <formula id="195">$ R_{AiC} \mathrel{+}= \sum_s \partial_i T_A|_s\, P_C|_s\, V_s $</formula> ( <formula id="196">$ V_s $</formula>: <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a9513587cc9b9ad95e801fc3ba5ca7c0f" kindref="member">getSubdomainVolume()</ref>). </para>
+<para>Accumulates the VCI integral of the test function gradient times the basis over the subdomains, <formula id="151">$ R_{AiC} \mathrel{+}= \sum_s \partial_i T_A|_s\, P_C|_s\, V_s $</formula> ( <formula id="152">$ V_s $</formula>: <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a9513587cc9b9ad95e801fc3ba5ca7c0f" kindref="member">getSubdomainVolume()</ref>). </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -1528,7 +1528,7 @@
           <declname>R_AiC_RowMajor</declname>
         </param>
         <briefdescription>
-<para>Accumulates the VCI integral of the test function times the basis gradient over the subdomains, <formula id="197">$ R_{AiC} \mathrel{+}= \sum_s T_A|_s\, \partial_i P_C|_s\, V_s $</formula>. </para>
+<para>Accumulates the VCI integral of the test function times the basis gradient over the subdomains, <formula id="153">$ R_{AiC} \mathrel{+}= \sum_s T_A|_s\, \partial_i P_C|_s\, V_s $</formula>. </para>
         </briefdescription>
         <detaileddescription>
 <para><parameterlist kind="param"><parameteritem>
@@ -1558,10 +1558,10 @@
           <declname>mMatrix_ACD_RowMajor</declname>
         </param>
         <briefdescription>
-<para>Accumulates the VCI moment matrix over the subdomains, <formula id="198">$ M_{ACD} \mathrel{+}= \sum_s \chi_A\, P_C|_s\, P_D|_s\, V_s $</formula>. </para>
+<para>Accumulates the VCI moment matrix over the subdomains, <formula id="154">$ M_{ACD} \mathrel{+}= \sum_s \chi_A\, P_C|_s\, P_D|_s\, V_s $</formula>. </para>
         </briefdescription>
         <detaileddescription>
-<para><formula id="15">$ \chi_A $</formula> is 1 if the center of the main domain (not of the subdomain) is in the support of kernel function <formula id="1">$ A $</formula>, else 0. <parameterlist kind="param"><parameteritem>
+<para><formula id="8">$ \chi_A $</formula> is 1 if the center of the main domain (not of the subdomain) is in the support of kernel function <formula id="9">$ A $</formula>, else 0. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="inout">mMatrix_ACD_RowMajor</parametername>
 </parameternamelist>
@@ -1588,10 +1588,10 @@
           <declname>eta_AiC_RowMajor</declname>
         </param>
         <briefdescription>
-<para>Assigns test function correction terms for VCI, <formula id="199">$ \partial_i T_A|_s = \partial_i N_A|_s + \chi_A \sum_C \eta_{AiC} P_C|_s $</formula> for every subdomain. </para>
+<para>Assigns test function correction terms for VCI, <formula id="155">$ \partial_i T_A|_s = \partial_i N_A|_s + \chi_A \sum_C \eta_{AiC} P_C|_s $</formula> for every subdomain. </para>
         </briefdescription>
         <detaileddescription>
-<para>The correction is applied to the uncorrected gradients, so repeated calls do not accumulate; <formula id="15">$ \chi_A $</formula> as in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1afaecc5e69b0d02884e7952eee96e4a8e" kindref="member">vci_compute_MMatrix()</ref>. <parameterlist kind="param"><parameteritem>
+<para>The correction is applied to the uncorrected gradients, so repeated calls do not accumulate; <formula id="8">$ \chi_A $</formula> as in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1afaecc5e69b0d02884e7952eee96e4a8e" kindref="member">vci_compute_MMatrix()</ref>. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">eta_AiC_RowMajor</parametername>
 </parameternamelist>
@@ -1772,7 +1772,7 @@
 <para>Computes the smoothed derivatives of shape functions for a particle domain. </para>
         </briefdescription>
         <detaileddescription>
-<para>This method uses a boundary integral approach (SNNI/SCNI) over the smoothing domain to compute the derivatives of the shape functions, with one point per face, <formula id="200">$ \partial N_A / \partial Y_i = \frac{1}{|\Omega_s|}\sum_f N_A(\boldsymbol{Y}_f)\, n_{f,i}\,dA_f $</formula>, where <formula id="182">$ \boldsymbol{Y}_f $</formula> is the face center and <formula id="184">$ \boldsymbol{n}_f\,dA_f $</formula> the boundary surface vector of the smoothing domain and <formula id="201">$ |\Omega_s| $</formula> its volume. <parameterlist kind="param"><parameteritem>
+<para>This method uses a boundary integral approach (SNNI/SCNI) over the smoothing domain to compute the derivatives of the shape functions, with one point per face, <formula id="156">$ \partial N_A / \partial Y_i = \frac{1}{|\Omega_s|}\sum_f N_A(\boldsymbol{Y}_f)\, n_{f,i}\,dA_f $</formula>, where <formula id="138">$ \boldsymbol{Y}_f $</formula> is the face center and <formula id="140">$ \boldsymbol{n}_f\,dA_f $</formula> the boundary surface vector of the smoothing domain and <formula id="157">$ |\Omega_s| $</formula> its volume. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">particleDomain</parametername>
 </parameternamelist>
@@ -1803,7 +1803,7 @@
 <para>Sets the VCI order and updates the number of VCI constraints. </para>
         </briefdescription>
         <detaileddescription>
-<para>The number of constraints is <formula id="202">$ \binom{k + n_{\text{dim}}}{n_{\text{dim}}} $</formula> for the order <formula id="90">$ k $</formula>. Unlike <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1af8e03a42df34772123b0643cfd322e4f" kindref="member">GenericParticle::setVCIOrder()</ref>, the basis is not evaluated here but in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ad390486161b4c6d7905785e97a102d6f" kindref="member">assignMeshfreeKernelFunctions()</ref> (per subdomain), which must therefore be called after the order has been set. <parameterlist kind="param"><parameteritem>
+<para>The number of constraints is <formula id="158">$ \binom{k + n_{\text{dim}}}{n_{\text{dim}}} $</formula> for the order <formula id="109">$ k $</formula>. Unlike <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_particle_1af8e03a42df34772123b0643cfd322e4f" kindref="member">GenericParticle::setVCIOrder()</ref>, the basis is not evaluated here but in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ad390486161b4c6d7905785e97a102d6f" kindref="member">assignMeshfreeKernelFunctions()</ref> (per subdomain), which must therefore be called after the order has been set. <parameterlist kind="param"><parameteritem>
 <parameternamelist>
 <parametername direction="in">order</parametername>
 </parameternamelist>
@@ -1823,13 +1823,13 @@
 <para>A generic, physics-independent base class for particles with subdomain integration (SDI). </para>
     </briefdescription>
     <detaileddescription>
-<para>The particle domain (a <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain" kindref="compound">ParticleDomain</ref>, e.g., a quadrilateral or a hexahedron) is uniformly subdivided once into <formula id="179">$ 2^{n_{\text{dim}}} $</formula> subdomains (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a35fce6e2a32f95799655761ce927ca2c" kindref="member">ParticleDomain::uniformSubdivided()</ref>). Each subdomain <formula id="180">$ s $</formula> is an integration point of its own: the derived class attaches a material point to it and integrates the weak form as a sum over the subdomains. The shape functions of a subdomain are evaluated at its center, and their gradients are smoothed over its smoothing domain <formula id="181">$ \Omega_s $</formula> by the divergence theorem, with one point (the face center <formula id="182">$ \boldsymbol{Y}_f $</formula>) per face <formula id="183">$ f $</formula> and the boundary surface vector <formula id="184">$ \boldsymbol{n}_f\,dA_f $</formula>,    <formula id="185">\[  \frac{\partial N_A}{\partial Y_i}\bigg|_s \approx \frac{1}{|\Omega_s|} \sum_f N_A(\boldsymbol{Y}_f)\,
+<para>The particle domain (a <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain" kindref="compound">ParticleDomain</ref>, e.g., a quadrilateral or a hexahedron) is uniformly subdivided once into <formula id="135">$ 2^{n_{\text{dim}}} $</formula> subdomains (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a35fce6e2a32f95799655761ce927ca2c" kindref="member">ParticleDomain::uniformSubdivided()</ref>). Each subdomain <formula id="136">$ s $</formula> is an integration point of its own: the derived class attaches a material point to it and integrates the weak form as a sum over the subdomains. The shape functions of a subdomain are evaluated at its center, and their gradients are smoothed over its smoothing domain <formula id="137">$ \Omega_s $</formula> by the divergence theorem, with one point (the face center <formula id="138">$ \boldsymbol{Y}_f $</formula>) per face <formula id="139">$ f $</formula> and the boundary surface vector <formula id="140">$ \boldsymbol{n}_f\,dA_f $</formula>,    <formula id="141">\[  \frac{\partial N_A}{\partial Y_i}\bigg|_s \approx \frac{1}{|\Omega_s|} \sum_f N_A(\boldsymbol{Y}_f)\,
   n_{f,i}\, dA_f
 \]</formula> (see <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1abbbe23074e669f37b85023ea8abe6420" kindref="member">_smoothDerivativeShapeFunctionsForParticleDomain()</ref>). The test functions start as copies of the trial functions and are changed only by the VCI correction.</para>
-<para>The particle as a whole moves with its <bold>center</bold>: in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ad8040a3eddfb94aa12cd33fd429272ec" kindref="member">computePhysicsKernels()</ref>, the displacement increment and the deformation gradient increment of the center are computed from the shape functions of the main domain,     <formula id="186">\[  \Delta\boldsymbol{u}_c = \sum_B N_B\, \Delta\boldsymbol{q}_B, \qquad
+<para>The particle as a whole moves with its <bold>center</bold>: in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ad8040a3eddfb94aa12cd33fd429272ec" kindref="member">computePhysicsKernels()</ref>, the displacement increment and the deformation gradient increment of the center are computed from the shape functions of the main domain,     <formula id="142">\[  \Delta\boldsymbol{u}_c = \sum_B N_B\, \Delta\boldsymbol{q}_B, \qquad
   \Delta\boldsymbol{F}_c = \boldsymbol{I} + \sum_B \Delta\boldsymbol{q}_B \otimes
   \frac{\partial N_B}{\partial \boldsymbol{Y}},
-\]</formula> and in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a5634dfba8f4d884f283b61dd7cb54858" kindref="member">acceptStateAndPosition()</ref> the total central deformation gradient <formula id="187">$ \boldsymbol{F}_c \leftarrow \Delta\boldsymbol{F}_c\, \boldsymbol{F}_c $</formula> and the total center displacement <formula id="188">$ \boldsymbol{u}_c $</formula> move the main domain and all subdomains (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a20c534581d8d89f4a51294aa1d1f783c" kindref="member">ParticleDomain::acceptStateAndPosition()</ref>).</para>
+\]</formula> and in <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1a5634dfba8f4d884f283b61dd7cb54858" kindref="member">acceptStateAndPosition()</ref> the total central deformation gradient <formula id="143">$ \boldsymbol{F}_c \leftarrow \Delta\boldsymbol{F}_c\, \boldsymbol{F}_c $</formula> and the total center displacement <formula id="144">$ \boldsymbol{u}_c $</formula> move the main domain and all subdomains (<ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_particle_domain_1a20c534581d8d89f4a51294aa1d1f783c" kindref="member">ParticleDomain::acceptStateAndPosition()</ref>).</para>
 <para><bold>State variable layout.</bold> The block given to <ref refid="class_marmot_1_1_discretizations_1_1_meshfree_1_1_generic_s_d_i_particle_1ac755a40084f1934d535d31e1b3bdc868" kindref="member">assignStateVars()</ref> is <table rows="5" cols="3"><row>
 <entry thead="yes"><para>offset  </para>
 </entry><entry thead="yes"><para>size  </para>
@@ -1838,17 +1838,17 @@
 <row>
 <entry thead="no"><para>0  </para>
 </entry><entry thead="no"><para>nDim  </para>
-</entry><entry thead="no"><para>center displacement <formula id="188">$ \boldsymbol{u}_c $</formula>  </para>
+</entry><entry thead="no"><para>center displacement <formula id="144">$ \boldsymbol{u}_c $</formula>  </para>
 </entry></row>
 <row>
 <entry thead="no"><para>nDim  </para>
 </entry><entry thead="no"><para>nDim * nDim  </para>
-</entry><entry thead="no"><para>central deformation gradient <formula id="189">$ \boldsymbol{F}_c $</formula> (column-major)  </para>
+</entry><entry thead="no"><para>central deformation gradient <formula id="145">$ \boldsymbol{F}_c $</formula> (column-major)  </para>
 </entry></row>
 <row>
 <entry thead="no"><para>nDim + nDim * nDim  </para>
 </entry><entry thead="no"><para>nDim * nDim  </para>
-</entry><entry thead="no"><para>its increment <formula id="190">$ \Delta\boldsymbol{F}_c $</formula> (column-major)  </para>
+</entry><entry thead="no"><para>its increment <formula id="146">$ \Delta\boldsymbol{F}_c $</formula> (column-major)  </para>
 </entry></row>
 <row>
 <entry thead="no"><para>paddedStateVarSize(nStateVarsCenter)  </para>
