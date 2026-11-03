@@ -78,6 +78,9 @@ All notable changes to Marmot are documented in this file. The format follows
   a zero-length increment adds no inertia; velocity and acceleration are left as they are and the inertia tangent
   is zero. The time increment used to be clamped to 1e-16, which made a zero-length increment with a nonzero
   velocity produce an acceleration of order -v/(beta 1e-16). Increments of at least 1e-16 are unchanged.
+- **Results:** `newmarkBetaIntegration` with `beta = 0` (no time integration, a quasi-static analysis) sets the velocity
+  and the acceleration to zero: a quasi-static step after a dynamic one leaves the particles at rest. It used to keep
+  the velocity, advanced once by `dT (1 - gamma) a_n`. Analyses that are quasi-static from the start are unchanged.
 
 ## [v26.11] - 2026-11-02
 
