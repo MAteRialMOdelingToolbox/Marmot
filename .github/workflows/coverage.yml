@@ -3,7 +3,7 @@ name: coverage
 
 on:
   push:
-    branches: [ master, 'next_v*' ]
+    branches: [ master ]
   pull_request:
 
 jobs:
