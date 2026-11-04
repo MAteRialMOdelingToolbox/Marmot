@@ -81,6 +81,13 @@ namespace Marmot::Discretizations::Elements {
     static constexpr int sizeLoadVector = nNodes * nDim;
     static constexpr int nCoordinates   = nNodes * nDim;
 
+    /**
+     * @brief Whether the element is a linear triangle or tetrahedron.
+     * @details Its reference domain is the unit simplex rather than the cube \f$[-1,1]^{nDim}\f$,
+     * which the element lengths of the quadrilaterals and hexahedra assume.
+     */
+    static constexpr bool isLinearSimplex = nDim >= 2 && nNodes == nDim + 1;
+
     using ParentGeometryElement = Marmot::Discretizations::Elements::GeometryElement< nDim, nNodes >;
     using JacobianSized         = typename ParentGeometryElement::JacobianSized;
     using dNdXiSized            = typename ParentGeometryElement::dNdXiSized;
@@ -272,12 +279,27 @@ namespace Marmot::Discretizations::Elements {
     std::vector< std::string > getPropertyNames() const override;
 
     /**
-     * @brief The element's smallest physical extent at a parent coordinate.
+     * @brief The element length \f$l\f$ of the stable increment \f$l / c\f$ at a parent coordinate.
      * @param xi Parent coordinate to evaluate the Jacobian at.
-     * @return Twice the smallest singular value of the Jacobian.
-     * @details The Jacobian maps \f$[-1,1]^{nDim}\f$ onto the element, so twice its smallest
-     * singular value IS the smallest physical extent. Shared by the stable increment and the bulk
-     * viscosity so the two cannot drift apart.
+     * @return For a quadrilateral or hexahedron, twice the smallest singular value of the Jacobian;
+     *         for a linear simplex, \f$1 / \sqrt{\sum_i |\nabla N_i|^2}\f$.
+     * @details The Jacobian of a quadrilateral or hexahedron maps \f$[-1,1]^{nDim}\f$ onto the
+     * element, so twice its smallest singular value IS the smallest physical extent.
+     *
+     * A linear simplex maps the unit simplex instead, and its Jacobian depends on which node is
+     * numbered first, so that measure would be neither the right size nor independent of the node
+     * numbering. Its length is taken from the gradients of the shape functions, which are constant
+     * and do not depend on the numbering: \f$|\nabla N_i| = 1 / h_i\f$ with the altitude \f$h_i\f$
+     * opposite node \f$i\f$, so \f$l = 1 / \sqrt{\sum_i h_i^{-2}}\f$. It goes to zero for a sliver,
+     * as \f$h_\mathrm{min}\f$ does, but unlike \f$h_\mathrm{min}\f$ it also counts the other
+     * altitudes. Compared with the exact stable increment \f$2 / \omega_\mathrm{max}\f$ of the
+     * element with lumped mass and an isotropic elastic material, \f$l / c\f$ (with the P-wave speed
+     * \f$c\f$) is between 0.62 and 0.87 times it for a triangle in plane strain and between 0.64 and
+     * 1 times it for a tetrahedron, for any shape and Poisson ratio. \f$h_\mathrm{min} / c\f$ would
+     * be up to 2 times it for a tetrahedron and 1.41 times it for the regular one, above the limit
+     * even with a courant number of 0.8.
+     *
+     * Shared by the stable increment and the bulk viscosity so the two cannot drift apart.
      */
     double characteristicElementLengthAt( const XiSized& xi );
 
@@ -456,7 +478,7 @@ namespace Marmot::Discretizations::Elements {
       }
     }
 
-    /** @brief Get physical coordinates at the element center. */
+    /** @brief Get physical coordinates at the element center (the centroid of the reference domain). */
     std::vector< double > getCoordinatesAtCenter() override;
 
     /** @brief Get physical coordinates at each quadrature point. */
@@ -563,10 +585,17 @@ namespace Marmot::Discretizations::Elements {
        * stability estimate needs the opposite: the element's SMALLEST extent, because that is what
        * bounds the highest frequency. The two definitions are not interchangeable; do not unify
        * them.
+       *
+       * The measure of the element is detJ times the measure of the reference domain: 2^nDim for
+       * the cube [-1, 1]^nDim, 1 / nDim! for the unit simplex of a linear triangle or tetrahedron.
        */
-      if constexpr ( nDim == 3 )
+      if constexpr ( isLinearSimplex && nDim == 3 )
+        qp.material->setCharacteristicElementLength( std::cbrt( qp.detJ / 6 ) );
+      else if constexpr ( isLinearSimplex && nDim == 2 )
+        qp.material->setCharacteristicElementLength( std::sqrt( qp.detJ / 2 ) );
+      else if constexpr ( nDim == 3 )
         qp.material->setCharacteristicElementLength( std::cbrt( 8 * qp.detJ ) );
-      if constexpr ( nDim == 2 )
+      else if constexpr ( nDim == 2 )
         qp.material->setCharacteristicElementLength( std::sqrt( 4 * qp.detJ ) );
       if constexpr ( nDim == 1 )
         qp.material->setCharacteristicElementLength( 2 * qp.detJ );
@@ -650,8 +679,15 @@ namespace Marmot::Discretizations::Elements {
   template < int nDim, int nNodes >
   double DisplacementFiniteElement< nDim, nNodes >::characteristicElementLengthAt( const XiSized& xi )
   {
-    const JacobianSized J = this->Jacobian( this->dNdXi( xi ) );
-    return 2.0 * Eigen::JacobiSVD< JacobianSized >( J ).singularValues().minCoeff();
+    const dNdXiSized    dNdXi = this->dNdXi( xi );
+    const JacobianSized J     = this->Jacobian( dNdXi );
+
+    if constexpr ( isLinearSimplex ) {
+      // the squared norm of the nDim x nNodes gradient matrix is the sum over i of |grad N_i|^2 = 1 / h_i^2
+      return 1.0 / std::sqrt( this->dNdX( dNdXi, J.inverse() ).squaredNorm() );
+    }
+    else
+      return 2.0 * Eigen::JacobiSVD< JacobianSized >( J ).singularValues().minCoeff();
   }
 
   template < int nDim, int nNodes >
@@ -1126,7 +1162,7 @@ namespace Marmot::Discretizations::Elements {
      * actually assembled is exactly the kind of inconsistency that surfaces as an unexplained
      * instability rather than as a clean failure.
      */
-    constexpr int   nNodesLinear     = ( 1 << nDim );
+    constexpr int   nNodesLinear     = Marmot::Discretizations::Elements::MassLumping::nLinearNodes< nDim, nNodes >();
     auto            linGeometryEl    = Marmot::Discretizations::Elements::GeometryElement< nDim, nNodesLinear >();
     Eigen::VectorXd rowSumsHighOrder = Eigen::VectorXd::Zero( nNodes );
     Eigen::VectorXd rowSumsLinear    = Eigen::VectorXd::Zero( nNodesLinear );
@@ -1186,7 +1222,7 @@ namespace Marmot::Discretizations::Elements {
      * slightly below 1 for a distorted element -- which is correct, a distorted element does have a
      * tighter limit than its volume alone suggests.
      */
-    constexpr int   nNodesLinear     = ( 1 << nDim );
+    constexpr int   nNodesLinear     = Marmot::Discretizations::Elements::MassLumping::nLinearNodes< nDim, nNodes >();
     auto            linGeometryEl    = Marmot::Discretizations::Elements::GeometryElement< nDim, nNodesLinear >();
     Eigen::VectorXd rowSumsHighOrder = Eigen::VectorXd::Zero( nNodes );
     Eigen::VectorXd rowSumsLinear    = Eigen::VectorXd::Zero( nNodesLinear );
@@ -1212,7 +1248,8 @@ namespace Marmot::Discretizations::Elements {
        * The Jacobian maps the natural cube [-1,1]^nDim onto the element, so twice its smallest
        * singular value IS that smallest physical extent. For a well-shaped element this
        * reproduces the previous expressions exactly -- a cube of side h gives h either way --
-       * so the estimate is tightened only where it was previously wrong.
+       * so the estimate is tightened only where it was previously wrong. A linear simplex maps the
+       * unit simplex instead and takes a length from its altitudes; see characteristicElementLengthAt.
        *
        * Read from the cache initializeYourself() fills rather than recomputed here: the artificial
        * bulk viscosity already needs this value on every explicit increment and caches it for that
@@ -1250,9 +1287,16 @@ namespace Marmot::Discretizations::Elements {
   {
     std::vector< double > coords( nDim );
 
+    /* The centroid of the reference domain: the origin of the cube [-1, 1]^nDim, but ( 1 / ( nDim + 1 ), ... ) for
+     * the unit simplex of a linear triangle or tetrahedron, whose origin is its node 0. All shape functions are
+     * 1 / nNodes there, so the result is the mean of the nodal coordinates, the centroid of the simplex.
+     */
+    XiSized centerXi = XiSized::Zero();
+    if constexpr ( isLinearSimplex )
+      centerXi.setConstant( 1.0 / ( nDim + 1 ) );
+
     Eigen::Map< XiSized > coordsMap( &coords[0] );
-    const auto            centerXi = XiSized::Zero();
-    coordsMap                      = this->NB( this->N( centerXi ) ) * this->coordinates;
+    coordsMap = this->NB( this->N( centerXi ) ) * this->coordinates;
     return coords;
   }
 

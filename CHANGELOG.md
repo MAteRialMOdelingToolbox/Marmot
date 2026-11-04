@@ -6,6 +6,21 @@ All notable changes to Marmot are documented in this file. The format follows
 
 ## [Unreleased]
 
+### Added
+- Linear simplices in `elements/DisplacementFiniteElement`: the triangles `CPS3` (plane stress) and `CPE3` (plane
+  strain), and the tetrahedron `C3D4`, each with one Gauss point. The strain is constant in a linear simplex, so one
+  point integrates the stiffness and the internal force exactly.
+  Their element length for the stable time increment l / c is 1 / sqrt( sum_i |grad N_i|^2 ), which does not depend
+  on the node numbering and stays below the exact stable increment of the element; the length of the quadrilaterals
+  and hexahedra, twice the smallest singular value of the Jacobian, assumes the reference cube [-1, 1]^nDim and
+  would exceed it by up to 4 times. Their regularisation length for softening materials is sqrt( A ) or cbrt( V ),
+  and `getCoordinatesAtCenter()` returns their centroid instead of node 0, the origin of the unit simplex.
+- `Tri3` shape: shape functions, the 1-point (reduced) and 3-point (full, exact for quadratics) Gauss rules, the
+  `GeometryElement<2, 3>` specialisations and the EnSight shape `tria3`.
+- Distributed loads (pressure, surface traction) on `Tetra4` and `Tri3` elements (`C3D4`, `CPS3`, `CPE3`). This adds
+  the face definitions `Tetra4::getBoundaryElementIndices` (Abaqus faces S1–S4; previously a stub that always threw)
+  and `Tri3::getBoundaryElementIndices`, and `BoundaryElement` support for both parent shapes.
+
 ### Changed
 - **Breaking:** `PRESSURE` on the faceted particles (`DisplacementParticleSQCNI`, implicit and explicit,
   `DisplacementParticleSQCNIxSDI`, `GradientEnhancedFiniteStrainParticleSQCNI` and the NSNI particles derived from
@@ -26,6 +41,14 @@ All notable changes to Marmot are documented in this file. The format follows
 - Result-file keyword of 2D interface elements (`ILINE2`): `GeometryInterfaceElement` named the four-node
   element `bar2`, a two-node cell, so the EnSight geometry was invalid; it is now `quad4`, the cell spanning both
   faces, as `hexa8` for the 3D interfaces.
+- Lumped inertia and critical time step of the linear simplices `CPS3`, `CPE3` and `C3D4`. The manifold-based mass
+  lumping blended in the shape functions of a quadrilateral or hexahedron and wrote past the end of the nodal
+  vectors, which corrupted the heap of an explicit analysis. A linear simplex is now its own linear counterpart
+  (`MassLumping::nLinearNodes()`, also used by the finite-strain and the gradient-enhanced elements), with the
+  mass / nNodes at each node.
+- Consistent mass of `Tetra4` elements (`C3D4`). Its Gauss rule has one point for every integration type, which gave
+  a mass of rank 3 out of 12. `ConsistentMass::integrationRule()` now takes the 4-point rule, which is exact for the
+  quadratic integrand.
 
 ## [v26.11] - 2026-11-02
 

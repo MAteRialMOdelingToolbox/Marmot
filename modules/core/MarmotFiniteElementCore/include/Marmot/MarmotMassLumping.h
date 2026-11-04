@@ -33,6 +33,23 @@
 namespace Marmot::Discretizations::Elements::MassLumping {
 
   /**
+   * @brief The number of nodes of the linear element whose shape functions are blended in.
+   *
+   * @tparam nDim   Number of spatial dimensions.
+   * @tparam nNodes Number of element nodes.
+   * @return @p nNodes for a linear simplex (bar2, tri3, tetra4), which is its own linear counterpart, and
+   *         \f$2^{n_{dim}}\f$ (the bilinear quadrilateral or trilinear hexahedron) otherwise.
+   *
+   * @details The linear counterpart must not have more nodes than the element itself: the blend adds its row sums to
+   * the first nodes of the element. A tri3 or tetra4 paired with a quad4 or hexa8 would write past the end of them.
+   */
+  template < int nDim, int nNodes >
+  constexpr int nLinearNodes()
+  {
+    return nNodes == nDim + 1 ? nNodes : 1 << nDim;
+  }
+
+  /**
    * @brief The blend weight of the manifold-based mass lumping scheme.
    *
    * @param rowSumsHighOrder Row sums of the consistent mass matrix built from the element's own

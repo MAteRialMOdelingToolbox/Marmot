@@ -39,6 +39,7 @@ namespace Marmot::Discretizations::Elements {
   enum ElementShapes {
     Bar2,    ///< 1-D 2-node bar
     Bar3,    ///< 1-D 3-node bar
+    Tri3,    ///< 2-D 3-node triangle
     Quad4,   ///< 2-D 4-node quadrilateral
     Quad8,   ///< 2-D 8-node serendipity quadrilateral
     Quad9,   ///< 2-D 9-node quadrilateral
@@ -261,6 +262,22 @@ namespace Marmot::Discretizations::Elements {
       /// @brief Return the local node indices for boundary face @p faceID.
       Eigen::Vector3i getBoundaryElementIndices( int faceID );
     } // namespace Quad8
+
+    namespace Tri3 {
+      constexpr int nNodes = 3;                                          ///< Number of nodes for a Tri3 element.
+
+      using CoordinateSized = Eigen::Matrix< double, nNodes * nDim, 1 >; ///< Flat vector of nodal coordinates.
+      using NSized          = Eigen::Matrix< double, 1, nNodes >;        ///< Row vector of shape function values.
+      using dNdXiSized      = Eigen::Matrix< double, nDim, nNodes >; ///< Matrix of shape function natural derivatives.
+
+      /// @brief Evaluate Tri3 shape functions at the area coordinates @p xi, with nodes at (0,0), (1,0), (0,1).
+      NSized N( const Eigen::Vector2d& xi );
+      /// @brief Evaluate Tri3 shape function natural derivatives at @p xi (constant over the element).
+      dNdXiSized dNdXi( const Eigen::Vector2d& xi );
+
+      /// @brief Return the local node indices for boundary face @p faceID.
+      Eigen::Vector2i getBoundaryElementIndices( int faceID );
+    } // namespace Tri3
 
   }   // end of namespace Spatial2D
 
@@ -651,6 +668,18 @@ namespace Marmot::Discretizations::Elements {
                 { ( Eigen::Vector2d () << gp3,      0.   ).finished(),   40./81},
                 { ( Eigen::Vector2d () << 0,        +gp3 ).finished(),   40./81},
                 { ( Eigen::Vector2d () << -gp3,     0.   ).finished(),   40./81},
+            };
+
+            /// 1-point rule for Tri3 elements.
+            const inline std::vector< QuadraturePointInfo > gaussPointListTri1 = {
+                { ( Eigen::Vector2d () << 1./3,     1./3 ).finished(),   1./2 }
+            };
+
+            /// 3-point rule for triangular elements (exact for quadratic polynomials).
+            const inline std::vector< QuadraturePointInfo > gaussPointListTri3 = {
+                { ( Eigen::Vector2d () << 1./6,     1./6 ).finished(),   1./6 },
+                { ( Eigen::Vector2d () << 2./3,     1./6 ).finished(),   1./6 },
+                { ( Eigen::Vector2d () << 1./6,     2./3 ).finished(),   1./6 }
             };
       // clang-format on
 

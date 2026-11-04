@@ -1280,7 +1280,7 @@ namespace Marmot::Discretizations::Elements {
      * actually assembled is exactly the kind of inconsistency that surfaces as an unexplained
      * instability rather than as a clean failure.
      */
-    constexpr int nNodesLinear = ( 1 << nDim );
+    constexpr int nNodesLinear = Marmot::Discretizations::Elements::MassLumping::nLinearNodes< nDim, nNodes >();
 
     // computeLumpedInertia() only knows how to weight the non-local block against either the
     // displacement interpolation itself (equal-order, nNonLocalNodes == nNodes) or the linear
@@ -1355,7 +1355,7 @@ namespace Marmot::Discretizations::Elements {
      * distributions and a helper that drifted would be invisible in either one alone -- but there
      * is no longer anything preventing that helper from existing.
      */
-    constexpr int nNodesLinear = ( 1 << nDim );
+    constexpr int nNodesLinear = Marmot::Discretizations::Elements::MassLumping::nLinearNodes< nDim, nNodes >();
 
     // The same precondition computeLumpedInertia() carries, and for the same reason: below,
     // N_weighted_nonlocal is assigned the LINEAR shape function vector and then indexed as though
@@ -1429,7 +1429,7 @@ namespace Marmot::Discretizations::Elements {
      * has a forward-Euler limit set by its viscosity against the Helmholtz operator, which is a
      * different formula, is not a wave speed, and is still not checked anywhere.
      */
-    constexpr int   nNodesLinear     = ( 1 << nDim );
+    constexpr int   nNodesLinear     = Marmot::Discretizations::Elements::MassLumping::nLinearNodes< nDim, nNodes >();
     auto            linGeometryEl    = Marmot::Discretizations::Elements::GeometryElement< nDim, nNodesLinear >();
     Eigen::VectorXd rowSumsHighOrder = Eigen::VectorXd::Zero( nNodes );
     Eigen::VectorXd rowSumsLinear    = Eigen::VectorXd::Zero( nNodesLinear );

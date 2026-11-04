@@ -14,6 +14,7 @@ using namespace Marmot::Discretizations::Elements;
 void testGetElementShapeByMetricAllValidCombinations()
 {
   throwExceptionOnFailure( getElementShapeByMetric( 1, 2 ) == Bar2, "nDim=1, nNodes=2 must be Bar2." );
+  throwExceptionOnFailure( getElementShapeByMetric( 2, 3 ) == Tri3, "nDim=2, nNodes=3 must be Tri3." );
   throwExceptionOnFailure( getElementShapeByMetric( 2, 4 ) == Quad4, "nDim=2, nNodes=4 must be Quad4." );
   throwExceptionOnFailure( getElementShapeByMetric( 2, 8 ) == Quad8, "nDim=2, nNodes=8 must be Quad8." );
   throwExceptionOnFailure( getElementShapeByMetric( 2, 9 ) == Quad9, "nDim=2, nNodes=9 must be Quad9." );
@@ -92,8 +93,8 @@ void testDynamicJacobianMatchesTemplatedJacobianForQuad4()
 // ---------------------------------------------------------------------------------------------
 // Quadrature::getGaussPointInfo() / getNumGaussPoints(): the branches actually reached by every
 // existing element and boundary test all use FullIntegration for Bar3/Tetra4/Tetra10 (or, for
-// Bar2/Quad4, never use ReducedIntegration) and never construct a Tetra4/Tetra10 element (there is
-// no registered element type using either shape) or pass an unsupported shape at all.
+// Bar2/Quad4, never use ReducedIntegration) and never construct a Tetra10 element (there is no
+// registered element type using that shape) or pass an unsupported shape at all.
 // ---------------------------------------------------------------------------------------------
 
 void testGetGaussPointInfoReducedIntegrationBranches()
