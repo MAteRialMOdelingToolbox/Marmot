@@ -16,6 +16,7 @@ namespace Marmot::Discretizations::Elements {
 
     case ( 2 ): {
       switch ( nNodes ) {
+      case 3: return ElementShapes::Tri3;
       case 4: return ElementShapes::Quad4;
       case 8: return ElementShapes::Quad8;
       case 9: return ElementShapes::Quad9;
@@ -126,6 +127,13 @@ namespace Marmot::Discretizations::Elements {
           return Spatial2D::gaussPointList3x3;
         else
           return Spatial2D::gaussPointList2x2;
+      }
+
+      case ( ElementShapes::Tri3 ): {
+        if ( integrationType == IntegrationTypes::FullIntegration )
+          return Spatial2D::gaussPointListTri3;
+        else
+          return Spatial2D::gaussPointListTri1;
       }
 
       case ( ElementShapes::Tetra4 ): {
