@@ -1,3 +1,4 @@
+#include "Marmot/ADLinearElastic.h"
 #include "Marmot/MarmotJournal.h"
 #include "Marmot/MarmotMaterialPointSolverHypoElastic.h"
 #include "Marmot/MarmotTesting.h"
@@ -81,12 +82,53 @@ void testADLinearElastic()
                              << __PRETTY_FUNCTION__ << "comparison with reference solution failed" );
 }
 
+void testADLinearElasticEnergyDensityOfNonProportionalStrainPath()
+{
+  // The strain energy of linear elasticity depends only on the final strain, W = 1/2 eps : C : eps
+  // = 1/2 ( lambda tr(eps)^2 + 2 mu eps : eps ), whatever the path. A non-proportional path in several increments
+  // checks the accumulation from a non-zero stress at the start of each increment.
+  std::vector< double > materialProperties = { 210000., 0.3 };
+  ADLinearElastic       material( materialProperties.data(), static_cast< int >( materialProperties.size() ), 1 );
+  MaterialHypoElastic&  materialBase = material;
+  const double          E = materialProperties[0], nu = materialProperties[1];
+  const double          lambda = E * nu / ( ( 1. + nu ) * ( 1. - 2. * nu ) );
+  const double          mu     = E / ( 2. * ( 1. + nu ) );
+  MaterialHypoElastic::timeInfo timeInfo{ 0., 1. };
+
+  Marmot::Math::Vector6d legA, legB; // engineering shear strains
+  legA << 1e-3, -2e-4, 3e-4, 4e-4, 0., -1e-4;
+  legB << -5e-4, 6e-4, 0., -2e-4, 5e-4, 3e-4;
+
+  MaterialHypoElastic::state3D state;
+  Marmot::Math::Matrix6d       tangent;
+  Marmot::Math::Vector6d       strain = Marmot::Math::Vector6d::Zero();
+  for ( const auto& [leg, nIncrements] : { std::pair{ legA, 4 }, std::pair{ legB, 7 } } )
+    for ( int i = 0; i < nIncrements; i++ ) {
+      const Marmot::Math::Vector6d dStrain = leg / nIncrements;
+      materialBase.computeStress( state, tangent, dStrain, timeInfo );
+      strain += dStrain;
+    }
+
+  const double trace           = strain.head< 3 >().sum();
+  const double strainDotStrain = strain.head< 3 >().squaredNorm() + 0.5 * strain.tail< 3 >().squaredNorm();
+  const double expected        = 0.5 * ( lambda * trace * trace + 2. * mu * strainDotStrain );
+
+  throwExceptionOnFailure( checkIfEqual( state.elasticEnergyDensity, expected, 1e-10 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << ": elastic energy density must be 1/2 eps : C : eps after a non-proportional path" );
+  throwExceptionOnFailure( checkIfEqual( state.dissipation, 0.0, 1e-15 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": linear elasticity must not dissipate" );
+}
+
 int main()
 {
 
   std::vector< std::function< void( void ) > > tests = {
     testADLinearElastic,
     testADLinearElasticObjectivity,
+    testADLinearElasticEnergyDensityOfNonProportionalStrainPath,
   };
 
   executeTestsAndCollectExceptions( tests );

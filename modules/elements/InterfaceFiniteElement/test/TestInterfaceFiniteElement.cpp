@@ -1072,8 +1072,8 @@ void TestElementShapeKeywordsAreEnSightNames()
                                                   FullIntegration,
                                                 InterfaceFiniteElement< nDim, nNodes >::SectionType::Interface );
 
-    throwExceptionOnFailure( element->getElementShape() == "bar2",
-                             "2D interface element must report the EnSight keyword \"bar2\", got \"" +
+    throwExceptionOnFailure( element->getElementShape() == "quad4",
+                             "2D interface element must report the EnSight keyword \"quad4\", got \"" +
                                element->getElementShape() + "\"." );
   }
 }
@@ -1308,7 +1308,7 @@ void TestFactoryCreatesRegisteredInterfaceElements()
 {
   std::cout << "\n--- TestFactoryCreatesRegisteredInterfaceElements ---\n";
 
-  const std::pair< std::string, std::string > registered[] = { { "IQUAD4", "hexa8" }, { "ILINE2", "bar2" } };
+  const std::pair< std::string, std::string > registered[] = { { "IQUAD4", "hexa8" }, { "ILINE2", "quad4" } };
   for ( const auto& [name, shape] : registered ) {
     std::unique_ptr< Marmot::Discretizations::Elements::Element > element(
       Marmot::Registry::ElementFactory::createElement( name, 1 ) );

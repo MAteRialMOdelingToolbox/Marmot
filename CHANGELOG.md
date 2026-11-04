@@ -6,6 +6,21 @@ All notable changes to Marmot are documented in this file. The format follows
 
 ## [Unreleased]
 
+### Fixed
+- **Results:** elastic strain energy of `LinearElastic`, `ADLinearElastic` and every material on
+  `MaterialHypoElasticAD`. The fixes:
+  - `LinearElastic` did not compute the elastic energy density at all, so the internal energy of the elements was
+    zero.
+  - `ADLinearElastic` accumulated ½ Δε : Δσ without the stress at the start of the increment, so it was too small
+    by about the number of increments.
+  - `MaterialHypoElasticAD::computeStress` returned only the stress of `computeStressAD` and dropped its energy and
+    dissipation.
+  - Both linear elastic laws now integrate W by the trapezoidal rule, which is exact for linear elasticity.
+  - Tests compare W with ½ ε : C : ε after a non-proportional strain path in 3D and in plane stress.
+- Result-file keyword of 2D interface elements (`ILINE2`): `GeometryInterfaceElement` named the four-node
+  element `bar2`, a two-node cell, so the EnSight geometry was invalid; it is now `quad4`, the cell spanning both
+  faces, as `hexa8` for the 3D interfaces.
+
 ## [v26.11] - 2026-11-02
 
 This changelog was started late in the v26.11 cycle. The entries below cover October 2026 onwards; the main
