@@ -99,6 +99,13 @@ these moved up by one.
      - ``nonlocalViscosity``
      - Optional viscosity of the nonlocal fields, applied to all six components (requires all preceding
        properties)
+   * - 16
+     - ``nonlocalMicroInertia``
+     - Optional micro-inertia of the nonlocal fields in time squared, applied to all six components (requires all
+       preceding properties; default 0, i.e. first-order nonlocal fields). It makes the nonlocal fields second order
+       in time, so that the stable increment of an explicit analysis falls off with the element size rather than
+       with its square. Admissible up to :math:`\eta^2/4` (with :math:`\eta` the ``nonlocalViscosity``), where it is
+       best; a larger, negative or non-finite value is rejected.
 
 The material is registered as ``GM7`` in the general gradient-enhanced hypoelastic material factory (six nonlocal
 fields), and is used with the six-field ``GeneralGradientEnhancedDisplacementFiniteElement`` elements (``G6GCPS8``,
