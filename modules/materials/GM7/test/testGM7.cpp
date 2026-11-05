@@ -11,6 +11,7 @@
 #include <array>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 using namespace Marmot::Testing;
 using response  = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< 6 >::response;
@@ -492,6 +493,45 @@ void testTooFewMaterialProperties()
   throwExceptionOnFailure( rejected, Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << " failed" );
 }
 
+// The nonlocal micro-inertia (property 15) is optional: absent, the nonlocal strain is first order in time and every
+// component reports zero; given, it is reported for all six components, and a value above eta^2/4 -- which would leave
+// the zeroth-order reaction mode of the nonlocal field underdamped -- is rejected with std::invalid_argument.
+void testNonlocalMicroInertia()
+{
+  const double                   eta = 3e-4;
+  const std::array< double, 15 > withoutMicroInertia =
+    { 2.5e4, 0.18, 1.5e-4, 110, 30, 100, 1e-4, 25.0, 1.0, 4.0, 36.0, 4.0, 0.4, 2.4e-9, eta };
+  const auto firstOrder = createGM7( withoutMicroInertia.data(), static_cast< int >( withoutMicroInertia.size() ) );
+  std::vector< double > stateVars( firstOrder->getNumberOfRequiredStateVars(), 0.0 );
+
+  throwExceptionOnFailure( firstOrder->getNonlocalMicroInertia( stateVars.data() ) == std::vector< double >( 6, 0.0 ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " failed: nonzero micro-inertia without property 15" );
+
+  std::array< double, 16 > withMicroInertia;
+  std::copy( withoutMicroInertia.begin(), withoutMicroInertia.end(), withMicroInertia.begin() );
+  withMicroInertia[15]   = eta * eta / 4.;
+  const auto secondOrder = createGM7( withMicroInertia.data(), static_cast< int >( withMicroInertia.size() ) );
+
+  throwExceptionOnFailure( secondOrder->getNonlocalMicroInertia( stateVars.data() ) ==
+                             std::vector< double >( 6, eta * eta / 4. ),
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " failed: micro-inertia eta^2/4 not reported" );
+
+  withMicroInertia[15]   = 1.01 * eta * eta / 4.;
+  const auto underdamped = createGM7( withMicroInertia.data(), static_cast< int >( withMicroInertia.size() ) );
+  bool       rejected    = false;
+  try {
+    underdamped->getNonlocalMicroInertia( stateVars.data() );
+  }
+  catch ( const std::invalid_argument& ) {
+    rejected = true;
+  }
+  throwExceptionOnFailure( rejected,
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " failed: micro-inertia above eta^2/4 not rejected" );
+}
+
 int main()
 {
   testOedometricCompression();
@@ -508,5 +548,6 @@ int main()
   testCubicSymmetryInvarianceCombinedNormalShear();
   testCubicSymmetryInvarianceTensionShear();
   testTooFewMaterialProperties();
+  testNonlocalMicroInertia();
   return 0;
 }

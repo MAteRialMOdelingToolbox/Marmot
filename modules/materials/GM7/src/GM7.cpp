@@ -40,6 +40,14 @@ namespace Marmot::Materials {
     return std::vector< double >( 6, this->materialProperties[14] );
   }
 
+  std::vector< double > GM7::getNonlocalMicroInertia( const double* stateVars ) const
+  {
+    if ( this->nMaterialProperties < 16 )
+      return std::vector< double >( 6, 0.0 );
+
+    return validatedNonlocalMicroInertia( std::vector< double >( 6, this->materialProperties[15] ), stateVars );
+  }
+
   void GM7::computeStress( response& res, tangents& tan, const increment& inc ) const
   {
     const Marmot::Math::Vector6d&       dE_macroLocal = inc.dStrain;
