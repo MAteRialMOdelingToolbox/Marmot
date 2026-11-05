@@ -4,6 +4,7 @@
 #include "Marmot/MarmotMaterialFiniteStrain.h"
 #include "Marmot/MarmotMaterialPointSolverFiniteStrain.h"
 #include "Marmot/MarmotTesting.h"
+#include <array>
 #include <cmath>
 #include <cstring>
 #include <string>
@@ -114,10 +115,9 @@ Tensor33d combinedStress( const Tensor33d& F, int base, double p1, double p2, do
 // higher-order coefficients vanish.
 // ---------------------------------------------------------------------------
 
-std::vector< Tensor33d > randomSymmetricPositiveDefiniteCs()
+std::array< Tensor33d, 3 > randomSymmetricPositiveDefiniteCs()
 {
-  std::vector< Tensor33d > Cs;
-  auto                     makeC = [&]( double a, double b, double c, double d, double e, double f ) {
+  auto makeC = []( double a, double b, double c, double d, double e, double f ) {
     Tensor33d F = Spatial3D::I;
     F( 0, 0 ) += a;
     F( 1, 1 ) += b;
@@ -127,10 +127,11 @@ std::vector< Tensor33d > randomSymmetricPositiveDefiniteCs()
     F( 0, 2 ) = f;
     return Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
   };
-  Cs.push_back( makeC( 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ) );         // C = I
-  Cs.push_back( makeC( 0.1, -0.03, -0.03, 0.02, 0.01, -0.01 ) ); // moderate, mildly triaxial
-  Cs.push_back( makeC( 0.3, 0.1, -0.2, 0.05, -0.03, 0.04 ) );    // larger, fully general
-  return Cs;
+  return {
+    makeC( 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ),         // C = I
+    makeC( 0.1, -0.03, -0.03, 0.02, 0.01, -0.01 ), // moderate, mildly triaxial
+    makeC( 0.3, 0.1, -0.2, 0.05, -0.03, 0.04 )     // larger, fully general
+  };
 }
 
 void testPotentialStressFreeAtReference()
@@ -142,7 +143,12 @@ void testPotentialStressFreeAtReference()
     BergstromBoyce m2 = makeMaterial( variant.props );
     double         psi;
     Tensor33d      dPsi_dC;
-    std::tie( psi, dPsi_dC ) = m2.hyperelasticPotential< double >( C, variant.props[0], 50.0, 5.0, 0.3, 1000.0 );
+    std::tie( psi, dPsi_dC ) = m2.hyperelasticPotential< double >( C,
+                                                                   static_cast< int >( variant.props[0] ),
+                                                                   50.0,
+                                                                   5.0,
+                                                                   0.3,
+                                                                   1000.0 );
     throwExceptionOnFailure( checkIfEqual( dPsi_dC, Tensor33d( 0.0 ), 1e-10 ),
                              "P-1 [" + variant.name + "]: potential is not stress-free at C=I" );
   }
@@ -350,6 +356,7 @@ void testZeroFlowDegeneracy( const PropsVariant& variant )
   mat.initializeYourself( sv.data(), static_cast< int >( sv.size() ) );
 
   std::vector< Tensor33d > Fhistory;
+  Fhistory.reserve( 8 );
   for ( int i = 1; i <= 5; ++i ) {
     Tensor33d F = Spatial3D::I;
     F( 0, 0 ) += 0.02 * i;
@@ -725,6 +732,7 @@ void testNetworkCEquivalenceToNetworkB()
 
   // Apply a series of deformation steps with tension + shear + compaction
   std::vector< Tensor33d > Fsteps;
+  Fsteps.reserve( 5 );
   for ( int i = 1; i <= 5; ++i ) {
     Tensor33d F = Spatial3D::I;
     F( 0, 0 ) += 0.03 * i;
