@@ -61,11 +61,6 @@ namespace Marmot::Materials {
     using namespace Math::Tensors;
     using RankineSoftening::YieldSurfFlagArr;
 
-    // vectors and matrices restricted to the (at most three) active yield surfaces
-    using VectorA  = Matrix< double, Dynamic, 1, 0, 3, 1 >;
-    using MatrixA3 = Matrix< double, Dynamic, 3, 0, 3, 3 >;
-    using MatrixAA = Matrix< double, Dynamic, Dynamic, 0, 3, 3 >;
-
     // elasticity parameters
     const double& E  = this->materialProperties[0];
     const double& nu = this->materialProperties[1];
@@ -131,31 +126,26 @@ namespace Marmot::Materials {
 
     // backward Euler return mapping in principal space for a given set of active yield surfaces
     auto returnMappingAttempt = [&]( const YieldSurfFlagArr& active ) -> bool {
-      const int nActive = active.count();
+      // the system is solved for all three surfaces; inactive surfaces keep dLambda = 0 by identity rows
+      const Math::Matrix3d activeMask = active.cast< double >().matrix().asDiagonal();
+      const Math::Matrix3d inactiveId = Math::Matrix3d::Identity() - activeMask;
 
-      // selection of the active principal directions
-      MatrixA3 P = MatrixA3::Zero( nActive, 3 );
-      for ( int i = 0, k = 0; i < 3; i++ )
-        if ( active( i ) )
-          P( k++, i ) = 1.;
+      Math::Vector3d dLambda = Math::Vector3d::Zero();
 
-      const MatrixA3 CpA       = P * Cp;
-      const MatrixAA CpAA      = CpA * P.transpose();
-      const VectorA  sigTrialA = P * sigTrial;
-
-      VectorA dLambda = VectorA::Zero( nActive );
-
-      auto residual = [&]() -> VectorA {
-        return sigTrialA - CpAA * dLambda - VectorA::Constant( nActive, hardening.fy( kappa + dLambda.sum() ) );
+      auto residual = [&]() -> Math::Vector3d {
+        return activeMask *
+               ( sigTrial - Cp * dLambda - Math::Vector3d::Constant( hardening.fy( kappa + dLambda.sum() ) ) );
       };
 
       // negative Jacobian of the residual wrt dLambda
-      auto jacobian = [&]() -> MatrixAA {
-        return CpAA + hardening.dfy_dKappa( kappa + dLambda.sum() ) * MatrixAA::Ones( nActive, nActive );
+      auto jacobian = [&]() -> Math::Matrix3d {
+        return activeMask * ( Cp + hardening.dfy_dKappa( kappa + dLambda.sum() ) * Math::Matrix3d::Ones() ) *
+                 activeMask +
+               inactiveId;
       };
 
-      VectorA R       = residual();
-      int     counter = 0;
+      Math::Vector3d R       = residual();
+      int            counter = 0;
 
       while ( R.norm() > innerNewtonTol * stressScale ) {
         if ( counter == nMaxInnerNewtonCycles )
@@ -175,7 +165,7 @@ namespace Marmot::Materials {
         return false;
 
       dKappa = dLambda.sum();
-      sig    = sigTrial - CpA.transpose() * dLambda;
+      sig    = sigTrial - Cp * dLambda;
 
       if ( ( sig.array() - hardening.fy( kappa + dKappa ) > yieldSurfaceResultTol * stressScale ).any() )
         return false;
@@ -185,7 +175,7 @@ namespace Marmot::Materials {
         return false;
 
       // algorithmic tangent in principal space
-      D = Math::Matrix3d::Identity() - CpA.transpose() * lu.solve( P );
+      D = Math::Matrix3d::Identity() - Cp * activeMask * lu.solve( activeMask );
 
       return true;
     };
