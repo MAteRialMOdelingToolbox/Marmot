@@ -154,11 +154,11 @@ namespace {
 /// equation gives K = kappaD), the model reproduces RankineDamagePlasticity for any m, including the total tangent.
 void testLocalLimit()
 {
-  const RankineDamagePlasticity local( localProperties.data(), localProperties.size(), 1 );
+  const RankineDamagePlasticity local( localProperties.data(), static_cast< int >( localProperties.size() ), 1 );
 
   for ( const double m : { 0., 0.5, 1., 2. } ) {
     const auto     props = propertiesWith( m );
-    const Material material( props.data(), props.size(), 1 );
+    const Material material( props.data(), static_cast< int >( props.size() ), 1 );
 
     for ( const auto& dE : increments ) {
       MaterialPointState state;
@@ -194,7 +194,7 @@ void testLocalLimit()
 
   // m = 0: purely local damage for any nonlocal field, no coupling
   const auto     props = propertiesWith( 0. );
-  const Material material( props.data(), props.size(), 1 );
+  const Material material( props.data(), static_cast< int >( props.size() ), 1 );
   const auto     rl = updateLocal( local, Math::Vector6d::Zero(), Eigen::Vector3d::Zero(), increments[0] * 5 );
   const auto     r  = update( material, MaterialPointState(), increments[0] * 5, 123. );
   throwExceptionOnFailure( checkIfEqual< double >( r.state.stress, rl.stress, 1e-12 ) && r.tan.dStressddK.isZero(),
@@ -206,7 +206,7 @@ void testUniaxialStrain()
 {
   for ( const double m : { 1., 2. } ) {
     const auto     props = propertiesWith( m );
-    const Material material( props.data(), props.size(), 1 );
+    const Material material( props.data(), static_cast< int >( props.size() ), 1 );
 
     const double eps = 4e-4;
     const double K   = 2e-4;
@@ -231,7 +231,7 @@ void testTangents()
 {
   for ( const double m : { 1., 2. } ) {
     const auto     props = propertiesWith( m );
-    const Material material( props.data(), props.size(), 1 );
+    const Material material( props.data(), static_cast< int >( props.size() ), 1 );
 
     for ( const auto& dE : increments ) {
       MaterialPointState state;
@@ -277,7 +277,7 @@ void testTangents()
 void testZeroStrainIncrement()
 {
   const auto     props = propertiesWith( 1. );
-  const Material material( props.data(), props.size(), 1 );
+  const Material material( props.data(), static_cast< int >( props.size() ), 1 );
   // plastic loading, then elastic unloading of the effective stress, so that the tangent is smooth at dE = 0
   auto state = update( material, MaterialPointState(), increments[0] * 3, 1e-4 ).state;
   state      = update( material, state, -0.1 * increments[0], 1e-4 ).state;
@@ -297,7 +297,7 @@ void testPropertiesAndFactory()
   std::unique_ptr< MaterialGradientEnhancedHypoElastic< 1 > > material(
     Registry::MaterialGradientEnhancedHypoElasticFactory< 1 >::createMaterial( "RANKINEGRADIENTDAMAGEPLASTICITY",
                                                                                props.data(),
-                                                                               props.size(),
+                                                                               static_cast< int >( props.size() ),
                                                                                1 ) );
   throwExceptionOnFailure( material->getNumberOfRequiredStateVars() == 5, "factory: wrong number of state variables" );
   throwExceptionOnFailure( material->getDensity( nullptr ) == props[6], "factory: wrong density" );
@@ -309,11 +309,13 @@ void testPropertiesAndFactory()
 
   // invalid properties
   for ( const auto& p : { std::vector< double >{ E, nu, ft, epsilonF, l } } )
-    throwExceptionOnFailure( throws< std::runtime_error >( [&] { Material( p.data(), p.size(), 1 ); } ),
+    throwExceptionOnFailure( throws< std::runtime_error >(
+                               [&] { Material( p.data(), static_cast< int >( p.size() ), 1 ); } ),
                              "properties: missing properties not detected" );
   for ( const auto& p :
         { std::vector< double >{ E, nu, ft, 0., l, 1. }, std::vector< double >{ E, nu, ft, epsilonF, -1., 1. } } )
-    throwExceptionOnFailure( throws< std::invalid_argument >( [&] { Material( p.data(), p.size(), 1 ); } ),
+    throwExceptionOnFailure( throws< std::invalid_argument >(
+                               [&] { Material( p.data(), static_cast< int >( p.size() ), 1 ); } ),
                              "properties: nonpositive epsilonF or negative nonlocal length not detected" );
   throwExceptionOnFailure( throws< std::runtime_error >( [&] { withoutOptional.getDensity( nullptr ); } ),
                            "properties: missing density not detected" );
@@ -360,10 +362,11 @@ void checkElementStiffness( double m )
 
   const auto props = propertiesWith( m );
   element.assignNodeCoordinates( coordinates.data() );
-  element.assignProperty(
-    Discretizations::MaterialSection( "RANKINEGRADIENTDAMAGEPLASTICITY", props.data(), props.size() ) );
+  element.assignProperty( Discretizations::MaterialSection( "RANKINEGRADIENTDAMAGEPLASTICITY",
+                                                            props.data(),
+                                                            static_cast< int >( props.size() ) ) );
   std::vector< double > stateVars( element.getNumberOfRequiredStateVars(), 0. );
-  element.assignStateVars( stateVars.data(), stateVars.size() );
+  element.assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
   element.initializeYourself();
 
   constexpr int   n = Element::sizeLoadVector, nU = Element::sizeDoFU;
@@ -425,7 +428,7 @@ void testElementStiffness()
 void testCompleteDamageThrows()
 {
   const auto     props = propertiesWith( 1. );
-  const Material material( props.data(), props.size(), 1 );
+  const Material material( props.data(), static_cast< int >( props.size() ), 1 );
   bool           threw = false;
   try {
     update( material, MaterialPointState(), increments[0], 1e6 );
@@ -449,7 +452,7 @@ void testCompleteDamageThrows()
 void testDivergedIterateRequestsCutback()
 {
   const auto     props = propertiesWith( 1. );
-  const Material material( props.data(), props.size(), 1 );
+  const Material material( props.data(), static_cast< int >( props.size() ), 1 );
 
   const Math::Vector6d dStrainDiverged = ( Math::Vector6d() << -2.1304181664190551e+287,
                                            -1.0379772584363431e+287,

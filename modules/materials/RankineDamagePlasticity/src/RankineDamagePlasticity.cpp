@@ -37,7 +37,7 @@ namespace Marmot::Materials {
                                         0.,
                                         0. };
       }() ),
-      effectiveMaterial( effectiveProperties.data(), effectiveProperties.size(), materialLabel )
+      effectiveMaterial( effectiveProperties.data(), static_cast< int >( effectiveProperties.size() ), materialLabel )
   {
     stateLayout.add( "kappaD", 1 );
     stateLayout.add( "acYield", 1 );

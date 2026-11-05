@@ -136,7 +136,7 @@ void testUniaxialStress()
   std::string matName = "RANKINEDAMAGEPLASTICITY";
   auto        solver  = Materials::MaterialPointSolverHypoElastic( matName,
                                                            properties.data(),
-                                                           properties.size(),
+                                                           static_cast< int >( properties.size() ),
                                                            MaterialPointSolverHypoElastic::SolverOptions() );
 
   // loading far into the softening regime, unloading, reloading
@@ -175,7 +175,7 @@ void testUniaxialStress()
   // the unloading tangent is the damaged elastic stiffness
   const MaterialPointState      state{ .stress    = solver.getHistory().back().stress,
                                        .stateVars = solver.getHistory().back().stateVars };
-  const RankineDamagePlasticity material( properties.data(), properties.size(), 1 );
+  const RankineDamagePlasticity material( properties.data(), static_cast< int >( properties.size() ), 1 );
   const auto [_, tangent, dPsi, dD] = update( material,
                                               state,
                                               ( Math::Vector6d() << -1e-5, 0, 0, 0, 0, 0 ).finished() );
@@ -186,7 +186,7 @@ void testUniaxialStress()
 
 void testUniaxialStrain()
 {
-  const RankineDamagePlasticity material( properties.data(), properties.size(), 1 );
+  const RankineDamagePlasticity material( properties.data(), static_cast< int >( properties.size() ), 1 );
 
   // single plastic increment from the virgin state: the effective stress is the perfectly plastic solution
   const double         eps          = 4e-4;
@@ -212,7 +212,9 @@ void testUniaxialStrain()
 
 void testNoDamageLimit()
 {
-  const RankineDamagePlasticity    material( noDamageProperties.data(), noDamageProperties.size(), 1 );
+  const RankineDamagePlasticity    material( noDamageProperties.data(),
+                                          static_cast< int >( noDamageProperties.size() ),
+                                          1 );
   const RankineSofteningPlasticity reference( perfectlyPlasticProperties.data(), 6, 1 );
 
   const std::vector< Math::Vector6d > increments =
@@ -247,7 +249,7 @@ void testNoDamageLimit()
 
 void testTangentSingleAndMultiSurface()
 {
-  const RankineDamagePlasticity material( properties.data(), properties.size(), 1 );
+  const RankineDamagePlasticity material( properties.data(), static_cast< int >( properties.size() ), 1 );
 
   // one (uniaxial), two (biaxial) and three (isotropic, apex) active surfaces, continued over several increments
   for ( const auto& dE : { ( Math::Vector6d() << 1e-4, 0, 0, 0, 0, 0 ).finished(),
@@ -272,7 +274,7 @@ void testTangentSingleAndMultiSurface()
 
 void testTangentGeneralLoadingPath()
 {
-  const RankineDamagePlasticity material( properties.data(), properties.size(), 1 );
+  const RankineDamagePlasticity material( properties.data(), static_cast< int >( properties.size() ), 1 );
 
   // rotated, multiaxial loading with shear, followed by unloading and reloading in a different direction
   const Math::Vector6d dE         = ( Math::Vector6d() << 4e-5, 2e-5, -1e-5, 3e-5, -2e-5, 1e-5 ).finished();
@@ -301,7 +303,7 @@ void testTangentGeneralLoadingPath()
 
 void testEnergyBalance()
 {
-  const RankineDamagePlasticity material( properties.data(), properties.size(), 1 );
+  const RankineDamagePlasticity material( properties.data(), static_cast< int >( properties.size() ), 1 );
 
   // uniaxial strain from first yield: the effective stress is constant, so the backward Euler update satisfies the
   // energy balance sigma_n+1 : dE = dPsi + dDissipation exactly
@@ -331,7 +333,7 @@ void testCoordinateInvariance()
   std::string matName = "RANKINEDAMAGEPLASTICITY";
   auto        solver  = Materials::MaterialPointSolverHypoElastic( matName,
                                                            properties.data(),
-                                                           properties.size(),
+                                                           static_cast< int >( properties.size() ),
                                                            MaterialPointSolverHypoElastic::SolverOptions() );
 
   MaterialPointSolverHypoElastic::Step step;
@@ -351,7 +353,7 @@ void testCoordinateInvariance()
 void testDivergedIterateRequestsCutback()
 {
   const std::vector< double >   props = { 210000., 0.3, 693., 3.3 };
-  const RankineDamagePlasticity material( props.data(), props.size(), 1 );
+  const RankineDamagePlasticity material( props.data(), static_cast< int >( props.size() ), 1 );
 
   struct Case {
     MaterialPointState state;
@@ -400,15 +402,16 @@ void testPropertiesAndZeroIncrement()
   throwExceptionOnFailure( throws< std::runtime_error >( [] { RankineDamagePlasticity( properties.data(), 3, 1 ); } ),
                            "properties: missing properties not detected" );
   const std::vector< double > noSoftening = { E, nu, ft, 0. };
-  throwExceptionOnFailure( throws< std::invalid_argument >(
-                             [&] { RankineDamagePlasticity( noSoftening.data(), noSoftening.size(), 1 ); } ),
+  throwExceptionOnFailure( throws< std::invalid_argument >( [&] {
+                             RankineDamagePlasticity( noSoftening.data(), static_cast< int >( noSoftening.size() ), 1 );
+                           } ),
                            "properties: nonpositive epsilonF not detected" );
 
   const RankineDamagePlasticity material( properties.data(), 4, 1 );
   throwExceptionOnFailure( throws< std::runtime_error >( [&] { material.getDensity( nullptr ); } ),
                            "properties: missing density not detected" );
   const std::vector< double >   withDensity = { E, nu, ft, epsilonF, 2.4e-9 };
-  const RankineDamagePlasticity materialWithDensity( withDensity.data(), withDensity.size(), 1 );
+  const RankineDamagePlasticity materialWithDensity( withDensity.data(), static_cast< int >( withDensity.size() ), 1 );
   throwExceptionOnFailure( materialWithDensity.getDensity( nullptr ) == 2.4e-9, "properties: wrong density" );
 
   // a zero increment from a damaged state returns the damaged elastic stiffness and leaves the state unchanged

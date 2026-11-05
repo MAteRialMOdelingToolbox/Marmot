@@ -179,7 +179,7 @@ void testBiaxialTension()
   std::string matName = "RANKINESOFTENINGPLASTICITY";
   auto        solver  = Materials::MaterialPointSolverHypoElastic( matName,
                                                            linearSofteningProperties.data(),
-                                                           linearSofteningProperties.size(),
+                                                           static_cast< int >( linearSofteningProperties.size() ),
                                                            MaterialPointSolverHypoElastic::SolverOptions() );
 
   const double eps = 2e-4;
@@ -337,7 +337,7 @@ void testUniaxialStress()
   std::string matName = "RANKINESOFTENINGPLASTICITY";
   auto        solver  = Materials::MaterialPointSolverHypoElastic( matName,
                                                            linearSofteningProperties.data(),
-                                                           linearSofteningProperties.size(),
+                                                           static_cast< int >( linearSofteningProperties.size() ),
                                                            MaterialPointSolverHypoElastic::SolverOptions() );
 
   const double eps = 2e-4;
@@ -364,7 +364,7 @@ void testCoordinateInvariance()
   std::string matName = "RANKINESOFTENINGPLASTICITY";
   auto        solver  = Materials::MaterialPointSolverHypoElastic( matName,
                                                            expSofteningProperties.data(),
-                                                           expSofteningProperties.size(),
+                                                           static_cast< int >( expSofteningProperties.size() ),
                                                            MaterialPointSolverHypoElastic::SolverOptions() );
 
   MaterialPointSolverHypoElastic::Step step;
@@ -382,7 +382,9 @@ void testCoordinateInvariance()
 /// energy: the material must request a cutback instead of returning non-finite results.
 void testDivergedIterateRequestsCutback()
 {
-  const RankineSofteningPlasticity material( perfectlyPlasticProperties.data(), perfectlyPlasticProperties.size(), 1 );
+  const RankineSofteningPlasticity material( perfectlyPlasticProperties.data(),
+                                             static_cast< int >( perfectlyPlasticProperties.size() ),
+                                             1 );
   const Math::Vector6d             dStrainDiverged = ( Math::Vector6d() << -2.1304181664190551e+287,
                                            -1.0379772584363431e+287,
                                            1.1922728518060270e+045,
@@ -414,7 +416,9 @@ void testPropertiesAndZeroIncrement()
                            "properties: missing density not detected" );
   std::vector< double > withDensity = linearSofteningProperties;
   withDensity.push_back( 2.4e-9 );
-  const RankineSofteningPlasticity materialWithDensity( withDensity.data(), withDensity.size(), 1 );
+  const RankineSofteningPlasticity materialWithDensity( withDensity.data(),
+                                                        static_cast< int >( withDensity.size() ),
+                                                        1 );
   throwExceptionOnFailure( materialWithDensity.getDensity( nullptr ) == 2.4e-9, "properties: wrong density" );
 
   // a zero increment returns the elastic stiffness and leaves the state unchanged
