@@ -110,6 +110,12 @@ All notable changes to Marmot are documented in this file. The format follows
 - **Results:** `newmarkBetaIntegration` with `beta = 0` (no time integration, a quasi-static analysis) sets the velocity
   and the acceleration to zero: a quasi-static step after a dynamic one leaves the particles at rest. It used to keep
   the velocity, advanced once by `dT (1 - gamma) a_n`. Analyses that are quasi-static from the start are unchanged.
+- **Results:** precision of the 3-point Gauss rules. The abscissa sqrt(3/5) was tabulated 4 ulp off and the 3x3x3
+  weights up to 12 ulp off (their sum missed 8 by 7e-15); both are now correctly rounded, the weights as exact fractions
+  over 729. The abscissas are no longer public (`Quadrature::gp2`, `Quadrature::gp3`); like all rule data they live in
+  `quadratureRules()`. This changes the last digits (about 1e-15 relative) of all elements and faces that use the
+  3-point, 3x3 or 3x3x3 rule: the full-integration Quad8 and Hexa20 elements, pressure on Quad8 and Hexa20 faces, and
+  the consistent mass of Quad8 and Hexa20.
 
 ## [v26.11] - 2026-11-02
 

@@ -328,8 +328,7 @@ void testEveryRuleOfTheCatalogueIntegratesItsDegreeExactly()
           value *= std::pow( qp.xi( i ), e[i] );
         integral += value;
       }
-      // the 3-point Gauss abscissa and the 3x3x3 weights are tabulated to about 15 digits
-      throwExceptionOnFailure( checkIfEqual( integral, exactIntegralOfMonomial( rule.domain, e ), 1e-13 ),
+      throwExceptionOnFailure( checkIfEqual( integral, exactIntegralOfMonomial( rule.domain, e ), 1e-14 ),
                                "A rule of degree " + std::to_string( rule.degree ) + " with " +
                                  std::to_string( rule.points.size() ) +
                                  " points does not integrate a monomial of its polynomial space exactly." );
