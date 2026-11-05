@@ -18,18 +18,18 @@ using namespace Materials;
 
 namespace {
 
-  const double E        = 30000.;
-  const double nu       = 0.2;
-  const double ft       = 3.;
-  const double epsilonF = 5e-4;
-  const double l        = 2.;
-  const double G        = E / ( 2. * ( 1. + nu ) );
-  const double lambda   = E * nu / ( ( 1. + nu ) * ( 1. - 2. * nu ) );
+  const double E              = 30000.;
+  const double nu             = 0.2;
+  const double ft             = 3.;
+  const double epsilonF       = 5e-4;
+  const double nonlocalLength = 2.;
+  const double G              = E / ( 2. * ( 1. + nu ) );
+  const double lambda         = E * nu / ( ( 1. + nu ) * ( 1. - 2. * nu ) );
 
   // E, nu, ft, epsilonF, nonlocal length, m
   std::vector< double > propertiesWith( double m )
   {
-    return { E, nu, ft, epsilonF, l, m, 7.85e-9, 1e-3 };
+    return { E, nu, ft, epsilonF, nonlocalLength, m, 7.85e-9, 1e-3 };
   }
   std::vector< double > localProperties = { E, nu, ft, epsilonF };
 
@@ -186,7 +186,7 @@ void testLocalLimit()
         throwExceptionOnFailure( checkIfEqual( r.dPsi, rl.dPsi, 1e-10 ) &&
                                    checkIfEqual( r.dDissipation, rl.dDissipation, 1e-10 ),
                                  Utilities::MakeString() << "local limit (m = " << m << "): energies differ" );
-        throwExceptionOnFailure( checkIfEqual( r.c, l * l, 1e-15 ), "local limit: c != l^2" );
+        throwExceptionOnFailure( checkIfEqual( r.c, nonlocalLength * nonlocalLength, 1e-15 ), "local limit: c != l^2" );
       }
       throwExceptionOnFailure( state.omega() > 0.1, "local limit: no damage occurred" );
     }
@@ -308,12 +308,12 @@ void testPropertiesAndFactory()
                            "factory: nonlocal viscosity default is not zero" );
 
   // invalid properties
-  for ( const auto& p : { std::vector< double >{ E, nu, ft, epsilonF, l } } )
+  for ( const auto& p : { std::vector< double >{ E, nu, ft, epsilonF, nonlocalLength } } )
     throwExceptionOnFailure( throws< std::runtime_error >(
                                [&] { Material( p.data(), static_cast< int >( p.size() ), 1 ); } ),
                              "properties: missing properties not detected" );
-  for ( const auto& p :
-        { std::vector< double >{ E, nu, ft, 0., l, 1. }, std::vector< double >{ E, nu, ft, epsilonF, -1., 1. } } )
+  for ( const auto& p : { std::vector< double >{ E, nu, ft, 0., nonlocalLength, 1. },
+                          std::vector< double >{ E, nu, ft, epsilonF, -1., 1. } } )
     throwExceptionOnFailure( throws< std::invalid_argument >(
                                [&] { Material( p.data(), static_cast< int >( p.size() ), 1 ); } ),
                              "properties: nonpositive epsilonF or negative nonlocal length not detected" );
