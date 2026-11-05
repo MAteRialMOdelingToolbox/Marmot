@@ -5,7 +5,7 @@
 #include <complex>
 
 using namespace Marmot::Testing;
-using namespace Marmot::FastorStandardTensors;
+using namespace Marmot::Math::Tensors::FastorTensors;
 
 std::tuple< Tensor33d, Tensor33d, double, double, double, double > computationParameters()
 {
@@ -42,7 +42,7 @@ std::tuple< Tensor33d, Tensor33d, double, double, double, double > computationPa
 
 auto testPenceGouPotentialA()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
   // get computation parameters
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
@@ -52,12 +52,13 @@ auto testPenceGouPotentialA()
   double expected = 5098.519486106722;
   double res      = PenceGouPotentialA( C, K, G );
   throwExceptionOnFailure( checkIfEqual( res, expected, 1e-15 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " energy density A function failed." );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " energy density A function failed." );
 }
 
 auto testPenceGouPotentialB()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
   // get computation parameters
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
@@ -67,12 +68,13 @@ auto testPenceGouPotentialB()
   double expected = 2966.146377987021;
   double res      = PenceGouPotentialB( C, K, G );
   throwExceptionOnFailure( checkIfEqual( res, expected, 1e-15 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " energy density B function failed." );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " energy density B function failed." );
 }
 
 auto testPenceGouPotentialC()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
   // get computation parameters
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
@@ -82,12 +84,13 @@ auto testPenceGouPotentialC()
   double expected = 1018.0232353221228;
   double res      = PenceGouPotentialC( C, K, G );
   throwExceptionOnFailure( checkIfEqual( res, expected, 1e-15 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " energy density C function failed." );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " energy density C function failed." );
 }
 
 auto testFirstOrderDerivedB()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder;
   // get computation parameters
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
@@ -103,7 +106,8 @@ auto testFirstOrderDerivedB()
   Tensor33d                       resS       = get< 1 >( res );
   // compare energy density
   throwExceptionOnFailure( checkIfEqual( resED, expectedED, 1e-15 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " energy density B function failed." );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " energy density B function failed." );
   // constant parameters
   const double dW_dI1 = G / 2. * pow( J, -2. / 3 );
   const double dW_dJ  = K / 4. * ( J - pow( J, -3. ) ) - G * I1 / 3. * pow( J, -5. / 3 );
@@ -113,14 +117,15 @@ auto testFirstOrderDerivedB()
     for ( int j = 0; j < 3; j++ ) {
       expectedS = dW_dI1 * ( i == j ? 1 : 0 ) + dW_dJ * J / 2. * invC( i, j );
       throwExceptionOnFailure( checkIfEqual( resS( i, j ), expectedS, 1e-12 ),
-                               MakeString() << __PRETTY_FUNCTION__ << " stress computation B failed for position (" << i
-                                            << ", " << j << ")" );
+                               Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__ << " stress computation B failed for position (" << i << ", "
+                                 << j << ")" );
     }
 }
 
 auto testSecondOrderDerivedB()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::SecondOrderDerived;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::SecondOrder;
   // get computation parameters
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
@@ -137,7 +142,8 @@ auto testSecondOrderDerivedB()
   Tensor3333t< double >                                  resCSE     = get< 2 >( res );
   // compare energy density
   throwExceptionOnFailure( checkIfEqual( resED, expectedED, 1e-15 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " energy density B function failed." );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " energy density B function failed." );
   // constant parameters
   const double dW_dI1    = G / 2. * pow( J, -2. / 3 );
   const double dW_dJ     = K / 8. * ( pow( J, 2. ) - pow( J, -2. ) ) - G * I1 / 6. * pow( J, -2. / 3 );
@@ -150,31 +156,33 @@ auto testSecondOrderDerivedB()
     for ( int j = 0; j < 3; j++ ) {
       expectedS = dW_dI1 * ( i == j ? 1 : 0 ) + dW_dJ * J / 2. * invC( i, j );
       throwExceptionOnFailure( checkIfEqual( resS( i, j ), expectedS, 1e-12 ),
-                               MakeString() << __PRETTY_FUNCTION__ << " stress computation B failed for position (" << i
-                                            << ", " << j << ")" );
+                               Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__ << " stress computation B failed for position (" << i << ", "
+                                 << j << ")" );
       for ( int k = 0; k < 3; k++ )
         for ( int l = 0; l < 3; l++ ) {
           expectedCSE = ( J * J ) / 4 * d2W_dJ2 * invC( j, i ) * invC( l, k ) +
                         dW_dJ * ( J / 4. * invC( j, i ) * invC( l, k ) - J / 2. * invC( j, k ) * invC( l, i ) ) +
                         d2W_dI1dJ * J / 2. * ( invC( j, i ) * ( k == l ? 1 : 0 ) + ( i == j ? 1 : 0 ) * invC( l, k ) );
           throwExceptionOnFailure( checkIfEqual( resCSE( i, j, k, l ), expectedCSE, 1e-12 ),
-                                   MakeString() << __PRETTY_FUNCTION__ << " tangent computation B failed for position ("
-                                                << i << ", " << j << ", " << k << ", " << l << ")" );
+                                   Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << " tangent computation B failed for position (" << i
+                                     << ", " << j << ", " << k << ", " << l << ")" );
         }
     }
 }
 
-// Cross-check that the plain (energy-only) and FirstOrderDerived (energy + analytic
+// Cross-check that the plain (energy-only) and FirstOrder (energy + analytic
 // dPsi/dC) overloads of ArrudaBoyce8ChainPotential cannot drift out of sync: both
-// funnel through the same internal `detail::arrudaBoyce8ChainEnergyAndDerivative`
+// funnel through the same internal `Detail::arrudaBoyce8ChainEnergyAndDerivative`
 // helper, but this test verifies that end-to-end rather than assuming it. The
 // gradient is cross-checked against a complex-step derivative of the plain overload
 // itself (not against a hand-derived formula), so this specifically guards against
 // the two overloads' shared helper silently diverging from what the plain overload
 // actually computes.
-auto testArrudaBoycePlainMatchesFirstOrderDerived()
+auto testArrudaBoycePlainMatchesFirstOrder()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
 
   Tensor33d    C       = get< 0 >( computationParameters() );
   const double mu      = 500.0;
@@ -184,11 +192,11 @@ auto testArrudaBoycePlainMatchesFirstOrderDerived()
 
   double    psiFOD;
   Tensor33d dPsiFOD_dC;
-  std::tie( psiFOD, dPsiFOD_dC ) = FirstOrderDerived::ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
+  std::tie( psiFOD, dPsiFOD_dC ) = FirstOrder::ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
 
   throwExceptionOnFailure( checkIfEqual( psiPlain, psiFOD, 1e-14 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << " plain and FirstOrderDerived energy densities disagree." );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " plain and FirstOrder energy densities disagree." );
 
   // complex-step derivative of the plain overload, entry by entry (C treated as a
   // general, not-necessarily-symmetric matrix argument, matching how dPsi/dC is
@@ -197,16 +205,18 @@ auto testArrudaBoycePlainMatchesFirstOrderDerived()
   Tensor33d    dPsiCSDA( 0.0 );
   for ( int i = 0; i < 3; i++ )
     for ( int j = 0; j < 3; j++ ) {
-      Tensor33t< std::complex< double > > Cc = Marmot::fastorTensorFromDoubleTensor< std::complex< double > >( C );
+      Tensor33t< std::complex< double > >
+        Cc = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< std::complex< double > >( C );
       Cc( i, j ) += std::complex< double >( 0.0, h );
       std::complex< double > psiC = ArrudaBoyce8ChainPotential< std::complex< double > >( Cc, mu, lambdaL );
       dPsiCSDA( i, j )            = psiC.imag() / h;
     }
 
   throwExceptionOnFailure( checkIfEqual( dPsiFOD_dC, dPsiCSDA, 1e-9 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << " FirstOrderDerived gradient disagrees with a complex-step derivative "
-                                           "of the plain overload." );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << " FirstOrder gradient disagrees with a complex-step derivative "
+                                "of the plain overload." );
 }
 
 // Cross-check that Arruda-Boyce returns exactly zero energy and zero derivative at
@@ -214,40 +224,41 @@ auto testArrudaBoycePlainMatchesFirstOrderDerived()
 // w0 = 1 - 1/lambdaL^2 is very small and an unscaled floor would clamp the reference state).
 auto testArrudaBoyceZeroEnergyAtReferenceForNearOneLockingStretch()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
-  const Tensor33d C  = Marmot::fastorTensorFromDoubleTensor< double >( Spatial3D::I );
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
+  const Tensor33d C  = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< double >( Spatial3D::I );
   const double    mu = 500.0;
 
   for ( double lambdaL : { 1.00001, 1.0001, 1.001, 1.005, 1.01, 2.5 } ) {
     const double psiPlain = ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
     double       psiFOD;
     Tensor33d    dPsiFOD_dC;
-    std::tie( psiFOD, dPsiFOD_dC ) = FirstOrderDerived::ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
+    std::tie( psiFOD, dPsiFOD_dC ) = FirstOrder::ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
 
     throwExceptionOnFailure( std::abs( psiPlain ) < 1e-12,
-                             MakeString() << __PRETTY_FUNCTION__
-                                          << " plain Arruda-Boyce energy non-zero at C=I for lambdaL=" << lambdaL );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__
+                               << " plain Arruda-Boyce energy non-zero at C=I for lambdaL=" << lambdaL );
     throwExceptionOnFailure( std::abs( psiFOD ) < 1e-12,
-                             MakeString()
+                             Marmot::Utilities::MakeString()
                                << __PRETTY_FUNCTION__
-                               << " FirstOrderDerived Arruda-Boyce energy non-zero at C=I for lambdaL=" << lambdaL );
+                               << " FirstOrder Arruda-Boyce energy non-zero at C=I for lambdaL=" << lambdaL );
     throwExceptionOnFailure( checkIfEqual( dPsiFOD_dC, Tensor33d( 0.0 ), 1e-10 ),
-                             MakeString()
+                             Marmot::Utilities::MakeString()
                                << __PRETTY_FUNCTION__
-                               << " FirstOrderDerived Arruda-Boyce gradient non-zero at C=I for lambdaL=" << lambdaL );
+                               << " FirstOrder Arruda-Boyce gradient non-zero at C=I for lambdaL=" << lambdaL );
   }
 }
 
-// Generic plain-vs-FirstOrderDerived cross-check, same methodology as
-// testArrudaBoycePlainMatchesFirstOrderDerived: the FirstOrderDerived gradient
+// Generic plain-vs-FirstOrder cross-check, same methodology as
+// testArrudaBoycePlainMatchesFirstOrder: the FirstOrder gradient
 // is checked against a complex-step derivative of the plain overload itself,
 // guarding against the two overloads' formulas silently drifting apart.
 template < typename PlainFn, typename FirstOrderFn, typename... Args >
-void checkPlainMatchesFirstOrderDerived( const char*      testName,
-                                         PlainFn          plainFn,
-                                         FirstOrderFn     firstOrderFn,
-                                         const Tensor33d& C,
-                                         Args... args )
+void checkPlainMatchesFirstOrder( const char*      testName,
+                                  PlainFn          plainFn,
+                                  FirstOrderFn     firstOrderFn,
+                                  const Tensor33d& C,
+                                  Args... args )
 {
   const double psiPlain = plainFn( C, args... );
 
@@ -256,73 +267,74 @@ void checkPlainMatchesFirstOrderDerived( const char*      testName,
   std::tie( psiFOD, dPsiFOD_dC ) = firstOrderFn( C, args... );
 
   throwExceptionOnFailure( checkIfEqual( psiPlain, psiFOD, 1e-14 ),
-                           MakeString() << testName << " plain and FirstOrderDerived energy densities disagree." );
+                           Marmot::Utilities::MakeString()
+                             << testName << " plain and FirstOrder energy densities disagree." );
 
   const double h = 1e-20;
   Tensor33d    dPsiCSDA( 0.0 );
   for ( int i = 0; i < 3; i++ )
     for ( int j = 0; j < 3; j++ ) {
-      Tensor33t< std::complex< double > > Cc = Marmot::fastorTensorFromDoubleTensor< std::complex< double > >( C );
+      Tensor33t< std::complex< double > >
+        Cc = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< std::complex< double > >( C );
       Cc( i, j ) += std::complex< double >( 0.0, h );
       std::complex< double > psiC = plainFn( Cc, args... );
       dPsiCSDA( i, j )            = psiC.imag() / h;
     }
 
   throwExceptionOnFailure( checkIfEqual( dPsiFOD_dC, dPsiCSDA, 1e-9 ),
-                           MakeString() << testName
-                                        << " FirstOrderDerived gradient disagrees with a complex-step derivative "
-                                           "of the plain overload." );
+                           Marmot::Utilities::MakeString()
+                             << testName
+                             << " FirstOrder gradient disagrees with a complex-step derivative "
+                                "of the plain overload." );
 }
 
-auto testNeoHookePlainMatchesFirstOrderDerived()
+auto testNeoHookePlainMatchesFirstOrder()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
   Tensor33d C = get< 0 >( computationParameters() );
-  checkPlainMatchesFirstOrderDerived(
+  checkPlainMatchesFirstOrder(
     __PRETTY_FUNCTION__,
     []( const auto& C, double mu ) { return NeoHookePotential( C, mu ); },
-    []( const auto& C, double mu ) { return FirstOrderDerived::NeoHookePotential( C, mu ); },
+    []( const auto& C, double mu ) { return FirstOrder::NeoHookePotential( C, mu ); },
     C,
     750.0 );
 }
 
-auto testYeohPlainMatchesFirstOrderDerived()
+auto testYeohPlainMatchesFirstOrder()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
   Tensor33d C = get< 0 >( computationParameters() );
-  checkPlainMatchesFirstOrderDerived(
+  checkPlainMatchesFirstOrder(
     __PRETTY_FUNCTION__,
     []( const auto& C, double c10, double c20, double c30 ) { return YeohPotential( C, c10, c20, c30 ); },
-    []( const auto& C, double c10, double c20, double c30 ) {
-      return FirstOrderDerived::YeohPotential( C, c10, c20, c30 );
-    },
+    []( const auto& C, double c10, double c20, double c30 ) { return FirstOrder::YeohPotential( C, c10, c20, c30 ); },
     C,
     500.0,
     50.0,
     5.0 );
 }
 
-auto testMooneyRivlinPlainMatchesFirstOrderDerived()
+auto testMooneyRivlinPlainMatchesFirstOrder()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
   Tensor33d C = get< 0 >( computationParameters() );
-  checkPlainMatchesFirstOrderDerived(
+  checkPlainMatchesFirstOrder(
     __PRETTY_FUNCTION__,
     []( const auto& C, double c10, double c01 ) { return MooneyRivlinPotential( C, c10, c01 ); },
-    []( const auto& C, double c10, double c01 ) { return FirstOrderDerived::MooneyRivlinPotential( C, c10, c01 ); },
+    []( const auto& C, double c10, double c01 ) { return FirstOrder::MooneyRivlinPotential( C, c10, c01 ); },
     C,
     400.0,
     100.0 );
 }
 
-auto testVolumetricPenaltyPlainMatchesFirstOrderDerived()
+auto testVolumetricPenaltyPlainMatchesFirstOrder()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
   Tensor33d C = get< 0 >( computationParameters() );
-  checkPlainMatchesFirstOrderDerived(
+  checkPlainMatchesFirstOrder(
     __PRETTY_FUNCTION__,
     []( const auto& C, double kappa ) { return VolumetricPenaltyPotential( C, kappa ); },
-    []( const auto& C, double kappa ) { return FirstOrderDerived::VolumetricPenaltyPotential( C, kappa ); },
+    []( const auto& C, double kappa ) { return FirstOrder::VolumetricPenaltyPotential( C, kappa ); },
     C,
     10000.0 );
 }
@@ -332,7 +344,7 @@ auto testVolumetricPenaltyPlainMatchesFirstOrderDerived()
 // the same isochoric invariant Ibar1 (no linear-shift terms to cause drift).
 auto testYeohMooneyRivlinReduceToNeoHooke()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions;
   Tensor33d    C  = get< 0 >( computationParameters() );
   const double mu = 750.0;
 
@@ -341,14 +353,16 @@ auto testYeohMooneyRivlinReduceToNeoHooke()
   const double psiMR       = MooneyRivlinPotential( C, mu / 2., 0.0 );
 
   throwExceptionOnFailure( checkIfEqual( psiYeoh, psiNeoHooke, 1e-13 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " Yeoh does not reduce to NeoHooke." );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " Yeoh does not reduce to NeoHooke." );
   throwExceptionOnFailure( checkIfEqual( psiMR, psiNeoHooke, 1e-13 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " Mooney-Rivlin does not reduce to NeoHooke." );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " Mooney-Rivlin does not reduce to NeoHooke." );
 }
 
 auto testStandardNeoHookeEnergyMatchesClosedForm()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrderDerived;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder;
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
   const double                                                       K      = get< 2 >( params );
@@ -362,12 +376,13 @@ auto testStandardNeoHookeEnergyMatchesClosedForm()
   auto [psi, dPsi_dC, d2Psi_dC2, d3Psi_dC3] = standardNeoHooke( C, K, G );
 
   throwExceptionOnFailure( checkIfEqual( psi, expected, 1e-10 ),
-                           MakeString() << __PRETTY_FUNCTION__ << " energy density does not match the closed form" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << " energy density does not match the closed form" );
 }
 
 auto testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrderDerived;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder;
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
   const double                                                       K      = get< 2 >( params );
@@ -386,8 +401,9 @@ auto testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation()
       const double psiMinus = std::get< 0 >( standardNeoHooke( Cm, K, G ) );
       const double numDeriv = ( psiPlus - psiMinus ) / ( 2. * h );
       throwExceptionOnFailure( checkIfEqual( dPsi_dC( i, j ), numDeriv, 1e-6 ),
-                               MakeString() << __PRETTY_FUNCTION__ << " dPsi_dC(" << i << "," << j
-                                            << ") does not match central-difference numerical differentiation" );
+                               Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__ << " dPsi_dC(" << i << "," << j
+                                 << ") does not match central-difference numerical differentiation" );
     }
 }
 
@@ -413,7 +429,7 @@ std::vector< Tensor33d > symmetricUnitDirections()
 
 auto testStandardNeoHookeSecondDerivativeMatchesNumericalDifferentiation()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrderDerived;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder;
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
   const double                                                       K      = get< 2 >( params );
@@ -439,16 +455,17 @@ auto testStandardNeoHookeSecondDerivativeMatchesNumericalDifferentiation()
             analyticalDirectional += d2Psi_dC2( i, j, k, l ) * dC( k, l );
 
         throwExceptionOnFailure( checkIfEqual( analyticalDirectional, numDirectional, 1e-4 ),
-                                 MakeString() << __PRETTY_FUNCTION__ << " d2Psi_dC2 contracted with a symmetric "
-                                              << "direction does not match numerical differentiation at (" << i << ","
-                                              << j << ")" );
+                                 Marmot::Utilities::MakeString()
+                                   << __PRETTY_FUNCTION__ << " d2Psi_dC2 contracted with a symmetric "
+                                   << "direction does not match numerical differentiation at (" << i << "," << j
+                                   << ")" );
       }
   }
 }
 
 auto testStandardNeoHookeThirdDerivativeMatchesNumericalDifferentiation()
 {
-  using namespace Marmot::ContinuumMechanics::EnergyDensityFunctions::ThirdOrderDerived;
+  using namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ThirdOrder;
   std::tuple< Tensor33d, Tensor33d, double, double, double, double > params = computationParameters();
   Tensor33d                                                          C      = get< 0 >( params );
   const double                                                       K      = get< 2 >( params );
@@ -485,9 +502,10 @@ auto testStandardNeoHookeThirdDerivativeMatchesNumericalDifferentiation()
                   analyticalDirectional += d3Psi_dC3( i, j, k, l, m, n ) * dCInner( k, l ) * dCOuter( m, n );
 
           throwExceptionOnFailure( checkIfEqual( analyticalDirectional, numDirectional, 1e-2 ),
-                                   MakeString() << __PRETTY_FUNCTION__ << " d3Psi_dC3 contracted with two symmetric "
-                                                << "directions does not match numerical differentiation at (" << i
-                                                << "," << j << ")" );
+                                   Marmot::Utilities::MakeString()
+                                     << __PRETTY_FUNCTION__ << " d3Psi_dC3 contracted with two symmetric "
+                                     << "directions does not match numerical differentiation at (" << i << "," << j
+                                     << ")" );
         }
   }
 }
@@ -500,12 +518,12 @@ int main()
                                testPenceGouPotentialC,
                                testFirstOrderDerivedB,
                                testSecondOrderDerivedB,
-                               testArrudaBoycePlainMatchesFirstOrderDerived,
+                               testArrudaBoycePlainMatchesFirstOrder,
                                testArrudaBoyceZeroEnergyAtReferenceForNearOneLockingStretch,
-                               testNeoHookePlainMatchesFirstOrderDerived,
-                               testYeohPlainMatchesFirstOrderDerived,
-                               testMooneyRivlinPlainMatchesFirstOrderDerived,
-                               testVolumetricPenaltyPlainMatchesFirstOrderDerived,
+                               testNeoHookePlainMatchesFirstOrder,
+                               testYeohPlainMatchesFirstOrder,
+                               testMooneyRivlinPlainMatchesFirstOrder,
+                               testVolumetricPenaltyPlainMatchesFirstOrder,
                                testYeohMooneyRivlinReduceToNeoHooke,
                                testStandardNeoHookeEnergyMatchesClosedForm,
                                testStandardNeoHookeFirstDerivativeMatchesNumericalDifferentiation,

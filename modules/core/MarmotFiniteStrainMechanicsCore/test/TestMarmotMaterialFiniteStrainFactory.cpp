@@ -6,7 +6,6 @@
 #include <vector>
 
 using namespace Marmot::Testing;
-using namespace MarmotLibrary;
 
 // ---------------------------------------------------------------------------------------------
 // createMaterial(): the success path is exercised elsewhere (e.g. CompressibleNeoHooke's own
@@ -19,7 +18,7 @@ void testCreateMaterialThrowsForUnregisteredName()
 {
   bool threw = false;
   try {
-    MarmotMaterialFiniteStrainFactory::createMaterial( "DEFINITELY_NOT_REGISTERED", nullptr, 0, 1 );
+    Marmot::Registry::MaterialFiniteStrainFactory::createMaterial( "DEFINITELY_NOT_REGISTERED", nullptr, 0, 1 );
   }
   catch ( const std::invalid_argument& ) {
     threw = true;
@@ -32,9 +31,9 @@ void testCreateMaterialThrowsForUnregisteredName()
 
 void testCreateMaterialSucceedsForRegisteredName()
 {
-  const double                                  properties[2] = { 3500., 1500. };
-  std::unique_ptr< MarmotMaterialFiniteStrain > mat(
-    MarmotMaterialFiniteStrainFactory::createMaterial( "COMPRESSIBLENEOHOOKE", properties, 2, 7 ) );
+  const double                                               properties[2] = { 3500., 1500. };
+  std::unique_ptr< Marmot::Materials::MaterialFiniteStrain > mat(
+    Marmot::Registry::MaterialFiniteStrainFactory::createMaterial( "COMPRESSIBLENEOHOOKE", properties, 2, 7 ) );
 
   throwExceptionOnFailure( mat != nullptr && mat->materialNumber == 7,
                            "createMaterial() did not return a correctly constructed instance in " +

@@ -11,4 +11,4 @@ add_marmot_test("TestMarmotDecreasingInteractions" "${CURR_TEST_SOURCE_DIR}/Test
 add_marmot_test("TestMarmotMaterialGeneralGradientEnhancedHypoElastic" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialGeneralGradientEnhancedHypoElastic.cpp")
 
 # Tests for MarmotMaterialGeneralGradientEnhancedHypoElasticFactory
-add_marmot_test("TestMarmotMaterialGeneralGradientEnhancedHypoElasticFactory" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialGeneralGradientEnhancedHypoElasticFactory.cpp")
+add_marmot_test("TestMarmotMaterialGeneralGradientEnhancedHypoElasticFactory" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialGeneralGradientEnhancedHypoElasticFactory.cpp" REQUIRES AT2PhaseField)

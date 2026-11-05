@@ -17,13 +17,13 @@ int main()
   Eigen::VectorXd residualScaleVector( 1 );
   residualScaleVector << 1.;
 
-  Marmot::NumericalAlgorithms::NewtonConvergenceChecker checker( residualScaleVector,
-                                                                 nMaxNewtonCycles,
-                                                                 nMaxNewtonCyclesAlt,
-                                                                 newtonTol,
-                                                                 newtonRTol,
-                                                                 newtonTolAlt,
-                                                                 newtonRTolAlt );
+  Marmot::Math::NewtonConvergenceChecker checker( residualScaleVector,
+                                                  nMaxNewtonCycles,
+                                                  nMaxNewtonCyclesAlt,
+                                                  newtonTol,
+                                                  newtonRTol,
+                                                  newtonTolAlt,
+                                                  newtonRTolAlt );
 
   // the "last newton increment"
   Eigen::VectorXd increment( 1 );

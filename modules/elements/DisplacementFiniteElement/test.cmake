@@ -2,4 +2,4 @@
 SET(CURR_TEST_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/test")
 
 # Tests for DisplacementFiniteElement
-add_marmot_test("TestDisplacementFiniteElement" "${CURR_TEST_SOURCE_DIR}/TestDisplacementFiniteElement.cpp")
+add_marmot_test("TestDisplacementFiniteElement" "${CURR_TEST_SOURCE_DIR}/TestDisplacementFiniteElement.cpp" REQUIRES LinearElastic)

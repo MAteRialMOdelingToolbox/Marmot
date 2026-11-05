@@ -10,13 +10,12 @@
 
 namespace Marmot::Materials {
 
-  using namespace Marmot;
   using namespace Fastor;
-  using namespace FastorIndices;
-  using namespace FastorStandardTensors;
+  using namespace Marmot::Math::Tensors::FastorIndices;
+  using namespace Marmot::Math::Tensors::FastorTensors;
 
   BergstromBoyce::BergstromBoyce( const double* materialProperties, int nMaterialProperties, int materialLabel )
-    : MarmotMaterialFiniteStrain( materialProperties, nMaterialProperties, materialLabel ),
+    : MaterialFiniteStrain( materialProperties, nMaterialProperties, materialLabel ),
       hyperelasticBase( materialProperties[0] ),
       kappaA( materialProperties[1] ),
       kappaB( materialProperties[2] ),
@@ -58,11 +57,10 @@ namespace Marmot::Materials {
                                                                               const double     c2_,
                                                                               const double     c3_ ) const
   {
-    using namespace Marmot;
     using namespace Fastor;
     using namespace Eigen;
-    using namespace FastorIndices;
-    using namespace FastorStandardTensors;
+    using namespace Marmot::Math::Tensors::FastorIndices;
+    using namespace Marmot::Math::Tensors::FastorTensors;
     using complexDouble = std::complex< double >;
 
     const Tensor33d FvOld( Fv );
@@ -83,7 +81,7 @@ namespace Marmot::Materials {
       return computeResidualVector( X_, FeTrial, dT, kappa, p1, p2, p3, c1_, c2_, c3_ );
     };
 
-    std::tie( R, dR_dX ) = NumericalAlgorithms::Differentiation::Complex::forwardDifference( evalResidual, X );
+    std::tie( R, dR_dX ) = Marmot::Math::Differentiation::Numerical::Complex::forwardDifference( evalResidual, X );
     R                    = computeResidualVector( X, FeTrial, dT, kappa, p1, p2, p3, c1_, c2_, c3_ );
 
     size_t counter = 0;
@@ -91,17 +89,18 @@ namespace Marmot::Materials {
       while ( R.norm() > 1e-12 || dX.norm() > 1e-12 ) {
 
         if ( counter > 20 )
-          throw StressUpdateFailed( "BergstromBoyce: inner newton not converged" );
+          throw Marmot::Utilities::StressUpdateFailed( "BergstromBoyce: inner newton not converged" );
 
         dX = -dR_dX.colPivHouseholderQr().solve( R );
         X += dX;
-        std::tie( R, dR_dX ) = NumericalAlgorithms::Differentiation::Complex::forwardDifference( evalResidual, X );
+        std::tie( R, dR_dX ) = Marmot::Math::Differentiation::Numerical::Complex::forwardDifference( evalResidual, X );
         R                    = computeResidualVector( X, FeTrial, dT, kappa, p1, p2, p3, c1_, c2_, c3_ );
         counter += 1;
       }
     }
     catch ( std::exception& e ) {
-      throw StressUpdateFailed( "BergstromBoyce: return mapping failed: " + std::string( e.what() ) );
+      throw Marmot::Utilities::StressUpdateFailed( "BergstromBoyce: return mapping failed: " +
+                                                   std::string( e.what() ) );
     }
 
     Tensor33d Fe( X.segment( 0, 9 ).data() );
@@ -112,10 +111,9 @@ namespace Marmot::Materials {
     Fv              = FvNew;
 
     // --- evaluation on the elastic Ce, pushed forward through Fe ---
-    using namespace ContinuumMechanics;
     Tensor33d   Ce, dPsi_dCe;
     Tensor3333d dCe_dFe;
-    std::tie( Ce, dCe_dFe ) = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( Fe );
+    std::tie( Ce, dCe_dFe ) = ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder::rightCauchyGreen( Fe );
 
     double psi;
     std::tie( psi, dPsi_dCe ) = hyperelasticPotential( Ce, hyperelasticBase, p1, p2, p3, kappa );
@@ -126,23 +124,28 @@ namespace Marmot::Materials {
       return _dPsi_dCe;
     };
     Tensor3333d
-      d2Psi_dCedCe = NumericalAlgorithms::Differentiation::Complex::TensorToTensor::forwardDifference( computeS, Ce );
+      d2Psi_dCedCe = Marmot::Math::Differentiation::Numerical::Complex::TensorToTensor::forwardDifference( computeS,
+                                                                                                           Ce );
 
     Tensor33d   PK2 = 2. * dPsi_dCe;
     Tensor3333d dTau_dPK2, dTau_dFe_partial;
     Tensor33d   tau;
-    std::tie( tau, dTau_dPK2, dTau_dFe_partial ) = StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2( PK2, Fe );
+    std::tie( tau,
+              dTau_dPK2,
+              dTau_dFe_partial ) = ContinuumMechanics::StressMeasures::FirstOrder::KirchhoffStressFromPK2( PK2, Fe );
 
     // --- implicit-function-theorem sensitivity dFe/dF ---
     MatrixXd dYdDeformation              = MatrixXd::Zero( 10, 10 );
-    dYdDeformation.block< 9, 9 >( 0, 0 ) = mM9d( Tensor3333d(
-                                                   einsum< IK, JL, to_IJKL >( Spatial3D::I,
-                                                                              transpose( Fastor::inverse( FvOld ) ) ) )
-                                                   .data() )
+    dYdDeformation.block< 9, 9 >( 0, 0 ) = mM9d(
+                                             Tensor3333d(
+                                               einsum< IK, JL, to_IJKL >( Math::Tensors::FastorTensors::Spatial3D::I,
+                                                                          transpose( Fastor::inverse( FvOld ) ) ) )
+                                               .data() )
                                              .transpose();
     MatrixXd dXdDeformation = dR_dX.colPivHouseholderQr().solve( dYdDeformation );
 
-    Tensor3333d dFe_dF = Tensor3333d( Matrix9d( dXdDeformation.block< 9, 9 >( 0, 0 ).transpose() ).data() );
+    Tensor3333d dFe_dF = Tensor3333d(
+      Marmot::Math::Matrix9d( dXdDeformation.block< 9, 9 >( 0, 0 ).transpose() ).data() );
 
     Tensor3333d dPK2_dFe = einsum< ijKL, KLMN >( 2. * d2Psi_dCedCe, dCe_dFe );
     Tensor3333d dPK2_dF  = einsum< ijKL, KLMN >( dPK2_dFe, dFe_dF );
@@ -163,20 +166,19 @@ namespace Marmot::Materials {
                                       const Deformation< 3 >&    deformation,
                                       const TimeIncrement&       timeIncrement ) const
   {
-    using namespace Marmot;
     using namespace Fastor;
     using namespace Eigen;
-    using namespace FastorIndices;
-    using namespace FastorStandardTensors;
+    using namespace Marmot::Math::Tensors::FastorIndices;
+    using namespace Marmot::Math::Tensors::FastorTensors;
     using complexDouble = std::complex< double >;
 
     const double dT = timeIncrement.dT;
 
     // --- network A: direct evaluation on total C ---
-    using namespace ContinuumMechanics;
     Tensor33d   C, dPsiA_dC;
     Tensor3333d dC_dF;
-    std::tie( C, dC_dF ) = DeformationMeasures::FirstOrderDerived::rightCauchyGreen( deformation.F );
+    std::tie( C, dC_dF ) = ContinuumMechanics::Kinematics::DeformationMeasures::FirstOrder::rightCauchyGreen(
+      deformation.F );
 
     double psiA;
     std::tie( psiA, dPsiA_dC ) = hyperelasticPotential( C, hyperelasticBase, A1, A2, A3, kappaA );
@@ -187,14 +189,17 @@ namespace Marmot::Materials {
       return _dPsi_dC;
     };
     Tensor3333d
-      d2PsiA_dCdC = NumericalAlgorithms::Differentiation::Complex::TensorToTensor::forwardDifference( computeSA, C );
+      d2PsiA_dCdC = Marmot::Math::Differentiation::Numerical::Complex::TensorToTensor::forwardDifference( computeSA,
+                                                                                                          C );
 
     Tensor33d   PK2_A = 2. * dPsiA_dC;
     Tensor3333d dTauA_dPK2, dTauA_dF_partial;
     Tensor33d   tauA;
     std::tie( tauA,
               dTauA_dPK2,
-              dTauA_dF_partial ) = StressMeasures::FirstOrderDerived::KirchhoffStressFromPK2( PK2_A, deformation.F );
+              dTauA_dF_partial ) = ContinuumMechanics::StressMeasures::FirstOrder::KirchhoffStressFromPK2( PK2_A,
+                                                                                                           deformation
+                                                                                                             .F );
 
     Tensor3333d dPK2A_dF = einsum< ijKL, KLMN >( 2. * d2PsiA_dCdC, dC_dF );
     // dTauA_dF_partial is already the direct partial derivative w.r.t. the total F (the second
@@ -237,11 +242,11 @@ namespace Marmot::Materials {
     }
 
     TensorMap33d Fv = stateLayout.getAs< TensorMap33d >( stateVars, "Fv" );
-    memcpy( Fv.data(), Spatial3D::I.data(), 9 * sizeof( double ) );
+    memcpy( Fv.data(), Math::Tensors::FastorTensors::Spatial3D::I.data(), 9 * sizeof( double ) );
 
     if ( hasNetworkC ) {
       TensorMap33d FvC = stateLayout.getAs< TensorMap33d >( stateVars, "FvC" );
-      memcpy( FvC.data(), Spatial3D::I.data(), 9 * sizeof( double ) );
+      memcpy( FvC.data(), Math::Tensors::FastorTensors::Spatial3D::I.data(), 9 * sizeof( double ) );
     }
   }
 } // namespace Marmot::Materials

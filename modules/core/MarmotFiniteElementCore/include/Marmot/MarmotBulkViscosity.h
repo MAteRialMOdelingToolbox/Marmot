@@ -28,7 +28,7 @@
 #include <algorithm>
 #include <cmath>
 
-namespace Marmot::FiniteElement::BulkViscosity {
+namespace Marmot::Discretizations::Elements::BulkViscosity {
 
   /**
    * @brief Coefficients of the artificial bulk viscosity.
@@ -84,8 +84,12 @@ namespace Marmot::FiniteElement::BulkViscosity {
    * interface here reports damage. For a quasi-brittle material in tension the two coincide; for
    * one that merely yields, the viscous stress is degraded by plastic flow rather than cracking.
    *
-   * @note Not free: the current wave speed costs a full constitutive evaluation per quadrature
-   * point per increment, which is why the reference is cached and why this is opt-in.
+   * @note Not free: the current wave speed is asked of the material on every quadrature point on
+   * every increment, which is why the reference is cached and why this is opt-in. With the material
+   * interface's default `getMaximumWaveSpeed()` that query is a full constitutive evaluation --
+   * about the cost of the stress update itself on a non-yielding point -- so a damage model meant
+   * to run with this should override it with its closed form, and check the override against the default
+   * with Marmot::Testing::checkMaximumWaveSpeedOverrideMatchesDefault().
    */
   inline double degradationFactor( double currentWaveSpeed, double referenceWaveSpeed, double exponent )
   {
@@ -199,4 +203,4 @@ namespace Marmot::FiniteElement::BulkViscosity {
                           coefficients );
   }
 
-} // namespace Marmot::FiniteElement::BulkViscosity
+} // namespace Marmot::Discretizations::Elements::BulkViscosity

@@ -1,20 +1,24 @@
 #include "Marmot/GeneralGradientEnhancedDisplacementFiniteElement.h"
+#include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotElementProperty.h"
 #include "Marmot/MarmotFiniteElement.h"
+#include "Marmot/MarmotMaterialGeneralGradientEnhancedHypoElasticFactory.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
 #include "Marmot/MarmotTesting.h"
+#include "Marmot/MarmotWaveSpeedContract.h"
 #include <Eigen/Dense>
 #include <algorithm>
 #include <cmath>
 #include <limits>
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 using namespace Marmot;
-using namespace Marmot::Elements;
+using namespace Marmot::Discretizations::Elements;
 using namespace Marmot::Testing;
-namespace NumDiff = Marmot::NumericalAlgorithms::Differentiation;
+namespace NumDiff = Marmot::Math::Differentiation::Numerical;
 
 void testBasicPropertiesQuad4PlaneStress()
 {
@@ -24,26 +28,26 @@ void testBasicPropertiesQuad4PlaneStress()
   constexpr int nNodes        = 4;
   constexpr int nNonlocalVars = 1;
   const int     elId          = 1;
-  const auto    intType       = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType       = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
   auto element = std::make_unique< ElemType >( elId, intType, ElemType::SectionType::PlaneStress );
 
   throwExceptionOnFailure( element->getNNodes() == nNodes,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect nNodes" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect nNodes" );
   throwExceptionOnFailure( element->getNSpatialDimensions() == nDim,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDim" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDim" );
 
   // sizeLoadVector = nNodes*nDim + nNodes*nNonlocalVars = 4*2 + 4*1 = 12
   throwExceptionOnFailure( element->getNDofPerElement() == 12,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDof" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDof" );
 
   throwExceptionOnFailure( element->getElementShape() == "quad4",
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect element shape" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect element shape" );
 
   // Full integration of Quad4 uses 2x2 = 4 Gauss points
   throwExceptionOnFailure( element->getNumberOfQuadraturePoints() == 4,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect number of QPs" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect number of QPs" );
 }
 
 void testBasicPropertiesQuad8PlaneStrain()
@@ -54,26 +58,26 @@ void testBasicPropertiesQuad8PlaneStrain()
   constexpr int nNodes        = 8;
   constexpr int nNonlocalVars = 1;
   const int     elId          = 2;
-  const auto    intType       = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType       = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
   auto element = std::make_unique< ElemType >( elId, intType, ElemType::SectionType::PlaneStrain );
 
   throwExceptionOnFailure( element->getNNodes() == nNodes,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect nNodes" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect nNodes" );
   throwExceptionOnFailure( element->getNSpatialDimensions() == nDim,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDim" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDim" );
 
   // sizeLoadVector = 8*2 + 8*1 = 24
   throwExceptionOnFailure( element->getNDofPerElement() == 24,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDof" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDof" );
 
   throwExceptionOnFailure( element->getElementShape() == "quad8",
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect element shape" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect element shape" );
 
   // Full integration of Quad8 uses 3x3 = 9 Gauss points
   throwExceptionOnFailure( element->getNumberOfQuadraturePoints() == 9,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect number of QPs" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect number of QPs" );
 }
 
 void testBasicPropertiesHex8Solid()
@@ -84,26 +88,26 @@ void testBasicPropertiesHex8Solid()
   constexpr int nNodes        = 8;
   constexpr int nNonlocalVars = 1;
   const int     elId          = 3;
-  const auto    intType       = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType       = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
   auto element = std::make_unique< ElemType >( elId, intType, ElemType::SectionType::Solid );
 
   throwExceptionOnFailure( element->getNNodes() == nNodes,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect nNodes" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect nNodes" );
   throwExceptionOnFailure( element->getNSpatialDimensions() == nDim,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDim" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDim" );
 
   // sizeLoadVector = 8*3 + 8*1 = 32
   throwExceptionOnFailure( element->getNDofPerElement() == 32,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDof" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect nDof" );
 
   throwExceptionOnFailure( element->getElementShape() == "hexa8",
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect element shape" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect element shape" );
 
   // Full integration of Hex8 uses 2x2x2 = 8 Gauss points
   throwExceptionOnFailure( element->getNumberOfQuadraturePoints() == 8,
-                           MakeString() << __PRETTY_FUNCTION__ << ": incorrect number of QPs" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": incorrect number of QPs" );
 }
 
 void testDofIndicesPermutationPatternQuad4()
@@ -118,18 +122,20 @@ void testDofIndicesPermutationPatternQuad4()
   const int     elId          = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  auto element = std::make_unique< ElemType >( elId,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::PlaneStress );
+  auto element = std::make_unique<
+    ElemType >( elId,
+                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                ElemType::SectionType::PlaneStress );
 
   const std::vector< int > pattern  = element->getDofIndicesPermutationPattern();
   const std::vector< int > expected = { 0, 1, 3, 4, 6, 7, 9, 10, 2, 5, 8, 11 };
 
   throwExceptionOnFailure( pattern.size() == expected.size(),
-                           MakeString() << __PRETTY_FUNCTION__ << ": pattern size mismatch" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": pattern size mismatch" );
   for ( std::size_t i = 0; i < expected.size(); ++i ) {
     throwExceptionOnFailure( pattern[i] == expected[i],
-                             MakeString() << __PRETTY_FUNCTION__ << ": pattern[" << i << "] mismatch" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": pattern[" << i << "] mismatch" );
   }
 }
 
@@ -143,18 +149,20 @@ void testDofIndicesPermutationPatternQuad4TwoNonlocalVars()
   const int     elId          = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  auto element = std::make_unique< ElemType >( elId,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::PlaneStress );
+  auto element = std::make_unique<
+    ElemType >( elId,
+                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                ElemType::SectionType::PlaneStress );
 
   const std::vector< int > pattern  = element->getDofIndicesPermutationPattern();
   const std::vector< int > expected = { 0, 1, 4, 5, 8, 9, 12, 13, 2, 6, 10, 14, 3, 7, 11, 15 };
 
   throwExceptionOnFailure( pattern.size() == expected.size(),
-                           MakeString() << __PRETTY_FUNCTION__ << ": pattern size mismatch" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": pattern size mismatch" );
   for ( std::size_t i = 0; i < expected.size(); ++i ) {
     throwExceptionOnFailure( pattern[i] == expected[i],
-                             MakeString() << __PRETTY_FUNCTION__ << ": pattern[" << i << "] mismatch" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": pattern[" << i << "] mismatch" );
   }
 }
 
@@ -167,20 +175,23 @@ void testNodeFieldsOneNonlocalVar()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::PlaneStress );
+  auto element = std::make_unique<
+    ElemType >( 1,
+                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                ElemType::SectionType::PlaneStress );
 
   const auto nodeFields = element->getNodeFields();
   throwExceptionOnFailure( static_cast< int >( nodeFields.size() ) == nNodes,
-                           MakeString() << __PRETTY_FUNCTION__ << ": nodeFields size mismatch" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": nodeFields size mismatch" );
   for ( int i = 0; i < nNodes; ++i ) {
     throwExceptionOnFailure( nodeFields[i].size() == 2,
-                             MakeString() << __PRETTY_FUNCTION__ << ": node " << i << " should have 2 fields" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": node " << i << " should have 2 fields" );
     throwExceptionOnFailure( nodeFields[i][0] == "displacement",
-                             MakeString() << __PRETTY_FUNCTION__ << ": node " << i << " first field != displacement" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": node " << i << " first field != displacement" );
     throwExceptionOnFailure( nodeFields[i][1] == "nonlocal damage",
-                             MakeString()
+                             Marmot::Utilities::MakeString()
                                << __PRETTY_FUNCTION__ << ": node " << i << " second field != nonlocal damage" );
   }
 }
@@ -193,20 +204,22 @@ void testCoordinatesAtCenter()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::PlaneStress );
+  auto element = std::make_unique<
+    ElemType >( 1,
+                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                ElemType::SectionType::PlaneStress );
 
   const std::vector< double > nodeCoords = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
   element->assignNodeCoordinates( nodeCoords.data() );
 
   const auto centerCoords = element->getCoordinatesAtCenter();
   throwExceptionOnFailure( static_cast< int >( centerCoords.size() ) == nDim,
-                           MakeString() << __PRETTY_FUNCTION__ << ": wrong dimension of center coordinates" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": wrong dimension of center coordinates" );
   throwExceptionOnFailure( checkIfEqual( centerCoords[0], 0.5 ),
-                           MakeString() << __PRETTY_FUNCTION__ << ": wrong x-coordinate at center" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": wrong x-coordinate at center" );
   throwExceptionOnFailure( checkIfEqual( centerCoords[1], 0.5 ),
-                           MakeString() << __PRETTY_FUNCTION__ << ": wrong y-coordinate at center" );
+                           Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": wrong y-coordinate at center" );
 }
 
 void testCoordinatesAtQuadraturePoints()
@@ -217,24 +230,29 @@ void testCoordinatesAtQuadraturePoints()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::PlaneStress );
+  auto element = std::make_unique<
+    ElemType >( 1,
+                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                ElemType::SectionType::PlaneStress );
 
   const std::vector< double > nodeCoords = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
   element->assignNodeCoordinates( nodeCoords.data() );
 
   const auto qpCoords = element->getCoordinatesAtQuadraturePoints();
   throwExceptionOnFailure( static_cast< int >( qpCoords.size() ) == element->getNumberOfQuadraturePoints(),
-                           MakeString() << __PRETTY_FUNCTION__ << ": wrong number of QP coordinate sets" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": wrong number of QP coordinate sets" );
 
   for ( const auto& coords : qpCoords ) {
     throwExceptionOnFailure( static_cast< int >( coords.size() ) == nDim,
-                             MakeString() << __PRETTY_FUNCTION__ << ": wrong QP coordinate dimension" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": wrong QP coordinate dimension" );
     throwExceptionOnFailure( coords[0] > 0.0 && coords[0] < 1.0,
-                             MakeString() << __PRETTY_FUNCTION__ << ": QP x-coordinate out of element bounds" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": QP x-coordinate out of element bounds" );
     throwExceptionOnFailure( coords[1] > 0.0 && coords[1] < 1.0,
-                             MakeString() << __PRETTY_FUNCTION__ << ": QP y-coordinate out of element bounds" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": QP y-coordinate out of element bounds" );
   }
 }
 
@@ -259,7 +277,8 @@ void testCoordinatesAtQuadraturePoints()
 // so computeLumpedInertia()'s non-local block is exactly zero -- checked here too.
 // ---------------------------------------------------------------------------------------------
 
-void checkQuad8AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes intType, const std::string& label )
+void checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes intType,
+                                     const std::string&                                              label )
 {
   constexpr int nDim          = 2;
   constexpr int nNodes        = 8; // Quad8 (quadratic serendipity)
@@ -291,10 +310,12 @@ void checkQuad8AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   // AT2PhaseField properties: E, nu, Gc, l, density, nonlocalViscosity
-  const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  const std::vector< double > elPropsVec = { 1.0 }; // thickness
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
+  const std::vector< double >                elPropsVec = { 1.0 }; // thickness
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -362,16 +383,18 @@ void checkQuad8AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes
 
 void testLumpedInertiaQuad8FullIntegrationMatchesAnalyticValues()
 {
-  checkQuad8AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes::FullIntegration, "FullIntegration" );
+  checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                                  "FullIntegration" );
 }
 
 void testLumpedInertiaQuad8ReducedIntegrationMatchesAnalyticValues()
 {
-  checkQuad8AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes::ReducedIntegration,
+  checkQuad8AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::ReducedIntegration,
                                   "ReducedIntegration" );
 }
 
-void checkHexa20AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes intType, const std::string& label )
+void checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes intType,
+                                      const std::string&                                              label )
 {
   constexpr int nDim          = 3;
   constexpr int nNodes        = 20; // Hexa20 (quadratic serendipity)
@@ -451,8 +474,10 @@ void checkHexa20AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationType
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   // AT2PhaseField properties: E, nu, Gc, l, density, nonlocalViscosity
-  const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  const std::vector< double >              matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+  Marmot::Discretizations::MaterialSection materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
 
   element->assignProperty( materialSection );
 
@@ -518,12 +543,13 @@ void checkHexa20AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationType
 
 void testLumpedInertiaHexa20FullIntegrationMatchesAnalyticValues()
 {
-  checkHexa20AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes::FullIntegration, "FullIntegration" );
+  checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                                   "FullIntegration" );
 }
 
 void testLumpedInertiaHexa20ReducedIntegrationMatchesAnalyticValues()
 {
-  checkHexa20AnalyticLumpedMasses( FiniteElement::Quadrature::IntegrationTypes::ReducedIntegration,
+  checkHexa20AnalyticLumpedMasses( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::ReducedIntegration,
                                    "ReducedIntegration" );
 }
 
@@ -536,9 +562,10 @@ void testNodeFieldsTwoNonlocalVars()
   constexpr int nNonlocalVars = 2;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::PlaneStress );
+  auto element = std::make_unique<
+    ElemType >( 1,
+                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                ElemType::SectionType::PlaneStress );
 
   const auto nodeFields = element->getNodeFields();
   throwExceptionOnFailure( static_cast< int >( nodeFields.size() ) == nNodes,
@@ -574,7 +601,7 @@ void testComputeKernelsPlaneStrainTangentMatchesNumericalDifferentiation()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  const auto intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto secType = ElemType::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -583,10 +610,12 @@ void testComputeKernelsPlaneStrainTangentMatchesNumericalDifferentiation()
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   // AT2PhaseField properties: E, nu, Gc, l, density, nonlocalViscosity
-  const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  const std::vector< double > elPropsVec = { 1.0 }; // thickness
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
+  const std::vector< double >                elPropsVec = { 1.0 }; // thickness
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -634,7 +663,7 @@ void testComputeKernelsPlaneStressTangentMatchesNumericalDifferentiation()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  const auto intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto secType = ElemType::SectionType::PlaneStress;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -642,10 +671,12 @@ void testComputeKernelsPlaneStressTangentMatchesNumericalDifferentiation()
   auto element = std::make_unique< ElemType >( 1, intType, secType );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
+  const std::vector< double >                elPropsVec = { 1.0 };
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -693,7 +724,7 @@ void testComputeKernelsSolid3DTangentMatchesNumericalDifferentiation()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  const auto intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto secType = ElemType::SectionType::Solid;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
@@ -702,8 +733,10 @@ void testComputeKernelsSolid3DTangentMatchesNumericalDifferentiation()
   auto element = std::make_unique< ElemType >( 1, intType, secType );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  const std::vector< double >              matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+  Marmot::Discretizations::MaterialSection materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
 
   const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
@@ -752,15 +785,18 @@ void testComputeKernelsThrowsForMismatchedSectionType()
 
     const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
-    auto element = std::make_unique< ElemType >( 1,
-                                                 FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                                 ElemType::SectionType::Solid );
+    auto element = std::make_unique<
+      ElemType >( 1,
+                  Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                  ElemType::SectionType::Solid );
     element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-    const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-    MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-    const std::vector< double > elPropsVec = { 1.0 };
-    ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+    const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+    Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                              matProps.data(),
+                                                              static_cast< int >( matProps.size() ) );
+    const std::vector< double >                elPropsVec = { 1.0 };
+    Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
     element->assignProperty( elProps );
     element->assignProperty( materialSection );
 
@@ -794,13 +830,16 @@ void testComputeKernelsThrowsForMismatchedSectionType()
     const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
                                                   0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
 
-    auto element = std::make_unique< ElemType >( 1,
-                                                 FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                                 ElemType::SectionType::PlaneStrain );
+    auto element = std::make_unique<
+      ElemType >( 1,
+                  Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                  ElemType::SectionType::PlaneStrain );
     element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-    const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-    MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+    const std::vector< double >              matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+    Marmot::Discretizations::MaterialSection materialSection( "AT2PHASEFIELD",
+                                                              matProps.data(),
+                                                              static_cast< int >( matProps.size() ) );
     element->assignProperty( materialSection );
 
     const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
@@ -831,7 +870,7 @@ void testComputeKernelsExplicitMatchesImplicitResidual()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  const auto intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto secType = ElemType::SectionType::PlaneStrain;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -840,8 +879,11 @@ void testComputeKernelsExplicitMatchesImplicitResidual()
 
   auto elementImplicit = std::make_unique< ElemType >( 1, intType, secType );
   elementImplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSectionImplicit( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  ElementProperties     elPropsImplicit( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::MaterialSection   materialSectionImplicit( "AT2PHASEFIELD",
+                                                                    matProps.data(),
+                                                                    static_cast< int >( matProps.size() ) );
+  Marmot::Discretizations::ElementProperties elPropsImplicit( elPropsVec.data(),
+                                                              static_cast< int >( elPropsVec.size() ) );
   elementImplicit->assignProperty( elPropsImplicit );
   elementImplicit->assignProperty( materialSectionImplicit );
   const int             nStateVarsTotalImplicit = elementImplicit->getNumberOfRequiredStateVars();
@@ -851,8 +893,11 @@ void testComputeKernelsExplicitMatchesImplicitResidual()
 
   auto elementExplicit = std::make_unique< ElemType >( 1, intType, secType );
   elementExplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSectionExplicit( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  ElementProperties     elPropsExplicit( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::MaterialSection   materialSectionExplicit( "AT2PHASEFIELD",
+                                                                    matProps.data(),
+                                                                    static_cast< int >( matProps.size() ) );
+  Marmot::Discretizations::ElementProperties elPropsExplicit( elPropsVec.data(),
+                                                              static_cast< int >( elPropsVec.size() ) );
   elementExplicit->assignProperty( elPropsExplicit );
   elementExplicit->assignProperty( materialSectionExplicit );
   const int             nStateVarsTotalExplicit = elementExplicit->getNumberOfRequiredStateVars();
@@ -887,7 +932,7 @@ void testComputeKernelsExplicitMatchesImplicitResidualPlaneStress()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  const auto intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto secType = ElemType::SectionType::PlaneStress;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
@@ -896,8 +941,11 @@ void testComputeKernelsExplicitMatchesImplicitResidualPlaneStress()
 
   auto elementImplicit = std::make_unique< ElemType >( 1, intType, secType );
   elementImplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSectionImplicit( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  ElementProperties     elPropsImplicit( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::MaterialSection   materialSectionImplicit( "AT2PHASEFIELD",
+                                                                    matProps.data(),
+                                                                    static_cast< int >( matProps.size() ) );
+  Marmot::Discretizations::ElementProperties elPropsImplicit( elPropsVec.data(),
+                                                              static_cast< int >( elPropsVec.size() ) );
   elementImplicit->assignProperty( elPropsImplicit );
   elementImplicit->assignProperty( materialSectionImplicit );
   const int             nStateVarsTotalImplicit = elementImplicit->getNumberOfRequiredStateVars();
@@ -907,8 +955,11 @@ void testComputeKernelsExplicitMatchesImplicitResidualPlaneStress()
 
   auto elementExplicit = std::make_unique< ElemType >( 1, intType, secType );
   elementExplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSectionExplicit( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  ElementProperties     elPropsExplicit( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::MaterialSection   materialSectionExplicit( "AT2PHASEFIELD",
+                                                                    matProps.data(),
+                                                                    static_cast< int >( matProps.size() ) );
+  Marmot::Discretizations::ElementProperties elPropsExplicit( elPropsVec.data(),
+                                                              static_cast< int >( elPropsVec.size() ) );
   elementExplicit->assignProperty( elPropsExplicit );
   elementExplicit->assignProperty( materialSectionExplicit );
   const int             nStateVarsTotalExplicit = elementExplicit->getNumberOfRequiredStateVars();
@@ -943,7 +994,7 @@ void testComputeKernelsExplicitMatchesImplicitResidualSolid3D()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  const auto intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   const auto secType = ElemType::SectionType::Solid;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
@@ -952,7 +1003,9 @@ void testComputeKernelsExplicitMatchesImplicitResidualSolid3D()
 
   auto elementImplicit = std::make_unique< ElemType >( 1, intType, secType );
   elementImplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSectionImplicit( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection materialSectionImplicit( "AT2PHASEFIELD",
+                                                                    matProps.data(),
+                                                                    static_cast< int >( matProps.size() ) );
   elementImplicit->assignProperty( materialSectionImplicit );
   const int             nStateVarsTotalImplicit = elementImplicit->getNumberOfRequiredStateVars();
   std::vector< double > stateVarsImplicit( nStateVarsTotalImplicit, 0.0 );
@@ -961,7 +1014,9 @@ void testComputeKernelsExplicitMatchesImplicitResidualSolid3D()
 
   auto elementExplicit = std::make_unique< ElemType >( 1, intType, secType );
   elementExplicit->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSectionExplicit( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection materialSectionExplicit( "AT2PHASEFIELD",
+                                                                    matProps.data(),
+                                                                    static_cast< int >( matProps.size() ) );
   elementExplicit->assignProperty( materialSectionExplicit );
   const int             nStateVarsTotalExplicit = elementExplicit->getNumberOfRequiredStateVars();
   std::vector< double > stateVarsExplicit( nStateVarsTotalExplicit, 0.0 );
@@ -998,15 +1053,18 @@ void testComputeKernelsExplicitThrowsForMismatchedSectionType()
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::Solid );
+  auto element = std::make_unique<
+    ElemType >( 1,
+                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                ElemType::SectionType::Solid );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
+  const std::vector< double >                elPropsVec = { 1.0 };
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1042,15 +1100,18 @@ void testSetInitialConditionsGeostaticStressAssignsInterpolatedStress()
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::PlaneStrain );
+  auto element = std::make_unique<
+    ElemType >( 1,
+                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                ElemType::SectionType::PlaneStrain );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
+  const std::vector< double >                elPropsVec = { 1.0 };
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1061,7 +1122,8 @@ void testSetInitialConditionsGeostaticStressAssignsInterpolatedStress()
 
   // sigmaY(y=0) = -10, sigmaY(y=1) = -20, kx = 0.5, kz = 0.25
   const std::vector< double > geostaticDefinition = { -10.0, 0.0, -20.0, 1.0, 0.5, 0.25 };
-  element->setInitialConditions( MarmotElement::GeostaticStress, geostaticDefinition.data() );
+  element->setInitialConditions( Marmot::Discretizations::Elements::Element::GeostaticStress,
+                                 geostaticDefinition.data() );
 
   for ( const auto& qp : element->qps ) {
     const Eigen::Vector2d physicalCoords = element->localGeometryElement.NB( qp.N ) *
@@ -1087,15 +1149,18 @@ void testSetInitialConditionsMaterialInitializationDoesNotThrow()
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::PlaneStrain );
+  auto element = std::make_unique<
+    ElemType >( 1,
+                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                ElemType::SectionType::PlaneStrain );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
+  const std::vector< double >                elPropsVec = { 1.0 };
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1104,7 +1169,7 @@ void testSetInitialConditionsMaterialInitializationDoesNotThrow()
   element->assignStateVars( stateVars.data(), nStateVarsTotal );
   element->initializeYourself();
 
-  element->setInitialConditions( MarmotElement::MarmotMaterialInitialization, nullptr );
+  element->setInitialConditions( Marmot::Discretizations::Elements::Element::MarmotMaterialInitialization, nullptr );
 }
 
 void testSetInitialConditionsRejectsUnsupportedStateTypes()
@@ -1114,13 +1179,14 @@ void testSetInitialConditionsRejectsUnsupportedStateTypes()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::PlaneStrain );
+  auto element = std::make_unique<
+    ElemType >( 1,
+                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                ElemType::SectionType::PlaneStrain );
 
   bool threwForStateVars = false;
   try {
-    element->setInitialConditions( MarmotElement::MarmotMaterialStateVars, nullptr );
+    element->setInitialConditions( Marmot::Discretizations::Elements::Element::MarmotMaterialStateVars, nullptr );
   }
   catch ( const std::invalid_argument& ) {
     threwForStateVars = true;
@@ -1131,7 +1197,7 @@ void testSetInitialConditionsRejectsUnsupportedStateTypes()
 
   bool threwForUnhandled = false;
   try {
-    element->setInitialConditions( MarmotElement::Sigma11, nullptr );
+    element->setInitialConditions( Marmot::Discretizations::Elements::Element::Sigma11, nullptr );
   }
   catch ( const std::invalid_argument& ) {
     threwForUnhandled = true;
@@ -1167,7 +1233,7 @@ void testComputeConsistentInertiaConservesTotalMassAndMicroInertia()
    * micro-inertia. Density and viscosity are 1, so the admissible eta^2/4 is 1/4.
    */
   /* matProps and stateVars are held OUT here, and the material properties are moved into
-   * matPropsStorage rather than read from the argument: MarmotMaterialSection keeps a bare
+   * matPropsStorage rather than read from the argument: Marmot::Discretizations::MaterialSection keeps a bare
    * `const double*`, and the material instantiated from it keeps that same pointer for its whole
    * life -- it does not copy. A `const std::vector&` parameter bound to a braced temporary at the
    * call site therefore dangles the moment buildElement() returns, and every later read of the
@@ -1184,19 +1250,22 @@ void testComputeConsistentInertiaConservesTotalMassAndMicroInertia()
     element.reset();
     matPropsStorage = std::move( matProps );
 
-    element = std::make_unique< ElemType >( 1,
-                                            FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                            ElemType::SectionType::PlaneStrain );
+    element = std::make_unique<
+      ElemType >( 1,
+                  Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                  ElemType::SectionType::PlaneStrain );
     element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-    MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matPropsStorage.data(), matPropsStorage.size() );
-    const std::vector< double > elPropsVec = { 1.0 };
-    ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+    Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                              matPropsStorage.data(),
+                                                              static_cast< int >( matPropsStorage.size() ) );
+    const std::vector< double >                elPropsVec = { 1.0 };
+    Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
     element->assignProperty( elProps );
     element->assignProperty( materialSection );
 
     stateVars.assign( element->getNumberOfRequiredStateVars(), 0.0 );
-    element->assignStateVars( stateVars.data(), stateVars.size() );
+    element->assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
     element->initializeYourself();
   };
 
@@ -1250,7 +1319,7 @@ void testComputeConsistentInertiaConservesTotalMassAndMicroInertia()
 }
 
 // The consistent inertia of a reduced-integration element is integrated with the FULL rule of its
-// shape (see Marmot::FiniteElement::ConsistentMass): on a distorted GC3D20R, the reduced and the
+// shape (see Marmot::Discretizations::Elements::ConsistentMass): on a distorted GC3D20R, the reduced and the
 // full-integration element must produce the same, positive definite matrix, displacement block and
 // micro-inertia block alike. With the element's own 8-point rule the displacement block would have
 // rank 24 out of 60.
@@ -1279,17 +1348,19 @@ void testConsistentInertiaHexa20ReducedIntegrationIsIntegratedWithTheFullRule()
   const std::vector< double > matProps   = { 20000.0, 0.2, 1.0, 1.0, 2.5, 1.0, 0.25 };
   const std::vector< double > elPropsVec = { 1.0 };
 
-  const auto consistentInertia = [&]( FiniteElement::Quadrature::IntegrationTypes intType ) {
+  const auto consistentInertia = [&]( Marmot::Discretizations::Elements::Quadrature::IntegrationTypes intType ) {
     ElemType element( 1, intType, ElemType::SectionType::Solid );
     element.assignNodeCoordinates( nodeCoordsVec.data() );
 
-    MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-    ElementProperties     elProps( elPropsVec.data(), elPropsVec.size() );
+    Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                              matProps.data(),
+                                                              static_cast< int >( matProps.size() ) );
+    Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
     element.assignProperty( elProps );
     element.assignProperty( materialSection );
 
     std::vector< double > stateVars( element.getNumberOfRequiredStateVars(), 0.0 );
-    element.assignStateVars( stateVars.data(), stateVars.size() );
+    element.assignStateVars( stateVars.data(), static_cast< int >( stateVars.size() ) );
     element.initializeYourself();
 
     const int             nDof = element.getNDofPerElement();
@@ -1298,8 +1369,10 @@ void testConsistentInertiaHexa20ReducedIntegrationIsIntegratedWithTheFullRule()
     return Eigen::MatrixXd( Eigen::Map< Eigen::MatrixXd >( M.data(), nDof, nDof ) );
   };
 
-  const Eigen::MatrixXd reduced = consistentInertia( FiniteElement::Quadrature::IntegrationTypes::ReducedIntegration );
-  const Eigen::MatrixXd full    = consistentInertia( FiniteElement::Quadrature::IntegrationTypes::FullIntegration );
+  const Eigen::MatrixXd reduced = consistentInertia(
+    Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::ReducedIntegration );
+  const Eigen::MatrixXd full = consistentInertia(
+    Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration );
 
   throwExceptionOnFailure( ( reduced - full ).norm() <= 1e-13 * full.norm(),
                            "the reduced-integration consistent inertia differs from the full-integration one." );
@@ -1318,15 +1391,18 @@ void testComputeBodyForceConservesTotalForcePerDirection()
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::PlaneStrain );
+  auto element = std::make_unique<
+    ElemType >( 1,
+                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                ElemType::SectionType::PlaneStrain );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
+  const std::vector< double >                elPropsVec = { 1.0 };
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1371,18 +1447,21 @@ void testComputeCriticalTimeStepMatchesMaterialWaveSpeedForRegularHexa8()
   constexpr int nNodes        = 8;
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
-  using Response              = typename MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVars >::response;
+  using Response = typename Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVars >::response;
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
                                                 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::Solid );
+  auto element = std::make_unique<
+    ElemType >( 1,
+                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                ElemType::SectionType::Solid );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  const std::vector< double >              matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+  Marmot::Discretizations::MaterialSection materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
 
   const int             nStateVarsTotal = element->getNumberOfRequiredStateVars();
@@ -1430,15 +1509,18 @@ void testComputeInternalEnergyMatchesSumOverQuadraturePoints()
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::PlaneStrain );
+  auto element = std::make_unique<
+    ElemType >( 1,
+                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                ElemType::SectionType::PlaneStrain );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
+  const std::vector< double >                elPropsVec = { 1.0 };
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1479,15 +1561,18 @@ void testGetStateViewVariants()
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::PlaneStrain );
+  auto element = std::make_unique<
+    ElemType >( 1,
+                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                ElemType::SectionType::PlaneStrain );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
+  const std::vector< double >                elPropsVec = { 1.0 };
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1545,15 +1630,18 @@ void testComputeDistributedLoadThrowsForUnhandledLoadType()
 
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::PlaneStrain );
+  auto element = std::make_unique<
+    ElemType >( 1,
+                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                ElemType::SectionType::PlaneStrain );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
+  const std::vector< double >                elPropsVec = { 1.0 };
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1573,7 +1661,7 @@ void testComputeDistributedLoadThrowsForUnhandledLoadType()
 
   bool threw = false;
   try {
-    element->computeDistributedLoad( MarmotElement::SurfaceTraction,
+    element->computeDistributedLoad( Marmot::Discretizations::Elements::Element::SurfaceTraction,
                                      P.data(),
                                      K.data(),
                                      0,
@@ -1606,7 +1694,7 @@ double criticalTimeStepOfCube( double edgeLength, double microInertia, double no
   constexpr int nNodes        = 8;
   constexpr int nNonlocalVars = 1;
   const int     elId          = 1;
-  const auto    intType       = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+  const auto    intType       = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
   const double                h             = edgeLength;
@@ -1631,9 +1719,11 @@ double criticalTimeStepOfCube( double edgeLength, double microInertia, double no
   if ( microInertia > 0.0 )
     matProps.push_back( microInertia );
 
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
+  const std::vector< double >                elPropsVec = { 1.0 };
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
 
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
@@ -1661,15 +1751,18 @@ void testNonlocalMicroInertiaIsZeroUnlessAssigned()
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
                                                 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::Solid );
+  auto element = std::make_unique<
+    ElemType >( 1,
+                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                ElemType::SectionType::Solid );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
-  const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
+  const std::vector< double >                elPropsVec = { 1.0 };
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1688,7 +1781,7 @@ void testNonlocalMicroInertiaIsZeroUnlessAssigned()
 
   for ( size_t i = sizeDoFU; i < microInertia.size(); i++ )
     throwExceptionOnFailure( microInertia[i] == 0.0,
-                             MakeString()
+                             Marmot::Utilities::MakeString()
                                << __PRETTY_FUNCTION__
                                << ": an element whose material gives no micro-inertia reported one at dof " << i );
 }
@@ -1704,17 +1797,20 @@ void testNonlocalMicroInertiaSumsToMicroInertiaTimesVolume()
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, h, 0.0, 0.0, h, h, 0.0, 0.0, h, 0.0,
                                                 0.0, 0.0, h,   h, 0.0, h,   h, h, h,   0.0, h, h };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::Solid );
+  auto element = std::make_unique<
+    ElemType >( 1,
+                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                ElemType::SectionType::Solid );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   // eta = 1 admits any micro-inertia up to 1/4, so the value below is far inside the bound.
-  const double                microInertiaValue = 3.0e-7;
-  const std::vector< double > matProps          = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0, microInertiaValue };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  const double                               microInertiaValue = 3.0e-7;
+  const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0, microInertiaValue };
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
+  const std::vector< double >                elPropsVec = { 1.0 };
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -1737,8 +1833,9 @@ void testNonlocalMicroInertiaSumsToMicroInertiaTimesVolume()
   // do between nodes, so this is an exact statement and not a tolerance-fitted one. It also fails
   // loudly on a mis-ordered node list, which would fold the cube inside out and change its volume.
   throwExceptionOnFailure( checkIfEqual( total, microInertiaValue * h * h * h, 1e-14 ),
-                           MakeString() << __PRETTY_FUNCTION__ << ": the lumped micro-inertia sums to " << total
-                                        << " instead of " << microInertiaValue * h * h * h );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": the lumped micro-inertia sums to " << total << " instead of "
+                             << microInertiaValue * h * h * h );
 }
 
 void testRetiredNonlocalMicroInertiaElementPropertyIsRejected()
@@ -1755,11 +1852,12 @@ void testRetiredNonlocalMicroInertiaElementPropertyIsRejected()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::Solid );
+  auto element = std::make_unique<
+    ElemType >( 1,
+                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                ElemType::SectionType::Solid );
 
-  MarmotElement* base = element.get();
+  Marmot::Discretizations::Elements::Element* base = element.get();
 
   const double value = 1.0e-12;
   bool         threw = false;
@@ -1770,13 +1868,15 @@ void testRetiredNonlocalMicroInertiaElementPropertyIsRejected()
     threw = true;
   }
   throwExceptionOnFailure( threw,
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << ": the retired 'nonlocal micro inertia' element property was accepted" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << ": the retired 'nonlocal micro inertia' element property was accepted" );
 
   const auto names = base->getPropertyNames();
   throwExceptionOnFailure( std::find( names.begin(), names.end(), "nonlocal micro inertia" ) == names.end(),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << ": the retired property is still reported by getPropertyNames()" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << ": the retired property is still reported by getPropertyNames()" );
 }
 
 void testBulkViscosityDamageDegradationIsValidated()
@@ -1786,12 +1886,13 @@ void testBulkViscosityDamageDegradationIsValidated()
   constexpr int nNonlocalVars = 1;
   using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::Solid );
+  auto element = std::make_unique<
+    ElemType >( 1,
+                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                ElemType::SectionType::Solid );
 
   // reached through the base pointer, the way the EdelweissFE wrapper reaches it
-  MarmotElement* base = element.get();
+  Marmot::Discretizations::Elements::Element* base = element.get();
 
   const auto rejects = [&]( const double* values, int nValues ) {
     try {
@@ -1805,25 +1906,29 @@ void testBulkViscosityDamageDegradationIsValidated()
 
   const std::vector< double > twoValues = { 2.0, 2.0 };
   throwExceptionOnFailure( rejects( twoValues.data(), 2 ),
-                           MakeString() << __PRETTY_FUNCTION__ << ": the single-value arity was not enforced" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": the single-value arity was not enforced" );
 
   const double negative = -1.0;
   throwExceptionOnFailure( rejects( &negative, 1 ),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << ": a negative exponent was accepted, which would amplify the viscous stress "
-                                           "as "
-                                           "the material fails" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << ": a negative exponent was accepted, which would amplify the viscous stress "
+                                "as "
+                                "the material fails" );
 
   const double exponent = 2.0;
   throwExceptionOnFailure( !rejects( &exponent, 1 ),
-                           MakeString() << __PRETTY_FUNCTION__ << ": a valid exponent was rejected" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": a valid exponent was rejected" );
 
   // The element must also report the name, or a deck asking for it would be silently ignored by
   // whatever validates against getPropertyNames().
   const auto names = base->getPropertyNames();
   throwExceptionOnFailure( std::find( names.begin(), names.end(), "bulk viscosity damage degradation" ) != names.end(),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << ": the degradation is assignable but not reported by getPropertyNames()" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << ": the degradation is assignable but not reported by getPropertyNames()" );
 }
 
 void testNonlocalCriticalTimeStepScalesWithSqrtOfMicroInertia()
@@ -1846,15 +1951,16 @@ void testNonlocalCriticalTimeStepScalesWithSqrtOfMicroInertia()
   const double dtMechanica = criticalTimeStepOfCube( 0.2, 0.0, 0.0, density );
 
   throwExceptionOnFailure( dtBase < dtMechanica,
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << ": the non-local field did not govern, so the ratio below would be "
-                                           "measuring the mechanical limit instead" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__
+                             << ": the non-local field did not govern, so the ratio below would be "
+                                "measuring the mechanical limit instead" );
 
   // A second-order field's limit goes with the square root of its inertia. A first-order (viscous)
   // one would go with the coefficient itself, so this ratio is what separates the two.
   throwExceptionOnFailure( checkIfEqual( dtFourfold / dtBase, 2.0, 1e-12 ),
-                           MakeString() << __PRETTY_FUNCTION__ << ": expected a ratio of 2, got "
-                                        << dtFourfold / dtBase );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": expected a ratio of 2, got " << dtFourfold / dtBase );
 }
 
 void testNonlocalCriticalTimeStepScalesLinearlyWithElementSize()
@@ -1873,14 +1979,16 @@ void testNonlocalCriticalTimeStepScalesLinearlyWithElementSize()
   const double dtFine   = criticalTimeStepOfCube( 0.1, 1.0e-4, 2.0e-2, density );
 
   throwExceptionOnFailure( dtFine < criticalTimeStepOfCube( 0.1, 0.0, 0.0, density ),
-                           MakeString() << __PRETTY_FUNCTION__ << ": the non-local field did not govern" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": the non-local field did not govern" );
 
   // This is the whole point of the micro-inertia: halving the element size halves the stable
   // increment. The parabolic scheme it replaces would have quartered it, so 0.25 is what this test
   // exists to exclude.
   const double ratio = dtFine / dtCoarse;
   throwExceptionOnFailure( std::abs( ratio - 0.5 ) < 0.01,
-                           MakeString() << __PRETTY_FUNCTION__ << ": expected a ratio of 0.5, got " << ratio );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": expected a ratio of 0.5, got " << ratio );
 }
 
 namespace {
@@ -1897,7 +2005,7 @@ namespace {
     constexpr int nNonlocalVars = 1;
     using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
 
-    const auto intType = FiniteElement::Quadrature::IntegrationTypes::FullIntegration;
+    const auto intType = Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
     const auto secType = ElemType::SectionType::Solid;
 
     const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
@@ -1919,11 +2027,13 @@ namespace {
     const auto internalForce = [&]( bool withBulkViscosity ) {
       auto element = std::make_unique< ElemType >( 1, intType, secType );
       element->assignNodeCoordinates( nodeCoordsVec.data() );
-      MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+      Marmot::Discretizations::MaterialSection materialSection( "AT2PHASEFIELD",
+                                                                matProps.data(),
+                                                                static_cast< int >( matProps.size() ) );
       element->assignProperty( materialSection );
 
       if ( withBulkViscosity ) {
-        element->assignProperty( "bulk viscosity", bulkViscosity.data(), bulkViscosity.size() );
+        element->assignProperty( "bulk viscosity", bulkViscosity.data(), static_cast< int >( bulkViscosity.size() ) );
         element->assignProperty( "bulk viscosity damage degradation", &degradationExponent, 1 );
       }
 
@@ -1953,8 +2063,9 @@ void testBulkViscosityDegradesWithTheNonlocalField()
   const Eigen::VectorXd undamaged = viscousForceAtNonlocalField( 0.0, 2.0 );
 
   throwExceptionOnFailure( undamaged.norm() > 0.0,
-                           MakeString() << __PRETTY_FUNCTION__ << ": the viscous force vanishes at phi = 0, so this "
-                                        << "test would pass on any implementation" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": the viscous force vanishes at phi = 0, so this "
+                             << "test would pass on any implementation" );
 
   for ( const double phi : { 0.25, 0.5, 0.75 } ) {
     for ( const double exponent : { 1.0, 2.0 } ) {
@@ -1965,9 +2076,10 @@ void testBulkViscosityDegradesWithTheNonlocalField()
       throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( damaged ),
                                              Eigen::MatrixXd( expected * undamaged ),
                                              1e-12 ),
-                               MakeString() << __PRETTY_FUNCTION__ << ": at a non-local field of " << phi
-                                            << " and exponent " << exponent << " the viscous force is not " << expected
-                                            << " times the undamaged one" );
+                               Marmot::Utilities::MakeString()
+                                 << __PRETTY_FUNCTION__ << ": at a non-local field of " << phi << " and exponent "
+                                 << exponent << " the viscous force is not " << expected
+                                 << " times the undamaged one" );
     }
   }
 }
@@ -1984,9 +2096,294 @@ void testBulkViscosityIsUndegradedByDefault()
     throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( viscousForceAtNonlocalField( phi, 0.0 ) ),
                                            Eigen::MatrixXd( atZero ),
                                            1e-12 ),
-                             MakeString() << __PRETTY_FUNCTION__
-                                          << ": the viscous force depends on the non-local field although the "
-                                          << "degradation was not requested" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__
+                               << ": the viscous force depends on the non-local field although the "
+                               << "degradation was not requested" );
+}
+
+namespace {
+
+  /* A linear elastic material degraded by its non-local field alone, (1 - K) C_el, that counts how
+   * often its wave speed is asked for. Created by the element the ordinary way, from a registered
+   * name, so that what is counted is what a real material sees.
+   */
+  class WaveSpeedQueryCountingMaterial : public Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 > {
+  public:
+    /// @brief Calls to getMaximumWaveSpeed() since the last reset, over all instances.
+    static inline int nWaveSpeedQueries = 0;
+
+    /**
+     * @brief Construct from E, nu, the density and the non-local viscosity.
+     * @param materialProperties The four properties, in that order.
+     * @param nMaterialProperties Their number.
+     * @param materialNumber The material's label.
+     */
+    WaveSpeedQueryCountingMaterial( const double* materialProperties, int nMaterialProperties, int materialNumber )
+      : Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >( materialProperties,
+                                                                     nMaterialProperties,
+                                                                     materialNumber )
+    {
+      stateLayout.add( "unused", 1 );
+      stateLayout.finalize();
+    }
+
+    /**
+     * @brief The degraded linear elastic stress update.
+     * @param[in,out] res The response.
+     * @param[out] tan The tangents.
+     * @param[in] inc The increment.
+     */
+    void computeStress( response& res, tangents& tan, const increment& inc ) const override
+    {
+      tan.dStressddStrain = ( 1.0 - inc.K[0] ) *
+                            ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( this->materialProperties[0],
+                                                                                        this->materialProperties[1] );
+      res.stress += tan.dStressddStrain * inc.dStrain;
+      res.KLocal.setZero();
+      res.c.setZero();
+    }
+
+    /**
+     * @brief The density.
+     * @param stateVars Unused.
+     * @return The third property.
+     */
+    double getDensity( const double* stateVars ) const override { return this->materialProperties[2]; }
+
+    /**
+     * @brief The non-local viscosity.
+     * @param stateVars Unused.
+     * @return The fourth property.
+     */
+    std::vector< double > getNonlocalViscosity( const double* stateVars ) const override
+    {
+      return { this->materialProperties[3] };
+    }
+
+    /**
+     * @brief The base class' default, counted.
+     * @param currentResponse The current response.
+     * @param K The non-local field.
+     * @return The wave speed the default returns.
+     */
+    double getMaximumWaveSpeed(
+      const response&                   currentResponse,
+      const Eigen::Vector< double, 1 >& K = Eigen::Vector< double, 1 >::Zero() ) const override
+    {
+      nWaveSpeedQueries++;
+      return Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >::getMaximumWaveSpeed( currentResponse, K );
+    }
+  };
+
+  [[maybe_unused]] const bool waveSpeedQueryCountingMaterialRegistered = Marmot::Registry::
+    MaterialGradientEnhancedHypoElasticFactory< 1 >::registerMaterial< WaveSpeedQueryCountingMaterial >(
+      "WAVESPEEDQUERYCOUNTINGMATERIAL" );
+
+  /// @brief The material's wave-speed queries over two explicit increments, and the element's quadrature points.
+  struct WaveSpeedQueries {
+    int firstIncrement;
+    int secondIncrement;
+    int nQuadraturePoints;
+  };
+
+  /* The material's wave-speed queries over the first and over the second explicit increment of a
+   * GC3D8 element under volumetric compression at a non-zero field.
+   */
+  WaveSpeedQueries waveSpeedQueriesOverTwoIncrements( bool   withBulkViscosity,
+                                                      double degradationExponent,
+                                                      double density = 2.0e-9 )
+  {
+    constexpr int nDim          = 3;
+    constexpr int nNodes        = 8;
+    constexpr int nNonlocalVars = 1;
+    using ElemType              = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, nNonlocalVars >;
+
+    const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                                  0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+    const std::vector< double > matProps      = { 20000.0, 0.2, density, 1.0e-6 };
+    const std::vector< double > bulkViscosity = { 0.06, 1.2 };
+
+    auto
+      element = std::make_unique< ElemType >( 1,
+                                              Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                                              ElemType::SectionType::Solid );
+    element->assignNodeCoordinates( nodeCoordsVec.data() );
+    Marmot::Discretizations::MaterialSection materialSection( "WAVESPEEDQUERYCOUNTINGMATERIAL",
+                                                              matProps.data(),
+                                                              static_cast< int >( matProps.size() ) );
+    element->assignProperty( materialSection );
+    if ( withBulkViscosity )
+      element->assignProperty( "bulk viscosity", bulkViscosity.data(), static_cast< int >( bulkViscosity.size() ) );
+    if ( degradationExponent > 0.0 )
+      element->assignProperty( "bulk viscosity damage degradation", &degradationExponent, 1 );
+
+    const int             nStateVars = element->getNumberOfRequiredStateVars();
+    std::vector< double > stateVars( nStateVars, 0.0 );
+    element->assignStateVars( stateVars.data(), nStateVars );
+    element->initializeYourself();
+
+    constexpr int   sizeDoFU = nNodes * nDim;
+    Eigen::VectorXd Q        = Eigen::VectorXd::Zero( sizeDoFU + nNodes );
+    for ( int a = 0; a < nNodes; a++ )
+      for ( int d = 0; d < nDim; d++ )
+        Q[a * nDim + d] = -1.0e-4 * nodeCoordsVec[a * nDim + d];
+    for ( int a = 0; a < nNodes; a++ )
+      Q[sizeDoFU + a] = 0.3;
+    Eigen::VectorXd P = Eigen::VectorXd::Zero( Q.size() );
+
+    WaveSpeedQueryCountingMaterial::nWaveSpeedQueries = 0;
+    element->computeKernelsExplicit( Q.data(), Q.data(), P.data(), 0.0, 1.0e-3 );
+    const int overTheFirstIncrement = WaveSpeedQueryCountingMaterial::nWaveSpeedQueries;
+
+    WaveSpeedQueryCountingMaterial::nWaveSpeedQueries = 0;
+    element->computeKernelsExplicit( Q.data(), Q.data(), P.data(), 1.0e-3, 1.0e-3 );
+    const int overTheSecondIncrement = WaveSpeedQueryCountingMaterial::nWaveSpeedQueries;
+
+    return { overTheFirstIncrement, overTheSecondIncrement, element->getNumberOfQuadraturePoints() };
+  }
+
+} // namespace
+
+/* What the degradation costs is what the material makes of ONE wave-speed query per quadrature
+ * point per increment, and nothing else: the reference is cached on the first increment, and with
+ * the exponent at its default -- or with no bulk viscosity at all -- the material is never asked for
+ * its current speed, which is what makes such a deck bit-identical to one built before the feature
+ * existed. Pinned through the count because a second query per increment, or a reference that is
+ * no longer cached, would change no result and would go unnoticed by every other test here while
+ * doubling the material cost of an explicit run.
+ */
+void testBulkViscosityDegradationAsksForTheWaveSpeedOncePerQuadraturePointPerIncrement()
+{
+  {
+    const auto [first, second, nQuadraturePoints] = waveSpeedQueriesOverTwoIncrements( false, 0.0 );
+    throwExceptionOnFailure( first == 0 && second == 0,
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": without bulk viscosity the material was asked " << first
+                               << " and " << second << " times for its wave speed" );
+  }
+  {
+    const auto [first, second, nQuadraturePoints] = waveSpeedQueriesOverTwoIncrements( true, 0.0 );
+    throwExceptionOnFailure( first == nQuadraturePoints && second == 0,
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": undegraded, the material was asked " << first << " and "
+                               << second << " times; expected the " << nQuadraturePoints
+                               << " reference queries once and nothing after" );
+  }
+  {
+    const auto [first, second, nQuadraturePoints] = waveSpeedQueriesOverTwoIncrements( true, 2.0 );
+    throwExceptionOnFailure( first == 2 * nQuadraturePoints && second == nQuadraturePoints,
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__ << ": degraded, the material was asked " << first << " and "
+                               << second << " times; expected the reference plus one current "
+                               << "query per quadrature point, then one current query per quadrature point" );
+  }
+}
+
+/* A material that reports a reference wave speed of zero -- no density here -- must be asked for it
+ * ONCE, like any other: a reference of zero is a value, not "not yet computed". Re-asking every
+ * increment would put a full constitutive evaluation per quadrature point per increment back, for
+ * exactly the materials whose answer never changes.
+ */
+void testBulkViscosityReferenceWaveSpeedOfZeroIsCachedToo()
+{
+  const auto [first, second, nQuadraturePoints] = waveSpeedQueriesOverTwoIncrements( true, 2.0, 0.0 );
+
+  throwExceptionOnFailure( first == 2 * nQuadraturePoints && second == nQuadraturePoints,
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": with a reference wave speed of zero the material "
+                             << "was asked " << first << " and " << second
+                             << " times; expected the reference once per quadrature point, then only the "
+                             << "current speed" );
+}
+
+namespace {
+
+  /* The two ways of overriding getMaximumWaveSpeed() with a closed form for the material of the
+   * counting test, (1 - K) C_el: the right one, and one that ignores the field.
+   */
+  class ClosedFormWaveSpeedMaterial : public WaveSpeedQueryCountingMaterial {
+  public:
+    using WaveSpeedQueryCountingMaterial::WaveSpeedQueryCountingMaterial;
+
+    /**
+     * @brief The closed form: the largest diagonal entry of the degraded stiffness over the density.
+     * @param currentResponse Unused.
+     * @param K The non-local field.
+     * @return The wave speed the default returns, to the bit.
+     */
+    double getMaximumWaveSpeed(
+      const response&                   currentResponse,
+      const Eigen::Vector< double, 1 >& K = Eigen::Vector< double, 1 >::Zero() ) const override
+    {
+      const double
+        maxStiffnessDiagonal = ( 1.0 - K[0] ) *
+                               ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( this->materialProperties[0],
+                                                                                           this->materialProperties[1] )
+                                 .diagonal()
+                                 .maxCoeff();
+      return std::sqrt( std::max( 0.0, maxStiffnessDiagonal ) / this->materialProperties[2] );
+    }
+  };
+
+  class FieldBlindWaveSpeedMaterial : public ClosedFormWaveSpeedMaterial {
+  public:
+    using ClosedFormWaveSpeedMaterial::ClosedFormWaveSpeedMaterial;
+
+    /**
+     * @brief The closed form at a zero field, whatever the field: what the degradation silently turns inert with.
+     * @param currentResponse The current response.
+     * @param K Ignored.
+     * @return The undamaged wave speed.
+     */
+    double getMaximumWaveSpeed(
+      const response&                   currentResponse,
+      const Eigen::Vector< double, 1 >& K = Eigen::Vector< double, 1 >::Zero() ) const override
+    {
+      return ClosedFormWaveSpeedMaterial::getMaximumWaveSpeed( currentResponse, Eigen::Vector< double, 1 >::Zero() );
+    }
+  };
+
+} // namespace
+
+/* The contract an override of getMaximumWaveSpeed() has to keep is checked against the default, over
+ * a range of fields. An override that ignores the field must be caught: it would make the degradation
+ * factor identically 1 and the property inert, which is what the element's comments say happened once.
+ */
+void testWaveSpeedOverrideCheckAcceptsTheClosedFormAndRejectsAnOverrideThatIgnoresTheField()
+{
+  using Response = Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >::response;
+
+  const std::vector< double >       matProps = { 20000.0, 0.2, 2.0e-9, 1.0e-6 };
+  const ClosedFormWaveSpeedMaterial closedForm( matProps.data(), static_cast< int >( matProps.size() ), 1 );
+  const FieldBlindWaveSpeedMaterial fieldBlind( matProps.data(), static_cast< int >( matProps.size() ), 2 );
+
+  std::vector< double > stateVars( closedForm.getNumberOfRequiredStateVars(), 0.0 );
+  Response              response;
+  response.stress               = Marmot::Math::Vector6d::Zero();
+  response.elasticEnergyDensity = 0.0;
+  response.dissipation          = 0.0;
+  response.KLocal.setZero();
+  response.c.setZero();
+  response.stateVars = stateVars.data();
+
+  const std::vector< Eigen::Vector< double, 1 > > fields = { Eigen::Vector< double, 1 >::Zero(),
+                                                             Eigen::Vector< double, 1 >::Constant( 0.3 ),
+                                                             Eigen::Vector< double, 1 >::Constant( 0.9 ) };
+
+  checkMaximumWaveSpeedOverrideMatchesDefault< 1 >( closedForm, response, fields );
+
+  bool rejected = false;
+  try {
+    checkMaximumWaveSpeedOverrideMatchesDefault< 1 >( fieldBlind, response, fields );
+  }
+  catch ( const std::runtime_error& ) {
+    rejected = true;
+  }
+  throwExceptionOnFailure( rejected,
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": an override that ignores the non-local field "
+                             << "passed the contract check" );
 }
 
 /* A rejected property assignment must leave the element as it was -- checked through the assembled
@@ -2006,11 +2403,14 @@ void testRejectedPropertyAssignmentLeavesTheElementUnchanged()
   // Fully built, because the assembled inertia is read back at the end: computeLumpedInertia()
   // asks every quadrature point's material for its density, and a quadrature point without one
   // has no material to ask.
-  auto element = std::make_unique< ElemType >( 1,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::Solid );
+  auto element = std::make_unique<
+    ElemType >( 1,
+                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                ElemType::SectionType::Solid );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
-  MarmotMaterialSection materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
+  Marmot::Discretizations::MaterialSection materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
   element->assignProperty( materialSection );
 
   const int             nStateVars = element->getNumberOfRequiredStateVars();
@@ -2019,7 +2419,7 @@ void testRejectedPropertyAssignmentLeavesTheElementUnchanged()
   element->initializeYourself();
 
   const std::vector< double > valid = { 0.06, 1.2 };
-  element->assignProperty( "bulk viscosity", valid.data(), valid.size() );
+  element->assignProperty( "bulk viscosity", valid.data(), static_cast< int >( valid.size() ) );
 
   const double                               nan      = std::numeric_limits< double >::quiet_NaN();
   const std::vector< std::vector< double > > rejected = { { -1.0, 1.2 }, { 0.06, -1.0 }, { nan, 1.2 }, { 0.06, nan } };
@@ -2027,22 +2427,23 @@ void testRejectedPropertyAssignmentLeavesTheElementUnchanged()
   for ( const auto& values : rejected ) {
     bool threw = false;
     try {
-      element->assignProperty( "bulk viscosity", values.data(), values.size() );
+      element->assignProperty( "bulk viscosity", values.data(), static_cast< int >( values.size() ) );
     }
     catch ( const std::invalid_argument& ) {
       threw = true;
     }
     throwExceptionOnFailure( threw,
-                             MakeString() << __PRETTY_FUNCTION__
-                                          << ": a negative or non-finite bulk viscosity coefficient was accepted" );
+                             Marmot::Utilities::MakeString()
+                               << __PRETTY_FUNCTION__
+                               << ": a negative or non-finite bulk viscosity coefficient was accepted" );
   }
 
   // A rejected coefficient must not reach the assembled quantities either.
   Eigen::VectorXd lumpedInertia = Eigen::VectorXd::Zero( element->getNDofPerElement() );
   element->computeLumpedInertia( lumpedInertia.data() );
   throwExceptionOnFailure( lumpedInertia.allFinite(),
-                           MakeString() << __PRETTY_FUNCTION__
-                                        << ": a rejected coefficient reached the assembled inertia" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": a rejected coefficient reached the assembled inertia" );
 }
 
 void testTinyMicroInertiaIsNotTreatedAsAbsent()
@@ -2061,9 +2462,9 @@ void testTinyMicroInertiaIsNotTreatedAsAbsent()
   const double dtMechanical = criticalTimeStepOfCube( 0.2, 0.0, 0.0, density );
 
   throwExceptionOnFailure( dtWithTiny < dtMechanical,
-                           MakeString() << __PRETTY_FUNCTION__ << ": a micro-inertia of " << tinyMicroInertia
-                                        << " was ignored -- the stable increment stayed at the mechanical "
-                                        << dtMechanical );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": a micro-inertia of " << tinyMicroInertia
+                             << " was ignored -- the stable increment stayed at the mechanical " << dtMechanical );
 
   // And it reaches the assembled vector, not just the time step.
   constexpr int nDim          = 3;
@@ -2074,17 +2475,20 @@ void testTinyMicroInertiaIsNotTreatedAsAbsent()
   const std::vector< double > nodeCoordsVec = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
                                                 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
 
-  auto element = std::make_unique< ElemType >( 1,
-                                               FiniteElement::Quadrature::IntegrationTypes::FullIntegration,
-                                               ElemType::SectionType::Solid );
+  auto element = std::make_unique<
+    ElemType >( 1,
+                Marmot::Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration,
+                ElemType::SectionType::Solid );
   element->assignNodeCoordinates( nodeCoordsVec.data() );
 
   // eta = 1 here rather than the 2e-7 above, so the tiny value is admissible by a wide margin: what
   // is under test is that it is not ROUNDED AWAY, not where the admissibility bound lies.
-  const std::vector< double > matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0, tinyMicroInertia };
-  MarmotMaterialSection       materialSection( "AT2PHASEFIELD", matProps.data(), matProps.size() );
-  const std::vector< double > elPropsVec = { 1.0 };
-  ElementProperties           elProps( elPropsVec.data(), elPropsVec.size() );
+  const std::vector< double >                matProps = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0, tinyMicroInertia };
+  Marmot::Discretizations::MaterialSection   materialSection( "AT2PHASEFIELD",
+                                                            matProps.data(),
+                                                            static_cast< int >( matProps.size() ) );
+  const std::vector< double >                elPropsVec = { 1.0 };
+  Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
   element->assignProperty( elProps );
   element->assignProperty( materialSection );
 
@@ -2101,8 +2505,9 @@ void testTinyMicroInertiaIsNotTreatedAsAbsent()
     total += microInertia[i];
 
   throwExceptionOnFailure( checkIfEqual( total, tinyMicroInertia, 1e-24 ),
-                           MakeString() << __PRETTY_FUNCTION__ << ": the lumped micro-inertia sums to " << total
-                                        << " instead of " << tinyMicroInertia );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": the lumped micro-inertia sums to " << total << " instead of "
+                             << tinyMicroInertia );
 }
 
 void testNonlocalViscosityLowersTheCriticalTimeStep()
@@ -2120,8 +2525,267 @@ void testNonlocalViscosityLowersTheCriticalTimeStep()
   // Damping never buys time step under central differences, it costs it. Getting the sign of that
   // wrong would leave a damped run integrating above its limit while the estimate reported safety.
   throwExceptionOnFailure( dtDamped < dtLeastDamped,
-                           MakeString() << __PRETTY_FUNCTION__ << ": damping did not lower the stable increment ("
-                                        << dtDamped << " against " << dtLeastDamped << ")" );
+                           Marmot::Utilities::MakeString()
+                             << __PRETTY_FUNCTION__ << ": damping did not lower the stable increment (" << dtDamped
+                             << " against " << dtLeastDamped << ")" );
+}
+
+// ---------------------------------------------------------------------------------------------
+// Consistency of the kernels: the tangent against numerical differentiation of the residual, and the
+// explicit residual against the implicit one, for
+//  - mixed-order elements: the non-local field is interpolated with fewer nodes than the displacement
+//    (Quad8/Quad4, Hexa20/Hexa8). The quadrature points then hold their own non-local shape
+//    functions, a code path the equal-order elements never take. The registered G6GCPS8M and G6GC3D20M
+//    are instances of it, and
+//  - a material whose gradient coefficient c depends on the non-local field, which makes the tangent
+//    term with dc/dK non-zero. The AT2 phase field has a constant c, so no other test here sees it.
+// ---------------------------------------------------------------------------------------------
+
+// Unit element with mildly perturbed corners and midside nodes (non-affine, so that the Jacobian
+// varies over the element). The midside nodes sit halfway between the corners they connect, in the
+// order the Marmot geometry elements expect: the edges are listed per element.
+std::vector< double > distortedElementCoordinates( int                                         nDim,
+                                                   const std::vector< double >&                corners,
+                                                   const std::vector< std::pair< int, int > >& edges )
+{
+  std::vector< double > coordinates = corners;
+  for ( const auto& edge : edges )
+    for ( int d = 0; d < nDim; d++ )
+      coordinates.push_back( 0.5 * ( corners[edge.first * nDim + d] + corners[edge.second * nDim + d] ) );
+
+  for ( size_t k = 0; k < coordinates.size(); k++ )
+    coordinates[k] += 0.04 * std::sin( 2.3 * static_cast< double >( k ) + 0.7 );
+  return coordinates;
+}
+
+namespace {
+
+  /* A linear elastic material with a gradient coefficient c = c0 (1 + 10 K) that depends on the
+   * non-local field, and nothing else non-trivial: the residual's gradient term then depends on K
+   * through c as well as through the gradient, and the tangent needs dc/dK = 10 c0.
+   */
+  class VariableGradientCoefficientMaterial : public Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 > {
+  public:
+    /**
+     * @brief Construct from E, nu, the density, the non-local viscosity and c0.
+     * @param materialProperties The five properties, in that order.
+     * @param nMaterialProperties Their number.
+     * @param materialNumber The material's label.
+     */
+    VariableGradientCoefficientMaterial( const double* materialProperties, int nMaterialProperties, int materialNumber )
+      : Marmot::Materials::MaterialGradientEnhancedHypoElastic< 1 >( materialProperties,
+                                                                     nMaterialProperties,
+                                                                     materialNumber )
+    {
+      stateLayout.add( "unused", 1 );
+      stateLayout.finalize();
+    }
+
+    /**
+     * @brief The linear elastic stress update with the field dependent gradient coefficient.
+     * @param[in,out] res The response.
+     * @param[out] tan The tangents.
+     * @param[in] inc The increment.
+     */
+    void computeStress( response& res, tangents& tan, const increment& inc ) const override
+    {
+      tan.dStressddStrain = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( this->materialProperties[0],
+                                                                                        this->materialProperties[1] );
+      res.stress += tan.dStressddStrain * inc.dStrain;
+      res.KLocal.setZero();
+      res.c( 0 )        = this->materialProperties[4] * ( 1.0 + 10.0 * inc.K[0] );
+      tan.dcddK( 0, 0 ) = 10.0 * this->materialProperties[4];
+    }
+
+    /**
+     * @brief The density.
+     * @param stateVars Unused.
+     * @return The third property.
+     */
+    double getDensity( const double* stateVars ) const override { return this->materialProperties[2]; }
+
+    /**
+     * @brief The non-local viscosity.
+     * @param stateVars Unused.
+     * @return The fourth property.
+     */
+    std::vector< double > getNonlocalViscosity( const double* stateVars ) const override
+    {
+      return { this->materialProperties[3] };
+    }
+  };
+
+  [[maybe_unused]] const bool variableGradientCoefficientMaterialRegistered = Marmot::Registry::
+    MaterialGradientEnhancedHypoElasticFactory< 1 >::registerMaterial< VariableGradientCoefficientMaterial >(
+      "VARIABLEGRADIENTCOEFFICIENTMATERIAL" );
+
+} // namespace
+
+template < int nDim, int nNodes, int nNonLocalNodes >
+void checkKernelsAreConsistent(
+  const std::vector< double >& nodeCoordsVec,
+  typename GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, 1, nNonLocalNodes >::SectionType secType,
+  const std::string&           materialName,
+  const std::vector< double >& matProps,
+  const std::string&           label )
+{
+  using ElemType = GeneralGradientEnhancedDisplacementFiniteElement< nDim, nNodes, 1, nNonLocalNodes >;
+
+  const auto intType = Discretizations::Elements::Quadrature::IntegrationTypes::FullIntegration;
+
+  // The two evaluations need independent elements: they update the stress and strain they store.
+  struct Fixture {
+    std::unique_ptr< ElemType > element;
+    std::vector< double >       stateVars;
+  };
+  const auto makeElement = [&]() {
+    Fixture fixture;
+    fixture.element = std::make_unique< ElemType >( 1, intType, secType );
+    fixture.element->assignNodeCoordinates( nodeCoordsVec.data() );
+
+    Marmot::Discretizations::MaterialSection   materialSection( materialName,
+                                                              matProps.data(),
+                                                              static_cast< int >( matProps.size() ) );
+    const std::vector< double >                elPropsVec = { 1.0 }; // thickness, ignored in 3D
+    Marmot::Discretizations::ElementProperties elProps( elPropsVec.data(), static_cast< int >( elPropsVec.size() ) );
+    fixture.element->assignProperty( elProps );
+    fixture.element->assignProperty( materialSection );
+
+    fixture.stateVars.assign( fixture.element->getNumberOfRequiredStateVars(), 0.0 );
+    fixture.element->assignStateVars( fixture.stateVars.data(), static_cast< int >( fixture.stateVars.size() ) );
+    fixture.element->initializeYourself();
+    return fixture;
+  };
+
+  Fixture implicitFixture = makeElement();
+  Fixture explicitFixture = makeElement();
+
+  const int nDof = implicitFixture.element->getNDofPerElement();
+  throwExceptionOnFailure( nDof == nNodes * nDim + nNonLocalNodes,
+                           label + ": the mixed-order element does not have nNonLocalNodes non-local DOFs." );
+
+  Eigen::VectorXd Q( nDof );
+  for ( int i = 0; i < nDof; i++ )
+    Q[i] = 0.01 * std::sin( 1.1 * ( i + 1 ) );
+
+  // The non-local field must be interpolated: a residual that ignored it would not see its DOFs.
+  Eigen::VectorXd PImplicit = Eigen::VectorXd::Zero( nDof );
+  Eigen::MatrixXd K         = Eigen::MatrixXd::Zero( nDof, nDof );
+  implicitFixture.element->computeKernels( Q.data(), Q.data(), PImplicit.data(), K.data(), 0.0, 1.0 );
+  throwExceptionOnFailure( PImplicit.tail( nNonLocalNodes ).norm() > 0.0,
+                           label + ": the non-local part of the residual is zero." );
+
+  Eigen::VectorXd PExplicit = Eigen::VectorXd::Zero( nDof );
+  explicitFixture.element->computeKernelsExplicit( Q.data(), Q.data(), PExplicit.data(), 0.0, 1.0 );
+  throwExceptionOnFailure( checkIfEqual( Eigen::MatrixXd( PImplicit ), Eigen::MatrixXd( PExplicit ), 1e-10 ),
+                           label + ": computeKernelsExplicit() residual does not match computeKernels()." );
+
+  Fixture tangentFixture = makeElement();
+
+  NumDiff::vector_to_vector_function_type residual = [&]( const Eigen::VectorXd& q ) -> Eigen::VectorXd {
+    std::fill( tangentFixture.stateVars.begin(), tangentFixture.stateVars.end(), 0.0 );
+    Eigen::VectorXd Ptmp = Eigen::VectorXd::Zero( nDof );
+    Eigen::MatrixXd Ktmp = Eigen::MatrixXd::Zero( nDof, nDof );
+    tangentFixture.element->computeKernels( q.data(), q.data(), Ptmp.data(), Ktmp.data(), 0.0, 1.0 );
+    return Ptmp;
+  };
+  const Eigen::MatrixXd numK = NumDiff::centralDifference( residual, Q );
+
+  throwExceptionOnFailure( checkIfEqual( K, numK, 1e-5 ),
+                           label + ": computeKernels() stiffness matrix does not match the numerical tangent." );
+}
+
+namespace {
+  // E, nu, Gc, l, density, non-local viscosity
+  const std::vector< double > at2Properties = { 20000.0, 0.2, 1.0, 1.0, 1.0, 1.0 };
+  // E, nu, density, non-local viscosity, c0
+  const std::vector< double > variableCoefficientProperties = { 20000.0, 0.2, 1.0, 1.0, 50.0 };
+} // namespace
+
+void testMixedOrderQuad8Quad4PlaneStrain()
+{
+  using ElemType                      = GeneralGradientEnhancedDisplacementFiniteElement< 2, 8, 1, 4 >;
+  const std::vector< double > corners = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
+  checkKernelsAreConsistent< 2, 8, 4 >( distortedElementCoordinates( 2,
+                                                                     corners,
+                                                                     { { 0, 1 }, { 1, 2 }, { 2, 3 }, { 3, 0 } } ),
+                                        ElemType::SectionType::PlaneStrain,
+                                        "AT2PHASEFIELD",
+                                        at2Properties,
+                                        "Quad8/Quad4 PlaneStrain" );
+}
+
+void testMixedOrderHexa20Hexa8Solid()
+{
+  using ElemType                      = GeneralGradientEnhancedDisplacementFiniteElement< 3, 20, 1, 8 >;
+  const std::vector< double > corners = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                          0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+  checkKernelsAreConsistent< 3, 20, 8 >( distortedElementCoordinates( 3,
+                                                                      corners,
+                                                                      { { 0, 1 },
+                                                                        { 1, 2 },
+                                                                        { 2, 3 },
+                                                                        { 3, 0 },
+                                                                        { 4, 5 },
+                                                                        { 5, 6 },
+                                                                        { 6, 7 },
+                                                                        { 7, 4 },
+                                                                        { 0, 4 },
+                                                                        { 1, 5 },
+                                                                        { 2, 6 },
+                                                                        { 3, 7 } } ),
+                                         ElemType::SectionType::Solid,
+                                         "AT2PHASEFIELD",
+                                         at2Properties,
+                                         "Hexa20/Hexa8 Solid" );
+}
+
+void testFieldDependentGradientCoefficientHexa8()
+{
+  using ElemType                      = GeneralGradientEnhancedDisplacementFiniteElement< 3, 8, 1, 8 >;
+  const std::vector< double > corners = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                          0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+  checkKernelsAreConsistent< 3, 8, 8 >( distortedElementCoordinates( 3, corners, {} ),
+                                        ElemType::SectionType::Solid,
+                                        "VARIABLEGRADIENTCOEFFICIENTMATERIAL",
+                                        variableCoefficientProperties,
+                                        "Hexa8 variable gradient coefficient" );
+}
+
+void testFieldDependentGradientCoefficientHexa20Hexa8()
+{
+  using ElemType                      = GeneralGradientEnhancedDisplacementFiniteElement< 3, 20, 1, 8 >;
+  const std::vector< double > corners = { 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+                                          0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 1.0, 1.0 };
+  checkKernelsAreConsistent< 3, 20, 8 >( distortedElementCoordinates( 3,
+                                                                      corners,
+                                                                      { { 0, 1 },
+                                                                        { 1, 2 },
+                                                                        { 2, 3 },
+                                                                        { 3, 0 },
+                                                                        { 4, 5 },
+                                                                        { 5, 6 },
+                                                                        { 6, 7 },
+                                                                        { 7, 4 },
+                                                                        { 0, 4 },
+                                                                        { 1, 5 },
+                                                                        { 2, 6 },
+                                                                        { 3, 7 } } ),
+                                         ElemType::SectionType::Solid,
+                                         "VARIABLEGRADIENTCOEFFICIENTMATERIAL",
+                                         variableCoefficientProperties,
+                                         "Hexa20/Hexa8 variable gradient coefficient" );
+}
+
+void testFieldDependentGradientCoefficientQuad4PlaneStrain()
+{
+  using ElemType                      = GeneralGradientEnhancedDisplacementFiniteElement< 2, 4, 1, 4 >;
+  const std::vector< double > corners = { 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0 };
+  checkKernelsAreConsistent< 2, 4, 4 >( distortedElementCoordinates( 2, corners, {} ),
+                                        ElemType::SectionType::PlaneStrain,
+                                        "VARIABLEGRADIENTCOEFFICIENTMATERIAL",
+                                        variableCoefficientProperties,
+                                        "Quad4 variable gradient coefficient" );
 }
 
 int main()
@@ -2149,6 +2813,9 @@ int main()
     testTinyMicroInertiaIsNotTreatedAsAbsent,
     testBulkViscosityDegradesWithTheNonlocalField,
     testBulkViscosityIsUndegradedByDefault,
+    testBulkViscosityDegradationAsksForTheWaveSpeedOncePerQuadraturePointPerIncrement,
+    testBulkViscosityReferenceWaveSpeedOfZeroIsCachedToo,
+    testWaveSpeedOverrideCheckAcceptsTheClosedFormAndRejectsAnOverrideThatIgnoresTheField,
     testRejectedPropertyAssignmentLeavesTheElementUnchanged,
     testNodeFieldsTwoNonlocalVars,
     testComputeKernelsPlaneStrainTangentMatchesNumericalDifferentiation,
@@ -2159,6 +2826,11 @@ int main()
     testComputeKernelsExplicitMatchesImplicitResidualPlaneStress,
     testComputeKernelsExplicitMatchesImplicitResidualSolid3D,
     testComputeKernelsExplicitThrowsForMismatchedSectionType,
+    testMixedOrderQuad8Quad4PlaneStrain,
+    testMixedOrderHexa20Hexa8Solid,
+    testFieldDependentGradientCoefficientHexa8,
+    testFieldDependentGradientCoefficientHexa20Hexa8,
+    testFieldDependentGradientCoefficientQuad4PlaneStrain,
     testSetInitialConditionsGeostaticStressAssignsInterpolatedStress,
     testSetInitialConditionsMaterialInitializationDoesNotThrow,
     testSetInitialConditionsRejectsUnsupportedStateTypes,

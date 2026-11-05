@@ -11,8 +11,8 @@
 
 using namespace Marmot::Testing;
 using namespace Marmot::Materials;
-using namespace Marmot::FastorStandardTensors;
-using namespace Marmot::FastorIndices;
+using namespace Marmot::Math::Tensors::FastorTensors;
+using namespace Marmot::Math::Tensors::FastorIndices;
 
 // Three parameter sets, one per HyperelasticBase, all chosen to represent the
 // SAME physical material (equivalent to a combined neo-Hookean network with
@@ -97,7 +97,7 @@ std::vector< double > initialState( const std::vector< double >& props )
 Tensor33d combinedStress( const Tensor33d& F, int base, double p1, double p2, double p3, double kappa )
 {
   BergstromBoyce mat = makeMaterial( VARIANTS[0].props );
-  Tensor33d      C   = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d      C   = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
   double    psi;
   Tensor33d dPsi_dC;
@@ -125,7 +125,7 @@ std::vector< Tensor33d > randomSymmetricPositiveDefiniteCs()
     F( 0, 1 ) = d;
     F( 1, 2 ) = e;
     F( 0, 2 ) = f;
-    return Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
+    return Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
   };
   Cs.push_back( makeC( 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ) );         // C = I
   Cs.push_back( makeC( 0.1, -0.03, -0.03, 0.02, 0.01, -0.01 ) ); // moderate, mildly triaxial
@@ -212,7 +212,7 @@ void testArrudaBoyceReducesToNeoHooke()
     F( 0, 0 )   = a;
     F( 1, 1 )   = 1.0 / sqrt( a );
     F( 2, 2 )   = 1.0 / sqrt( a );
-    return Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
+    return Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
   };
 
   // deliberately excludes a=1 (C=I): there, Psi_iso is identically zero for
@@ -224,10 +224,8 @@ void testArrudaBoyceReducesToNeoHooke()
     const double psiTargetNH = mu / 2. * ( I1 - 3. );
 
     auto errorAtLambdaL = [&]( double lambdaL ) {
-      double
-        psiAB = Marmot::ContinuumMechanics::EnergyDensityFunctions::ArrudaBoyce8ChainPotential< double >( C,
-                                                                                                          mu,
-                                                                                                          lambdaL );
+      double psiAB = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::ArrudaBoyce8ChainPotential<
+        double >( C, mu, lambdaL );
       return std::abs( psiAB - psiTargetNH );
     };
 
@@ -271,7 +269,9 @@ void testI2DerivativeIdentity()
 
   for ( const auto& C : randomSymmetricPositiveDefiniteCs() ) {
     const double I1               = Fastor::trace( C );
-    Tensor33d    analyticaldI2_dC = Marmot::multiplyFastorTensorWithScalar( Tensor33d( Spatial3D::I ), I1 ) - C;
+    Tensor33d    analyticaldI2_dC = Marmot::Math::Tensors::multiplyFastorTensorWithScalar( Tensor33d( Spatial3D::I ),
+                                                                                        I1 ) -
+                                 C;
 
     // NOTE: perturb only the (i,j) entry, leaving (j,i) at its original value -- this
     // reproduces the naive component-wise partial derivative that "I1*I - C" represents.
@@ -450,9 +450,9 @@ void testIsochoricFlowAndRelaxationSplit( const PropsVariant& variant )
 
   const auto& p = variant.props;
 
-  Tensor33d devHold    = Marmot::deviatoric( tauHold );
+  Tensor33d devHold    = Marmot::Math::Tensors::deviatoric( tauHold );
   Tensor33d tauA_alone = combinedStress( Fend, int( p[0] ), p[3], p[4], p[5], p[1] );
-  Tensor33d devA_alone = Marmot::deviatoric( tauA_alone );
+  Tensor33d devA_alone = Marmot::Math::Tensors::deviatoric( tauA_alone );
   Tensor33d devDiff    = devHold - devA_alone;
   double    relDiff    = sqrt( Fastor::inner( devDiff, devDiff ) ) / sqrt( Fastor::inner( devA_alone, devA_alone ) );
 
@@ -577,16 +577,12 @@ void testIsotropy( const PropsVariant& variant )
 // non-increasing (no overshoot) during the subsequent relaxation hold.
 void testUniaxialRelaxationWithMPSolver( const PropsVariant& variant )
 {
-  using namespace Marmot::Solvers;
 
-  auto        solveropts = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
+  auto        solveropts = MaterialPointSolverFiniteStrain::SolverOptions();
   std::string matName    = "BERGSTROMBOYCE";
-  auto        solver     = MarmotMaterialPointSolverFiniteStrain( matName,
-                                                       variant.props.data(),
-                                                       variant.props.size(),
-                                                       solveropts );
+  auto solver = MaterialPointSolverFiniteStrain( matName, variant.props.data(), variant.props.size(), solveropts );
 
-  MarmotMaterialPointSolverFiniteStrain::Step rampStep;
+  MaterialPointSolverFiniteStrain::Step rampStep;
   rampStep.gradUIncrementTarget                = Tensor33d( 0.0 );
   rampStep.gradUIncrementTarget( 0, 0 )        = 0.1;
   rampStep.stressIncrementTarget               = Tensor33d( 0.0 );
@@ -601,13 +597,13 @@ void testUniaxialRelaxationWithMPSolver( const PropsVariant& variant )
   rampStep.dTMin                               = 0.01;
   solver.addStep( rampStep );
 
-  MarmotMaterialPointSolverFiniteStrain::Step holdStep = rampStep;
-  holdStep.gradUIncrementTarget( 0, 0 )                = 0.0;
-  holdStep.timeStart                                   = 1.0;
-  holdStep.timeEnd                                     = 100.0;
-  holdStep.dTStart                                     = 1.0;
-  holdStep.dTMax                                       = 10.0;
-  holdStep.dTMin                                       = 0.1;
+  MaterialPointSolverFiniteStrain::Step holdStep = rampStep;
+  holdStep.gradUIncrementTarget( 0, 0 )          = 0.0;
+  holdStep.timeStart                             = 1.0;
+  holdStep.timeEnd                               = 100.0;
+  holdStep.dTStart                               = 1.0;
+  holdStep.dTMax                                 = 10.0;
+  holdStep.dTMin                                 = 0.1;
   solver.addStep( holdStep );
 
   solver.solve();

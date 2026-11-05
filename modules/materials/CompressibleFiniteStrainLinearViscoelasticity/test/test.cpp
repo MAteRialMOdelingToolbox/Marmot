@@ -8,9 +8,9 @@
 #include <string>
 
 using namespace Marmot::Testing;
-using namespace Marmot::Solvers;
-using namespace Marmot::FastorStandardTensors;
-using namespace Marmot::FastorIndices;
+using namespace Marmot::Materials;
+using namespace Marmot::Math::Tensors::FastorTensors;
+using namespace Marmot::Math::Tensors::FastorIndices;
 using namespace Marmot::ContinuumMechanics;
 
 // -----------------------------------------------------------------------
@@ -31,9 +31,9 @@ using namespace Marmot::ContinuumMechanics;
 // found to have a pre-existing, unrelated bug in the shared d3f_dT3 autodiff
 // utility (returns an incorrectly symmetrized off-diagonal/shear block, e.g.
 // d2Psi/dC_01dC_01=0 with d2Psi/dC_01dC_10=2x the correct value, verified
-// directly against the fully-analytic SecondOrderDerived::standardNeoHooke on
+// directly against the fully-analytic SecondOrder::standardNeoHooke on
 // the same potential) -- previously never triggered because NeoHooke used to
-// bypass d3f_dT3 entirely via its own analytic ThirdOrderDerived::standardNeoHooke,
+// bypass d3f_dT3 entirely via its own analytic ThirdOrder::standardNeoHooke,
 // and no other base's tests combined onlyShearCreep=0 with an actual nMaxwell>=1
 // relaxation exercising that inverted compliance. Out of scope to fix here.
 static std::vector< double > getElasticNeoHookeProps()
@@ -69,22 +69,23 @@ static std::vector< double > getElasticPenceGouNeoHookeProps()
 }
 
 // Helper to create a single-step deformation solver
-static MarmotMaterialPointSolverFiniteStrain makeSolver( const std::string& matName, std::vector< double >& matProps )
+static Marmot::Materials::MaterialPointSolverFiniteStrain makeSolver( const std::string&     matName,
+                                                                      std::vector< double >& matProps )
 {
-  auto solveropts = MarmotMaterialPointSolverFiniteStrain::SolverOptions();
-  return MarmotMaterialPointSolverFiniteStrain( matName,
-                                                matProps.data(),
-                                                static_cast< int >( matProps.size() ),
-                                                solveropts );
+  auto solveropts = Marmot::Materials::MaterialPointSolverFiniteStrain::SolverOptions();
+  return Marmot::Materials::MaterialPointSolverFiniteStrain( matName,
+                                                             matProps.data(),
+                                                             static_cast< int >( matProps.size() ),
+                                                             solveropts );
 }
 
 // Apply a single displacement-controlled step
-static MarmotMaterialPointSolverFiniteStrain::Step makeStep( const Tensor33d& gradUIncrement,
-                                                             double           timeStart,
-                                                             double           timeEnd,
-                                                             double           dT )
+static Marmot::Materials::MaterialPointSolverFiniteStrain::Step makeStep( const Tensor33d& gradUIncrement,
+                                                                          double           timeStart,
+                                                                          double           timeEnd,
+                                                                          double           dT )
 {
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  Marmot::Materials::MaterialPointSolverFiniteStrain::Step step;
   step.gradUIncrementTarget        = gradUIncrement;
   step.stressIncrementTarget       = Tensor33d( 0.0 );
   step.isGradUComponentControlled  = Tensor33t< bool >( true );
@@ -348,10 +349,10 @@ void testArrudaBoyceMatchesSharedPotential()
   solver.solve();
   Tensor33d tau = solver.getHistory().back().stress;
 
-  const Tensor33d C = Marmot::ContinuumMechanics::DeformationMeasures::rightCauchyGreen( F );
+  const Tensor33d C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
   double          psiIso;
   Tensor33d       dPsiIso_dC;
-  std::tie( psiIso, dPsiIso_dC ) = Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::
+  std::tie( psiIso, dPsiIso_dC ) = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
     ArrudaBoyce8ChainPotential< double >( C, mu, lambdaL );
 
   const double    lnDetC     = log( Fastor::determinant( C ) );
@@ -369,7 +370,7 @@ void testArrudaBoyceMatchesSharedPotential()
 
 // Test I-10: F=I gives zero Kirchhoff stress for elastic PenceGouNeoHooke (exercises the hyperelasticBase branches
 // of computeEnergyDensityAndDerivatives other than the default NeoHooke one, e.g. the third-derivative computation
-// via AutomaticDifferentiation::ThirdOrder::d3f_dT3)
+// via Marmot::Math::Differentiation::Automatic::ThirdOrder::d3f_dT3)
 void testUndeformedResponsePenceGouNeoHooke()
 {
   const std::string matName  = "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY";
@@ -386,7 +387,8 @@ void testUndeformedResponsePenceGouNeoHooke()
 }
 
 // Test I-11: Triaxial stretch for PenceGouNeoHooke matches an independently computed reference (PK2 = 2*dPsi/dC via
-// EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB, converted to Kirchhoff stress)
+// Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB, converted to
+// Kirchhoff stress)
 void testTriaxialResponsePenceGouNeoHookeMatchesAnalytical()
 {
   const std::string matName  = "COMPRESSIBLEFINITESTRAINLINEARVISCOELASTICITY";
@@ -405,11 +407,14 @@ void testTriaxialResponsePenceGouNeoHookeMatchesAnalytical()
   const double K = matProps[2];
   const double G = matProps[3];
   Tensor33d    F = gradU + Spatial3D::I;
-  Tensor33d    C = DeformationMeasures::rightCauchyGreen( F );
+  Tensor33d    C = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( F );
 
-  auto [psi, dPsi_dC]    = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( C, K, G );
-  Tensor33d PK2          = 2. * dPsi_dC;
-  Tensor33d stressTarget = StressMeasures::KirchhoffStressFromPK2( PK2, F );
+  auto [psi,
+        dPsi_dC] = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB( C,
+                                                                                                                   K,
+                                                                                                                   G );
+  Tensor33d PK2  = 2. * dPsi_dC;
+  Tensor33d stressTarget = Marmot::ContinuumMechanics::StressMeasures::KirchhoffStressFromPK2( PK2, F );
 
   throwExceptionOnFailure( checkIfEqual( finalStress, stressTarget, 1e-4 ),
                            "I-11: Triaxial PenceGouNeoHooke response doesn't match the analytical reference in " +

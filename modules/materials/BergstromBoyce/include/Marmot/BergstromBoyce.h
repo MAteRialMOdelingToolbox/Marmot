@@ -38,10 +38,6 @@
 
 namespace Marmot::Materials {
 
-  using namespace Fastor;
-  using namespace FastorStandardTensors;
-  using namespace FastorIndices;
-
   /**
    * @class Marmot::Materials::BergstromBoyce
    * @brief Classical Bergström-Boyce finite-strain viscoelastic-viscoplastic model.
@@ -76,14 +72,14 @@ namespace Marmot::Materials {
    *   \f$\Psi_{\rm iso}=C_{10}(\bar I_1-3)+C_{01}(\bar I_2-3)\f$
    * - @b ArrudaBoyce (coefficients 1,2 = \f$\mu,\lambda_L\f$, coefficient 3 unused):
    *   isochoric 8-chain potential from
-   *   Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::ArrudaBoyce8ChainPotential
+   *   Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::ArrudaBoyce8ChainPotential
    *   (shared with CompressibleFiniteStrainLinearViscoelasticity); reduces exactly
    *   to #NeoHooke's isochoric part as \f$\lambda_L\to\infty\f$ (both being
    *   functions of the same isochoric \f$\bar I_1\f$ now).
    *
    * All four isochoric parts and the shared volumetric term are themselves shared
    * with CompressibleFiniteStrainLinearViscoelasticity via
-   * Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived.
+   * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder.
    *
    * @par Material parameters
    * - @b #hyperelasticBase -- 0 = NeoHooke, 1 = Yeoh, 2 = MooneyRivlin, 3 = ArrudaBoyce
@@ -105,9 +101,19 @@ namespace Marmot::Materials {
    * - @b Fv -- viscous deformation gradient of network B
    * - @b FvC -- viscous deformation gradient of network C (if present)
    */
-  class BergstromBoyce : public MarmotMaterialFiniteStrain {
+  class BergstromBoyce : public Marmot::Materials::MaterialFiniteStrain {
   public:
-    using MarmotMaterialFiniteStrain::MarmotMaterialFiniteStrain;
+    template < typename T >
+    using Tensor33t = Marmot::Math::Tensors::FastorTensors::Tensor33t< T >;
+    template < typename T >
+    using Tensor3333t = Marmot::Math::Tensors::FastorTensors::Tensor3333t< T >;
+    using Tensor33d   = Marmot::Math::Tensors::FastorTensors::Tensor33d;
+    using Tensor3333d = Marmot::Math::Tensors::FastorTensors::Tensor3333d;
+
+    template < typename T >
+    using VectorXt = Marmot::Math::VectorXt< T >;
+
+    using Marmot::Materials::MaterialFiniteStrain::MaterialFiniteStrain;
 
     /// @brief Selectable hyperelastic base potential for both networks.
     enum HyperelasticBase { NeoHooke = 0, Yeoh = 1, MooneyRivlin = 2, ArrudaBoyce = 3 };
@@ -201,7 +207,7 @@ namespace Marmot::Materials {
     {
       const int minPropsWithDensity = hasNetworkC ? 20 : 13;
       if ( this->nMaterialProperties < minPropsWithDensity ) {
-        throw std::runtime_error( std::string( MakeString()
+        throw std::runtime_error( std::string( Marmot::Utilities::MakeString()
                                                << __PRETTY_FUNCTION__ << ": No density given! nMaterialProperties < "
                                                << minPropsWithDensity << "." ) );
       }
@@ -224,19 +230,19 @@ namespace Marmot::Materials {
      *   \qquad \bar I_1 = I_1 (\det\boldsymbol C)^{-1/3}
      * \f]
      * (isochoric part shared with CompressibleFiniteStrainLinearViscoelasticity via
-     * Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::NeoHookePotential,
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::NeoHookePotential,
      * volumetric part shared via
-     * Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::VolumetricPenaltyPotential).
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::VolumetricPenaltyPotential).
      */
     template < typename T >
     std::tuple< T, Tensor33t< T > > neoHookePotential( const Tensor33t< T >& C,
                                                        const double          mu,
                                                        const double          kappa ) const
     {
-      auto [psiIso,
-            dPsiIso_dC] = ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::NeoHookePotential< T >( C,
-                                                                                                                 mu );
-      auto [psiVol, dPsiVol_dC] = ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::
+      using namespace Fastor;
+      auto [psiIso, dPsiIso_dC] = ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::NeoHookePotential<
+        T >( C, mu );
+      auto [psiVol, dPsiVol_dC] = ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
         VolumetricPenaltyPotential< T >( C, kappa );
 
       return { psiIso + psiVol, evaluate( dPsiIso_dC + dPsiVol_dC ) };
@@ -257,9 +263,9 @@ namespace Marmot::Materials {
      *   \Psi(\boldsymbol C) = C_{10}(\bar I_1-3) + C_{20}(\bar I_1-3)^2 + C_{30}(\bar I_1-3)^3
      *                       + \frac{\kappa}{8}(\ln\det\boldsymbol C)^2, \qquad \bar I_1 = I_1 (\det\boldsymbol
      * C)^{-1/3} \f] (isochoric part shared with CompressibleFiniteStrainLinearViscoelasticity via
-     * Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::YeohPotential,
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::YeohPotential,
      * volumetric part shared via
-     * Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::VolumetricPenaltyPotential).
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::VolumetricPenaltyPotential).
      */
     template < typename T >
     std::tuple< T, Tensor33t< T > > yeohPotential( const Tensor33t< T >& C,
@@ -268,12 +274,13 @@ namespace Marmot::Materials {
                                                    const double          C30,
                                                    const double          kappa ) const
     {
+      using namespace Fastor;
       auto [psiIso,
-            dPsiIso_dC]         = ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::YeohPotential< T >( C,
-                                                                                                             C10,
-                                                                                                             C20,
-                                                                                                             C30 );
-      auto [psiVol, dPsiVol_dC] = ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::
+            dPsiIso_dC] = ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::YeohPotential< T >( C,
+                                                                                                                  C10,
+                                                                                                                  C20,
+                                                                                                                  C30 );
+      auto [psiVol, dPsiVol_dC] = ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
         VolumetricPenaltyPotential< T >( C, kappa );
 
       return { psiIso + psiVol, evaluate( dPsiIso_dC + dPsiVol_dC ) };
@@ -296,9 +303,9 @@ namespace Marmot::Materials {
      *   I_2 = \frac{1}{2}\left(I_1^2 - {\rm tr}(\boldsymbol C^2)\right)
      * \f]
      * (isochoric part shared with CompressibleFiniteStrainLinearViscoelasticity via
-     * Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::MooneyRivlinPotential,
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::MooneyRivlinPotential,
      * volumetric part shared via
-     * Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::VolumetricPenaltyPotential).
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::VolumetricPenaltyPotential).
      */
     template < typename T >
     std::tuple< T, Tensor33t< T > > mooneyRivlinPotential( const Tensor33t< T >& C,
@@ -306,9 +313,10 @@ namespace Marmot::Materials {
                                                            const double          C01,
                                                            const double          kappa ) const
     {
-      auto [psiIso, dPsiIso_dC] = ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::MooneyRivlinPotential<
-        T >( C, C10, C01 );
-      auto [psiVol, dPsiVol_dC] = ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::
+      using namespace Fastor;
+      auto [psiIso, dPsiIso_dC] = ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
+        MooneyRivlinPotential< T >( C, C10, C01 );
+      auto [psiVol, dPsiVol_dC] = ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
         VolumetricPenaltyPotential< T >( C, kappa );
 
       return { psiIso + psiVol, evaluate( dPsiIso_dC + dPsiVol_dC ) };
@@ -317,7 +325,7 @@ namespace Marmot::Materials {
     /**
      * @brief Arruda-Boyce 8-chain potential (isochoric part, shared with
      * CompressibleFiniteStrainLinearViscoelasticity via
-     * Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::ArrudaBoyce8ChainPotential)
+     * Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::ArrudaBoyce8ChainPotential)
      * plus this material's own \f$\frac{\kappa}{8}(\ln\det\boldsymbol C)^2\f$
      * volumetric term.
      * @tparam T Scalar type (double, complex).
@@ -346,9 +354,10 @@ namespace Marmot::Materials {
                                                           const double          lambdaL,
                                                           const double          kappa ) const
     {
-      auto [psiIso, dPsiIso_dC] = ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::
+      using namespace Fastor;
+      auto [psiIso, dPsiIso_dC] = ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
         ArrudaBoyce8ChainPotential< T >( C, mu, lambdaL );
-      auto [psiVol, dPsiVol_dC] = ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::
+      auto [psiVol, dPsiVol_dC] = ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
         VolumetricPenaltyPotential< T >( C, kappa );
 
       return { psiIso + psiVol, evaluate( dPsiIso_dC + dPsiVol_dC ) };
@@ -406,7 +415,11 @@ namespace Marmot::Materials {
                                                               const double          c2_,
                                                               const double          c3_ ) const
     {
-      const Tensor33t< T > Ce          = ContinuumMechanics::DeformationMeasures::rightCauchyGreen( Fe );
+      using namespace Fastor;
+      using namespace Marmot::Math::Tensors::FastorIndices;
+      using to_IJ = Fastor::OIndex< I_, J_ >;
+
+      const Tensor33t< T > Ce          = ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( Fe );
       const T              I1          = trace( Ce );
       const T              lambdaChain = sqrt( I1 / T( 3.0 ) );
 
@@ -415,7 +428,7 @@ namespace Marmot::Materials {
       std::tie( psi, dPsi_dCe ) = hyperelasticPotential( Ce, hyperelasticBase, p1, p2, p3, kappa );
 
       const Tensor33t< T > Mandel = 2. * einsum< IK, KJ, to_IJ >( Ce, dPsi_dCe );
-      const Tensor33t< T > devS   = deviatoric( Mandel );
+      const Tensor33t< T > devS   = Marmot::Math::Tensors::deviatoric( Mandel );
 
       // Regularize the RESULT of sqrt, not its argument: at the undeformed reference
       // configuration (devS=0), a complex-step perturbation makes inner(devS,devS)
@@ -427,10 +440,10 @@ namespace Marmot::Materials {
       // Newton solve for stress-controlled steps starting from a fresh, undeformed
       // state (verified: this was traced back to exactly this line during development).
       T normDev = sqrt( Fastor::inner( devS, devS ) );
-      if ( Math::makeReal( normDev ) == 0.0 )
+      if ( Math::Tensors::makeReal( normDev ) == 0.0 )
         normDev += 1e-15;
 
-      const Tensor33t< T > N   = multiplyFastorTensorWithScalar( devS, T( 1.0 ) / normDev );
+      const Tensor33t< T > N   = Math::Tensors::multiplyFastorTensorWithScalar( devS, T( 1.0 ) / normDev );
       T                    rho = normDev;
 
       const T stretchTerm = lambdaChain - T( 1.0 );
@@ -457,7 +470,7 @@ namespace Marmot::Materials {
       // those are handled by the existing per-residual exception fallback
       // during calibration, not by this floor.
       constexpr double stretchTermFloor   = 1e-2;
-      const double     stretchTermReal    = Math::makeReal( stretchTerm );
+      const double     stretchTermReal    = Math::Tensors::makeReal( stretchTerm );
       const T          stretchTermClamped = stretchTermReal > stretchTermFloor
                                               ? stretchTerm
                                               : stretchTerm + T( stretchTermFloor - stretchTermReal );
@@ -476,12 +489,6 @@ namespace Marmot::Materials {
       return computeFlowQuantities( Fe, kappaB, B1, B2, B3, c1, c2, c3 );
     }
 
-  private:
-    // helper alias needed inside mooneyRivlinPotential/computeFlowQuantities (declared here since
-    // class-scope 'using' of a local OIndex alias must be visible to all member templates)
-    using to_IJ = Fastor::OIndex< I_, J_ >;
-
-  public:
     /**
      * @brief Residual vector for the return mapping of a viscous network (templated scalar type).
      * @details Vector X has 10 unknowns: 9 for \f$\boldsymbol F^{\rm e}\f$ (flattened), 1 for \f$\Delta\gamma\f$.
@@ -510,6 +517,8 @@ namespace Marmot::Materials {
                                          const double         c2_,
                                          const double         c3_ ) const
     {
+      using namespace Fastor;
+      using namespace Marmot::Math::Tensors::FastorIndices;
       using mV9t = Eigen::Map< const Eigen::Matrix< T, 9, 1 > >;
       VectorXt< T > R( 10 );
 
@@ -520,11 +529,11 @@ namespace Marmot::Materials {
       T              rho, gammaDot;
       std::tie( N, rho, gammaDot ) = computeFlowQuantities( Fe, kappa, p1, p2, p3, c1_, c2_, c3_ );
 
-      const Tensor33t< T > dGp = multiplyFastorTensorWithScalar( N, dGamma );
-      const Tensor33t< T > dFv = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::exponentialMap( dGp );
+      const Tensor33t< T > dGp = Math::Tensors::multiplyFastorTensorWithScalar( N, dGamma );
+      const Tensor33t< T > dFv = ContinuumMechanics::Plasticity::FlowIntegration::exponentialMap( dGp );
 
       VectorXt< T > aux = mV9t( Tensor33t< T >( einsum< iJ, JK >( Fe, dFv ) ).data() ) -
-                          mV9t( fastorTensorFromDoubleTensor< T >( FeTrial ).data() );
+                          mV9t( Math::Tensors::fastorTensorFromDoubleTensor< T >( FeTrial ).data() );
 
       for ( int i = 0; i < 9; ++i )
         R( i ) = aux( i );

@@ -8,3 +8,4 @@ Features
   features/solvers
   features/materials
   features/elements
+  features/meshfree

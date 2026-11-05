@@ -3,8 +3,8 @@
 
 int main()
 {
-  using namespace Marmot::Solvers;
-  using namespace Marmot::FastorStandardTensors;
+  using namespace Marmot::Materials;
+  using namespace Marmot::Math::Tensors::FastorTensors;
 
   // 1) Define the material model
   std::string materialName = "COMPRESSIBLENEOHOOKE";
@@ -12,13 +12,13 @@ int main()
   int         nProps       = 2;
 
   // 2) Configure solver options
-  MarmotMaterialPointSolverFiniteStrain::SolverOptions options;
+  MaterialPointSolverFiniteStrain::SolverOptions options;
   options.maxIterations       = 25;
   options.residualTolerance   = 1e-10;
   options.correctionTolerance = 1e-10;
 
   // 3) Create solver instance
-  MarmotMaterialPointSolverFiniteStrain solver( materialName, properties, nProps, options );
+  MaterialPointSolverFiniteStrain solver( materialName, properties, nProps, options );
 
   // 4) Set the initial state
   int             nSV       = solver.getNumberOfStateVariables();
@@ -28,7 +28,7 @@ int main()
   solver.setInitialState( Tensor33d( 0.0 ), initialSV );
 
   // 5) Define a loading step (Uniaxial extension in 11-direction)
-  MarmotMaterialPointSolverFiniteStrain::Step step;
+  MaterialPointSolverFiniteStrain::Step step;
   step.timeStart = 0.0;
   step.timeEnd   = 1.0;
   step.dTStart   = 0.1;

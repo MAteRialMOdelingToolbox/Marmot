@@ -5,8 +5,8 @@ Gradient-enhanced Hughes-Winget wrapper
 
 The gradient-enhanced sibling of the :ref:`Hughes-Winget wrapper <hughesWingetWrapper>`. It makes a
 small-strain **gradient-enhanced** (implicit-gradient / nonlocal damage) material --
-``MarmotMaterialGeneralGradientEnhancedHypoElastic<1>`` -- usable wherever a
-``MarmotMaterialGradientEnhancedFiniteStrain`` is expected: the gradient-enhanced updated-Lagrangian
+``Marmot::Materials::MaterialGradientEnhancedHypoElastic<1>`` -- usable wherever a
+``Marmot::Materials::MaterialGradientEnhancedFiniteStrain`` is expected: the gradient-enhanced updated-Lagrangian
 element and the gradient-enhanced meshfree particle and material point.
 
 It works the same way as its local sibling -- the wrapped material is driven by the objective strain
@@ -19,7 +19,7 @@ a total-strain law.
 
 .. note::
 
-   ``MarmotMaterialGradientEnhancedFiniteStrain``, the interface this wrapper implements, is itself a
+   ``Marmot::Materials::MaterialGradientEnhancedFiniteStrain``, the interface this wrapper implements, is itself a
    **reconstruction**: the original header was written by the author of the gradient-enhanced
    finite-strain material point / particle / displacement element, but was never published to any
    repository. Everything those consumers observe (member names, struct shapes, call signatures) is
@@ -58,11 +58,11 @@ Add one line to that material's own ``<Name>Registration.cpp``:
 
   #include "Marmot/MarmotMaterialGradientEnhancedHughesWinget.h"
   ...
-  const static bool GCDPHughesWingetIsRegistered = MarmotMaterialGradientEnhancedFiniteStrainFactory::
+  const static bool GCDPHughesWingetIsRegistered = Marmot::Registry::MaterialGradientEnhancedFiniteStrainFactory::
     registerMaterial< GradientEnhancedHughesWingetWrapper< GCDPModel > >( "GCDP/HUGHES-WINGET" );
 
 Before doing so for a new material, read the three limitations below -- they are the reason not every
-``MarmotMaterialGeneralGradientEnhancedHypoElastic<1>`` model should be registered this way.
+``Marmot::Materials::MaterialGradientEnhancedHypoElastic<1>`` model should be registered this way.
 
 The nonlocal field across the two interfaces
 ---------------------------------------------

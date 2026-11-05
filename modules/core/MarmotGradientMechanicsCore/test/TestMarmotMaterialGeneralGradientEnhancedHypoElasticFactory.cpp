@@ -6,7 +6,6 @@
 
 using namespace Marmot;
 using namespace Marmot::Testing;
-using namespace MarmotLibrary;
 
 namespace {
 
@@ -15,9 +14,9 @@ namespace {
   // the factory itself is a general template over nNonlocalVariables, explicitly instantiated for
   // 1, 2 and 6, so this is genuine, reachable library code, not dead code.
   template < int nNonlocalVariables >
-  class DummyMaterial : public MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables > {
+  class DummyMaterial : public Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables > {
   public:
-    using Base = MarmotMaterialGeneralGradientEnhancedHypoElastic< nNonlocalVariables >;
+    using Base = Marmot::Materials::MaterialGradientEnhancedHypoElastic< nNonlocalVariables >;
     using Base::Base;
 
     void computeStress( typename Base::response&,
@@ -47,10 +46,10 @@ void testCreateMaterialN1ThrowsForUnregisteredName()
 {
   bool threw = false;
   try {
-    MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< 1 >::createMaterial( "DEFINITELY_NOT_REGISTERED",
-                                                                                  nullptr,
-                                                                                  0,
-                                                                                  1 );
+    Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory< 1 >::createMaterial( "DEFINITELY_NOT_REGISTERED",
+                                                                                       nullptr,
+                                                                                       0,
+                                                                                       1 );
   }
   catch ( const std::invalid_argument& ) {
     threw = true;
@@ -67,14 +66,14 @@ void testCreateMaterialN1ThrowsForUnregisteredName()
 // ---------------------------------------------------------------------------------------------
 void testRegisterAndCreateMaterialN2()
 {
-  MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< 2 >::registerMaterial< DummyMaterial< 2 > >(
+  Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory< 2 >::registerMaterial< DummyMaterial< 2 > >(
     "TESTDUMMYMATERIALN2" );
 
-  std::unique_ptr< MarmotMaterialGeneralGradientEnhancedHypoElastic< 2 > > mat(
-    MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< 2 >::createMaterial( "TESTDUMMYMATERIALN2",
-                                                                                  nullptr,
-                                                                                  0,
-                                                                                  7 ) );
+  std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedHypoElastic< 2 > > mat(
+    Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory< 2 >::createMaterial( "TESTDUMMYMATERIALN2",
+                                                                                       nullptr,
+                                                                                       0,
+                                                                                       7 ) );
 
   throwExceptionOnFailure( mat != nullptr && mat->materialNumber == 7,
                            "createMaterial<2>() did not return a correctly constructed instance in " +
@@ -85,10 +84,10 @@ void testCreateMaterialN2ThrowsForUnregisteredName()
 {
   bool threw = false;
   try {
-    MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< 2 >::createMaterial( "SOME_OTHER_UNKNOWN_NAME",
-                                                                                  nullptr,
-                                                                                  0,
-                                                                                  1 );
+    Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory< 2 >::createMaterial( "SOME_OTHER_UNKNOWN_NAME",
+                                                                                       nullptr,
+                                                                                       0,
+                                                                                       1 );
   }
   catch ( const std::invalid_argument& ) {
     threw = true;
@@ -105,14 +104,14 @@ void testCreateMaterialN2ThrowsForUnregisteredName()
 // ---------------------------------------------------------------------------------------------
 void testRegisterAndCreateMaterialN6()
 {
-  MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< 6 >::registerMaterial< DummyMaterial< 6 > >(
+  Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory< 6 >::registerMaterial< DummyMaterial< 6 > >(
     "TESTDUMMYMATERIALN6" );
 
-  std::unique_ptr< MarmotMaterialGeneralGradientEnhancedHypoElastic< 6 > > mat(
-    MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< 6 >::createMaterial( "TESTDUMMYMATERIALN6",
-                                                                                  nullptr,
-                                                                                  0,
-                                                                                  3 ) );
+  std::unique_ptr< Marmot::Materials::MaterialGradientEnhancedHypoElastic< 6 > > mat(
+    Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory< 6 >::createMaterial( "TESTDUMMYMATERIALN6",
+                                                                                       nullptr,
+                                                                                       0,
+                                                                                       3 ) );
 
   throwExceptionOnFailure( mat != nullptr && mat->materialNumber == 3,
                            "createMaterial<6>() did not return a correctly constructed instance in " +
@@ -123,10 +122,10 @@ void testCreateMaterialN6ThrowsForUnregisteredName()
 {
   bool threw = false;
   try {
-    MarmotMaterialGeneralGradientEnhancedHypoElasticFactory< 6 >::createMaterial( "SOME_OTHER_UNKNOWN_NAME",
-                                                                                  nullptr,
-                                                                                  0,
-                                                                                  1 );
+    Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory< 6 >::createMaterial( "SOME_OTHER_UNKNOWN_NAME",
+                                                                                       nullptr,
+                                                                                       0,
+                                                                                       1 );
   }
   catch ( const std::invalid_argument& ) {
     threw = true;

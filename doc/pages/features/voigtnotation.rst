@@ -51,7 +51,7 @@ For the 3D case the mapping between the tensor indices :math:`(i,j)` and the Voi
    \end{bmatrix}
 
 and is available in both directions as ``toVoigt<nDim>(i, j)`` and ``fromVoigt<nDim>(ij)`` in the
-namespace ``Marmot::ContinuumMechanics::TensorUtility::IndexNotation``. Prefer these helpers over
+namespace ``Marmot::Math::Tensors::IndexNotation``. Prefer these helpers over
 hard-coded indices — code written against them stays correct if the ordering ever changes.
 
 Stress and strain
@@ -115,8 +115,8 @@ using one-based matrix indices, i.e. entries ``(3,3)``, ``(4,4)`` and ``(5,5)`` 
 code. The corresponding compliance matrix holds :math:`1/G_{12}`, :math:`1/G_{13}` and
 :math:`1/G_{23}` in the same positions.
 
-Conversion to and from the full fourth order tensor is available as ``voigtToStiffness`` (Eigen),
-``voigtToStiffnessFastor`` (Fastor) and ``stiffnessToVoigt``. These populate
+Conversion to and from the full fourth order tensor is available as ``voigtToStiffness`` and
+``stiffnessToVoigt``. These populate
 
 .. math::
    \Cel_{ijkl} = \Cel^\mathrm{Voigt}_{\,\mathrm{toVoigt}(i,j)\,,\,\mathrm{toVoigt}(k,l)},
@@ -129,7 +129,7 @@ Coordinate transformations
 
 Because stress and strain use different shear scalings, they also require different transformation
 matrices under a change of basis. Both are built from a local coordinate system in
-``Marmot::ContinuumMechanics::VoigtNotation::Transformations``:
+``Marmot::ContinuumMechanics::Voigt::Transformations``:
 
 - ``transformationMatrixStressVoigt`` — for stress-like Voigt vectors
 - ``transformationMatrixStrainVoigt`` — for strain-like Voigt vectors; identical to the stress
@@ -177,7 +177,7 @@ and column 3 of the :math:`6\times6` tangent.
 Strain-displacement operators
 -----------------------------
 
-The B-operators in ``Marmot::FiniteElement`` produce strain vectors in exactly this ordering. For the
+The B-operators in ``Marmot::Discretizations::Elements`` produce strain vectors in exactly this ordering. For the
 3D case,
 
 .. math::

@@ -10,11 +10,11 @@ description: >-
 ## 1. Rules & Architecture
 - **In-Place State Variables**: Store **strictly path-dependent** variables via `stateLayout.add("name", size)`. Access by in-place reference `stateLayout.getAs<double&>(state.stateVars, "name")`.
 - **Early Exit on Zero Increments**: `if (dStrain.isZero(1e-14)) { dStress_dStrain = Cel; return; }`.
-- **Exceptions & Logging**: Throw `MarmotExceptions.h` (`StressUpdateFailed`, `SolverConvergenceFailed`). Log via `MarmotJournal::warningToMSG(...)`.
+- **Exceptions & Logging**: Throw `MarmotExceptions.h` (`Marmot::Utilities::StressUpdateFailed`, `Marmot::Utilities::SolverConvergenceFailed`). Log via `Marmot::Utilities::Journal::warningToMSG(...)`.
 - **Base Classes**:
-  - Small-strain: `MarmotMaterialHypoElastic` (`MarmotMaterialHypoElasticFactory`)
-  - Finite-strain: `MarmotMaterialFiniteStrain` (`MarmotMaterialFiniteStrainFactory`)
-  - Nonlocal: `MarmotMaterialGeneralGradientEnhancedHypoElastic` (`MarmotMaterialGeneralGradientEnhancedHypoElasticFactory`)
+  - Small-strain: `Marmot::Materials::MaterialHypoElastic` (`Marmot::Registry::MaterialHypoElasticFactory`)
+  - Finite-strain: `Marmot::Materials::MaterialFiniteStrain` (`Marmot::Registry::MaterialFiniteStrainFactory`)
+  - Nonlocal: `Marmot::Materials::MaterialGradientEnhancedHypoElastic` (`Marmot::Registry::MaterialGradientEnhancedHypoElasticFactory`)
 
 ---
 
@@ -31,16 +31,16 @@ namespace Marmot::Materials {
    * @class MyMaterial
    * @brief Linear elastic / plastic constitutive formulation.
    */
-  class MyMaterial : public MarmotMaterialHypoElastic {
+  class MyMaterial : public Marmot::Materials::MaterialHypoElastic {
   public:
-    using MarmotMaterialHypoElastic::MarmotMaterialHypoElastic;
+    using Marmot::Materials::MaterialHypoElastic::MarmotMaterialHypoElastic;
     MyMaterial( const double* materialProperties, int nMaterialProperties, int materialNumber );
     ~MyMaterial() override = default;
 
     double getDensity( const double* stateVars ) const override;
     void computeStress( state3D&                state,
-                        Marmot::Matrix6d&       dStress_dStrain,
-                        const Marmot::Vector6d& dStrain,
+                        Marmot::Math::Matrix6d&       dStress_dStrain,
+                        const Marmot::Math::Vector6d& dStrain,
                         const timeInfo&         timeInfo ) const override;
 
   private:
@@ -64,10 +64,10 @@ namespace Marmot::Materials {
 namespace Marmot::Materials {
 
   MyMaterial::MyMaterial( const double* props, int nProps, int label )
-    : MarmotMaterialHypoElastic( props, nProps, label )
+    : Marmot::Materials::MaterialHypoElastic( props, nProps, label )
   {
     if ( this->nMaterialProperties < 2 ) {
-      throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": Insufficient material properties." );
+      throw std::runtime_error( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": Insufficient material properties." );
     }
     m_E  = this->materialProperties[0];
     m_nu = this->materialProperties[1];
@@ -78,11 +78,11 @@ namespace Marmot::Materials {
 
   double MyMaterial::getDensity( const double* /*stateVars*/ ) const
   {
-    if ( this->nMaterialProperties < 3 ) throw std::runtime_error( MakeString() << __PRETTY_FUNCTION__ << ": No density." );
+    if ( this->nMaterialProperties < 3 ) throw std::runtime_error( Marmot::Utilities::MakeString() << __PRETTY_FUNCTION__ << ": No density." );
     return this->materialProperties[2];
   }
 
-  void MyMaterial::computeStress( state3D& state, Matrix6d& dStress_dStrain, const Vector6d& dStrain, const timeInfo& /*tInfo*/ ) const
+  void MyMaterial::computeStress( state3D& state, Marmot::Math::Matrix6d& dStress_dStrain, const Marmot::Math::Vector6d& dStrain, const timeInfo& /*tInfo*/ ) const
   {
     const auto Cel = ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( m_E, m_nu );
     if ( dStrain.isZero( 1e-14 ) ) {
@@ -105,9 +105,9 @@ namespace Marmot::Materials {
 #include "Marmot/MyMaterial.h"
 #include "Marmot/MarmotMaterialHypoElasticFactory.h"
 
-namespace Marmot::Materials::Registration {
-  using namespace MarmotLibrary;
-  const static bool registered = MarmotMaterialHypoElasticFactory::registerMaterial< MyMaterial >( "MYMATERIAL" );
+namespace {
+  using namespace Marmot::Materials;
+  const static bool registered = Marmot::Registry::MaterialHypoElasticFactory::registerMaterial< MyMaterial >( "MYMATERIAL" );
 }
 ```
 

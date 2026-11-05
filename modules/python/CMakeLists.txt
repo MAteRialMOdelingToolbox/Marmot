@@ -24,6 +24,12 @@ nanobind_add_module(_marmot
     src/bind_solver_hypo_elastic.cpp
 )
 
+# nanobind v1.9.2 and the arg_data[1] size clamp of patch_nanobind.py make GCC/Clang report -Warray-bounds inside
+# nanobind's own sources, which are not under our control.
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang" AND TARGET nanobind-static)
+  target_compile_options(nanobind-static PRIVATE -Wno-array-bounds)
+endif()
+
 # Link against the Marmot C++ library
 target_link_libraries(_marmot PRIVATE Marmot)
 

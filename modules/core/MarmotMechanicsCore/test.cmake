@@ -13,6 +13,9 @@ add_marmot_test("TestMarmotElasticity" "${CURR_TEST_SOURCE_DIR}/TestMarmotElasti
 # Tests for MarmotKelvinChain
 add_marmot_test("TestMarmotKelvinChain" "${CURR_TEST_SOURCE_DIR}/TestMarmotKelvinChain.cpp")
 
+# Tests for MarmotWiechert
+add_marmot_test("TestMarmotWiechert" "${CURR_TEST_SOURCE_DIR}/TestMarmotWiechert.cpp")
+
 # Tests for MarmotKinematics
 add_marmot_test("TestMarmotKinematics" "${CURR_TEST_SOURCE_DIR}/TestMarmotKinematics.cpp")
 
@@ -20,7 +23,7 @@ add_marmot_test("TestMarmotKinematics" "${CURR_TEST_SOURCE_DIR}/TestMarmotKinema
 add_marmot_test("TestMarmotLowerDimensionalStress" "${CURR_TEST_SOURCE_DIR}/TestMarmotLowerDimensionalStress.cpp")
 
 # Tests for MarmotLocalization
-add_marmot_test("TestMarmotLocalization" "${CURR_TEST_SOURCE_DIR}/TestMarmotLocalization.cpp")
+add_marmot_test("TestMarmotLocalization" "${CURR_TEST_SOURCE_DIR}/TestMarmotLocalization.cpp" REQUIRES VonMises)
 
 # Tests for MarmotPronySeries
 add_marmot_test("TestMarmotPronySeries" "${CURR_TEST_SOURCE_DIR}/TestMarmotPronySeries.cpp")
@@ -50,7 +53,16 @@ add_marmot_test("TestMarmotGeostaticStress" "${CURR_TEST_SOURCE_DIR}/TestMarmotG
 add_marmot_test("TestMarmotMaterialHypoElastic" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialHypoElastic.cpp")
 
 # Tests for MarmotMaterialHypoElasticFactory
-add_marmot_test("TestMarmotMaterialHypoElasticFactory" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialHypoElasticFactory.cpp")
+add_marmot_test("TestMarmotMaterialHypoElasticFactory" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialHypoElasticFactory.cpp" REQUIRES LinearElastic)
 
 # Tests for MarmotMaterialPointSolverHypoElastic
-add_marmot_test("TestMarmotMaterialPointSolverHypoElastic" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialPointSolverHypoElastic.cpp")
+add_marmot_test("TestMarmotMaterialPointSolverHypoElastic" "${CURR_TEST_SOURCE_DIR}/TestMarmotMaterialPointSolverHypoElastic.cpp" REQUIRES LinearElastic VonMises)
+
+# Tests for MarmotTesting
+add_marmot_test("TestMarmotTesting" "${CURR_TEST_SOURCE_DIR}/TestMarmotTesting.cpp" REQUIRES LinearElastic)
+
+# Tests for MarmotInterfaceMaterialHypoElastic
+add_marmot_test("TestMarmotInterfaceMaterialHypoElastic" "${CURR_TEST_SOURCE_DIR}/TestMarmotInterfaceMaterialHypoElastic.cpp")
+
+# Tests for MarmotMicroplane
+add_marmot_test("TestMarmotMicroplane" "${CURR_TEST_SOURCE_DIR}/TestMarmotMicroplane.cpp")

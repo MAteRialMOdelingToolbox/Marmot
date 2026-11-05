@@ -45,8 +45,8 @@ namespace Marmot::Materials {
    *   the bulk modulus \f$\kappa\f$ as the last entry (shared volumetric term
    *   \f$\Psi_{\rm vol}=\frac{\kappa}{8}(\ln\det\boldsymbol C)^2\f$ for every base except
    *   @c PenceGouNeoHooke, which uses its own \f$K,G\f$-based convention -- see
-   *   Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::VolumetricPenaltyPotential
-   *   and Marmot::ContinuumMechanics::EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB):
+   *   Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::VolumetricPenaltyPotential
+   *   and Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::PenceGouPotentialB):
    *   \f$\mu,\kappa\f$ for @c NeoHooke; \f$C_{10},C_{20},C_{30},\kappa\f$ for @c Yeoh;
    *   \f$C_{10},C_{01},\kappa\f$ for @c MooneyRivlin; \f$K,G\f$ for @c PenceGouNeoHooke;
    *   \f$\mu,\lambda_L,\kappa\f$ for @c ArrudaBoyce
@@ -59,9 +59,9 @@ namespace Marmot::Materials {
    * - @c S0_old - previous step stress-like internal variable used in viscoelastic update
    * - @c creepStateVars - internal variables for the generalized Maxwell chain
    */
-  class CompressibleFiniteStrainLinearViscoelasticity : public MarmotMaterialFiniteStrain {
+  class CompressibleFiniteStrainLinearViscoelasticity : public Marmot::Materials::MaterialFiniteStrain {
   public:
-    using MarmotMaterialFiniteStrain::MarmotMaterialFiniteStrain;
+    using Marmot::Materials::MaterialFiniteStrain::MaterialFiniteStrain;
 
     /**
      * @brief Construct a CompressibleFiniteStrainLinearViscoelasticity material.
@@ -125,10 +125,10 @@ namespace Marmot::Materials {
     const Eigen::Map< const Eigen::VectorXd > elasticProperties;
 
     /// @brief Generalized Maxwell model parameters.
-    const ContinuumMechanics::FiniteStrain::Viscoelasticity::MaxwellProperties maxwellProperties;
+    const ContinuumMechanics::Viscoelasticity::MaxwellProperties maxwellProperties;
 
     /// @brief Initial compliance tensor used for viscoelastic stress update.
-    FastorStandardTensors::Tensor3333d initialCompliance;
+    Marmot::Math::Tensors::FastorTensors::Tensor3333d initialCompliance;
 
     /// @brief Define the layout of persistent state variables.
     void initializeStateLayout()
@@ -144,10 +144,10 @@ namespace Marmot::Materials {
      * @return Tuple containing energy density and first, second and third derivatives.
      */
     std::tuple< double,
-                FastorStandardTensors::Tensor33d,
-                FastorStandardTensors::Tensor3333d,
-                FastorStandardTensors::Tensor333333d >
-    computeEnergyDensityAndDerivatives( const FastorStandardTensors::Tensor33d& C ) const;
+                Marmot::Math::Tensors::FastorTensors::Tensor33d,
+                Marmot::Math::Tensors::FastorTensors::Tensor3333d,
+                Marmot::Math::Tensors::FastorTensors::Tensor333333d >
+    computeEnergyDensityAndDerivatives( const Marmot::Math::Tensors::FastorTensors::Tensor33d& C ) const;
   };
 
 } // namespace Marmot::Materials

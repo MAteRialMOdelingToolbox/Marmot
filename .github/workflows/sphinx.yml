@@ -57,14 +57,14 @@ jobs:
         run: |
           git clone --branch V0.6.4 https://github.com/romeric/Fastor.git
           cd Fastor
-          cmake -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX .
+          cmake -DBUILD_TESTING=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX .
           make install
           cd ..
 
       - name: Building Marmot documentation
         shell: bash -l {0}
         run: |
-          python scripts/buildDocumentation.py
+          python scripts/buildDocumentation.py --werror
 
       - name: Upload documentation artifact
         if: github.event_name == 'pull_request'

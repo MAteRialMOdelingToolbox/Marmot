@@ -1,15 +1,11 @@
 #include "Marmot/GradientEnhancedFiniteStrainDruckerPrager.h"
 #include "Marmot/MarmotMaterialGradientEnhancedFiniteStrainFactory.h"
 
-namespace Marmot::Materials {
+namespace {
+  using namespace Marmot::Materials;
 
-  namespace Registration {
+  const static bool GradientEnhancedFiniteStrainDruckerPragerRegistered = Marmot::Registry::
+    MaterialGradientEnhancedFiniteStrainFactory::registerMaterial< GradientEnhancedFiniteStrainDruckerPrager >(
+      "GRADIENTENHANCEDFINITESTRAINDRUCKERPRAGER" );
 
-    using namespace MarmotLibrary;
-
-    const static bool
-      GradientEnhancedFiniteStrainDruckerPragerRegistered = MarmotMaterialGradientEnhancedFiniteStrainFactory::
-        registerMaterial< GradientEnhancedFiniteStrainDruckerPrager >( "GRADIENTENHANCEDFINITESTRAINDRUCKERPRAGER" );
-
-  } // namespace Registration
-} // namespace Marmot::Materials
+} // namespace

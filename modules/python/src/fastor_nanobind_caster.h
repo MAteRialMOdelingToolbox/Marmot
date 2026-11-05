@@ -24,7 +24,15 @@
  */
 #pragma once
 
+/* Fastor/Fastor.h ends with `#pragma warning( default : ... )`; scope it so it neither overrides the build's warning
+ * flags nor leaks into consumers. */
+#ifdef _MSC_VER
+#  pragma warning( push )
+#endif
 #include <Fastor/Fastor.h>
+#ifdef _MSC_VER
+#  pragma warning( pop )
+#endif
 #include <algorithm>
 #include <nanobind/nanobind.h>
 #include <nanobind/ndarray.h>
@@ -35,7 +43,7 @@ namespace nanobind::detail {
   template < typename T, size_t... Dims >
   struct type_caster< Fastor::Tensor< T, Dims... > > {
     using TensorType = Fastor::Tensor< T, Dims... >;
-    NB_TYPE_CASTER( TensorType, const_name( "numpy.ndarray[" ) + make_caster< T >::Name + const_name( "]" ) );
+    NB_TYPE_CASTER( TensorType, const_name( "numpy.ndarray[" ) + make_caster< T >::Name + const_name( "]" ) )
 
     bool from_python( handle src, uint8_t flags, cleanup_list* cleanup ) noexcept
     {

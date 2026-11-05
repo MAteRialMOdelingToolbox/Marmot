@@ -31,6 +31,7 @@
 #include "Marmot/MarmotMath.h"
 #include "Marmot/MarmotTypedefs.h"
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <utility>
 
@@ -58,8 +59,14 @@ namespace Marmot::Materials {
    * @f$ \eta = \frac{6\sin\phi}{\sqrt3\,(3-\sin\phi)} @f$, @f$ \xi = \frac{6\cos\phi}{\sqrt3\,(3-\sin\phi)} @f$,
    * @f$ \bar\eta @f$ as @f$ \eta @f$ with the dilatancy angle. Where the cone return does not exist (a trial state
    * beyond the apex), the state returns to the apex: by isotropy, @f$ \boldsymbol{F}^p @f$ is determined up to a
-   * rotation, so @f$ \boldsymbol{F}^e = J_e^{1/3}\boldsymbol{I} @f$ with the unknowns @f$ \{\ln J_e, \alpha\} @f$
-   * and @f$ \Delta\alpha = (\xi/\bar\eta)\,\Delta\varepsilon^p_v @f$.
+   * rotation, so @f$ \boldsymbol{F}^e = J_e^{1/3}\boldsymbol{R}^{\mathrm{trial}} @f$ (the elastic rotation of the trial
+   * state is kept, so that @f$ \boldsymbol{F}^p @f$ is objective) with the unknowns @f$ \{\ln J_e, \alpha\} @f$ and
+   * @f$ \Delta\alpha = (\xi/\bar\eta)\,\Delta\varepsilon^p_v @f$.
+   *
+   * The decision between the cone and the apex, and the starting point of the cone return, come from the return in
+   * the principal elastic log strains (principalResidual()), which is coaxial with the trial state and is posed with
+   * a signed deviatoric radius: its equations are smooth across the vertex, where those of the full return are
+   * singular, so that every trial state beyond the cone has a return, to the cone or to the apex.
    *
    * **Damage.** The local variable is the accumulated dilatant (volumetric) plastic strain,
    * @f$ \Delta\alpha_\mathrm{local} = \langle\Delta\varepsilon^p_v\rangle @f$ (on the cone
@@ -92,13 +99,13 @@ namespace Marmot::Materials {
    * The dissipation is cumulative: the incoming ConstitutiveResponse::dissipation is incremented by
    * @f$ (1-\omega)\,\boldsymbol{M}:\Delta\boldsymbol{\varepsilon}^p + \psi_\mathrm{eff}\,\Delta\omega @f$.
    */
-  class GradientEnhancedFiniteStrainDruckerPrager : public MarmotMaterialGradientEnhancedFiniteStrain {
+  class GradientEnhancedFiniteStrainDruckerPrager : public Marmot::Materials::MaterialGradientEnhancedFiniteStrain {
 
   public:
     template < typename T >
-    using Tensor33t    = FastorStandardTensors::Tensor33t< T >;
-    using Tensor33d    = FastorStandardTensors::Tensor33d;
-    using TensorMap33d = FastorStandardTensors::TensorMap33d;
+    using Tensor33t    = Marmot::Math::Tensors::FastorTensors::Tensor33t< T >;
+    using Tensor33d    = Marmot::Math::Tensors::FastorTensors::Tensor33d;
+    using TensorMap33d = Marmot::Math::Tensors::FastorTensors::TensorMap33d;
 
     /**
      * @brief Construct the material and validate its properties.
@@ -111,7 +118,7 @@ namespace Marmot::Materials {
                                                int           nMaterialProperties,
                                                int           materialNumber );
 
-    using MarmotMaterialGradientEnhancedFiniteStrain::computeStress;
+    using Marmot::Materials::MaterialGradientEnhancedFiniteStrain::computeStress;
 
     /**
      * @brief Compute the Kirchhoff stress, the local driving force and the algorithmic tangents.
@@ -124,7 +131,8 @@ namespace Marmot::Materials {
      * @f$ \partial L/\partial\bar{N} @f$.
      * @param[in] deformation Deformation gradient and nonlocal field at the end of the increment.
      * @param[in] timeIncrement Time and time increment (not used, the model is rate independent).
-     * @throws StressUpdateFailed if the elastic volume ratio is not positive or no admissible return exists.
+     * @throws Marmot::Utilities::StressUpdateFailed if the elastic volume ratio is not positive or no admissible return
+     * exists.
      */
     void computeStress( ConstitutiveResponse< 3 >& response,
                         AlgorithmicModuli< 3 >&    tangents,
@@ -164,9 +172,10 @@ namespace Marmot::Materials {
     Tensor33t< T > secondPiolaKirchhoff( const Tensor33t< T >& Fe ) const
     {
       using namespace ContinuumMechanics;
-      const Tensor33t< T > Ce     = DeformationMeasures::rightCauchyGreen( Fe );
-      const auto [psi_, dPsi_dCe] = EnergyDensityFunctions::FirstOrderDerived::PenceGouPotentialB( Ce, K, G );
-      return multiplyFastorTensorWithScalar( dPsi_dCe, T( 2.0 ) );
+      const Tensor33t< T > Ce     = Marmot::ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( Fe );
+      const auto [psi_, dPsi_dCe] = Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions::FirstOrder::
+        PenceGouPotentialB( Ce, K, G );
+      return Marmot::Math::Tensors::multiplyFastorTensorWithScalar( dPsi_dCe, T( 2.0 ) );
     }
 
     /**
@@ -178,7 +187,7 @@ namespace Marmot::Materials {
     template < typename T >
     Tensor33t< T > mandelStress( const Tensor33t< T >& Fe ) const
     {
-      return Tensor33t< T >( ContinuumMechanics::DeformationMeasures::rightCauchyGreen( Fe ) %
+      return Tensor33t< T >( ContinuumMechanics::Kinematics::DeformationMeasures::rightCauchyGreen( Fe ) %
                              secondPiolaKirchhoff( Fe ) );
     }
 
@@ -192,7 +201,7 @@ namespace Marmot::Materials {
     template < typename T >
     T yieldFunction( const Tensor33t< T >& M, const T alphaP ) const
     {
-      const Tensor33t< T > dev = deviatoric( M );
+      const Tensor33t< T > dev = Marmot::Math::Tensors::deviatoric( M );
       const T              p   = trace( M ) / 3.;
       return sqrt( 0.5 * Fastor::inner( dev, dev ) ) + eta * p - xi * ( c0 + H * alphaP );
     }
@@ -206,9 +215,9 @@ namespace Marmot::Materials {
     template < typename T >
     Tensor33t< T > flowDirection( const Tensor33t< T >& M ) const
     {
-      const Tensor33t< T > dev  = deviatoric( M );
+      const Tensor33t< T > dev  = Marmot::Math::Tensors::deviatoric( M );
       const T              sqJ2 = sqrt( 0.5 * Fastor::inner( dev, dev ) );
-      Tensor33t< T >       n    = multiplyFastorTensorWithScalar( dev, T( 0.5 ) / sqJ2 );
+      Tensor33t< T >       n    = Marmot::Math::Tensors::multiplyFastorTensorWithScalar( dev, T( 0.5 ) / sqJ2 );
       for ( int i = 0; i < 3; i++ )
         n( i, i ) += etaBar / 3.;
       return n;
@@ -227,20 +236,22 @@ namespace Marmot::Materials {
      * @return The residual (11).
      */
     template < typename T >
-    VectorXt< T > coneResidual( const VectorXt< T >& X, const Tensor33d& FeTrial, const double alphaPOld ) const
+    Marmot::Math::VectorXt< T > coneResidual( const Marmot::Math::VectorXt< T >& X,
+                                              const Tensor33d&                   FeTrial,
+                                              const double                       alphaPOld ) const
     {
-      using namespace FastorIndices;
+      using namespace Marmot::Math::Tensors::FastorIndices;
       const Tensor33t< T > Fe( X.segment( 0, 9 ).eval().data() );
       const T              alphaP  = X( 9 );
       const T              dLambda = X( 10 );
 
       const Tensor33t< T > M   = mandelStress( Fe );
-      const Tensor33t< T > dGp = multiplyFastorTensorWithScalar( flowDirection( M ), dLambda );
-      const Tensor33t< T >
-        dFp = ContinuumMechanics::FiniteStrain::Plasticity::FlowIntegration::exponentialMapScalingAndSquaring( dGp );
+      const Tensor33t< T > dGp = Marmot::Math::Tensors::multiplyFastorTensorWithScalar( flowDirection( M ), dLambda );
+      const Tensor33t< T > dFp = ContinuumMechanics::Plasticity::FlowIntegration::exponentialMapScalingAndSquaring(
+        dGp );
       const Tensor33t< T > Fe_dFp = Fastor::einsum< iJ, JK >( Fe, dFp );
 
-      VectorXt< T > R( 11 );
+      Marmot::Math::VectorXt< T > R( 11 );
       for ( int i = 0; i < 9; i++ )
         R( i ) = Fe_dFp.data()[i] - T( FeTrial.data()[i] );
       R( 9 )  = alphaP - alphaPOld - xi * dLambda;
@@ -259,7 +270,9 @@ namespace Marmot::Materials {
      * @return The residual (2).
      */
     template < typename T >
-    VectorXt< T > apexResidual( const VectorXt< T >& X, const double thetaTrial, const double alphaPOld ) const
+    Marmot::Math::VectorXt< T > apexResidual( const Marmot::Math::VectorXt< T >& X,
+                                              const double                       thetaTrial,
+                                              const double                       alphaPOld ) const
     {
       const T        theta  = X( 0 );
       const T        alphaP = X( 1 );
@@ -268,9 +281,84 @@ namespace Marmot::Materials {
         Fe( i, i ) = exp( theta / 3. );
       const T p = trace( mandelStress( Fe ) ) / 3.;
 
-      VectorXt< T > R( 2 );
+      Marmot::Math::VectorXt< T > R( 2 );
       R( 0 ) = ( eta * p - xi * ( c0 + H * alphaP ) ) / c0;
       R( 1 ) = alphaP - alphaPOld - xi / etaBar * ( thetaTrial - theta );
+      return R;
+    }
+
+    /**
+     * @brief An orthonormal basis of the deviatoric plane of the principal space.
+     * @param[in] i 0 or 1.
+     * @return @f$ (1,-1,0)/\sqrt2 @f$ or @f$ (1,1,-2)/\sqrt6 @f$.
+     */
+    static Eigen::Vector3d deviatoricBasis( int i )
+    {
+      return i == 0 ? Eigen::Vector3d( 1., -1., 0. ) / std::sqrt( 2. )
+                    : Eigen::Vector3d( 1., 1., -2. ) / std::sqrt( 6. );
+    }
+
+    /**
+     * @brief Residual of the return in the principal elastic logarithmic strains, smooth across the vertex.
+     * @details For isotropic elasticity and an isotropic yield function, the return is coaxial with the trial state:
+     * in the principal elastic log strains @f$ \varepsilon_a @f$ the flow rule reads
+     * @f$ \varepsilon_a - \varepsilon^{\mathrm{trial}}_a + \Delta\lambda\,(\partial g/\partial M)_a = 0 @f$, with the
+     * principal Mandel stresses of @f$ \boldsymbol{F}^e = \mathrm{diag}(e^{\varepsilon_a}) @f$. The deviatoric part
+     * @f$ \boldsymbol{e} = \rho\,(\cos\varphi\,\boldsymbol{b}_1 + \sin\varphi\,\boldsymbol{b}_2) @f$ has a signed
+     * radius
+     * @f$ \rho @f$, and the flow direction and @f$ \sqrt{J_2} @f$ are multiplied by @f$ \mathrm{sign}\,\rho @f$: the
+     * equations then continue smoothly through the vertex (as @f$ \sqrt{J_2^{\mathrm{trial}}} - G\Delta\lambda @f$ of
+     * the small-strain return), whose singularity @f$ \partial(\partial
+     * g/\partial\boldsymbol{M})/\partial\boldsymbol{M} \sim 1/\sqrt{J_2} @f$ is removed. A solution with @f$ \rho > 0
+     * @f$ lies on the cone, one with @f$ \rho < 0 @f$ beyond the vertex: the state returns to the apex.
+     * @tparam T Scalar type.
+     * @param[in] X Unknowns @f$ \{\rho, \varphi, \theta = \mathrm{tr}\,\boldsymbol{\varepsilon}, \Delta\lambda\} @f$.
+     * @param[in] epsTrial Principal elastic log strains of the trial state.
+     * @param[in] alphaPOld Hardening variable at the beginning of the increment.
+     * @return The residual (4): the two deviatoric components and the volumetric part of the flow rule, and the
+     * yield function (with the hardening law substituted) scaled by @f$ c_0 @f$.
+     */
+    template < typename T >
+    Marmot::Math::VectorXt< T > principalResidual( const Marmot::Math::VectorXt< T >& X,
+                                                   const Eigen::Vector3d&             epsTrial,
+                                                   const double                       alphaPOld ) const
+    {
+      // the radius enters through rho d only, and the flow direction through dev M / sqrt(J2), both ~ rho: a radius
+      // of exactly zero is shifted to a value far below every tolerance
+      const double sign  = Math::Tensors::makeReal( X( 0 ) ) >= 0.0 ? 1.0 : -1.0;
+      const T      rho   = std::abs( Math::Tensors::makeReal( X( 0 ) ) ) < 1e-14 ? X( 0 ) + T( sign * 1e-14 ) : X( 0 );
+      const T      phi   = X( 1 );
+      const T      theta = X( 2 );
+      const T      dLambda = X( 3 );
+
+      std::array< T, 3 > e;
+      for ( int a = 0; a < 3; a++ )
+        e[a] = rho * ( cos( phi ) * deviatoricBasis( 0 )( a ) + sin( phi ) * deviatoricBasis( 1 )( a ) );
+
+      Tensor33t< T > Fe( T( 0.0 ) );
+      for ( int a = 0; a < 3; a++ )
+        Fe( a, a ) = exp( e[a] + theta / 3. );
+      const Tensor33t< T > M = mandelStress( Fe );
+      const T              p = ( M( 0, 0 ) + M( 1, 1 ) + M( 2, 2 ) ) / 3.;
+      T                    J2( 0.0 );
+      for ( int a = 0; a < 3; a++ )
+        J2 += 0.5 * ( M( a, a ) - p ) * ( M( a, a ) - p );
+      const T sqJ2 = sqrt( J2 );
+
+      // the deviatoric flow rule, projected onto the deviatoric plane
+      std::array< T, 3 > devResidual;
+      for ( int a = 0; a < 3; a++ )
+        devResidual[a] = e[a] - ( epsTrial( a ) - epsTrial.mean() ) +
+                         dLambda * sign * ( M( a, a ) - p ) / ( 2. * sqJ2 );
+
+      Marmot::Math::VectorXt< T > R( 4 );
+      for ( int i = 0; i < 2; i++ ) {
+        R( i ) = T( 0.0 );
+        for ( int a = 0; a < 3; a++ )
+          R( i ) += deviatoricBasis( i )( a ) * devResidual[a];
+      }
+      R( 2 ) = theta - 3. * epsTrial.mean() + etaBar * dLambda;
+      R( 3 ) = ( sign * sqJ2 + eta * p - xi * ( c0 + H * ( alphaPOld + xi * dLambda ) ) ) / c0;
       return R;
     }
 
@@ -294,14 +382,14 @@ namespace Marmot::Materials {
      * @brief The converged return mapping: the new elastic state, and the sensitivities needed for the tangents.
      */
     struct ReturnMapping {
-      bool                               plastic = false; ///< the state has returned to the cone or the apex
-      Tensor33d                          Fe;              ///< elastic deformation gradient
-      Tensor33d                          FpNew;           ///< plastic deformation gradient
-      double                             alphaP;          ///< hardening variable
-      double                             dEpVol;          ///< volumetric plastic log strain increment
-      double                             plasticWork;     ///< M : dEp
-      FastorStandardTensors::Tensor3333d dFe_dF;          ///< d Fe / d F
-      Tensor33d                          dDeltaAlphaD_dF; ///< d dalpha_local / d F
+      bool      plastic = false;                                ///< the state has returned to the cone or the apex
+      Tensor33d Fe;                                             ///< elastic deformation gradient
+      Tensor33d FpNew;                                          ///< plastic deformation gradient
+      double    alphaP;                                         ///< hardening variable
+      double    dEpVol;                                         ///< volumetric plastic log strain increment
+      double    plasticWork;                                    ///< M : dEp
+      Marmot::Math::Tensors::FastorTensors::Tensor3333d dFe_dF; ///< d Fe / d F
+      Tensor33d                                         dDeltaAlphaD_dF; ///< d dalpha_local / d F
     };
 
     /**
@@ -310,24 +398,54 @@ namespace Marmot::Materials {
      * @param[in] FpOld Plastic deformation gradient at the beginning of the increment, a view of the state.
      * @param[in] alphaPOld Hardening variable at the beginning of the increment.
      * @return The converged return mapping.
-     * @throws StressUpdateFailed if the elastic volume ratio is not positive or no admissible return exists.
+     * @throws Marmot::Utilities::StressUpdateFailed if the elastic volume ratio is not positive or no admissible return
+     * exists.
      */
     ReturnMapping returnMapping( const Tensor33d& F, const TensorMap33d& FpOld, double alphaPOld ) const;
 
     /**
+     * @brief The return in the principal elastic log strains (see principalResidual()).
+     * @details Started from the radial return of the linearized (Hencky) problem, which is exact for small strains.
+     * @param[in] FeTrial Trial elastic deformation gradient.
+     * @param[in] alphaPOld Hardening variable at the beginning of the increment.
+     * @param[out] Fe The elastic deformation gradient of the solution,
+     * @f$ \boldsymbol{F}^{e,\mathrm{trial}}\,\boldsymbol{Q}\,\mathrm{diag}(e^{\varepsilon_a -
+     * \varepsilon^{\mathrm{trial}}_a})\,\boldsymbol{Q}^T @f$ with the principal directions @f$ \boldsymbol{Q} @f$ of
+     * @f$ \boldsymbol{C}^{e,\mathrm{trial}} @f$ (meaningful for @p rho > 0).
+     * @param[out] dLambda The plastic multiplier of the solution.
+     * @param[out] rho The signed deviatoric radius of the solution: > 0 on the cone, < 0 beyond the vertex (apex).
+     * @return Whether the return converged.
+     */
+    bool principalReturn( const Tensor33d& FeTrial,
+                          double           alphaPOld,
+                          Tensor33d&       Fe,
+                          double&          dLambda,
+                          double&          rho ) const;
+
+    /**
      * @brief The return to the cone.
+     * @details Started from the principal-space return (principalReturn()), or from fractions of the linearized
+     * return.
      * @param[in] FeTrial Trial elastic deformation gradient @f$ \boldsymbol{F}\boldsymbol{F}^{p,-1}_n @f$.
      * @param[in] FpOld Plastic deformation gradient at the beginning of the increment.
      * @param[in] FpOldInv Its inverse.
      * @param[in] alphaPOld Hardening variable at the beginning of the increment.
      * @param[out] converged Whether a solution on the cone was found.
+     * @param[in] FeGuess The solution of the principal-space return, if available (nullptr: the fractions of the
+     * linearized return are the initial guesses).
+     * @param[in] dLambdaGuess The plastic multiplier of @p FeGuess.
+     * @param[in] acceptVanishingDeviator Accept also a solution with a deviator below the apex threshold: the last
+     * resort if the apex is not admissible either (a trial state just below the apex pressure with a tiny deviator).
      * @return The converged return mapping (undefined if not @p converged).
      */
     ReturnMapping returnToCone( const Tensor33d&    FeTrial,
                                 const TensorMap33d& FpOld,
                                 const Tensor33d&    FpOldInv,
                                 double              alphaPOld,
-                                bool&               converged ) const;
+                                bool&               converged,
+                                const Tensor33d*    FeGuess                 = nullptr,
+                                double              dLambdaGuess            = 0.0,
+                                bool                acceptVanishingDeviator = false ) const;
 
     /**
      * @brief The return to the apex, if it is admissible (otherwise, the state belongs to the cone).
