@@ -25,6 +25,7 @@
 
 #pragma once
 #include "Marmot/MarmotFastorTensorBasics.h"
+#include "Marmot/MarmotMath.h"
 
 namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
 
@@ -159,6 +160,41 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
     return res;
   }
 
+  /** @brief Isochoric Mooney-Rivlin hyperelastic energy density function
+   * (no volumetric term; see #VolumetricPenaltyPotential for the shared
+   * volumetric term every potential in this file now uses).
+   *
+   *  The isochoric energy density is
+   *  \f[
+   *    W_{\rm iso} = C_{10} (\bar{I}_1 - 3) + C_{01} (\bar{I}_2 - 3)
+   *  \f]
+   *  where \f$ \bar{I}_1 = I_1 J^{-2/3} \f$ and \f$ \bar{I}_2 = I_2 J^{-4/3} \f$ are the first
+   *  and second invariant of the isochoric right Cauchy-Green tensor, respectively, \f$ I_1 =
+   *  \text{tr}(\boldsymbol{C}) \f$ and \f$ I_2 = 0.5 (I_1^2 - \text{tr}(\boldsymbol{C}^2)) \f$ are the first and
+   *  second invariant of the right Cauchy-Green tensor \f$ \boldsymbol{C} = \boldsymbol{F}^T \boldsymbol{F} \f$, \f$
+   * J = \sqrt{\det(\boldsymbol{C})} = \det(\boldsymbol{F}) \f$ is the determinant of the deformation gradient.
+   *
+   * @tparam T Scalar type, e.g. double, float, etc.
+   * @param C Right Cauchy-Green tensor
+   * @param C10 Mooney-Rivlin material parameter C10
+   * @param C01 Mooney-Rivlin material parameter C01
+   * @return Energy density (isochoric part only).
+   */
+  template < typename T >
+  T MooneyRivlinPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const double C10, const double C01 )
+  {
+    using namespace Fastor;
+    using namespace Marmot::Math::Tensors::FastorIndices;
+
+    const T J   = sqrt( determinant( C ) );
+    const T I1  = trace( C );
+    const T I1_ = I1 * pow( J, -2. / 3. );
+    const T I2_ = 0.5 * ( I1 * I1 - trace( C % C ) ) * pow( J, -4. / 3. );
+    T       res = C10 * ( I1_ - 3. ) + C01 * ( I2_ - 3. );
+
+    return res;
+  }
+
   /** @brief Yeoh hyperelastic energy density function.
    *
    *  The energy density function is given as
@@ -195,6 +231,85 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
     return res;
   }
 
+  /** @brief Isochoric Yeoh hyperelastic energy density function (no volumetric
+   * term; see #VolumetricPenaltyPotential for the shared volumetric term every
+   * potential in this file now uses).
+   *
+   *  The isochoric energy density is
+   *  \f[
+   *    W_{\rm iso} = C_{10} (\bar{I}_1 - 3) + C_{20} (\bar{I}_1 - 3)^2 + C_{30} (\bar{I}_1 - 3)^3
+   *  \f]
+   *  where \f$\bar{I}_1 = I_1 J^{-2/3}\f$, \f$I_1 = \mathrm{tr}(\boldsymbol{C})\f$, and
+   *  \f$J = \sqrt{\det(\boldsymbol{C})}\f$.
+   *
+   * @tparam T Scalar type, e.g. double, float, autodiff scalar.
+   * @param C Right Cauchy-Green tensor.
+   * @param C10 Yeoh material parameter.
+   * @param C20 Yeoh material parameter.
+   * @param C30 Yeoh material parameter.
+   * @return Energy density (isochoric part only).
+   */
+  template < typename T >
+  T YeohPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+                   const double                                        C10,
+                   const double                                        C20,
+                   const double                                        C30 )
+  {
+    const T J         = sqrt( determinant( C ) );
+    const T I1        = trace( C );
+    const T I1_minus3 = I1 * pow( J, -2. / 3. ) - 3.;
+    T       res       = C10 * I1_minus3 + C20 * I1_minus3 * I1_minus3 + C30 * I1_minus3 * I1_minus3 * I1_minus3;
+    return res;
+  }
+
+  /** @brief Isochoric neo-Hookean hyperelastic energy density function
+   * (no volumetric term; see #VolumetricPenaltyPotential
+   * for the shared volumetric term every potential in this file now uses),
+   * acc. Pence & Gou (2015).
+   *
+   * The isochoric energy density is
+   * \f[
+   *   W_{\rm iso} = \frac{\mu}{2}\left(\bar I_1 - 3\right)
+   * \f]
+   * where \f$\bar I_1 = I_1 J^{-2/3}\f$, \f$I_1 = \mathrm{tr}(\boldsymbol C)\f$, and
+   * \f$J = \sqrt{\det\boldsymbol C}\f$.
+   *
+   * @tparam T Scalar type, e.g. double, float, autodiff scalar.
+   * @param C Right Cauchy-Green tensor.
+   * @param mu Shear modulus.
+   * @return Energy density (isochoric part only).
+   */
+  template < typename T >
+  T NeoHookePotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const double mu )
+  {
+    const T J     = sqrt( determinant( C ) );
+    const T Ibar1 = trace( C ) * pow( J, -2. / 3. );
+    return mu / 2. * ( Ibar1 - 3. );
+  }
+
+  /** @brief Shared volumetric penalty potential, used by every hyperelastic
+   * base in this file (in place of the several different, mutually
+   * inconsistent volumetric conventions historically used by individual
+   * materials -- see the class-level docs of #Marmot::Materials::BergstromBoyce
+   * and #Marmot::Materials::CompressibleFiniteStrainLinearViscoelasticity for
+   * why this specific form was adopted).
+   *
+   * \f[
+   *   W_{\rm vol} = \frac{\kappa}{8}\left(\ln I_3\right)^2, \qquad I_3 = J^2 = \det\boldsymbol C
+   * \f]
+   *
+   * @tparam T Scalar type, e.g. double, float, autodiff scalar.
+   * @param C Right Cauchy-Green tensor.
+   * @param kappa Bulk modulus.
+   * @return Energy density (volumetric part only).
+   */
+  template < typename T >
+  T VolumetricPenaltyPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C, const double kappa )
+  {
+    const T lnDetC = log( determinant( C ) );
+    return kappa / 8. * lnDetC * lnDetC;
+  }
+
   /** @brief Standard compressible Neo-Hooke energy density function in terms of \f$\boldsymbol{C}\f$.
    *
    * @tparam T Scalar type, e.g. double, float, autodiff scalar.
@@ -227,6 +342,92 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
     const T psi = G / 2 * ( trC - 3.0 - lnDetC ) + lambda / 4 * ( detC - 1.0 - lnDetC );
 
     return psi;
+  }
+
+  /** @cond */
+  namespace Detail {
+    /** @brief Shared closed-form energy and derivative for the Arruda-Boyce 8-chain
+     * potential's isochoric part, as a function of the isochoric first invariant
+     * \f$\bar I_1\f$ alone -- used by both the plain (energy-only) and
+     * FirstOrder (energy + first derivative w.r.t. C) overloads of
+     * #ArrudaBoyce8ChainPotential below, so the two cannot independently drift out
+     * of sync with each other.
+     *
+     * Closed-form Cohen (1991) Pade approximation to the inverse Langevin function,
+     * integrated in \f$\bar I_1\f$. Regularized near the locking limit
+     * (\f$\bar I_1 \to 3\lambda_L^2\f$, i.e. the average chain stretch approaching
+     * the locking stretch) by shifting the real part of the argument \f$w\f$ up to a
+     * small positive floor rather than overwriting it, so that any complex-step or
+     * dual-number perturbation carried in \f$\bar I_1\f$ survives the regularization.
+     * The floor is scaled relative to \f$w_0 = 1 - 1/\lambda_L^2\f$ so that the
+     * reference state (\f$\bar I_1 = 3, w = w_0\f$) remains strictly unregularized
+     * and exactly zero-energy even for locking stretches arbitrarily close to 1.
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>, autodiff::dual3rd.
+     * @param Ibar1 Isochoric first invariant, \f$\bar I_1 = I_1 J^{-2/3}\f$.
+     * @param mu Shear-modulus-like parameter (small-strain limit -> standard
+     * neo-Hookean shear modulus).
+     * @param lambdaL Locking stretch (must be > 1).
+     * @return Pair (Psi_iso, dPsi_iso/dIbar1).
+     */
+    template < typename T >
+    std::pair< T, T > arrudaBoyce8ChainEnergyAndDerivative( const T& Ibar1, const double mu, const double lambdaL )
+    {
+      const double lambdaL2 = lambdaL * lambdaL;
+      const double w0       = 1. - 1. / lambdaL2;
+      const T      w        = w0 - ( Ibar1 - 3. ) / ( 3. * lambdaL2 );
+
+      const double wFloor   = ( w0 > 0. ) ? std::min( 1e-2, 1e-2 * w0 ) : 1e-2;
+      const double wReal    = Math::Tensors::makeReal( w );
+      const T      wClamped = wReal > wFloor ? w : w + T( wFloor - wReal );
+
+      const T psi_iso     = mu / 6. * ( Ibar1 - 3. ) - mu * lambdaL2 * log( wClamped / w0 );
+      const T dPsi_dIbar1 = mu / 6. + mu / 3. / wClamped;
+
+      return { psi_iso, dPsi_dIbar1 };
+    }
+  } // namespace Detail
+  /** @endcond */
+
+  /** @brief Isochoric Arruda-Boyce 8-chain hyperelastic energy density function (isochoric
+   * part only -- no volumetric term; each consuming material adds its own
+   * volumetric penalty, since the classical 8-chain derivation is purely isochoric
+   * and different materials in this codebase use different volumetric conventions),
+   * via the closed-form Cohen (1991) Pade approximation to the inverse Langevin
+   * function.
+   *
+   * The isochoric energy density is
+   * \f[
+   *   W_{AB} = \frac{\mu}{6}\left(\bar I_1 - 3\right) - \mu \lambda_L^2 \ln\left(
+   *   \frac{1 - \bar I_1/(3\lambda_L^2)}{1 - 1/\lambda_L^2} \right)
+   * \f]
+   * where \f$\bar I_1 = I_1 J^{-2/3}\f$, \f$I_1 = \mathrm{tr}(\boldsymbol C)\f$,
+   * \f$J=\sqrt{\det\boldsymbol C}\f$, \f$\mu\f$ is the shear-modulus-like parameter,
+   * and \f$\lambda_L\f$ is the locking stretch. Reduces exactly to the isochoric
+   * part of #standardNeoHooke as \f$\lambda_L\to\infty\f$, and is exactly
+   * stress-free (zero energy and zero gradient) at \f$\boldsymbol C=\boldsymbol I\f$
+   * for any finite \f$\lambda_L\f$, since \f$\bar I_1\f$ is invariant under
+   * \f$\boldsymbol C \to \lambda\boldsymbol C\f$ for any scalar \f$\lambda\f$.
+   *
+   * @tparam T Scalar type, e.g. double, float, autodiff scalar.
+   * @param C Right Cauchy-Green tensor.
+   * @param mu Shear-modulus-like parameter.
+   * @param lambdaL Locking stretch (must be > 1; the model has a genuine
+   * physical/numerical singularity as the average chain stretch approaches
+   * \f$\lambda_L\f$).
+   * @return Energy density (isochoric part only).
+   */
+  template < typename T >
+  T ArrudaBoyce8ChainPotential( const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+                                const double                                        mu,
+                                const double                                        lambdaL )
+  {
+    using namespace Fastor;
+    const T J     = sqrt( determinant( C ) );
+    const T I1    = trace( C );
+    const T Ibar1 = I1 * pow( J, -2. / 3 );
+
+    return Detail::arrudaBoyce8ChainEnergyAndDerivative( Ibar1, mu, lambdaL ).first;
   }
 
   namespace FirstOrder {
@@ -289,6 +490,207 @@ namespace Marmot::ContinuumMechanics::Elasticity::EnergyDensityFunctions {
                   Marmot::Math::Tensors::multiplyFastorTensorWithScalar( dI1_dC, dPsi_dI1 );
 
       return { psi, dPsi_dC };
+    }
+
+    /** @brief Shared volumetric penalty potential (see the plain
+     * #VolumetricPenaltyPotential) and its first derivative w.r.t. C,
+     * \f[
+     *   \frac{\partial W_{\rm vol}}{\partial \boldsymbol C} = \frac{\kappa}{4}\ln(I_3)\,\boldsymbol C^{-1}.
+     * \f]
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>.
+     * @param C Right Cauchy-Green tensor.
+     * @param kappa Bulk modulus.
+     * @return A tuple containing the (volumetric) energy density and its first derivative w.r.t. C.
+     */
+    template < typename T >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T > > VolumetricPenaltyPotential(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const double                                        kappa )
+    {
+      using namespace Fastor;
+      const T                                            lnDetC = log( determinant( C ) );
+      const Math::Tensors::FastorTensors::Tensor33t< T > CInv   = inverse( C );
+      const T                                            psi    = kappa / 8. * lnDetC * lnDetC;
+      const Math::Tensors::FastorTensors::Tensor33t< T >
+        dPsi_dC = Math::Tensors::multiplyFastorTensorWithScalar( CInv, T( kappa / 4. * lnDetC ) );
+      return { psi, dPsi_dC };
+    }
+
+    /** @brief Isochoric neo-Hookean potential (see the plain
+     * #NeoHookePotential, isochoric part only) and its first derivative w.r.t. C,
+     * \f[
+     *   \frac{\partial W_{\rm iso}}{\partial \boldsymbol C} = \frac{\mu}{2}\frac{\partial \bar I_1}{\partial
+     *   \boldsymbol C}, \qquad \frac{\partial \bar I_1}{\partial \boldsymbol C} = J^{-2/3}\boldsymbol I -
+     *   \frac{\bar I_1}{3}\boldsymbol C^{-1}.
+     * \f]
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>.
+     * @param C Right Cauchy-Green tensor.
+     * @param mu Shear modulus.
+     * @return A tuple containing the (isochoric) energy density and its first derivative w.r.t. C.
+     */
+    template < typename T >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T > > NeoHookePotential(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const double                                        mu )
+    {
+      using namespace Fastor;
+      const T Jm23  = pow( determinant( C ), -1. / 3. );
+      const T Ibar1 = trace( C ) * Jm23;
+
+      const Math::Tensors::FastorTensors::Tensor33t< T > I = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< T >(
+        Math::Tensors::FastorTensors::Spatial3D::I );
+      const Math::Tensors::FastorTensors::Tensor33t< T > CInv = inverse( C );
+      const Math::Tensors::FastorTensors::Tensor33t< T >
+        dIbar1_dC = Math::Tensors::multiplyFastorTensorWithScalar( I, Jm23 ) -
+                    Math::Tensors::multiplyFastorTensorWithScalar( CInv, Ibar1 / 3. );
+
+      const T psi = mu / 2. * ( Ibar1 - 3. );
+      const Math::Tensors::FastorTensors::Tensor33t< T >
+        dPsi_dC = Math::Tensors::multiplyFastorTensorWithScalar( dIbar1_dC, T( mu / 2. ) );
+      return { psi, dPsi_dC };
+    }
+
+    /** @brief Isochoric Yeoh potential (see the plain #YeohPotential, isochoric part
+     * only) and its first derivative w.r.t. C.
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>.
+     * @param C Right Cauchy-Green tensor.
+     * @param C10 Yeoh material parameter.
+     * @param C20 Yeoh material parameter.
+     * @param C30 Yeoh material parameter.
+     * @return A tuple containing the (isochoric) energy density and its first derivative w.r.t. C.
+     */
+    template < typename T >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T > > YeohPotential(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const double                                        C10,
+      const double                                        C20,
+      const double                                        C30 )
+    {
+      using namespace Fastor;
+      const T Jm23    = pow( determinant( C ), -1. / 3. );
+      const T Ibar1   = trace( C ) * Jm23;
+      const T Ibar1m3 = Ibar1 - 3.;
+
+      const Math::Tensors::FastorTensors::Tensor33t< T > I = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< T >(
+        Math::Tensors::FastorTensors::Spatial3D::I );
+      const Math::Tensors::FastorTensors::Tensor33t< T > CInv = inverse( C );
+      const Math::Tensors::FastorTensors::Tensor33t< T >
+        dIbar1_dC = Math::Tensors::multiplyFastorTensorWithScalar( I, Jm23 ) -
+                    Math::Tensors::multiplyFastorTensorWithScalar( CInv, Ibar1 / 3. );
+
+      const T psi         = C10 * Ibar1m3 + C20 * Ibar1m3 * Ibar1m3 + C30 * Ibar1m3 * Ibar1m3 * Ibar1m3;
+      const T dPsi_dIbar1 = C10 + 2. * C20 * Ibar1m3 + 3. * C30 * Ibar1m3 * Ibar1m3;
+      const Math::Tensors::FastorTensors::Tensor33t< T >
+        dPsi_dC = Math::Tensors::multiplyFastorTensorWithScalar( dIbar1_dC, dPsi_dIbar1 );
+      return { psi, dPsi_dC };
+    }
+
+    /** @brief Isochoric Mooney-Rivlin potential (see the plain #MooneyRivlinPotential,
+     * isochoric part only) and its first derivative w.r.t. C.
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>.
+     * @param C Right Cauchy-Green tensor.
+     * @param C10 Mooney-Rivlin material parameter.
+     * @param C01 Mooney-Rivlin material parameter.
+     * @return A tuple containing the (isochoric) energy density and its first derivative w.r.t. C.
+     */
+    template < typename T >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T > > MooneyRivlinPotential(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const double                                        C10,
+      const double                                        C01 )
+    {
+      using namespace Fastor;
+      const T J     = sqrt( determinant( C ) );
+      const T Jm23  = pow( J, -2. / 3. );
+      const T Jm43  = pow( J, -4. / 3. );
+      const T I1    = trace( C );
+      const T Ibar1 = I1 * Jm23;
+      const T I2    = 0.5 * ( I1 * I1 - trace( C % C ) );
+      const T Ibar2 = I2 * Jm43;
+
+      const Math::Tensors::FastorTensors::Tensor33t< T > I = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< T >(
+        Math::Tensors::FastorTensors::Spatial3D::I );
+      const Math::Tensors::FastorTensors::Tensor33t< T > CInv = inverse( C );
+
+      const Math::Tensors::FastorTensors::Tensor33t< T >
+        dIbar1_dC = Math::Tensors::multiplyFastorTensorWithScalar( I, Jm23 ) -
+                    Math::Tensors::multiplyFastorTensorWithScalar( CInv, Ibar1 / 3. );
+      // dIbar2/dC = J^(-4/3)*I1*I - J^(-4/3)*C - (2/3)*Ibar2*Cinv (standard
+      // isochoric second-invariant derivative identity, I2's own derivative
+      // dI2/dC = I1*I - C combined with the J^(-4/3) scaling's own C-derivative).
+      const Math::Tensors::FastorTensors::Tensor33t< T >
+        dIbar2_dC = Math::Tensors::multiplyFastorTensorWithScalar( I, T( Jm43 * I1 ) ) -
+                    Math::Tensors::multiplyFastorTensorWithScalar( C, Jm43 ) -
+                    Math::Tensors::multiplyFastorTensorWithScalar( CInv, T( 2. / 3. * Ibar2 ) );
+
+      const T psi = C10 * ( Ibar1 - 3. ) + C01 * ( Ibar2 - 3. );
+      const Math::Tensors::FastorTensors::Tensor33t< T >
+        dPsi_dC = Math::Tensors::multiplyFastorTensorWithScalar( dIbar1_dC, T( C10 ) ) +
+                  Math::Tensors::multiplyFastorTensorWithScalar( dIbar2_dC, T( C01 ) );
+      return { psi, dPsi_dC };
+    }
+
+    /** @brief Isochoric Arruda-Boyce 8-chain hyperelastic energy density function (isochoric
+     * part only) and its first derivative w.r.t. C -- see the plain
+     * #ArrudaBoyce8ChainPotential for the formula and its reduction/stress-free
+     * properties. This overload additionally returns
+     * \f[
+     *   \frac{\partial W_{AB}}{\partial \boldsymbol C} = \frac{\partial
+     *   W_{AB}}{\partial \bar I_1} \frac{\partial \bar I_1}{\partial \boldsymbol C},
+     *   \qquad \frac{\partial \bar I_1}{\partial \boldsymbol C} =
+     *   J^{-2/3}\boldsymbol I - \frac{\bar I_1}{3}\boldsymbol C^{-1}
+     * \f]
+     * (the standard isochoric-invariant derivative identity -- note \f$J^{-2/3}\f$
+     * multiplies ONLY the \f$\boldsymbol I\f$ term, not the \f$\boldsymbol C^{-1}\f$
+     * term, since the latter's scaling is already absorbed into \f$\bar I_1\f$
+     * itself), sharing the exact same closed-form \f$\Psi_{iso}(\bar I_1)\f$/
+     * \f$\partial\Psi_{iso}/\partial \bar I_1\f$ evaluation as the plain overload
+     * (both funnel through one shared internal helper), so the two cannot drift
+     * apart.
+     *
+     * @tparam T Scalar type, e.g. double, std::complex<double>.
+     * @param C Right Cauchy-Green tensor.
+     * @param mu Shear-modulus-like parameter.
+     * @param lambdaL Locking stretch.
+     * @return A tuple containing the (isochoric) energy density and its first
+     * derivative w.r.t. C.
+     */
+    template < typename T >
+    std::tuple< T, Math::Tensors::FastorTensors::Tensor33t< T > > ArrudaBoyce8ChainPotential(
+      const Math::Tensors::FastorTensors::Tensor33t< T >& C,
+      const double                                        mu,
+      const double                                        lambdaL )
+    {
+      using namespace Fastor;
+      const T J     = sqrt( determinant( C ) );
+      const T I1    = trace( C );
+      const T Ibar1 = I1 * pow( J, -2. / 3 );
+
+      const auto [psi_iso, dPsi_dIbar1] = Detail::arrudaBoyce8ChainEnergyAndDerivative( Ibar1, mu, lambdaL );
+
+      const Math::Tensors::FastorTensors::Tensor33t< T > I = Marmot::Math::Tensors::fastorTensorFromDoubleTensor< T >(
+        Math::Tensors::FastorTensors::Spatial3D::I );
+      const Math::Tensors::FastorTensors::Tensor33t< T > CInv = inverse( C );
+      // dIbar1/dC = d(I1*J^(-2/3))/dC = J^(-2/3)*dI1/dC + I1*d(J^(-2/3))/dC
+      //           = J^(-2/3)*I - (I1/3)*J^(-2/3)*Cinv
+      // and (I1/3)*J^(-2/3) = Ibar1/3 exactly (since Ibar1 = I1*J^(-2/3) by
+      // definition) -- so J^(-2/3) multiplies ONLY the I term, not the Cinv
+      // term (an earlier version of this code mistakenly applied J^(-2/3)
+      // to both, which is wrong away from J=1 and was caught by
+      // TestBergstromBoyce's P-4/I-1/I-2/I-3 failing against the isochoric
+      // formulation's own reduction check).
+      const Math::Tensors::FastorTensors::Tensor33t< T >
+        dIbar1_dC = Math::Tensors::multiplyFastorTensorWithScalar( I, T( pow( J, -2. / 3 ) ) ) -
+                    Math::Tensors::multiplyFastorTensorWithScalar( CInv, Ibar1 / 3. );
+
+      const Math::Tensors::FastorTensors::Tensor33t< T >
+        dPsi_dC = Math::Tensors::multiplyFastorTensorWithScalar( dIbar1_dC, dPsi_dIbar1 );
+
+      return { psi_iso, dPsi_dC };
     }
   } // namespace FirstOrder
 
