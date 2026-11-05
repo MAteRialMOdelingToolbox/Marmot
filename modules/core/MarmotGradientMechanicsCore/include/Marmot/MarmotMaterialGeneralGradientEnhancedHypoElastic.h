@@ -31,6 +31,7 @@
 #include "Marmot/MarmotTypedefs.h"
 #include <algorithm>
 #include <cmath>
+#include <limits>
 #include <stdexcept>
 #include <vector>
 
@@ -132,6 +133,18 @@ namespace Marmot::Materials {
       /// @brief Second derivative of nonlocal interaction parameters with respect to nonlocal variables.
       Eigen::Matrix< double, nNonlocalVariables, nNonlocalVariables >
         d2cddK2 = Eigen::Matrix< double, nNonlocalVariables, nNonlocalVariables >::Zero();
+      /// @brief Derivatives of the updated elastic energy density and dissipation wrt the strain increment and the
+      /// nonlocal variables (NaN unless provided by the material).
+      Marmot::Math::Vector6d dElasticEnergyDensityddStrain = Marmot::Math::Vector6d::Constant(
+        std::numeric_limits< double >::quiet_NaN() );
+      Marmot::Math::Vector6d dDissipationddStrain = Marmot::Math::Vector6d::Constant(
+        std::numeric_limits< double >::quiet_NaN() );
+      Eigen::Vector< double, nNonlocalVariables >
+        dElasticEnergyDensityddK = Eigen::Vector< double, nNonlocalVariables >::Constant(
+          std::numeric_limits< double >::quiet_NaN() );
+      Eigen::Vector< double, nNonlocalVariables >
+        dDissipationddK = Eigen::Vector< double, nNonlocalVariables >::Constant(
+          std::numeric_limits< double >::quiet_NaN() );
     };
 
     /**

@@ -1,6 +1,8 @@
+#include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotMaterialPointSolverHypoElastic.h"
 #include "Marmot/MarmotTesting.h"
 #include "Marmot/MarmotTypedefs.h"
+#include "Marmot/VonMises.h"
 
 using namespace Marmot::Testing;
 using namespace Marmot::Materials;
@@ -73,9 +75,88 @@ void testVonMises()
                            "comparison with reference solution failed" );
 }
 
+void checkVonMisesEnergies( const std::vector< double >& materialProperties, double kappaMin )
+{
+  using namespace Marmot;
+  using namespace Marmot::Math;
+  using namespace Marmot::Utilities;
+  using namespace Marmot::Materials;
+
+  const double        E = materialProperties[0], nu = materialProperties[1];
+  const VonMisesModel material( materialProperties.data(), materialProperties.size(), 0 );
+  const Matrix6d      CelInv = ContinuumMechanics::Elasticity::Isotropic::complianceTensor( E, nu );
+
+  struct MaterialPointState {
+    MaterialHypoElastic::state3D state;
+    double                       kappa = 0.;
+  };
+
+  // single stress update from a given state
+  auto update = [&]( const MaterialPointState& old, const Vector6d& dStrain ) {
+    MaterialPointState                  updated = old;
+    Matrix6d                            tangent;
+    const MaterialHypoElastic::timeInfo tInfo{ 0.0, 1.0 };
+    updated.state.stateVars = &updated.kappa;
+    material.computeStress( updated.state, tangent, dStrain, tInfo );
+    return updated;
+  };
+
+  // loading into softening, then elastic unloading
+  const Vector6d     direction = ( Vector6d() << 1., -0.3, -0.2, 0.1, 0.4, -0.2 ).finished();
+  MaterialPointState current;
+  double             dissipationReference = 0.;
+  for ( int i = 0; i < 60; i++ ) {
+    const Vector6d           dStrain = ( i < 50 ? 1e-4 : -2e-5 ) * direction;
+    const MaterialPointState updated = update( current, dStrain );
+    const auto&              state   = updated.state;
+
+    // plastic work sigma_{n+1} : dEpsP, with the plastic strain increment from the elastic law
+    dissipationReference += state.stress.dot( dStrain - CelInv * ( state.stress - current.state.stress ) );
+
+    throwExceptionOnFailure( checkIfEqual( state.elasticEnergyDensity,
+                                           0.5 * state.stress.dot( CelInv * state.stress ),
+                                           1e-10 ),
+                             MakeString() << "elastic energy density wrong in increment " << i );
+    throwExceptionOnFailure( checkIfEqual( state.dissipation, dissipationReference, 1e-9 ),
+                             MakeString() << "dissipation wrong in increment " << i );
+
+    // energy tangents against central differences wrt the strain increment
+    Vector6d     dPsiNumerical, dDNumerical;
+    const double h = 1e-9;
+    for ( int j = 0; j < 6; j++ ) {
+      Vector6d perturbation = Vector6d::Zero();
+      perturbation( j )     = h;
+      const auto plus       = update( current, dStrain + perturbation ).state;
+      const auto minus      = update( current, dStrain - perturbation ).state;
+      dPsiNumerical( j )    = ( plus.elasticEnergyDensity - minus.elasticEnergyDensity ) / ( 2. * h );
+      dDNumerical( j )      = ( plus.dissipation - minus.dissipation ) / ( 2. * h );
+    }
+    const double scale = state.stress.cwiseAbs().maxCoeff();
+    throwExceptionOnFailure( ( state.dElasticEnergyDensity_dStrain - dPsiNumerical ).cwiseAbs().maxCoeff() <
+                               1e-5 * scale,
+                             MakeString() << "elastic energy tangent wrong in increment " << i );
+    throwExceptionOnFailure( ( state.dDissipation_dStrain - dDNumerical ).cwiseAbs().maxCoeff() < 1e-5 * scale,
+                             MakeString() << "dissipation tangent wrong in increment " << i );
+
+    current = updated;
+  }
+  throwExceptionOnFailure( current.kappa > kappaMin && current.state.dissipation > 0.,
+                           "insufficient plastic flow in the energy test" );
+}
+
+void testVonMisesEnergies()
+{
+  // exponential softening fy = 200 - 150 (1 - exp(-500 kappa))
+  checkVonMisesEnergies( { 210000., 0.3, 200., 0., -150., 500. }, 0. );
+  // linear softening fy = 200 - 70000 kappa, beyond zero strength at kappa = 200 / 70000
+  checkVonMisesEnergies( { 210000., 0.3, 200., -70000., 0., 1. }, 200. / 70000. );
+}
+
 int main()
 {
-  std::vector< std::function< void( void ) > > tests = { testVonMises, testVonMisesCoordinateInvariance };
+  std::vector< std::function< void( void ) > > tests = { testVonMises,
+                                                         testVonMisesCoordinateInvariance,
+                                                         testVonMisesEnergies };
 
   executeTestsAndCollectExceptions( tests );
   return 0;
