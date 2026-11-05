@@ -10,6 +10,7 @@
 #include <Eigen/Eigenvalues>
 #include <algorithm>
 #include <limits>
+#include <stdexcept>
 
 using namespace Marmot;
 using namespace Testing;
@@ -61,6 +62,19 @@ namespace {
     result.dPsi         = state.elasticEnergyDensity;
     result.dDissipation = state.dissipation;
     return result;
+  }
+
+  // true if f throws an exception of type Ex
+  template < typename Ex, typename F >
+  bool throws( F&& f )
+  {
+    try {
+      f();
+    }
+    catch ( const Ex& ) {
+      return true;
+    }
+    return false;
   }
 
   // compare the algorithmic tangent against a central difference approximation
@@ -381,6 +395,52 @@ void testDivergedIterateRequestsCutback()
   }
 }
 
+void testPropertiesAndZeroIncrement()
+{
+  throwExceptionOnFailure( throws< std::runtime_error >( [] { RankineDamagePlasticity( properties.data(), 3, 1 ); } ),
+                           "properties: missing properties not detected" );
+  const std::vector< double > noSoftening = { E, nu, ft, 0. };
+  throwExceptionOnFailure( throws< std::invalid_argument >(
+                             [&] { RankineDamagePlasticity( noSoftening.data(), noSoftening.size(), 1 ); } ),
+                           "properties: nonpositive epsilonF not detected" );
+
+  const RankineDamagePlasticity material( properties.data(), 4, 1 );
+  throwExceptionOnFailure( throws< std::runtime_error >( [&] { material.getDensity( nullptr ); } ),
+                           "properties: missing density not detected" );
+  const std::vector< double >   withDensity = { E, nu, ft, epsilonF, 2.4e-9 };
+  const RankineDamagePlasticity materialWithDensity( withDensity.data(), withDensity.size(), 1 );
+  throwExceptionOnFailure( materialWithDensity.getDensity( nullptr ) == 2.4e-9, "properties: wrong density" );
+
+  // a zero increment from a damaged state returns the damaged elastic stiffness and leaves the state unchanged
+  const auto damaged = update( material, MaterialPointState(), ( Math::Vector6d() << 4e-4, 0, 0, 0, 0, 0 ).finished() )
+                         .state;
+  const auto result = update( material, damaged, Math::Vector6d::Zero() );
+  throwExceptionOnFailure( damaged.omega() > 0. && result.state.stress == damaged.stress &&
+                             result.state.stateVars == damaged.stateVars,
+                           "zero increment: state changed" );
+  throwExceptionOnFailure( checkIfEqual< double >( result.tangent,
+                                                   ( 1. - damaged.omega() ) *
+                                                     ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E,
+                                                                                                                 nu ),
+                                                   1e-12 ),
+                           "zero increment: tangent is not the damaged elastic stiffness" );
+
+  // a completely damaged old state has no effective stress
+  MaterialPointState completelyDamaged;
+  completelyDamaged.stateVars << 1e6, 1., 1.;
+  throwExceptionOnFailure( throws< Utilities::StressUpdateFailed >(
+                             [&] { update( material, completelyDamaged, Math::Vector6d::Zero() ); } ),
+                           "complete damage of the old state did not request a cutback" );
+
+  // complete damage within the increment
+  throwExceptionOnFailure( throws< Utilities::StressUpdateFailed >( [&] {
+                             update( material,
+                                     MaterialPointState(),
+                                     ( Math::Vector6d() << 10., 0, 0, 0, 0, 0 ).finished() );
+                           } ),
+                           "complete damage within the increment did not request a cutback" );
+}
+
 int main()
 {
   std::vector< std::function< void( void ) > > tests = { testUniaxialStress,
@@ -390,7 +450,8 @@ int main()
                                                          testTangentGeneralLoadingPath,
                                                          testEnergyBalance,
                                                          testCoordinateInvariance,
-                                                         testDivergedIterateRequestsCutback };
+                                                         testDivergedIterateRequestsCutback,
+                                                         testPropertiesAndZeroIncrement };
 
   executeTestsAndCollectExceptions( tests );
   return 0;

@@ -10,6 +10,7 @@
 #include "Marmot/RankineGradientDamagePlasticity.h"
 #include <algorithm>
 #include <memory>
+#include <stdexcept>
 
 using namespace Marmot;
 using namespace Testing;
@@ -33,6 +34,19 @@ namespace {
   std::vector< double > localProperties = { E, nu, ft, epsilonF };
 
   using Material = RankineGradientDamagePlasticity;
+
+  // true if f throws an exception of type Ex
+  template < typename Ex, typename F >
+  bool throws( F&& f )
+  {
+    try {
+      f();
+    }
+    catch ( const Ex& ) {
+      return true;
+    }
+    return false;
+  }
 
   struct MaterialPointState {
     Math::Vector6d                stress    = Math::Vector6d::Zero();
@@ -292,6 +306,17 @@ void testPropertiesAndFactory()
   const Material withoutOptional( props.data(), 6, 1 );
   throwExceptionOnFailure( withoutOptional.getNonlocalViscosity( nullptr )[0] == 0.,
                            "factory: nonlocal viscosity default is not zero" );
+
+  // invalid properties
+  for ( const auto& p : { std::vector< double >{ E, nu, ft, epsilonF, l } } )
+    throwExceptionOnFailure( throws< std::runtime_error >( [&] { Material( p.data(), p.size(), 1 ); } ),
+                             "properties: missing properties not detected" );
+  for ( const auto& p :
+        { std::vector< double >{ E, nu, ft, 0., l, 1. }, std::vector< double >{ E, nu, ft, epsilonF, -1., 1. } } )
+    throwExceptionOnFailure( throws< std::invalid_argument >( [&] { Material( p.data(), p.size(), 1 ); } ),
+                             "properties: nonpositive epsilonF or negative nonlocal length not detected" );
+  throwExceptionOnFailure( throws< std::runtime_error >( [&] { withoutOptional.getDensity( nullptr ); } ),
+                           "properties: missing density not detected" );
 }
 
 /// Element stiffness of GeneralGradientEnhancedDisplacementFiniteElement (C3D8 and C3D20R with the nonlocal field)
@@ -409,6 +434,13 @@ void testCompleteDamageThrows()
     threw = true;
   }
   throwExceptionOnFailure( threw, "complete damage did not throw" );
+
+  // a completely damaged old state has no effective stress
+  MaterialPointState completelyDamaged;
+  completelyDamaged.stateVars << 1e6, 1., 1., 1e6, 1e6;
+  throwExceptionOnFailure( throws< Utilities::StressUpdateFailed >(
+                             [&] { update( material, completelyDamaged, Math::Vector6d::Zero(), 1e6 ); } ),
+                           "complete damage of the old state did not throw" );
 }
 
 /// Strain increments of a diverged iterate (about 1e288, from a dissipation-controlled run at the onset of

@@ -1,3 +1,4 @@
+#include "Marmot/MarmotElasticity.h"
 #include "Marmot/MarmotExceptions.h"
 #include "Marmot/MarmotMaterialPointSolverHypoElastic.h"
 #include "Marmot/MarmotNumericalDifferentiation.h"
@@ -6,6 +7,7 @@
 #include "Marmot/MarmotVoigt.h"
 #include "Marmot/RankineSofteningPlasticity.h"
 #include <Eigen/Eigenvalues>
+#include <stdexcept>
 
 using namespace Marmot;
 using namespace Testing;
@@ -50,6 +52,19 @@ namespace {
     material.computeStress( state, tangent, dStrain, tInfo );
     stateNew.stress = state.stress;
     return { stateNew, tangent };
+  }
+
+  // true if f throws an exception of type Ex
+  template < typename Ex, typename F >
+  bool throws( F&& f )
+  {
+    try {
+      f();
+    }
+    catch ( const Ex& ) {
+      return true;
+    }
+    return false;
   }
 
   // compare the algorithmic tangent against a central difference approximation
@@ -388,6 +403,30 @@ void testDivergedIterateRequestsCutback()
                            "regular increment gave non-finite results" );
 }
 
+void testPropertiesAndZeroIncrement()
+{
+  throwExceptionOnFailure( throws< std::runtime_error >(
+                             [] { RankineSofteningPlasticity( linearSofteningProperties.data(), 5, 1 ); } ),
+                           "properties: missing properties not detected" );
+
+  const RankineSofteningPlasticity material( linearSofteningProperties.data(), 6, 1 );
+  throwExceptionOnFailure( throws< std::runtime_error >( [&] { material.getDensity( nullptr ); } ),
+                           "properties: missing density not detected" );
+  std::vector< double > withDensity = linearSofteningProperties;
+  withDensity.push_back( 2.4e-9 );
+  const RankineSofteningPlasticity materialWithDensity( withDensity.data(), withDensity.size(), 1 );
+  throwExceptionOnFailure( materialWithDensity.getDensity( nullptr ) == 2.4e-9, "properties: wrong density" );
+
+  // a zero increment returns the elastic stiffness and leaves the state unchanged
+  MaterialPointState stateOld;
+  stateOld.stress << 1., 0.5, 0., 0.2, 0., 0.;
+  const auto [state, tangent] = update( material, stateOld, Math::Vector6d::Zero() );
+  throwExceptionOnFailure( state.stress == stateOld.stress && state.stateVars == stateOld.stateVars,
+                           "zero increment: state changed" );
+  throwExceptionOnFailure( tangent == ContinuumMechanics::Elasticity::Isotropic::stiffnessTensor( E, nu ),
+                           "zero increment: tangent is not the elastic stiffness" );
+}
+
 int main()
 {
   std::vector< std::function< void( void ) > > tests = { testUniaxialStrain,
@@ -400,7 +439,8 @@ int main()
                                                          testYieldFlag,
                                                          testUniaxialStress,
                                                          testCoordinateInvariance,
-                                                         testDivergedIterateRequestsCutback };
+                                                         testDivergedIterateRequestsCutback,
+                                                         testPropertiesAndZeroIncrement };
 
   executeTestsAndCollectExceptions( tests );
   return 0;
